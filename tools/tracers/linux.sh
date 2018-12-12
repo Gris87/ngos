@@ -37,6 +37,9 @@ RANDOM_VIRTUAL_ADDRESS=0xFFFFFFFF81000000
 NEXTI_FILTERS=(
     -E
     -e "<efi_call>"
+    -e "<efi_low_alloc>"
+    -e "<efi_high_alloc>"
+    -e "<efi_get_memory_map>"
     -e "<memset>"
     -e "<__gunzip>"
 )
