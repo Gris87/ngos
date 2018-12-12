@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/images/about.png</file>
+        <file>assets/images/back.png</file>
+        <file>assets/images/breakpoint.png</file>
+        <file>assets/images/breakpoint_current.png</file>
+        <file>assets/images/exit.png</file>
+        <file>assets/images/icon.ico</file>
+        <file>assets/images/logo.png</file>
+        <file>assets/images/memory_map.png</file>
+        <file>assets/images/next.png</file>
+        <file>assets/images/restart.png</file>
+        <file>assets/images/spinner.gif</file>
+        <file>assets/images/start.png</file>
+        <file>assets/images/stop.png</file>
+    </qresource>
+</RCC>

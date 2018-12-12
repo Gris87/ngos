@@ -1,0 +1,20 @@
+#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTBLTPIXEL_H
+#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTBLTPIXEL_H
+
+
+
+#include <ngos/types.h>
+
+
+
+struct EfiGraphicsOutputBltPixel
+{
+    u8 blue;
+    u8 green;
+    u8 red;
+    u8 reserved;
+};
+
+
+
+#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTBLTPIXEL_H

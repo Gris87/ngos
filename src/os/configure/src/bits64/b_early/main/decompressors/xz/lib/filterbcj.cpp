@@ -1,0 +1,58 @@
+#include "filterbcj.h"
+
+#include <ngos/linkage.h>
+
+#include "src/bits64/b_early/early/earlyassert.h"
+#include "src/bits64/b_early/early/earlylog.h"
+#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
+
+
+
+#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
+
+
+
+NgosStatus filterBCJ(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeOfProperties, u8 *filterProperties, u64 uncompressedSize)
+{
+    EARLY_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, sizeOfProperties = %u, filterProperties = 0x%p, uncompressedSize = %u", compressedAddress, decompressedAddress, sizeOfProperties, filterProperties, uncompressedSize));
+
+    AVOID_UNUSED(sizeOfProperties);
+    AVOID_UNUSED(filterProperties);
+
+    EARLY_ASSERT(compressedAddress,    "compressedAddress is null",   NgosStatus::ASSERTION);
+    EARLY_ASSERT(decompressedAddress,  "decompressedAddress is null", NgosStatus::ASSERTION);
+    EARLY_ASSERT(!sizeOfProperties     // sizeOfProperties == 0
+                ||
+                sizeOfProperties == 4, "sizeOfProperties is invalid", NgosStatus::ASSERTION);
+    EARLY_ASSERT(filterProperties,     "filterProperties is null",    NgosStatus::ASSERTION);
+    EARLY_ASSERT(uncompressedSize > 0, "uncompressedSize is zero",    NgosStatus::ASSERTION);
+
+
+
+    XzBcjDecoder decoder;
+    XzBuffer     xzBuffer;
+
+    decoder.x86PreviousMask = 0;
+
+    xzBuffer.in          = compressedAddress;
+    xzBuffer.inPosition  = 0;
+    xzBuffer.inSize      = (u64)-1;
+    xzBuffer.out         = decompressedAddress;
+    xzBuffer.outPosition = 0;
+    xzBuffer.outSize     = uncompressedSize;
+
+
+
+    XzResult res = runXzBcjDecoder(&decoder, &xzBuffer);
+
+    if (res != XzResult::XZ_STREAM_END)
+    {
+        return NgosStatus::FAILED;
+    }
+
+    return NgosStatus::OK;
+}
+
+
+
+#endif

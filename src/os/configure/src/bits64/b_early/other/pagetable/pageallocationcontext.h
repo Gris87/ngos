@@ -1,0 +1,19 @@
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_OTHER_PAGETABLE_PAGEALLOCATIONCONTEXT_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_OTHER_PAGETABLE_PAGEALLOCATIONCONTEXT_H
+
+
+
+#include <ngos/types.h>
+
+
+
+struct PageAllocationContext
+{
+    u8  *buffer;
+    u64  size;
+    u64  position;
+};
+
+
+
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_OTHER_PAGETABLE_PAGEALLOCATIONCONTEXT_H

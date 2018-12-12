@@ -1,0 +1,32 @@
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_BLOCKFLAGS_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_BLOCKFLAGS_H
+
+
+
+#include <buildconfig.h>
+#include <ngos/types.h>
+
+
+
+#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
+
+
+
+typedef u8 xz_block_flags;
+
+enum class BlockFlag: xz_block_flags
+{
+    NONE                      = 0,
+    COMPRESSED_SIZE_PRESENT   = (1ULL << 6),
+    UNCOMPRESSED_SIZE_PRESENT = (1ULL << 7),
+
+    NUMBER_OF_FILTERS_MASK = 0x03
+};
+
+
+
+#endif
+
+
+
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_BLOCKFLAGS_H

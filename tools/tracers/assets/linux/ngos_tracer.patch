@@ -1,0 +1,31 @@
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index 91f27ab..6adda9a 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -465,6 +465,7 @@ static unsigned long slots_fetch_random(void)
+ 		return 0;
+ 
+ 	slot = kaslr_get_random_long("Physical") % slot_max;
++	slot = 0;
+ 
+ 	for (i = 0; i < slot_area_index; i++) {
+ 		if (slot >= slot_areas[i].num) {
+@@ -671,4 +672,5 @@ void choose_random_location(unsigned long input,
+ 	if (IS_ENABLED(CONFIG_X86_64))
+ 		random_addr = find_random_virt_addr(LOAD_PHYSICAL_ADDR, output_size);
+ 	*virt_addr = random_addr;
++	*virt_addr = 0x1000000;
+ }
+diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
+index 555c06b..aa0d8cc 100644
+--- a/lib/decompress_inflate.c
++++ b/lib/decompress_inflate.c
+@@ -193,7 +193,7 @@ STATIC int INIT gunzip(unsigned char *buf, long len,
+ 	return __gunzip(buf, len, fill, flush, out_buf, 0, pos, error);
+ }
+ #else
+-STATIC int INIT __decompress(unsigned char *buf, long len,
++int __decompress(unsigned char *buf, long len,
+ 			   long (*fill)(void*, unsigned long),
+ 			   long (*flush)(void*, unsigned long),
+ 			   unsigned char *out_buf, long out_len,

@@ -1,0 +1,62 @@
+#ifndef BUILD_CONFIG_GUI_SRC_MAIN_MAINWINDOW_H
+#define BUILD_CONFIG_GUI_SRC_MAIN_MAINWINDOW_H
+
+
+
+#include <QMainWindow>
+
+#include <QCloseEvent>
+#include <QHash>
+#include <QTreeWidgetItem>
+
+#include "src/other/optioninfo.h"
+#include "src/widgets/parameters/parameterwidget.h"
+
+
+
+namespace Ui
+{
+    class MainWindow;
+}
+
+
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = 0); // TEST: NO
+    ~MainWindow(); // TEST: NO
+
+    void loadBuildConfigFile(); // TEST: NO
+
+protected:
+    void closeEvent(QCloseEvent *event) override; // TEST: NO
+
+private slots:
+    void on_actionReload_triggered(); // TEST: NO
+    void on_actionSave_triggered(); // TEST: NO
+    void on_actionExit_triggered(); // TEST: NO
+    void on_actionAbout_triggered(); // TEST: NO
+    void on_actionReset_triggered(); // TEST: NO
+    void on_categoriesTreeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous); // TEST: NO
+
+    void parameterValueChanged(); // TEST: NO
+    void parameterDetailsUpdated(const QString &details); // TEST: NO
+
+private:
+    Ui::MainWindow                    *ui;
+    QHash<QString, OptionInfo>         mOptions;
+    QHash<QString, ParameterWidget *>  mParameters;
+
+    void parseBuildConfigFile(const QStringList &lines); // TEST: NO
+    void buildParameters(const QHash<QString, QHash<QString, QString>> &parameters, const QStringList &parametersIds); // TEST: NO
+
+    void saveWindowState(); // TEST: NO
+    void loadWindowState(); // TEST: NO
+};
+
+
+
+#endif // BUILD_CONFIG_GUI_SRC_MAIN_MAINWINDOW_H

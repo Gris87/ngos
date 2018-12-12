@@ -1,0 +1,28 @@
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_FILTER_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_FILTER_H
+
+
+
+#include <buildconfig.h>
+#include <ngos/types.h>
+
+
+
+#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
+
+
+
+struct Filter
+{
+    u64  id;
+    u64  sizeOfProperties;
+    u8  *properties;
+};
+
+
+
+#endif
+
+
+
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_FILTER_H

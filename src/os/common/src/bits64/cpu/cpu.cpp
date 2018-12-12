@@ -1,0 +1,908 @@
+#include "cpu.h"
+
+#include <ngos/linkage.h>
+#include <src/bits64/cpu/generated/cpufeaturesnames.h>
+#include <src/bits64/cpu/msr/msr.h>
+#include <src/bits64/cpu/msr/msrregisters.h>
+#include <src/bits64/cpu/processorflags.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
+#include <src/bits64/printf/printf.h>
+#include <src/bits64/string/string.h>
+
+
+
+#define VENDOR_INTEL_1 0x756E6547   // Genu
+#define VENDOR_INTEL_2 0x49656E69   // ineI
+#define VENDOR_INTEL_3 0x6C65746E   // ntel
+
+#define VENDOR_AMD_1   0x68747541   // Auth
+#define VENDOR_AMD_2   0x69746E65   // enti
+#define VENDOR_AMD_3   0x444D4163   // cAMD
+
+#define INTEL_MINIMAL_FAMILY 6
+#define INTEL_MINIMAL_MODEL  42
+
+#define AMD_MINIMAL_FAMILY 23
+#define AMD_MINIMAL_MODEL  1
+
+#define CPUID_LEVEL_LOWER_BOUND     0x00000001
+#define CPUID_LEVEL_UPPER_BOUND     0x0000FFFF
+
+#define EXT_CPUID_LEVEL_LOWER_BOUND 0x80000001
+#define EXT_CPUID_LEVEL_UPPER_BOUND 0x8000FFFF
+
+#define CPUID_EAX 0
+#define CPUID_EBX 1
+#define CPUID_ECX 2
+#define CPUID_EDX 3
+
+
+
+#define EXECUTE_IF_INTEL_VENDOR(func) \
+    if (sVendor[0] == VENDOR_INTEL_1 && sVendor[1] == VENDOR_INTEL_2 && sVendor[2] == VENDOR_INTEL_3) \
+    { \
+        COMMON_ASSERT_EXECUTION(func, NgosStatus::ASSERTION); \
+    }
+
+
+
+const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // "<< 5" == "* 32"
+
+u32 CPU::sVendor[3];
+u32 CPU::sModelName[12];
+u32 CPU::sCpuidLevel;
+u32 CPU::sExtendedCpuidLevel;
+u16 CPU::sFamily;
+u8  CPU::sModel;
+u8  CPU::sStepping;
+u16 CPU::sCacheLineFlushSize;
+u16 CPU::sCacheAlignment;
+i32 CPU::sCacheMaxRmid;
+i32 CPU::sCacheOccScale;
+u32 CPU::sPower;
+u8  CPU::sPhysicalBits;
+u8  CPU::sVirtualBits;
+u32 CPU::sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
+
+
+
+NgosStatus CPU::init()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(initCpuFeaturesNames(), NgosStatus::ASSERTION);
+
+
+
+    sCacheLineFlushSize = 64;
+    sCacheAlignment     = 64;
+    sCacheMaxRmid       = -1;
+    sCacheOccScale      = -1;
+    sPhysicalBits       = 36;
+    sVirtualBits        = 48;
+
+
+
+    if (hasEFlag(X86_EFLAGS_ID))
+    {
+        COMMON_LVV(("CPUID detection available"));
+
+        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::CPUID), NgosStatus::ASSERTION);
+
+
+
+        u32 ignored;
+
+
+
+        COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &sVendor[0], &sVendor[2], &sVendor[1]), NgosStatus::ASSERTION);
+
+
+
+        // Handle general CPUID levels
+        do
+        {
+            if (sCpuidLevel >= 0x00000001)
+            {
+                u32 tfms;
+                u32 misc;
+
+                COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &tfms, &misc, &sFlags[CPUID_00000001_ECX], &sFlags[CPUID_00000001_EDX]), NgosStatus::ASSERTION);
+
+
+
+                //
+                // https://en.wikipedia.org/wiki/CPUID#EAX=1:_Processor_Info_and_Feature_Bits
+                //
+                sFamily   = (tfms >> 8) & 0x0F;   // 11:8 - Family
+                sModel    = (tfms >> 4) & 0x0F;   // 7:4 - Model
+                sStepping = tfms & 0x0F;          // 3:0 - Stepping
+
+                if (sFamily == 15)
+                {
+                    sFamily += (tfms >> 20) & 0xFF; // 27:20 - Extended Family
+                }
+
+                if (sFamily >= 6)
+                {
+                    sModel += ((tfms >> 16) & 0x0F) << 4; // 19:16 - Extended Model
+                }
+
+
+
+                if (hasFlag(X86Feature::CLFLUSH))
+                {
+                    sCacheLineFlushSize = ((misc >> 8) & 0xFF) << 3; // "<< 3" == "* 8"
+                    sCacheAlignment     = sCacheLineFlushSize;
+                }
+
+
+
+                COMMON_ASSERT_EXECUTION(doPreprocessing(), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            if (sCpuidLevel >= 0x00000006)
+            {
+                COMMON_ASSERT_EXECUTION(cpuid(0x00000006, 0, &sFlags[CPUID_00000006_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            if (sCpuidLevel >= 0x00000007)
+            {
+                COMMON_ASSERT_EXECUTION(cpuid(0x00000007, 0, &ignored, &sFlags[CPUID_00000007_EBX], &sFlags[CPUID_00000007_ECX], &ignored), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            if (sCpuidLevel >= 0x0000000D)
+            {
+                COMMON_ASSERT_EXECUTION(cpuid(0x0000000D, 1, &sFlags[CPUID_0000000D_1_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            if (sCpuidLevel >= 0x0000000F)
+            {
+                i32 ebx;
+                i32 ecx;
+
+                COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 0, &ignored, (u32 *)&ebx, &ignored, &sFlags[CPUID_0000000F_0_EDX]), NgosStatus::ASSERTION);
+
+                if (hasFlag(X86Feature::CQM_LLC))
+                {
+                    sCacheMaxRmid = ebx;
+
+                    COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 1, &ignored, (u32 *)&ebx, (u32 *)&ecx, &sFlags[CPUID_0000000F_1_EDX]), NgosStatus::ASSERTION);
+
+                    if (
+                        hasFlag(X86Feature::CQM_OCCUP_LLC)
+                        ||
+                        hasFlag(X86Feature::CQM_MBM_TOTAL)
+                        ||
+                        hasFlag(X86Feature::CQM_MBM_LOCAL)
+                       )
+                    {
+                        sCacheMaxRmid  = ecx;
+                        sCacheOccScale = ebx;
+                    }
+                }
+            }
+            else
+            {
+                break;
+            }
+
+            break;
+        } while(true);
+
+
+
+        COMMON_ASSERT_EXECUTION(cpuid(0x80000000, 0, &sExtendedCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+
+
+
+        // Handle extended CPUID levels
+        do
+        {
+            if (sExtendedCpuidLevel >= 0x80000001)
+            {
+                COMMON_ASSERT_EXECUTION(cpuid(0x80000001, 0, &ignored, &ignored, &sFlags[CPUID_80000001_ECX], &sFlags[CPUID_80000001_EDX]), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            if (sExtendedCpuidLevel >= 0x80000004)
+            {
+                COMMON_ASSERT_EXECUTION(cpuid(0x80000002, 0, &sModelName[0], &sModelName[1], &sModelName[2],  &sModelName[3]),  NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(cpuid(0x80000003, 0, &sModelName[4], &sModelName[5], &sModelName[6],  &sModelName[7]),  NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(cpuid(0x80000004, 0, &sModelName[8], &sModelName[9], &sModelName[10], &sModelName[11]), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            if (sExtendedCpuidLevel >= 0x80000007)
+            {
+                COMMON_ASSERT_EXECUTION(cpuid(0x80000007, 0, &ignored, &sFlags[CPUID_80000007_EBX], &ignored, &sPower), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            if (sExtendedCpuidLevel >= 0x80000008)
+            {
+                u32 misc;
+
+                COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &misc, &sFlags[CPUID_80000008_EBX], &ignored, &ignored), NgosStatus::ASSERTION);
+
+                sVirtualBits  = (misc >> 8) & 0xFF;
+                sPhysicalBits = misc & 0xFF;
+            }
+            else
+            {
+                break;
+            }
+
+            if (sExtendedCpuidLevel >= 0x8000000A)
+            {
+                COMMON_ASSERT_EXECUTION(cpuid(0x8000000A, 0, &ignored, &ignored, &ignored, &sFlags[CPUID_8000000A_EDX]), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                break;
+            }
+
+            break;
+        } while(true);
+    }
+    else
+    {
+        COMMON_LF(("CPU didn't support CPUID"));
+
+        return NgosStatus::NOT_SUPPORTED;
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::ALWAYS), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initScatteredFeatures(),     NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(doPostprocessing(),          NgosStatus::ASSERTION);
+
+
+
+    COMMON_LVVV(("sVendor[0]          = 0x%08X", sVendor[0]));
+    COMMON_LVVV(("sVendor[1]          = 0x%08X", sVendor[1]));
+    COMMON_LVVV(("sVendor[2]          = 0x%08X", sVendor[2]));
+    COMMON_LVVV(("sVendor             = %-12s",  sVendor));
+    COMMON_LVVV(("sModelName[0]       = 0x%08X", sModelName[0]));
+    COMMON_LVVV(("sModelName[1]       = 0x%08X", sModelName[1]));
+    COMMON_LVVV(("sModelName[2]       = 0x%08X", sModelName[2]));
+    COMMON_LVVV(("sModelName[3]       = 0x%08X", sModelName[3]));
+    COMMON_LVVV(("sModelName[4]       = 0x%08X", sModelName[4]));
+    COMMON_LVVV(("sModelName[5]       = 0x%08X", sModelName[5]));
+    COMMON_LVVV(("sModelName[6]       = 0x%08X", sModelName[6]));
+    COMMON_LVVV(("sModelName[7]       = 0x%08X", sModelName[7]));
+    COMMON_LVVV(("sModelName[8]       = 0x%08X", sModelName[8]));
+    COMMON_LVVV(("sModelName[9]       = 0x%08X", sModelName[9]));
+    COMMON_LVVV(("sModelName[10]      = 0x%08X", sModelName[10]));
+    COMMON_LVVV(("sModelName[11]      = 0x%08X", sModelName[11]));
+    COMMON_LVVV(("sModelName          = %s",     sModelName));
+    COMMON_LVVV(("sCpuidLevel         = 0x%08X", sCpuidLevel));
+    COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X", sExtendedCpuidLevel));
+    COMMON_LVVV(("sFamily             = %u",     sFamily));
+    COMMON_LVVV(("sModel              = %u",     sModel));
+    COMMON_LVVV(("sStepping           = %u",     sStepping));
+    COMMON_LVVV(("sCacheLineFlushSize = %u",     sCacheLineFlushSize));
+    COMMON_LVVV(("sCacheAlignment     = %u",     sCacheAlignment));
+    COMMON_LVVV(("sCacheMaxRmid       = %d",     sCacheMaxRmid));
+    COMMON_LVVV(("sCacheOccScale      = %d",     sCacheOccScale));
+    COMMON_LVVV(("sPower              = %u",     sPower));
+    COMMON_LVVV(("sPhysicalBits       = %u",     sPhysicalBits));
+    COMMON_LVVV(("sVirtualBits        = %u",     sVirtualBits));
+
+
+
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+    {
+        COMMON_LVVV(("CPU flags:"));
+
+        for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_FEATURES; ++i)
+        {
+            COMMON_LVVV(("sFlags[%d] = 0x%08X", i, sFlags[i]));
+        }
+    }
+#endif
+
+
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    COMMON_TEST_ASSERT(sVendor[0]                       == 0x756E6547,                                                                        NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sVendor[1]                       == 0x49656E69,                                                                        NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sVendor[2]                       == 0x6C65746E,                                                                        NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(strncmp((const char *)sVendor, "GenuineIntel", 12) == 0,                                                               NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sModelName[0]                 == 0x65746E49,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[1]                 == 0x2952286C,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[2]                 == 0x6F655820,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[3]                 == 0x2952286E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[4]                 == 0x616C5020,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[5]                 == 0x756E6974,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[6]                 == 0x3138206D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[7]                 == 0x43203836,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[8]                 == 0x40205550,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[9]                 == 0x372E3220,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[10]                == 0x7A484730,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sModelName[11]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(strncmp((const char *)sModelName, "Intel(R) Xeon(R) Platinum 8168 CPU @ 2.70GHz", 48) == 0,                         NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sCpuidLevel                   == 0x00000015,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    COMMON_TEST_ASSERT(sCpuidLevel                      >= CPUID_LEVEL_LOWER_BOUND && sCpuidLevel <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sExtendedCpuidLevel           == 0x80000008,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    COMMON_TEST_ASSERT(sExtendedCpuidLevel              >= EXT_CPUID_LEVEL_LOWER_BOUND && sExtendedCpuidLevel <= EXT_CPUID_LEVEL_UPPER_BOUND, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sFamily                          == 6,                                                                                 NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sModel                        == 85,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sStepping                     == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+    COMMON_TEST_ASSERT(sCacheLineFlushSize              == 64,                                                                                NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sCacheAlignment                  == 64,                                                                                NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sCacheMaxRmid                    == -1,                                                                                NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sCacheOccScale                   == -1,                                                                                NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sPower                        == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sPhysicalBits                 == 44,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
+    COMMON_TEST_ASSERT(sVirtualBits                     == 48,                                                                                NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(AMOUNT_OF_WORDS_FOR_X86_FEATURES == 15,                                                                                NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sFlags[0]                     == 0x82D82203,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[1]                     == 0x0F8BFBFD,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[2]                     == 0x00000004,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[3]                     == 0x00180188,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[4]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[5]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[6]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[7]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[8]                     == 0x00000021,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[9]                     == 0x2C100800,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[10]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[11]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[12]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    COMMON_TEST_ASSERT(sFlags[14]                       == 0x00000005,                                                                        NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::toString(char *buffer, u16 size)
+{
+    COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
+
+    COMMON_ASSERT(buffer,   "buffer is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is zero",   NgosStatus::ASSERTION);
+
+
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    i64 res = sprintf(buffer,
+            "CPU info:\n"
+            "           Vendor:                %12s\n"
+            "           CPU Family:            %u\n"
+            "           Model:                 %u\n"
+            "           Model name:            %s\n"
+            "           Stepping:              %u\n"
+            "           CPUID level:           %u\n"
+            "           Cache line flush size: %u\n"
+            "           Cache alignment:       %u\n"
+            "           Address sizes:         %u bits physical, %u bits virtual"
+            , sVendor, sFamily, sModel, sModelName, sStepping, sCpuidLevel, sCacheLineFlushSize, sCacheAlignment, sPhysicalBits, sVirtualBits);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    AVOID_UNUSED(res);
+    AVOID_UNUSED(size);
+    COMMON_TEST_ASSERT(res < size, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::flagsToString(char *buffer, u16 size)
+{
+    COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
+
+    COMMON_ASSERT(buffer,   "buffer is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is zero",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(size);
+
+
+
+    u16 currentIndex = 0;
+
+    for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_FEATURES; ++i)
+    {
+        u32 flag = sFlags[i];
+
+        for (i64 j = 0; j < 32; ++j)
+        {
+            if (flag & (1ULL << j))
+            {
+                const char *featureName = cpuFeaturesNames[WORD_BIT(i, j)];
+
+                if (*featureName)
+                {
+                    if (currentIndex > 0)
+                    {
+                        COMMON_TEST_ASSERT(currentIndex < size, NgosStatus::ASSERTION);
+
+                        buffer[currentIndex] = ' ';
+                        ++currentIndex;
+                    }
+
+
+
+                    while (*featureName)
+                    {
+                        COMMON_TEST_ASSERT(currentIndex < size, NgosStatus::ASSERTION);
+
+                        buffer[currentIndex] = *featureName;
+                        ++currentIndex;
+                        ++featureName;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    COMMON_TEST_ASSERT(currentIndex < size, NgosStatus::ASSERTION);
+
+    buffer[currentIndex] = 0;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::check(const char **wantedFlag)
+{
+    COMMON_LT((" | wantedFlag = 0x%p", wantedFlag));
+
+    COMMON_ASSERT(wantedFlag, "wantedFlag is null", NgosStatus::ASSERTION);
+
+
+
+    X86Feature flags[] =
+    {
+        X86Feature::ALWAYS
+        , X86Feature::CPUID
+        , X86Feature::FPU
+        , X86Feature::MSR
+        , X86Feature::PAE
+        , X86Feature::CX8
+        , X86Feature::CMOV
+        , X86Feature::FXSR
+        , X86Feature::LM
+
+#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
+        , X86Feature::LA57
+#endif
+
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE
+        , X86Feature::XMM
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE2
+        , X86Feature::XMM2
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE3
+        , X86Feature::SSSE3
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE4
+        , X86Feature::SSE4A
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE4_1
+        , X86Feature::XMM4_1
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE4_2
+        , X86Feature::XMM4_2
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX
+        , X86Feature::AVX
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX2
+        , X86Feature::AVX2
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512
+        , X86Feature::AVX512F
+        , X86Feature::AVX512PF
+        , X86Feature::AVX512ER
+        , X86Feature::AVX512CD
+        , X86Feature::AVX512VL
+        , X86Feature::AVX512BW
+        , X86Feature::AVX512DQ
+        , X86Feature::AVX512IFMA
+        , X86Feature::AVX512VBMI
+#endif
+
+
+
+#if NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD == OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA4
+        , X86Feature::FMA4
+#elif NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD == OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3
+        , X86Feature::FMA
+#endif
+    };
+
+
+
+    i64 flagsCount = sizeof(flags) / sizeof(flags[0]);
+    COMMON_LVVV(("flagsCount = %d", flagsCount));
+
+    for (i64 i = 0; i < flagsCount; ++i)
+    {
+        X86Feature flag = flags[i];
+
+        if (!hasFlag(flag))
+        {
+            *wantedFlag = cpuFeaturesNames[(u64)flag];
+
+            return NgosStatus::NOT_SUPPORTED;
+        }
+    }
+
+
+
+    if (
+        sVendor[0] == VENDOR_AMD_1
+        &&
+        sVendor[1] == VENDOR_AMD_2
+        &&
+        sVendor[2] == VENDOR_AMD_3
+       )
+    {
+        if (
+            sFamily < AMD_MINIMAL_FAMILY
+            ||
+            (
+             sFamily == AMD_MINIMAL_FAMILY
+             &&
+             sModel < AMD_MINIMAL_MODEL
+            )
+           )
+        {
+            return NgosStatus::NOT_SUPPORTED;
+        }
+    }
+    else
+    {
+        if (
+            sFamily < INTEL_MINIMAL_FAMILY
+            ||
+            (
+             sFamily == INTEL_MINIMAL_FAMILY
+             &&
+             sModel < INTEL_MINIMAL_MODEL
+            )
+           )
+        {
+            return NgosStatus::NOT_SUPPORTED;
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::setFlag(X86Feature flag)
+{
+    COMMON_LT((" | flag = 0x%04X", flag));
+
+    COMMON_ASSERT(((u64)flag >> 5) < AMOUNT_OF_WORDS_FOR_X86_FEATURES, "flag is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+
+
+
+    sFlags[(u64)flag >> 5] |= (1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::clearFlag(X86Feature flag)
+{
+    COMMON_LT((" | flag = 0x%04X", flag));
+
+    COMMON_ASSERT(((u64)flag >> 5) < AMOUNT_OF_WORDS_FOR_X86_FEATURES, "flag is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+
+
+
+    sFlags[(u64)flag >> 5] &= ~(1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
+
+
+
+    return NgosStatus::OK;
+}
+
+bool CPU::hasFlag(X86Feature flag)
+{
+    COMMON_LT((" | flag = 0x%04X", flag));
+
+    COMMON_ASSERT(((u64)flag >> 5) < AMOUNT_OF_WORDS_FOR_X86_FEATURES, "flag is invalid", false); // ">> 5" == "/ 32"
+
+
+
+    return sFlags[(u64)flag >> 5] & (1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
+}
+
+NgosStatus CPU::doPreprocessing()
+{
+    COMMON_LT((""));
+
+
+
+    EXECUTE_IF_INTEL_VENDOR(doIntelPreprocessing());
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::doIntelPreprocessing()
+{
+    COMMON_LT((""));
+
+
+
+    if (
+        sFamily > 6
+        ||
+        (
+         sFamily == 6
+         &&
+         sModel >= 0x0D
+        )
+       )
+    {
+        NgosStatus status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT);
+
+        if (status == NgosStatus::OK)
+        {
+            // Nothing
+        }
+        else if (status != NgosStatus::NO_EFFECT)
+        {
+            COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT"));
+
+            return NgosStatus::FAILED;
+        }
+
+
+
+        status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT);
+
+        if (status == NgosStatus::OK)
+        {
+            u32 ignored;
+
+            COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+        }
+        else if (status != NgosStatus::NO_EFFECT)
+        {
+            COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT"));
+
+            return NgosStatus::FAILED;
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::initScatteredFeatures()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::APERFMPERF,       CPUID_ECX, 0,  0x00000006, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::EPB,              CPUID_ECX, 3,  0x00000006, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::INTEL_PT,         CPUID_EBX, 25, 0x00000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::AVX512_4VNNIW,    CPUID_EDX, 2,  0x00000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::AVX512_4FMAPS,    CPUID_EDX, 3,  0x00000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L3,           CPUID_EBX, 1,  0x00000010, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L2,           CPUID_EBX, 2,  0x00000010, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L3,           CPUID_ECX, 2,  0x00000010, 1), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::MBA,              CPUID_EBX, 3,  0x00000010, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::HW_PSTATE,        CPUID_EDX, 7,  0x80000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CPB,              CPUID_EDX, 9,  0x80000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::PROC_FEEDBACK,    CPUID_EDX, 11, 0x80000007, 0), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count)
+{
+    COMMON_LT((" | feature = 0x%04X, registerId = %u, bit = %u, level = %u, count = %u", feature, registerId, bit, level, count));
+
+    COMMON_ASSERT(registerId < 4, "registerId is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(bit < 32,       "bit is invalid",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(level > 0,      "level is zero",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(count <= 1,     "count is invalid",      NgosStatus::ASSERTION);
+
+
+
+    u32 maximumLevel;
+    u32 ignored;
+    u32 registers[4];
+
+    COMMON_ASSERT_EXECUTION(cpuid(level & 0xFFFF0000, 0, &maximumLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+
+
+
+    if (maximumLevel >= level)
+    {
+        COMMON_TEST_ASSERT(maximumLevel >= (level & 0xFFFF0000) && maximumLevel <= (level | 0xFFFF), NgosStatus::ASSERTION)
+
+        COMMON_ASSERT_EXECUTION(cpuid(level, count, &registers[0], &registers[1], &registers[2], &registers[3]), NgosStatus::ASSERTION);
+
+
+
+        if (registers[registerId] & (1 << bit))
+        {
+            COMMON_ASSERT_EXECUTION(setFlag(feature), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::doPostprocessing()
+{
+    COMMON_LT((""));
+
+
+
+    EXECUTE_IF_INTEL_VENDOR(doIntelPostprocessing());
+
+
+
+    NgosStatus status = MSR::setBit(MSR_EFER, MSR_EFER_SCE_BIT);
+
+    if (status == NgosStatus::OK)
+    {
+        // Nothing
+    }
+    else if (status != NgosStatus::NO_EFFECT)
+    {
+        COMMON_LF(("Failed to set MSR_EFER_SCE_BIT"));
+
+        return NgosStatus::FAILED;
+    }
+
+
+
+    if (hasFlag(X86Feature::NX))
+    {
+        status = MSR::setBit(MSR_EFER, MSR_EFER_NX_BIT);
+
+        if (status == NgosStatus::OK)
+        {
+            // Nothing
+        }
+        else if (status != NgosStatus::NO_EFFECT)
+        {
+            COMMON_LF(("Failed to set MSR_EFER_NX_BIT"));
+
+            return NgosStatus::FAILED;
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::doIntelPostprocessing()
+{
+    COMMON_LT((""));
+
+
+
+    return NgosStatus::OK;
+}
+
+bool CPU::hasEFlag(u64 mask)
+{
+    COMMON_LT((" | mask = 0x%016lX", mask));
+
+    COMMON_ASSERT(mask > 0, "mask is zero", false);
+
+
+
+    u64 f0 = 0;
+    u64 f1 = 0;
+
+
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
+        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
+        "popq    %0"        "\n\t"      // popq     %rbp        # Get EFLAGS from the stack to f0. %rbp == f0
+        "movq    %0, %1"    "\n\t"      // movq     %rbp, %r12  # Store f0 to f1. %rbp == f0. %r12 == f1
+        "xorq    %2, %1"    "\n\t"      // xorq     %rdi, %r12  # Xor f1 with mask. %rdi == mask. %r12 == f1
+        "pushq   %1"        "\n\t"      // pushq    %r12        # Push new value for EFLAGS to stack
+        "popfq"             "\n\t"      // popfq                # Set new value for EFLAGS from the stack. If EFLAGS did't support some flags they stay zero
+        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
+        "popq    %1"        "\n\t"      // popq     %r12        # Get EFLAGS from the stack to f1. %r12 == f1
+        "popfq"                         // popfq                # Restore EFLAGS from the stack
+            :                           // Output parameters
+                "=&r" (f0),             // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
+                "=&r" (f1)              // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
+            :                           // Input parameters
+                "ri" (mask)             // "r" == any general register, or "i" == immediate integer operand is allowed
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    COMMON_LVVV(("f0   = 0x%016lX", f0));
+    COMMON_LVVV(("f1   = 0x%016lX", f1));
+    COMMON_LVVV(("mask = 0x%016lX", mask));
+
+    // COMMON_TEST_ASSERT(f0 == 0x0000000000000202, false); // Commented due to value variation
+    // COMMON_TEST_ASSERT(f1 == 0x0000000000200202, false); // Commented due to value variation
+    COMMON_TEST_ASSERT(mask  == 0x0000000000200000, false);
+
+
+
+    return (f0 ^ f1) == mask;
+}
+
+NgosStatus CPU::cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
+{
+    COMMON_LT((" | id = 0x%08X, count = %u, a = 0x%p, b = 0x%p, c = 0x%p, d = 0x%p", id, count, a, b, c, d));
+
+    COMMON_ASSERT(a, "a is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(b, "b is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(c, "c is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(d, "d is null", NgosStatus::ASSERTION);
+
+
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "cpuid"             // cpuid        # Gets information about CPU to eax, ebx, ecx, edx
+            :               // Output parameters
+                "=a" (*a),  // "a" == EAX, "=" - write only
+                "=b" (*b),  // "b" == EBX, "=" - write only
+                "=c" (*c),  // "c" == ECX, "=" - write only
+                "=d" (*d)   // "d" == EDX, "=" - write only
+            :               // Input parameters
+                "a" (id),   // "a" == EAX // Ignore CppSingleCharVerifier
+                "c" (count) // "c" == ECX // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    return NgosStatus::OK;
+}

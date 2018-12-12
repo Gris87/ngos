@@ -1,0 +1,33 @@
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFLAGS_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFLAGS_H
+
+
+
+#include <buildconfig.h>
+#include <ngos/types.h>
+
+
+
+#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
+
+
+
+typedef u16 xz_stream_flags;
+
+enum class StreamFlag: xz_stream_flags
+{
+    NONE                 = 0x0000,
+    TYPE_OF_CHECK_CRC32  = 0x0100,
+    TYPE_OF_CHECK_CRC64  = 0x0400,
+    TYPE_OF_CHECK_SHA256 = 0x0A00,
+
+    TYPE_OF_CHECK_MASK   = 0x0F00
+};
+
+
+
+#endif
+
+
+
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFLAGS_H

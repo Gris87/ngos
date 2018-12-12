@@ -1,0 +1,14 @@
+#ifndef OS_KERNELBASE_SRC_BITS64_A_EARLY_MAIN_DISABLEIRQ_H
+#define OS_KERNELBASE_SRC_BITS64_A_EARLY_MAIN_DISABLEIRQ_H
+
+
+
+#include <ngos/status.h>
+
+
+
+NgosStatus disableIrq(); // TEST: NO
+
+
+
+#endif // OS_KERNELBASE_SRC_BITS64_A_EARLY_MAIN_DISABLEIRQ_H

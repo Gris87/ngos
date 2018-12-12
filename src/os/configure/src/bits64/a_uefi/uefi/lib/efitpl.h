@@ -1,0 +1,25 @@
+#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITPL_H
+#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITPL_H
+
+
+
+#include <ngos/types.h>
+
+
+
+#define TPL_APPLICATION     4
+#define TPL_CALLBACK        8
+#define TPL_NOTIFY          16
+#define TPL_HIGH_LEVEL      31
+#define EFI_TPL_APPLICATION TPL_APPLICATION
+#define EFI_TPL_CALLBACK    TPL_CALLBACK
+#define EFI_TPL_NOTIFY      TPL_NOTIFY
+#define EFI_TPL_HIGH_LEVEL  TPL_HIGH_LEVEL
+
+
+
+typedef u64 efi_tpl;
+
+
+
+#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITPL_H

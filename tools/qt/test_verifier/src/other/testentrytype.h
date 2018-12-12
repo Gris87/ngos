@@ -1,0 +1,19 @@
+#ifndef TEST_VERIFIER_SRC_OTHER_TESTENTRYTYPE_H
+#define TEST_VERIFIER_SRC_OTHER_TESTENTRYTYPE_H
+
+
+
+#include <Qt>
+
+
+
+enum class TestEntryType: quint8
+{
+    INTERNAL_FUNCTION,
+    DEFINE,
+    FUNCTION
+};
+
+
+
+#endif // TEST_VERIFIER_SRC_OTHER_TESTENTRYTYPE_H

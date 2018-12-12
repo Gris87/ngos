@@ -1,0 +1,31 @@
+#include "setupstackcanary.h"
+
+#include <src/bits64/a_early/early/earlyassert.h>
+#include <src/bits64/a_early/early/earlylog.h>
+#include <src/bits64/other/irq/irqstack.h>
+#include <src/bits64/other/tasks/task.h>
+#include <src/bits64/random/random.h>
+
+
+
+NgosStatus setupStackCanary()
+{
+    EARLY_LT((""));
+
+
+
+    u64 canary = simpleRandom();
+
+    irqStack.stackCanary = canary;
+    initTask.stackCanary = canary;
+
+
+
+    EARLY_LVVV(("canary               = 0x%016lX", canary));
+    EARLY_LVVV(("irqStack.stackCanary = 0x%016lX", irqStack.stackCanary));
+    EARLY_LVVV(("initTask.stackCanary = 0x%016lX", initTask.stackCanary));
+
+
+
+    return NgosStatus::OK;
+}

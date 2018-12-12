@@ -1,0 +1,30 @@
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBEREXTRAFLAGS_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBEREXTRAFLAGS_H
+
+
+
+#include <buildconfig.h>
+#include <ngos/types.h>
+
+
+
+#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
+
+
+
+typedef u8 gzip_member_extra_flags;
+
+enum class MemberExtraFlag: gzip_member_extra_flags
+{
+    NONE         = 0,
+    DEFLATE_SLOW = 0x02,
+    DEFLATE_FAST = 0x04
+};
+
+
+
+#endif
+
+
+
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBEREXTRAFLAGS_H

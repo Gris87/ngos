@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/images/about.png</file>
+        <file>assets/images/exit.png</file>
+        <file>assets/images/icon.ico</file>
+        <file>assets/images/logo.png</file>
+        <file>assets/images/reload.png</file>
+        <file>assets/images/reset.png</file>
+        <file>assets/images/save.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,211 @@
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___INCLUDE_NGOS_UTILS_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___INCLUDE_NGOS_UTILS_H
+
+
+
+#include <buildconfig.h>
+#include <ngos/utils.h>
+
+#include "test/bits64/a_uefi/testengine.h"
+
+
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+
+
+
+TEST_CASES(section0, __include_ngos_utils);
+{
+    TEST_CASE("ROUND_UP()");
+    {
+        TEST_ASSERT_EQUALS(ROUND_UP(0, 4), 0);
+        TEST_ASSERT_EQUALS(ROUND_UP(1, 4), 4);
+        TEST_ASSERT_EQUALS(ROUND_UP(2, 4), 4);
+        TEST_ASSERT_EQUALS(ROUND_UP(3, 4), 4);
+        TEST_ASSERT_EQUALS(ROUND_UP(4, 4), 4);
+        TEST_ASSERT_EQUALS(ROUND_UP(5, 4), 8);
+
+        TEST_ASSERT_EQUALS(ROUND_UP(0,  8), 0);
+        TEST_ASSERT_EQUALS(ROUND_UP(1,  8), 8);
+        TEST_ASSERT_EQUALS(ROUND_UP(2,  8), 8);
+        TEST_ASSERT_EQUALS(ROUND_UP(10, 8), 16);
+        TEST_ASSERT_EQUALS(ROUND_UP(18, 8), 24);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ROUND_DOWN()");
+    {
+        TEST_ASSERT_EQUALS(ROUND_DOWN(0, 4), 0);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(1, 4), 0);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(2, 4), 0);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(3, 4), 0);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(4, 4), 4);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(5, 4), 4);
+
+        TEST_ASSERT_EQUALS(ROUND_DOWN(0,  8), 0);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(1,  8), 0);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(2,  8), 0);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(10, 8), 8);
+        TEST_ASSERT_EQUALS(ROUND_DOWN(18, 8), 16);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("__ROUND_MASK()");
+    {
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 1),      0);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 2),      1);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 4),      3);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 8),      7);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 16),     15);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 32),     31);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 64),     63);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 128),    127);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 256),    255);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 512),    511);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 1024),   1023);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 2048),   2047);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 4096),   4095);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 8192),   8191);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 16384),  16383);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 32678),  32677);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 65536),  65535);
+        TEST_ASSERT_EQUALS(__ROUND_MASK(0, 131072), 131071);
+
+        TEST_ASSERT_EQUALS(__ROUND_MASK((i8)0, 1024), -1);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((u8)0, 1024), 255);
+
+        TEST_ASSERT_EQUALS(__ROUND_MASK((i8)0, 131072), -1);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((u8)0, 131072), 255);
+
+        TEST_ASSERT_EQUALS(__ROUND_MASK((i16)0, 131072), -1);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((u16)0, 131072), 65535);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("MIN()");
+    {
+        TEST_ASSERT_EQUALS(MIN(0, 1),      0);
+        TEST_ASSERT_EQUALS(MIN(1, 0),      0);
+        TEST_ASSERT_EQUALS(MIN(1, 1),      1);
+        TEST_ASSERT_EQUALS(MIN(1000, 5),   5);
+        TEST_ASSERT_EQUALS(MIN(3, 2000),   3);
+        TEST_ASSERT_EQUALS(MIN(100000, 5), 5);
+        TEST_ASSERT_EQUALS(MIN(3, 200000), 3);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("MIN_TYPED()");
+    {
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 0,  1),  0);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 1,  0),  0);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 1,  1),  1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, -1, 1),  1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 1,  -1), 1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, -1, -1), 255);
+        TEST_ASSERT_EQUALS(MIN_TYPED(i8, -1, 1),  -1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(i8, 1,  -1), -1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(i8, -1, -1), -1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("MAX()");
+    {
+        TEST_ASSERT_EQUALS(MAX(0, 1),      1);
+        TEST_ASSERT_EQUALS(MAX(1, 0),      1);
+        TEST_ASSERT_EQUALS(MAX(1, 1),      1);
+        TEST_ASSERT_EQUALS(MAX(1000, 5),   1000);
+        TEST_ASSERT_EQUALS(MAX(3, 2000),   2000);
+        TEST_ASSERT_EQUALS(MAX(100000, 5), 100000);
+        TEST_ASSERT_EQUALS(MAX(3, 200000), 200000);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("MAX_TYPED()");
+    {
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 0,  1),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 1,  0),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 1,  1),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, -1, 1),  255);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 1,  -1), 255);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, -1, -1), 255);
+        TEST_ASSERT_EQUALS(MAX_TYPED(i8, -1, 1),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(i8, 1,  -1), 1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(i8, -1, -1), -1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("htons()");
+    {
+        TEST_ASSERT_EQUALS(htons(0x01),   0x0100);
+        TEST_ASSERT_EQUALS(htons(0x0102), 0x0201);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ntohs()");
+    {
+        TEST_ASSERT_EQUALS(ntohs(0x01),   0x0100);
+        TEST_ASSERT_EQUALS(ntohs(0x0102), 0x0201);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("htonl()");
+    {
+        TEST_ASSERT_EQUALS(htonl(0x01),       0x01000000);
+        TEST_ASSERT_EQUALS(htonl(0x01020304), 0x04030201);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ntohl()");
+    {
+        TEST_ASSERT_EQUALS(ntohl(0x01),       0x01000000);
+        TEST_ASSERT_EQUALS(ntohl(0x01020304), 0x04030201);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("htonll()");
+    {
+        TEST_ASSERT_EQUALS(htonll(0x01),               0x0100000000000000);
+        TEST_ASSERT_EQUALS(htonll(0x0102030405060708), 0x0807060504030201);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ntohll()");
+    {
+        TEST_ASSERT_EQUALS(ntohll(0x01),               0x0100000000000000);
+        TEST_ASSERT_EQUALS(ntohll(0x0102030405060708), 0x0807060504030201);
+    }
+    TEST_CASE_END();
+}
+TEST_CASES_END();
+
+
+
+#endif
+
+
+
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___INCLUDE_NGOS_UTILS_H
