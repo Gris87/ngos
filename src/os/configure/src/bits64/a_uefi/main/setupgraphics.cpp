@@ -272,21 +272,21 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u6
 
 
     // UEFI_TEST_ASSERT(params->screenInfo.frameBufferBase == 0x0000000080000000, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.frameBufferSize == 2359296,            NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.lineLength      == 3072,               NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.width           == 1024,               NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.height          == 768,                NgosStatus::ASSERTION); // Commented due to value variation
-    UEFI_TEST_ASSERT((params->screenInfo.depth             == 24)
+    // UEFI_TEST_ASSERT(params->screenInfo.frameBufferSize == 1920000,            NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->screenInfo.lineLength      == 3200,               NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->screenInfo.width           == 800,                NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->screenInfo.height          == 600,                NgosStatus::ASSERTION); // Commented due to value variation
+    UEFI_TEST_ASSERT((params->screenInfo.depth             == 32)
                     ||
-                    (params->screenInfo.depth              == 32),                NgosStatus::ASSERTION);
+                    (params->screenInfo.depth              == 24),                NgosStatus::ASSERTION);
     UEFI_TEST_ASSERT(params->screenInfo.redOffset          == 16,                 NgosStatus::ASSERTION);
     UEFI_TEST_ASSERT(params->screenInfo.greenOffset        == 8,                  NgosStatus::ASSERTION);
     UEFI_TEST_ASSERT(params->screenInfo.blueOffset         == 0,                  NgosStatus::ASSERTION);
-    // UEFI_TEST_ASSERT(params->screenInfo.reservedOffset  == 0,                  NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->screenInfo.reservedOffset  == 24,                 NgosStatus::ASSERTION); // Commented due to value variation
     UEFI_TEST_ASSERT(params->screenInfo.redSize            == 8,                  NgosStatus::ASSERTION);
     UEFI_TEST_ASSERT(params->screenInfo.greenSize          == 8,                  NgosStatus::ASSERTION);
     UEFI_TEST_ASSERT(params->screenInfo.blueSize           == 8,                  NgosStatus::ASSERTION);
-    // UEFI_TEST_ASSERT(params->screenInfo.reservedSize    == 0,                  NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->screenInfo.reservedSize    == 8,                  NgosStatus::ASSERTION); // Commented due to value variation
 
 
 

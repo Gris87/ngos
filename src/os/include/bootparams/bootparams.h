@@ -15,8 +15,8 @@ struct BootParams
     BootParamsHeader     header;
     ScreenInfo           screenInfo;
     PciRomImageWithInfo *pciRomImages;
-    MemoryMapEntry      *memoryMapEntries;
     u64                  memoryMapEntriesCount;
+    MemoryMapEntry      *memoryMapEntries;
 };
 
 

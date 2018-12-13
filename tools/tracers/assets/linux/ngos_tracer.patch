@@ -1,3 +1,142 @@
+diff --git a/arch/x86/boot/compressed/eboot.c b/arch/x86/boot/compressed/eboot.c
+index c3e869e..6046cde 100644
+--- a/arch/x86/boot/compressed/eboot.c
++++ b/arch/x86/boot/compressed/eboot.c
+@@ -28,7 +28,7 @@ __pure const struct efi_config *__efi_early(void)
+ }
+ 
+ #define BOOT_SERVICES(bits)						\
+-static void setup_boot_services##bits(struct efi_config *c)		\
++void setup_boot_services##bits(struct efi_config *c)		\
+ {									\
+ 	efi_system_table_##bits##_t *table;				\
+ 									\
+@@ -108,7 +108,7 @@ void efi_char16_printk(efi_system_table_t *table, efi_char16_t *str)
+ 		       efi_early->text_output, str);
+ }
+ 
+-static efi_status_t
++efi_status_t
+ __setup_efi_pci32(efi_pci_io_protocol_32 *pci, struct pci_setup_rom **__rom)
+ {
+ 	struct pci_setup_rom *rom = NULL;
+@@ -171,7 +171,7 @@ __setup_efi_pci32(efi_pci_io_protocol_32 *pci, struct pci_setup_rom **__rom)
+ 	return status;
+ }
+ 
+-static void
++void
+ setup_efi_pci32(struct boot_params *params, void **pci_handle,
+ 		unsigned long size)
+ {
+@@ -216,7 +216,7 @@ setup_efi_pci32(struct boot_params *params, void **pci_handle,
+ 	}
+ }
+ 
+-static efi_status_t
++efi_status_t
+ __setup_efi_pci64(efi_pci_io_protocol_64 *pci, struct pci_setup_rom **__rom)
+ {
+ 	struct pci_setup_rom *rom;
+@@ -278,7 +278,7 @@ __setup_efi_pci64(efi_pci_io_protocol_64 *pci, struct pci_setup_rom **__rom)
+ 
+ }
+ 
+-static void
++void
+ setup_efi_pci64(struct boot_params *params, void **pci_handle,
+ 		unsigned long size)
+ {
+@@ -332,7 +332,7 @@ setup_efi_pci64(struct boot_params *params, void **pci_handle,
+  * just didn't find any PCI devices, but there's no way to tell outside
+  * the context of the call.
+  */
+-static void setup_efi_pci(struct boot_params *params)
++void setup_efi_pci(struct boot_params *params)
+ {
+ 	efi_status_t status;
+ 	void **pci_handle = NULL;
+@@ -370,7 +370,7 @@ static void setup_efi_pci(struct boot_params *params)
+ 	efi_call_early(free_pool, pci_handle);
+ }
+ 
+-static void retrieve_apple_device_properties(struct boot_params *boot_params)
++void retrieve_apple_device_properties(struct boot_params *boot_params)
+ {
+ 	efi_guid_t guid = APPLE_PROPERTIES_PROTOCOL_GUID;
+ 	struct setup_data *data, *new;
+@@ -421,7 +421,7 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 	}
+ }
+ 
+-static void setup_quirks(struct boot_params *boot_params)
++void setup_quirks(struct boot_params *boot_params)
+ {
+ 	efi_char16_t const apple[] = { 'A', 'p', 'p', 'l', 'e', 0 };
+ 	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
+@@ -433,7 +433,7 @@ static void setup_quirks(struct boot_params *boot_params)
+ 	}
+ }
+ 
+-static efi_status_t
++efi_status_t
+ setup_uga32(void **uga_handle, unsigned long size, u32 *width, u32 *height)
+ {
+ 	struct efi_uga_draw_protocol *uga = NULL, *first_uga;
+@@ -478,7 +478,7 @@ setup_uga32(void **uga_handle, unsigned long size, u32 *width, u32 *height)
+ 	return status;
+ }
+ 
+-static efi_status_t
++efi_status_t
+ setup_uga64(void **uga_handle, unsigned long size, u32 *width, u32 *height)
+ {
+ 	struct efi_uga_draw_protocol *uga = NULL, *first_uga;
+@@ -526,7 +526,7 @@ setup_uga64(void **uga_handle, unsigned long size, u32 *width, u32 *height)
+ /*
+  * See if we have Universal Graphics Adapter (UGA) protocol
+  */
+-static efi_status_t setup_uga(struct screen_info *si, efi_guid_t *uga_proto,
++efi_status_t setup_uga(struct screen_info *si, efi_guid_t *uga_proto,
+ 			      unsigned long size)
+ {
+ 	efi_status_t status;
+@@ -723,7 +723,7 @@ struct boot_params *make_boot_params(struct efi_config *c)
+ 	return NULL;
+ }
+ 
+-static void add_e820ext(struct boot_params *params,
++void add_e820ext(struct boot_params *params,
+ 			struct setup_data *e820ext, u32 nr_entries)
+ {
+ 	struct setup_data *data;
+@@ -745,7 +745,7 @@ static void add_e820ext(struct boot_params *params,
+ 		params->hdr.setup_data = (unsigned long)e820ext;
+ }
+ 
+-static efi_status_t setup_e820(struct boot_params *params,
++efi_status_t setup_e820(struct boot_params *params,
+ 			       struct setup_data *e820ext, u32 e820ext_size)
+ {
+ 	struct boot_e820_entry *entry = params->e820_table;
+@@ -843,7 +843,7 @@ static efi_status_t setup_e820(struct boot_params *params,
+ 	return EFI_SUCCESS;
+ }
+ 
+-static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
++efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
+ 				  u32 *e820ext_size)
+ {
+ 	efi_status_t status;
+@@ -915,7 +915,7 @@ static efi_status_t exit_boot_func(efi_system_table_t *sys_table_arg,
+ 	return EFI_SUCCESS;
+ }
+ 
+-static efi_status_t exit_boot(struct boot_params *boot_params,
++efi_status_t exit_boot(struct boot_params *boot_params,
+ 			      void *handle, bool is64)
+ {
+ 	unsigned long map_sz, key, desc_size, buff_size;
 diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
 index 91f27ab..6adda9a 100644
 --- a/arch/x86/boot/compressed/kaslr.c
@@ -16,6 +155,108 @@ index 91f27ab..6adda9a 100644
  	*virt_addr = random_addr;
 +	*virt_addr = 0x1000000;
  }
+diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
+index 8181ac1..27b061e9 100644
+--- a/drivers/firmware/efi/libstub/arm-stub.c
++++ b/drivers/firmware/efi/libstub/arm-stub.c
+@@ -74,7 +74,7 @@ void efi_char16_printk(efi_system_table_t *sys_table_arg,
+ 	out->output_string(out, str);
+ }
+ 
+-static struct screen_info *setup_graphics(efi_system_table_t *sys_table_arg)
++struct screen_info *setup_graphics(efi_system_table_t *sys_table_arg)
+ {
+ 	efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+ 	efi_status_t status;
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index b018436..94e6ea2 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -68,7 +68,7 @@ void efi_printk(efi_system_table_t *sys_table_arg, char *str)
+ 	}
+ }
+ 
+-static inline bool mmap_has_headroom(unsigned long buff_size,
++bool mmap_has_headroom(unsigned long buff_size,
+ 				     unsigned long map_size,
+ 				     unsigned long desc_size)
+ {
+@@ -721,7 +721,7 @@ efi_status_t efi_relocate_kernel(efi_system_table_t *sys_table_arg,
+  * Get the number of UTF-8 bytes corresponding to an UTF-16 character.
+  * This overestimates for surrogates, but that is okay.
+  */
+-static int efi_utf8_bytes(u16 c)
++int efi_utf8_bytes(u16 c)
+ {
+ 	return 1 + (c >= 0x80) + (c >= 0x800);
+ }
+@@ -729,7 +729,7 @@ static int efi_utf8_bytes(u16 c)
+ /*
+  * Convert an UTF-16 string, not necessarily null terminated, to UTF-8.
+  */
+-static u8 *efi_utf16_to_utf8(u8 *dst, const u16 *src, int n)
++u8 *efi_utf16_to_utf8(u8 *dst, const u16 *src, int n)
+ {
+ 	unsigned int c;
+ 
+diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
+index 24c461d..958dc8f 100644
+--- a/drivers/firmware/efi/libstub/gop.c
++++ b/drivers/firmware/efi/libstub/gop.c
+@@ -12,7 +12,7 @@
+ #include <asm/efi.h>
+ #include <asm/setup.h>
+ 
+-static void find_bits(unsigned long mask, u8 *pos, u8 *size)
++void find_bits(unsigned long mask, u8 *pos, u8 *size)
+ {
+ 	u8 first, len;
+ 
+@@ -35,7 +35,7 @@ static void find_bits(unsigned long mask, u8 *pos, u8 *size)
+ 	*size = len;
+ }
+ 
+-static void
++void
+ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
+ 		 struct efi_pixel_bitmask pixel_info, int pixel_format)
+ {
+@@ -85,7 +85,7 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
+ 	}
+ }
+ 
+-static efi_status_t
++efi_status_t
+ __gop_query32(efi_system_table_t *sys_table_arg,
+ 	      struct efi_graphics_output_protocol_32 *gop32,
+ 	      struct efi_graphics_output_mode_info **info,
+@@ -109,7 +109,7 @@ __gop_query32(efi_system_table_t *sys_table_arg,
+ 	return status;
+ }
+ 
+-static efi_status_t
++efi_status_t
+ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+             efi_guid_t *proto, unsigned long size, void **gop_handle)
+ {
+@@ -203,7 +203,7 @@ setup_gop32(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	return status;
+ }
+ 
+-static efi_status_t
++efi_status_t
+ __gop_query64(efi_system_table_t *sys_table_arg,
+ 	      struct efi_graphics_output_protocol_64 *gop64,
+ 	      struct efi_graphics_output_mode_info **info,
+@@ -227,7 +227,7 @@ __gop_query64(efi_system_table_t *sys_table_arg,
+ 	return status;
+ }
+ 
+-static efi_status_t
++efi_status_t
+ setup_gop64(efi_system_table_t *sys_table_arg, struct screen_info *si,
+ 	    efi_guid_t *proto, unsigned long size, void **gop_handle)
+ {
 diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
 index 555c06b..aa0d8cc 100644
 --- a/lib/decompress_inflate.c

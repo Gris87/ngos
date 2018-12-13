@@ -133,13 +133,13 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         }
     }
 
-    params->memoryMapEntries      = memoryMapEntries;
     params->memoryMapEntriesCount = memoryMapEntriesCount;
+    params->memoryMapEntries      = memoryMapEntries;
 
 
 
-    UEFI_LVVV(("params->memoryMapEntries      = 0x%p", params->memoryMapEntries));
     UEFI_LVVV(("params->memoryMapEntriesCount = %u",   params->memoryMapEntriesCount));
+    UEFI_LVVV(("params->memoryMapEntries      = 0x%p", params->memoryMapEntries));
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
@@ -157,8 +157,8 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-    UEFI_TEST_ASSERT(params->memoryMapEntries                != 0,                            NgosStatus::ASSERTION);
     // UEFI_TEST_ASSERT(params->memoryMapEntriesCount        == 11,                           NgosStatus::ASSERTION); // Commented due to value variation
+    UEFI_TEST_ASSERT(params->memoryMapEntries                != 0,                            NgosStatus::ASSERTION);
     // UEFI_TEST_ASSERT(params->memoryMapEntries[0].address  == 0x00000000,                   NgosStatus::ASSERTION); // Commented due to value variation
     // UEFI_TEST_ASSERT(params->memoryMapEntries[0].size     == 0x000A0000,                   NgosStatus::ASSERTION); // Commented due to value variation
     // UEFI_TEST_ASSERT(params->memoryMapEntries[0].type     == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
