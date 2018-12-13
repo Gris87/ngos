@@ -93,7 +93,6 @@ NgosStatus setupKernelLocation(BootParams *params)
 
 
 
-
     efi_physical_address address = 0;
 
     if (UEFI::lowAlloc(allocSize, NGOS_BUILD_KERNEL_ALIGN, (void **)&address) != EfiStatus::SUCCESS)
