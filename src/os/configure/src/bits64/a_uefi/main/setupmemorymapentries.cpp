@@ -157,41 +157,38 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-    // UEFI_TEST_ASSERT(params->memoryMapEntriesCount        == 11,                           NgosStatus::ASSERTION); // Commented due to value variation
-    UEFI_TEST_ASSERT(params->memoryMapEntries                != 0,                            NgosStatus::ASSERTION);
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[0].address  == 0x00000000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[0].size     == 0x000A0000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[0].type     == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[1].address  == 0x00100000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[1].size     == 0x3E9D6000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[1].type     == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[2].address  == 0x3EAD6000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[2].size     == 0x00045000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[2].type     == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[3].address  == 0x3EB1B000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[3].size     == 0x01080000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[3].type     == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[4].address  == 0x3FB9B000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[4].size     == 0x00054000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[4].type     == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[5].address  == 0x3FBEF000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[5].size     == 0x00005000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[5].type     == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[6].address  == 0x3FBF4000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[6].size     == 0x00007000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[6].type     == MemoryMapEntryType::ACPI,     NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[7].address  == 0x3FBFB000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[7].size     == 0x00004000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[7].type     == MemoryMapEntryType::NVS,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[8].address  == 0x3FBFF000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[8].size     == 0x003E1000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[8].type     == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[9].address  == 0x3FFE0000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[9].size     == 0x00020000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[9].type     == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[10].address == 0xFFE00000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[10].size    == 0x00200000,                   NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->memoryMapEntries[10].type    == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntriesCount       == 10,                           NgosStatus::ASSERTION); // Commented due to value variation
+    UEFI_TEST_ASSERT(params->memoryMapEntries               != 0,                            NgosStatus::ASSERTION);
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[0].address == 0x00000000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[0].size    == 0x000A0000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[0].type    == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[1].address == 0x00100000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[1].size    == 0x3E9D6000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[1].type    == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[2].address == 0x3EAD6000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[2].size    == 0x00045000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[2].type    == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[3].address == 0x3EB1B000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[3].size    == 0x01080000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[3].type    == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[4].address == 0x3FB9B000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[4].size    == 0x00058000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[4].type    == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[5].address == 0x3FBF3000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[5].size    == 0x00008000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[5].type    == MemoryMapEntryType::ACPI,     NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[6].address == 0x3FBFB000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[6].size    == 0x00004000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[6].type    == MemoryMapEntryType::NVS,      NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[7].address == 0x3FBFF000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[7].size    == 0x003E1000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[7].type    == MemoryMapEntryType::RAM,      NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[8].address == 0x3FFE0000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[8].size    == 0x00020000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[8].type    == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[9].address == 0xFFE00000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[9].size    == 0x00200000,                   NgosStatus::ASSERTION); // Commented due to value variation
+    // UEFI_TEST_ASSERT(params->memoryMapEntries[9].type    == MemoryMapEntryType::RESERVED, NgosStatus::ASSERTION); // Commented due to value variation
 
 
 
