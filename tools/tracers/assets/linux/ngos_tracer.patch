@@ -138,9 +138,99 @@ index c3e869e..6046cde 100644
  {
  	unsigned long map_sz, key, desc_size, buff_size;
 diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 91f27ab..6adda9a 100644
+index 91f27ab..de8f8a5 100644
 --- a/arch/x86/boot/compressed/kaslr.c
 +++ b/arch/x86/boot/compressed/kaslr.c
+@@ -49,7 +49,7 @@ extern unsigned long get_cmd_line_ptr(void);
+ static const char build_str[] = UTS_RELEASE " (" LINUX_COMPILE_BY "@"
+ 		LINUX_COMPILE_HOST ") (" LINUX_COMPILER ") " UTS_VERSION;
+ 
+-static unsigned long rotate_xor(unsigned long hash, const void *area,
++unsigned long rotate_xor(unsigned long hash, const void *area,
+ 				size_t size)
+ {
+ 	size_t i;
+@@ -65,7 +65,7 @@ static unsigned long rotate_xor(unsigned long hash, const void *area,
+ }
+ 
+ /* Attempt to create a simple but unpredictable starting entropy. */
+-static unsigned long get_boot_seed(void)
++unsigned long get_boot_seed(void)
+ {
+ 	unsigned long hash = 0;
+ 
+@@ -105,7 +105,7 @@ enum mem_avoid_index {
+ 
+ static struct mem_vector mem_avoid[MEM_AVOID_MAX];
+ 
+-static bool mem_overlaps(struct mem_vector *one, struct mem_vector *two)
++bool mem_overlaps(struct mem_vector *one, struct mem_vector *two)
+ {
+ 	/* Item one is entirely before item two. */
+ 	if (one->start + one->size <= two->start)
+@@ -125,7 +125,7 @@ char *skip_spaces(const char *str)
+ #include "../../../../lib/ctype.c"
+ #include "../../../../lib/cmdline.c"
+ 
+-static int
++int
+ parse_memmap(char *p, unsigned long long *start, unsigned long long *size)
+ {
+ 	char *oldp;
+@@ -165,7 +165,7 @@ parse_memmap(char *p, unsigned long long *start, unsigned long long *size)
+ 	return -EINVAL;
+ }
+ 
+-static void mem_avoid_memmap(char *str)
++void mem_avoid_memmap(char *str)
+ {
+ 	static int i;
+ 	int rc;
+@@ -204,7 +204,7 @@ static void mem_avoid_memmap(char *str)
+ 		memmap_too_large = true;
+ }
+ 
+-static int handle_mem_memmap(void)
++int handle_mem_memmap(void)
+ {
+ 	char *args = (char *)get_cmd_line_ptr();
+ 	size_t len = strlen((char *)args);
+@@ -329,7 +329,7 @@ static int handle_mem_memmap(void)
+  * they can be merged, resulting in: [input, output+init_size) which
+  * becomes the MEM_AVOID_ZO_RANGE below.
+  */
+-static void mem_avoid_init(unsigned long input, unsigned long input_size,
++void mem_avoid_init(unsigned long input, unsigned long input_size,
+ 			   unsigned long output)
+ {
+ 	unsigned long init_size = boot_params->hdr.init_size;
+@@ -388,7 +388,7 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+  * Does this memory vector overlap a known avoided area? If so, record the
+  * overlap region with the lowest address.
+  */
+-static bool mem_avoid_overlap(struct mem_vector *img,
++bool mem_avoid_overlap(struct mem_vector *img,
+ 			      struct mem_vector *overlap)
+ {
+ 	int i;
+@@ -438,7 +438,7 @@ static unsigned long slot_max;
+ 
+ static unsigned long slot_area_index;
+ 
+-static void store_slot_info(struct mem_vector *region, unsigned long image_size)
++void store_slot_info(struct mem_vector *region, unsigned long image_size)
+ {
+ 	struct slot_area slot_area;
+ 
+@@ -455,7 +455,7 @@ static void store_slot_info(struct mem_vector *region, unsigned long image_size)
+ 	}
+ }
+ 
+-static unsigned long slots_fetch_random(void)
++unsigned long slots_fetch_random(void)
+ {
+ 	unsigned long slot;
+ 	int i;
 @@ -465,6 +465,7 @@ static unsigned long slots_fetch_random(void)
  		return 0;
  
@@ -149,12 +239,74 @@ index 91f27ab..6adda9a 100644
  
  	for (i = 0; i < slot_area_index; i++) {
  		if (slot >= slot_areas[i].num) {
+@@ -479,7 +480,7 @@ static unsigned long slots_fetch_random(void)
+ 	return 0;
+ }
+ 
+-static void process_e820_entry(struct boot_e820_entry *entry,
++void process_e820_entry(struct boot_e820_entry *entry,
+ 			       unsigned long minimum,
+ 			       unsigned long image_size)
+ {
+@@ -562,7 +563,7 @@ static void process_e820_entry(struct boot_e820_entry *entry,
+ 	}
+ }
+ 
+-static unsigned long find_random_phys_addr(unsigned long minimum,
++unsigned long find_random_phys_addr(unsigned long minimum,
+ 					   unsigned long image_size)
+ {
+ 	int i;
+@@ -590,7 +591,7 @@ static unsigned long find_random_phys_addr(unsigned long minimum,
+ 	return slots_fetch_random();
+ }
+ 
+-static unsigned long find_random_virt_addr(unsigned long minimum,
++unsigned long find_random_virt_addr(unsigned long minimum,
+ 					   unsigned long image_size)
+ {
+ 	unsigned long slots, random_addr;
 @@ -671,4 +672,5 @@ void choose_random_location(unsigned long input,
  	if (IS_ENABLED(CONFIG_X86_64))
  		random_addr = find_random_virt_addr(LOAD_PHYSICAL_ADDR, output_size);
  	*virt_addr = random_addr;
 +	*virt_addr = 0x1000000;
  }
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index c14217c..cb4d150 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -169,7 +169,7 @@ void __puthex(unsigned long value)
+ }
+ 
+ #if CONFIG_X86_NEED_RELOCS
+-static void handle_relocations(void *output, unsigned long output_len,
++void handle_relocations(void *output, unsigned long output_len,
+ 			       unsigned long virt_addr)
+ {
+ 	int *reloc;
+@@ -264,7 +264,7 @@ static inline void handle_relocations(void *output, unsigned long output_len,
+ { }
+ #endif
+ 
+-static void parse_elf(void *output)
++void parse_elf(void *output)
+ {
+ #ifdef CONFIG_X86_64
+ 	Elf64_Ehdr ehdr;
+diff --git a/arch/x86/boot/compressed/pagetable.c b/arch/x86/boot/compressed/pagetable.c
+index 28029be..a916e6f 100644
+--- a/arch/x86/boot/compressed/pagetable.c
++++ b/arch/x86/boot/compressed/pagetable.c
+@@ -40,7 +40,7 @@ struct alloc_pgt_data {
+  * above. Besides the local callers, this is used as the allocation
+  * callback in mapping_info below.
+  */
+-static void *alloc_pgt_page(void *context)
++void *alloc_pgt_page(void *context)
+ {
+ 	struct alloc_pgt_data *pages = (struct alloc_pgt_data *)context;
+ 	unsigned char *entry;
 diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
 index 8181ac1..27b061e9 100644
 --- a/drivers/firmware/efi/libstub/arm-stub.c
