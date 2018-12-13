@@ -88,37 +88,25 @@ NgosStatus setupKernelLocation(BootParams *params)
 
 
 
-    u64                  numberOfPages = ROUND_UP(allocSize, EFI_ALLOC_ALIGN) / EFI_PAGE_SIZE;
-    efi_physical_address address       = 0;
+    UEFI_LVVV(("imageSize = %u", imageSize));
+    UEFI_LVVV(("allocSize = %u", allocSize));
 
 
 
-    UEFI_LVVV(("imageSize     = %u", imageSize));
-    UEFI_LVVV(("allocSize     = %u", allocSize));
-    UEFI_LVVV(("numberOfPages = %u", numberOfPages));
 
+    efi_physical_address address = 0;
 
-
-    if (UEFI::allocatePages(EfiAllocateType::ALLOCATE_ADDRESS, EfiMemoryType::LOADER_DATA, numberOfPages, &address) == EfiStatus::SUCCESS)
+    if (UEFI::lowAlloc(allocSize, NGOS_BUILD_KERNEL_ALIGN, (void **)&address) != EfiStatus::SUCCESS)
     {
-        UEFI_LVV(("Allocated pages(%u) for kernel at address(0x%p)", numberOfPages, address));
+        UEFI_LF(("Failed to allocate space(%u) for kernel", allocSize));
+
+        return NgosStatus::FAILED;
     }
-    else
-    {
-        if (UEFI::lowAlloc(allocSize, NGOS_BUILD_KERNEL_ALIGN, (void **)&address) != EfiStatus::SUCCESS)
-        {
-            UEFI_LF(("Failed to allocate space(%u) for kernel", allocSize));
-
-            return NgosStatus::FAILED;
-        }
-
-        UEFI_LVV(("Kernel allocated in space(%u, 0x%p)", allocSize, address));
-    }
-
-
 
 #if NGOS_BUILD_RELEASE == OPTION_NO
     UEFI_LD(("gdb_debug: Kernel allocated in space(%u, 0x%p)", allocSize, address));
+#else
+    UEFI_LVV(("Kernel allocated in space(%u, 0x%p)", allocSize, address));
 #endif
 
 
