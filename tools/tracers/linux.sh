@@ -42,6 +42,7 @@ NEXTI_FILTERS=(
     -e "<efi_get_memory_map>"
     -e "<memset>"
     -e "<memcpy>"
+    -e "<memmove>"
     -e "<memcmp>"
     -e "<__gunzip>"
 )

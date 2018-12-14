@@ -170,6 +170,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas, u64
 
 
 
+    // TODO: Use enum
     EARLY_TEST_ASSERT(currentAreaId < AMOUNT_OF_MEMORY_AREAS, NgosStatus::ASSERTION);
 
     areas[currentAreaId].start = 0;

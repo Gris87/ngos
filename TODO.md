@@ -1,6 +1,7 @@
 TODO List
 =========
 
+- [ ] Implement function for testing/setting/resetting bit
 - [ ] Complete with interruptions
 - [ ] Implement graphics for kernel
 - [ ] Initialization via multiple CPU cores
