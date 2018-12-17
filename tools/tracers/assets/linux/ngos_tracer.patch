@@ -307,6 +307,44 @@ index 28029be..a916e6f 100644
  {
  	struct alloc_pgt_data *pages = (struct alloc_pgt_data *)context;
  	unsigned char *entry;
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 9ba7954..46bdf0a 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -143,7 +143,7 @@ void __head __startup_64(unsigned long physaddr)
+ }
+ 
+ /* Wipe all early page tables except for the kernel symbol map */
+-static void __init reset_early_page_tables(void)
++void __init reset_early_page_tables(void)
+ {
+ 	memset(early_top_pgt, 0, sizeof(pgd_t)*(PTRS_PER_PGD-1));
+ 	next_early_pgt = 0;
+@@ -224,13 +224,13 @@ int __init early_make_pgtable(unsigned long address)
+ 
+ /* Don't add a printk in there. printk relies on the PDA which is not initialized 
+    yet. */
+-static void __init clear_bss(void)
++void __init clear_bss(void)
+ {
+ 	memset(__bss_start, 0,
+ 	       (unsigned long) __bss_stop - (unsigned long) __bss_start);
+ }
+ 
+-static unsigned long get_cmd_line_ptr(void)
++unsigned long get_cmd_line_ptr(void)
+ {
+ 	unsigned long cmd_line_ptr = boot_params.hdr.cmd_line_ptr;
+ 
+@@ -239,7 +239,7 @@ static unsigned long get_cmd_line_ptr(void)
+ 	return cmd_line_ptr;
+ }
+ 
+-static void __init copy_bootdata(char *real_mode_data)
++void __init copy_bootdata(char *real_mode_data)
+ {
+ 	char * command_line;
+ 	unsigned long cmd_line_ptr;
 diff --git a/drivers/firmware/efi/libstub/arm-stub.c b/drivers/firmware/efi/libstub/arm-stub.c
 index 8181ac1..27b061e9 100644
 --- a/drivers/firmware/efi/libstub/arm-stub.c

@@ -259,12 +259,12 @@ do
 
 
 
-    MEMORY_LOCATIONS=(`echo "${INSTRUCTION}" | grep -o -E -e "\*?(0x[0-9a-f]+)?\((%.{2,3})\)" -e "# +(0x[0-9a-f]+)" -e "\*(%.{2,3})" -e "\*(0x[0-9a-f]+)" | sed -r "s/^# +//g"`)
+    MEMORY_LOCATIONS=(`echo "${INSTRUCTION}" | grep -o -E -e "\*?(-?0x[0-9a-f]+)?\((%.{2,3})\)" -e "# +(0x[0-9a-f]+)" -e "\*(%.{2,3})" -e "\*(0x[0-9a-f]+)" | sed -r "s/^# +//g"`)
     MEMORY_VALUES_BEFORE=()
 
     for LOCATION in "${MEMORY_LOCATIONS[@]}"
     do
-        MEMORY_DUMP_ARG=`echo "${LOCATION}" | sed -r "s/(0x[0-9a-f]+)?\((%.{2,3})\)/\1 + \2/g" | sed -r "s/^ \+ //g" | sed -r "s/^\* \+ /\*/g" | sed -r "s/%/\$/g" | sed -r "s/^\*(.*)/\*\(\1\)/g"`
+        MEMORY_DUMP_ARG=`echo "${LOCATION}" | sed -r "s/(-?0x[0-9a-f]+)?\((%.{2,3})\)/\1 + \2/g" | sed -r "s/^ \+ //g" | sed -r "s/^\* \+ /\*/g" | sed -r "s/%/\$/g" | sed -r "s/^\*(.*)/\*\(\1\)/g"`
 
         MEMORY_VALUE=`execute_gdb_command "x/1xg ${MEMORY_DUMP_ARG}"`
         MEMORY_VALUES_BEFORE+=("${MEMORY_VALUE}")
@@ -309,7 +309,7 @@ do
 
     for LOCATION in "${MEMORY_LOCATIONS[@]}"
     do
-        MEMORY_DUMP_ARG=`echo "${LOCATION}" | sed -r "s/(0x[0-9a-f]+)?\((%.{2,3})\)/\1 + \2/g" | sed -r "s/^ \+ //g" | sed -r "s/^\* \+ /\*/g" | sed -r "s/%/\$/g" | sed -r "s/^\*(.*)/\*\(\1\)/g"`
+        MEMORY_DUMP_ARG=`echo "${LOCATION}" | sed -r "s/(-?0x[0-9a-f]+)?\((%.{2,3})\)/\1 + \2/g" | sed -r "s/^ \+ //g" | sed -r "s/^\* \+ /\*/g" | sed -r "s/%/\$/g" | sed -r "s/^\*(.*)/\*\(\1\)/g"`
 
         MEMORY_VALUE=`execute_gdb_command "x/1xg ${MEMORY_DUMP_ARG}"`
         MEMORY_VALUES_AFTER+=("${MEMORY_VALUE}")
