@@ -620,6 +620,7 @@ NgosStatus CPU::setFlag(X86Feature flag)
 
 
 
+    // TODO: Need to use bit utils
     sFlags[(u64)flag >> 5] |= (1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
 
 
@@ -635,6 +636,7 @@ NgosStatus CPU::clearFlag(X86Feature flag)
 
 
 
+    // TODO: Need to use bit utils
     sFlags[(u64)flag >> 5] &= ~(1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
 
 
@@ -650,6 +652,7 @@ bool CPU::hasFlag(X86Feature flag)
 
 
 
+    // TODO: Need to use bit utils
     return sFlags[(u64)flag >> 5] & (1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
 }
 
