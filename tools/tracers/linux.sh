@@ -387,7 +387,7 @@ do
 
 
 
-    RESULT_LINE=`printf "%-60s:%-80s // %-100s // %-320s // %s\n" "${INSTRUCTION_ADDRESS_NICE}" "${INSTRUCTION}" "${DETAILS}" "${REGISTERS_DIFF}" "${SOURCE_LINE}"`
+    RESULT_LINE=`printf "%-60s:%-80s // %-100s // %-340s // %s\n" "${INSTRUCTION_ADDRESS_NICE}" "${INSTRUCTION}" "${DETAILS}" "${REGISTERS_DIFF}" "${SOURCE_LINE}"`
     echo "${RESULT_LINE}" >> ${OUTPUT_FILE}
 
 

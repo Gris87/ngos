@@ -29,10 +29,12 @@ private:
 #endif
     static NgosStatus doPreprocessing(); // TEST: NO
     static NgosStatus doIntelPreprocessing(); // TEST: NO
+    static NgosStatus doAmdPreprocessing(); // TEST: NO
     static NgosStatus initScatteredFeatures(); // TEST: NO
     static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count); // TEST: NO
     static NgosStatus doPostprocessing(); // TEST: NO
     static NgosStatus doIntelPostprocessing(); // TEST: NO
+    static NgosStatus doAmdPostprocessing(); // TEST: NO
     static bool hasEFlag(u64 mask); // TEST: NO
     static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
 

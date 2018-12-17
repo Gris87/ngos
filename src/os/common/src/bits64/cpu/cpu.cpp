@@ -45,6 +45,12 @@
         COMMON_ASSERT_EXECUTION(func, NgosStatus::ASSERTION); \
     }
 
+#define EXECUTE_IF_AMD_VENDOR(func) \
+    if (sVendor[0] == VENDOR_AMD_1 && sVendor[1] == VENDOR_AMD_2 && sVendor[2] == VENDOR_AMD_3) \
+    { \
+        COMMON_ASSERT_EXECUTION(func, NgosStatus::ASSERTION); \
+    }
+
 
 
 const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // "<< 5" == "* 32"
@@ -654,6 +660,7 @@ NgosStatus CPU::doPreprocessing()
 
 
     EXECUTE_IF_INTEL_VENDOR(doIntelPreprocessing());
+    EXECUTE_IF_AMD_VENDOR(doAmdPreprocessing());
 
 
 
@@ -706,6 +713,15 @@ NgosStatus CPU::doIntelPreprocessing()
             return NgosStatus::FAILED;
         }
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::doAmdPreprocessing()
+{
+    COMMON_LT((""));
 
 
 
@@ -781,6 +797,7 @@ NgosStatus CPU::doPostprocessing()
 
 
     EXECUTE_IF_INTEL_VENDOR(doIntelPostprocessing());
+    EXECUTE_IF_AMD_VENDOR(doAmdPostprocessing());
 
 
 
@@ -821,6 +838,15 @@ NgosStatus CPU::doPostprocessing()
 }
 
 NgosStatus CPU::doIntelPostprocessing()
+{
+    COMMON_LT((""));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::doAmdPostprocessing()
 {
     COMMON_LT((""));
 
