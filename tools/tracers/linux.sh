@@ -279,7 +279,21 @@ do
 
 
 
-    SOURCE_LINE=`execute_gdb_command "list *${INSTRUCTION_ADDRESS}"`
+    SOURCE_LINES=()
+
+    execute_gdb_command "list *${INSTRUCTION_ADDRESS}" |
+        while IFS= read -r line
+        do
+            SOURCE_LINES+=("${line}")
+        done
+
+
+
+    SOURCE_LINE=
+
+    if [ ${#SOURCE_LINES[@]} -eq 2 ]; then
+        SOURCE_LINE=`printf "%-60s %s" "${SOURCE_LINES[1]}" "${SOURCE_LINES[0]}"`
+    fi
 
 
 
