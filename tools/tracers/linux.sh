@@ -279,20 +279,14 @@ do
 
 
 
-    SOURCE_LINES=()
-
-    execute_gdb_command "list *${INSTRUCTION_ADDRESS}" |
-        while IFS= read -r line
-        do
-            SOURCE_LINES+=("${line}")
-        done
-
-
-
     SOURCE_LINE=
 
+    mapfile -t SOURCE_LINES < <( execute_gdb_command "list *${INSTRUCTION_ADDRESS}" )
+
     if [ ${#SOURCE_LINES[@]} -eq 2 ]; then
-        SOURCE_LINE=`printf "%-60s %s" "${SOURCE_LINES[1]}" "${SOURCE_LINES[0]}"`
+        CODE_LINE=`echo "${SOURCE_LINES[1]}" | sed -r "s/\t/    /g"`
+
+        SOURCE_LINE=`printf "%-100s %s" "${CODE_LINE}" "${SOURCE_LINES[0]}"`
     fi
 
 
@@ -385,7 +379,15 @@ do
 
 
 
-    RESULT_LINE=`printf "%-60s:%-60s // %-80s // %-100s // %s\n" "${INSTRUCTION_ADDRESS_NICE}" "${INSTRUCTION}" "${DETAILS}" "${REGISTERS_DIFF}" "${SOURCE_LINE}"`
+    INSTRUCTION_ADDRESS_NICE=`echo "${INSTRUCTION_ADDRESS_NICE}" | sed -r "s/\t/    /g"`
+    INSTRUCTION=`echo              "${INSTRUCTION}"              | sed -r "s/\t/    /g"`
+    DETAILS=`echo                  "${DETAILS}"                  | sed -r "s/\t/    /g"`
+    REGISTERS_DIFF=`echo           "${REGISTERS_DIFF}"           | sed -r "s/\t/    /g"`
+    SOURCE_LINE=`echo              "${SOURCE_LINE}"              | sed -r "s/\t/    /g"`
+
+
+
+    RESULT_LINE=`printf "%-60s:%-80s // %-100s // %-320s // %s\n" "${INSTRUCTION_ADDRESS_NICE}" "${INSTRUCTION}" "${DETAILS}" "${REGISTERS_DIFF}" "${SOURCE_LINE}"`
     echo "${RESULT_LINE}" >> ${OUTPUT_FILE}
 
 
