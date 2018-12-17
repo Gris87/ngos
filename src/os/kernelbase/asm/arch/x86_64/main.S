@@ -327,7 +327,7 @@ ENTRY(earlyIdtHandlerArray)                                                     
                                                                                 #
     jmp     earlyIdtHandler                                                     # Jump to earlyIdtHandler
     i = i + 1                                                                   # Increment counter
-    .fill   earlyIdtHandlerArray + i * EARLY_IDT_HANDLER_SIZE - ., 1, 0         # earlyIdtHandlerArray is the list of instruction blocks. Where block size is 9 bytes. We need to fill remaining bytes with 0 when block is less than 9 bytes
+    .fill   earlyIdtHandlerArray + i * EARLY_IDT_HANDLER_SIZE - ., 1, 0xCC      # earlyIdtHandlerArray is the list of instruction blocks. Where block size is 9 bytes. We need to fill remaining bytes with 0xCC(int3) when block is less than 9 bytes
     .endr                                                                       # End of cycle
 END_ENTRY(earlyIdtHandlerArray)                                                 # End of declaration for earlyIdtHandlerArray variable
                                                                                 #
