@@ -18,8 +18,8 @@
 
 
 
-extern PGD early_pagetable[PTRS_PER_PGD]; // early_pagetable is declared in main.S file
-extern PGD init_pagetable[PTRS_PER_PGD];  // init_pagetable is declared in main.S file
+extern PGD early_pagetable[PTRS_PER_PGD]; // early_pagetable declared in main.S file
+extern PGD init_pagetable[PTRS_PER_PGD];  // init_pagetable declared in main.S file
 
 
 

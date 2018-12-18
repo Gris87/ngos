@@ -10,7 +10,7 @@
 
 
 
-extern void *_start; // _start is declared in main.S file // Ignore CppEqualAlignmentVerifier
+extern void *_start; // _start declared in main.S file // Ignore CppEqualAlignmentVerifier
 
 
 

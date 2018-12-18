@@ -29,7 +29,7 @@
 
 
 #ifdef __cplusplus
-#define CPP_EXTERN_C extern "C"
+#define CPP_EXTERN_C extern "C" // Ignore CppExternDeclaredVerifier
 #else
 #define CPP_EXTERN_C
 #endif

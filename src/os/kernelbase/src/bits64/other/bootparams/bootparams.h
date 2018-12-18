@@ -7,7 +7,7 @@
 
 
 
-extern BootParams bootParams;
+extern BootParams bootParams; // bootParams declared in bootparams.cpp
 
 
 

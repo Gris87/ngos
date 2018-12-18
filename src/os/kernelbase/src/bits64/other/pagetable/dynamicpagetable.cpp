@@ -11,9 +11,9 @@
 
 
 
-extern void *_start;                                                           // _start is declared in main.S file // Ignore CppEqualAlignmentVerifier
-extern PGD   early_pagetable[PTRS_PER_PGD];                                    // early_pagetable is declared in main.S file
-extern PMD   dynamic_pagetable_pages[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD]; // dynamic_pagetable_pages is declared in main.S file
+extern void *_start;                                                           // _start declared in main.S file // Ignore CppEqualAlignmentVerifier
+extern PGD   early_pagetable[PTRS_PER_PGD];                                    // early_pagetable declared in main.S file
+extern PMD   dynamic_pagetable_pages[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD]; // dynamic_pagetable_pages declared in main.S file
 
 
 

@@ -520,6 +520,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppexterndeclaredverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppexterndeclaredverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppforverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppforverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppincludeverifier.cpp

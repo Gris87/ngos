@@ -62,6 +62,7 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cppenumclassverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cppexterndeclaredverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppforverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppincludeverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppindentverifier.cpp \
@@ -107,6 +108,7 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cppenumclassverifier.h \
     src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.h \
     src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.h \
+    src/verifiers/zzz_types/cpp_h/cppexterndeclaredverifier.h \
     src/verifiers/zzz_types/cpp_h/cppforverifier.h \
     src/verifiers/zzz_types/cpp_h/cppincludeverifier.h \
     src/verifiers/zzz_types/cpp_h/cppindentverifier.h \

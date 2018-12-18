@@ -335,6 +335,10 @@ GLOBAL_FUNCTION(earlyIdtHandler)                                                
     jmp     fail                                                                # Temp action
 END_FUNCTION(earlyIdtHandler)                                                   # End of earlyIdtHandler function
                                                                                 #
+ENTRY(idt)                                                                      # Declaration for idt variable
+    .fill   IDT_EXCEPTIONS_COUNT * 16, 1, 0                                     # Put zeros for IDT_EXCEPTIONS_COUNT entries
+END_ENTRY(idt)                                                                  # End of declaration for idt variable
+                                                                                #
 ENTRY(earlyIdtRegister)                                                         # Declaration for earlyIdtRegister variable
     .word   IDT_EXCEPTIONS_COUNT * 16 - 1                                       # Put size of idt variable. The size subtracted by 1 because the maximum value of size is 65535
     .quad   idt                                                                 # Put address of idt variable

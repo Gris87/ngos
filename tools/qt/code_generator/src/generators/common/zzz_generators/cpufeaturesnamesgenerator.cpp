@@ -82,15 +82,17 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    lines.append("extern const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // \"<< 5\" == \"* 32\"");
+    lines.append("extern const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // cpuFeaturesNames declared in cpu.cpp // \"<< 5\" == \"* 32\"");
     addThreeBlankLines(lines);
 
 
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     lines.append("inline NgosStatus initCpuFeaturesNames() // TEST: NO");
     lines.append(QString('{'));
     lines.append("    COMMON_LT((\"\"));");
     addThreeBlankLines(lines);
+    // Ignore CppAlignmentVerifier [END]
 
 
 

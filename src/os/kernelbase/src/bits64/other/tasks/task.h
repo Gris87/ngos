@@ -20,8 +20,8 @@ struct Task
 
 
 
-extern Task initTask;
-extern u8   initStack[THREAD_SIZE];
+extern Task initTask;               // initTask declared in task.cpp
+extern u8   initStack[THREAD_SIZE]; // initTask declared in task.cpp
 
 
 

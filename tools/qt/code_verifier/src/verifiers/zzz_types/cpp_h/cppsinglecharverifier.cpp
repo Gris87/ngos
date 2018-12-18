@@ -61,7 +61,7 @@ void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path
                                 if (
                                     line.trimmed() != "\"\\n\" \\"
                                     &&
-                                    !line.contains("extern \"C\"")
+                                    !line.contains("extern \"C\"") // Ignore CppExternDeclaredVerifier
                                    )
                                 {
                                     if (

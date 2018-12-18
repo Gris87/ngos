@@ -13,7 +13,7 @@
 
 
 
-extern void *_end; // _end is declared in linker.ld file // Ignore CppEqualAlignmentVerifier
+extern void *_end; // _end declared in linker.ld file // Ignore CppEqualAlignmentVerifier
 
 
 

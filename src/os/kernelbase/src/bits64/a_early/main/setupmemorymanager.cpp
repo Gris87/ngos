@@ -7,8 +7,8 @@
 
 
 
-extern void *_start; // _start is declared in main.S file // Ignore CppEqualAlignmentVerifier
-extern void *_end;   // _end is declared in linker.ld file // Ignore CppEqualAlignmentVerifier
+extern void *_start; // _start declared in main.S file // Ignore CppEqualAlignmentVerifier
+extern void *_end;   // _end declared in linker.ld file // Ignore CppEqualAlignmentVerifier
 
 
 
