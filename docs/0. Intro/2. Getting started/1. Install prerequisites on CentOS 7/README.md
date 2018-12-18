@@ -23,6 +23,7 @@ If you need to install VNC server please use the following instruction:
 
 ```sh
 sudo su
+yum update -y
 yum groupinstall -y "Server with GUI"
 yum install -y tigervnc-server
 
