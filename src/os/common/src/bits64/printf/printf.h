@@ -8,7 +8,7 @@
 
 
 
-extern char printfBuffer[1024]; // printfBuffer declared in printf.cpp
+extern char printfBuffer[1024]; // printfBuffer declared in printf.cpp file
 
 
 

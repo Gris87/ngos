@@ -117,8 +117,8 @@ First of all we setup the stack because we want to use our own stack for the ker
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
     pushq   %rsi                                                                # Push address of boot parameters (RSI) to the stack
-    leaq    _bss_begin(%rip), %rdi                                              # Put start address of bss section to RDI. _bss_begin declared in linker.ld
-    leaq    _bss_end(%rip), %rsi                                                # Put end address of bss section to RSI. _bss_end declared in linker.ld
+    leaq    _bss_begin(%rip), %rdi                                              # Put start address of bss section to RDI. _bss_begin declared in linker.ld file
+    leaq    _bss_end(%rip), %rsi                                                # Put end address of bss section to RSI. _bss_end declared in linker.ld file
     subq    %rdi, %rsi                                                          # Put size of bss section to RSI
     call    memzero                                                             # Call memzero function
     popq    %rsi                                                                # Restore address of boot parameters back to RSI from the stack

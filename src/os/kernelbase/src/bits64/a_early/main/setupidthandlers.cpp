@@ -13,9 +13,9 @@
 
 
 
-extern char          earlyIdtHandlerArray[IDT_EXCEPTIONS_COUNT][EARLY_IDT_HANDLER_SIZE]; // earlyIdtHandlerArray declared in main.S
-extern IdtRegister   earlyIdtRegister;                                                   // earlyIdtRegister declared in main.S
-extern IdtDescriptor idt[IDT_EXCEPTIONS_COUNT];                                          // idt declared in main.S
+extern u8            earlyIdtHandlerArray[IDT_EXCEPTIONS_COUNT][EARLY_IDT_HANDLER_SIZE]; // earlyIdtHandlerArray declared in main.S file
+extern IdtRegister   earlyIdtRegister;                                                   // earlyIdtRegister declared in main.S file
+extern IdtDescriptor idt[IDT_EXCEPTIONS_COUNT];                                          // idt declared in main.S file
 
 
 

@@ -25,7 +25,7 @@ union IrqStack
 
 
 
-extern IrqStack irqStack; // irqStack declared in irqstack.cpp
+extern IrqStack irqStack; // irqStack declared in irqstack.cpp file
 
 
 
