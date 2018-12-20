@@ -76,6 +76,7 @@ apt-get upgrade -y
 apt-get install -y curl
 apt-get install -y build-essential
 apt-get install -y libncurses-dev
+apt-get install -y libelf-dev
 apt-get install -y bison
 apt-get install -y flex
 apt-get install -y gdb

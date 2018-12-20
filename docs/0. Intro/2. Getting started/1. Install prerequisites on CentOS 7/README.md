@@ -54,6 +54,7 @@ yum install -y curl
 yum install -y gcc
 yum install -y gcc-c++
 yum install -y ncurses-devel
+yum install -y libelf-devel
 yum install -y bison
 yum install -y flex
 yum install -y gdb
