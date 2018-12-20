@@ -169,7 +169,7 @@ if [ ! -f ngos_tracer ]; then
     cp -r ${WORKING_DIR}/assets/${OS_NAME}/. ./
     git apply ngos_tracer.patch
 
-    make -j8 && touch ngos_tracer
+    make -j8 && touch ngos_tracer || exit 1
 fi
 
 cd ${WORKING_DIR}/
