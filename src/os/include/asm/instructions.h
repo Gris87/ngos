@@ -18,7 +18,7 @@
 
 
 
-inline NgosStatus cpuIdle() // TEST: NO
+inline NgosStatus cpuIdle() // TEST: NOl
 {
     asm volatile("rep; nop");
 
@@ -69,7 +69,7 @@ inline NgosStatus rdrand(u64 *value) // TEST: NO
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
             "rdrand  %0"    "\n\t"  // rdrand  %rax     # Generate random number to RAX. %rax == (*value)
-            "setc    %1"            // setb    %dl      # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == ok
+            "setc    %1"            // setc    %dl      # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == ok
                 :                   // Output parameters
                     "=r"  (*value), // "r" == any general register, "=" - write only
                     "=qm" (ok)      // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
@@ -100,7 +100,7 @@ inline u64 rdtsc() // TEST: NO
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "rdtsc"             // rdtsc        # Get how many CPU ticks took place since the processor was reset to EDX:EAX. %edx == edx. %eax == eax
+        "rdtsc"             // rdtsc    # Get how many CPU ticks took place since the processor was reset to EDX:EAX. %edx == edx. %eax == eax
             :               // Output parameters
                 "=a" (eax), // "a" == EAX, "=" - write only
                 "=d" (edx)  // "d" == EDX, "=" - write only
@@ -165,6 +165,248 @@ inline u64 readCr4() // TEST: NO
     return value;
 }
 
+inline bool bt(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "bt      %2, %0"    "\n\t"  // bt      %rax, (%rbx) # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                       // Output parameters
+                "+m" (*address),    // "m" == use memory, "+" - read and write
+                "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline bool btSafe(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "lock bt     %2, %0"    "\n\t"  // lock bt     %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc        %1"                // setc        %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                           // Output parameters
+                "+m" (*address),        // "m" == use memory, "+" - read and write
+                "=qm" (res)             // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                           // Input parameters
+                "r" (bit)               // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline bool bts(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "bts     %2, %0"    "\n\t"  // bts     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                       // Output parameters
+                "+m" (*address),    // "m" == use memory, "+" - read and write
+                "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline NgosStatus btsPure(void **address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "bts     %1, %0"            // bts     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline bool btsSafe(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "lock bts    %2, %0"    "\n\t"  // lock bts    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc        %1"                // setc        %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                           // Output parameters
+                "+m" (*address),        // "m" == use memory, "+" - read and write
+                "=qm" (res)             // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                           // Input parameters
+                "r" (bit)               // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline NgosStatus btsSafePure(void **address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "lock bts    %1, %0"        // lock bts    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline bool btr(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "btr     %2, %0"    "\n\t"  // btr     %rax, (%rbx) # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                       // Output parameters
+                "+m" (*address),    // "m" == use memory, "+" - read and write
+                "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline NgosStatus btrPure(void **address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "btr     %1, %0"            // btr     %rax, (%rbx) # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline bool btrSafe(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "lock btr    %2, %0"    "\n\t"  // lock btr    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc        %1"                // setc        %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                           // Output parameters
+                "+m" (*address),        // "m" == use memory, "+" - read and write
+                "=qm" (res)             // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                           // Input parameters
+                "r" (bit)               // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline NgosStatus btrSafePure(void **address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "lock btr    %1, %0"        // lock btr    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline bool btc(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "btc     %2, %0"    "\n\t"  // btc     %rax, (%rbx) # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                       // Output parameters
+                "+m" (*address),    // "m" == use memory, "+" - read and write
+                "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline NgosStatus btcPure(void **address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "btc     %1, %0"            // btc     %rax, (%rbx) # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline bool btcSafe(void **address, u64 bit) // TEST: NO
+{
+    bool res;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "lock btc    %2, %0"    "\n\t"  // lock btc    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc        %1"                // setc        %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+            :                           // Output parameters
+                "+m" (*address),        // "m" == use memory, "+" - read and write
+                "=qm" (res)             // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
+            :                           // Input parameters
+                "r" (bit)               // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return res;
+}
+
+inline NgosStatus btcSafePure(void **address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "lock btc    %1, %0"        // lock btc    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
 inline u64 rdmsr(u32 msr) // TEST: NO
 {
     u32 eax;
@@ -172,7 +414,7 @@ inline u64 rdmsr(u32 msr) // TEST: NO
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "rdmsr"             // rdmsr        # Read MSR value specified by ECX to EDX:EAX. %edx == edx. %eax == eax
+        "rdmsr"             // rdmsr    # Read MSR value specified by ECX to EDX:EAX. %edx == edx. %eax == eax
             :               // Output parameters
                 "=a" (eax), // "a" == EAX, "=" - write only
                 "=d" (edx)  // "d" == EDX, "=" - write only
@@ -191,7 +433,7 @@ inline NgosStatus wrmsr(u32 msr, u64 value) // TEST: NO
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "wrmsr"             // wrmsr        # Write MSR value specified by ECX from EDX:EAX. %edx == edx. %eax == eax
+        "wrmsr"             // wrmsr    # Write MSR value specified by ECX from EDX:EAX. %edx == edx. %eax == eax
             :               // Output parameters
             :               // Input parameters
                 "c" (msr),  // "c" == ECX // Ignore CppSingleCharVerifier

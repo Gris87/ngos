@@ -90,7 +90,7 @@ private:
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
-            "lock bts   %1, %0"             // lock bts   %rax,(%rbx) # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == cpu. %rbx == mBits
+            "lock bts   %1, %0"             // lock bts   %rax, (%rbx)  # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == cpu. %rbx == mBits
                 :                           // Output parameters
                     "+m" (mBits)            // "m" == use memory, "+" - read and write
                 :                           // Input parameters
@@ -113,7 +113,7 @@ private:
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
-            "lock btr   %1, %0"             // lock btr   %rax,(%rbx) # lock - CPU will lock system Bus until instruction finish # Clears bit RAX starting from address RBX. %rax == cpu. %rbx == mBits
+            "lock btr   %1, %0"             // lock btr   %rax, (%rbx)  # lock - CPU will lock system Bus until instruction finish # Clears bit RAX starting from address RBX. %rax == cpu. %rbx == mBits
                 :                           // Output parameters
                     "+m" (mBits)            // "m" == use memory, "+" - read and write
                 :                           // Input parameters

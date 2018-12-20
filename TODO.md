@@ -1,7 +1,6 @@
 TODO List
 =========
 
-- [ ] Implement function for testing/setting/resetting bit
 - [ ] Check for `// TEST: NO`
 - [ ] Add more tests
 - [ ] Complete with interruptions

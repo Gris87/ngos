@@ -1,5 +1,6 @@
 #include "cpu.h"
 
+#include <asm/instructions.h>
 #include <ngos/linkage.h>
 #include <src/bits64/cpu/generated/cpufeaturesnames.h>
 #include <src/bits64/cpu/msr/msr.h>
@@ -620,8 +621,7 @@ NgosStatus CPU::setFlag(X86Feature flag)
 
 
 
-    // TODO: Need to use bit utils
-    sFlags[(u64)flag >> 5] |= (1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
+    COMMON_ASSERT_EXECUTION(btsPure((void **)&sFlags, (u64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -636,8 +636,7 @@ NgosStatus CPU::clearFlag(X86Feature flag)
 
 
 
-    // TODO: Need to use bit utils
-    sFlags[(u64)flag >> 5] &= ~(1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
+    COMMON_ASSERT_EXECUTION(btrPure((void **)&sFlags, (u64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -652,8 +651,7 @@ bool CPU::hasFlag(X86Feature flag)
 
 
 
-    // TODO: Need to use bit utils
-    return sFlags[(u64)flag >> 5] & (1ULL << ((u64)flag & 0x1F)); // ">> 5" == "/ 32"
+    return bt((void **)&sFlags, (u64)flag);
 }
 
 NgosStatus CPU::doPreprocessing()
@@ -919,7 +917,7 @@ NgosStatus CPU::cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "cpuid"             // cpuid        # Gets information about CPU to eax, ebx, ecx, edx
+        "cpuid"             // cpuid    # Gets information about CPU to eax, ebx, ecx, edx
             :               // Output parameters
                 "=a" (*a),  // "a" == EAX, "=" - write only
                 "=b" (*b),  // "b" == EBX, "=" - write only

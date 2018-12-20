@@ -59,7 +59,7 @@ NgosStatus setupKernelLocation(BootParams *params)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    _end(%%rip), %0"       // leaq    _end(%rip), %rdx   # Get address of _end variable to RDX. %RDX == kernelDescriptor
+        "leaq    _end(%%rip), %0"       // leaq    _end(%rip), %rdx     # Get address of _end variable to RDX. %RDX == kernelDescriptor
             :                           // Output parameters
                 "=r" (kernelDescriptor) // "r" == any general register, "=" - write only
     );
