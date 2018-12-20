@@ -6,6 +6,7 @@ TODO List
 - [ ] Add more tests
 - [ ] Complete with interruptions
 - [ ] Implement graphics for kernel
+- [ ] Per CPU?
 - [ ] Initialization via multiple CPU cores
 - [ ] Need to think how to enable AVX2 and FMA
 - [ ] gdb_debug. Load memory page by page
