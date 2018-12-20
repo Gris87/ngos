@@ -45,6 +45,8 @@ NEXTI_FILTERS=(
     -e "<memmove>"
     -e "<memcmp>"
     -e "<__gunzip>"
+    -e "<printk>"
+    -e "<_get_random_bytes>"
 )
 
 NEXT_FILTERS=(
