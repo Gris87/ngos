@@ -621,7 +621,7 @@ NgosStatus CPU::setFlag(X86Feature flag)
 
 
 
-    COMMON_ASSERT_EXECUTION(btsPure((void **)&sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(btsPure((u8 **)&sFlags, (u64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -636,7 +636,7 @@ NgosStatus CPU::clearFlag(X86Feature flag)
 
 
 
-    COMMON_ASSERT_EXECUTION(btrPure((void **)&sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(btrPure((u8 **)&sFlags, (u64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -651,7 +651,7 @@ bool CPU::hasFlag(X86Feature flag)
 
 
 
-    return bt((void **)&sFlags, (u64)flag);
+    return bt((u8 **)&sFlags, (u64)flag);
 }
 
 NgosStatus CPU::doPreprocessing()

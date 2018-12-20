@@ -3,6 +3,7 @@
 
 
 
+#include <asm/instructions.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 #include <ngos/utils.h>
@@ -88,15 +89,7 @@ private:
 
 
 
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock bts   %1, %0"             // lock bts   %rax, (%rbx)  # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == cpu. %rbx == mBits
-                :                           // Output parameters
-                    "+m" (mBits)            // "m" == use memory, "+" - read and write
-                :                           // Input parameters
-                    "r" (cpu)               // "r" == any general register // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
+        EARLY_ASSERT_EXECUTION(btsSafePure((u8 **)&mBits, cpu), NgosStatus::ASSERTION);
 
 
 
@@ -111,15 +104,7 @@ private:
 
 
 
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock btr   %1, %0"             // lock btr   %rax, (%rbx)  # lock - CPU will lock system Bus until instruction finish # Clears bit RAX starting from address RBX. %rax == cpu. %rbx == mBits
-                :                           // Output parameters
-                    "+m" (mBits)            // "m" == use memory, "+" - read and write
-                :                           // Input parameters
-                    "r" (cpu)               // "r" == any general register // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
+        EARLY_ASSERT_EXECUTION(btrSafePure((u8 **)&mBits, cpu), NgosStatus::ASSERTION);
 
 
 
