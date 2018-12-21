@@ -1,6 +1,6 @@
 #include "cpu.h"
 
-#include <asm/instructions.h>
+#include <asm/bitutils.h>
 #include <ngos/linkage.h>
 #include <src/bits64/cpu/generated/cpufeaturesnames.h>
 #include <src/bits64/cpu/msr/msr.h>
@@ -621,7 +621,7 @@ NgosStatus CPU::setFlag(X86Feature flag)
 
 
 
-    COMMON_ASSERT_EXECUTION(btsPure((u8 *)&sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::set((u8 *)sFlags, (u64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -636,7 +636,7 @@ NgosStatus CPU::clearFlag(X86Feature flag)
 
 
 
-    COMMON_ASSERT_EXECUTION(btrPure((u8 *)&sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::clear((u8 *)sFlags, (u64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -651,7 +651,7 @@ bool CPU::hasFlag(X86Feature flag)
 
 
 
-    return bt((u8 *)&sFlags, (u64)flag);
+    return BitUtils::test((u8 *)sFlags, (u64)flag);
 }
 
 NgosStatus CPU::doPreprocessing()
@@ -780,7 +780,7 @@ NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u
 
 
 
-        if (registers[registerId] & (1 << bit))
+        if (registers[registerId] & (1ULL << bit))
         {
             COMMON_ASSERT_EXECUTION(setFlag(feature), NgosStatus::ASSERTION);
         }

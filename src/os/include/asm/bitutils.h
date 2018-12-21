@@ -3,6 +3,7 @@
 
 
 
+#include <asm/instructions.h>
 #include <ngos/linkage.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
@@ -10,7 +11,7 @@
 
 
 #define CONST_BIT_ADDRESS(address, bit) (u8 *)((u64)(address) + ((bit) >> 3)) // ">> 3" == "/ 8"
-#define CONST_BIT_IN_U8(bit)            (1 << ((bit) & 7))
+#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))
 
 
 
@@ -19,61 +20,170 @@ class BitUtils
 public:
     static inline bool test(u8 *address, u64 bit) // TEST: NO
     {
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "bt      %2, %0"    "\n\t"  // bt      %rax, (%rbx) # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                       // Output parameters
-                    "+m" (*address),    // "m" == use memory, "+" - read and write
-                    "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
-                :                       // Input parameters
-                    "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-        return res;
+        if (IS_CONSTANT(bit))
+        {
+            return *CONST_BIT_ADDRESS(address, bit) & CONST_BIT_IN_U8(bit);
+        }
+        else
+        {
+            return bt(address, bit);
+        }
     }
 
-    inline bool set(u8 *address, u64 bit) // TEST: NO
+    static inline bool testSafe(u8 *address, u64 bit) // TEST: NO
     {
-        bool res;
+        if (IS_CONSTANT(bit))
+        {
+            return *CONST_BIT_ADDRESS(address, bit) & CONST_BIT_IN_U8(bit);
+        }
+        else
+        {
+            return btSafe(address, bit);
+        }
+    }
 
+    static inline NgosStatus set(u8 *address, u64 bit) // TEST: NO
+    {
         if (IS_CONSTANT(bit))
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "orb     %2, %0"    "\n\t"  // orb     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-                "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                    :                       // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit)),    // "m" == use memory, "+" - read and write
-                        "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
-                    :                       // Input parameters
-                        "i" (CONST_BIT_IN_U8(bit))           // "r" == any general register // Ignore CppSingleCharVerifier
-                    :                       // Clobber list
-                        "memory"            // Inform gcc that memory will be changed
+                "orb     %1, %0"                                    // orb     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
+                    :                                               // Output parameters
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                    :                                               // Input parameters
+                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                    :                                               // Clobber list
+                        "memory"                                    // Inform gcc that memory will be changed
             );
             // Ignore CppAlignmentVerifier [END]
         }
         else
         {
+            return btsPure(address, bit);
+        }
+
+        return NgosStatus::OK;
+    }
+
+    static inline NgosStatus setSafe(u8 *address, u64 bit) // TEST: NO
+    {
+        if (IS_CONSTANT(bit))
+        {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "bts     %2, %0"    "\n\t"  // bts     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-                "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                    :                       // Output parameters
-                        "+m" (*address),    // "m" == use memory, "+" - read and write
-                        "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
-                    :                       // Input parameters
-                        "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
-                    :                       // Clobber list
-                        "memory"            // Inform gcc that memory will be changed
+                "lock orb    %1, %0"                                // lock orb    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
+                    :                                               // Output parameters
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                    :                                               // Input parameters
+                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                    :                                               // Clobber list
+                        "memory"                                    // Inform gcc that memory will be changed
             );
             // Ignore CppAlignmentVerifier [END]
         }
+        else
+        {
+            return btsSafePure(address, bit);
+        }
 
-        return res;
+        return NgosStatus::OK;
+    }
+
+    static inline NgosStatus clear(u8 *address, u64 bit) // TEST: NO
+    {
+        if (IS_CONSTANT(bit))
+        {
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "andb    %1, %0"                                    // andb    %rax, (%rbx) # Clears bit RAX starting from address RBX. %rax == bit. %rbx == address
+                    :                                               // Output parameters
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                    :                                               // Input parameters
+                        "i" ((u8)~CONST_BIT_IN_U8(bit))             // "i" == integer constant // Ignore CppSingleCharVerifier
+                    :                                               // Clobber list
+                        "memory"                                    // Inform gcc that memory will be changed
+            );
+            // Ignore CppAlignmentVerifier [END]
+        }
+        else
+        {
+            return btrPure(address, bit);
+        }
+
+        return NgosStatus::OK;
+    }
+
+    static inline NgosStatus clearSafe(u8 *address, u64 bit) // TEST: NO
+    {
+        if (IS_CONSTANT(bit))
+        {
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "lock andb   %1, %0"                                // lock andb   %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Clears bit RAX starting from address RBX. %rax == bit. %rbx == address
+                    :                                               // Output parameters
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                    :                                               // Input parameters
+                        "i" ((u8)~CONST_BIT_IN_U8(bit))             // "i" == integer constant // Ignore CppSingleCharVerifier
+                    :                                               // Clobber list
+                        "memory"                                    // Inform gcc that memory will be changed
+            );
+            // Ignore CppAlignmentVerifier [END]
+        }
+        else
+        {
+            return btrSafePure(address, bit);
+        }
+
+        return NgosStatus::OK;
+    }
+
+    static inline NgosStatus invert(u8 *address, u64 bit) // TEST: NO
+    {
+        if (IS_CONSTANT(bit))
+        {
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "xorb    %1, %0"                                    // xorb    %rax, (%rbx) # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
+                    :                                               // Output parameters
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                    :                                               // Input parameters
+                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                    :                                               // Clobber list
+                        "memory"                                    // Inform gcc that memory will be changed
+            );
+            // Ignore CppAlignmentVerifier [END]
+        }
+        else
+        {
+            return btcPure(address, bit);
+        }
+
+        return NgosStatus::OK;
+    }
+
+    static inline NgosStatus invertSafe(u8 *address, u64 bit) // TEST: NO
+    {
+        if (IS_CONSTANT(bit))
+        {
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "lock xorb   %1, %0"                                // lock xorb   %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
+                    :                                               // Output parameters
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                    :                                               // Input parameters
+                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                    :                                               // Clobber list
+                        "memory"                                    // Inform gcc that memory will be changed
+            );
+            // Ignore CppAlignmentVerifier [END]
+        }
+        else
+        {
+            return btcSafePure(address, bit);
+        }
+
+        return NgosStatus::OK;
     }
 };
 

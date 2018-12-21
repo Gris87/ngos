@@ -136,50 +136,6 @@ TEST_CASES(section1, bits64_other_cpu_cpumask);
 
 
 
-    TEST_CASE("setCpuBit()");
-    {
-        CpuMask cpuMask;
-
-        memzero(cpuMask.mBits, sizeof(cpuMask.mBits));
-
-        TEST_ASSERT_EQUALS(cpuMask.setCpuBit(0),   NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[0],       0x0000000000000001);
-
-        TEST_ASSERT_EQUALS(cpuMask.setCpuBit(5),   NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[0],       0x0000000000000021);
-
-        TEST_ASSERT_EQUALS(cpuMask.setCpuBit(40),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[0],       0x0000010000000021);
-
-        TEST_ASSERT_EQUALS(cpuMask.setCpuBit(100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[1],       0x0000001000000000);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("clearCpuBit()");
-    {
-        CpuMask cpuMask;
-
-        memset(cpuMask.mBits, 0xFF, sizeof(cpuMask.mBits));
-
-        TEST_ASSERT_EQUALS(cpuMask.clearCpuBit(0),   NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[0],         0xFFFFFFFFFFFFFFFE);
-
-        TEST_ASSERT_EQUALS(cpuMask.clearCpuBit(5),   NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[0],         0xFFFFFFFFFFFFFFDE);
-
-        TEST_ASSERT_EQUALS(cpuMask.clearCpuBit(40),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[0],         0xFFFFFEFFFFFFFFDE);
-
-        TEST_ASSERT_EQUALS(cpuMask.clearCpuBit(100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(cpuMask.mBits[1],         0xFFFFFFEFFFFFFFFF);
-    }
-    TEST_CASE_END();
-
-
-
     TEST_CASE("setCpuMask()");
     {
         CpuMask cpuMask;

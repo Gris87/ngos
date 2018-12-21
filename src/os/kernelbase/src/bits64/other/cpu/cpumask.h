@@ -3,7 +3,7 @@
 
 
 
-#include <asm/instructions.h>
+#include <asm/bitutils.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 #include <ngos/utils.h>
@@ -81,36 +81,6 @@ public:
 #else
 private:
 #endif
-    inline NgosStatus setCpuBit(u64 cpu)
-    {
-        EARLY_LT((" | cpu = %u, this = 0x%p", cpu, this));
-
-        EARLY_ASSERT(cpu < NUMBER_OF_CPUS, "cpu is invalid", NgosStatus::ASSERTION);
-
-
-
-        EARLY_ASSERT_EXECUTION(btsSafePure((u8 *)mBits, cpu), NgosStatus::ASSERTION);
-
-
-
-        return NgosStatus::OK;
-    }
-
-    inline NgosStatus clearCpuBit(u64 cpu)
-    {
-        EARLY_LT((" | cpu = %u, this = 0x%p", cpu, this));
-
-        EARLY_ASSERT(cpu < NUMBER_OF_CPUS, "cpu is invalid", NgosStatus::ASSERTION);
-
-
-
-        EARLY_ASSERT_EXECUTION(btrSafePure((u8 *)mBits, cpu), NgosStatus::ASSERTION);
-
-
-
-        return NgosStatus::OK;
-    }
-
     inline NgosStatus setCpuMask(u64 cpu, bool enabled)
     {
         EARLY_LT((" | cpu = %u, enabled = %s, this = 0x%p", cpu, enabled ? "true" : "false", this));
@@ -121,11 +91,11 @@ private:
 
         if (enabled)
         {
-            return setCpuBit(cpu);
+            return BitUtils::setSafe((u8 *)mBits, cpu);
         }
         else
         {
-            return clearCpuBit(cpu);
+            return BitUtils::clearSafe((u8 *)mBits, cpu);
         }
     }
 

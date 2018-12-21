@@ -171,12 +171,12 @@ inline bool bt(u8 *address, u64 bit) // TEST: NO
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "bt      %2, %0"    "\n\t"  // bt      %rax, (%rbx) # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
-        "setc    %1"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+        "bt      %2, %1"    "\n\t"  // bt      %rax, (%rbx) # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc    %0"                // setc    %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
             :                       // Output parameters
-                "+m" (*address),    // "m" == use memory, "+" - read and write
                 "=qm" (res)         // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
             :                       // Input parameters
+                "m" (*address),     // "m" == use memory // Ignore CppSingleCharVerifier
                 "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
@@ -190,12 +190,12 @@ inline bool btSafe(u8 *address, u64 bit) // TEST: NO
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "lock bt     %2, %0"    "\n\t"  // lock bt     %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
-        "setc        %1"                // setc        %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
+        "lock bt     %2, %1"    "\n\t"  // lock bt     %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
+        "setc        %0"                // setc        %dl          # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
             :                           // Output parameters
-                "+m" (*address),        // "m" == use memory, "+" - read and write
                 "=qm" (res)             // "q" == Registers a, b, c or d, or "m" == use memory, "=" - write only
             :                           // Input parameters
+                "m" (*address),         // "m" == use memory // Ignore CppSingleCharVerifier
                 "r" (bit)               // "r" == any general register // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
