@@ -89,7 +89,7 @@ private:
 
 
 
-        EARLY_ASSERT_EXECUTION(btsSafePure((u8 **)&mBits, cpu), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(btsSafePure((u8 *)mBits, cpu), NgosStatus::ASSERTION);
 
 
 
@@ -104,7 +104,7 @@ private:
 
 
 
-        EARLY_ASSERT_EXECUTION(btrSafePure((u8 **)&mBits, cpu), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(btrSafePure((u8 *)mBits, cpu), NgosStatus::ASSERTION);
 
 
 

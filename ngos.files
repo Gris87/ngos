@@ -269,6 +269,7 @@ src/os/configure/test/bits64/a_uefi/sections/section0/testcase.h
 src/os/configure/test/bits64/a_uefi/testengine.h
 src/os/configure/test/bits64/a_uefi/testresults.cpp
 src/os/configure/test/bits64/a_uefi/testresults.h
+src/os/include/asm/bitutils.h
 src/os/include/asm/instructions.h
 src/os/include/bootparams/bootparams.h
 src/os/include/bootparams/bootparamsheader.h
