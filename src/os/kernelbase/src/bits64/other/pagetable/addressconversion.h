@@ -17,7 +17,7 @@ extern void *_start; // _start declared in main.S file // Ignore CppEqualAlignme
 class AddressConversion
 {
 public:
-    static inline u64 physicalAddress(u64 address) // TEST: NO
+    static inline u64 physicalAddress(u64 address)
     {
         EARLY_LT((" | address = 0x%p", address));
 
@@ -26,7 +26,7 @@ public:
         return address + sPhysicalDelta;
     }
 
-    static inline NgosStatus setPhysicalDeltaBaseOnLocation(u64 location) // TEST: NO
+    static inline NgosStatus setPhysicalDeltaBaseOnLocation(u64 location)
     {
         EARLY_LT((" | location = 0x%016lX", location));
 
@@ -42,7 +42,11 @@ public:
         return NgosStatus::OK;
     }
 
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
 private:
+#endif
     static u64 sPhysicalDelta; // Special delta value that let you convert virtual address to physical address
 };
 

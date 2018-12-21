@@ -10,8 +10,8 @@
 
 
 
-#define CONST_BIT_ADDRESS(address, bit) (u8 *)((u64)(address) + ((bit) >> 3)) // ">> 3" == "/ 8"
-#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))
+#define CONST_BIT_ADDRESS(address, bit) (u8 *)((u64)(address) + ((bit) >> 3)) // TEST: NO // ">> 3" == "/ 8"
+#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))                 // TEST: NO
 
 
 

@@ -72,6 +72,8 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
                 if (
                     !funcDesc.startsWith("TEST_CASES(")
                     &&
+                    !funcDesc.startsWith("enum")
+                    &&
                     !funcDesc.endsWith('=')
                     &&
                     !mDefinitionRegExp.match(funcDesc).hasMatch()

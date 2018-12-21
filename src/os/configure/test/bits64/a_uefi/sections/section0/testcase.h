@@ -11,8 +11,11 @@
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/printf/printf.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/random/random.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/string/string.h"
+#include "test/bits64/a_uefi/sections/section0/__include/asm/bitutils.h"
+#include "test/bits64/a_uefi/sections/section0/__include/asm/instructions.h"
 #include "test/bits64/a_uefi/sections/section0/__include/elf/rela.h"
 #include "test/bits64/a_uefi/sections/section0/__include/elf/symbol.h"
+#include "test/bits64/a_uefi/sections/section0/__include/ngos/linkage.h"
 #include "test/bits64/a_uefi/sections/section0/__include/ngos/types.h"
 #include "test/bits64/a_uefi/sections/section0/__include/ngos/utils.h"
 #include "test/bits64/a_uefi/sections/section0/__include/pagetable/utils.h"
@@ -39,8 +42,11 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __common_bits64_printf_printf);
     CALL_TEST_CASES(section0, __common_bits64_random_random);
     CALL_TEST_CASES(section0, __common_bits64_string_string);
+    CALL_TEST_CASES(section0, __include_asm_bitutils);
+    CALL_TEST_CASES(section0, __include_asm_instructions);
     CALL_TEST_CASES(section0, __include_elf_rela);
     CALL_TEST_CASES(section0, __include_elf_symbol);
+    CALL_TEST_CASES(section0, __include_ngos_linkage);
     CALL_TEST_CASES(section0, __include_ngos_types);
     CALL_TEST_CASES(section0, __include_ngos_utils);
     CALL_TEST_CASES(section0, __include_pagetable_utils);

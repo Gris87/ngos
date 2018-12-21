@@ -259,8 +259,11 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/memory/mem
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/printf/printf.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/random/random.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/string/string.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__include/asm/bitutils.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__include/asm/instructions.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/elf/rela.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/elf/symbol.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__include/ngos/linkage.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/ngos/types.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/ngos/utils.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/pagetable/utils.h
@@ -379,7 +382,9 @@ src/os/kernelbase/src/bits64/other/tasks/utils.cpp
 src/os/kernelbase/src/bits64/other/tasks/utils.h
 src/os/kernelbase/src/main.cpp
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h
+src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/memorymanager/memoryblockregion.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/memorymanager/memorymanager.h
+src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/addressconversion.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/dynamicpagetable.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/tasks/utils.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/testcase.h

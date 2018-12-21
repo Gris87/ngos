@@ -5,7 +5,9 @@
 
 #include <buildconfig.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h>
+#include <test/bits64/a_early/sections/section1/bits64/other/memorymanager/memoryblockregion.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/memorymanager/memorymanager.h>
+#include <test/bits64/a_early/sections/section1/bits64/other/pagetable/addressconversion.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/pagetable/dynamicpagetable.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/tasks/utils.h>
 #include <test/bits64/a_early/testengine.h>
@@ -25,7 +27,9 @@ NgosStatus startTestSection1()
     INIT_TEST_SECTION();
 
     CALL_TEST_CASES(section1, bits64_other_cpu_cpumask);
+    CALL_TEST_CASES(section1, bits64_other_memorymanager_memoryblockregion);
     CALL_TEST_CASES(section1, bits64_other_memorymanager_memorymanager);
+    CALL_TEST_CASES(section1, bits64_other_pagetable_addressconversion);
     CALL_TEST_CASES(section1, bits64_other_pagetable_dynamicpagetable);
     CALL_TEST_CASES(section1, bits64_other_tasks_utils);
 

@@ -22,7 +22,7 @@
 
 
 
-enum UnavailableMemoryArea
+enum class UnavailableMemoryArea: u8
 {
     MEMORY_AREA_ZERO_PAGE,
     MEMORY_AREA_BOOT_PARAMS,
@@ -166,24 +166,24 @@ NgosStatus printPgd(PGD *pgd)
 }
 #endif
 
-inline NgosStatus addUnavailableMemoryArea(MemoryArea areas[UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS], UnavailableMemoryArea areaId, u64 address, u64 size, bool addToIdentityMap)
+inline NgosStatus addUnavailableMemoryArea(MemoryArea *areas, UnavailableMemoryArea areaId, u64 address, u64 size, bool addToIdentityMap)
 {
-    EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016lx, size = 0x%016lx, addToIdentityMap = %s", areas, areaId, address, size, addToIdentityMap ? "true" : "false"));
+    EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016lx, size = 0x%016lx, addToIdentityMap = %u", areas, areaId, address, size, addToIdentityMap));
 
-    EARLY_ASSERT(areas,                                                                 "areas is null",     NgosStatus::ASSERTION);
-    EARLY_ASSERT(areaId >= 0 && areaId < UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS, "areaId is invalid", NgosStatus::ASSERTION);
-    EARLY_ASSERT(size > 0,                                                              "size is zero",      NgosStatus::ASSERTION);
+    EARLY_ASSERT(areas,                                                            "areas is null",     NgosStatus::ASSERTION);
+    EARLY_ASSERT((u64)areaId < (u64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS, "areaId is invalid", NgosStatus::ASSERTION);
+    EARLY_ASSERT(size > 0,                                                         "size is zero",      NgosStatus::ASSERTION);
 
 
 
-    areas[areaId].start = address;
-    areas[areaId].end   = size + areas[areaId].start;
+    areas[(u64)areaId].start = address;
+    areas[(u64)areaId].end   = size + areas[(u64)areaId].start;
 
 
 
     if (addToIdentityMap)
     {
-        EARLY_ASSERT_EXECUTION(addIdentityMap(areas[areaId].start, areas[areaId].end), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(addIdentityMap(areas[(u64)areaId].start, areas[(u64)areaId].end), NgosStatus::ASSERTION);
     }
 
 
@@ -191,7 +191,7 @@ inline NgosStatus addUnavailableMemoryArea(MemoryArea areas[UnavailableMemoryAre
     return NgosStatus::OK;
 }
 
-NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea areas[UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS])
+NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 {
     EARLY_LT((" | params = 0x%p, areas = 0x%p", params, areas));
 
@@ -214,7 +214,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea areas[Unava
         EARLY_LVVV(("Unavailable memory areas:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (i64 i = 0; i < UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS; ++i)
+        for (i64 i = 0; i < (i64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS; ++i)
         {
             EARLY_LVVV(("#%d: 0x%p-0x%p", i, areas[i].start, areas[i].end));
         }
@@ -254,7 +254,7 @@ NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAre
 
 
 
-    for (i64 i = 0; i < UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS; ++i)
+    for (i64 i = 0; i < (i64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS; ++i)
     {
         if (
             end > (i64)unavailableMemoryAreas[i].start
@@ -606,7 +606,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
 
 
 
-    MemoryArea unavailableMemoryAreas[UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS];
+    MemoryArea unavailableMemoryAreas[(u64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS];
 
     EARLY_ASSERT_EXECUTION(initUnavailableMemoryAreas(params, unavailableMemoryAreas), NgosStatus::ASSERTION);
 
