@@ -145,7 +145,7 @@ TEST_CASES(section0, __include_asm_bitutils);
 
 
 
-    TEST_CASE("clear()");
+    TEST_CASE("clearSafe()");
     {
         u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
@@ -172,6 +172,100 @@ TEST_CASES(section0, __include_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::clearSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                            0x2ADFACEB00AFCDE7);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("invert()");
+    {
+        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[1],                           0x984ADBEACE231913);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[1],                           0x984ADBFACE231913);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[0],                           0x65198712AADCBF97);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[0],                           0x65198732AADCBF97);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                           0x6ADFACEB00AFCDE7);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                           0xEADFACEB00AFCDE7);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[4],                           0x98310ADADADADA19);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[4],                           0x98312ADADADADA19);
+
+
+
+        u8 temp = 0;
+
+        for (i64 i = 0; i < 100; ++i)
+        {
+            temp += temp + 1;
+        }
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                                         0xAADFACEB00AFCDE7);
+
+        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                                         0xEADFACEB00AFCDE7);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("invertSafe()");
+    {
+        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[1],                               0x984ADBEACE231913);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[1],                               0x984ADBFACE231913);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[0],                               0x65198712AADCBF97);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[0],                               0x65198732AADCBF97);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                               0x6ADFACEB00AFCDE7);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                               0xEADFACEB00AFCDE7);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[4],                               0x98310ADADADADA19);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[4],                               0x98312ADADADADA19);
+
+
+
+        u8 temp = 0;
+
+        for (i64 i = 0; i < 100; ++i)
+        {
+            temp += temp + 1;
+        }
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                                             0xAADFACEB00AFCDE7);
+
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(buffer[3],                                             0xEADFACEB00AFCDE7);
     }
     TEST_CASE_END();
 }
