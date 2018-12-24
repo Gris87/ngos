@@ -30,18 +30,6 @@ public:
         }
     }
 
-    static inline bool testSafe(u8 *address, u64 bit) // TEST: NO
-    {
-        if (IS_CONSTANT(bit))
-        {
-            return *CONST_BIT_ADDRESS(address, bit) & CONST_BIT_IN_U8(bit);
-        }
-        else
-        {
-            return btSafe(address, bit);
-        }
-    }
-
     static inline NgosStatus set(u8 *address, u64 bit) // TEST: NO
     {
         if (IS_CONSTANT(bit))
