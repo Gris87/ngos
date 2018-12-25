@@ -72,7 +72,7 @@ public:
         }
         else
         {
-            return btsSafePure(address, bit);
+            return btsPureSafe(address, bit);
         }
 
         return NgosStatus::OK;
@@ -120,7 +120,7 @@ public:
         }
         else
         {
-            return btrSafePure(address, bit);
+            return btrPureSafe(address, bit);
         }
 
         return NgosStatus::OK;
@@ -168,7 +168,7 @@ public:
         }
         else
         {
-            return btcSafePure(address, bit);
+            return btcPureSafe(address, bit);
         }
 
         return NgosStatus::OK;

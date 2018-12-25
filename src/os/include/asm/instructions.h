@@ -205,23 +205,6 @@ inline bool bts(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btsPure(u8 *address, u64 bit) // TEST: NO
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "bts     %1, %0"            // bts     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-            :                       // Output parameters
-                "+m" (*address)     // "m" == use memory, "+" - read and write
-            :                       // Input parameters
-                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
-            :                       // Clobber list
-                "memory"            // Inform gcc that memory will be changed
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-    return NgosStatus::OK;
-}
-
 inline bool btsSafe(u8 *address, u64 bit) // TEST: NO
 {
     bool res;
@@ -243,7 +226,24 @@ inline bool btsSafe(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btsSafePure(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btsPure(u8 *address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "bts     %1, %0"            // bts     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+            :                       // Clobber list
+                "memory"            // Inform gcc that memory will be changed
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus btsPureSafe(u8 *address, u64 bit) // TEST: NO
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -281,23 +281,6 @@ inline bool btr(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btrPure(u8 *address, u64 bit) // TEST: NO
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "btr     %1, %0"            // btr     %rax, (%rbx) # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
-            :                       // Output parameters
-                "+m" (*address)     // "m" == use memory, "+" - read and write
-            :                       // Input parameters
-                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
-            :                       // Clobber list
-                "memory"            // Inform gcc that memory will be changed
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-    return NgosStatus::OK;
-}
-
 inline bool btrSafe(u8 *address, u64 bit) // TEST: NO
 {
     bool res;
@@ -319,7 +302,24 @@ inline bool btrSafe(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btrSafePure(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btrPure(u8 *address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "btr     %1, %0"            // btr     %rax, (%rbx) # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+            :                       // Clobber list
+                "memory"            // Inform gcc that memory will be changed
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus btrPureSafe(u8 *address, u64 bit) // TEST: NO
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -357,23 +357,6 @@ inline bool btc(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btcPure(u8 *address, u64 bit) // TEST: NO
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "btc     %1, %0"            // btc     %rax, (%rbx) # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
-            :                       // Output parameters
-                "+m" (*address)     // "m" == use memory, "+" - read and write
-            :                       // Input parameters
-                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
-            :                       // Clobber list
-                "memory"            // Inform gcc that memory will be changed
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-    return NgosStatus::OK;
-}
-
 inline bool btcSafe(u8 *address, u64 bit) // TEST: NO
 {
     bool res;
@@ -395,7 +378,24 @@ inline bool btcSafe(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btcSafePure(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btcPure(u8 *address, u64 bit) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "btc     %1, %0"            // btc     %rax, (%rbx) # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+            :                       // Input parameters
+                "r" (bit)           // "r" == any general register // Ignore CppSingleCharVerifier
+            :                       // Clobber list
+                "memory"            // Inform gcc that memory will be changed
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus btcPureSafe(u8 *address, u64 bit) // TEST: NO
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
