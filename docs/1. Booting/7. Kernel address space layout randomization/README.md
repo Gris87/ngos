@@ -4,10 +4,10 @@ NGOS
 1.7. Kernel address space layout randomization
 ----------------------------------------------
 
-We have skipped explanation of [getRandomLocation()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L613) function in the previous [chapter](../6.%20Kernel%20decompression/README.md).<br/>
+We have skipped explanation of [getRandomLocation()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L593) function in the previous [chapter](../6.%20Kernel%20decompression/README.md).<br/>
 But getRandomLocation() function is complex and need to be described in details.
 
-Let's go through [getRandomLocation()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L613) function and explain what we are doing.
+Let's go through [getRandomLocation()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L593) function and explain what we are doing.
 
 ```
     EARLY_LT((" | params = 0x%p, pageTable = 0x%p, imageSize = %u, physicalAddress = 0x%p, virtualAddress = 0x%p", params, pageTable, imageSize, physicalAddress, virtualAddress));
@@ -38,77 +38,54 @@ There is a set of memory ranges that allocated during UEFI booting process and s
 For this reason we should avoid them during random address search.
 
 ```
-    MemoryArea unavailableMemoryAreas[AMOUNT_OF_MEMORY_AREAS];
-    u64        numberOfAreas = 0;
+    MemoryArea unavailableMemoryAreas[(u64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS];
 
-    EARLY_ASSERT_EXECUTION(initUnavailableMemoryAreas(params, unavailableMemoryAreas, &numberOfAreas), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(initUnavailableMemoryAreas(params, unavailableMemoryAreas), NgosStatus::ASSERTION);
 ```
 
-Let's check [initUnavailableMemoryAreas()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L159) function.
+Let's check [initUnavailableMemoryAreas()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L194) function.
 
 ```
-    EARLY_TEST_ASSERT(currentAreaId < AMOUNT_OF_MEMORY_AREAS, NgosStatus::ASSERTION);
-
-    areas[currentAreaId].start = 0;
-    areas[currentAreaId].end   = PMD_SIZE;
-
-    ++currentAreaId;
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_ZERO_PAGE,        0,                             PMD_SIZE,                                                          false), NgosStatus::ASSERTION);
 ```
 
 With this memory range we are avoiding random address at zero page.
 
+[addUnavailableMemoryArea()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L169) function simply fills memory area with the specified range and calls [addIdentityMap()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/other/pagetable/pagetable.cpp#L152) function if needed.
+
 ```
-    EARLY_TEST_ASSERT(currentAreaId < AMOUNT_OF_MEMORY_AREAS, NgosStatus::ASSERTION);
-
-    areas[currentAreaId].start = (u64)params;
-    areas[currentAreaId].end   = sizeof(*params) + areas[currentAreaId].start;
-
-    EARLY_ASSERT_EXECUTION(addIdentityMap(areas[currentAreaId].start, areas[currentAreaId].end), NgosStatus::ASSERTION);
-
-    ++currentAreaId;
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_BOOT_PARAMS,      (u64)params,                   sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
 ```
 
 Here we are avoiding memory range for boot parameters.<br/>
 We are also calling [addIdentityMap()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/other/pagetable/pagetable.cpp#L152) function in order to provide access to this memory range after calling [finalizeIdentityMaps()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/other/pagetable/pagetable.cpp#L176) function that applying new page table.
 
 ```
-    EARLY_TEST_ASSERT(currentAreaId < AMOUNT_OF_MEMORY_AREAS, NgosStatus::ASSERTION);
-
-    areas[currentAreaId].start = params->header.kernelLocation;
-    areas[currentAreaId].end   = params->header.allocatedKernelSize + areas[currentAreaId].start;
-
-    EARLY_ASSERT_EXECUTION(addIdentityMap(areas[currentAreaId].start, areas[currentAreaId].end), NgosStatus::ASSERTION);
-
-    ++currentAreaId;
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_RELOCATED_KERNEL, params->header.kernelLocation, params->header.allocatedKernelSize,                                true),  NgosStatus::ASSERTION);
 ```
 
 This memory range is used for currently executed kernel image in relocated kernel space.<br/>
 We should provide access to this memory range to let kernel finish with the remaining instructions before jumping to extracted kernel binary image.
 
 ```
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_MEMORY_MAP,       (u64)params->memoryMapEntries, params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
+```
+
+And the last one is the memory range for memory map.
+
+```
     // We don't need to include params->pciRomImages to areas
 ```
 
 We should also avoid memory ranges for PCI ROM images. But the amount of such devices may be huge.<br/>
-We will directly check intersection with such ranges in [findIntersection()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L259) function.
-
-```
-    EARLY_TEST_ASSERT(currentAreaId < AMOUNT_OF_MEMORY_AREAS, NgosStatus::ASSERTION);
-
-    areas[currentAreaId].start = (u64)params->memoryMapEntries;
-    areas[currentAreaId].end   = params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries) + areas[currentAreaId].start;
-
-    ++currentAreaId;
-```
-
-And the last one is the memory range for memory map.
+We will directly check intersection with such ranges in [findIntersection()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L246) function.
 
 ### Search for random address space
 
 We are ready to search for random address space now.
 
 ```
-    if (findRandomPhysicalAddress(params, unavailableMemoryAreas, numberOfAreas, imageSize, physicalAddress) != NgosStatus::OK)
+    if (findRandomPhysicalAddress(params, unavailableMemoryAreas, imageSize, physicalAddress) != NgosStatus::OK)
     {
         EARLY_LF(("Failed to find random physical address"));
 
@@ -122,10 +99,10 @@ We are ready to search for random address space now.
     EARLY_LVV(("Random physical address: 0x%016lX", *physicalAddress));
 ```
 
-[findRandomPhysicalAddress()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L477) function trying to search aligned address space for kernel binary image that didn't intersect with any of unavailable memory ranges.
+[findRandomPhysicalAddress()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L461) function trying to search aligned address space for kernel binary image that didn't intersect with any of unavailable memory ranges.
 
 ```
-    if (findRandomVirtualAddress(params, unavailableMemoryAreas, numberOfAreas, imageSize, virtualAddress) != NgosStatus::OK)
+    if (findRandomVirtualAddress(params, unavailableMemoryAreas, imageSize, virtualAddress) != NgosStatus::OK)
     {
         EARLY_LF(("Failed to find random virtual address"));
 
@@ -139,7 +116,7 @@ We are ready to search for random address space now.
     EARLY_LVV(("Random virtual address: 0x%016lX", *virtualAddress));
 ```
 
-We are also searching for virtual address of kernel image in range 0xFFFFFFFF80000000 - 0xFFFFFFFFC0000000 with [findRandomVirtualAddress()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L558) function.
+We are also searching for virtual address of kernel image in range 0xFFFFFFFF80000000 - 0xFFFFFFFFC0000000 with [findRandomVirtualAddress()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L540) function.
 
 ### Complete with page table initialization
 

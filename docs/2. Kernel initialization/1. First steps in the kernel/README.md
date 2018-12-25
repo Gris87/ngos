@@ -95,7 +95,7 @@ The initial kernel code is located in .kernel_code section.
 If you search for .kernel_code section you will find that it is only declared at [src/os/kernelbase/asm/arch/x86_64/main.S](../../../src/os/kernelbase/asm/arch/x86_64/main.S) file.<br/>
 Let's check this [file](../../../src/os/kernelbase/asm/arch/x86_64/main.S).
 
-### CPU validation
+### Entry point
 
 ```
 # ============================================================================= # =============================================================================

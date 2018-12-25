@@ -89,7 +89,7 @@ Here we are calculating amount of memory required for extracted kernel binary im
     EARLY_LI(("Random location for kernel found"));
 ```
 
-We need to choose random location for kernel binary image for security reasons. This can be done with [getRandomLocation()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L613) function.<br/>
+We need to choose random location for kernel binary image for security reasons. This can be done with [getRandomLocation()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L593) function.<br/>
 Detailed explanation for this function can be found at the next [chapter](../7.%20Kernel%20address%20space%20layout%20randomization/README.md).
 
 ```
