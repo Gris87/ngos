@@ -6,6 +6,28 @@ NGOS
 
 There are several scripts can be found in the [scripts](../../../scripts/) folder.
 
+### add_rc_version_tag.sh
+
+This script helps to add tag for new RC version.<br/>
+It should be called from the project root directory.
+
+Example:
+
+```sh
+./scripts/add_rc_version_tag.sh
+```
+
+### add_version_tag.sh
+
+This script helps to add tag for new version.<br/>
+It should be called from the project root directory.
+
+Example:
+
+```sh
+./scripts/add_version_tag.sh
+```
+
 ### commit.sh
 
 This script can be used to simplify interaction with the Git.<br/>
