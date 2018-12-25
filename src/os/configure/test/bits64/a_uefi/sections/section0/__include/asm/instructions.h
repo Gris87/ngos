@@ -21,9 +21,9 @@ TEST_CASES(section0, __include_asm_instructions);
     {
         if (CPU::hasFlag(X86Feature::RDRAND))
         {
-            u64 value1;
-            u64 value2;
-            u64 value3;
+            u64 value1 = 0;
+            u64 value2 = 0;
+            u64 value3 = 0;
 
             TEST_ASSERT_EQUALS(rdrand(&value1), NgosStatus::OK);
             TEST_ASSERT_EQUALS(rdrand(&value2), NgosStatus::OK);
