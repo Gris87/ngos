@@ -75,6 +75,8 @@ include/stdinc/stdarg.h
 Makefile
 ngos.creator.shared
 README.md
+scripts/add_rc_version_tag.sh
+scripts/add_version_tag.sh
 scripts/commit.sh
 scripts/pull.sh
 scripts/push.sh
