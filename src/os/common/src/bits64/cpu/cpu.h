@@ -49,6 +49,7 @@ private:
     static u8        sModel;
     static u8        sStepping;
     static u32       sMicrocodeRevision;
+    static i8        sX86CoreIdBits;
     static u16       sCacheLineFlushSize;
     static u16       sCacheAlignment;
     static i32       sCacheMaxRmid;

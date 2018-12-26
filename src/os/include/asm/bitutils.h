@@ -173,6 +173,330 @@ public:
 
         return NgosStatus::OK;
     }
+
+    static inline u8 findFirstBit16(u16 value) // TEST: NO
+    {
+        if (value == 0)
+        {
+            return 0;
+        }
+
+
+
+        u16 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "rep; bsfw    %1, %0"   // bsfw    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                   // Output parameters
+                    "=r" (res)      // "r" == any general register, "=" - write only
+                :                   // Input parameters
+                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findFirstBit32(u32 value) // TEST: NO
+    {
+        if (value == 0)
+        {
+            return 0;
+        }
+
+
+
+        u32 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "rep; bsfl    %1, %0"   // bsfl    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                   // Output parameters
+                    "=r" (res)      // "r" == any general register, "=" - write only
+                :                   // Input parameters
+                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findFirstBit64(u64 value) // TEST: NO
+    {
+        if (value == 0)
+        {
+            return 0;
+        }
+
+
+
+        u64 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "rep; bsfq    %1, %0"   // bsfq    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                   // Output parameters
+                    "=r" (res)      // "r" == any general register, "=" - write only
+                :                   // Input parameters
+                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findFirstZero16(u16 value) // TEST: NO
+    {
+        if (value == (u16)-1LL)
+        {
+            return 0;
+        }
+
+
+
+        u16 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "rep; bsfw    %1, %0"       // bsfw    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                       // Output parameters
+                    "=r" (res)          // "r" == any general register, "=" - write only
+                :                       // Input parameters
+                    "r" ((u16)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findFirstZero32(u32 value) // TEST: NO
+    {
+        if (value == (u32)-1LL)
+        {
+            return 0;
+        }
+
+
+
+        u32 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "rep; bsfl    %1, %0"       // bsfl    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                       // Output parameters
+                    "=r" (res)          // "r" == any general register, "=" - write only
+                :                       // Input parameters
+                    "r" ((u32)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findFirstZero64(u64 value) // TEST: NO
+    {
+        if (value == (u64)-1LL)
+        {
+            return 0;
+        }
+
+
+
+        u64 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "rep; bsfq    %1, %0"       // bsfq    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                       // Output parameters
+                    "=r" (res)          // "r" == any general register, "=" - write only
+                :                       // Input parameters
+                    "r" ((u64)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findLastBit16(u16 value) // TEST: NO
+    {
+        if (value == 0)
+        {
+            return 0;
+        }
+
+
+
+        u16 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "bsrw    %1, %0"        // bsrw    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                   // Output parameters
+                    "=r" (res)      // "r" == any general register, "=" - write only
+                :                   // Input parameters
+                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findLastBit32(u32 value) // TEST: NO
+    {
+        if (value == 0)
+        {
+            return 0;
+        }
+
+
+
+        u32 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "bsrl    %1, %0"        // bsrl    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                   // Output parameters
+                    "=r" (res)      // "r" == any general register, "=" - write only
+                :                   // Input parameters
+                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findLastBit64(u64 value) // TEST: NO
+    {
+        if (value == 0)
+        {
+            return 0;
+        }
+
+
+
+        u64 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "bsrq    %1, %0"        // bsrq    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                   // Output parameters
+                    "=r" (res)      // "r" == any general register, "=" - write only
+                :                   // Input parameters
+                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findLastZero16(u16 value) // TEST: NO
+    {
+        if (value == (u16)-1LL)
+        {
+            return 0;
+        }
+
+
+
+        u16 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "bsrw    %1, %0"            // bsrw    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                       // Output parameters
+                    "=r" (res)          // "r" == any general register, "=" - write only
+                :                       // Input parameters
+                    "r" ((u16)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findLastZero32(u32 value) // TEST: NO
+    {
+        if (value == (u32)-1LL)
+        {
+            return 0;
+        }
+
+
+
+        u32 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "bsrl    %1, %0"            // bsrl    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                       // Output parameters
+                    "=r" (res)          // "r" == any general register, "=" - write only
+                :                       // Input parameters
+                    "r" ((u32)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline u8 findLastZero64(u64 value) // TEST: NO
+    {
+        if (value == (u64)-1LL)
+        {
+            return 0;
+        }
+
+
+
+        u64 res;
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        asm volatile(
+            "bsrq    %1, %0"            // bsrq    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
+                :                       // Output parameters
+                    "=r" (res)          // "r" == any general register, "=" - write only
+                :                       // Input parameters
+                    "r" ((u64)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+        );
+        // Ignore CppAlignmentVerifier [END]
+
+        return res + 1;
+    }
+
+    static inline i8 getCountOrder16(u16 value) // TEST: NO
+    {
+        if (value & (value - 1))
+        {
+            return (i8)findLastBit16(value);
+        }
+        else
+        {
+            return (i8)(findLastBit16(value) - 1);
+        }
+    }
+
+    static inline i8 getCountOrder32(u32 value) // TEST: NO
+    {
+        if (value & (value - 1))
+        {
+            return (i8)findLastBit32(value);
+        }
+        else
+        {
+            return (i8)(findLastBit32(value) - 1);
+        }
+    }
+
+    static inline i8 getCountOrder64(u64 value) // TEST: NO
+    {
+        if (value & (value - 1))
+        {
+            return (i8)findLastBit64(value);
+        }
+        else
+        {
+            return (i8)(findLastBit64(value) - 1);
+        }
+    }
 };
 
 

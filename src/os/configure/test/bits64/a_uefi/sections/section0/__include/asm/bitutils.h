@@ -268,6 +268,198 @@ TEST_CASES(section0, __include_asm_bitutils);
         TEST_ASSERT_EQUALS(buffer[3],                                             0xEADFACEB00AFCDE7);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("findFirstBit16()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit16(0xAB11), 1);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit16(0x1300), 9);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit16(0xDDAC), 3);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit16(0xDDA0), 6);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit16(0xB800), 12);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit16(0x0000), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findFirstBit32()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit32(0x4091AB11), 1);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit32(0x13971300), 9);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit32(0xDDADDDAC), 3);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit32(0xBCDEDDA0), 6);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit32(0x1ABBB800), 12);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit32(0x00000000), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findFirstBit64()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit64(0x134AD0654091AB11), 1);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit64(0x9713298713971300), 9);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit64(0xDADDDAAADDADDDAC), 3);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit64(0x321897ADBCDEDDA0), 6);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit64(0x009813981ABBB800), 12);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstBit64(0x0000000000000000), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findFirstZero16()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero16(0xAB11), 2);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero16(0x13FF), 11);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero16(0xDDFF), 10);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero16(0xDDAF), 5);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero16(0xB8FF), 9);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero16(0xFFFF), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findFirstZero32()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero32(0x4091AB11), 2);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero32(0x139713FF), 11);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero32(0xDDADDDFF), 10);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero32(0xBCDEDDAF), 5);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero32(0x1ABBB8FF), 9);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero32(0xFFFFFFFF), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findFirstZero64()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero64(0x134AD0654091AB11), 2);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero64(0x97132987139713FF), 11);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero64(0xDADDDAAADDADDDFF), 10);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero64(0x321897ADBCDEDDAF), 5);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero64(0x009813981ABBB8FF), 9);
+        TEST_ASSERT_EQUALS(BitUtils::findFirstZero64(0xFFFFFFFFFFFFFFFF), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findLastBit16()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit16(0x134A), 13);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit16(0x9713), 16);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit16(0xDADD), 16);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit16(0x3218), 14);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit16(0x0098), 8);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit16(0x0000), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findLastBit32()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit32(0x134AD065), 29);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit32(0x97132987), 32);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit32(0xDADDDAAA), 32);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit32(0x321897AD), 30);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit32(0x00981398), 24);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit32(0x00000000), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findLastBit64()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit64(0x134AD0654091AB11), 61);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit64(0x9713298713971300), 64);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit64(0xDADDDAAADDADDDAC), 64);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit64(0x321897ADBCDEDDA0), 62);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit64(0x009813981ABBB800), 56);
+        TEST_ASSERT_EQUALS(BitUtils::findLastBit64(0x0000000000000000), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findLastZero16()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero16(0xFD4A), 10);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero16(0xFFFE), 1);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero16(0xFADD), 11);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero16(0xF218), 12);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero16(0xFF98), 7);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero16(0xFFFF), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findLastZero32()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero32(0xFD4AD065), 26);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero32(0xFFFE2987), 17);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero32(0xFADDDAAA), 27);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero32(0xF21897AD), 28);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero32(0xFF981398), 23);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero32(0xFFFFFFFF), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("findLastZero64()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero64(0xFD4AD0654091AB11), 58);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero64(0xFFFE298713971300), 49);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero64(0xFADDDAAADDADDDAC), 59);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero64(0xF21897ADBCDEDDA0), 60);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero64(0xFF9813981ABBB800), 55);
+        TEST_ASSERT_EQUALS(BitUtils::findLastZero64(0xFFFFFFFFFFFFFFFF), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getCountOrder16()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder16(0x8000), 15);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder16(0x8100), 16);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder16(0x0010), 4);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder16(0x0011), 5);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder16(0x0000), -1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getCountOrder32()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder32(0x80000000), 31);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder32(0x81000000), 32);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder32(0x00000010), 4);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder32(0x00000011), 5);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder32(0x00000000), -1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getCountOrder64()");
+    {
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder64(0x8000000000000000), 63);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder64(0x8100000000000000), 64);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder64(0x0000001000000000), 36);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder64(0x0000001100000000), 37);
+        TEST_ASSERT_EQUALS(BitUtils::getCountOrder64(0x0000000000000000), -1);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 

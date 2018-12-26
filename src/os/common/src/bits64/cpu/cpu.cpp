@@ -51,6 +51,7 @@ u16       CPU::sFamily;
 u8        CPU::sModel;
 u8        CPU::sStepping;
 u32       CPU::sMicrocodeRevision;
+i8        CPU::sX86CoreIdBits;
 u16       CPU::sCacheLineFlushSize;
 u16       CPU::sCacheAlignment;
 i32       CPU::sCacheMaxRmid;
@@ -320,6 +321,7 @@ NgosStatus CPU::init()
     COMMON_LVVV(("sModel              = %u",     sModel));
     COMMON_LVVV(("sStepping           = %u",     sStepping));
     COMMON_LVVV(("sMicrocodeRevision  = 0x%08X", sMicrocodeRevision));
+    COMMON_LVVV(("sX86CoreIdBits      = %d",     sX86CoreIdBits));
     COMMON_LVVV(("sCacheLineFlushSize = %u",     sCacheLineFlushSize));
     COMMON_LVVV(("sCacheAlignment     = %u",     sCacheAlignment));
     COMMON_LVVV(("sCacheMaxRmid       = %d",     sCacheMaxRmid));
@@ -370,6 +372,7 @@ NgosStatus CPU::init()
     // COMMON_TEST_ASSERT(sModel                        == 85,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sStepping                     == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sMicrocodeRevision            == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sX86CoreIdBits                == 1,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
     COMMON_TEST_ASSERT(sCacheLineFlushSize              == 64,                                                                                NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sCacheAlignment                  == 64,                                                                                NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sCacheMaxRmid                    == -1,                                                                                NgosStatus::ASSERTION);
@@ -718,45 +721,34 @@ NgosStatus CPU::doIntelPreprocessing()
 
 
 
-    if (
-        sFamily > 6
-        ||
-        (
-         sFamily == 6
-         &&
-         sModel >= 0x0D
-        )
-       )
+    NgosStatus status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT);
+
+    if (status == NgosStatus::OK)
     {
-        NgosStatus status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT);
+        // Nothing
+    }
+    else if (status != NgosStatus::NO_EFFECT)
+    {
+        COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT"));
 
-        if (status == NgosStatus::OK)
-        {
-            // Nothing
-        }
-        else if (status != NgosStatus::NO_EFFECT)
-        {
-            COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT"));
-
-            return NgosStatus::FAILED;
-        }
+        return NgosStatus::FAILED;
+    }
 
 
 
-        status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT);
+    status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT);
 
-        if (status == NgosStatus::OK)
-        {
-            u32 ignored;
+    if (status == NgosStatus::OK)
+    {
+        u32 ignored;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
-        }
-        else if (status != NgosStatus::NO_EFFECT)
-        {
-            COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT"));
+        COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+    }
+    else if (status != NgosStatus::NO_EFFECT)
+    {
+        COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT"));
 
-            return NgosStatus::FAILED;
-        }
+        return NgosStatus::FAILED;
     }
 
 
@@ -913,22 +905,11 @@ NgosStatus CPU::doIntelPostprocessing()
 
 
 
-    if (
-        sFamily > 6
-        ||
-        (
-         sFamily == 6
-         &&
-         sModel >= 0x0E
-        )
-       )
-    {
-        setFlag(X86Feature::CONSTANT_TSC);
-    }
+    setFlag(X86Feature::CONSTANT_TSC);
 
 
 
-    if (sFamily >= 6 && !hasFlag(X86Feature::IA64))
+    if (!hasFlag(X86Feature::IA64))
     {
         COMMON_ASSERT_EXECUTION(getIntelMicrocodeRevision(), NgosStatus::ASSERTION);
     }
@@ -940,6 +921,49 @@ NgosStatus CPU::doIntelPostprocessing()
     {
         setFlag(X86Feature::CONSTANT_TSC);
         setFlag(X86Feature::NONSTOP_TSC);
+    }
+
+
+
+    if (sFamily == 6)
+    {
+        switch (sModel)
+        {
+            case 0x35:  // Cloverview
+            case 0x4A:  // Merrifield
+            {
+                setFlag(X86Feature::NONSTOP_TSC_S3);
+            }
+            break;
+        }
+    }
+
+
+
+    if (!MSR::testBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_FAST_STRING_BIT))
+    {
+        COMMON_LW(("Fast string operations disabled in MSR"));
+
+        clearFlag(X86Feature::ERMS);
+    }
+
+
+
+    if (hasFlag(X86Feature::HT))
+    {
+        u32 ebx;
+        u32 ignored;
+
+        COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ebx, &ignored, &ignored), NgosStatus::ASSERTION);
+
+        // If Hyper-Threading is set EBX[16:23] in cpuid 0x00000001 contain the number of
+        // apicids which are reserved per package. Store the resulting
+        // shift value for the package management code.
+        u8 threadsPerCore = ebx >> 16;
+
+        COMMON_LVVV(("threadsPerCore = %u", threadsPerCore));
+
+        sX86CoreIdBits = BitUtils::getCountOrder16(threadsPerCore);
     }
 
 
@@ -962,10 +986,13 @@ NgosStatus CPU::getIntelMicrocodeRevision()
 
 
 
+    u32 ignored;
+
+
+
     COMMON_ASSERT_EXECUTION(MSR::write(MSR_IA32_MICROCODE_REV, 0), NgosStatus::ASSERTION);
 
     // Call cpuid with 0x00000001 to trigger microcode revision refresh
-    u32 ignored;
     COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
 
     sMicrocodeRevision = (u32)(MSR::read(MSR_IA32_MICROCODE_REV) >> 32);

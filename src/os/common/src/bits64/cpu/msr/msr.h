@@ -17,6 +17,18 @@ public:
     static NgosStatus setBit(u32 msr, u8 bit); // TEST: NO
     static NgosStatus clearBit(u32 msr, u8 bit); // TEST: NO
 
+    static inline bool testBit(u32 msr, u8 bit) // TEST: NO
+    {
+        COMMON_LT((" | msr = %u, bit = %u", msr, bit));
+
+        COMMON_ASSERT(msr > 0,  "msr is invalid", false);
+        COMMON_ASSERT(bit < 64, "bit is invalid", false);
+
+
+
+        return read(msr) & (1ULL << bit);
+    }
+
     static inline u64 read(u32 msr) // TEST: NO
     {
         COMMON_LT((" | msr = %u", msr));
