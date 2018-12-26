@@ -6,6 +6,7 @@
 #include <ngos/status.h>
 #include <ngos/types.h>
 #include <src/bits64/cpu/cpufeatures.h>
+#include <src/bits64/cpu/cpuvendor.h>
 
 
 
@@ -35,24 +36,27 @@ private:
     static NgosStatus doPostprocessing(); // TEST: NO
     static NgosStatus doIntelPostprocessing(); // TEST: NO
     static NgosStatus doAmdPostprocessing(); // TEST: NO
+    static NgosStatus getIntelMicrocodeRevision(); // TEST: NO
     static bool hasEFlag(u64 mask); // TEST: NO
     static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
 
-    static u32 sVendor[3];
-    static u32 sModelName[12];
-    static u32 sCpuidLevel;
-    static u32 sExtendedCpuidLevel;
-    static u16 sFamily;
-    static u8  sModel;
-    static u8  sStepping;
-    static u16 sCacheLineFlushSize;
-    static u16 sCacheAlignment;
-    static i32 sCacheMaxRmid;
-    static i32 sCacheOccScale;
-    static u32 sPower;
-    static u8  sPhysicalBits;
-    static u8  sVirtualBits;
-    static u32 sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
+    static u32       sVendor[3];
+    static CpuVendor sCpuVendor;
+    static u32       sModelName[12];
+    static u32       sCpuidLevel;
+    static u32       sExtendedCpuidLevel;
+    static u16       sFamily;
+    static u8        sModel;
+    static u8        sStepping;
+    static u32       sMicrocodeRevision;
+    static u16       sCacheLineFlushSize;
+    static u16       sCacheAlignment;
+    static i32       sCacheMaxRmid;
+    static i32       sCacheOccScale;
+    static u32       sPower;
+    static u8        sPhysicalBits;
+    static u8        sVirtualBits;
+    static u32       sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
 };
 
 

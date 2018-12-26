@@ -40,37 +40,25 @@
 
 
 
-#define EXECUTE_IF_INTEL_VENDOR(func) \
-    if (sVendor[0] == VENDOR_INTEL_1 && sVendor[1] == VENDOR_INTEL_2 && sVendor[2] == VENDOR_INTEL_3) \
-    { \
-        COMMON_ASSERT_EXECUTION(func, NgosStatus::ASSERTION); \
-    }
-
-#define EXECUTE_IF_AMD_VENDOR(func) \
-    if (sVendor[0] == VENDOR_AMD_1 && sVendor[1] == VENDOR_AMD_2 && sVendor[2] == VENDOR_AMD_3) \
-    { \
-        COMMON_ASSERT_EXECUTION(func, NgosStatus::ASSERTION); \
-    }
-
-
-
 const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // "<< 5" == "* 32"
 
-u32 CPU::sVendor[3];
-u32 CPU::sModelName[12];
-u32 CPU::sCpuidLevel;
-u32 CPU::sExtendedCpuidLevel;
-u16 CPU::sFamily;
-u8  CPU::sModel;
-u8  CPU::sStepping;
-u16 CPU::sCacheLineFlushSize;
-u16 CPU::sCacheAlignment;
-i32 CPU::sCacheMaxRmid;
-i32 CPU::sCacheOccScale;
-u32 CPU::sPower;
-u8  CPU::sPhysicalBits;
-u8  CPU::sVirtualBits;
-u32 CPU::sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
+u32       CPU::sVendor[3];
+CpuVendor CPU::sCpuVendor;
+u32       CPU::sModelName[12];
+u32       CPU::sCpuidLevel;
+u32       CPU::sExtendedCpuidLevel;
+u16       CPU::sFamily;
+u8        CPU::sModel;
+u8        CPU::sStepping;
+u32       CPU::sMicrocodeRevision;
+u16       CPU::sCacheLineFlushSize;
+u16       CPU::sCacheAlignment;
+i32       CPU::sCacheMaxRmid;
+i32       CPU::sCacheOccScale;
+u32       CPU::sPower;
+u8        CPU::sPhysicalBits;
+u8        CPU::sVirtualBits;
+u32       CPU::sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
 
 
 
@@ -106,6 +94,19 @@ NgosStatus CPU::init()
 
 
         COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &sVendor[0], &sVendor[2], &sVendor[1]), NgosStatus::ASSERTION);
+
+        if (sVendor[0] == VENDOR_INTEL_1 && sVendor[1] == VENDOR_INTEL_2 && sVendor[2] == VENDOR_INTEL_3)
+        {
+            sCpuVendor = CpuVendor::INTEL;
+        }
+        else if (sVendor[0] == VENDOR_AMD_1 && sVendor[1] == VENDOR_AMD_2 && sVendor[2] == VENDOR_AMD_3)
+        {
+            sCpuVendor = CpuVendor::AMD;
+        }
+        else
+        {
+            sCpuVendor = CpuVendor::UNKNOWN;
+        }
 
 
 
@@ -299,6 +300,7 @@ NgosStatus CPU::init()
     COMMON_LVVV(("sVendor[1]          = 0x%08X", sVendor[1]));
     COMMON_LVVV(("sVendor[2]          = 0x%08X", sVendor[2]));
     COMMON_LVVV(("sVendor             = %-12s",  sVendor));
+    COMMON_LVVV(("sCpuVendor          = %u",     sCpuVendor));
     COMMON_LVVV(("sModelName[0]       = 0x%08X", sModelName[0]));
     COMMON_LVVV(("sModelName[1]       = 0x%08X", sModelName[1]));
     COMMON_LVVV(("sModelName[2]       = 0x%08X", sModelName[2]));
@@ -317,6 +319,7 @@ NgosStatus CPU::init()
     COMMON_LVVV(("sFamily             = %u",     sFamily));
     COMMON_LVVV(("sModel              = %u",     sModel));
     COMMON_LVVV(("sStepping           = %u",     sStepping));
+    COMMON_LVVV(("sMicrocodeRevision  = 0x%08X", sMicrocodeRevision));
     COMMON_LVVV(("sCacheLineFlushSize = %u",     sCacheLineFlushSize));
     COMMON_LVVV(("sCacheAlignment     = %u",     sCacheAlignment));
     COMMON_LVVV(("sCacheMaxRmid       = %d",     sCacheMaxRmid));
@@ -345,6 +348,7 @@ NgosStatus CPU::init()
     COMMON_TEST_ASSERT(sVendor[1]                       == 0x49656E69,                                                                        NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sVendor[2]                       == 0x6C65746E,                                                                        NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(strncmp((const char *)sVendor, "GenuineIntel", 12) == 0,                                                               NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sCpuVendor                       == CpuVendor::INTEL,                                                                                 NgosStatus::ASSERTION);
     // COMMON_TEST_ASSERT(sModelName[0]                 == 0x65746E49,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sModelName[1]                 == 0x2952286C,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sModelName[2]                 == 0x6F655820,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
@@ -365,6 +369,7 @@ NgosStatus CPU::init()
     COMMON_TEST_ASSERT(sFamily                          == 6,                                                                                 NgosStatus::ASSERTION);
     // COMMON_TEST_ASSERT(sModel                        == 85,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sStepping                     == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sMicrocodeRevision            == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
     COMMON_TEST_ASSERT(sCacheLineFlushSize              == 64,                                                                                NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sCacheAlignment                  == 64,                                                                                NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sCacheMaxRmid                    == -1,                                                                                NgosStatus::ASSERTION);
@@ -387,7 +392,7 @@ NgosStatus CPU::init()
     // COMMON_TEST_ASSERT(sFlags[11]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sFlags[12]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sFlags[14]                       == 0x00000005,                                                                        NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sFlags[14]                       == 0x0000000D,                                                                        NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
 
 
@@ -412,11 +417,12 @@ NgosStatus CPU::toString(char *buffer, u16 size)
             "           Model:                 %u\n"
             "           Model name:            %s\n"
             "           Stepping:              %u\n"
+            "           Microcode:             0x%08X\n"
             "           CPUID level:           %u\n"
             "           Cache line flush size: %u\n"
             "           Cache alignment:       %u\n"
             "           Address sizes:         %u bits physical, %u bits virtual"
-            , sVendor, sFamily, sModel, sModelName, sStepping, sCpuidLevel, sCacheLineFlushSize, sCacheAlignment, sPhysicalBits, sVirtualBits);
+            , sVendor, sFamily, sModel, sModelName, sStepping, sMicrocodeRevision, sCpuidLevel, sCacheLineFlushSize, sCacheAlignment, sPhysicalBits, sVirtualBits);
     // Ignore CppAlignmentVerifier [END]
 
 
@@ -571,41 +577,54 @@ NgosStatus CPU::check(const char **wantedFlag)
 
 
 
-    if (
-        sVendor[0] == VENDOR_AMD_1
-        &&
-        sVendor[1] == VENDOR_AMD_2
-        &&
-        sVendor[2] == VENDOR_AMD_3
-       )
+    switch (sCpuVendor)
     {
-        if (
-            sFamily < AMD_MINIMAL_FAMILY
-            ||
-            (
-             sFamily == AMD_MINIMAL_FAMILY
-             &&
-             sModel < AMD_MINIMAL_MODEL
-            )
-           )
+        case CpuVendor::INTEL:
         {
+            if (
+                sFamily != INTEL_MINIMAL_FAMILY
+                ||
+                sModel < INTEL_MINIMAL_MODEL
+               )
+            {
+                return NgosStatus::NOT_SUPPORTED;
+            }
+        }
+        break;
+
+        case CpuVendor::AMD:
+        {
+            if (
+                sFamily < AMD_MINIMAL_FAMILY
+                ||
+                (
+                 sFamily == AMD_MINIMAL_FAMILY
+                 &&
+                 sModel < AMD_MINIMAL_MODEL
+                )
+               )
+            {
+                return NgosStatus::NOT_SUPPORTED;
+            }
+        }
+        break;
+
+        case CpuVendor::NONE:
+        case CpuVendor::UNKNOWN:
+        {
+            COMMON_LF(("Unknown CPU vendor"));
+
             return NgosStatus::NOT_SUPPORTED;
         }
-    }
-    else
-    {
-        if (
-            sFamily < INTEL_MINIMAL_FAMILY
-            ||
-            (
-             sFamily == INTEL_MINIMAL_FAMILY
-             &&
-             sModel < INTEL_MINIMAL_MODEL
-            )
-           )
+        break;
+
+        default:
         {
+            COMMON_LF(("Unexpected CPU vendor %u", sCpuVendor));
+
             return NgosStatus::NOT_SUPPORTED;
         }
+        break;
     }
 
 
@@ -660,8 +679,33 @@ NgosStatus CPU::doPreprocessing()
 
 
 
-    EXECUTE_IF_INTEL_VENDOR(doIntelPreprocessing());
-    EXECUTE_IF_AMD_VENDOR(doAmdPreprocessing());
+    switch (sCpuVendor)
+    {
+        case CpuVendor::INTEL:
+        {
+            COMMON_ASSERT_EXECUTION(doIntelPreprocessing(), NgosStatus::ASSERTION);
+        }
+        break;
+
+        case CpuVendor::AMD:
+        {
+            COMMON_ASSERT_EXECUTION(doAmdPreprocessing(), NgosStatus::ASSERTION);
+        }
+        break;
+
+        case CpuVendor::NONE:
+        case CpuVendor::UNKNOWN:
+        {
+            COMMON_LF(("Unknown CPU vendor"));
+        }
+        break;
+
+        default:
+        {
+            COMMON_LF(("Unexpected CPU vendor %u", sCpuVendor));
+        }
+        break;
+    }
 
 
 
@@ -797,8 +841,33 @@ NgosStatus CPU::doPostprocessing()
 
 
 
-    EXECUTE_IF_INTEL_VENDOR(doIntelPostprocessing());
-    EXECUTE_IF_AMD_VENDOR(doAmdPostprocessing());
+    switch (sCpuVendor)
+    {
+        case CpuVendor::INTEL:
+        {
+            COMMON_ASSERT_EXECUTION(doIntelPostprocessing(), NgosStatus::ASSERTION);
+        }
+        break;
+
+        case CpuVendor::AMD:
+        {
+            COMMON_ASSERT_EXECUTION(doAmdPostprocessing(), NgosStatus::ASSERTION);
+        }
+        break;
+
+        case CpuVendor::NONE:
+        case CpuVendor::UNKNOWN:
+        {
+            COMMON_LF(("Unknown CPU vendor"));
+        }
+        break;
+
+        default:
+        {
+            COMMON_LF(("Unexpected CPU vendor %u", sCpuVendor));
+        }
+        break;
+    }
 
 
 
@@ -844,12 +913,62 @@ NgosStatus CPU::doIntelPostprocessing()
 
 
 
+    if (
+        sFamily > 6
+        ||
+        (
+         sFamily == 6
+         &&
+         sModel >= 0x0E
+        )
+       )
+    {
+        setFlag(X86Feature::CONSTANT_TSC);
+    }
+
+
+
+    if (sFamily >= 6 && !hasFlag(X86Feature::IA64))
+    {
+        COMMON_ASSERT_EXECUTION(getIntelMicrocodeRevision(), NgosStatus::ASSERTION);
+    }
+
+
+
+    // Bit 8 in cpuid 0x80000007 EDX means that TSC runs at constant rate with P/T states and does not stop in deep C-states.
+    if (sPower & (1ULL << 8))
+    {
+        setFlag(X86Feature::CONSTANT_TSC);
+        setFlag(X86Feature::NONSTOP_TSC);
+    }
+
+
+
     return NgosStatus::OK;
 }
 
 NgosStatus CPU::doAmdPostprocessing()
 {
     COMMON_LT((""));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::getIntelMicrocodeRevision()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(MSR::write(MSR_IA32_MICROCODE_REV, 0), NgosStatus::ASSERTION);
+
+    // Call cpuid with 0x00000001 to trigger microcode revision refresh
+    u32 ignored;
+    COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+
+    sMicrocodeRevision = (u32)(MSR::read(MSR_IA32_MICROCODE_REV) >> 32);
 
 
 

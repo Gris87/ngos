@@ -1,10 +1,5 @@
 #include "msr.h"
 
-#include <asm/instructions.h>
-#include <ngos/linkage.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-
 
 
 NgosStatus MSR::setBit(u32 msr, u8 bit)
@@ -40,7 +35,7 @@ NgosStatus MSR::setMsrBit(u32 msr, u8 bit, bool enabled)
 
 
 
-    u64 value     = rdmsr(msr);
+    u64 value     = read(msr);
     u64 valueOrig = value;
 
     if (enabled)
@@ -61,7 +56,7 @@ NgosStatus MSR::setMsrBit(u32 msr, u8 bit, bool enabled)
 
 
 
-    COMMON_ASSERT_EXECUTION(wrmsr(msr, value), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(write(msr, value), NgosStatus::ASSERTION);
 
 
 

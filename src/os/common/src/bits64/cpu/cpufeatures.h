@@ -301,6 +301,8 @@ enum class X86Feature: u16
     ALWAYS              = WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 0),       // "" Always-present feature
     ALWAYS_ZERO         = WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 1),       // "" Always-absent feature
     CPUID               = WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 2),       // CPU has CPUID instruction itself
+    CONSTANT_TSC        = WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 3),       // TSC ticks at a constant rate
+    NONSTOP_TSC         = WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 4),       // TSC does not stop in C states
 };
 
 

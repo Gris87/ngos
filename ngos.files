@@ -106,6 +106,7 @@ src/os/common/src/bits64/console/lib/glyphdata.h
 src/os/common/src/bits64/cpu/cpu.cpp
 src/os/common/src/bits64/cpu/cpu.h
 src/os/common/src/bits64/cpu/cpufeatures.h
+src/os/common/src/bits64/cpu/cpuvendor.h
 src/os/common/src/bits64/cpu/generated/cpufeaturesnames.h
 src/os/common/src/bits64/cpu/msr/msr.cpp
 src/os/common/src/bits64/cpu/msr/msr.h
