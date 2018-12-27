@@ -517,9 +517,9 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 0)]  = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 1)]  = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 2)]  = "cpuid";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 3)]  = "";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 4)]  = "";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 5)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 3)]  = "constant_tsc";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 4)]  = "nonstop_tsc";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 5)]  = "nonstop_tsc_s3";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 6)]  = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 7)]  = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 8)]  = "";

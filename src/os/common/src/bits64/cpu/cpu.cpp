@@ -410,7 +410,7 @@ NgosStatus CPU::init()
     // COMMON_TEST_ASSERT(sFlags[11]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sFlags[12]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sFlags[14]                       == 0x0000000D,                                                                        NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sFlags[14]                    == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // Ignore CppAlignmentVerifier [END]
 
 

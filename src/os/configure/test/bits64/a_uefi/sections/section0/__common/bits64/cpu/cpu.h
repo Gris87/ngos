@@ -31,19 +31,21 @@ TEST_CASES(section0, __common_bits64_cpu_cpu);
 
 
 
+        u32 temp = flags[CPU_FEATURES_NGOS_OTHER_FLAGS];
+
         TEST_ASSERT_EQUALS(CPU::hasFlag(X86Feature::ALWAYS),        true);
         TEST_ASSERT_EQUALS(CPU::hasFlag(X86Feature::ALWAYS_ZERO),   false);
-        TEST_ASSERT_EQUALS(flags[CPU_FEATURES_NGOS_OTHER_FLAGS],    0x0000000D);
+        TEST_ASSERT_EQUALS(flags[CPU_FEATURES_NGOS_OTHER_FLAGS],    temp);
 
         TEST_ASSERT_EQUALS(CPU::setFlag(X86Feature::ALWAYS_ZERO),   NgosStatus::OK);
         TEST_ASSERT_EQUALS(CPU::hasFlag(X86Feature::ALWAYS),        true);
         TEST_ASSERT_EQUALS(CPU::hasFlag(X86Feature::ALWAYS_ZERO),   true);
-        TEST_ASSERT_EQUALS(flags[CPU_FEATURES_NGOS_OTHER_FLAGS],    0x0000000F);
+        TEST_ASSERT_EQUALS(flags[CPU_FEATURES_NGOS_OTHER_FLAGS],    temp | 0x02);
 
         TEST_ASSERT_EQUALS(CPU::clearFlag(X86Feature::ALWAYS_ZERO), NgosStatus::OK);
         TEST_ASSERT_EQUALS(CPU::hasFlag(X86Feature::ALWAYS),        true);
         TEST_ASSERT_EQUALS(CPU::hasFlag(X86Feature::ALWAYS_ZERO),   false);
-        TEST_ASSERT_EQUALS(flags[CPU_FEATURES_NGOS_OTHER_FLAGS],    0x0000000D);
+        TEST_ASSERT_EQUALS(flags[CPU_FEATURES_NGOS_OTHER_FLAGS],    temp);
     }
     TEST_CASE_END();
 }
