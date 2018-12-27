@@ -1040,6 +1040,38 @@ NgosStatus CPU::doAmdPostprocessing()
     return NgosStatus::OK;
 }
 
+NgosStatus CPU::filterFeaturesDependentOnCpuid()
+{
+    COMMON_LT((""));
+
+
+
+    if (hasFlag(X86Feature::MWAIT) && sCpuidLevel <= 0x00000005)
+    {
+        COMMON_LW(("X86Feature::MWAIT resetted because sCpuidLevel <= 0x00000005"));
+
+        clearFlag(X86Feature::MWAIT);
+    }
+
+    if (hasFlag(X86Feature::DCA) && sCpuidLevel <= 0x00000009)
+    {
+        COMMON_LW(("X86Feature::DCA resetted because sCpuidLevel <= 0x00000009"));
+
+        clearFlag(X86Feature::DCA);
+    }
+
+    if (hasFlag(X86Feature::XSAVE) && sCpuidLevel <= 0x0000000D)
+    {
+        COMMON_LW(("X86Feature::XSAVE resetted because sCpuidLevel <= 0x0000000D"));
+
+        clearFlag(X86Feature::XSAVE);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus CPU::getIntelMicrocodeRevision()
 {
     COMMON_LT((""));
