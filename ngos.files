@@ -355,7 +355,7 @@ src/os/kernelbase/src/bits64/a_early/main/setupmemorymanager.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupmemorymanager.h
 src/os/kernelbase/src/bits64/a_early/main/setupstackcanary.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupstackcanary.h
-src/os/kernelbase/src/bits64/other/adaptpagetable.cpp
+src/os/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp
 src/os/kernelbase/src/bits64/other/bootparams/bootparams.cpp
 src/os/kernelbase/src/bits64/other/bootparams/bootparams.h
 src/os/kernelbase/src/bits64/other/cpu/cpumask.cpp
