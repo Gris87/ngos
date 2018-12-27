@@ -98,15 +98,21 @@ NgosStatus CPU::init()
 
         if (sVendor[0] == VENDOR_INTEL_1 && sVendor[1] == VENDOR_INTEL_2 && sVendor[2] == VENDOR_INTEL_3)
         {
+            COMMON_LVV(("Intel CPU detected"));
+
             sCpuVendor = CpuVendor::INTEL;
         }
         else
         if (sVendor[0] == VENDOR_AMD_1 && sVendor[1] == VENDOR_AMD_2 && sVendor[2] == VENDOR_AMD_3)
         {
+            COMMON_LVV(("AMD CPU detected"));
+
             sCpuVendor = CpuVendor::AMD;
         }
         else
         {
+            COMMON_LVV(("Unknown CPU detected"));
+
             sCpuVendor = CpuVendor::UNKNOWN;
         }
 
@@ -145,6 +151,8 @@ NgosStatus CPU::init()
 
                 if (hasFlag(X86Feature::CLFLUSH))
                 {
+                    COMMON_LVV(("X86Feature::CLFLUSH supported"));
+
                     sCacheLineFlushSize = ((misc >> 8) & 0xFF) << 3; // "<< 3" == "* 8"
                     sCacheAlignment     = sCacheLineFlushSize;
                 }
@@ -194,6 +202,10 @@ NgosStatus CPU::init()
 
                 if (hasFlag(X86Feature::CQM_LLC))
                 {
+                    COMMON_LVV(("X86Feature::CQM_LLC supported"));
+
+
+
                     sCacheMaxRmid = ebx;
 
                     COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 1, &ignored, (u32 *)&ebx, (u32 *)&ecx, &sFlags[CPUID_0000000F_1_EDX]), NgosStatus::ASSERTION);
@@ -206,6 +218,8 @@ NgosStatus CPU::init()
                         hasFlag(X86Feature::CQM_MBM_LOCAL)
                        )
                     {
+                        COMMON_LVV(("X86Feature::CQM_OCCUP_LLC, X86Feature::CQM_MBM_TOTAL or X86Feature::CQM_MBM_LOCAL supported"));
+
                         sCacheMaxRmid  = ecx;
                         sCacheOccScale = ebx;
                     }
@@ -726,10 +740,14 @@ NgosStatus CPU::doIntelPreprocessing()
 
     if (status == NgosStatus::OK)
     {
-        // Nothing
+        COMMON_LVV(("MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT successfully cleared"));
     }
     else
-    if (status != NgosStatus::NO_EFFECT)
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        COMMON_LVV(("MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT already cleared"));
+    }
+    else
     {
         COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT"));
 
@@ -742,12 +760,19 @@ NgosStatus CPU::doIntelPreprocessing()
 
     if (status == NgosStatus::OK)
     {
+        COMMON_LVV(("MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT successfully cleared"));
+        COMMON_LVV(("Updating CPUID level"));
+
         u32 ignored;
 
         COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
     }
     else
-    if (status != NgosStatus::NO_EFFECT)
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        COMMON_LVV(("MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT already cleared"));
+    }
+    else
     {
         COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT"));
 
@@ -870,10 +895,14 @@ NgosStatus CPU::doPostprocessing()
 
     if (status == NgosStatus::OK)
     {
-        // Nothing
+        COMMON_LVV(("MSR_EFER_SCE_BIT successfully set"));
     }
     else
-    if (status != NgosStatus::NO_EFFECT)
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        COMMON_LVV(("MSR_EFER_SCE_BIT already set"));
+    }
+    else
     {
         COMMON_LF(("Failed to set MSR_EFER_SCE_BIT"));
 
@@ -884,14 +913,22 @@ NgosStatus CPU::doPostprocessing()
 
     if (hasFlag(X86Feature::NX))
     {
+        COMMON_LVV(("X86Feature::NX supported"));
+
+
+
         status = MSR::setBit(MSR_EFER, MSR_EFER_NX_BIT);
 
         if (status == NgosStatus::OK)
         {
-            // Nothing
+            COMMON_LVV(("MSR_EFER_NX_BIT successfully set"));
         }
         else
-        if (status != NgosStatus::NO_EFFECT)
+        if (status == NgosStatus::NO_EFFECT)
+        {
+            COMMON_LVV(("MSR_EFER_NX_BIT already set"));
+        }
+        else
         {
             COMMON_LF(("Failed to set MSR_EFER_NX_BIT"));
 
@@ -910,12 +947,16 @@ NgosStatus CPU::doIntelPostprocessing()
 
 
 
+    COMMON_LVV(("X86Feature::CONSTANT_TSC supported"));
+
     setFlag(X86Feature::CONSTANT_TSC);
 
 
 
     if (!hasFlag(X86Feature::IA64))
     {
+        COMMON_LVV(("Getting microcode revision since X86Feature::IA64 not supported"));
+
         COMMON_ASSERT_EXECUTION(getIntelMicrocodeRevision(), NgosStatus::ASSERTION);
     }
 
@@ -924,6 +965,8 @@ NgosStatus CPU::doIntelPostprocessing()
     // Bit 8 in cpuid 0x80000007 EDX means that TSC runs at constant rate with P/T states and does not stop in deep C-states.
     if (sPower & (1ULL << 8))
     {
+        COMMON_LVV(("X86Feature::CONSTANT_TSC and X86Feature::NONSTOP_TSC supported due to bit 8 in cpuid 0x80000007 EDX"));
+
         setFlag(X86Feature::CONSTANT_TSC);
         setFlag(X86Feature::NONSTOP_TSC);
     }
@@ -937,6 +980,8 @@ NgosStatus CPU::doIntelPostprocessing()
             case 0x35:  // Cloverview
             case 0x4A:  // Merrifield
             {
+                COMMON_LVV(("Your CPU model supports X86Feature::NONSTOP_TSC_S3"));
+
                 setFlag(X86Feature::NONSTOP_TSC_S3);
             }
             break;
@@ -962,6 +1007,10 @@ NgosStatus CPU::doIntelPostprocessing()
 
     if (hasFlag(X86Feature::HT))
     {
+        COMMON_LVV(("X86Feature::HT supported"));
+
+
+
         u32 ebx;
         u32 ignored;
 

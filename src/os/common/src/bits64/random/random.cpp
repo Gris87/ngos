@@ -21,7 +21,7 @@ u64 simpleRandom(u64 seed)
 
     if (CPU::hasFlag(X86Feature::RDRAND))
     {
-        COMMON_LVV(("X86Feature::RDRAND is enabled"));
+        COMMON_LVV(("X86Feature::RDRAND supported"));
 
         u64 raw1 = 0;
         u64 raw2 = 0;
@@ -56,7 +56,7 @@ u64 simpleRandom(u64 seed)
 
     if (CPU::hasFlag(X86Feature::TSC))
     {
-        COMMON_LVV(("X86Feature::TSC is enabled"));
+        COMMON_LVV(("X86Feature::TSC supported"));
 
         u64 raw1 = rdtsc();
         u64 raw2 = rdtsc();
