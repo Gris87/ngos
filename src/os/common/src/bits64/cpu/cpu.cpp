@@ -938,6 +938,10 @@ NgosStatus CPU::doPostprocessing()
 
 
 
+    COMMON_ASSERT_EXECUTION(filterFeaturesDependentOnCpuid(), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
