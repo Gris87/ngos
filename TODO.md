@@ -9,6 +9,8 @@ TODO List
 - [ ] gdb_debug. Load memory page by page
 - [ ] Rewrite gdb_debug
 
+- [ ] Add option for optimization level `-O2 | -O3`
+- [ ] Add option to disable inline
 - [ ] Add stack protector to build
 - [ ] Code verifier. Verifier for void functions
 - [ ] Docs verifier. Verifier for Project structure
