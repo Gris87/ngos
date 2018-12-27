@@ -619,7 +619,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
         return NgosStatus::NOT_FOUND;
     }
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     *physicalAddress = 0x10000000;
 #endif
 
@@ -634,7 +634,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
         return NgosStatus::NOT_FOUND;
     }
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     *virtualAddress = 0xFFFFFFFF80000000;
 #endif
 

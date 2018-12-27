@@ -71,6 +71,7 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cppoperatorspacesverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cpppowerof2verifier.cpp \
     src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.cpp \
@@ -117,6 +118,7 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cppoperatorspacesverifier.h \
     src/verifiers/zzz_types/cpp_h/cpppowerof2verifier.h \
     src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.h \
+    src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.h \
     src/verifiers/zzz_types/cpp_h/cppshiftverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.h \

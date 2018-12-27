@@ -100,7 +100,8 @@ NgosStatus CPU::init()
         {
             sCpuVendor = CpuVendor::INTEL;
         }
-        else if (sVendor[0] == VENDOR_AMD_1 && sVendor[1] == VENDOR_AMD_2 && sVendor[2] == VENDOR_AMD_3)
+        else
+        if (sVendor[0] == VENDOR_AMD_1 && sVendor[1] == VENDOR_AMD_2 && sVendor[2] == VENDOR_AMD_3)
         {
             sCpuVendor = CpuVendor::AMD;
         }
@@ -727,7 +728,8 @@ NgosStatus CPU::doIntelPreprocessing()
     {
         // Nothing
     }
-    else if (status != NgosStatus::NO_EFFECT)
+    else
+    if (status != NgosStatus::NO_EFFECT)
     {
         COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT"));
 
@@ -744,7 +746,8 @@ NgosStatus CPU::doIntelPreprocessing()
 
         COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
     }
-    else if (status != NgosStatus::NO_EFFECT)
+    else
+    if (status != NgosStatus::NO_EFFECT)
     {
         COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT"));
 
@@ -869,7 +872,8 @@ NgosStatus CPU::doPostprocessing()
     {
         // Nothing
     }
-    else if (status != NgosStatus::NO_EFFECT)
+    else
+    if (status != NgosStatus::NO_EFFECT)
     {
         COMMON_LF(("Failed to set MSR_EFER_SCE_BIT"));
 
@@ -886,7 +890,8 @@ NgosStatus CPU::doPostprocessing()
         {
             // Nothing
         }
-        else if (status != NgosStatus::NO_EFFECT)
+        else
+        if (status != NgosStatus::NO_EFFECT)
         {
             COMMON_LF(("Failed to set MSR_EFER_NX_BIT"));
 
@@ -933,6 +938,12 @@ NgosStatus CPU::doIntelPostprocessing()
             case 0x4A:  // Merrifield
             {
                 setFlag(X86Feature::NONSTOP_TSC_S3);
+            }
+            break;
+
+            default:
+            {
+                // Nothing
             }
             break;
         }

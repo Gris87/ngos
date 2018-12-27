@@ -24,9 +24,9 @@ u8 __reserved_for_bss __attribute__ ((section (".noinit")));
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
 NgosStatus waitForGdbDebug()
-{
+{ // Ignore CppNgosTraceVerifier
     UEFI_LT((""));
 
 
@@ -68,7 +68,7 @@ NgosStatus waitForGdbDebug()
 CPP_EXTERN_C
 CPP_NO_OPTIMIZATION
 NgosStatus gdbDebugBreakpointFunction()
-{
+{ // Ignore CppNgosTraceVerifier
     UEFI_LT((""));
 
 
@@ -84,7 +84,7 @@ NgosStatus gdbDebugBreakpointFunction()
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
 NgosStatus printCpuFlags()
-{
+{ // Ignore CppNgosTraceVerifier
     UEFI_LT((""));
 
 
@@ -104,7 +104,7 @@ NgosStatus printCpuFlags()
 
 CPP_EXTERN_C
 BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 kernelLocation)
-{
+{ // Ignore CppNgosTraceVerifier
     // We can't output at the moment
     // UEFI_LT((" | imageHandle = 0x%p, systemTable = 0x%p, kernelLocation = 0x%p", imageHandle, systemTable, kernelLocation)); // Commented to avoid error because UEFI is uninitialized
 
@@ -140,7 +140,7 @@ BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 ker
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     UEFI_LD(("Executing code for gdb_debug"));
     UEFI_LD(("Kernel started at address 0x%p", kernelLocation));
     UEFI_LD(("gdb_debug is ready to go"));

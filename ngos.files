@@ -547,6 +547,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpppowerof2verifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpppowerof2verifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp

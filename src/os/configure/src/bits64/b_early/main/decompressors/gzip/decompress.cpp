@@ -14,7 +14,7 @@
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
 u32 gzipCrc32Table[256];
 
 
@@ -82,7 +82,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     EARLY_ASSERT_EXECUTION(gzipInitCrc(), NgosStatus::ASSERTION);
 #endif
 

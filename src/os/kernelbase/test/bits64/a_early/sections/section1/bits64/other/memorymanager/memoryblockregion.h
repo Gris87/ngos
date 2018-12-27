@@ -24,15 +24,15 @@ TEST_CASES(section1, bits64_other_memorymanager_memoryblockregion);
 
         TEST_ASSERT_EQUALS(temp.end(), 3000);
 
-        temp.size  = 3000;
+        temp.size = 3000;
 
         TEST_ASSERT_EQUALS(temp.end(), 4000);
 
-        temp.start  = 4000;
+        temp.start = 4000;
 
         TEST_ASSERT_EQUALS(temp.end(), 7000);
 
-        temp.size  = 1000;
+        temp.size = 1000;
 
         TEST_ASSERT_EQUALS(temp.end(), 5000);
     }

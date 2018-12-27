@@ -176,7 +176,7 @@ public:
 
     static inline u8 findFirstBit16(u16 value) // TEST: NO
     {
-        if (value == 0)
+        if (!value) // value == 0
         {
             return 0;
         }
@@ -200,7 +200,7 @@ public:
 
     static inline u8 findFirstBit32(u32 value) // TEST: NO
     {
-        if (value == 0)
+        if (!value) // value == 0
         {
             return 0;
         }
@@ -224,7 +224,7 @@ public:
 
     static inline u8 findFirstBit64(u64 value) // TEST: NO
     {
-        if (value == 0)
+        if (!value) // value == 0
         {
             return 0;
         }
@@ -320,7 +320,7 @@ public:
 
     static inline u8 findLastBit16(u16 value) // TEST: NO
     {
-        if (value == 0)
+        if (!value) // value == 0
         {
             return 0;
         }
@@ -344,7 +344,7 @@ public:
 
     static inline u8 findLastBit32(u32 value) // TEST: NO
     {
-        if (value == 0)
+        if (!value) // value == 0
         {
             return 0;
         }
@@ -368,7 +368,7 @@ public:
 
     static inline u8 findLastBit64(u64 value) // TEST: NO
     {
-        if (value == 0)
+        if (!value) // value == 0
         {
             return 0;
         }

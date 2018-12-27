@@ -25,7 +25,7 @@ extern PGD init_pagetable[PTRS_PER_PGD];  // init_pagetable declared in main.S f
 
 CPP_EXTERN_C
 void kernelMain(BootParams *params)
-{
+{ // Ignore CppNgosTraceVerifier
     EARLY_LT((" | params = 0x%p", params));
 
     EARLY_ASSERT(params, "params is null");

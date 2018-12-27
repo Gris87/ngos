@@ -17,24 +17,57 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 {
     QString traceCommand;
 
-    if (path.contains("/src/os/configure/") && path.contains("uefi/"))
+    if (path.contains("/src/os/configure/"))
     {
-        traceCommand = "UEFI_LT";
+        if (path.contains("uefi/"))
+        {
+            traceCommand = "UEFI_LT";
+        }
+        else
+        if (path.contains("early/"))
+        {
+            traceCommand = "EARLY_LT";
+        }
+        else
+        {
+            traceCommand = "COMMON_LT";
+        }
     }
     else
-    if (path.contains("/src/os/configure/") && path.contains("early/"))
+    if (path.contains("/src/os/kernel/"))
     {
-        traceCommand = "EARLY_LT";
+        if (path.contains("early/"))
+        {
+            traceCommand = "EARLY_LT";
+        }
+        else
+        {
+            traceCommand = "COMMON_LT";
+        }
     }
     else
-    if (path.contains("/src/os/kernel/") && path.contains("early/"))
+    if (path.contains("/src/os/installer/"))
     {
-        traceCommand = "EARLY_LT";
+        if (path.contains("early/"))
+        {
+            traceCommand = "EARLY_LT";
+        }
+        else
+        {
+            traceCommand = "COMMON_LT";
+        }
     }
     else
-    if (path.contains("/src/os/installer/") && path.contains("early/"))
+    if (path.contains("/src/os/kernelbase/"))
     {
-        traceCommand = "EARLY_LT";
+        if (path.contains("early/"))
+        {
+            traceCommand = "EARLY_LT";
+        }
+        else
+        {
+            traceCommand = "COMMON_LT";
+        }
     }
     else
     if (path.contains("/src/os/common/"))

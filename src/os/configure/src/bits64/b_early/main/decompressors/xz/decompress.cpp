@@ -22,7 +22,7 @@
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
 u32 xzCrc32Table[256];
 u64 xzCrc64Table[256];
 
@@ -162,7 +162,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     EARLY_ASSERT_EXECUTION(xzInitCrc(), NgosStatus::ASSERTION);
 #endif
 
