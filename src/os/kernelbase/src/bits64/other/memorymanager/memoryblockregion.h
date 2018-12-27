@@ -4,6 +4,8 @@
 
 
 #include <ngos/types.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
 #include <src/bits64/other/memorymanager/memoryblockregionflags.h>
 #include <src/bits64/other/memorymanager/memoryblockregionnodeid.h>
 
@@ -20,6 +22,10 @@ struct MemoryBlockRegion
 
     inline u64 end()
     {
+        COMMON_LT((""));
+
+
+
         return start + size;
     }
 };

@@ -1,8 +1,8 @@
 #include "memorymanager.h"
 
 #include <ngos/utils.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
 #include <src/bits64/memory/memory.h>
 
 
@@ -15,7 +15,7 @@ MemoryBlockRegion MemoryManager::sReservedRegions[INIT_MEMORYBLOCK_REGIONS];
 
 NgosStatus MemoryManager::init()
 {
-    EARLY_LT((""));
+    COMMON_LT((""));
 
 
 
@@ -31,13 +31,13 @@ NgosStatus MemoryManager::init()
 
 
 
-    EARLY_LVVV(("sizeof(sMemoryBlock)     = %u", sizeof(sMemoryBlock)));
-    EARLY_LVVV(("sizeof(sMemoryRegions)   = %u", sizeof(sMemoryRegions)));
-    EARLY_LVVV(("sizeof(sReservedRegions) = %u", sizeof(sReservedRegions)));
+    COMMON_LVVV(("sizeof(sMemoryBlock)     = %u", sizeof(sMemoryBlock)));
+    COMMON_LVVV(("sizeof(sMemoryRegions)   = %u", sizeof(sMemoryRegions)));
+    COMMON_LVVV(("sizeof(sReservedRegions) = %u", sizeof(sReservedRegions)));
 
-    EARLY_TEST_ASSERT(sizeof(sMemoryBlock)     == 64,   NgosStatus::ASSERTION);
-    EARLY_TEST_ASSERT(sizeof(sMemoryRegions)   == 3072, NgosStatus::ASSERTION);
-    EARLY_TEST_ASSERT(sizeof(sReservedRegions) == 3072, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sizeof(sMemoryBlock)     == 64,   NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sizeof(sMemoryRegions)   == 3072, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sizeof(sReservedRegions) == 3072, NgosStatus::ASSERTION);
 
 
 
@@ -46,13 +46,13 @@ NgosStatus MemoryManager::init()
 
 NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 start, u64 size, memory_block_region_flags flags, memory_block_region_node_id nodeId)
 {
-    EARLY_LT((" | type = 0x%p, index = %u, start = 0x%016lX, size = %u, flags = 0x%016lX, nodeId = %u", type, index, start, size, flags, nodeId));
+    COMMON_LT((" | type = 0x%p, index = %u, start = 0x%016lX, size = %u, flags = 0x%016lX, nodeId = %u", type, index, start, size, flags, nodeId));
 
-    EARLY_ASSERT(type,                    "type is null",      NgosStatus::ASSERTION);
-    EARLY_ASSERT(type->count < type->max, "type is full",      NgosStatus::ASSERTION);
-    EARLY_ASSERT(index <= type->count,    "index is invalid",  NgosStatus::ASSERTION);
-    EARLY_ASSERT(size > 0,                "size is zero",      NgosStatus::ASSERTION);
-    EARLY_ASSERT(nodeId <= MAX_NUMNODES,  "nodeId is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(type,                    "type is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(type->count < type->max, "type is full",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(index <= type->count,    "index is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,                "size is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(nodeId <= MAX_NUMNODES,  "nodeId is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -77,11 +77,11 @@ NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 sta
 
 NgosStatus MemoryManager::removeRegion(MemoryBlockType *type, u64 index)
 {
-    EARLY_LT((" | type = 0x%p, index = %u", type, index));
+    COMMON_LT((" | type = 0x%p, index = %u", type, index));
 
-    EARLY_ASSERT(type,                "type is null",     NgosStatus::ASSERTION);
-    EARLY_ASSERT(type->count > 0,     "type is empty",    NgosStatus::ASSERTION);
-    EARLY_ASSERT(index < type->count, "index is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(type,                "type is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(type->count > 0,     "type is empty",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(index < type->count, "index is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -93,7 +93,7 @@ NgosStatus MemoryManager::removeRegion(MemoryBlockType *type, u64 index)
 
 
 
-    EARLY_ASSERT((type->count > 0 && type->totalSize > 0) || (type->count == 0 && type->totalSize == 0), "type is broken", NgosStatus::ASSERTION);
+    COMMON_ASSERT((type->count > 0 && type->totalSize > 0) || (type->count == 0 && type->totalSize == 0), "type is broken", NgosStatus::ASSERTION);
 
 
 
@@ -102,12 +102,12 @@ NgosStatus MemoryManager::removeRegion(MemoryBlockType *type, u64 index)
 
 NgosStatus MemoryManager::removeRegions(MemoryBlockType *type, u64 index, u64 count)
 {
-    EARLY_LT((" | type = 0x%p, index = %u, count = %u", type, index, count));
+    COMMON_LT((" | type = 0x%p, index = %u, count = %u", type, index, count));
 
-    EARLY_ASSERT(type,                                      "type is null",     NgosStatus::ASSERTION);
-    EARLY_ASSERT(type->count > 0,                           "type is empty",    NgosStatus::ASSERTION);
-    EARLY_ASSERT(index < type->count,                       "index is invalid", NgosStatus::ASSERTION);
-    EARLY_ASSERT(count > 0 && count <= type->count - index, "count is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(type,                                      "type is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(type->count > 0,                           "type is empty",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(index < type->count,                       "index is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0 && count <= type->count - index, "count is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -122,7 +122,7 @@ NgosStatus MemoryManager::removeRegions(MemoryBlockType *type, u64 index, u64 co
 
 
 
-    EARLY_ASSERT((type->count > 0 && type->totalSize > 0) || (type->count == 0 && type->totalSize == 0), "type is broken", NgosStatus::ASSERTION);
+    COMMON_ASSERT((type->count > 0 && type->totalSize > 0) || (type->count == 0 && type->totalSize == 0), "type is broken", NgosStatus::ASSERTION);
 
 
 
@@ -131,9 +131,9 @@ NgosStatus MemoryManager::removeRegions(MemoryBlockType *type, u64 index, u64 co
 
 NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
 {
-    EARLY_LT((" | type = 0x%p", type));
+    COMMON_LT((" | type = 0x%p", type));
 
-    EARLY_ASSERT(type, "type is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(type, "type is null", NgosStatus::ASSERTION);
 
 
 
@@ -152,7 +152,7 @@ NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
             previousRegion.nodeId != currentRegion.nodeId
            )
         {
-            EARLY_TEST_ASSERT(previousRegion.end() <= currentRegion.start, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(previousRegion.end() <= currentRegion.start, NgosStatus::ASSERTION);
 
             ++i;
 
@@ -175,17 +175,17 @@ NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
 
 NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, memory_block_region_flags flags, memory_block_region_node_id nodeId)
 {
-    EARLY_LT((" | type = 0x%p, start = 0x%016lX, size = %u, flags = 0x%016lX, nodeId = %u", type, start, size, flags, nodeId));
+    COMMON_LT((" | type = 0x%p, start = 0x%016lX, size = %u, flags = 0x%016lX, nodeId = %u", type, start, size, flags, nodeId));
 
-    EARLY_ASSERT(type,                   "type is null",      NgosStatus::ASSERTION);
-    EARLY_ASSERT(size > 0,               "size is zero",      NgosStatus::ASSERTION);
-    EARLY_ASSERT(nodeId <= MAX_NUMNODES, "nodeId is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(type,                   "type is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,               "size is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(nodeId <= MAX_NUMNODES, "nodeId is invalid", NgosStatus::ASSERTION);
 
 
 
     if (!type->count) // type->count == 0
     {
-        EARLY_TEST_ASSERT(type->totalSize == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(type->totalSize == 0, NgosStatus::ASSERTION);
 
 
 
@@ -208,7 +208,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
     u64 end = start + size;
 
-    EARLY_TEST_ASSERT(end > start, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(end > start, NgosStatus::ASSERTION);
 
 
 
@@ -233,7 +233,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
             )
            )
         {
-            EARLY_ASSERT_EXECUTION(insertRegion(type, left, start, size, flags, nodeId), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(insertRegion(type, left, start, size, flags, nodeId), NgosStatus::ASSERTION);
 
             return NgosStatus::OK;
         }
@@ -252,7 +252,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
             )
            )
         {
-            EARLY_ASSERT_EXECUTION(insertRegion(type, right, start, size, flags, nodeId), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(insertRegion(type, right, start, size, flags, nodeId), NgosStatus::ASSERTION);
 
             return NgosStatus::OK;
         }
@@ -280,11 +280,11 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 
 
-    // EARLY_LVVV(("left  = %u", left));  // Commented to avoid too frequent logs
-    // EARLY_LVVV(("right = %u", right)); // Commented to avoid too frequent logs
+    // COMMON_LVVV(("left  = %u", left));  // Commented to avoid too frequent logs
+    // COMMON_LVVV(("right = %u", right)); // Commented to avoid too frequent logs
 
-    EARLY_TEST_ASSERT(left == right,      NgosStatus::ASSERTION);
-    EARLY_TEST_ASSERT(left < type->count, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(left == right,      NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(left < type->count, NgosStatus::ASSERTION);
 
     MemoryBlockRegion &region    = type->regions[left];
     u64                regionEnd = region.end();
@@ -325,7 +325,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
             )
            )
         {
-            EARLY_ASSERT_EXECUTION(insertRegion(type, left, start, size, flags, nodeId), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(insertRegion(type, left, start, size, flags, nodeId), NgosStatus::ASSERTION);
 
             return NgosStatus::OK;
         }
@@ -364,7 +364,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
             )
            )
         {
-            EARLY_ASSERT_EXECUTION(insertRegion(type, left + 1, start, size, flags, nodeId), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(insertRegion(type, left + 1, start, size, flags, nodeId), NgosStatus::ASSERTION);
 
             return NgosStatus::OK;
         }
@@ -372,10 +372,10 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 
 
-    EARLY_TEST_ASSERT(end    >= region.start,  NgosStatus::ASSERTION);
-    EARLY_TEST_ASSERT(start  <= regionEnd,     NgosStatus::ASSERTION);
-    EARLY_TEST_ASSERT(flags  == region.flags,  NgosStatus::ASSERTION);
-    EARLY_TEST_ASSERT(nodeId == region.nodeId, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(end    >= region.start,  NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(start  <= regionEnd,     NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(flags  == region.flags,  NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(nodeId == region.nodeId, NgosStatus::ASSERTION);
 
 
 
@@ -385,8 +385,8 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
            end >= type->regions[right].start
           )
     {
-        EARLY_TEST_ASSERT(flags  == type->regions[right].flags,  NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(nodeId == type->regions[right].nodeId, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(flags  == type->regions[right].flags,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(nodeId == type->regions[right].nodeId, NgosStatus::ASSERTION);
 
         ++right;
     }
@@ -397,7 +397,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
     {
         regionEnd = type->regions[right - 1].end();
 
-        EARLY_ASSERT_EXECUTION(removeRegions(type, left + 1, right - left - 1), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(removeRegions(type, left + 1, right - left - 1), NgosStatus::ASSERTION);
     }
 
 
@@ -420,9 +420,9 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 NgosStatus MemoryManager::add(u64 start, u64 size)
 {
-    EARLY_LT((" | start = 0x%016lX, size = %u", start, size));
+    COMMON_LT((" | start = 0x%016lX, size = %u", start, size));
 
-    EARLY_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
 
 
 
@@ -431,9 +431,9 @@ NgosStatus MemoryManager::add(u64 start, u64 size)
 
 NgosStatus MemoryManager::reserve(u64 start, u64 size)
 {
-    EARLY_LT((" | start = 0x%016lX, size = %u", start, size));
+    COMMON_LT((" | start = 0x%016lX, size = %u", start, size));
 
-    EARLY_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
 
 
 

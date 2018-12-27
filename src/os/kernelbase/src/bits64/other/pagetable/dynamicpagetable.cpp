@@ -3,8 +3,8 @@
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <pagetable/utils.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
 #include <src/bits64/memory/memory.h>
 #include <src/bits64/other/kerneldefines.h>
 #include <src/bits64/other/pagetable/addressconversion.h>
@@ -21,11 +21,11 @@ u8 currentDynamicPageIndex = 0;
 
 u8* allocateDynamicPage()
 {
-    EARLY_LT((""));
+    COMMON_LT((""));
 
 
 
-    EARLY_TEST_ASSERT(currentDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, 0);
+    COMMON_TEST_ASSERT(currentDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, 0);
     u8 *page = (u8 *)dynamic_pagetable_pages[currentDynamicPageIndex];
     ++currentDynamicPageIndex;
 
@@ -36,11 +36,11 @@ u8* allocateDynamicPage()
 
 NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 level)
 {
-    EARLY_LT((" | page = 0x%p, address = 0x%p, end = 0x%p, level = %u", page, address, end, level));
+    COMMON_LT((" | page = 0x%p, address = 0x%p, end = 0x%p, level = %u", page, address, end, level));
 
-    EARLY_ASSERT(page,                     "page is null",     NgosStatus::ASSERTION);
-    EARLY_ASSERT(end > address,            "end is invalid",   NgosStatus::ASSERTION);
-    EARLY_ASSERT(level >= 2 && level <= 5, "level is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(page,                     "page is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(end > address,            "end is invalid",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(level >= 2 && level <= 5, "level is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -69,11 +69,11 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 lev
         if (level > 2)
         {
             PGD *pgdNext = (PGD *)allocateDynamicPage();
-            EARLY_TEST_ASSERT(pgdNext, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(pgdNext, NgosStatus::ASSERTION);
 
             setPgd(pgd, AddressConversion::physicalAddress((pgd_value)pgdNext | KERNEL_PAGE_TABLE_FLAGS));
 
-            EARLY_ASSERT_EXECUTION(initializeDynamicPageIdentity(pgdNext, address, next, level - 1), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(initializeDynamicPageIdentity(pgdNext, address, next, level - 1), NgosStatus::ASSERTION);
         }
         else
         {
@@ -92,9 +92,9 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 lev
 
 NgosStatus addDynamicIdentityMap(u64 start, u64 end)
 {
-    EARLY_LT((" | start = 0x%p, end = 0x%p", start, end));
+    COMMON_LT((" | start = 0x%p, end = 0x%p", start, end));
 
-    EARLY_ASSERT(end > start, "end is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(end > start, "end is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -106,9 +106,9 @@ NgosStatus addDynamicIdentityMap(u64 start, u64 end)
 
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    EARLY_ASSERT_EXECUTION(initializeDynamicPageIdentity(early_pagetable, start, end, 5), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initializeDynamicPageIdentity(early_pagetable, start, end, 5), NgosStatus::ASSERTION);
 #else
-    EARLY_ASSERT_EXECUTION(initializeDynamicPageIdentity(early_pagetable, start, end, 4), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initializeDynamicPageIdentity(early_pagetable, start, end, 4), NgosStatus::ASSERTION);
 #endif
 
 
@@ -118,9 +118,9 @@ NgosStatus addDynamicIdentityMap(u64 start, u64 end)
 
 NgosStatus clearDynamicIdentityMap(u64 start, u64 end)
 {
-    EARLY_LT((" | start = 0x%p, end = 0x%p", start, end));
+    COMMON_LT((" | start = 0x%p, end = 0x%p", start, end));
 
-    EARLY_ASSERT(end > start, "end is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(end > start, "end is invalid", NgosStatus::ASSERTION);
 
 
 

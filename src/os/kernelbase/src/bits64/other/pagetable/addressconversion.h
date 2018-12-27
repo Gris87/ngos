@@ -5,8 +5,8 @@
 
 #include <ngos/status.h>
 #include <ngos/types.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
 
 
 
@@ -19,7 +19,7 @@ class AddressConversion
 public:
     static inline u64 physicalAddress(u64 address)
     {
-        EARLY_LT((" | address = 0x%p", address));
+        COMMON_LT((" | address = 0x%p", address));
 
 
 
@@ -28,9 +28,9 @@ public:
 
     static inline NgosStatus setPhysicalDeltaBaseOnLocation(u64 location)
     {
-        EARLY_LT((" | location = 0x%016lX", location));
+        COMMON_LT((" | location = 0x%016lX", location));
 
-        EARLY_ASSERT(location, "location is null", NgosStatus::ASSERTION);
+        COMMON_ASSERT(location, "location is null", NgosStatus::ASSERTION);
 
 
 

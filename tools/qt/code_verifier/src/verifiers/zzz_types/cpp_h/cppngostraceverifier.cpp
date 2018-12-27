@@ -8,7 +8,7 @@
 
 CppNgosTraceVerifier::CppNgosTraceVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^(struct|class|enum( class)?) (\\w+)(: \\w+)?$")
+    , mDefinitionRegExp("^(struct|class|union|enum( class)?) (\\w+)(: \\w+)?$")
 {
     // Nothing
 }
@@ -104,8 +104,6 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                 if (
                     !funcDesc.startsWith("TEST_CASES(")
-                    &&
-                    !funcDesc.startsWith("enum")
                     &&
                     !funcDesc.endsWith('=')
                     &&

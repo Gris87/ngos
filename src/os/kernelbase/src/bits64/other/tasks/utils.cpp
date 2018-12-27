@@ -1,8 +1,8 @@
 #include "utils.h"
 
 #include <ngos/types.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
 
 
 
@@ -12,9 +12,9 @@
 
 NgosStatus putTaskStackEndMagic(Task *task)
 {
-    EARLY_LT((" | task = 0x%p", task));
+    COMMON_LT((" | task = 0x%p", task));
 
-    EARLY_ASSERT(task, "task is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(task, "task is null", NgosStatus::ASSERTION);
 
 
 

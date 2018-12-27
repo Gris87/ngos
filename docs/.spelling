@@ -29,7 +29,10 @@
 3rd_party
 adaptPageTable
 addIdentityMap
+add_rc_version_tag.sh
 addressOfEntryPoint
+addUnavailableMemoryArea
+add_version_tag.sh
 a_early
 AMD64
 AppArmor
