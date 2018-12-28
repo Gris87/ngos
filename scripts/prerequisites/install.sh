@@ -2,7 +2,7 @@
 
 # This script helps to install prerequisites
 # Author: Maxim Shvecov
-# Usage: ./install.sh
+# Usage: sudo ./install.sh
 
 
 
