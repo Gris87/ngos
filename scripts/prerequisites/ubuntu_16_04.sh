@@ -56,7 +56,7 @@ fi
 #    PROCESSING
 ###########################################################################################
 
-if [ -d sdfsd ]; then
+
 
 echo ""
 echo -e "\e[33m-------------------- Environment --------------------\e[0m"
@@ -177,7 +177,7 @@ git checkout v${LIBVIRT_VERSION}
 make -j8 all
 make install
 
-fi
+
 
 echo ""
 echo -e "\e[33m-------------------- qemu-${QEMU_VERSION} --------------------\e[0m"
@@ -244,10 +244,32 @@ echo ""
 
 
 
-cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" >> /home/${USER}/temp
+cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" > /home/${USER}/temp
 mv /home/${USER}/temp /home/${USER}/.bashrc
 echo "export PATH=/usr/local/x8664elfgcc/bin:\$PATH" >> /home/${USER}/.bashrc
 echo "export PATH=~/Qt/5.11.1/gcc_64/bin:\$PATH"     >> /home/${USER}/.bashrc
+chown ${USER}:${USER} /home/${USER}/.bashrc
+
+
+
+echo ""
+echo -e "\e[33m-------------------- Qt --------------------\e[0m"
+echo ""
+
+
+
+cd /home/${USER}/
+wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
+chmod 755 qt-unified-linux-x64-online.run
+chown ${USER}:${USER} qt-unified-linux-x64-online.run
+
+echo "Please install Qt in your X-Window Manager"
+echo "~/qt-unified-linux-x64-online.run"
+
+echo "
+echo "Please choose following items during Qt installation:"
+echo "* Qt -> Qt 5.11.1 -> Desktop gcc 64 bit"
+echo "* Qt -> Qt 5.11.1 -> Sources"
 
 
 
