@@ -266,7 +266,7 @@ chown ${USER}:${USER} qt-unified-linux-x64-online.run
 echo "Please install Qt in your X-Window Manager"
 echo "~/qt-unified-linux-x64-online.run"
 
-echo "
+echo ""
 echo "Please choose following items during Qt installation:"
 echo "* Qt -> Qt 5.11.1 -> Desktop gcc 64 bit"
 echo "* Qt -> Qt 5.11.1 -> Sources"
