@@ -12,10 +12,12 @@
 
 
 
+CURRENT_PATH=`pwd`
 BINUTILS_VERSION=2.31.1
 GCC_VERSION=8.2.0
 LIBVIRT_VERSION=4.10.0
 QEMU_VERSION=3.1.0
+VIRTUALBOX_VERSION=6.0
 
 
 
@@ -35,6 +37,15 @@ fi
 
 if [ $EUID -ne 0 ]; then
     echo "Please run as root"
+
+    exit 1
+fi
+
+
+USER=`pwd | cut -d / -f 3`
+
+if [ "${USER}" == "" ]; then
+    echo "Failed to detect user name"
 
     exit 1
 fi
@@ -202,5 +213,45 @@ make install
 
 
 echo ""
+echo -e "\e[33m-------------------- virtualbox-${VIRTUALBOX_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
+apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib"
+
+apt-get update
+apt-get install -y virtualbox-${VIRTUALBOX_VERSION}
+
+
+
+echo ""
+echo -e "\e[33m-------------------- .gdbinit --------------------\e[0m"
+echo ""
+
+
+
+cp ${CURRENT_PATH}/../../tools/gdb/.gdbinit /home/#{USER}/
+chown ${USER}:${USER} /home/#{USER}/.gdbinit
+
+
+
+echo ""
+echo -e "\e[33m-------------------- .bashrc --------------------\e[0m"
+echo ""
+
+
+
+cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" >> /home/${USER}/temp
+mv /home/${USER}/temp /home/${USER}/.bashrc
+echo "export PATH=/usr/local/x8664elfgcc/bin:\$PATH" >> /home/${USER}/.bashrc
+echo "export PATH=~/Qt/5.11.1/gcc_64/bin:\$PATH"     >> /home/${USER}/.bashrc
+
+
+
+echo ""
 echo -e "\e[32m-------------------- Done --------------------\e[0m"
 echo ""
+
