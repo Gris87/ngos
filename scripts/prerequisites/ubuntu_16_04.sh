@@ -7,6 +7,19 @@
 
 
 ###########################################################################################
+#    PARAMETERS
+###########################################################################################
+
+
+
+BINUTILS_VERSION=2.31.1
+GCC_VERSION=8.2.0
+LIBVIRT_VERSION=4.10.0
+QEMU_VERSION=3.1.0
+
+
+
+###########################################################################################
 #    VERIFICATION
 ###########################################################################################
 
@@ -32,7 +45,7 @@ fi
 #    PROCESSING
 ###########################################################################################
 
-
+if [ -d sdfsd ]; then
 
 echo ""
 echo -e "\e[33m-------------------- Environment --------------------\e[0m"
@@ -44,7 +57,6 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y curl
 apt-get install -y build-essential
-apt-get install -y build-dep
 apt-get install -y libncurses-dev
 apt-get install -y libelf-dev
 apt-get install -y bison
@@ -78,39 +90,47 @@ update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bi
 
 
 echo ""
-echo -e "\e[33m-------------------- binutils-2.31.1 --------------------\e[0m"
+echo -e "\e[33m-------------------- binutils-${BINUTILS_VERSION} --------------------\e[0m"
 echo ""
 
 
 
 mkdir /tmp/src
 cd /tmp/src
-curl -O http://ftp.gnu.org/gnu/binutils/binutils-2.31.1.tar.xz
-tar xf binutils-2.31.1.tar.xz
+
+if [ ! -d binutils-${BINUTILS_VERSION} ]; then
+    curl -O http://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.xz
+    tar xf binutils-${BINUTILS_VERSION}.tar.xz
+fi
+
 mkdir binutils-build
 cd binutils-build
-../binutils-2.31.1/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log || exit 1
+../binutils-${BINUTILS_VERSION}/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log || exit 1
 make -j8 all 2>&1 | tee make.log || exit 1
 make install || exit 1
 
 
 
 echo ""
-echo -e "\e[33m-------------------- gcc-8.2.0 --------------------\e[0m"
+echo -e "\e[33m-------------------- gcc-${GCC_VERSION} --------------------\e[0m"
 echo ""
 
 
 
 mkdir /tmp/src
 cd /tmp/src
-curl -O https://ftp.gnu.org/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.xz
-tar xf gcc-8.2.0.tar.xz
-cd gcc-8.2.0
+
+if [ ! -d gcc-${GCC_VERSION} ]; then
+    curl -O https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.xz
+    tar xf gcc-${GCC_VERSION}.tar.xz
+fi
+
+cd gcc-${GCC_VERSION}
 contrib/download_prerequisites
 cd ..
 mkdir gcc-build
 cd gcc-build
-../gcc-8.2.0/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ | tee configure.log || exit 1
+../gcc-${GCC_VERSION}/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ | tee configure.log || exit 1
 make -j8 all-gcc 2>&1 | tee make-gcc.log || exit 1
 make install-gcc || exit 1
 make -j8 all-target-libgcc 2>&1 | tee make-libgcc.log || exit 1
@@ -119,19 +139,68 @@ make install-target-libgcc || exit 1
 
 
 echo ""
-echo -e "\e[33m-------------------- libvirt- --------------------\e[0m"
+echo -e "\e[33m-------------------- libvirt-${LIBVIRT_VERSION} --------------------\e[0m"
 echo ""
 
 
 
+apt-get build-dep -y libvirt
 
 
 
+mkdir /tmp/src
+cd /tmp/src
 
+if [ ! -d libvirt ]; then
+    git clone git://libvirt.org/libvirt.git
+fi
+
+cd libvirt
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${LIBVIRT_VERSION}
+./autogen.sh --system
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make -j8 all
+make install
+
+fi
+
+echo ""
+echo -e "\e[33m-------------------- qemu-${QEMU_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get install -y libpixman-1-dev
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d qemu ]; then
+    git clone git://git.qemu-project.org/qemu.git
+fi
+
+cd qemu
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${QEMU_VERSION}
+cd ..
+
+mkdir qemu-build
+cd qemu-build
+../qemu/configure --enable-debug
+make -j8 all
+make install
 
 
 
 echo ""
 echo -e "\e[32m-------------------- Done --------------------\e[0m"
 echo ""
-
