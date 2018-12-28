@@ -200,8 +200,8 @@ rm qt-unified-linux-x64-online.run
 ```
 
 Please choose following items during Qt installation:
-* Qt -> Qt 5.11.1 -> Desktop gcc 64 bit
-* Qt -> Qt 5.11.1 -> Sources
+* Qt -> Qt 5.12.0 -> Desktop gcc 64 bit
+* Qt -> Qt 5.12.0 -> Sources
 
 Post processing
 ---------------
@@ -212,7 +212,7 @@ Execute these commands with your user account
 cat ~/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" >> ~/temp
 mv ~/temp ~/.bashrc
 echo "export PATH=/usr/local/x8664elfgcc/bin:\$PATH" >> ~/.bashrc
-echo "export PATH=~/Qt/5.11.1/gcc_64/bin:\$PATH"     >> ~/.bashrc
+echo "export PATH=~/Qt/5.12.0/gcc_64/bin:\$PATH"     >> ~/.bashrc
 source ~/.bashrc
 
 cd ~/workspace/ngos/tools/gdb

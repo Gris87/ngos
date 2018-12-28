@@ -78,6 +78,10 @@ README.md
 scripts/add_rc_version_tag.sh
 scripts/add_version_tag.sh
 scripts/commit.sh
+scripts/prerequisites/centos_7.sh
+scripts/prerequisites/install.sh
+scripts/prerequisites/ubuntu_16_04.sh
+scripts/prerequisites/ubuntu_18_04.sh
 scripts/pull.sh
 scripts/push.sh
 scripts/update_ngos_files.sh

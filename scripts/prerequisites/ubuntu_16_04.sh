@@ -18,6 +18,7 @@ GCC_VERSION=8.2.0
 LIBVIRT_VERSION=4.10.0
 QEMU_VERSION=3.1.0
 VIRTUALBOX_VERSION=6.0
+QT_VERSION=5.12.0
 
 
 
@@ -247,7 +248,7 @@ echo ""
 cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" > /home/${USER}/temp
 mv /home/${USER}/temp /home/${USER}/.bashrc
 echo "export PATH=/usr/local/x8664elfgcc/bin:\$PATH" >> /home/${USER}/.bashrc
-echo "export PATH=~/Qt/5.11.1/gcc_64/bin:\$PATH"     >> /home/${USER}/.bashrc
+echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\$PATH"     >> /home/${USER}/.bashrc
 chown ${USER}:${USER} /home/${USER}/.bashrc
 
 
@@ -268,8 +269,8 @@ echo "~/qt-unified-linux-x64-online.run"
 
 echo ""
 echo "Please choose following items during Qt installation:"
-echo "* Qt -> Qt 5.11.1 -> Desktop gcc 64 bit"
-echo "* Qt -> Qt 5.11.1 -> Sources"
+echo "* Qt -> Qt ${QT_VERSION} -> Desktop gcc 64 bit"
+echo "* Qt -> Qt ${QT_VERSION} -> Sources"
 
 
 
