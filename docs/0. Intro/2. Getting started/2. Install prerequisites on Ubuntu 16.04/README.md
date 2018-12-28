@@ -6,7 +6,7 @@ NGOS
 
 You need the following software to be able to build NGOS.
 * Ubuntu 16.04
-* binutils-2.31
+* binutils-2.31.1
 * gcc-8.2.0
 * qemu
 * ovmf
@@ -35,6 +35,7 @@ mkdir tigervnc
 cd tigervnc
 wget https://bintray.com/tigervnc/stable/download_file?file_path=ubuntu-16.04LTS%2Famd64%2Ftigervncserver_1.8.0-1ubuntu1_amd64.deb
 dpkg -i *.deb
+rm -rf /tmp/src
 ```
 
 After this run commands with your user account:
@@ -89,8 +90,8 @@ ln -s /usr/bin/nodejs /usr/bin/node
 npm i markdown-spellcheck -g
 ```
 
-binutils
---------
+binutils-2.31.1
+---------------
 
 Please prepare environment before calling these commands
 
@@ -103,17 +104,17 @@ export PATH="$PREFIX/bin:$PATH"
 
 mkdir /tmp/src
 cd /tmp/src
-curl -O http://ftp.gnu.org/gnu/binutils/binutils-2.31.tar.xz
-tar xf binutils-2.31.tar.xz
+curl -O http://ftp.gnu.org/gnu/binutils/binutils-2.31.1.tar.xz
+tar xf binutils-2.31.1.tar.xz
 mkdir binutils-build
 cd binutils-build
-../binutils-2.31/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log
+../binutils-2.31.1/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log
 make -j8 all 2>&1 | tee make.log
 make install
 ```
 
-gcc
----
+gcc-8.2.0
+---------
 
 Please prepare environment before calling these commands
 
