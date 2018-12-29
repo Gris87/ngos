@@ -45,6 +45,7 @@ if [ $EUID -ne 0 ]; then
 fi
 
 
+
 USER=`pwd | cut -d / -f 3`
 
 if [ "${USER}" == "" ]; then
@@ -175,10 +176,10 @@ git reset --hard
 git clean -df
 git pull
 git checkout v${LIBVIRT_VERSION}
-./autogen.sh --system
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-make -j8 all
-make install
+./autogen.sh || exit 1
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+make -j8 all || exit 1
+make install || exit 1
 
 
 
@@ -209,9 +210,9 @@ cd ..
 
 mkdir qemu-build
 cd qemu-build
-../qemu/configure --enable-debug
-make -j8 all
-make install
+../qemu/configure --enable-debug || exit 1
+make -j8 all || exit 1
+make install || exit 1
 
 
 
@@ -230,7 +231,7 @@ if [ ! -d virt-manager-${VIRT_MANAGER_VERSION} ]; then
 fi
 
 cd virt-manager-${VIRT_MANAGER_VERSION}/
-./setup.py install
+./setup.py install || exit 1
 
 
 
@@ -253,9 +254,9 @@ if [ ! -d virt-viewer-${VIRT_VIEWER_VERSION} ]; then
 fi
 
 cd virt-viewer-${VIRT_VIEWER_VERSION}/
-./configure
-make -j8 all
-make install
+./configure || exit 1
+make -j8 all || exit 1
+make install || exit 1
 
 
 
@@ -360,4 +361,3 @@ echo ""
 echo "AppArmor disabled. Rebooting..."
 sleep 5
 reboot
-
