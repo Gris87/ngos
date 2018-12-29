@@ -222,6 +222,10 @@ echo ""
 
 
 
+apt-get install -y intltool libgtk2.0-bin
+
+
+
 mkdir /tmp/src
 cd /tmp/src
 
