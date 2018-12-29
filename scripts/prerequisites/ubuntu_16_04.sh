@@ -17,6 +17,8 @@ BINUTILS_VERSION=2.31.1
 GCC_VERSION=8.2.0
 LIBVIRT_VERSION=4.10.0
 QEMU_VERSION=3.1.0
+VIRT_MANAGER_VERSION=2.0.0
+VIRT_VIEWER_VERSION=7.0
 VIRTUALBOX_VERSION=6.0
 QT_VERSION=5.12.0
 
@@ -214,6 +216,72 @@ make install
 
 
 echo ""
+echo -e "\e[33m-------------------- virt-manager-${VIRT_MANAGER_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d virt-manager-${VIRT_MANAGER_VERSION} ]; then
+    wget https://virt-manager.org/download/sources/virt-manager/virt-manager-${VIRT_MANAGER_VERSION}.tar.gz
+    tar xf virt-manager-${VIRT_MANAGER_VERSION}.tar.gz
+fi
+
+cd virt-manager-${VIRT_MANAGER_VERSION}/
+./setup.py install
+
+
+
+echo ""
+echo -e "\e[33m-------------------- virt-viewer-${VIRT_VIEWER_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get install -y libgtk-vnc-2.0-dev
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d virt-viewer-${VIRT_VIEWER_VERSION} ]; then
+    wget https://virt-manager.org/download/sources/virt-viewer/virt-viewer-${VIRT_VIEWER_VERSION}.tar.gz
+    tar xf virt-viewer-${VIRT_VIEWER_VERSION}.tar.gz
+fi
+
+cd virt-viewer-${VIRT_VIEWER_VERSION}/
+./configure
+make -j8 all
+make install
+
+
+
+
+
+echo ""
+echo -e "\e[33m-------------------- OVMF --------------------\e[0m"
+echo ""
+
+
+
+apt-get install -y alien
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+mkdir edk2_git
+cd edk2_git
+wget https://www.kraxel.org/repos/jenkins/edk2/`curl https://www.kraxel.org/repos/jenkins/edk2/ 2> /dev/nill | grep -o -e "edk2.git-ovmf-x64-.*.rpm\"" | rev | cut -c 2- | rev`
+alien *.rpm
+dpkg -i *.deb
+
+
+
+echo ""
 echo -e "\e[33m-------------------- virtualbox-${VIRTUALBOX_VERSION} --------------------\e[0m"
 echo ""
 
@@ -264,17 +332,32 @@ wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-
 chmod 755 qt-unified-linux-x64-online.run
 chown ${USER}:${USER} qt-unified-linux-x64-online.run
 
-echo "Please install Qt in your X-Window Manager"
-echo "~/qt-unified-linux-x64-online.run"
+echo -e "\e[31mPlease install Qt in your X-Window Manager\e[0m"
+echo -e "\e[31m~/qt-unified-linux-x64-online.run\e[0m"
+echo ""
+echo -e "\e[31mPlease choose following items during Qt installation:\e[0m"
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Desktop gcc 64 bit\e[0m"
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
+
+
 
 echo ""
-echo "Please choose following items during Qt installation:"
-echo "* Qt -> Qt ${QT_VERSION} -> Desktop gcc 64 bit"
-echo "* Qt -> Qt ${QT_VERSION} -> Sources"
+echo -e "\e[33m-------------------- AppArmor --------------------\e[0m"
+echo ""
+
+
+
+update-rc.d apparmor disable
 
 
 
 echo ""
 echo -e "\e[32m-------------------- Done --------------------\e[0m"
 echo ""
+
+
+
+echo "AppArmor disabled. Rebooting..."
+sleep 5
+reboot
 
