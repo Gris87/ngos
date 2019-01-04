@@ -181,6 +181,9 @@ git checkout v${LIBVIRT_VERSION}
 make -j8 all || exit 1
 make install || exit 1
 
+systemctl enable libvirtd
+systemctl restart libvirtd
+
 
 
 echo ""
@@ -222,7 +225,9 @@ echo ""
 
 
 
-apt-get install -y intltool libgtk2.0-bin
+apt-get install -y intltool libgtk2.0-bin python3-pip libosinfo-1.0
+pip3 install libvirt-python
+pip3 install libxml2-python3
 
 
 
@@ -245,7 +250,7 @@ echo ""
 
 
 
-apt-get install -y libgtk-vnc-2.0-dev
+apt-get install -y libgtk-vnc-2.0-dev libvirt-glib-1.0
 
 
 
