@@ -16,6 +16,7 @@ CURRENT_PATH=`pwd`
 BINUTILS_VERSION=2.31.1
 GCC_VERSION=8.2.0
 LIBVIRT_VERSION=4.10.0
+LIBVIRT_GLIB_VERSION=2.0.0
 QEMU_VERSION=3.1.0
 VIRT_MANAGER_VERSION=2.0.0
 VIRT_VIEWER_VERSION=7.0
@@ -187,6 +188,37 @@ systemctl restart libvirtd
 
 
 echo ""
+echo -e "\e[33m-------------------- libvirt-glib-${LIBVIRT_GLIB_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get build-dep -y libvirt-glib
+apt-get install -y gtk-doc-tools
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d libvirt-glib ]; then
+    git clone https://github.com/libvirt/libvirt-glib.git
+fi
+
+cd libvirt-glib
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${LIBVIRT_GLIB_VERSION}
+./autogen.sh || exit 1
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
 echo -e "\e[33m-------------------- qemu-${QEMU_VERSION} --------------------\e[0m"
 echo ""
 
@@ -250,7 +282,7 @@ echo ""
 
 
 
-apt-get install -y libgtk-vnc-2.0-dev libvirt-glib-1.0
+apt-get install -y libgtk-vnc-2.0-dev
 
 
 
@@ -266,8 +298,6 @@ cd virt-viewer-${VIRT_VIEWER_VERSION}/
 ./configure || exit 1
 make -j8 all || exit 1
 make install || exit 1
-
-
 
 
 
