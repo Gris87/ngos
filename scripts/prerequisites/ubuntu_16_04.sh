@@ -168,7 +168,7 @@ mkdir /tmp/src
 cd /tmp/src
 
 if [ ! -d libvirt ]; then
-    git clone git://libvirt.org/libvirt.git
+    git clone https://github.com/libvirt/libvirt.git
 fi
 
 cd libvirt
@@ -232,7 +232,7 @@ mkdir /tmp/src
 cd /tmp/src
 
 if [ ! -d qemu ]; then
-    git clone git://git.qemu-project.org/qemu.git
+    git clone https://github.com/qemu/qemu.git
 fi
 
 cd qemu
