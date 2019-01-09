@@ -312,8 +312,8 @@ echo ""
 
 
 
-cp ${CURRENT_PATH}/../../tools/gdb/.gdbinit /home/#{USER}/
-chown ${USER}:${USER} /home/#{USER}/.gdbinit
+cp ${CURRENT_PATH}/../../tools/gdb/.gdbinit /home/${USER}/
+chown ${USER}:${USER} /home/${USER}/.gdbinit
 
 
 
