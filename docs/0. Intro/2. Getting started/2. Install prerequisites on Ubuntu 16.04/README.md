@@ -26,8 +26,7 @@ sudo su
 apt-get update
 apt-get upgrade -y
 apt-get install -y --no-install-recommends ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
-apt-get install -y libtasn1-3-bin
-apt-get install -y xfce4 xfce4-goodies
+apt-get install -y libtasn1-3-bin xfce4 xfce4-goodies
 
 mkdir /tmp/src
 cd /tmp/src
