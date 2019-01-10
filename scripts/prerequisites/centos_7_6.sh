@@ -122,7 +122,7 @@ do
 done
 
 yum install -y *.rpm
-scl enable devtoolset-8 bash
+source /opt/rh/devtoolset-8/enable
 
 
 
