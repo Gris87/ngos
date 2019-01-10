@@ -44,7 +44,7 @@ yum install -y redhat-lsb
 
 
 if [[ "`lsb_release -rs`" != "7.6.1810" ]]; then
-    echo "This script should be called on CentOS 7"
+    echo "This script should be called on CentOS 7.6"
 
     exit 1
 fi
@@ -126,4 +126,53 @@ scl enable devtoolset-8 bash
 
 echo ""
 echo -e "\e[33m-------------------- binutils-${BINUTILS_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d binutils-${BINUTILS_VERSION} ]; then
+    curl -O http://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.xz
+    tar xf binutils-${BINUTILS_VERSION}.tar.xz
+fi
+
+mkdir binutils-build
+cd binutils-build
+../binutils-${BINUTILS_VERSION}/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log || exit 1
+make -j8 all 2>&1 | tee make.log || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- gcc-${GCC_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d gcc-${GCC_VERSION} ]; then
+    curl -O https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.xz
+    tar xf gcc-${GCC_VERSION}.tar.xz
+fi
+
+cd gcc-${GCC_VERSION}
+contrib/download_prerequisites
+cd ..
+mkdir gcc-build
+cd gcc-build
+../gcc-${GCC_VERSION}/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ | tee configure.log || exit 1
+make -j8 all-gcc 2>&1 | tee make-gcc.log || exit 1
+make install-gcc || exit 1
+make -j8 all-target-libgcc 2>&1 | tee make-libgcc.log || exit 1
+make install-target-libgcc || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- libvirt-${LIBVIRT_VERSION} --------------------\e[0m"
 echo ""
