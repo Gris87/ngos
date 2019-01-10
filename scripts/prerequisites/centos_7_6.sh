@@ -114,6 +114,8 @@ cd /tmp/src/
 mkdir devtoolset/
 cd devtoolset/
 
+rm *
+
 for RPM in `curl https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/ | grep -o -E -e "href=\".*.rpm\"" | cut -d \" -f 2`
 do
     wget https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/${RPM}
