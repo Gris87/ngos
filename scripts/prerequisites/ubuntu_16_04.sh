@@ -31,16 +31,16 @@ QT_VERSION=5.12.0
 
 
 
-if [[ "`lsb_release -rs`" != "16.04" ]]; then
-    echo "This script should be called on Ubuntu 16.04"
+if [ $EUID -ne 0 ]; then
+    echo "Please run as root"
 
     exit 1
 fi
 
 
 
-if [ $EUID -ne 0 ]; then
-    echo "Please run as root"
+if [[ "`lsb_release -rs`" != "16.04" ]]; then
+    echo "This script should be called on Ubuntu 16.04"
 
     exit 1
 fi
