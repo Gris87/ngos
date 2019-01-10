@@ -94,6 +94,7 @@ yum install -y socat
 yum install -y ImageMagick
 yum install -y nodejs
 
+npm i sinon --save-dev || exit 1
 npm i markdown-spellcheck -g || exit 1
 
 export PREFIX="/usr/local/x8664elfgcc"
