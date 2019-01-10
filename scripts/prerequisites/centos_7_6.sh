@@ -178,3 +178,84 @@ make install-target-libgcc || exit 1
 echo ""
 echo -e "\e[33m-------------------- libvirt-${LIBVIRT_VERSION} --------------------\e[0m"
 echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d libvirt ]; then
+    git clone https://github.com/libvirt/libvirt.git
+fi
+
+cd libvirt
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${LIBVIRT_VERSION}
+./autogen.sh || exit 1
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- libvirt-glib-${LIBVIRT_GLIB_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d libvirt-glib ]; then
+    git clone https://github.com/libvirt/libvirt-glib.git
+fi
+
+cd libvirt-glib
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${LIBVIRT_GLIB_VERSION}
+./autogen.sh || exit 1
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- qemu-${QEMU_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d qemu ]; then
+    git clone https://github.com/qemu/qemu.git
+fi
+
+cd qemu
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${QEMU_VERSION}
+cd ..
+
+mkdir qemu-build
+cd qemu-build
+../qemu/configure --enable-debug || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- virt-manager-${VIRT_MANAGER_VERSION} --------------------\e[0m"
+echo ""
