@@ -114,12 +114,13 @@ cd /tmp/src/
 mkdir devtoolset/
 cd devtoolset/
 
-for RPM in `curl https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/ | grep -o -E -e "href=\".*.rpm" | cut -c 7-`
+for RPM in `curl https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/ | grep -o -E -e "href=\".*.rpm\"" | cut -d \" -f 2`
 do
     wget https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/${RPM}
 done
 
 yum install -y *.rpm
+scl enable devtoolset-8 bash
 
 
 
