@@ -181,6 +181,10 @@ echo ""
 
 
 
+yum-builddep -y libvirt
+
+
+
 mkdir /tmp/src
 cd /tmp/src
 
@@ -199,11 +203,18 @@ git checkout v${LIBVIRT_VERSION}
 make -j8 all || exit 1
 make install || exit 1
 
+service libvirtd restart
+
 
 
 echo ""
 echo -e "\e[33m-------------------- libvirt-glib-${LIBVIRT_GLIB_VERSION} --------------------\e[0m"
 echo ""
+
+
+
+yum-builddep -y libvirt-glib
+yum install -y gtk-doc
 
 
 
