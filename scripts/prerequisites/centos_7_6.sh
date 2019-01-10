@@ -26,7 +26,7 @@ QT_VERSION=5.12.0
 
 
 ###########################################################################################
-#    PROCESSING
+#    VERIFICATION
 ###########################################################################################
 
 
@@ -75,6 +75,8 @@ echo ""
 
 mkdir /tmp/src/
 cd /tmp/src/
+mkdir epel/
+cd epel/
 wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum install -y epel-release-latest-7.noarch.rpm
 
@@ -92,5 +94,34 @@ yum install -y socat
 yum install -y ImageMagick
 yum install -y nodejs
 
-npm i markdown-spellcheck -g
+npm i markdown-spellcheck -g || exit 1
 
+export PREFIX="/usr/local/x8664elfgcc"
+export TARGET=x86_64-elf
+export PATH="$PREFIX/bin:$PATH"
+
+
+
+echo ""
+echo -e "\e[33m-------------------- gcc-8 --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src/
+cd /tmp/src/
+mkdir devtoolset/
+cd devtoolset/
+
+for RPM in `curl https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/ | grep -o -E -e "href=\".*.rpm" | cut -c 7-`
+do
+    wget https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/${RPM}
+done
+
+yum install -y *.rpm
+
+
+
+echo ""
+echo -e "\e[33m-------------------- binutils-${BINUTILS_VERSION} --------------------\e[0m"
+echo ""
