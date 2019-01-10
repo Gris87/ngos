@@ -244,6 +244,10 @@ echo ""
 
 
 
+yum install -y pixman-devel
+
+
+
 mkdir /tmp/src
 cd /tmp/src
 
