@@ -285,6 +285,8 @@ ln -s /bin/pip3.6 /bin/pip3
 yum install -y intltool libosinfo
 pip3 install libvirt-python
 pip3 install libxml2-python3
+pip3 install pygobject
+pip3 install requests
 
 
 
@@ -402,11 +404,21 @@ echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
 
 
 echo ""
+echo -e "\e[33m-------------------- SELinux --------------------\e[0m"
+echo ""
+
+
+
+sed -i "s/SELINUX=.*/SELINUX=disabled/g" /etc/selinux/config
+
+
+
+echo ""
 echo -e "\e[32m-------------------- Done --------------------\e[0m"
 echo ""
 
 
 
-echo "Rebooting..."
+echo "SELinux disabled. Rebooting..."
 sleep 5
 reboot
