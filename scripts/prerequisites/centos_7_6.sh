@@ -203,7 +203,8 @@ git checkout v${LIBVIRT_VERSION}
 make -j8 all || exit 1
 make install || exit 1
 
-service libvirtd restart
+systemctl enable libvirtd
+systemctl restart libvirtd
 
 
 
@@ -274,3 +275,124 @@ make install || exit 1
 echo ""
 echo -e "\e[33m-------------------- virt-manager-${VIRT_MANAGER_VERSION} --------------------\e[0m"
 echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d virt-manager-${VIRT_MANAGER_VERSION} ]; then
+    wget https://virt-manager.org/download/sources/virt-manager/virt-manager-${VIRT_MANAGER_VERSION}.tar.gz
+    tar xf virt-manager-${VIRT_MANAGER_VERSION}.tar.gz
+fi
+
+cd virt-manager-${VIRT_MANAGER_VERSION}/
+./setup.py install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- virt-viewer-${VIRT_VIEWER_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d virt-viewer-${VIRT_VIEWER_VERSION} ]; then
+    wget https://virt-manager.org/download/sources/virt-viewer/virt-viewer-${VIRT_VIEWER_VERSION}.tar.gz
+    tar xf virt-viewer-${VIRT_VIEWER_VERSION}.tar.gz
+fi
+
+cd virt-viewer-${VIRT_VIEWER_VERSION}/
+./configure || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- OVMF --------------------\e[0m"
+echo ""
+
+
+
+cd /etc/yum.repos.d/ && wget http://www.kraxel.org/repos/firmware.repo
+yum install -y edk2.git-ovmf-x64
+
+
+
+echo ""
+echo -e "\e[33m-------------------- virtualbox-${VIRTUALBOX_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+cd /etc/yum.repos.d
+wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo
+
+yum --enablerepo=epel install -y dkms
+
+yum groupinstall -y "Development Tools"
+yum install -y kernel-devel
+
+yum install -y VirtualBox-${VIRTUALBOX_VERSION}
+
+
+
+echo ""
+echo -e "\e[33m-------------------- .gdbinit --------------------\e[0m"
+echo ""
+
+
+
+cp ${CURRENT_PATH}/../../tools/gdb/.gdbinit /home/${USER}/
+chown ${USER}:${USER} /home/${USER}/.gdbinit
+
+
+
+echo ""
+echo -e "\e[33m-------------------- .bashrc --------------------\e[0m"
+echo ""
+
+
+
+cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" | grep -v "/opt/rh/devtoolset-8/enable" > /home/${USER}/temp
+mv /home/${USER}/temp /home/${USER}/.bashrc
+echo "export PATH=/usr/local/x8664elfgcc/bin:\$PATH"    >> /home/${USER}/.bashrc
+echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\$PATH" >> /home/${USER}/.bashrc
+echo "source /opt/rh/devtoolset-8/enable"               >> /home/${USER}/.bashrc
+chown ${USER}:${USER} /home/${USER}/.bashrc
+
+
+
+echo ""
+echo -e "\e[33m-------------------- Qt --------------------\e[0m"
+echo ""
+
+
+
+cd /home/${USER}/
+wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
+chmod 755 qt-unified-linux-x64-online.run
+chown ${USER}:${USER} qt-unified-linux-x64-online.run
+
+echo -e "\e[31mPlease install Qt in your X-Window Manager\e[0m"
+echo -e "\e[31m~/qt-unified-linux-x64-online.run\e[0m"
+echo ""
+echo -e "\e[31mPlease choose following items during Qt installation:\e[0m"
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Desktop gcc 64 bit\e[0m"
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
+
+
+
+echo ""
+echo -e "\e[32m-------------------- Done --------------------\e[0m"
+echo ""
+
+
+
+echo "Rebooting..."
+sleep 5
+reboot
