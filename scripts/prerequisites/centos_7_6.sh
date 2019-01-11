@@ -307,7 +307,7 @@ echo ""
 
 
 
-yum install -y gtk-vnc-devel libvirt-glib-devel
+yum install -y gtk-vnc-devel libvirt-glib-devel gtk3-devel spice-gtk3-devel
 
 
 
