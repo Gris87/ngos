@@ -328,6 +328,12 @@ make install || exit 1
 
 
 
+sed -i "s/^#\? \?user *=.*/user = \"${USER}\"/g"   /etc/libvirt/qemu.conf
+sed -i "s/^#\? \?group *=.*/group = \"${USER}\"/g" /etc/libvirt/qemu.conf
+systemctl restart libvirtd
+
+
+
 echo ""
 echo -e "\e[33m-------------------- OVMF --------------------\e[0m"
 echo ""
