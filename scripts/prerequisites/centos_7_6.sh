@@ -94,7 +94,7 @@ yum install -y socat
 yum install -y ImageMagick
 yum install -y nodejs
 
-npm i sinon --save-dev || exit 1
+npm i sinon --save-dev       || exit 1
 npm i markdown-spellcheck -g || exit 1
 
 export PREFIX="/usr/local/x8664elfgcc"
@@ -309,7 +309,7 @@ echo ""
 
 
 
-yum install -y gtk-vnc-devel libvirt-glib-devel gtk3-devel spice-gtk3-devel
+yum install -y gtk-vnc2-devel libvirt-glib-devel gtk3-devel spice-gtk3-devel
 
 
 

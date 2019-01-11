@@ -84,7 +84,7 @@ apt-get install -y imagemagick
 apt-get install -y npm
 
 ln -s /usr/bin/nodejs /usr/bin/node
-npm i sinon --save-dev || exit 1
+npm i sinon --save-dev       || exit 1
 npm i markdown-spellcheck -g || exit 1
 
 export PREFIX="/usr/local/x8664elfgcc"
