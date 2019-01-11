@@ -6,8 +6,9 @@ NGOS
 
 You have to install prerequisites before building the source code.
 
-* [Install prerequisites on CentOS 7](../2.%20Getting%20started/1.%20Install%20prerequisites%20on%20CentOS%207/README.md)
+* [Install prerequisites on Ubuntu 18.04](../2.%20Getting%20started/1.%20Install%20prerequisites%20on%20Ubuntu%2018.04/README.md)
 * [Install prerequisites on Ubuntu 16.04](../2.%20Getting%20started/2.%20Install%20prerequisites%20on%20Ubuntu%2016.04/README.md)
+* [Install prerequisites on CentOS 7.6](../2.%20Getting%20started/3.%20Install%20prerequisites%20on%20CentOS%207.6/README.md)
 
 You can also change the build configuration if needed. Please read [for more details](../3.%20Configuration/README.md).
 
