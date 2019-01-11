@@ -282,7 +282,7 @@ yum install -y https://centos7.iuscommunity.org/ius-release.rpm
 yum install -y python36u python36u-devel python36u-pip
 ln -s /bin/python3.6 /bin/python3
 ln -s /bin/pip3.6 /bin/pip3
-yum install -y intltool spice-gtk-devel libosinfo
+yum install -y intltool libosinfo
 pip3 install libvirt-python
 pip3 install libxml2-python3
 
@@ -307,7 +307,7 @@ echo ""
 
 
 
-yum install -y gtk-vnc-devel
+yum install -y gtk-vnc-devel libvirt-glib-devel
 
 
 
