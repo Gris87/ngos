@@ -278,6 +278,16 @@ echo ""
 
 
 
+yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+yum install -y python36u python36u-devel python36u-pip
+ln -s /bin/python3.6 /bin/python3
+ln -s /bin/pip3.6 /bin/pip3
+yum install -y intltool spice-gtk-devel libosinfo
+pip3 install libvirt-python
+pip3 install libxml2-python3
+
+
+
 mkdir /tmp/src
 cd /tmp/src
 
@@ -294,6 +304,10 @@ cd virt-manager-${VIRT_MANAGER_VERSION}/
 echo ""
 echo -e "\e[33m-------------------- virt-viewer-${VIRT_VIEWER_VERSION} --------------------\e[0m"
 echo ""
+
+
+
+yum install -y gtk-vnc-devel
 
 
 
