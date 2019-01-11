@@ -285,8 +285,8 @@ ln -s /bin/pip3.6 /bin/pip3
 yum install -y intltool libosinfo
 pip3 install libvirt-python
 pip3 install libxml2-python3
-pip3 install pygobject
 pip3 install requests
+pip3 install pygobject
 
 
 
