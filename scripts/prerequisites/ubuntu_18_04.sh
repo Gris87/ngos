@@ -66,3 +66,256 @@ fi
 echo ""
 echo -e "\e[33m-------------------- Environment --------------------\e[0m"
 echo ""
+
+
+
+apt-get update
+apt-get upgrade -y
+apt-get install -y curl
+apt-get install -y build-essential
+apt-get install -y libncurses-dev
+apt-get install -y libelf-dev
+apt-get install -y bison
+apt-get install -y flex
+apt-get install -y gdb
+apt-get install -y libgl-dev
+apt-get install -y socat
+apt-get install -y imagemagick
+apt-get install -y npm
+
+ln -s /usr/bin/nodejs /usr/bin/node
+npm i sinon --save-dev       || exit 1
+npm i markdown-spellcheck -g || exit 1
+
+export PREFIX="/usr/local/x8664elfgcc"
+export TARGET=x86_64-elf
+export PATH="$PREFIX/bin:$PATH"
+
+
+
+echo ""
+echo -e "\e[33m-------------------- gcc-8 --------------------\e[0m"
+echo ""
+
+
+
+add-apt-repository -y ppa:jonathonf/gcc
+apt-get update
+apt-get install -y gcc-8 g++-8
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+
+
+
+echo ""
+echo -e "\e[33m-------------------- binutils-${BINUTILS_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d binutils-${BINUTILS_VERSION} ]; then
+    curl -O http://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.xz
+    tar xf binutils-${BINUTILS_VERSION}.tar.xz
+fi
+
+mkdir binutils-build
+cd binutils-build
+../binutils-${BINUTILS_VERSION}/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log || exit 1
+make -j8 all 2>&1 | tee make.log || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- gcc-${GCC_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d gcc-${GCC_VERSION} ]; then
+    curl -O https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.xz
+    tar xf gcc-${GCC_VERSION}.tar.xz
+fi
+
+cd gcc-${GCC_VERSION}
+contrib/download_prerequisites
+cd ..
+mkdir gcc-build
+cd gcc-build
+../gcc-${GCC_VERSION}/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ | tee configure.log || exit 1
+make -j8 all-gcc 2>&1 | tee make-gcc.log || exit 1
+make install-gcc || exit 1
+make -j8 all-target-libgcc 2>&1 | tee make-libgcc.log || exit 1
+make install-target-libgcc || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- libvirt-${LIBVIRT_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get build-dep -y libvirt
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d libvirt ]; then
+    git clone https://github.com/libvirt/libvirt.git
+fi
+
+cd libvirt
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${LIBVIRT_VERSION}
+./autogen.sh || exit 1
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+systemctl enable libvirtd
+systemctl restart libvirtd
+
+
+
+echo ""
+echo -e "\e[33m-------------------- libvirt-glib-${LIBVIRT_GLIB_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get build-dep -y libvirt-glib
+apt-get install -y gtk-doc-tools
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d libvirt-glib ]; then
+    git clone https://github.com/libvirt/libvirt-glib.git
+fi
+
+cd libvirt-glib
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${LIBVIRT_GLIB_VERSION}
+./autogen.sh || exit 1
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- qemu-${QEMU_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get install -y libpixman-1-dev
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d qemu ]; then
+    git clone https://github.com/qemu/qemu.git
+fi
+
+cd qemu
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git checkout v${QEMU_VERSION}
+cd ..
+
+mkdir qemu-build
+cd qemu-build
+../qemu/configure --enable-debug || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- virt-manager-${VIRT_MANAGER_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get install -y intltool libgtk2.0-bin python3-pip libosinfo-1.0
+pip3 install libvirt-python
+pip3 install libxml2-python3
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d virt-manager-${VIRT_MANAGER_VERSION} ]; then
+    wget https://virt-manager.org/download/sources/virt-manager/virt-manager-${VIRT_MANAGER_VERSION}.tar.gz
+    tar xf virt-manager-${VIRT_MANAGER_VERSION}.tar.gz
+fi
+
+cd virt-manager-${VIRT_MANAGER_VERSION}/
+./setup.py install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- virt-viewer-${VIRT_VIEWER_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+apt-get install -y libgtk-vnc-2.0-dev
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+
+if [ ! -d virt-viewer-${VIRT_VIEWER_VERSION} ]; then
+    wget https://virt-manager.org/download/sources/virt-viewer/virt-viewer-${VIRT_VIEWER_VERSION}.tar.gz
+    tar xf virt-viewer-${VIRT_VIEWER_VERSION}.tar.gz
+fi
+
+cd virt-viewer-${VIRT_VIEWER_VERSION}/
+./configure || exit 1
+make -j8 all || exit 1
+make install || exit 1
+
+
+
+echo ""
+echo -e "\e[33m-------------------- OVMF --------------------\e[0m"
+echo ""
+
+
+
+apt-get install -y alien
+
+
+
+mkdir /tmp/src
+cd /tmp/src
+mkdir edk2_git
+cd edk2_git
+wget https://www.kraxel.org/repos/jenkins/edk2/`curl https://www.kraxel.org/repos/jenkins/edk2/ 2> /dev/nill | grep -o -e "edk2.git-ovmf-x64-.*.rpm\"" | rev | cut -c 2- | rev`
+alien *.rpm
+dpkg -i *.deb
