@@ -20,7 +20,7 @@ fi
 
 
 
-yum install -y redhat-lsb
+yum install -y redhat-lsb 2> /dev/null
 
 
 
