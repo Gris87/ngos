@@ -319,3 +319,85 @@ cd edk2_git
 wget https://www.kraxel.org/repos/jenkins/edk2/`curl https://www.kraxel.org/repos/jenkins/edk2/ 2> /dev/nill | grep -o -e "edk2.git-ovmf-x64-.*.rpm\"" | rev | cut -c 2- | rev`
 alien *.rpm
 dpkg -i *.deb
+
+
+
+echo ""
+echo -e "\e[33m-------------------- virtualbox-${VIRTUALBOX_VERSION} --------------------\e[0m"
+echo ""
+
+
+
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
+apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib"
+
+apt-get update
+apt-get install -y virtualbox-${VIRTUALBOX_VERSION}
+
+
+
+echo ""
+echo -e "\e[33m-------------------- .gdbinit --------------------\e[0m"
+echo ""
+
+
+
+cp ${CURRENT_PATH}/../../tools/gdb/.gdbinit /home/${USER}/
+chown ${USER}:${USER} /home/${USER}/.gdbinit
+
+
+
+echo ""
+echo -e "\e[33m-------------------- .bashrc --------------------\e[0m"
+echo ""
+
+
+
+cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" > /home/${USER}/temp
+mv /home/${USER}/temp /home/${USER}/.bashrc
+echo "export PATH=/usr/local/x8664elfgcc/bin:\$PATH"    >> /home/${USER}/.bashrc
+echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\$PATH" >> /home/${USER}/.bashrc
+chown ${USER}:${USER} /home/${USER}/.bashrc
+
+
+
+echo ""
+echo -e "\e[33m-------------------- Qt --------------------\e[0m"
+echo ""
+
+
+
+cd /home/${USER}/
+wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
+chmod 755 qt-unified-linux-x64-online.run
+chown ${USER}:${USER} qt-unified-linux-x64-online.run
+
+echo -e "\e[31mPlease install Qt in your X-Window Manager\e[0m"
+echo -e "\e[31m~/qt-unified-linux-x64-online.run\e[0m"
+echo ""
+echo -e "\e[31mPlease choose following items during Qt installation:\e[0m"
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Desktop gcc 64 bit\e[0m"
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
+
+
+
+echo ""
+echo -e "\e[33m-------------------- AppArmor --------------------\e[0m"
+echo ""
+
+
+
+update-rc.d apparmor disable
+
+
+
+echo ""
+echo -e "\e[32m-------------------- Done --------------------\e[0m"
+echo ""
+
+
+
+echo "AppArmor disabled. Rebooting..."
+sleep 5
+reboot
