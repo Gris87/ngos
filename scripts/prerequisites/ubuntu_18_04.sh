@@ -302,6 +302,11 @@ make install || exit 1
 
 
 
+rm /usr/lib/x86_64-linux-gnu/libvirt*
+systemctl restart libvirtd
+
+
+
 echo ""
 echo -e "\e[33m-------------------- OVMF --------------------\e[0m"
 echo ""
