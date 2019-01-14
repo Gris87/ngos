@@ -15,15 +15,8 @@ If you need to install VNC server please use the following instruction:
 sudo su
 apt-get update
 apt-get upgrade -y
-apt-get install -y --no-install-recommends ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal libtasn1-3-bin xfce4 xfce4-goodies
-
-mkdir /tmp/src
-cd /tmp/src
-mkdir tigervnc
-cd tigervnc
-wget https://bintray.com/tigervnc/stable/download_file?file_path=ubuntu-16.04LTS%2Famd64%2Ftigervncserver_1.8.0-1ubuntu1_amd64.deb
-dpkg -i *.deb
-rm -rf /tmp/src
+apt-get install -y --no-install-recommends ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal libtasn1-bin xfce4 xfce4-goodies
+apt-get install -y tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer
 ```
 
 After this run commands with your user account:
