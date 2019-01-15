@@ -101,7 +101,7 @@ qint32 main(qint32 argc, char *argv[])
         {
             if (file.isDir())
             {
-                if (filename != ".git" && !path.contains("tools/tracers/assets"))
+                if (filename != ".git" && !path.contains("tools/tracers/assets") && !path.contains("scripts/prerequisites"))
                 {
                     QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
