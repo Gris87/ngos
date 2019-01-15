@@ -23,6 +23,8 @@ $(OUTPUT_DIR)/NGOS_installer.bin: src/os/boot/build/boot.elf src/os/configure/bu
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -i src/os/installer/build/installer.elf -o $@
 
+
+
 clean: $(SUBDIRS)
 	$(RMDIR) $(OUTPUT_DIR)
 
