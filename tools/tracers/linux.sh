@@ -169,7 +169,7 @@ if [ ! -f ngos_tracer ]; then
     git checkout master
     git branch -D ngos_tracer
     git pull
-    git checkout v4.13 -b ngos_tracer
+    git checkout v4.20 -b ngos_tracer
 
     cp -r ${WORKING_DIR}/assets/${OS_NAME}/. ./
     git apply ngos_tracer.patch
