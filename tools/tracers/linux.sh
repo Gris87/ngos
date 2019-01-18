@@ -25,8 +25,8 @@ OUTPUT_FILE=/tmp/${OS_NAME}_tracer.txt
 BZ_IMAGE_ELF=../../../${OS_NAME}/arch/x86/boot/compressed/vmlinux
 VM_LINUX_ELF=../../../${OS_NAME}/vmlinux
 
-INITIAL_BREAKPOINT=0x3FFA1CCD
-INITIAL_ADDRESS=0x3C58D410
+INITIAL_BREAKPOINT=0x3FFA3343
+INITIAL_ADDRESS=0x39E6B4F0
 PREFERRED_ADDRESS=0x1400000
 RELOCATED_ADDRESS=0x246B000
 RANDOM_PHYSICAL_ADDRESS=0x2C00000
@@ -222,7 +222,7 @@ execute_gdb_command "set width 200" -v
 execute_gdb_command "set listsize 1" -v
 execute_gdb_command "set architecture i386:x86-64:intel" -v
 execute_gdb_command "target remote :1234" -v
-execute_gdb_command "add-symbol-file-all ${BZ_IMAGE_ELF} ${INITIAL_ADDRESS}-0x210" -v
+execute_gdb_command "add-symbol-file-all ${BZ_IMAGE_ELF} ${INITIAL_ADDRESS}-0x2F0" -v
 execute_gdb_command "add-symbol-file-all ${BZ_IMAGE_ELF} ${PREFERRED_ADDRESS}" -v
 execute_gdb_command "add-symbol-file-all ${BZ_IMAGE_ELF} ${RELOCATED_ADDRESS}" -v
 execute_gdb_command "add-symbol-file-all ${VM_LINUX_ELF} -0xFFFFFFFF81000000+${RANDOM_PHYSICAL_ADDRESS}" -v
@@ -262,11 +262,11 @@ do
     INSTRUCTION_ADDRESS=`echo "${INSTRUCTION_ADDRESS_NICE}" | cut -d \< -f 1`
     INSTRUCTION=`echo "${INSTRUCTION}" | cut -d : -f 2`
 
-    echo "${INSTRUCTION_ADDRESS}" >  ${LAST_BREAKPOINT_FILE}
+    echo "${INSTRUCTION_ADDRESS}" > ${LAST_BREAKPOINT_FILE}
 
 
 
-    MEMORY_LOCATIONS=(`echo "${INSTRUCTION}" | grep -o -E -e "\*?(-?0x[0-9a-f]+)?\((%.{2,3})\)" -e "# +(0x[0-9a-f]+)" -e "\*(%.{2,3})" -e "\*(0x[0-9a-f]+)" | sed -r "s/^# +//g"`)
+    MEMORY_LOCATIONS=(`echo "${INSTRUCTION}" | grep -o -E -e "\*?(-?0x[0-9a-f]+)?\((%.{2,3})\)" -e "# +(0x[0-9a-f]+)" -e "\*(%.{2,3})" -e "\*(0x[0-9a-f]+)" | sed -r "s/^# +//g" | sed -r "s/^\*(.*)/\*\1 \1/g"`)
     MEMORY_VALUES_BEFORE=()
 
     for LOCATION in "${MEMORY_LOCATIONS[@]}"
