@@ -7,7 +7,7 @@
 
 
 
-#define MAX_NUMNODES 0x400
+#define MAX_NUMNODES 0x0400
 
 
 

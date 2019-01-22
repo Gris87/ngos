@@ -25,6 +25,9 @@ NgosStatus setupStackCanary()
     EARLY_LVVV(("irqStack.stackCanary = 0x%016lX", irqStack.stackCanary));
     EARLY_LVVV(("initTask.stackCanary = 0x%016lX", initTask.stackCanary));
 
+    EARLY_TEST_ASSERT(irqStack.stackCanary == canary, NgosStatus::ASSERTION);
+    EARLY_TEST_ASSERT(initTask.stackCanary == canary, NgosStatus::ASSERTION);
+
 
 
     return NgosStatus::OK;

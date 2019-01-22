@@ -128,6 +128,81 @@ index 9ed9709d9947..a8bf61fcae6c 100644
  	*virt_addr = random_addr;
 +	*virt_addr = 0x1000000;
  }
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 16b1cbd3a61e..01892dd65776 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -63,23 +63,23 @@ EXPORT_SYMBOL(vmemmap_base);
+ 
+ #define __head	__section(.head.text)
+ 
+-static void __head *fixup_pointer(void *ptr, unsigned long physaddr)
++void __head *fixup_pointer(void *ptr, unsigned long physaddr)
+ {
+ 	return ptr - (void *)_text + (void *)physaddr;
+ }
+ 
+-static unsigned long __head *fixup_long(void *ptr, unsigned long physaddr)
++unsigned long __head *fixup_long(void *ptr, unsigned long physaddr)
+ {
+ 	return fixup_pointer(ptr, physaddr);
+ }
+ 
+ #ifdef CONFIG_X86_5LEVEL
+-static unsigned int __head *fixup_int(void *ptr, unsigned long physaddr)
++unsigned int __head *fixup_int(void *ptr, unsigned long physaddr)
+ {
+ 	return fixup_pointer(ptr, physaddr);
+ }
+ 
+-static bool __head check_la57_support(unsigned long physaddr)
++bool __head check_la57_support(unsigned long physaddr)
+ {
+ 	/*
+ 	 * 5-level paging is detected and enabled at kernel decomression
+@@ -98,7 +98,7 @@ static bool __head check_la57_support(unsigned long physaddr)
+ 	return true;
+ }
+ #else
+-static bool __head check_la57_support(unsigned long physaddr)
++bool __head check_la57_support(unsigned long physaddr)
+ {
+ 	return false;
+ }
+@@ -269,7 +269,7 @@ unsigned long __startup_secondary_64(void)
+ }
+ 
+ /* Wipe all early page tables except for the kernel symbol map */
+-static void __init reset_early_page_tables(void)
++void __init reset_early_page_tables(void)
+ {
+ 	memset(early_top_pgt, 0, sizeof(pgd_t)*(PTRS_PER_PGD-1));
+ 	next_early_pgt = 0;
+@@ -359,13 +359,13 @@ int __init early_make_pgtable(unsigned long address)
+ 
+ /* Don't add a printk in there. printk relies on the PDA which is not initialized 
+    yet. */
+-static void __init clear_bss(void)
++void __init clear_bss(void)
+ {
+ 	memset(__bss_start, 0,
+ 	       (unsigned long) __bss_stop - (unsigned long) __bss_start);
+ }
+ 
+-static unsigned long get_cmd_line_ptr(void)
++unsigned long get_cmd_line_ptr(void)
+ {
+ 	unsigned long cmd_line_ptr = boot_params.hdr.cmd_line_ptr;
+ 
+@@ -374,7 +374,7 @@ static unsigned long get_cmd_line_ptr(void)
+ 	return cmd_line_ptr;
+ }
+ 
+-static void __init copy_bootdata(char *real_mode_data)
++void __init copy_bootdata(char *real_mode_data)
+ {
+ 	char * command_line;
+ 	unsigned long cmd_line_ptr;
 diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
 index 63b4b7eee138..921526e1ddb5 100644
 --- a/lib/decompress_inflate.c
