@@ -154,7 +154,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 22)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 23)] = "clflushopt";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 24)] = "clwb";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 25)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 25)] = "intel_pt";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 26)] = "avx512pf";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 27)] = "avx512er";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_EBX, 28)] = "avx512cd";
@@ -166,18 +166,18 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
 
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 0)]  = "";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 1)]  = "avx512vbmi";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 2)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 2)]  = "umip";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 3)]  = "pku";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 4)]  = "ospke";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 5)]  = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 6)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 6)]  = "avx512_vbmi2";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 7)]  = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 8)]  = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 9)]  = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 10)] = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 11)] = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 12)] = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 13)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 8)]  = "gfni";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 9)]  = "vaes";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 10)] = "vpclmulqdq";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 11)] = "avx512_vnni";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 12)] = "avx512_bitalg";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 13)] = "tme";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 14)] = "avx512_vpopcntdq";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 15)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 16)] = "la57";
@@ -189,15 +189,50 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 22)] = "rdpid";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 23)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 24)] = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 25)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 25)] = "cldemote";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 26)] = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 27)] = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 28)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 27)] = "movdiri";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 28)] = "movdir64b";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 29)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_00000007_ECX, 31)] = "";
 
     // word 5
+
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 0)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 1)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 2)]  = "avx512_4vnniw";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 3)]  = "avx512_4fmaps";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 4)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 5)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 6)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 7)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 8)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 9)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 10)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 11)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 12)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 13)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 14)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 15)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 16)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 17)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 18)] = "pconfig";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 19)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 20)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 21)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 22)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 23)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 24)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 25)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 26)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 27)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 28)] = "flush_l1d";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 29)] = "arch_capabilities";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 30)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_00000007_EDX, 31)] = "";
+
+    // word 6
 
     cpuFeaturesNames[WORD_BIT(CPUID_0000000D_1_EAX, 0)]  = "xsaveopt";
     cpuFeaturesNames[WORD_BIT(CPUID_0000000D_1_EAX, 1)]  = "xsavec";
@@ -232,7 +267,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_0000000D_1_EAX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_0000000D_1_EAX, 31)] = "";
 
-    // word 6
+    // word 7
 
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_0_EDX, 0)]  = "";
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_0_EDX, 1)]  = "cqm_llc";
@@ -267,7 +302,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_0_EDX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_0_EDX, 31)] = "";
 
-    // word 7
+    // word 8
 
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_1_EDX, 0)]  = "cqm_occup_llc";
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_1_EDX, 1)]  = "cqm_mbm_total";
@@ -302,7 +337,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_1_EDX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_0000000F_1_EDX, 31)] = "";
 
-    // word 8
+    // word 9
 
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 0)]  = "lahf_lm";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 1)]  = "cmp_legacy";
@@ -332,12 +367,12 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 25)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 26)] = "bpext";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 27)] = "ptsc";
-    cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 28)] = "perfctr_l2";
+    cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 28)] = "perfctr_llc";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 29)] = "mwaitx";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_ECX, 31)] = "";
 
-    // word 9
+    // word 10
 
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_EDX, 0)]  = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_EDX, 1)]  = "";
@@ -372,7 +407,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_EDX, 30)] = "3dnowext";
     cpuFeaturesNames[WORD_BIT(CPUID_80000001_EDX, 31)] = "3dnow";
 
-    // word 10
+    // word 11
 
     cpuFeaturesNames[WORD_BIT(CPUID_80000007_EBX, 0)]  = "overflow_recov";
     cpuFeaturesNames[WORD_BIT(CPUID_80000007_EBX, 1)]  = "succor";
@@ -407,11 +442,11 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_80000007_EBX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000007_EBX, 31)] = "";
 
-    // word 11
+    // word 12
 
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 0)]  = "clzero";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 1)]  = "irperf";
-    cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 2)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 2)]  = "xsaveerptr";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 3)]  = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 4)]  = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 5)]  = "";
@@ -434,7 +469,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 22)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 23)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 24)] = "";
-    cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 25)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 25)] = "virt_ssbd";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 26)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 27)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 28)] = "";
@@ -442,7 +477,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_80000008_EBX, 31)] = "";
 
-    // word 12
+    // word 13
 
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 0)]  = "npt";
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 1)]  = "lbrv";
@@ -460,7 +495,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 13)] = "avic";
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 14)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 15)] = "v_vmsave_vmload";
-    cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 16)] = "";
+    cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 16)] = "vgif";
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 17)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 18)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 19)] = "";
@@ -477,20 +512,20 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPUID_8000000A_EDX, 31)] = "";
 
-    // word 13
+    // word 14
 
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 0)]  = "aperfmperf";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 1)]  = "epb";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 2)]  = "intel_pt";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 3)]  = "avx512_4vnniw";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 4)]  = "avx512_4fmaps";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 5)]  = "cat_l3";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 6)]  = "cat_l2";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 7)]  = "cdp_l3";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 8)]  = "mba";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 9)]  = "hw_pstate";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 10)] = "cpb";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 11)] = "proc_feedback";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 2)]  = "cat_l3";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 3)]  = "cat_l2";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 4)]  = "cdp_l3";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 5)]  = "mba";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 6)]  = "hw_pstate";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 7)]  = "cpb";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 8)]  = "proc_feedback";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 9)]  = "";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 10)] = "";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 11)] = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 12)] = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 13)] = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 14)] = "";
@@ -512,7 +547,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 30)] = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 31)] = "";
 
-    // word 14
+    // word 15
 
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 0)]  = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_OTHER_FLAGS, 1)]  = "";
