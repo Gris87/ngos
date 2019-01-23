@@ -315,15 +315,23 @@ enum class X86Feature: u16
     // Auxiliary flags: NGOS defined - For features scattered in various
     // CPUID levels like 0x6, 0xA etc, word 14
     //
-    APERFMPERF          = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 0),   // APERFMPERF
+    APERFMPERF          = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 0),   // P-State hardware coordination feedback capability (APERF/MPERF MSRs)
     EPB                 = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 1),   // IA32_ENERGY_PERF_BIAS support
     CAT_L3              = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 2),   // Cache Allocation Technology L3
     CAT_L2              = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 3),   // Cache Allocation Technology L2
     CDP_L3              = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 4),   // Code and Data Prioritization L3
-    MBA                 = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 5),   // Memory Bandwidth Allocation
-    HW_PSTATE           = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 6),   // AMD HW-PState
-    CPB                 = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 7),   // AMD Core Performance Boost
-    PROC_FEEDBACK       = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 8),   // AMD ProcFeedbackInterface
+    CDP_L2              = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 5),   // Code and Data Prioritization L2
+    MBA                 = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 6),   // Memory Bandwidth Allocation
+    HW_PSTATE           = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 7),   // AMD HW-PState
+    CPB                 = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 8),   // AMD Core Performance Boost
+    PROC_FEEDBACK       = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 9),   // AMD ProcFeedbackInterface
+    SME                 = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 10),  // AMD Secure Memory Encryption
+    SEV                 = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 11),  // AMD Secure Encrypted Virtualization
+    MSR_SPEC_CTRL       = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 12),  // "" MSR SPEC_CTRL is implemented
+    IBRS                = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 13),  // Indirect Branch Restricted Speculation
+    IBPB                = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 14),  // Indirect Branch Prediction Barrier
+    STIBP               = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 15),  // Single Thread Indirect Branch Predictors
+    SSBD                = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 16),  // Speculative Store Bypass Disable
 
 
 

@@ -30,11 +30,13 @@ public:
 #else
 private:
 #endif
+    static NgosStatus initCpuFeatures(); // TEST: NO
     static NgosStatus doPreprocessing(); // TEST: NO
     static NgosStatus doIntelPreprocessing(); // TEST: NO
     static NgosStatus doAmdPreprocessing(); // TEST: NO
     static NgosStatus initScatteredFeatures(); // TEST: NO
     static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count); // TEST: NO
+    static NgosStatus initSpeculationControl(); // TEST: NO
     static NgosStatus doPostprocessing(); // TEST: NO
     static NgosStatus doIntelPostprocessing(); // TEST: NO
     static NgosStatus doAmdPostprocessing(); // TEST: NO
