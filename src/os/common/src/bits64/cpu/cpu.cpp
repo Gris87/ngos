@@ -1172,23 +1172,23 @@ NgosStatus CPU::filterFeaturesDependentOnCpuid()
 
 
 
-    if (hasFlag(X86Feature::MWAIT) && sCpuidLevel <= 0x00000005)
+    if (hasFlag(X86Feature::MWAIT) && sCpuidLevel < 0x00000005)
     {
-        COMMON_LW(("X86Feature::MWAIT resetted because sCpuidLevel <= 0x00000005"));
+        COMMON_LW(("X86Feature::MWAIT resetted because sCpuidLevel < 0x00000005"));
 
         COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::MWAIT), NgosStatus::ASSERTION);
     }
 
-    if (hasFlag(X86Feature::DCA) && sCpuidLevel <= 0x00000009)
+    if (hasFlag(X86Feature::DCA) && sCpuidLevel < 0x00000009)
     {
-        COMMON_LW(("X86Feature::DCA resetted because sCpuidLevel <= 0x00000009"));
+        COMMON_LW(("X86Feature::DCA resetted because sCpuidLevel < 0x00000009"));
 
         COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::DCA), NgosStatus::ASSERTION);
     }
 
-    if (hasFlag(X86Feature::XSAVE) && sCpuidLevel <= 0x0000000D)
+    if (hasFlag(X86Feature::XSAVE) && sCpuidLevel < 0x0000000D)
     {
-        COMMON_LW(("X86Feature::XSAVE resetted because sCpuidLevel <= 0x0000000D"));
+        COMMON_LW(("X86Feature::XSAVE resetted because sCpuidLevel < 0x0000000D"));
 
         COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::XSAVE), NgosStatus::ASSERTION);
     }
