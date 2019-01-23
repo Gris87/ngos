@@ -42,6 +42,7 @@ private:
     static NgosStatus doAmdPostprocessing(); // TEST: NO
     static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO
     static NgosStatus getIntelMicrocodeRevision(); // TEST: NO
+    static bool isIntelBadSpectreMicrocode(); // TEST: NO
     static bool hasEFlag(u64 mask); // TEST: NO
     static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
 

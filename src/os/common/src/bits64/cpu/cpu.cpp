@@ -1069,6 +1069,38 @@ NgosStatus CPU::doIntelPostprocessing()
 
 
 
+    // Early microcode releases for the Spectre v2 mitigation were broken. Therefore we are disabling Speculation Control in the case
+    if (
+        (
+         hasFlag(X86Feature::IBRS)
+         ||
+         hasFlag(X86Feature::IBPB)
+         ||
+         hasFlag(X86Feature::STIBP)
+         ||
+         hasFlag(X86Feature::INTEL_STIBP)
+         ||
+         hasFlag(X86Feature::SPEC_CTRL)
+        )
+        &&
+        isIntelBadSpectreMicrocode()
+       )
+    {
+        COMMON_LVV(("X86Feature::IBRS, X86Feature::IBPB, X86Feature::STIBP, X86Feature::INTEL_STIBP or X86Feature::SPEC_CTRL supported"));
+        COMMON_LW(("Intel Spectre v2 broken microcode detected; disabling Speculation Control"));
+
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::IBRS),           NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::IBPB),           NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::STIBP),          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::INTEL_STIBP),    NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::SPEC_CTRL),      NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::MSR_SPEC_CTRL),  NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::SSBD),           NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::SPEC_CTRL_SSBD), NgosStatus::ASSERTION);
+    }
+
+
+
     // Bit 8 in cpuid 0x80000007 EDX means that TSC runs at constant rate with P/T states and does not stop in deep C-states.
     if (sPower & (1ULL << 8))
     {
@@ -1076,29 +1108,6 @@ NgosStatus CPU::doIntelPostprocessing()
 
         COMMON_ASSERT_EXECUTION(setFlag(X86Feature::CONSTANT_TSC), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(setFlag(X86Feature::NONSTOP_TSC),  NgosStatus::ASSERTION);
-    }
-
-
-
-    if (sFamily == 6)
-    {
-        switch (sModel)
-        {
-            case 0x35:  // Cloverview
-            case 0x4A:  // Merrifield
-            {
-                COMMON_LVV(("Your CPU model supports X86Feature::NONSTOP_TSC_S3"));
-
-                COMMON_ASSERT_EXECUTION(setFlag(X86Feature::NONSTOP_TSC_S3), NgosStatus::ASSERTION);
-            }
-            break;
-
-            default:
-            {
-                // Nothing
-            }
-            break;
-        }
     }
 
 
@@ -1132,6 +1141,15 @@ NgosStatus CPU::doIntelPostprocessing()
         COMMON_LVVV(("threadsPerCore = %u", threadsPerCore));
 
         sX86CoreIdBits = BitUtils::getCountOrder16(threadsPerCore);
+    }
+
+
+
+    if (hasFlag(X86Feature::MPX) && !hasFlag(X86Feature::SMEP))
+    {
+        COMMON_LW(("X86Feature::MPX resetted because X86Feature::SMEP not supported"));
+
+        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::MPX), NgosStatus::ASSERTION);
     }
 
 
@@ -1200,6 +1218,98 @@ NgosStatus CPU::getIntelMicrocodeRevision()
 
 
     return NgosStatus::OK;
+}
+
+bool CPU::isIntelBadSpectreMicrocode()
+{
+    COMMON_LT((""));
+
+
+
+    // hypervisor lie to us on the microcode version so
+    // we may as well hope that it is running the correct version.
+    if (hasFlag(X86Feature::HYPERVISOR))
+    {
+        COMMON_LVV(("X86Feature::HYPERVISOR supported"));
+
+        return false;
+    }
+
+
+
+    return (
+            (
+             sModel == (u8)IntelCpuModel::SKYLAKE_X
+             &&
+             (
+              (
+               sStepping == 0x03
+               &&
+               sMicrocodeRevision <= 0x0100013E
+              )
+              ||
+              (
+               sStepping == 0x04
+               &&
+               sMicrocodeRevision <= 0x0200003C
+              )
+             )
+            )
+
+
+
+            ||
+
+
+
+            (
+             sModel == (u8)IntelCpuModel::KABY_LAKE_MOBILE
+             &&
+             (
+              (
+               sStepping == 0x09
+               &&
+               sMicrocodeRevision <= 0x80
+              )
+              ||
+              (
+               sStepping == 0x0A
+               &&
+               sMicrocodeRevision <= 0x80
+              )
+             )
+            )
+
+
+
+            ||
+
+
+
+            (
+             sModel == (u8)IntelCpuModel::KABY_LAKE_DESKTOP
+             &&
+             (
+              (
+               sStepping == 0x09
+               &&
+               sMicrocodeRevision <= 0x80
+              )
+              ||
+              (
+               sStepping == 0x0A
+               &&
+               sMicrocodeRevision <= 0x80
+              )
+              ||
+              (
+               sStepping == 0x0B
+               &&
+               sMicrocodeRevision <= 0x80
+              )
+             )
+            )
+           );
 }
 
 bool CPU::hasEFlag(u64 mask)
