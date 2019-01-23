@@ -113,6 +113,8 @@ src/os/common/src/bits64/cpu/cpu.h
 src/os/common/src/bits64/cpu/cpufeatures.h
 src/os/common/src/bits64/cpu/cpuvendor.h
 src/os/common/src/bits64/cpu/generated/cpufeaturesnames.h
+src/os/common/src/bits64/cpu/models/amd.h
+src/os/common/src/bits64/cpu/models/intel.h
 src/os/common/src/bits64/cpu/msr/msr.cpp
 src/os/common/src/bits64/cpu/msr/msr.h
 src/os/common/src/bits64/cpu/msr/msrregisters.h

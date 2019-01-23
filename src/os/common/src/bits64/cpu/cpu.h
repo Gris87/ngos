@@ -5,6 +5,8 @@
 
 #include <ngos/status.h>
 #include <ngos/types.h>
+#include <src/bits64/cpu/models/amd.h>
+#include <src/bits64/cpu/models/intel.h>
 #include <src/bits64/cpu/cpufeatures.h>
 #include <src/bits64/cpu/cpuvendor.h>
 
