@@ -2,11 +2,11 @@
 
 #include <asm/bitutils.h>
 #include <ngos/linkage.h>
+#include <src/bits64/cpu/flags.h>
 #include <src/bits64/cpu/generated/cpubugsnames.h>
 #include <src/bits64/cpu/generated/cpufeaturesnames.h>
 #include <src/bits64/cpu/msr/msr.h>
 #include <src/bits64/cpu/msr/msrregisters.h>
-#include <src/bits64/cpu/flags.h>
 #include <src/bits64/log/assert.h>
 #include <src/bits64/log/log.h>
 #include <src/bits64/printf/printf.h>
@@ -1361,21 +1361,21 @@ bool CPU::isIntelBadSpectreMicrocode()
 
     return (
             (
-             sModel == (u8)IntelCpuModel::SKYLAKE_X
-             &&
-             (
-              (
-               sStepping == 0x03
-               &&
-               sMicrocodeRevision <= 0x0100013E
-              )
-              ||
-              (
-               sStepping == 0x04
-               &&
-               sMicrocodeRevision <= 0x0200003C
-              )
-             )
+                sModel == (u8)IntelCpuModel::SKYLAKE_X
+                &&
+                (
+                    (
+                        sStepping == 0x03
+                        &&
+                        sMicrocodeRevision <= 0x0100013E
+                    )
+                    ||
+                    (
+                        sStepping == 0x04
+                        &&
+                        sMicrocodeRevision <= 0x0200003C
+                    )
+                )
             )
 
 
@@ -1385,21 +1385,21 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-             sModel == (u8)IntelCpuModel::KABY_LAKE_MOBILE
-             &&
-             (
-              (
-               sStepping == 0x09
-               &&
-               sMicrocodeRevision <= 0x80
-              )
-              ||
-              (
-               sStepping == 0x0A
-               &&
-               sMicrocodeRevision <= 0x80
-              )
-             )
+                sModel == (u8)IntelCpuModel::KABY_LAKE_MOBILE
+                &&
+                (
+                    (
+                        sStepping == 0x09
+                        &&
+                        sMicrocodeRevision <= 0x80
+                    )
+                    ||
+                    (
+                        sStepping == 0x0A
+                        &&
+                        sMicrocodeRevision <= 0x80
+                    )
+                )
             )
 
 
@@ -1409,29 +1409,29 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-             sModel == (u8)IntelCpuModel::KABY_LAKE_DESKTOP
-             &&
-             (
-              (
-               sStepping == 0x09
-               &&
-               sMicrocodeRevision <= 0x80
-              )
-              ||
-              (
-               sStepping == 0x0A
-               &&
-               sMicrocodeRevision <= 0x80
-              )
-              ||
-              (
-               sStepping == 0x0B
-               &&
-               sMicrocodeRevision <= 0x80
-              )
-             )
+                sModel == (u8)IntelCpuModel::KABY_LAKE_DESKTOP
+                &&
+                (
+                    (
+                        sStepping == 0x09
+                        &&
+                        sMicrocodeRevision <= 0x80
+                    )
+                    ||
+                    (
+                        sStepping == 0x0A
+                        &&
+                        sMicrocodeRevision <= 0x80
+                    )
+                    ||
+                    (
+                        sStepping == 0x0B
+                        &&
+                        sMicrocodeRevision <= 0x80
+                    )
+                )
             )
-           );
+        );
 }
 
 bool CPU::hasEFlag(u64 mask)

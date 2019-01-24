@@ -202,7 +202,11 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    addOneBlankLine(lines);
+    if (currentWord > 0)
+    {
+        addOneBlankLine(lines);
+    }
+
     lines.append(QString("    // word %1").arg(currentWord));
     addOneBlankLine(lines);
 

@@ -5,11 +5,11 @@
 
 #include <ngos/status.h>
 #include <ngos/types.h>
-#include <src/bits64/cpu/models/amd.h>
-#include <src/bits64/cpu/models/intel.h>
 #include <src/bits64/cpu/cpubugs.h>
 #include <src/bits64/cpu/cpufeatures.h>
 #include <src/bits64/cpu/cpuvendor.h>
+#include <src/bits64/cpu/models/amd.h>
+#include <src/bits64/cpu/models/intel.h>
 
 
 
@@ -28,7 +28,7 @@ public:
     static bool hasFlag(X86Feature flag); // TEST: NO
 
     static NgosStatus setBug(X86Bug bug); // TEST: NO
-    static NgosStatus cleaBug(X86Bug bug); // TEST: NO
+    static NgosStatus clearBug(X86Bug bug); // TEST: NO
     static bool hasBug(X86Bug bug); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES

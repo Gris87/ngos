@@ -102,7 +102,7 @@ bool CpuBugsNamesGenerator::generate(const QString &path)
 
 
 
-    qint64  currentWord      = 0;
+    qint64  currentWord  = 0;
     qint64  lastBugIndex = 0;
     QString lastBugWord  = "";
 
@@ -202,7 +202,11 @@ bool CpuBugsNamesGenerator::generate(const QString &path)
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    addOneBlankLine(lines);
+    if (currentWord > 0)
+    {
+        addOneBlankLine(lines);
+    }
+
     lines.append(QString("    // word %1").arg(currentWord));
     addOneBlankLine(lines);
 

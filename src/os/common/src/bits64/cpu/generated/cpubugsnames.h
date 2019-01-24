@@ -22,7 +22,6 @@ inline NgosStatus initCpuBugsNames() // TEST: NO
 
 
 
-
     // word 0
 
     cpuBugsNames[WORD_BIT(0, 0)]  = "cpu_meltdown";
