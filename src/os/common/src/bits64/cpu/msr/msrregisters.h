@@ -3,15 +3,29 @@
 
 
 
-#define MSR_IA32_MICROCODE_REV  0x0000008B // Microcode revision
-#define MSR_IA32_MISC_ENABLE    0x000001A0 // Misc enable flags
-#define MSR_EFER                0xC0000080 // Extended Feature Enable Register
-#define MSR_FS_BASE             0xC0000100 // 64 bit FS base
-#define MSR_GS_BASE             0xC0000101 // 64 bit GS base
+#define MSR_IA32_MICROCODE_REV      0x0000008B // Microcode revision
+#define MSR_IA32_ARCH_CAPABILITIES  0x0000010A // Architecture capabilities
+#define MSR_IA32_MISC_ENABLE        0x000001A0 // Misc enable flags
+#define MSR_EFER                    0xC0000080 // Extended Feature Enable Register
+#define MSR_FS_BASE                 0xC0000100 // 64 bit FS base
+#define MSR_GS_BASE                 0xC0000101 // 64 bit GS base
 
 
 
-// MISC_ENABLE bits: architectural
+// MSR_IA32_ARCH_CAPABILITIES bits:
+#define MSR_IA32_ARCH_CAPABILITIES_RDCL_NO_BIT                  0 // Not susceptible to Meltdown
+#define MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL_BIT                 1 // Enhanced IBRS support
+#define MSR_IA32_ARCH_CAPABILITIES_SKIP_VMENTRY_L1DFLUSH_BIT    3 // Skip L1D flush on vmentry
+#define MSR_IA32_ARCH_CAPABILITIES_SSB_NO_BIT                   4 // Not susceptible to Speculative Store Bypass attack, so no Speculative Store Bypass control required.
+
+#define MSR_IA32_ARCH_CAPABILITIES_RDCL_NO                      (1ULL << MSR_IA32_ARCH_CAPABILITIES_RDCL_NO_BIT)
+#define MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL                     (1ULL << MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL_BIT)
+#define MSR_IA32_ARCH_CAPABILITIES_SKIP_VMENTRY_L1DFLUSH        (1ULL << MSR_IA32_ARCH_CAPABILITIES_SKIP_VMENTRY_L1DFLUSH_BIT)
+#define MSR_IA32_ARCH_CAPABILITIES_SSB_NO                       (1ULL << MSR_IA32_ARCH_CAPABILITIES_SSB_NO_BIT)
+
+
+
+// MSR_IA32_MISC_ENABLE bits:
 #define MSR_IA32_MISC_ENABLE_FAST_STRING_BIT        0
 #define MSR_IA32_MISC_ENABLE_TCC_BIT                1
 #define MSR_IA32_MISC_ENABLE_EMON_BIT               7
@@ -36,7 +50,7 @@
 
 
 
-// EFER bits:
+// MSR_EFER bits:
 #define MSR_EFER_SCE_BIT    0  // SYSCALL/SYSRET
 #define MSR_EFER_LME_BIT    8  // Long mode enable
 #define MSR_EFER_LMA_BIT    10 // Long mode active (read-only)

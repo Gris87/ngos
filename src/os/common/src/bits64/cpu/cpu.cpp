@@ -1317,6 +1317,97 @@ NgosStatus CPU::initCpuBugs()
 
 
 
+    if (isCpuNoSpeculation())
+    {
+        COMMON_LVV(("CPU is not affected by Spectre attack"));
+
+        return NgosStatus::OK;
+    }
+
+
+
+    COMMON_LVV(("X86Bug::SPECTRE_V1 and X86Bug::SPECTRE_V2 set because CPU is affected by Spectre attack"));
+
+    COMMON_ASSERT_EXECUTION(setBug(X86Bug::SPECTRE_V1), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setBug(X86Bug::SPECTRE_V2), NgosStatus::ASSERTION);
+
+
+
+    u64 ia32Capabilities = 0;
+
+    if (hasFlag(X86Feature::ARCH_CAPABILITIES))
+    {
+        COMMON_LVV(("X86Feature::ARCH_CAPABILITIES supported"));
+
+        ia32Capabilities = MSR::read(MSR_IA32_ARCH_CAPABILITIES);
+
+        COMMON_LVVV(("ia32Capabilities = 0x%016lX", ia32Capabilities));
+    }
+
+
+
+    if (
+        !isCpuNoSpecStoreBypass()
+        &&
+        !(ia32Capabilities & MSR_IA32_ARCH_CAPABILITIES_SSB_NO)
+        &&
+        !hasFlag(X86Feature::AMD_SSB_NO)
+       )
+    {
+        COMMON_LVV(("X86Bug::SPEC_STORE_BYPASS set because CPU is affected by speculative store bypass attack"));
+
+        COMMON_ASSERT_EXECUTION(setBug(X86Bug::SPEC_STORE_BYPASS), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        COMMON_LVV(("CPU is not affected by speculative store bypass attack"));
+    }
+
+
+
+    if (ia32Capabilities & MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL)
+    {
+        COMMON_LVV(("X86Feature::IBRS_ENHANCED set because MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL found"));
+
+        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::IBRS_ENHANCED), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (
+        isCpuNoMeltdown()
+        ||
+        ia32Capabilities & MSR_IA32_ARCH_CAPABILITIES_RDCL_NO
+       )
+    {
+        COMMON_LVV(("CPU is not affected by meltdown attack"));
+
+        return NgosStatus::OK;
+    }
+
+
+
+    COMMON_LVV(("X86Bug::CPU_MELTDOWN set because CPU is affected by meltdown attack"));
+
+    COMMON_ASSERT_EXECUTION(setBug(X86Bug::CPU_MELTDOWN), NgosStatus::ASSERTION);
+
+
+
+    if (isCpuNoL1TF())
+    {
+        COMMON_LVV(("CPU is not affected by L1 Terminal Fault"));
+
+        return NgosStatus::OK;
+    }
+
+
+
+    COMMON_LVV(("X86Bug::L1TF set because CPU is affected by L1 Terminal Fault"));
+
+    COMMON_ASSERT_EXECUTION(setBug(X86Bug::L1TF), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
@@ -1361,7 +1452,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
     return (
             (
-                sModel == (u8)IntelCpuModel::SKYLAKE_X
+                sModel == (u8)IntelCpuModel::FAMILY_6_SKYLAKE_X
                 &&
                 (
                     (
@@ -1385,7 +1476,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-                sModel == (u8)IntelCpuModel::KABY_LAKE_MOBILE
+                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_MOBILE
                 &&
                 (
                     (
@@ -1409,7 +1500,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-                sModel == (u8)IntelCpuModel::KABY_LAKE_DESKTOP
+                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_DESKTOP
                 &&
                 (
                     (
@@ -1429,6 +1520,74 @@ bool CPU::isIntelBadSpectreMicrocode()
                         &&
                         sMicrocodeRevision <= 0x80
                     )
+                )
+            )
+        );
+}
+
+bool CPU::isCpuNoSpeculation()
+{
+    COMMON_LT((""));
+
+
+
+    return false;
+}
+
+bool CPU::isCpuNoMeltdown()
+{
+    COMMON_LT((""));
+
+
+
+    return sCpuVendor == CpuVendor::AMD;
+}
+
+bool CPU::isCpuNoSpecStoreBypass()
+{
+    COMMON_LT((""));
+
+
+
+    return (
+            (
+                sCpuVendor == CpuVendor::INTEL
+                &&
+                sFamily == INTEL_FAMILY_6
+                &&
+                (
+                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_LANDING
+                    ||
+                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_MILL
+                )
+            )
+        );
+}
+
+bool CPU::isCpuNoL1TF()
+{
+    COMMON_LT((""));
+
+
+
+    return (
+            (
+                sCpuVendor == CpuVendor::INTEL
+                &&
+                sFamily == INTEL_FAMILY_6
+                &&
+                (
+                    sModel == (u8)IntelCpuModel::FAMILY_6_AIRMONT_MID
+                    ||
+                    sModel == (u8)IntelCpuModel::FAMILY_6_APOLLO_LAKE
+                    ||
+                    sModel == (u8)IntelCpuModel::FAMILY_6_DENVERTON
+                    ||
+                    sModel == (u8)IntelCpuModel::FAMILY_6_GEMINI_LAKE
+                    ||
+                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_LANDING
+                    ||
+                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_MILL
                 )
             )
         );

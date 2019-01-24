@@ -24,38 +24,38 @@ inline NgosStatus initCpuBugsNames() // TEST: NO
 
     // word 0
 
-    cpuBugsNames[WORD_BIT(0, 0)]  = "cpu_meltdown";
-    cpuBugsNames[WORD_BIT(0, 1)]  = "spectre_v1";
-    cpuBugsNames[WORD_BIT(0, 2)]  = "spectre_v2";
-    cpuBugsNames[WORD_BIT(0, 3)]  = "spec_store_bypass";
-    cpuBugsNames[WORD_BIT(0, 4)]  = "l1tf";
-    cpuBugsNames[WORD_BIT(0, 5)]  = "";
-    cpuBugsNames[WORD_BIT(0, 6)]  = "";
-    cpuBugsNames[WORD_BIT(0, 7)]  = "";
-    cpuBugsNames[WORD_BIT(0, 8)]  = "";
-    cpuBugsNames[WORD_BIT(0, 9)]  = "";
-    cpuBugsNames[WORD_BIT(0, 10)] = "";
-    cpuBugsNames[WORD_BIT(0, 11)] = "";
-    cpuBugsNames[WORD_BIT(0, 12)] = "";
-    cpuBugsNames[WORD_BIT(0, 13)] = "";
-    cpuBugsNames[WORD_BIT(0, 14)] = "";
-    cpuBugsNames[WORD_BIT(0, 15)] = "";
-    cpuBugsNames[WORD_BIT(0, 16)] = "";
-    cpuBugsNames[WORD_BIT(0, 17)] = "";
-    cpuBugsNames[WORD_BIT(0, 18)] = "";
-    cpuBugsNames[WORD_BIT(0, 19)] = "";
-    cpuBugsNames[WORD_BIT(0, 20)] = "";
-    cpuBugsNames[WORD_BIT(0, 21)] = "";
-    cpuBugsNames[WORD_BIT(0, 22)] = "";
-    cpuBugsNames[WORD_BIT(0, 23)] = "";
-    cpuBugsNames[WORD_BIT(0, 24)] = "";
-    cpuBugsNames[WORD_BIT(0, 25)] = "";
-    cpuBugsNames[WORD_BIT(0, 26)] = "";
-    cpuBugsNames[WORD_BIT(0, 27)] = "";
-    cpuBugsNames[WORD_BIT(0, 28)] = "";
-    cpuBugsNames[WORD_BIT(0, 29)] = "";
-    cpuBugsNames[WORD_BIT(0, 30)] = "";
-    cpuBugsNames[WORD_BIT(0, 31)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 0)]  = "test";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 1)]  = "cpu_meltdown";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 2)]  = "spectre_v1";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 3)]  = "spectre_v2";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 4)]  = "spec_store_bypass";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 5)]  = "l1tf";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 6)]  = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 7)]  = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 8)]  = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 9)]  = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 10)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 11)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 12)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 13)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 14)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 15)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 16)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 17)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 18)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 19)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 20)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 21)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 22)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 23)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 24)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 25)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 26)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 27)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 28)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 29)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 30)] = "";
+    cpuBugsNames[WORD_BIT(CPU_BUGS_NGOS_COMMON_FLAGS, 31)] = "";
 
 
 

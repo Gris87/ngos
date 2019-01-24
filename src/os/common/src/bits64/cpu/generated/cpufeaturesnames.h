@@ -531,7 +531,7 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 14)] = "ibpb";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 15)] = "stibp";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 16)] = "ssbd";
-    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 17)] = "";
+    cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 17)] = "ibrs_enhanced";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 18)] = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 19)] = "";
     cpuFeaturesNames[WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 20)] = "";

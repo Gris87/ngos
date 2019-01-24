@@ -13,13 +13,13 @@
 
 enum class AmdCpuModel: u8
 {
-    NAPLES         = 1,
-    WHITEHAVEN     = 1,
-    SUMMIT_RIDGE   = 1,
-    SNOWY_OWL      = 1,
-    PINNACLE_RIDGE = 8,
-    RAVEN_RIDGE    = 17,
-    ROME           = 32
+    FAMILY_23_NAPLES         = 1,
+    FAMILY_23_WHITEHAVEN     = 1,
+    FAMILY_23_SUMMIT_RIDGE   = 1,
+    FAMILY_23_SNOWY_OWL      = 1,
+    FAMILY_23_PINNACLE_RIDGE = 8,
+    FAMILY_23_RAVEN_RIDGE    = 17,
+    FAMILY_23_ROME           = 32
 };
 
 

@@ -329,6 +329,7 @@ enum class X86Feature: u16
     IBPB                = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 14),  // Indirect Branch Prediction Barrier
     STIBP               = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 15),  // Single Thread Indirect Branch Predictors
     SSBD                = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 16),  // Speculative Store Bypass Disable
+    IBRS_ENHANCED       = WORD_BIT(CPU_FEATURES_NGOS_AUXILIARY_FLAGS, 17),  // Enhanced IBRS
 
 
 
