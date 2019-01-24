@@ -1,7 +1,7 @@
 #include <buildconfig.h>
 #include <gdt/segments.h>
 #include <ngos/linkage.h>
-#include <src/bits64/cpu/processorflags.h>
+#include <src/bits64/cpu/flags.h>
                                                                                 #
                                                                                 #
                                                                                 #

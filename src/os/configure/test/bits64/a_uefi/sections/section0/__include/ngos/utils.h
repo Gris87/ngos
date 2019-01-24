@@ -88,6 +88,27 @@ TEST_CASES(section0, __include_ngos_utils);
 
 
 
+    TEST_CASE("WORD_BIT()");
+    {
+        TEST_ASSERT_EQUALS(WORD_BIT(0, 0),   0);
+        TEST_ASSERT_EQUALS(WORD_BIT(0, 1),   1);
+        TEST_ASSERT_EQUALS(WORD_BIT(0, 2),   2);
+        TEST_ASSERT_EQUALS(WORD_BIT(0, 31),  31);
+
+        TEST_ASSERT_EQUALS(WORD_BIT(1, 0),   32);
+        TEST_ASSERT_EQUALS(WORD_BIT(1, 1),   33);
+        TEST_ASSERT_EQUALS(WORD_BIT(1, 2),   34);
+        TEST_ASSERT_EQUALS(WORD_BIT(1, 31),  63);
+
+        TEST_ASSERT_EQUALS(WORD_BIT(10, 0),   320);
+        TEST_ASSERT_EQUALS(WORD_BIT(10, 1),   321);
+        TEST_ASSERT_EQUALS(WORD_BIT(10, 2),   322);
+        TEST_ASSERT_EQUALS(WORD_BIT(10, 31),  351);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("MIN()");
     {
         TEST_ASSERT_EQUALS(MIN(0, 1),      0);

@@ -5,7 +5,7 @@
 #include <pagetable/flags.h>
 #include <pagetable/macros.h>
 #include <src/bits64/cpu/msr/msrregisters.h>
-#include <src/bits64/cpu/processorflags.h>
+#include <src/bits64/cpu/flags.h>
 #include <src/bits64/other/kerneldefines.h>
                                                                                 #
                                                                                 #

@@ -1,5 +1,5 @@
-#ifndef OS_COMMON_SRC_BITS64_CPU_PROCESSORFLAGS_H
-#define OS_COMMON_SRC_BITS64_CPU_PROCESSORFLAGS_H
+#ifndef OS_COMMON_SRC_BITS64_CPU_FLAGS_H
+#define OS_COMMON_SRC_BITS64_CPU_FLAGS_H
 
 
 
@@ -41,15 +41,6 @@
 #define X86_CR0_NW  (1ULL << 29)    // Not Write-through
 #define X86_CR0_CD  (1ULL << 30)    // Cache Disable
 #define X86_CR0_PG  (1ULL << 31)    // Paging
-
-
-
-//
-// Paging options in CR3
-//
-#define X86_CR3_PWT         (1ULL << 3) // Page Write Through
-#define X86_CR3_PCD         (1ULL << 4) // Page Cache Disable
-#define X86_CR3_PCID_MASK   0x0FFF      // PCID Mask
 
 
 
@@ -120,4 +111,4 @@
 
 
 
-#endif // OS_COMMON_SRC_BITS64_CPU_PROCESSORFLAGS_H
+#endif // OS_COMMON_SRC_BITS64_CPU_FLAGS_H

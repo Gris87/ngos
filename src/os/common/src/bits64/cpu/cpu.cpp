@@ -2,10 +2,11 @@
 
 #include <asm/bitutils.h>
 #include <ngos/linkage.h>
+#include <src/bits64/cpu/generated/cpubugsnames.h>
 #include <src/bits64/cpu/generated/cpufeaturesnames.h>
 #include <src/bits64/cpu/msr/msr.h>
 #include <src/bits64/cpu/msr/msrregisters.h>
-#include <src/bits64/cpu/processorflags.h>
+#include <src/bits64/cpu/flags.h>
 #include <src/bits64/log/assert.h>
 #include <src/bits64/log/log.h>
 #include <src/bits64/printf/printf.h>
@@ -41,6 +42,7 @@
 
 
 const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // "<< 5" == "* 32"
+const char* cpuBugsNames[AMOUNT_OF_WORDS_FOR_X86_BUGS << 5]; // "<< 5" == "* 32"
 
 u32       CPU::sVendor[3];
 CpuVendor CPU::sCpuVendor;
@@ -60,6 +62,7 @@ u32       CPU::sPower;
 u8        CPU::sPhysicalBits;
 u8        CPU::sVirtualBits;
 u32       CPU::sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
+u32       CPU::sBugs[AMOUNT_OF_WORDS_FOR_X86_BUGS];
 
 
 
@@ -70,6 +73,7 @@ NgosStatus CPU::init()
 
 
     COMMON_ASSERT_EXECUTION(initCpuFeaturesNames(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initCpuBugsNames(),     NgosStatus::ASSERTION);
 
 
 
@@ -98,10 +102,12 @@ NgosStatus CPU::init()
 
 
 
-    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::ALWAYS), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(initScatteredFeatures(),     NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(initSpeculationControl(),    NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(doPostprocessing(),          NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::ALWAYS),      NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initScatteredFeatures(),          NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initSpeculationControl(),         NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(doPostprocessing(),               NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(filterFeaturesDependentOnCpuid(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initCpuBugs(),                    NgosStatus::ASSERTION);
 
 
 
@@ -147,6 +153,13 @@ NgosStatus CPU::init()
         for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_FEATURES; ++i)
         {
             COMMON_LVVV(("sFlags[%d] = 0x%08X", i, sFlags[i]));
+        }
+
+        COMMON_LVVV(("CPU bugs:"));
+
+        for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_BUGS; ++i)
+        {
+            COMMON_LVVV(("sBugs[%d] = 0x%08X", i, sBugs[i]));
         }
     }
 #endif
@@ -205,6 +218,8 @@ NgosStatus CPU::init()
     // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sFlags[14]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sFlags[15]                    == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    COMMON_TEST_ASSERT(AMOUNT_OF_WORDS_FOR_X86_BUGS     == 1,                                                                                 NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sBugs[0]                      == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // Ignore CppAlignmentVerifier [END]
 
 
@@ -292,6 +307,67 @@ NgosStatus CPU::flagsToString(char *buffer, u16 size)
                         buffer[currentIndex] = *featureName;
                         ++currentIndex;
                         ++featureName;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    COMMON_TEST_ASSERT(currentIndex < size, NgosStatus::ASSERTION);
+
+    buffer[currentIndex] = 0;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::bugsToString(char *buffer, u16 size)
+{
+    COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
+
+    COMMON_ASSERT(buffer,   "buffer is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is zero",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(size);
+
+
+
+    u16 currentIndex = 0;
+
+    for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_BUGS; ++i)
+    {
+        u32 bug = sBugs[i];
+
+        for (i64 j = 0; j < 32; ++j)
+        {
+            if (bug & (1ULL << j))
+            {
+                const char *bugName = cpuBugsNames[WORD_BIT(i, j)];
+
+                if (*bugName)
+                {
+                    if (currentIndex > 0)
+                    {
+                        COMMON_TEST_ASSERT(currentIndex < size, NgosStatus::ASSERTION);
+
+                        buffer[currentIndex] = ' ';
+                        ++currentIndex;
+                    }
+
+
+
+                    while (*bugName)
+                    {
+                        COMMON_TEST_ASSERT(currentIndex < size, NgosStatus::ASSERTION);
+
+                        buffer[currentIndex] = *bugName;
+                        ++currentIndex;
+                        ++bugName;
                     }
                 }
             }
@@ -483,6 +559,47 @@ bool CPU::hasFlag(X86Feature flag)
 
 
     return BitUtils::test((u8 *)sFlags, (u64)flag);
+}
+
+NgosStatus CPU::setBug(X86Bug bug)
+{
+    COMMON_LT((" | bug = 0x%04X", bug));
+
+    COMMON_ASSERT(((u64)bug >> 5) < AMOUNT_OF_WORDS_FOR_X86_BUGS, "bug is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+
+
+
+    COMMON_ASSERT_EXECUTION(BitUtils::set((u8 *)sBugs, (u64)bug), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::clearBug(X86Bug bug)
+{
+    COMMON_LT((" | bug = 0x%04X", bug));
+
+    COMMON_ASSERT(((u64)bug >> 5) < AMOUNT_OF_WORDS_FOR_X86_BUGS, "bug is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+
+
+
+    COMMON_ASSERT_EXECUTION(BitUtils::clear((u8 *)sBugs, (u64)bug), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+bool CPU::hasBug(X86Bug bug)
+{
+    COMMON_LT((" | bug = 0x%04X", bug));
+
+    COMMON_ASSERT(((u64)bug >> 5) < AMOUNT_OF_WORDS_FOR_X86_BUGS, "bug is invalid", false); // ">> 5" == "/ 32"
+
+
+
+    return BitUtils::test((u8 *)sBugs, (u64)bug);
 }
 
 NgosStatus CPU::initCpuFeatures()
@@ -811,18 +928,18 @@ NgosStatus CPU::initScatteredFeatures()
 
 
 
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::APERFMPERF,       CPUID_ECX, 0,  0x00000006, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::EPB,              CPUID_ECX, 3,  0x00000006, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L3,           CPUID_EBX, 1,  0x00000010, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L2,           CPUID_EBX, 2,  0x00000010, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L3,           CPUID_ECX, 2,  0x00000010, 1), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L2,           CPUID_ECX, 2,  0x00000010, 2), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::MBA,              CPUID_EBX, 3,  0x00000010, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::HW_PSTATE,        CPUID_EDX, 7,  0x80000007, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CPB,              CPUID_EDX, 9,  0x80000007, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::PROC_FEEDBACK,    CPUID_EDX, 11, 0x80000007, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SME,              CPUID_EAX, 0,  0x8000001f, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SEV,              CPUID_EAX, 1,  0x8000001f, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::APERFMPERF,    CPUID_ECX, 0,  0x00000006, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::EPB,           CPUID_ECX, 3,  0x00000006, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L3,        CPUID_EBX, 1,  0x00000010, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L2,        CPUID_EBX, 2,  0x00000010, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L3,        CPUID_ECX, 2,  0x00000010, 1), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L2,        CPUID_ECX, 2,  0x00000010, 2), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::MBA,           CPUID_EBX, 3,  0x00000010, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::HW_PSTATE,     CPUID_EDX, 7,  0x80000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CPB,           CPUID_EDX, 9,  0x80000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::PROC_FEEDBACK, CPUID_EDX, 11, 0x80000007, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SME,           CPUID_EAX, 0,  0x8000001f, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SEV,           CPUID_EAX, 1,  0x8000001f, 0), NgosStatus::ASSERTION);
 
 
 
@@ -1041,10 +1158,6 @@ NgosStatus CPU::doPostprocessing()
 
 
 
-    COMMON_ASSERT_EXECUTION(filterFeaturesDependentOnCpuid(), NgosStatus::ASSERTION);
-
-
-
     return NgosStatus::OK;
 }
 
@@ -1192,6 +1305,15 @@ NgosStatus CPU::filterFeaturesDependentOnCpuid()
 
         COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::XSAVE), NgosStatus::ASSERTION);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::initCpuBugs()
+{
+    COMMON_LT((""));
 
 
 

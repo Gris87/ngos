@@ -110,15 +110,17 @@ src/os/common/src/bits64/console/console.h
 src/os/common/src/bits64/console/lib/glyphdata.h
 src/os/common/src/bits64/cpu/cpu.cpp
 src/os/common/src/bits64/cpu/cpu.h
+src/os/common/src/bits64/cpu/cpubugs.h
 src/os/common/src/bits64/cpu/cpufeatures.h
 src/os/common/src/bits64/cpu/cpuvendor.h
+src/os/common/src/bits64/cpu/flags.h
+src/os/common/src/bits64/cpu/generated/cpubugsnames.h
 src/os/common/src/bits64/cpu/generated/cpufeaturesnames.h
 src/os/common/src/bits64/cpu/models/amd.h
 src/os/common/src/bits64/cpu/models/intel.h
 src/os/common/src/bits64/cpu/msr/msr.cpp
 src/os/common/src/bits64/cpu/msr/msr.h
 src/os/common/src/bits64/cpu/msr/msrregisters.h
-src/os/common/src/bits64/cpu/processorflags.h
 src/os/common/src/bits64/log/assert.h
 src/os/common/src/bits64/log/log.h
 src/os/common/src/bits64/memory/asm_memcpy.h
@@ -264,7 +266,6 @@ src/os/configure/src/bits64/other/configuredefines.h
 src/os/configure/src/bits64/other/kerneldescriptor.h
 src/os/configure/src/main.cpp
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/cpu/cpu.h
-src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/cpu/cpufeatures.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/memory/memory.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/printf/printf.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/random/random.h
@@ -481,6 +482,8 @@ tools/qt/code_generator/src/generators/assets/zzz_generators/consoleglyphgenerat
 tools/qt/code_generator/src/generators/assets/zzz_generators/consoleglyphgenerator.h
 tools/qt/code_generator/src/generators/common/commongenerator.cpp
 tools/qt/code_generator/src/generators/common/commongenerator.h
+tools/qt/code_generator/src/generators/common/zzz_generators/cpubugsnamesgenerator.cpp
+tools/qt/code_generator/src/generators/common/zzz_generators/cpubugsnamesgenerator.h
 tools/qt/code_generator/src/generators/common/zzz_generators/cpufeaturesnamesgenerator.cpp
 tools/qt/code_generator/src/generators/common/zzz_generators/cpufeaturesnamesgenerator.h
 tools/qt/code_generator/src/generators/configure/configuregenerator.cpp

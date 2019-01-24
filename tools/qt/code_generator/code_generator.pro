@@ -57,6 +57,7 @@ SOURCES += \
     src/generators/assets/assetsgenerator.cpp \
     src/generators/assets/zzz_generators/consoleglyphgenerator.cpp \
     src/generators/common/commongenerator.cpp \
+    src/generators/common/zzz_generators/cpubugsnamesgenerator.cpp \
     src/generators/common/zzz_generators/cpufeaturesnamesgenerator.cpp \
     src/generators/configure/configuregenerator.cpp \
     src/generators/configure/zzz_generators/asmoffsetsgenerator.cpp \
@@ -69,6 +70,7 @@ HEADERS += \
     src/generators/assets/assetsgenerator.h \
     src/generators/assets/zzz_generators/consoleglyphgenerator.h \
     src/generators/common/commongenerator.h \
+    src/generators/common/zzz_generators/cpubugsnamesgenerator.h \
     src/generators/common/zzz_generators/cpufeaturesnamesgenerator.h \
     src/generators/configure/configuregenerator.h \
     src/generators/configure/zzz_generators/asmoffsetsgenerator.h \

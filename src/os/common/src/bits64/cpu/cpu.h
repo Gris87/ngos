@@ -7,6 +7,7 @@
 #include <ngos/types.h>
 #include <src/bits64/cpu/models/amd.h>
 #include <src/bits64/cpu/models/intel.h>
+#include <src/bits64/cpu/cpubugs.h>
 #include <src/bits64/cpu/cpufeatures.h>
 #include <src/bits64/cpu/cpuvendor.h>
 
@@ -19,11 +20,16 @@ public:
 
     static NgosStatus toString(char *buffer, u16 size); // TEST: NO
     static NgosStatus flagsToString(char *buffer, u16 size); // TEST: NO
+    static NgosStatus bugsToString(char *buffer, u16 size); // TEST: NO
     static NgosStatus check(const char **wantedFlag); // TEST: NO
 
     static NgosStatus setFlag(X86Feature flag); // TEST: NO
     static NgosStatus clearFlag(X86Feature flag); // TEST: NO
     static bool hasFlag(X86Feature flag); // TEST: NO
+
+    static NgosStatus setBug(X86Bug bug); // TEST: NO
+    static NgosStatus cleaBug(X86Bug bug); // TEST: NO
+    static bool hasBug(X86Bug bug); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -41,6 +47,7 @@ private:
     static NgosStatus doIntelPostprocessing(); // TEST: NO
     static NgosStatus doAmdPostprocessing(); // TEST: NO
     static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO
+    static NgosStatus initCpuBugs(); // TEST: NO
     static NgosStatus getIntelMicrocodeRevision(); // TEST: NO
     static bool isIntelBadSpectreMicrocode(); // TEST: NO
     static bool hasEFlag(u64 mask); // TEST: NO
@@ -64,6 +71,7 @@ private:
     static u8        sPhysicalBits;
     static u8        sVirtualBits;
     static u32       sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
+    static u32       sBugs[AMOUNT_OF_WORDS_FOR_X86_BUGS];
 };
 
 

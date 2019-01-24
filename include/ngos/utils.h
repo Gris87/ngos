@@ -13,6 +13,10 @@
 
 
 
+#define WORD_BIT(wordId, bitId) ((wordId << 5) + bitId)         // TEST: NO // "<< 5" == "* 32"
+
+
+
 #define MIN(a, b) (a) < (b) ? (a) : (b)                         // TEST: NO
 #define MIN_TYPED(type, a, b) MIN((type)(a), (type)(b))         // TEST: NO
 

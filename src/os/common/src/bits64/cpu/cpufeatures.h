@@ -4,6 +4,7 @@
 
 
 #include <ngos/types.h>
+#include <ngos/utils.h>
 
 
 
@@ -25,10 +26,6 @@
 #define CPUID_8000000A_EDX                  13
 #define CPU_FEATURES_NGOS_AUXILIARY_FLAGS   14
 #define CPU_FEATURES_NGOS_OTHER_FLAGS       15
-
-
-
-#define WORD_BIT(wordId, bitId) ((wordId << 5) + bitId) // TEST: NO // "<< 5" == "* 32"
 
 
 
