@@ -8,8 +8,6 @@
 #include <src/bits64/cpu/cpubugs.h>
 #include <src/bits64/cpu/cpufeatures.h>
 #include <src/bits64/cpu/cpuvendor.h>
-#include <src/bits64/cpu/models/amd.h>
-#include <src/bits64/cpu/models/intel.h>
 
 
 

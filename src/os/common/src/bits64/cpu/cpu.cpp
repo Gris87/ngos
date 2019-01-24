@@ -5,6 +5,8 @@
 #include <src/bits64/cpu/flags.h>
 #include <src/bits64/cpu/generated/cpubugsnames.h>
 #include <src/bits64/cpu/generated/cpufeaturesnames.h>
+#include <src/bits64/cpu/models/amd.h>
+#include <src/bits64/cpu/models/intel.h>
 #include <src/bits64/cpu/msr/msr.h>
 #include <src/bits64/cpu/msr/msrregisters.h>
 #include <src/bits64/log/assert.h>
@@ -219,7 +221,7 @@ NgosStatus CPU::init()
     // COMMON_TEST_ASSERT(sFlags[14]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sFlags[15]                    == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     COMMON_TEST_ASSERT(AMOUNT_OF_WORDS_FOR_X86_BUGS     == 1,                                                                                 NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sBugs[0]                      == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sBugs[0]                      == 0x0000003E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
     // Ignore CppAlignmentVerifier [END]
 
 
