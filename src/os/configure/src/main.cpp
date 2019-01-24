@@ -178,14 +178,20 @@ BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 ker
 
         UEFI_ASSERT_EXECUTION(CPU::flagsToString(buffer, 1024), 0);
 
-
-
         UEFI_LF(("CPU flags:             %s\n", buffer));
+
+        UEFI_ASSERT_EXECUTION(CPU::bugsToString(buffer, 1024), 0);
+
+        UEFI_LF(("CPU bugs:              %s\n", buffer));
+
+
 
         if (wantedCpuFlag && *wantedCpuFlag)
         {
             UEFI_LF(("CPU flag \"%s\" is not supported\n", wantedCpuFlag));
         }
+
+
 
         UEFI_LF(("Your CPU is already outdated. Please upgrade your hardware."));
         UEFI_LF(("It is expected Intel Core i9-9980XE Extreme Edition or newer or AMD Ryzen Threadripper 2990WX or newer."));

@@ -953,7 +953,7 @@ NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u
     COMMON_ASSERT(registerId < 4, "registerId is invalid", NgosStatus::ASSERTION);
     COMMON_ASSERT(bit < 32,       "bit is invalid",        NgosStatus::ASSERTION);
     COMMON_ASSERT(level > 0,      "level is zero",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(count <= 1,     "count is invalid",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(count <= 2,     "count is invalid",      NgosStatus::ASSERTION);
 
 
 
@@ -1486,10 +1486,11 @@ NgosStatus CPU::cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
 {
     COMMON_LT((" | id = 0x%08X, count = %u, a = 0x%p, b = 0x%p, c = 0x%p, d = 0x%p", id, count, a, b, c, d));
 
-    COMMON_ASSERT(a, "a is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(b, "b is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(c, "c is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(d, "d is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(count <= 2, "count is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(a,          "a is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(b,          "b is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(c,          "c is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(d,          "d is null",        NgosStatus::ASSERTION);
 
 
 
