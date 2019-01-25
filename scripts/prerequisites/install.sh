@@ -30,7 +30,9 @@ yum install -y redhat-lsb 2> /dev/null
 
 
 
-if [[ "`lsb_release -rs`" == "18.04" ]]; then
+if [[ "`lsb_release -rs`" == "18.10" ]]; then
+    ./ubuntu_18_10.sh
+elif [[ "`lsb_release -rs`" == "18.04" ]]; then
     ./ubuntu_18_04.sh
 elif [[ "`lsb_release -rs`" == "16.04" ]]; then
     ./ubuntu_16_04.sh
