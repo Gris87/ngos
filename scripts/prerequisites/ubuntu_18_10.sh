@@ -69,6 +69,9 @@ echo ""
 
 
 
+mkdir /tmp/src/
+cd /tmp/src/
+
 apt-get update
 apt-get upgrade -y
 apt-get install -y curl
