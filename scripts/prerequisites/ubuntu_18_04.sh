@@ -164,6 +164,8 @@ echo ""
 
 
 
+sed -i "s/^# deb-src /deb-src /" /etc/apt/sources.list
+apt-get update
 apt-get build-dep -y libvirt
 
 
