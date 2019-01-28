@@ -15,7 +15,7 @@ If you need to install VNC server please use the following instruction:
 sudo su
 apt-get update
 apt-get upgrade -y
-apt-get install -y --no-install-recommends ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal libtasn1-bin xfce4 xfce4-goodies
+apt-get install -y xfce4 xfce4-goodies
 apt-get install -y tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer
 ```
 
@@ -32,15 +32,7 @@ echo "# exec /etc/X11/xinit/xinitrc"                                            
 echo ""                                                                                >> ~/.vnc/xstartup
 echo "[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup"                              >> ~/.vnc/xstartup
 echo "[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources"                              >> ~/.vnc/xstartup
-echo "xsetroot -solid grey"                                                            >> ~/.vnc/xstartup
-echo "vncconfig -iconic &"                                                             >> ~/.vnc/xstartup
-echo "x-terminal-emulator -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" &" >> ~/.vnc/xstartup
-echo "x-window-manager &"                                                              >> ~/.vnc/xstartup
-echo ""                                                                                >> ~/.vnc/xstartup
-echo "gnome-panel &"                                                                   >> ~/.vnc/xstartup
-echo "gnome-settings-daemon &"                                                         >> ~/.vnc/xstartup
-echo "metacity &"                                                                      >> ~/.vnc/xstartup
-echo "nautilus &"                                                                      >> ~/.vnc/xstartup
+echo "startxfce4 &"                                                                    >> ~/.vnc/xstartup
 
 vncserver -kill :1
 vncserver
