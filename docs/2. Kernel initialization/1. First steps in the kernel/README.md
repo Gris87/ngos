@@ -275,13 +275,6 @@ We should get page table like on the image below:
 # Apply new page table                                                          #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    movq    $(X86_CR4_PAE | X86_CR4_PGE | X86_CR4_LA57), %rcx                   # Enable PAE mode, PGE and LA57
-#else
-    movq    $(X86_CR4_PAE | X86_CR4_PGE), %rcx                                  # Enable PAE mode and PGE
-#endif
-    movq    %rcx, %cr4                                                          # Update CR4 register with the provided flags
-                                                                                #
     leaq    early_pagetable(%rip), %rax                                         # Put address of page table to RAX
     movq    %rax, %cr3                                                          # Update CR3 register with the address of page table
 ```

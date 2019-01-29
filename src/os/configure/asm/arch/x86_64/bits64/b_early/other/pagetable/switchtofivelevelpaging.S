@@ -59,7 +59,7 @@ compatible_mode:                                                                
 #  Enable PAE and LA57 mode                                                     #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    orl     $(X86_CR4_PAE | X86_CR4_LA57), %ebx                                 # Adding PAE and LA57 flags to EBX. RBX was initialized with CR4 before
+    orl     $(X86_CR4_LA57), %ebx                                               # Adding LA57 flag to EBX. RBX was initialized with CR4 before
     movl    %ebx, %cr4                                                          # Store EBX to CR4
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
