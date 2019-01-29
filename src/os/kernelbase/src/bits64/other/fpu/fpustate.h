@@ -5,10 +5,9 @@
 
 #include <ngos/types.h>
 #include <pagetable/macros.h>
-
-#include "src/bits64/other/fpu/fsavestate.h"
-#include "src/bits64/other/fpu/fxsavestate.h"
-#include "src/bits64/other/fpu/xsavestate.h"
+#include <src/bits64/other/fpu/fsavestate.h>
+#include <src/bits64/other/fpu/fxsavestate.h>
+#include <src/bits64/other/fpu/xsavestate.h>
 
 
 

@@ -84,8 +84,6 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             ||
                             anotherLineTrimmed == "};"
                             ||
-                            anotherLineTrimmed == "} __attribute__((packed));"
-                            ||
                             anotherLineTrimmed == "//"
                             ||
                             anotherLineTrimmed == "/***"
@@ -93,6 +91,8 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             anotherLineTrimmed == "***"
                             ||
                             anotherLineTrimmed == "***/"
+                            ||
+                            anotherLineTrimmed.startsWith("} __attribute__((")
                             ||
                             anotherLineTrimmed.startsWith("} while(")
                             ||
@@ -142,8 +142,6 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             ||
                             anotherLineTrimmed == "};"
                             ||
-                            anotherLineTrimmed == "} __attribute__((packed));"
-                            ||
                             anotherLineTrimmed == "//"
                             ||
                             anotherLineTrimmed == "/***"
@@ -151,6 +149,8 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             anotherLineTrimmed == "***"
                             ||
                             anotherLineTrimmed == "***/"
+                            ||
+                            anotherLineTrimmed.startsWith("} __attribute__((")
                             ||
                             anotherLineTrimmed.startsWith("} while(")
                             ||
