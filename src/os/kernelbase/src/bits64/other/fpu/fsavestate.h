@@ -18,7 +18,7 @@ struct FSaveState
     u32 foo;    // FPU Operand Pointer Offset
     u32 fos;    // FPU Operand Pointer Selector
 
-    // 10*8 bytes for each FPU register = 80 bytes
+    // 10 * 8 bytes for each FPU register = 80 bytes
     u64 stack[10];
 };
 

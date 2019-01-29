@@ -36,11 +36,11 @@ struct FXSaveState
     u32         mxcsr;      // MXCSR Register State
     u32         mxcsrMask;  // MXCSR Mask
 
-    // 16*8 bytes for each FPU register = 128 bytes
+    // 16 * 8 bytes for each FPU register = 128 bytes
     //
     u64         stack[16];
 
-    // 16*16 bytes for each XMM register = 256 bytes
+    // 16 * 16 bytes for each XMM register = 256 bytes
     //
     u64         xmms[32];
 
