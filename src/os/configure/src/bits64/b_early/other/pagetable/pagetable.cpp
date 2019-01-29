@@ -140,12 +140,6 @@ NgosStatus initializeIdentityMaps(u8 *pageTable)
 
 
 
-#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    switchToFiveLevelPaging(topLevelPage);
-#endif
-
-
-
     return NgosStatus::OK;
 }
 
@@ -179,7 +173,11 @@ NgosStatus finalizeIdentityMaps()
 
 
 
+#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
+    switchToFiveLevelPaging(topLevelPage);
+#else
     EARLY_ASSERT_EXECUTION(writeCr3((u64)topLevelPage), NgosStatus::ASSERTION);
+#endif
 
 
 

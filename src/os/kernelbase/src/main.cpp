@@ -13,6 +13,7 @@
 #include <src/bits64/a_early/main/setupstackcanary.h>
 #include <src/bits64/assets/assets.h>
 #include <src/bits64/cpu/cpu.h>
+#include <src/bits64/other/fpu/fpu.h>
 #include <src/bits64/serial/serial.h>
 #include <test/bits64/a_early/sections/section1/testcase.h>
 
@@ -46,6 +47,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(CPU::init());
     EARLY_LI(("CPU information initialized"));
+
+    EARLY_ASSERT_EXECUTION(FPU::init());
+    EARLY_LI(("FPU initialized"));
 
     EARLY_ASSERT_EXECUTION(Assets::init());
     EARLY_LI(("Assets initialized"));

@@ -19,15 +19,7 @@
 GLOBAL_FUNCTION(switchToFiveLevelPaging)                                        # switchToFiveLevelPaging function
     movq    %cr4, %rbx                                                          # Put CR4 to RBX
     testq   $(X86_CR4_LA57), %rbx                                               # Check for LA57 flag in RBX
-    jnz     paging_level_5                                                      # Jump to paging_level_5 label if flag LA57 is set
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-#  Initialize our 5 level page table with the existing 4 level page table       #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    movq    %cr3, %rax                                                          # Put CR3 to RAX
-    orq     $0x07, %rax                                                         # Enable flags PageFlag::PRESENT | PageFlag::READ_WRITE | PageFlag::USER in RAX
-    movq    %rax, (%rdi)                                                        # Store RAX to the new page table located at RDI
+    jnz     paging_level_5_cr3                                                  # Jump to paging_level_5_cr3 label if flag LA57 is set
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
 #  We need to go in 32 bit mode in order to enable 5 level paging               #
@@ -101,6 +93,8 @@ compatible_mode:                                                                
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
 .code64                                                                         # Generate code in 64 bits mode
+paging_level_5_cr3:                                                             # Label for jumping when paging level 5 enabled but we need to update CR3
+    movq    %rdi, %cr3                                                          # Put address of page table to CR3
 paging_level_5:                                                                 # Label for jumping when paging level 5 enabled
     retq                                                                        # Return from the function
 END_FUNCTION(switchToFiveLevelPaging)                                           # End of switchToFiveLevelPaging function
