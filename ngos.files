@@ -374,6 +374,12 @@ src/os/kernelbase/src/bits64/other/cpu/percpu.cpp
 src/os/kernelbase/src/bits64/other/cpu/percpu.h
 src/os/kernelbase/src/bits64/other/fpu/fpu.cpp
 src/os/kernelbase/src/bits64/other/fpu/fpu.h
+src/os/kernelbase/src/bits64/other/fpu/fpustate.h
+src/os/kernelbase/src/bits64/other/fpu/fsavestate.h
+src/os/kernelbase/src/bits64/other/fpu/fxsavestate.h
+src/os/kernelbase/src/bits64/other/fpu/xfeature.h
+src/os/kernelbase/src/bits64/other/fpu/xsavestate.h
+src/os/kernelbase/src/bits64/other/fpu/xstateheader.h
 src/os/kernelbase/src/bits64/other/irq/irqstack.cpp
 src/os/kernelbase/src/bits64/other/irq/irqstack.h
 src/os/kernelbase/src/bits64/other/kerneldefines.h
