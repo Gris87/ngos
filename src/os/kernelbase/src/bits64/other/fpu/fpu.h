@@ -11,6 +11,9 @@ class FPU
 {
 public:
     static NgosStatus init(); // TEST: NO
+
+private:
+    static NgosStatus initCpu(); // TEST: NO
 };
 
 

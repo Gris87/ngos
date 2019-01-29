@@ -150,6 +150,8 @@ src/os/configure/src/bits64/a_uefi/main/exitbootservices.cpp
 src/os/configure/src/bits64/a_uefi/main/exitbootservices.h
 src/os/configure/src/bits64/a_uefi/main/setupbootparams.cpp
 src/os/configure/src/bits64/a_uefi/main/setupbootparams.h
+src/os/configure/src/bits64/a_uefi/main/setupcr4.cpp
+src/os/configure/src/bits64/a_uefi/main/setupcr4.h
 src/os/configure/src/bits64/a_uefi/main/setupgraphics.cpp
 src/os/configure/src/bits64/a_uefi/main/setupgraphics.h
 src/os/configure/src/bits64/a_uefi/main/setupkernellocation.cpp

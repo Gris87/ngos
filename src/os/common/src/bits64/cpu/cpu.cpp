@@ -406,6 +406,7 @@ NgosStatus CPU::check(const char **wantedFlag)
         , X86Feature::CMOV
         , X86Feature::FXSR
         , X86Feature::LM
+        , X86Feature::XSAVE
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         , X86Feature::LA57

@@ -165,6 +165,20 @@ inline u64 readCr4() // TEST: NO
     return value;
 }
 
+inline NgosStatus writeCr4(u64 value) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movq    %0, %%cr4"     // movq    %rax, %cr4   # %rax == value
+            :                   // Output parameters
+            :                   // Input parameters
+                "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
+
 inline bool bt(u8 *address, u64 bit) // TEST: NO
 {
     bool res;
@@ -464,6 +478,12 @@ inline NgosStatus sti() // TEST: NO
     return NgosStatus::OK;
 }
 
+inline NgosStatus fninit() // TEST: NO
+{
+    asm volatile("fninit");
+
+    return NgosStatus::OK;
+}
 
 
 #endif // ASM_INSTRUCTIONS_H

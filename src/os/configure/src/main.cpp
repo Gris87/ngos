@@ -7,6 +7,7 @@
 
 #include "src/bits64/a_uefi/main/exitbootservices.h"
 #include "src/bits64/a_uefi/main/setupbootparams.h"
+#include "src/bits64/a_uefi/main/setupcr4.h"
 #include "src/bits64/a_uefi/main/setupgraphics.h"
 #include "src/bits64/a_uefi/main/setupkernellocation.h"
 #include "src/bits64/a_uefi/main/setuppciio.h"
@@ -200,6 +201,11 @@ BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 ker
 
         return 0;
     }
+
+
+
+    UEFI_ASSERT_EXECUTION(setupCr4(), 0);
+    UEFI_LI(("Setup CR4 completed"));
 
 
 

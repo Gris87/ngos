@@ -1,0 +1,14 @@
+#ifndef CONFIGURE_SRC_BITS64_A_UEFI_MAIN_SETUPCR4_H
+#define CONFIGURE_SRC_BITS64_A_UEFI_MAIN_SETUPCR4_H
+
+
+
+#include <ngos/status.h>
+
+
+
+NgosStatus setupCr4(); // TEST: NO
+
+
+
+#endif // CONFIGURE_SRC_BITS64_A_UEFI_MAIN_SETUPCR4_H
