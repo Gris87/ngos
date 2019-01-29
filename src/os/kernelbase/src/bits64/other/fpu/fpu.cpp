@@ -1,11 +1,10 @@
 #include "fpu.h"
 
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
+#include <asm/instructions.h>
 #include <src/bits64/cpu/cpu.h>
 #include <src/bits64/cpu/flags.h>
-#include <src/bits64/other/cpu/percpu.h>
-#include <asm/instructions.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
 
 
 

@@ -486,4 +486,5 @@ inline NgosStatus fninit() // TEST: NO
 }
 
 
+
 #endif // ASM_INSTRUCTIONS_H

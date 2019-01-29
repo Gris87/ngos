@@ -1,7 +1,7 @@
 TODO List
 =========
 
-- [ ] Bug with VVVERBOSE printing
+- [ ] Bug with `VVVERBOSE` printing
 - [ ] Complete with interruptions
 - [ ] Implement graphics for kernel
 - [ ] Per CPU?
