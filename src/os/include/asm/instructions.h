@@ -489,9 +489,31 @@ inline NgosStatus fxsave(u8 *address) // TEST: NO
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "fxsave  %0"                // fxsave 0x0000(%rip)    # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address
+        "fxsave  %0"                // fxsave 0x0000(%rip)  # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address
             :                       // Output parameters
                 "+m" (*address)     // "m" == use memory, "+" - read and write
+    );
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
+{
+    u32 eax = value;
+    u32 edx = value >> 32;
+
+    asm volatile(".byte 0x0f,0x01,0xd1" /* xsetbv */
+                 : : "a" (eax), "d" (edx), "c" (index));
+
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "xsetbv"                // xsetbv   # Writes the contents of registers EDX:EAX into the 64-bit extended control register (XCR) specified in the ECX register
+            :                   // Output parameters
+            :                   // Input parameters
+                "c" (index),    // "c" == ECX // Ignore CppSingleCharVerifier
+                "a" (eax),      // "a" == EAX // Ignore CppSingleCharVerifier
+                "d" (edx)       // "d" == EDX // Ignore CppSingleCharVerifier
     );
 
     return NgosStatus::OK;

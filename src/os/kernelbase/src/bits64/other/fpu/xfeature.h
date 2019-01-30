@@ -7,6 +7,11 @@
 
 
 
+#define XFEATURE_MASK_FPU_SSE    ((x_features)XFeature::FPU | (x_features)XFeature::SSE)
+#define XFEATURE_MASK_SUPERVISOR ((x_features)XFeature::PT)
+
+
+
 typedef u64 x_features;
 
 enum class XFeature: x_features

@@ -605,6 +605,96 @@ bool CPU::hasBug(X86Bug bug)
     return BitUtils::test((u8 *)sBugs, (u64)bug);
 }
 
+bool CPU::isCpuIdLevelSupported(u32 cpuidLevel)
+{
+    COMMON_LT((" | cpuidLevel = 0x%08X", cpuidLevel));
+
+    COMMON_ASSERT(cpuidLevel >= CPUID_LEVEL_LOWER_BOUND && cpuidLevel <= CPUID_LEVEL_UPPER_BOUND, "cpuidLevel is invalid", false);
+
+
+
+    return sCpuidLevel >= cpuidLevel;
+}
+
+bool CPU::hasEFlag(u64 mask)
+{
+    COMMON_LT((" | mask = 0x%016lX", mask));
+
+    COMMON_ASSERT(mask > 0, "mask is zero", false);
+
+
+
+    u64 f0 = 0;
+    u64 f1 = 0;
+
+
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
+        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
+        "popq    %0"        "\n\t"      // popq     %rbp        # Get EFLAGS from the stack to f0. %rbp == f0
+        "movq    %0, %1"    "\n\t"      // movq     %rbp, %r12  # Store f0 to f1. %rbp == f0. %r12 == f1
+        "xorq    %2, %1"    "\n\t"      // xorq     %rdi, %r12  # Xor f1 with mask. %rdi == mask. %r12 == f1
+        "pushq   %1"        "\n\t"      // pushq    %r12        # Push new value for EFLAGS to stack
+        "popfq"             "\n\t"      // popfq                # Set new value for EFLAGS from the stack. If EFLAGS did't support some flags they stay zero
+        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
+        "popq    %1"        "\n\t"      // popq     %r12        # Get EFLAGS from the stack to f1. %r12 == f1
+        "popfq"                         // popfq                # Restore EFLAGS from the stack
+            :                           // Output parameters
+                "=&r" (f0),             // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
+                "=&r" (f1)              // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
+            :                           // Input parameters
+                "ri" (mask)             // "r" == any general register, or "i" == immediate integer operand is allowed
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    COMMON_LVVV(("f0   = 0x%016lX", f0));
+    COMMON_LVVV(("f1   = 0x%016lX", f1));
+    COMMON_LVVV(("mask = 0x%016lX", mask));
+
+    // COMMON_TEST_ASSERT(f0 == 0x0000000000000202, false); // Commented due to value variation
+    // COMMON_TEST_ASSERT(f1 == 0x0000000000200202, false); // Commented due to value variation
+    COMMON_TEST_ASSERT(mask  == 0x0000000000200000, false);
+
+
+
+    return (f0 ^ f1) == mask;
+}
+
+NgosStatus CPU::cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
+{
+    COMMON_LT((" | id = 0x%08X, count = %u, a = 0x%p, b = 0x%p, c = 0x%p, d = 0x%p", id, count, a, b, c, d));
+
+    COMMON_ASSERT(count <= 2, "count is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(a,          "a is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(b,          "b is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(c,          "c is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(d,          "d is null",        NgosStatus::ASSERTION);
+
+
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "cpuid"             // cpuid    # Gets information about CPU to eax, ebx, ecx, edx
+            :               // Output parameters
+                "=a" (*a),  // "a" == EAX, "=" - write only
+                "=b" (*b),  // "b" == EBX, "=" - write only
+                "=c" (*c),  // "c" == ECX, "=" - write only
+                "=d" (*d)   // "d" == EDX, "=" - write only
+            :               // Input parameters
+                "a" (id),   // "a" == EAX // Ignore CppSingleCharVerifier
+                "c" (count) // "c" == ECX // Ignore CppSingleCharVerifier
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus CPU::initCpuFeatures()
 {
     COMMON_LT((""));
@@ -1594,83 +1684,4 @@ bool CPU::isCpuNoL1TF()
                 )
             )
         );
-}
-
-bool CPU::hasEFlag(u64 mask)
-{
-    COMMON_LT((" | mask = 0x%016lX", mask));
-
-    COMMON_ASSERT(mask > 0, "mask is zero", false);
-
-
-
-    u64 f0 = 0;
-    u64 f1 = 0;
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
-        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
-        "popq    %0"        "\n\t"      // popq     %rbp        # Get EFLAGS from the stack to f0. %rbp == f0
-        "movq    %0, %1"    "\n\t"      // movq     %rbp, %r12  # Store f0 to f1. %rbp == f0. %r12 == f1
-        "xorq    %2, %1"    "\n\t"      // xorq     %rdi, %r12  # Xor f1 with mask. %rdi == mask. %r12 == f1
-        "pushq   %1"        "\n\t"      // pushq    %r12        # Push new value for EFLAGS to stack
-        "popfq"             "\n\t"      // popfq                # Set new value for EFLAGS from the stack. If EFLAGS did't support some flags they stay zero
-        "pushfq"            "\n\t"      // pushfq               # Push EFLAGS to the stack
-        "popq    %1"        "\n\t"      // popq     %r12        # Get EFLAGS from the stack to f1. %r12 == f1
-        "popfq"                         // popfq                # Restore EFLAGS from the stack
-            :                           // Output parameters
-                "=&r" (f0),             // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
-                "=&r" (f1)              // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
-            :                           // Input parameters
-                "ri" (mask)             // "r" == any general register, or "i" == immediate integer operand is allowed
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    COMMON_LVVV(("f0   = 0x%016lX", f0));
-    COMMON_LVVV(("f1   = 0x%016lX", f1));
-    COMMON_LVVV(("mask = 0x%016lX", mask));
-
-    // COMMON_TEST_ASSERT(f0 == 0x0000000000000202, false); // Commented due to value variation
-    // COMMON_TEST_ASSERT(f1 == 0x0000000000200202, false); // Commented due to value variation
-    COMMON_TEST_ASSERT(mask  == 0x0000000000200000, false);
-
-
-
-    return (f0 ^ f1) == mask;
-}
-
-NgosStatus CPU::cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
-{
-    COMMON_LT((" | id = 0x%08X, count = %u, a = 0x%p, b = 0x%p, c = 0x%p, d = 0x%p", id, count, a, b, c, d));
-
-    COMMON_ASSERT(count <= 2, "count is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(a,          "a is null",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(b,          "b is null",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(c,          "c is null",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(d,          "d is null",        NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "cpuid"             // cpuid    # Gets information about CPU to eax, ebx, ecx, edx
-            :               // Output parameters
-                "=a" (*a),  // "a" == EAX, "=" - write only
-                "=b" (*b),  // "b" == EBX, "=" - write only
-                "=c" (*c),  // "c" == ECX, "=" - write only
-                "=d" (*d)   // "d" == EDX, "=" - write only
-            :               // Input parameters
-                "a" (id),   // "a" == EAX // Ignore CppSingleCharVerifier
-                "c" (count) // "c" == ECX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
 }

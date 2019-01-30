@@ -29,6 +29,11 @@ public:
     static NgosStatus clearBug(X86Bug bug); // TEST: NO
     static bool hasBug(X86Bug bug); // TEST: NO
 
+    static bool isCpuIdLevelSupported(u32 cpuidLevel);
+
+    static bool hasEFlag(u64 mask); // TEST: NO
+    static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
+
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
@@ -52,8 +57,6 @@ private:
     static bool isCpuNoMeltdown(); // TEST: NO
     static bool isCpuNoSpecStoreBypass(); // TEST: NO
     static bool isCpuNoL1TF(); // TEST: NO
-    static bool hasEFlag(u64 mask); // TEST: NO
-    static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
 
     static u32       sVendor[3];
     static CpuVendor sCpuVendor;

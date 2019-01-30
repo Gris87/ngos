@@ -14,13 +14,13 @@ public:
     static NgosStatus init(); // TEST: NO
 
 private:
-    static NgosStatus initState(); // TEST: NO
-    static NgosStatus initXState(); // TEST: NO
-    static NgosStatus initFXState(); // TEST: NO
     static NgosStatus initMxcsrMask(); // TEST: NO
+    static NgosStatus initFXState(); // TEST: NO
+    static NgosStatus initXState(); // TEST: NO
 
-    static FpuState sState;
-    static u32      sMxcsrMask;
+    static FpuState   sState;
+    static u32        sMxcsrMask;
+    static x_features sXFeaturesMask;
 };
 
 
