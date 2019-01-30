@@ -485,6 +485,18 @@ inline NgosStatus fninit() // TEST: NO
     return NgosStatus::OK;
 }
 
+inline NgosStatus fxsave(u8 *address) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "fxsave  %0"                // fxsave 0x0000(%rip)    # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+    );
+
+    return NgosStatus::OK;
+}
+
 
 
 #endif // ASM_INSTRUCTIONS_H

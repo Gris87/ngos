@@ -4,6 +4,7 @@
 
 
 #include <ngos/status.h>
+#include <src/bits64/other/fpu/fpustate.h>
 
 
 
@@ -13,7 +14,13 @@ public:
     static NgosStatus init(); // TEST: NO
 
 private:
-    static NgosStatus initCpu(); // TEST: NO
+    static NgosStatus initState(); // TEST: NO
+    static NgosStatus initXState(); // TEST: NO
+    static NgosStatus initFXState(); // TEST: NO
+    static NgosStatus initMxcsrMask(); // TEST: NO
+
+    static FpuState sState;
+    static u32      sMxcsrMask;
 };
 
 

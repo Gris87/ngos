@@ -42,7 +42,7 @@ struct FXSaveState
 
     // 16 * 16 bytes for each XMM register = 256 bytes
     //
-    u64         xmms[32];
+    u64         xmms[16][2];
 
     u32         __reserved[12];
     u32         __pad[12];

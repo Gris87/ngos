@@ -377,6 +377,7 @@ src/os/kernelbase/src/bits64/other/fpu/fpu.h
 src/os/kernelbase/src/bits64/other/fpu/fpustate.h
 src/os/kernelbase/src/bits64/other/fpu/fsavestate.h
 src/os/kernelbase/src/bits64/other/fpu/fxsavestate.h
+src/os/kernelbase/src/bits64/other/fpu/macros.h
 src/os/kernelbase/src/bits64/other/fpu/xfeature.h
 src/os/kernelbase/src/bits64/other/fpu/xsavestate.h
 src/os/kernelbase/src/bits64/other/fpu/xstateheader.h
