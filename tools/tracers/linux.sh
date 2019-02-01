@@ -50,8 +50,9 @@ NEXTI_FILTERS=(
     -e "<strcmp>"
     -e "<strncmp>"
     -e "<__gunzip>"
-    -e "<printk>"
     -e "<_get_random_bytes>"
+    -e "<printk>"
+    -e "<print_xstate_feature>"
 )
 
 NEXT_FILTERS=(

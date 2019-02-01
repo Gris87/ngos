@@ -24,6 +24,8 @@ u32        FPU::sStateKernelSize;
 u32        FPU::sStateUserSize;
 u32        FPU::sMxcsrMask;
 x_features FPU::sXFeaturesMask;
+u32        FPU::sXFeaturesOffsets[XFEATURE_MAX];
+u32        FPU::sXFeaturesSizes[XFEATURE_MAX];
 
 
 
@@ -69,6 +71,99 @@ NgosStatus FPU::init()
     COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
     COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));
     COMMON_LVVV(("sXFeaturesMask                  = 0x%016lX", sXFeaturesMask));
+
+    for (i64 i = 0; i < XFEATURE_MAX; ++i)
+    {
+        COMMON_LVVV(("sXFeaturesOffsets[%d] = 0x%08X", i, sXFeaturesOffsets[i]));
+        COMMON_LVVV(("sXFeaturesSizes[%d]   = 0x%08X", i, sXFeaturesSizes[i]));
+    }
+
+
+
+    COMMON_TEST_ASSERT(sState.fxsave.cwd               == 0x037F,             NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.swd               == 0x0000,             NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.twd               == 0x0000,             NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.fop               == 0x0000,             NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.fip               == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.fcs               == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.foo               == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.fos               == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.mxcsr             == 0x00001F80,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.mxcsrMask         == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[0]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[1]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[2]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[3]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[4]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[5]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[6]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[7]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[8]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[9]          == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[10]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[11]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[12]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[13]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[14]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.stack[15]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[0][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[0][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[1][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[1][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[2][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[2][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[3][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[3][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[4][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[4][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[5][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[5][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[6][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[6][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[7][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[7][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[8][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[8][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[9][0]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[9][1]         == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[10][0]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[10][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[11][0]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[11][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[12][0]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[12][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[13][0]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[13][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[14][0]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[14][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[15][0]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.xmm[15][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.xsave.header.xFeatures   == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.xsave.header.xComponents == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sStateKernelSize                == 2696,               NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sStateUserSize                  == 2696,               NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sMxcsrMask                      == 0x0000FFFF,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesMask                  == 0x000000000000021B, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[0]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[0]              == 0x00000100,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[1]            == 0x00000100,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[1]              == 0x00000100,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[2]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[2]              == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[3]            == 0x000003C0,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[3]              == 0x00000040,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[4]            == 0x00000400,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[4]              == 0x00000040,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[5]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[5]              == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[6]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[6]              == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[7]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[7]              == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[8]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[8]              == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[9]            == 0x00000A80,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[9]              == 0x00000008,         NgosStatus::ASSERTION);
 
 
 
@@ -117,15 +212,6 @@ NgosStatus FPU::initFXState()
 NgosStatus FPU::initXState()
 {
     COMMON_LT((""));
-
-
-
-    if (CPU::hasFlag(X86Feature::XSAVES))
-    {
-        COMMON_LVV(("X86Feature::XSAVES supported"));
-
-        sState.xsave.header.xComponents = XCOMPONENTS_COMPACTED_FORMAT;
-    }
 
 
 
@@ -228,7 +314,17 @@ NgosStatus FPU::initXState()
 
     COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeaturesMask), NgosStatus::ASSERTION);
 
-    COMMON_ASSERT_EXECUTION(initStateSizes(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initStateSizes(),               NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initXFeaturesOffsetsAndSizes(), NgosStatus::ASSERTION);
+
+
+
+    if (CPU::hasFlag(X86Feature::XSAVES))
+    {
+        COMMON_LVV(("X86Feature::XSAVES supported"));
+
+        sState.xsave.header.xComponents = XCOMPONENTS_COMPACTED_FORMAT | sXFeaturesMask;
+    }
 
 
 
@@ -271,6 +367,56 @@ NgosStatus FPU::initStateSizes()
     COMMON_TEST_ASSERT(sStateKernelSize >= sStateUserSize, NgosStatus::ASSERTION);
 
     COMMON_TEST_ASSERT(expectedStateSize() == sStateKernelSize, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus FPU::initXFeaturesOffsetsAndSizes()
+{
+    COMMON_LT((""));
+
+
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+    u32 lastGoodOffset = sizeof(FXSaveState) + sizeof(XStateHeader);
+#endif
+
+    sXFeaturesOffsets[XFEATURE_FPU] = 0;
+    sXFeaturesSizes[XFEATURE_FPU]   = sizeof(FXSaveState) - sizeof(FXSaveState::xmm);
+
+    sXFeaturesOffsets[XFEATURE_SSE] = sXFeaturesSizes[XFEATURE_FPU];
+    sXFeaturesSizes[XFEATURE_SSE]   = sizeof(FXSaveState::xmm);
+
+
+
+    for (i64 i = XFEATURE_SSE + 1; i < XFEATURE_MAX; ++i)
+    {
+        if (sXFeaturesMask & (1ULL << i))
+        {
+            u32 ignored;
+
+            COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, i, &sXFeaturesSizes[i], &sXFeaturesOffsets[i], &ignored, &ignored), NgosStatus::ASSERTION);
+
+
+
+            if (!isXFeatureUser(i))
+            {
+                COMMON_LF(("Can't get offset of X feature %s", getFeatureName(i)));
+
+                sXFeaturesOffsets[i] = 0;
+            }
+
+
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+            COMMON_TEST_ASSERT(sXFeaturesOffsets[i] > lastGoodOffset, NgosStatus::ASSERTION);
+
+            lastGoodOffset = sXFeaturesOffsets[i];
+#endif
+        }
+    }
 
 
 

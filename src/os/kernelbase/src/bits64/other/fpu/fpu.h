@@ -18,6 +18,7 @@ private:
     static NgosStatus initFXState(); // TEST: NO
     static NgosStatus initXState(); // TEST: NO
     static NgosStatus initStateSizes(); // TEST: NO
+    static NgosStatus initXFeaturesOffsetsAndSizes(); // TEST: NO
     static const char* getFeatureName(u8 xFeature); // TEST: NO
     static u32 xFeatureSize(u8 xFeature); // TEST: NO
     static u32 xFeatureOffset(u8 xFeature); // TEST: NO
@@ -31,6 +32,8 @@ private:
     static u32        sStateUserSize;
     static u32        sMxcsrMask;
     static x_features sXFeaturesMask;
+    static u32        sXFeaturesOffsets[XFEATURE_MAX];
+    static u32        sXFeaturesSizes[XFEATURE_MAX];
 };
 
 
