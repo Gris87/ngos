@@ -52,7 +52,7 @@ NEXTI_FILTERS=(
     -e "<__gunzip>"
     -e "<_get_random_bytes>"
     -e "<printk>"
-    -e "<print_xstate_feature>"
+    -e "<print_xstate_features>"
 )
 
 NEXT_FILTERS=(
