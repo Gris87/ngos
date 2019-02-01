@@ -498,6 +498,66 @@ index ffb181f959d2..d00f26cdb94c 100644
  {
  	register_syscore_ops(&cpu_syscore_ops);
  	return 0;
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 2ea85b32421a..9b4cd4386365 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -42,24 +42,24 @@ static DEFINE_PER_CPU(bool, in_kernel_fpu);
+  */
+ DEFINE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
+ 
+-static void kernel_fpu_disable(void)
++void kernel_fpu_disable(void)
+ {
+ 	WARN_ON_FPU(this_cpu_read(in_kernel_fpu));
+ 	this_cpu_write(in_kernel_fpu, true);
+ }
+ 
+-static void kernel_fpu_enable(void)
++void kernel_fpu_enable(void)
+ {
+ 	WARN_ON_FPU(!this_cpu_read(in_kernel_fpu));
+ 	this_cpu_write(in_kernel_fpu, false);
+ }
+ 
+-static bool kernel_fpu_disabled(void)
++bool kernel_fpu_disabled(void)
+ {
+ 	return this_cpu_read(in_kernel_fpu);
+ }
+ 
+-static bool interrupted_kernel_fpu_idle(void)
++bool interrupted_kernel_fpu_idle(void)
+ {
+ 	return !kernel_fpu_disabled();
+ }
+@@ -72,7 +72,7 @@ static bool interrupted_kernel_fpu_idle(void)
+  * in an interrupt context from user mode - we'll just
+  * save the FPU state as required.
+  */
+-static bool interrupted_user_mode(void)
++bool interrupted_user_mode(void)
+ {
+ 	struct pt_regs *regs = get_irq_regs();
+ 	return regs && user_mode(regs);
+@@ -162,7 +162,7 @@ EXPORT_SYMBOL_GPL(fpu__save);
+ /*
+  * Legacy x87 fpstate state init:
+  */
+-static inline void fpstate_init_fstate(struct fregs_state *fp)
++void fpstate_init_fstate(struct fregs_state *fp)
+ {
+ 	fp->cwd = 0xffff037fu;
+ 	fp->swd = 0xffff0000u;
+@@ -363,7 +363,7 @@ void fpu__drop(struct fpu *fpu)
+  * Clear FPU registers by setting them up from
+  * the init fpstate:
+  */
+-static inline void copy_init_fpstate_to_fpregs(void)
++void copy_init_fpstate_to_fpregs(void)
+ {
+ 	if (use_xsave())
+ 		copy_kernel_to_xregs(&init_fpstate.xsave, -1);
 diff --git a/arch/x86/kernel/fpu/init.c b/arch/x86/kernel/fpu/init.c
 index 6abd83572b01..defbe7891ce3 100644
 --- a/arch/x86/kernel/fpu/init.c
@@ -583,6 +643,217 @@ index 6abd83572b01..defbe7891ce3 100644
  {
  	char arg[32];
  	char *argptr = arg;
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 87a57b7642d3..c375a88f3a2d 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -113,7 +113,7 @@ int cpu_has_xfeatures(u64 xfeatures_needed, const char **feature_name)
+ }
+ EXPORT_SYMBOL_GPL(cpu_has_xfeatures);
+ 
+-static int xfeature_is_supervisor(int xfeature_nr)
++int xfeature_is_supervisor(int xfeature_nr)
+ {
+ 	/*
+ 	 * We currently do not support supervisor states, but if
+@@ -129,7 +129,7 @@ static int xfeature_is_supervisor(int xfeature_nr)
+ 	return !!(ecx & 1);
+ }
+ 
+-static int xfeature_is_user(int xfeature_nr)
++int xfeature_is_user(int xfeature_nr)
+ {
+ 	return !xfeature_is_supervisor(xfeature_nr);
+ }
+@@ -240,7 +240,7 @@ void fpu__init_cpu_xstate(void)
+  * functions here: one for user xstates and the other for
+  * system xstates.  For now, they are the same.
+  */
+-static int xfeature_enabled(enum xfeature xfeature)
++int xfeature_enabled(enum xfeature xfeature)
+ {
+ 	return !!(xfeatures_mask & (1UL << xfeature));
+ }
+@@ -249,7 +249,7 @@ static int xfeature_enabled(enum xfeature xfeature)
+  * Record the offsets and sizes of various xstates contained
+  * in the XSAVE state memory layout.
+  */
+-static void __init setup_xstate_features(void)
++void __init setup_xstate_features(void)
+ {
+ 	u32 eax, ebx, ecx, edx, i;
+ 	/* start at the beginnning of the "extended state" */
+@@ -290,7 +290,7 @@ static void __init setup_xstate_features(void)
+ 	}
+ }
+ 
+-static void __init print_xstate_feature(u64 xstate_mask)
++void __init print_xstate_feature(u64 xstate_mask)
+ {
+ 	const char *feature_name;
+ 
+@@ -301,7 +301,7 @@ static void __init print_xstate_feature(u64 xstate_mask)
+ /*
+  * Print out all the supported xstate features:
+  */
+-static void __init print_xstate_features(void)
++void __init print_xstate_features(void)
+ {
+ 	print_xstate_feature(XFEATURE_MASK_FP);
+ 	print_xstate_feature(XFEATURE_MASK_SSE);
+@@ -327,7 +327,7 @@ static void __init print_xstate_features(void)
+  * We could cache this like xstate_size[], but we only use
+  * it here, so it would be a waste of space.
+  */
+-static int xfeature_is_aligned(int xfeature_nr)
++int xfeature_is_aligned(int xfeature_nr)
+ {
+ 	u32 eax, ebx, ecx, edx;
+ 
+@@ -346,7 +346,7 @@ static int xfeature_is_aligned(int xfeature_nr)
+  * xsave area. This supports both standard format and compacted format
+  * of the xsave aread.
+  */
+-static void __init setup_xstate_comp(void)
++void __init setup_xstate_comp(void)
+ {
+ 	unsigned int xstate_comp_sizes[sizeof(xfeatures_mask)*8];
+ 	int i;
+@@ -392,7 +392,7 @@ static void __init setup_xstate_comp(void)
+ /*
+  * Print out xstate component offsets and sizes
+  */
+-static void __init print_xstate_offset_size(void)
++void __init print_xstate_offset_size(void)
+ {
+ 	int i;
+ 
+@@ -407,7 +407,7 @@ static void __init print_xstate_offset_size(void)
+ /*
+  * setup the xstate image representing the init state
+  */
+-static void __init setup_init_fpu_buf(void)
++void __init setup_init_fpu_buf(void)
+ {
+ 	static int on_boot_cpu __initdata = 1;
+ 
+@@ -435,7 +435,7 @@ static void __init setup_init_fpu_buf(void)
+ 	copy_xregs_to_kernel_booting(&init_fpstate.xsave);
+ }
+ 
+-static int xfeature_uncompacted_offset(int xfeature_nr)
++int xfeature_uncompacted_offset(int xfeature_nr)
+ {
+ 	u32 eax, ebx, ecx, edx;
+ 
+@@ -454,7 +454,7 @@ static int xfeature_uncompacted_offset(int xfeature_nr)
+ 	return ebx;
+ }
+ 
+-static int xfeature_size(int xfeature_nr)
++int xfeature_size(int xfeature_nr)
+ {
+ 	u32 eax, ebx, ecx, edx;
+ 
+@@ -501,7 +501,7 @@ int validate_xstate_header(const struct xstate_header *hdr)
+ 	return 0;
+ }
+ 
+-static void __xstate_dump_leaves(void)
++void __xstate_dump_leaves(void)
+ {
+ 	int i;
+ 	u32 eax, ebx, ecx, edx;
+@@ -541,7 +541,7 @@ static void __xstate_dump_leaves(void)
+  * that our software representation matches what the CPU
+  * tells us about the state's size.
+  */
+-static void check_xstate_against_struct(int nr)
++void check_xstate_against_struct(int nr)
+ {
+ 	/*
+ 	 * Ask the CPU for the size of the state.
+@@ -577,7 +577,7 @@ static void check_xstate_against_struct(int nr)
+  * how large the XSAVE buffer needs to be.  We are recalculating
+  * it to be safe.
+  */
+-static void do_extra_xstate_size_checks(void)
++void do_extra_xstate_size_checks(void)
+ {
+ 	int paranoid_xstate_size = FXSAVE_SIZE + XSAVE_HDR_SIZE;
+ 	int i;
+@@ -626,7 +626,7 @@ static void do_extra_xstate_size_checks(void)
+  * Note that we do not currently set any bits on IA32_XSS so
+  * 'XCR0 | IA32_XSS == XCR0' for now.
+  */
+-static unsigned int __init get_xsaves_size(void)
++unsigned int __init get_xsaves_size(void)
+ {
+ 	unsigned int eax, ebx, ecx, edx;
+ 	/*
+@@ -641,7 +641,7 @@ static unsigned int __init get_xsaves_size(void)
+ 	return ebx;
+ }
+ 
+-static unsigned int __init get_xsave_size(void)
++unsigned int __init get_xsave_size(void)
+ {
+ 	unsigned int eax, ebx, ecx, edx;
+ 	/*
+@@ -659,7 +659,7 @@ static unsigned int __init get_xsave_size(void)
+  * Will the runtime-enumerated 'xstate_size' fit in the init
+  * task's statically-allocated buffer?
+  */
+-static bool is_supported_xstate_size(unsigned int test_xstate_size)
++bool is_supported_xstate_size(unsigned int test_xstate_size)
+ {
+ 	if (test_xstate_size <= sizeof(union fpregs_state))
+ 		return true;
+@@ -669,7 +669,7 @@ static bool is_supported_xstate_size(unsigned int test_xstate_size)
+ 	return false;
+ }
+ 
+-static int init_xstate_size(void)
++int init_xstate_size(void)
+ {
+ 	/* Recompute the context size for enabled features: */
+ 	unsigned int possible_xstate_size;
+@@ -704,7 +704,7 @@ static int init_xstate_size(void)
+  * We enabled the XSAVE hardware, but something went wrong and
+  * we can not use it.  Disable it.
+  */
+-static void fpu__init_disable_system_xstate(void)
++void fpu__init_disable_system_xstate(void)
+ {
+ 	xfeatures_mask = 0;
+ 	cr4_clear_bits(X86_CR4_OSXSAVE);
+@@ -953,7 +953,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+  * area is marked as unused in the xfeatures header, we need to copy
+  * MXCSR and MXCSR_FLAGS if either SSE or YMM are in use.
+  */
+-static inline bool xfeatures_mxcsr_quirk(u64 xfeatures)
++bool xfeatures_mxcsr_quirk(u64 xfeatures)
+ {
+ 	if (!(xfeatures & (XFEATURE_MASK_SSE|XFEATURE_MASK_YMM)))
+ 		return false;
+@@ -968,7 +968,7 @@ static inline bool xfeatures_mxcsr_quirk(u64 xfeatures)
+  * This is similar to user_regset_copyout(), but will not add offset to
+  * the source data pointer or increment pos, count, kbuf, and ubuf.
+  */
+-static inline void
++void
+ __copy_xstate_to_kernel(void *kbuf, const void *data,
+ 			unsigned int offset, unsigned int size, unsigned int size_total)
+ {
+@@ -1049,7 +1049,7 @@ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int of
+ 	return 0;
+ }
+ 
+-static inline int
++int
+ __copy_xstate_to_user(void __user *ubuf, const void *data, unsigned int offset, unsigned int size, unsigned int size_total)
+ {
+ 	if (!size)
 diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
 index 16b1cbd3a61e..01892dd65776 100644
 --- a/arch/x86/kernel/head64.c

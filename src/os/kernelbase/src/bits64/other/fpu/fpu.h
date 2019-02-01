@@ -17,8 +17,18 @@ private:
     static NgosStatus initMxcsrMask(); // TEST: NO
     static NgosStatus initFXState(); // TEST: NO
     static NgosStatus initXState(); // TEST: NO
+    static NgosStatus initStateSizes(); // TEST: NO
+    static const char* getFeatureName(u8 xFeature); // TEST: NO
+    static u32 xFeatureSize(u8 xFeature); // TEST: NO
+    static u32 xFeatureOffset(u8 xFeature); // TEST: NO
+    static bool isXFeatureSupervisor(u8 xFeature); // TEST: NO
+    static bool isXFeatureUser(u8 xFeature); // TEST: NO
+    static bool isXFeatureAligned(u8 xFeature); // TEST: NO
+    static u32 expectedStateSize(); // TEST: NO
 
     static FpuState   sState;
+    static u32        sStateKernelSize;
+    static u32        sStateUserSize;
     static u32        sMxcsrMask;
     static x_features sXFeaturesMask;
 };

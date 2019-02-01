@@ -1,0 +1,31 @@
+#ifndef OS_KERNELBASE_SRC_BITS64_OTHER_FPU_XFEATURES_EXTENDEDREGISTERS_H
+#define OS_KERNELBASE_SRC_BITS64_OTHER_FPU_XFEATURES_EXTENDEDREGISTERS_H
+
+
+
+#include <ngos/types.h>
+
+
+
+struct Register128Bit
+{
+    u8 bytes[128 / 8];
+};
+
+
+
+struct Register256Bit
+{
+    u8 bytes[256 / 8];
+};
+
+
+
+struct Register512Bit
+{
+    u8 bytes[512 / 8];
+};
+
+
+
+#endif // OS_KERNELBASE_SRC_BITS64_OTHER_FPU_XFEATURES_EXTENDEDREGISTERS_H

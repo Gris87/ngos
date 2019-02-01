@@ -78,7 +78,7 @@ sudo virt-install --name ${VM_NAME} \
     --os-variant=none \
     --ram ${RAM_SIZE} \
     --vcpus 2,sockets=1,cores=1,threads=2 \
-    --cpu Skylake-Client,+la57 \
+    --cpu Icelake-Client,+la57 \
     --graphics ${DISPLAY_TYPE} \
     --video=vmvga \
     --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none \
