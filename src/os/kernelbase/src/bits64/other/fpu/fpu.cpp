@@ -150,9 +150,9 @@ NgosStatus FPU::init()
     COMMON_TEST_ASSERT(sXFeaturesMask                  == 0x000000000000021B, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[0]            == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[0]   == 0x00000000,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesSizes[0]              == 0x00000100,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesOffsets[1]            == 0x00000100,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[1]   == 0x00000100,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesSizes[0]              == 0x000000A0,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesOffsets[1]            == 0x000000A0,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[1]   == 0x000000A0,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[1]              == 0x00000100,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[2]            == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[2]   == 0x00000000,         NgosStatus::ASSERTION);
