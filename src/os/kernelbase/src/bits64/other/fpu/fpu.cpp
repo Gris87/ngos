@@ -4,6 +4,7 @@
 #include <src/bits64/cpu/cpu.h>
 #include <src/bits64/log/assert.h>
 #include <src/bits64/log/log.h>
+#include <src/bits64/memory/memory.h>
 #include <src/bits64/other/fpu/macros.h>
 #include <src/bits64/other/fpu/xfeatureflags.h>
 #include <src/bits64/other/fpu/xfeatures/xfeatureavx512opmaskstate.h>
@@ -26,6 +27,7 @@ u32        FPU::sStateUserSize;
 u32        FPU::sMxcsrMask;
 x_features FPU::sXFeaturesMask;
 u32        FPU::sXFeaturesOffsets[XFEATURE_MAX];
+u32        FPU::sXFeaturesCompactedOffsets[XFEATURE_MAX];
 u32        FPU::sXFeaturesSizes[XFEATURE_MAX];
 
 
@@ -75,8 +77,9 @@ NgosStatus FPU::init()
 
     for (i64 i = 0; i < XFEATURE_MAX; ++i)
     {
-        COMMON_LVVV(("sXFeaturesOffsets[%d] = 0x%08X", i, sXFeaturesOffsets[i]));
-        COMMON_LVVV(("sXFeaturesSizes[%d]   = 0x%08X", i, sXFeaturesSizes[i]));
+        COMMON_LVVV(("sXFeaturesOffsets[%d]          = 0x%08X", i, sXFeaturesOffsets[i]));
+        COMMON_LVVV(("sXFeaturesCompactedOffsets[%d] = 0x%08X", i, sXFeaturesCompactedOffsets[i]));
+        COMMON_LVVV(("sXFeaturesSizes[%d]            = 0x%08X", i, sXFeaturesSizes[i]));
     }
 
 
@@ -146,24 +149,34 @@ NgosStatus FPU::init()
     COMMON_TEST_ASSERT(sMxcsrMask                      == 0x0000FFFF,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesMask                  == 0x000000000000021B, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[0]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[0]   == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[0]              == 0x00000100,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[1]            == 0x00000100,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[1]   == 0x00000100,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[1]              == 0x00000100,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[2]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[2]   == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[2]              == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[3]            == 0x000003C0,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[3]   == 0x000003C0,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[3]              == 0x00000040,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[4]            == 0x00000400,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[4]   == 0x00000400,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[4]              == 0x00000040,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[5]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[5]   == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[5]              == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[6]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[6]   == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[6]              == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[7]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[7]   == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[7]              == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[8]            == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[8]   == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[8]              == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesOffsets[9]            == 0x00000A80,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[9]   == 0x00000A80,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sXFeaturesSizes[9]              == 0x00000008,         NgosStatus::ASSERTION);
 
 
@@ -336,7 +349,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 #endif
 
     sXFeaturesOffsets[XFEATURE_FPU] = 0;
-    sXFeaturesSizes[XFEATURE_FPU]   = sizeof(FXSaveState) - sizeof(FXSaveState::xmm);
+    sXFeaturesSizes[XFEATURE_FPU]   = sizeof(FXSaveState) - sizeof(FXSaveState::xmm) - sizeof(FXSaveState::__reserved) - sizeof(FXSaveState::__pad);
 
     sXFeaturesOffsets[XFEATURE_SSE] = sXFeaturesSizes[XFEATURE_FPU];
     sXFeaturesSizes[XFEATURE_SSE]   = sizeof(FXSaveState::xmm);
@@ -368,6 +381,34 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
             lastGoodOffset = sXFeaturesOffsets[i];
 #endif
         }
+    }
+
+
+    if (CPU::hasFlag(X86Feature::XSAVES))
+    {
+        COMMON_LVV(("X86Feature::XSAVES supported"));
+
+        sXFeaturesCompactedOffsets[XFEATURE_FPU]     = sXFeaturesOffsets[XFEATURE_FPU];
+        sXFeaturesCompactedOffsets[XFEATURE_SSE]     = sXFeaturesOffsets[XFEATURE_SSE];
+        sXFeaturesCompactedOffsets[XFEATURE_SSE + 1] = sizeof(FXSaveState) + sizeof(XStateHeader);
+
+        for (i64 i = XFEATURE_SSE + 2; i < XFEATURE_MAX; ++i)
+        {
+            sXFeaturesCompactedOffsets[i] = sXFeaturesCompactedOffsets[i - 1] + sXFeaturesSizes[i - 1];
+
+            if (isXFeatureAligned(i))
+            {
+                COMMON_LVV(("X feature %s should be aligned to 64 bytes", getFeatureName(i)));
+
+                sXFeaturesCompactedOffsets[i] = ROUND_UP(sXFeaturesCompactedOffsets[i], 64);
+            }
+        }
+    }
+    else
+    {
+        COMMON_LVV(("X86Feature::XSAVES not supported"));
+
+        memcpy(sXFeaturesCompactedOffsets, sXFeaturesOffsets, sizeof(sXFeaturesOffsets));
     }
 
 

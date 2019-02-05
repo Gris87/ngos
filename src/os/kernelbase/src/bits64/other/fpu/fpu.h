@@ -33,6 +33,7 @@ private:
     static u32        sMxcsrMask;
     static x_features sXFeaturesMask;
     static u32        sXFeaturesOffsets[XFEATURE_MAX];
+    static u32        sXFeaturesCompactedOffsets[XFEATURE_MAX];
     static u32        sXFeaturesSizes[XFEATURE_MAX];
 };
 
