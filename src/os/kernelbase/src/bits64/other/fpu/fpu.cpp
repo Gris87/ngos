@@ -5,6 +5,7 @@
 #include <src/bits64/log/assert.h>
 #include <src/bits64/log/log.h>
 #include <src/bits64/other/fpu/macros.h>
+#include <src/bits64/other/fpu/xfeatureflags.h>
 #include <src/bits64/other/fpu/xfeatures/xfeatureavx512opmaskstate.h>
 #include <src/bits64/other/fpu/xfeatures/xfeatureavx512zmmfrom0to15state.h>
 #include <src/bits64/other/fpu/xfeatures/xfeatureavx512zmmfrom16to31state.h>
@@ -89,7 +90,7 @@ NgosStatus FPU::init()
     COMMON_TEST_ASSERT(sState.fxsave.foo               == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.fxsave.fos               == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.fxsave.mxcsr             == 0x00001F80,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.mxcsrMask         == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.fxsave.mxcsrMask         == 0x0000FFFF,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.fxsave.stack[0]          == 0x0000000000000000, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.fxsave.stack[1]          == 0x0000000000000000, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.fxsave.stack[2]          == 0x0000000000000000, NgosStatus::ASSERTION);
@@ -138,7 +139,7 @@ NgosStatus FPU::init()
     COMMON_TEST_ASSERT(sState.fxsave.xmm[14][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.fxsave.xmm[15][0]        == 0x0000000000000000, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.fxsave.xmm[15][1]        == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.xsave.header.xFeatures   == 0x00000000,         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sState.xsave.header.xFeatures   == 0x00000213,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sState.xsave.header.xComponents == 0x00000000,         NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sStateKernelSize                == 2696,               NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sStateUserSize                  == 2696,               NgosStatus::ASSERTION);
@@ -316,15 +317,8 @@ NgosStatus FPU::initXState()
 
     COMMON_ASSERT_EXECUTION(initXFeaturesOffsetsAndSizes(), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(initStateSizes(),               NgosStatus::ASSERTION);
-
-
-
-    if (CPU::hasFlag(X86Feature::XSAVES))
-    {
-        COMMON_LVV(("X86Feature::XSAVES supported"));
-
-        sState.xsave.header.xComponents = XCOMPONENTS_COMPACTED_FORMAT | sXFeaturesMask;
-    }
+    COMMON_ASSERT_EXECUTION(copyStateFromFPU(),             NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(copyStateToFPU(),               NgosStatus::ASSERTION);
 
 
 
@@ -423,6 +417,57 @@ NgosStatus FPU::initStateSizes()
     return NgosStatus::OK;
 }
 
+NgosStatus FPU::copyStateFromFPU()
+{
+    COMMON_LT((""));
+
+
+
+    if (CPU::hasFlag(X86Feature::XSAVES))
+    {
+        COMMON_LVV(("X86Feature::XSAVES supported"));
+
+        // We need to set bit 63 of xComponents field to avoid General Protection during xrstors64 call
+        sState.xsave.header.xComponents = XCOMPONENTS_COMPACTED_FORMAT;
+
+        COMMON_ASSERT_EXECUTION(xrstors64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        COMMON_LVV(("X86Feature::XSAVES not supported"));
+
+        COMMON_ASSERT_EXECUTION(xrstor64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus FPU::copyStateToFPU()
+{
+    COMMON_LT((""));
+
+
+
+    if (CPU::hasFlag(X86Feature::XSAVES))
+    {
+        COMMON_LVV(("X86Feature::XSAVES supported"));
+
+        COMMON_ASSERT_EXECUTION(xsaves64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        COMMON_LVV(("X86Feature::XSAVES not supported"));
+
+        COMMON_ASSERT_EXECUTION(xsave64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 const char* FPU::getFeatureName(u8 xFeature)
 {
     COMMON_LT((" | xFeature = %u", xFeature));
@@ -464,7 +509,7 @@ bool FPU::isXFeatureSupervisor(u8 xFeature)
 
 
 
-    bool res = !!(ecx & 0x01);
+    bool res = !!(ecx & (x_feature_flags)XFeatureFlag::SUPERVISOR);
 
     COMMON_TEST_ASSERT(!!((1ULL << xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
 
@@ -487,7 +532,7 @@ bool FPU::isXFeatureUser(u8 xFeature)
 
 
 
-    bool res = !(ecx & 0x01);
+    bool res = !(ecx & (x_feature_flags)XFeatureFlag::SUPERVISOR);
 
     COMMON_TEST_ASSERT(!!((1ULL << xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
 
@@ -511,7 +556,7 @@ bool FPU::isXFeatureAligned(u8 xFeature)
 
 
 
-    return ecx & 0x02;
+    return ecx & (x_feature_flags)XFeatureFlag::ALIGNED;
 }
 
 u32 FPU::expectedStateSize()

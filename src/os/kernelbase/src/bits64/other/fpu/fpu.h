@@ -19,6 +19,8 @@ private:
     static NgosStatus initXState(); // TEST: NO
     static NgosStatus initXFeaturesOffsetsAndSizes(); // TEST: NO
     static NgosStatus initStateSizes(); // TEST: NO
+    static NgosStatus copyStateFromFPU(); // TEST: NO
+    static NgosStatus copyStateToFPU(); // TEST: NO
     static const char* getFeatureName(u8 xFeature); // TEST: NO
     static bool isXFeatureSupervisor(u8 xFeature); // TEST: NO
     static bool isXFeatureUser(u8 xFeature); // TEST: NO

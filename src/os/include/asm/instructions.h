@@ -485,18 +485,6 @@ inline NgosStatus fninit() // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus fxsave(u8 *address) // TEST: NO
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "fxsave  %0"                // fxsave 0x0000(%rip)  # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address
-            :                       // Output parameters
-                "+m" (*address)     // "m" == use memory, "+" - read and write
-    );
-
-    return NgosStatus::OK;
-}
-
 inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
 {
     u32 eax = value;
@@ -514,6 +502,78 @@ inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
                 "c" (index),    // "c" == ECX // Ignore CppSingleCharVerifier
                 "a" (eax),      // "a" == EAX // Ignore CppSingleCharVerifier
                 "d" (edx)       // "d" == EDX // Ignore CppSingleCharVerifier
+    );
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus fxsave(u8 *address) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "fxsave  %0"                // fxsave  0x0000(%rip)  # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address
+            :                       // Output parameters
+                "+m" (*address)     // "m" == use memory, "+" - read and write
+    );
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "xsave64 %0"                        // xsave64 0x0000(%rip)  # Saves Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address
+            :                               // Output parameters
+                "+m" (*address)             // "m" == use memory, "+" - read and write
+            :                               // Input parameters
+                "d" ((u32)(mask >> 32)),    // "d" == EDX // Ignore CppSingleCharVerifier
+                "a" ((u32)mask)             // "a" == EAX // Ignore CppSingleCharVerifier
+    );
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "xsaves64    %0"                    // xsaves64    0x0000(%rip)  # Saves Processor Extended States specified by EDX:EAX to address with compaction, optimizing if possible. 0x0000(%rip) == address
+            :                               // Output parameters
+                "+m" (*address)             // "m" == use memory, "+" - read and write
+            :                               // Input parameters
+                "d" ((u32)(mask >> 32)),    // "d" == EDX // Ignore CppSingleCharVerifier
+                "a" ((u32)mask)             // "a" == EAX // Ignore CppSingleCharVerifier
+    );
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "xrstor64    %0"                    // xrstor64    0x0000(%rip)  # Restores Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address
+            :                               // Output parameters
+                "+m" (*address)             // "m" == use memory, "+" - read and write
+            :                               // Input parameters
+                "d" ((u32)(mask >> 32)),    // "d" == EDX // Ignore CppSingleCharVerifier
+                "a" ((u32)mask)             // "a" == EAX // Ignore CppSingleCharVerifier
+    );
+
+    return NgosStatus::OK;
+}
+
+inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "xrstors64   %0"                    // xrstors64   0x0000(%rip)  # Restores Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address
+            :                               // Output parameters
+                "+m" (*address)             // "m" == use memory, "+" - read and write
+            :                               // Input parameters
+                "d" ((u32)(mask >> 32)),    // "d" == EDX // Ignore CppSingleCharVerifier
+                "a" ((u32)mask)             // "a" == EAX // Ignore CppSingleCharVerifier
     );
 
     return NgosStatus::OK;
