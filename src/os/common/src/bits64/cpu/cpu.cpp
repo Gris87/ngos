@@ -428,14 +428,23 @@ NgosStatus CPU::check(const char **wantedFlag)
         , X86Feature::AVX
 #elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX2
         , X86Feature::AVX2
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1
         , X86Feature::AVX512F
-        , X86Feature::AVX512PF
-        , X86Feature::AVX512ER
         , X86Feature::AVX512CD
-        , X86Feature::AVX512VL
+        , X86Feature::AVX512ER
+        , X86Feature::AVX512PF
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V2
+        , X86Feature::AVX512F
+        , X86Feature::AVX512CD
         , X86Feature::AVX512BW
         , X86Feature::AVX512DQ
+        , X86Feature::AVX512VL
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3
+        , X86Feature::AVX512F
+        , X86Feature::AVX512CD
+        , X86Feature::AVX512BW
+        , X86Feature::AVX512DQ
+        , X86Feature::AVX512VL
         , X86Feature::AVX512IFMA
         , X86Feature::AVX512VBMI
 #endif

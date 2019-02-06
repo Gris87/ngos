@@ -3,6 +3,7 @@
 #include <ngos/linkage.h>
 #include <src/bits64/assets/assets.h>
 #include <src/bits64/cpu/cpu.h>
+#include <src/bits64/fpu/fpu.h>
 #include <src/bits64/serial/serial.h>
 
 #include "src/bits64/a_uefi/main/exitbootservices.h"
@@ -206,6 +207,10 @@ BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 ker
 
     UEFI_ASSERT_EXECUTION(setupCr4(), 0);
     UEFI_LI(("Setup CR4 completed"));
+
+
+
+    UEFI_ASSERT_EXECUTION(FPU::init(), 0);
 
 
 

@@ -1,10 +1,10 @@
-#ifndef OS_KERNELBASE_SRC_BITS64_OTHER_FPU_XSTATEHEADER_H
-#define OS_KERNELBASE_SRC_BITS64_OTHER_FPU_XSTATEHEADER_H
+#ifndef OS_COMMON_SRC_BITS64_FPU_XSTATEHEADER_H
+#define OS_COMMON_SRC_BITS64_FPU_XSTATEHEADER_H
 
 
 
 #include <ngos/types.h>
-#include <src/bits64/other/fpu/xfeature.h>
+#include <src/bits64/fpu/xfeature.h>
 
 
 
@@ -22,4 +22,4 @@ struct XStateHeader
 
 
 
-#endif // OS_KERNELBASE_SRC_BITS64_OTHER_FPU_XSTATEHEADER_H
+#endif // OS_COMMON_SRC_BITS64_FPU_XSTATEHEADER_H

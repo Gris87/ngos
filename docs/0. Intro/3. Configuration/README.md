@@ -231,16 +231,18 @@ This parameter is used to keep the kernel location aligned.
 Vectorization allows your machine significantly improve performance, but only the modern CPUs supports the best vectorization modes.
 
 **Values:**
-* OPTION_X86_64_VECTORIZATION_MODE_NONE    - Compile kernel without vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE     - Compile kernel with SSE vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE2    - Compile kernel with SSE2 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE3    - Compile kernel with SSE3 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE4    - Compile kernel with SSE4 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE4_1  - Compile kernel with SSE4.1 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE4_2  - Compile kernel with SSE4.2 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_AVX     - Compile kernel with AVX vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_AVX2    - Compile kernel with AVX2 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_AVX_512 - Compile kernel with AVX-512 vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_NONE       - Compile kernel without vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_SSE        - Compile kernel with SSE vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_SSE2       - Compile kernel with SSE2 vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_SSE3       - Compile kernel with SSE3 vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_SSE4       - Compile kernel with SSE4 vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_SSE4_1     - Compile kernel with SSE4.1 vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_SSE4_2     - Compile kernel with SSE4.2 vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_AVX        - Compile kernel with AVX vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_AVX2       - Compile kernel with AVX2 vectorization
+* OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1 - Compile kernel with AVX-512 vectorization (F + CD + ER + PF)
+* OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V2 - Compile kernel with AVX-512 vectorization (F + CD + BW + DQ + VL)
+* OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3 - Compile kernel with AVX-512 vectorization (F + CD + BW + DQ + VL + IFMA + VBMI)
 
 **Default:** OPTION_X86_64_VECTORIZATION_MODE_AVX2
 

@@ -242,7 +242,7 @@ There are a lot of ignored fields. Let's explain the remaining ones.
 
 We are putting 0x020B signature to identify 64 bit version of PE Optional Header.<br/>
 majorLinkerVersion and minorLinkerVersion set for some modern linker version.<br/>
-addressOfEntryPoint will be filled by image_builder, but in most cases the value is 0x220 (0x200 bytes for Boot part and 0x20 byte for .reloc section).<br/>
+addressOfEntryPoint will be filled by image_builder, but in most cases the value is 0x240 (0x200 bytes for Boot part and 0x40 byte for .reloc section).<br/>
 sectionAlignment and fileAlignment set to 0x10 in order to make kernel running in aligned place.<br/>
 sizeOfImage is the total size of image. We will put the value during image build procedure.<br/>
 sizeOfHeaders set to 0x200. It is the size of whole Boot part.<br/>
@@ -317,11 +317,11 @@ We have 3 sections here:
 * .config section
 * .kernel section
 
-.reloc section is required for UEFI in order to run this image. It is located at 0x200 offset right after the Boot part and contains 0x20 bytes.
+.reloc section is required for UEFI in order to run this image. It is located at 0x200 offset right after the Boot part and contains 0x40 bytes.
 
 Since UEFI binaries are executed in physical mode, UEFI cannot guarantee that a given binary can be loaded at its preferred address. UEFI does _try_ to load a binary at it's preferred address, but if it can't do so, it will load it at another address and then relocate the binary using the contents of the .reloc section.
 
-.config section is located at 0x220 (0x200 + 0x20) offset, next to .reloc section. This section contains the code from Configure part. It is a entry point for NGOS kernel.
+.config section is located at 0x240 (0x200 + 0x40) offset, next to .reloc section. This section contains the code from Configure part. It is a entry point for NGOS kernel.
 
 .kernel section is located after the .config section and contains raw or compressed kernel.elf file or installer.elf file. This section starts with [KernelDescriptor](../../../src/os/configure/src/bits64/other/kerneldescriptor.h) that indicates the size of included image.
 

@@ -8,7 +8,7 @@
 
 
 
-#define RELOC_SECTION_SIZE 0x20
+#define RELOC_SECTION_SIZE 0x40
 
 
 

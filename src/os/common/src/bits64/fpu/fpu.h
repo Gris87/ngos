@@ -1,10 +1,10 @@
-#ifndef OS_KERNELBASE_SRC_BITS64_OTHER_FPU_FPU_H
-#define OS_KERNELBASE_SRC_BITS64_OTHER_FPU_FPU_H
+#ifndef OS_COMMON_SRC_BITS64_FPU_FPU_H
+#define OS_COMMON_SRC_BITS64_FPU_FPU_H
 
 
 
 #include <ngos/status.h>
-#include <src/bits64/other/fpu/fpustate.h>
+#include <src/bits64/fpu/fpustate.h>
 
 
 
@@ -39,4 +39,4 @@ private:
 
 
 
-#endif // OS_KERNELBASE_SRC_BITS64_OTHER_FPU_FPU_H
+#endif // OS_COMMON_SRC_BITS64_FPU_FPU_H

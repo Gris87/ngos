@@ -71,8 +71,12 @@ ifeq ($(ARCH), x86_64)
 		VECTORIZATION_FLAGS = -mavx
 	else ifeq ($(VECTORIZATION_MODE), avx2)
 		VECTORIZATION_FLAGS = -mavx2
-	else ifeq ($(VECTORIZATION_MODE), avx_512)
-		VECTORIZATION_FLAGS = -mavx512f -mavx512pf -mavx512er -mavx512cd -mavx512vl -mavx512bw -mavx512dq -mavx512ifma -mavx512vbmi
+	else ifeq ($(VECTORIZATION_MODE), avx_512_v1)
+		VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512er -mavx512pf
+	else ifeq ($(VECTORIZATION_MODE), avx_512_v2)
+		VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl
+	else ifeq ($(VECTORIZATION_MODE), avx_512_v3)
+		VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl -mavx512ifma -mavx512vbmi
 	endif
 endif
 
