@@ -4,9 +4,10 @@
 3rd_party/Makefile
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
-docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 18.04/README.md
-docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 16.04/README.md
-docs/0. Intro/2. Getting started/3. Install prerequisites on CentOS 7.6/README.md
+docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 18.10/README.md
+docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 18.04/README.md
+docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 16.04/README.md
+docs/0. Intro/2. Getting started/4. Install prerequisites on CentOS 7.6/README.md
 docs/0. Intro/2. Getting started/Configuring Qt Creator 01.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 02.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 03.png
@@ -83,6 +84,7 @@ scripts/prerequisites/centos_7_6.sh
 scripts/prerequisites/install.sh
 scripts/prerequisites/ubuntu_16_04.sh
 scripts/prerequisites/ubuntu_18_04.sh
+scripts/prerequisites/ubuntu_18_10.sh
 scripts/pull.sh
 scripts/push.sh
 scripts/update_ngos_files.sh
@@ -121,6 +123,24 @@ src/os/common/src/bits64/cpu/models/intel.h
 src/os/common/src/bits64/cpu/msr/msr.cpp
 src/os/common/src/bits64/cpu/msr/msr.h
 src/os/common/src/bits64/cpu/msr/msrregisters.h
+src/os/common/src/bits64/fpu/fpu.cpp
+src/os/common/src/bits64/fpu/fpu.h
+src/os/common/src/bits64/fpu/fpustate.h
+src/os/common/src/bits64/fpu/fsavestate.h
+src/os/common/src/bits64/fpu/fxsavestate.h
+src/os/common/src/bits64/fpu/macros.h
+src/os/common/src/bits64/fpu/xfeature.h
+src/os/common/src/bits64/fpu/xfeatureflags.h
+src/os/common/src/bits64/fpu/xfeatures/extendedregisters.h
+src/os/common/src/bits64/fpu/xfeatures/xfeatureavx512opmaskstate.h
+src/os/common/src/bits64/fpu/xfeatures/xfeatureavx512zmmfrom0to15state.h
+src/os/common/src/bits64/fpu/xfeatures/xfeatureavx512zmmfrom16to31state.h
+src/os/common/src/bits64/fpu/xfeatures/xfeatureavxstate.h
+src/os/common/src/bits64/fpu/xfeatures/xfeaturempxboundconfigandstatusregistersstate.h
+src/os/common/src/bits64/fpu/xfeatures/xfeaturempxboundregistersstate.h
+src/os/common/src/bits64/fpu/xfeatures/xfeaturepkrustate.h
+src/os/common/src/bits64/fpu/xsavestate.h
+src/os/common/src/bits64/fpu/xstateheader.h
 src/os/common/src/bits64/log/assert.h
 src/os/common/src/bits64/log/log.h
 src/os/common/src/bits64/memory/asm_memcpy.h
@@ -372,24 +392,6 @@ src/os/kernelbase/src/bits64/other/cpu/cpumask.cpp
 src/os/kernelbase/src/bits64/other/cpu/cpumask.h
 src/os/kernelbase/src/bits64/other/cpu/percpu.cpp
 src/os/kernelbase/src/bits64/other/cpu/percpu.h
-src/os/kernelbase/src/bits64/other/fpu/fpu.cpp
-src/os/kernelbase/src/bits64/other/fpu/fpu.h
-src/os/kernelbase/src/bits64/other/fpu/fpustate.h
-src/os/kernelbase/src/bits64/other/fpu/fsavestate.h
-src/os/kernelbase/src/bits64/other/fpu/fxsavestate.h
-src/os/kernelbase/src/bits64/other/fpu/macros.h
-src/os/kernelbase/src/bits64/other/fpu/xfeature.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatureflags.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/extendedregisters.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/xfeatureavx512opmaskstate.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/xfeatureavx512zmmfrom0to15state.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/xfeatureavx512zmmfrom16to31state.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/xfeatureavxstate.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/xfeaturempxboundconfigandstatusregistersstate.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/xfeaturempxboundregistersstate.h
-src/os/kernelbase/src/bits64/other/fpu/xfeatures/xfeaturepkrustate.h
-src/os/kernelbase/src/bits64/other/fpu/xsavestate.h
-src/os/kernelbase/src/bits64/other/fpu/xstateheader.h
 src/os/kernelbase/src/bits64/other/irq/irqstack.cpp
 src/os/kernelbase/src/bits64/other/irq/irqstack.h
 src/os/kernelbase/src/bits64/other/kerneldefines.h
