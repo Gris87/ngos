@@ -71,7 +71,13 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     defaultCaseFound = true;
                                 }
 
-                                if (!switchLineTrimmed.mid(switchLineTrimmed.indexOf(':') + 1).trimmed().startsWith("return "))
+                                QString tail = switchLineTrimmed.mid(switchLineTrimmed.indexOf(':') + 1).trimmed();
+
+                                if (
+                                    !tail.startsWith("return ")
+                                    &&
+                                    !tail.endsWith("break;")
+                                   )
                                 {
                                     QString switchSpaces = switchLine.left(switchLine.indexOf(switchLineTrimmed));
 
@@ -133,7 +139,20 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                             }
                             else
                             {
-                                worker->addError(path, j, "Unexpected line in switch statement");
+                                if (
+                                    switchLineTrimmed != ""
+                                    ||
+                                    j == startLine
+                                    ||
+                                    (
+                                     !lines.at(j - 1).trimmed().endsWith("break;")
+                                     &&
+                                     !lines.at(j - 1).contains("return ")
+                                    )
+                                   )
+                                {
+                                    worker->addError(path, j, "Unexpected line in switch statement");
+                                }
                             }
                         }
 

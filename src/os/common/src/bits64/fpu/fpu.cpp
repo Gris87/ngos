@@ -2,9 +2,6 @@
 
 #include <asm/instructions.h>
 #include <src/bits64/cpu/cpu.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-#include <src/bits64/memory/memory.h>
 #include <src/bits64/fpu/macros.h>
 #include <src/bits64/fpu/xfeatureflags.h>
 #include <src/bits64/fpu/xfeatures/xfeatureavx512opmaskstate.h>
@@ -14,6 +11,9 @@
 #include <src/bits64/fpu/xfeatures/xfeaturempxboundconfigandstatusregistersstate.h>
 #include <src/bits64/fpu/xfeatures/xfeaturempxboundregistersstate.h>
 #include <src/bits64/fpu/xfeatures/xfeaturepkrustate.h>
+#include <src/bits64/log/assert.h>
+#include <src/bits64/log/log.h>
+#include <src/bits64/memory/memory.h>
 
 
 
@@ -384,6 +384,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
     }
 
 
+
     if (CPU::hasFlag(X86Feature::XSAVES))
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
@@ -530,7 +531,13 @@ const char* FPU::getFeatureName(u8 xFeature)
         case XFEATURE_PT:                                    return "XFEATURE_PT";
         case XFEATURE_PKRU:                                  return "XFEATURE_PKRU";
 
-        default: return "UNKNOWN";
+        default:
+        {
+            COMMON_LF(("Unknown X feature: %u", xFeature));
+
+            return "UNKNOWN";
+        }
+        break;
     }
 }
 

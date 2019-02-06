@@ -343,6 +343,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         do
         {
             fill -= incr;
+
             next[(huff >> drop) + fill] = currentCode;
         } while(fill); // fill != 0
 
