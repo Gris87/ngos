@@ -140,7 +140,7 @@ run-test-release: test-release run-vm
 
 
 
-run-vm: run-qemu-kvm
+run-vm: run-qemu
 
 run-qemu-kvm:
 	sh -c "cd tools/vm/ && ./start_vm.sh qemu-kvm"
