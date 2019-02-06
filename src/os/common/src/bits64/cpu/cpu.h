@@ -29,7 +29,7 @@ public:
     static NgosStatus clearBug(X86Bug bug); // TEST: NO
     static bool hasBug(X86Bug bug); // TEST: NO
 
-    static bool isCpuIdLevelSupported(u32 cpuidLevel);
+    static bool isCpuIdLevelSupported(u32 cpuidLevel); // TEST: NO
 
     static bool hasEFlag(u64 mask); // TEST: NO
     static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
