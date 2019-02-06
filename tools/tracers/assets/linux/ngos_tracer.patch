@@ -644,7 +644,7 @@ index 6abd83572b01..defbe7891ce3 100644
  	char arg[32];
  	char *argptr = arg;
 diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 87a57b7642d3..c375a88f3a2d 100644
+index 87a57b7642d3..ad50e384d0c2 100644
 --- a/arch/x86/kernel/fpu/xstate.c
 +++ b/arch/x86/kernel/fpu/xstate.c
 @@ -113,7 +113,7 @@ int cpu_has_xfeatures(u64 xfeatures_needed, const char **feature_name)
@@ -827,7 +827,21 @@ index 87a57b7642d3..c375a88f3a2d 100644
  {
  	xfeatures_mask = 0;
  	cr4_clear_bits(X86_CR4_OSXSAVE);
-@@ -953,7 +953,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+@@ -781,10 +781,13 @@ void __init fpu__init_system_xstate(void)
+ 	setup_xstate_comp();
+ 	print_xstate_offset_size();
+ 
++	/*
+ 	pr_info("x86/fpu: Enabled xstate features 0x%llx, context size is %d bytes, using '%s' format.\n",
+ 		xfeatures_mask,
+ 		fpu_kernel_xstate_size,
+ 		boot_cpu_has(X86_FEATURE_XSAVES) ? "compacted" : "standard");
++	*/
++
+ 	return;
+ 
+ out_disable:
+@@ -953,7 +956,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
   * area is marked as unused in the xfeatures header, we need to copy
   * MXCSR and MXCSR_FLAGS if either SSE or YMM are in use.
   */
@@ -836,7 +850,7 @@ index 87a57b7642d3..c375a88f3a2d 100644
  {
  	if (!(xfeatures & (XFEATURE_MASK_SSE|XFEATURE_MASK_YMM)))
  		return false;
-@@ -968,7 +968,7 @@ static inline bool xfeatures_mxcsr_quirk(u64 xfeatures)
+@@ -968,7 +971,7 @@ static inline bool xfeatures_mxcsr_quirk(u64 xfeatures)
   * This is similar to user_regset_copyout(), but will not add offset to
   * the source data pointer or increment pos, count, kbuf, and ubuf.
   */
@@ -845,7 +859,7 @@ index 87a57b7642d3..c375a88f3a2d 100644
  __copy_xstate_to_kernel(void *kbuf, const void *data,
  			unsigned int offset, unsigned int size, unsigned int size_total)
  {
-@@ -1049,7 +1049,7 @@ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int of
+@@ -1049,7 +1052,7 @@ int copy_xstate_to_kernel(void *kbuf, struct xregs_state *xsave, unsigned int of
  	return 0;
  }
  

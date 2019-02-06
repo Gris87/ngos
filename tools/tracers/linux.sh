@@ -52,6 +52,7 @@ NEXTI_FILTERS=(
     -e "<__gunzip>"
     -e "<_get_random_bytes>"
     -e "<printk>"
+    -e "<vprintk_func>"
     -e "<print_xstate_features>"
 )
 
