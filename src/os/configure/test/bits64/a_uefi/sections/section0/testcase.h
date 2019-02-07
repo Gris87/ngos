@@ -7,6 +7,7 @@
 
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/cpu/cpu.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/sse.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/sse2.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/memory/memory.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/printf/printf.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/random/random.h"
@@ -38,6 +39,7 @@ NgosStatus startTestSection0()
 
     CALL_TEST_CASES(section0, __common_bits64_cpu_cpu);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse_sse);
+    CALL_TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
     CALL_TEST_CASES(section0, __common_bits64_memory_memory);
     CALL_TEST_CASES(section0, __common_bits64_printf_printf);
     CALL_TEST_CASES(section0, __common_bits64_random_random);

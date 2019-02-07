@@ -167,6 +167,11 @@ src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/b
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssersqrtps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssesqrtps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssesubps.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm/testsse2addpd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm/testsse2divpd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm/testsse2maxpd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm/testsse2minpd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm/testsse2mulpd.S
 src/os/configure/asm/arch/x86_64/main.S
 src/os/configure/assets/.gitignore
 src/os/configure/assets/generate_assets.sh
@@ -307,6 +312,8 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/as
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssesqrtps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssesubps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/sse.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm/testsse2addpd.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/sse2.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/memory/memory.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/printf/printf.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/random/random.h
