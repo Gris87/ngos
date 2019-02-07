@@ -44,13 +44,11 @@
 #define OPTION_X86_64_VECTORIZATION_MODE_SSE2       2   // Compile kernel with SSE2 vectorization
 #define OPTION_X86_64_VECTORIZATION_MODE_SSE3       3   // Compile kernel with SSE3 vectorization
 #define OPTION_X86_64_VECTORIZATION_MODE_SSE4       4   // Compile kernel with SSE4 vectorization
-#define OPTION_X86_64_VECTORIZATION_MODE_SSE4_1     5   // Compile kernel with SSE4.1 vectorization
-#define OPTION_X86_64_VECTORIZATION_MODE_SSE4_2     6   // Compile kernel with SSE4.2 vectorization
-#define OPTION_X86_64_VECTORIZATION_MODE_AVX        7   // Compile kernel with AVX vectorization
-#define OPTION_X86_64_VECTORIZATION_MODE_AVX2       8   // Compile kernel with AVX2 vectorization
-#define OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1 9   // Compile kernel with AVX-512 vectorization (F + CD + ER + PF)
-#define OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V2 10  // Compile kernel with AVX-512 vectorization (F + CD + BW + DQ + VL)
-#define OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3 11  // Compile kernel with AVX-512 vectorization (F + CD + BW + DQ + VL + IFMA + VBMI)
+#define OPTION_X86_64_VECTORIZATION_MODE_AVX        5   // Compile kernel with AVX vectorization
+#define OPTION_X86_64_VECTORIZATION_MODE_AVX2       6   // Compile kernel with AVX2 vectorization
+#define OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1 7   // Compile kernel with AVX-512 vectorization (F + CD + ER + PF)
+#define OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V2 8   // Compile kernel with AVX-512 vectorization (F + CD + BW + DQ + VL)
+#define OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3 9   // Compile kernel with AVX-512 vectorization (F + CD + BW + DQ + VL + IFMA + VBMI)
 
 #define OPTION_X86_64_FUSED_MULTIPLY_ADD_NONE 0     // Compile kernel without Fused Multiply-Add support
 #define OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA4 1     // Compile kernel with Fused Multiply-Add 4
@@ -347,8 +345,6 @@
  ***         OPTION_X86_64_VECTORIZATION_MODE_SSE2, \
  ***         OPTION_X86_64_VECTORIZATION_MODE_SSE3, \
  ***         OPTION_X86_64_VECTORIZATION_MODE_SSE4, \
- ***         OPTION_X86_64_VECTORIZATION_MODE_SSE4_1, \
- ***         OPTION_X86_64_VECTORIZATION_MODE_SSE4_2, \
  ***         OPTION_X86_64_VECTORIZATION_MODE_AVX, \
  ***         OPTION_X86_64_VECTORIZATION_MODE_AVX2, \
  ***         OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1, \

@@ -236,8 +236,6 @@ Vectorization allows your machine significantly improve performance, but only th
 * OPTION_X86_64_VECTORIZATION_MODE_SSE2       - Compile kernel with SSE2 vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_SSE3       - Compile kernel with SSE3 vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_SSE4       - Compile kernel with SSE4 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE4_1     - Compile kernel with SSE4.1 vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE4_2     - Compile kernel with SSE4.2 vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_AVX        - Compile kernel with AVX vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_AVX2       - Compile kernel with AVX2 vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1 - Compile kernel with AVX-512 vectorization (F + CD + ER + PF)

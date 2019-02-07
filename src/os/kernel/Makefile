@@ -60,13 +60,9 @@ ifeq ($(ARCH), x86_64)
 	else ifeq ($(VECTORIZATION_MODE), sse2)
 		VECTORIZATION_FLAGS = -msse2
 	else ifeq ($(VECTORIZATION_MODE), sse3)
-		VECTORIZATION_FLAGS = -msse3
+		VECTORIZATION_FLAGS = -msse3 -mssse3
 	else ifeq ($(VECTORIZATION_MODE), sse4)
-		VECTORIZATION_FLAGS = -msse4
-	else ifeq ($(VECTORIZATION_MODE), sse4_1)
-		VECTORIZATION_FLAGS = -msse4.1
-	else ifeq ($(VECTORIZATION_MODE), sse4_2)
-		VECTORIZATION_FLAGS = -msse4.2
+		VECTORIZATION_FLAGS = -msse4 -msse4.1 -msse4.2
 	else ifeq ($(VECTORIZATION_MODE), avx)
 		VECTORIZATION_FLAGS = -mavx
 	else ifeq ($(VECTORIZATION_MODE), avx2)

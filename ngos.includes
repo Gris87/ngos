@@ -28,3 +28,4 @@ tools/qt/gdb_debug/build/gen/
 tools/qt/image_builder/
 tools/qt/include/
 tools/qt/test_verifier/
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3
