@@ -100,17 +100,31 @@
 
 
 
-#define __TEST_ASSERT_EQUALS2(value1, value2) TEST_ASSERT((value1) == (value2));
+#define __TEST_ASSERT_EQUALS2(value1, value2)              TEST_ASSERT((value1) == (value2));
 #define __TEST_ASSERT_EQUALS3(value1, value2, description) TEST_ASSERT((value1) == (value2), description);
 
 #define TEST_ASSERT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_EQUALS3, __TEST_ASSERT_EQUALS2)(__VA_ARGS__)
 
 
 
-#define __TEST_ASSERT_NOT_EQUALS2(value1, value2) TEST_ASSERT((value1) != (value2));
+#define __TEST_ASSERT_NOT_EQUALS2(value1, value2)              TEST_ASSERT((value1) != (value2));
 #define __TEST_ASSERT_NOT_EQUALS3(value1, value2, description) TEST_ASSERT((value1) != (value2), description);
 
 #define TEST_ASSERT_NOT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_NOT_EQUALS3, __TEST_ASSERT_NOT_EQUALS2)(__VA_ARGS__)
+
+
+
+#define __TEST_ASSERT_FLOAT_EQUALS2(value1, value2)              TEST_ASSERT((value1) - (value2) < 0.001 && (value1) - (value2) > -0.001);
+#define __TEST_ASSERT_FLOAT_EQUALS3(value1, value2, description) TEST_ASSERT((value1) - (value2) < 0.001 && (value1) - (value2) > -0.001, description);
+
+#define TEST_ASSERT_FLOAT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_FLOAT_EQUALS3, __TEST_ASSERT_FLOAT_EQUALS2)(__VA_ARGS__)
+
+
+
+#define __TEST_ASSERT_FLOAT_NOT_EQUALS2(value1, value2)              TEST_ASSERT((value1) - (value2) >= 0.001 || (value1) - (value2) <= -0.001);
+#define __TEST_ASSERT_FLOAT_NOT_EQUALS3(value1, value2, description) TEST_ASSERT((value1) - (value2) >= 0.001 || (value1) - (value2) <= -0.001, description);
+
+#define TEST_ASSERT_FLOAT_NOT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_FLOAT_NOT_EQUALS3, __TEST_ASSERT_FLOAT_NOT_EQUALS2)(__VA_ARGS__)
 
 
 
