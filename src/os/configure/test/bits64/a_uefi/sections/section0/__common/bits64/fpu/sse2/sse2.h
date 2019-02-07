@@ -12,8 +12,6 @@
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2maxpd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2minpd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2mulpd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2rcppd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2rsqrtpd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2sqrtpd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2subpd.h"
 
@@ -135,46 +133,6 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
 
             TEST_ASSERT_FLOAT_EQUALS(b[0], 1.0);
             TEST_ASSERT_FLOAT_EQUALS(b[1], 2.0);
-        }
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("rcppd");
-    {
-        if (CPU::hasFlag(X86Feature::XMM2))
-        {
-            double a[2] = { 0.1, 0.3 };
-            double b[2];
-
-            testSse2Rcppd(a, b);
-
-            TEST_ASSERT_FLOAT_EQUALS(a[0], 0.1);
-            TEST_ASSERT_FLOAT_EQUALS(a[1], 0.3);
-
-            TEST_ASSERT_FLOAT_EQUALS(b[0], 10.0);
-            TEST_ASSERT_FLOAT_EQUALS(b[1], 3.333);
-        }
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("rsqrtpd");
-    {
-        if (CPU::hasFlag(X86Feature::XMM2))
-        {
-            double a[2] = { 1.0, 4.0 };
-            double b[2];
-
-            testSse2Rsqrtpd(a, b);
-
-            TEST_ASSERT_FLOAT_EQUALS(a[0], 1.0);
-            TEST_ASSERT_FLOAT_EQUALS(a[1], 4.0);
-
-            TEST_ASSERT_FLOAT_EQUALS(b[0], 1.0);
-            TEST_ASSERT_FLOAT_EQUALS(b[1], 0.5);
         }
     }
     TEST_CASE_END();
