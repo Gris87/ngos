@@ -7,15 +7,15 @@
 #include <src/bits64/cpu/cpu.h>
 
 #include "test/bits64/a_uefi/testengine.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testsseaddps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssedivps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssemaxps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testsseminps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssemulps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssercpps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssersqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssesqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm/testssesubps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseaddps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssedivps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemaxps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseminps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemulps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssercpps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssersqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssesqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssesubps.h"
 
 
 
