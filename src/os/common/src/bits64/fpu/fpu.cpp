@@ -344,7 +344,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 
 
 
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
+#if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
     u32 lastGoodOffset = sizeof(FXSaveState) + sizeof(XStateHeader);
 #endif
 
@@ -366,7 +366,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 
 
 
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
+#if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
             if (isXFeatureSupervisor(i))
             {
                 COMMON_LF(("Can't get offset of X feature %s", getFeatureName(i)));
@@ -607,6 +607,7 @@ bool FPU::isXFeatureAligned(u8 xFeature)
     return ecx & (x_feature_flags)XFeatureFlag::ALIGNED;
 }
 
+#if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
 u32 FPU::expectedStateSize()
 {
     COMMON_LT((""));
@@ -699,3 +700,4 @@ u32 FPU::expectedStateSize()
 
     return res;
 }
+#endif

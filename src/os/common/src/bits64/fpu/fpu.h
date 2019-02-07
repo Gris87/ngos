@@ -25,7 +25,10 @@ private:
     static bool isXFeatureSupervisor(u8 xFeature); // TEST: NO
     static bool isXFeatureUser(u8 xFeature); // TEST: NO
     static bool isXFeatureAligned(u8 xFeature); // TEST: NO
+
+#if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
     static u32 expectedStateSize(); // TEST: NO
+#endif
 
     static FpuState   sState;
     static u32        sStateKernelSize;
