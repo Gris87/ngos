@@ -36,11 +36,6 @@ TEST_CASES(section0, __common_bits64_fpu_sse41_sse41);
 
             testSse41Pmulld(a, b, c);
 
-            UEFI_LF(("c[0] = %d", c[0]));
-            UEFI_LF(("c[1] = %d", c[1]));
-            UEFI_LF(("c[2] = %d", c[2]));
-            UEFI_LF(("c[3] = %d", c[3]));
-
             TEST_ASSERT_EQUALS(a[0], 1981965841);
             TEST_ASSERT_EQUALS(a[1], -1987077212);
             TEST_ASSERT_EQUALS(a[2], 2003838066);
@@ -74,9 +69,6 @@ TEST_CASES(section0, __common_bits64_fpu_sse41_sse41);
             i64 c[2];
 
             testSse41Pmuldq(a, b, c);
-
-            UEFI_LF(("c[0] = 0x%016lX", c[0]));
-            UEFI_LF(("c[1] = 0x%016lX", c[1]));
 
             TEST_ASSERT_EQUALS(a[0], 1981965841);
             TEST_ASSERT_EQUALS(a[1], -1987077212);

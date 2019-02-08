@@ -202,6 +202,7 @@ src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/b
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse41/testsse41pminuw.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse41/testsse41pmuldq.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse41/testsse41pmulld.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse42/testsse42pcmpgtq.S
 src/os/configure/asm/arch/x86_64/main.S
 src/os/configure/assets/.gitignore
 src/os/configure/assets/generate_assets.sh
@@ -380,6 +381,8 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmuldq.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmulld.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/sse41.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse42/asm_testsse42pcmpgtq.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse42/sse42.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/memory/memory.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/printf/printf.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/random/random.h
