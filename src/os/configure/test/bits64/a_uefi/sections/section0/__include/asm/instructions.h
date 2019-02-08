@@ -37,6 +37,10 @@ TEST_CASES(section0, __include_asm_instructions);
             TEST_ASSERT_NOT_EQUALS(value1, value3);
             TEST_ASSERT_NOT_EQUALS(value2, value3);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::RDRAND not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -56,6 +60,10 @@ TEST_CASES(section0, __include_asm_instructions);
 
             TEST_ASSERT(value2 > value1);
             TEST_ASSERT(value3 > value2);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::TSC not supported"));
         }
     }
     TEST_CASE_END();

@@ -29,3 +29,7 @@ tools/qt/image_builder/
 tools/qt/include/
 tools/qt/test_verifier/
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse3
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse41

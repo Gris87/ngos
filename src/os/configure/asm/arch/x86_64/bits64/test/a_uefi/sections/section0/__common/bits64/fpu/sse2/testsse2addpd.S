@@ -22,7 +22,7 @@ GLOBAL_FUNCTION(testSse2Addpd)                                                  
                                                                                 #
     addpd   %xmm1, %xmm0                                                        # Add in parallel 2 doubles in XMM0 with 2 doubles in XMM1 and store results in XMM0
                                                                                 #
-    movapd  %xmm0, (%rdx)                                                       # Put 2 doubles from XMM1 to location specified with RDX
+    movapd  %xmm0, (%rdx)                                                       # Put 2 doubles from XMM0 to location specified with RDX
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSse2Addpd)                                                     # End of testSse2Addpd function

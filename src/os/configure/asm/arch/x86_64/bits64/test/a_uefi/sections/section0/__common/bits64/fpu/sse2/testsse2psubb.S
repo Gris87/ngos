@@ -17,12 +17,12 @@
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(testSse2Psubb)                                                  # testSse2Psubb function
-    movapd  (%rdi), %xmm0                                                       # Put 16 bytes located at RDI to XMM0
-    movapd  (%rsi), %xmm1                                                       # Put 16 bytes located at RSI to XMM1
+    movdqa  (%rdi), %xmm0                                                       # Put 16 bytes located at RDI to XMM0
+    movdqa  (%rsi), %xmm1                                                       # Put 16 bytes located at RSI to XMM1
                                                                                 #
     psubb   %xmm1, %xmm0                                                        # Subtract in parallel 16 bytes in XMM0 with 16 bytes in XMM1 and store results in XMM0
                                                                                 #
-    movapd  %xmm0, (%rdx)                                                       # Put 16 bytes from XMM1 to location specified with RDX
+    movdqa  %xmm0, (%rdx)                                                       # Put 16 bytes from XMM0 to location specified with RDX
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSse2Psubb)                                                     # End of testSse2Psubb function

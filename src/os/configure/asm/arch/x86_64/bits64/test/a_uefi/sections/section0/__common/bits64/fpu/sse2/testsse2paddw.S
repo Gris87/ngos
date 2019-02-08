@@ -17,12 +17,12 @@
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(testSse2Paddw)                                                  # testSse2Paddw function
-    movapd  (%rdi), %xmm0                                                       # Put 8 words located at RDI to XMM0
-    movapd  (%rsi), %xmm1                                                       # Put 8 words located at RSI to XMM1
+    movdqa  (%rdi), %xmm0                                                       # Put 8 words located at RDI to XMM0
+    movdqa  (%rsi), %xmm1                                                       # Put 8 words located at RSI to XMM1
                                                                                 #
     paddw   %xmm1, %xmm0                                                        # Add in parallel 8 words in XMM0 with 8 words in XMM1 and store results in XMM0
                                                                                 #
-    movapd  %xmm0, (%rdx)                                                       # Put 8 words from XMM1 to location specified with RDX
+    movdqa  %xmm0, (%rdx)                                                       # Put 8 words from XMM0 to location specified with RDX
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSse2Paddw)                                                     # End of testSse2Paddw function

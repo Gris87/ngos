@@ -50,6 +50,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(c[2], 1.0);
             TEST_ASSERT_FLOAT_EQUALS(c[3], 0.7);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -79,6 +83,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 0.2);
             TEST_ASSERT_FLOAT_EQUALS(c[2], 0.4);
             TEST_ASSERT_FLOAT_EQUALS(c[3], -0.3);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
         }
     }
     TEST_CASE_END();
@@ -110,6 +118,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(c[2], 0.56);
             TEST_ASSERT_FLOAT_EQUALS(c[3], 0.18);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -140,6 +152,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(c[2], 0.714);
             TEST_ASSERT_FLOAT_EQUALS(c[3], 1.5);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -163,6 +179,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(b[1], 2.0);
             TEST_ASSERT_FLOAT_EQUALS(b[2], 1.772);
             TEST_ASSERT_FLOAT_EQUALS(b[3], 0.3);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
         }
     }
     TEST_CASE_END();
@@ -188,6 +208,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(b[2], 5.0);
             TEST_ASSERT_FLOAT_EQUALS(b[3], 2.0);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -211,6 +235,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(b[1], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(b[2], 0.333);
             TEST_ASSERT_FLOAT_EQUALS(b[3], 0.564);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
         }
     }
     TEST_CASE_END();
@@ -242,6 +270,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(c[2], 0.7);
             TEST_ASSERT_FLOAT_EQUALS(c[3], 0.4);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -271,6 +303,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse_sse);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 0.3);
             TEST_ASSERT_FLOAT_EQUALS(c[2], 0.7);
             TEST_ASSERT_FLOAT_EQUALS(c[3], 0.2);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM not supported"));
         }
     }
     TEST_CASE_END();

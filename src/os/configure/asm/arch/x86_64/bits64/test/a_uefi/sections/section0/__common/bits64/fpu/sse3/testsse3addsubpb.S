@@ -8,22 +8,22 @@
 .section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)
                                                                                 #
 # ============================================================================= # =============================================================================
-# testSseAddps declaration:                                                     #
-#     void testSseAddps(float *a, float *b, float *c);                          #
+# testSse3Addsubpd declaration:                                                 #
+#     void testSse3Addsubpd(double *a, double *b, double *c);                   #
 #                                                                               #
-# RDI - a, address of 4 floats array                                            #
-# RSI - b, address of 4 floats array                                            #
-# RDX - c, address of result 4 floats array                                     #
+# RDI - a, address of 2 doubles array                                           #
+# RSI - b, address of 2 doubles array                                           #
+# RDX - c, address of result 2 doubles array                                    #
 # ============================================================================= # =============================================================================
                                                                                 #
-GLOBAL_FUNCTION(testSseAddps)                                                   # testSseAddps function
-    movaps  (%rdi), %xmm0                                                       # Put 4 floats located at RDI to XMM0
-    movaps  (%rsi), %xmm1                                                       # Put 4 floats located at RSI to XMM1
+GLOBAL_FUNCTION(testSse3Addsubpd)                                               # testSse3Addsubpd function
+    movapd      (%rdi), %xmm0                                                   # Put 2 doubles located at RDI to XMM0
+    movapd      (%rsi), %xmm1                                                   # Put 2 doubles located at RSI to XMM1
                                                                                 #
-    addps   %xmm1, %xmm0                                                        # Add in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
+    addsubpd    %xmm1, %xmm0                                                    # Add 2nd double of XMM0 with 2nd double of XMM1 and subtract 1st double of XMM0 with 1st double of XMM1. The results stored in XMM0
                                                                                 #
-    movaps  %xmm0, (%rdx)                                                       # Put 4 floats from XMM0 to location specified with RDX
+    movapd      %xmm0, (%rdx)                                                   # Put 2 doubles from XMM0 to location specified with RDX
                                                                                 #
     retq                                                                        # Return from the function
-END_FUNCTION(testSseAddps)                                                      # End of testSseAddps function
+END_FUNCTION(testSse3Addsubpd)                                                  # End of testSse3Addsubpd function
 #endif

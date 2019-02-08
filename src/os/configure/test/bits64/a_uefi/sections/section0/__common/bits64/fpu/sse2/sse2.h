@@ -50,6 +50,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_FLOAT_EQUALS(c[0], 1.3);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 0.7);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -73,6 +77,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
 
             TEST_ASSERT_FLOAT_EQUALS(c[0], -0.6);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 0.2);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
         }
     }
     TEST_CASE_END();
@@ -98,6 +106,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_FLOAT_EQUALS(c[0], 0.12);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 0.3);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -122,6 +134,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_FLOAT_EQUALS(c[0], 2.666);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 2.0);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -141,6 +157,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
 
             TEST_ASSERT_FLOAT_EQUALS(b[0], 1.0);
             TEST_ASSERT_FLOAT_EQUALS(b[1], 2.0);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
         }
     }
     TEST_CASE_END();
@@ -166,6 +186,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_FLOAT_EQUALS(c[0], 0.9);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 0.5);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -189,6 +213,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
 
             TEST_ASSERT_FLOAT_EQUALS(c[0], 0.1);
             TEST_ASSERT_FLOAT_EQUALS(c[1], 0.3);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
         }
     }
     TEST_CASE_END();
@@ -256,6 +284,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_EQUALS(c[14], 4);
             TEST_ASSERT_EQUALS(c[15], 15);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -298,6 +330,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_EQUALS(c[6], 37);
             TEST_ASSERT_EQUALS(c[7], 115);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -328,6 +364,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_EQUALS(c[2], 161);
             TEST_ASSERT_EQUALS(c[3], 45);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -351,6 +391,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
 
             TEST_ASSERT_EQUALS(c[0], 300);
             TEST_ASSERT_EQUALS(c[1], 128);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
         }
     }
     TEST_CASE_END();
@@ -418,6 +462,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_EQUALS(c[14], 2);
             TEST_ASSERT_EQUALS(c[15], 255);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -460,6 +508,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_EQUALS(c[6], 11);
             TEST_ASSERT_EQUALS(c[7], 21);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -490,6 +542,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
             TEST_ASSERT_EQUALS(c[2], 4294967263);
             TEST_ASSERT_EQUALS(c[3], 4294967277);
         }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
+        }
     }
     TEST_CASE_END();
 
@@ -513,6 +569,10 @@ TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
 
             TEST_ASSERT_EQUALS(c[0], 0xFFFFFFFFFFFFFF9C);
             TEST_ASSERT_EQUALS(c[1], 0xFFFFFFFFFFFFFFBC);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::XMM2 not supported"));
         }
     }
     TEST_CASE_END();

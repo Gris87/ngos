@@ -111,14 +111,14 @@ bool PEOptHeader::verify()
         return false;
     }
 
-    if (sectionAlignment != 0x10)
+    if (sectionAlignment != 0x40)
     {
         Console::err(QString("Wrong PE Optional Header sectionAlignment: 0x%1").arg(sectionAlignment, 8, 16, QChar('0')));
 
         return false;
     }
 
-    if (fileAlignment != 0x10)
+    if (fileAlignment != 0x40)
     {
         Console::err(QString("Wrong PE Optional Header fileAlignment: 0x%1").arg(fileAlignment, 8, 16, QChar('0')));
 

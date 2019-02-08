@@ -17,12 +17,12 @@
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(testSse2Psubq)                                                  # testSse2Psubq function
-    movapd  (%rdi), %xmm0                                                       # Put 2 quadwords located at RDI to XMM0
-    movapd  (%rsi), %xmm1                                                       # Put 2 quadwords located at RSI to XMM1
+    movdqa  (%rdi), %xmm0                                                       # Put 2 quadwords located at RDI to XMM0
+    movdqa  (%rsi), %xmm1                                                       # Put 2 quadwords located at RSI to XMM1
                                                                                 #
     psubq   %xmm1, %xmm0                                                        # Subtract in parallel 2 quadwords in XMM0 with 2 quadwords in XMM1 and store results in XMM0
                                                                                 #
-    movapd  %xmm0, (%rdx)                                                       # Put 2 quadwords from XMM1 to location specified with RDX
+    movdqa  %xmm0, (%rdx)                                                       # Put 2 quadwords from XMM0 to location specified with RDX
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSse2Psubq)                                                     # End of testSse2Psubq function
