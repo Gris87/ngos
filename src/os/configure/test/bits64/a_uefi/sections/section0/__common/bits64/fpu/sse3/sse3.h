@@ -6,9 +6,8 @@
 #include <buildconfig.h>
 #include <src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/testengine.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3addsubps.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3addsubpd.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3addsubps.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3haddpd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3haddps.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3hsubpd.h"
@@ -17,6 +16,7 @@
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3phaddw.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3phsubd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3phsubw.h"
+#include "test/bits64/a_uefi/testengine.h"
 
 
 

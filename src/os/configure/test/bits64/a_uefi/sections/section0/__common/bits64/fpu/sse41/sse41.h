@@ -6,7 +6,6 @@
 #include <buildconfig.h>
 #include <src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/testengine.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmaxsb.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmaxsd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmaxud.h"
@@ -17,6 +16,7 @@
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pminuw.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmuldq.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmulld.h"
+#include "test/bits64/a_uefi/testengine.h"
 
 
 

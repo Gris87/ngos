@@ -17,12 +17,12 @@
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(testSse42Pcmpgtq)                                               # testSse42Pcmpgtq function
-    movdqa  (%rdi), %xmm0                                                       # Put 2 quadwords located at RDI to XMM0
-    movdqa  (%rsi), %xmm1                                                       # Put 2 quadwords located at RSI to XMM1
+    movdqa      (%rdi), %xmm0                                                   # Put 2 quadwords located at RDI to XMM0
+    movdqa      (%rsi), %xmm1                                                   # Put 2 quadwords located at RSI to XMM1
                                                                                 #
-    pcmpgtq %xmm1, %xmm0                                                        # Compare signed quadwords in XMM0 with quadwords in XMM1. If quadword in XMM0 is greater then returns -1, otherwise 0. The results stored in XMM0
+    pcmpgtq     %xmm1, %xmm0                                                    # Compare signed quadwords in XMM0 with quadwords in XMM1. If quadword in XMM0 is greater then returns -1, otherwise 0. The results stored in XMM0
                                                                                 #
-    movdqa  %xmm0, (%rdx)                                                       # Put 2 quadwords from XMM0 to location specified with RDX
+    movdqa      %xmm0, (%rdx)                                                   # Put 2 quadwords from XMM0 to location specified with RDX
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSse42Pcmpgtq)                                                  # End of testSse42Pcmpgtq function

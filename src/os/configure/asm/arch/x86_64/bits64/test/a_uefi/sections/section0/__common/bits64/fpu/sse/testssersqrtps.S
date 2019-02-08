@@ -16,11 +16,11 @@
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(testSseRsqrtps)                                                 # testSseRsqrtps function
-    movaps  (%rdi), %xmm0                                                       # Put 4 floats located at RDI to XMM0
+    movaps      (%rdi), %xmm0                                                   # Put 4 floats located at RDI to XMM0
                                                                                 #
-    rsqrtps  %xmm0, %xmm0                                                       # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 4 floats in XMM0 and store results in XMM0
+    rsqrtps     %xmm0, %xmm0                                                    # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 4 floats in XMM0 and store results in XMM0
                                                                                 #
-    movaps  %xmm0, (%rdx)                                                       # Put 4 floats from XMM0 to location specified with RSI
+    movaps      %xmm0, (%rdx)                                                   # Put 4 floats from XMM0 to location specified with RSI
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSseRsqrtps)                                                    # End of testSseRsqrtps function

@@ -74,7 +74,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
             }
             else
             {
-                if (filepath.endsWith(".h") && filepath != path)
+                if (filepath.endsWith(".h") && filepath != path && !filepath.contains("/asm_"))
                 {
                     QString expectedPath = filepath.mid(filepath.lastIndexOf("/test/") + 6);
 

@@ -6,8 +6,8 @@
 #include <buildconfig.h>
 #include <src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/testengine.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse42/asm_testsse42pcmpgtq.h"
+#include "test/bits64/a_uefi/testengine.h"
 
 
 

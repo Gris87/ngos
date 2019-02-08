@@ -6,7 +6,6 @@
 #include <buildconfig.h>
 #include <src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/testengine.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseaddps.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssedivps.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemaxps.h"
@@ -16,6 +15,7 @@
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssersqrtps.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssesqrtps.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssesubps.h"
+#include "test/bits64/a_uefi/testengine.h"
 
 
 
