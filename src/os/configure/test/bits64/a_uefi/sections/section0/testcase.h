@@ -6,6 +6,7 @@
 #include <buildconfig.h>
 
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/cpu/cpu.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/avx.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/sse.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/sse2.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/sse3.h"
@@ -40,7 +41,14 @@ NgosStatus startTestSection0()
 
     INIT_TEST_SECTION();
 
+    asm volatile (
+        "pushq   %rbp"          "\n\t"
+        "movq    %rsp, %rbp"    "\n\t"
+        "andq    $-0x40, %rsp"  "\n\t"
+    );
+
     CALL_TEST_CASES(section0, __common_bits64_cpu_cpu);
+    CALL_TEST_CASES(section0, __common_bits64_fpu_avx_avx);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse3_sse3);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse41_sse41);
@@ -59,6 +67,11 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __include_ngos_utils);
     CALL_TEST_CASES(section0, __include_pagetable_utils);
     CALL_TEST_CASES(section0, bits64_a_uefi_uefi_uefi);
+
+    asm volatile (
+        "movq    %rbp, %rsp"    "\n\t"
+        "popq    %rbp"          "\n\t"
+    );
 
     SUMMARY_TEST_SECTION();
 }

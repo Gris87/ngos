@@ -158,6 +158,7 @@ src/os/common/src/bits64/string/string.cpp
 src/os/common/src/bits64/string/string.h
 src/os/configure/.gitignore
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx/testavxvaddps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testsseaddps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testssedivps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testssemaxps.S
@@ -333,6 +334,8 @@ src/os/configure/src/bits64/other/configuredefines.h
 src/os/configure/src/bits64/other/kerneldescriptor.h
 src/os/configure/src/main.cpp
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/cpu/cpu.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvaddps.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/avx.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseaddps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssedivps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemaxps.h
