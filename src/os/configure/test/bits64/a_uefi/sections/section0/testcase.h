@@ -41,11 +41,11 @@ NgosStatus startTestSection0()
     INIT_TEST_SECTION();
 
     CALL_TEST_CASES(section0, __common_bits64_cpu_cpu);
-    CALL_TEST_CASES(section0, __common_bits64_fpu_sse_sse);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse3_sse3);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse41_sse41);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse42_sse42);
+    CALL_TEST_CASES(section0, __common_bits64_fpu_sse_sse);
     CALL_TEST_CASES(section0, __common_bits64_memory_memory);
     CALL_TEST_CASES(section0, __common_bits64_printf_printf);
     CALL_TEST_CASES(section0, __common_bits64_random_random);
