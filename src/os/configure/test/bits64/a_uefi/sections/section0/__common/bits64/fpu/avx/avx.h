@@ -73,7 +73,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vsubps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
@@ -110,7 +110,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
@@ -119,7 +119,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vmulps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
@@ -156,7 +156,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
@@ -165,7 +165,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vdivps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
@@ -202,7 +202,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
@@ -211,7 +211,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vsqrtps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
             float b[8];
@@ -238,7 +238,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
@@ -247,7 +247,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vrcpps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8];
@@ -274,7 +274,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
@@ -283,7 +283,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vrsqrtps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
             float b[8];
@@ -310,7 +310,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
@@ -319,7 +319,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vmaxps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
@@ -356,7 +356,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
@@ -365,7 +365,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vminps");
     {
-        if (CPU::hasFlag(X86Feature::XMM))
+        if (CPU::hasFlag(X86Feature::AVX))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
@@ -402,7 +402,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::AVX not supported"));
         }
     }
     TEST_CASE_END();
