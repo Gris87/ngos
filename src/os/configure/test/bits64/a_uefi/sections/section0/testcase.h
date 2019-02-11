@@ -8,6 +8,7 @@
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/cpu/cpu.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/avx.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/avx2.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/avx512cd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/avx512f.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/sse.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/sse2.h"
@@ -53,6 +54,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __common_bits64_cpu_cpu);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx_avx);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx2_avx2);
+    CALL_TEST_CASES(section0, __common_bits64_fpu_avx512cd_avx512cd);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx512f_avx512f);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse3_sse3);
