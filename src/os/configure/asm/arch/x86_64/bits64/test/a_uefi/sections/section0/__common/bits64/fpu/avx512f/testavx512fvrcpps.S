@@ -1,0 +1,27 @@
+#include <buildconfig.h>
+#include <ngos/linkage.h>
+                                                                                #
+                                                                                #
+                                                                                #
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+.code64                                                                         # Generate code in 64 bits mode
+.section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)
+                                                                                #
+# ============================================================================= # =============================================================================
+# testAvxVrcpps declaration:                                                    #
+#     void testAvxVrcpps(float *a, float *b);                                   #
+#                                                                               #
+# RDI - a, address of 8 floats array                                            #
+# RSI - b, address of result 8 floats array                                     #
+# ============================================================================= # =============================================================================
+                                                                                #
+GLOBAL_FUNCTION(testAvxVrcpps)                                                  # testAvxVrcpps function
+    vmovaps     (%rdi), %ymm1                                                   # Put 8 floats located at RDI to YMM1
+                                                                                #
+    vrcpps      %ymm1, %ymm0                                                    # Compute Reciprocal (1/A) in parallel for 8 floats in YMM1 and store results in YMM0
+                                                                                #
+    vmovaps     %ymm0, (%rdx)                                                   # Put 8 floats from YMM0 to location specified with RSI
+                                                                                #
+    retq                                                                        # Return from the function
+END_FUNCTION(testAvxVrcpps)                                                     # End of testAvxVrcpps function
+#endif
