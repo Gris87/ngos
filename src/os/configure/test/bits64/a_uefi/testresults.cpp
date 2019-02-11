@@ -91,7 +91,7 @@ NgosStatus TestResults::summary()
 
 
 
-    sprintf(tempBuffer, "\n --- Testing completed. %u passed. %u failed ---\n", mPassed, mFailed);
+    sprintf(tempBuffer, "\n --- Testing completed: %u passed, %u failed ---\n", mPassed, mFailed);
 
     if (Console::canPrint())
     {

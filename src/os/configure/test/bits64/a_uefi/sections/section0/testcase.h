@@ -7,6 +7,7 @@
 
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/cpu/cpu.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/avx.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/avx2.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/sse.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/sse2.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/sse3.h"
@@ -50,6 +51,7 @@ NgosStatus startTestSection0()
 
     CALL_TEST_CASES(section0, __common_bits64_cpu_cpu);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx_avx);
+    CALL_TEST_CASES(section0, __common_bits64_fpu_avx2_avx2);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse3_sse3);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse41_sse41);

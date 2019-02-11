@@ -88,7 +88,7 @@ ERRORS=` \
         -e "ERROR" \
         -e "CRITICAL" \
         -e "FATAL" \
-        -e "Testing completed\. [0-9]+ passed\. ([0-9]{2,}|[1-9]) failed" \
+        -e "Testing completed: [0-9]+ passed, ([0-9]{2,}|[1-9]) failed" \
     ${LOG_PATH}
 `
 

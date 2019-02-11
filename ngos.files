@@ -167,6 +167,10 @@ src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/b
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx/testavxvrsqrtps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx/testavxvsqrtps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx/testavxvsubps.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx2/testavx2vphaddd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx2/testavx2vphaddw.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx2/testavx2vphsubd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx2/testavx2vphsubw.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testsseaddps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testssedivps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testssemaxps.S
@@ -352,6 +356,11 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/as
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvsqrtps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvsubps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/avx.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/asm_testavx2vphaddd.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/asm_testavx2vphaddw.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/asm_testavx2vphsubd.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/asm_testavx2vphsubw.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/avx2.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseaddps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssedivps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemaxps.h

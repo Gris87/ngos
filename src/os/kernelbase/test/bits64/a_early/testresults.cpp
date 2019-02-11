@@ -56,7 +56,7 @@ NgosStatus TestResults::summary()
 
 
 
-    sprintf(printfBuffer, "\n --- Testing completed. %u passed. %u failed ---\n", mPassed, mFailed);
+    sprintf(printfBuffer, "\n --- Testing completed: %u passed, %u failed ---\n", mPassed, mFailed);
 
     Serial::println(printfBuffer);
 
