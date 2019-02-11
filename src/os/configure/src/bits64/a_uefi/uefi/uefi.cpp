@@ -636,7 +636,7 @@ EfiStatus UEFI::exitBootServices(u64 mapKey)
 
 
 
-    asm volatile (
+    asm volatile(
         "pushq   %rbp"          "\n\t"
         "movq    %rsp, %rbp"    "\n\t"
         "andq    $-0x10, %rsp"  "\n\t"
@@ -648,7 +648,7 @@ EfiStatus UEFI::exitBootServices(u64 mapKey)
 
 
 
-    asm volatile (
+    asm volatile(
         "movq    %rbp, %rsp"    "\n\t"
         "popq    %rbp"          "\n\t"
     );
