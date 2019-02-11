@@ -16,13 +16,13 @@
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(testAvx512cdVpbroadcastmw2d)                                    # testAvx512cdVpbroadcastmw2d function
-    kmovw               %esi, %k0                                               # Put mask value to K0
+    kmovw               %esi, %k1                                               # Put mask value to K1
                                                                                 #
-    vpbroadcastmw2d     %k0, %zmm0                                              # Broadcast value from K0 to 16 doublewords in ZMM0
+    vpbroadcastmw2d     %k1, %zmm0                                              # Broadcast value from K1 to 16 doublewords in ZMM0
                                                                                 #
     vmovdqa32           %zmm0, (%rdi)                                           # Put 16 doublewords from ZMM0 to location specified with RDI
-    xorq                %rsi, %rsi                                              # Put 0 to RSI
-    kmovw               %esi, %k0                                               # Reset K0
+    xorl                %esi, %esi                                              # Put 0 to ESI
+    kmovw               %esi, %k1                                               # Reset K1
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testAvx512cdVpbroadcastmw2d)                                       # End of testAvx512cdVpbroadcastmw2d function

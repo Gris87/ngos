@@ -8,20 +8,24 @@
 .section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)
                                                                                 #
 # ============================================================================= # =============================================================================
-# testAvxVrcpps declaration:                                                    #
-#     void testAvxVrcpps(float *a, float *b);                                   #
+# testAvx512vlVrsqrt14ps declaration:                                           #
+#     void testAvx512vlVrsqrt14ps(float *a, float *b);                          #
 #                                                                               #
 # RDI - a, address of 8 floats array                                            #
 # RSI - b, address of result 8 floats array                                     #
 # ============================================================================= # =============================================================================
                                                                                 #
-GLOBAL_FUNCTION(testAvxVrcpps)                                                  # testAvxVrcpps function
+GLOBAL_FUNCTION(testAvx512vlVrsqrt14ps)                                         # testAvx512vlVrsqrt14ps function
     vmovaps     (%rdi), %ymm1                                                   # Put 8 floats located at RDI to YMM1
+    movl        $0xFFFFFFFF, %eax                                               # Set all bits in EAX
+    kmovw       %eax, %k1                                                       # Set all bits in K1 via EAX
                                                                                 #
-    vrcpps      %ymm1, %ymm0                                                    # Compute Reciprocal (1/A) in parallel for 8 floats in YMM1 and store results in YMM0
+    vrsqrt14ps  %ymm1, %ymm0 {%k1}                                              # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 8 floats in YMM1 and store results in YMM0
                                                                                 #
     vmovaps     %ymm0, (%rdx)                                                   # Put 8 floats from YMM0 to location specified with RSI
+    xorl        %esi, %esi                                                      # Put 0 to ESI
+    kmovw       %esi, %k1                                                       # Reset K1
                                                                                 #
     retq                                                                        # Return from the function
-END_FUNCTION(testAvxVrcpps)                                                     # End of testAvxVrcpps function
+END_FUNCTION(testAvx512vlVrsqrt14ps)                                            # End of testAvx512vlVrsqrt14ps function
 #endif

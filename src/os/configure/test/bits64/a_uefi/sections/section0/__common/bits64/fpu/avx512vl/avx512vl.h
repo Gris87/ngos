@@ -1,20 +1,20 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX_AVX_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX_AVX_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512VL_AVX512VL_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512VL_AVX512VL_H
 
 
 
 #include <buildconfig.h>
 #include <src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvaddps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvdivps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvmaxps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvminps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvmulps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvrcpps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvrsqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvsqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvsubps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvaddps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvdivps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvmaxps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvminps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvmulps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvrcp14ps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvrsqrt14ps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvsqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvsubps.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -23,17 +23,17 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_avx_avx);
+TEST_CASES(section0, __common_bits64_fpu_avx512vl_avx512vl);
 {
     TEST_CASE("vaddps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
             float c[8];
 
-            testAvxVaddps(a, b, c);
+            testAvx512vlVaddps(a, b, c);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 0.4);
@@ -64,7 +64,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
@@ -73,13 +73,13 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vsubps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
             float c[8];
 
-            testAvxVsubps(a, b, c);
+            testAvx512vlVsubps(a, b, c);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 0.4);
@@ -110,7 +110,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
@@ -119,13 +119,13 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vmulps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
             float c[8];
 
-            testAvxVmulps(a, b, c);
+            testAvx512vlVmulps(a, b, c);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 0.4);
@@ -156,7 +156,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
@@ -165,13 +165,13 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vdivps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
             float c[8];
 
-            testAvxVdivps(a, b, c);
+            testAvx512vlVdivps(a, b, c);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 0.4);
@@ -202,7 +202,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
@@ -211,12 +211,12 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vsqrtps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
             float b[8];
 
-            testAvxVsqrtps(a, b);
+            testAvx512vlVsqrtps(a, b);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 1.0);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 4.0);
@@ -238,21 +238,21 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
 
 
 
-    TEST_CASE("vrcpps");
+    TEST_CASE("vrcp14ps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8];
 
-            testAvxVrcpps(a, b);
+            testAvx512vlVrcp14ps(a, b);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 0.4);
@@ -274,21 +274,21 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
 
 
 
-    TEST_CASE("vrsqrtps");
+    TEST_CASE("vrsqrt14ps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
             float b[8];
 
-            testAvxVrsqrtps(a, b);
+            testAvx512vlVrsqrt14ps(a, b);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 1.0);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 4.0);
@@ -310,7 +310,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
@@ -319,13 +319,13 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vmaxps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
             float c[8];
 
-            testAvxVmaxps(a, b, c);
+            testAvx512vlVmaxps(a, b, c);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 0.4);
@@ -356,7 +356,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
@@ -365,13 +365,13 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
 
     TEST_CASE("vminps");
     {
-        if (CPU::hasFlag(X86Feature::AVX))
+        if (CPU::hasFlag(X86Feature::AVX512VL))
         {
             float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
             float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
             float c[8];
 
-            testAvxVminps(a, b, c);
+            testAvx512vlVminps(a, b, c);
 
             TEST_ASSERT_FLOAT_EQUALS(a[0], 0.5);
             TEST_ASSERT_FLOAT_EQUALS(a[1], 0.4);
@@ -402,7 +402,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx_avx);
         }
         else
         {
-            UEFI_LVV(("X86Feature::AVX not supported"));
+            UEFI_LVV(("X86Feature::AVX512VL not supported"));
         }
     }
     TEST_CASE_END();
@@ -415,4 +415,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX_AVX_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512VL_AVX512VL_H

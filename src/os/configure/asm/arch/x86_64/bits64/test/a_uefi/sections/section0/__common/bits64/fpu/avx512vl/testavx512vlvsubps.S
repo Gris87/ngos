@@ -8,22 +8,26 @@
 .section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)
                                                                                 #
 # ============================================================================= # =============================================================================
-# testAvxVsubps declaration:                                                    #
-#     void testAvxVsubps(float *a, float *b, float *c);                         #
+# testAvx512vlVsubps declaration:                                               #
+#     void testAvx512vlVsubps(float *a, float *b, float *c);                    #
 #                                                                               #
 # RDI - a, address of 8 floats array                                            #
 # RSI - b, address of 8 floats array                                            #
 # RDX - c, address of result 8 floats array                                     #
 # ============================================================================= # =============================================================================
                                                                                 #
-GLOBAL_FUNCTION(testAvxVsubps)                                                  # testAvxVsubps function
+GLOBAL_FUNCTION(testAvx512vlVsubps)                                             # testAvx512vlVsubps function
     vmovaps     (%rdi), %ymm1                                                   # Put 8 floats located at RDI to YMM1
     vmovaps     (%rsi), %ymm2                                                   # Put 8 floats located at RSI to YMM2
+    movl        $0xFFFFFFFF, %eax                                               # Set all bits in EAX
+    kmovw       %eax, %k1                                                       # Set all bits in K1 via EAX
                                                                                 #
-    vsubps      %ymm2, %ymm1, %ymm0                                             # Subtract in parallel 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
+    vsubps      %ymm2, %ymm1, %ymm0 {%k1}                                       # Subtract in parallel 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
                                                                                 #
     vmovaps     %ymm0, (%rdx)                                                   # Put 8 floats from YMM0 to location specified with RDX
+    xorl        %esi, %esi                                                      # Put 0 to ESI
+    kmovw       %esi, %k1                                                       # Reset K1
                                                                                 #
     retq                                                                        # Return from the function
-END_FUNCTION(testAvxVsubps)                                                     # End of testAvxVsubps function
+END_FUNCTION(testAvx512vlVsubps)                                                # End of testAvx512vlVsubps function
 #endif
