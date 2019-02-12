@@ -288,7 +288,7 @@ TEST_CASES(section0, __common_bits64_fpu_avx512bw_avx512bw);
             TEST_ASSERT_EQUALS(c[7],  14);
             TEST_ASSERT_EQUALS(c[8],  24);
             TEST_ASSERT_EQUALS(c[9],  1024);
-            TEST_ASSERT_EQUALS(c[10],  64);
+            TEST_ASSERT_EQUALS(c[10], 64);
             TEST_ASSERT_EQUALS(c[11], 192);
             TEST_ASSERT_EQUALS(c[12], 8);
             TEST_ASSERT_EQUALS(c[13], 8);

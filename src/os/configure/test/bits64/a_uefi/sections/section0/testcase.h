@@ -56,13 +56,13 @@ NgosStatus startTestSection0()
     );
 
     CALL_TEST_CASES(section0, __common_bits64_cpu_cpu);
-    CALL_TEST_CASES(section0, __common_bits64_fpu_avx_avx);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx2_avx2);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx512bw_avx512bw);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx512cd_avx512cd);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx512dq_avx512dq);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx512f_avx512f);
     CALL_TEST_CASES(section0, __common_bits64_fpu_avx512vl_avx512vl);
+    CALL_TEST_CASES(section0, __common_bits64_fpu_avx_avx);
     CALL_TEST_CASES(section0, __common_bits64_fpu_fma3_fma3);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse2_sse2);
     CALL_TEST_CASES(section0, __common_bits64_fpu_sse3_sse3);

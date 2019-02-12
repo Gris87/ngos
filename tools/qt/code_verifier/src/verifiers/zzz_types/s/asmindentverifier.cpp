@@ -9,7 +9,7 @@ AsmIndentVerifier::AsmIndentVerifier()
     : BaseCodeVerifier(VerificationFileType::S)
     , mConstRegExp("^ *(\\w+) *=.*$")
     , mLabelRegExp("^(\\w+):.*$")
-    , mOperationRegExp("^    (\\.?)(\\w{2,8})  .*$")
+    , mOperationRegExp("^    (\\.?)(\\w{2,16})  .*$")
 {
     // Nothing
 }
