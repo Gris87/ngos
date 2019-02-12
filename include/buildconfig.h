@@ -51,8 +51,8 @@
 #define OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3 9   // Compile kernel with AVX-512 vectorization (F + CD + BW + DQ + VL + IFMA + VBMI)
 
 #define OPTION_X86_64_FUSED_MULTIPLY_ADD_NONE 0     // Compile kernel without Fused Multiply-Add support
-#define OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA4 1     // Compile kernel with Fused Multiply-Add 4
-#define OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3 2     // Compile kernel with Fused Multiply-Add 3
+#define OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA4 1     // Compile kernel with Fused Multiply-Add 4 (4 means with 4 operands)
+#define OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3 2     // Compile kernel with Fused Multiply-Add 3 (3 means with 3 operands)
 
 
 

@@ -202,6 +202,10 @@ src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/b
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/testavx512vlvrsqrt14ps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/testavx512vlvsqrtps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/testavx512vlvsubps.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/fma3/testfma3vfmadd213pd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/fma3/testfma3vfmadd213ps.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/fma3/testfma3vfmsub213pd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/fma3/testfma3vfmsub213ps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testsseaddps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testssedivps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/sse/testssemaxps.S
@@ -428,6 +432,11 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvsqrtps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/asm_testavx512vlvsubps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512vl/avx512vl.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmadd213pd.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmadd213ps.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmsub213pd.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmsub213ps.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/fma3.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseaddps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssedivps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemaxps.h

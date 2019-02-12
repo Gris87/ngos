@@ -252,7 +252,7 @@ Please note that FMA4 was realized in hardware before FMA3.
 
 **Values:**
 * OPTION_X86_64_FUSED_MULTIPLY_ADD_NONE - Compile kernel without Fused Multiply-Add support
-* OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA4 - Compile kernel with Fused Multiply-Add 4
-* OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3 - Compile kernel with Fused Multiply-Add 3
+* OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA4 - Compile kernel with Fused Multiply-Add 4 (4 means with 4 operands)
+* OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3 - Compile kernel with Fused Multiply-Add 3 (3 means with 3 operands)
 
 **Default:** OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3
