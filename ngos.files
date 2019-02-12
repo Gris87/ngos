@@ -179,6 +179,11 @@ src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/b
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/testavx512cdvpbroadcastmw2d.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/testavx512cdvplzcntd.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/testavx512cdvplzcntq.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/testavx512dqvcvtpd2qq.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/testavx512dqvcvtps2qq.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/testavx512dqvcvtqq2pd.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/testavx512dqvcvtqq2ps.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/testavx512dqvpmullq.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512f/testavx512fvaddps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512f/testavx512fvdivps.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512f/testavx512fvmaxps.S
@@ -397,6 +402,12 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvplzcntd.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvplzcntq.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/avx512cd.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtpd2qq.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtps2qq.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtqq2pd.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtqq2ps.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvpmullq.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/avx512dq.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvaddps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvdivps.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvmaxps.h
