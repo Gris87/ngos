@@ -54,7 +54,7 @@ help:
 	@echo "    run-release      - Build the source code in release mode and run kernel on the VM"
 	@echo "    run-test-debug   - Build the source code in debug mode with the tests included and run kernel on the VM. Preferable target for development"
 	@echo "    run-test-release - Build the source code in release mode with the tests included and run kernel on the VM"
-	@echo "    run-vm           - Run kernel on the VM (QEMU by default)"
+	@echo "    run-vm           - Run kernel on the VM (QEMU-KVM by default)"
 	@echo "    run-qemu-kvm     - Run kernel on the QEMU-KVM VM"
 	@echo "    run-qemu         - Run kernel on the QEMU VM"
 	@echo "    run-vbox         - Run kernel on the VirtualBox VM"
@@ -140,7 +140,7 @@ run-test-release: test-release run-vm
 
 
 
-run-vm: run-qemu
+run-vm: run-qemu-kvm
 
 run-qemu-kvm:
 	sh -c "cd tools/vm/ && ./start_vm.sh qemu-kvm"

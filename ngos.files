@@ -171,6 +171,10 @@ src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/b
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx2/testavx2vphaddw.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx2/testavx2vphsubd.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx2/testavx2vphsubw.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/testavx512bwvpbroadcastb.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/testavx512bwvpbroadcastw.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/testavx512bwvpsllvw.S
+src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/testavx512bwvpsrlvw.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/testavx512cdvpbroadcastmb2q.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/testavx512cdvpbroadcastmw2d.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/testavx512cdvplzcntd.S
@@ -383,6 +387,11 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/a
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/asm_testavx2vphsubd.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/asm_testavx2vphsubw.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx2/avx2.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/asm_testavx512bwvpbroadcastb.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/asm_testavx512bwvpbroadcastw.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/asm_testavx512bwvpsllvw.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/asm_testavx512bwvpsrlvw.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512bw/avx512bw.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvpbroadcastmb2q.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvpbroadcastmw2d.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvplzcntd.h

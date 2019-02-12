@@ -43,7 +43,7 @@ Available targets:
     run-release      - Build the source code in release mode and run kernel on the VM
     run-test-debug   - Build the source code in debug mode with the tests included and run kernel on the VM. Preferable target for development
     run-test-release - Build the source code in release mode with the tests included and run kernel on the VM
-    run-vm           - Run kernel on the VM (QEMU by default)
+    run-vm           - Run kernel on the VM (QEMU-KVM by default)
     run-qemu-kvm     - Run kernel on the QEMU-KVM VM
     run-qemu         - Run kernel on the QEMU VM
     run-vbox         - Run kernel on the VirtualBox VM
