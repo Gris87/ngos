@@ -25,7 +25,7 @@ SECTIONS
         _assets_end = .;
     }
 
-    . = ALIGN(4);
+    . = ALIGN(64);
     .stack       :       {
         *(.stack)
         _stack_begin = .;

@@ -77,7 +77,7 @@ sudo virt-install --name ${VM_NAME} \
     --arch=x86_64 \
     --os-variant=none \
     --ram ${RAM_SIZE} \
-    --vcpus 2,sockets=1,cores=1,threads=2 \
+    --vcpus 4,sockets=1,cores=2,threads=2 \
     --cpu host \
     --graphics ${DISPLAY_TYPE} \
     --video=vmvga \
