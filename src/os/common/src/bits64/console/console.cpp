@@ -74,8 +74,8 @@ void Console::print(char ch)
 
 
 
-            u16 charPosX      = sScreenPosX + glyphData->bitmapLeft;
-            u16 charPosY      = sScreenInfo->height - BOTTOM_MARGIN - glyphData->bitmapTop;
+            i16 charPosX      = sScreenPosX + glyphData->bitmapLeft;
+            i16 charPosY      = sScreenInfo->height - BOTTOM_MARGIN - glyphData->bitmapTop;
             u8  bytesPerPixel = sScreenInfo->depth >> 3; // ">> 3" == "/ 8"
 
 
@@ -84,13 +84,16 @@ void Console::print(char ch)
             {
                 for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                 {
-                    u8 greyColor = glyphData->bitmap[i * glyphData->bitmapWidth + j];
+                    if (charPosX + j >= 0)
+                    {
+                        u8 greyColor = glyphData->bitmap[i * glyphData->bitmapWidth + j];
 
-                    u8 *frameBufferPixel = (u8 *)((u64)sScreenInfo->frameBufferBase + (charPosY + i) * sScreenInfo->lineLength + (charPosX + j) * bytesPerPixel);
+                        u8 *frameBufferPixel = (u8 *)((u64)sScreenInfo->frameBufferBase + (charPosY + i) * sScreenInfo->lineLength + (charPosX + j) * bytesPerPixel);
 
-                    frameBufferPixel[0] = greyColor;
-                    frameBufferPixel[1] = greyColor;
-                    frameBufferPixel[2] = greyColor;
+                        frameBufferPixel[0] = greyColor;
+                        frameBufferPixel[1] = greyColor;
+                        frameBufferPixel[2] = greyColor;
+                    }
                 }
             }
 
