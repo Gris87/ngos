@@ -10,6 +10,7 @@
 
 
 #define CHAR_HEIGHT   20
+#define SIDE_MARGIN   1
 #define BOTTOM_MARGIN 5
 
 
@@ -34,7 +35,7 @@ NgosStatus Console::init(BootParams *params)
 
 
     sScreenInfo   = &params->screenInfo;
-    sScreenPosX   = 0;
+    sScreenPosX   = SIDE_MARGIN;
     sGlyphOffsets = (u16 *)asset->content;
 
 
@@ -57,7 +58,7 @@ void Console::print(char ch)
     else
     if (ch == '\r')
     {
-        sScreenPosX = 0;
+        sScreenPosX = SIDE_MARGIN;
     }
     else
     {
@@ -67,7 +68,7 @@ void Console::print(char ch)
 
 
 
-            if (sScreenPosX + glyphData->width > sScreenInfo->width)
+            if (sScreenPosX + glyphData->width > sScreenInfo->width - SIDE_MARGIN)
             {
                 newLine();
             }
@@ -77,6 +78,11 @@ void Console::print(char ch)
             i16 charPosX      = sScreenPosX + glyphData->bitmapLeft;
             i16 charPosY      = sScreenInfo->height - BOTTOM_MARGIN - glyphData->bitmapTop;
             u8  bytesPerPixel = sScreenInfo->depth >> 3; // ">> 3" == "/ 8"
+            u8 *bitmapByte    = glyphData->bitmap;
+
+            COMMON_TEST_ASSERT(charPosX >= 0);
+            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sScreenInfo->height);
+            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT);
 
 
 
@@ -84,16 +90,23 @@ void Console::print(char ch)
             {
                 for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                 {
-                    if (charPosX + j >= 0)
-                    {
-                        u8 greyColor = glyphData->bitmap[i * glyphData->bitmapWidth + j];
+                    u8 *frameBufferPixel = (u8 *)((u64)sScreenInfo->frameBufferBase + (charPosY + i) * sScreenInfo->lineLength + (charPosX + j) * bytesPerPixel);
 
-                        u8 *frameBufferPixel = (u8 *)((u64)sScreenInfo->frameBufferBase + (charPosY + i) * sScreenInfo->lineLength + (charPosX + j) * bytesPerPixel);
+                    COMMON_TEST_ASSERT(
+                        (u64)frameBufferPixel >= (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - sScreenInfo->lineLength * CHAR_HEIGHT
+                        &&
+                        (u64)frameBufferPixel <  (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - 2
+                    );
 
-                        frameBufferPixel[0] = greyColor;
-                        frameBufferPixel[1] = greyColor;
-                        frameBufferPixel[2] = greyColor;
-                    }
+
+
+                    u8 greyColor = *bitmapByte;
+
+                    frameBufferPixel[0] = greyColor;
+                    frameBufferPixel[1] = greyColor;
+                    frameBufferPixel[2] = greyColor;
+
+                    ++bitmapByte;
                 }
             }
 
@@ -202,5 +215,5 @@ void Console::newLine()
 
     newLineWithoutCaretReturn();
 
-    sScreenPosX = 0;
+    sScreenPosX = SIDE_MARGIN;
 }
