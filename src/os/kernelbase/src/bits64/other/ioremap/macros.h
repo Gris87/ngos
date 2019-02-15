@@ -1,0 +1,22 @@
+#ifndef OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H
+#define OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H
+
+
+
+#include <ngos/utils.h>
+#include <pagetable/macros.h>
+#include <src/bits64/other/ioremap/fixmap.h>
+
+
+
+#define FIX_BITMAP_SLOTS      8
+#define NUMBER_OF_FIX_BITMAPS 64
+#define TOTAL_FIX_BITMAPS     (NUMBER_OF_FIX_BITMAPS * FIX_BITMAP_SLOTS)
+
+#define FIX_ADDRESS_TOP  0xFFFFFFFFFF3FF000
+#define FIX_BITMAP_END   ROUND_UP((fix_map)FixMap::END, PTRS_PER_PTE)
+#define FIX_BITMAP_BEGIN FIX_BITMAP_END + TOTAL_FIX_BITMAPS - 1
+
+
+
+#endif // OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H

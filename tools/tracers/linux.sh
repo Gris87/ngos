@@ -54,6 +54,7 @@ NEXTI_FILTERS=(
     -e "<printk>"
     -e "<vprintk_func>"
     -e "<print_xstate_features>"
+    -e "<sort>"
 )
 
 NEXT_FILTERS=(

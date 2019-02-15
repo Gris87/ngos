@@ -1,0 +1,27 @@
+#ifndef OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H
+#define OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H
+
+
+
+#include <ngos/status.h>
+#include <ngos/types.h>
+#include <src/bits64/other/ioremap/macros.h>
+
+
+
+class IORemap
+{
+public:
+    static NgosStatus init(); // TEST: NO
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
+private:
+#endif
+    static u64 sVirtualSlots[FIX_BITMAP_SLOTS];
+};
+
+
+
+#endif // OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H

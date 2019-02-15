@@ -943,6 +943,251 @@ index 16b1cbd3a61e..01892dd65776 100644
  {
  	char * command_line;
  	unsigned long cmd_line_ptr;
+diff --git a/kernel/jump_label.c b/kernel/jump_label.c
+index b28028b08d44..1ee5e27a7195 100644
+--- a/kernel/jump_label.c
++++ b/kernel/jump_label.c
+@@ -33,7 +33,7 @@ void jump_label_unlock(void)
+ 	mutex_unlock(&jump_label_mutex);
+ }
+ 
+-static int jump_label_cmp(const void *a, const void *b)
++int jump_label_cmp(const void *a, const void *b)
+ {
+ 	const struct jump_entry *jea = a;
+ 	const struct jump_entry *jeb = b;
+@@ -47,7 +47,7 @@ static int jump_label_cmp(const void *a, const void *b)
+ 	return 0;
+ }
+ 
+-static void jump_label_swap(void *a, void *b, int size)
++void jump_label_swap(void *a, void *b, int size)
+ {
+ 	long delta = (unsigned long)a - (unsigned long)b;
+ 	struct jump_entry *jea = a;
+@@ -63,7 +63,7 @@ static void jump_label_swap(void *a, void *b, int size)
+ 	jeb->key	= tmp.key + delta;
+ }
+ 
+-static void
++void
+ jump_label_sort_entries(struct jump_entry *start, struct jump_entry *stop)
+ {
+ 	unsigned long size;
+@@ -77,7 +77,7 @@ jump_label_sort_entries(struct jump_entry *start, struct jump_entry *stop)
+ 	sort(start, size, sizeof(struct jump_entry), jump_label_cmp, swapfn);
+ }
+ 
+-static void jump_label_update(struct static_key *key);
++void jump_label_update(struct static_key *key);
+ 
+ /*
+  * There are similar definitions for the !HAVE_JUMP_LABEL case in jump_label.h.
+@@ -204,7 +204,7 @@ void static_key_disable(struct static_key *key)
+ }
+ EXPORT_SYMBOL_GPL(static_key_disable);
+ 
+-static void __static_key_slow_dec_cpuslocked(struct static_key *key,
++void __static_key_slow_dec_cpuslocked(struct static_key *key,
+ 					   unsigned long rate_limit,
+ 					   struct delayed_work *work)
+ {
+@@ -232,7 +232,7 @@ static void __static_key_slow_dec_cpuslocked(struct static_key *key,
+ 	jump_label_unlock();
+ }
+ 
+-static void __static_key_slow_dec(struct static_key *key,
++void __static_key_slow_dec(struct static_key *key,
+ 				  unsigned long rate_limit,
+ 				  struct delayed_work *work)
+ {
+@@ -241,7 +241,7 @@ static void __static_key_slow_dec(struct static_key *key,
+ 	cpus_read_unlock();
+ }
+ 
+-static void jump_label_update_timeout(struct work_struct *work)
++void jump_label_update_timeout(struct work_struct *work)
+ {
+ 	struct static_key_deferred *key =
+ 		container_of(work, struct static_key_deferred, work.work);
+@@ -284,7 +284,7 @@ void jump_label_rate_limit(struct static_key_deferred *key,
+ }
+ EXPORT_SYMBOL_GPL(jump_label_rate_limit);
+ 
+-static int addr_conflict(struct jump_entry *entry, void *start, void *end)
++int addr_conflict(struct jump_entry *entry, void *start, void *end)
+ {
+ 	if (jump_entry_code(entry) <= (unsigned long)end &&
+ 	    jump_entry_code(entry) + JUMP_LABEL_NOP_SIZE > (unsigned long)start)
+@@ -293,7 +293,7 @@ static int addr_conflict(struct jump_entry *entry, void *start, void *end)
+ 	return 0;
+ }
+ 
+-static int __jump_label_text_reserved(struct jump_entry *iter_start,
++int __jump_label_text_reserved(struct jump_entry *iter_start,
+ 		struct jump_entry *iter_stop, void *start, void *end)
+ {
+ 	struct jump_entry *iter;
+@@ -320,28 +320,28 @@ void __weak __init_or_module arch_jump_label_transform_static(struct jump_entry
+ 	arch_jump_label_transform(entry, type);
+ }
+ 
+-static inline struct jump_entry *static_key_entries(struct static_key *key)
++inline struct jump_entry *static_key_entries(struct static_key *key)
+ {
+ 	WARN_ON_ONCE(key->type & JUMP_TYPE_LINKED);
+ 	return (struct jump_entry *)(key->type & ~JUMP_TYPE_MASK);
+ }
+ 
+-static inline bool static_key_type(struct static_key *key)
++bool static_key_type(struct static_key *key)
+ {
+ 	return key->type & JUMP_TYPE_TRUE;
+ }
+ 
+-static inline bool static_key_linked(struct static_key *key)
++bool static_key_linked(struct static_key *key)
+ {
+ 	return key->type & JUMP_TYPE_LINKED;
+ }
+ 
+-static inline void static_key_clear_linked(struct static_key *key)
++void static_key_clear_linked(struct static_key *key)
+ {
+ 	key->type &= ~JUMP_TYPE_LINKED;
+ }
+ 
+-static inline void static_key_set_linked(struct static_key *key)
++void static_key_set_linked(struct static_key *key)
+ {
+ 	key->type |= JUMP_TYPE_LINKED;
+ }
+@@ -355,7 +355,7 @@ static inline void static_key_set_linked(struct static_key *key)
+  * type is in use and to store the initial branch direction, we use an access
+  * function which preserves these bits.
+  */
+-static void static_key_set_entries(struct static_key *key,
++void static_key_set_entries(struct static_key *key,
+ 				   struct jump_entry *entries)
+ {
+ 	unsigned long type;
+@@ -366,7 +366,7 @@ static void static_key_set_entries(struct static_key *key,
+ 	key->type |= type;
+ }
+ 
+-static enum jump_label_type jump_label_type(struct jump_entry *entry)
++enum jump_label_type jump_label_type(struct jump_entry *entry)
+ {
+ 	struct static_key *key = jump_entry_key(entry);
+ 	bool enabled = static_key_enabled(key);
+@@ -376,7 +376,7 @@ static enum jump_label_type jump_label_type(struct jump_entry *entry)
+ 	return enabled ^ branch;
+ }
+ 
+-static void __jump_label_update(struct static_key *key,
++void __jump_label_update(struct static_key *key,
+ 				struct jump_entry *entry,
+ 				struct jump_entry *stop,
+ 				bool init)
+@@ -443,7 +443,7 @@ void __init jump_label_init(void)
+ 
+ #ifdef CONFIG_MODULES
+ 
+-static enum jump_label_type jump_label_init_type(struct jump_entry *entry)
++enum jump_label_type jump_label_init_type(struct jump_entry *entry)
+ {
+ 	struct static_key *key = jump_entry_key(entry);
+ 	bool type = static_key_type(key);
+@@ -459,7 +459,7 @@ struct static_key_mod {
+ 	struct module *mod;
+ };
+ 
+-static inline struct static_key_mod *static_key_mod(struct static_key *key)
++struct static_key_mod *static_key_mod(struct static_key *key)
+ {
+ 	WARN_ON_ONCE(!static_key_linked(key));
+ 	return (struct static_key_mod *)(key->type & ~JUMP_TYPE_MASK);
+@@ -471,7 +471,7 @@ static inline struct static_key_mod *static_key_mod(struct static_key *key)
+  *
+  * See additional comments above static_key_set_entries().
+  */
+-static void static_key_set_mod(struct static_key *key,
++void static_key_set_mod(struct static_key *key,
+ 			       struct static_key_mod *mod)
+ {
+ 	unsigned long type;
+@@ -482,7 +482,7 @@ static void static_key_set_mod(struct static_key *key,
+ 	key->type |= type;
+ }
+ 
+-static int __jump_label_mod_text_reserved(void *start, void *end)
++int __jump_label_mod_text_reserved(void *start, void *end)
+ {
+ 	struct module *mod;
+ 
+@@ -500,7 +500,7 @@ static int __jump_label_mod_text_reserved(void *start, void *end)
+ 				start, end);
+ }
+ 
+-static void __jump_label_mod_update(struct static_key *key)
++void __jump_label_mod_update(struct static_key *key)
+ {
+ 	struct static_key_mod *mod;
+ 
+@@ -550,7 +550,7 @@ void jump_label_apply_nops(struct module *mod)
+ 	}
+ }
+ 
+-static int jump_label_add_module(struct module *mod)
++int jump_label_add_module(struct module *mod)
+ {
+ 	struct jump_entry *iter_start = mod->jump_entries;
+ 	struct jump_entry *iter_stop = iter_start + mod->num_jump_entries;
+@@ -611,7 +611,7 @@ static int jump_label_add_module(struct module *mod)
+ 	return 0;
+ }
+ 
+-static void jump_label_del_module(struct module *mod)
++void jump_label_del_module(struct module *mod)
+ {
+ 	struct jump_entry *iter_start = mod->jump_entries;
+ 	struct jump_entry *iter_stop = iter_start + mod->num_jump_entries;
+@@ -661,7 +661,7 @@ static void jump_label_del_module(struct module *mod)
+ 	}
+ }
+ 
+-static int
++int
+ jump_label_module_notify(struct notifier_block *self, unsigned long val,
+ 			 void *data)
+ {
+@@ -695,7 +695,7 @@ static struct notifier_block jump_label_module_nb = {
+ 	.priority = 1, /* higher than tracepoints */
+ };
+ 
+-static __init int jump_label_init_module(void)
++__init int jump_label_init_module(void)
+ {
+ 	return register_module_notifier(&jump_label_module_nb);
+ }
+@@ -730,7 +730,7 @@ int jump_label_text_reserved(void *start, void *end)
+ 	return ret;
+ }
+ 
+-static void jump_label_update(struct static_key *key)
++void jump_label_update(struct static_key *key)
+ {
+ 	struct jump_entry *stop = __stop___jump_table;
+ 	struct jump_entry *entry;
+@@ -759,7 +759,7 @@ static void jump_label_update(struct static_key *key)
+ static DEFINE_STATIC_KEY_TRUE(sk_true);
+ static DEFINE_STATIC_KEY_FALSE(sk_false);
+ 
+-static __init int jump_label_test(void)
++__init int jump_label_test(void)
+ {
+ 	int i;
+ 
 diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
 index 63b4b7eee138..921526e1ddb5 100644
 --- a/lib/decompress_inflate.c

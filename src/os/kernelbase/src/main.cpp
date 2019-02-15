@@ -9,6 +9,7 @@
 #include <src/bits64/a_early/main/setupfirstcpu.h>
 #include <src/bits64/a_early/main/setupidthandlers.h>
 #include <src/bits64/a_early/main/setupinittask.h>
+#include <src/bits64/a_early/main/setupioremap.h>
 #include <src/bits64/a_early/main/setupmemorymanager.h>
 #include <src/bits64/a_early/main/setupstackcanary.h>
 #include <src/bits64/assets/assets.h>
@@ -90,6 +91,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(setupMemoryManager());
     EARLY_LI(("Setup memory manager completed"));
+
+    EARLY_ASSERT_EXECUTION(setupIoRemap());
+    EARLY_LI(("Setup IO remap completed"));
 
 
 

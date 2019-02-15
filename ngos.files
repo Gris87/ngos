@@ -580,6 +580,8 @@ src/os/kernelbase/src/bits64/a_early/main/setupidthandlers.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupidthandlers.h
 src/os/kernelbase/src/bits64/a_early/main/setupinittask.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupinittask.h
+src/os/kernelbase/src/bits64/a_early/main/setupioremap.cpp
+src/os/kernelbase/src/bits64/a_early/main/setupioremap.h
 src/os/kernelbase/src/bits64/a_early/main/setupmemorymanager.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupmemorymanager.h
 src/os/kernelbase/src/bits64/a_early/main/setupstackcanary.cpp
@@ -591,6 +593,11 @@ src/os/kernelbase/src/bits64/other/cpu/cpumask.cpp
 src/os/kernelbase/src/bits64/other/cpu/cpumask.h
 src/os/kernelbase/src/bits64/other/cpu/percpu.cpp
 src/os/kernelbase/src/bits64/other/cpu/percpu.h
+src/os/kernelbase/src/bits64/other/ioremap/fixmap.h
+src/os/kernelbase/src/bits64/other/ioremap/ioremap.cpp
+src/os/kernelbase/src/bits64/other/ioremap/ioremap.h
+src/os/kernelbase/src/bits64/other/ioremap/macros.h
+src/os/kernelbase/src/bits64/other/ioremap/utils.h
 src/os/kernelbase/src/bits64/other/irq/irqstack.cpp
 src/os/kernelbase/src/bits64/other/irq/irqstack.h
 src/os/kernelbase/src/bits64/other/kerneldefines.h
