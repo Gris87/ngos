@@ -157,12 +157,12 @@ NgosStatus FPU::init()
     // COMMON_TEST_ASSERT(sXFeaturesOffsets[2]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[2]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sXFeaturesSizes[2]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sXFeaturesOffsets[3]               == 0x000003C0,         NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sXFeaturesOffsets[3]            == 0x000003C0,         NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[3]   == 0x000003C0,         NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sXFeaturesSizes[3]                 == 0x00000040,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesOffsets[4]               == 0x00000400,         NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sXFeaturesSizes[3]              == 0x00000040,         NgosStatus::ASSERTION); // Commented due to value variation
+    // COMMON_TEST_ASSERT(sXFeaturesOffsets[4]            == 0x00000400,         NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[4]   == 0x00000400,         NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sXFeaturesSizes[4]                 == 0x00000040,         NgosStatus::ASSERTION);
+    // COMMON_TEST_ASSERT(sXFeaturesSizes[4]              == 0x00000040,         NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sXFeaturesOffsets[5]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[5]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
     // COMMON_TEST_ASSERT(sXFeaturesSizes[5]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation

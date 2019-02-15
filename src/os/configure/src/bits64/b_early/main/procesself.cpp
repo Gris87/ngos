@@ -54,8 +54,8 @@ u64 getElfMemorySize(ElfHeader *header)
     EARLY_TEST_ASSERT(header->programHeaderTableEntrySize  == sizeof(ElfProgramHeaderTableEntry), 0);
     EARLY_TEST_ASSERT(header->programHeaderTableEntryCount == 1,                                  0);
     EARLY_TEST_ASSERT(header->sectionHeaderTableEntrySize  == sizeof(ElfSectionHeaderTableEntry), 0);
-    EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount == 36,                                 0);
-    EARLY_TEST_ASSERT(header->sectionHeaderTableNamesIndex == 35,                                 0);
+    EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount == 37,                                 0);
+    EARLY_TEST_ASSERT(header->sectionHeaderTableNamesIndex == 36,                                 0);
 
 
 

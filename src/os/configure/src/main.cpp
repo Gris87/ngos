@@ -170,7 +170,7 @@ BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 ker
     {
         char buffer[1024];
 
-        UEFI_ASSERT_EXECUTION(UEFI::clearScreen(), EfiStatus, EfiStatus::SUCCESS, 0);
+        UEFI::clearScreen(); // Do not check with UEFI_ASSERT_EXECUTION
 
 
 

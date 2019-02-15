@@ -6,7 +6,6 @@ TODO List
 - [ ] Implement graphics for kernel
 - [ ] Per CPU?
 - [ ] Initialization via multiple CPU cores
-- [ ] Four cores for VirtualBox
 - [ ] gdb_debug. Load memory page by page
 - [ ] Rewrite gdb_debug
 
