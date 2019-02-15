@@ -22,4 +22,5 @@ TODO List
 - [ ] Write documentation
 - [ ] Jenkins
 - [ ] Bug tracker
+- [ ] Compile cpp -> S -> Optimize S file -> o. Need to implement mechanism for optimizations at Assembler level
 - [ ] All resources for one application (Turbo mode)
