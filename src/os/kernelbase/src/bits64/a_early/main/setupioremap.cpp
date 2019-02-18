@@ -12,7 +12,8 @@ NgosStatus setupIoRemap()
 
 
 
-    EARLY_ASSERT_EXECUTION(IORemap::init(), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(IORemap::init(),            NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(IORemap::addPmdForFixmap(), NgosStatus::ASSERTION);
 
 
 

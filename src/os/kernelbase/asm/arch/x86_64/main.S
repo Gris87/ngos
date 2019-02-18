@@ -245,7 +245,7 @@ END_ENTRY(early_pagetable_level2)                                               
                                                                                 #
                                                                                 #
 DECLARE_PAGE(fixmap_pagetable_level2)                                           # Declaration for fixmap_pagetable_level2 variable
-    .fill   506, 8, 0                                                           # Skip 506 entries in PUD
+    .fill   506, 8, 0                                                           # Skip 506 entries in PMD
     .quad   fixmap_pagetable_level1 + USER_PAGE_TABLE_FLAGS                     # Put address of fixmap_pagetable_level1
     .fill   5, 8, 0                                                             # 8MB reserved for vsyscalls + a 2 MB hole = 4 + 1 entries
 END_ENTRY(fixmap_pagetable_level2)                                              # End of declaration for fixmap_pagetable_level2 variable

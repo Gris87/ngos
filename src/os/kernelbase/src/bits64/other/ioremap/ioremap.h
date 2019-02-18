@@ -5,6 +5,7 @@
 
 #include <ngos/status.h>
 #include <ngos/types.h>
+#include <pagetable/types.h>
 #include <src/bits64/other/ioremap/macros.h>
 
 
@@ -13,6 +14,7 @@ class IORemap
 {
 public:
     static NgosStatus init(); // TEST: NO
+    static NgosStatus addPmdForFixmap(); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -20,6 +22,7 @@ public:
 private:
 #endif
     static u64 sVirtualSlots[FIX_BITMAP_SLOTS];
+    static PTE sFixmapPage[PTRS_PER_PMD];
 };
 
 
