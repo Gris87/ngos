@@ -20,7 +20,7 @@ GLOBAL_FUNCTION(testAvxVrcpps)                                                  
                                                                                 #
     vrcpps      %ymm1, %ymm0                                                    # Compute Reciprocal (1/A) in parallel for 8 floats in YMM1 and store results in YMM0
                                                                                 #
-    vmovaps     %ymm0, (%rdx)                                                   # Put 8 floats from YMM0 to location specified with RSI
+    vmovaps     %ymm0, (%rsi)                                                   # Put 8 floats from YMM0 to location specified with RSI
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testAvxVrcpps)                                                     # End of testAvxVrcpps function

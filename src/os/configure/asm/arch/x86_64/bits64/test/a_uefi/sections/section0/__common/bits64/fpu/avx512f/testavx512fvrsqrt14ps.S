@@ -20,7 +20,7 @@ GLOBAL_FUNCTION(testAvx512fVrsqrt14ps)                                          
                                                                                 #
     vrsqrt14ps  %zmm1, %zmm0                                                    # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 16 floats in ZMM1 and store results in ZMM0
                                                                                 #
-    vmovaps     %zmm0, (%rdx)                                                   # Put 16 floats from ZMM0 to location specified with RSI
+    vmovaps     %zmm0, (%rsi)                                                   # Put 16 floats from ZMM0 to location specified with RSI
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testAvx512fVrsqrt14ps)                                             # End of testAvx512fVrsqrt14ps function

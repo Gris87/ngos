@@ -22,7 +22,7 @@ GLOBAL_FUNCTION(testAvx512vlVsqrtps)                                            
                                                                                 #
     vsqrtps     %ymm1, %ymm0 {%k1}                                              # Compute Square Roots in parallel for 8 floats in YMM1 and store results in YMM0
                                                                                 #
-    vmovaps     %ymm0, (%rdx)                                                   # Put 8 floats from YMM0 to location specified with RSI
+    vmovaps     %ymm0, (%rsi)                                                   # Put 8 floats from YMM0 to location specified with RSI
     xorl        %esi, %esi                                                      # Put 0 to ESI
     kmovw       %esi, %k1                                                       # Reset K1
                                                                                 #

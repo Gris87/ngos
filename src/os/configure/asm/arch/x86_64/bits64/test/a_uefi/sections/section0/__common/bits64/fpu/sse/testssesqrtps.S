@@ -20,7 +20,7 @@ GLOBAL_FUNCTION(testSseSqrtps)                                                  
                                                                                 #
     sqrtps  %xmm0, %xmm0                                                        # Compute Square Roots in parallel for 4 floats in XMM0 and store results in XMM0
                                                                                 #
-    movaps  %xmm0, (%rdx)                                                       # Put 4 floats from XMM0 to location specified with RSI
+    movaps  %xmm0, (%rsi)                                                       # Put 4 floats from XMM0 to location specified with RSI
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSseSqrtps)                                                     # End of testSseSqrtps function

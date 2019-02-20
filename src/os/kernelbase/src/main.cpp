@@ -6,6 +6,7 @@
 #include <src/bits64/a_early/main/disableirq.h>
 #include <src/bits64/a_early/main/setupbootparams.h>
 #include <src/bits64/a_early/main/setupcr4shadow.h>
+#include <src/bits64/a_early/main/setupe820tables.h>
 #include <src/bits64/a_early/main/setupfirstcpu.h>
 #include <src/bits64/a_early/main/setupidthandlers.h>
 #include <src/bits64/a_early/main/setupinittask.h>
@@ -94,6 +95,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(setupIoRemap());
     EARLY_LI(("Setup IO remap completed"));
+
+    EARLY_ASSERT_EXECUTION(setupE820Tables());
+    EARLY_LI(("Setup E820 tables completed"));
 
 
 

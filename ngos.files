@@ -574,6 +574,8 @@ src/os/kernelbase/src/bits64/a_early/main/setupbootparams.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupbootparams.h
 src/os/kernelbase/src/bits64/a_early/main/setupcr4shadow.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupcr4shadow.h
+src/os/kernelbase/src/bits64/a_early/main/setupe820tables.cpp
+src/os/kernelbase/src/bits64/a_early/main/setupe820tables.h
 src/os/kernelbase/src/bits64/a_early/main/setupfirstcpu.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupfirstcpu.h
 src/os/kernelbase/src/bits64/a_early/main/setupidthandlers.cpp
@@ -593,6 +595,9 @@ src/os/kernelbase/src/bits64/other/cpu/cpumask.cpp
 src/os/kernelbase/src/bits64/other/cpu/cpumask.h
 src/os/kernelbase/src/bits64/other/cpu/percpu.cpp
 src/os/kernelbase/src/bits64/other/cpu/percpu.h
+src/os/kernelbase/src/bits64/other/e820/e820.cpp
+src/os/kernelbase/src/bits64/other/e820/e820.h
+src/os/kernelbase/src/bits64/other/e820/e820table.h
 src/os/kernelbase/src/bits64/other/ioremap/fixmap.h
 src/os/kernelbase/src/bits64/other/ioremap/ioremap.cpp
 src/os/kernelbase/src/bits64/other/ioremap/ioremap.h

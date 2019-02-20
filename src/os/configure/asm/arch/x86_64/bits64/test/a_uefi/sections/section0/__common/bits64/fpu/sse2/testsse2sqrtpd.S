@@ -20,7 +20,7 @@ GLOBAL_FUNCTION(testSse2Sqrtpd)                                                 
                                                                                 #
     sqrtpd  %xmm0, %xmm0                                                        # Compute Square Roots in parallel for 2 doubles in XMM0 and store results in XMM0
                                                                                 #
-    movapd  %xmm0, (%rdx)                                                       # Put 2 doubles from XMM0 to location specified with RSI
+    movapd  %xmm0, (%rsi)                                                       # Put 2 doubles from XMM0 to location specified with RSI
                                                                                 #
     retq                                                                        # Return from the function
 END_FUNCTION(testSse2Sqrtpd)                                                    # End of testSse2Sqrtpd function

@@ -13,7 +13,7 @@ extern PMD fixmap_pagetable_level2[PTRS_PER_PGD]; // fixmap_pagetable_level2 dec
 
 
 u64 IORemap::sVirtualSlots[FIX_BITMAP_SLOTS];
-PTE IORemap::sFixmapPage[PTRS_PER_PMD] __attribute__((aligned(PAGE_SIZE)));;
+PTE IORemap::sFixmapPage[PTRS_PER_PMD] __attribute__((aligned(PAGE_SIZE)));
 
 
 

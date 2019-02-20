@@ -22,7 +22,7 @@ GLOBAL_FUNCTION(testAvx512vlVrsqrt14ps)                                         
                                                                                 #
     vrsqrt14ps  %ymm1, %ymm0 {%k1}                                              # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 8 floats in YMM1 and store results in YMM0
                                                                                 #
-    vmovaps     %ymm0, (%rdx)                                                   # Put 8 floats from YMM0 to location specified with RSI
+    vmovaps     %ymm0, (%rsi)                                                   # Put 8 floats from YMM0 to location specified with RSI
     xorl        %esi, %esi                                                      # Put 0 to ESI
     kmovw       %esi, %k1                                                       # Reset K1
                                                                                 #
