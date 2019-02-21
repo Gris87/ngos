@@ -181,7 +181,7 @@ git checkout master
 git reset --hard
 git clean -df
 git pull
-git checkout v${LIBVIRT_VERSION}
+git reset --hard v${LIBVIRT_VERSION}
 ./autogen.sh || exit 1
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
 make -j`nproc` all || exit 1
@@ -215,7 +215,7 @@ git checkout master
 git reset --hard
 git clean -df
 git pull
-git checkout v${LIBVIRT_GLIB_VERSION}
+git reset --hard v${LIBVIRT_GLIB_VERSION}
 ./autogen.sh || exit 1
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
 make -j`nproc` all || exit 1
@@ -245,7 +245,7 @@ git checkout master
 git reset --hard
 git clean -df
 git pull
-git checkout v${QEMU_VERSION}
+git reset --hard v${QEMU_VERSION}
 cd ..
 
 mkdir qemu-build
