@@ -15,7 +15,7 @@ all: $(SUBDIRS)
 clean: $(SUBDIRS)
 
 $(SUBDIRS):
-	sh -c "cd $@ && qmake $@.pro && make -j8 $(MAKECMDGOALS)"
+	sh -c "cd $@ && qmake $@.pro && make -j`nproc` $(MAKECMDGOALS)"
 
 
 

@@ -8,8 +8,12 @@ RMDIR = rm -rf
 
 SUBDIRS = \
 	3rd_party \
-	src \
-	tools
+	tools \
+	src
+
+
+
+.NOTPARALLEL:
 
 
 
@@ -62,32 +66,32 @@ help:
 
 
 config:
-	sh -c "cd tools/qt/build_config_gui/ && qmake build_config_gui.pro && make -j8"
+	sh -c "cd tools/qt/build_config_gui/ && qmake build_config_gui.pro && make -j`nproc`"
 	tools/qt/build_config_gui/build/build_config_gui
 
 
 
 generate:
 	sh -c "cd 3rd_party/ && make"
-	sh -c "cd tools/qt/code_generator/ && qmake code_generator.pro && make -j8"
+	sh -c "cd tools/qt/code_generator/ && qmake code_generator.pro && make -j`nproc`"
 	tools/qt/code_generator/build/code_generator .
 
 
 
 verify:
-	sh -c "cd tools/qt/code_verifier/ && qmake code_verifier.pro && make -j8"
+	sh -c "cd tools/qt/code_verifier/ && qmake code_verifier.pro && make -j`nproc`"
 	tools/qt/code_verifier/build/code_verifier .
 
 
 
 verify-tests:
-	sh -c "cd tools/qt/test_verifier/ && qmake test_verifier.pro && make -j8"
+	sh -c "cd tools/qt/test_verifier/ && qmake test_verifier.pro && make -j`nproc`"
 	tools/qt/test_verifier/build/test_verifier .
 
 
 
 verify-docs:
-	sh -c "cd tools/qt/docs_verifier/ && qmake docs_verifier.pro && make -j8"
+	sh -c "cd tools/qt/docs_verifier/ && qmake docs_verifier.pro && make -j`nproc`"
 	tools/qt/docs_verifier/build/docs_verifier .
 
 
@@ -103,28 +107,28 @@ run-gdb-debug: test-debug
 
 
 debug:
-	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j8"
+	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_NO NGOS_BUILD_TEST_MODE=OPTION_NO
 	$(MAKE) all
 
 
 
 release:
-	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j8"
+	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_YES NGOS_BUILD_TEST_MODE=OPTION_NO
 	$(MAKE) all
 
 
 
 test-debug:
-	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j8"
+	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_NO NGOS_BUILD_TEST_MODE=OPTION_YES
 	$(MAKE) all
 
 
 
 test-release:
-	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j8"
+	sh -c "cd tools/qt/build_config_maker/ && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_YES NGOS_BUILD_TEST_MODE=OPTION_YES
 	$(MAKE) all
 
