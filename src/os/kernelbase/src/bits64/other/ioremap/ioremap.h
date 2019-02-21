@@ -15,6 +15,7 @@ class IORemap
 public:
     static NgosStatus init(); // TEST: NO
     static NgosStatus addPmdForFixmap(); // TEST: NO
+    static NgosStatus addFixedMapping(u64 address, u64 size, void **res); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

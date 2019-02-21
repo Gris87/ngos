@@ -86,3 +86,17 @@ NgosStatus IORemap::addPmdForFixmap()
 
     return NgosStatus::OK;
 }
+
+NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
+{
+    COMMON_LT((" | address = 0x%016lX, size = %u, res = 0x%016lX", address, size, res));
+
+    COMMON_ASSERT(address,                  "address is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,                 "size is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,                      "res is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(address + size > address, "size is invalid", NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
