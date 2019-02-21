@@ -169,6 +169,18 @@ TEST_CASES(section0, __include_ngos_utils);
 
 
 
+    TEST_CASE("ABS()");
+    {
+        TEST_ASSERT_EQUALS(ABS(0),     0);
+        TEST_ASSERT_EQUALS(ABS(10),    10);
+        TEST_ASSERT_EQUALS(ABS(-5),    5);
+        TEST_ASSERT_EQUALS(ABS(5 - 6), 1);
+        TEST_ASSERT_EQUALS(ABS(5 - 4), 1);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("htons()");
     {
         TEST_ASSERT_EQUALS(htons(0x01),   0x0100);

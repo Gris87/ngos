@@ -25,7 +25,7 @@
 #define VENDOR_AMD_3   0x444D4163   // cAMD
 
 #define INTEL_MINIMAL_FAMILY INTEL_FAMILY_6
-#define INTEL_MINIMAL_MODEL  85
+#define INTEL_MINIMAL_MODEL  60
 
 #define AMD_MINIMAL_FAMILY AMD_FAMILY_23
 #define AMD_MINIMAL_MODEL  1
@@ -400,13 +400,15 @@ NgosStatus CPU::check(const char **wantedFlag)
         X86Feature::ALWAYS
         , X86Feature::CPUID
         , X86Feature::FPU
+        , X86Feature::LM
         , X86Feature::MSR
         , X86Feature::PAE
+        , X86Feature::NX
+        , X86Feature::TSC
+        , X86Feature::FXSR
+        , X86Feature::XSAVE
         , X86Feature::CX8
         , X86Feature::CMOV
-        , X86Feature::FXSR
-        , X86Feature::LM
-        , X86Feature::XSAVE
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         , X86Feature::LA57

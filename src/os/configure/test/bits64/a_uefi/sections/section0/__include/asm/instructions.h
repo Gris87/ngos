@@ -48,41 +48,16 @@ TEST_CASES(section0, __include_asm_instructions);
 
     TEST_CASE("rdtsc()");
     {
-        if (CPU::hasFlag(X86Feature::TSC))
-        {
-            u64 value1 = rdtsc();
-            u64 value2 = rdtsc();
-            u64 value3 = rdtsc();
-
-            TEST_ASSERT_NOT_EQUALS(value1, 0);
-            TEST_ASSERT_NOT_EQUALS(value2, 0);
-            TEST_ASSERT_NOT_EQUALS(value3, 0);
-
-            TEST_ASSERT(value2 > value1);
-            TEST_ASSERT(value3 > value2);
-        }
-        else
-        {
-            UEFI_LVV(("X86Feature::TSC not supported"));
-        }
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("randomI8254()");
-    {
-        u16 value1 = randomI8254();
-        u16 value2 = randomI8254();
-        u16 value3 = randomI8254();
+        u64 value1 = rdtsc();
+        u64 value2 = rdtsc();
+        u64 value3 = rdtsc();
 
         TEST_ASSERT_NOT_EQUALS(value1, 0);
         TEST_ASSERT_NOT_EQUALS(value2, 0);
         TEST_ASSERT_NOT_EQUALS(value3, 0);
 
-        TEST_ASSERT_NOT_EQUALS(value1, value2);
-        TEST_ASSERT_NOT_EQUALS(value1, value3);
-        TEST_ASSERT_NOT_EQUALS(value2, value3);
+        TEST_ASSERT(value2 > value1);
+        TEST_ASSERT(value3 > value2);
     }
     TEST_CASE_END();
 

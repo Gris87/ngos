@@ -23,6 +23,8 @@
 #define MAX(a, b) (a) > (b) ? (a) : (b)                         // TEST: NO
 #define MAX_TYPED(type, a, b) MAX((type)(a), (type)(b))         // TEST: NO
 
+#define ABS(a) ((a) >= 0 ? (a) : -(a))                          // TEST: NO
+
 
 
 // Ignore CppAlignmentVerifier [BEGIN]

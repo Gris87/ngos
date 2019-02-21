@@ -110,32 +110,6 @@ inline u64 rdtsc() // TEST: NO
     return ((u64)edx << 32) | eax;
 }
 
-inline u16 randomI8254() // TEST: NO
-{
-    u16 status;
-    u16 timer;
-
-
-
-    do
-    {
-        outb(I8254_PORT_CONTROL, I8254_CMD_READBACK | I8254_SELECT_COUNTER0);
-
-        status =  inb(I8254_PORT_COUNTER0);
-        timer  =  inb(I8254_PORT_COUNTER0);
-        timer  |= inb(I8254_PORT_COUNTER0) << 8;
-
-        if (!(status & I8254_STATUS_NOTREADY))
-        {
-            break;
-        }
-    } while(true);
-
-
-
-    return timer;
-}
-
 inline NgosStatus writeCr3(u64 value) // TEST: NO
 {
     // Ignore CppAlignmentVerifier [BEGIN]

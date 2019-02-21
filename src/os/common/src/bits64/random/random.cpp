@@ -14,8 +14,11 @@ u64 simpleRandom(u64 seed)
 
 
 
-    u64  random          = seed;
-    bool needRandomI8254 = true;
+    u64 random = seed;
+    u64 raw1   = 0;
+    u64 raw2   = 0;
+    u64 raw3   = 0;
+    u64 raw    = 0;
 
 
 
@@ -23,9 +26,7 @@ u64 simpleRandom(u64 seed)
     {
         COMMON_LVV(("X86Feature::RDRAND supported"));
 
-        u64 raw1 = 0;
-        u64 raw2 = 0;
-        u64 raw3 = 0;
+
 
         if (
             rdrand(&raw1) == NgosStatus::OK
@@ -35,7 +36,7 @@ u64 simpleRandom(u64 seed)
             rdrand(&raw3) == NgosStatus::OK
            )
         {
-            u64 raw = raw1 * raw2 * raw3;
+            raw = raw1 * raw2 * raw3;
 
             COMMON_LVVV(("raw1 = 0x%016lX", raw1));
             COMMON_LVVV(("raw2 = 0x%016lX", raw2));
@@ -43,8 +44,6 @@ u64 simpleRandom(u64 seed)
             COMMON_LVVV(("raw  = 0x%016lX", raw));
 
             random ^= raw;
-
-            needRandomI8254 = false;
         }
         else
         {
@@ -54,49 +53,17 @@ u64 simpleRandom(u64 seed)
 
 
 
-    if (CPU::hasFlag(X86Feature::TSC))
-    {
-        COMMON_LVV(("X86Feature::TSC supported"));
+    raw1 = rdtsc();
+    raw2 = rdtsc();
+    raw3 = rdtsc();
+    raw  = raw1 * raw2 * raw3;
 
-        u64 raw1 = rdtsc();
-        u64 raw2 = rdtsc();
-        u64 raw3 = rdtsc();
-        u64 raw  = raw1 * raw2 * raw3;
+    COMMON_LVVV(("raw1 = 0x%016lX", raw1));
+    COMMON_LVVV(("raw2 = 0x%016lX", raw2));
+    COMMON_LVVV(("raw3 = 0x%016lX", raw3));
+    COMMON_LVVV(("raw  = 0x%016lX", raw));
 
-        COMMON_LVVV(("raw1 = 0x%016lX", raw1));
-        COMMON_LVVV(("raw2 = 0x%016lX", raw2));
-        COMMON_LVVV(("raw3 = 0x%016lX", raw3));
-        COMMON_LVVV(("raw  = 0x%016lX", raw));
-
-        random ^= raw;
-
-        needRandomI8254 = false;
-    }
-
-
-
-    if (needRandomI8254)
-    {
-        COMMON_LVV(("Random with i8254"));
-
-        u64 raw1 = randomI8254();
-        u64 raw2 = randomI8254();
-        u64 raw3 = randomI8254();
-        u64 raw4 = randomI8254();
-        u64 raw5 = randomI8254();
-        u64 raw6 = randomI8254();
-        u64 raw  = raw1 * raw2 * raw3 * raw4 * raw5 * raw6;
-
-        COMMON_LVVV(("raw1 = 0x%016lX", raw1));
-        COMMON_LVVV(("raw2 = 0x%016lX", raw2));
-        COMMON_LVVV(("raw3 = 0x%016lX", raw3));
-        COMMON_LVVV(("raw4 = 0x%016lX", raw4));
-        COMMON_LVVV(("raw5 = 0x%016lX", raw5));
-        COMMON_LVVV(("raw6 = 0x%016lX", raw6));
-        COMMON_LVVV(("raw  = 0x%016lX", raw));
-
-        random ^= raw;
-    }
+    random ^= raw;
 
 
 
