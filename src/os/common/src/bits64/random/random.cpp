@@ -26,8 +26,6 @@ u64 simpleRandom(u64 seed)
     {
         COMMON_LVV(("X86Feature::RDRAND supported"));
 
-
-
         if (
             rdrand(&raw1) == NgosStatus::OK
             &&
