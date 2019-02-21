@@ -28,7 +28,7 @@ clean:
 
 
 $(TARGET_FREETYPE): $(FREETYPE_DIR)
-	sh -c "cd $(FREETYPE_DIR) && ./configure && make -j8"
+	sh -c "cd $(FREETYPE_DIR) && ./configure && make -j`nproc`"
 
 
 

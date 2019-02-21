@@ -127,7 +127,7 @@ fi
 mkdir binutils-build
 cd binutils-build
 ../binutils-${BINUTILS_VERSION}/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log || exit 1
-make -j8 all 2>&1 | tee make.log || exit 1
+make -j`nproc` all 2>&1 | tee make.log || exit 1
 make install || exit 1
 
 
@@ -152,9 +152,9 @@ cd ..
 mkdir gcc-build
 cd gcc-build
 ../gcc-${GCC_VERSION}/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ | tee configure.log || exit 1
-make -j8 all-gcc 2>&1 | tee make-gcc.log || exit 1
+make -j`nproc` all-gcc 2>&1 | tee make-gcc.log || exit 1
 make install-gcc || exit 1
-make -j8 all-target-libgcc 2>&1 | tee make-libgcc.log || exit 1
+make -j`nproc` all-target-libgcc 2>&1 | tee make-libgcc.log || exit 1
 make install-target-libgcc || exit 1
 
 
@@ -184,7 +184,7 @@ git pull
 git checkout v${LIBVIRT_VERSION}
 ./autogen.sh || exit 1
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
-make -j8 all || exit 1
+make -j`nproc` all || exit 1
 make install || exit 1
 
 systemctl enable libvirtd
@@ -218,7 +218,7 @@ git pull
 git checkout v${LIBVIRT_GLIB_VERSION}
 ./autogen.sh || exit 1
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
-make -j8 all || exit 1
+make -j`nproc` all || exit 1
 make install || exit 1
 
 
@@ -251,7 +251,7 @@ cd ..
 mkdir qemu-build
 cd qemu-build
 ../qemu/configure --enable-debug || exit 1
-make -j8 all || exit 1
+make -j`nproc` all || exit 1
 make install || exit 1
 
 
@@ -301,7 +301,7 @@ fi
 
 cd virt-viewer-${VIRT_VIEWER_VERSION}/
 ./configure || exit 1
-make -j8 all || exit 1
+make -j`nproc` all || exit 1
 make install || exit 1
 
 
