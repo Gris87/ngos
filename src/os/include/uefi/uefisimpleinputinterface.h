@@ -1,22 +1,22 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISIMPLEINPUTINTERFACE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISIMPLEINPUTINTERFACE_H
+#ifndef UEFI_UEFISIMPLEINPUTINTERFACE_H
+#define UEFI_UEFISIMPLEINPUTINTERFACE_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/efidefines.h"
-#include "src/bits64/a_uefi/uefi/lib/efiinputkey.h"
-#include "src/bits64/a_uefi/uefi/lib/efistatus.h"
+#include <uefi/macros.h>
+#include <uefi/uefiinputkey.h>
+#include <uefi/uefistatus.h>
 
 
 
-struct EfiSimpleInputInterface
+struct UefiSimpleInputInterface
 {
-    EfiStatus (EFIAPI *reset)(EfiSimpleInputInterface *obj, bool extendedVerification); // TEST: NO
-    EfiStatus (EFIAPI *readKeyStroke)(EfiSimpleInputInterface *obj, EfiInputKey *key); // TEST: NO
+    UefiStatus (UEFI_API *reset)(UefiSimpleInputInterface *obj, bool extendedVerification); // TEST: NO
+    UefiStatus (UEFI_API *readKeyStroke)(UefiSimpleInputInterface *obj, UefiInputKey *key); // TEST: NO
 
-    EfiEvent waitForKey;
+    uefi_event waitForKey;
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISIMPLEINPUTINTERFACE_H
+#endif // UEFI_UEFISIMPLEINPUTINTERFACE_H

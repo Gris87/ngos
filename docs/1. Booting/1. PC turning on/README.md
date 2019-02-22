@@ -12,9 +12,9 @@ There are 2 ways how PC may boot next:
 
 BIOS is non-volatile firmware used to perform hardware initialization during the booting process.
 
-As of 2011, the BIOS is being replaced by the more complex Extensible Firmware Interface (EFI) in many new machines.<br/>
-EFI is a specification which replaces the runtime interface of the legacy BIOS.<br/>
-Initially written for the Intel Itanium architecture, EFI is now available for x86 and x86_64 platforms.
+As of 2011, the BIOS is being replaced by the more complex Unified Extensible Firmware Interface (UEFI) in many new machines.<br/>
+UEFI is a specification which replaces the runtime interface of the legacy BIOS.<br/>
+Initially written for the Intel Itanium architecture, UEFI is now available for x86 and x86_64 platforms.
 
 Unified Extensible Firmware Interface (UEFI) is a successor to BIOS.
 

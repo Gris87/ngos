@@ -1,9 +1,13 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIMERDELAY_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIMERDELAY_H
+#ifndef UEFI_UEFITIMERDELAY_H
+#define UEFI_UEFITIMERDELAY_H
 
 
 
-enum class EfiTimerDelay
+#include <ngos/types.h>
+
+
+
+enum class UefiTimerDelay: u32
 {
     CANCEL,
     PERIODIC,
@@ -13,4 +17,4 @@ enum class EfiTimerDelay
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIMERDELAY_H
+#endif // UEFI_UEFITIMERDELAY_H

@@ -1,9 +1,9 @@
 #include "setupgraphics.h"
 
 #include <ngos/linkage.h>
+#include <uefi/uefigraphicsoutputprotocol.h>
+#include <uefi/uefiguid.h>
 
-#include "src/bits64/a_uefi/uefi/lib/efigraphicsoutputprotocol.h"
-#include "src/bits64/a_uefi/uefi/lib/efiguid.h"
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"
 
@@ -44,7 +44,7 @@ NgosStatus pixelBitMaskToOffsetAndSize(u32 mask, u8 *offset, u8 *size)
     return NgosStatus::OK;
 }
 
-NgosStatus updateScreenInfo(BootParams *params, EfiGraphicsOutputProtocol *gop, EfiGraphicsOutputModeInformation *info)
+NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop, UefiGraphicsOutputModeInformation *info)
 {
     UEFI_LT((" | params = 0x%p, gop = 0x%p, info = 0x%p", params, gop, info));
 
@@ -56,7 +56,7 @@ NgosStatus updateScreenInfo(BootParams *params, EfiGraphicsOutputProtocol *gop, 
 
     switch (info->pixelFormat)
     {
-        case EfiGraphicsPixelFormat::RGB_8_BIT_PER_COLOR:
+        case UefiGraphicsPixelFormat::RGB_8_BIT_PER_COLOR:
         {
             params->screenInfo.depth          = 32;
             params->screenInfo.lineLength     = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
@@ -71,7 +71,7 @@ NgosStatus updateScreenInfo(BootParams *params, EfiGraphicsOutputProtocol *gop, 
         }
         break;
 
-        case EfiGraphicsPixelFormat::BGR_8_BIT_PER_COLOR:
+        case UefiGraphicsPixelFormat::BGR_8_BIT_PER_COLOR:
         {
             params->screenInfo.depth          = 32;
             params->screenInfo.lineLength     = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
@@ -86,7 +86,7 @@ NgosStatus updateScreenInfo(BootParams *params, EfiGraphicsOutputProtocol *gop, 
         }
         break;
 
-        case EfiGraphicsPixelFormat::BIT_MASK:
+        case UefiGraphicsPixelFormat::BIT_MASK:
         {
             UEFI_ASSERT_EXECUTION(pixelBitMaskToOffsetAndSize(info->pixelInformation.redMask,      &params->screenInfo.redOffset,      &params->screenInfo.redSize),      NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(pixelBitMaskToOffsetAndSize(info->pixelInformation.greenMask,    &params->screenInfo.greenOffset,    &params->screenInfo.greenSize),    NgosStatus::ASSERTION);
@@ -103,8 +103,8 @@ NgosStatus updateScreenInfo(BootParams *params, EfiGraphicsOutputProtocol *gop, 
         }
         break;
 
-        case EfiGraphicsPixelFormat::BLT_ONLY:
-        case EfiGraphicsPixelFormat::MAXIMUM:
+        case UefiGraphicsPixelFormat::BLT_ONLY:
+        case UefiGraphicsPixelFormat::MAXIMUM:
         {
             UEFI_LF(("Invalid pixel format %d", info->pixelFormat));
 
@@ -133,7 +133,7 @@ NgosStatus updateScreenInfo(BootParams *params, EfiGraphicsOutputProtocol *gop, 
     return NgosStatus::OK;
 }
 
-NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u64 size, EfiHandle *graphicsHandles)
+NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u64 size, uefi_handle *graphicsHandles)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u, graphicsHandles = 0x%p", params, protocol, size, graphicsHandles));
 
@@ -145,48 +145,48 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u6
 
 
     u64                               maximumBuffer = 0;
-    EfiGraphicsOutputProtocol        *foundGop      = 0;
+    UefiGraphicsOutputProtocol        *foundGop      = 0;
     u32                               foundMode     = 0;
-    EfiGraphicsOutputModeInformation *foundInfo     = 0;
+    UefiGraphicsOutputModeInformation *foundInfo     = 0;
 
 
 
-    i64 count = size / sizeof(EfiHandle);
+    i64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
     for (i64 i = 0; i < count; ++i)
     {
-        EfiHandle                  handle = graphicsHandles[i];
-        EfiGraphicsOutputProtocol *gop    = 0;
+        uefi_handle                  handle = graphicsHandles[i];
+        UefiGraphicsOutputProtocol *gop    = 0;
 
 
 
-        if (UEFI::handleProtocol(handle, protocol, (void **)&gop) != EfiStatus::SUCCESS)
+        if (UEFI::handleProtocol(handle, protocol, (void **)&gop) != UefiStatus::SUCCESS)
         {
-            UEFI_LE(("Failed to handle(0x%p) protocol for EFI_GRAPHICS_OUTPUT_PROTOCOL", handle));
+            UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_GRAPHICS_OUTPUT_PROTOCOL", handle));
 
             continue;
         }
 
-        UEFI_LVV(("Handled(0x%p) protocol(0x%p) for EFI_GRAPHICS_OUTPUT_PROTOCOL", handle, gop));
+        UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", handle, gop));
 
 
 
         for (i64 j = 0; j < gop->mode->maxMode; ++j)
         {
             u64                               sizeOfInfo = 0;
-            EfiGraphicsOutputModeInformation *info       = 0;
+            UefiGraphicsOutputModeInformation *info       = 0;
 
 
 
-            if (gop->queryMode(gop, j, &sizeOfInfo, &info) != EfiStatus::SUCCESS)
+            if (gop->queryMode(gop, j, &sizeOfInfo, &info) != UefiStatus::SUCCESS)
             {
-                UEFI_LE(("Failed to query mode(%d) for protocol(0x%p) for EFI_GRAPHICS_OUTPUT_PROTOCOL", j, gop));
+                UEFI_LE(("Failed to query mode(%d) for protocol(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", j, gop));
 
                 continue;
             }
 
-            UEFI_LVV(("Queried mode(%d) with info(%u, 0x%p) for protocol(0x%p) for EFI_GRAPHICS_OUTPUT_PROTOCOL", j, sizeOfInfo, info, gop));
+            UEFI_LVV(("Queried mode(%d) with info(%u, 0x%p) for protocol(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", j, sizeOfInfo, info, gop));
 
 
 
@@ -198,7 +198,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u6
             UEFI_LVVV(("screenResolution           = %u", screenResolution));
 
             if (
-                info->pixelFormat != EfiGraphicsPixelFormat::BLT_ONLY
+                info->pixelFormat != UefiGraphicsPixelFormat::BLT_ONLY
                 &&
                 screenResolution > maximumBuffer
                )
@@ -215,18 +215,18 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u6
 
     if (!foundGop)
     {
-        UEFI_LF(("Failed to find valid protocol for EFI_GRAPHICS_OUTPUT_PROTOCOL"));
+        UEFI_LF(("Failed to find valid protocol for UEFI_GRAPHICS_OUTPUT_PROTOCOL"));
 
         return NgosStatus::NOT_FOUND;
     }
 
-    UEFI_LVV(("Found valid protocol(0x%p) with info(0x%p) for EFI_GRAPHICS_OUTPUT_PROTOCOL", foundGop, foundInfo));
+    UEFI_LVV(("Found valid protocol(0x%p) with info(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", foundGop, foundInfo));
 
 
 
     if (foundGop->mode->mode != foundMode)
     {
-        if (foundGop->setMode(foundGop, foundMode) != EfiStatus::SUCCESS)
+        if (foundGop->setMode(foundGop, foundMode) != UefiStatus::SUCCESS)
         {
             UEFI_LF(("Failed to update screen mode"));
 
@@ -298,7 +298,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u6
     return NgosStatus::OK;
 }
 
-NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u64 size)
+NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u64 size)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u", params, protocol, size));
 
@@ -308,43 +308,43 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, EfiGuid *protocol, u6
 
 
 
-    EfiHandle *graphicsHandles = 0;
+    uefi_handle *graphicsHandles = 0;
 
 
 
-    if (UEFI::allocatePool(EfiMemoryType::LOADER_DATA, size, (void **)&graphicsHandles) != EfiStatus::SUCCESS)
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&graphicsHandles) != UefiStatus::SUCCESS)
     {
-        UEFI_LF(("Failed to allocate pool(%u) for handles for EFI_GRAPHICS_OUTPUT_PROTOCOL", size));
+        UEFI_LF(("Failed to allocate pool(%u) for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", size));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Allocated pool(%u, 0x%p) for handles for EFI_GRAPHICS_OUTPUT_PROTOCOL", size, graphicsHandles));
+    UEFI_LVV(("Allocated pool(%u, 0x%p) for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", size, graphicsHandles));
 
 
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(EfiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, graphicsHandles) == EfiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, graphicsHandles) == UefiStatus::SUCCESS)
     {
-        UEFI_LVV(("Located handles(0x%p) for EFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
+        UEFI_LVV(("Located handles(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
 
         status = setupGraphicsOutputProtocol(params, protocol, size, graphicsHandles);
     }
     else
     {
-        UEFI_LF(("Failed to locate handles(0x%p) for EFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
+        UEFI_LF(("Failed to locate handles(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
     }
 
 
 
-    if (UEFI::freePool(graphicsHandles) == EfiStatus::SUCCESS)
+    if (UEFI::freePool(graphicsHandles) == UefiStatus::SUCCESS)
     {
-        UEFI_LVV(("Released pool(0x%p) for handles for EFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
+        UEFI_LVV(("Released pool(0x%p) for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
     }
     else
     {
-        UEFI_LE(("Failed to release pool(0x%p) for handles for EFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
+        UEFI_LE(("Failed to release pool(0x%p) for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
     }
 
 
@@ -360,28 +360,28 @@ NgosStatus setupGraphics(BootParams *params)
 
 
 
-    EfiGuid    graphicsProtocol = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+    UefiGuid    graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
     u64        graphicsSize     = 0;
-    EfiHandle *graphicsHandles  = 0;
+    uefi_handle *graphicsHandles  = 0;
 
 
 
-    if (UEFI::locateHandle(EfiLocateSearchType::BY_PROTOCOL, &graphicsProtocol, 0, &graphicsSize, graphicsHandles) == EfiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &graphicsProtocol, 0, &graphicsSize, graphicsHandles) == UefiStatus::BUFFER_TOO_SMALL)
     {
-        UEFI_LVV(("Found size(%u) of buffer for handles for EFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsSize));
+        UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsSize));
 
         if (setupGraphicsOutputProtocol(params, &graphicsProtocol, graphicsSize) != NgosStatus::OK)
         {
-            UEFI_LF(("Failed to setup EFI_GRAPHICS_OUTPUT_PROTOCOL"));
+            UEFI_LF(("Failed to setup UEFI_GRAPHICS_OUTPUT_PROTOCOL"));
 
             return NgosStatus::FAILED;
         }
 
-        UEFI_LV(("Setup EFI_GRAPHICS_OUTPUT_PROTOCOL completed"));
+        UEFI_LV(("Setup UEFI_GRAPHICS_OUTPUT_PROTOCOL completed"));
     }
     else
     {
-        UEFI_LW(("Handle for EFI_GRAPHICS_OUTPUT_PROTOCOL not found"));
+        UEFI_LW(("Handle for UEFI_GRAPHICS_OUTPUT_PROTOCOL not found"));
     }
 
 

@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIPIXELBITMASK_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIPIXELBITMASK_H
+#ifndef UEFI_UEFIPIXELBITMASK_H
+#define UEFI_UEFIPIXELBITMASK_H
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-struct EfiPixelBitmask
+struct UefiPixelBitmask
 {
     u32 redMask;
     u32 greenMask;
@@ -17,4 +17,4 @@ struct EfiPixelBitmask
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIPIXELBITMASK_H
+#endif // UEFI_UEFIPIXELBITMASK_H

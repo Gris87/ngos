@@ -1,22 +1,26 @@
 #include "uefi.h"
 
 #include <ngos/utils.h>
+#include <page/macros.h>
 #include <src/bits64/printf/printf.h>
 
-#include "src/bits64/a_uefi/uefi/lib/eficonstants.h"
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"
 
 
 
-EfiHandle                     UEFI::sImageHandle;
-EfiSystemTable               *UEFI::sSystemTable;
-EfiSimpleTextOutputInterface *UEFI::sTextOutput;
-EfiBootServices              *UEFI::sBootServices;
+#define UEFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS 8
 
 
 
-NgosStatus UEFI::init(EfiHandle imageHandle, EfiSystemTable *systemTable)
+uefi_handle                    UEFI::sImageHandle;
+UefiSystemTable               *UEFI::sSystemTable;
+UefiSimpleTextOutputInterface *UEFI::sTextOutput;
+UefiBootServices              *UEFI::sBootServices;
+
+
+
+NgosStatus UEFI::init(uefi_handle imageHandle, UefiSystemTable *systemTable)
 {
     // We can't output at the moment
     // UEFI_LT((" | imageHandle = 0x%p, systemTable = 0x%p", imageHandle, systemTable)); // Commented to avoid error because sTextOutput is null
@@ -37,19 +41,19 @@ NgosStatus UEFI::init(EfiHandle imageHandle, EfiSystemTable *systemTable)
     UEFI_ASSERT(sTextOutput,   "sTextOutput is null",   NgosStatus::ASSERTION);
     UEFI_ASSERT(sBootServices, "sBootServices is null", NgosStatus::ASSERTION);
 
-    UEFI_ASSERT(sSystemTable->runtimeServices->header.signature == EFI_RUNTIME_SERVICES_SIGNATURE, "Runtime services signature is invalid", NgosStatus::ASSERTION);
-    UEFI_ASSERT(sSystemTable->bootServices->header.signature    == EFI_BOOT_SERVICES_SIGNATURE,    "Boot services signature is invalid",    NgosStatus::ASSERTION);
+    UEFI_ASSERT(sSystemTable->runtimeServices->header.signature == UEFI_RUNTIME_SERVICES_SIGNATURE, "Runtime services signature is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(sSystemTable->bootServices->header.signature    == UEFI_BOOT_SERVICES_SIGNATURE,    "Boot services signature is invalid",    NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-EfiStatus UEFI::clearScreen()
+UefiStatus UEFI::clearScreen()
 {
     UEFI_LT((""));
 
-    UEFI_ASSERT(sTextOutput, "sTextOutput is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(sTextOutput, "sTextOutput is null", UefiStatus::ABORTED);
 
 
 
@@ -62,7 +66,7 @@ void UEFI::print(char ch)
 
 
 
-    efi_char16 buffer[2] = { (efi_char16)ch, 0 };
+    uefi_char16 buffer[2] = { (uefi_char16)ch, 0 };
     print(buffer);
 }
 
@@ -78,11 +82,11 @@ void UEFI::print(const char *str)
     {
         if (*str == '\n')
         {
-            efi_char16 nl[2] = { '\r', 0 };
+            uefi_char16 nl[2] = { '\r', 0 };
             print(nl);
         }
 
-        efi_char16 ch[2] = { (efi_char16)(*str), 0 };
+        uefi_char16 ch[2] = { (uefi_char16)(*str), 0 };
         print(ch);
 
         ++str;
@@ -95,7 +99,7 @@ void UEFI::println()
 
 
 
-    efi_char16 nl[3] = { '\r', '\n', 0 };
+    uefi_char16 nl[3] = { '\r', '\n', 0 };
     print(nl);
 }
 
@@ -105,7 +109,7 @@ void UEFI::println(char ch)
 
 
 
-    efi_char16 buffer[4] = { (efi_char16)ch, '\r', '\n', 0 };
+    uefi_char16 buffer[4] = { (uefi_char16)ch, '\r', '\n', 0 };
     print(buffer);
 }
 
@@ -119,7 +123,7 @@ void UEFI::println(const char *str)
 
     print(str);
 
-    efi_char16 nl[3] = { '\r', '\n', 0 };
+    uefi_char16 nl[3] = { '\r', '\n', 0 };
     print(nl);
 }
 
@@ -185,104 +189,104 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-EfiStatus UEFI::createEvent(u32 type, efi_tpl notifyTpl, efi_event_notify notifyFunction, void *notifyContext, EfiEvent *event)
+UefiStatus UEFI::createEvent(u32 type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)
 {
     UEFI_LT((" | type = %u, notifyTpl = %u, notifyFunction = 0x%p, notifyContext = 0x%p, event = 0x%p", type, notifyTpl, notifyFunction, notifyContext, event));
 
-    UEFI_ASSERT(event, "event is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(event, "event is null", UefiStatus::ABORTED);
 
 
 
     return sBootServices->createEvent(type, notifyTpl, notifyFunction, notifyContext, event);
 }
 
-EfiStatus UEFI::setTimer(EfiEvent event, EfiTimerDelay type, u64 triggerTime)
+UefiStatus UEFI::setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime)
 {
     UEFI_LT((" | event = 0x%p, type = %d, triggerTime = %u", event, type, triggerTime));
 
-    UEFI_ASSERT(event, "event is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(event, "event is null", UefiStatus::ABORTED);
 
 
 
     return sBootServices->setTimer(event, type, triggerTime);
 }
 
-EfiStatus UEFI::waitForEvent(u64 numberOfEvents, EfiEvent *event, u64 *index)
+UefiStatus UEFI::waitForEvent(u64 numberOfEvents, uefi_event *event, u64 *index)
 {
     UEFI_LT((" | numberOfEvents = %u, event = 0x%p, index = 0x%p", numberOfEvents, event, index));
 
-    UEFI_ASSERT(numberOfEvents > 0, "numberOfEvents is zero", EfiStatus::ABORTED);
-    UEFI_ASSERT(event,              "event is null",          EfiStatus::ABORTED);
-    UEFI_ASSERT(index,              "index is null",          EfiStatus::ABORTED);
+    UEFI_ASSERT(numberOfEvents > 0, "numberOfEvents is zero", UefiStatus::ABORTED);
+    UEFI_ASSERT(event,              "event is null",          UefiStatus::ABORTED);
+    UEFI_ASSERT(index,              "index is null",          UefiStatus::ABORTED);
 
 
 
     return sBootServices->waitForEvent(numberOfEvents, event, index);
 }
 
-EfiStatus UEFI::closeEvent(EfiEvent event)
+UefiStatus UEFI::closeEvent(uefi_event event)
 {
     UEFI_LT((" | event = 0x%p", event));
 
-    UEFI_ASSERT(event, "event is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(event, "event is null", UefiStatus::ABORTED);
 
 
 
     return sBootServices->closeEvent(event);
 }
 
-EfiStatus UEFI::allocatePool(EfiMemoryType poolType, u64 size, void **buffer)
+UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
 {
     UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer));
 
-    UEFI_ASSERT(size > 0, "size is zero",   EfiStatus::ABORTED);
-    UEFI_ASSERT(buffer,   "buffer is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(size > 0, "size is zero",   UefiStatus::ABORTED);
+    UEFI_ASSERT(buffer,   "buffer is null", UefiStatus::ABORTED);
 
 
 
     return sBootServices->allocatePool(poolType, size, buffer);
 }
 
-EfiStatus UEFI::freePool(void *buffer)
+UefiStatus UEFI::freePool(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));
 
-    UEFI_ASSERT(buffer, "buffer is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(buffer, "buffer is null", UefiStatus::ABORTED);
 
 
 
     return sBootServices->freePool(buffer);
 }
 
-EfiStatus UEFI::handleProtocol(EfiHandle handle, EfiGuid *protocol, void **interface)
+UefiStatus UEFI::handleProtocol(uefi_handle handle, UefiGuid *protocol, void **interface)
 {
     UEFI_LT((" | handle = 0x%p, protocol = 0x%p, interface = 0x%p", handle, protocol, interface));
 
-    UEFI_ASSERT(handle,    "handle is null",    EfiStatus::ABORTED);
-    UEFI_ASSERT(protocol,  "protocol is null",  EfiStatus::ABORTED);
-    UEFI_ASSERT(interface, "interface is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(handle,    "handle is null",    UefiStatus::ABORTED);
+    UEFI_ASSERT(protocol,  "protocol is null",  UefiStatus::ABORTED);
+    UEFI_ASSERT(interface, "interface is null", UefiStatus::ABORTED);
 
 
 
     return sBootServices->handleProtocol(handle, protocol, interface);
 }
 
-EfiStatus UEFI::locateHandle(EfiLocateSearchType searchType, EfiGuid *protocol, void *searchKey, u64 *bufferSize, EfiHandle *buffer)
+UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, UefiGuid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer)
 {
     UEFI_LT((" | searchType = %d, protocol = 0x%p, searchKey = 0x%p, bufferSize = 0x%p, buffer = 0x%p", searchType, protocol, searchKey, bufferSize, buffer));
 
-    UEFI_ASSERT((searchType == EfiLocateSearchType::BY_PROTOCOL
+    UEFI_ASSERT((searchType == UefiLocateSearchType::BY_PROTOCOL
                 &&
                 protocol)
                 ||
-                (searchType == EfiLocateSearchType::BY_REGISTER_NOTIFY
+                (searchType == UefiLocateSearchType::BY_REGISTER_NOTIFY
                 &&
                 searchKey)
                 ||
-                searchType == EfiLocateSearchType::ALL_HANDLES, "Invalid arguments",  EfiStatus::ABORTED);
+                searchType == UefiLocateSearchType::ALL_HANDLES, "Invalid arguments",  UefiStatus::ABORTED);
 
-    UEFI_ASSERT(bufferSize,                                     "bufferSize is null", EfiStatus::ABORTED);
-    UEFI_ASSERT(buffer || (bufferSize && *bufferSize == 0),     "buffer is null",     EfiStatus::ABORTED);
+    UEFI_ASSERT(bufferSize,                                     "bufferSize is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(buffer || (bufferSize && *bufferSize == 0),     "buffer is null",     UefiStatus::ABORTED);
 
 
 
@@ -301,50 +305,50 @@ bool UEFI::memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descripto
 
     i64 slack = bufferSize - memoryMapSize;
 
-    return slack / (i64)descriptorSize >= EFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS;
+    return slack / (i64)descriptorSize >= UEFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS;
 }
 
-EfiStatus UEFI::allocatePages(EfiAllocateType type, EfiMemoryType memoryType, u64 noPages, efi_physical_address *memory)
+UefiStatus UEFI::allocatePages(UefiAllocateType type, UefiMemoryType memoryType, u64 noPages, u64 *memory)
 {
     UEFI_LT((" | type = %d, memoryType = %d, noPages = %u, memory = 0x%p", type, memoryType, noPages, memory));
 
-    UEFI_ASSERT(noPages > 0, "noPages is zero", EfiStatus::ABORTED);
-    UEFI_ASSERT(memory,      "memory is null",  EfiStatus::ABORTED);
+    UEFI_ASSERT(noPages > 0, "noPages is zero", UefiStatus::ABORTED);
+    UEFI_ASSERT(memory,      "memory is null",  UefiStatus::ABORTED);
 
 
 
     return sBootServices->allocatePages(type, memoryType, noPages, memory);
 }
 
-EfiStatus UEFI::getMemoryMap(u64 *memoryMapSize, EfiMemoryDescriptor *memoryMap, u64 *mapKey, u64 *descriptorSize, u32 *descriptorVersion)
+UefiStatus UEFI::getMemoryMap(u64 *memoryMapSize, UefiMemoryDescriptor *memoryMap, u64 *mapKey, u64 *descriptorSize, u32 *descriptorVersion)
 {
     UEFI_LT((" | memoryMapSize = 0x%p, memoryMap = 0x%p, mapKey = 0x%p, descriptorSize = 0x%p, descriptorVersion = 0x%p", memoryMapSize, memoryMap, mapKey, descriptorSize, descriptorVersion));
 
-    UEFI_ASSERT(memoryMapSize,     "memoryMapSize is null",     EfiStatus::ABORTED);
-    UEFI_ASSERT(memoryMap,         "memoryMap is null",         EfiStatus::ABORTED);
-    UEFI_ASSERT(mapKey,            "mapKey is null",            EfiStatus::ABORTED);
-    UEFI_ASSERT(descriptorSize,    "descriptorSize is null",    EfiStatus::ABORTED);
-    UEFI_ASSERT(descriptorVersion, "descriptorVersion is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(memoryMapSize,     "memoryMapSize is null",     UefiStatus::ABORTED);
+    UEFI_ASSERT(memoryMap,         "memoryMap is null",         UefiStatus::ABORTED);
+    UEFI_ASSERT(mapKey,            "mapKey is null",            UefiStatus::ABORTED);
+    UEFI_ASSERT(descriptorSize,    "descriptorSize is null",    UefiStatus::ABORTED);
+    UEFI_ASSERT(descriptorVersion, "descriptorVersion is null", UefiStatus::ABORTED);
 
 
 
     return sBootServices->getMemoryMap(memoryMapSize, memoryMap, mapKey, descriptorSize, descriptorVersion);
 }
 
-EfiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
+UefiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 {
     UEFI_LT((" | map = 0x%p", map));
 
-    UEFI_ASSERT(map,                 "map is null",                 EfiStatus::ABORTED);
-    UEFI_ASSERT(map->memoryMapSize,  "map->memoryMapSize is null",  EfiStatus::ABORTED);
-    UEFI_ASSERT(map->descriptorSize, "map->descriptorSize is null", EfiStatus::ABORTED);
-    UEFI_ASSERT(map->bufferSize,     "map->bufferSize is null",     EfiStatus::ABORTED);
+    UEFI_ASSERT(map,                 "map is null",                 UefiStatus::ABORTED);
+    UEFI_ASSERT(map->memoryMapSize,  "map->memoryMapSize is null",  UefiStatus::ABORTED);
+    UEFI_ASSERT(map->descriptorSize, "map->descriptorSize is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(map->bufferSize,     "map->bufferSize is null",     UefiStatus::ABORTED);
 
 
 
-    EfiMemoryDescriptor *memoryDescriptor = 0;
+    UefiMemoryDescriptor *memoryDescriptor = 0;
 
-    *map->descriptorSize = sizeof(EfiMemoryDescriptor);
+    *map->descriptorSize = sizeof(UefiMemoryDescriptor);
     *map->memoryMapSize  = *map->descriptorSize << 6; // "<< 6" == "* 64"
     *map->bufferSize     = *map->memoryMapSize;
 
@@ -352,11 +356,11 @@ EfiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
     do
     {
-        if (allocatePool(EfiMemoryType::LOADER_DATA, *map->memoryMapSize, (void **)&memoryDescriptor) != EfiStatus::SUCCESS)
+        if (allocatePool(UefiMemoryType::LOADER_DATA, *map->memoryMapSize, (void **)&memoryDescriptor) != UefiStatus::SUCCESS)
         {
             UEFI_LF(("Failed to allocate pool(%u) for memory descriptor", *map->memoryMapSize));
 
-            return EfiStatus::ABORTED;
+            return UefiStatus::ABORTED;
         }
 
         UEFI_LVV(("Allocated pool(%u, 0x%p) for memory descriptor", *map->memoryMapSize, memoryDescriptor));
@@ -370,15 +374,15 @@ EfiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
 
 
-        EfiStatus status = getMemoryMap(map->memoryMapSize, memoryDescriptor, &mapKey, map->descriptorSize, &descriptorVersion);
+        UefiStatus status = getMemoryMap(map->memoryMapSize, memoryDescriptor, &mapKey, map->descriptorSize, &descriptorVersion);
 
-        if (status == EfiStatus::BUFFER_TOO_SMALL || !memoryMapHasHeadroom(*map->bufferSize, *map->memoryMapSize, *map->descriptorSize))
+        if (status == UefiStatus::BUFFER_TOO_SMALL || !memoryMapHasHeadroom(*map->bufferSize, *map->memoryMapSize, *map->descriptorSize))
         {
             UEFI_LW(("Buffer for memory descriptor is too small. Trying to allocate bigger buffer"));
 
 
 
-            if (freePool(memoryDescriptor) == EfiStatus::SUCCESS)
+            if (freePool(memoryDescriptor) == UefiStatus::SUCCESS)
             {
                 UEFI_LVV(("Released pool(0x%p) for memory descriptor", memoryDescriptor));
             }
@@ -389,7 +393,7 @@ EfiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
 
 
-            *map->memoryMapSize += *map->descriptorSize * EFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS;
+            *map->memoryMapSize += *map->descriptorSize * UEFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS;
             *map->bufferSize    =  *map->memoryMapSize;
 
 
@@ -399,13 +403,13 @@ EfiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
 
 
-        if (status != EfiStatus::SUCCESS)
+        if (status != UefiStatus::SUCCESS)
         {
             UEFI_LF(("Failed to get memory map"));
 
 
 
-            if (freePool(memoryDescriptor) == EfiStatus::SUCCESS)
+            if (freePool(memoryDescriptor) == UefiStatus::SUCCESS)
             {
                 UEFI_LVV(("Released pool(0x%p) for memory descriptor", memoryDescriptor));
             }
@@ -416,7 +420,7 @@ EfiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
 
 
-            return EfiStatus::ABORTED;
+            return UefiStatus::ABORTED;
         }
 
         UEFI_LVV(("Found memory map"));
@@ -440,21 +444,21 @@ EfiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
 
 
-        return EfiStatus::SUCCESS;
+        return UefiStatus::SUCCESS;
     } while(true);
 }
 
-EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
+UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 {
     UEFI_LT((" | size = %u, align = %u, address = 0x%p", size, align, address));
 
-    UEFI_ASSERT(size > 0,  "size is zero",    EfiStatus::ABORTED);
-    UEFI_ASSERT(align > 0, "align is zero",   EfiStatus::ABORTED);
-    UEFI_ASSERT(address,   "address is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(size > 0,  "size is zero",    UefiStatus::ABORTED);
+    UEFI_ASSERT(align > 0, "align is zero",   UefiStatus::ABORTED);
+    UEFI_ASSERT(address,   "address is null", UefiStatus::ABORTED);
 
 
 
-    EfiMemoryDescriptor *memoryMap      = 0;
+    UefiMemoryDescriptor *memoryMap      = 0;
     u64                  memoryMapSize  = 0;
     u64                  descriptorSize = 0;
     u64                  bufferSize     = 0;
@@ -472,11 +476,11 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-    if (getMemoryMap(&bootMemoryMap) != EfiStatus::SUCCESS)
+    if (getMemoryMap(&bootMemoryMap) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to get memory map"));
 
-        return EfiStatus::ABORTED;
+        return UefiStatus::ABORTED;
     }
 
     // UEFI_LVV(("Found memory map")); // Commented to avoid log duplication
@@ -495,18 +499,18 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-    if (align < EFI_ALLOC_ALIGN)
+    if (align < PAGE_SIZE)
     {
-        UEFI_LVVV(("align value increased from %u to %u", align, EFI_ALLOC_ALIGN));
+        UEFI_LVVV(("align value increased from %u to %u", align, PAGE_SIZE));
 
-        align = EFI_ALLOC_ALIGN;
+        align = PAGE_SIZE;
     }
 
 
 
-    size = ROUND_UP(size, EFI_ALLOC_ALIGN);
+    size = ROUND_UP(size, PAGE_SIZE);
 
-    u64 numberOfPages = size / EFI_PAGE_SIZE;
+    u64 numberOfPages = size / PAGE_SIZE;
 
 
 
@@ -524,10 +528,10 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
     for (i64 i = 0; i < count; ++i)
     {
-        EfiMemoryDescriptor *memoryDescriptor = (EfiMemoryDescriptor *)((u64)memoryMap + (i * descriptorSize));
+        UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)memoryMap + (i * descriptorSize));
         UEFI_LVV(("Handling memory descriptor 0x%p", memoryDescriptor));
 
-        UEFI_TEST_ASSERT(memoryDescriptor, EfiStatus::ABORTED);
+        UEFI_TEST_ASSERT(memoryDescriptor, UefiStatus::ABORTED);
 
 
 
@@ -539,7 +543,7 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-        if (memoryDescriptor->type != (u32)EfiMemoryType::CONVENTIONAL_MEMORY)
+        if (memoryDescriptor->type != (u32)UefiMemoryType::CONVENTIONAL_MEMORY)
         {
             UEFI_LVV(("Skipped memory descriptor 0x%p because type = %u", memoryDescriptor, memoryDescriptor->type));
 
@@ -556,7 +560,7 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
         u64 start = memoryDescriptor->physicalStart;
-        u64 end   = start + memoryDescriptor->numberOfPages * EFI_PAGE_SIZE;
+        u64 end   = start + memoryDescriptor->numberOfPages * PAGE_SIZE;
 
         if (!start) // start == 0
         {
@@ -585,7 +589,7 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-        if (allocatePages(EfiAllocateType::ALLOCATE_ADDRESS, EfiMemoryType::LOADER_DATA, numberOfPages, &start) != EfiStatus::SUCCESS)
+        if (allocatePages(UefiAllocateType::ALLOCATE_ADDRESS, UefiMemoryType::LOADER_DATA, numberOfPages, &start) != UefiStatus::SUCCESS)
         {
             UEFI_LE(("Failed to allocate pages(%u)", numberOfPages));
 
@@ -605,7 +609,7 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-    if (freePool(memoryMap) == EfiStatus::SUCCESS)
+    if (freePool(memoryMap) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Released pool(0x%p) for memory descriptor", memoryMap));
     }
@@ -620,17 +624,17 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
     {
         UEFI_LF(("Failed to find valid memory descriptor"));
 
-        return EfiStatus::NOT_FOUND;
+        return UefiStatus::NOT_FOUND;
     }
 
     UEFI_LVV(("Allocated address(0x%p)", *address));
 
 
 
-    return EfiStatus::SUCCESS;
+    return UefiStatus::SUCCESS;
 }
 
-EfiStatus UEFI::exitBootServices(u64 mapKey)
+UefiStatus UEFI::exitBootServices(u64 mapKey)
 {
     UEFI_LT((" | mapKey = %u", mapKey));
 
@@ -644,7 +648,7 @@ EfiStatus UEFI::exitBootServices(u64 mapKey)
 
 
 
-    EfiStatus res = sBootServices->exitBootServices(sImageHandle, mapKey);
+    UefiStatus res = sBootServices->exitBootServices(sImageHandle, mapKey);
 
 
 
@@ -658,7 +662,7 @@ EfiStatus UEFI::exitBootServices(u64 mapKey)
     return res;
 }
 
-EfiHandle UEFI::getImageHandle()
+uefi_handle UEFI::getImageHandle()
 {
     UEFI_LT((""));
 
@@ -667,7 +671,7 @@ EfiHandle UEFI::getImageHandle()
     return sImageHandle;
 }
 
-void UEFI::print(efi_char16 *ch)
+void UEFI::print(uefi_char16 *ch)
 {
     // UEFI_LT((" | ch = 0x%p", ch)); // Commented to avoid infinite loop
 

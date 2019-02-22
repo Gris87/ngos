@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITABLEHEADER_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITABLEHEADER_H
+#ifndef UEFI_UEFITABLEHEADER_H
+#define UEFI_UEFITABLEHEADER_H
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-struct EfiTableHeader
+struct UefiTableHeader
 {
     u64 signature;
     u32 revision;
@@ -18,4 +18,4 @@ struct EfiTableHeader
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITABLEHEADER_H
+#endif // UEFI_UEFITABLEHEADER_H

@@ -1,24 +1,24 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIPCIIOPROTOCOLACCESS_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIPCIIOPROTOCOLACCESS_H
+#ifndef UEFI_UEFIPCIIOPROTOCOLACCESS_H
+#define UEFI_UEFIPCIIOPROTOCOLACCESS_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/efidefines.h"
-#include "src/bits64/a_uefi/uefi/lib/efipciioprotocolwidth.h"
-#include "src/bits64/a_uefi/uefi/lib/efistatus.h"
+#include <uefi/macros.h>
+#include <uefi/uefipciioprotocolwidth.h>
+#include <uefi/uefistatus.h>
 
 
 
-struct EfiPciIoProtocol;
+struct UefiPciIoProtocol;
 
 
 
-struct EfiPciIoProtocolAccess
+struct UefiPciIoProtocolAccess
 {
-    EfiStatus (EFIAPI *read)(EfiPciIoProtocol *obj, EfiPciIoProtocolWidth width, u8 barIndex, u64 offset, u64 count, void *buffer); // TEST: NO
-    EfiStatus (EFIAPI *write)(EfiPciIoProtocol *obj, EfiPciIoProtocolWidth width, u8 barIndex, u64 offset, u64 count, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *read)(UefiPciIoProtocol *obj, UefiPciIoProtocolWidth width, u8 barIndex, u64 offset, u64 count, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *write)(UefiPciIoProtocol *obj, UefiPciIoProtocolWidth width, u8 barIndex, u64 offset, u64 count, void *buffer); // TEST: NO
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIPCIIOPROTOCOLACCESS_H
+#endif // UEFI_UEFIPCIIOPROTOCOLACCESS_H

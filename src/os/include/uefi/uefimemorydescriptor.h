@@ -1,22 +1,22 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIMEMORYDESCRIPTOR_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIMEMORYDESCRIPTOR_H
+#ifndef UEFI_UEFIMEMORYDESCRIPTOR_H
+#define UEFI_UEFIMEMORYDESCRIPTOR_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/efitypes.h"
+#include <uefi/types.h>
 
 
 
-struct EfiMemoryDescriptor
+struct UefiMemoryDescriptor
 {
-    u32                  type;
-    u32                  __pad;
-    efi_physical_address physicalStart;
-    efi_virtual_address  virtualStart;
-    u64                  numberOfPages;
-    u64                  attribute;
+    u32 type;
+    u32 __pad;
+    u64 physicalStart;
+    u64 virtualStart;
+    u64 numberOfPages;
+    u64 attribute;
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIMEMORYDESCRIPTOR_H
+#endif // UEFI_UEFIMEMORYDESCRIPTOR_H

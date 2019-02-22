@@ -3,9 +3,8 @@
 #include <buildconfig.h>
 #include <ngos/utils.h>
 #include <src/bits64/memory/memory.h>
+#include <uefi/uefiloadedimageprotocol.h>
 
-#include "src/bits64/a_uefi/uefi/lib/eficonstants.h"
-#include "src/bits64/a_uefi/uefi/lib/efiloadedimageprotocol.h"
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"
 #include "src/bits64/other/configuredefines.h"
@@ -25,20 +24,20 @@ NgosStatus setupKernelLocation(BootParams *params)
 
 
 
-    EfiGuid                 protocol = EFI_LOADED_IMAGE_PROTOCOL_GUID;
-    EfiHandle               handle   = UEFI::getImageHandle();
-    EfiLoadedImageProtocol *image    = 0;
+    UefiGuid                 protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+    uefi_handle               handle   = UEFI::getImageHandle();
+    UefiLoadedImageProtocol *image    = 0;
 
 
 
-    if (UEFI::handleProtocol(handle, &protocol, (void **)&image) != EfiStatus::SUCCESS)
+    if (UEFI::handleProtocol(handle, &protocol, (void **)&image) != UefiStatus::SUCCESS)
     {
-        UEFI_LF(("Failed to handle(0x%p) protocol for EFI_LOADED_IMAGE_PROTOCOL", handle));
+        UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_LOADED_IMAGE_PROTOCOL", handle));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for EFI_LOADED_IMAGE_PROTOCOL", handle, image));
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_LOADED_IMAGE_PROTOCOL", handle, image));
 
 
 
@@ -78,7 +77,7 @@ NgosStatus setupKernelLocation(BootParams *params)
     // We are going to allocate space for imageSize + page table + stack ( + decompressed Kernel part if it compressed)
     //
     u64 allocSize =
-            ROUND_UP(imageSize, EFI_ALLOC_ALIGN)    // Use ROUND_UP in order to make space for page table to be aligned
+            ROUND_UP(imageSize, PAGE_SIZE)  // Use ROUND_UP in order to make space for page table to be aligned
             + BOOT_PAGE_TABLE_SIZE
             + BOOT_STACK_SIZE
 #if NGOS_BUILD_KERNEL_COMPRESSION != OPTION_KERNEL_COMPRESSION_NONE
@@ -93,9 +92,9 @@ NgosStatus setupKernelLocation(BootParams *params)
 
 
 
-    efi_physical_address address = 0;
+    u64 address = 0;
 
-    if (UEFI::lowAlloc(allocSize, NGOS_BUILD_KERNEL_ALIGN, (void **)&address) != EfiStatus::SUCCESS)
+    if (UEFI::lowAlloc(allocSize, NGOS_BUILD_KERNEL_ALIGN, (void **)&address) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to allocate space(%u) for kernel", allocSize));
 

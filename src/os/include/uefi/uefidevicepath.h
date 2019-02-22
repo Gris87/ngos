@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIDEVICEPATH_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIDEVICEPATH_H
+#ifndef UEFI_UEFIDEVICEPATH_H
+#define UEFI_UEFIDEVICEPATH_H
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-struct EfiDevicePath
+struct UefiDevicePath
 {
     u8 type;
     u8 subType;
@@ -16,4 +16,4 @@ struct EfiDevicePath
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIDEVICEPATH_H
+#endif // UEFI_UEFIDEVICEPATH_H

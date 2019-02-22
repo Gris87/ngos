@@ -1,18 +1,18 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFICONFIGURATIONTABLE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFICONFIGURATIONTABLE_H
+#ifndef UEFI_UEFICONFIGURATIONTABLE_H
+#define UEFI_UEFICONFIGURATIONTABLE_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/efiguid.h"
+#include <uefi/uefiguid.h>
 
 
 
-struct EfiConfigurationTable
+struct UefiConfigurationTable
 {
-    EfiGuid  vendorGuid;
-    void    *vendorTable;
+    UefiGuid  vendorGuid;
+    void     *vendorTable;
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFICONFIGURATIONTABLE_H
+#endif // UEFI_UEFICONFIGURATIONTABLE_H

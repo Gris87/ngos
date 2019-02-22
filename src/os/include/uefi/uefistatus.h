@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISTATUS_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISTATUS_H
+#ifndef UEFI_UEFISTATUS_H
+#define UEFI_UEFISTATUS_H
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-enum class EfiStatus: u64
+enum class UefiStatus: u64
 {
     SUCCESS              = 0,
     LOAD_ERROR           = 0x8000000000000001,
@@ -45,4 +45,4 @@ enum class EfiStatus: u64
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISTATUS_H
+#endif // UEFI_UEFISTATUS_H

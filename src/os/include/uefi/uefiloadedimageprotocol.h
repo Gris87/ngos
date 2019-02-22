@@ -1,43 +1,43 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFILOADEDIMAGEPROTOCOL_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFILOADEDIMAGEPROTOCOL_H
+#ifndef UEFI_UEFILOADEDIMAGEPROTOCOL_H
+#define UEFI_UEFILOADEDIMAGEPROTOCOL_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/efidefines.h"
-#include "src/bits64/a_uefi/uefi/lib/efidevicepath.h"
-#include "src/bits64/a_uefi/uefi/lib/efimemorytype.h"
-#include "src/bits64/a_uefi/uefi/lib/efistatus.h"
-#include "src/bits64/a_uefi/uefi/lib/efisystemtable.h"
-#include "src/bits64/a_uefi/uefi/lib/efitypes.h"
+#include <uefi/macros.h>
+#include <uefi/types.h>
+#include <uefi/uefidevicepath.h>
+#include <uefi/uefimemorytype.h>
+#include <uefi/uefistatus.h>
+#include <uefi/uefisystemtable.h>
 
 
 
-#define EFI_LOADED_IMAGE_PROTOCOL_GUID \
+#define UEFI_LOADED_IMAGE_PROTOCOL_GUID \
     { 0x5B1B31A1, 0x9562, 0x11D2, {0x8E, 0x3F, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B} }
 
 
 
-struct EfiLoadedImageProtocol
+struct UefiLoadedImageProtocol
 {
-    u32             revision;
-    EfiHandle       parentHandle;
-    EfiSystemTable *systemTable;
+    u32              revision;
+    uefi_handle      parentHandle;
+    UefiSystemTable *systemTable;
 
-    EfiHandle       deviceHandle;
-    EfiDevicePath  *filePath;
-    void           *reserved;
+    uefi_handle      deviceHandle;
+    UefiDevicePath  *filePath;
+    void            *reserved;
 
-    u32             loadOptionsSize;
-    void           *loadOptions;
+    u32              loadOptionsSize;
+    void            *loadOptions;
 
-    void           *imageBase;
-    u64             imageSize;
-    EfiMemoryType   imageCodeType;
-    EfiMemoryType   imageDataType;
+    void            *imageBase;
+    u64              imageSize;
+    UefiMemoryType   imageCodeType;
+    UefiMemoryType   imageDataType;
 
-    EfiStatus (EFIAPI *unload)(EfiHandle imageHandle); // TEST: NO
+    UefiStatus (UEFI_API *unload)(uefi_handle imageHandle); // TEST: NO
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFILOADEDIMAGEPROTOCOL_H
+#endif // UEFI_UEFILOADEDIMAGEPROTOCOL_H

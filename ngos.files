@@ -506,15 +506,14 @@ src/os/include/pagetable/flags.h
 src/os/include/pagetable/macros.h
 src/os/include/pagetable/types.h
 src/os/include/pagetable/utils.h
+src/os/include/uefi/macros.h
+src/os/include/uefi/types.h
 src/os/include/uefi/uefiallocatetype.h
 src/os/include/uefi/uefibootservices.h
 src/os/include/uefi/ueficapsuleheader.h
 src/os/include/uefi/ueficonfigurationtable.h
-src/os/include/uefi/ueficonstants.h
 src/os/include/uefi/uefidevicepath.h
-src/os/include/uefi/uefiduefines.h
 src/os/include/uefi/uefievent.h
-src/os/include/uefi/uefifunctors.h
 src/os/include/uefi/uefigraphicsoutputbltoperation.h
 src/os/include/uefi/uefigraphicsoutputbltpixel.h
 src/os/include/uefi/uefigraphicsoutputmodeinformation.h
@@ -548,7 +547,6 @@ src/os/include/uefi/uefitime.h
 src/os/include/uefi/uefitimecapabilicies.h
 src/os/include/uefi/uefitimerdelay.h
 src/os/include/uefi/uefitpl.h
-src/os/include/uefi/uefitypes.h
 src/os/installer/.gitignore
 src/os/installer/assets/.gitignore
 src/os/installer/assets/generate_assets.sh

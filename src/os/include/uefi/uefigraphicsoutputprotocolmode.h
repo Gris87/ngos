@@ -1,25 +1,24 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTPROTOCOLMODE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTPROTOCOLMODE_H
+#ifndef UEFI_UEFIGRAPHICSOUTPUTPROTOCOLMODE_H
+#define UEFI_UEFIGRAPHICSOUTPUTPROTOCOLMODE_H
 
 
 
 #include <ngos/types.h>
-
-#include "src/bits64/a_uefi/uefi/lib/efigraphicsoutputmodeinformation.h"
-#include "src/bits64/a_uefi/uefi/lib/efitypes.h"
-
+#include <uefi/uefigraphicsoutputmodeinformation.h>
+#include <uefi/types.h>
 
 
-struct EfiGraphicsOutputProtocolMode
+
+struct UefiGraphicsOutputProtocolMode
 {
-    u32                               maxMode;
-    u32                               mode;
-    EfiGraphicsOutputModeInformation *info;
-    u64                               sizeOfInfo;
-    efi_physical_address              frameBufferBase;
-    u64                               frameBufferSize;
+    u32                                maxMode;
+    u32                                mode;
+    UefiGraphicsOutputModeInformation *info;
+    u64                                sizeOfInfo;
+    u64                                frameBufferBase;
+    u64                                frameBufferSize;
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTPROTOCOLMODE_H
+#endif // UEFI_UEFIGRAPHICSOUTPUTPROTOCOLMODE_H

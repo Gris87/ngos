@@ -1,43 +1,44 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIRUNTIMESERVICES_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIRUNTIMESERVICES_H
+#ifndef UEFI_UEFIRUNTIMESERVICES_H
+#define UEFI_UEFIRUNTIMESERVICES_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/eficapsuleheader.h"
-#include "src/bits64/a_uefi/uefi/lib/efiguid.h"
-#include "src/bits64/a_uefi/uefi/lib/efimemorydescriptor.h"
-#include "src/bits64/a_uefi/uefi/lib/efiresettype.h"
-#include "src/bits64/a_uefi/uefi/lib/efitableheader.h"
-#include "src/bits64/a_uefi/uefi/lib/efitime.h"
-#include "src/bits64/a_uefi/uefi/lib/efitimecapabilicies.h"
-#include "src/bits64/a_uefi/uefi/lib/efitypes.h"
+#include <uefi/types.h>
+#include <uefi/ueficapsuleheader.h>
+#include <uefi/uefiguid.h>
+#include <uefi/uefimemorydescriptor.h>
+#include <uefi/uefiresettype.h>
+#include <uefi/uefistatus.h>
+#include <uefi/uefitableheader.h>
+#include <uefi/uefitime.h>
+#include <uefi/uefitimecapabilicies.h>
 
 
 
-struct EfiRuntimeServices
+struct UefiRuntimeServices
 {
-    EfiTableHeader header;
+    UefiTableHeader header;
 
-    EfiStatus (EFIAPI *getTime)(EfiTime *time, EfiTimeCapabilities *capabilities); // TEST: NO
-    EfiStatus (EFIAPI *setTime)(EfiTime *time); // TEST: NO
-    EfiStatus (EFIAPI *getWakeupTime)(bool *enabled, bool *pending, EfiTime *time); // TEST: NO
-    EfiStatus (EFIAPI *setWakeupTime)(bool enable, EfiTime *time); // TEST: NO
+    UefiStatus (UEFI_API *getTime)(UefiTime *time, UefiTimeCapabilities *capabilities); // TEST: NO
+    UefiStatus (UEFI_API *setTime)(UefiTime *time); // TEST: NO
+    UefiStatus (UEFI_API *getWakeupTime)(bool *enabled, bool *pending, UefiTime *time); // TEST: NO
+    UefiStatus (UEFI_API *setWakeupTime)(bool enable, UefiTime *time); // TEST: NO
 
-    EfiStatus (EFIAPI *setVirtualAddressMap)(u64 memoryMapSize, u64 descriptorSize, u32 descriptorVersion, EfiMemoryDescriptor *virtualMap); // TEST: NO
-    EfiStatus (EFIAPI *convertPointer)(u64 debugDisposition, void **address); // TEST: NO
+    UefiStatus (UEFI_API *setVirtualAddressMap)(u64 memoryMapSize, u64 descriptorSize, u32 descriptorVersion, UefiMemoryDescriptor *virtualMap); // TEST: NO
+    UefiStatus (UEFI_API *convertPointer)(u64 debugDisposition, void **address); // TEST: NO
 
-    EfiStatus (EFIAPI *getVariable)(efi_char16 *variableName, EfiGuid *vendorGuid, u32 *attributes, u64 *dataSize, void *data); // TEST: NO
-    EfiStatus (EFIAPI *getNextVariableName)(u64 *variableNameSize, efi_char16 *variableName, EfiGuid *vendorGuid); // TEST: NO
-    EfiStatus (EFIAPI *setVariable)(efi_char16 *variableName, EfiGuid *vendorGuid, u32 attributes, u64 dataSize, void *data); // TEST: NO
+    UefiStatus (UEFI_API *getVariable)(uefi_char16 *variableName, UefiGuid *vendorGuid, u32 *attributes, u64 *dataSize, void *data); // TEST: NO
+    UefiStatus (UEFI_API *getNextVariableName)(u64 *variableNameSize, uefi_char16 *variableName, UefiGuid *vendorGuid); // TEST: NO
+    UefiStatus (UEFI_API *setVariable)(uefi_char16 *variableName, UefiGuid *vendorGuid, u32 attributes, u64 dataSize, void *data); // TEST: NO
 
-    EfiStatus (EFIAPI *getNextHighMonotonicCount)(u32 *highCount); // TEST: NO
-    EfiStatus (EFIAPI *resetSystem)(EfiResetType resetType, EfiStatus resetStatus, u64 dataSize, efi_char16 *resetData); // TEST: NO
+    UefiStatus (UEFI_API *getNextHighMonotonicCount)(u32 *highCount); // TEST: NO
+    UefiStatus (UEFI_API *resetSystem)(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, uefi_char16 *resetData); // TEST: NO
 
-    EfiStatus (EFIAPI *updateCapsule)(EfiCapsuleHeader **capsuleHeaderArray, u64 capsuleCount, efi_physical_address scatterGatherList); // TEST: NO
-    EfiStatus (EFIAPI *queryCapsuleCapabilities)(EfiCapsuleHeader **capsuleHeaderArray, u64 capsuleCount, u64 *maximumCapsuleSize, EfiResetType *resetType); // TEST: NO
-    EfiStatus (EFIAPI *queryVariableInfo)(u32 attributes, u64 *maximumVariableStorageSize, u64 *remainingVariableStorageSize, u64 *maximumVariableSize); // TEST: NO
+    UefiStatus (UEFI_API *updateCapsule)(UefiCapsuleHeader **capsuleHeaderArray, u64 capsuleCount, u64 scatterGatherList); // TEST: NO
+    UefiStatus (UEFI_API *queryCapsuleCapabilities)(UefiCapsuleHeader **capsuleHeaderArray, u64 capsuleCount, u64 *maximumCapsuleSize, UefiResetType *resetType); // TEST: NO
+    UefiStatus (UEFI_API *queryVariableInfo)(u32 attributes, u64 *maximumVariableStorageSize, u64 *remainingVariableStorageSize, u64 *maximumVariableSize); // TEST: NO
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIRUNTIMESERVICES_H
+#endif // UEFI_UEFIRUNTIMESERVICES_H

@@ -1,9 +1,13 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIMEMORYTYPE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIMEMORYTYPE_H
+#ifndef UEFI_UEFIMEMORYTYPE_H
+#define UEFI_UEFIMEMORYTYPE_H
 
 
 
-enum class EfiMemoryType
+#include <ngos/types.h>
+
+
+
+enum class UefiMemoryType: u32
 {
     RESERVED_MEMORY,
     LOADER_CODE,
@@ -25,4 +29,4 @@ enum class EfiMemoryType
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIMEMORYTYPE_H
+#endif // UEFI_UEFIMEMORYTYPE_H

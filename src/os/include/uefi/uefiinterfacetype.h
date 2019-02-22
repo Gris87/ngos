@@ -1,9 +1,13 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIINTERFACETYPE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIINTERFACETYPE_H
+#ifndef UEFI_UEFIINTERFACETYPE_H
+#define UEFI_UEFIINTERFACETYPE_H
 
 
 
-enum class EfiInterfaceType
+#include <ngos/types.h>
+
+
+
+enum class UefiInterfaceType: u32
 {
     NATIVE_INTERFACE,
     PCODE_INTERFACE
@@ -11,4 +15,4 @@ enum class EfiInterfaceType
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIINTERFACETYPE_H
+#endif // UEFI_UEFIINTERFACETYPE_H

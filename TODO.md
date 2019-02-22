@@ -18,6 +18,7 @@ TODO List
 - [ ] Docs verifier. Verifier for Scripts
 - [ ] Docs verifier. Verifier for amount of links (amount of tools/libraries/applications)
 - [ ] Code generator. Generate documentation for applications
+- [ ] Headers optimizator
 - [ ] Write documentation
 - [ ] Jenkins
 - [ ] Bug tracker

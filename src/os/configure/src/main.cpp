@@ -5,6 +5,7 @@
 #include <src/bits64/cpu/cpu.h>
 #include <src/bits64/fpu/fpu.h>
 #include <src/bits64/serial/serial.h>
+#include <uefi/uefisystemtable.h>
 
 #include "src/bits64/a_uefi/main/exitbootservices.h"
 #include "src/bits64/a_uefi/main/setupbootparams.h"
@@ -12,8 +13,6 @@
 #include "src/bits64/a_uefi/main/setupgraphics.h"
 #include "src/bits64/a_uefi/main/setupkernellocation.h"
 #include "src/bits64/a_uefi/main/setuppciio.h"
-#include "src/bits64/a_uefi/uefi/lib/eficonstants.h"
-#include "src/bits64/a_uefi/uefi/lib/efisystemtable.h"
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"
 #include "test/bits64/a_uefi/sections/section0/testcase.h"
@@ -37,29 +36,29 @@ NgosStatus waitForGdbDebug()
 
 
 
-    EfiEvent timerEvent = 0;
+    uefi_event timerEvent = 0;
 
-    UEFI_ASSERT_EXECUTION(UEFI::createEvent(EFI_EVENT_TIMER, 0, 0, 0, &timerEvent), EfiStatus, EfiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UEFI_EVENT_TIMER, 0, 0, 0, &timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_LVV(("Created timer event(0x%p)", timerEvent));
 
 
 
-    UEFI_ASSERT_EXECUTION(UEFI::setTimer(timerEvent, EfiTimerDelay::RELATIVE, 50000000), EfiStatus, EfiStatus::SUCCESS, NgosStatus::ASSERTION); // 5 * 1000 * 1000 * 10 "* 100ns"
+    UEFI_ASSERT_EXECUTION(UEFI::setTimer(timerEvent, UefiTimerDelay::RELATIVE, 50000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 5 * 1000 * 1000 * 10 "* 100ns"
     UEFI_LVV(("Setup timer(0x%p) completed", timerEvent));
 
 
 
-    EfiEvent waitEvents[1] = { timerEvent };
+    uefi_event waitEvents[1] = { timerEvent };
     u64      eventIndex    = 0;
 
-    UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(1, waitEvents, &eventIndex), EfiStatus, EfiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(1, waitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_LVV(("Timer(0x%p) triggered", timerEvent));
 
     UEFI_TEST_ASSERT(eventIndex == 0, NgosStatus::ASSERTION);
 
 
 
-    UEFI_ASSERT_EXECUTION(UEFI::closeEvent(timerEvent), EfiStatus, EfiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::closeEvent(timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_LVV(("Closed timer event(0x%p)", timerEvent));
 
 
@@ -105,7 +104,7 @@ NgosStatus printCpuFlags()
 #endif
 
 CPP_EXTERN_C
-BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 kernelLocation)
+BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 kernelLocation)
 { // Ignore CppNgosTraceVerifier
     // We can't output at the moment
     // UEFI_LT((" | imageHandle = 0x%p, systemTable = 0x%p, kernelLocation = 0x%p", imageHandle, systemTable, kernelLocation)); // Commented to avoid error because UEFI is uninitialized
@@ -117,7 +116,7 @@ BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 ker
 
 
     // Check that we are booting via UEFI
-    if (systemTable->header.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+    if (systemTable->header.signature != UEFI_SYSTEM_TABLE_SIGNATURE)
     {
         UEFI_LF(("Unexpected UEFI System Table signature"));
 

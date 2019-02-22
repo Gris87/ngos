@@ -1,9 +1,13 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIALLOCATETYPE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIALLOCATETYPE_H
+#ifndef UEFI_UEFIALLOCATETYPE_H
+#define UEFI_UEFIALLOCATETYPE_H
 
 
 
-enum class EfiAllocateType
+#include <ngos/types.h>
+
+
+
+enum class UefiAllocateType: u32
 {
     ALLOCATE_ANY_PAGES,
     ALLOCATE_MAX_ADDRESS,
@@ -13,4 +17,4 @@ enum class EfiAllocateType
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIALLOCATETYPE_H
+#endif // UEFI_UEFIALLOCATETYPE_H

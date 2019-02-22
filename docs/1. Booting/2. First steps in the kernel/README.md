@@ -101,7 +101,7 @@ Here is the uefiMain declaration:
 
 ```
 CPP_EXTERN_C
-BootParams* uefiMain(EfiHandle imageHandle, EfiSystemTable *systemTable, u64 kernelLocation)
+BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 kernelLocation)
 ```
 
 As a result we should get the pointer to [BootParams](../../../src/os/include/bootparams/bootparams.h) structure.<br/>

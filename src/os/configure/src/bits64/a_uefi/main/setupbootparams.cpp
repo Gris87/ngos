@@ -2,7 +2,6 @@
 
 #include <src/bits64/memory/memory.h>
 
-#include "src/bits64/a_uefi/uefi/lib/eficonstants.h"
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"
 
@@ -17,7 +16,7 @@ NgosStatus setupBootParams(BootParams **params, u64 kernelLocation)
 
 
 
-    if (UEFI::lowAlloc(sizeof(BootParams), 1, (void **)params) != EfiStatus::SUCCESS)
+    if (UEFI::lowAlloc(sizeof(BootParams), 1, (void **)params) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to allocate space(%u) for boot parameters", sizeof(BootParams)));
 

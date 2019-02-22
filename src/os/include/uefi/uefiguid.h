@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGUID_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGUID_H
+#ifndef UEFI_UEFIGUID_H
+#define UEFI_UEFIGUID_H
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-struct EfiGuid
+struct UefiGuid
 {
     u32 data1;
     u16 data2;
@@ -17,4 +17,4 @@ struct EfiGuid
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGUID_H
+#endif // UEFI_UEFIGUID_H

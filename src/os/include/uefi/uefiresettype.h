@@ -1,9 +1,13 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIRESETTYPE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIRESETTYPE_H
+#ifndef UEFI_UEFIRESETTYPE_H
+#define UEFI_UEFIRESETTYPE_H
 
 
 
-enum class EfiResetType
+#include <ngos/types.h>
+
+
+
+enum class UefiResetType: u32
 {
     COLD,
     WARM,
@@ -12,4 +16,4 @@ enum class EfiResetType
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIRESETTYPE_H
+#endif // UEFI_UEFIRESETTYPE_H

@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIMECAPABILICIES_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIMECAPABILICIES_H
+#ifndef UEFI_UEFITIMECAPABILICIES_H
+#define UEFI_UEFITIMECAPABILICIES_H
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-struct EfiTimeCapabilities
+struct UefiTimeCapabilities
 {
     u32  resolution; // 1e-6 parts per million
     u32  accuracy;   // hertz
@@ -16,4 +16,4 @@ struct EfiTimeCapabilities
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIMECAPABILICIES_H
+#endif // UEFI_UEFITIMECAPABILICIES_H

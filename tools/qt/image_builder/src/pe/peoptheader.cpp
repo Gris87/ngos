@@ -195,7 +195,7 @@ bool PEOptHeader::verify()
         return false;
     }
 
-    if (subsystem != IMAGE_SUBSYSTEM_EFI_APPLICATION)
+    if (subsystem != IMAGE_SUBSYSTEM_UEFI_APPLICATION)
     {
         Console::err(QString("Wrong PE Optional Header subsystem: 0x%1").arg(subsystem, 4, 16, QChar('0')));
         return false;

@@ -32,7 +32,7 @@
 #define IMAGE_MACHINE_ALPHA_AXP_64_BIT                    0x0284
 #define IMAGE_MACHINE_MIPS_WITH_FPU                       0x0366
 #define IMAGE_MACHINE_MIPS16_WITH_FPU                     0x0466
-#define IMAGE_MACHINE_EFI_BYTE_CODE                       0x0EBC
+#define IMAGE_MACHINE_UEFI_BYTE_CODE                      0x0EBC
 #define IMAGE_MACHINE_AMD_AMD64                           0x8664
 #define IMAGE_MACHINE_MITSUBISHI_M32R_LITTLE_ENDIAN       0x9041
 #define IMAGE_MACHINE_ARM64_LITTLE_ENDIAN                 0xAA64

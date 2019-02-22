@@ -6,11 +6,11 @@
 
 
 
-inline EfiStatus exitBootServicesAttempt(UefiBootMemoryMap *bootMemoryMap)
+inline UefiStatus exitBootServicesAttempt(UefiBootMemoryMap *bootMemoryMap)
 {
     UEFI_LT((" | bootMemoryMap = 0x%p", bootMemoryMap));
 
-    UEFI_ASSERT(bootMemoryMap, "bootMemoryMap is null", EfiStatus::ABORTED);
+    UEFI_ASSERT(bootMemoryMap, "bootMemoryMap is null", UefiStatus::ABORTED);
 
 
 
@@ -44,7 +44,7 @@ NgosStatus exitBootServices(UefiBootMemoryMap *bootMemoryMap)
 
 
 
-    if (UEFI::getMemoryMap(bootMemoryMap) != EfiStatus::SUCCESS)
+    if (UEFI::getMemoryMap(bootMemoryMap) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to get memory map"));
 
@@ -55,10 +55,10 @@ NgosStatus exitBootServices(UefiBootMemoryMap *bootMemoryMap)
 
 
 
-    EfiStatus status = exitBootServicesAttempt(bootMemoryMap);
+    UefiStatus status = exitBootServicesAttempt(bootMemoryMap);
 
-    // exitBootServices may return EfiStatus::INVALID_PARAMETER. It is means that memory map became invalid and we have one more attempt to repeat
-    if (status == EfiStatus::INVALID_PARAMETER)
+    // exitBootServices may return UefiStatus::INVALID_PARAMETER. It is means that memory map became invalid and we have one more attempt to repeat
+    if (status == UefiStatus::INVALID_PARAMETER)
     {
         UEFI_LW(("Boot memory map became invalid during exitBootServices. Trying one more time"));
 
@@ -68,7 +68,7 @@ NgosStatus exitBootServices(UefiBootMemoryMap *bootMemoryMap)
 
 
 
-        if (UEFI::getMemoryMap(bootMemoryMap->memoryMapSize, *bootMemoryMap->memoryMap, bootMemoryMap->mapKey, bootMemoryMap->descriptorSize, bootMemoryMap->descriptorVersion) != EfiStatus::SUCCESS)
+        if (UEFI::getMemoryMap(bootMemoryMap->memoryMapSize, *bootMemoryMap->memoryMap, bootMemoryMap->mapKey, bootMemoryMap->descriptorSize, bootMemoryMap->descriptorVersion) != UefiStatus::SUCCESS)
         {
             UEFI_LF(("Failed to get memory map"));
 
@@ -79,7 +79,7 @@ NgosStatus exitBootServices(UefiBootMemoryMap *bootMemoryMap)
 
 
 
-        if (exitBootServicesAttempt(bootMemoryMap) != EfiStatus::SUCCESS)
+        if (exitBootServicesAttempt(bootMemoryMap) != UefiStatus::SUCCESS)
         {
             UEFI_LF(("Failed to exit boot services"));
 
@@ -89,7 +89,7 @@ NgosStatus exitBootServices(UefiBootMemoryMap *bootMemoryMap)
         // UEFI_LVV(("Exit boot services completed")); // Commented to avoid log duplication
     }
     else
-    if (status != EfiStatus::SUCCESS)
+    if (status != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to exit boot services"));
 
@@ -111,7 +111,7 @@ NgosStatus exitBootServices(BootParams *params)
 
 
 
-    EfiMemoryDescriptor *memoryMap         = 0;
+    UefiMemoryDescriptor *memoryMap         = 0;
     u64                  memoryMapSize     = 0;
     u64                  descriptorSize    = 0;
     u32                  descriptorVersion = 0;
@@ -131,7 +131,7 @@ NgosStatus exitBootServices(BootParams *params)
 
 
 
-    if (UEFI::getMemoryMap(&bootMemoryMap) != EfiStatus::SUCCESS)
+    if (UEFI::getMemoryMap(&bootMemoryMap) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to get memory map"));
 
@@ -162,7 +162,7 @@ NgosStatus exitBootServices(BootParams *params)
 
 
 
-    if (UEFI::allocatePool(EfiMemoryType::LOADER_DATA, size, (void **)&memoryMapEntries) != EfiStatus::SUCCESS)
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&memoryMapEntries) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to allocate pool(%u) for memory map entries", size));
 

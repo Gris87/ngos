@@ -22,10 +22,10 @@
 #define IMAGE_SUBSYSTEM_OS2_CUI                  5  // OS/2 CUI subsystem
 #define IMAGE_SUBSYSTEM_POSIX_CUI                7  // POSIX CUI subsystem
 #define IMAGE_SUBSYSTEM_WINDOWS_CE_GUI           9  // Windows CE system
-#define IMAGE_SUBSYSTEM_EFI_APPLICATION          10 // Extensible Firmware Interface (EFI) application
-#define IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER  11 // EFI driver with boot services
-#define IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER       12 // EFI driver with run-time services
-#define IMAGE_SUBSYSTEM_EFI_ROM                  13 // EFI ROM image
+#define IMAGE_SUBSYSTEM_UEFI_APPLICATION         10 // Unified Extensible Firmware Interface (UEFI) application
+#define IMAGE_SUBSYSTEM_UEFI_BOOT_SERVICE_DRIVER 11 // UEFI driver with boot services
+#define IMAGE_SUBSYSTEM_UEFI_RUNTIME_DRIVER      12 // UEFI driver with run-time services
+#define IMAGE_SUBSYSTEM_UEFI_ROM                 13 // UEFI ROM image
 #define IMAGE_SUBSYSTEM_XBOX                     14 // Xbox system
 #define IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION 16 // Boot application
 

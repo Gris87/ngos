@@ -1,20 +1,20 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFICAPSULEHEADER_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFICAPSULEHEADER_H
+#ifndef UEFI_UEFICAPSULEHEADER_H
+#define UEFI_UEFICAPSULEHEADER_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/efiguid.h"
+#include <uefi/uefiguid.h>
 
 
 
-struct EfiCapsuleHeader
+struct UefiCapsuleHeader
 {
-    EfiGuid capsuleGuid;
-    u32     headerSize;
-    u32     flags;
-    u32     capsuleImageSize;
+    UefiGuid capsuleGuid;
+    u32      headerSize;
+    u32      flags;
+    u32      capsuleImageSize;
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFICAPSULEHEADER_H
+#endif // UEFI_UEFICAPSULEHEADER_H

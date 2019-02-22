@@ -1,25 +1,25 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTMODEINFORMATION_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTMODEINFORMATION_H
+#ifndef UEFI_UEFIGRAPHICSOUTPUTMODEINFORMATION_H
+#define UEFI_UEFIGRAPHICSOUTPUTMODEINFORMATION_H
 
 
 
 #include <ngos/types.h>
 
-#include "src/bits64/a_uefi/uefi/lib/efigraphicspixelformat.h"
-#include "src/bits64/a_uefi/uefi/lib/efipixelbitmask.h"
+#include <uefi/uefigraphicspixelformat.h>
+#include <uefi/uefipixelbitmask.h>
 
 
 
-struct EfiGraphicsOutputModeInformation
+struct UefiGraphicsOutputModeInformation
 {
-    u32                    version;
-    u32                    horizontalResolution;
-    u32                    verticalResolution;
-    EfiGraphicsPixelFormat pixelFormat;
-    EfiPixelBitmask        pixelInformation;
-    u32                    pixelsPerScanLine;
+    u32                     version;
+    u32                     horizontalResolution;
+    u32                     verticalResolution;
+    UefiGraphicsPixelFormat pixelFormat;
+    UefiPixelBitmask        pixelInformation;
+    u32                     pixelsPerScanLine;
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFIGRAPHICSOUTPUTMODEINFORMATION_H
+#endif // UEFI_UEFIGRAPHICSOUTPUTMODEINFORMATION_H

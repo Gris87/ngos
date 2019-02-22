@@ -1,6 +1,7 @@
 #include "setupmemorymapentries.h"
 
-#include "src/bits64/a_uefi/uefi/lib/eficonstants.h"
+#include <page/macros.h>
+
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"
 
@@ -26,7 +27,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
     for (i64 i = 0; i < count; ++i)
     {
-        EfiMemoryDescriptor *memoryDescriptor = (EfiMemoryDescriptor *)((u64)(*bootMemoryMap->memoryMap) + (i * (*bootMemoryMap->descriptorSize)));
+        UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)(*bootMemoryMap->memoryMap) + (i * (*bootMemoryMap->descriptorSize)));
         UEFI_LVV(("Handling memory descriptor 0x%p", memoryDescriptor));
 
         UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
@@ -43,54 +44,54 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
         MemoryMapEntryType entryType;
 
-        switch ((EfiMemoryType)memoryDescriptor->type)
+        switch ((UefiMemoryType)memoryDescriptor->type)
         {
-            case EfiMemoryType::RESERVED_MEMORY:
-            case EfiMemoryType::RUNTIME_SERVICES_CODE:
-            case EfiMemoryType::RUNTIME_SERVICES_DATA:
-            case EfiMemoryType::MEMORY_MAPPED_IO:
-            case EfiMemoryType::MEMORY_MAPPED_IO_PORT_SPACE:
-            case EfiMemoryType::PAL_CODE:
+            case UefiMemoryType::RESERVED_MEMORY:
+            case UefiMemoryType::RUNTIME_SERVICES_CODE:
+            case UefiMemoryType::RUNTIME_SERVICES_DATA:
+            case UefiMemoryType::MEMORY_MAPPED_IO:
+            case UefiMemoryType::MEMORY_MAPPED_IO_PORT_SPACE:
+            case UefiMemoryType::PAL_CODE:
             {
                 entryType = MemoryMapEntryType::RESERVED;
             }
             break;
 
-            case EfiMemoryType::UNUSABLE_MEMORY:
+            case UefiMemoryType::UNUSABLE_MEMORY:
             {
                 entryType = MemoryMapEntryType::UNUSABLE;
             }
             break;
 
-            case EfiMemoryType::ACPI_RECLAIM_MEMORY:
+            case UefiMemoryType::ACPI_RECLAIM_MEMORY:
             {
                 entryType = MemoryMapEntryType::ACPI;
             }
             break;
 
-            case EfiMemoryType::LOADER_CODE:
-            case EfiMemoryType::LOADER_DATA:
-            case EfiMemoryType::BOOT_SERVICES_CODE:
-            case EfiMemoryType::BOOT_SERVICES_DATA:
-            case EfiMemoryType::CONVENTIONAL_MEMORY:
+            case UefiMemoryType::LOADER_CODE:
+            case UefiMemoryType::LOADER_DATA:
+            case UefiMemoryType::BOOT_SERVICES_CODE:
+            case UefiMemoryType::BOOT_SERVICES_DATA:
+            case UefiMemoryType::CONVENTIONAL_MEMORY:
             {
                 entryType = MemoryMapEntryType::RAM;
             }
             break;
 
-            case EfiMemoryType::ACPI_MEMORY_NVS:
+            case UefiMemoryType::ACPI_MEMORY_NVS:
             {
                 entryType = MemoryMapEntryType::NVS;
             }
             break;
 
-            case EfiMemoryType::PERSISTENT_MEMORY:
+            case UefiMemoryType::PERSISTENT_MEMORY:
             {
                 entryType = MemoryMapEntryType::PERSISTENT_MEMORY;
             }
             break;
 
-            case EfiMemoryType::MAXIMUM:
+            case UefiMemoryType::MAXIMUM:
             {
                 UEFI_LF(("Invalid memory descriptor type %u", memoryDescriptor->type));
 
@@ -117,14 +118,14 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
             previous->address + previous->size == memoryDescriptor->physicalStart
            )
         {
-            previous->size += memoryDescriptor->numberOfPages * EFI_PAGE_SIZE;
+            previous->size += memoryDescriptor->numberOfPages * PAGE_SIZE;
         }
         else
         {
             MemoryMapEntry *entry = &memoryMapEntries[memoryMapEntriesCount];
 
             entry->address = memoryDescriptor->physicalStart;
-            entry->size    = memoryDescriptor->numberOfPages * EFI_PAGE_SIZE;
+            entry->size    = memoryDescriptor->numberOfPages * PAGE_SIZE;
             entry->type    = entryType;
 
             ++memoryMapEntriesCount;
@@ -156,10 +157,10 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
         for (i64 i = 0; i < count; ++i)
         {
-            EfiMemoryDescriptor *memoryDescriptor = (EfiMemoryDescriptor *)((u64)(*bootMemoryMap->memoryMap) + (i * (*bootMemoryMap->descriptorSize)));
+            UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)(*bootMemoryMap->memoryMap) + (i * (*bootMemoryMap->descriptorSize)));
             UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
 
-            UEFI_LVVV(("#%d: type = %u | 0x%p-0x%p | 0x%016lX", i, memoryDescriptor->type, memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * EFI_PAGE_SIZE, memoryDescriptor->attribute));
+            UEFI_LVVV(("#%d: type = %u | 0x%p-0x%p | 0x%016lX", i, memoryDescriptor->type, memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
         }
 
         UEFI_LVVV(("-------------------------------------"));
@@ -180,12 +181,11 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-    UEFI_TEST_ASSERT(params->uefi.memoryMap.address           != 0,                           NgosStatus::ASSERTION);
-    // UEFI_TEST_ASSERT(params->uefi.memoryMap.size           == 2160,                        NgosStatus::ASSERTION); // Commented due to value variation
-    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorSize    == 48,                          NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorSize    == sizeof(EfiMemoryDescriptor), NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorVersion == 1,                           NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(count                                    == 45,                          NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.address           != 0,    NgosStatus::ASSERTION);
+    // UEFI_TEST_ASSERT(params->uefi.memoryMap.size           == 2160, NgosStatus::ASSERTION); // Commented due to value variation
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorSize    == 48,   NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorVersion == 1,    NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(count                                    == 45,   NgosStatus::ASSERTION);
 
     // UEFI_TEST_ASSERT(params->memoryMapEntriesCount       == 10,                           NgosStatus::ASSERTION); // Commented due to value variation
     UEFI_TEST_ASSERT(params->memoryMapEntries               != 0,                            NgosStatus::ASSERTION);

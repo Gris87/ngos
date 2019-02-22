@@ -4,14 +4,13 @@
 
 
 #include <ngos/types.h>
-
-#include "src/bits64/a_uefi/uefi/lib/efimemorydescriptor.h"
+#include <uefi/uefimemorydescriptor.h>
 
 
 
 struct UefiBootMemoryMap
 {
-    EfiMemoryDescriptor **memoryMap;
+    UefiMemoryDescriptor **memoryMap;
     u64                  *memoryMapSize;
     u64                  *descriptorSize;
     u32                  *descriptorVersion;

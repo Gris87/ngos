@@ -44,7 +44,7 @@ We are checking that Serial::initConsole() was successful with UEFI_ASSERT_EXECU
 
 ```
     // Check that we are booting via UEFI
-    if (systemTable->header.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+    if (systemTable->header.signature != UEFI_SYSTEM_TABLE_SIGNATURE)
     {
         UEFI_LF(("Unexpected UEFI System Table signature"));
 
@@ -115,7 +115,7 @@ Please refer to [How to debug chapter](../../0.%20Intro/5.%20How%20to%20debug/RE
     {
         char buffer[1024];
 
-        UEFI_ASSERT_EXECUTION(UEFI::clearScreen(), EfiStatus, EfiStatus::SUCCESS, 0);
+        UEFI_ASSERT_EXECUTION(UEFI::clearScreen(), UefiStatus, UefiStatus::SUCCESS, 0);
 
 
 
@@ -275,20 +275,20 @@ As you can see [setupKernelLocation()](https://github.com/Gris87/ngos/blob/maste
 First of all, we will get information about loaded image:
 
 ```
-    EfiGuid                 protocol = EFI_LOADED_IMAGE_PROTOCOL_GUID;
-    EfiHandle               handle   = UEFI::getImageHandle();
-    EfiLoadedImageProtocol *image    = 0;
+    UefiGuid                 protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+    uefi_handle               handle   = UEFI::getImageHandle();
+    UefiLoadedImageProtocol *image    = 0;
 
 
 
-    if (UEFI::handleProtocol(handle, &protocol, (void **)&image) != EfiStatus::SUCCESS)
+    if (UEFI::handleProtocol(handle, &protocol, (void **)&image) != UefiStatus::SUCCESS)
     {
-        UEFI_LF(("Failed to handle(0x%p) protocol for EFI_LOADED_IMAGE_PROTOCOL", handle));
+        UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_LOADED_IMAGE_PROTOCOL", handle));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for EFI_LOADED_IMAGE_PROTOCOL", handle, image));
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_LOADED_IMAGE_PROTOCOL", handle, image));
 
 
 
@@ -334,7 +334,7 @@ It is expected that the location of relocated kernel will be also aligned to pag
     // We are going to allocate space for imageSize + page table + stack ( + decompressed Kernel part if it compressed)
     //
     u64 allocSize =
-            ROUND_UP(imageSize, EFI_ALLOC_ALIGN)    // Use ROUND_UP in order to make space for page table to be aligned
+            ROUND_UP(imageSize, UEFI_ALLOC_ALIGN)    // Use ROUND_UP in order to make space for page table to be aligned
             + BOOT_PAGE_TABLE_SIZE
             + BOOT_STACK_SIZE
 #if NGOS_BUILD_KERNEL_COMPRESSION != OPTION_KERNEL_COMPRESSION_NONE

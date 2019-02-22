@@ -1,41 +1,41 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISYSTEMTABLE_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISYSTEMTABLE_H
+#ifndef UEFI_UEFISYSTEMTABLE_H
+#define UEFI_UEFISYSTEMTABLE_H
 
 
 
-#include "src/bits64/a_uefi/uefi/lib/efibootservices.h"
-#include "src/bits64/a_uefi/uefi/lib/eficonfigurationtable.h"
-#include "src/bits64/a_uefi/uefi/lib/efiruntimeservices.h"
-#include "src/bits64/a_uefi/uefi/lib/efisimpleinputinterface.h"
-#include "src/bits64/a_uefi/uefi/lib/efisimpletextoutputinterface.h"
-#include "src/bits64/a_uefi/uefi/lib/efitableheader.h"
-#include "src/bits64/a_uefi/uefi/lib/efitypes.h"
+#include <uefi/uefibootservices.h>
+#include <uefi/ueficonfigurationtable.h>
+#include <uefi/uefiruntimeservices.h>
+#include <uefi/uefisimpleinputinterface.h>
+#include <uefi/uefisimpletextoutputinterface.h>
+#include <uefi/uefitableheader.h>
+#include <uefi/types.h>
 
 
 
-struct EfiSystemTable
+struct UefiSystemTable
 {
-    EfiTableHeader                header;
+    UefiTableHeader                header;
 
-    efi_char16                   *firmwareVendor;
-    u32                           firmwareRevision;
+    uefi_char16                   *firmwareVendor;
+    u32                            firmwareRevision;
 
-    EfiHandle                     stdinHandle;
-    EfiSimpleInputInterface      *stdin;
+    uefi_handle                    stdinHandle;
+    UefiSimpleInputInterface      *stdin;
 
-    EfiHandle                     stdoutHandle;
-    EfiSimpleTextOutputInterface *stdout;
+    uefi_handle                    stdoutHandle;
+    UefiSimpleTextOutputInterface *stdout;
 
-    EfiHandle                     stderrHandle;
-    EfiSimpleTextOutputInterface *stderr;
+    uefi_handle                    stderrHandle;
+    UefiSimpleTextOutputInterface *stderr;
 
-    EfiRuntimeServices           *runtimeServices;
-    EfiBootServices              *bootServices;
+    UefiRuntimeServices           *runtimeServices;
+    UefiBootServices              *bootServices;
 
-    u64                           numberOfTableEntries;
-    EfiConfigurationTable        *configurationTable;
+    u64                            numberOfTableEntries;
+    UefiConfigurationTable        *configurationTable;
 };
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFISYSTEMTABLE_H
+#endif // UEFI_UEFISYSTEMTABLE_H

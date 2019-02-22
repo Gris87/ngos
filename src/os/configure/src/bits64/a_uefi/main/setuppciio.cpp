@@ -2,15 +2,15 @@
 
 #include <bootparams/pciromimagewithinfo.h>
 #include <src/bits64/memory/memory.h>
+#include <uefi/uefipciioprotocol.h>
 
 #include "src/bits64/a_uefi/other/pciregisters.h"
-#include "src/bits64/a_uefi/uefi/lib/efipciioprotocol.h"
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"
 
 
 
-NgosStatus processPciRomImage(EfiPciIoProtocol *pci, PciRomImageWithInfo **result)
+NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **result)
 {
     UEFI_LT((" | pci = 0x%p, result = 0x%p", pci, result));
 
@@ -24,14 +24,14 @@ NgosStatus processPciRomImage(EfiPciIoProtocol *pci, PciRomImageWithInfo **resul
 
 
 
-    if (UEFI::allocatePool(EfiMemoryType::LOADER_DATA, size, (void **)&rom) != EfiStatus::SUCCESS)
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&rom) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to allocate pool(%u) for ROM image for protocol(0x%p) for EFI_PCI_IO_PROTOCOL", size, pci));
+        UEFI_LE(("Failed to allocate pool(%u) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", size, pci));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Allocated pool(%u, 0x%p) for ROM image for protocol(0x%p) for EFI_PCI_IO_PROTOCOL", size, rom, pci));
+    UEFI_LVV(("Allocated pool(%u, 0x%p) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", size, rom, pci));
 
 
 
@@ -42,17 +42,17 @@ NgosStatus processPciRomImage(EfiPciIoProtocol *pci, PciRomImageWithInfo **resul
 
 
 
-    if (pci->pci.read(pci, EfiPciIoProtocolWidth::UINT16, PCI_REGISTER_OFFSET_VENDOR_ID, 1, &rom->vendorId) == EfiStatus::SUCCESS)
+    if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, PCI_REGISTER_OFFSET_VENDOR_ID, 1, &rom->vendorId) == UefiStatus::SUCCESS)
     {
-        UEFI_LVV(("Successfully read PCI register Vendor ID(0x%04X) from protocol(0x%p) for EFI_PCI_IO_PROTOCOL", rom->vendorId, pci));
+        UEFI_LVV(("Successfully read PCI register Vendor ID(0x%04X) from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom->vendorId, pci));
 
-        if (pci->pci.read(pci, EfiPciIoProtocolWidth::UINT16, PCI_REGISTER_OFFSET_DEVICE_ID, 1, &rom->deviceId) == EfiStatus::SUCCESS)
+        if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, PCI_REGISTER_OFFSET_DEVICE_ID, 1, &rom->deviceId) == UefiStatus::SUCCESS)
         {
-            UEFI_LVV(("Successfully read PCI register Device ID(0x%04X) from protocol(0x%p) for EFI_PCI_IO_PROTOCOL", rom->deviceId, pci));
+            UEFI_LVV(("Successfully read PCI register Device ID(0x%04X) from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom->deviceId, pci));
 
-            if (pci->getLocation(pci, &rom->segmentNumber, &rom->busNumber, &rom->deviceNumber, &rom->functionNumber) == EfiStatus::SUCCESS)
+            if (pci->getLocation(pci, &rom->segmentNumber, &rom->busNumber, &rom->deviceNumber, &rom->functionNumber) == UefiStatus::SUCCESS)
             {
-                UEFI_LVV(("Found PCI location(%u, %u, %u, %u) from protocol(0x%p) for EFI_PCI_IO_PROTOCOL", rom->segmentNumber, rom->busNumber, rom->deviceNumber, rom->functionNumber, pci));
+                UEFI_LVV(("Found PCI location(%u, %u, %u, %u) from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom->segmentNumber, rom->busNumber, rom->deviceNumber, rom->functionNumber, pci));
 
 
 
@@ -64,17 +64,17 @@ NgosStatus processPciRomImage(EfiPciIoProtocol *pci, PciRomImageWithInfo **resul
             }
             else
             {
-                UEFI_LE(("Failed to get PCI location from protocol(0x%p) for EFI_PCI_IO_PROTOCOL", pci));
+                UEFI_LE(("Failed to get PCI location from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", pci));
             }
         }
         else
         {
-            UEFI_LE(("Failed to read PCI register Device ID from protocol(0x%p) for EFI_PCI_IO_PROTOCOL", pci));
+            UEFI_LE(("Failed to read PCI register Device ID from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", pci));
         }
     }
     else
     {
-        UEFI_LE(("Failed to read PCI register Vendor ID from protocol(0x%p) for EFI_PCI_IO_PROTOCOL", pci));
+        UEFI_LE(("Failed to read PCI register Vendor ID from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", pci));
     }
 
 
@@ -85,13 +85,13 @@ NgosStatus processPciRomImage(EfiPciIoProtocol *pci, PciRomImageWithInfo **resul
 
 
 
-    if (UEFI::freePool(rom) == EfiStatus::SUCCESS)
+    if (UEFI::freePool(rom) == UefiStatus::SUCCESS)
     {
-        UEFI_LVV(("Released pool(0x%p) for ROM image for protocol(0x%p) for EFI_PCI_IO_PROTOCOL", rom, pci));
+        UEFI_LVV(("Released pool(0x%p) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom, pci));
     }
     else
     {
-        UEFI_LE(("Failed to release pool(0x%p) for ROM image for protocol(0x%p) for EFI_PCI_IO_PROTOCOL", rom, pci));
+        UEFI_LE(("Failed to release pool(0x%p) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom, pci));
     }
 
 
@@ -99,7 +99,7 @@ NgosStatus processPciRomImage(EfiPciIoProtocol *pci, PciRomImageWithInfo **resul
     return NgosStatus::FAILED;
 }
 
-NgosStatus setupPciIoProtocol(BootParams *params, EfiGuid *protocol, u64 size, EfiHandle *pciIoHandles)
+NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size, uefi_handle *pciIoHandles)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u, pciIoHandles = 0x%p", params, protocol, size, pciIoHandles));
 
@@ -114,30 +114,30 @@ NgosStatus setupPciIoProtocol(BootParams *params, EfiGuid *protocol, u64 size, E
 
 
 
-    i64 count = size / sizeof(EfiHandle);
+    i64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
     for (i64 i = 0; i < count; ++i)
     {
-        EfiHandle         handle = pciIoHandles[i];
-        EfiPciIoProtocol *pci    = 0;
+        uefi_handle         handle = pciIoHandles[i];
+        UefiPciIoProtocol *pci    = 0;
 
 
 
-        if (UEFI::handleProtocol(handle, protocol, (void **)&pci) != EfiStatus::SUCCESS)
+        if (UEFI::handleProtocol(handle, protocol, (void **)&pci) != UefiStatus::SUCCESS)
         {
-            UEFI_LE(("Failed to handle(0x%p) protocol for EFI_PCI_IO_PROTOCOL", handle));
+            UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_PCI_IO_PROTOCOL", handle));
 
             continue;
         }
 
-        UEFI_LVV(("Handled(0x%p) protocol(0x%p) for EFI_PCI_IO_PROTOCOL", handle, pci));
+        UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", handle, pci));
 
 
 
         if (!pci->romImage || !pci->romSize) // pci->romImage == 0 || pci->romSize == 0
         {
-            UEFI_LVV(("Skipped protocol(0x%p) without ROM Image for EFI_PCI_IO_PROTOCOL", pci));
+            UEFI_LVV(("Skipped protocol(0x%p) without ROM Image for UEFI_PCI_IO_PROTOCOL", pci));
 
             continue;
         }
@@ -148,12 +148,12 @@ NgosStatus setupPciIoProtocol(BootParams *params, EfiGuid *protocol, u64 size, E
 
         if (processPciRomImage(pci, &rom) != NgosStatus::OK)
         {
-            UEFI_LE(("Failed to process protocol(0x%p) for EFI_PCI_IO_PROTOCOL", pci));
+            UEFI_LE(("Failed to process protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", pci));
 
             continue;
         }
 
-        UEFI_LVV(("Processed protocol(0x%p) with ROM Image(0x%p) for EFI_PCI_IO_PROTOCOL", pci, rom));
+        UEFI_LVV(("Processed protocol(0x%p) with ROM Image(0x%p) for UEFI_PCI_IO_PROTOCOL", pci, rom));
 
 
 
@@ -173,11 +173,11 @@ NgosStatus setupPciIoProtocol(BootParams *params, EfiGuid *protocol, u64 size, E
 
     if (params->pciRomImages)
     {
-        UEFI_LVV(("Found valid protocol with ROM Image(0x%p) for EFI_PCI_IO_PROTOCOL", params->pciRomImages));
+        UEFI_LVV(("Found valid protocol with ROM Image(0x%p) for UEFI_PCI_IO_PROTOCOL", params->pciRomImages));
     }
     else
     {
-        UEFI_LVV(("Protocol with ROM Image for EFI_PCI_IO_PROTOCOL not found"));
+        UEFI_LVV(("Protocol with ROM Image for UEFI_PCI_IO_PROTOCOL not found"));
     }
 
 
@@ -241,7 +241,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, EfiGuid *protocol, u64 size, E
     return NgosStatus::OK;
 }
 
-NgosStatus setupPciIoProtocol(BootParams *params, EfiGuid *protocol, u64 size)
+NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u", params, protocol, size));
 
@@ -251,43 +251,43 @@ NgosStatus setupPciIoProtocol(BootParams *params, EfiGuid *protocol, u64 size)
 
 
 
-    EfiHandle *pciIoHandles = 0;
+    uefi_handle *pciIoHandles = 0;
 
 
 
-    if (UEFI::allocatePool(EfiMemoryType::LOADER_DATA, size, (void **)&pciIoHandles) != EfiStatus::SUCCESS)
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&pciIoHandles) != UefiStatus::SUCCESS)
     {
-        UEFI_LF(("Failed to allocate pool(%u) for handles for EFI_PCI_IO_PROTOCOL", size));
+        UEFI_LF(("Failed to allocate pool(%u) for handles for UEFI_PCI_IO_PROTOCOL", size));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Allocated pool(%u, 0x%p) for handles for EFI_PCI_IO_PROTOCOL", size, pciIoHandles));
+    UEFI_LVV(("Allocated pool(%u, 0x%p) for handles for UEFI_PCI_IO_PROTOCOL", size, pciIoHandles));
 
 
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(EfiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, pciIoHandles) == EfiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, pciIoHandles) == UefiStatus::SUCCESS)
     {
-        UEFI_LVV(("Located handles(0x%p) for EFI_PCI_IO_PROTOCOL", pciIoHandles));
+        UEFI_LVV(("Located handles(0x%p) for UEFI_PCI_IO_PROTOCOL", pciIoHandles));
 
         status = setupPciIoProtocol(params, protocol, size, pciIoHandles);
     }
     else
     {
-        UEFI_LF(("Failed to locate handles(0x%p) for EFI_PCI_IO_PROTOCOL", pciIoHandles));
+        UEFI_LF(("Failed to locate handles(0x%p) for UEFI_PCI_IO_PROTOCOL", pciIoHandles));
     }
 
 
 
-    if (UEFI::freePool(pciIoHandles) == EfiStatus::SUCCESS)
+    if (UEFI::freePool(pciIoHandles) == UefiStatus::SUCCESS)
     {
-        UEFI_LVV(("Released pool(0x%p) for handles for EFI_PCI_IO_PROTOCOL", pciIoHandles));
+        UEFI_LVV(("Released pool(0x%p) for handles for UEFI_PCI_IO_PROTOCOL", pciIoHandles));
     }
     else
     {
-        UEFI_LE(("Failed to release pool(0x%p) for handles for EFI_PCI_IO_PROTOCOL", pciIoHandles));
+        UEFI_LE(("Failed to release pool(0x%p) for handles for UEFI_PCI_IO_PROTOCOL", pciIoHandles));
     }
 
 
@@ -303,28 +303,28 @@ NgosStatus setupPciIo(BootParams *params)
 
 
 
-    EfiGuid    pciIoProtocol = EFI_PCI_IO_PROTOCOL_GUID;
+    UefiGuid    pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
     u64        pciIoSize     = 0;
-    EfiHandle *pciIoHandles  = 0;
+    uefi_handle *pciIoHandles  = 0;
 
 
 
-    if (UEFI::locateHandle(EfiLocateSearchType::BY_PROTOCOL, &pciIoProtocol, 0, &pciIoSize, pciIoHandles) == EfiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pciIoProtocol, 0, &pciIoSize, pciIoHandles) == UefiStatus::BUFFER_TOO_SMALL)
     {
-        UEFI_LVV(("Found size(%u) of buffer for handles for EFI_PCI_IO_PROTOCOL", pciIoSize));
+        UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_PCI_IO_PROTOCOL", pciIoSize));
 
         if (setupPciIoProtocol(params, &pciIoProtocol, pciIoSize) != NgosStatus::OK)
         {
-            UEFI_LF(("Failed to setup EFI_PCI_IO_PROTOCOL"));
+            UEFI_LF(("Failed to setup UEFI_PCI_IO_PROTOCOL"));
 
             return NgosStatus::FAILED;
         }
 
-        UEFI_LV(("Setup EFI_PCI_IO_PROTOCOL completed"));
+        UEFI_LV(("Setup UEFI_PCI_IO_PROTOCOL completed"));
     }
     else
     {
-        UEFI_LV(("Handle for EFI_PCI_IO_PROTOCOL not found"));
+        UEFI_LV(("Handle for UEFI_PCI_IO_PROTOCOL not found"));
     }
 
 

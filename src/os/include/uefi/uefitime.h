@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIME_H
-#define CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIME_H
+#ifndef UEFI_UEFITIME_H
+#define UEFI_UEFITIME_H
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-struct EfiTime
+struct UefiTime
 {
     u16 year;       // 1998 - 20XX
     u8  month;      // 1 - 12
@@ -24,4 +24,4 @@ struct EfiTime
 
 
 
-#endif // CONFIGURE_SRC_BITS64_A_UEFI_UEFI_LIB_EFITIME_H
+#endif // UEFI_UEFITIME_H
