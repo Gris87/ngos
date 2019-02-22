@@ -531,11 +531,11 @@ EfiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-        UEFI_LVVV(("type          = %u",   memoryDescriptor->type));
-        UEFI_LVVV(("physicalStart = 0x%p", memoryDescriptor->physicalStart));
-        UEFI_LVVV(("virtualStart  = 0x%p", memoryDescriptor->virtualStart));
-        UEFI_LVVV(("numberOfPages = %u",   memoryDescriptor->numberOfPages));
-        UEFI_LVVV(("attribute     = %u",   memoryDescriptor->attribute));
+        UEFI_LVVV(("type          = %u",       memoryDescriptor->type));
+        UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
+        UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
+        UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
+        UEFI_LVVV(("attribute     = 0x%016lX", memoryDescriptor->attribute));
 
 
 
