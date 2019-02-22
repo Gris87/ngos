@@ -180,6 +180,13 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.address           != 0,                           NgosStatus::ASSERTION);
+    // UEFI_TEST_ASSERT(params->uefi.memoryMap.size           == 2160,                        NgosStatus::ASSERTION); // Commented due to value variation
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorSize    == 48,                          NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorSize    == sizeof(EfiMemoryDescriptor), NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorVersion == 1,                           NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(count                                    == 45,                          NgosStatus::ASSERTION);
+
     // UEFI_TEST_ASSERT(params->memoryMapEntriesCount       == 10,                           NgosStatus::ASSERTION); // Commented due to value variation
     UEFI_TEST_ASSERT(params->memoryMapEntries               != 0,                            NgosStatus::ASSERTION);
     // UEFI_TEST_ASSERT(params->memoryMapEntries[0].address == 0x00000000,                   NgosStatus::ASSERTION); // Commented due to value variation
