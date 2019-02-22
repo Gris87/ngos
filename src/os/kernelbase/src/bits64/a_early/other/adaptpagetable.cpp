@@ -15,7 +15,7 @@ extern P4D   early_pagetable_level4[PTRS_PER_P4D];                             /
 #endif
 
 extern PUD   early_pagetable_level3[PTRS_PER_PUD];                             // early_pagetable_level3 declared in main.S file
-extern PMD   early_pagetable_level2[PTRS_PER_PGD];                             // early_pagetable_level2 declared in main.S file
+extern PMD   early_pagetable_level2[PTRS_PER_PMD];                             // early_pagetable_level2 declared in main.S file
 extern PMD   fixmap_pagetable_level2[PTRS_PER_PMD];                            // fixmap_pagetable_level2 declared in main.S file
 extern PMD   dynamic_pagetable_pages[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD]; // dynamic_pagetable_pages declared in main.S file
 

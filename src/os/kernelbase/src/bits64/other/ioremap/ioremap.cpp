@@ -8,12 +8,12 @@
 
 
 
-extern PMD fixmap_pagetable_level2[PTRS_PER_PGD]; // fixmap_pagetable_level2 declared in main.S file
+extern PMD fixmap_pagetable_level2[PTRS_PER_PMD]; // fixmap_pagetable_level2 declared in main.S file
 
 
 
 u64 IORemap::sVirtualSlots[FIX_BITMAP_SLOTS];
-PTE IORemap::sFixmapPage[PTRS_PER_PMD] __attribute__((aligned(PAGE_SIZE)));
+PTE IORemap::sFixmapPage[PTRS_PER_PTE] __attribute__((aligned(PAGE_SIZE)));
 
 
 

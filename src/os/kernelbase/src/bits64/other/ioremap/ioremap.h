@@ -23,7 +23,7 @@ public:
 private:
 #endif
     static u64 sVirtualSlots[FIX_BITMAP_SLOTS];
-    static PTE sFixmapPage[PTRS_PER_PMD];
+    static PTE sFixmapPage[PTRS_PER_PTE];
 };
 
 
