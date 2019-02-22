@@ -4,17 +4,18 @@
 
 
 #include <uefi/types.h>
+#include <uefi/uefimemorytype.h>
 
 
 
 struct UefiMemoryDescriptor
 {
-    u32 type;
-    u32 __pad;
-    u64 physicalStart;
-    u64 virtualStart;
-    u64 numberOfPages;
-    u64 attribute;
+    UefiMemoryType type;
+    u32            __pad;
+    u64            physicalStart;
+    u64            virtualStart;
+    u64            numberOfPages;
+    u64            attribute;
 };
 
 

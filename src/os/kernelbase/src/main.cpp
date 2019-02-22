@@ -13,6 +13,7 @@
 #include <src/bits64/a_early/main/setupioremap.h>
 #include <src/bits64/a_early/main/setupmemorymanager.h>
 #include <src/bits64/a_early/main/setupstackcanary.h>
+#include <src/bits64/a_early/main/setupuefimemorymap.h>
 #include <src/bits64/assets/assets.h>
 #include <src/bits64/cpu/cpu.h>
 #include <src/bits64/fpu/fpu.h>
@@ -98,6 +99,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(setupE820Tables());
     EARLY_LI(("Setup E820 tables completed"));
+
+    EARLY_ASSERT_EXECUTION(setupUefiMemoryMap());
+    EARLY_LI(("Setup UEFI memory map completed"));
 
 
 

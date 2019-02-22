@@ -588,6 +588,8 @@ src/os/kernelbase/src/bits64/a_early/main/setupmemorymanager.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupmemorymanager.h
 src/os/kernelbase/src/bits64/a_early/main/setupstackcanary.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupstackcanary.h
+src/os/kernelbase/src/bits64/a_early/main/setupuefimemorymap.cpp
+src/os/kernelbase/src/bits64/a_early/main/setupuefimemorymap.h
 src/os/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp
 src/os/kernelbase/src/bits64/other/bootparams/bootparams.cpp
 src/os/kernelbase/src/bits64/other/bootparams/bootparams.h
@@ -624,6 +626,8 @@ src/os/kernelbase/src/bits64/other/tasks/threadinfo.h
 src/os/kernelbase/src/bits64/other/tasks/threadinfoflags.h
 src/os/kernelbase/src/bits64/other/tasks/utils.cpp
 src/os/kernelbase/src/bits64/other/tasks/utils.h
+src/os/kernelbase/src/bits64/other/uefi/uefi.cpp
+src/os/kernelbase/src/bits64/other/uefi/uefi.h
 src/os/kernelbase/src/main.cpp
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/utils.h

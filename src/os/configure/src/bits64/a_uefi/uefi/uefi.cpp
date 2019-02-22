@@ -543,7 +543,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-        if (memoryDescriptor->type != (u32)UefiMemoryType::CONVENTIONAL_MEMORY)
+        if (memoryDescriptor->type != UefiMemoryType::CONVENTIONAL_MEMORY)
         {
             UEFI_LVV(("Skipped memory descriptor 0x%p because type = %u", memoryDescriptor, memoryDescriptor->type));
 
