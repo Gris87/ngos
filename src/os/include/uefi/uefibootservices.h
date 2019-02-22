@@ -7,7 +7,7 @@
 #include <uefi/types.h>
 #include <uefi/uefiallocatetype.h>
 #include <uefi/uefidevicepath.h>
-#include <uefi/uefievent.h>
+#include <uefi/uefieventtype.h>
 #include <uefi/uefiguid.h>
 #include <uefi/uefiinterfacetype.h>
 #include <uefi/uefilocatesearchtype.h>
@@ -38,7 +38,7 @@ struct UefiBootServices
     UefiStatus (UEFI_API *allocatePool)(UefiMemoryType poolType, u64 size, void **buffer); // TEST: NO
     UefiStatus (UEFI_API *freePool)(void *buffer); // TEST: NO
 
-    UefiStatus (UEFI_API *createEvent)(u32 type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
+    UefiStatus (UEFI_API *createEvent)(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
     UefiStatus (UEFI_API *setTimer)(uefi_event event, UefiTimerDelay type, u64 triggerTime); // TEST: NO
     UefiStatus (UEFI_API *waitForEvent)(u64 numberOfEvents, uefi_event *event, u64 *index); // TEST: NO
     UefiStatus (UEFI_API *signalEvent)(uefi_event event); // TEST: NO

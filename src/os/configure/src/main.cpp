@@ -38,7 +38,7 @@ NgosStatus waitForGdbDebug()
 
     uefi_event timerEvent = 0;
 
-    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UEFI_EVENT_TIMER, 0, 0, 0, &timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, 0, 0, 0, &timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_LVV(("Created timer event(0x%p)", timerEvent));
 
 
