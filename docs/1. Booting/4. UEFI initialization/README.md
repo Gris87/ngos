@@ -276,7 +276,7 @@ First of all, we will get information about loaded image:
 
 ```
     UefiGuid                 protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
-    uefi_handle               handle   = UEFI::getImageHandle();
+    uefi_handle              handle   = UEFI::getImageHandle();
     UefiLoadedImageProtocol *image    = 0;
 
 
@@ -334,7 +334,7 @@ It is expected that the location of relocated kernel will be also aligned to pag
     // We are going to allocate space for imageSize + page table + stack ( + decompressed Kernel part if it compressed)
     //
     u64 allocSize =
-            ROUND_UP(imageSize, UEFI_ALLOC_ALIGN)    // Use ROUND_UP in order to make space for page table to be aligned
+            ROUND_UP(imageSize, PAGE_SIZE)  // Use ROUND_UP in order to make space for page table to be aligned
             + BOOT_PAGE_TABLE_SIZE
             + BOOT_STACK_SIZE
 #if NGOS_BUILD_KERNEL_COMPRESSION != OPTION_KERNEL_COMPRESSION_NONE
