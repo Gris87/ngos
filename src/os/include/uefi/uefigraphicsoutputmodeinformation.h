@@ -4,7 +4,6 @@
 
 
 #include <ngos/types.h>
-
 #include <uefi/uefigraphicspixelformat.h>
 #include <uefi/uefipixelbitmask.h>
 

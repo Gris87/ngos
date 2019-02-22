@@ -144,9 +144,9 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
 
 
 
-    u64                               maximumBuffer = 0;
+    u64                                maximumBuffer = 0;
     UefiGraphicsOutputProtocol        *foundGop      = 0;
-    u32                               foundMode     = 0;
+    u32                                foundMode     = 0;
     UefiGraphicsOutputModeInformation *foundInfo     = 0;
 
 
@@ -156,7 +156,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
 
     for (i64 i = 0; i < count; ++i)
     {
-        uefi_handle                  handle = graphicsHandles[i];
+        uefi_handle                 handle = graphicsHandles[i];
         UefiGraphicsOutputProtocol *gop    = 0;
 
 
@@ -174,7 +174,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
 
         for (i64 j = 0; j < gop->mode->maxMode; ++j)
         {
-            u64                               sizeOfInfo = 0;
+            u64                                sizeOfInfo = 0;
             UefiGraphicsOutputModeInformation *info       = 0;
 
 
@@ -360,8 +360,8 @@ NgosStatus setupGraphics(BootParams *params)
 
 
 
-    UefiGuid    graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-    u64        graphicsSize     = 0;
+    UefiGuid     graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+    u64          graphicsSize     = 0;
     uefi_handle *graphicsHandles  = 0;
 
 

@@ -4,7 +4,6 @@
 
 
 #include <ngos/types.h>
-
 #include <uefi/macros.h>
 #include <uefi/types.h>
 #include <uefi/uefisimpletextoutputmode.h>

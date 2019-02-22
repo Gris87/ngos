@@ -6,7 +6,7 @@
 
 CppEnumClassVerifier::CppEnumClassVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^ *enum +(\\w+)(: *\\w[\\w\\d]*)?$")
+    , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(: *\\w[\\w\\d]*)?$")
 {
     // Nothing
 }
@@ -25,7 +25,24 @@ void CppEnumClassVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
         if (match.hasMatch())
         {
-            worker->addError(path, i, "Expected enum class definition");
+            QString enumClass = match.captured(1);
+            QString enumName  = match.captured(2);
+            QString enumType  = match.captured(3);
+
+            if (enumClass == "")
+            {
+                worker->addError(path, i, "Expected enum class definition");
+            }
+
+            if (enumName == "")
+            {
+                worker->addError(path, i, "Expected enum name");
+            }
+
+            if (enumType == "")
+            {
+                worker->addError(path, i, "Expected enum type");
+            }
         }
     }
 }

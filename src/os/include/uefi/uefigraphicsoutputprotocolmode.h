@@ -4,8 +4,8 @@
 
 
 #include <ngos/types.h>
-#include <uefi/uefigraphicsoutputmodeinformation.h>
 #include <uefi/types.h>
+#include <uefi/uefigraphicsoutputmodeinformation.h>
 
 
 

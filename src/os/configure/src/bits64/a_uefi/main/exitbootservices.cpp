@@ -112,11 +112,11 @@ NgosStatus exitBootServices(BootParams *params)
 
 
     UefiMemoryDescriptor *memoryMap         = 0;
-    u64                  memoryMapSize     = 0;
-    u64                  descriptorSize    = 0;
-    u32                  descriptorVersion = 0;
-    u64                  mapKey            = 0;
-    u64                  bufferSize        = 0;
+    u64                   memoryMapSize     = 0;
+    u64                   descriptorSize    = 0;
+    u32                   descriptorVersion = 0;
+    u64                   mapKey            = 0;
+    u64                   bufferSize        = 0;
 
 
 

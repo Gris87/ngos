@@ -4,9 +4,9 @@
 
 
 #include <ngos/status.h>
+#include <uefi/types.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisystemtable.h>
-#include <uefi/types.h>
 
 #include "src/bits64/a_uefi/other/uefibootmemorymap.h"
 
@@ -50,7 +50,7 @@ public:
     static uefi_handle getImageHandle(); // TEST: NO
 
 private:
-    static uefi_handle                     sImageHandle;
+    static uefi_handle                    sImageHandle;
     static UefiSystemTable               *sSystemTable;
     static UefiSimpleTextOutputInterface *sTextOutput;
     static UefiBootServices              *sBootServices;

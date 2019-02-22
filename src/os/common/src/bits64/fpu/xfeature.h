@@ -19,14 +19,14 @@
 #define XFEATURE_PKRU                                  9
 #define XFEATURE_MAX                                   10
 
-#define XFEATURE_MASK_FPU_SSE    ((x_features)XFeature::FPU | (x_features)XFeature::SSE)
-#define XFEATURE_MASK_SUPERVISOR ((x_features)XFeature::PT)
+#define XFEATURE_MASK_FPU_SSE    ((x_features_type_flags)XFeature::FPU | (x_features_type_flags)XFeature::SSE)
+#define XFEATURE_MASK_SUPERVISOR ((x_features_type_flags)XFeature::PT)
 
 
 
-typedef u64 x_features;
+typedef u64 x_features_type_flags;
 
-enum class XFeature: x_features
+enum class XFeature: x_features_type_flags
 {
     FPU                                   = (1ULL << XFEATURE_FPU),
     SSE                                   = (1ULL << XFEATURE_SSE),

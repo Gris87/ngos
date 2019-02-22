@@ -191,6 +191,8 @@ const char* E820::getTypeName(MemoryMapEntryType type)
 {
     COMMON_LT((" | type = %u", type));
 
+
+
     switch (type)
     {
         case MemoryMapEntryType::RAM:               return "RAM";

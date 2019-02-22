@@ -15,9 +15,9 @@
 
 struct XStateHeader
 {
-    x_features xFeatures;
-    u64        xComponents;
-    u64        __reserved[6];
+    x_features_type_flags xFeatures;
+    u64                   xComponents;
+    u64                   __reserved[6];
 } __attribute__((packed));
 
 

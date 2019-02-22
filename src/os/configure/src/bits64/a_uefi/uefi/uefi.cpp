@@ -459,9 +459,9 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
     UefiMemoryDescriptor *memoryMap      = 0;
-    u64                  memoryMapSize  = 0;
-    u64                  descriptorSize = 0;
-    u64                  bufferSize     = 0;
+    u64                   memoryMapSize  = 0;
+    u64                   descriptorSize = 0;
+    u64                   bufferSize     = 0;
 
 
 

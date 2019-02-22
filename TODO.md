@@ -18,9 +18,9 @@ TODO List
 - [ ] Docs verifier. Verifier for Scripts
 - [ ] Docs verifier. Verifier for amount of links (amount of tools/libraries/applications)
 - [ ] Code generator. Generate documentation for applications
-- [ ] Headers optimizator
+- [ ] Tool for headers optimization
+- [ ] Tool for assembler code optimization
 - [ ] Write documentation
 - [ ] Jenkins
 - [ ] Bug tracker
-- [ ] Compile cpp -> S -> Optimize S file -> o. Need to implement mechanism for optimizations at Assembler level
 - [ ] All resources for one application (Turbo mode)

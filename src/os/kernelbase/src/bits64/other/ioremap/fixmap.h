@@ -7,9 +7,7 @@
 
 
 
-typedef u16 fix_map;
-
-enum class FixMap: fix_map
+enum class FixMap: u16
 {
     END
 };

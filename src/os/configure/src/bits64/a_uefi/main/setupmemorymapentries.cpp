@@ -27,7 +27,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
     for (i64 i = 0; i < count; ++i)
     {
-        UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)(*bootMemoryMap->memoryMap) + (i * (*bootMemoryMap->descriptorSize)));
+        UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
         UEFI_LVV(("Handling memory descriptor 0x%p", memoryDescriptor));
 
         UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
@@ -134,7 +134,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         }
     }
 
-    params->uefi.memoryMap.address           = (u64)*bootMemoryMap->memoryMap;
+    params->uefi.memoryMap.map               = *bootMemoryMap->memoryMap;
     params->uefi.memoryMap.size              = *bootMemoryMap->memoryMapSize;
     params->uefi.memoryMap.descriptorSize    = *bootMemoryMap->descriptorSize;
     params->uefi.memoryMap.descriptorVersion = *bootMemoryMap->descriptorVersion;
@@ -143,7 +143,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-    UEFI_LVVV(("params->uefi.memoryMap.address           = 0x%p", params->uefi.memoryMap.address));
+    UEFI_LVVV(("params->uefi.memoryMap.map               = 0x%p", params->uefi.memoryMap.map));
     UEFI_LVVV(("params->uefi.memoryMap.size              = %u",   params->uefi.memoryMap.size));
     UEFI_LVVV(("params->uefi.memoryMap.descriptorSize    = %u",   params->uefi.memoryMap.descriptorSize));
     UEFI_LVVV(("params->uefi.memoryMap.descriptorVersion = %u",   params->uefi.memoryMap.descriptorVersion));
@@ -157,7 +157,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
         for (i64 i = 0; i < count; ++i)
         {
-            UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)(*bootMemoryMap->memoryMap) + (i * (*bootMemoryMap->descriptorSize)));
+            UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
             UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
 
             UEFI_LVVV(("#%d: type = %u | 0x%p-0x%p | 0x%016lX", i, memoryDescriptor->type, memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
@@ -181,7 +181,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-    UEFI_TEST_ASSERT(params->uefi.memoryMap.address           != 0,    NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(params->uefi.memoryMap.map               != 0,    NgosStatus::ASSERTION);
     // UEFI_TEST_ASSERT(params->uefi.memoryMap.size           == 2160, NgosStatus::ASSERTION); // Commented due to value variation
     UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorSize    == 48,   NgosStatus::ASSERTION);
     UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorVersion == 1,    NgosStatus::ASSERTION);

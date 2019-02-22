@@ -49,7 +49,7 @@ NgosStatus waitForGdbDebug()
 
 
     uefi_event waitEvents[1] = { timerEvent };
-    u64      eventIndex    = 0;
+    u64        eventIndex    = 0;
 
     UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(1, waitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_LVV(("Timer(0x%p) triggered", timerEvent));

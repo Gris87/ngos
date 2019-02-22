@@ -8,14 +8,18 @@
 
 
 
+#define MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i) (UefiMemoryDescriptor *)((u64)(*bootMemoryMap->memoryMap) + (i * (*bootMemoryMap->descriptorSize))) // TEST: NO
+
+
+
 struct UefiBootMemoryMap
 {
     UefiMemoryDescriptor **memoryMap;
-    u64                  *memoryMapSize;
-    u64                  *descriptorSize;
-    u32                  *descriptorVersion;
-    u64                  *mapKey;
-    u64                  *bufferSize;
+    u64                   *memoryMapSize;
+    u64                   *descriptorSize;
+    u32                   *descriptorVersion;
+    u64                   *mapKey;
+    u64                   *bufferSize;
 };
 
 

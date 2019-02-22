@@ -71,7 +71,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     defaultCaseFound = true;
                                 }
 
-                                QString tail = switchLineTrimmed.mid(switchLineTrimmed.indexOf(':') + 1).trimmed();
+                                QString tail = switchLineTrimmed.mid(switchLineTrimmed.lastIndexOf(':') + 1).trimmed();
 
                                 if (
                                     !tail.startsWith("return ")

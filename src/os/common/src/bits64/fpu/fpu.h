@@ -30,14 +30,14 @@ private:
     static u32 expectedStateSize(); // TEST: NO
 #endif
 
-    static FpuState   sState;
-    static u32        sStateKernelSize;
-    static u32        sStateUserSize;
-    static u32        sMxcsrMask;
-    static x_features sXFeaturesMask;
-    static u32        sXFeaturesOffsets[XFEATURE_MAX];
-    static u32        sXFeaturesCompactedOffsets[XFEATURE_MAX];
-    static u32        sXFeaturesSizes[XFEATURE_MAX];
+    static FpuState              sState;
+    static u32                   sStateKernelSize;
+    static u32                   sStateUserSize;
+    static u32                   sMxcsrMask;
+    static x_features_type_flags sXFeaturesMask;
+    static u32                   sXFeaturesOffsets[XFEATURE_MAX];
+    static u32                   sXFeaturesCompactedOffsets[XFEATURE_MAX];
+    static u32                   sXFeaturesSizes[XFEATURE_MAX];
 };
 
 

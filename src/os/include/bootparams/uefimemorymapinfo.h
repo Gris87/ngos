@@ -3,17 +3,17 @@
 
 
 
-
 #include <ngos/types.h>
+#include <uefi/uefimemorydescriptor.h>
 
 
 
 struct UefiMemoryMapInfo
 {
-    u64 address;
-    u64 size;
-    u64 descriptorSize;
-    u32 descriptorVersion;
+    UefiMemoryDescriptor *map;
+    u64                   size;
+    u64                   descriptorSize;
+    u32                   descriptorVersion;
 };
 
 

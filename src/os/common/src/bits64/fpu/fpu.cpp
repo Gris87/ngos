@@ -21,14 +21,14 @@
 
 
 
-FpuState   FPU::sState;
-u32        FPU::sStateKernelSize;
-u32        FPU::sStateUserSize;
-u32        FPU::sMxcsrMask;
-x_features FPU::sXFeaturesMask;
-u32        FPU::sXFeaturesOffsets[XFEATURE_MAX];
-u32        FPU::sXFeaturesCompactedOffsets[XFEATURE_MAX];
-u32        FPU::sXFeaturesSizes[XFEATURE_MAX];
+FpuState              FPU::sState;
+u32                   FPU::sStateKernelSize;
+u32                   FPU::sStateUserSize;
+u32                   FPU::sMxcsrMask;
+x_features_type_flags FPU::sXFeaturesMask;
+u32                   FPU::sXFeaturesOffsets[XFEATURE_MAX];
+u32                   FPU::sXFeaturesCompactedOffsets[XFEATURE_MAX];
+u32                   FPU::sXFeaturesSizes[XFEATURE_MAX];
 
 
 
@@ -254,12 +254,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::AVX)
             &&
-            (sXFeaturesMask & (x_features)XFeature::AVX)
+            (sXFeaturesMask & (x_features_type_flags)XFeature::AVX)
            )
         {
             COMMON_LVV(("Disabling XFeature::AVX since X86Feature::AVX not supported"));
 
-            sXFeaturesMask &= ~(x_features)XFeature::AVX;
+            sXFeaturesMask &= ~(x_features_type_flags)XFeature::AVX;
         }
 
 
@@ -267,12 +267,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::MPX)
             &&
-            (sXFeaturesMask & ((x_features)XFeature::MPX_BOUND_REGISTERS | (x_features)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS))
+            (sXFeaturesMask & ((x_features_type_flags)XFeature::MPX_BOUND_REGISTERS | (x_features_type_flags)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS))
            )
         {
             COMMON_LVV(("Disabling XFeature::MPX_BOUND_REGISTERS and XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS since X86Feature::MPX not supported"));
 
-            sXFeaturesMask &= ~((x_features)XFeature::MPX_BOUND_REGISTERS | (x_features)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS);
+            sXFeaturesMask &= ~((x_features_type_flags)XFeature::MPX_BOUND_REGISTERS | (x_features_type_flags)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS);
         }
 
 
@@ -280,12 +280,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::AVX512F)
             &&
-            (sXFeaturesMask & ((x_features)XFeature::AVX512_OPMASK | (x_features)XFeature::AVX512_ZMM_FROM_0_TO_15 | (x_features)XFeature::AVX512_ZMM_FROM_16_TO_31))
+            (sXFeaturesMask & ((x_features_type_flags)XFeature::AVX512_OPMASK | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_0_TO_15 | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_16_TO_31))
            )
         {
             COMMON_LVV(("Disabling XFeature::AVX512_OPMASK, XFeature::AVX512_ZMM_FROM_0_TO_15 and XFeature::AVX512_ZMM_FROM_16_TO_31 since X86Feature::AVX512F not supported"));
 
-            sXFeaturesMask &= ~((x_features)XFeature::AVX512_OPMASK | (x_features)XFeature::AVX512_ZMM_FROM_0_TO_15 | (x_features)XFeature::AVX512_ZMM_FROM_16_TO_31);
+            sXFeaturesMask &= ~((x_features_type_flags)XFeature::AVX512_OPMASK | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_0_TO_15 | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_16_TO_31);
         }
 
 
@@ -293,12 +293,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::INTEL_PT)
             &&
-            (sXFeaturesMask & (x_features)XFeature::PT)
+            (sXFeaturesMask & (x_features_type_flags)XFeature::PT)
            )
         {
             COMMON_LVV(("Disabling XFeature::PT since X86Feature::INTEL_PT not supported"));
 
-            sXFeaturesMask &= ~(x_features)XFeature::PT;
+            sXFeaturesMask &= ~(x_features_type_flags)XFeature::PT;
         }
 
 
@@ -306,12 +306,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::PKU)
             &&
-            (sXFeaturesMask & (x_features)XFeature::PKRU)
+            (sXFeaturesMask & (x_features_type_flags)XFeature::PKRU)
            )
         {
             COMMON_LVV(("Disabling XFeature::PKRU since X86Feature::PKU not supported"));
 
-            sXFeaturesMask &= ~(x_features)XFeature::PKRU;
+            sXFeaturesMask &= ~(x_features_type_flags)XFeature::PKRU;
         }
     }
 

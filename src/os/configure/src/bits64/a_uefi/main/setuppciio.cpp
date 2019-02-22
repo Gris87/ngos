@@ -119,7 +119,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size, 
 
     for (i64 i = 0; i < count; ++i)
     {
-        uefi_handle         handle = pciIoHandles[i];
+        uefi_handle        handle = pciIoHandles[i];
         UefiPciIoProtocol *pci    = 0;
 
 
@@ -303,8 +303,8 @@ NgosStatus setupPciIo(BootParams *params)
 
 
 
-    UefiGuid    pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
-    u64        pciIoSize     = 0;
+    UefiGuid     pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
+    u64          pciIoSize     = 0;
     uefi_handle *pciIoHandles  = 0;
 
 

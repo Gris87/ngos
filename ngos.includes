@@ -28,4 +28,3 @@ tools/qt/gdb_debug/build/gen/
 tools/qt/image_builder/
 tools/qt/include/
 tools/qt/test_verifier/
-src/os/include/uefi

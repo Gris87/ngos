@@ -7,11 +7,11 @@
 
 
 
-enum class TaskState: i32
+enum class TaskState: u8
 {
-    UNRUNNABLE = -1,
-    RUNNABLE   = 0,
-    STOPPED    = 1
+    UNRUNNABLE,
+    RUNNABLE,
+    STOPPED
 };
 
 
