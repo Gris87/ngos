@@ -25,8 +25,8 @@ TEST_CASES(section1, bits64_other_memorymanager_memorymanager);
         TEST_ASSERT_EQUALS(MemoryManager::init(), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(memempty(&MemoryManager::sMemoryBlock,     sizeof(MemoryManager::sMemoryBlock)),     false);
-        TEST_ASSERT_EQUALS(memempty(&MemoryManager::sMemoryRegions,   sizeof(MemoryManager::sMemoryRegions)),   false);
-        TEST_ASSERT_EQUALS(memempty(&MemoryManager::sReservedRegions, sizeof(MemoryManager::sReservedRegions)), false);
+        TEST_ASSERT_EQUALS(memempty(&MemoryManager::sMemoryRegions,   sizeof(MemoryManager::sMemoryRegions)),   true);
+        TEST_ASSERT_EQUALS(memempty(&MemoryManager::sReservedRegions, sizeof(MemoryManager::sReservedRegions)), true);
     }
     TEST_CASE_END();
 
@@ -3262,8 +3262,8 @@ TEST_CASES(section1, bits64_other_memorymanager_memorymanager);
         TEST_ASSERT_EQUALS(memempty(&MemoryManager::sReservedRegions, sizeof(MemoryManager::sReservedRegions)), false);
 
         TEST_ASSERT_EQUALS(memzero(&MemoryManager::sMemoryBlock,     sizeof(MemoryManager::sMemoryBlock)),     &MemoryManager::sMemoryBlock);
-        TEST_ASSERT_EQUALS(memzero(&MemoryManager::sMemoryRegions,   sizeof(MemoryManager::sMemoryRegions)),   &MemoryManager::sMemoryBlock);
-        TEST_ASSERT_EQUALS(memzero(&MemoryManager::sReservedRegions, sizeof(MemoryManager::sReservedRegions)), &MemoryManager::sMemoryBlock);
+        TEST_ASSERT_EQUALS(memzero(&MemoryManager::sMemoryRegions,   sizeof(MemoryManager::sMemoryRegions)),   &MemoryManager::sMemoryRegions);
+        TEST_ASSERT_EQUALS(memzero(&MemoryManager::sReservedRegions, sizeof(MemoryManager::sReservedRegions)), &MemoryManager::sReservedRegions);
     }
     TEST_CASE_END();
 }

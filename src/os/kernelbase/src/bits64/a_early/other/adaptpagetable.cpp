@@ -399,14 +399,14 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    pgd[pgdIndex(imageLocation)].pgd = (u64)p4d      + KERNEL_PAGE_TABLE_FLAGS;
-    p4d[pgdIndex(imageLocation)].p4d = (u64)pud      + KERNEL_PAGE_TABLE_FLAGS;
+    pgd[pgdIndex(imageLocation)].pgd = (u64)p4d       | KERNEL_PAGE_TABLE_FLAGS;
+    p4d[pgdIndex(imageLocation)].p4d = (u64)pud       | KERNEL_PAGE_TABLE_FLAGS;
 #else
-    pgd[pgdIndex(imageLocation)].pgd = (u64)pud      + KERNEL_PAGE_TABLE_FLAGS;
+    pgd[pgdIndex(imageLocation)].pgd = (u64)pud       | KERNEL_PAGE_TABLE_FLAGS;
 #endif
 
-    pud[pudIndex(imageLocation)].pud = (u64)pmd      + KERNEL_PAGE_TABLE_FLAGS;
-    pmd[pmdIndex(imageLocation)].pmd = imageLocation + KERNEL_PAGE_LARGE_EXEC_FLAGS - PAGE_FLAG_GLOBAL;
+    pud[pudIndex(imageLocation)].pud = (u64)pmd       | KERNEL_PAGE_TABLE_FLAGS;
+    pmd[pmdIndex(imageLocation)].pmd = (imageLocation | KERNEL_PAGE_LARGE_EXEC_FLAGS) & ~PAGE_FLAG_GLOBAL;
 
 
 

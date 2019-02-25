@@ -72,8 +72,8 @@ void QemuReaderThread::parseBootParamsAllocated(const QString &line)
 
         if (spaceParts.length() == 2)
         {
-            QString size    = spaceParts.at(0).trimmed();
-            QString address = spaceParts.at(1).trimmed();
+            QString address = spaceParts.at(0).trimmed();
+            QString size    = spaceParts.at(1).trimmed();
 
             if (address.startsWith("0x"))
             {
@@ -111,8 +111,8 @@ void QemuReaderThread::parseKernelAllocated(const QString &line)
 
         if (spaceParts.length() == 2)
         {
-            QString size    = spaceParts.at(0).trimmed();
-            QString address = spaceParts.at(1).trimmed();
+            QString address = spaceParts.at(0).trimmed();
+            QString size    = spaceParts.at(1).trimmed();
 
             if (address.startsWith("0x"))
             {

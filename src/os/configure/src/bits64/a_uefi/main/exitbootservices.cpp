@@ -169,7 +169,7 @@ NgosStatus exitBootServices(BootParams *params)
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Allocated pool(%u, 0x%p) for memory map entries", size, memoryMapEntries));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for memory map entries", memoryMapEntries, size));
 
 
 

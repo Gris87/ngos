@@ -186,7 +186,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
                 continue;
             }
 
-            UEFI_LVV(("Queried mode(%d) with info(%u, 0x%p) for protocol(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", j, sizeOfInfo, info, gop));
+            UEFI_LVV(("Queried mode(%d) with info(0x%p, %u) for protocol(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", j, info, sizeOfInfo, gop));
 
 
 
@@ -319,7 +319,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Allocated pool(%u, 0x%p) for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", size, graphicsHandles));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles, size));
 
 
 

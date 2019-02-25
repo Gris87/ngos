@@ -363,7 +363,7 @@ UefiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
             return UefiStatus::ABORTED;
         }
 
-        UEFI_LVV(("Allocated pool(%u, 0x%p) for memory descriptor", *map->memoryMapSize, memoryDescriptor));
+        UEFI_LVV(("Allocated pool(0x%p, %u) for memory descriptor", memoryDescriptor, *map->memoryMapSize));
 
 
 

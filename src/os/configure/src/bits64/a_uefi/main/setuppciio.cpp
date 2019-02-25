@@ -31,7 +31,7 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Allocated pool(%u, 0x%p) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", size, rom, pci));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom, size, pci));
 
 
 
@@ -262,7 +262,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size)
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Allocated pool(%u, 0x%p) for handles for UEFI_PCI_IO_PROTOCOL", size, pciIoHandles));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for handles for UEFI_PCI_IO_PROTOCOL", pciIoHandles, size));
 
 
 
