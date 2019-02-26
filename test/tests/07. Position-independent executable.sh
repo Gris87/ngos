@@ -11,6 +11,7 @@
 WORKING_DIR=`pwd`
 BUILD_CONFIG=include/buildconfig.h
 BUILD_LOG=/tmp/ngos_test.log
+BUILD_CFG_BACKUP=/tmp/ngos_buildconfig2.h
 TEMP_LOG=/tmp/ngos_kernel.log
 GDB_FIFO=/tmp/ngos_gdb_fifo
 GDB_LOG=/tmp/ngos_gdb.log
@@ -39,15 +40,19 @@ echo ""
 
 
 cd ../../
+cp ${BUILD_CONFIG} ${BUILD_CFG_BACKUP}
 
 tools/qt/build_config_maker/build/build_config_maker ${BUILD_CONFIG} NGOS_BUILD_X86_64_VECTORIZATION_MODE=OPTION_X86_64_VECTORIZATION_MODE_NONE NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD=OPTION_X86_64_FUSED_MULTIPLY_ADD_NONE > ${BUILD_LOG} 2>&1
 make test-debug >> ${BUILD_LOG} 2>&1
 
 if [ $? -ne 0 ]; then
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
+
     cat ${BUILD_LOG} 2>&1
     exit 1
 fi
 
+cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
 cd ${WORKING_DIR}/
 
 
