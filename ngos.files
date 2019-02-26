@@ -633,6 +633,7 @@ src/os/kernelbase/src/bits64/other/uefi/uefi.cpp
 src/os/kernelbase/src/bits64/other/uefi/uefi.h
 src/os/kernelbase/src/main.cpp
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h
+src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/e820/e820.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/ioremap.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/utils.h
 src/os/kernelbase/test/bits64/a_early/sections/section1/bits64/other/memorymanager/memoryblockregion.h

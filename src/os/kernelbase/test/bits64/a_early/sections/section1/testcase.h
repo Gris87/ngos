@@ -5,6 +5,7 @@
 
 #include <buildconfig.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h>
+#include <test/bits64/a_early/sections/section1/bits64/other/e820/e820.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/ioremap/ioremap.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/ioremap/utils.h>
 #include <test/bits64/a_early/sections/section1/bits64/other/memorymanager/memoryblockregion.h>
@@ -29,6 +30,7 @@ NgosStatus startTestSection1()
     INIT_TEST_SECTION();
 
     CALL_TEST_CASES(section1, bits64_other_cpu_cpumask);
+    CALL_TEST_CASES(section1, bits64_other_e820_e820);
     CALL_TEST_CASES(section1, bits64_other_ioremap_ioremap);
     CALL_TEST_CASES(section1, bits64_other_ioremap_utils);
     CALL_TEST_CASES(section1, bits64_other_memorymanager_memoryblockregion);
