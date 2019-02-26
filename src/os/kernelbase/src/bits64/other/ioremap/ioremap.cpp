@@ -1,6 +1,7 @@
 #include "ioremap.h"
 
 #include <pagetable/utils.h>
+#include <src/bits64/memory/memory.h>
 #include <src/bits64/log/assert.h>
 #include <src/bits64/log/log.h>
 #include <src/bits64/other/ioremap/utils.h>
@@ -74,7 +75,7 @@ NgosStatus IORemap::addPmdForFixmap()
 
     PMD *pmd = &fixmap_pagetable_level2[pmdIndex(FIX_ADDRESS_TO_VIRTUAL(FIX_BITMAP_BEGIN))];
 
-    setPmd(pmd, AddressConversion::physicalAddress((pmd_value)&sFixmapPage | USER_PAGE_TABLE_FLAGS));
+    setPmd(pmd, AddressConversion::physicalAddress((pmd_value)&sFixmapPage) | USER_PAGE_TABLE_FLAGS);
 
 
 
@@ -88,14 +89,10 @@ NgosStatus IORemap::addPmdForFixmap()
     }
 #endif
 
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[504].pmd == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[506].pmd != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[507].pmd == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[508].pmd == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[509].pmd == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[510].pmd == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[511].pmd == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd               != 0,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(fixmap_pagetable_level2[506].pmd               != 0,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION);
 
 
 
