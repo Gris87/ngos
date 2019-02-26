@@ -24,7 +24,8 @@ public:
 #else
 private:
 #endif
-    static NgosStatus updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType); // TEST: NO
+    static NgosStatus insertRangeInTable(E820Table *table, u64 index, u64 start, u64 size, MemoryMapEntryType type);
+    static NgosStatus updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType);
 
     static E820Table sTable;
     static E820Table sTableKExec;

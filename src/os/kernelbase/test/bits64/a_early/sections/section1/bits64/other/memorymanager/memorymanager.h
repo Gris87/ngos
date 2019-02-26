@@ -32,6 +32,468 @@ TEST_CASES(section1, bits64_other_memorymanager_memorymanager);
 
 
 
+    TEST_CASE("add()");
+    {
+        TEST_ASSERT_EQUALS(MemoryManager::add(50000, 2000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     1);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 2000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(90000, 5000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     2);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 7000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(10000, 3000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     3);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 10000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(30000, 1000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     4);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 11000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(70000, 4000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 15000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(45000, 6000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 20000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  45000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   7000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(51000, 4000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 23000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  45000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(47000, 2000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 23000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  45000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::add(500, 100000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     1);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 100000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  500);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   100000);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("reserve()");
+    {
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(50000, 2000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     1);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 2000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(90000, 5000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     2);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 7000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(10000, 3000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     3);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 10000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(30000, 1000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     4);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 11000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(70000, 4000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 15000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  50000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   2000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(45000, 6000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 20000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  45000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   7000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(51000, 4000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 23000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  45000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(47000, 2000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 23000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  45000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   10000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
+
+
+
+        TEST_ASSERT_EQUALS(MemoryManager::reserve(500, 100000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     1);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
+        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 100000);
+
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  500);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   100000);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
+        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("insertRegion()");
     {
         MemoryBlockType   blockType;
@@ -2788,468 +3250,6 @@ TEST_CASES(section1, bits64_other_memorymanager_memorymanager);
         TEST_ASSERT_EQUALS(blockRegions[4].size,   1000);
         TEST_ASSERT_EQUALS(blockRegions[4].flags,  4);
         TEST_ASSERT_EQUALS(blockRegions[4].nodeId, 123);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("add()");
-    {
-        TEST_ASSERT_EQUALS(MemoryManager::add(50000, 2000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     1);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 2000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(90000, 5000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     2);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 7000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(10000, 3000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     3);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 10000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(30000, 1000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     4);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 11000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(70000, 4000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 15000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(45000, 6000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 20000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  45000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   7000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(51000, 4000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 23000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  45000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(47000, 2000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 23000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].start,  45000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].size,   10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::add(500, 100000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.count,     1);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.memory.totalSize, 100000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].start,  500);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].size,   100000);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryRegions[0].nodeId, 0x400);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("reserve()");
-    {
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(50000, 2000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     1);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 2000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(90000, 5000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     2);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 7000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(10000, 3000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     3);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 10000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(30000, 1000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     4);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 11000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(70000, 4000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 15000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  50000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   2000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(45000, 6000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 20000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  45000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   7000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(51000, 4000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 23000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  45000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(47000, 2000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     5);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 23000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   3000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].start,  30000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].size,   1000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[1].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].start,  45000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].size,   10000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[2].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].start,  70000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].size,   4000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[3].nodeId, 0x400);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].start,  90000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].size,   5000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[4].nodeId, 0x400);
-
-
-
-        TEST_ASSERT_EQUALS(MemoryManager::reserve(500, 100000), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.count,     1);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.max,       128);
-        TEST_ASSERT_EQUALS(MemoryManager::sMemoryBlock.reserved.totalSize, 100000);
-
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].start,  500);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].size,   100000);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].flags,  0);
-        TEST_ASSERT_EQUALS(MemoryManager::sReservedRegions[0].nodeId, 0x400);
     }
     TEST_CASE_END();
 

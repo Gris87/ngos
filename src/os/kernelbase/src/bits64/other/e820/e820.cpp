@@ -239,6 +239,36 @@ const char* E820::getTypeName(MemoryMapEntryType type)
     }
 }
 
+NgosStatus E820::insertRangeInTable(E820Table *table, u64 index, u64 start, u64 size, MemoryMapEntryType type)
+{
+    COMMON_LT((" | table = 0x%p, index = %u, start = 0x%016lX, size = 0x%016lX, type = %u", table, index, start, size, type));
+
+    COMMON_ASSERT(table,                          "table is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(table->count < E820_TABLE_SIZE, "table is full",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(index <= table->count,          "index is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(start,                          "start is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,                       "size is zero",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start,           "size is invalid",  NgosStatus::ASSERTION);
+
+
+
+    memmove(&table->entries[index + 1], &table->entries[index], (table->count - index) * sizeof(MemoryMapEntry));
+
+
+
+    MemoryMapEntry &entry = table->entries[index];
+
+    entry.start = start;
+    entry.size  = size;
+    entry.type  = type;
+
+    ++table->count;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
     COMMON_LT((" | table = 0x%p, start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", table, start, size, oldType, newType));

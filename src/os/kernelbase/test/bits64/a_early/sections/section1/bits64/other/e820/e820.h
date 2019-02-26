@@ -19,6 +19,22 @@ TEST_CASES(section1, bits64_other_e820_e820);
     {
         E820Table table;
 
+        table.count = 0;
+
+        TEST_ASSERT_EQUALS(E820::insertRangeInTable(&table, 0, 0x2000, 0x1000, MemoryMapEntryType::RAM), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(table.count,                                                                  1);
+        TEST_ASSERT_EQUALS(table.entries[0].start,                                                       0x2000);
+        TEST_ASSERT_EQUALS(table.entries[0].size,                                                        0x1000);
+        TEST_ASSERT_EQUALS(table.entries[0].type,                                                        MemoryMapEntryType::RAM);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("updateRangeInTable()");
+    {
+        E820Table table;
+
         table.count = 1;
         table.entries[0].start = 0x01000000;
         table.entries[0].size  = 0x00500000;
