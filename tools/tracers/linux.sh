@@ -52,8 +52,6 @@ NEXTI_FILTERS=(
     -e "<__gunzip>"
     -e "<_get_random_bytes>"
     -e "<printk>"
-    -e "<vprintk_func>"
-    -e "<print_xstate_features>"
     -e "<sort>"
 )
 
@@ -304,6 +302,10 @@ do
 
     if [ "`echo "${FILTERING_DATA}" | grep "${NEXTI_FILTERS[@]}"`" != "" ]; then
         execute_gdb_command "nexti" > /dev/null 2>&1
+
+        if [ "`echo "${INSTRUCTION}" | grep jmpq`" != "" ]; then
+            execute_gdb_command "finish" > /dev/null 2>&1
+        fi
     elif [ "`echo "${FILTERING_DATA}" | grep "${NEXT_FILTERS[@]}"`" != "" ]; then
         NEXT_INSTRUCTION=`execute_gdb_command "x/2i \\\$pc" | tail -n 1`
         NEXT_INSTRUCTION_ADDRESS_NICE=`echo "${NEXT_INSTRUCTION}" | cut -d : -f 1 | cut -c 4-`
