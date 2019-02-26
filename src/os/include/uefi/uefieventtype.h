@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIEVENT_H
-#define UEFI_UEFIEVENT_H
+#ifndef UEFI_UEFIEVENTTYPE_H
+#define UEFI_UEFIEVENTTYPE_H
 
 
 
@@ -14,4 +14,4 @@ enum class UefiEventType: u32
 
 
 
-#endif // UEFI_UEFIEVENT_H
+#endif // UEFI_UEFIEVENTTYPE_H

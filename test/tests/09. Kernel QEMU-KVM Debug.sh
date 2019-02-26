@@ -9,6 +9,7 @@
 
 
 WORKING_DIR=`pwd`
+BUILD_CONFIG=include/buildconfig.h
 BUILD_LOG=/tmp/ngos_test.log
 TEMP_LOG=/tmp/ngos_kernel.log
 LOG_PATH=../../tools/vm/qemu-kvm/logs/NGOS_dev.log
@@ -36,7 +37,8 @@ echo ""
 
 cd ../../
 
-make test-debug > ${BUILD_LOG} 2>&1
+tools/qt/build_config_maker/build/build_config_maker ${BUILD_CONFIG} NGOS_BUILD_X86_64_VECTORIZATION_MODE=OPTION_X86_64_VECTORIZATION_MODE_AVX2 NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD=OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3 > ${BUILD_LOG} 2>&1
+make test-debug >> ${BUILD_LOG} 2>&1
 
 if [ $? -ne 0 ]; then
     cat ${BUILD_LOG} 2>&1

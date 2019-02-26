@@ -1,9 +1,9 @@
 #include "ioremap.h"
 
 #include <pagetable/utils.h>
-#include <src/bits64/memory/memory.h>
 #include <src/bits64/log/assert.h>
 #include <src/bits64/log/log.h>
+#include <src/bits64/memory/memory.h>
 #include <src/bits64/other/ioremap/utils.h>
 #include <src/bits64/other/pagetable/addressconversion.h>
 
@@ -89,10 +89,10 @@ NgosStatus IORemap::addPmdForFixmap()
     }
 #endif
 
-    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
     COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd               != 0,    NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(fixmap_pagetable_level2[506].pmd               != 0,    NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
 
 
 

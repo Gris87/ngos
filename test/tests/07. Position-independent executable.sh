@@ -9,6 +9,7 @@
 
 
 WORKING_DIR=`pwd`
+BUILD_CONFIG=include/buildconfig.h
 BUILD_LOG=/tmp/ngos_test.log
 TEMP_LOG=/tmp/ngos_kernel.log
 GDB_FIFO=/tmp/ngos_gdb_fifo
@@ -39,7 +40,8 @@ echo ""
 
 cd ../../
 
-make test-debug > ${BUILD_LOG} 2>&1
+tools/qt/build_config_maker/build/build_config_maker ${BUILD_CONFIG} NGOS_BUILD_X86_64_VECTORIZATION_MODE=OPTION_X86_64_VECTORIZATION_MODE_NONE NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD=OPTION_X86_64_FUSED_MULTIPLY_ADD_NONE > ${BUILD_LOG} 2>&1
+make test-debug >> ${BUILD_LOG} 2>&1
 
 if [ $? -ne 0 ]; then
     cat ${BUILD_LOG} 2>&1
@@ -257,7 +259,7 @@ echo "(gdb) dump binary memory ${MEMORY_DUMP} 0 0x000A0000"
 echo "dump binary memory ${MEMORY_DUMP} 0 0x000A0000" > ${GDB_FIFO}
 sleep 10
 
-hexdump -C ${MEMORY_DUMP} | grep -v "^00001" | grep -v "^0009f000" | grep -v "^\*$" > ${MEMORY_DUMP}.hex
+hexdump -C ${MEMORY_DUMP} | grep -v "^00001" | grep -v "^0009f" | grep -v "^\*$" > ${MEMORY_DUMP}.hex
 
 
 
