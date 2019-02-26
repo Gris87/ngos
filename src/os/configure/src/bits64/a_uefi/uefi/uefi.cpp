@@ -529,7 +529,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
     for (i64 i = 0; i < count; ++i)
     {
         UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)memoryMap + (i * descriptorSize));
-        UEFI_LVV(("Handling memory descriptor 0x%p", memoryDescriptor));
+        UEFI_LVV(("Handling memory descriptor #%d at address 0x%p", i, memoryDescriptor));
 
         UEFI_TEST_ASSERT(memoryDescriptor, UefiStatus::ABORTED);
 

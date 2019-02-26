@@ -5,7 +5,7 @@
 
 #include <buildconfig.h>
 #include <ngos/status.h>
-#include <uefi/uefimemorydescriptor.h>
+#include <bootparams/uefimemorymapinfo.h>
 
 
 
@@ -19,7 +19,7 @@ public:
 #else
 private:
 #endif
-    static UefiMemoryDescriptor *sMemoryMap;
+    static UefiMemoryMapInfo sMemoryMap;
 };
 
 
