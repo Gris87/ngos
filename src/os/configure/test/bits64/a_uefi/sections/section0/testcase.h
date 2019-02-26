@@ -25,6 +25,7 @@
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/string/string.h"
 #include "test/bits64/a_uefi/sections/section0/__include/asm/bitutils.h"
 #include "test/bits64/a_uefi/sections/section0/__include/asm/instructions.h"
+#include "test/bits64/a_uefi/sections/section0/__include/bootparams/memorymapentry.h"
 #include "test/bits64/a_uefi/sections/section0/__include/elf/rela.h"
 #include "test/bits64/a_uefi/sections/section0/__include/elf/symbol.h"
 #include "test/bits64/a_uefi/sections/section0/__include/ngos/linkage.h"
@@ -75,6 +76,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __common_bits64_string_string);
     CALL_TEST_CASES(section0, __include_asm_bitutils);
     CALL_TEST_CASES(section0, __include_asm_instructions);
+    CALL_TEST_CASES(section0, __include_bootparams_memorymapentry);
     CALL_TEST_CASES(section0, __include_elf_rela);
     CALL_TEST_CASES(section0, __include_elf_symbol);
     CALL_TEST_CASES(section0, __include_ngos_linkage);

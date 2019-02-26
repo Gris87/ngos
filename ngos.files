@@ -450,6 +450,7 @@ src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/random/ran
 src/os/configure/test/bits64/a_uefi/sections/section0/__common/bits64/string/string.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/asm/bitutils.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/asm/instructions.h
+src/os/configure/test/bits64/a_uefi/sections/section0/__include/bootparams/memorymapentry.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/elf/rela.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/elf/symbol.h
 src/os/configure/test/bits64/a_uefi/sections/section0/__include/ngos/linkage.h
@@ -570,6 +571,8 @@ src/os/kernelbase/src/bits64/a_early/early/earlylog.h
 src/os/kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h
 src/os/kernelbase/src/bits64/a_early/main/disableirq.cpp
 src/os/kernelbase/src/bits64/a_early/main/disableirq.h
+src/os/kernelbase/src/bits64/a_early/main/reservepciromimages.cpp
+src/os/kernelbase/src/bits64/a_early/main/reservepciromimages.h
 src/os/kernelbase/src/bits64/a_early/main/setupbootparams.cpp
 src/os/kernelbase/src/bits64/a_early/main/setupbootparams.h
 src/os/kernelbase/src/bits64/a_early/main/setupcr4shadow.cpp

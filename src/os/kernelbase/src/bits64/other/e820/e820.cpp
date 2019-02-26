@@ -49,7 +49,7 @@ NgosStatus E820::init()
 
         for (i64 i = 0; i < (i64)sTable.count; ++i)
         {
-            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTable.entries[i].type), sTable.entries[i].address, sTable.entries[i].address + sTable.entries[i].size));
+            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTable.entries[i].type), sTable.entries[i].start, sTable.entries[i].end()));
         }
 
         COMMON_LVVV(("-------------------------------------"));
@@ -61,7 +61,7 @@ NgosStatus E820::init()
 
         for (i64 i = 0; i < (i64)sTableKExec.count; ++i)
         {
-            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableKExec.entries[i].type), sTableKExec.entries[i].address, sTableKExec.entries[i].address + sTableKExec.entries[i].size));
+            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableKExec.entries[i].type), sTableKExec.entries[i].start, sTableKExec.entries[i].end()));
         }
 
         COMMON_LVVV(("-------------------------------------"));
@@ -73,7 +73,7 @@ NgosStatus E820::init()
 
         for (i64 i = 0; i < (i64)sTableFirmware.count; ++i)
         {
-            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableFirmware.entries[i].type), sTableFirmware.entries[i].address, sTableFirmware.entries[i].address + sTableFirmware.entries[i].size));
+            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableFirmware.entries[i].type), sTableFirmware.entries[i].start, sTableFirmware.entries[i].end()));
         }
 
         COMMON_LVVV(("-------------------------------------"));
@@ -187,6 +187,32 @@ NgosStatus E820::init()
     return NgosStatus::OK;
 }
 
+NgosStatus E820::updateRange(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
+{
+    COMMON_LT((" | start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", start, size, oldType, newType));
+
+    COMMON_ASSERT(start,                "start is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start, "size is invalid", NgosStatus::ASSERTION);
+
+
+
+    return updateRangeInTable(&sTable, start, size, oldType, newType);
+}
+
+NgosStatus E820::updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
+{
+    COMMON_LT((" | start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", start, size, oldType, newType));
+
+    COMMON_ASSERT(start,                "start is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start, "size is invalid", NgosStatus::ASSERTION);
+
+
+
+    return updateRangeInTable(&sTableKExec, start, size, oldType, newType);
+}
+
 const char* E820::getTypeName(MemoryMapEntryType type)
 {
     COMMON_LT((" | type = %u", type));
@@ -195,12 +221,13 @@ const char* E820::getTypeName(MemoryMapEntryType type)
 
     switch (type)
     {
-        case MemoryMapEntryType::RAM:               return "RAM";
-        case MemoryMapEntryType::ACPI:              return "ACPI";
-        case MemoryMapEntryType::NVS:               return "NVS";
-        case MemoryMapEntryType::PERSISTENT_MEMORY: return "PERSISTENT_MEMORY";
-        case MemoryMapEntryType::UNUSABLE:          return "UNUSABLE";
-        case MemoryMapEntryType::RESERVED:          return "RESERVED";
+        case MemoryMapEntryType::RAM:                return "RAM";
+        case MemoryMapEntryType::ACPI:               return "ACPI";
+        case MemoryMapEntryType::NVS:                return "NVS";
+        case MemoryMapEntryType::PERSISTENT_MEMORY:  return "PERSISTENT_MEMORY";
+        case MemoryMapEntryType::UNUSABLE:           return "UNUSABLE";
+        case MemoryMapEntryType::RESERVED:           return "RESERVED";
+        case MemoryMapEntryType::RESERVED_BY_KERNEL: return "RESERVED_BY_KERNEL";
 
         default:
         {
@@ -210,4 +237,55 @@ const char* E820::getTypeName(MemoryMapEntryType type)
         }
         break;
     }
+}
+
+NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
+{
+    COMMON_LT((" | table = 0x%p, start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", table, start, size, oldType, newType));
+
+    COMMON_ASSERT(start,                "start is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start, "size is invalid", NgosStatus::ASSERTION);
+
+
+
+    u64 left  = 0;
+    u64 right = table->count;
+
+    while (left < right)
+    {
+        u64 middle = (left + right) >> 1; // ">> 1" == "/ 2"
+
+        MemoryMapEntry &entry = table->entries[middle];
+
+
+
+        if (start <= entry.end())
+        {
+            right = middle;
+        }
+        else
+        {
+            left = middle + 1;
+        }
+    }
+
+
+
+    COMMON_LVVV(("left  = %u", left));
+    COMMON_LVVV(("right = %u", right));
+
+    COMMON_TEST_ASSERT(left == right,       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(left < table->count, NgosStatus::ASSERTION);
+
+    AVOID_UNUSED(oldType);
+    AVOID_UNUSED(newType);
+
+
+
+
+
+
+
+    return NgosStatus::OK;
 }

@@ -4,6 +4,7 @@
 #include <src/bits64/a_early/early/earlyassert.h>
 #include <src/bits64/a_early/early/earlylog.h>
 #include <src/bits64/a_early/main/disableirq.h>
+#include <src/bits64/a_early/main/reservepciromimages.h>
 #include <src/bits64/a_early/main/setupbootparams.h>
 #include <src/bits64/a_early/main/setupcr4shadow.h>
 #include <src/bits64/a_early/main/setupe820tables.h>
@@ -102,6 +103,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(setupUefiMemoryMap());
     EARLY_LI(("Setup UEFI memory map completed"));
+
+    EARLY_ASSERT_EXECUTION(reservePciRomImages());
+    EARLY_LI(("Memory reserved for PCI ROM images"));
 
 
 

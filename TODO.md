@@ -1,6 +1,7 @@
 TODO List
 =========
 
+- [ ] Move common and kernelbase folder under shared folder
 - [ ] Complete with interruptions
 - [ ] Implement graphics for kernel
 - [ ] Per CPU?

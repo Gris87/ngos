@@ -14,7 +14,8 @@ enum class MemoryMapEntryType: u8
     NVS,
     PERSISTENT_MEMORY,
     UNUSABLE,
-    RESERVED
+    RESERVED,
+    RESERVED_BY_KERNEL
 };
 
 

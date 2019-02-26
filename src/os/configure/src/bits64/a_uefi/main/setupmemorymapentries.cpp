@@ -115,7 +115,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
             &&
             previous->type == entryType
             &&
-            previous->address + previous->size == memoryDescriptor->physicalStart
+            previous->end() == memoryDescriptor->physicalStart
            )
         {
             previous->size += memoryDescriptor->numberOfPages * PAGE_SIZE;
@@ -124,9 +124,9 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         {
             MemoryMapEntry *entry = &memoryMapEntries[memoryMapEntriesCount];
 
-            entry->address = memoryDescriptor->physicalStart;
-            entry->size    = memoryDescriptor->numberOfPages * PAGE_SIZE;
-            entry->type    = entryType;
+            entry->start = memoryDescriptor->physicalStart;
+            entry->size  = memoryDescriptor->numberOfPages * PAGE_SIZE;
+            entry->type  = entryType;
 
             ++memoryMapEntriesCount;
 
@@ -172,7 +172,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
         for (i64 i = 0; i < (i64)params->memoryMapEntriesCount; ++i)
         {
-            UEFI_LVVV(("#%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].address, params->memoryMapEntries[i].address + params->memoryMapEntries[i].size));
+            UEFI_LVVV(("#%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
         }
 
         UEFI_LVVV(("-------------------------------------"));

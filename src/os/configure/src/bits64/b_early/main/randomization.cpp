@@ -324,7 +324,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
 
 
-    u64 entryAddress = memoryMapEntry->address;
+    u64 entryAddress = memoryMapEntry->start;
     u64 allowedSize  = memoryMapEntry->size;
 
 
@@ -480,7 +480,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
         for (i64 i = 0; i < (i64)params->memoryMapEntriesCount; ++i)
         {
-            EARLY_LVVV(("#%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].address, params->memoryMapEntries[i].address + params->memoryMapEntries[i].size));
+            EARLY_LVVV(("#%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
         }
 
         EARLY_LVVV(("-------------------------------------"));
@@ -514,7 +514,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
     for (i64 i = randomId; i >= 0; --i)
     {
-        EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].address, params->memoryMapEntries[i].address + params->memoryMapEntries[i].size));
+        EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
 
         if (findRandomPhysicalAddressInMemoryMapEntry(&params->memoryMapEntries[i], params, unavailableMemoryAreas, imageSize, address) == NgosStatus::OK)
         {
@@ -526,7 +526,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
     for (i64 i = randomId + 1; i < (i64)params->memoryMapEntriesCount; ++i)
     {
-        EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].address, params->memoryMapEntries[i].address + params->memoryMapEntries[i].size));
+        EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
 
         if (findRandomPhysicalAddressInMemoryMapEntry(&params->memoryMapEntries[i], params, unavailableMemoryAreas, imageSize, address) == NgosStatus::OK)
         {

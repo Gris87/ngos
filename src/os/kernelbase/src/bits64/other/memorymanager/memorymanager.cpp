@@ -179,6 +179,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
     COMMON_ASSERT(type,                   "type is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0,               "size is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start,   "size is invalid",   NgosStatus::ASSERTION);
     COMMON_ASSERT(nodeId <= MAX_NUMNODES, "nodeId is invalid", NgosStatus::ASSERTION);
 
 
@@ -207,10 +208,6 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 
     u64 end = start + size;
-
-    COMMON_TEST_ASSERT(end > start, NgosStatus::ASSERTION);
-
-
 
     u64 left  = 0;
     u64 right = type->count;
@@ -379,6 +376,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 
 
+    // Collect amount of regions that we can absorb with the new region
     while (
            right < type->count
            &&
@@ -393,6 +391,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 
 
+    // Remove absorbed regions
     if (right > left + 1)
     {
         regionEnd = type->regions[right - 1].end();
@@ -402,13 +401,12 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 
 
+    // Update region location and size
     start = MIN(start, region.start);
     end   = MAX(end,   regionEnd);
 
     u64 newSize     =  end - start;
     type->totalSize += newSize - region.size;
-
-
 
     region.start = start;
     region.size  = newSize;
