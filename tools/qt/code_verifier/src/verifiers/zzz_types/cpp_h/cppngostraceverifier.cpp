@@ -58,7 +58,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
         }
     }
     else
-    if (path.contains("/src/os/kernelbase/"))
+    if (path.contains("/src/os/shared/kernelbase/"))
     {
         if (path.contains("early/"))
         {
@@ -70,7 +70,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
         }
     }
     else
-    if (path.contains("/src/os/common/"))
+    if (path.contains("/src/os/shared/common/"))
     {
         traceCommand = "COMMON_LT";
     }

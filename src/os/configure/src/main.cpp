@@ -1,10 +1,10 @@
 #include <bootparams/bootparams.h>
 #include <buildconfig.h>
+#include <common/src/bits64/assets/assets.h>
+#include <common/src/bits64/cpu/cpu.h>
+#include <common/src/bits64/fpu/fpu.h>
+#include <common/src/bits64/serial/serial.h>
 #include <ngos/linkage.h>
-#include <src/bits64/assets/assets.h>
-#include <src/bits64/cpu/cpu.h>
-#include <src/bits64/fpu/fpu.h>
-#include <src/bits64/serial/serial.h>
 #include <uefi/uefisystemtable.h>
 
 #include "src/bits64/a_uefi/main/exitbootservices.h"

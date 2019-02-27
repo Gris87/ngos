@@ -1,12 +1,12 @@
 #include "setupbootparams.h"
 
+#include <common/src/bits64/memory/memory.h>
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
+#include <kernelbase/src/bits64/other/pagetable/dynamicpagetable.h>
 #include <ngos/linkage.h>
 #include <pagetable/utils.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <src/bits64/memory/memory.h>
-#include <src/bits64/other/bootparams/bootparams.h>
-#include <src/bits64/other/pagetable/dynamicpagetable.h>
 
 
 

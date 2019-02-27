@@ -1,8 +1,8 @@
 #include "setupfirstcpu.h"
 
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <src/bits64/other/cpu/cpumask.h>
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/src/bits64/other/cpu/cpumask.h>
 
 
 

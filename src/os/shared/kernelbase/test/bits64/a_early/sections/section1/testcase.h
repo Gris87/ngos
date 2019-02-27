@@ -1,19 +1,19 @@
-#ifndef OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_TESTCASE_H
-#define OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_TESTCASE_H
+#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_TESTCASE_H
+#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_TESTCASE_H
 
 
 
 #include <buildconfig.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/e820/e820.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/ioremap/ioremap.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/ioremap/utils.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/memorymanager/memoryblockregion.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/memorymanager/memorymanager.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/pagetable/addressconversion.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/pagetable/dynamicpagetable.h>
-#include <test/bits64/a_early/sections/section1/bits64/other/tasks/utils.h>
-#include <test/bits64/a_early/testengine.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/e820/e820.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/ioremap.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/utils.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/memorymanager/memoryblockregion.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/memorymanager/memorymanager.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/addressconversion.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/dynamicpagetable.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/tasks/utils.h>
+#include <kernelbase/test/bits64/a_early/testengine.h>
 
 
 
@@ -48,4 +48,4 @@ NgosStatus startTestSection1()
 
 
 
-#endif // OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_TESTCASE_H
+#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_TESTCASE_H

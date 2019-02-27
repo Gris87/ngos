@@ -1,8 +1,8 @@
 #include "utils.h"
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
 #include <ngos/types.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
 
 
 

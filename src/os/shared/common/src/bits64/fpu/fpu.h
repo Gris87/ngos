@@ -1,10 +1,10 @@
-#ifndef OS_COMMON_SRC_BITS64_FPU_FPU_H
-#define OS_COMMON_SRC_BITS64_FPU_FPU_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_FPU_FPU_H
+#define OS_SHARED_COMMON_SRC_BITS64_FPU_FPU_H
 
 
 
+#include <common/src/bits64/fpu/fpustate.h>
 #include <ngos/status.h>
-#include <src/bits64/fpu/fpustate.h>
 
 
 
@@ -42,4 +42,4 @@ private:
 
 
 
-#endif // OS_COMMON_SRC_BITS64_FPU_FPU_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_FPU_FPU_H

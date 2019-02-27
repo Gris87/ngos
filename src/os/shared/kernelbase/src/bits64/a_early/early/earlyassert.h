@@ -1,13 +1,13 @@
-#ifndef OS_KERNELBASE_SRC_BITS64_A_EARLY_EARLY_EARLYASSERT_H
-#define OS_KERNELBASE_SRC_BITS64_A_EARLY_EARLY_EARLYASSERT_H
+#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_A_EARLY_EARLY_EARLYASSERT_H
+#define OS_SHARED_KERNELBASE_SRC_BITS64_A_EARLY_EARLY_EARLYASSERT_H
 
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/console/console.h>
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/serial/serial.h>
 #include <ngos/status.h>
-#include <src/bits64/console/console.h>
-#include <src/bits64/printf/printf.h>
-#include <src/bits64/serial/serial.h>
 
 
 
@@ -142,4 +142,4 @@
 
 
 
-#endif // OS_KERNELBASE_SRC_BITS64_A_EARLY_EARLY_EARLYASSERT_H
+#endif // OS_SHARED_KERNELBASE_SRC_BITS64_A_EARLY_EARLY_EARLYASSERT_H

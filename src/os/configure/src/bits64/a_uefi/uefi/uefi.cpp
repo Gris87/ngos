@@ -1,8 +1,8 @@
 #include "uefi.h"
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/utils.h>
 #include <page/macros.h>
-#include <src/bits64/printf/printf.h>
 
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"

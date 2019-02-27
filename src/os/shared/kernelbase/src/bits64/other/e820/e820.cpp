@@ -1,10 +1,10 @@
 #include "e820.h"
 
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-#include <src/bits64/memory/memory.h>
-#include <src/bits64/other/bootparams/bootparams.h>
-#include <src/bits64/other/pagetable/dynamicpagetable.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/memory.h>
+#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
+#include <kernelbase/src/bits64/other/pagetable/dynamicpagetable.h>
 
 
 
@@ -300,7 +300,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, Memor
 
     u64 end = start + size;
 
-    COMMON_LVV(("Converting %s => %s for E820 range: 0x%p-0x%p", getTypeName(oldType), getTypeName(newType), start, end));
+    COMMON_LVV(("Converting memory type %s to %s for E820 range: 0x%p-0x%p", getTypeName(oldType), getTypeName(newType), start, end));
 
 
 

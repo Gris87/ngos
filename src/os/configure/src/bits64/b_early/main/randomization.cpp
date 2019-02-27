@@ -1,9 +1,9 @@
 #include "randomization.h"
 
+#include <common/src/bits64/random/random.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <pagetable/utils.h>
-#include <src/bits64/random/random.h>
 
 #include "src/bits64/b_early/early/earlyassert.h"
 #include "src/bits64/b_early/early/earlylog.h"

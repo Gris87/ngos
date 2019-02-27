@@ -1,7 +1,7 @@
 #include "setuppciio.h"
 
 #include <bootparams/pciromimagewithinfo.h>
-#include <src/bits64/memory/memory.h>
+#include <common/src/bits64/memory/memory.h>
 #include <uefi/uefipciioprotocol.h>
 
 #include "src/bits64/a_uefi/other/pciregisters.h"

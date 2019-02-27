@@ -9,11 +9,11 @@ So, in order to obtain logs from the machine we just need to connect to ttyS0 se
 
 In most cases UEFI::print() calls printing to this serial port inside, but after calling UEFI::exitBootServices() there is no more such possibility.
 
-That's why we have our own mechanism for printing characters to default serial port. You may check it in [src/os/common/src/bits64/serial/serial.cpp](../../../src/os/common/src/bits64/serial/serial.cpp) file.<br/>
+That's why we have our own mechanism for printing characters to default serial port. You may check it in [src/os/shared/common/src/bits64/serial/serial.cpp](../../../src/os/shared/common/src/bits64/serial/serial.cpp) file.<br/>
 The only thing that we should to do is to call Serial::initConsole() method at the very beginning of the kernel.
 
-You may use Serial::print methods for your own debugging, but it is more preferable to use special macros defined in [src/os/common/src/bits64/log/log.h](../../../src/os/common/src/bits64/log/log.h) file.<br/>
-If you check [src/os/common/src/bits64/log/log.h](../../../src/os/common/src/bits64/log/log.h) file you may found that there are several macros like:
+You may use Serial::print methods for your own debugging, but it is more preferable to use special macros defined in [src/os/shared/common/src/bits64/log/log.h](../../../src/os/shared/common/src/bits64/log/log.h) file.<br/>
+If you check [src/os/shared/common/src/bits64/log/log.h](../../../src/os/shared/common/src/bits64/log/log.h) file you may found that there are several macros like:
 * COMMON_LF
 * COMMON_LC
 * COMMON_LE
@@ -36,7 +36,7 @@ Each category has its own macros for logging.
 
 Another helpful thing that you may found in NGOS source code is an assertions.
 
-Please check [src/os/common/src/bits64/log/assert.h](../../../src/os/common/src/bits64/log/assert.h) file.
+Please check [src/os/shared/common/src/bits64/log/assert.h](../../../src/os/shared/common/src/bits64/log/assert.h) file.
 
 There are 3 kind of asserts implemented:
 * ASSERT

@@ -1,11 +1,11 @@
-#ifndef OS_COMMON_SRC_BITS64_MEMORY_MEMORY_H
-#define OS_COMMON_SRC_BITS64_MEMORY_MEMORY_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_MEMORY_MEMORY_H
+#define OS_SHARED_COMMON_SRC_BITS64_MEMORY_MEMORY_H
 
 
 
-#include <src/bits64/memory/asm_memcpy.h>
-#include <src/bits64/memory/asm_memset.h>
-#include <src/bits64/memory/asm_memzero.h>
+#include <common/src/bits64/memory/asm_memcpy.h>
+#include <common/src/bits64/memory/asm_memset.h>
+#include <common/src/bits64/memory/asm_memzero.h>
 
 
 
@@ -15,4 +15,4 @@ void* memmove(void *dest, const void *src, i64 length); // TEST: NO
 
 
 
-#endif // OS_COMMON_SRC_BITS64_MEMORY_MEMORY_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_MEMORY_MEMORY_H

@@ -1,11 +1,11 @@
-#ifndef OS_COMMON_SRC_BITS64_LOG_ASSERT_H
-#define OS_COMMON_SRC_BITS64_LOG_ASSERT_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_LOG_ASSERT_H
+#define OS_SHARED_COMMON_SRC_BITS64_LOG_ASSERT_H
 
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/serial/serial.h>
 #include <ngos/status.h>
-#include <src/bits64/serial/serial.h>
 
 
 
@@ -123,4 +123,4 @@
 
 
 
-#endif // OS_COMMON_SRC_BITS64_LOG_ASSERT_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_LOG_ASSERT_H

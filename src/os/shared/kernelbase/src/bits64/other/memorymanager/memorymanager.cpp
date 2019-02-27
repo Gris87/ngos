@@ -1,9 +1,9 @@
 #include "memorymanager.h"
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/memory.h>
 #include <ngos/utils.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-#include <src/bits64/memory/memory.h>
 
 
 
@@ -425,6 +425,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, m
 
 
     // Update region location and size
+    //
     start = MIN(start, region.start);
     end   = MAX(end,   regionEnd);
 

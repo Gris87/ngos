@@ -1,12 +1,12 @@
 #include "setupuefimemorymap.h"
 
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <src/bits64/other/bootparams/bootparams.h>
-#include <src/bits64/other/ioremap/ioremap.h>
-#include <src/bits64/other/memorymanager/memorymanager.h>
-#include <src/bits64/other/pagetable/addressconversion.h>
-#include <src/bits64/other/uefi/uefi.h>
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
+#include <kernelbase/src/bits64/other/ioremap/ioremap.h>
+#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
+#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
+#include <kernelbase/src/bits64/other/uefi/uefi.h>
 
 
 

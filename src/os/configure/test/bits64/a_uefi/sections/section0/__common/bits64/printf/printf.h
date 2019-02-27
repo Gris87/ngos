@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <src/bits64/printf/printf.h>
-#include <src/bits64/string/string.h>
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
 
 #include "test/bits64/a_uefi/testengine.h"
 

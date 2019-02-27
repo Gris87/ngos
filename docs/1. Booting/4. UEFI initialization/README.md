@@ -155,8 +155,8 @@ Assets are the set of files directly included to kernel image from [src/os/confi
     UEFI_LI(("Assets initialized"));
 ```
 
-Here we are calling [Assets::init()](https://github.com/Gris87/ngos/blob/master/src/os/common/src/bits64/assets/assets.cpp#L19) function to perform loading addresses of all assets included to kernel image.<br/>
-We can get address of some asset with [Assets::getAssetEntry()](https://github.com/Gris87/ngos/blob/master/src/os/common/src/bits64/assets/assets.cpp#L87) function after this.
+Here we are calling [Assets::init()](https://github.com/Gris87/ngos/blob/master/src/os/shared/common/src/bits64/assets/assets.cpp#L19) function to perform loading addresses of all assets included to kernel image.<br/>
+We can get address of some asset with [Assets::getAssetEntry()](https://github.com/Gris87/ngos/blob/master/src/os/shared/common/src/bits64/assets/assets.cpp#L87) function after this.
 
 ### Early kernel testing
 
@@ -226,7 +226,7 @@ Since we have information about screen we can use our own printing on the screen
     UEFI_LVV(("Console initialized"));
 ```
 
-[Console](../../../src/os/common/src/bits64/console/console.cpp) module is a special module that use predrawn glyphs for printing on the screen.<br/>
+[Console](../../../src/os/shared/common/src/bits64/console/console.cpp) module is a special module that use predrawn glyphs for printing on the screen.<br/>
 It even can print after calling UEFI::exitBootServices().<br/>
 These glyphs located in kernel image as an asset. We are using freetype library to prepare the glyphs.<br/>
 You may check it in [code_generator](../../../tools/qt/code_generator/src/generators/assets/zzz_generators/consoleglyphgenerator.cpp) tool.

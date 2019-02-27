@@ -1,9 +1,9 @@
 #include "serial.h"
 
 #include <asm/instructions.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-#include <src/bits64/printf/printf.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 
 
 

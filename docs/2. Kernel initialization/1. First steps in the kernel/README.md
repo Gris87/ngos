@@ -92,8 +92,8 @@ We will go to virtual address space as soon as possible at the very beginning.
 
 The initial kernel code is located in .kernel_code section.
 
-If you search for .kernel_code section you will find that it is only declared at [src/os/kernelbase/asm/arch/x86_64/main.S](../../../src/os/kernelbase/asm/arch/x86_64/main.S) file.<br/>
-Let's check this [file](../../../src/os/kernelbase/asm/arch/x86_64/main.S).
+If you search for .kernel_code section you will find that it is only declared at [src/os/shared/kernelbase/asm/arch/x86_64/main.S](../../../src/os/shared/kernelbase/asm/arch/x86_64/main.S) file.<br/>
+Let's check this [file](../../../src/os/shared/kernelbase/asm/arch/x86_64/main.S).
 
 ### Entry point
 
@@ -146,7 +146,7 @@ Therefore we are doing clean up for bss section.
     jne     fail                                                                #   THEN jump to fail
 ```
 
-At the next step we calls [adaptPageTable()](https://github.com/Gris87/ngos/blob/master/src/os/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp#L417) function in order to update page table in a proper way.<br/>
+At the next step we calls [adaptPageTable()](https://github.com/Gris87/ngos/blob/master/src/os/shared/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp#L417) function in order to update page table in a proper way.<br/>
 We are providing kernel address as an argument for that function.
 
 Here is the adaptPageTable declaration:
@@ -259,7 +259,7 @@ In case of 5 level paging:<br/>
 000000000000000000000 - Address in 2 MB PMD page<br/>
                         Combined with PTE since PMD pages has PGE flag
 
-[adaptPageTable()](https://github.com/Gris87/ngos/blob/master/src/os/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp#L417) function can be splitted into 3 parts:
+[adaptPageTable()](https://github.com/Gris87/ngos/blob/master/src/os/shared/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp#L417) function can be splitted into 3 parts:
 * Adapting for predefined page table entries in order to make them points to the real physical address
 * Adapting a set of PMD entries for 1 to 1 mapping of 1 GB starting from kernel image
 * Creating additional entries in page table that let us finish instructions before jumping to virtual address space
@@ -498,11 +498,11 @@ When a system call or interrupt occurred, there is no kernel stack at the entry 
 kernelMain_exit:                                                                # Label that we gonna use for returning from kernelMain function
 ```
 
-Here we put the address of boot parameters to RDI and call [kernelMain()](https://github.com/Gris87/ngos/blob/master/src/os/kernelbase/src/main.cpp#L27) function by performing long jump return.<br/>
+Here we put the address of boot parameters to RDI and call [kernelMain()](https://github.com/Gris87/ngos/blob/master/src/os/shared/kernelbase/src/main.cpp#L27) function by performing long jump return.<br/>
 Pushing GDT_KERNEL_CS to the stack required for long jump return for CS register initialization.<br/>
 We also push address of kernelMain_exit label to the stack that let us come back from kernelMain() function.
 
-kernelMain() function declared in [src/os/kernelbase/src/main.cpp](https://github.com/Gris87/ngos/blob/master/src/os/kernelbase/src/main.cpp#L27) file:
+kernelMain() function declared in [src/os/shared/kernelbase/src/main.cpp](https://github.com/Gris87/ngos/blob/master/src/os/shared/kernelbase/src/main.cpp#L27) file:
 
 ```
 CPP_EXTERN_C

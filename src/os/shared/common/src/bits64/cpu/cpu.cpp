@@ -1,18 +1,18 @@
 #include "cpu.h"
 
 #include <asm/bitutils.h>
+#include <common/src/bits64/cpu/flags.h>
+#include <common/src/bits64/cpu/generated/cpubugsnames.h>
+#include <common/src/bits64/cpu/generated/cpufeaturesnames.h>
+#include <common/src/bits64/cpu/models/amd.h>
+#include <common/src/bits64/cpu/models/intel.h>
+#include <common/src/bits64/cpu/msr/msr.h>
+#include <common/src/bits64/cpu/msr/msrregisters.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
 #include <ngos/linkage.h>
-#include <src/bits64/cpu/flags.h>
-#include <src/bits64/cpu/generated/cpubugsnames.h>
-#include <src/bits64/cpu/generated/cpufeaturesnames.h>
-#include <src/bits64/cpu/models/amd.h>
-#include <src/bits64/cpu/models/intel.h>
-#include <src/bits64/cpu/msr/msr.h>
-#include <src/bits64/cpu/msr/msrregisters.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-#include <src/bits64/printf/printf.h>
-#include <src/bits64/string/string.h>
 
 
 

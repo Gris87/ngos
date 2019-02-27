@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <src/bits64/cpu/cpu.h>
+#include <common/src/bits64/cpu/cpu.h>
 
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2addpd.h"
 #include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse2/asm_testsse2divpd.h"

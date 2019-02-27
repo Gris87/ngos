@@ -6,10 +6,10 @@
 #include <idt/idtregister.h>
 #include <idt/macros.h>
 #include <idt/types.h>
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h>
 #include <ngos/linkage.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <src/bits64/a_early/main/asm_setupidthandlers.h>
 
 
 

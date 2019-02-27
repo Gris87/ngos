@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <src/bits64/random/random.h>
+#include <common/src/bits64/random/random.h>
 
 #include "test/bits64/a_uefi/testengine.h"
 

@@ -1,10 +1,10 @@
-#ifndef OS_COMMON_SRC_BITS64_LOG_LOG_H
-#define OS_COMMON_SRC_BITS64_LOG_LOG_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_LOG_LOG_H
+#define OS_SHARED_COMMON_SRC_BITS64_LOG_LOG_H
 
 
 
 #include <buildconfig.h>
-#include <src/bits64/serial/serial.h>
+#include <common/src/bits64/serial/serial.h>
 
 
 
@@ -108,4 +108,4 @@
 
 
 
-#endif // OS_COMMON_SRC_BITS64_LOG_LOG_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_LOG_LOG_H

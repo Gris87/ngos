@@ -51,9 +51,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 if (
                     !line.contains("include/")
                     &&
-                    !line.contains("src/os/common/")
-                    &&
-                    !line.contains("src/os/kernelbase/")
+                    !line.contains("src/os/shared/")
                     &&
                     !line.contains("build/gen/")
                     &&
@@ -85,7 +83,6 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     blockTarget.append("3rd_party/libs/freetype/include/");
     blockTarget.append("include/");
     blockTarget.append("include/stdinc/");
-    blockTarget.append("src/os/kernelbase/");
 
     addSubfoldersWithMakefile(blockTarget, parentFolder, "src/apps");
     addSubfoldersWithMakefile(blockTarget, parentFolder, "src/libs");
@@ -119,7 +116,7 @@ void QtIncludesVerifier::addSubfoldersWithMakefile(QStringList &block, const QSt
         if (
             subfolder == "include"
             ||
-            subfolder == "common"
+            subfolder == "shared"
             ||
             makeFile.exists()
            )

@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <src/bits64/cpu/cpu.h>
+#include <common/src/bits64/cpu/cpu.h>
 
 #include "test/bits64/a_uefi/testengine.h"
 
@@ -66,18 +66,18 @@ TEST_CASES(section0, __common_bits64_cpu_cpu);
 
 
 
-        u32 temp = bugs[CPU_BUGS_NGOS_COMMON_FLAGS];
+        u32 temp = bugs[CPU_BUGS_NGOS_SHARED_COMMON_FLAGS];
 
-        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),        false);
-        TEST_ASSERT_EQUALS(bugs[CPU_BUGS_NGOS_COMMON_FLAGS], temp);
+        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),               false);
+        TEST_ASSERT_EQUALS(bugs[CPU_BUGS_NGOS_SHARED_COMMON_FLAGS], temp);
 
-        TEST_ASSERT_EQUALS(CPU::setBug(X86Bug::TEST),        NgosStatus::OK);
-        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),        true);
-        TEST_ASSERT_EQUALS(bugs[CPU_BUGS_NGOS_COMMON_FLAGS], temp | 0x01);
+        TEST_ASSERT_EQUALS(CPU::setBug(X86Bug::TEST),               NgosStatus::OK);
+        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),               true);
+        TEST_ASSERT_EQUALS(bugs[CPU_BUGS_NGOS_SHARED_COMMON_FLAGS], temp | 0x01);
 
-        TEST_ASSERT_EQUALS(CPU::clearBug(X86Bug::TEST),      NgosStatus::OK);
-        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),        false);
-        TEST_ASSERT_EQUALS(bugs[CPU_BUGS_NGOS_COMMON_FLAGS], temp);
+        TEST_ASSERT_EQUALS(CPU::clearBug(X86Bug::TEST),             NgosStatus::OK);
+        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),               false);
+        TEST_ASSERT_EQUALS(bugs[CPU_BUGS_NGOS_SHARED_COMMON_FLAGS], temp);
     }
     TEST_CASE_END();
 }

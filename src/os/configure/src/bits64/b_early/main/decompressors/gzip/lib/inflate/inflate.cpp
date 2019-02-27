@@ -1,6 +1,6 @@
 #include "inflate.h"
 
-#include <src/bits64/memory/memory.h>
+#include <common/src/bits64/memory/memory.h>
 
 #include "src/bits64/b_early/early/earlyassert.h"
 #include "src/bits64/b_early/early/earlylog.h"

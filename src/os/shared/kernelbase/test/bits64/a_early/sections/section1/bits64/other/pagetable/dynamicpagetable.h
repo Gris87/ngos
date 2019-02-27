@@ -1,13 +1,13 @@
-#ifndef OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
-#define OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
+#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
+#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
 
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/memory/memory.h>
+#include <kernelbase/src/bits64/other/pagetable/dynamicpagetable.h>
+#include <kernelbase/test/bits64/a_early/testengine.h>
 #include <pagetable/utils.h>
-#include <src/bits64/memory/memory.h>
-#include <src/bits64/other/pagetable/dynamicpagetable.h>
-#include <test/bits64/a_early/testengine.h>
 
 
 
@@ -49,4 +49,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
+#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H

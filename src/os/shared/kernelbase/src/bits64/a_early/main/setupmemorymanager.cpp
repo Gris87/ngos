@@ -1,10 +1,10 @@
 #include "setupmemorymanager.h"
 
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
+#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
 #include <page/macros.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <src/bits64/other/memorymanager/memorymanager.h>
-#include <src/bits64/other/pagetable/addressconversion.h>
 
 
 

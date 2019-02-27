@@ -1,11 +1,11 @@
-#ifndef OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H
-#define OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H
+#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H
+#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H
 
 
 
+#include <kernelbase/src/bits64/other/ioremap/fixmap.h>
 #include <ngos/utils.h>
 #include <pagetable/macros.h>
-#include <src/bits64/other/ioremap/fixmap.h>
 
 
 
@@ -20,4 +20,4 @@
 
 
 
-#endif // OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H
+#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_MACROS_H

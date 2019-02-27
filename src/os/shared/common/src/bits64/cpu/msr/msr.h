@@ -1,13 +1,13 @@
-#ifndef OS_COMMON_SRC_BITS64_CPU_MSR_MSR_H
-#define OS_COMMON_SRC_BITS64_CPU_MSR_MSR_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_CPU_MSR_MSR_H
+#define OS_SHARED_COMMON_SRC_BITS64_CPU_MSR_MSR_H
 
 
 
 #include <asm/instructions.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
 
 
 
@@ -61,4 +61,4 @@ private:
 
 
 
-#endif // OS_COMMON_SRC_BITS64_CPU_MSR_MSR_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_CPU_MSR_MSR_H

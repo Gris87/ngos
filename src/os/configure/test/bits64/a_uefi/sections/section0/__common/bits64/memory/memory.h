@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/memory/memory.h>
 #include <ngos/types.h>
-#include <src/bits64/memory/memory.h>
 
 #include "test/bits64/a_uefi/testengine.h"
 

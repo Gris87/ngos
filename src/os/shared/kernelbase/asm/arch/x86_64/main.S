@@ -1,12 +1,12 @@
 #include <buildconfig.h>
+#include <common/src/bits64/cpu/flags.h>
+#include <common/src/bits64/cpu/msr/msrregisters.h>
 #include <gdt/segments.h>
 #include <idt/macros.h>
+#include <kernelbase/src/bits64/other/kerneldefines.h>
 #include <ngos/linkage.h>
 #include <pagetable/flags.h>
 #include <pagetable/macros.h>
-#include <src/bits64/cpu/msr/msrregisters.h>
-#include <src/bits64/cpu/flags.h>
-#include <src/bits64/other/kerneldefines.h>
                                                                                 #
                                                                                 #
                                                                                 #

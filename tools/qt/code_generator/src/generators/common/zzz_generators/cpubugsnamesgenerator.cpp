@@ -6,8 +6,8 @@
 
 
 
-#define ORIGINAL_FILE_PATH "/src/os/common/src/bits64/cpu/cpubugs.h"
-#define FILE_PATH          "/src/os/common/src/bits64/cpu/generated/cpubugsnames.h"
+#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/bits64/cpu/cpubugs.h"
+#define FILE_PATH          "/src/os/shared/common/src/bits64/cpu/generated/cpubugsnames.h"
 
 
 
@@ -73,10 +73,10 @@ bool CpuBugsNamesGenerator::generate(const QString &path)
 
     QStringList lines;
 
+    lines.append("#include <common/src/bits64/cpu/cpubugs.h>");
+    lines.append("#include <common/src/bits64/log/assert.h>");
+    lines.append("#include <common/src/bits64/log/log.h>");
     lines.append("#include <ngos/status.h>");
-    lines.append("#include <src/bits64/cpu/cpubugs.h>");
-    lines.append("#include <src/bits64/log/assert.h>");
-    lines.append("#include <src/bits64/log/log.h>");
 
     addThreeBlankLines(lines);
 

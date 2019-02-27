@@ -1,9 +1,9 @@
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/src/bits64/other/kerneldefines.h>
+#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
 #include <ngos/linkage.h>
 #include <pagetable/utils.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <src/bits64/other/kerneldefines.h>
-#include <src/bits64/other/pagetable/addressconversion.h>
 
 
 

@@ -1,14 +1,14 @@
 // This file generated with the code_generator
 // Please do not modify it manually
-#ifndef OS_COMMON_SRC_BITS64_CPU_GENERATED_CPUFEATURESNAMES_H
-#define OS_COMMON_SRC_BITS64_CPU_GENERATED_CPUFEATURESNAMES_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_CPU_GENERATED_CPUFEATURESNAMES_H
+#define OS_SHARED_COMMON_SRC_BITS64_CPU_GENERATED_CPUFEATURESNAMES_H
 
 
 
+#include <common/src/bits64/cpu/cpufeatures.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
 #include <ngos/status.h>
-#include <src/bits64/cpu/cpufeatures.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
 
 
 
@@ -589,4 +589,4 @@ inline NgosStatus initCpuFeaturesNames() // TEST: NO
 
 
 
-#endif // OS_COMMON_SRC_BITS64_CPU_GENERATED_CPUFEATURESNAMES_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_CPU_GENERATED_CPUFEATURESNAMES_H

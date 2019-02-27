@@ -1,12 +1,12 @@
-#ifndef OS_KERNELBASE_TEST_BITS64_A_EARLY_TESTENGINE_H
-#define OS_KERNELBASE_TEST_BITS64_A_EARLY_TESTENGINE_H
+#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_TESTENGINE_H
+#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_TESTENGINE_H
 
 
 
 #include <buildconfig.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/test/bits64/a_early/testresults.h>
 #include <ngos/utils.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <test/bits64/a_early/testresults.h>
 
 
 
@@ -119,4 +119,4 @@
 
 
 
-#endif // OS_KERNELBASE_TEST_BITS64_A_EARLY_TESTENGINE_H
+#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_TESTENGINE_H

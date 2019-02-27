@@ -1,12 +1,12 @@
-#ifndef OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H
-#define OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H
+#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H
+#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H
 
 
 
+#include <kernelbase/src/bits64/other/ioremap/macros.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 #include <pagetable/types.h>
-#include <src/bits64/other/ioremap/macros.h>
 
 
 
@@ -34,4 +34,4 @@ private:
 
 
 
-#endif // OS_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H
+#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_IOREMAP_H

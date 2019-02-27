@@ -1,11 +1,11 @@
 #include "console.h"
 
-#include <src/bits64/assets/assets.h>
-#include <src/bits64/console/lib/glyphdata.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-#include <src/bits64/memory/memory.h>
-#include <src/bits64/printf/printf.h>
+#include <common/src/bits64/assets/assets.h>
+#include <common/src/bits64/console/lib/glyphdata.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/printf/printf.h>
 
 
 

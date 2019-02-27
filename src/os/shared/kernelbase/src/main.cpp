@@ -1,25 +1,25 @@
 #include <bootparams/bootparams.h>
+#include <common/src/bits64/assets/assets.h>
+#include <common/src/bits64/cpu/cpu.h>
+#include <common/src/bits64/fpu/fpu.h>
+#include <common/src/bits64/serial/serial.h>
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <kernelbase/src/bits64/a_early/main/disableirq.h>
+#include <kernelbase/src/bits64/a_early/main/reservepciromimages.h>
+#include <kernelbase/src/bits64/a_early/main/setupbootparams.h>
+#include <kernelbase/src/bits64/a_early/main/setupcr4shadow.h>
+#include <kernelbase/src/bits64/a_early/main/setupe820tables.h>
+#include <kernelbase/src/bits64/a_early/main/setupfirstcpu.h>
+#include <kernelbase/src/bits64/a_early/main/setupidthandlers.h>
+#include <kernelbase/src/bits64/a_early/main/setupinittask.h>
+#include <kernelbase/src/bits64/a_early/main/setupioremap.h>
+#include <kernelbase/src/bits64/a_early/main/setupmemorymanager.h>
+#include <kernelbase/src/bits64/a_early/main/setupstackcanary.h>
+#include <kernelbase/src/bits64/a_early/main/setupuefimemorymap.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/testcase.h>
 #include <ngos/linkage.h>
 #include <pagetable/utils.h>
-#include <src/bits64/a_early/early/earlyassert.h>
-#include <src/bits64/a_early/early/earlylog.h>
-#include <src/bits64/a_early/main/disableirq.h>
-#include <src/bits64/a_early/main/reservepciromimages.h>
-#include <src/bits64/a_early/main/setupbootparams.h>
-#include <src/bits64/a_early/main/setupcr4shadow.h>
-#include <src/bits64/a_early/main/setupe820tables.h>
-#include <src/bits64/a_early/main/setupfirstcpu.h>
-#include <src/bits64/a_early/main/setupidthandlers.h>
-#include <src/bits64/a_early/main/setupinittask.h>
-#include <src/bits64/a_early/main/setupioremap.h>
-#include <src/bits64/a_early/main/setupmemorymanager.h>
-#include <src/bits64/a_early/main/setupstackcanary.h>
-#include <src/bits64/a_early/main/setupuefimemorymap.h>
-#include <src/bits64/assets/assets.h>
-#include <src/bits64/cpu/cpu.h>
-#include <src/bits64/fpu/fpu.h>
-#include <src/bits64/serial/serial.h>
-#include <test/bits64/a_early/sections/section1/testcase.h>
 
 
 

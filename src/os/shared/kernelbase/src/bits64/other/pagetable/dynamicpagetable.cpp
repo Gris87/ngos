@@ -1,13 +1,13 @@
 #include "dynamicpagetable.h"
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/memory.h>
+#include <kernelbase/src/bits64/other/kerneldefines.h>
+#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <pagetable/utils.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
-#include <src/bits64/memory/memory.h>
-#include <src/bits64/other/kerneldefines.h>
-#include <src/bits64/other/pagetable/addressconversion.h>
 
 
 

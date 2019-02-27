@@ -1,6 +1,6 @@
 #include "setupbootparams.h"
 
-#include <src/bits64/memory/memory.h>
+#include <common/src/bits64/memory/memory.h>
 
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"

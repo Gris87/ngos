@@ -1,13 +1,13 @@
-#ifndef OS_COMMON_SRC_BITS64_CPU_CPU_H
-#define OS_COMMON_SRC_BITS64_CPU_CPU_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_CPU_CPU_H
+#define OS_SHARED_COMMON_SRC_BITS64_CPU_CPU_H
 
 
 
+#include <common/src/bits64/cpu/cpubugs.h>
+#include <common/src/bits64/cpu/cpufeatures.h>
+#include <common/src/bits64/cpu/cpuvendor.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
-#include <src/bits64/cpu/cpubugs.h>
-#include <src/bits64/cpu/cpufeatures.h>
-#include <src/bits64/cpu/cpuvendor.h>
 
 
 
@@ -81,4 +81,4 @@ private:
 
 
 
-#endif // OS_COMMON_SRC_BITS64_CPU_CPU_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_CPU_CPU_H

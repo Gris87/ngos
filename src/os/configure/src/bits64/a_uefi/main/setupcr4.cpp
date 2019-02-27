@@ -1,7 +1,7 @@
 #include "setupcr4.h"
 
 #include <asm/instructions.h>
-#include <src/bits64/cpu/flags.h>
+#include <common/src/bits64/cpu/flags.h>
 
 #include "src/bits64/a_uefi/uefi/uefiassert.h"
 #include "src/bits64/a_uefi/uefi/uefilog.h"

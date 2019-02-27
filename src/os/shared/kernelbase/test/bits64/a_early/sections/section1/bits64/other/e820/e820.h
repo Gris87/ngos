@@ -1,11 +1,11 @@
-#ifndef OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_E820_E820_H
-#define OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_E820_E820_H
+#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_E820_E820_H
+#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_E820_E820_H
 
 
 
 #include <buildconfig.h>
-#include <src/bits64/other/e820/e820.h>
-#include <test/bits64/a_early/testengine.h>
+#include <kernelbase/src/bits64/other/e820/e820.h>
+#include <kernelbase/test/bits64/a_early/testengine.h>
 
 
 
@@ -42,7 +42,7 @@ TEST_CASES(section1, bits64_other_e820_e820);
         TEST_ASSERT_EQUALS(table.count,                                                                       3);
         TEST_ASSERT_EQUALS(table.entries[0].start,                                                            0x5000);
         TEST_ASSERT_EQUALS(table.entries[0].size,                                                             0x4000);
-        TEST_ASSERT_EQUALS(table.entries[0].type,                                                         MemoryMapEntryType::NVS);
+        TEST_ASSERT_EQUALS(table.entries[0].type,                                                             MemoryMapEntryType::NVS);
         TEST_ASSERT_EQUALS(table.entries[1].start,                                                            0xA000);
         TEST_ASSERT_EQUALS(table.entries[1].size,                                                             0x2000);
         TEST_ASSERT_EQUALS(table.entries[1].type,                                                             MemoryMapEntryType::RESERVED);
@@ -607,4 +607,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_E820_E820_H
+#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_E820_E820_H

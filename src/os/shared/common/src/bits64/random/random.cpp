@@ -1,10 +1,10 @@
 #include "random.h"
 
 #include <asm/instructions.h>
-#include <src/bits64/cpu/cpu.h>
-#include <src/bits64/cpu/cpufeatures.h>
-#include <src/bits64/log/assert.h>
-#include <src/bits64/log/log.h>
+#include <common/src/bits64/cpu/cpu.h>
+#include <common/src/bits64/cpu/cpufeatures.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
 
 
 

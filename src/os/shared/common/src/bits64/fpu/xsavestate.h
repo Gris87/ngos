@@ -1,11 +1,11 @@
-#ifndef OS_COMMON_SRC_BITS64_FPU_XSAVESTATE_H
-#define OS_COMMON_SRC_BITS64_FPU_XSAVESTATE_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_FPU_XSAVESTATE_H
+#define OS_SHARED_COMMON_SRC_BITS64_FPU_XSAVESTATE_H
 
 
 
+#include <common/src/bits64/fpu/fxsavestate.h>
+#include <common/src/bits64/fpu/xstateheader.h>
 #include <ngos/types.h>
-#include <src/bits64/fpu/fxsavestate.h>
-#include <src/bits64/fpu/xstateheader.h>
 
 
 
@@ -18,4 +18,4 @@ struct XSaveState
 
 
 
-#endif // OS_COMMON_SRC_BITS64_FPU_XSAVESTATE_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_FPU_XSAVESTATE_H

@@ -1,12 +1,12 @@
-#ifndef OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_IOREMAP_IOREMAP_H
-#define OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_IOREMAP_IOREMAP_H
+#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_IOREMAP_IOREMAP_H
+#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_IOREMAP_IOREMAP_H
 
 
 
 #include <buildconfig.h>
-#include <src/bits64/memory/memory.h>
-#include <src/bits64/other/ioremap/ioremap.h>
-#include <test/bits64/a_early/testengine.h>
+#include <common/src/bits64/memory/memory.h>
+#include <kernelbase/src/bits64/other/ioremap/ioremap.h>
+#include <kernelbase/test/bits64/a_early/testengine.h>
 
 
 
@@ -896,4 +896,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_IOREMAP_IOREMAP_H
+#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION1_BITS64_OTHER_IOREMAP_IOREMAP_H

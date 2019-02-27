@@ -1,13 +1,13 @@
-#ifndef OS_COMMON_SRC_BITS64_FPU_FPUSTATE_H
-#define OS_COMMON_SRC_BITS64_FPU_FPUSTATE_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_FPU_FPUSTATE_H
+#define OS_SHARED_COMMON_SRC_BITS64_FPU_FPUSTATE_H
 
 
 
+#include <common/src/bits64/fpu/fsavestate.h>
+#include <common/src/bits64/fpu/fxsavestate.h>
+#include <common/src/bits64/fpu/xsavestate.h>
 #include <ngos/types.h>
 #include <pagetable/macros.h>
-#include <src/bits64/fpu/fsavestate.h>
-#include <src/bits64/fpu/fxsavestate.h>
-#include <src/bits64/fpu/xsavestate.h>
 
 
 
@@ -21,4 +21,4 @@ union FpuState
 
 
 
-#endif // OS_COMMON_SRC_BITS64_FPU_FPUSTATE_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_FPU_FPUSTATE_H

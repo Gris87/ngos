@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/console/console.h>
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/serial/serial.h>
 #include <ngos/status.h>
-#include <src/bits64/console/console.h>
-#include <src/bits64/printf/printf.h>
-#include <src/bits64/serial/serial.h>
 
 #include "src/bits64/a_uefi/uefi/uefi.h"
 

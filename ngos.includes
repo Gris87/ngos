@@ -11,12 +11,11 @@ include/stdinc/
 src/apps/ls/
 src/libs/qt/
 src/os/boot/
-src/os/common/
 src/os/configure/
 src/os/include/
 src/os/installer/
 src/os/kernel/
-src/os/kernelbase/
+src/os/shared/
 tools/qt/build_config_gui/
 tools/qt/build_config_gui/build/gen/
 tools/qt/build_config_maker/

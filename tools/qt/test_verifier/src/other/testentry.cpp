@@ -132,5 +132,5 @@ QString TestEntry::toString() const
         break;
     }
 
-    return QString("%1 | %2 | %3 | %4").arg(type, 17, QChar(' ')).arg(mPath + ':' + QString::number(mLine + 1), -100, QChar(' ')).arg(mName, 30, QChar(' ')).arg(mTestModule);
+    return QString("%1 | %2 | %3 | %4").arg(type, 17, QChar(' ')).arg(mPath + ':' + QString::number(mLine + 1), -120, QChar(' ')).arg(mName, 35, QChar(' ')).arg(mTestModule);
 }
