@@ -218,7 +218,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 
         for (i64 i = 0; i < (i64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS; ++i)
         {
-            EARLY_LVVV(("#%d: 0x%p-0x%p", i, areas[i].start, areas[i].end));
+            EARLY_LVVV(("#%-3d: 0x%p-0x%p", i, areas[i].start, areas[i].end));
         }
 
         EARLY_LVVV(("params->pciRomImages:"));
@@ -480,7 +480,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
         for (i64 i = 0; i < (i64)params->memoryMapEntriesCount; ++i)
         {
-            EARLY_LVVV(("#%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
+            EARLY_LVVV(("#%-3d: type = %-2u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
         }
 
         EARLY_LVVV(("-------------------------------------"));

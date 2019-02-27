@@ -188,7 +188,7 @@ NgosStatus reservePciRomImages()
 
     for (i64 i = 0; i < (i64)E820::sTable.count; ++i)
     {
-        COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTable.entries[i].type), E820::sTable.entries[i].start, E820::sTable.entries[i].end()));
+        COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTable.entries[i].type), E820::sTable.entries[i].start, E820::sTable.entries[i].end()));
     }
 
     COMMON_LVVV(("-------------------------------------"));
@@ -200,7 +200,7 @@ NgosStatus reservePciRomImages()
 
     for (i64 i = 0; i < (i64)E820::sTableKExec.count; ++i)
     {
-        COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableKExec.entries[i].type), E820::sTableKExec.entries[i].start, E820::sTableKExec.entries[i].end()));
+        COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableKExec.entries[i].type), E820::sTableKExec.entries[i].start, E820::sTableKExec.entries[i].end()));
     }
 
     COMMON_LVVV(("-------------------------------------"));
@@ -212,7 +212,7 @@ NgosStatus reservePciRomImages()
 
     for (i64 i = 0; i < (i64)E820::sTableFirmware.count; ++i)
     {
-        COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableFirmware.entries[i].type), E820::sTableFirmware.entries[i].start, E820::sTableFirmware.entries[i].end()));
+        COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableFirmware.entries[i].type), E820::sTableFirmware.entries[i].start, E820::sTableFirmware.entries[i].end()));
     }
 
     COMMON_LVVV(("-------------------------------------"));

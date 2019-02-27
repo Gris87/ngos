@@ -160,7 +160,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
             UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
             UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
 
-            UEFI_LVVV(("#%d: type = %u | 0x%p-0x%p | 0x%016lX", i, memoryDescriptor->type, memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
+            UEFI_LVVV(("#%-3d: type = %-2u | 0x%p-0x%p | 0x%016lX", i, memoryDescriptor->type, memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
         }
 
         UEFI_LVVV(("-------------------------------------"));
@@ -172,7 +172,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
         for (i64 i = 0; i < (i64)params->memoryMapEntriesCount; ++i)
         {
-            UEFI_LVVV(("#%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
+            UEFI_LVVV(("#%-3d: type = %-2u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
         }
 
         UEFI_LVVV(("-------------------------------------"));

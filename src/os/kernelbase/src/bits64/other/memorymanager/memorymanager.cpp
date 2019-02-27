@@ -167,28 +167,28 @@ NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
         MemoryBlockRegion &previousRegion = type->regions[i - 1];
         MemoryBlockRegion &currentRegion  = type->regions[i];
 
+
+
         if (
-            previousRegion.end() != currentRegion.start
-            ||
-            previousRegion.flags != currentRegion.flags
-            ||
-            previousRegion.nodeId != currentRegion.nodeId
+            previousRegion.end() == currentRegion.start
+            &&
+            previousRegion.flags == currentRegion.flags
+            &&
+            previousRegion.nodeId == currentRegion.nodeId
            )
+        {
+            previousRegion.size += currentRegion.size;
+
+            memmove(&type->regions[i], &type->regions[i + 1], (type->count - (i + 1)) * sizeof(MemoryBlockRegion));
+
+            --type->count;
+        }
+        else
         {
             COMMON_TEST_ASSERT(previousRegion.end() <= currentRegion.start, NgosStatus::ASSERTION);
 
             ++i;
-
-            continue;
         }
-
-
-
-        previousRegion.size += currentRegion.size;
-
-        memmove(&type->regions[i], &type->regions[i + 1], (type->count - (i + 1)) * sizeof(MemoryBlockRegion));
-
-        --type->count;
     }
 
 

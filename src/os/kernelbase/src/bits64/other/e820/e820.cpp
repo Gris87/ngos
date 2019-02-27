@@ -49,7 +49,7 @@ NgosStatus E820::init()
 
         for (i64 i = 0; i < (i64)sTable.count; ++i)
         {
-            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTable.entries[i].type), sTable.entries[i].start, sTable.entries[i].end()));
+            COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, getTypeName(sTable.entries[i].type), sTable.entries[i].start, sTable.entries[i].end()));
         }
 
         COMMON_LVVV(("-------------------------------------"));
@@ -61,7 +61,7 @@ NgosStatus E820::init()
 
         for (i64 i = 0; i < (i64)sTableKExec.count; ++i)
         {
-            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableKExec.entries[i].type), sTableKExec.entries[i].start, sTableKExec.entries[i].end()));
+            COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableKExec.entries[i].type), sTableKExec.entries[i].start, sTableKExec.entries[i].end()));
         }
 
         COMMON_LVVV(("-------------------------------------"));
@@ -73,7 +73,7 @@ NgosStatus E820::init()
 
         for (i64 i = 0; i < (i64)sTableFirmware.count; ++i)
         {
-            COMMON_LVVV(("#%d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableFirmware.entries[i].type), sTableFirmware.entries[i].start, sTableFirmware.entries[i].end()));
+            COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, getTypeName(sTableFirmware.entries[i].type), sTableFirmware.entries[i].start, sTableFirmware.entries[i].end()));
         }
 
         COMMON_LVVV(("-------------------------------------"));
@@ -191,9 +191,9 @@ NgosStatus E820::updateRange(u64 start, u64 size, MemoryMapEntryType oldType, Me
 {
     COMMON_LT((" | start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", start, size, oldType, newType));
 
-    COMMON_ASSERT(start,                "start is null",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,             "size is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(start + size > start, "size is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(oldType != newType,   "types are the same", NgosStatus::ASSERTION);
 
 
 
@@ -204,9 +204,9 @@ NgosStatus E820::updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldTyp
 {
     COMMON_LT((" | start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", start, size, oldType, newType));
 
-    COMMON_ASSERT(start,                "start is null",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,             "size is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(start + size > start, "size is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(oldType != newType,   "types are the same", NgosStatus::ASSERTION);
 
 
 
@@ -246,7 +246,6 @@ NgosStatus E820::insertRangeInTable(E820Table *table, u64 index, u64 start, u64 
     COMMON_ASSERT(table,                          "table is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(table->count < E820_TABLE_SIZE, "table is full",    NgosStatus::ASSERTION);
     COMMON_ASSERT(index <= table->count,          "index is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(start,                          "start is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0,                       "size is zero",     NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start,           "size is invalid",  NgosStatus::ASSERTION);
 
@@ -269,13 +268,39 @@ NgosStatus E820::insertRangeInTable(E820Table *table, u64 index, u64 start, u64 
     return NgosStatus::OK;
 }
 
+NgosStatus E820::removeRangeInTable(E820Table *table, u64 index)
+{
+    COMMON_LT((" | table = 0x%p, index = %u", table, index));
+
+    COMMON_ASSERT(table,                "table is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(table->count > 0,     "type is empty",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(index < table->count, "index is invalid", NgosStatus::ASSERTION);
+
+
+
+    memmove(&table->entries[index], &table->entries[index + 1], (table->count - (index + 1)) * sizeof(MemoryMapEntry));
+
+    --table->count;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
     COMMON_LT((" | table = 0x%p, start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", table, start, size, oldType, newType));
 
-    COMMON_ASSERT(start,                "start is null",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,             "size is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(start + size > start, "size is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(table,                "table is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(oldType != newType,   "types are the same", NgosStatus::ASSERTION);
+
+
+
+    u64 end = start + size;
+
+    COMMON_LVV(("Converting %s => %s for E820 range: 0x%p-0x%p", getTypeName(oldType), getTypeName(newType), start, end));
 
 
 
@@ -290,7 +315,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, Memor
 
 
 
-        if (start <= entry.end())
+        if (start < entry.end())
         {
             right = middle;
         }
@@ -302,18 +327,137 @@ NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, Memor
 
 
 
-    COMMON_LVVV(("left  = %u", left));
-    COMMON_LVVV(("right = %u", right));
+    // COMMON_LVVV(("left  = %u", left));  // Commented to avoid too frequent logs
+    // COMMON_LVVV(("right = %u", right)); // Commented to avoid too frequent logs
 
-    COMMON_TEST_ASSERT(left == right,       NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(left < table->count, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(left == right, NgosStatus::ASSERTION);
 
-    AVOID_UNUSED(oldType);
-    AVOID_UNUSED(newType);
+    if (left >= table->count)
+    {
+        return NgosStatus::OK;
+    }
 
 
 
+    for (i64 i = left; i < (i64)table->count; ++i)
+    {
+        MemoryMapEntry &entry = table->entries[i];
 
+
+
+        if (entry.start >= end)
+        {
+            break;
+        }
+
+
+
+        if (entry.type != oldType)
+        {
+            continue;
+        }
+
+
+
+        u64 entryEnd = entry.end();
+
+
+
+        if (start >= entryEnd)
+        {
+            continue;
+        }
+
+
+
+        // Entry is fully covered by specified range
+        if (entry.start >= start && entryEnd <= end)
+        {
+            entry.type = newType;
+
+            continue;
+        }
+
+
+
+        // Specified range is fully covered by entry
+        if (entry.start < start && entryEnd > end)
+        {
+            COMMON_ASSERT_EXECUTION(insertRangeInTable(table, i + 1, start, size,           newType), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(insertRangeInTable(table, i + 2, end,   entryEnd - end, oldType), NgosStatus::ASSERTION);
+
+            entry.size = start - entry.start;
+
+            continue;
+        }
+
+
+
+        // Partially covered
+        if (entry.start < start)
+        {
+            COMMON_ASSERT_EXECUTION(insertRangeInTable(table, i + 1, start, entryEnd - start, newType), NgosStatus::ASSERTION);
+
+            entry.size = start - entry.start;
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(entryEnd > end, NgosStatus::ASSERTION);
+
+
+
+            u64 entryStartOrig = entry.start;
+
+            entry.start = end;
+            entry.size  = entryEnd - end;
+
+            COMMON_ASSERT_EXECUTION(insertRangeInTable(table, i, entryStartOrig, end - entryStartOrig, newType), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    // ------------------------------------------------------------------------------
+    // Merge processed entries
+    // ------------------------------------------------------------------------------
+
+
+
+    i64 index = left > 0 ? left - 1 : 0;
+
+    while (index < (i64)table->count - 1)
+    {
+        MemoryMapEntry &currentEntry = table->entries[index];
+        MemoryMapEntry &nextEntry    = table->entries[index + 1];
+
+
+
+        if (currentEntry.start >= end)
+        {
+            break;
+        }
+
+
+
+        if (
+            currentEntry.end() == nextEntry.start
+            &&
+            currentEntry.type == nextEntry.type
+           )
+        {
+            currentEntry.size += nextEntry.size;
+
+            memmove(&table->entries[index + 1], &table->entries[index + 2], (table->count - (index + 2)) * sizeof(MemoryMapEntry));
+
+            --table->count;
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(currentEntry.end() <= nextEntry.start, NgosStatus::ASSERTION);
+
+            ++index;
+        }
+    }
 
 
 
