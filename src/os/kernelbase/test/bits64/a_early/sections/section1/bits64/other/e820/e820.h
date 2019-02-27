@@ -26,6 +26,60 @@ TEST_CASES(section1, bits64_other_e820_e820);
         TEST_ASSERT_EQUALS(table.entries[0].start,                                                       0x2000);
         TEST_ASSERT_EQUALS(table.entries[0].size,                                                        0x1000);
         TEST_ASSERT_EQUALS(table.entries[0].type,                                                        MemoryMapEntryType::RAM);
+
+        TEST_ASSERT_EQUALS(E820::insertRangeInTable(&table, 0, 0x5000, 0x4000, MemoryMapEntryType::NVS), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(table.count,                                                                  2);
+        TEST_ASSERT_EQUALS(table.entries[0].start,                                                       0x5000);
+        TEST_ASSERT_EQUALS(table.entries[0].size,                                                        0x4000);
+        TEST_ASSERT_EQUALS(table.entries[0].type,                                                        MemoryMapEntryType::NVS);
+        TEST_ASSERT_EQUALS(table.entries[1].start,                                                       0x2000);
+        TEST_ASSERT_EQUALS(table.entries[1].size,                                                        0x1000);
+        TEST_ASSERT_EQUALS(table.entries[1].type,                                                        MemoryMapEntryType::RAM);
+
+        TEST_ASSERT_EQUALS(E820::insertRangeInTable(&table, 1, 0xA000, 0x2000, MemoryMapEntryType::RESERVED), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(table.count,                                                                       3);
+        TEST_ASSERT_EQUALS(table.entries[0].start,                                                            0x5000);
+        TEST_ASSERT_EQUALS(table.entries[0].size,                                                             0x4000);
+        TEST_ASSERT_EQUALS(table.entries[0].type,                                                         MemoryMapEntryType::NVS);
+        TEST_ASSERT_EQUALS(table.entries[1].start,                                                            0xA000);
+        TEST_ASSERT_EQUALS(table.entries[1].size,                                                             0x2000);
+        TEST_ASSERT_EQUALS(table.entries[1].type,                                                             MemoryMapEntryType::RESERVED);
+        TEST_ASSERT_EQUALS(table.entries[2].start,                                                            0x2000);
+        TEST_ASSERT_EQUALS(table.entries[2].size,                                                             0x1000);
+        TEST_ASSERT_EQUALS(table.entries[2].type,                                                             MemoryMapEntryType::RAM);
+
+        TEST_ASSERT_EQUALS(E820::insertRangeInTable(&table, 3, 0xD000, 0x5000, MemoryMapEntryType::UNUSABLE), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(table.count,                                                                       4);
+        TEST_ASSERT_EQUALS(table.entries[0].start,                                                            0x5000);
+        TEST_ASSERT_EQUALS(table.entries[0].size,                                                             0x4000);
+        TEST_ASSERT_EQUALS(table.entries[0].type,                                                             MemoryMapEntryType::NVS);
+        TEST_ASSERT_EQUALS(table.entries[1].start,                                                            0xA000);
+        TEST_ASSERT_EQUALS(table.entries[1].size,                                                             0x2000);
+        TEST_ASSERT_EQUALS(table.entries[1].type,                                                             MemoryMapEntryType::RESERVED);
+        TEST_ASSERT_EQUALS(table.entries[2].start,                                                            0x2000);
+        TEST_ASSERT_EQUALS(table.entries[2].size,                                                             0x1000);
+        TEST_ASSERT_EQUALS(table.entries[2].type,                                                             MemoryMapEntryType::RAM);
+        TEST_ASSERT_EQUALS(table.entries[3].start,                                                            0xD000);
+        TEST_ASSERT_EQUALS(table.entries[3].size,                                                             0x5000);
+        TEST_ASSERT_EQUALS(table.entries[3].type,                                                             MemoryMapEntryType::UNUSABLE);
+
+        TEST_ASSERT_EQUALS(E820::insertRangeInTable(&table, 2, 0x9000, 0x1000, MemoryMapEntryType::ACPI), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(table.count,                                                                   5);
+        TEST_ASSERT_EQUALS(table.entries[0].start,                                                        0x5000);
+        TEST_ASSERT_EQUALS(table.entries[0].size,                                                         0x4000);
+        TEST_ASSERT_EQUALS(table.entries[0].type,                                                         MemoryMapEntryType::NVS);
+        TEST_ASSERT_EQUALS(table.entries[1].start,                                                        0xA000);
+        TEST_ASSERT_EQUALS(table.entries[1].size,                                                         0x2000);
+        TEST_ASSERT_EQUALS(table.entries[1].type,                                                         MemoryMapEntryType::RESERVED);
+        TEST_ASSERT_EQUALS(table.entries[2].start,                                                        0x9000);
+        TEST_ASSERT_EQUALS(table.entries[2].size,                                                         0x1000);
+        TEST_ASSERT_EQUALS(table.entries[2].type,                                                         MemoryMapEntryType::ACPI);
+        TEST_ASSERT_EQUALS(table.entries[3].start,                                                        0x2000);
+        TEST_ASSERT_EQUALS(table.entries[3].size,                                                         0x1000);
+        TEST_ASSERT_EQUALS(table.entries[3].type,                                                         MemoryMapEntryType::RAM);
+        TEST_ASSERT_EQUALS(table.entries[4].start,                                                        0xD000);
+        TEST_ASSERT_EQUALS(table.entries[4].size,                                                         0x5000);
+        TEST_ASSERT_EQUALS(table.entries[4].type,                                                         MemoryMapEntryType::UNUSABLE);
     }
     TEST_CASE_END();
 
