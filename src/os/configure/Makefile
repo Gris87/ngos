@@ -3,7 +3,8 @@ TARGET = configure
 ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr '[:upper:]' '[:lower:]')
 
 ASSETS_DIR     = assets
-COMMON_DIR     = ../common
+SHARED_DIR     = ../shared
+COMMON_DIR     = $(SHARED_DIR)/common
 SOURCE_ASM_DIR = asm
 SOURCE_CPP_DIR = src
 TEST_CPP_DIR   = test
@@ -48,10 +49,10 @@ DEFINES = \
 
 INCLUDE_PATH = \
 	-I . \
-	-I $(COMMON_DIR)/ \
+	-I $(SHARED_DIR)/ \
+	-I ../include/ \
 	-I ../../../include/ \
-	-I ../../../include/stdinc/ \
-	-I ../include/
+	-I ../../../include/stdinc/
 
 
 
@@ -66,12 +67,12 @@ COMMON_ASM_SOURCES = $(shell find $(COMMON_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/ 
 COMMON_CPP_SOURCES = $(shell find $(COMMON_DIR)/$(SOURCE_CPP_DIR)/                                                 -name '*.cpp' 2> /dev/null)
 ASM_SOURCES        = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                  -name '*.S'   2> /dev/null)
 CPP_SOURCES        = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/                                              -name '*.cpp' 2> /dev/null)
-CPP_HEADERS        = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(COMMON_DIR)/ ../../../include/ ../include/ -name '*.h'   2> /dev/null)
+CPP_HEADERS        = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(SHARED_DIR)/ ../include/ ../../../include/ -name '*.h'   2> /dev/null)
 
 # Getting list of object files
 ASSETS_OBJ     = $(OUTPUT_DIR)/$(ASSETS_DIR)/generated/assets.o
-COMMON_ASM_OBJ = $(addprefix $(OUTPUT_DIR)/,$(COMMON_ASM_SOURCES:../common/%.S=common/%.o))
-COMMON_CPP_OBJ = $(addprefix $(OUTPUT_DIR)/,$(COMMON_CPP_SOURCES:../common/%.cpp=common/%.o))
+COMMON_ASM_OBJ = $(addprefix $(OUTPUT_DIR)/,$(COMMON_ASM_SOURCES:../shared/common/%.S=shared/common/%.o))
+COMMON_CPP_OBJ = $(addprefix $(OUTPUT_DIR)/,$(COMMON_CPP_SOURCES:../shared/common/%.cpp=shared/common/%.o))
 ASM_OBJ        = $(addprefix $(OUTPUT_DIR)/,$(ASM_SOURCES:%.S=%.o))
 CPP_OBJ        = $(addprefix $(OUTPUT_DIR)/,$(CPP_SOURCES:%.cpp=%.o))
 
@@ -89,11 +90,11 @@ $(ASSETS_OBJ): $(ASSETS_FILES)
 	$(MKDIR) $(@D)
 	$(CC) $(ASMFLAGS) $(ASSETS_DIR)/generated/assets.S -o $@
 
-$(OUTPUT_DIR)/common/%.o: $(COMMON_DIR)/%.S $(CPP_HEADERS)
+$(OUTPUT_DIR)/shared/%.o: $(SHARED_DIR)/%.S $(CPP_HEADERS)
 	$(MKDIR) $(@D)
 	$(CC) $(ASMFLAGS) $< -o $@
 
-$(OUTPUT_DIR)/common/%.o: $(COMMON_DIR)/%.cpp $(CPP_HEADERS)
+$(OUTPUT_DIR)/shared/%.o: $(SHARED_DIR)/%.cpp $(CPP_HEADERS)
 	$(MKDIR) $(@D)
 	$(CXX) $(CXXFLAGS) -E $< -o $@.cpp
 	$(CXX) $(CXXFLAGS) -S $< -o $@.S

@@ -3,8 +3,9 @@ TARGET = installer
 ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr '[:upper:]' '[:lower:]')
 
 ASSETS_DIR     = assets
-COMMON_DIR     = ../common
-KERNELBASE_DIR = ../kernelbase
+SHARED_DIR     = ../shared
+COMMON_DIR     = $(SHARED_DIR)/common
+KERNELBASE_DIR = $(SHARED_DIR)/kernelbase
 SOURCE_ASM_DIR = asm
 SOURCE_CPP_DIR = src
 TEST_CPP_DIR   = test
@@ -113,11 +114,10 @@ DEFINES = \
 
 INCLUDE_PATH = \
 	-I . \
-	-I $(COMMON_DIR)/ \
-	-I $(KERNELBASE_DIR)/ \
+	-I $(SHARED_DIR)/ \
+	-I ../include/ \
 	-I ../../../include/ \
-	-I ../../../include/stdinc/ \
-	-I ../include/
+	-I ../../../include/stdinc/
 
 
 
@@ -127,21 +127,21 @@ CXXFLAGS = -c -m64 -O3 -W -Wall -Werror -nostdinc -mno-red-zone -fPIE -ffreestan
 
 
 # Getting list of source files
-ASSETS_FILES           = $(shell find $(ASSETS_DIR)/ -type f | grep -ve .gitignore -ve generated/assets.S                                               2> /dev/null)
-COMMON_ASM_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                       -name '*.S'   2> /dev/null)
-COMMON_CPP_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_CPP_DIR)/                                                                    -name '*.cpp' 2> /dev/null)
-KERNELBASE_ASM_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                   -name '*.S'   2> /dev/null)
-KERNELBASE_CPP_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_CPP_DIR)/ $(KERNELBASE_DIR)/$(TEST_CPP_DIR)/                             -name '*.cpp' 2> /dev/null)
-ASM_SOURCES            = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                                     -name '*.S'   2> /dev/null)
-CPP_SOURCES            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/                                                                 -name '*.cpp' 2> /dev/null)
-CPP_HEADERS            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(COMMON_DIR)/ $(KERNELBASE_DIR)/ ../../../include/ ../include/ -name '*.h'   2> /dev/null)
+ASSETS_FILES           = $(shell find $(ASSETS_DIR)/ -type f | grep -ve .gitignore -ve generated/assets.S                            2> /dev/null)
+COMMON_ASM_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                    -name '*.S'   2> /dev/null)
+COMMON_CPP_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_CPP_DIR)/                                                 -name '*.cpp' 2> /dev/null)
+KERNELBASE_ASM_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                -name '*.S'   2> /dev/null)
+KERNELBASE_CPP_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_CPP_DIR)/ $(KERNELBASE_DIR)/$(TEST_CPP_DIR)/          -name '*.cpp' 2> /dev/null)
+ASM_SOURCES            = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                  -name '*.S'   2> /dev/null)
+CPP_SOURCES            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/                                              -name '*.cpp' 2> /dev/null)
+CPP_HEADERS            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(SHARED_DIR)/ ../include/ ../../../include/ -name '*.h'   2> /dev/null)
 
 # Getting list of object files
 ASSETS_OBJ         = $(OUTPUT_DIR)/$(ASSETS_DIR)/generated/assets.o
-COMMON_ASM_OBJ     = $(addprefix $(OUTPUT_DIR)/,$(COMMON_ASM_SOURCES:../common/%.S=common/%.o))
-COMMON_CPP_OBJ     = $(addprefix $(OUTPUT_DIR)/,$(COMMON_CPP_SOURCES:../common/%.cpp=common/%.o))
-KERNELBASE_ASM_OBJ = $(addprefix $(OUTPUT_DIR)/,$(KERNELBASE_ASM_SOURCES:../kernelbase/%.S=kernelbase/%.o))
-KERNELBASE_CPP_OBJ = $(addprefix $(OUTPUT_DIR)/,$(KERNELBASE_CPP_SOURCES:../kernelbase/%.cpp=kernelbase/%.o))
+COMMON_ASM_OBJ     = $(addprefix $(OUTPUT_DIR)/,$(COMMON_ASM_SOURCES:../shared/common/%.S=shared/common/%.o))
+COMMON_CPP_OBJ     = $(addprefix $(OUTPUT_DIR)/,$(COMMON_CPP_SOURCES:../shared/common/%.cpp=shared/common/%.o))
+KERNELBASE_ASM_OBJ = $(addprefix $(OUTPUT_DIR)/,$(KERNELBASE_ASM_SOURCES:../shared/kernelbase/%.S=shared/kernelbase/%.o))
+KERNELBASE_CPP_OBJ = $(addprefix $(OUTPUT_DIR)/,$(KERNELBASE_CPP_SOURCES:../shared/kernelbase/%.cpp=shared/kernelbase/%.o))
 ASM_OBJ            = $(addprefix $(OUTPUT_DIR)/,$(ASM_SOURCES:%.S=%.o))
 CPP_OBJ            = $(addprefix $(OUTPUT_DIR)/,$(CPP_SOURCES:%.cpp=%.o))
 
@@ -160,21 +160,11 @@ $(ASSETS_OBJ): $(ASSETS_FILES)
 	$(MKDIR) $(@D)
 	$(CC) $(ASMFLAGS) $(ASSETS_DIR)/generated/assets.S -o $@
 
-$(OUTPUT_DIR)/common/%.o: $(COMMON_DIR)/%.S $(CPP_HEADERS)
+$(OUTPUT_DIR)/shared/%.o: $(SHARED_DIR)/%.S $(CPP_HEADERS)
 	$(MKDIR) $(@D)
 	$(CC) $(ASMFLAGS) $< -o $@
 
-$(OUTPUT_DIR)/common/%.o: $(COMMON_DIR)/%.cpp $(CPP_HEADERS)
-	$(MKDIR) $(@D)
-	$(CXX) $(CXXFLAGS) -E $< -o $@.cpp
-	$(CXX) $(CXXFLAGS) -S $< -o $@.S
-	$(CXX) $(CXXFLAGS) $< -o $@
-
-$(OUTPUT_DIR)/kernelbase/%.o: $(KERNELBASE_DIR)/%.S $(CPP_HEADERS)
-	$(MKDIR) $(@D)
-	$(CC) $(ASMFLAGS) $< -o $@
-
-$(OUTPUT_DIR)/kernelbase/%.o: $(KERNELBASE_DIR)/%.cpp $(CPP_HEADERS)
+$(OUTPUT_DIR)/shared/%.o: $(SHARED_DIR)/%.cpp $(CPP_HEADERS)
 	$(MKDIR) $(@D)
 	$(CXX) $(CXXFLAGS) -E $< -o $@.cpp
 	$(CXX) $(CXXFLAGS) -S $< -o $@.S
