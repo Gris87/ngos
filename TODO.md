@@ -1,7 +1,6 @@
 TODO List
 =========
 
-- [ ] Move common and kernelbase folder under shared folder
 - [ ] Complete with interruptions
 - [ ] Implement graphics for kernel
 - [ ] Per CPU?
@@ -13,6 +12,7 @@ TODO List
 - [ ] Add option to disable inline
 - [ ] Add stack protector to build
 - [ ] Code verifier. Verifier for void functions
+- [ ] Code verifier. Verifier for headers in assembler
 - [ ] Docs verifier. Verifier for Project structure
 - [ ] Docs verifier. Verifier for Configuration
 - [ ] Docs verifier. Verifier for How to Build
