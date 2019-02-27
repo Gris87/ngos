@@ -1,12 +1,12 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE42_SSE42_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE42_SSE42_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE42_SSE42_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE42_SSE42_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse42/asm_testsse42pcmpgtq.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse42/asm_testsse42pcmpgtq.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -15,7 +15,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_sse42_sse42);
+TEST_CASES(section0, __shared_common_bits64_fpu_sse42_sse42);
 {
     TEST_CASE("pcmpgtq");
     {
@@ -51,4 +51,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE42_SSE42_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE42_SSE42_H

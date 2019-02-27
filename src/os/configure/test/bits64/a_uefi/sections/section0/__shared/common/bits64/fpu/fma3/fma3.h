@@ -1,15 +1,15 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_FMA3_FMA3_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_FMA3_FMA3_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_FMA3_FMA3_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_FMA3_FMA3_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmadd213pd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmadd213ps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmsub213pd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/fma3/asm_testfma3vfmsub213ps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmadd213pd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmadd213ps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmsub213pd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmsub213ps.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -18,7 +18,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_fma3_fma3);
+TEST_CASES(section0, __shared_common_bits64_fpu_fma3_fma3);
 {
     TEST_CASE("vfmadd213ps");
     {
@@ -218,4 +218,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_FMA3_FMA3_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_FMA3_FMA3_H

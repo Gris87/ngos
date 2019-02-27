@@ -1,21 +1,21 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE41_SSE41_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE41_SSE41_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE41_SSE41_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE41_SSE41_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmaxsb.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmaxsd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmaxud.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmaxuw.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pminsb.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pminsd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pminud.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pminuw.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmuldq.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse41/asm_testsse41pmulld.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmaxsb.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmaxsd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmaxud.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmaxuw.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pminsb.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pminsd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pminud.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pminuw.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmuldq.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmulld.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -24,7 +24,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_sse41_sse41);
+TEST_CASES(section0, __shared_common_bits64_fpu_sse41_sse41);
 {
     TEST_CASE("pmulld");
     {
@@ -466,4 +466,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE41_SSE41_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE41_SSE41_H

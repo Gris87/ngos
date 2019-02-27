@@ -1,15 +1,15 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512CD_AVX512CD_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512CD_AVX512CD_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512CD_AVX512CD_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512CD_AVX512CD_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvpbroadcastmb2q.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvpbroadcastmw2d.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvplzcntd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512cd/asm_testavx512cdvplzcntq.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512cd/asm_testavx512cdvpbroadcastmb2q.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512cd/asm_testavx512cdvpbroadcastmw2d.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512cd/asm_testavx512cdvplzcntd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512cd/asm_testavx512cdvplzcntq.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -18,7 +18,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_avx512cd_avx512cd);
+TEST_CASES(section0, __shared_common_bits64_fpu_avx512cd_avx512cd);
 {
     TEST_CASE("vpbroadcastmb2q");
     {
@@ -174,4 +174,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512CD_AVX512CD_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512CD_AVX512CD_H

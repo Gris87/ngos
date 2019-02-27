@@ -1,16 +1,16 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512DQ_AVX512DQ_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512DQ_AVX512DQ_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512DQ_AVX512DQ_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512DQ_AVX512DQ_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtpd2qq.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtps2qq.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtqq2pd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvcvtqq2ps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512dq/asm_testavx512dqvpmullq.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvcvtpd2qq.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvcvtps2qq.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvcvtqq2pd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvcvtqq2ps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvpmullq.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -19,7 +19,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_avx512dq_avx512dq);
+TEST_CASES(section0, __shared_common_bits64_fpu_avx512dq_avx512dq);
 {
     TEST_CASE("vcvtpd2qq");
     {
@@ -217,4 +217,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512DQ_AVX512DQ_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512DQ_AVX512DQ_H

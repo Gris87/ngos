@@ -1,20 +1,20 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512F_AVX512F_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512F_AVX512F_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512F_AVX512F_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512F_AVX512F_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvaddps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvdivps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvmaxps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvminps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvmulps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvrcp14ps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvrsqrt14ps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvsqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx512f/asm_testavx512fvsubps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvaddps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvdivps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvmaxps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvminps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvmulps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvrcp14ps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvrsqrt14ps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvsqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/asm_testavx512fvsubps.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -23,7 +23,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_avx512f_avx512f);
+TEST_CASES(section0, __shared_common_bits64_fpu_avx512f_avx512f);
 {
     TEST_CASE("vaddps");
     {
@@ -607,4 +607,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX512F_AVX512F_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512F_AVX512F_H

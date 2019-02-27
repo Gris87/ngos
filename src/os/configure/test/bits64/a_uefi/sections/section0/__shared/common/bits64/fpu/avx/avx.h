@@ -1,20 +1,20 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX_AVX_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX_AVX_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvaddps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvdivps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvmaxps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvminps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvmulps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvrcpps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvrsqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvsqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/avx/asm_testavxvsubps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvaddps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvdivps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvmaxps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvminps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvmulps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvrcpps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvrsqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvsqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvsubps.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -23,7 +23,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_avx_avx);
+TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
 {
     TEST_CASE("vaddps");
     {
@@ -415,4 +415,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_AVX_AVX_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H

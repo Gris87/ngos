@@ -1,20 +1,20 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE_SSE_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE_SSE_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE_SSE_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE_SSE_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseaddps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssedivps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemaxps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testsseminps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssemulps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssercpps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssersqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssesqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse/asm_testssesubps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testsseaddps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testssedivps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testssemaxps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testsseminps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testssemulps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testssercpps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testssersqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testssesqrtps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/asm_testssesubps.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -23,7 +23,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_sse_sse);
+TEST_CASES(section0, __shared_common_bits64_fpu_sse_sse);
 {
     TEST_CASE("addps");
     {
@@ -319,4 +319,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE_SSE_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE_SSE_H

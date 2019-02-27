@@ -1,21 +1,21 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE3_SSE3_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE3_SSE3_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE3_SSE3_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE3_SSE3_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
 
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3addsubpd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3addsubps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3haddpd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3haddps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3hsubpd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3hsubps.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3phaddd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3phaddw.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3phsubd.h"
-#include "test/bits64/a_uefi/sections/section0/__common/bits64/fpu/sse3/asm_testsse3phsubw.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3addsubpd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3addsubps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3haddpd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3haddps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3hsubpd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3hsubps.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phaddd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phaddw.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phsubd.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phsubw.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -24,7 +24,7 @@
 
 
 
-TEST_CASES(section0, __common_bits64_fpu_sse3_sse3);
+TEST_CASES(section0, __shared_common_bits64_fpu_sse3_sse3);
 {
     TEST_CASE("addsubps");
     {
@@ -378,4 +378,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___COMMON_BITS64_FPU_SSE3_SSE3_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE3_SSE3_H
