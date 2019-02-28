@@ -574,7 +574,7 @@ inline NgosStatus invlpg(u8 *address) // TEST: NO
         "invlpg  %0"                // invlpg  0x0000(%rip)  # Invalidate TLB entries for page containing specified address. 0x0000(%rip) == address
             :                       // Output parameters
             :                       // Input parameters
-                "m" (*address)      // "m" == use memory
+                "m" (*address)      // "m" == use memory // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
