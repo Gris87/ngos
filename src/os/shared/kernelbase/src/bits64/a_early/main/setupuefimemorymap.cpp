@@ -31,13 +31,15 @@ NgosStatus setupUefiMemoryMap()
     EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",       MemoryManager::sMemoryBlock.reserved.max));
     EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016lX", MemoryManager::sMemoryBlock.reserved.totalSize));
 
+    EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
+    EARLY_LVVV(("-------------------------------------"));
+
     for (i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
     {
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].start  = 0x%016lX", i, MemoryManager::sMemoryBlock.reserved.regions[i].start));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].size   = 0x%016lX", i, MemoryManager::sMemoryBlock.reserved.regions[i].size));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].flags  = 0x%02X",   i, MemoryManager::sMemoryBlock.reserved.regions[i].flags));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].nodeId = 0x%04X",   i, MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
+        EARLY_LVVV(("#%-3d: 0x%p-0x%p | 0x%02X | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), MemoryManager::sMemoryBlock.reserved.regions[i].flags, MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
     }
+
+    EARLY_LVVV(("-------------------------------------"));
 #endif
 
     EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.count             == 3,                                                                      NgosStatus::ASSERTION);

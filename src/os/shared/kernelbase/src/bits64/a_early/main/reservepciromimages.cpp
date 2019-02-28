@@ -62,30 +62,30 @@ NgosStatus reservePciRomImages()
 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-    COMMON_LVVV(("IORemap::sLastUsedSlot     = %u", IORemap::sLastUsedSlot));
-    COMMON_LVVV(("IORemap::sLastReleasedSlot = %u", IORemap::sLastReleasedSlot));
-    COMMON_LVVV(("IORemap::sSlotsAvailable   = %u", IORemap::sSlotsAvailable));
+    EARLY_LVVV(("IORemap::sLastUsedSlot     = %u", IORemap::sLastUsedSlot));
+    EARLY_LVVV(("IORemap::sLastReleasedSlot = %u", IORemap::sLastReleasedSlot));
+    EARLY_LVVV(("IORemap::sSlotsAvailable   = %u", IORemap::sSlotsAvailable));
 
     for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
     {
-        COMMON_LVVV(("IORemap::sSlotsAddresses[%d] = 0x%p", i, IORemap::sSlotsAddresses[i]));
+        EARLY_LVVV(("IORemap::sSlotsAddresses[%d] = 0x%p", i, IORemap::sSlotsAddresses[i]));
     }
 
     for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
     {
-        COMMON_LVVV(("IORemap::sSlotsSizes[%d] = %u", i, IORemap::sSlotsSizes[i]));
+        EARLY_LVVV(("IORemap::sSlotsSizes[%d] = %u", i, IORemap::sSlotsSizes[i]));
     }
 
     for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
     {
-        COMMON_LVVV(("IORemap::sPoolOfSlots[%d] = %u", i, IORemap::sPoolOfSlots[i]));
+        EARLY_LVVV(("IORemap::sPoolOfSlots[%d] = %u", i, IORemap::sPoolOfSlots[i]));
     }
 
     for (i64 i = 0; i < PTRS_PER_PTE; ++i)
     {
         if (IORemap::sFixmapPage[i].pte)
         {
-            COMMON_LVVV(("IORemap::sFixmapPage[%d].pte = 0x%016lX", i, IORemap::sFixmapPage[i].pte));
+            EARLY_LVVV(("IORemap::sFixmapPage[%d].pte = 0x%016lX", i, IORemap::sFixmapPage[i].pte));
         }
     }
 #endif
@@ -135,13 +135,15 @@ NgosStatus reservePciRomImages()
     EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",       MemoryManager::sMemoryBlock.reserved.max));
     EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016lX", MemoryManager::sMemoryBlock.reserved.totalSize));
 
+    EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
+    EARLY_LVVV(("-------------------------------------"));
+
     for (i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
     {
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].start  = 0x%016lX", i, MemoryManager::sMemoryBlock.reserved.regions[i].start));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].size   = 0x%016lX", i, MemoryManager::sMemoryBlock.reserved.regions[i].size));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].flags  = 0x%02X",   i, MemoryManager::sMemoryBlock.reserved.regions[i].flags));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions[%d].nodeId = 0x%04X",   i, MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
+        EARLY_LVVV(("#%-3d: 0x%p-0x%p | 0x%02X | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), MemoryManager::sMemoryBlock.reserved.regions[i].flags, MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
     }
+
+    EARLY_LVVV(("-------------------------------------"));
 #endif
 
 
@@ -179,43 +181,43 @@ NgosStatus reservePciRomImages()
 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-    COMMON_LVVV(("E820::sTable.count         = %u", E820::sTable.count));
-    COMMON_LVVV(("E820::sTableKExec.count    = %u", E820::sTableKExec.count));
-    COMMON_LVVV(("E820::sTableFirmware.count = %u", E820::sTableFirmware.count));
+    EARLY_LVVV(("E820::sTable.count         = %u", E820::sTable.count));
+    EARLY_LVVV(("E820::sTableKExec.count    = %u", E820::sTableKExec.count));
+    EARLY_LVVV(("E820::sTableFirmware.count = %u", E820::sTableFirmware.count));
 
-    COMMON_LVVV(("E820::sTable.entries:"));
-    COMMON_LVVV(("-------------------------------------"));
+    EARLY_LVVV(("E820::sTable.entries:"));
+    EARLY_LVVV(("-------------------------------------"));
 
     for (i64 i = 0; i < (i64)E820::sTable.count; ++i)
     {
-        COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTable.entries[i].type), E820::sTable.entries[i].start, E820::sTable.entries[i].end()));
+        EARLY_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTable.entries[i].type), E820::sTable.entries[i].start, E820::sTable.entries[i].end()));
     }
 
-    COMMON_LVVV(("-------------------------------------"));
+    EARLY_LVVV(("-------------------------------------"));
 
 
 
-    COMMON_LVVV(("sTableKExec.entries:"));
-    COMMON_LVVV(("-------------------------------------"));
+    EARLY_LVVV(("sTableKExec.entries:"));
+    EARLY_LVVV(("-------------------------------------"));
 
     for (i64 i = 0; i < (i64)E820::sTableKExec.count; ++i)
     {
-        COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableKExec.entries[i].type), E820::sTableKExec.entries[i].start, E820::sTableKExec.entries[i].end()));
+        EARLY_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableKExec.entries[i].type), E820::sTableKExec.entries[i].start, E820::sTableKExec.entries[i].end()));
     }
 
-    COMMON_LVVV(("-------------------------------------"));
+    EARLY_LVVV(("-------------------------------------"));
 
 
 
-    COMMON_LVVV(("sTableFirmware.entries:"));
-    COMMON_LVVV(("-------------------------------------"));
+    EARLY_LVVV(("sTableFirmware.entries:"));
+    EARLY_LVVV(("-------------------------------------"));
 
     for (i64 i = 0; i < (i64)E820::sTableFirmware.count; ++i)
     {
-        COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableFirmware.entries[i].type), E820::sTableFirmware.entries[i].start, E820::sTableFirmware.entries[i].end()));
+        EARLY_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, E820::getTypeName(E820::sTableFirmware.entries[i].type), E820::sTableFirmware.entries[i].start, E820::sTableFirmware.entries[i].end()));
     }
 
-    COMMON_LVVV(("-------------------------------------"));
+    EARLY_LVVV(("-------------------------------------"));
 #endif
 
 
