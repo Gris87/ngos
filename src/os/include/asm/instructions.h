@@ -473,6 +473,7 @@ inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
                 "a" (eax),      // "a" == EAX // Ignore CppSingleCharVerifier
                 "d" (edx)       // "d" == EDX // Ignore CppSingleCharVerifier
     );
+    // Ignore CppAlignmentVerifier [END]
 
     return NgosStatus::OK;
 }
@@ -485,6 +486,7 @@ inline NgosStatus fxsave(u8 *address) // TEST: NO
             :                       // Output parameters
                 "+m" (*address)     // "m" == use memory, "+" - read and write
     );
+    // Ignore CppAlignmentVerifier [END]
 
     return NgosStatus::OK;
 }
@@ -503,6 +505,7 @@ inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: N
                 "a" (eax),                  // "a" == EAX // Ignore CppSingleCharVerifier
                 "d" (edx)                   // "d" == EDX // Ignore CppSingleCharVerifier
     );
+    // Ignore CppAlignmentVerifier [END]
 
     return NgosStatus::OK;
 }
@@ -521,6 +524,7 @@ inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
                 "a" (eax),                  // "a" == EAX // Ignore CppSingleCharVerifier
                 "d" (edx)                   // "d" == EDX // Ignore CppSingleCharVerifier
     );
+    // Ignore CppAlignmentVerifier [END]
 
     return NgosStatus::OK;
 }
@@ -539,6 +543,7 @@ inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
                 "a" (eax),                  // "a" == EAX // Ignore CppSingleCharVerifier
                 "d" (edx)                   // "d" == EDX // Ignore CppSingleCharVerifier
     );
+    // Ignore CppAlignmentVerifier [END]
 
     return NgosStatus::OK;
 }
@@ -557,10 +562,24 @@ inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST:
                 "a" (eax),                  // "a" == EAX // Ignore CppSingleCharVerifier
                 "d" (edx)                   // "d" == EDX // Ignore CppSingleCharVerifier
     );
+    // Ignore CppAlignmentVerifier [END]
 
     return NgosStatus::OK;
 }
 
+inline NgosStatus invlpg(u8 *address) // TEST: NO
+{
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "invlpg  %0"                // invlpg  0x0000(%rip)  # Invalidate TLB entries for page containing specified address. 0x0000(%rip) == address
+            :                       // Output parameters
+            :                       // Input parameters
+                "m" (*address)      // "m" == use memory
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+    return NgosStatus::OK;
+}
 
 
 #endif // ASM_INSTRUCTIONS_H

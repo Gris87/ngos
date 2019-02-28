@@ -1,5 +1,6 @@
 #include "ioremap.h"
 
+#include <asm/instructions.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
@@ -256,6 +257,8 @@ NgosStatus IORemap::removeFixedMapping(u64 address, u64 size)
         COMMON_TEST_ASSERT(sFixmapPage[startPteForSlot + i].pte != 0, NgosStatus::ASSERTION);
 
         sFixmapPage[startPteForSlot + i].pte = 0;
+
+        COMMON_ASSERT_EXECUTION(invlpg((u8 *)(start + i * PAGE_SIZE)), NgosStatus::ASSERTION);
     }
 
 

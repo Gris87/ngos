@@ -1,5 +1,6 @@
 #include "dynamicpagetable.h"
 
+#include <asm/instructions.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
@@ -128,6 +129,18 @@ NgosStatus clearDynamicIdentityMap(u64 start, u64 end)
     i64 endIndex   = pgdIndex(end);
 
     memzero(&early_pagetable[startIndex], (endIndex - startIndex + 1) * sizeof(early_pagetable[0]));
+
+
+
+    start = ROUND_DOWN(start, PMD_SIZE);
+    end   = ROUND_UP(end,     PMD_SIZE);
+
+    while (start < end)
+    {
+        COMMON_ASSERT_EXECUTION(invlpg((u8 *)start), NgosStatus::ASSERTION);
+
+        start += PMD_SIZE;
+    }
 
 
 

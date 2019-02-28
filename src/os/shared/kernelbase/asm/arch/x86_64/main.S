@@ -81,8 +81,8 @@ _start:                                                                         
 # Apply new page table                                                          #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    leaq    early_pagetable(%rip), %rax                                         # Put address of page table to RAX
-    movq    %rax, %cr3                                                          # Update CR3 register with the address of page table
+    leaq    early_pagetable(%rip), %rbx                                         # Put address of page table to RBX
+    movq    %rbx, %cr3                                                          # Update CR3 register with the address of page table
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
 # Jump to virtual address space                                                 #
@@ -117,6 +117,8 @@ virtual_address_space:                                                          
     movq    $(511 * 8), %rsi                                                    # We should clear all PGD entries except the last one
     call    memzero                                                             # Call memzero function
     popq    %rsi                                                                # Restore address of boot parameters back to RSI from the stack
+                                                                                #
+    movq    %rbx, %cr3                                                          # Update CR3 register with the address of page table once again to force CPU to clean TLB cache
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
 # Setup CR0                                                                     #
