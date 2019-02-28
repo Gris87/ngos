@@ -31,13 +31,16 @@ NgosStatus MemoryManager::init()
 
 
 
-    COMMON_LVVV(("sizeof(sMemoryBlock)     = %u", sizeof(sMemoryBlock)));
-    COMMON_LVVV(("sizeof(sMemoryRegions)   = %u", sizeof(sMemoryRegions)));
-    COMMON_LVVV(("sizeof(sReservedRegions) = %u", sizeof(sReservedRegions)));
+    // Validation
+    {
+        COMMON_LVVV(("sizeof(sMemoryBlock)     = %u", sizeof(sMemoryBlock)));
+        COMMON_LVVV(("sizeof(sMemoryRegions)   = %u", sizeof(sMemoryRegions)));
+        COMMON_LVVV(("sizeof(sReservedRegions) = %u", sizeof(sReservedRegions)));
 
-    COMMON_TEST_ASSERT(sizeof(sMemoryBlock)     == 64,   NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sizeof(sMemoryRegions)   == 3072, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sizeof(sReservedRegions) == 3072, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sizeof(sMemoryBlock)     == 64,   NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sizeof(sMemoryRegions)   == 3072, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sizeof(sReservedRegions) == 3072, NgosStatus::ASSERTION);
+    }
 
 
 

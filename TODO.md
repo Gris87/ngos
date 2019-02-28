@@ -1,6 +1,8 @@
 TODO List
 =========
 
+- [ ] Regions with `// Validation`
+- [ ] Clear TLB cache on page table changes
 - [ ] Complete with interruptions
 - [ ] Implement graphics for kernel
 - [ ] Per CPU?

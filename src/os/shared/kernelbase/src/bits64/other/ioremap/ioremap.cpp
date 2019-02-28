@@ -40,22 +40,27 @@ NgosStatus IORemap::init()
     sLastReleasedSlot = FIX_BITMAP_SLOTS - 1;
     sSlotsAvailable   = FIX_BITMAP_SLOTS;
 
-    COMMON_LVVV(("sLastUsedSlot     = %u", sLastUsedSlot));
-    COMMON_LVVV(("sLastReleasedSlot = %u", sLastReleasedSlot));
-    COMMON_LVVV(("sSlotsAvailable   = %u", sSlotsAvailable));
 
-    COMMON_TEST_ASSERT(FIX_BITMAP_SLOTS  == 8, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[0]   == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[1]   == 1, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[2]   == 2, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[3]   == 3, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[4]   == 4, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[5]   == 5, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[6]   == 6, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sPoolOfSlots[7]   == 7, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sLastUsedSlot     == 7, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sLastReleasedSlot == 7, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sSlotsAvailable   == 8, NgosStatus::ASSERTION);
+
+    // Validation
+    {
+        COMMON_LVVV(("sLastUsedSlot     = %u", sLastUsedSlot));
+        COMMON_LVVV(("sLastReleasedSlot = %u", sLastReleasedSlot));
+        COMMON_LVVV(("sSlotsAvailable   = %u", sSlotsAvailable));
+
+        COMMON_TEST_ASSERT(FIX_BITMAP_SLOTS  == 8, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[0]   == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[1]   == 1, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[2]   == 2, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[3]   == 3, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[4]   == 4, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[5]   == 5, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[6]   == 6, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPoolOfSlots[7]   == 7, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sLastUsedSlot     == 7, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sLastReleasedSlot == 7, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSlotsAvailable   == 8, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -79,20 +84,23 @@ NgosStatus IORemap::addPmdForFixmap()
 
 
 
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-    for (i64 i = 0; i < PTRS_PER_PMD; ++i)
+    // Validation
     {
-        if (fixmap_pagetable_level2[i].pmd)
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+        for (i64 i = 0; i < PTRS_PER_PMD; ++i)
         {
-            COMMON_LVVV(("fixmap_pagetable_level2[%d] = 0x%016lX", i, fixmap_pagetable_level2[i].pmd));
+            if (fixmap_pagetable_level2[i].pmd)
+            {
+                COMMON_LVVV(("fixmap_pagetable_level2[%d] = 0x%016lX", i, fixmap_pagetable_level2[i].pmd));
+            }
         }
-    }
 #endif
 
-    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd               != 0,    NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(fixmap_pagetable_level2[506].pmd               != 0,    NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+        COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+        COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd               != 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(fixmap_pagetable_level2[506].pmd               != 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+    }
 
 
 
