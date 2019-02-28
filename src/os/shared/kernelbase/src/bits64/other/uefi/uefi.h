@@ -6,6 +6,7 @@
 #include <bootparams/uefimemorymapinfo.h>
 #include <buildconfig.h>
 #include <ngos/status.h>
+#include <uefi/uefisystemtable.h>
 
 
 
@@ -21,6 +22,7 @@ public:
 private:
 #endif
     static UefiMemoryMapInfo sMemoryMap;
+    static UefiSystemTable   sSystemTable;
 };
 
 

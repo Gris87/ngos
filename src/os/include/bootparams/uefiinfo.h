@@ -4,12 +4,14 @@
 
 
 #include <bootparams/uefimemorymapinfo.h>
+#include <uefi/uefisystemtable.h>
 
 
 
 struct UefiInfo
 {
-    UefiMemoryMapInfo memoryMap;
+    UefiMemoryMapInfo  memoryMap;
+    UefiSystemTable   *systemTable;
 };
 
 
