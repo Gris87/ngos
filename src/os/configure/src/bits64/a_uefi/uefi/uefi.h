@@ -48,14 +48,15 @@ public:
     static UefiStatus exitBootServices(u64 mapKey); // TEST: NO
 
     static uefi_handle getImageHandle(); // TEST: NO
+    static UefiSystemTable* getSystemTable(); // TEST: NO
 
 private:
+    static void print(uefi_char16 *ch); // TEST: NO
+
     static uefi_handle                    sImageHandle;
     static UefiSystemTable               *sSystemTable;
     static UefiSimpleTextOutputInterface *sTextOutput;
     static UefiBootServices              *sBootServices;
-
-    static void print(uefi_char16 *ch); // TEST: NO
 };
 
 

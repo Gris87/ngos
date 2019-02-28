@@ -138,6 +138,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
     params->uefi.memoryMap.size              = *bootMemoryMap->memoryMapSize;
     params->uefi.memoryMap.descriptorSize    = *bootMemoryMap->descriptorSize;
     params->uefi.memoryMap.descriptorVersion = *bootMemoryMap->descriptorVersion;
+    params->uefi.systemTable                 = UEFI::getSystemTable();
     params->memoryMapEntriesCount            = memoryMapEntriesCount;
     params->memoryMapEntries                 = memoryMapEntries;
 
@@ -149,8 +150,8 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         UEFI_LVVV(("params->uefi.memoryMap.size              = %u",   params->uefi.memoryMap.size));
         UEFI_LVVV(("params->uefi.memoryMap.descriptorSize    = %u",   params->uefi.memoryMap.descriptorSize));
         UEFI_LVVV(("params->uefi.memoryMap.descriptorVersion = %u",   params->uefi.memoryMap.descriptorVersion));
-        UEFI_LVVV(("params->memoryMapEntriesCount            = %u",   params->memoryMapEntriesCount));
-        UEFI_LVVV(("params->memoryMapEntries                 = 0x%p", params->memoryMapEntries));
+        UEFI_LVVV(("params->uefi.systemTable                 = 0x%p", params->uefi.systemTable));
+        UEFI_LVVV(("params->memoryMapEntriesCount            = %u",   params->memoryMapEntriesCount));        UEFI_LVVV(("params->memoryMapEntries                 = 0x%p", params->memoryMapEntries));
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
@@ -187,6 +188,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         // UEFI_TEST_ASSERT(params->uefi.memoryMap.size                             == 2160,                                  NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorSize                   == 48,                                    NgosStatus::ASSERTION); // Commented due to value variation
         UEFI_TEST_ASSERT(params->uefi.memoryMap.descriptorVersion                   == 1,                                     NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(params->uefi.systemTable                                   != 0,                                     NgosStatus::ASSERTION);
         // UEFI_TEST_ASSERT(count                                                   == 45,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(MEMORY_MAP_DESCRIPTOR(bootMemoryMap, 0)->type           == UefiMemoryType::BOOT_SERVICES_CODE,    NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(MEMORY_MAP_DESCRIPTOR(bootMemoryMap, 0)->physicalStart  == 0x0000000000000000,                    NgosStatus::ASSERTION); // Commented due to value variation

@@ -671,6 +671,15 @@ uefi_handle UEFI::getImageHandle()
     return sImageHandle;
 }
 
+UefiSystemTable* UEFI::getSystemTable()
+{
+    UEFI_LT((""));
+
+
+
+    return sSystemTable;
+}
+
 void UEFI::print(uefi_char16 *ch)
 {
     // UEFI_LT((" | ch = 0x%p", ch)); // Commented to avoid infinite loop
