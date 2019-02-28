@@ -21,6 +21,8 @@ NgosStatus setupCr4Shadow()
     {
         EARLY_LVVV(("PERCPU::cr4 = 0x%016lX", PERCPU::cr4));
 
+
+
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         EARLY_TEST_ASSERT(PERCPU::cr4 == 0x000416E8, NgosStatus::ASSERTION);
 #else

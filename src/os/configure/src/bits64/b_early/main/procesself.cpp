@@ -19,44 +19,49 @@ u64 getElfMemorySize(ElfHeader *header)
 
 
 
-    EARLY_LVVV(("header->identification.signature     = 0x%08X",   header->identification.signature));
-    EARLY_LVVV(("header->identification.fileClass     = %u",       header->identification.fileClass));
-    EARLY_LVVV(("header->identification.fileData      = %u",       header->identification.fileData));
-    EARLY_LVVV(("header->identification.version       = %u",       header->identification.version));
-    EARLY_LVVV(("header->identification.osAbi         = 0x%02X",   header->identification.osAbi));
-    EARLY_LVVV(("header->type                         = %u",       header->type));
-    EARLY_LVVV(("header->machine                      = 0x%04X",   header->machine));
-    EARLY_LVVV(("header->version                      = %u",       header->version));
-    EARLY_LVVV(("header->entryPoint                   = 0x%016lX", header->entryPoint));
-    EARLY_LVVV(("header->programHeaderTableOffset     = %u",       header->programHeaderTableOffset));
-    EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",       header->sectionHeaderTableOffset));
-    EARLY_LVVV(("header->flags                        = %u",       header->flags));
-    EARLY_LVVV(("header->headerSize                   = %u",       header->headerSize));
-    EARLY_LVVV(("header->programHeaderTableEntrySize  = %u",       header->programHeaderTableEntrySize));
-    EARLY_LVVV(("header->programHeaderTableEntryCount = %u",       header->programHeaderTableEntryCount));
-    EARLY_LVVV(("header->sectionHeaderTableEntrySize  = %u",       header->sectionHeaderTableEntrySize));
-    EARLY_LVVV(("header->sectionHeaderTableEntryCount = %u",       header->sectionHeaderTableEntryCount));
-    EARLY_LVVV(("header->sectionHeaderTableNamesIndex = %u",       header->sectionHeaderTableNamesIndex));
+    // Validation
+    {
+        EARLY_LVVV(("header->identification.signature     = 0x%08X",   header->identification.signature));
+        EARLY_LVVV(("header->identification.fileClass     = %u",       header->identification.fileClass));
+        EARLY_LVVV(("header->identification.fileData      = %u",       header->identification.fileData));
+        EARLY_LVVV(("header->identification.version       = %u",       header->identification.version));
+        EARLY_LVVV(("header->identification.osAbi         = 0x%02X",   header->identification.osAbi));
+        EARLY_LVVV(("header->type                         = %u",       header->type));
+        EARLY_LVVV(("header->machine                      = 0x%04X",   header->machine));
+        EARLY_LVVV(("header->version                      = %u",       header->version));
+        EARLY_LVVV(("header->entryPoint                   = 0x%016lX", header->entryPoint));
+        EARLY_LVVV(("header->programHeaderTableOffset     = %u",       header->programHeaderTableOffset));
+        EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",       header->sectionHeaderTableOffset));
+        EARLY_LVVV(("header->flags                        = %u",       header->flags));
+        EARLY_LVVV(("header->headerSize                   = %u",       header->headerSize));
+        EARLY_LVVV(("header->programHeaderTableEntrySize  = %u",       header->programHeaderTableEntrySize));
+        EARLY_LVVV(("header->programHeaderTableEntryCount = %u",       header->programHeaderTableEntryCount));
+        EARLY_LVVV(("header->sectionHeaderTableEntrySize  = %u",       header->sectionHeaderTableEntrySize));
+        EARLY_LVVV(("header->sectionHeaderTableEntryCount = %u",       header->sectionHeaderTableEntryCount));
+        EARLY_LVVV(("header->sectionHeaderTableNamesIndex = %u",       header->sectionHeaderTableNamesIndex));
 
-    EARLY_TEST_ASSERT(header->identification.signature     == ELF_SIGNATURE,                            0);
-    EARLY_TEST_ASSERT(header->identification.fileClass     == ElfClass::CLASS_64,                       0);
-    EARLY_TEST_ASSERT(header->identification.fileData      == ElfData::LEAST_SIGNIFICANT_BYTE,          0);
-    EARLY_TEST_ASSERT(header->identification.version       == ElfFileVersion::CURRENT,                  0);
-    EARLY_TEST_ASSERT(header->identification.osAbi         == ElfOsAbi::SYSTEM_V,                       0);
-    EARLY_TEST_ASSERT(header->type                         == ElfType::EXECUTABLE,                      0);
-    EARLY_TEST_ASSERT(header->machine                      == ElfMachine::MACHINE_X86_64,               0);
-    EARLY_TEST_ASSERT(header->version                      == ElfVersion::CURRENT,                      0);
-    EARLY_TEST_ASSERT(header->entryPoint                   == 0xFFFFFFFF80000000,                       0);
-    EARLY_TEST_ASSERT(header->programHeaderTableOffset     == 64,                                       0);
-    EARLY_TEST_ASSERT(header->sectionHeaderTableOffset     >= 2000000,                                  0);
-    EARLY_TEST_ASSERT(header->flags                        == 0,                                        0);
-    EARLY_TEST_ASSERT(header->headerSize                   == sizeof(ElfHeader),                        0);
-    EARLY_TEST_ASSERT(header->programHeaderTableEntrySize  == sizeof(ElfProgramHeaderTableEntry),       0);
-    EARLY_TEST_ASSERT(header->programHeaderTableEntryCount == 1,                                        0);
-    EARLY_TEST_ASSERT(header->sectionHeaderTableEntrySize  == sizeof(ElfSectionHeaderTableEntry),       0);
-    EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount >= 36,                                       0);
-    EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount <= 37,                                       0);
-    EARLY_TEST_ASSERT(header->sectionHeaderTableNamesIndex == header->sectionHeaderTableEntryCount - 1, 0);
+
+
+        EARLY_TEST_ASSERT(header->identification.signature     == ELF_SIGNATURE,                            0);
+        EARLY_TEST_ASSERT(header->identification.fileClass     == ElfClass::CLASS_64,                       0);
+        EARLY_TEST_ASSERT(header->identification.fileData      == ElfData::LEAST_SIGNIFICANT_BYTE,          0);
+        EARLY_TEST_ASSERT(header->identification.version       == ElfFileVersion::CURRENT,                  0);
+        EARLY_TEST_ASSERT(header->identification.osAbi         == ElfOsAbi::SYSTEM_V,                       0);
+        EARLY_TEST_ASSERT(header->type                         == ElfType::EXECUTABLE,                      0);
+        EARLY_TEST_ASSERT(header->machine                      == ElfMachine::MACHINE_X86_64,               0);
+        EARLY_TEST_ASSERT(header->version                      == ElfVersion::CURRENT,                      0);
+        EARLY_TEST_ASSERT(header->entryPoint                   == 0xFFFFFFFF80000000,                       0);
+        EARLY_TEST_ASSERT(header->programHeaderTableOffset     == 64,                                       0);
+        EARLY_TEST_ASSERT(header->sectionHeaderTableOffset     >= 2000000,                                  0);
+        EARLY_TEST_ASSERT(header->flags                        == 0,                                        0);
+        EARLY_TEST_ASSERT(header->headerSize                   == sizeof(ElfHeader),                        0);
+        EARLY_TEST_ASSERT(header->programHeaderTableEntrySize  == sizeof(ElfProgramHeaderTableEntry),       0);
+        EARLY_TEST_ASSERT(header->programHeaderTableEntryCount == 1,                                        0);
+        EARLY_TEST_ASSERT(header->sectionHeaderTableEntrySize  == sizeof(ElfSectionHeaderTableEntry),       0);
+        EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount >= 36,                                       0);
+        EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount <= 37,                                       0);
+        EARLY_TEST_ASSERT(header->sectionHeaderTableNamesIndex == header->sectionHeaderTableEntryCount - 1, 0);
+    }
 
 
 

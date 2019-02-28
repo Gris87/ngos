@@ -43,6 +43,8 @@ NgosStatus setupMemoryManager()
         EARLY_LVVV(("-------------------------------------"));
 #endif
 
+
+
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.count             == 2,                                                NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.max               == INIT_MEMORYBLOCK_REGIONS,                         NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.totalSize         == PAGE_SIZE + (u64)&_end - (u64)&_start,            NgosStatus::ASSERTION);

@@ -249,44 +249,42 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
 
 
 
-    UEFI_LVVV(("Screen info:"));
-    UEFI_LVVV(("-------------------------------------"));
-
-    UEFI_LVVV(("frameBufferBase = 0x%p", params->screenInfo.frameBufferBase));
-    UEFI_LVVV(("frameBufferSize = %u",   params->screenInfo.frameBufferSize));
-    UEFI_LVVV(("lineLength      = %u",   params->screenInfo.lineLength));
-    UEFI_LVVV(("width           = %u",   params->screenInfo.width));
-    UEFI_LVVV(("height          = %u",   params->screenInfo.height));
-    UEFI_LVVV(("depth           = %u",   params->screenInfo.depth));
-    UEFI_LVVV(("redOffset       = %u",   params->screenInfo.redOffset));
-    UEFI_LVVV(("greenOffset     = %u",   params->screenInfo.greenOffset));
-    UEFI_LVVV(("blueOffset      = %u",   params->screenInfo.blueOffset));
-    UEFI_LVVV(("reservedOffset  = %u",   params->screenInfo.reservedOffset));
-    UEFI_LVVV(("redSize         = %u",   params->screenInfo.redSize));
-    UEFI_LVVV(("greenSize       = %u",   params->screenInfo.greenSize));
-    UEFI_LVVV(("blueSize        = %u",   params->screenInfo.blueSize));
-    UEFI_LVVV(("reservedSize    = %u",   params->screenInfo.reservedSize));
-
-    UEFI_LVVV(("-------------------------------------"));
+    // Validation
+    {
+        UEFI_LVVV(("params->screenInfo.frameBufferBase = 0x%p", params->screenInfo.frameBufferBase));
+        UEFI_LVVV(("params->screenInfo.frameBufferSize = %u",   params->screenInfo.frameBufferSize));
+        UEFI_LVVV(("params->screenInfo.lineLength      = %u",   params->screenInfo.lineLength));
+        UEFI_LVVV(("params->screenInfo.width           = %u",   params->screenInfo.width));
+        UEFI_LVVV(("params->screenInfo.height          = %u",   params->screenInfo.height));
+        UEFI_LVVV(("params->screenInfo.depth           = %u",   params->screenInfo.depth));
+        UEFI_LVVV(("params->screenInfo.redOffset       = %u",   params->screenInfo.redOffset));
+        UEFI_LVVV(("params->screenInfo.greenOffset     = %u",   params->screenInfo.greenOffset));
+        UEFI_LVVV(("params->screenInfo.blueOffset      = %u",   params->screenInfo.blueOffset));
+        UEFI_LVVV(("params->screenInfo.reservedOffset  = %u",   params->screenInfo.reservedOffset));
+        UEFI_LVVV(("params->screenInfo.redSize         = %u",   params->screenInfo.redSize));
+        UEFI_LVVV(("params->screenInfo.greenSize       = %u",   params->screenInfo.greenSize));
+        UEFI_LVVV(("params->screenInfo.blueSize        = %u",   params->screenInfo.blueSize));
+        UEFI_LVVV(("params->screenInfo.reservedSize    = %u",   params->screenInfo.reservedSize));
 
 
 
-    // UEFI_TEST_ASSERT(params->screenInfo.frameBufferBase == 0x0000000080000000, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.frameBufferSize == 1920000,            NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.lineLength      == 3200,               NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.width           == 800,                NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->screenInfo.height          == 600,                NgosStatus::ASSERTION); // Commented due to value variation
-    UEFI_TEST_ASSERT((params->screenInfo.depth             == 32)
-                    ||
-                    (params->screenInfo.depth              == 24),                NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(params->screenInfo.redOffset          == 16,                 NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(params->screenInfo.greenOffset        == 8,                  NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(params->screenInfo.blueOffset         == 0,                  NgosStatus::ASSERTION);
-    // UEFI_TEST_ASSERT(params->screenInfo.reservedOffset  == 24,                 NgosStatus::ASSERTION); // Commented due to value variation
-    UEFI_TEST_ASSERT(params->screenInfo.redSize            == 8,                  NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(params->screenInfo.greenSize          == 8,                  NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(params->screenInfo.blueSize           == 8,                  NgosStatus::ASSERTION);
-    // UEFI_TEST_ASSERT(params->screenInfo.reservedSize    == 8,                  NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->screenInfo.frameBufferBase == 0x0000000080000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->screenInfo.frameBufferSize == 1920000,            NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->screenInfo.lineLength      == 3200,               NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->screenInfo.width           == 800,                NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->screenInfo.height          == 600,                NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT((params->screenInfo.depth             == 32)
+                        ||
+                        (params->screenInfo.depth              == 24),                NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(params->screenInfo.redOffset          == 16,                 NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(params->screenInfo.greenOffset        == 8,                  NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(params->screenInfo.blueOffset         == 0,                  NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(params->screenInfo.reservedOffset  == 24,                 NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(params->screenInfo.redSize            == 8,                  NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(params->screenInfo.greenSize          == 8,                  NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(params->screenInfo.blueSize           == 8,                  NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(params->screenInfo.reservedSize    == 8,                  NgosStatus::ASSERTION); // Commented due to value variation
+    }
 
 
 

@@ -31,6 +31,8 @@ NgosStatus setupInitTask()
         EARLY_LVVV(("initTask.stackCanary      == %u",        initTask.stackCanary));
         EARLY_LVVV(("*((u64 *)initTask.stack)  == 0x%016lX", *((u64 *)initTask.stack)));
 
+
+
         EARLY_TEST_ASSERT(sizeof(initTask)          == 24,                                      NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(initTask.threadInfo.flags == (thread_info_flags)ThreadInfoFlag::NONE, NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(initTask.state            == TaskState::RUNNABLE,                     NgosStatus::ASSERTION);

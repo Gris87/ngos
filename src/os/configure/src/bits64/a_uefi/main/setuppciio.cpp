@@ -182,59 +182,62 @@ NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size, 
 
 
 
-#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+    // Validation
     {
-        UEFI_LVVV(("ROM Images:"));
-        UEFI_LVVV(("-------------------------------------"));
-
-        curNode = params->pciRomImages;
-
-        while (curNode)
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
-            UEFI_LVVV(("ROM Image with info: 0x%p", curNode));
-            UEFI_LVVV((""));
+            UEFI_LVVV(("ROM Images:"));
+            UEFI_LVVV(("-------------------------------------"));
 
-            UEFI_LVVV(("next           = 0x%p",   curNode->next));
-            UEFI_LVVV(("vendorId       = 0x%04X", curNode->vendorId));
-            UEFI_LVVV(("deviceId       = 0x%04X", curNode->deviceId));
-            UEFI_LVVV(("segmentNumber  = %u",     curNode->segmentNumber));
-            UEFI_LVVV(("busNumber      = %u",     curNode->busNumber));
-            UEFI_LVVV(("deviceNumber   = %u",     curNode->deviceNumber));
-            UEFI_LVVV(("functionNumber = %u",     curNode->functionNumber));
-            UEFI_LVVV(("romSize        = %u",     curNode->romSize));
+            curNode = params->pciRomImages;
 
-            UEFI_LVVV((""));
+            while (curNode)
+            {
+                UEFI_LVVV(("ROM Image with info: 0x%p", curNode));
+                UEFI_LVVV((""));
+
+                UEFI_LVVV(("next           = 0x%p",   curNode->next));
+                UEFI_LVVV(("vendorId       = 0x%04X", curNode->vendorId));
+                UEFI_LVVV(("deviceId       = 0x%04X", curNode->deviceId));
+                UEFI_LVVV(("segmentNumber  = %u",     curNode->segmentNumber));
+                UEFI_LVVV(("busNumber      = %u",     curNode->busNumber));
+                UEFI_LVVV(("deviceNumber   = %u",     curNode->deviceNumber));
+                UEFI_LVVV(("functionNumber = %u",     curNode->functionNumber));
+                UEFI_LVVV(("romSize        = %u",     curNode->romSize));
+
+                UEFI_LVVV((""));
 
 
 
-            curNode = curNode->next;
+                curNode = curNode->next;
+            }
+
+            UEFI_LVVV(("-------------------------------------"));
         }
-
-        UEFI_LVVV(("-------------------------------------"));
-    }
 #endif
 
 
 
-    // UEFI_TEST_ASSERT(params->pciRomImages                       != 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages                       != 0,      NgosStatus::ASSERTION); // Commented due to value variation
 
-    // UEFI_TEST_ASSERT(params->pciRomImages->next                 != 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->vendorId             == 0x15AD, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->deviceId             == 0x0405, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->segmentNumber        == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->busNumber            == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->deviceNumber         == 2,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->functionNumber       == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->romSize              == 38400,  NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next                 != 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->vendorId             == 0x15AD, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->deviceId             == 0x0405, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->segmentNumber        == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->busNumber            == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->deviceNumber         == 2,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->functionNumber       == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->romSize              == 38400,  NgosStatus::ASSERTION); // Commented due to value variation
 
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->next           == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->vendorId       == 0x10EC, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->deviceId       == 0x8139, NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->segmentNumber  == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->busNumber      == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->deviceNumber   == 3,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->functionNumber == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-    // UEFI_TEST_ASSERT(params->pciRomImages->next->romSize        == 247808, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->next           == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->vendorId       == 0x10EC, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->deviceId       == 0x8139, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->segmentNumber  == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->busNumber      == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->deviceNumber   == 3,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->functionNumber == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->romSize        == 247808, NgosStatus::ASSERTION); // Commented due to value variation
+    }
 
 
 

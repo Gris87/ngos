@@ -48,6 +48,8 @@ NgosStatus IORemap::init()
         COMMON_LVVV(("sLastReleasedSlot = %u", sLastReleasedSlot));
         COMMON_LVVV(("sSlotsAvailable   = %u", sSlotsAvailable));
 
+
+
         COMMON_TEST_ASSERT(FIX_BITMAP_SLOTS  == 8, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sPoolOfSlots[0]   == 0, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sPoolOfSlots[1]   == 1, NgosStatus::ASSERTION);
@@ -95,6 +97,8 @@ NgosStatus IORemap::addPmdForFixmap()
             }
         }
 #endif
+
+
 
         COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
         COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd               != 0,    NgosStatus::ASSERTION);

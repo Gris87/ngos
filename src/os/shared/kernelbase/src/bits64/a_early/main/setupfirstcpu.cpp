@@ -28,6 +28,8 @@ NgosStatus setupFirstCpu()
         EARLY_LVVV(("CpuMask::sPossibleCpus.mBits[0] = 0x%016lX", CpuMask::sPossibleCpus.mBits[0]));
 #endif
 
+
+
         EARLY_TEST_ASSERT(CpuMask::sOnlineCpus.mBits[0]   == 0x0000000000000001, NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(CpuMask::sActiveCpus.mBits[0]   == 0x0000000000000001, NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(CpuMask::sPresentCpus.mBits[0]  == 0x0000000000000001, NgosStatus::ASSERTION);

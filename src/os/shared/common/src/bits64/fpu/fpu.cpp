@@ -46,138 +46,141 @@ NgosStatus FPU::init()
 
 
 
-    COMMON_LVVV(("sState.fxsave.cwd       = 0x%04X", sState.fxsave.cwd));
-    COMMON_LVVV(("sState.fxsave.swd       = 0x%04X", sState.fxsave.swd));
-    COMMON_LVVV(("sState.fxsave.twd       = 0x%04X", sState.fxsave.twd));
-    COMMON_LVVV(("sState.fxsave.fop       = 0x%04X", sState.fxsave.fop));
-    COMMON_LVVV(("sState.fxsave.fip       = 0x%08X", sState.fxsave.fip));
-    COMMON_LVVV(("sState.fxsave.fcs       = 0x%08X", sState.fxsave.fcs));
-    COMMON_LVVV(("sState.fxsave.foo       = 0x%08X", sState.fxsave.foo));
-    COMMON_LVVV(("sState.fxsave.fos       = 0x%08X", sState.fxsave.fos));
-    COMMON_LVVV(("sState.fxsave.mxcsr     = 0x%08X", sState.fxsave.mxcsr));
-    COMMON_LVVV(("sState.fxsave.mxcsrMask = 0x%08X", sState.fxsave.mxcsrMask));
-
-    for (i64 i = 0; i < 16; ++i)
+    // Validation
     {
-        COMMON_LVVV(("sState.fxsave.stack[%d] = 0x%016lX", i, sState.fxsave.stack[i]));
+        COMMON_LVVV(("sState.fxsave.cwd       = 0x%04X", sState.fxsave.cwd));
+        COMMON_LVVV(("sState.fxsave.swd       = 0x%04X", sState.fxsave.swd));
+        COMMON_LVVV(("sState.fxsave.twd       = 0x%04X", sState.fxsave.twd));
+        COMMON_LVVV(("sState.fxsave.fop       = 0x%04X", sState.fxsave.fop));
+        COMMON_LVVV(("sState.fxsave.fip       = 0x%08X", sState.fxsave.fip));
+        COMMON_LVVV(("sState.fxsave.fcs       = 0x%08X", sState.fxsave.fcs));
+        COMMON_LVVV(("sState.fxsave.foo       = 0x%08X", sState.fxsave.foo));
+        COMMON_LVVV(("sState.fxsave.fos       = 0x%08X", sState.fxsave.fos));
+        COMMON_LVVV(("sState.fxsave.mxcsr     = 0x%08X", sState.fxsave.mxcsr));
+        COMMON_LVVV(("sState.fxsave.mxcsrMask = 0x%08X", sState.fxsave.mxcsrMask));
+
+        for (i64 i = 0; i < 16; ++i)
+        {
+            COMMON_LVVV(("sState.fxsave.stack[%d] = 0x%016lX", i, sState.fxsave.stack[i]));
+        }
+
+        for (i64 i = 0; i < 16; ++i)
+        {
+            COMMON_LVVV(("sState.fxsave.xmm[%d][0] = 0x%016lX", i, sState.fxsave.xmm[i][0]));
+            COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016lX", i, sState.fxsave.xmm[i][1]));
+        }
+
+        COMMON_LVVV(("sState.xsave.header.xFeatures   = 0x%08X",   sState.xsave.header.xFeatures));
+        COMMON_LVVV(("sState.xsave.header.xComponents = 0x%08X",   sState.xsave.header.xComponents));
+        COMMON_LVVV(("sStateKernelSize                = %u",       sStateKernelSize));
+        COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
+        COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));
+        COMMON_LVVV(("sXFeaturesMask                  = 0x%016lX", sXFeaturesMask));
+
+        for (i64 i = 0; i < XFEATURE_MAX; ++i)
+        {
+            COMMON_LVVV(("sXFeaturesOffsets[%d]          = 0x%08X", i, sXFeaturesOffsets[i]));
+            COMMON_LVVV(("sXFeaturesCompactedOffsets[%d] = 0x%08X", i, sXFeaturesCompactedOffsets[i]));
+            COMMON_LVVV(("sXFeaturesSizes[%d]            = 0x%08X", i, sXFeaturesSizes[i]));
+        }
+
+
+
+        COMMON_TEST_ASSERT(sState.fxsave.cwd                  == 0x037F,             NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.swd                  == 0x0000,             NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.twd                  == 0x0000,             NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.fop                  == 0x0000,             NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.fip                  == 0x00000000,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.fcs                  == 0x00000000,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.foo                  == 0x00000000,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.fos                  == 0x00000000,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.mxcsr                == 0x00001F80,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.mxcsrMask            == 0x0000FFFF,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[0]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[1]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[2]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[3]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[4]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[5]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[6]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[7]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[8]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[9]             == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[10]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[11]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[12]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[13]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[14]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.stack[15]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[0][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[0][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[1][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[1][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[2][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[2][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[3][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[3][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[4][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[4][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[5][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[5][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[6][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[6][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[7][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[7][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[8][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[8][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[9][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[9][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[10][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[10][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[11][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[11][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[12][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[12][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[13][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[13][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[14][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[14][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[15][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sState.fxsave.xmm[15][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sState.xsave.header.xFeatures   == 0x00000213,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sState.xsave.header.xComponents == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sStateKernelSize                == 2696,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sStateUserSize                  == 2696,               NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sMxcsrMask                         == 0x0000FFFF,         NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sXFeaturesMask                  == 0x000000000000021B, NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sXFeaturesOffsets[0]               == 0x00000000,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[0]      == 0x00000000,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sXFeaturesSizes[0]                 == 0x000000A0,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sXFeaturesOffsets[1]               == 0x000000A0,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[1]      == 0x000000A0,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sXFeaturesSizes[1]                 == 0x00000100,         NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[2]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[2]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[2]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[3]            == 0x000003C0,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[3]   == 0x000003C0,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[3]              == 0x00000040,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[4]            == 0x00000400,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[4]   == 0x00000400,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[4]              == 0x00000040,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[5]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[5]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[5]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[6]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[6]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[6]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[7]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[7]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[7]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sXFeaturesOffsets[8]               == 0x00000000,         NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[8]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sXFeaturesSizes[8]                 == 0x00000000,         NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[9]            == 0x00000A80,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[9]   == 0x00000A80,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[9]              == 0x00000008,         NgosStatus::ASSERTION); // Commented due to value variation
     }
-
-    for (i64 i = 0; i < 16; ++i)
-    {
-        COMMON_LVVV(("sState.fxsave.xmm[%d][0] = 0x%016lX", i, sState.fxsave.xmm[i][0]));
-        COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016lX", i, sState.fxsave.xmm[i][1]));
-    }
-
-    COMMON_LVVV(("sState.xsave.header.xFeatures   = 0x%08X",   sState.xsave.header.xFeatures));
-    COMMON_LVVV(("sState.xsave.header.xComponents = 0x%08X",   sState.xsave.header.xComponents));
-    COMMON_LVVV(("sStateKernelSize                = %u",       sStateKernelSize));
-    COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
-    COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));
-    COMMON_LVVV(("sXFeaturesMask                  = 0x%016lX", sXFeaturesMask));
-
-    for (i64 i = 0; i < XFEATURE_MAX; ++i)
-    {
-        COMMON_LVVV(("sXFeaturesOffsets[%d]          = 0x%08X", i, sXFeaturesOffsets[i]));
-        COMMON_LVVV(("sXFeaturesCompactedOffsets[%d] = 0x%08X", i, sXFeaturesCompactedOffsets[i]));
-        COMMON_LVVV(("sXFeaturesSizes[%d]            = 0x%08X", i, sXFeaturesSizes[i]));
-    }
-
-
-
-    COMMON_TEST_ASSERT(sState.fxsave.cwd                  == 0x037F,             NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.swd                  == 0x0000,             NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.twd                  == 0x0000,             NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.fop                  == 0x0000,             NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.fip                  == 0x00000000,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.fcs                  == 0x00000000,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.foo                  == 0x00000000,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.fos                  == 0x00000000,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.mxcsr                == 0x00001F80,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.mxcsrMask            == 0x0000FFFF,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[0]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[1]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[2]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[3]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[4]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[5]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[6]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[7]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[8]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[9]             == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[10]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[11]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[12]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[13]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[14]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.stack[15]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[0][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[0][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[1][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[1][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[2][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[2][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[3][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[3][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[4][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[4][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[5][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[5][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[6][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[6][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[7][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[7][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[8][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[8][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[9][0]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[9][1]            == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[10][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[10][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[11][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[11][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[12][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[12][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[13][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[13][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[14][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[14][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[15][0]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sState.fxsave.xmm[15][1]           == 0x0000000000000000, NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sState.xsave.header.xFeatures   == 0x00000213,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sState.xsave.header.xComponents == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sStateKernelSize                == 2696,               NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sStateUserSize                  == 2696,               NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sMxcsrMask                         == 0x0000FFFF,         NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sXFeaturesMask                  == 0x000000000000021B, NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sXFeaturesOffsets[0]               == 0x00000000,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[0]      == 0x00000000,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesSizes[0]                 == 0x000000A0,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesOffsets[1]               == 0x000000A0,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[1]      == 0x000000A0,         NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sXFeaturesSizes[1]                 == 0x00000100,         NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sXFeaturesOffsets[2]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[2]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesSizes[2]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesOffsets[3]            == 0x000003C0,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[3]   == 0x000003C0,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesSizes[3]              == 0x00000040,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesOffsets[4]            == 0x00000400,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[4]   == 0x00000400,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesSizes[4]              == 0x00000040,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesOffsets[5]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[5]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesSizes[5]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesOffsets[6]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[6]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesSizes[6]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesOffsets[7]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[7]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesSizes[7]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sXFeaturesOffsets[8]               == 0x00000000,         NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[8]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sXFeaturesSizes[8]                 == 0x00000000,         NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sXFeaturesOffsets[9]            == 0x00000A80,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[9]   == 0x00000A80,         NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sXFeaturesSizes[9]              == 0x00000008,         NgosStatus::ASSERTION); // Commented due to value variation
 
 
 

@@ -113,116 +113,119 @@ NgosStatus CPU::init()
 
 
 
-    COMMON_LVVV(("sVendor[0]          = 0x%08X", sVendor[0]));
-    COMMON_LVVV(("sVendor[1]          = 0x%08X", sVendor[1]));
-    COMMON_LVVV(("sVendor[2]          = 0x%08X", sVendor[2]));
-    COMMON_LVVV(("sVendor             = %-12s",  sVendor));
-    COMMON_LVVV(("sCpuVendor          = %u",     sCpuVendor));
-    COMMON_LVVV(("sModelName[0]       = 0x%08X", sModelName[0]));
-    COMMON_LVVV(("sModelName[1]       = 0x%08X", sModelName[1]));
-    COMMON_LVVV(("sModelName[2]       = 0x%08X", sModelName[2]));
-    COMMON_LVVV(("sModelName[3]       = 0x%08X", sModelName[3]));
-    COMMON_LVVV(("sModelName[4]       = 0x%08X", sModelName[4]));
-    COMMON_LVVV(("sModelName[5]       = 0x%08X", sModelName[5]));
-    COMMON_LVVV(("sModelName[6]       = 0x%08X", sModelName[6]));
-    COMMON_LVVV(("sModelName[7]       = 0x%08X", sModelName[7]));
-    COMMON_LVVV(("sModelName[8]       = 0x%08X", sModelName[8]));
-    COMMON_LVVV(("sModelName[9]       = 0x%08X", sModelName[9]));
-    COMMON_LVVV(("sModelName[10]      = 0x%08X", sModelName[10]));
-    COMMON_LVVV(("sModelName[11]      = 0x%08X", sModelName[11]));
-    COMMON_LVVV(("sModelName          = %s",     sModelName));
-    COMMON_LVVV(("sCpuidLevel         = 0x%08X", sCpuidLevel));
-    COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X", sExtendedCpuidLevel));
-    COMMON_LVVV(("sFamily             = %u",     sFamily));
-    COMMON_LVVV(("sModel              = %u",     sModel));
-    COMMON_LVVV(("sStepping           = %u",     sStepping));
-    COMMON_LVVV(("sMicrocodeRevision  = 0x%08X", sMicrocodeRevision));
-    COMMON_LVVV(("sX86CoreIdBits      = %d",     sX86CoreIdBits));
-    COMMON_LVVV(("sCacheLineFlushSize = %u",     sCacheLineFlushSize));
-    COMMON_LVVV(("sCacheAlignment     = %u",     sCacheAlignment));
-    COMMON_LVVV(("sCacheMaxRmid       = %d",     sCacheMaxRmid));
-    COMMON_LVVV(("sCacheOccScale      = %d",     sCacheOccScale));
-    COMMON_LVVV(("sPower              = %u",     sPower));
-    COMMON_LVVV(("sPhysicalBits       = %u",     sPhysicalBits));
-    COMMON_LVVV(("sVirtualBits        = %u",     sVirtualBits));
+    // Validation
+    {
+        COMMON_LVVV(("sVendor[0]          = 0x%08X", sVendor[0]));
+        COMMON_LVVV(("sVendor[1]          = 0x%08X", sVendor[1]));
+        COMMON_LVVV(("sVendor[2]          = 0x%08X", sVendor[2]));
+        COMMON_LVVV(("sVendor             = %-12s",  sVendor));
+        COMMON_LVVV(("sCpuVendor          = %u",     sCpuVendor));
+        COMMON_LVVV(("sModelName[0]       = 0x%08X", sModelName[0]));
+        COMMON_LVVV(("sModelName[1]       = 0x%08X", sModelName[1]));
+        COMMON_LVVV(("sModelName[2]       = 0x%08X", sModelName[2]));
+        COMMON_LVVV(("sModelName[3]       = 0x%08X", sModelName[3]));
+        COMMON_LVVV(("sModelName[4]       = 0x%08X", sModelName[4]));
+        COMMON_LVVV(("sModelName[5]       = 0x%08X", sModelName[5]));
+        COMMON_LVVV(("sModelName[6]       = 0x%08X", sModelName[6]));
+        COMMON_LVVV(("sModelName[7]       = 0x%08X", sModelName[7]));
+        COMMON_LVVV(("sModelName[8]       = 0x%08X", sModelName[8]));
+        COMMON_LVVV(("sModelName[9]       = 0x%08X", sModelName[9]));
+        COMMON_LVVV(("sModelName[10]      = 0x%08X", sModelName[10]));
+        COMMON_LVVV(("sModelName[11]      = 0x%08X", sModelName[11]));
+        COMMON_LVVV(("sModelName          = %s",     sModelName));
+        COMMON_LVVV(("sCpuidLevel         = 0x%08X", sCpuidLevel));
+        COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X", sExtendedCpuidLevel));
+        COMMON_LVVV(("sFamily             = %u",     sFamily));
+        COMMON_LVVV(("sModel              = %u",     sModel));
+        COMMON_LVVV(("sStepping           = %u",     sStepping));
+        COMMON_LVVV(("sMicrocodeRevision  = 0x%08X", sMicrocodeRevision));
+        COMMON_LVVV(("sX86CoreIdBits      = %d",     sX86CoreIdBits));
+        COMMON_LVVV(("sCacheLineFlushSize = %u",     sCacheLineFlushSize));
+        COMMON_LVVV(("sCacheAlignment     = %u",     sCacheAlignment));
+        COMMON_LVVV(("sCacheMaxRmid       = %d",     sCacheMaxRmid));
+        COMMON_LVVV(("sCacheOccScale      = %d",     sCacheOccScale));
+        COMMON_LVVV(("sPower              = %u",     sPower));
+        COMMON_LVVV(("sPhysicalBits       = %u",     sPhysicalBits));
+        COMMON_LVVV(("sVirtualBits        = %u",     sVirtualBits));
 
 
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-    {
-        COMMON_LVVV(("CPU flags:"));
-
-        for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_FEATURES; ++i)
         {
-            COMMON_LVVV(("sFlags[%d] = 0x%08X", i, sFlags[i]));
-        }
+            COMMON_LVVV(("CPU flags:"));
 
-        COMMON_LVVV(("CPU bugs:"));
+            for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_FEATURES; ++i)
+            {
+                COMMON_LVVV(("sFlags[%d] = 0x%08X", i, sFlags[i]));
+            }
 
-        for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_BUGS; ++i)
-        {
-            COMMON_LVVV(("sBugs[%d] = 0x%08X", i, sBugs[i]));
+            COMMON_LVVV(("CPU bugs:"));
+
+            for (i64 i = 0; i < AMOUNT_OF_WORDS_FOR_X86_BUGS; ++i)
+            {
+                COMMON_LVVV(("sBugs[%d] = 0x%08X", i, sBugs[i]));
+            }
         }
-    }
 #endif
 
 
 
-    // Ignore CppAlignmentVerifier [BEGIN]
-    // COMMON_TEST_ASSERT(sVendor[0]                    == 0x756E6547,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sVendor[1]                    == 0x49656E69,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sVendor[2]                    == 0x6C65746E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(strncmp((const char *)sVendor, "GenuineIntel", 12) == 0,                                                            NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sCpuVendor                    == CpuVendor::INTEL,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[0]                 == 0x65746E49,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[1]                 == 0x6F43206C,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[2]                 == 0x50206572,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[3]                 == 0x65636F72,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[4]                 == 0x726F7373,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[5]                 == 0x6B532820,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[6]                 == 0x6B616C79,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[7]                 == 0x00002965,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[8]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[9]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[10]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModelName[11]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(strncmp((const char *)sModelName, "Intel Core Processor (Skylake)", 48) == 0,                                       NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sCpuidLevel                   == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sCpuidLevel                      >= CPUID_LEVEL_LOWER_BOUND && sCpuidLevel <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sExtendedCpuidLevel           == 0x80000008,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sExtendedCpuidLevel              >= EXT_CPUID_LEVEL_LOWER_BOUND && sExtendedCpuidLevel <= EXT_CPUID_LEVEL_UPPER_BOUND, NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sFamily                       == 6,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sModel                        == 94,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sStepping                     == 3,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sMicrocodeRevision            == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sX86CoreIdBits                == 1,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(sCacheLineFlushSize              == 64,                                                                                NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sCacheAlignment                  == 64,                                                                                NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sCacheMaxRmid                    == -1,                                                                                NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sCacheOccScale                   == -1,                                                                                NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sPower                        == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sPhysicalBits                 == 40,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sVirtualBits                  == 57,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(AMOUNT_OF_WORDS_FOR_X86_FEATURES == 16,                                                                                NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sFlags[0]                     == 0x82D82203,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[1]                     == 0x178BFBFD,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[2]                     == 0x00000004,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[3]                     == 0x00184389,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[4]                     == 0x00010000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[5]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[6]                     == 0x00000005,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[7]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[8]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[9]                     == 0x00000021,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[10]                    == 0x28100800,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[11]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[12]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[14]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // COMMON_TEST_ASSERT(sFlags[15]                    == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    COMMON_TEST_ASSERT(AMOUNT_OF_WORDS_FOR_X86_BUGS     == 1,                                                                                 NgosStatus::ASSERTION);
-    // COMMON_TEST_ASSERT(sBugs[0]                      == 0x0000003E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-    // Ignore CppAlignmentVerifier [END]
+        // Ignore CppAlignmentVerifier [BEGIN]
+        // COMMON_TEST_ASSERT(sVendor[0]                    == 0x756E6547,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVendor[1]                    == 0x49656E69,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVendor[2]                    == 0x6C65746E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(strncmp((const char *)sVendor, "GenuineIntel", 12) == 0,                                                            NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sCpuVendor                    == CpuVendor::INTEL,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[0]                 == 0x65746E49,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[1]                 == 0x6F43206C,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[2]                 == 0x50206572,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[3]                 == 0x65636F72,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[4]                 == 0x726F7373,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[5]                 == 0x6B532820,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[6]                 == 0x6B616C79,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[7]                 == 0x00002965,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[8]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[9]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[10]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName[11]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(strncmp((const char *)sModelName, "Intel Core Processor (Skylake)", 48) == 0,                                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sCpuidLevel                   == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sCpuidLevel                      >= CPUID_LEVEL_LOWER_BOUND && sCpuidLevel <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sExtendedCpuidLevel           == 0x80000008,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sExtendedCpuidLevel              >= EXT_CPUID_LEVEL_LOWER_BOUND && sExtendedCpuidLevel <= EXT_CPUID_LEVEL_UPPER_BOUND, NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sFamily                       == 6,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModel                        == 94,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sStepping                     == 3,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMicrocodeRevision            == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sX86CoreIdBits                == 1,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sCacheLineFlushSize              == 64,                                                                                NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sCacheAlignment                  == 64,                                                                                NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sCacheMaxRmid                    == -1,                                                                                NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sCacheOccScale                   == -1,                                                                                NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sPower                        == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sPhysicalBits                 == 40,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVirtualBits                  == 57,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(AMOUNT_OF_WORDS_FOR_X86_FEATURES == 16,                                                                                NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sFlags[0]                     == 0x82D82203,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[1]                     == 0x178BFBFD,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[2]                     == 0x00000004,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[3]                     == 0x00184389,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[4]                     == 0x00010000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[5]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[6]                     == 0x00000005,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[7]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[8]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[9]                     == 0x00000021,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[10]                    == 0x28100800,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[11]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[12]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[14]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFlags[15]                    == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(AMOUNT_OF_WORDS_FOR_X86_BUGS     == 1,                                                                                 NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sBugs[0]                      == 0x0000003E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // Ignore CppAlignmentVerifier [END]
+    }
 
 
 
@@ -660,13 +663,18 @@ bool CPU::hasEFlag(u64 mask)
 
 
 
-    COMMON_LVVV(("f0   = 0x%016lX", f0));
-    COMMON_LVVV(("f1   = 0x%016lX", f1));
-    COMMON_LVVV(("mask = 0x%016lX", mask));
+    // Validation
+    {
+        COMMON_LVVV(("f0   = 0x%016lX", f0));
+        COMMON_LVVV(("f1   = 0x%016lX", f1));
+        COMMON_LVVV(("mask = 0x%016lX", mask));
 
-    // COMMON_TEST_ASSERT(f0 == 0x0000000000000202, false); // Commented due to value variation
-    // COMMON_TEST_ASSERT(f1 == 0x0000000000200202, false); // Commented due to value variation
-    COMMON_TEST_ASSERT(mask  == 0x0000000000200000, false);
+
+
+        // COMMON_TEST_ASSERT(f0 == 0x0000000000000202, false); // Commented due to value variation
+        // COMMON_TEST_ASSERT(f1 == 0x0000000000200202, false); // Commented due to value variation
+        COMMON_TEST_ASSERT(mask  == 0x0000000000200000, false);
+    }
 
 
 
