@@ -373,3 +373,12 @@ NgosStatus UEFI::initMemoryMap()
 
     return NgosStatus::OK;
 }
+
+NgosStatus UEFI::initSystemTable()
+{
+    COMMON_LT((""));
+
+
+
+    return NgosStatus::OK;
+}

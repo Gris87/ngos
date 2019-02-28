@@ -17,6 +17,7 @@
 #include <kernelbase/src/bits64/a_early/main/setupmemorymanager.h>
 #include <kernelbase/src/bits64/a_early/main/setupstackcanary.h>
 #include <kernelbase/src/bits64/a_early/main/setupuefimemorymap.h>
+#include <kernelbase/src/bits64/a_early/main/setupuefisystemtable.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/testcase.h>
 #include <ngos/linkage.h>
 #include <pagetable/utils.h>
@@ -106,6 +107,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(reservePciRomImages());
     EARLY_LI(("Memory reserved for PCI ROM images"));
+
+    EARLY_ASSERT_EXECUTION(setupUefiSystemTable());
+    EARLY_LI(("Setup UEFI system table completed"));
 
 
 

@@ -13,6 +13,7 @@ class UEFI
 {
 public:
     static NgosStatus initMemoryMap(); // TEST: NO
+    static NgosStatus initSystemTable(); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

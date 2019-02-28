@@ -594,6 +594,8 @@ src/os/shared/kernelbase/src/bits64/a_early/main/setupstackcanary.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupstackcanary.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupuefimemorymap.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupuefimemorymap.h
+src/os/shared/kernelbase/src/bits64/a_early/main/setupuefisystemtable.cpp
+src/os/shared/kernelbase/src/bits64/a_early/main/setupuefisystemtable.h
 src/os/shared/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp
 src/os/shared/kernelbase/src/bits64/other/bootparams/bootparams.cpp
 src/os/shared/kernelbase/src/bits64/other/bootparams/bootparams.h
