@@ -12,8 +12,25 @@
 
 
 
-UefiMemoryMapInfo UEFI::sMemoryMap;
-UefiSystemTable   UEFI::sSystemTable;
+UefiMemoryMapInfo                             UEFI::sMemoryMap;
+UefiSystemTable                               UEFI::sSystemTable;
+UefiAcpi20ConfigurationTable                 *UEFI::sAcpi20Config;
+UefiAcpiConfigurationTable                   *UEFI::sAcpiConfig;
+UefiDebugInfoConfigurationTable              *UEFI::sDebugInfoConfig;
+UefiDxeServicesConfigurationTable            *UEFI::sDxeServicesConfig;
+UefiHcdpConfigurationTable                   *UEFI::sHcdpConfig;
+UefiHobListConfigurationTable                *UEFI::sHobListConfig;
+UefiLzmaDecompressConfigurationTable         *UEFI::sLzmaDecompressConfig;
+UefiMemoryAttributesConfigurationTable       *UEFI::sMemoryAttributesConfig;
+UefiMemoryStatusCodeRecordConfigurationTable *UEFI::sMemoryStatusCodeRecordConfig;
+UefiMemoryTypeInformationConfigurationTable  *UEFI::sMemoryTypeInformationConfig;
+UefiMpsConfigurationTable                    *UEFI::sMpsConfig;
+UefiPropertiesConfigurationTable             *UEFI::sPropertiesConfig;
+UefiSalSystemConfigurationTable              *UEFI::sSalSystemConfig;
+UefiSmbios3ConfigurationTable                *UEFI::sSmbios3Config;
+UefiSmbiosConfigurationTable                 *UEFI::sSmbiosConfig;
+UefiSystemResourceConfigurationTable         *UEFI::sSystemResourceConfig;
+UefiUgaIoConfigurationTable                  *UEFI::sUgaIoConfig;
 
 
 
@@ -435,48 +452,250 @@ NgosStatus UEFI::initSystemTable()
 
 
 
+    COMMON_ASSERT_EXECUTION(initConfigurationTables(), NgosStatus::ASSERTION);
+
+
+
     // Validation
     {
-        COMMON_LVVV(("sSystemTable.header.signature     = 0x016lX", sSystemTable.header.signature));
-        COMMON_LVVV(("sSystemTable.header.revision      = 0x%08X",  sSystemTable.header.revision));
-        COMMON_LVVV(("sSystemTable.header.headerSize    = %u",      sSystemTable.header.headerSize));
-        COMMON_LVVV(("sSystemTable.header.crc32         = 0x%08X",  sSystemTable.header.crc32));
-        COMMON_LVVV(("sSystemTable.header.reserved      = %u",      sSystemTable.header.reserved));
-        COMMON_LVVV(("sSystemTable.firmwareVendor       = 0x%p",    sSystemTable.firmwareVendor));
-        COMMON_LVVV(("sSystemTable.firmwareRevision     = 0x%08X",  sSystemTable.firmwareRevision));
-        COMMON_LVVV(("sSystemTable.stdinHandle          = 0x%p",    sSystemTable.stdinHandle));
-        COMMON_LVVV(("sSystemTable.stdin                = 0x%p",    sSystemTable.stdin));
-        COMMON_LVVV(("sSystemTable.stdoutHandle         = 0x%p",    sSystemTable.stdoutHandle));
-        COMMON_LVVV(("sSystemTable.stdout               = 0x%p",    sSystemTable.stdout));
-        COMMON_LVVV(("sSystemTable.stderrHandle         = 0x%p",    sSystemTable.stderrHandle));
-        COMMON_LVVV(("sSystemTable.stderr               = 0x%p",    sSystemTable.stderr));
-        COMMON_LVVV(("sSystemTable.runtimeServices      = 0x%p",    sSystemTable.runtimeServices));
-        COMMON_LVVV(("sSystemTable.bootServices         = 0x%p",    sSystemTable.bootServices));
-        COMMON_LVVV(("sSystemTable.numberOfTableEntries = %u",      sSystemTable.numberOfTableEntries));
-        COMMON_LVVV(("sSystemTable.configurationTable   = 0x%p",    sSystemTable.configurationTable));
+        COMMON_LVVV(("sSystemTable.header.signature            = 0x016lX", sSystemTable.header.signature));
+        COMMON_LVVV(("sSystemTable.header.revision             = 0x%08X",  sSystemTable.header.revision));
+        COMMON_LVVV(("sSystemTable.header.headerSize           = %u",      sSystemTable.header.headerSize));
+        COMMON_LVVV(("sSystemTable.header.crc32                = 0x%08X",  sSystemTable.header.crc32));
+        COMMON_LVVV(("sSystemTable.header.reserved             = %u",      sSystemTable.header.reserved));
+        COMMON_LVVV(("sSystemTable.firmwareVendor              = 0x%p",    sSystemTable.firmwareVendor));
+        COMMON_LVVV(("sSystemTable.firmwareRevision            = 0x%08X",  sSystemTable.firmwareRevision));
+        COMMON_LVVV(("sSystemTable.stdinHandle                 = 0x%p",    sSystemTable.stdinHandle));
+        COMMON_LVVV(("sSystemTable.stdin                       = 0x%p",    sSystemTable.stdin));
+        COMMON_LVVV(("sSystemTable.stdoutHandle                = 0x%p",    sSystemTable.stdoutHandle));
+        COMMON_LVVV(("sSystemTable.stdout                      = 0x%p",    sSystemTable.stdout));
+        COMMON_LVVV(("sSystemTable.stderrHandle                = 0x%p",    sSystemTable.stderrHandle));
+        COMMON_LVVV(("sSystemTable.stderr                      = 0x%p",    sSystemTable.stderr));
+        COMMON_LVVV(("sSystemTable.runtimeServices             = 0x%p",    sSystemTable.runtimeServices));
+        COMMON_LVVV(("sSystemTable.bootServices                = 0x%p",    sSystemTable.bootServices));
+        COMMON_LVVV(("sSystemTable.numberOfConfigurationTables = %u",      sSystemTable.numberOfConfigurationTables));
+        COMMON_LVVV(("sSystemTable.configurationTables         = 0x%p",    sSystemTable.configurationTables));
+        COMMON_LVVV(("sAcpi20Config                            = 0x%p",    sAcpi20Config));
+        COMMON_LVVV(("sAcpiConfig                              = 0x%p",    sAcpiConfig));
+        COMMON_LVVV(("sDebugInfoConfig                         = 0x%p",    sDebugInfoConfig));
+        COMMON_LVVV(("sDxeServicesConfig                       = 0x%p",    sDxeServicesConfig));
+        COMMON_LVVV(("sHcdpConfig                              = 0x%p",    sHcdpConfig));
+        COMMON_LVVV(("sHobListConfig                           = 0x%p",    sHobListConfig));
+        COMMON_LVVV(("sLzmaDecompressConfig                    = 0x%p",    sLzmaDecompressConfig));
+        COMMON_LVVV(("sMemoryAttributesConfig                  = 0x%p",    sMemoryAttributesConfig));
+        COMMON_LVVV(("sMemoryStatusCodeRecordConfig            = 0x%p",    sMemoryStatusCodeRecordConfig));
+        COMMON_LVVV(("sMemoryTypeInformationConfig             = 0x%p",    sMemoryTypeInformationConfig));
+        COMMON_LVVV(("sMpsConfig                               = 0x%p",    sMpsConfig));
+        COMMON_LVVV(("sPropertiesConfig                        = 0x%p",    sPropertiesConfig));
+        COMMON_LVVV(("sSalSystemConfig                         = 0x%p",    sSalSystemConfig));
+        COMMON_LVVV(("sSmbios3Config                           = 0x%p",    sSmbios3Config));
+        COMMON_LVVV(("sSmbiosConfig                            = 0x%p",    sSmbiosConfig));
+        COMMON_LVVV(("sSystemResourceConfig                    = 0x%p",    sSystemResourceConfig));
+        COMMON_LVVV(("sUgaIoConfig                             = 0x%p",    sUgaIoConfig));
 
 
 
-        COMMON_TEST_ASSERT(sSystemTable.header.signature     == UEFI_SYSTEM_TABLE_SIGNATURE, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.header.revision      == 0x00020046,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.header.headerSize    == 120,                         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.header.crc32         == 0x938F9502,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.header.reserved      == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.firmwareVendor       != 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.firmwareRevision     == 0x00010000,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.stdinHandle          == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.stdin                == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.stdoutHandle         == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.stdout               == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.stderrHandle         == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.stderr               == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.runtimeServices      != 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.bootServices         == 0,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.numberOfTableEntries == 10,                          NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.configurationTable   != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.signature            == UEFI_SYSTEM_TABLE_SIGNATURE, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.revision             == 0x00020046,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.headerSize           == 120,                         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.crc32                == 0x938F9502,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.reserved             == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.firmwareVendor              != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.firmwareRevision            == 0x00010000,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdinHandle                 == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdin                       == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdoutHandle                == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdout                      == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stderrHandle                == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stderr                      == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.runtimeServices             != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.bootServices                == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.numberOfConfigurationTables == 10,                          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.configurationTables         != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sAcpi20Config                            != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sAcpiConfig                              != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sDebugInfoConfig                         != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sDxeServicesConfig                       != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sHcdpConfig                              == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sHobListConfig                           != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sLzmaDecompressConfig                    != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryAttributesConfig                  != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryStatusCodeRecordConfig            != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryTypeInformationConfig             != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMpsConfig                               == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sPropertiesConfig                        == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSalSystemConfig                         == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSmbios3Config                           == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSmbiosConfig                            != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemResourceConfig                    == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sUgaIoConfig                             == 0,                           NgosStatus::ASSERTION);
     }
 
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus UEFI::initConfigurationTables()
+{
+    COMMON_LT((""));
+
+
+
+    UefiConfigurationTable *configurationTables;
+
+
+
+    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)sSystemTable.configurationTables, sSystemTable.numberOfConfigurationTables * sizeof(UefiConfigurationTable), (void **)&configurationTables), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < (i64)sSystemTable.numberOfConfigurationTables; ++i)
+    {
+        COMMON_LVV(("Processing configuration table #%d {%08X-%04X-%04X-%02X%02X%02X%02X%02X%02X%02X%02X} at address 0x%p", i, configurationTables[i].vendorGuid.data1, configurationTables[i].vendorGuid.data2, configurationTables[i].vendorGuid.data3, configurationTables[i].vendorGuid.data4[0], configurationTables[i].vendorGuid.data4[1], configurationTables[i].vendorGuid.data4[2], configurationTables[i].vendorGuid.data4[3], configurationTables[i].vendorGuid.data4[4], configurationTables[i].vendorGuid.data4[5], configurationTables[i].vendorGuid.data4[6], configurationTables[i].vendorGuid.data4[7], configurationTables[i].vendorTable));
+
+
+
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_ACPI_20_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("ACPI 2.0 configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sAcpi20Config = (UefiAcpi20ConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_ACPI_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("ACPI configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sAcpiConfig = (UefiAcpiConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_DEBUG_INFO_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("Debug info configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sDebugInfoConfig = (UefiDebugInfoConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_DXE_SERVICES_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("DXE services configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sDxeServicesConfig = (UefiDxeServicesConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_HCDP_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("HCDP configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sHcdpConfig = (UefiHcdpConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_HOB_LIST_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("HOB list configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sHobListConfig = (UefiHobListConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_LZMA_DECOMPRESS_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("LZMA decompress configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sLzmaDecompressConfig = (UefiLzmaDecompressConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_MEMORY_STATUS_CODE_RECORD_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("Memory status code record configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sMemoryStatusCodeRecordConfig = (UefiMemoryStatusCodeRecordConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_MEMORY_ATTRIBUTES_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("Memory attributes configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sMemoryAttributesConfig = (UefiMemoryAttributesConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_MEMORY_TYPE_INFORMATION_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("Memory type information configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sMemoryTypeInformationConfig = (UefiMemoryTypeInformationConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_MPS_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("MPS configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sMpsConfig = (UefiMpsConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_PROPERTIES_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("Properties configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sPropertiesConfig = (UefiPropertiesConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_SAL_SYSTEM_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("SAL system configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sSalSystemConfig = (UefiSalSystemConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_SMBIOS_3_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("SMBIOS 3.0 configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sSmbios3Config = (UefiSmbios3ConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_SMBIOS_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("SMBIOS configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sSmbiosConfig = (UefiSmbiosConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_SYSTEM_RESOURCE_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("System resource configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sSystemResourceConfig = (UefiSystemResourceConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_UGA_IO_CONFIGURATION_TABLE_GUID))
+        {
+            COMMON_LV(("UGA IO configuration table found at address 0x%p", configurationTables[i].vendorTable));
+
+            sUgaIoConfig = (UefiUgaIoConfigurationTable *)configurationTables[i].vendorTable;
+        }
+        else
+        {
+            COMMON_LW(("Unknown configuration table {%08X-%04X-%04X-%02X%02X%02X%02X%02X%02X%02X%02X}", configurationTables[i].vendorGuid.data1, configurationTables[i].vendorGuid.data2, configurationTables[i].vendorGuid.data3, configurationTables[i].vendorGuid.data4[0], configurationTables[i].vendorGuid.data4[1], configurationTables[i].vendorGuid.data4[2], configurationTables[i].vendorGuid.data4[3], configurationTables[i].vendorGuid.data4[4], configurationTables[i].vendorGuid.data4[5], configurationTables[i].vendorGuid.data4[6], configurationTables[i].vendorGuid.data4[7]));
+        }
+    }
+
+    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)configurationTables, sSystemTable.numberOfConfigurationTables * sizeof(UefiConfigurationTable)), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+bool UEFI::isGuidEquals(const UefiGuid &guid1, const UefiGuid &guid2)
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_TEST_ASSERT(sizeof(UefiGuid) == 16, false);
+
+
+
+    return *((u64 *)&guid1.data1) == *((u64 *)&guid2.data1)
+            &&
+            *((u64 *)&guid1.data4[0]) == *((u64 *)&guid2.data4[0]);
 }

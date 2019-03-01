@@ -32,8 +32,8 @@ struct UefiSystemTable
     UefiRuntimeServices           *runtimeServices;
     UefiBootServices              *bootServices;
 
-    u64                            numberOfTableEntries;
-    UefiConfigurationTable        *configurationTable;
+    u64                            numberOfConfigurationTables;
+    UefiConfigurationTable        *configurationTables;
 };
 
 

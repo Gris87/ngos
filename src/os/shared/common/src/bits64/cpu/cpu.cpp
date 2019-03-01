@@ -1047,8 +1047,8 @@ NgosStatus CPU::initScatteredFeatures()
     COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::HW_PSTATE,     CPUID_EDX, 7,  0x80000007, 0), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CPB,           CPUID_EDX, 9,  0x80000007, 0), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::PROC_FEEDBACK, CPUID_EDX, 11, 0x80000007, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SME,           CPUID_EAX, 0,  0x8000001f, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SEV,           CPUID_EAX, 1,  0x8000001f, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SME,           CPUID_EAX, 0,  0x8000001F, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SEV,           CPUID_EAX, 1,  0x8000001F, 0), NgosStatus::ASSERTION);
 
 
 
