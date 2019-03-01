@@ -9,6 +9,7 @@
 #include <kernelbase/src/bits64/a_early/main/reservepciromimages.h>
 #include <kernelbase/src/bits64/a_early/main/setupbootparams.h>
 #include <kernelbase/src/bits64/a_early/main/setupcr4shadow.h>
+#include <kernelbase/src/bits64/a_early/main/setupdmi.h>
 #include <kernelbase/src/bits64/a_early/main/setupe820tables.h>
 #include <kernelbase/src/bits64/a_early/main/setupfirstcpu.h>
 #include <kernelbase/src/bits64/a_early/main/setupidthandlers.h>
@@ -110,6 +111,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(setupUefiSystemTable());
     EARLY_LI(("Setup UEFI system table completed"));
+
+    EARLY_ASSERT_EXECUTION(setupDmi());
+    EARLY_LI(("Setup DMI completed"));
 
 
 

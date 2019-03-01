@@ -582,4 +582,5 @@ inline NgosStatus invlpg(u8 *address) // TEST: NO
 }
 
 
+
 #endif // ASM_INSTRUCTIONS_H

@@ -595,6 +595,8 @@ src/os/shared/kernelbase/src/bits64/a_early/main/setupbootparams.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupbootparams.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupcr4shadow.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupcr4shadow.h
+src/os/shared/kernelbase/src/bits64/a_early/main/setupdmi.cpp
+src/os/shared/kernelbase/src/bits64/a_early/main/setupdmi.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupe820tables.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupe820tables.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupfirstcpu.cpp
@@ -620,6 +622,8 @@ src/os/shared/kernelbase/src/bits64/other/cpu/cpumask.cpp
 src/os/shared/kernelbase/src/bits64/other/cpu/cpumask.h
 src/os/shared/kernelbase/src/bits64/other/cpu/percpu.cpp
 src/os/shared/kernelbase/src/bits64/other/cpu/percpu.h
+src/os/shared/kernelbase/src/bits64/other/dmi/dmi.cpp
+src/os/shared/kernelbase/src/bits64/other/dmi/dmi.h
 src/os/shared/kernelbase/src/bits64/other/e820/e820.cpp
 src/os/shared/kernelbase/src/bits64/other/e820/e820.h
 src/os/shared/kernelbase/src/bits64/other/e820/e820table.h
@@ -661,6 +665,7 @@ src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/memo
 src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/addressconversion.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/dynamicpagetable.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/tasks/utils.h
+src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/uefi/uefi.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section1/testcase.h
 src/os/shared/kernelbase/test/bits64/a_early/testengine.h
 src/os/shared/kernelbase/test/bits64/a_early/testresults.cpp
