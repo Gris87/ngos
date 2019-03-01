@@ -13,6 +13,7 @@
 
 
 UefiMemoryMapInfo UEFI::sMemoryMap;
+UefiSystemTable   UEFI::sSystemTable;
 
 
 
@@ -380,13 +381,100 @@ NgosStatus UEFI::initSystemTable()
 
 
 
-    UefiSystemTable *systemTable;
+    // Copy system table from BootParams
+    {
+        UefiSystemTable *systemTable;
 
-    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)bootParams.uefi.systemTable, sizeof(UefiSystemTable), (void **)&systemTable), NgosStatus::ASSERTION);
 
-    memcpy(&sSystemTable, systemTable, sizeof(UefiSystemTable));
 
-    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)systemTable, sizeof(UefiSystemTable)), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)bootParams.uefi.systemTable, sizeof(UefiSystemTable), (void **)&systemTable), NgosStatus::ASSERTION);
+
+        memcpy(&sSystemTable, systemTable, sizeof(UefiSystemTable));
+
+        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)systemTable, sizeof(UefiSystemTable)), NgosStatus::ASSERTION);
+    }
+
+
+
+    // Print vendor name
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
+    {
+        uefi_char16 *uefiVendor;
+        char         vendor[128];
+
+
+
+        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)sSystemTable.firmwareVendor, sizeof(vendor) << 1, (void **)&uefiVendor), NgosStatus::ASSERTION); // "<< 1" == "* 2"
+
+
+
+        u8           i  = 0;
+        uefi_char16 *ch = uefiVendor;
+
+        while (*ch)
+        {
+            COMMON_TEST_ASSERT(i < sizeof(vendor), NgosStatus::ASSERTION);
+            vendor[i] = *ch;
+
+            ++ch;
+            ++i;
+        }
+
+        COMMON_TEST_ASSERT(i < sizeof(vendor), NgosStatus::ASSERTION);
+        vendor[i] = 0;
+
+
+
+        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)uefiVendor, sizeof(vendor) << 1), NgosStatus::ASSERTION); // "<< 1" == "* 2"
+
+
+
+        COMMON_LV(("UEFI v%u.%02u by %s", sSystemTable.header.revision >> 16, sSystemTable.header.revision & 0xFFFF, vendor));
+    }
+#endif
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("sSystemTable.header.signature     = 0x016lX", sSystemTable.header.signature));
+        COMMON_LVVV(("sSystemTable.header.revision      = 0x%08X",  sSystemTable.header.revision));
+        COMMON_LVVV(("sSystemTable.header.headerSize    = %u",      sSystemTable.header.headerSize));
+        COMMON_LVVV(("sSystemTable.header.crc32         = 0x%08X",  sSystemTable.header.crc32));
+        COMMON_LVVV(("sSystemTable.header.reserved      = %u",      sSystemTable.header.reserved));
+        COMMON_LVVV(("sSystemTable.firmwareVendor       = 0x%p",    sSystemTable.firmwareVendor));
+        COMMON_LVVV(("sSystemTable.firmwareRevision     = 0x%08X",  sSystemTable.firmwareRevision));
+        COMMON_LVVV(("sSystemTable.stdinHandle          = 0x%p",    sSystemTable.stdinHandle));
+        COMMON_LVVV(("sSystemTable.stdin                = 0x%p",    sSystemTable.stdin));
+        COMMON_LVVV(("sSystemTable.stdoutHandle         = 0x%p",    sSystemTable.stdoutHandle));
+        COMMON_LVVV(("sSystemTable.stdout               = 0x%p",    sSystemTable.stdout));
+        COMMON_LVVV(("sSystemTable.stderrHandle         = 0x%p",    sSystemTable.stderrHandle));
+        COMMON_LVVV(("sSystemTable.stderr               = 0x%p",    sSystemTable.stderr));
+        COMMON_LVVV(("sSystemTable.runtimeServices      = 0x%p",    sSystemTable.runtimeServices));
+        COMMON_LVVV(("sSystemTable.bootServices         = 0x%p",    sSystemTable.bootServices));
+        COMMON_LVVV(("sSystemTable.numberOfTableEntries = %u",      sSystemTable.numberOfTableEntries));
+        COMMON_LVVV(("sSystemTable.configurationTable   = 0x%p",    sSystemTable.configurationTable));
+
+
+
+        COMMON_TEST_ASSERT(sSystemTable.header.signature     == UEFI_SYSTEM_TABLE_SIGNATURE, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.revision      == 0x00020046,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.headerSize    == 120,                         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.crc32         == 0x938F9502,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.header.reserved      == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.firmwareVendor       != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.firmwareRevision     == 0x00010000,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdinHandle          == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdin                == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdoutHandle         == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stdout               == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stderrHandle         == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.stderr               == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.runtimeServices      != 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.bootServices         == 0,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.numberOfTableEntries == 10,                          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sSystemTable.configurationTable   != 0,                           NgosStatus::ASSERTION);
+    }
 
 
 
