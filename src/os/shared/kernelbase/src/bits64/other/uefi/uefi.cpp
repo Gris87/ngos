@@ -384,7 +384,7 @@ NgosStatus UEFI::initSystemTable()
 
     COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)bootParams.uefi.systemTable, sizeof(UefiSystemTable), (void **)&systemTable), NgosStatus::ASSERTION);
 
-    sSystemTable.firmwareVendor = systemTable->firmwareVendor;
+    memcpy(&sSystemTable, systemTable, sizeof(UefiSystemTable));
 
     COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)systemTable, sizeof(UefiSystemTable)), NgosStatus::ASSERTION);
 
