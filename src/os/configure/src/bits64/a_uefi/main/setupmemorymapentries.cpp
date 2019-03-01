@@ -151,7 +151,8 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         UEFI_LVVV(("params->uefi.memoryMap.descriptorSize    = %u",   params->uefi.memoryMap.descriptorSize));
         UEFI_LVVV(("params->uefi.memoryMap.descriptorVersion = %u",   params->uefi.memoryMap.descriptorVersion));
         UEFI_LVVV(("params->uefi.systemTable                 = 0x%p", params->uefi.systemTable));
-        UEFI_LVVV(("params->memoryMapEntriesCount            = %u",   params->memoryMapEntriesCount));        UEFI_LVVV(("params->memoryMapEntries                 = 0x%p", params->memoryMapEntries));
+        UEFI_LVVV(("params->memoryMapEntriesCount            = %u",   params->memoryMapEntriesCount));
+        UEFI_LVVV(("params->memoryMapEntries                 = 0x%p", params->memoryMapEntries));
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
