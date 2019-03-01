@@ -5,6 +5,7 @@
 #include <common/src/bits64/memory/memory.h>
 #include <kernelbase/src/bits64/other/bootparams/bootparams.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
+#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
 
 
 
@@ -453,11 +454,141 @@ NgosStatus UEFI::initSystemTable()
 
 
     COMMON_ASSERT_EXECUTION(initConfigurationTables(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initMemoryAttributes(),    NgosStatus::ASSERTION);
 
 
 
     // Validation
     {
+        // -----------------------------------------------------------------------------------------------
+        // Check IORemap
+        // -----------------------------------------------------------------------------------------------
+
+
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+        COMMON_LVVV(("IORemap::sLastUsedSlot     = %u", IORemap::sLastUsedSlot));
+        COMMON_LVVV(("IORemap::sLastReleasedSlot = %u", IORemap::sLastReleasedSlot));
+        COMMON_LVVV(("IORemap::sSlotsAvailable   = %u", IORemap::sSlotsAvailable));
+
+        for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        {
+            COMMON_LVVV(("IORemap::sSlotsAddresses[%d] = 0x%p", i, IORemap::sSlotsAddresses[i]));
+        }
+
+        for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        {
+            COMMON_LVVV(("IORemap::sSlotsSizes[%d] = %u", i, IORemap::sSlotsSizes[i]));
+        }
+
+        for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        {
+            COMMON_LVVV(("IORemap::sPoolOfSlots[%d] = %u", i, IORemap::sPoolOfSlots[i]));
+        }
+
+        for (i64 i = 0; i < PTRS_PER_PTE; ++i)
+        {
+            if (IORemap::sFixmapPage[i].pte)
+            {
+                COMMON_LVVV(("IORemap::sFixmapPage[%d].pte = 0x%016lX", i, IORemap::sFixmapPage[i].pte));
+            }
+        }
+#endif
+
+
+
+        COMMON_TEST_ASSERT(IORemap::sLastUsedSlot                      == 6,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sLastReleasedSlot                  == 5,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAvailable                    == 7,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[0]                 == 0xFFFFFFFFFF200018, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[1]                 == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[2]                 == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[3]                 == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[4]                 == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[5]                 == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[6]                 == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsAddresses[7]                 == 0x0000000000000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[0]                     == 2160,               NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[1]                     == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[2]                     == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[3]                     == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[4]                     == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[5]                     == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[6]                     == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sSlotsSizes[7]                     == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[0]                    == 1,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[1]                    == 2,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[2]                    == 3,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[3]                    == 4,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[4]                    == 5,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[5]                    == 6,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[6]                    == 6,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[7]                    == 7,                  NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(IORemap::sFixmapPage[0].pte              == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+
+
+
+        // -----------------------------------------------------------------------------------------------
+        // Check MemoryManager
+        // -----------------------------------------------------------------------------------------------
+
+
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.count     = %u",       MemoryManager::sMemoryBlock.reserved.count));
+        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",       MemoryManager::sMemoryBlock.reserved.max));
+        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016lX", MemoryManager::sMemoryBlock.reserved.totalSize));
+
+        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
+        COMMON_LVVV(("-------------------------------------"));
+
+        for (i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
+        {
+            COMMON_LVVV(("#%-3d: 0x%p-0x%p | 0x%02X | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), MemoryManager::sMemoryBlock.reserved.regions[i].flags, MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
+        }
+
+        COMMON_LVVV(("-------------------------------------"));
+#endif
+
+
+
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.count             == 6,                        NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.max                  == INIT_MEMORYBLOCK_REGIONS, NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.totalSize         == 0x00000000000B4B88,       NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].start     == 0,                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].size      == PAGE_SIZE,                NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].flags     == 0,                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].nodeId    == MAX_NUMNODES,             NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].start  == 0x0000000010000000,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].size   == 0x000000000006F0A8,       NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].flags     == 0,                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].nodeId    == MAX_NUMNODES,             NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[2].start  == 0x000000003E357018,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[2].size   == 0x0000000000000870,       NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[2].flags     == 0,                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[2].nodeId    == MAX_NUMNODES,             NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[3].start  == 0x000000003E359018,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[3].size   == 0x000000000003AA38,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[3].flags  == 0,                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[3].nodeId == MAX_NUMNODES,             NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[4].start  == 0x000000003E394018,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[4].size   == 0x0000000000009838,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[4].flags  == 0,                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[4].nodeId == MAX_NUMNODES,             NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[5].start  == 0x000000003EF41018,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[5].size   == 0x0000000000000550,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[5].flags  == 0,                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[5].nodeId == MAX_NUMNODES,             NgosStatus::ASSERTION); // Commented due to value variation
+
+
+
+        // -----------------------------------------------------------------------------------------------
+        // Check system table
+        // -----------------------------------------------------------------------------------------------
+
+
+
         COMMON_LVVV(("sSystemTable.header.signature            = 0x016lX", sSystemTable.header.signature));
         COMMON_LVVV(("sSystemTable.header.revision             = 0x%08X",  sSystemTable.header.revision));
         COMMON_LVVV(("sSystemTable.header.headerSize           = %u",      sSystemTable.header.headerSize));
@@ -685,9 +816,61 @@ NgosStatus UEFI::initConfigurationTables()
     return NgosStatus::OK;
 }
 
-bool UEFI::isGuidEquals(const UefiGuid &guid1, const UefiGuid &guid2)
+NgosStatus UEFI::initMemoryAttributes()
 {
     COMMON_LT((""));
+
+
+
+    if (!sMemoryAttributesConfig)
+    {
+        COMMON_LVV(("sMemoryAttributesConfig is null"));
+
+        return NgosStatus::OK;
+    }
+
+
+
+    UefiMemoryAttributesConfigurationTable *memoryAttrs;
+
+
+
+    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)sMemoryAttributesConfig, sizeof(UefiMemoryAttributesConfigurationTable), (void **)&memoryAttrs), NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("memoryAttrs->version         = %u", memoryAttrs->version));
+        COMMON_LVVV(("memoryAttrs->numberOfEntries = %u", memoryAttrs->numberOfEntries));
+        COMMON_LVVV(("memoryAttrs->descriptorSize  = %u", memoryAttrs->descriptorSize));
+        COMMON_LVVV(("memoryAttrs->reserved        = %u", memoryAttrs->reserved));
+
+
+
+        COMMON_TEST_ASSERT(memoryAttrs->version            == 1,  NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(memoryAttrs->numberOfEntries == 28, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(memoryAttrs->descriptorSize  == 48, NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(memoryAttrs->reserved           == 0,  NgosStatus::ASSERTION);
+    }
+
+
+
+    u64 memoryAttrsSize = sizeof(UefiMemoryAttributesConfigurationTable) + memoryAttrs->numberOfEntries * memoryAttrs->descriptorSize;
+    COMMON_ASSERT_EXECUTION(MemoryManager::reserve((u64)sMemoryAttributesConfig, memoryAttrsSize), NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)memoryAttrs, sizeof(UefiMemoryAttributesConfigurationTable)), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+bool UEFI::isGuidEquals(const UefiGuid &guid1, const UefiGuid &guid2)
+{
+    COMMON_LT((" | guid1 = 0x%08X, guid2 = 0x%08X", guid1.data1, guid2.data1));
 
 
 
