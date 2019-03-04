@@ -192,7 +192,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-    currentPointer += sizeof(*streamHeader);
+    currentPointer += sizeof(StreamHeader);
 
 
 
@@ -202,7 +202,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
         if (blockHeader->blockHeaderSize) // The first byte overlaps with the Index Indicator field. Non-zero value indicates a Block Header while zero value used for Index Indicator.
         {
-            EARLY_LVV(("Processing Block at address 0x%p", currentPointer));
+            EARLY_LVV(("Processing Block at address 0x%p", blockHeader));
 
 
 
@@ -484,6 +484,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
             StreamFooter *streamFooter = (StreamFooter *)currentPointer;
 
 
+
             // Validation
             {
                 EARLY_LVVV(("streamFooter->crc32        = 0x%08X", streamFooter->crc32));
@@ -501,7 +502,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            currentPointer += sizeof(*streamFooter);
+            currentPointer += sizeof(StreamFooter);
 
 
 
