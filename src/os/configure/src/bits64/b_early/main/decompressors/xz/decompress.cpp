@@ -280,16 +280,18 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            EARLY_ASSERT(currentBlockPointer <= currentPointer + realBlockHeaderSize - 4, "Block header size is too small", NgosStatus::ASSERTION);
+            EARLY_TEST_ASSERT(currentBlockPointer <= currentPointer + realBlockHeaderSize - 4, NgosStatus::ASSERTION);
 
 
 
-            EARLY_LVVV(("blockHeaderCrc32 = 0x%08X", *((u32 *)(currentPointer + realBlockHeaderSize - 4))));
+            u32 blockHeaderCrc32 = *(u32 *)(currentPointer + realBlockHeaderSize - 4);
+            AVOID_UNUSED(blockHeaderCrc32);
 
-            EARLY_ASSERT(xzCrc32(
-                            currentPointer,
-                            realBlockHeaderSize - 4,
-                            0) == *((u32 *)(currentPointer + realBlockHeaderSize - 4)), "CRC32 is invalid in Block Header", NgosStatus::ASSERTION);
+
+
+            EARLY_LVVV(("blockHeaderCrc32 = 0x%08X", blockHeaderCrc32));
+
+            EARLY_TEST_ASSERT(blockHeaderCrc32 == xzCrc32(currentPointer, realBlockHeaderSize - 4, 0), NgosStatus::ASSERTION);
 
 
 
@@ -369,26 +371,34 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             if (typeOfCheckFlag == StreamFlag::TYPE_OF_CHECK_CRC32)
             {
-                EARLY_LVVV(("blockCrc32 = 0x%08X", *((u32 *)(currentBlockPointer))));
+                u32 blockCrc32 = *(u32 *)currentBlockPointer;
+                AVOID_UNUSED(blockCrc32);
 
-                EARLY_ASSERT(xzCrc32(
-                                decompressedAddress,
-                                uncompressedSize,
-                                0) == *((u32 *)(currentBlockPointer)), "CRC32 is invalid in Block", NgosStatus::ASSERTION);
 
-                currentBlockPointer += 4;
+
+                EARLY_LVVV(("blockCrc32 = 0x%08X", blockCrc32));
+
+                EARLY_TEST_ASSERT(blockCrc32 == xzCrc32(decompressedAddress, uncompressedSize, 0), NgosStatus::ASSERTION);
+
+
+
+                currentBlockPointer += sizeof(blockCrc32);
             }
             else
             if (typeOfCheckFlag == StreamFlag::TYPE_OF_CHECK_CRC64)
             {
-                EARLY_LVVV(("blockCrc64 = 0x%016lX", *((u64 *)(currentBlockPointer))));
+                u64 blockCrc64 = *(u64 *)currentBlockPointer;
+                AVOID_UNUSED(blockCrc64);
 
-                EARLY_ASSERT(xzCrc64(
-                                decompressedAddress,
-                                uncompressedSize,
-                                0) == *((u64 *)(currentBlockPointer)), "CRC64 is invalid in Block", NgosStatus::ASSERTION);
 
-                currentBlockPointer += 8;
+
+                EARLY_LVVV(("blockCrc64 = 0x%016lX", blockCrc64));
+
+                EARLY_TEST_ASSERT(blockCrc64 == xzCrc64(decompressedAddress, uncompressedSize, 0), NgosStatus::ASSERTION);
+
+
+
+                currentBlockPointer += sizeof(blockCrc64);
             }
             else
             if (typeOfCheckFlag != StreamFlag::NONE)
@@ -450,16 +460,15 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            EARLY_LVVV(("indexCrc32 = 0x%08X", *((u32 *)(currentIndexPointer))));
+            u32 indexCrc32 = *((u32 *)(currentIndexPointer));
 
-            EARLY_ASSERT(xzCrc32(
-                            currentPointer,
-                            currentIndexPointer - currentPointer,
-                            0) == *((u32 *)(currentIndexPointer)), "CRC32 is invalid in Index", NgosStatus::ASSERTION);
+            EARLY_LVVV(("indexCrc32 = 0x%08X", indexCrc32));
 
+            EARLY_TEST_ASSERT(indexCrc32 == xzCrc32(currentPointer, currentIndexPointer - currentPointer, 0), NgosStatus::ASSERTION);
 
 
-            currentIndexPointer += 4;
+
+            currentIndexPointer += sizeof(indexCrc32);
             indexSize           =  currentIndexPointer - currentPointer;
 
             EARLY_LVVV(("indexSize = %u", indexSize));
@@ -474,18 +483,21 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             StreamFooter *streamFooter = (StreamFooter *)currentPointer;
 
-            EARLY_LVVV(("streamFooter->crc32        = 0x%08X", streamFooter->crc32));
-            EARLY_LVVV(("streamFooter->backwardSize = %u",     streamFooter->backwardSize));
-            EARLY_LVVV(("streamFooter->streamFlags  = 0x%04X", streamFooter->streamFlags));
-            EARLY_LVVV(("streamFooter->signature    = %.2s",   &streamFooter->signature));
 
-            EARLY_ASSERT(xzCrc32(
-                            (u8 *)&streamFooter->backwardSize,
-                            sizeof(streamFooter->backwardSize) + sizeof(streamFooter->streamFlags),
-                            0) == streamFooter->crc32,                                              "CRC32 is invalid in Stream Footer",                                NgosStatus::ASSERTION);
-            EARLY_ASSERT(((streamFooter->backwardSize + 1) << 2) == indexSize,                      "Backward Size is invalid",                                         NgosStatus::ASSERTION); // "<< 2" == "* 4"
-            EARLY_ASSERT(streamFooter->streamFlags == streamHeader->streamFlags,                    "Stream flags are not the same in Stream Header and Stream Footer", NgosStatus::ASSERTION);
-            EARLY_ASSERT(streamFooter->signature == XZ_STREAM_FOOTER_SIGNATURE,                     "Stream Footer signature is invalid",                               NgosStatus::ASSERTION);
+            // Validation
+            {
+                EARLY_LVVV(("streamFooter->crc32        = 0x%08X", streamFooter->crc32));
+                EARLY_LVVV(("streamFooter->backwardSize = %u",     streamFooter->backwardSize));
+                EARLY_LVVV(("streamFooter->streamFlags  = 0x%04X", streamFooter->streamFlags));
+                EARLY_LVVV(("streamFooter->signature    = %.2s",   &streamFooter->signature));
+
+
+
+                EARLY_TEST_ASSERT(streamFooter->crc32        == xzCrc32((u8 *)&streamFooter->backwardSize, sizeof(streamFooter->backwardSize) + sizeof(streamFooter->streamFlags), 0), NgosStatus::ASSERTION);
+                EARLY_TEST_ASSERT(streamFooter->backwardSize == (indexSize >> 2) - 1,                                                                                                  NgosStatus::ASSERTION); // "<< 2" == "* 4"
+                EARLY_TEST_ASSERT(streamFooter->streamFlags  == streamHeader->streamFlags,                                                                                             NgosStatus::ASSERTION);
+                EARLY_TEST_ASSERT(streamFooter->signature    == XZ_STREAM_FOOTER_SIGNATURE,                                                                                            NgosStatus::ASSERTION);
+            }
 
 
 

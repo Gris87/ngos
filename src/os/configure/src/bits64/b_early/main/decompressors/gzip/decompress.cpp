@@ -92,21 +92,26 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
     MemberHeader *memberHeader = (MemberHeader *)currentPointer;
 
-    EARLY_LVVV(("memberHeader->signature         = 0x%04X", memberHeader->signature));
-    EARLY_LVVV(("memberHeader->compressionMethod = %u",     memberHeader->compressionMethod));
-    EARLY_LVVV(("memberHeader->flags             = 0x%02X", memberHeader->flags));
-    EARLY_LVVV(("memberHeader->modificationTime  = %u",     memberHeader->modificationTime));
-    EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X", memberHeader->extraFlags));
-    EARLY_LVVV(("memberHeader->operatingSystem   = %u",     memberHeader->operatingSystem));
+
+
+    // Validation
+    {
+        EARLY_LVVV(("memberHeader->signature         = 0x%04X", memberHeader->signature));
+        EARLY_LVVV(("memberHeader->compressionMethod = %u",     memberHeader->compressionMethod));
+        EARLY_LVVV(("memberHeader->flags             = 0x%02X", memberHeader->flags));
+        EARLY_LVVV(("memberHeader->modificationTime  = %u",     memberHeader->modificationTime));
+        EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X", memberHeader->extraFlags));
+        EARLY_LVVV(("memberHeader->operatingSystem   = %u",     memberHeader->operatingSystem));
 
 
 
-    EARLY_ASSERT(memberHeader->signature         == GZIP_MEMBER_HEADER_SIGNATURE,                           "Member Header signature is invalid",        NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->compressionMethod == CompressionMethod::DEFLATE,                             "Unsupported compression method",            NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->flags             == (gzip_member_flags)MemberFlag::NONE,                    "Member Header flags is invalid",            NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->modificationTime  == 0,                                                      "Member Header modificationTime is invalid", NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->extraFlags        == (gzip_member_extra_flags)MemberExtraFlag::DEFLATE_SLOW, "Member Header extraFlags is invalid",       NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->operatingSystem   == OperatingSystem::UNIX,                                  "Member Header operatingSystem is invalid",  NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->signature         == GZIP_MEMBER_HEADER_SIGNATURE,                           NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->compressionMethod == CompressionMethod::DEFLATE,                             NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->flags             == (gzip_member_flags)MemberFlag::NONE,                    NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->modificationTime  == 0,                                                      NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->extraFlags        == (gzip_member_extra_flags)MemberExtraFlag::DEFLATE_SLOW, NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->operatingSystem   == OperatingSystem::UNIX,                                  NgosStatus::ASSERTION);
+    }
 
 
 
@@ -143,16 +148,18 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
     MemberFooter *memberFooter = (MemberFooter *)currentPointer;
 
-    EARLY_LVVV(("memberFooter->crc32     = 0x%08X", memberFooter->crc32));
-    EARLY_LVVV(("memberFooter->inputSize = %u",     memberFooter->inputSize));
+
+
+    // Validation
+    {
+        EARLY_LVVV(("memberFooter->crc32     = 0x%08X", memberFooter->crc32));
+        EARLY_LVVV(("memberFooter->inputSize = %u",     memberFooter->inputSize));
 
 
 
-    EARLY_ASSERT(gzipCrc32(
-                    decompressedAddress,
-                    uncompressedSize,
-                    0) == memberFooter->crc32,                "CRC32 is invalid in Member Footer",  NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberFooter->inputSize == uncompressedSize, "Member Footer inputSize is invalid", NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberFooter->crc32     == gzipCrc32(decompressedAddress, uncompressedSize, 0), NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberFooter->inputSize == uncompressedSize,                                    NgosStatus::ASSERTION);
+    }
 
 
 
