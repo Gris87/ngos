@@ -300,10 +300,11 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
                 QStringList blockOriginal = block;
                 block.sort();
+                block.removeDuplicates();
 
                 if (block != blockOriginal)
                 {
-                    worker->addWarning(path, blockStarts.at(i), "Includes should be sorted");
+                    worker->addWarning(path, blockStarts.at(i), "Includes should be sorted or duplicates detected");
                 }
             }
 

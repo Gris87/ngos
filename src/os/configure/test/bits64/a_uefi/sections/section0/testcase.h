@@ -14,6 +14,7 @@
 #include "test/bits64/a_uefi/sections/section0/__include/ngos/types.h"
 #include "test/bits64/a_uefi/sections/section0/__include/ngos/utils.h"
 #include "test/bits64/a_uefi/sections/section0/__include/pagetable/utils.h"
+#include "test/bits64/a_uefi/sections/section0/__include/types.h"
 #include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/cpu/cpu.h"
 #include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/avx.h"
 #include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx2/avx2.h"
@@ -32,7 +33,9 @@
 #include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/printf/printf.h"
 #include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/random/random.h"
 #include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/string/string.h"
+#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/types.h"
 #include "test/bits64/a_uefi/sections/section0/bits64/a_uefi/uefi/uefi.h"
+#include "test/bits64/a_uefi/sections/section0/bits64/types.h"
 #include "test/bits64/a_uefi/testengine.h"
 
 
@@ -65,6 +68,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __include_ngos_types);
     CALL_TEST_CASES(section0, __include_ngos_utils);
     CALL_TEST_CASES(section0, __include_pagetable_utils);
+    CALL_TEST_CASES(section0, __include_types);
     CALL_TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_avx2_avx2);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
@@ -83,7 +87,9 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_printf_printf);
     CALL_TEST_CASES(section0, __shared_common_bits64_random_random);
     CALL_TEST_CASES(section0, __shared_common_bits64_string_string);
+    CALL_TEST_CASES(section0, __shared_common_bits64_types);
     CALL_TEST_CASES(section0, bits64_a_uefi_uefi_uefi);
+    CALL_TEST_CASES(section0, bits64_types);
 
     asm volatile(
         "movq    %rbp, %rsp"    "\n\t"

@@ -222,10 +222,11 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
         QStringList blockOriginal = block;
         block.sort();
+        block.removeDuplicates();
 
         if (block != blockOriginal)
         {
-            worker->addWarning(path, startPos, "Files should be sorted");
+            worker->addWarning(path, startPos, "Files should be sorted or duplicates detected");
         }
 
 

@@ -16,18 +16,18 @@
 
 struct Lzma2Decoder
 {
-    // Position in runXzLzma2Decoder().
-    Lzma2Sequence sequence;
-
-    // Next position after decoding the compressed size of the chunk.
-    Lzma2Sequence nextSequence;
-
     // Uncompressed size of LZMA chunk (2 MiB at maximum)
     u32 uncompressed;
 
     // Compressed size of LZMA chunk or compressed/uncompressed
     // size of uncompressed chunk (64 KiB at maximum)
     u32 compressed;
+
+    // Position in runXzLzma2Decoder().
+    Lzma2Sequence sequence;
+
+    // Next position after decoding the compressed size of the chunk.
+    Lzma2Sequence nextSequence;
 
     // True if dictionary reset is needed. This is false before
     // the first chunk (LZMA or uncompressed).

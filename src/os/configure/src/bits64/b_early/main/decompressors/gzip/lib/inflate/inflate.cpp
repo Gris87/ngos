@@ -9,7 +9,6 @@
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecodetype.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatedecoder.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatefixedcodes.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/memberheader.h"
 
 
 
