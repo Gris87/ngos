@@ -170,30 +170,25 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
     u8 *currentPointer = compressedAddress;
 
-    StreamHeader *streamHeader = (StreamHeader *)currentPointer;
-
-    EARLY_LVVV(("streamHeader->signature   = \\x%02X%c%c%c%c\\x%02X", (u8)streamHeader->signature[0], streamHeader->signature[1], streamHeader->signature[2], streamHeader->signature[3], streamHeader->signature[4], (u8)streamHeader->signature[5]));
-    EARLY_LVVV(("streamHeader->streamFlags = 0x%04X",                 streamHeader->streamFlags));
-    EARLY_LVVV(("streamHeader->crc32       = 0x%08X",                 streamHeader->crc32));
+    StreamHeader *streamHeader    = (StreamHeader *)currentPointer;
+    StreamFlag    typeOfCheckFlag = (StreamFlag)(streamHeader->streamFlags & (xz_stream_flags)StreamFlag::TYPE_OF_CHECK_MASK);
 
 
 
-    StreamFlag typeOfCheckFlag = (StreamFlag)(streamHeader->streamFlags & (xz_stream_flags)StreamFlag::TYPE_OF_CHECK_MASK);
+    // Validation
+    {
+        EARLY_LVVV(("streamHeader->signature   = 0x%02X %.4s 0x%02X", streamHeader->signature[0], &streamHeader->signature[1], streamHeader->signature[5]));
+        EARLY_LVVV(("streamHeader->streamFlags = 0x%04X",             streamHeader->streamFlags));
+        EARLY_LVVV(("streamHeader->crc32       = 0x%08X",             streamHeader->crc32));
+        EARLY_LVVV(("typeOfCheckFlag           = 0x%04X",             typeOfCheckFlag));
 
-    EARLY_LVVV(("typeOfCheckFlag = 0x%04X", typeOfCheckFlag));
 
 
-
-    EARLY_ASSERT(memcmp(streamHeader->signature, XZ_STREAM_HEADER_SIGNATURE, sizeof(streamHeader->signature)) == 0, "Stream Header signature is invalid", NgosStatus::ASSERTION);
-    EARLY_ASSERT(typeOfCheckFlag == StreamFlag::NONE
-                ||
-                typeOfCheckFlag == StreamFlag::TYPE_OF_CHECK_CRC32
-                ||
-                typeOfCheckFlag == StreamFlag::TYPE_OF_CHECK_CRC64,                                                 "Unsupported type of check",          NgosStatus::ASSERTION);
-    EARLY_ASSERT(xzCrc32(
-                    (u8 *)&streamHeader->streamFlags,
-                    sizeof(streamHeader->streamFlags),
-                    0) == streamHeader->crc32,                                                                      "CRC32 is invalid in Stream Header",  NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT((*((u64 *)streamHeader->signature) & 0xFFFFFFFFFFFF) == XZ_STREAM_HEADER_SIGNATURE,                                                      NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(streamHeader->streamFlags                            == 0x0400,                                                                          NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(streamHeader->crc32                                  == xzCrc32((u8 *)&streamHeader->streamFlags, sizeof(streamHeader->streamFlags), 0), NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(typeOfCheckFlag                                      == StreamFlag::TYPE_OF_CHECK_CRC64,                                                 NgosStatus::ASSERTION);
+    }
 
 
 
@@ -482,15 +477,15 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
             EARLY_LVVV(("streamFooter->crc32        = 0x%08X", streamFooter->crc32));
             EARLY_LVVV(("streamFooter->backwardSize = %u",     streamFooter->backwardSize));
             EARLY_LVVV(("streamFooter->streamFlags  = 0x%04X", streamFooter->streamFlags));
-            EARLY_LVVV(("streamFooter->signature    = %2s",    streamFooter->signature));
+            EARLY_LVVV(("streamFooter->signature    = %.2s",   &streamFooter->signature));
 
             EARLY_ASSERT(xzCrc32(
                             (u8 *)&streamFooter->backwardSize,
                             sizeof(streamFooter->backwardSize) + sizeof(streamFooter->streamFlags),
-                            0) == streamFooter->crc32,                                                                      "CRC32 is invalid in Stream Footer",                                NgosStatus::ASSERTION);
-            EARLY_ASSERT(((streamFooter->backwardSize + 1) << 2) == indexSize,                                              "Backward Size is invalid",                                         NgosStatus::ASSERTION); // "<< 2" == "* 4"
-            EARLY_ASSERT(streamFooter->streamFlags == streamHeader->streamFlags,                                            "Stream flags are not the same in Stream Header and Stream Footer", NgosStatus::ASSERTION);
-            EARLY_ASSERT(memcmp(streamFooter->signature, XZ_STREAM_FOOTER_SIGNATURE, sizeof(streamFooter->signature)) == 0, "Stream Footer signature is invalid",                               NgosStatus::ASSERTION);
+                            0) == streamFooter->crc32,                                              "CRC32 is invalid in Stream Footer",                                NgosStatus::ASSERTION);
+            EARLY_ASSERT(((streamFooter->backwardSize + 1) << 2) == indexSize,                      "Backward Size is invalid",                                         NgosStatus::ASSERTION); // "<< 2" == "* 4"
+            EARLY_ASSERT(streamFooter->streamFlags == streamHeader->streamFlags,                    "Stream flags are not the same in Stream Header and Stream Footer", NgosStatus::ASSERTION);
+            EARLY_ASSERT(streamFooter->signature == XZ_STREAM_FOOTER_SIGNATURE,                     "Stream Footer signature is invalid",                               NgosStatus::ASSERTION);
 
 
 

@@ -17,13 +17,13 @@
 
 
 
-#define GZIP_MEMBER_HEADER_SIGNATURE "\x1F""\x8B" // { 0x1F, 0x8B }
+#define GZIP_MEMBER_HEADER_SIGNATURE 0x8B1F
 
 
 
 struct MemberHeader
 {
-    char                    signature[2];
+    u16                     signature;
     CompressionMethod       compressionMethod;
     gzip_member_flags       flags;
     u32                     modificationTime;

@@ -14,13 +14,13 @@
 
 
 
-#define XZ_STREAM_HEADER_SIGNATURE "\xFD""7zXZ" // { 0xFD, '7', 'z', 'X', 'Z', 0x00 }
+#define XZ_STREAM_HEADER_SIGNATURE 0x0000005A587A37FD   // 0xFD 7zXZ 0x00
 
 
 
 struct StreamHeader
 {
-    char            signature[6];
+    u8              signature[6];
     xz_stream_flags streamFlags;
     u32             crc32;
 } __attribute__((packed));

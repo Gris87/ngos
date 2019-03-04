@@ -10,7 +10,7 @@
 #define UEFI_SMBIOS_CONFIGURATION_TABLE_GUID \
     { 0xEB9D2D31, 0x2D88, 0x11D3, {0x9A, 0x16, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D} }
 
-#define SMBIOS_ANCHOR               0x5F4D53F5F         // _SM_
+#define SMBIOS_ANCHOR               0x5F4D535F          // _SM_
 #define SMBIOS_INTERMEDIATE_ANCHOR  0x0000005F494D445F  // _DMI_
 
 

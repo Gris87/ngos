@@ -92,21 +92,21 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
     MemberHeader *memberHeader = (MemberHeader *)currentPointer;
 
-    EARLY_LVVV(("memberHeader->signature         = 0x%02X/0x%02X", (u8)(memberHeader->signature[0]), (u8)(memberHeader->signature[1])));
-    EARLY_LVVV(("memberHeader->compressionMethod = %u",            memberHeader->compressionMethod));
-    EARLY_LVVV(("memberHeader->flags             = 0x%02X",        memberHeader->flags));
-    EARLY_LVVV(("memberHeader->modificationTime  = %u",            memberHeader->modificationTime));
-    EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X",        memberHeader->extraFlags));
-    EARLY_LVVV(("memberHeader->operatingSystem   = %u",            memberHeader->operatingSystem));
+    EARLY_LVVV(("memberHeader->signature         = 0x%04X", memberHeader->signature));
+    EARLY_LVVV(("memberHeader->compressionMethod = %u",     memberHeader->compressionMethod));
+    EARLY_LVVV(("memberHeader->flags             = 0x%02X", memberHeader->flags));
+    EARLY_LVVV(("memberHeader->modificationTime  = %u",     memberHeader->modificationTime));
+    EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X", memberHeader->extraFlags));
+    EARLY_LVVV(("memberHeader->operatingSystem   = %u",     memberHeader->operatingSystem));
 
 
 
-    EARLY_ASSERT(memcmp(memberHeader->signature, GZIP_MEMBER_HEADER_SIGNATURE, sizeof(memberHeader->signature)) == 0, "Member Header signature is invalid",        NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->compressionMethod == CompressionMethod::DEFLATE,                                       "Unsupported compression method",            NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->flags == (gzip_member_flags)MemberFlag::NONE,                                          "Member Header flags is invalid",            NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->modificationTime == 0,                                                                 "Member Header modificationTime is invalid", NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->extraFlags == (gzip_member_extra_flags)MemberExtraFlag::DEFLATE_SLOW,                  "Member Header extraFlags is invalid",       NgosStatus::ASSERTION);
-    EARLY_ASSERT(memberHeader->operatingSystem == OperatingSystem::UNIX,                                              "Member Header operatingSystem is invalid",  NgosStatus::ASSERTION);
+    EARLY_ASSERT(memberHeader->signature         == GZIP_MEMBER_HEADER_SIGNATURE,                           "Member Header signature is invalid",        NgosStatus::ASSERTION);
+    EARLY_ASSERT(memberHeader->compressionMethod == CompressionMethod::DEFLATE,                             "Unsupported compression method",            NgosStatus::ASSERTION);
+    EARLY_ASSERT(memberHeader->flags             == (gzip_member_flags)MemberFlag::NONE,                    "Member Header flags is invalid",            NgosStatus::ASSERTION);
+    EARLY_ASSERT(memberHeader->modificationTime  == 0,                                                      "Member Header modificationTime is invalid", NgosStatus::ASSERTION);
+    EARLY_ASSERT(memberHeader->extraFlags        == (gzip_member_extra_flags)MemberExtraFlag::DEFLATE_SLOW, "Member Header extraFlags is invalid",       NgosStatus::ASSERTION);
+    EARLY_ASSERT(memberHeader->operatingSystem   == OperatingSystem::UNIX,                                  "Member Header operatingSystem is invalid",  NgosStatus::ASSERTION);
 
 
 

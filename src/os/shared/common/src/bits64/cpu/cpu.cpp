@@ -118,7 +118,7 @@ NgosStatus CPU::init()
         COMMON_LVVV(("sVendor[0]          = 0x%08X", sVendor[0]));
         COMMON_LVVV(("sVendor[1]          = 0x%08X", sVendor[1]));
         COMMON_LVVV(("sVendor[2]          = 0x%08X", sVendor[2]));
-        COMMON_LVVV(("sVendor             = %-12s",  sVendor));
+        COMMON_LVVV(("sVendor             = %.12s",  sVendor));
         COMMON_LVVV(("sCpuVendor          = %u",     sCpuVendor));
         COMMON_LVVV(("sModelName[0]       = 0x%08X", sModelName[0]));
         COMMON_LVVV(("sModelName[1]       = 0x%08X", sModelName[1]));
@@ -132,7 +132,7 @@ NgosStatus CPU::init()
         COMMON_LVVV(("sModelName[9]       = 0x%08X", sModelName[9]));
         COMMON_LVVV(("sModelName[10]      = 0x%08X", sModelName[10]));
         COMMON_LVVV(("sModelName[11]      = 0x%08X", sModelName[11]));
-        COMMON_LVVV(("sModelName          = %s",     sModelName));
+        COMMON_LVVV(("sModelName          = %.48s",  sModelName));
         COMMON_LVVV(("sCpuidLevel         = 0x%08X", sCpuidLevel));
         COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X", sExtendedCpuidLevel));
         COMMON_LVVV(("sFamily             = %u",     sFamily));
@@ -244,10 +244,10 @@ NgosStatus CPU::toString(char *buffer, u16 size)
     // Ignore CppAlignmentVerifier [BEGIN]
     i64 res = sprintf(buffer,
             "CPU info:\n"
-            "           Vendor:                %12s\n"
+            "           Vendor:                %.12s\n"
             "           CPU Family:            %u\n"
             "           Model:                 %u\n"
-            "           Model name:            %s\n"
+            "           Model name:            %.48s\n"
             "           Stepping:              %u\n"
             "           Microcode:             0x%08X\n"
             "           CPUID level:           %u\n"

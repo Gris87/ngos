@@ -14,7 +14,7 @@
 
 
 
-#define XZ_STREAM_FOOTER_SIGNATURE "YZ"
+#define XZ_STREAM_FOOTER_SIGNATURE 0x5A59   // YZ
 
 
 
@@ -23,7 +23,7 @@ struct StreamFooter
     u32             crc32;
     u32             backwardSize;
     xz_stream_flags streamFlags;
-    char            signature[2];
+    u16             signature;
 } __attribute__((packed));
 
 
