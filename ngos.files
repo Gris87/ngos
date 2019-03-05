@@ -596,6 +596,8 @@ src/os/shared/kernelbase/src/bits64/a_early/main/reservepciromimages.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/reservepciromimages.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupbootparams.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupbootparams.h
+src/os/shared/kernelbase/src/bits64/a_early/main/setupbrk.cpp
+src/os/shared/kernelbase/src/bits64/a_early/main/setupbrk.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupcr4shadow.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupcr4shadow.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupdmi.cpp
@@ -621,6 +623,8 @@ src/os/shared/kernelbase/src/bits64/a_early/main/setupuefisystemtable.h
 src/os/shared/kernelbase/src/bits64/a_early/other/adaptpagetable.cpp
 src/os/shared/kernelbase/src/bits64/other/bootparams/bootparams.cpp
 src/os/shared/kernelbase/src/bits64/other/bootparams/bootparams.h
+src/os/shared/kernelbase/src/bits64/other/brk/brk.cpp
+src/os/shared/kernelbase/src/bits64/other/brk/brk.h
 src/os/shared/kernelbase/src/bits64/other/cpu/cpumask.cpp
 src/os/shared/kernelbase/src/bits64/other/cpu/cpumask.h
 src/os/shared/kernelbase/src/bits64/other/cpu/percpu.cpp

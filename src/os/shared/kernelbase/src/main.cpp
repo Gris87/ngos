@@ -8,6 +8,7 @@
 #include <kernelbase/src/bits64/a_early/main/disableirq.h>
 #include <kernelbase/src/bits64/a_early/main/reservepciromimages.h>
 #include <kernelbase/src/bits64/a_early/main/setupbootparams.h>
+#include <kernelbase/src/bits64/a_early/main/setupbrk.h>
 #include <kernelbase/src/bits64/a_early/main/setupcr4shadow.h>
 #include <kernelbase/src/bits64/a_early/main/setupdmi.h>
 #include <kernelbase/src/bits64/a_early/main/setupe820tables.h>
@@ -81,6 +82,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(setupIdtHandlers());
     EARLY_LI(("Setup IDT handlers completed"));
+
+    EARLY_ASSERT_EXECUTION(setupBrk());
+    EARLY_LI(("Setup BRK completed"));
 
     EARLY_ASSERT_EXECUTION(setupInitTask());
     EARLY_LI(("Setup init task completed"));

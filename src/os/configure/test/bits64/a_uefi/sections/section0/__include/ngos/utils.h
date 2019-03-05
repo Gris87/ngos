@@ -109,6 +109,25 @@ TEST_CASES(section0, __include_ngos_utils);
 
 
 
+    TEST_CASE("IS_POWER_OF_2()");
+    {
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(1),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(2),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(3),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(4),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(5),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(6),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(7),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(8),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(9),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(16), true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(32), true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(64), true);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("MIN()");
     {
         TEST_ASSERT_EQUALS(MIN(0, 1),      0);

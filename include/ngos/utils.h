@@ -17,6 +17,10 @@
 
 
 
+#define IS_POWER_OF_2(a) (((a) & ((a) - 1)) == 0)               // TEST: NO
+
+
+
 #define MIN(a, b) (a) < (b) ? (a) : (b)                         // TEST: NO
 #define MIN_TYPED(type, a, b) MIN((type)(a), (type)(b))         // TEST: NO
 

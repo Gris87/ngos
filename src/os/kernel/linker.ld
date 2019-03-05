@@ -37,6 +37,12 @@ SECTIONS
         _bss_end = .;
     }
 
+    .brk         :       {
+        _brk_begin = .;
+        . += 64 * 1024;
+        _brk_end = .;
+    }
+
     _end = .;
 
 

@@ -274,6 +274,71 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
 
 
 
+    switch (header->type)
+    {
+        case DmiEntryType::BIOS:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::SYSTEM:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::BASEBOARD:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::CHASSIS:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::SYSTEM_SLOTS:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::ONBOARD_DEVICES:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::OEM_STRINGS:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::IPMI_DEVICE:
+        {
+
+        }
+        break;
+
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:
+        {
+
+        }
+        break;
+
+        default:
+        {
+            COMMON_LVV(("Ignoring DMI entry at address 0x%p with type %u", header, header->type));
+        }
+        break;
+    }
+
+
+
     return NgosStatus::OK;
 }
 

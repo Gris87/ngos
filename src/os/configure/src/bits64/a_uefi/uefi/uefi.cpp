@@ -452,9 +452,10 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 {
     UEFI_LT((" | size = %u, align = %u, address = 0x%p", size, align, address));
 
-    UEFI_ASSERT(size > 0,  "size is zero",    UefiStatus::ABORTED);
-    UEFI_ASSERT(align > 0, "align is zero",   UefiStatus::ABORTED);
-    UEFI_ASSERT(address,   "address is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(size > 0,             "size is zero",            UefiStatus::ABORTED);
+    UEFI_ASSERT(align > 0,            "align is zero",           UefiStatus::ABORTED);
+    UEFI_ASSERT(IS_POWER_OF_2(align), "align is not power of 2", UefiStatus::ABORTED);
+    UEFI_ASSERT(address,              "address is null",         UefiStatus::ABORTED);
 
 
 
