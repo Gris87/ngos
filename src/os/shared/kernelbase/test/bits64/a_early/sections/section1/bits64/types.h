@@ -9,8 +9,8 @@
 #include <kernelbase/src/bits64/other/memorymanager/memoryblock.h>
 #include <kernelbase/src/bits64/other/memorymanager/memoryblockregion.h>
 #include <kernelbase/src/bits64/other/memorymanager/memoryblocktype.h>
-#include <kernelbase/src/bits64/other/tasks/task.h>
-#include <kernelbase/src/bits64/other/tasks/threadinfo.h>
+#include <kernelbase/src/bits64/other/task/task.h>
+#include <kernelbase/src/bits64/other/task/threadinfo.h>
 #include <kernelbase/test/bits64/a_early/testengine.h>
 
 

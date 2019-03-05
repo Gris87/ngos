@@ -2,7 +2,7 @@
 
 #include <kernelbase/src/bits64/a_early/early/earlyassert.h>
 #include <kernelbase/src/bits64/a_early/early/earlylog.h>
-#include <kernelbase/src/bits64/other/tasks/utils.h>
+#include <kernelbase/src/bits64/other/task/utils.h>
 #include <ngos/linkage.h>
 
 

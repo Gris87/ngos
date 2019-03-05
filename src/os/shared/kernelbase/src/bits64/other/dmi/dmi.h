@@ -5,6 +5,9 @@
 
 #include <ngos/status.h>
 #include <kernelbase/src/bits64/other/dmi/dmientryheader.h>
+#include <kernelbase/src/bits64/other/dmi/dmiidentities.h>
+#include <kernelbase/src/bits64/other/dmi/entry/dmibiosentry.h>
+#include <kernelbase/src/bits64/other/dmi/entry/dmisystementry.h>
 #include <uefi/config/uefismbios3configurationtable.h>
 #include <uefi/config/uefismbiosconfigurationtable.h>
 
@@ -28,12 +31,16 @@ private:
     static NgosStatus initFromSmbios(UefiSmbiosConfigurationTable *smbios);
     static NgosStatus iterateDmiEntries(process_dmi_entry processDmiEntry);
     static NgosStatus decodeDmiEntry(DmiEntryHeader *header);
+    static NgosStatus saveDmiBiosEntry(DmiBiosEntry *entry);
+    static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry);
+    static NgosStatus saveIdentity(DmiIdentity identity, u8 *address, u64 size);
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
-    static u32 sVersion;
-    static u16 sNumberOfSmbiosStructures;
-    static u32 sStructureTableLength;
-    static u64 sStructureTableAddress;
+    static u32         sVersion;
+    static u16         sNumberOfSmbiosStructures;
+    static u32         sStructureTableLength;
+    static u64         sStructureTableAddress;
+    static const char* sIdentities[(u64)DmiIdentity::MAX];
 };
 
 

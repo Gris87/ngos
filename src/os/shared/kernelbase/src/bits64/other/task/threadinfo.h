@@ -3,7 +3,7 @@
 
 
 
-#include <kernelbase/src/bits64/other/tasks/threadinfoflags.h>
+#include <kernelbase/src/bits64/other/task/threadinfoflags.h>
 #include <ngos/types.h>
 
 

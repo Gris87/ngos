@@ -5,7 +5,7 @@
 
 #include <buildconfig.h>
 #include <common/src/bits64/memory/memory.h>
-#include <kernelbase/src/bits64/other/tasks/utils.h>
+#include <kernelbase/src/bits64/other/task/utils.h>
 #include <kernelbase/test/bits64/a_early/testengine.h>
 
 
@@ -14,7 +14,7 @@
 
 
 
-TEST_CASES(section1, bits64_other_tasks_utils);
+TEST_CASES(section1, bits64_other_task_utils);
 {
     TEST_CASE("putTaskStackEndMagic()");
     {

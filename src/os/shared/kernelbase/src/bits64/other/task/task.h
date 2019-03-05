@@ -4,8 +4,8 @@
 
 
 #include <kernelbase/src/bits64/other/kerneldefines.h>
-#include <kernelbase/src/bits64/other/tasks/taskstate.h>
-#include <kernelbase/src/bits64/other/tasks/threadinfo.h>
+#include <kernelbase/src/bits64/other/task/taskstate.h>
+#include <kernelbase/src/bits64/other/task/threadinfo.h>
 #include <ngos/types.h>
 
 

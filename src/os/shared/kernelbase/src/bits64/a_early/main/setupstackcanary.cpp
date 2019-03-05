@@ -4,7 +4,7 @@
 #include <kernelbase/src/bits64/a_early/early/earlyassert.h>
 #include <kernelbase/src/bits64/a_early/early/earlylog.h>
 #include <kernelbase/src/bits64/other/irq/irqstack.h>
-#include <kernelbase/src/bits64/other/tasks/task.h>
+#include <kernelbase/src/bits64/other/task/task.h>
 
 
 

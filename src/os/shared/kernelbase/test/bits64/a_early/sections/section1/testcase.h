@@ -12,7 +12,7 @@
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/memorymanager/memorymanager.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/addressconversion.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/pagetable/dynamicpagetable.h>
-#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/tasks/utils.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/task/utils.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/uefi/uefi.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/types.h>
 #include <kernelbase/test/bits64/a_early/testengine.h>
@@ -39,7 +39,7 @@ NgosStatus startTestSection1()
     CALL_TEST_CASES(section1, bits64_other_memorymanager_memorymanager);
     CALL_TEST_CASES(section1, bits64_other_pagetable_addressconversion);
     CALL_TEST_CASES(section1, bits64_other_pagetable_dynamicpagetable);
-    CALL_TEST_CASES(section1, bits64_other_tasks_utils);
+    CALL_TEST_CASES(section1, bits64_other_task_utils);
     CALL_TEST_CASES(section1, bits64_other_uefi_uefi);
     CALL_TEST_CASES(section1, bits64_types);
 
