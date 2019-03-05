@@ -7,6 +7,13 @@
 
 
 
+u32 DMI::sVersion;
+u16 DMI::sNumberOfSmbiosStructures;
+u32 DMI::sStructureTableLength;
+u64 DMI::sStructureTableAddress;
+
+
+
 NgosStatus DMI::init()
 {
     COMMON_LT((""));
@@ -66,8 +73,31 @@ NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)
         COMMON_LVVV(("smbios3->entryPointRevision          = %u",   smbios3->entryPointRevision));
         COMMON_LVVV(("smbios3->reserved                    = %u",   smbios3->reserved));
         COMMON_LVVV(("smbios3->structureTableMaximumSize   = %u",   smbios3->structureTableMaximumSize));
-        COMMON_LVVV(("smbios3->structureTableAddress       = %u",   smbios3->structureTableAddress));
+        COMMON_LVVV(("smbios3->structureTableAddress       = 0x%p", smbios3->structureTableAddress));
+
+
+
+        COMMON_TEST_ASSERT((*((u64 *)smbios3->anchor) & 0xFFFFFFFFFF) == SMBIOS_3_ANCHOR,                                                                          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->entryPointStructureChecksum       == checksum((u8 *)smbios3, smbios3->entryPointLength, smbios3->entryPointStructureChecksum), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->entryPointLength                  == 24,                                                                                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->majorVersion                      == 0,                                                                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->minorVersion                      == 0,                                                                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->docRevision                       == 0,                                                                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->entryPointRevision                == 0,                                                                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->reserved                          == 0,                                                                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->structureTableMaximumSize         == 0,                                                                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->structureTableAddress             == 0,                                                                                        NgosStatus::ASSERTION);
     }
+
+
+
+    sVersion               = (smbios3->majorVersion << 16) + (smbios3->minorVersion << 8) + smbios3->docRevision;
+    sStructureTableLength  = smbios3->structureTableMaximumSize;
+    sStructureTableAddress = smbios3->structureTableAddress;
+
+
+
+    COMMON_ASSERT_EXECUTION(iterateDmiEntries(decodeDmiEntry), NgosStatus::ASSERTION);
 
 
 
@@ -124,6 +154,123 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
         COMMON_TEST_ASSERT(smbios->numberOfSmbiosStructures                      == 9,                                                                                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->bcdRevision                                   == 0x28,                                                                                  NgosStatus::ASSERTION);
     }
+
+
+
+    sVersion                  = (smbios->majorVersion << 16) + (smbios->minorVersion << 8);
+    sNumberOfSmbiosStructures = smbios->numberOfSmbiosStructures;
+    sStructureTableLength     = smbios->structureTableLength;
+    sStructureTableAddress    = smbios->structureTableAddress;
+
+
+
+    COMMON_ASSERT_EXECUTION(iterateDmiEntries(decodeDmiEntry), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::iterateDmiEntries(process_dmi_entry processDmiEntry)
+{
+    COMMON_LT((" | processDmiEntry = 0x%p", processDmiEntry));
+
+    COMMON_ASSERT(processDmiEntry, "processDmiEntry is null", NgosStatus::ASSERTION);
+
+
+
+    u8 *buf;
+
+    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(sStructureTableAddress, sStructureTableLength, (void **)&buf), NgosStatus::ASSERTION);
+
+
+
+    i64  i   = 0;
+    u8  *cur = buf;
+    u8  *end = buf + sStructureTableLength;
+
+    while (
+           (
+            !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
+            ||
+            i < sNumberOfSmbiosStructures
+           )
+           &&
+           cur + sizeof(DmiEntryHeader) <= end
+          )
+    {
+        DmiEntryHeader *dmiEntryHeader = (DmiEntryHeader *)cur;
+
+
+
+        COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));
+
+        COMMON_LVVV(("dmiEntryHeader->type   = %u", dmiEntryHeader->type));
+        COMMON_LVVV(("dmiEntryHeader->length = %u", dmiEntryHeader->length));
+        COMMON_LVVV(("dmiEntryHeader->handle = %u", dmiEntryHeader->handle));
+
+
+
+        cur += dmiEntryHeader->length;
+
+        // We are getting total DMI entry size until we met 2 zeros in buffer that let us avoid issues on decoding
+        while (
+               (cur < end - 1)
+               &&
+               (
+                cur[0]
+                ||
+                cur[1]
+               )
+              )
+        {
+            ++cur;
+        }
+
+        if (cur < end - 1)
+        {
+            COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            break;
+        }
+
+
+
+        cur += 2;
+        ++i;
+
+
+
+        // Starting from SMBIOS 3 there is no information about amount of entries.
+        // Therefore we should stop iterating when we met entry with the special DmiEntryType::END_OF_TABLE type
+        if (
+            !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
+            &&
+            dmiEntryHeader->type == DmiEntryType::END_OF_TABLE
+           )
+        {
+            break;
+        }
+    }
+
+    COMMON_TEST_ASSERT(sStructureTableLength == cur - buf, NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)buf, sStructureTableLength), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
+{
+    COMMON_LT((" | header = 0x%p", header));
+
+    COMMON_ASSERT(header, "header is null", NgosStatus::ASSERTION);
 
 
 

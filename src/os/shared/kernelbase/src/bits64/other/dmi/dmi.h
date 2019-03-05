@@ -4,8 +4,13 @@
 
 
 #include <ngos/status.h>
+#include <kernelbase/src/bits64/other/dmi/dmientryheader.h>
 #include <uefi/config/uefismbios3configurationtable.h>
 #include <uefi/config/uefismbiosconfigurationtable.h>
+
+
+
+typedef NgosStatus (*process_dmi_entry) (DmiEntryHeader *header);
 
 
 
@@ -21,8 +26,14 @@ private:
 #endif
     static NgosStatus initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3);
     static NgosStatus initFromSmbios(UefiSmbiosConfigurationTable *smbios);
-
+    static NgosStatus iterateDmiEntries(process_dmi_entry processDmiEntry);
+    static NgosStatus decodeDmiEntry(DmiEntryHeader *header);
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
+
+    static u32 sVersion;
+    static u16 sNumberOfSmbiosStructures;
+    static u32 sStructureTableLength;
+    static u64 sStructureTableAddress;
 };
 
 
