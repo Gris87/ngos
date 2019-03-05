@@ -14,7 +14,6 @@ extern void *_brk_end;   // _brk_end declared in linker.ld file // Ignore CppEqu
 
 u64 BRK::sBegin;
 u64 BRK::sEnd;
-u64 BRK::sLimit;
 
 
 
@@ -26,7 +25,6 @@ NgosStatus BRK::init()
 
     sBegin = (u64)&_brk_begin;
     sEnd   = sBegin;
-    sLimit = (u64)&_brk_end;
 
 
 
@@ -58,7 +56,7 @@ NgosStatus BRK::allocate(u64 size, u64 align, u8 **result)
 
 
     sEnd = ROUND_UP(sEnd, align);
-    COMMON_TEST_ASSERT(sEnd + size <= sLimit, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sEnd + size <= (u64)&_brk_end, NgosStatus::ASSERTION);
 
     *result = (u8 *)sEnd;
 
@@ -67,28 +65,6 @@ NgosStatus BRK::allocate(u64 size, u64 align, u8 **result)
 
 
     COMMON_LVV(("Allocated space(0x%p, %u) in BRK", *result, size));
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus BRK::allocateAndClear(u64 size, u64 align, u8 **result)
-{
-    COMMON_LT((" | size = %u, align = %u, result = 0x%p", size, align, result));
-
-    COMMON_ASSERT(size > 0,             "size is zero",            NgosStatus::ASSERTION);
-    COMMON_ASSERT(align > 0,            "align is zero",           NgosStatus::ASSERTION);
-    COMMON_ASSERT(IS_POWER_OF_2(align), "align is not power of 2", NgosStatus::ASSERTION);
-    COMMON_ASSERT(result,               "result is null",          NgosStatus::ASSERTION);
-
-
-
-    COMMON_ASSERT_EXECUTION(allocate(size, align, result), NgosStatus::ASSERTION);
-
-
-
-    memzero(*result, size);
 
 
 
