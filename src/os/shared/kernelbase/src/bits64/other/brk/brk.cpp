@@ -34,7 +34,7 @@ NgosStatus BRK::init()
 
 
         COMMON_TEST_ASSERT(sBegin != 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sEnd != 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sEnd   != 0, NgosStatus::ASSERTION);
     }
 
 
