@@ -6,6 +6,7 @@
 #include <ngos/status.h>
 #include <kernelbase/src/bits64/other/dmi/dmientryheader.h>
 #include <kernelbase/src/bits64/other/dmi/dmiidentity.h>
+#include <kernelbase/src/bits64/other/dmi/dmimemorydevice.h>
 #include <kernelbase/src/bits64/other/dmi/dmistoredinteger.h>
 #include <kernelbase/src/bits64/other/dmi/dmistoreduuid.h>
 #include <kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h>
@@ -33,24 +34,29 @@ private:
 #endif
     static NgosStatus initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3);
     static NgosStatus initFromSmbios(UefiSmbiosConfigurationTable *smbios);
-    static NgosStatus iterateDmiEntries(process_dmi_entry processDmiEntry);
+    static NgosStatus iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry);
     static NgosStatus decodeDmiEntry(DmiEntryHeader *header);
     static NgosStatus saveDmiBiosEntry(DmiBiosEntry *entry);
     static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry);
     static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry);
     static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry);
+    static NgosStatus storeDmiMemoryDevices(u8 *buf);
+    static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header);
+    static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header);
     static NgosStatus saveIdentity(DmiIdentity id, u8 *address, u64 size);
     static NgosStatus saveUuid(DmiStoredUuid id, const DmiUuid &uuid);
     static NgosStatus saveInteger(DmiStoredInteger id, u32 value);
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
-    static u32         sVersion;
-    static u16         sNumberOfSmbiosStructures;
-    static u32         sStructureTableLength;
-    static u64         sStructureTableAddress;
-    static const char* sIdentities[(u64)DmiIdentity::MAX];
-    static DmiUuid*    sUuids[(u64)DmiStoredUuid::MAX];
-    static u32         sIntegers[(u64)DmiStoredInteger::MAX];
+    static u32              sVersion;
+    static u16              sNumberOfSmbiosStructures;
+    static u32              sStructureTableLength;
+    static u64              sStructureTableAddress;
+    static u64              sNumberOfMemoryDevices;
+    static DmiMemoryDevice *sMemoryDevices;
+    static const char*      sIdentities[(u64)DmiIdentity::MAX];
+    static DmiUuid*         sUuids[(u64)DmiStoredUuid::MAX];
+    static u32              sIntegers[(u64)DmiStoredInteger::MAX];
 };
 
 

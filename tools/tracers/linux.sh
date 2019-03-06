@@ -52,6 +52,8 @@ NEXTI_FILTERS=(
     -e "<__gunzip>"
     -e "<_get_random_bytes>"
     -e "<printk>"
+    -e "<scnprintf>"
+    -e "<print_filtered>"
     -e "<sort>"
 )
 

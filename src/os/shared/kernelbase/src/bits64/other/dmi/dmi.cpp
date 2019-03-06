@@ -4,18 +4,21 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
 #include <kernelbase/src/bits64/other/brk/brk.h>
+#include <kernelbase/src/bits64/other/dmi/entry/dmimemorydeviceentry.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/src/bits64/other/uefi/uefi.h>
 
 
 
-u32         DMI::sVersion;
-u16         DMI::sNumberOfSmbiosStructures;
-u32         DMI::sStructureTableLength;
-u64         DMI::sStructureTableAddress;
-const char* DMI::sIdentities[(u64)DmiIdentity::MAX];
-DmiUuid*    DMI::sUuids[(u64)DmiStoredUuid::MAX];
-u32         DMI::sIntegers[(u64)DmiStoredInteger::MAX];
+u32              DMI::sVersion;
+u16              DMI::sNumberOfSmbiosStructures;
+u32              DMI::sStructureTableLength;
+u64              DMI::sStructureTableAddress;
+u64              DMI::sNumberOfMemoryDevices;
+DmiMemoryDevice *DMI::sMemoryDevices;
+const char*      DMI::sIdentities[(u64)DmiIdentity::MAX];
+DmiUuid*         DMI::sUuids[(u64)DmiStoredUuid::MAX];
+u32              DMI::sIntegers[(u64)DmiStoredInteger::MAX];
 
 
 
@@ -56,6 +59,15 @@ NgosStatus DMI::init()
 
 
 
+    u8 *buf;
+
+    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(sStructureTableAddress, sStructureTableLength, (void **)&buf), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, decodeDmiEntry),                                                 NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(buf),                                                             NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)buf, sStructureTableLength),                           NgosStatus::ASSERTION);
+
+
+
     COMMON_LV(("SMBIOS version is %u.%u", sVersion >> 16, (sVersion >> 8) & 0xFF));
     COMMON_LV(("DMI: %s %s, BIOS %s %s %s", sIdentities[(u64)DmiIdentity::SYSTEM_MANUFACTURER], sIdentities[(u64)DmiIdentity::SYSTEM_PRODUCT_NAME], sIdentities[(u64)DmiIdentity::BIOS_VENDOR], sIdentities[(u64)DmiIdentity::BIOS_VERSION], sIdentities[(u64)DmiIdentity::BIOS_RELEASE_DATE]));
 
@@ -67,9 +79,22 @@ NgosStatus DMI::init()
         COMMON_LVVV(("sNumberOfSmbiosStructures = %u",     sNumberOfSmbiosStructures));
         COMMON_LVVV(("sStructureTableLength     = %u",     sStructureTableLength));
         COMMON_LVVV(("sStructureTableAddress    = 0x%p",   sStructureTableAddress));
+        COMMON_LVVV(("sNumberOfMemoryDevices    = %u",     sNumberOfMemoryDevices));
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
+            COMMON_LVVV(("sMemoryDevices:"));
+            COMMON_LVVV(("-------------------------------------"));
+
+            for (i64 i = 0; i < (i64)DmiIdentity::MAX; ++i)
+            {
+                COMMON_LVVV(("#%-3d: %u | %s | %s | %u", i, sMemoryDevices[i].handle, sMemoryDevices[i].device, sMemoryDevices[i].bank, sMemoryDevices[i].size));
+            }
+
+            COMMON_LVVV(("-------------------------------------"));
+
+
+
             COMMON_LVVV(("sIdentities:"));
             COMMON_LVVV(("-------------------------------------"));
 
@@ -126,6 +151,7 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sStructureTableLength     == 394,                NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sStructureTableAddress       == 0x000000003FBCB000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sNumberOfMemoryDevices       == 1,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT((u64)DmiIdentity::MAX        == 18,                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]               != 0,                  NgosStatus::ASSERTION);
@@ -210,10 +236,6 @@ NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)
 
 
 
-    COMMON_ASSERT_EXECUTION(iterateDmiEntries(decodeDmiEntry), NgosStatus::ASSERTION);
-
-
-
     return NgosStatus::OK;
 }
 
@@ -277,24 +299,15 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
 
 
 
-    COMMON_ASSERT_EXECUTION(iterateDmiEntries(decodeDmiEntry), NgosStatus::ASSERTION);
-
-
-
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::iterateDmiEntries(process_dmi_entry processDmiEntry)
+NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
 {
-    COMMON_LT((" | processDmiEntry = 0x%p", processDmiEntry));
+    COMMON_LT((" | buf = 0x%p, processDmiEntry = 0x%p", buf, processDmiEntry));
 
+    COMMON_ASSERT(buf,             "buf is null",             NgosStatus::ASSERTION);
     COMMON_ASSERT(processDmiEntry, "processDmiEntry is null", NgosStatus::ASSERTION);
-
-
-
-    u8 *buf;
-
-    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(sStructureTableAddress, sStructureTableLength, (void **)&buf), NgosStatus::ASSERTION);
 
 
 
@@ -373,10 +386,6 @@ NgosStatus DMI::iterateDmiEntries(process_dmi_entry processDmiEntry)
 
 
 
-    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)buf, sStructureTableLength), NgosStatus::ASSERTION);
-
-
-
     return NgosStatus::OK;
 }
 
@@ -394,11 +403,10 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::SYSTEM:                   COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),       NgosStatus::ASSERTION); break;
         case DmiEntryType::BASEBOARD:                COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header), NgosStatus::ASSERTION); break;
         case DmiEntryType::CHASSIS:                  COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),     NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_SLOTS:                                                                                                                 break;
-        case DmiEntryType::ONBOARD_DEVICES:                                                                                                              break;
-        case DmiEntryType::OEM_STRINGS:                                                                                                                  break;
-        case DmiEntryType::IPMI_DEVICE:                                                                                                                  break;
-        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:                                                                                                     break;
+        case DmiEntryType::SYSTEM_SLOTS:             return NgosStatus::NOT_SUPPORTED;
+        case DmiEntryType::OEM_STRINGS:              return NgosStatus::NOT_SUPPORTED;
+        case DmiEntryType::IPMI_DEVICE:              return NgosStatus::NOT_SUPPORTED;
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED: return NgosStatus::NOT_SUPPORTED;
 
         default:
         {
@@ -823,6 +831,138 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
         ++cur;
     } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::storeDmiMemoryDevices(u8 *buf)
+{
+    COMMON_LT((" | buf = 0x%p", buf));
+
+    COMMON_ASSERT(buf, "buf is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, countDmiMemoryDevices), NgosStatus::ASSERTION);
+
+    if (sNumberOfMemoryDevices)
+    {
+        COMMON_LVV(("Found memory devices: %u", sNumberOfMemoryDevices));
+
+        COMMON_ASSERT_EXECUTION(BRK::allocate(sNumberOfMemoryDevices * sizeof(DmiMemoryDevice), 1, (u8 **)&sMemoryDevices), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, saveDmiMemoryDevice),                                                NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::countDmiMemoryDevices(DmiEntryHeader *header)
+{
+    COMMON_LT((" | header = 0x%p", header));
+
+    COMMON_ASSERT(header, "header is null", NgosStatus::ASSERTION);
+
+
+
+    if (header->type != DmiEntryType::MEMORY_DEVICE)
+    {
+        return NgosStatus::OK;
+    }
+
+
+
+    COMMON_LVV(("DmiEntryType::MEMORY_DEVICE found at address 0x%p", header));
+
+    ++sNumberOfMemoryDevices;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
+{
+    COMMON_LT((" | header = 0x%p", header));
+
+    COMMON_ASSERT(header, "header is null", NgosStatus::ASSERTION);
+
+
+
+    static u64 memoryId;
+
+
+
+    if (header->type != DmiEntryType::MEMORY_DEVICE)
+    {
+        return NgosStatus::OK;
+    }
+
+    DmiMemoryDeviceEntry *entry = (DmiMemoryDeviceEntry *)header;
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->physicalMemoryArrayHandle    = %u", entry->physicalMemoryArrayHandle));
+        COMMON_LVVV(("entry->memoryErrorInformationHandle = %u", entry->memoryErrorInformationHandle));
+        COMMON_LVVV(("entry->totalWidth                   = %u", entry->totalWidth));
+        COMMON_LVVV(("entry->dataWidth                    = %u", entry->dataWidth));
+        COMMON_LVVV(("entry->size                         = %u", entry->size));
+        COMMON_LVVV(("entry->formFactor                   = %u", entry->formFactor));
+        COMMON_LVVV(("entry->deviceSet                    = %u", entry->deviceSet));
+        COMMON_LVVV(("entry->deviceLocator                = %u", entry->deviceLocator));
+        COMMON_LVVV(("entry->bankLocator                  = %u", entry->bankLocator));
+        COMMON_LVVV(("entry->memoryType                   = %u", entry->memoryType));
+        COMMON_LVVV(("entry->typeDetail                   = %u", entry->typeDetail));
+        COMMON_LVVV(("entry->speed                        = %u", entry->speed));
+        COMMON_LVVV(("entry->manufacturer                 = %u", entry->manufacturer));
+        COMMON_LVVV(("entry->serialNumber                 = %u", entry->serialNumber));
+        COMMON_LVVV(("entry->assetTag                     = %u", entry->assetTag));
+        COMMON_LVVV(("entry->partNumber                   = %u", entry->partNumber));
+        COMMON_LVVV(("entry->attributes                   = %u", entry->attributes));
+        COMMON_LVVV(("entry->extendedSize                 = %u", entry->extendedSize));
+        COMMON_LVVV(("entry->configuredMemorySpeed        = %u", entry->configuredMemorySpeed));
+        COMMON_LVVV(("entry->minimumVoltage               = %u", entry->minimumVoltage));
+        COMMON_LVVV(("entry->maximumVoltage               = %u", entry->maximumVoltage));
+        COMMON_LVVV(("entry->configuredVoltage            = %u", entry->configuredVoltage));
+
+
+
+        COMMON_TEST_ASSERT(entry->physicalMemoryArrayHandle    == 4096,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 65534, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->totalWidth                   == 65535, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->dataWidth                    == 65535, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->size                         == 1024,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->formFactor                   == 9,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->deviceSet                    == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->deviceLocator                == 1,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->bankLocator                  == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->memoryType                   == 7,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->typeDetail                   == 2,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->speed                        == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->manufacturer                 == 2,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->serialNumber                 == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->assetTag                     == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->partNumber                   == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->attributes                   == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->extendedSize                 == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->configuredMemorySpeed        == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->minimumVoltage               == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->maximumVoltage               == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->configuredVoltage            == 0,     NgosStatus::ASSERTION);
+    }
+
+
+
+    COMMON_TEST_ASSERT(memoryId < sNumberOfMemoryDevices, NgosStatus::ASSERTION);
+
+
+
+    ++memoryId;
 
 
 
