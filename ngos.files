@@ -673,6 +673,7 @@ src/os/shared/kernelbase/src/bits64/other/task/utils.h
 src/os/shared/kernelbase/src/bits64/other/uefi/uefi.cpp
 src/os/shared/kernelbase/src/bits64/other/uefi/uefi.h
 src/os/shared/kernelbase/src/main.cpp
+src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/brk/brk.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/e820/e820.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/ioremap.h

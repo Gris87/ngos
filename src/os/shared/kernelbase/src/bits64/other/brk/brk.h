@@ -11,7 +11,7 @@ class BRK
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus allocate(u64 size, u64 align, u8 **result); // TEST: NO
+    static NgosStatus allocate(u64 size, u64 align, u8 **result);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

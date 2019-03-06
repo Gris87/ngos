@@ -27,3 +27,4 @@ tools/qt/gdb_debug/build/gen/
 tools/qt/image_builder/
 tools/qt/include/
 tools/qt/test_verifier/
+src/os/shared/kernelbase/test/bits64/a_early/sections/section1/bits64/other/brk
