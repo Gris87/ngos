@@ -10,6 +10,7 @@
 #include <kernelbase/src/bits64/other/dmi/dmistoreduuid.h>
 #include <kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h>
 #include <kernelbase/src/bits64/other/dmi/entry/dmibiosentry.h>
+#include <kernelbase/src/bits64/other/dmi/entry/dmichassisentry.h>
 #include <kernelbase/src/bits64/other/dmi/entry/dmisystementry.h>
 #include <uefi/config/uefismbios3configurationtable.h>
 #include <uefi/config/uefismbiosconfigurationtable.h>
@@ -37,6 +38,7 @@ private:
     static NgosStatus saveDmiBiosEntry(DmiBiosEntry *entry);
     static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry);
     static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry);
+    static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry);
     static NgosStatus saveIdentity(DmiIdentity id, u8 *address, u64 size);
     static NgosStatus saveUuid(DmiStoredUuid id, const DmiUuid &uuid);
     static NgosStatus saveInteger(DmiStoredInteger id, u32 value);

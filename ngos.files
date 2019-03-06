@@ -639,6 +639,7 @@ src/os/shared/kernelbase/src/bits64/other/dmi/dmistoreduuid.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmiuuid.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmibiosentry.h
+src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmichassisentry.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmisystementry.h
 src/os/shared/kernelbase/src/bits64/other/e820/e820.cpp
 src/os/shared/kernelbase/src/bits64/other/e820/e820.h
