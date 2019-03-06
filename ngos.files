@@ -635,7 +635,6 @@ src/os/shared/kernelbase/src/bits64/other/dmi/dmientryheader.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmientrytype.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmiidentity.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmimemorydevice.h
-src/os/shared/kernelbase/src/bits64/other/dmi/dmistoredinteger.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmistoreduuid.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmiuuid.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h

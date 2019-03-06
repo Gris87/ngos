@@ -14,11 +14,11 @@ u32              DMI::sVersion;
 u16              DMI::sNumberOfSmbiosStructures;
 u32              DMI::sStructureTableLength;
 u64              DMI::sStructureTableAddress;
+u8               DMI::sChassisType;
 u64              DMI::sNumberOfMemoryDevices;
 DmiMemoryDevice *DMI::sMemoryDevices;
 const char*      DMI::sIdentities[(u64)DmiIdentity::MAX];
 DmiUuid*         DMI::sUuids[(u64)DmiStoredUuid::MAX];
-u32              DMI::sIntegers[(u64)DmiStoredInteger::MAX];
 
 
 
@@ -79,6 +79,7 @@ NgosStatus DMI::init()
         COMMON_LVVV(("sNumberOfSmbiosStructures = %u",     sNumberOfSmbiosStructures));
         COMMON_LVVV(("sStructureTableLength     = %u",     sStructureTableLength));
         COMMON_LVVV(("sStructureTableAddress    = 0x%p",   sStructureTableAddress));
+        COMMON_LVVV(("sChassisType              = %u",     sChassisType));
         COMMON_LVVV(("sNumberOfMemoryDevices    = %u",     sNumberOfMemoryDevices));
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
@@ -130,18 +131,6 @@ NgosStatus DMI::init()
             }
 
             COMMON_LVVV(("-------------------------------------"));
-
-
-
-            COMMON_LVVV(("sIntegers:"));
-            COMMON_LVVV(("-------------------------------------"));
-
-            for (i64 i = 0; i < (i64)DmiStoredUuid::MAX; ++i)
-            {
-                COMMON_LVVV(("#%-3d: %u", i, sIntegers[i]));
-            }
-
-            COMMON_LVVV(("-------------------------------------"));
         }
 #endif
 
@@ -151,6 +140,7 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sStructureTableLength     == 394,                NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sStructureTableAddress       == 0x000000003FBCB000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sChassisType                 == 1,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sNumberOfMemoryDevices       == 1,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT((u64)DmiIdentity::MAX        == 18,                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                  NgosStatus::ASSERTION);
@@ -184,8 +174,6 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sUuids[0]->data6[3]       == 0x0F,               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sUuids[0]->data6[4]       == 0x4E,               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sUuids[0]->data6[5]       == 0x5B,               NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiStoredInteger::MAX   == 1,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIntegers[0]                 == 1,                  NgosStatus::ASSERTION);
     }
 
 
@@ -780,7 +768,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-    COMMON_ASSERT_EXECUTION(saveInteger(DmiStoredInteger::CHASSIS_TYPE, entry->type), NgosStatus::ASSERTION);
+    sChassisType = entry->type;
 
 
 
@@ -1012,19 +1000,6 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const DmiUuid &uuid)
     ((u64 *)brkAddress)[1] = ((u64 *)&uuid)[1];
 
     sUuids[(u64)id] = (DmiUuid *)brkAddress;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveInteger(DmiStoredInteger id, u32 value)
-{
-    COMMON_LT((" | id = %u, value = %u", id, value));
-
-
-
-    sIntegers[(u64)id] = value;
 
 
 
