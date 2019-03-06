@@ -633,8 +633,11 @@ src/os/shared/kernelbase/src/bits64/other/dmi/dmi.cpp
 src/os/shared/kernelbase/src/bits64/other/dmi/dmi.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmientryheader.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmientrytype.h
-src/os/shared/kernelbase/src/bits64/other/dmi/dmiidentities.h
+src/os/shared/kernelbase/src/bits64/other/dmi/dmiidentity.h
+src/os/shared/kernelbase/src/bits64/other/dmi/dmistoredinteger.h
+src/os/shared/kernelbase/src/bits64/other/dmi/dmistoreduuid.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmiuuid.h
+src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmibiosentry.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmisystementry.h
 src/os/shared/kernelbase/src/bits64/other/e820/e820.cpp

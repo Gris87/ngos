@@ -14,6 +14,8 @@ u16         DMI::sNumberOfSmbiosStructures;
 u32         DMI::sStructureTableLength;
 u64         DMI::sStructureTableAddress;
 const char* DMI::sIdentities[(u64)DmiIdentity::MAX];
+DmiUuid*    DMI::sUuids[(u64)DmiStoredUuid::MAX];
+u32         DMI::sIntegers[(u64)DmiStoredInteger::MAX];
 
 
 
@@ -54,6 +56,7 @@ NgosStatus DMI::init()
 
 
 
+    COMMON_LV(("SMBIOS version is %u.%u", sVersion >> 16, (sVersion >> 8) & 0xFF));
     COMMON_LV(("DMI: %s %s, BIOS %s %s %s", sIdentities[(u64)DmiIdentity::SYSTEM_MANUFACTURER], sIdentities[(u64)DmiIdentity::SYSTEM_PRODUCT_NAME], sIdentities[(u64)DmiIdentity::BIOS_VENDOR], sIdentities[(u64)DmiIdentity::BIOS_VERSION], sIdentities[(u64)DmiIdentity::BIOS_RELEASE_DATE]));
 
 
@@ -83,25 +86,76 @@ NgosStatus DMI::init()
             }
 
             COMMON_LVVV(("-------------------------------------"));
+
+
+
+            COMMON_LVVV(("sUuids:"));
+            COMMON_LVVV(("-------------------------------------"));
+
+            for (i64 i = 0; i < (i64)DmiStoredUuid::MAX; ++i)
+            {
+                if (sUuids[i])
+                {
+                    COMMON_LVVV(("#%-3d: 0x%p | {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", i, sUuids[i], sUuids[i]->data1, sUuids[i]->data2, sUuids[i]->data3, sUuids[i]->data4, sUuids[i]->data5, sUuids[i]->data6[0], sUuids[i]->data6[1], sUuids[i]->data6[2], sUuids[i]->data6[3], sUuids[i]->data6[4], sUuids[i]->data6[5]));
+                }
+                else
+                {
+                    COMMON_LVVV(("#%-3d: 0x%p", i, sUuids[i]));
+                }
+            }
+
+            COMMON_LVVV(("-------------------------------------"));
+
+
+
+            COMMON_LVVV(("sIntegers:"));
+            COMMON_LVVV(("-------------------------------------"));
+
+            for (i64 i = 0; i < (i64)DmiStoredUuid::MAX; ++i)
+            {
+                COMMON_LVVV(("#%-3d: %u", i, sIntegers[i]));
+            }
+
+            COMMON_LVVV(("-------------------------------------"));
         }
 #endif
 
 
 
-        COMMON_TEST_ASSERT(sVersion                  == 0x00020800,         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sStructureTableLength     == 394,                NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sStructureTableAddress    == 0x000000003FBCB000, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAX     == 9,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[0]            != 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[1]            != 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[2]            != 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[3]            != 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[4]            != 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[5]            != 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[6]            == 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[7]            == 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[8]            == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sVersion                   == 0x00020800,         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sNumberOfSmbiosStructures  == 9,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sStructureTableLength      == 394,                NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sStructureTableAddress     == 0x000000003FBCB000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((u64)DmiIdentity::MAX      == 14,                 NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[0]             != 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[1]             != 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[2]             != 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[3]             != 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[4]             != 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[5]             != 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[6]             == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[7]             == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[8]             == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[9]             == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[10]            == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[11]            == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[12]            == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[13]            == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAX    == 1,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sUuids[0]                  != 0,                  NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sUuids[0]->data1        == 0x9FAE0773,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data2        == 0xF53F,             NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data3        == 0x4A15,             NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data4        == 0x8A,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data5        == 0x11,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]     == 0xED,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]     == 0x76,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]     == 0xA1,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]     == 0x0F,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]     == 0x4E,               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]     == 0x5B,               NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT((u64)DmiStoredInteger::MAX == 1,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIntegers[0]               == 0,                  NgosStatus::ASSERTION);
     }
 
 
@@ -332,59 +386,15 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
 
     switch (header->type)
     {
-        case DmiEntryType::BIOS:
-        {
-            COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header), NgosStatus::ASSERTION);
-        }
-        break;
-
-        case DmiEntryType::SYSTEM:
-        {
-            COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header), NgosStatus::ASSERTION);
-        }
-        break;
-
-        case DmiEntryType::BASEBOARD:
-        {
-
-        }
-        break;
-
-        case DmiEntryType::CHASSIS:
-        {
-
-        }
-        break;
-
-        case DmiEntryType::SYSTEM_SLOTS:
-        {
-
-        }
-        break;
-
-        case DmiEntryType::ONBOARD_DEVICES:
-        {
-
-        }
-        break;
-
-        case DmiEntryType::OEM_STRINGS:
-        {
-
-        }
-        break;
-
-        case DmiEntryType::IPMI_DEVICE:
-        {
-
-        }
-        break;
-
-        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:
-        {
-
-        }
-        break;
+        case DmiEntryType::BIOS:                     COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header),           NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM:                   COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),       NgosStatus::ASSERTION); break;
+        case DmiEntryType::BASEBOARD:                COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header), NgosStatus::ASSERTION); break;
+        case DmiEntryType::CHASSIS:                                                                                                                      break;
+        case DmiEntryType::SYSTEM_SLOTS:                                                                                                                 break;
+        case DmiEntryType::ONBOARD_DEVICES:                                                                                                              break;
+        case DmiEntryType::OEM_STRINGS:                                                                                                                  break;
+        case DmiEntryType::IPMI_DEVICE:                                                                                                                  break;
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:                                                                                                     break;
 
         default:
         {
@@ -518,6 +528,10 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
+    COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, entry->uuid), NgosStatus::ASSERTION);
+
+
+
     u8 *cur      = (u8 *)entry + entry->header.length;
     u8 *begin    = cur;
     u8  stringId = 0;
@@ -581,16 +595,126 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::saveIdentity(DmiIdentity identity, u8 *address, u64 size)
+NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 {
-    COMMON_LT((" | identity = %u, address = 0x%p, size = %u", identity, address, size));
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->manufacturer                   = %u",     entry->manufacturer));
+        COMMON_LVVV(("entry->product                        = %u",     entry->product));
+        COMMON_LVVV(("entry->version                        = %u",     entry->version));
+        COMMON_LVVV(("entry->serialNumber                   = %u",     entry->serialNumber));
+        COMMON_LVVV(("entry->assetTag                       = %u",     entry->assetTag));
+        COMMON_LVVV(("entry->featureFlags                   = 0x%02X", entry->featureFlags));
+        COMMON_LVVV(("entry->locationInChassis              = %u",     entry->locationInChassis));
+        COMMON_LVVV(("entry->chassisHandle                  = %u",     entry->chassisHandle));
+        COMMON_LVVV(("entry->boardType                      = %u",     entry->boardType));
+        COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",     entry->numberOfContainedObjectHandles));
+
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+        {
+            COMMON_LVVV(("entry->containedObjectHandles:"));
+            COMMON_LVVV(("-------------------------------------"));
+
+            for (i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
+            {
+                COMMON_LVVV(("#%-3d: %u", i, entry->containedObjectHandles[i]));
+            }
+
+            COMMON_LVVV(("-------------------------------------"));
+        }
+#endif
+
+
+
+        COMMON_TEST_ASSERT(entry->manufacturer                   == 1,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->product                        == 2,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->version                        == 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->serialNumber                   == 3,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->assetTag                       == 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->featureFlags                   == 0x08, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->locationInChassis              == 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->chassisHandle                  == 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->boardType                      == 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->containedObjectHandles[0]      == 0,    NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%d: %s", stringId, begin));
+
+
+
+            if (stringId == entry->manufacturer)
+            {
+                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+            }
+            else
+            if (stringId == entry->product)
+            {
+                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
+            }
+            else
+            if (stringId == entry->version)
+            {
+                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+            }
+            else
+            if (stringId == entry->serialNumber)
+            {
+                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+            }
+            else
+            if (stringId == entry->assetTag)
+            {
+                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+            }
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveIdentity(DmiIdentity id, u8 *address, u64 size)
+{
+    COMMON_LT((" | id = %u, address = 0x%p, size = %u", id, address, size));
 
     COMMON_ASSERT(address,  "address is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0, "size is zero",    NgosStatus::ASSERTION);
 
 
 
-    COMMON_TEST_ASSERT(sIdentities[(u64)identity] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sIdentities[(u64)id] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -599,7 +723,44 @@ NgosStatus DMI::saveIdentity(DmiIdentity identity, u8 *address, u64 size)
     COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, &brkAddress), NgosStatus::ASSERTION);
     memcpy(brkAddress, address, size);
 
-    sIdentities[(u64)identity] = (const char *)brkAddress;
+    sIdentities[(u64)id] = (const char *)brkAddress;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveUuid(DmiStoredUuid id, const DmiUuid &uuid)
+{
+    COMMON_LT((" | id = %u, uuid = {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", id, uuid.data1, uuid.data2, uuid.data3, uuid.data4, uuid.data5, uuid.data6[0], uuid.data6[1], uuid.data6[2], uuid.data6[3], uuid.data6[4], uuid.data6[5]));
+
+
+
+    COMMON_TEST_ASSERT(sUuids[(u64)id] == 0,  NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sizeof(DmiUuid) == 16, NgosStatus::ASSERTION);
+
+
+
+    u8 *brkAddress;
+
+    COMMON_ASSERT_EXECUTION(BRK::allocate(sizeof(DmiUuid), 1, &brkAddress), NgosStatus::ASSERTION);
+    ((u64 *)brkAddress)[0] = ((u64 *)&uuid)[0];
+    ((u64 *)brkAddress)[1] = ((u64 *)&uuid)[1];
+
+    sUuids[(u64)id] = (DmiUuid *)brkAddress;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveInteger(DmiStoredInteger id, u32 value)
+{
+    COMMON_LT((" | id = %u, value = %u", id, value));
+
+
+
+    sIntegers[(u64)id] = value;
 
 
 
