@@ -3,7 +3,6 @@
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/fpu/macros.h>
-#include <common/src/bits64/fpu/xfeatureflags.h>
 #include <common/src/bits64/fpu/xfeature/xfeatureavx512opmaskstate.h>
 #include <common/src/bits64/fpu/xfeature/xfeatureavx512zmmfrom0to15state.h>
 #include <common/src/bits64/fpu/xfeature/xfeatureavx512zmmfrom16to31state.h>
@@ -11,6 +10,7 @@
 #include <common/src/bits64/fpu/xfeature/xfeaturempxboundconfigandstatusregistersstate.h>
 #include <common/src/bits64/fpu/xfeature/xfeaturempxboundregistersstate.h>
 #include <common/src/bits64/fpu/xfeature/xfeaturepkrustate.h>
+#include <common/src/bits64/fpu/xfeatureflags.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>

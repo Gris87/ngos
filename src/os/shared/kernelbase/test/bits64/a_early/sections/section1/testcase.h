@@ -6,6 +6,7 @@
 #include <buildconfig.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/brk/brk.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/cpu/cpumask.h>
+#include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/dmi/dmi.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/e820/e820.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/bits64/other/ioremap/utils.h>
@@ -34,6 +35,7 @@ NgosStatus startTestSection1()
 
     CALL_TEST_CASES(section1, bits64_other_brk_brk);
     CALL_TEST_CASES(section1, bits64_other_cpu_cpumask);
+    CALL_TEST_CASES(section1, bits64_other_dmi_dmi);
     CALL_TEST_CASES(section1, bits64_other_e820_e820);
     CALL_TEST_CASES(section1, bits64_other_ioremap_ioremap);
     CALL_TEST_CASES(section1, bits64_other_ioremap_utils);

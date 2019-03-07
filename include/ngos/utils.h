@@ -17,7 +17,7 @@
 
 
 
-#define IS_POWER_OF_2(a) (((a) & ((a) - 1)) == 0)               // TEST: NO
+#define IS_POWER_OF_2(a) (!((a) & ((a) - 1)))                   // TEST: NO
 
 
 

@@ -51,11 +51,11 @@ void MdNewLineVerifier::verify(DocsWorkerThread *worker, const QString &path, co
             &&
             !lines.at(i + 1).trimmed().startsWith("* ")
             &&
+            !lines.at(i + 1).trimmed().startsWith("- ")
+            &&
             !lines.at(i + 1).startsWith("==")
             &&
             !lines.at(i + 1).startsWith("--")
-            &&
-            !lines.at(i + 1).startsWith("- [")
             &&
             !lines.at(i + 1).startsWith("| ")
            )

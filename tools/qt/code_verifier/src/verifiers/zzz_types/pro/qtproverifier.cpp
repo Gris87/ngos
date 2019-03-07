@@ -271,7 +271,7 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
         if (block != blockOriginal)
         {
-            worker->addWarning(path, startPos, "Files should be sorted or duplicates detected");
+            worker->addWarning(path, startPos, "Files should be sorted or duplicates need to remove");
         }
 
 

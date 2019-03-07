@@ -269,23 +269,23 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
     // Validation
     {
         COMMON_LVVV(("smbios->anchor                      = %.4s",   &smbios->anchor));
-        COMMON_LVVV(("smbios->entryPointStructureChecksum = %u",     smbios->entryPointStructureChecksum));
-        COMMON_LVVV(("smbios->entryPointLength            = %u",     smbios->entryPointLength));
-        COMMON_LVVV(("smbios->majorVersion                = %u",     smbios->majorVersion));
-        COMMON_LVVV(("smbios->minorVersion                = %u",     smbios->minorVersion));
-        COMMON_LVVV(("smbios->maximumStructureSize        = %u",     smbios->maximumStructureSize));
-        COMMON_LVVV(("smbios->entryPointRevision          = %u",     smbios->entryPointRevision));
-        COMMON_LVVV(("smbios->formattedArea[0]            = %u",     smbios->formattedArea[0]));
-        COMMON_LVVV(("smbios->formattedArea[1]            = %u",     smbios->formattedArea[1]));
-        COMMON_LVVV(("smbios->formattedArea[2]            = %u",     smbios->formattedArea[2]));
-        COMMON_LVVV(("smbios->formattedArea[3]            = %u",     smbios->formattedArea[3]));
-        COMMON_LVVV(("smbios->formattedArea[4]            = %u",     smbios->formattedArea[4]));
-        COMMON_LVVV(("smbios->intermediateAnchor          = %.5s",   smbios->intermediateAnchor));
-        COMMON_LVVV(("smbios->intermediateChecksum        = %u",     smbios->intermediateChecksum));
-        COMMON_LVVV(("smbios->structureTableLength        = %u",     smbios->structureTableLength));
-        COMMON_LVVV(("smbios->structureTableAddress       = 0x%p",   smbios->structureTableAddress));
-        COMMON_LVVV(("smbios->numberOfSmbiosStructures    = %u",     smbios->numberOfSmbiosStructures));
-        COMMON_LVVV(("smbios->bcdRevision                 = 0x%02X", smbios->bcdRevision));
+        COMMON_LVVV(("smbios->entryPointStructureChecksum = %u",      smbios->entryPointStructureChecksum));
+        COMMON_LVVV(("smbios->entryPointLength            = %u",      smbios->entryPointLength));
+        COMMON_LVVV(("smbios->majorVersion                = %u",      smbios->majorVersion));
+        COMMON_LVVV(("smbios->minorVersion                = %u",      smbios->minorVersion));
+        COMMON_LVVV(("smbios->maximumStructureSize        = %u",      smbios->maximumStructureSize));
+        COMMON_LVVV(("smbios->entryPointRevision          = %u",      smbios->entryPointRevision));
+        COMMON_LVVV(("smbios->formattedArea[0]            = %u",      smbios->formattedArea[0]));
+        COMMON_LVVV(("smbios->formattedArea[1]            = %u",      smbios->formattedArea[1]));
+        COMMON_LVVV(("smbios->formattedArea[2]            = %u",      smbios->formattedArea[2]));
+        COMMON_LVVV(("smbios->formattedArea[3]            = %u",      smbios->formattedArea[3]));
+        COMMON_LVVV(("smbios->formattedArea[4]            = %u",      smbios->formattedArea[4]));
+        COMMON_LVVV(("smbios->intermediateAnchor          = %.5s",    smbios->intermediateAnchor));
+        COMMON_LVVV(("smbios->intermediateChecksum        = %u",      smbios->intermediateChecksum));
+        COMMON_LVVV(("smbios->structureTableLength        = %u",      smbios->structureTableLength));
+        COMMON_LVVV(("smbios->structureTableAddress       = 0x%p",    smbios->structureTableAddress));
+        COMMON_LVVV(("smbios->numberOfSmbiosStructures    = %u",      smbios->numberOfSmbiosStructures));
+        COMMON_LVVV(("smbios->bcdRevision                 = 0x%02X",  smbios->bcdRevision));
 
 
 
@@ -770,7 +770,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
             {
                 for (i64 j = 0; j < entry->containedElementRecordLength; ++j)
                 {
-                    COMMON_LVVV(("#%-3d,-3d: %u", i, j, entry->containedElements[i * j]));
+                    COMMON_LVVV(("#%-3d -3d: %u", i, j, entry->containedElements[i * j]));
                 }
             }
 
@@ -981,7 +981,7 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
     sMemoryDevices[memoryId].handle = entry->header.handle;
 
-    if (entry->size == 0)   // Not installed
+    if (!entry->size)   // entry->size == 0 // Not installed
     {
         sMemoryDevices[memoryId].size = 0;
     }
@@ -1073,7 +1073,7 @@ NgosStatus DMI::saveIdentity(DmiIdentity id, u8 *address, u64 size)
 }
 
 NgosStatus DMI::saveUuid(DmiStoredUuid id, const DmiUuid &uuid)
-{
+{ // Ignore CppNgosTraceVerifier
     COMMON_LT((" | id = %u, uuid = {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", id, uuid.data1, uuid.data2, uuid.data3, uuid.data4, uuid.data5, uuid.data6[0], uuid.data6[1], uuid.data6[2], uuid.data6[3], uuid.data6[4], uuid.data6[5]));
 
 

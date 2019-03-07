@@ -156,6 +156,9 @@ main.cpp
 main.S
 majorLinkerVersion
 Makefile
+Makefiles
+MathZip
+inlining
 md
 minorLinkerVersion
 MSR

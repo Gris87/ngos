@@ -69,7 +69,7 @@ C++ headers optimizer:
 
 
 
-UsB Boot Maker:
+USB Boot Maker:
 
 - Implement tool
 

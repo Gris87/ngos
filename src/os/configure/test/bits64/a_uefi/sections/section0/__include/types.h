@@ -52,9 +52,9 @@
 #include <uefi/uefiloadedimageprotocol.h>
 #include <uefi/uefimemorydescriptor.h>
 #include <uefi/uefiopenprotocolinformationentry.h>
+#include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipciioprotocolaccess.h>
 #include <uefi/uefipciioprotocolconfigaccess.h>
-#include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipixelbitmask.h>
 #include <uefi/uefiruntimeservices.h>
 #include <uefi/uefisimpleinputinterface.h>
@@ -62,8 +62,8 @@
 #include <uefi/uefisimpletextoutputmode.h>
 #include <uefi/uefisystemtable.h>
 #include <uefi/uefitableheader.h>
-#include <uefi/uefitimecapabilicies.h>
 #include <uefi/uefitime.h>
+#include <uefi/uefitimecapabilicies.h>
 
 #include "test/bits64/a_uefi/testengine.h"
 

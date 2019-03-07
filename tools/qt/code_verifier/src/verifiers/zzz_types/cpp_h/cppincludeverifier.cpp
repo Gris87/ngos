@@ -247,7 +247,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                                 }
                                 else
                                 {
-                                    if (QFile::exists(parentFolder + '/' + includeFile))
+                                    if (!globalInclude && QFile::exists(parentFolder + '/' + includeFile))
                                     {
                                         includeType = INCLUDE_BLOCK_TYPE_PROJECT;
 
@@ -304,7 +304,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
                 if (block != blockOriginal)
                 {
-                    worker->addWarning(path, blockStarts.at(i), "Includes should be sorted or duplicates detected");
+                    worker->addWarning(path, blockStarts.at(i), "Includes should be sorted or duplicates need to remove");
                 }
             }
 
