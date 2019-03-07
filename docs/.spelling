@@ -131,6 +131,7 @@ imageSize
 initConsole
 initializeIdentityMaps
 initUnavailableMemoryAreas
+inlining
 installer.elf
 intel
 IRQ
@@ -158,7 +159,6 @@ majorLinkerVersion
 Makefile
 Makefiles
 MathZip
-inlining
 md
 minorLinkerVersion
 MSR
