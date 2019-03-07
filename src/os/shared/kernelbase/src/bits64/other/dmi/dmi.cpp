@@ -87,9 +87,36 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDevices:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)DmiIdentity::MAX; ++i)
+            for (i64 i = 0; i < (i64)sNumberOfMemoryDevices; ++i)
             {
-                COMMON_LVVV(("#%-3d: %u | %s | %s | %u", i, sMemoryDevices[i].handle, sMemoryDevices[i].device, sMemoryDevices[i].bank, sMemoryDevices[i].size));
+                const char *device;
+                const char *bank;
+
+
+
+                if (sMemoryDevices[i].device)
+                {
+                    device = sMemoryDevices[i].device;
+                }
+                else
+                {
+                    device = "null";
+                }
+
+
+
+                if (sMemoryDevices[i].bank)
+                {
+                    bank = sMemoryDevices[i].bank;
+                }
+                else
+                {
+                    bank = "null";
+                }
+
+
+
+                COMMON_LVVV(("#%-3d: %u | %s | %s | %u", i, sMemoryDevices[i].handle, device, bank, sMemoryDevices[i].size));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -142,6 +169,10 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sStructureTableAddress       == 0x000000003FBCB000, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sChassisType                 == 1,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sNumberOfMemoryDevices       == 1,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryDevices[0].handle     == 4352,               NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryDevices[0].device     != 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryDevices[0].bank       == 0,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryDevices[0].size       == 1073741824,         NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT((u64)DmiIdentity::MAX        == 18,                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]               != 0,                  NgosStatus::ASSERTION);
@@ -880,10 +911,6 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
 
 
-    static u64 memoryId;
-
-
-
     if (header->type != DmiEntryType::MEMORY_DEVICE)
     {
         return NgosStatus::OK;
@@ -946,7 +973,77 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
 
 
+    static u64 memoryId;
+
     COMMON_TEST_ASSERT(memoryId < sNumberOfMemoryDevices, NgosStatus::ASSERTION);
+
+
+
+    sMemoryDevices[memoryId].handle = entry->header.handle;
+
+    if (entry->size == 0)   // Not installed
+    {
+        sMemoryDevices[memoryId].size = 0;
+    }
+    else
+    if (entry->size == 0xFFFF)  // Uknown value
+    {
+        sMemoryDevices[memoryId].size = 0xFFFFFFFFFFFFFFFF;
+    }
+    else
+    if (entry->size & (1ULL << 15))  // If last bit is set then units is KB
+    {
+        sMemoryDevices[memoryId].size = (u64)(entry->size & 0x7FFF) << 10; // "<< 10" == "* 1024"
+    }
+    else
+    if (entry->size == 0x7FFF)  // Special case when size is more than 32 GB - 1 MB and we need to use extended size instead
+    {
+        sMemoryDevices[memoryId].size = (u64)entry->extendedSize << 20;
+    }
+    else
+    {
+        sMemoryDevices[memoryId].size = (u64)entry->size << 20;
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%d: %s", stringId, begin));
+
+
+
+            if (stringId == entry->deviceLocator)
+            {
+                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].device), NgosStatus::ASSERTION);
+            }
+            else
+            if (stringId == entry->bankLocator)
+            {
+                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].bank), NgosStatus::ASSERTION);
+            }
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
 
 
 
@@ -968,14 +1065,7 @@ NgosStatus DMI::saveIdentity(DmiIdentity id, u8 *address, u64 size)
 
     COMMON_TEST_ASSERT(sIdentities[(u64)id] == 0, NgosStatus::ASSERTION);
 
-
-
-    u8 *brkAddress;
-
-    COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, &brkAddress), NgosStatus::ASSERTION);
-    memcpy(brkAddress, address, size);
-
-    sIdentities[(u64)id] = (const char *)brkAddress;
+    COMMON_ASSERT_EXECUTION(getString(address, size, (u8 **)&sIdentities[(u64)id]), NgosStatus::ASSERTION);
 
 
 
@@ -1000,6 +1090,24 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const DmiUuid &uuid)
     ((u64 *)brkAddress)[1] = ((u64 *)&uuid)[1];
 
     sUuids[(u64)id] = (DmiUuid *)brkAddress;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::getString(u8 *address, u64 size, u8 **destination)
+{
+    COMMON_LT((" | address = 0x%p, size = %u, destination = 0x%p", address, size, destination));
+
+    COMMON_ASSERT(address,     "address is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,    "size is zero",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(destination, "destination is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, destination), NgosStatus::ASSERTION);
+    memcpy(*destination, address, size);
 
 
 

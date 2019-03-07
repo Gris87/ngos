@@ -44,6 +44,7 @@ private:
     static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header);
     static NgosStatus saveIdentity(DmiIdentity id, u8 *address, u64 size);
     static NgosStatus saveUuid(DmiStoredUuid id, const DmiUuid &uuid);
+    static NgosStatus getString(u8 *address, u64 size, u8 **destination);
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
     static u32              sVersion;
