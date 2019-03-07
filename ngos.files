@@ -606,6 +606,8 @@ src/os/shared/kernelbase/src/bits64/a_early/main/setupe820tables.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupe820tables.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupfirstcpu.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupfirstcpu.h
+src/os/shared/kernelbase/src/bits64/a_early/main/setuphypervisor.cpp
+src/os/shared/kernelbase/src/bits64/a_early/main/setuphypervisor.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupidthandlers.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/setupidthandlers.h
 src/os/shared/kernelbase/src/bits64/a_early/main/setupinittask.cpp
@@ -645,6 +647,11 @@ src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmisystementry.h
 src/os/shared/kernelbase/src/bits64/other/e820/e820.cpp
 src/os/shared/kernelbase/src/bits64/other/e820/e820.h
 src/os/shared/kernelbase/src/bits64/other/e820/e820table.h
+src/os/shared/kernelbase/src/bits64/other/hypervisor/hypervisor.cpp
+src/os/shared/kernelbase/src/bits64/other/hypervisor/hypervisor.h
+src/os/shared/kernelbase/src/bits64/other/hypervisor/hypervisortype.h
+src/os/shared/kernelbase/src/bits64/other/hypervisor/kvm/kvm.cpp
+src/os/shared/kernelbase/src/bits64/other/hypervisor/kvm/kvm.h
 src/os/shared/kernelbase/src/bits64/other/ioremap/fixmap.h
 src/os/shared/kernelbase/src/bits64/other/ioremap/ioremap.cpp
 src/os/shared/kernelbase/src/bits64/other/ioremap/ioremap.h

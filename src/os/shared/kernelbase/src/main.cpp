@@ -13,6 +13,7 @@
 #include <kernelbase/src/bits64/a_early/main/setupdmi.h>
 #include <kernelbase/src/bits64/a_early/main/setupe820tables.h>
 #include <kernelbase/src/bits64/a_early/main/setupfirstcpu.h>
+#include <kernelbase/src/bits64/a_early/main/setuphypervisor.h>
 #include <kernelbase/src/bits64/a_early/main/setupidthandlers.h>
 #include <kernelbase/src/bits64/a_early/main/setupinittask.h>
 #include <kernelbase/src/bits64/a_early/main/setupioremap.h>
@@ -118,6 +119,9 @@ void kernelMain(BootParams *params)
 
     EARLY_ASSERT_EXECUTION(setupDmi());
     EARLY_LI(("Setup DMI completed"));
+
+    EARLY_ASSERT_EXECUTION(setupHypervisor());
+    EARLY_LI(("Setup hypervisor completed"));
 
 
 

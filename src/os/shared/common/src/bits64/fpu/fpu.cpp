@@ -241,9 +241,9 @@ NgosStatus FPU::initXState()
 
 
 
-    u32 ignored;
     u32 eax;
     u32 edx;
+    u32 ignored;
 
     COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, 0, &eax, &ignored, &ignored, &edx), NgosStatus::ASSERTION);
     sXFeaturesMask = eax | ((u64)edx << 32);
