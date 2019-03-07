@@ -53,6 +53,7 @@ NEXTI_FILTERS=(
     -e "<_get_random_bytes>"
     -e "<printk>"
     -e "<scnprintf>"
+    -e "<vsnprintf>"
     -e "<print_filtered>"
     -e "<sort>"
 )

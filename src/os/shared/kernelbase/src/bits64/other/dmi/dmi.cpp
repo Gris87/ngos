@@ -116,7 +116,7 @@ NgosStatus DMI::init()
 
 
 
-                COMMON_LVVV(("#%-3d: %u | %s | %s | %u", i, sMemoryDevices[i].handle, device, bank, sMemoryDevices[i].size));
+                COMMON_LVVV(("#%-3d: 0x%04X | %s | %s | %u", i, sMemoryDevices[i].handle, device, bank, sMemoryDevices[i].size));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -169,7 +169,7 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sStructureTableAddress       == 0x000000003FBCB000, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sChassisType                 == 1,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sNumberOfMemoryDevices       == 1,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sMemoryDevices[0].handle     == 4352,               NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sMemoryDevices[0].handle     == 0x1100,             NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sMemoryDevices[0].device     != 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sMemoryDevices[0].bank       == 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sMemoryDevices[0].size       == 1073741824,         NgosStatus::ASSERTION);
@@ -350,9 +350,9 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
 
         COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));
 
-        COMMON_LVVV(("dmiEntryHeader->type   = %u", dmiEntryHeader->type));
-        COMMON_LVVV(("dmiEntryHeader->length = %u", dmiEntryHeader->length));
-        COMMON_LVVV(("dmiEntryHeader->handle = %u", dmiEntryHeader->handle));
+        COMMON_LVVV(("dmiEntryHeader->type   = %u",     dmiEntryHeader->type));
+        COMMON_LVVV(("dmiEntryHeader->length = %u",     dmiEntryHeader->length));
+        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X", dmiEntryHeader->handle));
 
 
 
@@ -643,7 +643,7 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
         COMMON_LVVV(("entry->assetTag                       = %u",     entry->assetTag));
         COMMON_LVVV(("entry->featureFlags                   = 0x%02X", entry->featureFlags));
         COMMON_LVVV(("entry->locationInChassis              = %u",     entry->locationInChassis));
-        COMMON_LVVV(("entry->chassisHandle                  = %u",     entry->chassisHandle));
+        COMMON_LVVV(("entry->chassisHandle                  = 0x%04X", entry->chassisHandle));
         COMMON_LVVV(("entry->boardType                      = %u",     entry->boardType));
         COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",     entry->numberOfContainedObjectHandles));
 
@@ -654,7 +654,7 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
             for (i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
             {
-                COMMON_LVVV(("#%-3d: %u", i, entry->containedObjectHandles[i]));
+                COMMON_LVVV(("#%-3d: 0x%04X", i, entry->containedObjectHandles[i]));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -663,17 +663,17 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
 
 
-        COMMON_TEST_ASSERT(entry->manufacturer                   == 1,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->product                        == 2,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->version                        == 3,    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->serialNumber                == 4,    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->assetTag                    == 5,    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->featureFlags                   == 0x01, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->locationInChassis              == 0,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->chassisHandle                  == 768,  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->boardType                      == 10,   NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,    NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->manufacturer                   == 1,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->product                        == 2,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->version                        == 3,      NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->serialNumber                == 4,      NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->assetTag                    == 5,      NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->featureFlags                   == 0x01,   NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->locationInChassis              == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->chassisHandle                  == 0x0300, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->boardType                      == 10,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,      NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,      NgosStatus::ASSERTION); // Commented due to value variation
     }
 
 
@@ -922,53 +922,53 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
     // Validation
     {
-        COMMON_LVVV(("entry->physicalMemoryArrayHandle    = %u", entry->physicalMemoryArrayHandle));
-        COMMON_LVVV(("entry->memoryErrorInformationHandle = %u", entry->memoryErrorInformationHandle));
-        COMMON_LVVV(("entry->totalWidth                   = %u", entry->totalWidth));
-        COMMON_LVVV(("entry->dataWidth                    = %u", entry->dataWidth));
-        COMMON_LVVV(("entry->size                         = %u", entry->size));
-        COMMON_LVVV(("entry->formFactor                   = %u", entry->formFactor));
-        COMMON_LVVV(("entry->deviceSet                    = %u", entry->deviceSet));
-        COMMON_LVVV(("entry->deviceLocator                = %u", entry->deviceLocator));
-        COMMON_LVVV(("entry->bankLocator                  = %u", entry->bankLocator));
-        COMMON_LVVV(("entry->memoryType                   = %u", entry->memoryType));
-        COMMON_LVVV(("entry->typeDetail                   = %u", entry->typeDetail));
-        COMMON_LVVV(("entry->speed                        = %u", entry->speed));
-        COMMON_LVVV(("entry->manufacturer                 = %u", entry->manufacturer));
-        COMMON_LVVV(("entry->serialNumber                 = %u", entry->serialNumber));
-        COMMON_LVVV(("entry->assetTag                     = %u", entry->assetTag));
-        COMMON_LVVV(("entry->partNumber                   = %u", entry->partNumber));
-        COMMON_LVVV(("entry->attributes                   = %u", entry->attributes));
-        COMMON_LVVV(("entry->extendedSize                 = %u", entry->extendedSize));
-        COMMON_LVVV(("entry->configuredMemorySpeed        = %u", entry->configuredMemorySpeed));
-        COMMON_LVVV(("entry->minimumVoltage               = %u", entry->minimumVoltage));
-        COMMON_LVVV(("entry->maximumVoltage               = %u", entry->maximumVoltage));
-        COMMON_LVVV(("entry->configuredVoltage            = %u", entry->configuredVoltage));
+        COMMON_LVVV(("entry->physicalMemoryArrayHandle    = 0x%04X", entry->physicalMemoryArrayHandle));
+        COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));
+        COMMON_LVVV(("entry->totalWidth                   = %u",     entry->totalWidth));
+        COMMON_LVVV(("entry->dataWidth                    = %u",     entry->dataWidth));
+        COMMON_LVVV(("entry->size                         = %u",     entry->size));
+        COMMON_LVVV(("entry->formFactor                   = %u",     entry->formFactor));
+        COMMON_LVVV(("entry->deviceSet                    = %u",     entry->deviceSet));
+        COMMON_LVVV(("entry->deviceLocator                = %u",     entry->deviceLocator));
+        COMMON_LVVV(("entry->bankLocator                  = %u",     entry->bankLocator));
+        COMMON_LVVV(("entry->memoryType                   = %u",     entry->memoryType));
+        COMMON_LVVV(("entry->typeDetail                   = %u",     entry->typeDetail));
+        COMMON_LVVV(("entry->speed                        = %u",     entry->speed));
+        COMMON_LVVV(("entry->manufacturer                 = %u",     entry->manufacturer));
+        COMMON_LVVV(("entry->serialNumber                 = %u",     entry->serialNumber));
+        COMMON_LVVV(("entry->assetTag                     = %u",     entry->assetTag));
+        COMMON_LVVV(("entry->partNumber                   = %u",     entry->partNumber));
+        COMMON_LVVV(("entry->attributes                   = %u",     entry->attributes));
+        COMMON_LVVV(("entry->extendedSize                 = %u",     entry->extendedSize));
+        COMMON_LVVV(("entry->configuredMemorySpeed        = %u",     entry->configuredMemorySpeed));
+        COMMON_LVVV(("entry->minimumVoltage               = %u",     entry->minimumVoltage));
+        COMMON_LVVV(("entry->maximumVoltage               = %u",     entry->maximumVoltage));
+        COMMON_LVVV(("entry->configuredVoltage            = %u",     entry->configuredVoltage));
 
 
 
-        COMMON_TEST_ASSERT(entry->physicalMemoryArrayHandle    == 4096,  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 65534, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->totalWidth                   == 65535, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->dataWidth                    == 65535, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->size                         == 1024,  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->formFactor                   == 9,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->deviceSet                    == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->deviceLocator                == 1,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->bankLocator                  == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->memoryType                   == 7,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->typeDetail                   == 2,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->speed                        == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->manufacturer                 == 2,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->serialNumber                 == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->assetTag                     == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->partNumber                   == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->attributes                   == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->extendedSize                 == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->configuredMemorySpeed        == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->minimumVoltage               == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->maximumVoltage               == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->configuredVoltage            == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->physicalMemoryArrayHandle    == 0x1000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->totalWidth                   == 65535,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->dataWidth                    == 65535,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->size                         == 1024,   NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->formFactor                   == 9,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->deviceSet                    == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->deviceLocator                == 1,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->bankLocator                  == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->memoryType                   == 7,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->typeDetail                   == 2,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->speed                        == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->manufacturer                 == 2,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->serialNumber                 == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->assetTag                     == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->partNumber                   == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->attributes                   == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->extendedSize                 == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->configuredMemorySpeed        == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->minimumVoltage               == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->maximumVoltage               == 0,      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->configuredVoltage            == 0,      NgosStatus::ASSERTION);
     }
 
 
