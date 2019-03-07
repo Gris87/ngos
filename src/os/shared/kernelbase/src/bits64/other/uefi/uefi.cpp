@@ -667,6 +667,24 @@ NgosStatus UEFI::initSystemTable()
     return NgosStatus::OK;
 }
 
+UefiSmbios3ConfigurationTable* UEFI::getSmbios3Config()
+{
+    COMMON_LT((""));
+
+
+
+    return sSmbios3Config;
+}
+
+UefiSmbiosConfigurationTable* UEFI::getSmbiosConfig()
+{
+    COMMON_LT((""));
+
+
+
+    return sSmbiosConfig;
+}
+
 NgosStatus UEFI::initConfigurationTables()
 {
     COMMON_LT((""));

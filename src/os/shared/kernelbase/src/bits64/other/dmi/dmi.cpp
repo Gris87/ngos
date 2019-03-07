@@ -28,8 +28,8 @@ NgosStatus DMI::init()
 
 
 
-    UefiSmbios3ConfigurationTable *smbios3 = UEFI::sSmbios3Config;
-    UefiSmbiosConfigurationTable  *smbios  = UEFI::sSmbiosConfig;
+    UefiSmbios3ConfigurationTable *smbios3 = UEFI::getSmbios3Config();
+    UefiSmbiosConfigurationTable  *smbios  = UEFI::getSmbiosConfig();
 
 
 

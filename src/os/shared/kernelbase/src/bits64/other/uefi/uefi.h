@@ -33,6 +33,9 @@ public:
     static NgosStatus initMemoryMap(); // TEST: NO
     static NgosStatus initSystemTable(); // TEST: NO
 
+    static UefiSmbios3ConfigurationTable* getSmbios3Config(); // TEST: NO
+    static UefiSmbiosConfigurationTable* getSmbiosConfig(); // TEST: NO
+
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else

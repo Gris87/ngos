@@ -482,6 +482,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
             StreamFooter *streamFooter = (StreamFooter *)currentPointer;
+            AVOID_UNUSED(streamFooter);
 
 
 
