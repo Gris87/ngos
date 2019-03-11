@@ -15,3 +15,4 @@ Please check them all.
 * [Build config maker](6.%20Build%20config%20maker/README.md)
 * [Build config GUI](7.%20Build%20config%20GUI/README.md)
 * [GDB debug](8.%20GDB%20debug/README.md)
+* [USB boot maker](9.%20USB%20boot%20maker/README.md)

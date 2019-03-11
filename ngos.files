@@ -42,6 +42,7 @@ docs/0. Intro/7. Tools/5. Docs verifier/README.md
 docs/0. Intro/7. Tools/6. Build config maker/README.md
 docs/0. Intro/7. Tools/7. Build config GUI/README.md
 docs/0. Intro/7. Tools/8. GDB debug/README.md
+docs/0. Intro/7. Tools/9. USB boot maker/README.md
 docs/0. Intro/7. Tools/README.md
 docs/0. Intro/8. Scripts/README.md
 docs/0. Intro/README.md
@@ -559,7 +560,6 @@ src/os/shared/common/src/bits64/fpu/fsavestate.h
 src/os/shared/common/src/bits64/fpu/fxsavestate.h
 src/os/shared/common/src/bits64/fpu/macros.h
 src/os/shared/common/src/bits64/fpu/xfeature.h
-src/os/shared/common/src/bits64/fpu/xfeatureflags.h
 src/os/shared/common/src/bits64/fpu/xfeature/extendedregisters.h
 src/os/shared/common/src/bits64/fpu/xfeature/xfeatureavx512opmaskstate.h
 src/os/shared/common/src/bits64/fpu/xfeature/xfeatureavx512zmmfrom0to15state.h
@@ -568,6 +568,7 @@ src/os/shared/common/src/bits64/fpu/xfeature/xfeatureavxstate.h
 src/os/shared/common/src/bits64/fpu/xfeature/xfeaturempxboundconfigandstatusregistersstate.h
 src/os/shared/common/src/bits64/fpu/xfeature/xfeaturempxboundregistersstate.h
 src/os/shared/common/src/bits64/fpu/xfeature/xfeaturepkrustate.h
+src/os/shared/common/src/bits64/fpu/xfeatureflags.h
 src/os/shared/common/src/bits64/fpu/xsavestate.h
 src/os/shared/common/src/bits64/fpu/xstateheader.h
 src/os/shared/common/src/bits64/log/assert.h
@@ -1042,6 +1043,23 @@ tools/qt/test_verifier/src/threads/testverifythread.h
 tools/qt/test_verifier/src/threads/testworkerthread.cpp
 tools/qt/test_verifier/src/threads/testworkerthread.h
 tools/qt/test_verifier/test_verifier.pro
+tools/qt/usb_boot_maker/.gitignore
+tools/qt/usb_boot_maker/assets/images/about.png
+tools/qt/usb_boot_maker/assets/images/exit.png
+tools/qt/usb_boot_maker/assets/images/icon.ico
+tools/qt/usb_boot_maker/assets/images/logo.png
+tools/qt/usb_boot_maker/README.md
+tools/qt/usb_boot_maker/Resources.qrc
+tools/qt/usb_boot_maker/Resources.rc
+tools/qt/usb_boot_maker/Screenshot.png
+tools/qt/usb_boot_maker/src/main.cpp
+tools/qt/usb_boot_maker/src/main/aboutdialog.cpp
+tools/qt/usb_boot_maker/src/main/aboutdialog.h
+tools/qt/usb_boot_maker/src/main/aboutdialog.ui
+tools/qt/usb_boot_maker/src/main/mainwindow.cpp
+tools/qt/usb_boot_maker/src/main/mainwindow.h
+tools/qt/usb_boot_maker/src/main/mainwindow.ui
+tools/qt/usb_boot_maker/usb_boot_maker.pro
 tools/tracers/assets/linux/.config
 tools/tracers/assets/linux/ngos_tracer.patch
 tools/tracers/assets/win10/EFI/Boot/bootx64.efi
