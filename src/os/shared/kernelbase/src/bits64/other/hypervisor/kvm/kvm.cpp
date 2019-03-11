@@ -3,6 +3,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/cpu/cpu.h>
+#include <kernelbase/src/bits64/other/hypervisor/kvm/clock/kvmclock.h>
 
 
 
@@ -17,7 +18,7 @@
 
 
 
-u32 KVM::sBaseId;
+u32 KVM::sFeatures;
 
 
 
@@ -66,6 +67,15 @@ NgosStatus KVM::init()
     return NgosStatus::NOT_FOUND;
 }
 
+bool KVM::hasFeature(KvmFeature feature)
+{
+    COMMON_LT((" | feature = %u", feature));
+
+
+
+    return sFeatures & (1ULL << (u8)feature);
+}
+
 NgosStatus KVM::initPlatform(u32 id)
 {
     COMMON_LT((" | id = 0x%08X", id));
@@ -74,17 +84,20 @@ NgosStatus KVM::initPlatform(u32 id)
 
 
 
-    sBaseId = id;
+    u32 ignored;
+
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(id | 0x01, 0, &sFeatures, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(KvmClock::init(),                                                   NgosStatus::ASSERTION);
 
 
 
     // Validation
     {
-        COMMON_LVVV(("sBaseId = 0x%08X", sBaseId));
+        COMMON_LVVV(("sFeatures = 0x%08X", sFeatures));
 
 
 
-        COMMON_TEST_ASSERT(sBaseId == 0x40000000, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sFeatures == 0x0100007B, NgosStatus::ASSERTION);
     }
 
 
