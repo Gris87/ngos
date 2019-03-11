@@ -45,6 +45,44 @@ NgosStatus KvmClock::init()
 
     // Validation
     {
+        // -----------------------------------------------------------------------------------------------
+        // Check CpuHotplug
+        // -----------------------------------------------------------------------------------------------
+
+
+
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+        {
+            COMMON_LVVV(("CpuHotplug::sSteps:"));
+            COMMON_LVVV(("-------------------------------------"));
+
+            for (i64 i = 0; i < (i64)CpuHotplugState::MAX; ++i)
+            {
+                if (CpuHotplug::sSteps[i].name)
+                {
+                    COMMON_LVVV(("#%-3d: %10s | 0x%p | 0x%p | %s", i, CpuHotplug::sSteps[i].name, CpuHotplug::sSteps[i].upAction, CpuHotplug::sSteps[i].downAction, CpuHotplug::sSteps[i].multipleInstances ? "multiple" : "single"));
+                }
+            }
+
+            COMMON_LVVV(("-------------------------------------"));
+        }
+#endif
+
+
+
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].name              != 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].upAction          == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].downAction        == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].multipleInstances == false, NgosStatus::ASSERTION);
+
+
+
+        // -----------------------------------------------------------------------------------------------
+        // Check KvmClock
+        // -----------------------------------------------------------------------------------------------
+
+
+
         COMMON_LVVV(("sWallClockMsr  = 0x%08X", sWallClockMsr));
         COMMON_LVVV(("sSystemTimeMsr = 0x%08X", sSystemTimeMsr));
 
