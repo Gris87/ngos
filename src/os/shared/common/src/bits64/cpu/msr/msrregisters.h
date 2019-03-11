@@ -8,8 +8,8 @@
 #define MSR_IA32_MICROCODE_REV              0x0000008B // Microcode revision
 #define MSR_IA32_ARCH_CAPABILITIES          0x0000010A // Architecture capabilities
 #define MSR_IA32_MISC_ENABLE                0x000001A0 // Misc enable flags
-#define MSR_KVM_CLOCKSOURCE2_WALL_CLOCK     0x4B564D00 // KVM clock 1 wall clock
-#define MSR_KVM_CLOCKSOURCE2_SYSTEM_TIME    0x4B564D01 // KVM clock 1 system time
+#define MSR_KVM_CLOCKSOURCE2_WALL_CLOCK     0x4B564D00 // KVM clock 2 wall clock
+#define MSR_KVM_CLOCKSOURCE2_SYSTEM_TIME    0x4B564D01 // KVM clock 2 system time
 #define MSR_EFER                            0xC0000080 // Extended Feature Enable Register
 #define MSR_FS_BASE                         0xC0000100 // 64 bit FS base
 #define MSR_GS_BASE                         0xC0000101 // 64 bit GS base
