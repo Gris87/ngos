@@ -191,9 +191,17 @@ echo ""
 
 
 
-cd ../../tools/vm
-./start_vm.sh qemu none ${OS_NAME} > ${TEMP_LOG} 2>&1 &
-cd ${WORKING_DIR}/
+BREAKPOINT=`cat ${LAST_BREAKPOINT_FILE} 2> /dev/null`
+
+if [ `echo "${BREAKPOINT}" | grep 0xffffffff8` != "" ]; then
+    cd ../../tools/vm
+    ./start_vm.sh qemu-kvm none ${OS_NAME} > ${TEMP_LOG} 2>&1 &
+    cd ${WORKING_DIR}/
+else
+    cd ../../tools/vm
+    ./start_vm.sh qemu none ${OS_NAME} > ${TEMP_LOG} 2>&1 &
+    cd ${WORKING_DIR}/
+fi
 
 
 
@@ -239,9 +247,28 @@ execute_gdb_command "add-symbol-file-all ${VM_LINUX_ELF} -0xFFFFFFFF81000000+${R
 
 
 
-BREAKPOINT=`cat ${LAST_BREAKPOINT_FILE} 2> /dev/null`
-
 if [ "${BREAKPOINT}" != "" ]; then
+    if [ `echo "${BREAKPOINT}" | grep 0xffffffff8` != "" ]; then
+        execute_gdb_command "tbreak *0x3ff93288" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *0x39e6a4f0" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *0x39e6a57e" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *0x1400200" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *0x14002e7" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *0x35224c0" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *0x3522501" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *${RANDOM_PHYSICAL_ADDRESS}" -v
+        execute_gdb_command "continue" -v
+        execute_gdb_command "tbreak *${RANDOM_PHYSICAL_ADDRESS}+0x5b" -v
+        execute_gdb_command "continue" -v
+    fi
+
     execute_gdb_command "tbreak *${BREAKPOINT}" -v
     execute_gdb_command "continue" -v
 
