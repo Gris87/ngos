@@ -3,6 +3,7 @@
 #include <common/src/bits64/cpu/msr/msrregisters.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplug.h>
 #include <kernelbase/src/bits64/other/hypervisor/kvm/kvm.h>
 
 
@@ -35,6 +36,10 @@ NgosStatus KvmClock::init()
 
         return NgosStatus::FAILED;
     }
+
+
+
+    COMMON_ASSERT_EXECUTION(CpuHotplug::setupState(CpuHotplugState::BP_PREPARE_DYNAMIC, "KvmClock::init", 0, 0, false), NgosStatus::ASSERTION);
 
 
 

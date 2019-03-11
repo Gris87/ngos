@@ -629,6 +629,10 @@ src/os/shared/kernelbase/src/bits64/other/brk/brk.cpp
 src/os/shared/kernelbase/src/bits64/other/brk/brk.h
 src/os/shared/kernelbase/src/bits64/other/cpu/cpumask.cpp
 src/os/shared/kernelbase/src/bits64/other/cpu/cpumask.h
+src/os/shared/kernelbase/src/bits64/other/cpu/hotplug/cpuhotplug.cpp
+src/os/shared/kernelbase/src/bits64/other/cpu/hotplug/cpuhotplug.h
+src/os/shared/kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstate.h
+src/os/shared/kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstep.h
 src/os/shared/kernelbase/src/bits64/other/cpu/percpu.cpp
 src/os/shared/kernelbase/src/bits64/other/cpu/percpu.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmi.cpp
