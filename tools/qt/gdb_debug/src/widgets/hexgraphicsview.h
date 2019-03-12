@@ -44,6 +44,9 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override; // TEST: NO
     void leaveEvent(QEvent *event) override; // TEST: NO
 
+private slots:
+    void verticalScrollBarValueChanged(qint32 position); // TEST: NO
+
 private:
     GdbProcess                        *mGdbProcess;
     QByteArray                         mBytes;
@@ -66,9 +69,6 @@ private:
     qint64                             mBootParamsEnd;
     qint64                             mKernelStart;
     qint64                             mKernelEnd;
-
-private slots:
-    void verticalScrollBarValueChanged(qint32 position); // TEST: NO
 
 signals:
     void byteHovered(qint64 position); // TEST: NO
