@@ -50,3 +50,7 @@ HEADERS += \
 FORMS += \
     src/main/aboutdialog.ui \
     src/main/mainwindow.ui
+
+TRANSLATIONS += \
+    assets/translations/language_en.ts \
+    assets/translations/language_ru.ts

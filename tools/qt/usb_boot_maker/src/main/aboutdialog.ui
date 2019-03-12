@@ -60,7 +60,7 @@
         </font>
        </property>
        <property name="text">
-        <string>USB Boot Maker</string>
+        <string notr="true">USB Boot Maker</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
