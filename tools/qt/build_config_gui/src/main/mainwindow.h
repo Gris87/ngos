@@ -46,15 +46,15 @@ private slots:
     void parameterDetailsUpdated(const QString &details); // TEST: NO
 
 private:
-    Ui::MainWindow                    *ui;
-    QHash<QString, OptionInfo>         mOptions;
-    QHash<QString, ParameterWidget *>  mParameters;
-
     void parseBuildConfigFile(const QStringList &lines); // TEST: NO
     void buildParameters(const QHash<QString, QHash<QString, QString>> &parameters, const QStringList &parametersIds); // TEST: NO
 
     void saveWindowState(); // TEST: NO
     void loadWindowState(); // TEST: NO
+
+    Ui::MainWindow                    *ui;
+    QHash<QString, OptionInfo>         mOptions;
+    QHash<QString, ParameterWidget *>  mParameters;
 };
 
 

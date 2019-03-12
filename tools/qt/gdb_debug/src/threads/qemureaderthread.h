@@ -22,12 +22,12 @@ protected:
     void run() override; // TEST: NO
 
 private:
-    bool         mIsRunning;
-    QemuProcess *mQemuProcess;
-
     void parseBootParamsAllocated(const QString &line); // TEST: NO
     void parseKernelAllocated(const QString &line); // TEST: NO
     void parseKernelRelocated(const QString &line); // TEST: NO
+
+    bool         mIsRunning;
+    QemuProcess *mQemuProcess;
 
 signals:
     void bootParamsAllocated(quint64 address, quint64 size); // TEST: NO

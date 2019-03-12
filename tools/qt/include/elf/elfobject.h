@@ -31,6 +31,8 @@ public:
     ElfSymbol* getSymbol(QString name); // TEST: NO
 
 private:
+    bool verifyHeader(); // TEST: NO
+
     QByteArray                                    mBytes;
     ElfHeader                                    *mHeader;
     QList<ElfProgramHeaderTableEntry *>           mProgramHeaderTableEntries;
@@ -39,8 +41,6 @@ private:
     quint64                                       mMemorySize;
     QHash<QString, ElfSectionHeaderTableEntry *>  mNameToSectionMap;
     QHash<QString, ElfSymbol *>                   mNameToSymbolMap;
-
-    bool verifyHeader(); // TEST: NO
 };
 
 

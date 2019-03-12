@@ -76,27 +76,6 @@ private slots:
     void waitForBreakThreadFinished(); // TEST: NO
 
 private:
-    Ui::MainWindow          *ui;
-    bool                     mIsExecuting;
-    QTimer                   mWaitingTimer;
-    RestartThread           *mRestartThread;
-    QemuProcess             *mQemuProcess;
-    GdbProcess              *mGdbProcess;
-    QemuReaderThread        *mQemuReaderThread;
-    StartThread             *mStartThread;
-    StopThread              *mStopThread;
-    StepThread              *mStepThread;
-    InterpretThread         *mInterpretThread;
-    RegistersThread         *mRegistersThread;
-    DumpMemoryThread        *mDumpMemoryThread;
-    AddBreakpointThread     *mAddBreakpointThread;
-    DeleteBreakpointThread  *mDeleteBreakpointThread;
-    WaitForBreakThread      *mWaitForBreakThread;
-    qint64                   mDataInspectorAssemblerPosition;
-    qint64                   mDataInspectorPosition;
-    qint64                   mDataInspectorScrollBarValue;
-    QHash<QString, quint64>  mBreakpointsMap;
-
     void stopAllThreads(); // TEST: NO
     void stopRestartThread(); // TEST: NO
     void stopQemuReaderThread(); // TEST: NO
@@ -123,6 +102,27 @@ private:
 
     void saveWindowState(); // TEST: NO
     void loadWindowState(); // TEST: NO
+
+    Ui::MainWindow          *ui;
+    bool                     mIsExecuting;
+    QTimer                   mWaitingTimer;
+    RestartThread           *mRestartThread;
+    QemuProcess             *mQemuProcess;
+    GdbProcess              *mGdbProcess;
+    QemuReaderThread        *mQemuReaderThread;
+    StartThread             *mStartThread;
+    StopThread              *mStopThread;
+    StepThread              *mStepThread;
+    InterpretThread         *mInterpretThread;
+    RegistersThread         *mRegistersThread;
+    DumpMemoryThread        *mDumpMemoryThread;
+    AddBreakpointThread     *mAddBreakpointThread;
+    DeleteBreakpointThread  *mDeleteBreakpointThread;
+    WaitForBreakThread      *mWaitForBreakThread;
+    qint64                   mDataInspectorAssemblerPosition;
+    qint64                   mDataInspectorPosition;
+    qint64                   mDataInspectorScrollBarValue;
+    QHash<QString, quint64>  mBreakpointsMap;
 };
 
 
