@@ -121,7 +121,12 @@
     <property name="title">
      <string>Settings</string>
     </property>
-    <addaction name="actionLanguage"/>
+    <widget class="QMenu" name="menuLanguage">
+     <property name="title">
+      <string>Language</string>
+     </property>
+    </widget>
+    <addaction name="menuLanguage"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -146,11 +151,6 @@
    </property>
    <property name="shortcut">
     <string notr="true">Alt+X</string>
-   </property>
-  </action>
-  <action name="actionLanguage">
-   <property name="text">
-    <string>Language</string>
    </property>
   </action>
   <action name="actionAbout">

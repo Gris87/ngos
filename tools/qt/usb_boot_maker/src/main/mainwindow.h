@@ -5,6 +5,8 @@
 
 #include <QMainWindow>
 
+#include <QTranslator>
+
 
 
 namespace Ui
@@ -26,11 +28,17 @@ private slots:
     void on_actionExit_triggered(); // TEST: NO
     void on_actionAbout_triggered(); // TEST: NO
 
+    void languageToggled(bool checked); // TEST: NO
+
 private:
+    void prepareLanguages(); // TEST: NO
     void saveWindowState(); // TEST: NO
     void loadWindowState(); // TEST: NO
 
-    Ui::MainWindow *ui;
+    Ui::MainWindow            *ui;
+    QTranslator               *mTranslator;
+    QString                    mLanguage;
+    QHash<QString, QAction *>  mLanguageActions;
 };
 
 
