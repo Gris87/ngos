@@ -690,7 +690,7 @@
   </widget>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../../../build_config_gui/Resources.qrc">
+    <iconset resource="../../Resources.qrc">
      <normaloff>:/assets/images/exit.png</normaloff>:/assets/images/exit.png</iconset>
    </property>
    <property name="text">
@@ -774,7 +774,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="../../../build_config_gui/Resources.qrc">
+    <iconset resource="../../Resources.qrc">
      <normaloff>:/assets/images/about.png</normaloff>:/assets/images/about.png</iconset>
    </property>
    <property name="text">
@@ -809,7 +809,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../build_config_gui/Resources.qrc"/>
   <include location="../../Resources.qrc"/>
  </resources>
  <connections/>

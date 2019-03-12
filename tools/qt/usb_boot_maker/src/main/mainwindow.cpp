@@ -3,6 +3,8 @@
 
 #include <QSettings>
 
+#include "src/main/aboutdialog.h"
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -37,4 +39,15 @@ void MainWindow::loadWindowState()
     restoreGeometry(settings.value("MainWindow/geometry").toByteArray());
     restoreState(   settings.value("MainWindow/windowState").toByteArray());
     // Ignore CppAlignmentVerifier [END]
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    AboutDialog dialog(this);
+    dialog.exec();
 }

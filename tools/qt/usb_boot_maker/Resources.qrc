@@ -4,5 +4,6 @@
         <file>assets/images/exit.png</file>
         <file>assets/images/icon.ico</file>
         <file>assets/images/logo.png</file>
+        <file>assets/images/start.png</file>
     </qresource>
 </RCC>
