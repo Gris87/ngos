@@ -41,7 +41,9 @@ UI_DIR      = build/gen
 SOURCES += \
     src/main.cpp \
     src/main/aboutdialog.cpp \
-    src/main/mainwindow.cpp
+    src/main/mainwindow.cpp \
+    src/main/mainwindow_win.cpp \
+    src/main/mainwindow_linux.cpp
 
 HEADERS += \
     src/main/aboutdialog.h \

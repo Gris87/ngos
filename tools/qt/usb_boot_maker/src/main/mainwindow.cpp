@@ -15,10 +15,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+
+
     mTranslator = new QTranslator(this);
     prepareLanguages();
 
     loadWindowState();
+
+
+
+    updateUsbDevices();
 }
 
 MainWindow::~MainWindow()

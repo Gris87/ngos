@@ -1048,6 +1048,11 @@ tools/qt/usb_boot_maker/assets/images/about.png
 tools/qt/usb_boot_maker/assets/images/exit.png
 tools/qt/usb_boot_maker/assets/images/icon.ico
 tools/qt/usb_boot_maker/assets/images/logo.png
+tools/qt/usb_boot_maker/assets/images/start.png
+tools/qt/usb_boot_maker/assets/translations/language_en.qm
+tools/qt/usb_boot_maker/assets/translations/language_en.ts
+tools/qt/usb_boot_maker/assets/translations/language_ru.qm
+tools/qt/usb_boot_maker/assets/translations/language_ru.ts
 tools/qt/usb_boot_maker/README.md
 tools/qt/usb_boot_maker/Resources.qrc
 tools/qt/usb_boot_maker/Resources.rc
@@ -1059,6 +1064,8 @@ tools/qt/usb_boot_maker/src/main/aboutdialog.ui
 tools/qt/usb_boot_maker/src/main/mainwindow.cpp
 tools/qt/usb_boot_maker/src/main/mainwindow.h
 tools/qt/usb_boot_maker/src/main/mainwindow.ui
+tools/qt/usb_boot_maker/src/main/mainwindow_linux.cpp
+tools/qt/usb_boot_maker/src/main/mainwindow_win.cpp
 tools/qt/usb_boot_maker/usb_boot_maker.pro
 tools/tracers/assets/linux/.config
 tools/tracers/assets/linux/ngos_tracer.patch
