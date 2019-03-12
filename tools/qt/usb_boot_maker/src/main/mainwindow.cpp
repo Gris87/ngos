@@ -43,7 +43,11 @@ void MainWindow::languageToggled(bool checked)
 {
     if (checked)
     {
-        mLanguage = ((QAction *)sender())->data().toString();
+        QAction *action = (QAction *)sender();
+
+
+
+        mLanguage = action->data().toString();
 
         qDebug() << "Switching to language:" << mLanguage;
 
@@ -53,12 +57,18 @@ void MainWindow::languageToggled(bool checked)
         QApplication::installTranslator(mTranslator);
 
         ui->retranslateUi(this);
+
+
+
+        addLog(tr("Language switched to %1").arg(action->text()));
     }
 }
 
 void MainWindow::prepareLanguages()
 {
     QActionGroup *group = new QActionGroup(this);
+
+
 
     QStringList languages = QDir(":/assets/translations").entryList();
 
@@ -107,6 +117,11 @@ void MainWindow::prepareLanguages()
 
         mLanguageActions.insert(language, languageItem);
     }
+}
+
+void MainWindow::addLog(const QString &text)
+{
+    ui->logTextEdit->append(text);
 }
 
 void MainWindow::saveWindowState()

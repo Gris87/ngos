@@ -32,6 +32,7 @@ private slots:
 
 private:
     void prepareLanguages(); // TEST: NO
+    void addLog(const QString &text); // TEST: NO
     void saveWindowState(); // TEST: NO
     void loadWindowState(); // TEST: NO
 

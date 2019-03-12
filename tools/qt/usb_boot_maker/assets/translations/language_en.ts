@@ -37,22 +37,22 @@
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="128"/>
+        <location filename="../../src/main/mainwindow.ui" line="133"/>
         <source>Help</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="142"/>
+        <location filename="../../src/main/mainwindow.ui" line="147"/>
         <source>Exit</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="145"/>
+        <location filename="../../src/main/mainwindow.ui" line="150"/>
         <source>Exit (Alt+X)</source>
         <translation>Exit (Alt+X)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="153"/>
+        <location filename="../../src/main/mainwindow.ui" line="126"/>
         <source>Language</source>
         <translation>Language</translation>
     </message>
@@ -65,6 +65,11 @@
         <location filename="../../src/main/mainwindow.ui" line="165"/>
         <source>About (F1)</source>
         <translation>About (F1)</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="61"/>
+        <source>Language switched to %1</source>
+        <translation>Language switched to %1</translation>
     </message>
 </context>
 </TS>

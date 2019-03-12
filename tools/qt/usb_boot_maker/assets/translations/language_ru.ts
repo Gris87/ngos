@@ -37,22 +37,22 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="128"/>
+        <location filename="../../src/main/mainwindow.ui" line="133"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="142"/>
+        <location filename="../../src/main/mainwindow.ui" line="147"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="145"/>
+        <location filename="../../src/main/mainwindow.ui" line="150"/>
         <source>Exit (Alt+X)</source>
         <translation>Выход (Alt+X)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="153"/>
+        <location filename="../../src/main/mainwindow.ui" line="126"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
@@ -65,6 +65,11 @@
         <location filename="../../src/main/mainwindow.ui" line="165"/>
         <source>About (F1)</source>
         <translation>О программе (F1)</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="61"/>
+        <source>Language switched to %1</source>
+        <translation>Язык изменен на %1</translation>
     </message>
 </context>
 </TS>
