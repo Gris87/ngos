@@ -11,8 +11,11 @@ RESOURCES += Resources.qrc
 
 
 # Warnings as errors - BEGIN
-QMAKE_CFLAGS_WARN_ON   += -Werror
-QMAKE_CXXFLAGS_WARN_ON += -Werror
+win32-msvc* {
+    QMAKE_CXXFLAGS += /WX
+} else {
+    QMAKE_CXXFLAGS += -Werror
+}
 # Warnings as errors - END
 
 # Release optimization - BEGIN

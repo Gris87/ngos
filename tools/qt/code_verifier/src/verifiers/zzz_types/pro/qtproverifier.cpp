@@ -12,8 +12,11 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 #define WARNINS_AS_ERRORS \
     "# Warnings as errors - BEGIN\n" \
-    "QMAKE_CFLAGS_WARN_ON   += -Werror\n" \
-    "QMAKE_CXXFLAGS_WARN_ON += -Werror\n" \
+    "win32-msvc* {\n" \
+    "    QMAKE_CXXFLAGS += /WX\n" \
+    "} else {\n" \
+    "    QMAKE_CXXFLAGS += -Werror\n" \
+    "}\n" \
     "# Warnings as errors - END\n"
 
 
