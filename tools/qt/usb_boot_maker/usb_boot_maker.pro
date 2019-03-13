@@ -38,6 +38,22 @@ UI_DIR      = build/gen
 
 
 
+# Include libraries - BEGIN
+win32 {
+    LIBS += -lSetupAPI
+}
+# Include libraries - END
+
+
+
+# Increase permissions - BEGIN
+win32 {
+    QMAKE_LFLAGS += /MANIFESTUAC:"level='requireAdministrator'"
+}
+# Increase permissions - END
+
+
+
 SOURCES += \
     src/main.cpp \
     src/main/aboutdialog.cpp \
