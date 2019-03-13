@@ -9,14 +9,17 @@
 #include <SetupAPI.h>
 #include <cfgmgr32.h>
 
+#include "src/other/usbproperties.h"
+
+
+
+const GUID USB_HUB_GUID = { 0xF18A0E88, 0xC30C, 0x11D0, {0x88, 0x15, 0x00, 0xA0, 0xC9, 0x06, 0xBE, 0xD8} };
+const GUID DISK_GUID    = { 0x53F56307, 0xB6BF, 0x11D0, {0x94, 0xF2, 0x00, 0xA0, 0xC9, 0x1E, 0xFB, 0x8B} };
+
 
 
 void updateUsbs()
 {
-    const GUID USB_HUB_GUID = { 0xF18A0E88, 0xC30C, 0x11D0, {0x88, 0x15, 0x00, 0xA0, 0xC9, 0x06, 0xBE, 0xD8} };
-
-
-
     HDEVINFO deviceInfoSet = SetupDiGetClassDevs(&USB_HUB_GUID, 0, 0, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 
     if (deviceInfoSet != INVALID_HANDLE_VALUE)
@@ -85,13 +88,13 @@ void updateUsbs()
                                         }
                                         else
                                         {
-                                            qCritical() << "CM_Get_Device_ID failed:" << ret;
+                                            qWarning() << "CM_Get_Device_ID failed:" << ret;
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    qCritical() << "CM_Get_Device_ID failed:" << ret;
+                                    qWarning() << "CM_Get_Device_ID failed:" << ret;
                                 }
                             }
                         }
@@ -124,7 +127,10 @@ void updateUsbs()
 
 
 
-        SetupDiDestroyDeviceInfoList(deviceInfoSet);
+        if (!SetupDiDestroyDeviceInfoList(deviceInfoSet))
+        {
+            qCritical() << "SetupDiDestroyDeviceInfoList failed:" << GetLastError();
+        }
     }
     else
     {
@@ -157,9 +163,152 @@ void updateDisks()
 
 
 
+    QList<ULONG> listSizes;
+
     for (qint64 i = 0; i < usbStorageDrivers.length(); ++i)
     {
+        ULONG listSize;
 
+
+
+        CONFIGRET ret = CM_Get_Device_ID_List_SizeA(&listSize, usbStorageDrivers.at(i).toLatin1().constData(), CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
+
+        if (ret == CR_SUCCESS)
+        {
+            listSizes.append(listSize);
+        }
+        else
+        {
+            qWarning() << "CM_Get_Device_ID_List_SizeA failed:" << ret;
+
+            listSizes.append(0);
+        }
+    }
+
+
+
+    quint8 uasptorIndex = 4;
+    quint8 sdIndex      = 1;
+
+    Q_ASSERT(uasptorIndex == usbStorageDrivers.indexOf("UASPSTOR"));
+    Q_ASSERT(sdIndex      == genericStorageDrivers.indexOf("SD"));
+
+
+
+    QList<QStringList> deviceIdList;
+
+    for (qint64 i = 0; i < usbStorageDrivers.length(); ++i)
+    {
+        QString usbStorageDriver = usbStorageDrivers.at(i);
+        ULONG   listSize         = listSizes.at(i);
+
+        QStringList deviceIds;
+
+
+
+        if (listSize > 1)
+        {
+            char *buffer = (char *)malloc(listSize);
+
+            if (buffer)
+            {
+                CONFIGRET ret = CM_Get_Device_ID_ListA(usbStorageDriver.toLatin1().constData(), buffer, listSize, CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
+
+                if (ret == CR_SUCCESS)
+                {
+                    qDebug() << "IDs belonging to" << usbStorageDriver;
+
+
+
+                    char *deviceId = buffer;
+
+                    while (*deviceId)
+                    {
+                        qDebug() << deviceId;
+
+                        deviceIds.append(QString(deviceId));
+                        deviceId += strlen(deviceId) + 1;
+                    }
+                }
+                else
+                {
+                    qWarning() << "CM_Get_Device_ID_ListA failed:" << ret;
+                }
+
+
+
+                free(buffer);
+            }
+            else
+            {
+                qCritical() << "malloc failed";
+            }
+        }
+
+
+
+        deviceIdList.append(deviceIds);
+    }
+
+
+
+    HDEVINFO deviceInfoSet = SetupDiGetClassDevs(&DISK_GUID, 0, 0, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+
+    if (deviceInfoSet != INVALID_HANDLE_VALUE)
+    {
+        SP_DEVINFO_DATA deviceInfoData;
+        deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
+
+
+        DWORD memberIndex = 0;
+
+        while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
+        {
+            qDebug() << "Disk #" << memberIndex << "found";
+
+
+
+            UsbProperties props;
+            memset(&props, 0, sizeof(UsbProperties));
+
+
+            SetupDiGetDeviceRegistryPropertyW(
+                _In_ HDEVINFO DeviceInfoSet,
+                _In_ PSP_DEVINFO_DATA DeviceInfoData,
+                _In_ DWORD Property,
+                _Out_opt_ PDWORD PropertyRegDataType,
+                _Out_writes_bytes_to_opt_(PropertyBufferSize, *RequiredSize) PBYTE PropertyBuffer,
+                _In_ DWORD PropertyBufferSize,
+                _Out_opt_ PDWORD RequiredSize
+                );
+
+
+
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, &datatype, buffer, sizeof(buffer), &size))
+            {
+
+            }
+            else
+            {
+                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+            }
+
+
+
+            ++memberIndex;
+        }
+
+
+
+        if (!SetupDiDestroyDeviceInfoList(deviceInfoSet))
+        {
+            qCritical() << "SetupDiDestroyDeviceInfoList failed:" << GetLastError();
+        }
+    }
+    else
+    {
+        qCritical() << "SetupDiGetClassDevs failed:" << GetLastError();
     }
 }
 
