@@ -13,8 +13,34 @@
 
 
 
+#define UASPSTOR_INDEX 4
+#define SD_INDEX       1
+
+
+
 const GUID USB_HUB_GUID = { 0xF18A0E88, 0xC30C, 0x11D0, {0x88, 0x15, 0x00, 0xA0, 0xC9, 0x06, 0xBE, 0xD8} };
 const GUID DISK_GUID    = { 0x53F56307, 0xB6BF, 0x11D0, {0x94, 0xF2, 0x00, 0xA0, 0xC9, 0x1E, 0xFB, 0x8B} };
+
+const QStringList usbStorageDrivers = QStringList()
+        // Standard MS USB storage driver
+        << "USBSTOR"
+        // USB card readers, with proprietary drivers (Realtek, etc...)
+        // Mostly "guessed" from http://www.carrona.org/dvrref.php
+        << "RTSUER" << "CMIUCR" << "EUCR"
+        // UASP Drivers *MUST* be listed after this, starting with "UASPSTOR"
+        // (which is Microsoft's native UASP driver for Windows 8 and later)
+        // as we use "UASPSTOR" as a delimiter
+        << "UASPSTOR" << "VUSBSTOR" << "ETRONSTOR" << "ASUSSTPT"
+    ;
+
+const QStringList genericStorageDrivers = QStringList()
+        // Generic storage drivers (Careful now!)
+        << "SCSI" // << "STORAGE"   // "STORAGE" is used by 'Storage Spaces" and stuff => DANGEROUS!
+        // Non-USB card reader drivers - This list *MUST* start with "SD" (delimiter)
+        // See http://itdoc.hitachi.co.jp/manuals/3021/30213B5200e/DMDS0094.HTM
+        // Also http://www.carrona.org/dvrref.php.
+        << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
+    ;
 
 
 
@@ -58,7 +84,7 @@ void updateUsbs()
                     {
                         deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
 
-                        if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, &requiredSize, 0))
+                        if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, 0, 0))
                         {
                             DEVINST deviceInstance;
 
@@ -138,28 +164,184 @@ void updateUsbs()
     }
 }
 
+void handleDiskEnumeratorName(const QString &enumeratorName, UsbProperties *props)
+{
+    qint64 index = usbStorageDrivers.indexOf(enumeratorName);
+
+    if (index >= 0)
+    {
+        props->isUSB = true;
+
+        if (index > 0 && index < UASPSTOR_INDEX)
+        {
+            props->isCARD = true;
+        }
+    }
+
+
+
+    index = genericStorageDrivers.indexOf(enumeratorName);
+
+    if (index >= 0)
+    {
+        props->isSCSI = true;
+
+        if (index >= SD_INDEX)
+        {
+            props->isCARD = true;
+        }
+    }
+}
+
+void handleDiskEnumeratorName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
+{
+    DWORD requiredSize;
+
+    if (
+        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, 0, 0, 0, &requiredSize)
+        &&
+        GetLastError() == ERROR_INSUFFICIENT_BUFFER
+       )
+    {
+        BYTE *buffer = (BYTE *)malloc(requiredSize);
+
+        if (buffer)
+        {
+            DWORD propertyRegDataType;
+
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, &propertyRegDataType, buffer, requiredSize, 0))
+            {
+                QString enumeratorName = QString::fromWCharArray((wchar_t *)buffer);
+                qDebug() << "    Disk enumerator: " << enumeratorName;
+
+
+
+                handleDiskEnumeratorName(enumeratorName, props);
+            }
+            else
+            {
+                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+            }
+
+            free(buffer);
+        }
+        else
+        {
+            qCritical() << "malloc failed";
+        }
+    }
+    else
+    {
+        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+    }
+}
+
+void checkDiskIsVHDFromHardwareId(const QString &hardwareId, UsbProperties *props)
+{
+    props->isVHD = hardwareId.contains("Arsenal_________Virtual_")
+                    ||
+                    hardwareId.contains("KernSafeVirtual_________")
+                    ||
+                    hardwareId.contains("Msft____Virtual_Disk____")
+                    ||
+                    hardwareId.contains("VMware__VMware_Virtual_S");
+}
+
+void checkDiskIsCardFromHardwareId(const QString &hardwareId, UsbProperties *props)
+{
+    if (
+        !props->isCARD
+        &&
+        hardwareId.startsWith("SCSI\\Disk")
+        &&
+        (
+         hardwareId.contains("_SD_")
+         ||
+         hardwareId.contains("_SD&")
+         ||
+         hardwareId.contains("_SDHC_")
+         ||
+         hardwareId.contains("_SDHC&")
+         ||
+         hardwareId.contains("_MMC_")
+         ||
+         hardwareId.contains("_MMC&")
+         ||
+         hardwareId.contains("_MS_")
+         ||
+         hardwareId.contains("_MS&")
+         ||
+         hardwareId.contains("_MSPro_")
+         ||
+         hardwareId.contains("_MSPro&")
+         ||
+         hardwareId.contains("_xDPicture_")
+         ||
+         hardwareId.contains("_xDPicture&")
+         ||
+         hardwareId.contains("_O2Media_")
+         ||
+         hardwareId.contains("_O2Media&")
+        )
+       )
+    {
+        props->isCARD = true;
+    }
+}
+
+void handleDiskHardwareId(const QString &hardwareId, UsbProperties *props)
+{
+    checkDiskIsVHDFromHardwareId(hardwareId, props);
+    checkDiskIsCardFromHardwareId(hardwareId, props);
+}
+
+void handleDiskHardwareId(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
+{
+    DWORD requiredSize;
+
+    if (
+        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, 0, 0, 0, &requiredSize)
+        &&
+        GetLastError() == ERROR_INSUFFICIENT_BUFFER
+       )
+    {
+        BYTE *buffer = (BYTE *)malloc(requiredSize);
+
+        if (buffer)
+        {
+            DWORD propertyRegDataType;
+
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, &propertyRegDataType, buffer, requiredSize, 0))
+            {
+                QString hardwareId = QString::fromWCharArray((wchar_t *)buffer);
+                qDebug() << "    Hardware ID: " << hardwareId;
+
+
+
+                handleDiskHardwareId(hardwareId, props);
+            }
+            else
+            {
+                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+            }
+
+            free(buffer);
+        }
+        else
+        {
+            qCritical() << "malloc failed";
+        }
+    }
+    else
+    {
+        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+    }
+}
+
 void updateDisks()
 {
-    QStringList usbStorageDrivers = QStringList()
-            // Standard MS USB storage driver
-            << "USBSTOR"
-            // USB card readers, with proprietary drivers (Realtek, etc...)
-            // Mostly "guessed" from http://www.carrona.org/dvrref.php
-            << "RTSUER" << "CMIUCR" << "EUCR"
-            // UASP Drivers *MUST* be listed after this, starting with "UASPSTOR"
-            // (which is Microsoft's native UASP driver for Windows 8 and later)
-            // as we use "UASPSTOR" as a delimiter
-            << "UASPSTOR" << "VUSBSTOR" << "ETRONSTOR" << "ASUSSTPT"
-        ;
-
-    QStringList genericStorageDrivers = QStringList()
-            // Generic storage drivers (Careful now!)
-            << "SCSI" // << "STORAGE"   // "STORAGE" is used by 'Storage Spaces" and stuff => DANGEROUS!
-            // Non-USB card reader drivers - This list *MUST* start with "SD" (delimiter)
-            // See http://itdoc.hitachi.co.jp/manuals/3021/30213B5200e/DMDS0094.HTM
-            // Also http://www.carrona.org/dvrref.php.
-            << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
-        ;
+    Q_ASSERT(UASPSTOR_INDEX == usbStorageDrivers.indexOf("UASPSTOR"));
+    Q_ASSERT(SD_INDEX       == genericStorageDrivers.indexOf("SD"));
 
 
 
@@ -184,14 +366,6 @@ void updateDisks()
             listSizes.append(0);
         }
     }
-
-
-
-    quint8 uasptorIndex = 4;
-    quint8 sdIndex      = 1;
-
-    Q_ASSERT(uasptorIndex == usbStorageDrivers.indexOf("UASPSTOR"));
-    Q_ASSERT(sdIndex      == genericStorageDrivers.indexOf("SD"));
 
 
 
@@ -273,25 +447,16 @@ void updateDisks()
             memset(&props, 0, sizeof(UsbProperties));
 
 
-            SetupDiGetDeviceRegistryPropertyW(
-                _In_ HDEVINFO DeviceInfoSet,
-                _In_ PSP_DEVINFO_DATA DeviceInfoData,
-                _In_ DWORD Property,
-                _Out_opt_ PDWORD PropertyRegDataType,
-                _Out_writes_bytes_to_opt_(PropertyBufferSize, *RequiredSize) PBYTE PropertyBuffer,
-                _In_ DWORD PropertyBufferSize,
-                _Out_opt_ PDWORD RequiredSize
-                );
 
+            handleDiskEnumeratorName(deviceInfoSet, deviceInfoData, &props);
 
-
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, &datatype, buffer, sizeof(buffer), &size))
+            if (props.isUSB || props.isSCSI)
             {
-
+                handleDiskHardwareId(deviceInfoSet, deviceInfoData, &props);
             }
             else
             {
-                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+                qDebug() << "    Ignoring this disk since it is not USB/SCSI disk";
             }
 
 
