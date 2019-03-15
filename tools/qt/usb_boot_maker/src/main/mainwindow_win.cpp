@@ -212,7 +212,7 @@ void handleDiskEnumeratorName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &de
             if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, &propertyRegDataType, buffer, requiredSize, 0))
             {
                 QString enumeratorName = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Disk enumerator: " << enumeratorName;
+                qDebug() << "    Disk enumerator:" << enumeratorName;
 
 
 
@@ -314,7 +314,7 @@ void handleDiskHardwareId(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &device
             if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, &propertyRegDataType, buffer, requiredSize, 0))
             {
                 QString hardwareId = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Hardware ID: " << hardwareId;
+                qDebug() << "    Hardware ID:" << hardwareId;
 
 
 
@@ -337,6 +337,99 @@ void handleDiskHardwareId(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &device
         qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
     }
 }
+
+void handleDiskRemovalPolicy(DWORD removalPolicy, UsbProperties *props)
+{
+    props->isRemovable = removalPolicy == CM_REMOVAL_POLICY_EXPECT_ORDERLY_REMOVAL
+                        ||
+                        removalPolicy  == CM_REMOVAL_POLICY_EXPECT_SURPRISE_REMOVAL;
+}
+
+void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
+{
+    DWORD requiredSize;
+
+    if (
+        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, 0, 0, 0, &requiredSize)
+        &&
+        GetLastError() == ERROR_INSUFFICIENT_BUFFER
+       )
+    {
+        BYTE *buffer = (BYTE *)malloc(requiredSize);
+
+        if (buffer)
+        {
+            DWORD propertyRegDataType;
+
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, &propertyRegDataType, buffer, requiredSize, 0))
+            {
+                DWORD removalPolicy = *((DWORD*)buffer);
+                qDebug() << "    Removal policy:" << removalPolicy;
+
+
+
+                handleDiskRemovalPolicy(removalPolicy, props);
+            }
+            else
+            {
+                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+            }
+
+            free(buffer);
+        }
+        else
+        {
+            qCritical() << "malloc failed";
+        }
+    }
+    else
+    {
+        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+    }
+}
+
+void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
+{
+    DWORD requiredSize;
+
+    if (
+        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_FRIENDLYNAME, 0, 0, 0, &requiredSize)
+        &&
+        GetLastError() == ERROR_INSUFFICIENT_BUFFER
+       )
+    {
+        BYTE *buffer = (BYTE *)malloc(requiredSize);
+
+        if (buffer)
+        {
+            DWORD propertyRegDataType;
+
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_FRIENDLYNAME, &propertyRegDataType, buffer, requiredSize, 0))
+            {
+                QString friendlyName = QString::fromWCharArray((wchar_t *)buffer);
+                qDebug() << "    Friendly name:" << friendlyName;
+
+
+
+            }
+            else
+            {
+                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+            }
+
+            free(buffer);
+        }
+        else
+        {
+            qCritical() << "malloc failed";
+        }
+    }
+    else
+    {
+        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
+    }
+}
+
 
 void updateDisks()
 {
@@ -453,6 +546,8 @@ void updateDisks()
             if (props.isUSB || props.isSCSI)
             {
                 handleDiskHardwareId(deviceInfoSet, deviceInfoData, &props);
+                handleDiskRemovalPolicy(deviceInfoSet, deviceInfoData, &props);
+                handleDiskFriendlyName(deviceInfoSet, deviceInfoData, &props);
             }
             else
             {
