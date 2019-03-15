@@ -5,14 +5,16 @@
 
 #include <Qt>
 
+#include "src/other/usbspeed.h"
+
 
 
 struct UsbProperties
 {
     quint32  vid;
     quint32  pid;
-    quint32  speed;
     quint32  port;
+    UsbSpeed speed;
     bool     isUSB;
     bool     isSCSI;
     bool     isCARD;

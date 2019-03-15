@@ -5,9 +5,11 @@
 #ifdef Q_OS_WIN
 
 #include <QDebug>
+#include <QRegularExpression>
 #include <Windows.h>
 #include <SetupAPI.h>
 #include <cfgmgr32.h>
+#include <usbioctl.h>
 
 #include "src/other/usbproperties.h"
 
@@ -42,114 +44,170 @@ const QStringList genericStorageDrivers = QStringList()
         << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
     ;
 
+const QRegularExpression vidPidRegExp(".+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]+)\\\\.+");
 
 
-void updateUsbs()
+
+void handleUsbHubChildren(SP_DEVINFO_DATA &deviceInfoData, SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
 {
+    Q_ASSERT(deviceInterfaceDetailData);
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
+
+
+
+    DEVINST deviceInstance;
+
+    if (CM_Get_Child(&deviceInstance, deviceInfoData.DevInst, 0) == CR_SUCCESS)
+    {
+        QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
+        qDebug() << "    USB Hub path =" << deviceInterfacePath;
+
+
+
+        wchar_t   deviceId[MAX_PATH];
+        CONFIGRET ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, 0);
+
+        if (ret == CR_SUCCESS)
+        {
+            QString deviceIdString = QString::fromWCharArray(deviceId);
+            qDebug() << "        USB found:" << deviceIdString;
+
+            deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);
+
+
+
+            while (CM_Get_Sibling(&deviceInstance, deviceInstance, 0) == CR_SUCCESS)
+            {
+                ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, 0);
+
+                if (ret == CR_SUCCESS)
+                {
+                    QString deviceIdString = QString::fromWCharArray(deviceId);
+                    qDebug() << "        USB found:" << deviceIdString;
+
+                    deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);
+                }
+                else
+                {
+                    qWarning() << "CM_Get_Device_ID failed:" << ret;
+                }
+            }
+        }
+        else
+        {
+            qWarning() << "CM_Get_Device_ID failed:" << ret;
+        }
+    }
+    else
+    {
+        // qWarning() << "CM_Get_Child failed"; // Commented to avoid not interesting warnings
+    }
+}
+
+void handleUsbHubInterfaceData(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, SP_DEVICE_INTERFACE_DATA &deviceInterfaceData, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
+{
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
+
+
+
+    DWORD requiredSize;
+
+    if (
+        !SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, 0, 0, &requiredSize, 0)
+        &&
+        GetLastError() == ERROR_INSUFFICIENT_BUFFER
+       )
+    {
+        SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData = (SP_DEVICE_INTERFACE_DETAIL_DATA_W *)malloc(requiredSize);
+
+        if (deviceInterfaceDetailData)
+        {
+            deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
+
+            if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, 0, 0))
+            {
+                handleUsbHubChildren(deviceInfoData, deviceInterfaceDetailData, deviceIdToDeviceInterfacePathHash);
+            }
+            else
+            {
+                qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
+            }
+
+
+
+            free(deviceInterfaceDetailData);
+        }
+        else
+        {
+            qCritical() << "malloc failed";
+        }
+    }
+    else
+    {
+        qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
+    }
+}
+
+void handleUsbHub(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
+{
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
+
+
+
+    SP_DEVICE_INTERFACE_DATA deviceInterfaceData;
+    deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
+
+
+
+    if (SetupDiEnumDeviceInterfaces(deviceInfoSet, &deviceInfoData, &USB_HUB_GUID, 0, &deviceInterfaceData))
+    {
+        handleUsbHubInterfaceData(deviceInfoSet, deviceInfoData, deviceInterfaceData, deviceIdToDeviceInterfacePathHash);
+    }
+    else
+    {
+        qCritical() << "SetupDiEnumDeviceInterfaces failed:" << GetLastError();
+    }
+}
+
+void handleUsbHubs(const HDEVINFO &deviceInfoSet, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
+{
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
+
+
+
+    SP_DEVINFO_DATA deviceInfoData;
+    deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
+
+
+    DWORD memberIndex = 0;
+
+    while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
+    {
+        qDebug() << "USB Hub #" << memberIndex << "found";
+
+
+
+        handleUsbHub(deviceInfoSet, deviceInfoData, deviceIdToDeviceInterfacePathHash);
+
+        ++memberIndex;
+    }
+}
+
+void updateUsbs(QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
+{
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
+
+
+
     HDEVINFO deviceInfoSet = SetupDiGetClassDevs(&USB_HUB_GUID, 0, 0, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 
     if (deviceInfoSet != INVALID_HANDLE_VALUE)
     {
-        SP_DEVINFO_DATA deviceInfoData;
-        deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
-
-
-
-        DWORD memberIndex = 0;
-
-        while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
-        {
-            qDebug() << "USB Hub #" << memberIndex << "found";
-
-
-
-            SP_DEVICE_INTERFACE_DATA deviceInterfaceData;
-            deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
-
-
-
-            if (SetupDiEnumDeviceInterfaces(deviceInfoSet, &deviceInfoData, &USB_HUB_GUID, 0, &deviceInterfaceData))
-            {
-                DWORD requiredSize;
-
-                if (
-                    !SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, 0, 0, &requiredSize, 0)
-                    &&
-                    GetLastError() == ERROR_INSUFFICIENT_BUFFER
-                   )
-                {
-                    SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData = (SP_DEVICE_INTERFACE_DETAIL_DATA_W *)malloc(requiredSize);
-
-                    if (deviceInterfaceDetailData)
-                    {
-                        deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
-
-                        if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, 0, 0))
-                        {
-                            DEVINST deviceInstance;
-
-                            if (CM_Get_Child(&deviceInstance, deviceInfoData.DevInst, 0) == CR_SUCCESS)
-                            {
-                                QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
-                                qDebug() << "    USB Hub path =" << deviceInterfacePath;
-
-
-
-                                wchar_t   deviceId[MAX_PATH];
-                                CONFIGRET ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, 0);
-
-                                if (ret == CR_SUCCESS)
-                                {
-                                    QString deviceIdString = QString::fromWCharArray(deviceId);
-                                    qDebug() << "        USB found:" << deviceIdString;
-
-                                    while (CM_Get_Sibling(&deviceInstance, deviceInstance, 0) == CR_SUCCESS)
-                                    {
-                                        ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, 0);
-
-                                        if (ret == CR_SUCCESS)
-                                        {
-                                            QString deviceIdString = QString::fromWCharArray(deviceId);
-                                            qDebug() << "        USB found:" << deviceIdString;
-                                        }
-                                        else
-                                        {
-                                            qWarning() << "CM_Get_Device_ID failed:" << ret;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    qWarning() << "CM_Get_Device_ID failed:" << ret;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
-                        }
-
-                        free(deviceInterfaceDetailData);
-                    }
-                    else
-                    {
-                        qCritical() << "malloc failed";
-                    }
-                }
-                else
-                {
-                    qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
-                }
-            }
-            else
-            {
-                qCritical() << "SetupDiEnumDeviceInterfaces failed:" << GetLastError();
-            }
-
-
-
-            ++memberIndex;
-        }
+        handleUsbHubs(deviceInfoSet, deviceIdToDeviceInterfacePathHash);
 
 
 
@@ -161,6 +219,95 @@ void updateUsbs()
     else
     {
         qCritical() << "SetupDiGetClassDevs failed:" << GetLastError();
+    }
+}
+
+void handleUsbStorageDriverDeviceIds(const QString &usbStorageDriver, char *buffer, QStringList &deviceIds)
+{
+    qDebug() << "IDs belonging to" << usbStorageDriver;
+
+
+
+    char *deviceId = buffer;
+
+    while (*deviceId)
+    {
+        qDebug() << deviceId;
+
+
+
+        QString deviceIdString = QString::fromLatin1(deviceId);
+
+        deviceIds.append(deviceIdString);
+        deviceId += deviceIdString.length() + 1;
+    }
+}
+
+void handleUsbStorageDriverList(const QString &usbStorageDriver, ULONG listSize, QList<QStringList> *deviceIdList)
+{
+    Q_ASSERT(deviceIdList);
+
+
+
+    QStringList deviceIds;
+
+
+
+    if (listSize > 1)
+    {
+        char *buffer = (char *)malloc(listSize);
+
+        if (buffer)
+        {
+            CONFIGRET ret = CM_Get_Device_ID_ListA(usbStorageDriver.toLatin1().constData(), buffer, listSize, CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
+
+            if (ret == CR_SUCCESS)
+            {
+                handleUsbStorageDriverDeviceIds(usbStorageDriver, buffer, deviceIds);
+            }
+            else
+            {
+                qWarning() << "CM_Get_Device_ID_ListA failed:" << ret;
+            }
+
+
+
+            free(buffer);
+        }
+        else
+        {
+            qCritical() << "malloc failed";
+        }
+    }
+
+
+
+    deviceIdList->append(deviceIds);
+}
+
+void getDeviceIdList(QList<QStringList> *deviceIdList)
+{
+    Q_ASSERT(deviceIdList);
+
+
+
+    for (qint64 i = 0; i < usbStorageDrivers.length(); ++i)
+    {
+        const QString &usbStorageDriver = usbStorageDrivers.at(i);
+        ULONG          listSize;
+
+
+
+        CONFIGRET ret = CM_Get_Device_ID_List_SizeA(&listSize, usbStorageDriver.toLatin1().constData(), CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
+
+        if (ret == CR_SUCCESS)
+        {
+            handleUsbStorageDriverList(usbStorageDriver, listSize, deviceIdList);
+        }
+        else
+        {
+            qWarning() << "CM_Get_Device_ID_List_SizeA failed:" << ret;
+        }
     }
 }
 
@@ -222,6 +369,8 @@ void handleDiskEnumeratorName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &de
             {
                 qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
             }
+
+
 
             free(buffer);
         }
@@ -325,6 +474,8 @@ void handleDiskHardwareId(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &device
                 qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
             }
 
+
+
             free(buffer);
         }
         else
@@ -375,6 +526,8 @@ void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &dev
                 qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
             }
 
+
+
             free(buffer);
         }
         else
@@ -388,7 +541,262 @@ void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &dev
     }
 }
 
-void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
+bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)
+{
+    USB_NODE_CONNECTION_INFORMATION_EX connectionInfoEx;
+
+    DWORD size = sizeof(connectionInfoEx);
+    memset(&connectionInfoEx, 0, size);
+
+    connectionInfoEx.ConnectionIndex = (ULONG)props->port;
+
+
+
+    if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX, &connectionInfoEx, size, &connectionInfoEx, size, &size, 0))
+    {
+        if (
+            connectionInfoEx.DeviceDescriptor.idVendor != 0
+            ||
+            connectionInfoEx.DeviceDescriptor.idProduct != 0
+           )
+        {
+            props->vid   = connectionInfoEx.DeviceDescriptor.idVendor;
+            props->pid   = connectionInfoEx.DeviceDescriptor.idProduct;
+            props->speed = (UsbSpeed)(connectionInfoEx.Speed + 1);
+
+            qDebug() << "    VID:"   << props->vid;
+            qDebug() << "    PID:"   << props->pid;
+            qDebug() << "    Speed:" << (quint64)props->speed;
+
+
+
+            return true;
+        }
+    }
+    else
+    {
+        qCritical() << "DeviceIoControl failed:" << GetLastError();
+    }
+
+
+
+    return false;
+}
+
+void getUsbConnectionInfoV2(const HANDLE &deviceHandle, UsbProperties *props)
+{
+    USB_NODE_CONNECTION_INFORMATION_EX_V2 connectionInfoExV2;
+
+    DWORD size = sizeof(connectionInfoExV2);
+    memset(&connectionInfoExV2, 0, size);
+
+    connectionInfoExV2.ConnectionIndex              = (ULONG)props->port;
+    connectionInfoExV2.Length                       = size;
+    connectionInfoExV2.SupportedUsbProtocols.Usb300 = true;
+
+
+
+    if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX_V2, &connectionInfoExV2, size, &connectionInfoExV2, size, &size, 0))
+    {
+        if (connectionInfoExV2.Flags.DeviceIsOperatingAtSuperSpeedOrHigher)
+        {
+            props->speed = UsbSpeed::SUPER_OR_LATER;
+        }
+        else
+        if (connectionInfoExV2.Flags.DeviceIsSuperSpeedCapableOrHigher)
+        {
+            props->isLowerSpeed = true;
+        }
+    }
+    else
+    {
+        qCritical() << "DeviceIoControl failed:" << GetLastError();
+    }
+}
+
+void getUsbConnectionInfo(const HANDLE &deviceHandle, UsbProperties *props)
+{
+    if (getUsbConnectionInfoV1(deviceHandle, props))
+    {
+        getUsbConnectionInfoV2(deviceHandle, props);
+    }
+}
+
+void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceID, UsbProperties *props)
+{
+    DEVINST deviceInstance;
+
+    CONFIGRET ret = CM_Locate_DevNodeA(&deviceInstance, deviceID.toLatin1().data(), 0);
+
+    if (ret == CR_SUCCESS)
+    {
+        props->port = 0;
+
+        DWORD size = sizeof(props->port);
+        ret        = CM_Get_DevNode_Registry_Property(deviceInstance, CM_DRP_ADDRESS, 0, &props->port, &size, 0);
+
+        if (ret == CR_SUCCESS)
+        {
+            HANDLE deviceHandle = CreateFileA(deviceInterfacePath.toLatin1().constData(), GENERIC_WRITE, FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, 0);
+
+            if (deviceHandle != INVALID_HANDLE_VALUE)
+            {
+                getUsbConnectionInfo(deviceHandle, props);
+
+                if (!CloseHandle(deviceHandle))
+                {
+                    qCritical() << "CloseHandle failed:" << GetLastError();
+                }
+            }
+            else
+            {
+                qCritical() << "CreateFileA failed:" << GetLastError();
+            }
+        }
+        else
+        {
+            qCritical() << "CM_Get_DevNode_Registry_PropertyA failed:" << ret;
+        }
+    }
+    else
+    {
+        qCritical() << "CM_Locate_DevNodeA failed:" << ret;
+    }
+}
+
+void handleDiskFriendlyName(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, SP_DEVINFO_DATA &deviceInfoData, const QString &friendlyName, const QList<QStringList> &deviceIdList, UsbProperties *props)
+{
+    if (!props->isVHD)
+    {
+        for (qint64 i = 0; i < deviceIdList.length(); ++i)
+        {
+            const QStringList &deviceIds = deviceIdList.at(i);
+
+            for (qint64 j = 0; j < deviceIds.length(); ++j)
+            {
+                QString deviceId = deviceIds.at(j);
+
+
+
+                DEVINST   parentDeviceInstance;
+                CONFIGRET ret = CM_Locate_DevNodeA(&parentDeviceInstance, deviceId.toLatin1().data(), 0);
+
+                if (ret == CR_SUCCESS)
+                {
+                    DEVINST deviceInstance;
+
+                    ret = CM_Get_Child(&deviceInstance, parentDeviceInstance, 0);
+
+                    if (ret == CR_SUCCESS)
+                    {
+                        if (deviceInstance != deviceInfoData.DevInst)
+                        {
+                            while (CM_Get_Sibling(&deviceInstance, deviceInstance, 0) == CR_SUCCESS)
+                            {
+                                if (deviceInstance == deviceInfoData.DevInst)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (deviceInstance != deviceInfoData.DevInst)
+                            {
+                                qCritical() << "Failed to find child device in parent";
+
+                                continue;
+                            }
+                        }
+
+                        props->isUASP = (i >= UASPSTOR_INDEX);
+
+
+
+                        QRegularExpressionMatch match = vidPidRegExp.match(deviceId);
+
+                        if (match.hasMatch())
+                        {
+                            QString vid = match.captured(1);
+                            QString pid = match.captured(2);
+
+
+
+                            bool ok;
+
+                            props->vid = vid.toUInt(&ok, 16);
+                            Q_ASSERT(ok);
+
+                            props->pid = pid.toUInt(&ok, 16);
+                            Q_ASSERT(ok);
+
+
+
+                            qDebug() << "    VID:" << vid << "(" << props->vid << ")";
+                            qDebug() << "    PID:" << pid << "(" << props->pid << ")";
+
+
+
+                            qDebug() << friendlyName;
+                        }
+                        else
+                        {
+                            qWarning() << "Failed to find VID/PID for device id:" << deviceId;
+                        }
+
+
+
+                        QString deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
+                        qDebug() << "    Device interface path:" << deviceInterfacePath;
+
+
+
+                        if (deviceInterfacePath == "")
+                        {
+                            DEVINST grandparentDeviceInstance;
+                            ret = CM_Get_Parent(&grandparentDeviceInstance, parentDeviceInstance, 0);
+
+                            if (ret -= CR_SUCCESS)
+                            {
+                                wchar_t grandparentDeviceId[MAX_PATH];
+                                ret = CM_Get_Device_ID(grandparentDeviceInstance, grandparentDeviceId, MAX_PATH, 0);
+
+                                if (ret == CR_SUCCESS)
+                                {
+                                    deviceId            = QString::fromWCharArray(grandparentDeviceId);
+                                    deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
+                                }
+                                else
+                                {
+                                    qCritical() << "CM_Get_Parent failed:" << ret;
+                                }
+                            }
+                            else
+                            {
+                                qCritical() << "CM_Get_Parent failed:" << ret;
+                            }
+                        }
+
+
+
+                        if (deviceInterfacePath != "")
+                        {
+                            getUsbProperties(deviceInterfacePath, deviceId, props);
+                        }
+                    }
+                    else
+                    {
+                        qCritical() << "CM_Get_Child failed:" << ret;
+                    }
+                }
+                else
+                {
+                    qCritical() << "CM_Locate_DevNodeA failed:" << ret;
+                }
+            }
+        }
+    }
+}
+
+void handleDiskFriendlyName(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, const QList<QStringList> &deviceIdList, UsbProperties *props)
 {
     DWORD requiredSize;
 
@@ -411,6 +819,7 @@ void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &devi
 
 
 
+                handleDiskFriendlyName(deviceIdToDeviceInterfacePathHash, deviceInfoData, friendlyName, deviceIdList, props);
             }
             else
             {
@@ -430,92 +839,57 @@ void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &devi
     }
 }
 
-
-void updateDisks()
+void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData)
 {
-    Q_ASSERT(UASPSTOR_INDEX == usbStorageDrivers.indexOf("UASPSTOR"));
-    Q_ASSERT(SD_INDEX       == genericStorageDrivers.indexOf("SD"));
+    UsbProperties props;
+    memset(&props, 0, sizeof(UsbProperties));
 
 
 
-    QList<ULONG> listSizes;
+    handleDiskEnumeratorName(deviceInfoSet, deviceInfoData, &props);
 
-    for (qint64 i = 0; i < usbStorageDrivers.length(); ++i)
+    if (props.isUSB || props.isSCSI)
     {
-        ULONG listSize;
-
-
-
-        CONFIGRET ret = CM_Get_Device_ID_List_SizeA(&listSize, usbStorageDrivers.at(i).toLatin1().constData(), CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
-
-        if (ret == CR_SUCCESS)
-        {
-            listSizes.append(listSize);
-        }
-        else
-        {
-            qWarning() << "CM_Get_Device_ID_List_SizeA failed:" << ret;
-
-            listSizes.append(0);
-        }
+        handleDiskHardwareId(deviceInfoSet, deviceInfoData, &props);
+        handleDiskRemovalPolicy(deviceInfoSet, deviceInfoData, &props);
+        handleDiskFriendlyName(deviceIdToDeviceInterfacePathHash, deviceInfoSet, deviceInfoData, deviceIdList, &props);
     }
+    else
+    {
+        qDebug() << "    Ignoring this disk since it is not USB/SCSI disk";
+    }
+}
+
+void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet)
+{
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
 
 
 
+    SP_DEVINFO_DATA deviceInfoData;
+    deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
+
+
+    DWORD memberIndex = 0;
+
+    while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
+    {
+        qDebug() << "Disk #" << memberIndex << "found";
+
+
+
+        handleDisk(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, deviceInfoData);
+
+        ++memberIndex;
+    }
+}
+
+void updateDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash)
+{
     QList<QStringList> deviceIdList;
 
-    for (qint64 i = 0; i < usbStorageDrivers.length(); ++i)
-    {
-        QString usbStorageDriver = usbStorageDrivers.at(i);
-        ULONG   listSize         = listSizes.at(i);
-
-        QStringList deviceIds;
-
-
-
-        if (listSize > 1)
-        {
-            char *buffer = (char *)malloc(listSize);
-
-            if (buffer)
-            {
-                CONFIGRET ret = CM_Get_Device_ID_ListA(usbStorageDriver.toLatin1().constData(), buffer, listSize, CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
-
-                if (ret == CR_SUCCESS)
-                {
-                    qDebug() << "IDs belonging to" << usbStorageDriver;
-
-
-
-                    char *deviceId = buffer;
-
-                    while (*deviceId)
-                    {
-                        qDebug() << deviceId;
-
-                        deviceIds.append(QString(deviceId));
-                        deviceId += strlen(deviceId) + 1;
-                    }
-                }
-                else
-                {
-                    qWarning() << "CM_Get_Device_ID_ListA failed:" << ret;
-                }
-
-
-
-                free(buffer);
-            }
-            else
-            {
-                qCritical() << "malloc failed";
-            }
-        }
-
-
-
-        deviceIdList.append(deviceIds);
-    }
+    getDeviceIdList(&deviceIdList);
 
 
 
@@ -523,41 +897,7 @@ void updateDisks()
 
     if (deviceInfoSet != INVALID_HANDLE_VALUE)
     {
-        SP_DEVINFO_DATA deviceInfoData;
-        deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
-
-
-
-        DWORD memberIndex = 0;
-
-        while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
-        {
-            qDebug() << "Disk #" << memberIndex << "found";
-
-
-
-            UsbProperties props;
-            memset(&props, 0, sizeof(UsbProperties));
-
-
-
-            handleDiskEnumeratorName(deviceInfoSet, deviceInfoData, &props);
-
-            if (props.isUSB || props.isSCSI)
-            {
-                handleDiskHardwareId(deviceInfoSet, deviceInfoData, &props);
-                handleDiskRemovalPolicy(deviceInfoSet, deviceInfoData, &props);
-                handleDiskFriendlyName(deviceInfoSet, deviceInfoData, &props);
-            }
-            else
-            {
-                qDebug() << "    Ignoring this disk since it is not USB/SCSI disk";
-            }
-
-
-
-            ++memberIndex;
-        }
+        handleDisks(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet);
 
 
 
@@ -572,10 +912,22 @@ void updateDisks()
     }
 }
 
+void getDevices()
+{
+    QHash<QString, QString> deviceIdToDeviceInterfacePathHash;
+
+    updateUsbs(&deviceIdToDeviceInterfacePathHash);
+    updateDisks(deviceIdToDeviceInterfacePathHash);
+}
+
 void MainWindow::updateUsbDevices()
 {
-    updateUsbs();
-    updateDisks();
+    Q_ASSERT(UASPSTOR_INDEX == usbStorageDrivers.indexOf("UASPSTOR"));
+    Q_ASSERT(SD_INDEX       == genericStorageDrivers.indexOf("SD"));
+
+
+
+    getDevices();
 }
 
 
