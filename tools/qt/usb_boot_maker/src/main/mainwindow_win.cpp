@@ -232,6 +232,7 @@ void handleUsbStorageDriverDeviceIds(const QString &usbStorageDriver, char *buff
 
 
 
+    qDebug() << "";
     qDebug() << "IDs belonging to" << usbStorageDriver;
 
 
@@ -622,6 +623,40 @@ void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &devi
     }
 }
 
+void getVidPidFromDeviceId(const QString &deviceId, UsbProperties *props)
+{
+    Q_ASSERT(props);
+
+
+
+    QRegularExpressionMatch match = vidPidRegExp.match(deviceId);
+
+    if (match.hasMatch())
+    {
+        QString vid = match.captured(1);
+        QString pid = match.captured(2);
+
+
+
+        bool ok;
+
+        props->vid = vid.toUInt(&ok, 16);
+        Q_ASSERT(ok);
+
+        props->pid = pid.toUInt(&ok, 16);
+        Q_ASSERT(ok);
+
+
+
+        qDebug() << "    VID:" << vid << "(" << props->vid << ")";
+        qDebug() << "    PID:" << pid << "(" << props->pid << ")";
+    }
+    else
+    {
+        qWarning() << "Failed to find VID/PID for device id:" << deviceId;
+    }
+}
+
 bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)
 {
     Q_ASSERT(props);
@@ -767,7 +802,111 @@ void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceI
     }
 }
 
-void handleDisk2(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
+bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, QString deviceId, qint64 usbDriverIndex, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
+{
+    Q_ASSERT(props);
+
+
+
+    DEVINST   parentDeviceInstance;
+    CONFIGRET ret = CM_Locate_DevNodeA(&parentDeviceInstance, deviceId.toLatin1().data(), CM_LOCATE_DEVNODE_NORMAL);
+
+    if (ret == CR_SUCCESS)
+    {
+        DEVINST deviceInstance;
+
+        ret = CM_Get_Child(&deviceInstance, parentDeviceInstance, NO_FLAGS);
+
+        if (ret == CR_SUCCESS)
+        {
+            if (deviceInstance != deviceInfoData.DevInst)
+            {
+                while (CM_Get_Sibling(&deviceInstance, deviceInstance, 0) == CR_SUCCESS)
+                {
+                    if (deviceInstance == deviceInfoData.DevInst)
+                    {
+                        break;
+                    }
+                }
+
+                if (deviceInstance != deviceInfoData.DevInst)
+                {
+                    qCritical() << "Failed to find child device in parent";
+
+                    return false;
+                }
+            }
+
+
+
+            props->isUASP = (usbDriverIndex >= UASPSTOR_INDEX);
+
+            getVidPidFromDeviceId(deviceId, props);
+
+
+
+            QString deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
+            qDebug() << "    Device interface path:" << deviceInterfacePath;
+
+
+
+            if (deviceInterfacePath == "")
+            {
+                DEVINST grandparentDeviceInstance;
+                ret = CM_Get_Parent(&grandparentDeviceInstance, parentDeviceInstance, 0);
+
+                if (ret == CR_SUCCESS)
+                {
+                    wchar_t grandparentDeviceId[MAX_PATH];
+                    ret = CM_Get_Device_ID(grandparentDeviceInstance, grandparentDeviceId, MAX_PATH, NO_FLAGS);
+
+                    if (ret == CR_SUCCESS)
+                    {
+                        deviceId            = QString::fromWCharArray(grandparentDeviceId);
+                        deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
+                    }
+                    else
+                    {
+                        qCritical() << "CM_Get_Device_ID failed:" << ret;
+                    }
+                }
+                else
+                {
+                    qCritical() << "CM_Get_Parent failed:" << ret;
+                }
+            }
+
+
+
+            if (deviceInterfacePath != "")
+            {
+                getUsbProperties(deviceInterfacePath, deviceId, props);
+            }
+            else
+            {
+                qWarning() << "Failed to get USB properties";
+            }
+
+
+
+            return true;
+        }
+        else
+        {
+            qCritical() << "CM_Get_Child failed:" << ret;
+        }
+    }
+    else
+    {
+        qCritical() << "CM_Locate_DevNodeA failed:" << ret;
+    }
+
+
+
+    return false;
+}
+
+void handleDeviceIds(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
 {
     Q_ASSERT(props);
 
@@ -781,118 +920,9 @@ void handleDisk2(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHas
 
             for (qint64 j = 0; j < deviceIds.length(); ++j)
             {
-                QString deviceId = deviceIds.at(j);
-
-
-
-                DEVINST   parentDeviceInstance;
-                CONFIGRET ret = CM_Locate_DevNodeA(&parentDeviceInstance, deviceId.toLatin1().data(), CM_LOCATE_DEVNODE_NORMAL);
-
-                if (ret == CR_SUCCESS)
+                if (handleDeviceId(deviceIdToDeviceInterfacePathHash, deviceIds.at(j), i, deviceInfoData, props))
                 {
-                    DEVINST deviceInstance;
-
-                    ret = CM_Get_Child(&deviceInstance, parentDeviceInstance, NO_FLAGS);
-
-                    if (ret == CR_SUCCESS)
-                    {
-                        if (deviceInstance != deviceInfoData.DevInst)
-                        {
-                            while (CM_Get_Sibling(&deviceInstance, deviceInstance, 0) == CR_SUCCESS)
-                            {
-                                if (deviceInstance == deviceInfoData.DevInst)
-                                {
-                                    break;
-                                }
-                            }
-
-                            if (deviceInstance != deviceInfoData.DevInst)
-                            {
-                                qCritical() << "Failed to find child device in parent";
-
-                                continue;
-                            }
-                        }
-
-                        props->isUASP = (i >= UASPSTOR_INDEX);
-
-
-
-                        QRegularExpressionMatch match = vidPidRegExp.match(deviceId);
-
-                        if (match.hasMatch())
-                        {
-                            QString vid = match.captured(1);
-                            QString pid = match.captured(2);
-
-
-
-                            bool ok;
-
-                            props->vid = vid.toUInt(&ok, 16);
-                            Q_ASSERT(ok);
-
-                            props->pid = pid.toUInt(&ok, 16);
-                            Q_ASSERT(ok);
-
-
-
-                            qDebug() << "    VID:" << vid << "(" << props->vid << ")";
-                            qDebug() << "    PID:" << pid << "(" << props->pid << ")";
-                        }
-                        else
-                        {
-                            qWarning() << "Failed to find VID/PID for device id:" << deviceId;
-                        }
-
-
-
-                        QString deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
-                        qDebug() << "    Device interface path:" << deviceInterfacePath;
-
-
-
-                        if (deviceInterfacePath == "")
-                        {
-                            DEVINST grandparentDeviceInstance;
-                            ret = CM_Get_Parent(&grandparentDeviceInstance, parentDeviceInstance, 0);
-
-                            if (ret -= CR_SUCCESS)
-                            {
-                                wchar_t grandparentDeviceId[MAX_PATH];
-                                ret = CM_Get_Device_ID(grandparentDeviceInstance, grandparentDeviceId, MAX_PATH, NO_FLAGS);
-
-                                if (ret == CR_SUCCESS)
-                                {
-                                    deviceId            = QString::fromWCharArray(grandparentDeviceId);
-                                    deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
-                                }
-                                else
-                                {
-                                    qCritical() << "CM_Get_Parent failed:" << ret;
-                                }
-                            }
-                            else
-                            {
-                                qCritical() << "CM_Get_Parent failed:" << ret;
-                            }
-                        }
-
-
-
-                        if (deviceInterfacePath != "")
-                        {
-                            getUsbProperties(deviceInterfacePath, deviceId, props);
-                        }
-                    }
-                    else
-                    {
-                        qCritical() << "CM_Get_Child failed:" << ret;
-                    }
-                }
-                else
-                {
-                    qCritical() << "CM_Locate_DevNodeA failed:" << ret;
+                    return;
                 }
             }
         }
@@ -914,7 +944,66 @@ void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash
         handleDiskRemovalPolicy(deviceInfoSet, deviceInfoData, &props);
         handleDiskFriendlyName(deviceInfoSet, deviceInfoData);
 
-        handleDisk2(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoData, &props); // TODO: Rename
+        handleDeviceIds(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoData, &props);
+
+
+
+        if (props.isVHD)
+        {
+            qDebug() << "Found VHD device";
+        }
+        else
+        if (
+            props.isCARD
+            &&
+            (
+             !props.isUSB
+             ||
+             (
+              props.vid == 0
+              &&
+              props.pid == 0
+             )
+            )
+           )
+        {
+            qDebug() << "Found card reader device";
+        }
+        else
+        if (
+            !props.isUSB
+            &&
+            !props.isUASP
+            &&
+            props.isRemovable)
+        {
+            qDebug() << "Found non-USB removable device";
+
+            return;
+        }
+        else
+        {
+            if (
+                props.vid == 0
+                &&
+                props.pid == 0
+               )
+            {
+                if (!props.isUSB)
+                {
+                    qDebug() << "Found non-USB non-removable device";
+
+                    return;
+                }
+            }
+
+            qDebug() << "Found " << (props.isUASP ? "UAS (" : "") << usbSpeedToString(props.speed) << (props.isUASP ? ")" : "") << " device";
+
+            if (props.isLowerSpeed)
+            {
+                qDebug() << "NOTE: This device is an USB 3.0 device operating at lower speed...";
+            }
+        }
     }
     else
     {
@@ -937,6 +1026,7 @@ void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHas
 
     while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
     {
+        qDebug() << "";
         qDebug() << "Disk #" << memberIndex << "found";
 
 

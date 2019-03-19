@@ -7,6 +7,7 @@
 
 #include <QTranslator>
 
+#include "src/other/usbspeed.h"
 
 
 namespace Ui

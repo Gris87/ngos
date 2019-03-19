@@ -18,4 +18,8 @@ enum class UsbSpeed: quint8
 
 
 
+const char* usbSpeedToString(UsbSpeed speed); // TEST: NO
+
+
+
 #endif // USBSPEED_H
