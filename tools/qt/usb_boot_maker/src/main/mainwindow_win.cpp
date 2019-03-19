@@ -929,6 +929,76 @@ void handleDeviceIds(const QHash<QString, QString> &deviceIdToDeviceInterfacePat
     }
 }
 
+bool checkDeviceType(UsbProperties *props)
+{
+    Q_ASSERT(props);
+
+
+
+    if (props->isVHD)
+    {
+        qDebug() << "Found VHD device";
+    }
+    else
+    if (
+        props->isCARD
+        &&
+        (
+         !props->isUSB
+         ||
+         (
+          props->vid == 0
+          &&
+          props->pid == 0
+         )
+        )
+       )
+    {
+        qDebug() << "Found card reader device";
+    }
+    else
+    if (
+        !props->isUSB
+        &&
+        !props->isUASP
+        &&
+        props->isRemovable
+       )
+    {
+        qDebug() << "Found non-USB removable device";
+
+        return false;
+    }
+    else
+    {
+        if (
+            !props->isUSB
+            &&
+            props->vid == 0
+            &&
+            props->pid == 0
+           )
+        {
+            qDebug() << "Found non-USB non-removable device";
+
+            return false;
+        }
+
+
+
+        qDebug().nospace() << "Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ")" : "") << " device";
+
+        if (props->isLowerSpeed)
+        {
+            qDebug() << "NOTE: This device is an USB 3.0 device operating at lower speed...";
+        }
+    }
+
+
+
+    return true;
+}
+
 void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData)
 {
     UsbProperties props;
@@ -948,61 +1018,9 @@ void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash
 
 
 
-        if (props.isVHD)
+        if (checkDeviceType(&props))
         {
-            qDebug() << "Found VHD device";
-        }
-        else
-        if (
-            props.isCARD
-            &&
-            (
-             !props.isUSB
-             ||
-             (
-              props.vid == 0
-              &&
-              props.pid == 0
-             )
-            )
-           )
-        {
-            qDebug() << "Found card reader device";
-        }
-        else
-        if (
-            !props.isUSB
-            &&
-            !props.isUASP
-            &&
-            props.isRemovable)
-        {
-            qDebug() << "Found non-USB removable device";
 
-            return;
-        }
-        else
-        {
-            if (
-                props.vid == 0
-                &&
-                props.pid == 0
-               )
-            {
-                if (!props.isUSB)
-                {
-                    qDebug() << "Found non-USB non-removable device";
-
-                    return;
-                }
-            }
-
-            qDebug() << "Found " << (props.isUASP ? "UAS (" : "") << usbSpeedToString(props.speed) << (props.isUASP ? ")" : "") << " device";
-
-            if (props.isLowerSpeed)
-            {
-                qDebug() << "NOTE: This device is an USB 3.0 device operating at lower speed...";
-            }
         }
     }
     else
