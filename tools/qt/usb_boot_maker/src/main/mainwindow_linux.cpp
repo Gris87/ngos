@@ -6,9 +6,13 @@
 
 
 
-void MainWindow::updateUsbDevices()
+QList<UsbDeviceInfo *> MainWindow::getUsbDevices()
 {
+    QList<UsbDeviceInfo *> res;
+
     // TODO: Implement
+
+    return res;
 }
 
 

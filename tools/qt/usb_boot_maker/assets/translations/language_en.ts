@@ -27,49 +27,54 @@
         <translation>Device:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="116"/>
+        <location filename="../../src/main/mainwindow.ui" line="180"/>
         <source>File</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="122"/>
+        <location filename="../../src/main/mainwindow.ui" line="186"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="133"/>
+        <location filename="../../src/main/mainwindow.ui" line="197"/>
         <source>Help</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="147"/>
+        <location filename="../../src/main/mainwindow.ui" line="211"/>
         <source>Exit</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="150"/>
+        <location filename="../../src/main/mainwindow.ui" line="214"/>
         <source>Exit (Alt+X)</source>
         <translation>Exit (Alt+X)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="126"/>
+        <location filename="../../src/main/mainwindow.ui" line="190"/>
         <source>Language</source>
         <translation>Language</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="162"/>
+        <location filename="../../src/main/mainwindow.ui" line="226"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="165"/>
+        <location filename="../../src/main/mainwindow.ui" line="229"/>
         <source>About (F1)</source>
         <translation>About (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="61"/>
+        <location filename="../../src/main/mainwindow.cpp" line="69"/>
         <source>Language switched to %1</source>
         <translation>Language switched to %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="132"/>
+        <source>Found devices: %1</source>
+        <translation>Found devices: %1</translation>
     </message>
 </context>
 </TS>

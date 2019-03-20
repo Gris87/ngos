@@ -5,8 +5,10 @@
 
 #include <QMainWindow>
 
+#include <QList>
 #include <QTranslator>
 
+#include "src/other/usbdeviceinfo.h"
 #include "src/other/usbspeed.h"
 
 
@@ -34,6 +36,7 @@ private slots:
 private:
     void prepareLanguages(); // TEST: NO
     void updateUsbDevices(); // TEST: NO
+    QList<UsbDeviceInfo *> getUsbDevices(); // TEST: NO
     void addLog(const QString &text); // TEST: NO
 
     void saveWindowState(); // TEST: NO

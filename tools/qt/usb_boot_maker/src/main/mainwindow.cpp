@@ -125,6 +125,34 @@ void MainWindow::prepareLanguages()
     }
 }
 
+void MainWindow::updateUsbDevices()
+{
+    QList<UsbDeviceInfo *> usbDevices = getUsbDevices();
+
+    addLog(tr("Found devices: %1").arg(usbDevices.length()));
+
+
+
+    for (qint64 i = 0; i < ui->deviceComboBox->count(); ++i)
+    {
+        delete ui->deviceComboBox->itemData(i).value<UsbDeviceInfo *>();
+    }
+
+    ui->deviceComboBox->clear();
+
+
+
+    for (qint64 i = 0; i < usbDevices.length(); ++i)
+    {
+        UsbDeviceInfo *usbDevice = usbDevices.at(i);
+
+        QVariant data;
+        data.setValue(usbDevice);
+
+        ui->deviceComboBox->addItem(usbDevice->title, data);
+    }
+}
+
 void MainWindow::addLog(const QString &text)
 {
     ui->logTextEdit->append(text);

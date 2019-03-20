@@ -4,8 +4,11 @@
 
 #ifdef Q_OS_WIN
 
+
+
 #include <QDebug>
 #include <QRegularExpression>
+#include <QSettings>
 #include <Windows.h>
 #include <SetupAPI.h>
 #include <cfgmgr32.h>
@@ -18,6 +21,8 @@
 #define NO_FLAGS           0
 #define ZERO_SIZE          0
 #define MEMBER_INDEX_FIRST 0
+
+#define MIN_DISK_SIZE (8 * 1024 * 1024)
 
 #define USB_CARD_READER_INDEX 1
 #define UASPSTOR_INDEX        4
@@ -50,6 +55,15 @@ const QStringList genericStorageDrivers = QStringList()
     ;
 
 const QRegularExpression vidPidRegExp(".+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]+)\\\\.+");
+
+
+
+// Redefine VOLUME_DISK_EXTENTS from winioctl.h with the more space for Extents
+struct VOLUME_DISK_EXTENTS_REDEF
+{
+    DWORD NumberOfDiskExtents;
+    DISK_EXTENT Extents[8];
+};
 
 
 
@@ -127,7 +141,7 @@ void handleUsbHubInterfaceData(const HDEVINFO &deviceInfoSet, const SP_DEVINFO_D
             if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))
             {
                 QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
-                qDebug() << "    USB Hub path =" << deviceInterfacePath;
+                qDebug() << "    USB Hub path:" << deviceInterfacePath;
 
 
 
@@ -191,7 +205,7 @@ void handleUsbHubs(const HDEVINFO &deviceInfoSet, QHash<QString, QString> *devic
 
     while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
     {
-        qDebug() << "USB Hub #" << memberIndex << "found";
+        qDebug().nospace() << "USB Hub #" << memberIndex << " found";
 
 
 
@@ -935,9 +949,11 @@ bool checkDeviceType(UsbProperties *props)
 
 
 
+    qDebug() << "";
+
     if (props->isVHD)
     {
-        qDebug() << "Found VHD device";
+        qDebug() << "    Found VHD device";
     }
     else
     if (
@@ -954,7 +970,7 @@ bool checkDeviceType(UsbProperties *props)
         )
        )
     {
-        qDebug() << "Found card reader device";
+        qDebug() << "    Found card reader device";
     }
     else
     if (
@@ -965,7 +981,7 @@ bool checkDeviceType(UsbProperties *props)
         props->isRemovable
        )
     {
-        qDebug() << "Found non-USB removable device";
+        qDebug() << "    Found non-USB removable device";
 
         return false;
     }
@@ -979,18 +995,18 @@ bool checkDeviceType(UsbProperties *props)
             props->pid == 0
            )
         {
-            qDebug() << "Found non-USB non-removable device";
+            qDebug() << "    Found non-USB non-removable device";
 
             return false;
         }
 
 
 
-        qDebug().nospace() << "Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ")" : "") << " device";
+        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ")" : "") << " device";
 
         if (props->isLowerSpeed)
         {
-            qDebug() << "NOTE: This device is an USB 3.0 device operating at lower speed...";
+            qDebug() << "    NOTE: This device is an USB 3.0 device operating at lower speed...";
         }
     }
 
@@ -999,8 +1015,439 @@ bool checkDeviceType(UsbProperties *props)
     return true;
 }
 
-void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData)
+DWORD getDiskNumber(const HANDLE &deviceHandle)
 {
+    VOLUME_DISK_EXTENTS_REDEF DiskExtents;
+    STORAGE_DEVICE_NUMBER     DeviceNumber;
+    DWORD                     size;
+
+
+
+    if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &DiskExtents, sizeof(DiskExtents), &size, nullptr))
+    {
+        // qDebug() << "        NumberOfDiskExtents:" << DiskExtents.NumberOfDiskExtents;
+
+        if (DiskExtents.NumberOfDiskExtents == 1)
+        {
+            return DiskExtents.Extents[0].DiskNumber;
+        }
+        else
+        {
+            qWarning() << "Ignoring disk since it belongs to RAID array";
+        }
+    }
+    else
+    if (DeviceIoControl(deviceHandle, IOCTL_STORAGE_GET_DEVICE_NUMBER, nullptr, ZERO_SIZE, &DeviceNumber, sizeof(DeviceNumber), &size, nullptr))
+    {
+        return DeviceNumber.DeviceNumber;
+    }
+    else
+    {
+        qCritical() << "Failed to get device number";
+    }
+
+
+
+    return -1;
+}
+
+HANDLE getDiskHandle(DWORD diskNumber)
+{
+    QString diskPath = "\\\\.\\PhysicalDrive" + QString::number(diskNumber);
+
+    return CreateFileA(diskPath.toLatin1().constData(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+}
+
+quint64 getDiskSize(DWORD diskNumber)
+{
+    quint64 res = 0;
+
+
+
+    HANDLE diskHandle = getDiskHandle(diskNumber);
+
+    if (diskHandle != INVALID_HANDLE_VALUE)
+    {
+        DWORD size;
+        BYTE  geometry[256];
+
+        if (
+            DeviceIoControl(diskHandle, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, nullptr, ZERO_SIZE, geometry, sizeof(geometry), &size, nullptr)
+            &&
+            size > 0
+           )
+        {
+            res = ((DISK_GEOMETRY_EX *)geometry)->DiskSize.QuadPart;
+        }
+
+
+
+        if (!CloseHandle(diskHandle))
+        {
+            qCritical() << "CloseHandle failed:" << GetLastError();
+        }
+    }
+
+
+
+    return res;
+}
+
+QString diskSizeHumanReadable(quint64 diskSize)
+{
+    if (diskSize >= 1000000000000)
+    {
+        return QString::number((quint64)floor(diskSize / 1000000000000.0)) + "TB";
+    }
+
+    if (diskSize >= 1000000000)
+    {
+        return QString::number((quint64)floor(diskSize / 1000000000.0)) + "GB";
+    }
+
+    return QString::number((quint64)floor(diskSize / 1000000.0)) + "MB";
+}
+
+void getDriveLetters(DWORD diskNumber, char *letters)
+{
+    Q_ASSERT(letters);
+
+
+
+    char *curLetter = &letters[0];
+
+
+
+    char drives[128];
+
+    DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);
+
+    if (size > 0 && size <= sizeof(drives))
+    {
+        for (char *drive = drives; *drive; drive += strlen(drive) + 1)
+        {
+            drive[0] = QChar::toUpper(drive[0]);
+
+            if (drive[0] < 'A' || drive[0] > 'Z')
+            {
+                continue;
+            }
+
+
+
+            UINT driveType = GetDriveTypeA(drive);
+
+            if (
+                driveType != DRIVE_REMOVABLE
+                &&
+                driveType != DRIVE_FIXED
+               )
+            {
+                continue;
+            }
+
+
+
+            QString logicalDrivePath = QString("\\\\.\\%1:").arg(drive[0]);
+
+            HANDLE driveHandle = CreateFileA(logicalDrivePath.toLatin1().constData(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+            if (driveHandle != INVALID_HANDLE_VALUE)
+            {
+                if (getDiskNumber(driveHandle) == diskNumber)
+                {
+                    *curLetter = drive[0];
+                    ++curLetter;
+                }
+
+
+
+                if (!CloseHandle(driveHandle))
+                {
+                    qCritical() << "CloseHandle failed:" << GetLastError();
+                }
+            }
+        }
+    }
+    else
+    {
+        qCritical() << "size is invalid";
+    }
+
+
+
+    *curLetter = 0;
+}
+
+QString driveLettersHumanReadable(DWORD diskNumber, char *letters)
+{
+    if (letters[0] == 0)
+    {
+        return "Disk " + QString::number(diskNumber);
+    }
+
+
+
+    QString res;
+
+    for (char *letter = letters; *letter; ++letter)
+    {
+        if (letter != letters)
+        {
+            res += ' ';
+        }
+
+        res += QString("%1:").arg(letter);
+    }
+
+    return res;
+}
+
+QString getDiskLabel(DWORD diskNumber, char *letters)
+{
+    if (letters[0]) // letters[0] != 0
+    {
+        QString autorunLabel;
+
+
+
+        HANDLE diskHandle = getDiskHandle(diskNumber);
+
+        if (diskHandle != INVALID_HANDLE_VALUE)
+        {
+            DWORD size;
+
+            if (DeviceIoControl(diskHandle, IOCTL_STORAGE_CHECK_VERIFY, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
+            {
+                QSettings settings(QString("%1:/autorun.inf").arg(letters[0]), QSettings::IniFormat);
+
+                settings.beginGroup("autorun");
+                autorunLabel = settings.value("label", "").toString();
+                settings.endGroup();
+            }
+            else
+            {
+                qWarning() << "DeviceIoControl failed:" << GetLastError();
+            }
+
+
+
+            if (!CloseHandle(diskHandle))
+            {
+                qCritical() << "CloseHandle failed:" << GetLastError();
+            }
+        }
+
+
+
+        if (autorunLabel != "")
+        {
+            return autorunLabel;
+        }
+
+
+
+        wchar_t volumeLabel[MAX_PATH];
+        wchar_t drivePath[] = { (wchar_t)letters[0], ':', '\\', 0 };
+
+        if (GetVolumeInformation(drivePath, volumeLabel, sizeof(volumeLabel), nullptr, nullptr, nullptr, nullptr, ZERO_SIZE))
+        {
+            QString volumeLabelString = QString::fromWCharArray(volumeLabel);
+
+            if (volumeLabelString != "")
+            {
+                return volumeLabelString;
+            }
+        }
+        else
+        {
+            qWarning() << "DeviceIoControl failed:" << GetLastError();
+        }
+    }
+
+
+
+    return "NO_LABEL";
+}
+
+void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *usbDevices)
+{
+    Q_ASSERT(deviceHandle != INVALID_HANDLE_VALUE);
+    Q_ASSERT(usbDevices);
+
+
+
+    DWORD diskNumber = getDiskNumber(deviceHandle);
+
+    qDebug() << "        Disk number:" << diskNumber;
+
+
+
+    quint64 diskSize = getDiskSize(diskNumber);
+
+    qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB";
+
+    if (diskSize == 0)
+    {
+        qCritical() << "Device without media";
+
+        return;
+    }
+
+    if (diskSize < MIN_DISK_SIZE)
+    {
+        qCritical() << "Disk is too small";
+
+        return;
+    }
+
+
+
+    char driveLetters[27];
+
+    getDriveLetters(diskNumber, driveLetters);
+
+    qDebug() << "        Drive letters:" << driveLetters;
+
+
+
+    QString diskLabel = getDiskLabel(diskNumber, driveLetters);
+
+    qDebug() << "        Disk label:" << diskLabel;
+
+
+
+    UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();
+
+    deviceInfo->title = QString("%1 (%2) [%3]").arg(diskLabel).arg(driveLettersHumanReadable(diskNumber, driveLetters)).arg(diskSizeHumanReadable(diskSize));
+
+    usbDevices->append(deviceInfo);
+}
+
+void handleDiskDeviceInterfacePath(const QString &deviceInterfacePath, QList<UsbDeviceInfo *> *usbDevices)
+{
+    Q_ASSERT(usbDevices);
+
+
+
+    HANDLE deviceHandle = CreateFileA(deviceInterfacePath.toLatin1().constData(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+    if (deviceHandle != INVALID_HANDLE_VALUE)
+    {
+        handleDiskDeviceHandle(deviceHandle, usbDevices);
+
+
+
+        if (!CloseHandle(deviceHandle))
+        {
+            qCritical() << "CloseHandle failed:" << GetLastError();
+        }
+    }
+    else
+    {
+        qCritical() << "CreateFileA failed:" << GetLastError();
+    }
+}
+
+void handleDiskInterfaceData(const HDEVINFO &deviceInfoSet, SP_DEVICE_INTERFACE_DATA &deviceInterfaceData, QList<UsbDeviceInfo *> *usbDevices)
+{
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
+    Q_ASSERT(usbDevices);
+
+
+
+    DWORD requiredSize;
+
+    if (
+        !SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, nullptr, ZERO_SIZE, &requiredSize, nullptr)
+        &&
+        GetLastError() == ERROR_INSUFFICIENT_BUFFER
+       )
+    {
+        SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData = (SP_DEVICE_INTERFACE_DETAIL_DATA_W *)malloc(requiredSize);
+
+        if (deviceInterfaceDetailData)
+        {
+            deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
+
+            if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))
+            {
+                QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
+                qDebug() << "        Disk path:" << deviceInterfacePath;
+
+
+
+                handleDiskDeviceInterfacePath(deviceInterfacePath, usbDevices);
+            }
+            else
+            {
+                qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
+            }
+
+
+
+            free(deviceInterfaceDetailData);
+        }
+        else
+        {
+            qCritical() << "malloc failed";
+        }
+    }
+    else
+    {
+        qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
+    }
+}
+
+void handleDiskInterfaces(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QList<UsbDeviceInfo *> *usbDevices)
+{
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
+    Q_ASSERT(usbDevices);
+
+
+
+    SP_DEVICE_INTERFACE_DATA deviceInterfaceData;
+    deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
+
+
+
+    DWORD memberIndex = 0;
+
+    do
+    {
+        if (!SetupDiEnumDeviceInterfaces(deviceInfoSet, &deviceInfoData, &DISK_GUID, memberIndex, &deviceInterfaceData))
+        {
+            if (GetLastError() == ERROR_NO_MORE_ITEMS)
+            {
+                qWarning() << "Device interface not found for the disk";
+            }
+            else
+            {
+                qCritical() << "SetupDiEnumDeviceInterfaces failed:" << GetLastError();
+            }
+
+            break;
+        }
+
+
+
+        qDebug() << "";
+        qDebug().nospace() << "    Disk interface #" << memberIndex << " found";
+
+
+
+        handleDiskInterfaceData(deviceInfoSet, deviceInterfaceData, usbDevices);
+
+        ++memberIndex;
+    } while(true);
+}
+
+void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QList<UsbDeviceInfo *> *usbDevices)
+{
+    Q_ASSERT(usbDevices);
+
+
+
     UsbProperties props;
     memset(&props, 0, sizeof(UsbProperties));
 
@@ -1020,7 +1467,7 @@ void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash
 
         if (checkDeviceType(&props))
         {
-
+            handleDiskInterfaces(deviceInfoSet, deviceInfoData, usbDevices);
         }
     }
     else
@@ -1029,9 +1476,10 @@ void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash
     }
 }
 
-void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet)
+void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, QList<UsbDeviceInfo *> *usbDevices)
 {
     Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
+    Q_ASSERT(usbDevices);
 
 
 
@@ -1045,18 +1493,22 @@ void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHas
     while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
     {
         qDebug() << "";
-        qDebug() << "Disk #" << memberIndex << "found";
+        qDebug().nospace() << "Disk #" << memberIndex << " found";
 
 
 
-        handleDisk(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, deviceInfoData);
+        handleDisk(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, deviceInfoData, usbDevices);
 
         ++memberIndex;
     }
 }
 
-void updateDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash)
+void updateDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, QList<UsbDeviceInfo *> *usbDevices)
 {
+    Q_ASSERT(usbDevices);
+
+
+
     QList<QStringList> deviceIdList;
 
     getDeviceIdList(&deviceIdList);
@@ -1067,7 +1519,7 @@ void updateDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHas
 
     if (deviceInfoSet != INVALID_HANDLE_VALUE)
     {
-        handleDisks(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet);
+        handleDisks(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, usbDevices);
 
 
 
@@ -1082,15 +1534,7 @@ void updateDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHas
     }
 }
 
-void getDevices()
-{
-    QHash<QString, QString> deviceIdToDeviceInterfacePathHash;
-
-    updateUsbs(&deviceIdToDeviceInterfacePathHash);
-    updateDisks(deviceIdToDeviceInterfacePathHash);
-}
-
-void MainWindow::updateUsbDevices()
+QList<UsbDeviceInfo *> MainWindow::getUsbDevices()
 {
     Q_ASSERT(USB_CARD_READER_INDEX == usbStorageDrivers.indexOf("USBSTOR") + 1);
     Q_ASSERT(UASPSTOR_INDEX        == usbStorageDrivers.indexOf("UASPSTOR"));
@@ -1098,7 +1542,18 @@ void MainWindow::updateUsbDevices()
 
 
 
-    getDevices();
+    QList<UsbDeviceInfo *> res;
+
+
+
+    QHash<QString, QString> deviceIdToDeviceInterfacePathHash;
+
+    updateUsbs(&deviceIdToDeviceInterfacePathHash);
+    updateDisks(deviceIdToDeviceInterfacePathHash, &res);
+
+
+
+    return res;
 }
 
 
