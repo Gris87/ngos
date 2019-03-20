@@ -9,7 +9,9 @@
 #include <QDebug>
 #include <QRegularExpression>
 #include <QSettings>
+#include <QTimer>
 #include <Windows.h>
+#include <Dbt.h>
 #include <SetupAPI.h>
 #include <cfgmgr32.h>
 #include <usbioctl.h>
@@ -66,6 +68,38 @@ struct VOLUME_DISK_EXTENTS_REDEF
 };
 
 
+
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
+{
+    MSG *msg = (MSG *)message;
+
+    switch (msg->message)
+    {
+        case WM_DEVICECHANGE:
+        {
+            switch (msg->wParam)
+            {
+                case DBT_DEVICEARRIVAL:
+                case DBT_DEVICEREMOVECOMPLETE:
+                case DBT_DEVNODES_CHANGED:
+                {
+                    mUpdateTimer.stop();
+                    mUpdateTimer.start(1000);
+                }
+                break;
+
+                default:
+                {
+                    qCritical() << "Unexpected wParam:" << msg->wParam;
+                }
+                break;
+            }
+        }
+        break;
+    }
+
+    return QMainWindow::nativeEvent(eventType, message, result);
+}
 
 void handleUsbHubChildren(const SP_DEVINFO_DATA &deviceInfoData, const QString &deviceInterfacePath, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
 {

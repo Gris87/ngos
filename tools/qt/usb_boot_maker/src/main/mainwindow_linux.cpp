@@ -6,6 +6,11 @@
 
 
 
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
+{
+    return QMainWindow::nativeEvent(eventType, message, result);
+}
+
 QList<UsbDeviceInfo *> MainWindow::getUsbDevices()
 {
     QList<UsbDeviceInfo *> res;

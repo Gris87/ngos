@@ -6,6 +6,7 @@
 #include <QMainWindow>
 
 #include <QList>
+#include <QTimer>
 #include <QTranslator>
 
 #include "src/other/usbdeviceinfo.h"
@@ -27,15 +28,18 @@ public:
     explicit MainWindow(QWidget *parent = 0); // TEST: NO
     ~MainWindow(); // TEST: NO
 
+protected:
+    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+
 private slots:
     void on_actionExit_triggered(); // TEST: NO
     void on_actionAbout_triggered(); // TEST: NO
 
     void languageToggled(bool checked); // TEST: NO
+    void updateUsbDevices(); // TEST: NO
 
 private:
     void prepareLanguages(); // TEST: NO
-    void updateUsbDevices(); // TEST: NO
     QList<UsbDeviceInfo *> getUsbDevices(); // TEST: NO
     void addLog(const QString &text); // TEST: NO
 
@@ -46,6 +50,7 @@ private:
     QTranslator               *mTranslator;
     QString                    mLanguage;
     QHash<QString, QAction *>  mLanguageActions;
+    QTimer                     mUpdateTimer;
 };
 
 

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDateTime>
 #include <QDebug>
 #include <QDir>
 #include <QSettings>
@@ -21,6 +22,11 @@ MainWindow::MainWindow(QWidget *parent)
     prepareLanguages();
 
     loadWindowState();
+
+
+
+    mUpdateTimer.setSingleShot(true);
+    connect(&mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateUsbDevices()));
 
 
 
@@ -67,6 +73,41 @@ void MainWindow::languageToggled(bool checked)
 
 
         addLog(tr("Language switched to %1").arg(action->text()));
+    }
+}
+
+void MainWindow::updateUsbDevices()
+{
+    mUpdateTimer.stop();
+
+
+
+    QList<UsbDeviceInfo *> usbDevices = getUsbDevices();
+
+    qDebug() << "";
+    qDebug() << "Found devices:" << usbDevices.length();
+
+    addLog(tr("Found devices: %1").arg(usbDevices.length()));
+
+
+
+    for (qint64 i = 0; i < ui->deviceComboBox->count(); ++i)
+    {
+        delete ui->deviceComboBox->itemData(i).value<UsbDeviceInfo *>();
+    }
+
+    ui->deviceComboBox->clear();
+
+
+
+    for (qint64 i = 0; i < usbDevices.length(); ++i)
+    {
+        UsbDeviceInfo *usbDevice = usbDevices.at(i);
+
+        QVariant data;
+        data.setValue(usbDevice);
+
+        ui->deviceComboBox->addItem(usbDevice->title, data);
     }
 }
 
@@ -122,34 +163,6 @@ void MainWindow::prepareLanguages()
 
 
         mLanguageActions.insert(language, languageItem);
-    }
-}
-
-void MainWindow::updateUsbDevices()
-{
-    QList<UsbDeviceInfo *> usbDevices = getUsbDevices();
-
-    addLog(tr("Found devices: %1").arg(usbDevices.length()));
-
-
-
-    for (qint64 i = 0; i < ui->deviceComboBox->count(); ++i)
-    {
-        delete ui->deviceComboBox->itemData(i).value<UsbDeviceInfo *>();
-    }
-
-    ui->deviceComboBox->clear();
-
-
-
-    for (qint64 i = 0; i < usbDevices.length(); ++i)
-    {
-        UsbDeviceInfo *usbDevice = usbDevices.at(i);
-
-        QVariant data;
-        data.setValue(usbDevice);
-
-        ui->deviceComboBox->addItem(usbDevice->title, data);
     }
 }
 
