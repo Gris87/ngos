@@ -67,12 +67,24 @@
         <translation>О программе (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="69"/>
+        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <source>Format disk</source>
+        <translation>Форматирование диска</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <source>Do you really want to format disk &quot;%1&quot;?
+All data on the device will be destroyed!</source>
+        <translation>Вы действительно хотите отформатировать диск &quot;%1&quot;?
+Это действие удалит все данные с устройства!</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="83"/>
         <source>Language switched to %1</source>
         <translation>Язык изменен на %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="132"/>
+        <location filename="../../src/main/mainwindow.cpp" line="98"/>
         <source>Found devices: %1</source>
         <translation>Найдено устройств: %1</translation>
     </message>

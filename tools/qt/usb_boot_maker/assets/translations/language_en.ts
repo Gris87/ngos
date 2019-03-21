@@ -67,12 +67,24 @@
         <translation>About (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="69"/>
+        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <source>Format disk</source>
+        <translation>Format disk</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <source>Do you really want to format disk &quot;%1&quot;?
+All data on the device will be destroyed!</source>
+        <translation>Do you really want to format disk &quot;%1&quot;?
+All data on the device will be destroyed!</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="83"/>
         <source>Language switched to %1</source>
         <translation>Language switched to %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="132"/>
+        <location filename="../../src/main/mainwindow.cpp" line="98"/>
         <source>Found devices: %1</source>
         <translation>Found devices: %1</translation>
     </message>
