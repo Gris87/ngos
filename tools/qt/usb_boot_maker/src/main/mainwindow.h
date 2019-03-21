@@ -34,6 +34,7 @@ protected:
 private slots:
     void on_actionExit_triggered(); // TEST: NO
     void on_actionAbout_triggered(); // TEST: NO
+    void on_startButton_clicked(); // TEST: NO
 
     void languageToggled(bool checked); // TEST: NO
     void updateUsbDevices(); // TEST: NO

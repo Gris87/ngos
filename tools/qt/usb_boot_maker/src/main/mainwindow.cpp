@@ -1,9 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QDateTime>
 #include <QDebug>
 #include <QDir>
+#include <QMessageBox>
 #include <QSettings>
 
 #include "src/main/aboutdialog.h"
@@ -49,6 +49,14 @@ void MainWindow::on_actionAbout_triggered()
 {
     AboutDialog dialog(this);
     dialog.exec();
+}
+
+void MainWindow::on_startButton_clicked()
+{
+    if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok)
+    {
+        ui->startButton->setIcon(QIcon(":/assets/images/stop.png"));
+    }
 }
 
 void MainWindow::languageToggled(bool checked)
@@ -109,6 +117,10 @@ void MainWindow::updateUsbDevices()
 
         ui->deviceComboBox->addItem(usbDevice->title, data);
     }
+
+
+
+    ui->startButton->setEnabled(usbDevices.length() > 0);
 }
 
 void MainWindow::prepareLanguages()

@@ -83,8 +83,10 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *r
                 case DBT_DEVICEREMOVECOMPLETE:
                 case DBT_DEVNODES_CHANGED:
                 {
-                    mUpdateTimer.stop();
-                    mUpdateTimer.start(1000);
+                    if (!mUpdateTimer.isActive())
+                    {
+                        mUpdateTimer.start(1000);
+                    }
                 }
                 break;
 
@@ -1231,7 +1233,7 @@ QString driveLettersHumanReadable(DWORD diskNumber, char *letters)
             res += ' ';
         }
 
-        res += QString("%1:").arg(letter);
+        res += QString("%1:").arg(*letter);
     }
 
     return res;
