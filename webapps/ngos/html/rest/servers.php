@@ -50,13 +50,14 @@
 
             if (!$result)
             {
-                $link_error = $link->error;
-                error_log("SQL Failed: " . $sql . " Error: " . $link_error);
-
+                $error_details = "SQL Failed: " . $sql . " Error: " . $link->error;
+                error_log($error_details);
+                
                 db_disconnect($link);
-
+                
                 $data["message"] = "Database error";
-                $data["details"] = $link_error;
+                $data["details"] = $error_details;
+                
                 die(json_encode($data));
             }
 
@@ -83,6 +84,7 @@
         else
         {
             $data["message"] = "Database error";
+            
             die(json_encode($data));
         }
     }

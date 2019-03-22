@@ -22,6 +22,13 @@
             die("Unknown method");
         }
     }
+    
+    
+    
+    function handle_get()
+    {
+        // Nothing
+    }
 
 
 
@@ -67,13 +74,6 @@
         {
             error_log("Failed to get response from server: " . $server_url);
         }
-    }
-
-
-
-    function handle_get()
-    {
-        // Nothing
     }
 
 
