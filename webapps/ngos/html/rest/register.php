@@ -115,7 +115,7 @@
 
 
 
-    function handle_post_internal($link)
+    function handle_post_internal($link, $data)
     {
         $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_SERVERS"]
             . " (address)"
@@ -186,7 +186,7 @@
             }
             else
             {
-                handle_post_internal($link);
+                handle_post_internal($link, $data);
             }
 
 
