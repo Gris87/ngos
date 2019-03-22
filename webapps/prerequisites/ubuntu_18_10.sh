@@ -106,6 +106,7 @@ apt-get install -y ssl-cert
 make-ssl-cert generate-default-snakeoil --force-overwrite
 
 a2enmod ssl
+a2enmod rewrite
 a2ensite default-ssl
 
 
@@ -116,7 +117,8 @@ echo ""
 
 
 
-sed -i "s/Options Indexes/Options/g" /etc/apache2/apache2.conf
+sed -i "s/Options Indexes/Options/g"              /etc/apache2/apache2.conf
+sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
 rm /var/www/html/index.html 2> /dev/null
 

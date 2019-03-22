@@ -46,7 +46,9 @@ fi
 
 
 
-cp -r html/* /var/www/html/
+mysql -u root < mariadb/create.sql
+
+cp -r html/. /var/www/html
 
 
 
