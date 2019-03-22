@@ -12,7 +12,7 @@
 
 
 
-if [ $EUID -ne 0 ]; then
+if [ ${EUID} -ne 0 ]; then
     echo "Please run as root"
 
     exit 1

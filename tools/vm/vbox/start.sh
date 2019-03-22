@@ -106,7 +106,7 @@ sleep 1
 tail -f -n +1 "logs/${VM_NAME}.log" |
     while IFS= read -r line
     do
-        echo "$line"
+        echo "${line}"
     done
 
 

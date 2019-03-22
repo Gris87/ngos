@@ -31,7 +31,7 @@ QT_VERSION=5.12.1
 
 
 
-if [ $EUID -ne 0 ]; then
+if [ ${EUID} -ne 0 ]; then
     echo "Please run as root"
 
     exit 1
@@ -99,7 +99,7 @@ npm i markdown-spellcheck -g || exit 1
 
 export PREFIX="/usr/local/x8664elfgcc"
 export TARGET=x86_64-elf
-export PATH="$PREFIX/bin:$PATH"
+export PATH="${PREFIX}/bin:${PATH}"
 
 
 
@@ -142,7 +142,7 @@ fi
 
 mkdir binutils-build
 cd binutils-build
-../binutils-${BINUTILS_VERSION}/configure --prefix=$PREFIX --target=$TARGET --disable-werror 2>&1 | tee configure.log || exit 1
+../binutils-${BINUTILS_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --disable-werror 2>&1 | tee configure.log || exit 1
 make -j`nproc` all 2>&1 | tee make.log || exit 1
 make install || exit 1
 
@@ -167,7 +167,7 @@ contrib/download_prerequisites
 cd ..
 mkdir gcc-build
 cd gcc-build
-../gcc-${GCC_VERSION}/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ | tee configure.log || exit 1
+../gcc-${GCC_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --enable-languages=c,c++ | tee configure.log || exit 1
 make -j`nproc` all-gcc 2>&1 | tee make-gcc.log || exit 1
 make install-gcc || exit 1
 make -j`nproc` all-target-libgcc 2>&1 | tee make-libgcc.log || exit 1
@@ -382,8 +382,8 @@ echo ""
 
 cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" | grep -v "/opt/rh/devtoolset-8/enable" > /home/${USER}/temp
 mv /home/${USER}/temp /home/${USER}/.bashrc
-echo "export PATH=/usr/local/x8664elfgcc/bin:\$PATH"    >> /home/${USER}/.bashrc
-echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\$PATH" >> /home/${USER}/.bashrc
+echo "export PATH=/usr/local/x8664elfgcc/bin:\${PATH}"    >> /home/${USER}/.bashrc
+echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\${PATH}" >> /home/${USER}/.bashrc
 echo "source /opt/rh/devtoolset-8/enable"               >> /home/${USER}/.bashrc
 chown ${USER}:${USER} /home/${USER}/.bashrc
 

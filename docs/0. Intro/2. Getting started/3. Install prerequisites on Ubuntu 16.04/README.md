@@ -31,23 +31,23 @@ After this run commands with your user account:
 ```sh
 vncserver
 
-echo '#!/bin/sh'                                                                       >  ~/.vnc/xstartup
-echo ""                                                                                >> ~/.vnc/xstartup
-echo "# Uncomment the following two lines for normal desktop:"                         >> ~/.vnc/xstartup
-echo "# unset SESSION_MANAGER"                                                         >> ~/.vnc/xstartup
-echo "# exec /etc/X11/xinit/xinitrc"                                                   >> ~/.vnc/xstartup
-echo ""                                                                                >> ~/.vnc/xstartup
-echo "[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup"                              >> ~/.vnc/xstartup
-echo "[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources"                              >> ~/.vnc/xstartup
-echo "xsetroot -solid grey"                                                            >> ~/.vnc/xstartup
-echo "vncconfig -iconic &"                                                             >> ~/.vnc/xstartup
-echo "x-terminal-emulator -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" &" >> ~/.vnc/xstartup
-echo "x-window-manager &"                                                              >> ~/.vnc/xstartup
-echo ""                                                                                >> ~/.vnc/xstartup
-echo "gnome-panel &"                                                                   >> ~/.vnc/xstartup
-echo "gnome-settings-daemon &"                                                         >> ~/.vnc/xstartup
-echo "metacity &"                                                                      >> ~/.vnc/xstartup
-echo "nautilus &"                                                                      >> ~/.vnc/xstartup
+echo '#!/bin/sh'                                                                            >  ~/.vnc/xstartup
+echo ""                                                                                     >> ~/.vnc/xstartup
+echo "# Uncomment the following two lines for normal desktop:"                              >> ~/.vnc/xstartup
+echo "# unset SESSION_MANAGER"                                                              >> ~/.vnc/xstartup
+echo "# exec /etc/X11/xinit/xinitrc"                                                        >> ~/.vnc/xstartup
+echo ""                                                                                     >> ~/.vnc/xstartup
+echo "[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup"                                   >> ~/.vnc/xstartup
+echo "[ -r ${HOME}/.Xresources ] && xrdb ${HOME}/.Xresources"                               >> ~/.vnc/xstartup
+echo "xsetroot -solid grey"                                                                 >> ~/.vnc/xstartup
+echo "vncconfig -iconic &"                                                                  >> ~/.vnc/xstartup
+echo "x-terminal-emulator -geometry 80x24+10+10 -ls -title \"\${VNCDESKTOP} Desktop\" &"    >> ~/.vnc/xstartup
+echo "x-window-manager &"                                                                   >> ~/.vnc/xstartup
+echo ""                                                                                     >> ~/.vnc/xstartup
+echo "gnome-panel &"                                                                        >> ~/.vnc/xstartup
+echo "gnome-settings-daemon &"                                                              >> ~/.vnc/xstartup
+echo "metacity &"                                                                           >> ~/.vnc/xstartup
+echo "nautilus &"                                                                           >> ~/.vnc/xstartup
 
 vncserver -kill :1
 vncserver

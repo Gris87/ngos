@@ -24,15 +24,15 @@ After this run commands with your user account:
 ```sh
 vncserver
 
-echo '#!/bin/sh'                                                                       >  ~/.vnc/xstartup
-echo ""                                                                                >> ~/.vnc/xstartup
-echo "# Uncomment the following two lines for normal desktop:"                         >> ~/.vnc/xstartup
-echo "# unset SESSION_MANAGER"                                                         >> ~/.vnc/xstartup
-echo "# exec /etc/X11/xinit/xinitrc"                                                   >> ~/.vnc/xstartup
-echo ""                                                                                >> ~/.vnc/xstartup
-echo "[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup"                              >> ~/.vnc/xstartup
-echo "[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources"                              >> ~/.vnc/xstartup
-echo "startxfce4 &"                                                                    >> ~/.vnc/xstartup
+echo '#!/bin/sh'                                                >  ~/.vnc/xstartup
+echo ""                                                         >> ~/.vnc/xstartup
+echo "# Uncomment the following two lines for normal desktop:"  >> ~/.vnc/xstartup
+echo "# unset SESSION_MANAGER"                                  >> ~/.vnc/xstartup
+echo "# exec /etc/X11/xinit/xinitrc"                            >> ~/.vnc/xstartup
+echo ""                                                         >> ~/.vnc/xstartup
+echo "[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup"       >> ~/.vnc/xstartup
+echo "[ -r ${HOME}/.Xresources ] && xrdb ${HOME}/.Xresources"   >> ~/.vnc/xstartup
+echo "startxfce4 &"                                             >> ~/.vnc/xstartup
 
 vncserver -kill :1
 vncserver
