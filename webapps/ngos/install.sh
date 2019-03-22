@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script helps to install webapps
+# This script helps to install NGOS webapp
 # Author: Maxim Shvecov
 # Usage: sudo ./install.sh
 
@@ -33,7 +33,7 @@ fi
 APACHE_VERSION=`apache2 -v`
 
 if [ "$APACHE_VERSION" == "" ]; then
-    cd prerequisites/
+    cd ../prerequisites/
     ./install.sh
     cd ${CURRENT_PATH}
 fi
@@ -46,9 +46,7 @@ fi
 
 
 
-cd ngos/
-./install.sh
-cd ${CURRENT_PATH}
+cp -r html/* /var/www/html/
 
 
 
