@@ -47,19 +47,7 @@
 
 
             $result = $link->query($sql);
-
-            if (!$result)
-            {
-                $error_details = "SQL Failed: " . $sql . " Error: " . $link->error;
-                error_log($error_details);
-                
-                db_disconnect($link);
-                
-                $data["message"] = "Database error";
-                $data["details"] = $error_details;
-                
-                die(json_encode($data));
-            }
+            die_if_sql_failed($result, $link, $data, $sql);
 
 
 
@@ -70,12 +58,11 @@
                 array_push($servers, $row[0]);
             }
 
+            $result->close();
 
 
-            $data["status"]  = "OK";
+
             $data["servers"] = $servers;
-
-            echo json_encode($data);
 
 
 
@@ -83,10 +70,15 @@
         }
         else
         {
-            $data["message"] = "Database error";
-            
+            $data["message"] = "Database connection error";
+
             die(json_encode($data));
         }
+
+
+
+        $data["status"] = "OK";
+        echo json_encode($data);
     }
 
 

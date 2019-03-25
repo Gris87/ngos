@@ -22,9 +22,9 @@
             die("Unknown method");
         }
     }
-    
-    
-    
+
+
+
     function handle_get()
     {
         // Nothing
@@ -32,7 +32,7 @@
 
 
 
-    function add_servers_from_address($link, $data, $address)
+    function add_servers_from_address($link, $data, $address, &$servers)
     {
         $server_url = "https://" . $address . "/rest/servers.php";
 
@@ -55,6 +55,8 @@
         {
             $response = json_decode($response, true);
 
+
+
             if ($response["status"] != "OK")
             {
                 $error_details = "Failed to parse response from server: " . $server_url;
@@ -68,12 +70,40 @@
                 die(json_encode($data));
             }
 
-            var_dump($response);
+
+
+            $another_servers = $response["servers"];
+
+            foreach ($another_servers as $server)
+            {
+                if (!in_array($server, $servers))
+                {
+                    array_push($servers, $server);
+
+                    add_servers_from_address($link, $data, $server, $servers);
+                }
+            }
         }
         else
         {
             error_log("Failed to get response from server: " . $server_url);
         }
+    }
+
+
+
+    function insert_server_to_db($link, $data, $address)
+    {
+        $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_SERVERS"]
+            . " (address)"
+            . " VALUES("
+            . "  '" . $link->real_escape_string($address) . "'"
+            . ")";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
     }
 
 
@@ -87,58 +117,44 @@
 
 
         $result = $link->query($sql);
-
-        if (!$result)
-        {
-            $error_details = "SQL Failed: " . $sql . " Error: " . $link->error;
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "Database error";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
+        die_if_sql_failed($result, $link, $data, $sql);
 
 
+
+        $servers = [];
 
         while ($row = $result->fetch_row())
         {
-            add_servers_from_address($link, $data, $row[0]);
+            array_push($servers, $row[0]);
+        }
+
+        $result->close();
+
+
+
+        $original_servers = $servers;
+
+        foreach ($original_servers as $server)
+        {
+            add_servers_from_address($link, $data, $server, $servers);
         }
 
 
 
-        $result->close();
+        foreach ($servers as $server)
+        {
+            if (!in_array($server, $original_servers))
+            {
+                insert_server_to_db($link, $data, $server);
+            }
+        }
     }
 
 
 
     function handle_post_internal($link, $data)
     {
-        $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_SERVERS"]
-            . " (address)"
-            . " VALUES("
-            . "  '" . $link->real_escape_string($_SERVER["REMOTE_ADDR"]) . "'"
-            . ")";
-
-
-
-        $result = $link->query($sql);
-
-        if (!$result)
-        {
-            $error_details = "SQL Failed: " . $sql . " Error: " . $link->error;
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "Database error";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
+        insert_server_to_db($link, $data, $_SERVER["REMOTE_ADDR"]);
     }
 
 
@@ -195,7 +211,7 @@
         }
         else
         {
-            $data["message"] = "Database error";
+            $data["message"] = "Database connection error";
 
             die(json_encode($data));
         }
