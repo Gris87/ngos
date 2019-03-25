@@ -13,7 +13,7 @@
 
 
 CURRENT_PATH=`pwd`
-FIRST_SERVER_ADDRESS=10.83.230.9
+FIRST_SERVER_ADDRESS=cps-etl-srv.northeurope.cloudapp.azure.com
 
 
 
