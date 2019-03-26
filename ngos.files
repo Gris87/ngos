@@ -1300,9 +1300,9 @@ webapps/ngos/html/common/functions.php
 webapps/ngos/html/index.php
 webapps/ngos/html/rest/appinfo.php
 webapps/ngos/html/rest/deploy.php
-webapps/ngos/html/rest/register.php
-webapps/ngos/html/rest/servers.php
 webapps/ngos/install.sh
+webapps/ngos/register.sh
+webapps/ngos/setup_secret_key.sh
 webapps/ngos/mariadb/create.sql
 webapps/prerequisites/centos_7_6.sh
 webapps/prerequisites/install.sh

@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS properties
 (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(256) NOT NULL UNIQUE,
-    value VARCHAR(256) NOT NULL
+    value VARCHAR(1024) NOT NULL
 ) engine=InnoDB default character set latin1;
 
 
@@ -28,5 +28,6 @@ CREATE TABLE IF NOT EXISTS properties
 CREATE TABLE IF NOT EXISTS servers
 (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    address VARCHAR(256) NOT NULL UNIQUE
+    address VARCHAR(256) NOT NULL UNIQUE,
+    secret_key VARCHAR(1024) NULL
 ) engine=InnoDB default character set latin1;

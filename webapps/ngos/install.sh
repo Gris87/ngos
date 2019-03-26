@@ -49,10 +49,10 @@ fi
 
 mysql -u root < mariadb/create.sql
 
-FIRST_SERVER=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address=\"${FIRST_SERVER_ADDRESS}\";"`
+FIRST_SERVER=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address='${FIRST_SERVER_ADDRESS}';"`
 
 if [ "${FIRST_SERVER}" == "" ]; then
-    mysql -u root -D ngos -e "INSERT INTO servers (address) VALUES (\"${FIRST_SERVER_ADDRESS}\");"
+    mysql -u root -D ngos -e "INSERT INTO servers (address) VALUES ('${FIRST_SERVER_ADDRESS}');"
 fi
 
 
