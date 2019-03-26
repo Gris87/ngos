@@ -6,8 +6,9 @@
 
 
 
-BuildConfigMaker::BuildConfigMaker(const QString &buildConfigPath, QMap<QString, QString> parameters)
+BuildConfigMaker::BuildConfigMaker(const QString &buildConfigPath, bool reset, QMap<QString, QString> parameters)
     : mBuildConfigPath(buildConfigPath)
+    , mReset(reset)
     , mParameters(parameters)
 {
     // Nothing
@@ -38,6 +39,29 @@ qint64 BuildConfigMaker::process()
         if (line.endsWith('\r'))
         {
             line.remove(line.length() - 1, 1);
+        }
+    }
+
+
+
+    if (mReset)
+    {
+        QString defaultValue;
+
+        for (qint64 i = 0; i < lines.length(); ++i)
+        {
+            QString &line = lines[i];
+
+            if (line.startsWith(" *** Default: "))
+            {
+                defaultValue = line.mid(14);
+            }
+            else
+            if (line.startsWith("#define ") && defaultValue != "")
+            {
+                line = line.left(line.lastIndexOf(' ') + 1) + defaultValue;
+                defaultValue = "";
+            }
         }
     }
 

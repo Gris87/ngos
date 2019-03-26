@@ -7,11 +7,11 @@ use ngos;
 
 CREATE TABLE IF NOT EXISTS apps
 (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    appid INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    appid BIGINT NOT NULL,
     codename VARCHAR(256) NOT NULL,
     name VARCHAR(256) NOT NULL,
-    version INT NOT NULL
+    version BIGINT NOT NULL
 ) engine=InnoDB default character set latin1;
 
 

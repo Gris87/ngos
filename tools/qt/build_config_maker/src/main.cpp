@@ -11,10 +11,12 @@ void usage()
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     Console::err(
-                "Usage: build_config_maker PATH_TO_BUILDCONFIG_H {BUILD_PARAMETER=VALUE}\n" // Ignore CppOperatorSpacesVerifier
+                "Usage: build_config_maker PATH_TO_BUILDCONFIG_H [--reset] {BUILD_PARAMETER=VALUE}\n" // Ignore CppOperatorSpacesVerifier
                 "    * PATH_TO_BUILDCONFIG_H - path to buildconfig.h file\n"
                 "    * BUILD_PARAMETER       - One of the parameters from buildconfig.h file\n"
-                "    * VALUE                 - What value should be assigned to the BUILD_PARAMETER"
+                "    * VALUE                 - What value should be assigned to the BUILD_PARAMETER\n"
+                "\n"
+                "    --reset - Reset all parameters to their defaults"
                 );
     // Ignore CppAlignmentVerifier [END]
 }
@@ -38,9 +40,20 @@ qint32 main(qint32 argc, char *argv[])
 
     QString buildConfigPath = arguments.at(1);
 
+
+
+    bool reset = false;
+
+    if (arguments.length() > 2 && arguments.at(2) == "--reset")
+    {
+        reset = true;
+    }
+
+
+
     QMap<QString, QString> parameters;
 
-    for (qint64 i = 2; i < arguments.length(); ++i)
+    for (qint64 i = (reset ? 3 : 2); i < arguments.length(); ++i)
     {
         QString arg = arguments.at(i);
 
@@ -72,6 +85,13 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
+    if (reset)
+    {
+        Console::out("--reset");
+    }
+
+
+
     QMapIterator<QString, QString> it(parameters);
 
     while (it.hasNext())
@@ -87,7 +107,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    BuildConfigMaker maker(buildConfigPath, parameters);
+    BuildConfigMaker maker(buildConfigPath, reset, parameters);
     qint64 res = maker.process();
 
     Console::out("");

@@ -13,10 +13,12 @@ Build config maker is command line tool for editing [include/buildconfig.h](../.
 ### Usage
 
 ```sh
-build_config_maker PATH_TO_BUILDCONFIG_H {BUILD_PARAMETER=VALUE}
+build_config_maker PATH_TO_BUILDCONFIG_H [--reset] {BUILD_PARAMETER=VALUE}
     * PATH_TO_BUILDCONFIG_H - path to buildconfig.h file
     * BUILD_PARAMETER       - One of the parameters from buildconfig.h file
     * VALUE                 - What value should be assigned to the BUILD_PARAMETER
+
+    --reset - Reset all parameters to their defaults
 ```
 
 ### How to ...

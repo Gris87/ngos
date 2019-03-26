@@ -10,12 +10,13 @@
 class BuildConfigMaker
 {
 public:
-    BuildConfigMaker(const QString &buildConfigPath, QMap<QString, QString> parameters); // TEST: NO
+    BuildConfigMaker(const QString &buildConfigPath, bool reset, QMap<QString, QString> parameters); // TEST: NO
 
     qint64 process(); // TEST: NO
 
 private:
     QString                mBuildConfigPath;
+    bool                   mReset;
     QMap<QString, QString> mParameters;
 };
 

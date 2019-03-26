@@ -11,7 +11,7 @@
 WORKING_DIR=`pwd`
 BUILD_CONFIG=include/buildconfig.h
 BUILD_LOG=/tmp/ngos_test.log
-BUILD_CFG_BACKUP=/tmp/ngos_buildconfig2.h
+BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig2.h
 TEMP_LOG=/tmp/ngos_kernel.log
 GDB_FIFO=/tmp/ngos_gdb_fifo
 GDB_LOG=/tmp/ngos_gdb.log

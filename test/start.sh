@@ -13,8 +13,9 @@
 
 
 CURRENT_PATH=`pwd`
+BUILD_CONFIG=include/buildconfig.h
 BUILD_LOG=/tmp/ngos_test.log
-BUILD_CFG_BACKUP=/tmp/ngos_buildconfig.h
+BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig.h
 
 
 
@@ -26,14 +27,14 @@ BUILD_CFG_BACKUP=/tmp/ngos_buildconfig.h
 
 cd ../
 
-cp include/buildconfig.h ${BUILD_CFG_BACKUP}
+cp ${BUILD_CONFIG} ${BUILD_CFG_BACKUP}
 
 make generate > ${BUILD_LOG} 2>&1
 
 if [ $? -ne 0 ]; then
     cat ${BUILD_LOG} 2>&1
 
-    cp ${BUILD_CFG_BACKUP} include/buildconfig.h
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
     cd ${CURRENT_PATH}/
 
     exit 1
@@ -44,7 +45,7 @@ make test-debug > ${BUILD_LOG} 2>&1
 if [ $? -ne 0 ]; then
     cat ${BUILD_LOG} 2>&1
 
-    cp ${BUILD_CFG_BACKUP} include/buildconfig.h
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
     cd ${CURRENT_PATH}/
 
     exit 1
@@ -84,7 +85,7 @@ do
 
 
 
-        cp ${BUILD_CFG_BACKUP} ../include/buildconfig.h
+        cp ${BUILD_CFG_BACKUP} ../${BUILD_CONFIG}
 
         exit ${EXIT_CODE}
     fi
@@ -94,6 +95,6 @@ done
 
 
 
-cp ${BUILD_CFG_BACKUP} ../include/buildconfig.h
+cp ${BUILD_CFG_BACKUP} ../${BUILD_CONFIG}
 
 exit 0
