@@ -384,7 +384,7 @@ cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt
 mv /home/${USER}/temp /home/${USER}/.bashrc
 echo "export PATH=/usr/local/x8664elfgcc/bin:\${PATH}"    >> /home/${USER}/.bashrc
 echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\${PATH}" >> /home/${USER}/.bashrc
-echo "source /opt/rh/devtoolset-8/enable"               >> /home/${USER}/.bashrc
+echo "source /opt/rh/devtoolset-8/enable"                 >> /home/${USER}/.bashrc
 chown ${USER}:${USER} /home/${USER}/.bashrc
 
 
