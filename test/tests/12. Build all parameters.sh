@@ -21,7 +21,8 @@ BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig2.h
 
 
 
-function run_build {
+function run_build
+{
     echo "Building with $1"
 
     tools/qt/build_config_maker/build/build_config_maker ${BUILD_CONFIG} $1 >  ${BUILD_LOG} 2>&1

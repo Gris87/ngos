@@ -365,7 +365,7 @@ do
 
 
     MEMORY_CHANGES=
-    MEMORY_COUNT=${#MEMORY_LOCATIONS[*]}
+    MEMORY_COUNT=${#MEMORY_LOCATIONS[@]}
 
     for ((i = 0; i < ${MEMORY_COUNT}; i++))
     do

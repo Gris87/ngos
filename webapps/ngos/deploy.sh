@@ -25,7 +25,8 @@ BUILD_CFG_BACKUP=/tmp/ngos_deploy_buildconfig.h
 
 
 
-function deploy_app {
+function deploy_app
+{
     CODENAME=$1
     NAME=$2
     VERSION=$3
