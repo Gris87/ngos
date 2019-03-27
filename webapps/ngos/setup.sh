@@ -7,6 +7,24 @@
 
 
 ###########################################################################################
+#    PARAMETERS
+###########################################################################################
+
+
+
+SILENT_MODE=$1
+
+
+
+if [ "${SILENT_MODE}" == "" ]; then
+    SILENT_MODE=0
+else
+    SILENT_MODE=1
+fi
+
+
+
+###########################################################################################
 #    VERIFICATION
 ###########################################################################################
 
@@ -30,16 +48,68 @@ function install_sources
 {
     ./install.sh || return 1
 
-    return 0;
+    echo "NGOS webapp installed"
+
+    return 0
 }
 
 
 
 function setup_server_name
 {
-    echo "TBD"
+    SERVER_NAME_VALUE=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';"`
 
-    return 1;
+    if [ "${SERVER_NAME_VALUE}" == "" ]; then
+        SERVER_NAME=$1
+
+        while [ "${SERVER_NAME}" == "" ];
+        do
+            echo -n "Enter server name: "
+            read SERVER_NAME
+        done
+
+        mysql -u root -D ngos -e "INSERT INTO properties (name, value) VALUES ('server_name', '${SERVER_NAME}');" || return 1
+    else
+        if [ ${SILENT_MODE} -eq 0 ]; then
+            while true
+            do
+                echo "This operation is only required in case when your server DNS name changed."
+                echo "It is your responsibility to update server list information on all other servers."
+                echo -n "Do you really need to change server name? (Y/n) "
+                read CONFIRM
+
+                if [ "${CONFIRM}" == "" -o "${CONFIRM}" == "y" -o "${CONFIRM}" == "Y" ]; then
+                    CONFIRM=1
+                    break
+                elif [ "${CONFIRM}" == "n" -o "${CONFIRM}" == "N" ]; then
+                    CONFIRM=0
+                    break
+                fi
+            done
+        else
+            CONFIRM=1
+        fi
+
+        if [ ${CONFIRM} -eq 1 ]; then
+            SERVER_NAME=$1
+
+            while [ "${SERVER_NAME}" == "" ];
+            do
+                echo -n "Enter server name: "
+                read SERVER_NAME
+            done
+
+            if [ "${SERVER_NAME}" != "${SERVER_NAME_VALUE}" ]; then
+                mysql -u root -D ngos -e "UPDATE properties SET value='${SERVER_NAME}' WHERE name='server_name';" || return 1
+            fi
+        else
+            return 1
+        fi
+    fi
+
+
+
+    return 0
 }
 
 
@@ -65,7 +135,7 @@ function generate_secret_key
 
 
 
-    return 0;
+    return 0
 }
 
 
@@ -74,7 +144,9 @@ function update_sources
 {
     cp -r html/. /var/www/html || return 1
 
-    return 0;
+    echo "NGOS webapp sources updated"
+
+    return 0
 }
 
 
@@ -83,7 +155,7 @@ function register_server
 {
     echo "TBD"
 
-    return 0;
+    return 0
 }
 
 
@@ -92,7 +164,25 @@ function validate_setup
 {
     echo "TBD"
 
-    return 0;
+    return 0
+}
+
+
+
+function print_server_name
+{
+    echo "TBD"
+
+    return 0
+}
+
+
+
+function print_secret_key
+{
+    echo "TBD"
+
+    return 0
 }
 
 
@@ -101,6 +191,8 @@ function uninstall_sources
 {
     if [ -d /var/www/html ]; then
         rm -rf /var/www/html || return 1
+
+        echo "NGOS webapp uninstalled"
     else
         echo "Directory \"/var/www/html\" not found"
 
@@ -109,7 +201,7 @@ function uninstall_sources
 
 
 
-    return 0;
+    return 0
 }
 
 
@@ -118,7 +210,9 @@ function drop_database
 {
     mysql -u root -e "DROP DATABASE ngos" || return 1
 
-    return 0;
+    echo "NGOS database dropped"
+
+    return 0
 }
 
 
@@ -127,7 +221,7 @@ function quit()
 {
     QUIT=1
 
-    return 0;
+    return 0
 }
 
 
@@ -145,7 +239,7 @@ function step1_options()
     TEXT[2]="Generate server secret key"
     FUNC[2]="generate_secret_key"
 
-    return 0;
+    return 0
 }
 
 
@@ -160,7 +254,7 @@ function step2_options()
     TEXT[1]="Register new server"
     FUNC[1]="register_server"
 
-    return 0;
+    return 0
 }
 
 
@@ -172,7 +266,13 @@ function step3_options()
     TEXT[0]="Validate setup"
     FUNC[0]="validate_setup"
 
-    return 0;
+    TEXT[1]="Print server name"
+    FUNC[1]="print_server_name"
+
+    TEXT[2]="Print secret key"
+    FUNC[2]="print_secret_key"
+
+    return 0
 }
 
 
@@ -187,7 +287,7 @@ function step4_options()
     TEXT[1]="Drop database"
     FUNC[1]="drop_database"
 
-    return 0;
+    return 0
 }
 
 
@@ -201,7 +301,7 @@ function display_menu
 
     QUIT=0
 
-    while [ "${QUIT}" == "0" ];
+    while [ ${QUIT} -eq 0 ];
     do
         clear
 
@@ -236,8 +336,8 @@ function display_menu
             unset FUNC
         done
 
-        echo "[${OPTION_NUM}] Exit"
-        OPTIONS[${OPTION_NUM}]="quit"
+        echo "[0] Exit"
+        OPTIONS[0]="quit"
 
 
 
@@ -252,10 +352,11 @@ function display_menu
         EXIT_CODE=$?
 
 
-        if [ "${QUIT}" == "0" ]; then
+
+        if [ ${QUIT} -eq 0 ]; then
             echo ""
 
-            if [ "${EXIT_CODE}" == "0" ]; then
+            if [ ${EXIT_CODE} -eq 0 ]; then
                 echo "Success"
             else
                 echo "Failed"
@@ -271,7 +372,7 @@ function display_menu
 
 
 
-    return 0;
+    return 0
 }
 
 
