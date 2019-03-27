@@ -53,9 +53,9 @@ function generate_secret_key
     SECRET_KEY_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM properties WHERE name='secret_key';"`
 
     if [ "${SECRET_KEY_ID}" == "" ]; then
-        mysql -u root -D ngos -e "INSERT INTO properties (name, value) VALUES ('secret_key', '${SECRET_KEY}');"
+        mysql -u root -D ngos -e "INSERT INTO properties (name, value) VALUES ('secret_key', '${SECRET_KEY}');" || return 1
     else
-        mysql -u root -D ngos -e "UPDATE properties SET value='${SECRET_KEY}' WHERE id=${SECRET_KEY_ID};"
+        mysql -u root -D ngos -e "UPDATE properties SET value='${SECRET_KEY}' WHERE id=${SECRET_KEY_ID};" || return 1
     fi
 
 
@@ -99,7 +99,15 @@ function validate_setup
 
 function uninstall_sources
 {
-    rm -rf /var/www/html || return 1
+    if [ -d /var/www/html ]; then
+        rm -rf /var/www/html || return 1
+    else
+        echo "Directory \"/var/www/html\" not found"
+
+        return 1
+    fi
+
+
 
     return 0;
 }
@@ -108,7 +116,7 @@ function uninstall_sources
 
 function drop_database
 {
-    echo "TBD"
+    mysql -u root -e "DROP DATABASE ngos" || return 1
 
     return 0;
 }
@@ -241,18 +249,20 @@ function display_menu
 
         echo ""
         ${OPTIONS[${SELECTED_OPTION}]}
-
-
-
-        if [ "$?" == "0" ]; then
-            echo "Success"
-        else
-            echo "Failed"
-        fi
-
+        EXIT_CODE=$?
 
 
         if [ "${QUIT}" == "0" ]; then
+            echo ""
+
+            if [ "${EXIT_CODE}" == "0" ]; then
+                echo "Success"
+            else
+                echo "Failed"
+            fi
+
+
+
             echo ""
             echo -n "Press enter to continue ..."
             read
