@@ -226,6 +226,7 @@ function assign_secret_key
 
 
     SECRET_KEY=$2
+    SECRET_KEY=`echo "${SECRET_KEY}" | tr -dc "a-zA-Z0-9"`
 
     while [ ${#SECRET_KEY} -ne 1000 ];
     do
@@ -552,28 +553,32 @@ function display_menu
         echo -n "Option: "
         read SELECTED_OPTION
 
-
-
-        echo ""
-        ${OPTIONS[${SELECTED_OPTION}]}
-        EXIT_CODE=$?
+        COMMAND=${OPTIONS[${SELECTED_OPTION}]}
 
 
 
-        if [ ${QUIT} -eq 0 ]; then
+        if [ "${COMMAND}" != "" ]; then
             echo ""
+            ${COMMAND}
+            EXIT_CODE=$?
 
-            if [ ${EXIT_CODE} -eq 0 ]; then
-                echo "Success"
-            else
-                echo "Failed"
+
+
+            if [ ${QUIT} -eq 0 ]; then
+                echo ""
+
+                if [ ${EXIT_CODE} -eq 0 ]; then
+                    echo "Success"
+                else
+                    echo "Failed"
+                fi
+
+
+
+                echo ""
+                echo -n "Press enter to continue ..."
+                read
             fi
-
-
-
-            echo ""
-            echo -n "Press enter to continue ..."
-            read
         fi
     done
 
