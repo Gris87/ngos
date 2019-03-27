@@ -13,6 +13,8 @@
 
 
 SILENT_MODE=$1
+STEPS=( step1_options step2_options step3_options step4_options )
+STEPS_COUNT=${#STEPS[@]}
 
 
 
@@ -110,6 +112,8 @@ function setup_server_name
     fi
 
 
+
+    echo "Server name changed to ${SERVER_NAME}"
 
     return 0
 }
@@ -437,15 +441,19 @@ function step1_options()
 
     TEXT[0]="Install webapp sources on the server"
     FUNC[0]="install_sources"
+    ATTRS[0]=""
 
     TEXT[1]="Setup server name"
     FUNC[1]="setup_server_name"
+    ATTRS[1]="NAME"
 
     TEXT[2]="Generate server secret key"
     FUNC[2]="generate_secret_key"
+    ATTRS[2]=""
 
     TEXT[3]="Assign secret key to server"
     FUNC[3]="assign_secret_key"
+    ATTRS[3]="SERVER SECRET_KEY"
 
     return 0
 }
@@ -458,9 +466,11 @@ function step2_options()
 
     TEXT[0]="Update webapp sources"
     FUNC[0]="update_sources"
+    ATTRS[0]=""
 
     TEXT[1]="Register new server"
     FUNC[1]="register_server"
+    ATTRS[1]=""
 
     return 0
 }
@@ -473,12 +483,15 @@ function step3_options()
 
     TEXT[0]="Validate setup"
     FUNC[0]="validate_setup"
+    ATTRS[0]=""
 
     TEXT[1]="Print server name"
     FUNC[1]="print_server_name"
+    ATTRS[1]=""
 
     TEXT[2]="Print secret key"
     FUNC[2]="print_secret_key"
+    ATTRS[2]=""
 
     return 0
 }
@@ -491,9 +504,11 @@ function step4_options()
 
     TEXT[0]="Uninstall webapp sources"
     FUNC[0]="uninstall_sources"
+    ATTRS[0]=""
 
     TEXT[1]="Drop database"
     FUNC[1]="drop_database"
+    ATTRS[1]=""
 
     return 0
 }
@@ -502,11 +517,6 @@ function step4_options()
 
 function display_menu
 {
-    STEPS=( step1_options step2_options step3_options step4_options )
-    STEPS_COUNT=${#STEPS[@]}
-
-
-
     QUIT=0
 
     while [ ${QUIT} -eq 0 ];
@@ -542,6 +552,7 @@ function display_menu
 
             unset TEXT
             unset FUNC
+            unset ATTRS
         done
 
         echo "[0] Exit"
@@ -589,13 +600,135 @@ function display_menu
 
 
 
+function usage()
+{
+    echo -n "Usage: sudo ./setup.sh"
+
+    for ((s = 0; s < ${STEPS_COUNT}; s++))
+    do
+        ${STEPS[s]} || return 1
+
+
+
+        OPTIONS_COUNT=${#TEXT[@]}
+
+        for ((i = 0; i < ${OPTIONS_COUNT}; i++))
+        do
+            echo -n " [--${FUNC[i]}"
+
+            if [ "${ATTRS[i]}" != "" ]; then
+                echo -n " ${ATTRS[i]}"
+            fi
+
+            echo -n "]"
+        done
+
+
+
+        unset TEXT
+        unset FUNC
+        unset ATTRS
+    done
+
+    echo ""
+    echo ""
+
+
+
+    for ((s = 0; s < ${STEPS_COUNT}; s++))
+    do
+        ${STEPS[s]} || return 1
+
+
+
+        OPTIONS_COUNT=${#TEXT[@]}
+
+        for ((i = 0; i < ${OPTIONS_COUNT}; i++))
+        do
+            FUNC_ATTRS=`echo "--${FUNC[i]} ${ATTRS[i]}"`
+            FUNC_ATTRS_LENGTH=${#FUNC_ATTRS}
+
+            echo -n "    ${FUNC_ATTRS}"
+            printf "%$((40 - FUNC_ATTRS_LENGTH))s" ""
+            echo " - ${TEXT[i]}"
+        done
+
+
+
+        unset TEXT
+        unset FUNC
+        unset ATTRS
+    done
+
+
+
+    return 0
+}
+
+
+
+function script_mode()
+{
+    while true
+    do
+        COMMAND=$1
+
+        if [ "${COMMAND}" == "" ]; then
+            break
+        fi
+
+        if [ "${COMMAND}" == "-h" -o "${COMMAND}" == "--help" ]; then
+            usage || return 1
+
+            return 0
+        fi
+
+
+
+        ATTRS=()
+
+        while true
+        do
+            ATTR=$2
+
+            if [ "${ATTR}" == "" ]; then
+                break
+            fi
+
+            if [ "${ATTR}" == "-h" -o "${ATTR:0:2}" == "--" ]; then
+                break
+            fi
+
+            ATTRS+=($ATTR)
+
+            shift
+        done
+
+        ${COMMAND:2} ${ATTRS[*]}
+
+
+
+        shift
+    done
+
+
+
+    return 0
+}
+
+
+
 ###########################################################################################
 #    PROCESSING
 ###########################################################################################
 
 
 
-display_menu || exit 1
+if [ ${SILENT_MODE} -eq 0 ]; then
+    display_menu || exit 1
+else
+    script_mode $* || exit 1
+fi
 
 
 
