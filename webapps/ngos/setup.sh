@@ -75,13 +75,13 @@ function setup_server_name
             do
                 echo "This operation is only required in case when your server DNS name changed."
                 echo "It is your responsibility to update server list information on all other servers."
-                echo -n "Do you really need to change server name? (Y/n) "
+                echo -n "Do you really need to change server name? (y/N) "
                 read CONFIRM
 
-                if [ "${CONFIRM}" == "" -o "${CONFIRM}" == "y" -o "${CONFIRM}" == "Y" ]; then
+                if [ "${CONFIRM}" == "y" -o "${CONFIRM}" == "Y" ]; then
                     CONFIRM=1
                     break
-                elif [ "${CONFIRM}" == "n" -o "${CONFIRM}" == "N" ]; then
+                elif [ "${CONFIRM}" == "" -o "${CONFIRM}" == "n" -o "${CONFIRM}" == "N" ]; then
                     CONFIRM=0
                     break
                 fi
@@ -125,7 +125,31 @@ function generate_secret_key
     if [ "${SECRET_KEY_ID}" == "" ]; then
         mysql -u root -D ngos -e "INSERT INTO properties (name, value) VALUES ('secret_key', '${SECRET_KEY}');" || return 1
     else
-        mysql -u root -D ngos -e "UPDATE properties SET value='${SECRET_KEY}' WHERE id=${SECRET_KEY_ID};" || return 1
+        if [ ${SILENT_MODE} -eq 0 ]; then
+            while true
+            do
+                echo "This operation is only required in case when security violation detected."
+                echo "It is your responsibility to update server list information on all other servers."
+                echo -n "Do you really need to generate new secret key? (y/N) "
+                read CONFIRM
+
+                if [ "${CONFIRM}" == "y" -o "${CONFIRM}" == "Y" ]; then
+                    CONFIRM=1
+                    break
+                elif [ "${CONFIRM}" == "" -o "${CONFIRM}" == "n" -o "${CONFIRM}" == "N" ]; then
+                    CONFIRM=0
+                    break
+                fi
+            done
+        else
+            CONFIRM=1
+        fi
+
+        if [ ${CONFIRM} -eq 1 ]; then
+            mysql -u root -D ngos -e "UPDATE properties SET value='${SECRET_KEY}' WHERE name='secret_key';" || return 1
+        else
+            return 1
+        fi
     fi
 
 
@@ -162,7 +186,33 @@ function register_server
 
 function validate_setup
 {
-    echo "TBD"
+    if [ ! -f /var/www/html/rest/deploy.php ]; then
+        echo "NGOS webapp not installed"
+
+        return 1
+    fi
+
+
+
+    SERVER_NAME=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';"`
+
+    if [ "${SERVER_NAME}" == "" ]; then
+        echo "Server name is invalid. Please specify new server name"
+
+        return 1
+    fi
+
+
+
+    SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
+
+    if [ ${#SECRET_KEY} -ne 1000 ]; then
+        echo "Secret key is invalid. Please generate new secret key"
+
+        return 1
+    fi
+
+
 
     return 0
 }
@@ -171,7 +221,8 @@ function validate_setup
 
 function print_server_name
 {
-    echo "TBD"
+    echo "Server name:"
+    mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';" || return 1
 
     return 0
 }
@@ -180,7 +231,8 @@ function print_server_name
 
 function print_secret_key
 {
-    echo "TBD"
+    echo "Secret key:"
+    mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='secret_key';" || return 1
 
     return 0
 }
@@ -190,9 +242,32 @@ function print_secret_key
 function uninstall_sources
 {
     if [ -d /var/www/html ]; then
-        rm -rf /var/www/html || return 1
+        if [ ${SILENT_MODE} -eq 0 ]; then
+            while true
+            do
+                echo "This operation will remove all NGOS webapp sources and all NGOS applications stored on this server."
+                echo -n "Do you really want to uninstall NGOS webapp sources? (y/N) "
+                read CONFIRM
 
-        echo "NGOS webapp uninstalled"
+                if [ "${CONFIRM}" == "y" -o "${CONFIRM}" == "Y" ]; then
+                    CONFIRM=1
+                    break
+                elif [ "${CONFIRM}" == "" -o "${CONFIRM}" == "n" -o "${CONFIRM}" == "N" ]; then
+                    CONFIRM=0
+                    break
+                fi
+            done
+        else
+            CONFIRM=1
+        fi
+
+        if [ ${CONFIRM} -eq 1 ]; then
+            rm -rf /var/www/html || return 1
+
+            echo "NGOS webapp sources uninstalled"
+        else
+            return 1
+        fi
     else
         echo "Directory \"/var/www/html\" not found"
 
@@ -208,9 +283,34 @@ function uninstall_sources
 
 function drop_database
 {
-    mysql -u root -e "DROP DATABASE ngos" || return 1
+    if [ ${SILENT_MODE} -eq 0 ]; then
+        while true
+        do
+            echo "This operation will remove all data stored in NGOS database."
+            echo -n "Do you really want to drop NGOS database? (y/N) "
+            read CONFIRM
 
-    echo "NGOS database dropped"
+            if [ "${CONFIRM}" == "y" -o "${CONFIRM}" == "Y" ]; then
+                CONFIRM=1
+                break
+            elif [ "${CONFIRM}" == "" -o "${CONFIRM}" == "n" -o "${CONFIRM}" == "N" ]; then
+                CONFIRM=0
+                break
+            fi
+        done
+    else
+        CONFIRM=1
+    fi
+
+    if [ ${CONFIRM} -eq 1 ]; then
+        mysql -u root -e "DROP DATABASE ngos" || return 1
+
+        echo "NGOS database dropped"
+    else
+        return 1
+    fi
+
+
 
     return 0
 }
