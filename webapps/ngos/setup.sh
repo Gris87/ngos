@@ -103,6 +103,8 @@ function setup_server_name
                 mysql -u root -D ngos -e "UPDATE properties SET value='${SERVER_NAME}' WHERE name='server_name';" || return 1
             fi
         else
+            echo "Canceled"
+
             return 1
         fi
     fi
@@ -148,6 +150,8 @@ function generate_secret_key
         if [ ${CONFIRM} -eq 1 ]; then
             mysql -u root -D ngos -e "UPDATE properties SET value='${SECRET_KEY}' WHERE name='secret_key';" || return 1
         else
+            echo "Canceled"
+
             return 1
         fi
     fi
@@ -156,6 +160,88 @@ function generate_secret_key
 
     echo "Secret key:"
     echo "${SECRET_KEY}"
+
+
+
+    return 0
+}
+
+
+
+function assign_secret_key
+{
+    SERVER=$1
+
+    if [ "${SERVER}" == "" ]; then
+        while true
+        do
+            clear
+
+
+
+            echo "Assign secret key to server:"
+
+            OPTION_NUM=1
+
+            for SERVER in `mysql -u root -D ngos -NB -e "SELECT address FROM servers;"`
+            do
+                SERVER_LENGTH=${#SERVER}
+
+                echo -n "[${OPTION_NUM}] ${SERVER}"
+                printf "%$((60 - SERVER_LENGTH))s" ""
+                mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${SERVER}';" | cut -c -20
+
+                OPTIONS[${OPTION_NUM}]=${SERVER}
+                OPTION_NUM=$((${OPTION_NUM} + 1))
+            done
+
+            echo ""
+            echo "[0] Cancel"
+            OPTIONS[0]="~~~CANCEL~~~"
+
+
+
+            echo ""
+            echo -n "Option: "
+            read SELECTED_OPTION
+
+
+
+            SERVER=${OPTIONS[${SELECTED_OPTION}]}
+
+            if [ "${SERVER}" != "" ]; then
+                break
+            fi
+        done
+
+
+
+        if [ "${SERVER}" == "~~~CANCEL~~~" ]; then
+            echo "Canceled"
+
+            return 1
+        fi
+    fi
+
+
+
+    SECRET_KEY=$2
+
+    while [ ${#SECRET_KEY} -ne 1000 ];
+    do
+        echo -n "Enter secret key for ${SERVER}: "
+        read SECRET_KEY
+
+        SECRET_KEY=`echo "${SECRET_KEY}" | tr -dc "a-zA-Z0-9"`
+
+        if [ ${#SECRET_KEY} -ne 1000 ]; then
+            echo "Invalid secret key"
+        fi
+    done
+
+
+
+    mysql -u root -D ngos -e "UPDATE servers SET secret_key='${SECRET_KEY}' WHERE address='${SERVER}';" || return 1
 
 
 
@@ -214,6 +300,20 @@ function validate_setup
 
 
 
+    INVALID_SERVERS=`mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE secret_key IS NULL OR LENGTH(secret_key) != 1000;"`
+
+    if [ "${INVALID_SERVERS}" != "" ]; then
+        echo "Servers with invalid secret keys:"
+        echo "${INVALID_SERVERS}"
+
+        echo ""
+        echo "Please assign valid secret keys"
+
+        return 1
+    fi
+
+
+
     return 0
 }
 
@@ -266,6 +366,8 @@ function uninstall_sources
 
             echo "NGOS webapp sources uninstalled"
         else
+            echo "Canceled"
+
             return 1
         fi
     else
@@ -307,6 +409,8 @@ function drop_database
 
         echo "NGOS database dropped"
     else
+        echo "Canceled"
+
         return 1
     fi
 
@@ -338,6 +442,9 @@ function step1_options()
 
     TEXT[2]="Generate server secret key"
     FUNC[2]="generate_secret_key"
+
+    TEXT[3]="Assign secret key to server"
+    FUNC[3]="assign_secret_key"
 
     return 0
 }
