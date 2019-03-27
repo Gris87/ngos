@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script helps to setup secret key for the Slave Server [Slave Server only]
+# This script helps to perform all the required setup for the server
 # Author: Maxim Shvecov
-# Usage: sudo ./setup_secret_key.sh
+# Usage: sudo ./setup.sh
 
 
 
