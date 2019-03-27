@@ -319,6 +319,8 @@ function validate_setup
 
 
 
+    echo "Everything is OK"
+
     return 0
 }
 
@@ -470,7 +472,7 @@ function step2_options()
 
     TEXT[1]="Register new server"
     FUNC[1]="register_server"
-    ATTRS[1]=""
+    ATTRS[1]="SERVER SECRET_KEY"
 
     return 0
 }
@@ -704,7 +706,7 @@ function script_mode()
             shift
         done
 
-        ${COMMAND:2} ${ATTRS[*]}
+        ${COMMAND:2} ${ATTRS[@]}
 
 
 
@@ -727,7 +729,7 @@ function script_mode()
 if [ ${SILENT_MODE} -eq 0 ]; then
     display_menu || exit 1
 else
-    script_mode $* || exit 1
+    script_mode $@ || exit 1
 fi
 
 
