@@ -268,7 +268,92 @@ function update_sources
 
 function register_server
 {
-    echo "TBD"
+    SERVER_NAME=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';"`
+
+    if [ "${SERVER_NAME}" == "" ]; then
+        echo "Server name is invalid. Please specify new server name"
+
+        return 1
+    fi
+
+
+
+    MY_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
+
+    if [ ${#MY_SECRET_KEY} -ne 1000 ]; then
+        echo "Secret key is invalid. Please generate new secret key"
+
+        return 1
+    fi
+
+
+
+    SERVER=$1
+
+    if [ "${SERVER}" == "" ]; then
+        while [ "${SERVER}" == "" ];
+        do
+            echo -n "Enter server name: "
+            read SERVER
+        done
+    fi
+
+
+
+    if [ "${SERVER}" == "${SERVER}" ]; then
+        echo "${SERVER} is the localhost"
+
+        return 1
+    fi
+
+
+
+    SECRET_KEY=$2
+    SECRET_KEY=`echo "${SECRET_KEY}" | tr -dc "a-zA-Z0-9"`
+
+    while [ ${#SECRET_KEY} -ne 1000 ];
+    do
+        echo -n "Enter secret key for ${SERVER}: "
+        read SECRET_KEY
+
+        SECRET_KEY=`echo "${SECRET_KEY}" | tr -dc "a-zA-Z0-9"`
+
+        if [ ${#SECRET_KEY} -ne 1000 ]; then
+            echo "Invalid secret key"
+        fi
+    done
+
+
+
+    SERVER_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address='${SERVER}';"`
+
+    if [ "${SERVER_ID}" == "" ]; then
+        mysql -u root -D ngos -e "INSERT INTO servers (address, secret_key) VALUES ('${SERVER}', '${SECRET_KEY}');" || return 1
+    else
+        mysql -u root -D ngos -e "UPDATE servers SET secret_key='${SECRET_KEY}' WHERE address='${SERVER}';" || return 1
+    fi
+
+
+
+    for ADDRESS in `mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE address!='${SERVER}' AND address!='${SERVER_NAME}';"`
+    do
+        REQUEST_DATA=`cat << EOF
+            {
+                "my_address":    "${SERVER_NAME}",
+                "address":       "${ADDRESS}",
+                "my_secret_key": "${MY_SECRET_KEY}",
+                "secret_key":    "${SECRET_KEY}"
+            }
+EOF
+        `
+
+        echo "${REQUEST_DATA}" | curl -k -X POST -H "Content-Type: application/json" -d @- "https://${SERVER}/rest/register.php"
+        echo ""
+    done
+
+
+
+    echo "Server ${SERVER} registered"
 
     return 0
 }

@@ -37,6 +37,7 @@ function deploy_app
     CONTENT=`base64 -w 0 ${FILEPATH}`
 
 
+
     REQUEST_DATA=`cat << EOF
         {
             "codename": "${CODENAME}",
