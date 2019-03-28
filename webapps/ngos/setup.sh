@@ -360,6 +360,52 @@ EOF
 
 
 
+function change_server_location
+{
+    echo "TBD"
+
+    return 0
+}
+
+
+
+function update_server_delays
+{
+    for SERVER in `mysql -u root -D ngos -NB -e "SELECT address FROM servers;"`
+    do
+        echo "Updating delay to server: ${SERVER}"
+
+
+
+        PING_TOTAL=0
+
+        for ((i = 0; i < 10; i++))
+        do
+            PING_RESPONSE=`curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php`
+
+            if [ "${PING_RESPONSE:0:15}" != "{\"status\":\"OK\"}" ]; then
+                echo "Failed to ping server: ${SERVER}"
+
+                exit 1
+            fi
+
+            PING_TOTAL=`echo "${PING_TOTAL} + ${PING_RESPONSE:15}" | bc`
+        done
+
+        DELAY=`echo "${PING_TOTAL} * 100000 / 1" | bc`
+
+
+
+        mysql -u root -D ngos -e "UPDATE servers SET delay='${DELAY}' WHERE address='${SERVER}';" || return 1
+    done
+
+
+
+    return 0
+}
+
+
+
 function validate_setup
 {
     if [ ! -f /var/www/html/rest/deploy.php ]; then
@@ -568,6 +614,14 @@ function step2_options()
     TEXT[1]="Register new server"
     FUNC[1]="register_server"
     ATTRS[1]="SERVER SECRET_KEY"
+
+    TEXT[2]="Change server location"
+    FUNC[2]="change_server_location"
+    ATTRS[2]="SERVER REGION"
+
+    TEXT[3]="Update server delays"
+    FUNC[3]="update_server_delays"
+    ATTRS[3]=""
 
     return 0
 }

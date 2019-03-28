@@ -1305,7 +1305,6 @@ webapps/ngos/html/rest/ping.php
 webapps/ngos/html/rest/register.php
 webapps/ngos/install.sh
 webapps/ngos/mariadb/create.sql
-webapps/ngos/register.sh
 webapps/ngos/setup.sh
 webapps/prerequisites/centos_7_6.sh
 webapps/prerequisites/install.sh
