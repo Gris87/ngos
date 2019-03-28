@@ -56,7 +56,10 @@ mysql -u root < mariadb/create.sql || exit 1
 
 
 mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('1', 'Russia / Saint-Petersburg');" || exit 1
-mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('2', 'Ireland');"                   || exit 1
+mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('2', 'Russia / Moscow');"           || exit 1
+mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('3', 'Ireland');"                   || exit 1
+mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('4', 'China');"                     || exit 1
+mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('5', 'USA');"                       || exit 1
 
 
 
@@ -82,7 +85,7 @@ if [ "${FIRST_SERVER}" == "" ]; then
 
 
 
-    mysql -u root -D ngos -e "INSERT INTO servers (region_id, address, delay) VALUES ('2', '${FIRST_SERVER_ADDRESS}', '${DELAY}');" || exit 1
+    mysql -u root -D ngos -e "INSERT INTO servers (region_id, address, delay) VALUES ('3', '${FIRST_SERVER_ADDRESS}', '${DELAY}');" || exit 1
 fi
 
 
