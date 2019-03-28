@@ -51,11 +51,12 @@ cp -r html/. /var/www/html
 
 
 
-mysql -u root < mariadb/create.sql | exit 1
+mysql -u root < mariadb/create.sql || exit 1
 
 
 
-mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('1', 'Ireland');" | exit 1
+mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('1', 'Russia / Saint-Petersburg');" || exit 1
+mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('2', 'Ireland');"                   || exit 1
 
 
 
@@ -81,7 +82,7 @@ if [ "${FIRST_SERVER}" == "" ]; then
 
 
 
-    mysql -u root -D ngos -e "INSERT INTO servers (region_id, address, delay) VALUES ('1', '${FIRST_SERVER_ADDRESS}', '${DELAY}');" | exit 1
+    mysql -u root -D ngos -e "INSERT INTO servers (region_id, address, delay) VALUES ('2', '${FIRST_SERVER_ADDRESS}', '${DELAY}');" || exit 1
 fi
 
 
