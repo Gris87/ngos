@@ -431,6 +431,16 @@ function print_secret_key
 
 
 
+function print_servers
+{
+    echo "Servers:"
+    mysql -u root -D ngos -e "SELECT t1.id, t1.address, t2.name as region, t1.delay, SUBSTRING(t1.secret_key, 1, 20) as secret_key FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id;" || return 1
+
+    return 0
+}
+
+
+
 function uninstall_sources
 {
     if [ -d /var/www/html ]; then
@@ -579,6 +589,10 @@ function step3_options()
     TEXT[2]="Print secret key"
     FUNC[2]="print_secret_key"
     ATTRS[2]=""
+
+    TEXT[3]="Print servers"
+    FUNC[3]="print_servers"
+    ATTRS[3]=""
 
     return 0
 }
