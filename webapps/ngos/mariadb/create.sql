@@ -37,9 +37,23 @@ CREATE TABLE IF NOT EXISTS properties
 
 
 
+CREATE TABLE IF NOT EXISTS regions
+(
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(256) NOT NULL UNIQUE
+) engine=InnoDB default character set latin1;
+
+
+
 CREATE TABLE IF NOT EXISTS servers
 (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    region_id INT NOT NULL,
     address VARCHAR(256) NOT NULL UNIQUE,
-    secret_key VARCHAR(1024) NULL
+    delay INT NOT NULL,
+    secret_key VARCHAR(1024) NULL,
+    CONSTRAINT `fk_region_server`
+        FOREIGN KEY (region_id) REFERENCES regions (id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT
 ) engine=InnoDB default character set latin1;

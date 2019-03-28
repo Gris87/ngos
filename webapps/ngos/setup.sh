@@ -300,7 +300,7 @@ function register_server
 
 
 
-    if [ "${SERVER}" == "${SERVER}" ]; then
+    if [ "${SERVER}" == "${SERVER_NAME}" ]; then
         echo "${SERVER} is the localhost"
 
         return 1

@@ -1301,6 +1301,7 @@ webapps/ngos/html/common/functions.php
 webapps/ngos/html/index.php
 webapps/ngos/html/rest/appinfo.php
 webapps/ngos/html/rest/deploy.php
+webapps/ngos/html/rest/ping.php
 webapps/ngos/html/rest/register.php
 webapps/ngos/install.sh
 webapps/ngos/mariadb/create.sql
