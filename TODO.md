@@ -66,18 +66,33 @@ Assembler optimizer:
 C++ headers optimizer:
 
 - Implement tool
+- Investigate C++ headers hierarchy
+- Collapse C++ headers hierarchy for each C++ file
+- Iterate over all possible options for header inclusions
+- Try to delete some inclusions if it's not harmful for build
 
 
 
 USB Boot Maker:
 
-- Implement tool
+- Request servers for installer latest version
+- Store delays
+- Download installer from server with the lowest delay
+- Burn installer on USB
+- Verify code
 
 
 
 MathZip:
 
 - Implement tool
+- Try to think how we can produce original file with some magic function
+
+
+
+webapps:
+
+- Create web site
 
 
 
