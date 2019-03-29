@@ -139,6 +139,7 @@
 
         foreach ($curl_sessions as $curl_session)
         {
+            var_dump(curl_multi_getcontent($curl_session));
             array_push($responses, curl_multi_getcontent($curl_session));
             $ping_total += curl_getinfo($curl_session, CURLINFO_TOTAL_TIME);
         }
@@ -148,6 +149,7 @@
         foreach ($curl_sessions as $curl_session)
         {
             curl_multi_remove_handle($curl_multi, $curl_session);
+            curl_close($curl_session);
         }
 
         curl_multi_close($curl_multi);
