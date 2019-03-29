@@ -139,7 +139,7 @@
 
         foreach ($curl_sessions as $curl_session)
         {
-            array_push($responses, curl_multi_getcontent(curl_session));
+            array_push($responses, curl_multi_getcontent($curl_session));
             $ping_total += curl_getinfo($curl_session, CURLINFO_TOTAL_TIME);
         }
 
@@ -155,9 +155,7 @@
 
 
         foreach ($responses as $response)
-        {
-            var_dump($response);
-            
+        {            
             if ($response)
             {
                 $response = json_decode($response, true);
