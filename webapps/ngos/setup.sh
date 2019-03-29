@@ -453,6 +453,7 @@ EOF
 
 
 
+        ANOTHER_REGION_ID=`mysql -u root -D ngos -NB -e "SELECT region_id FROM servers WHERE address='${ADDRESS}';"`
         ANOTHER_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
 
         REGISTER_REQUEST_DATA=`cat << EOF
@@ -461,13 +462,14 @@ EOF
                 "my_secret_key":   "${MY_SECRET_KEY}",
                 "your_secret_key": "${SECRET_KEY}",
                 "address":         "${ADDRESS}",
+                "region_id":       ${ANOTHER_REGION_ID},
                 "secret_key":      "${ANOTHER_SECRET_KEY}"
             }
 EOF
         `
 
         REGISTER_RESPONSE=`echo "${REGISTER_REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/register.php`
-echo "${REGISTER_REQUEST_DATA}"
+
         if [ "${REGISTER_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
             echo "Failed to register server ${ADDRESS} on server ${SERVER}"
 
@@ -491,6 +493,7 @@ echo "${REGISTER_REQUEST_DATA}"
                 "my_secret_key":   "${MY_SECRET_KEY}",
                 "your_secret_key": "${ANOTHER_SECRET_KEY}",
                 "address":         "${SERVER}",
+                "region_id":       ${REGION_ID},
                 "secret_key":      "${SECRET_KEY}"
             }
 EOF
