@@ -32,10 +32,77 @@
     
     
     
+    function verify_server_with_ping($link, $data, $my_address, $my_secret_key, $address, $secret_key)
+    {
+        $server_url = "https://" . $address . "/rest/ping.php";
+        
+        
+        
+        $request_data = [
+            "my_address"      => $my_address,
+            "my_secret_key"   => $my_secret_key,
+            "your_secret_key" => $secret_key
+        ];
+        
+        
+        
+        $curlSession = curl_init($server_url);
+        
+        curl_setopt($curlSession, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curlSession, CURLOPT_HEADER,         false);
+        curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlSession, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curlSession, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curlSession, CURLOPT_HTTPHEADER,     array("Content-Type: application/json"));
+        curl_setopt($curlSession, CURLOPT_CUSTOMREQUEST,  "POST");
+        curl_setopt($curlSession, CURLOPT_POSTFIELDS,     json_encode($request_data));     
+        
+        $response = curl_exec($curlSession);
+        curl_close($curlSession);
+        
+        
+        
+        if ($response)
+        {
+            $response = json_decode($response, true);
+            
+            if ($response["status"] != "OK")
+            {
+                $error_details = "Failed to parse response from server: " . $server_url;
+                error_log($error_details);
+                
+                db_disconnect($link);
+                
+                $data["message"] = "Request error";
+                $data["details"] = $error_details;
+                
+                die(json_encode($data));
+            }
+            
+            var_dump($response);
+        }
+        else
+        {
+            $error_details = "Failed to get response from server: " . $server_url;
+            error_log($error_details);
+            
+            db_disconnect($link);
+            
+            $data["message"] = "Request error";
+            $data["details"] = $error_details;
+            
+            die(json_encode($data));
+        }
+    }
+    
+    
+    
     function handle_post_with_params($link, $data, $my_address, $my_secret_key, $your_secret_key, $address, $region_id, $secret_key)
     {
         validate_server($link, $data, $my_address, $my_secret_key);
         validate_this_server($link, $data, $your_secret_key);
+        
+        verify_server_with_ping($link, $data, $my_address, $my_secret_key, $address, $secret_key);
     }
 
 
