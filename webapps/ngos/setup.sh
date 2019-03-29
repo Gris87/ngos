@@ -122,13 +122,11 @@ function setup_server_name
 
 function generate_secret_key
 {
-    SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
-
-
-
     SECRET_KEY_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM properties WHERE name='secret_key';"`
 
     if [ "${SECRET_KEY_ID}" == "" ]; then
+        SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
+
         mysql -u root -D ngos -e "INSERT INTO properties (name, value) VALUES ('secret_key', '${SECRET_KEY}');" || return 1
     else
         if [ ${SILENT_MODE} -eq 0 ]; then
@@ -152,6 +150,8 @@ function generate_secret_key
         fi
 
         if [ ${CONFIRM} -eq 1 ]; then
+            SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
+
             mysql -u root -D ngos -e "UPDATE properties SET value='${SECRET_KEY}' WHERE name='secret_key';" || return 1
         else
             echo "Canceled"
@@ -184,6 +184,8 @@ function assign_secret_key
 
 
             echo "Assign secret key to server:"
+
+
 
             OPTION_NUM=1
 
@@ -308,7 +310,75 @@ function register_server
 
 
 
-    SECRET_KEY=$2
+    REGION=$2
+
+    if [ "${REGION}" == "" ]; then
+        while true
+        do
+            clear
+
+
+
+            echo "Choose server location:"
+
+
+
+            OLD_IFS=${IFS}
+            IFS=$'\n'
+
+            OPTION_NUM=1
+
+            for REGION in `mysql -u root -D ngos -NB -e "SELECT name FROM regions;"`
+            do
+                echo "[${OPTION_NUM}] ${REGION}"
+
+                OPTIONS[${OPTION_NUM}]=${REGION}
+                OPTION_NUM=$((${OPTION_NUM} + 1))
+            done
+
+            echo ""
+            echo "[0] Cancel"
+            OPTIONS[0]="~~~CANCEL~~~"
+
+            IFS=${OLD_IFS}
+
+
+
+            echo ""
+            echo -n "Option: "
+            read SELECTED_OPTION
+
+
+
+            REGION=${OPTIONS[${SELECTED_OPTION}]}
+
+            if [ "${REGION}" != "" ]; then
+                break
+            fi
+        done
+
+
+
+        if [ "${REGION}" == "~~~CANCEL~~~" ]; then
+            echo "Canceled"
+
+            return 1
+        fi
+    fi
+
+
+
+    REGION_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM regions WHERE name='${REGION}';"`
+
+    if [ "${REGION_ID}" == "" ]; then
+        echo "Region ${REGION} not found"
+
+        return 1
+    fi
+
+
+
+    SECRET_KEY=$3
     SECRET_KEY=`echo "${SECRET_KEY}" | tr -dc "a-zA-Z0-9"`
 
     while [ ${#SECRET_KEY} -ne 1000 ];
@@ -327,27 +397,62 @@ function register_server
 
     SERVER_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address='${SERVER}';"`
 
-    if [ "${SERVER_ID}" == "" ]; then
-        mysql -u root -D ngos -e "INSERT INTO servers (address, secret_key) VALUES ('${SERVER}', '${SECRET_KEY}');" || return 1
-    else
-        mysql -u root -D ngos -e "UPDATE servers SET secret_key='${SECRET_KEY}' WHERE address='${SERVER}';" || return 1
+    if [ "${SERVER_ID}" != "" ]; then
+        echo "Server ${SERVER} already registered"
+
+        return 1
     fi
+
+
+
+    PING_REQUEST_DATA=`cat << EOF
+        {
+            "my_address":      "${SERVER_NAME}",
+            "my_secret_key":   "${MY_SECRET_KEY}",
+            "your_secret_key": "${SECRET_KEY}"
+        }
+EOF
+    `
+
+    PING_TOTAL=0
+
+    for ((i = 0; i < 10; i++))
+    do
+        PING_RESPONSE=`echo "${PING_REQUEST_DATA}" | curl -k -w "%{time_total}" -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/ping.php`
+
+        if [ "${PING_RESPONSE:0:15}" != "{\"status\":\"OK\"}" ]; then
+            echo "Failed to ping server: ${SERVER}"
+
+            exit 1
+        fi
+
+        PING_TOTAL=`echo "${PING_TOTAL} + ${PING_RESPONSE:15}" | bc`
+    done
+
+    DELAY=`echo "${PING_TOTAL} * 100000 / 1" | bc`
+
+
+
+    mysql -u root -D ngos -e "INSERT INTO servers (region_id, address, delay, secret_key) VALUES ('${REGION_ID}', '${SERVER}', '${DELAY}', '${SECRET_KEY}');" || return 1
 
 
 
     for ADDRESS in `mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE address!='${SERVER}' AND address!='${SERVER_NAME}';"`
     do
+        ANOTHER_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
+
         REQUEST_DATA=`cat << EOF
             {
-                "my_address":    "${SERVER_NAME}",
-                "address":       "${ADDRESS}",
-                "my_secret_key": "${MY_SECRET_KEY}",
-                "secret_key":    "${SECRET_KEY}"
+                "my_address":      "${SERVER_NAME}",
+                "address":         "${ADDRESS}",
+                "my_secret_key":   "${MY_SECRET_KEY}",
+                "your_secret_key": "${SECRET_KEY}",
+                "secret_key":      "${ANOTHER_SECRET_KEY}"
             }
 EOF
         `
 
-        echo "${REQUEST_DATA}" | curl -k -X POST -H "Content-Type: application/json" -d @- "https://${SERVER}/rest/register.php"
+        echo "${REQUEST_DATA}" | curl -k -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/register.php
         echo ""
     done
 
@@ -613,7 +718,7 @@ function step2_options()
 
     TEXT[1]="Register new server"
     FUNC[1]="register_server"
-    ATTRS[1]="SERVER SECRET_KEY"
+    ATTRS[1]="SERVER REGION SECRET_KEY"
 
     TEXT[2]="Change server location"
     FUNC[2]="change_server_location"
@@ -859,7 +964,7 @@ function script_mode()
             shift
         done
 
-        ${COMMAND:2} ${ATTRS[@]}
+        ${COMMAND:2} ${ATTRS[@]} || return 1
 
 
 

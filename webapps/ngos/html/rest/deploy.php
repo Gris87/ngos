@@ -84,8 +84,6 @@
             die_if_sql_failed($result2, $link, $data, $sql);
         }
 
-
-
         $result->close();
 
 
