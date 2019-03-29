@@ -153,7 +153,8 @@
         curl_multi_close($curl_multi);
 
 
-
+        var_dump($responses);
+        var_dump($ping_total);
         foreach ($responses as $response)
         {            
             if ($response)
