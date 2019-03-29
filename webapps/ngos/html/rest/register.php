@@ -114,8 +114,8 @@
             curl_setopt($curl_session, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
 
+            curl_multi_add_handle($curl_multi, $curl_session);
             array_push($curl_sessions, $curl_session);
-            curl_multi_add_handle($curl_multi, $curl_sessions);
         }
 
 
