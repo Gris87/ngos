@@ -48,7 +48,7 @@ function deploy_app
 EOF
     `
 
-    echo "${REQUEST_DATA}" | curl -k -X POST -H "Content-Type: application/json" -d @- https://localhost/rest/deploy.php
+    echo "${REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://localhost/rest/deploy.php
     echo ""
 }
 

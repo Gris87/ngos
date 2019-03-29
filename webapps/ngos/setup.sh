@@ -310,6 +310,16 @@ function register_server
 
 
 
+    SERVER_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address='${SERVER}';"`
+
+    if [ "${SERVER_ID}" != "" ]; then
+        echo "Server ${SERVER} already registered"
+
+        return 1
+    fi
+
+
+
     REGION=$2
 
     if [ "${REGION}" == "" ]; then
@@ -395,16 +405,6 @@ function register_server
 
 
 
-    SERVER_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address='${SERVER}';"`
-
-    if [ "${SERVER_ID}" != "" ]; then
-        echo "Server ${SERVER} already registered"
-
-        return 1
-    fi
-
-
-
     PING_REQUEST_DATA=`cat << EOF
         {
             "my_address":      "${SERVER_NAME}",
@@ -414,16 +414,26 @@ function register_server
 EOF
     `
 
+    PING_RESPONSE=`echo "${PING_REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/ping.php`
+
+    if [ "${PING_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+        echo "Failed to ping server: ${SERVER}"
+
+        return 1
+    fi
+
+
+
     PING_TOTAL=0
 
     for ((i = 0; i < 10; i++))
     do
-        PING_RESPONSE=`echo "${PING_REQUEST_DATA}" | curl -k -w "%{time_total}" -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/ping.php`
+        PING_RESPONSE=`curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php`
 
         if [ "${PING_RESPONSE:0:15}" != "{\"status\":\"OK\"}" ]; then
             echo "Failed to ping server: ${SERVER}"
 
-            exit 1
+            return 1
         fi
 
         PING_TOTAL=`echo "${PING_TOTAL} + ${PING_RESPONSE:15}" | bc`
@@ -437,23 +447,62 @@ EOF
 
 
 
-    for ADDRESS in `mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE address!='${SERVER}' AND address!='${SERVER_NAME}';"`
+    for ADDRESS in `mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE address!='${SERVER_NAME}';"`
     do
+        echo "Registering server ${ADDRESS} on server ${SERVER}"
+
+
+
         ANOTHER_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
 
-        REQUEST_DATA=`cat << EOF
+        REGISTER_REQUEST_DATA=`cat << EOF
             {
                 "my_address":      "${SERVER_NAME}",
-                "address":         "${ADDRESS}",
                 "my_secret_key":   "${MY_SECRET_KEY}",
                 "your_secret_key": "${SECRET_KEY}",
+                "address":         "${ADDRESS}",
                 "secret_key":      "${ANOTHER_SECRET_KEY}"
             }
 EOF
         `
 
-        echo "${REQUEST_DATA}" | curl -k -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/register.php
-        echo ""
+        REGISTER_RESPONSE=`echo "${REGISTER_REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/register.php`
+echo "${REGISTER_REQUEST_DATA}"
+        if [ "${REGISTER_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+            echo "Failed to register server ${ADDRESS} on server ${SERVER}"
+
+            return 1
+        fi
+    done
+
+
+
+    for ADDRESS in `mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE address!='${SERVER}' AND address!='${SERVER_NAME}';"`
+    do
+        echo "Registering server ${SERVER} on server ${ADDRESS}"
+
+
+
+        ANOTHER_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
+
+        REGISTER_REQUEST_DATA=`cat << EOF
+            {
+                "my_address":      "${SERVER_NAME}",
+                "my_secret_key":   "${MY_SECRET_KEY}",
+                "your_secret_key": "${ANOTHER_SECRET_KEY}",
+                "address":         "${SERVER}",
+                "secret_key":      "${SECRET_KEY}"
+            }
+EOF
+        `
+
+        REGISTER_RESPONSE=`echo "${REGISTER_REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://${ADDRESS}/rest/register.php`
+
+        if [ "${REGISTER_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+            echo "Failed to register server ${ADDRESS} on server ${SERVER}"
+
+            return 1
+        fi
     done
 
 
@@ -491,7 +540,7 @@ function update_server_delays
             if [ "${PING_RESPONSE:0:15}" != "{\"status\":\"OK\"}" ]; then
                 echo "Failed to ping server: ${SERVER}"
 
-                exit 1
+                return 1
             fi
 
             PING_TOTAL=`echo "${PING_TOTAL} + ${PING_RESPONSE:15}" | bc`
