@@ -461,8 +461,8 @@ EOF
                 "my_address":      "${SERVER_NAME}",
                 "my_secret_key":   "${MY_SECRET_KEY}",
                 "your_secret_key": "${SECRET_KEY}",
-                "address":         "${ADDRESS}",
                 "region_id":       ${ANOTHER_REGION_ID},
+                "address":         "${ADDRESS}",
                 "secret_key":      "${ANOTHER_SECRET_KEY}"
             }
 EOF
@@ -492,8 +492,8 @@ EOF
                 "my_address":      "${SERVER_NAME}",
                 "my_secret_key":   "${MY_SECRET_KEY}",
                 "your_secret_key": "${ANOTHER_SECRET_KEY}",
-                "address":         "${SERVER}",
                 "region_id":       ${REGION_ID},
+                "address":         "${SERVER}",
                 "secret_key":      "${SECRET_KEY}"
             }
 EOF
