@@ -149,7 +149,7 @@
                 $owner_email == ""
                 ||
                 $name == ""
-                )
+               )
             {
                 db_disconnect($link);
 
@@ -178,14 +178,14 @@
 
 
 
-                $result2 = $link->query($sql);
-                die_if_sql_failed($result2, $link, $data, $sql);
+            $result2 = $link->query($sql);
+            die_if_sql_failed($result2, $link, $data, $sql);
         }
         else
         {
             $row = $result->fetch_array();
 
-            $res         = $row["id"];
+            $res            = $row["id"];
             $app_secret_key = $row["secret_key"];
 
             $result->close();
