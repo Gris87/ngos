@@ -43,7 +43,11 @@
     {
         $res = 1;
 
+        
+        
+        $link->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
+        
 
         $sql = "SELECT"
             . "     value"
@@ -57,23 +61,10 @@
 
 
 
-        if ($result->num_rows == 0)
-        {
-            $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_PROPERTIES"]
-                . " (name, value)"
-                . " VALUES("
-                . "  'last_app_id',"
-                . "  '1'"
-                . ")";
-
-
-
-            $result2 = $link->query($sql);
-            die_if_sql_failed($result2, $link, $data, $sql);
-        }
-        else
+        if ($result->num_rows == 1)
         {
             $res = (int)$result->fetch_row()[0] + 1;
+            $result->close();
 
 
 
@@ -85,39 +76,61 @@
 
             $result2 = $link->query($sql);
             die_if_sql_failed($result2, $link, $data, $sql);
+            
+            
+            
+            $link->commit();
         }
+        else
+        {
+            $result->close();
+            $link->commit();
 
-        $result->close();
 
 
+            $error_details = "Access violation";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+        
+        
 
         return $res;
     }
-
-
-
-    function handle_post_with_params($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
+    
+    
+    
+    function get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
-        $link->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-
-
-
+        $res = 0;
+        
+        
+        
         $sql = "SELECT"
-            . "     id"
+            . "     id,"
+            . "     secret_key"
             . " FROM " . $GLOBALS["DB_TABLE_APPS"]
             . " WHERE codename='" . $link->real_escape_string($codename) . "'";
-
-
-
+                    
+                    
+                    
         $result = $link->query($sql);
         die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-        $app_id = 0;
-
+                    
+                    
+        
         if ($result->num_rows == 0)
         {
+            $result->close();
+            
+            
+            
             if (
                 !isset($vendor_id)
                 ||
@@ -136,26 +149,25 @@
                 $owner_email == ""
                 ||
                 $name == ""
-               )
+                )
             {
-                $link->commit();
                 db_disconnect($link);
-
+                
                 $data["message"] = "Invalid parameters";
-
+                
                 die(json_encode($data));
             }
-
-
-
-            $app_id = obtain_next_app_id($link, $data);
-
-
-
+            
+            
+            
+            $res = obtain_next_app_id($link, $data);
+            
+            
+            
             $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_APPS"]
                 . " (id, vendor_id, codename, owner_email, name, description, secret_key)"
                 . " VALUES("
-                . "  '" . $link->real_escape_string($app_id)      . "',"
+                . "  '" . $link->real_escape_string($res)      . "',"
                 . "  '" . $link->real_escape_string($vendor_id)   . "',"
                 . "  '" . $link->real_escape_string($codename)    . "',"
                 . "  '" . $link->real_escape_string($owner_email) . "',"
@@ -163,22 +175,95 @@
                 . "  '',"
                 . "  '" . $link->real_escape_string($secret_key)  . "'"
                 . ")";
-
-
-
-            $result2 = $link->query($sql);
-            die_if_sql_failed($result2, $link, $data, $sql);
+                                                
+                                                
+                                                
+                $result2 = $link->query($sql);
+                die_if_sql_failed($result2, $link, $data, $sql);
         }
         else
         {
-            $app_id = $result->fetch_row()[0];
+            $row = $result->fetch_array();
+            
+            $res         = $row["id"];
+            $app_secret_key = $row["secret_key"];
+            
+            $result->close();
+            
+            
+            
+            if ($secret_key != $app_secret_key)
+            {
+                $error_details = "Access violation";
+                error_log($error_details);
+                
+                db_disconnect($link);
+                
+                $data["message"] = "Access error";
+                $data["details"] = $error_details;
+                
+                die(json_encode($data));
+            }
         }
+        
+        
+        
+        return $res;
+    }
 
-        $result->close();
+
+
+    function handle_post_for_add_version($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
+    {
+        $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);
 
 
 
-        $link->commit();
+        $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_APP_VERSIONS"]
+            . " (app_id, version, hash, completed)"
+            . " VALUES("
+            . "  '" . $link->real_escape_string($app_id)  . "',"
+            . "  '" . $link->real_escape_string($version) . "',"
+            . "  '00000000000000000000000000000000',"
+            . "  '0'"
+            . ")";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+        
+        
+        $app_version_id = $link->insert_id;
+
+        
+
+        $data["app_id"]         = $app_id;
+        $data["app_version_id"] = $app_version_id;
+    }
+    
+    
+    
+    function handle_post_with_params($link, &$data, $action, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
+    {
+        switch ($action)
+        {
+            case "add_version":
+            {
+                handle_post_for_add_version($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
+            }
+            break;
+                
+            default:
+            {
+                db_disconnect($link);
+                
+                $data["message"] = "Invalid parameters";
+                
+                die(json_encode($data));
+            }
+        }
     }
 
 
@@ -198,6 +283,7 @@
 
 
 
+        $action      = @$_POST["action"];
         $vendor_id   = @$_POST["vendor_id"];
         $codename    = @$_POST["codename"];
         $owner_email = @$_POST["owner_email"];
@@ -208,17 +294,23 @@
 
 
         if (
+            !isset($action)
+            ||
             !isset($codename)
             ||
             !isset($version)
             ||
             !isset($secret_key)
             ||
+            !is_string($action)
+            ||
             !is_string($codename)
             ||
             !is_int($version)
             ||
             !is_string($secret_key)
+            ||
+            $action == ""
             ||
             !preg_match(constant("CODENAME_REGEXP"), $codename)
             ||
@@ -238,7 +330,7 @@
 
         if ($link)
         {
-            handle_post_with_params($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
+            handle_post_with_params($link, $data, $action, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
 
             db_disconnect($link);
         }

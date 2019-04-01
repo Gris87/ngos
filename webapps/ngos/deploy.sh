@@ -90,6 +90,7 @@ function deploy_app
 
     REQUEST_DATA=`cat << EOF
         {
+            "action":      "add_version",
             "vendor_id":   1,
             "codename":    "${CODENAME}",
             "owner_email": "admin@ngos.com",
