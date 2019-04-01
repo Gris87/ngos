@@ -26,8 +26,8 @@
 
 
     function handle_get()
-    {        
-        echo password_hash("Grisly-ly=Gris", PASSWORD_BCRYPT);
+    {
+        // Nothing
     }
 
 
