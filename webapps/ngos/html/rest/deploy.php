@@ -96,7 +96,7 @@
 
 
 
-    function handle_post_with_params($link, $data, $codename, $name, $version)
+    function handle_post_with_params($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
     {
         $link->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
@@ -119,9 +119,21 @@
         if ($result->num_rows == 0)
         {
             if (
+                !isset($vendor_id)
+                ||
+                !isset($owner_email)
+                ||
                 !isset($name)
                 ||
+                !is_int($vendor_id)
+                ||
+                !is_string($owner_email)
+                ||
                 !is_string($name)
+                ||
+                $vendor_id <= 0
+                ||
+                $owner_email == ""
                 ||
                 $name == ""
                )
@@ -141,11 +153,15 @@
 
 
             $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_APPS"]
-                . " (id, codename, name)"
+                . " (id, vendor_id, codename, owner_email, name, description, secret_key)"
                 . " VALUES("
-                . "  '" . $link->real_escape_string($app_id) . "',"
-                . "  '" . $link->real_escape_string($codename) . "',"
-                . "  '" . $link->real_escape_string($name) . "'"
+                . "  '" . $link->real_escape_string($app_id)      . "',"
+                . "  '" . $link->real_escape_string($vendor_id)   . "',"
+                . "  '" . $link->real_escape_string($codename)    . "',"
+                . "  '" . $link->real_escape_string($owner_email) . "',"
+                . "  '" . $link->real_escape_string($name)        . "',"
+                . "  '',"
+                . "  '" . $link->real_escape_string($secret_key)  . "'"
                 . ")";
 
 
@@ -182,22 +198,33 @@
 
 
 
-        $codename = @$_POST["codename"];
-        $name     = @$_POST["name"];
-        $version  = @$_POST["version"];
+        $vendor_id   = @$_POST["vendor_id"];
+        $codename    = @$_POST["codename"];
+        $owner_email = @$_POST["owner_email"];
+        $name        = @$_POST["name"];
+        $version     = @$_POST["version"];
+        $secret_key  = @$_POST["secret_key"];
+
+
 
         if (
             !isset($codename)
             ||
             !isset($version)
             ||
+            !isset($secret_key)
+            ||
             !is_string($codename)
             ||
             !is_int($version)
             ||
+            !is_string($secret_key)
+            ||
             !preg_match(constant("CODENAME_REGEXP"), $codename)
             ||
             $version < 20190101000000
+            ||
+            strlen($secret_key) != 1000
            )
         {
             $data["message"] = "Invalid parameters";
@@ -211,7 +238,7 @@
 
         if ($link)
         {
-            handle_post_with_params($link, $data, $codename, $name, $version);
+            handle_post_with_params($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
 
             db_disconnect($link);
         }

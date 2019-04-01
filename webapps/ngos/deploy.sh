@@ -33,6 +33,17 @@ function send_post_request
 
 
 
+function execute_sql_without_header
+{
+    SQL=$1
+
+    mysql -u ngos -pngos -D ngos -NB -e "${SQL}" || exit 1
+
+    return 0
+}
+
+
+
 function deploy_app_file
 {
     CONTENT=`base64 -w 0 ${FILEPATH}`
@@ -65,14 +76,31 @@ function deploy_app
 
 
 
+    SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM apps WHERE codename='${CODENAME}';" | tr -dc "a-zA-Z0-9"`
+
+    if [ "${SECRET_KEY}" == "" ]; then
+        SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
+    elif [ ${#SECRET_KEY} -ne 1000 ]; then
+        echo "Secret key is invalid. Please generate new secret key"
+
+        return 1
+    fi
+
+
+
     REQUEST_DATA=`cat << EOF
         {
-            "codename": "${CODENAME}",
-            "name":     "${NAME}",
-            "version":  "${VERSION}"
+            "vendor_id":   1,
+            "codename":    "${CODENAME}",
+            "owner_email": "admin@ngos.com",
+            "name":        "${NAME}",
+            "version":     ${VERSION},
+            "secret_key":  "${SECRET_KEY}"
         }
 EOF
     `
+
+
 
     echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy.php
     echo ""
