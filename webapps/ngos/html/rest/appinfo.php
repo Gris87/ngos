@@ -3,23 +3,26 @@
 
 
 
-    switch ($_SERVER["REQUEST_METHOD"])
+    function handle_request()
     {
-        case "GET":
+        switch ($_SERVER["REQUEST_METHOD"])
         {
-            handle_get();
-        }
-        break;
-
-        case "POST":
-        {
-            handle_post();
-        }
-        break;
-
-        default:
-        {
-            die("Unknown method");
+            case "GET":
+            {
+                handle_get();
+            }
+            break;
+    
+            case "POST":
+            {
+                handle_post();
+            }
+            break;
+    
+            default:
+            {
+                die("Unknown method");
+            }
         }
     }
 
@@ -36,4 +39,8 @@
     {
         // Nothing
     }
+    
+    
+    
+    handle_request();
 ?>

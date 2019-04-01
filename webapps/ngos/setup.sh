@@ -46,6 +46,46 @@ fi
 
 
 
+function ping_server
+{
+    SERVER=$1
+
+    curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php
+}
+
+
+
+function send_post_request
+{
+    SERVER=$1
+
+    curl -k -s -X POST -H "Content-Type: application/json" -d @- ${SERVER}
+}
+
+
+
+function execute_sql
+{
+    SQL=$1
+
+    mysql -u root -D ngos -e "${SQL}" || exit 1
+
+    return 0
+}
+
+
+
+function execute_sql_without_header
+{
+    SQL=$1
+
+    mysql -u root -D ngos -NB -e "${SQL}" || exit 1
+
+    return 0
+}
+
+
+
 function install_sources
 {
     ./install.sh || return 1
@@ -59,7 +99,7 @@ function install_sources
 
 function setup_server_name
 {
-    SERVER_NAME_VALUE=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';"`
+    SERVER_NAME_VALUE=`execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';"`
 
     if [ "${SERVER_NAME_VALUE}" == "" ]; then
         SERVER_NAME=$1
@@ -70,7 +110,7 @@ function setup_server_name
             read SERVER_NAME
         done
 
-        mysql -u root -D ngos -e "INSERT INTO properties (name, value) VALUES ('server_name', '${SERVER_NAME}');" || return 1
+        execute_sql "INSERT INTO properties (name, value) VALUES ('server_name', '${SERVER_NAME}');" || return 1
     else
         if [ ${SILENT_MODE} -eq 0 ]; then
             while true
@@ -102,7 +142,7 @@ function setup_server_name
             done
 
             if [ "${SERVER_NAME}" != "${SERVER_NAME_VALUE}" ]; then
-                mysql -u root -D ngos -e "UPDATE properties SET value='${SERVER_NAME}' WHERE name='server_name';" || return 1
+                execute_sql "UPDATE properties SET value='${SERVER_NAME}' WHERE name='server_name';" || return 1
             fi
         else
             echo "Canceled"
@@ -122,12 +162,12 @@ function setup_server_name
 
 function generate_secret_key
 {
-    SECRET_KEY_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM properties WHERE name='secret_key';"`
+    SECRET_KEY_ID=`execute_sql_without_header "SELECT id FROM properties WHERE name='secret_key';"`
 
     if [ "${SECRET_KEY_ID}" == "" ]; then
         SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
 
-        mysql -u root -D ngos -e "INSERT INTO properties (name, value) VALUES ('secret_key', '${SECRET_KEY}');" || return 1
+        execute_sql "INSERT INTO properties (name, value) VALUES ('secret_key', '${SECRET_KEY}');" || return 1
     else
         if [ ${SILENT_MODE} -eq 0 ]; then
             while true
@@ -152,7 +192,7 @@ function generate_secret_key
         if [ ${CONFIRM} -eq 1 ]; then
             SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
 
-            mysql -u root -D ngos -e "UPDATE properties SET value='${SECRET_KEY}' WHERE name='secret_key';" || return 1
+            execute_sql "UPDATE properties SET value='${SECRET_KEY}' WHERE name='secret_key';" || return 1
         else
             echo "Canceled"
 
@@ -189,13 +229,13 @@ function assign_secret_key
 
             OPTION_NUM=1
 
-            for SERVER in `mysql -u root -D ngos -NB -e "SELECT address FROM servers;"`
+            for SERVER in `execute_sql_without_header "SELECT address FROM servers;"`
             do
                 SERVER_LENGTH=${#SERVER}
 
                 echo -n "[${OPTION_NUM}] ${SERVER}"
                 printf "%$((60 - SERVER_LENGTH))s" ""
-                mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${SERVER}';" | cut -c -20
+                execute_sql_without_header "SELECT secret_key FROM servers WHERE address='${SERVER}';" | cut -c -20
 
                 OPTIONS[${OPTION_NUM}]=${SERVER}
                 OPTION_NUM=$((${OPTION_NUM} + 1))
@@ -248,7 +288,7 @@ function assign_secret_key
 
 
 
-    mysql -u root -D ngos -e "UPDATE servers SET secret_key='${SECRET_KEY}' WHERE address='${SERVER}';" || return 1
+    execute_sql "UPDATE servers SET secret_key='${SECRET_KEY}' WHERE address='${SERVER}';" || return 1
 
 
 
@@ -270,7 +310,7 @@ function update_sources
 
 function register_server
 {
-    SERVER_NAME=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';"`
+    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';"`
 
     if [ "${SERVER_NAME}" == "" ]; then
         echo "Server name is invalid. Please specify new server name"
@@ -280,7 +320,7 @@ function register_server
 
 
 
-    MY_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
+    MY_SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
 
     if [ ${#MY_SECRET_KEY} -ne 1000 ]; then
         echo "Secret key is invalid. Please generate new secret key"
@@ -310,7 +350,7 @@ function register_server
 
 
 
-    SERVER_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address='${SERVER}';"`
+    SERVER_ID=`execute_sql_without_header "SELECT id FROM servers WHERE address='${SERVER}';"`
 
     if [ "${SERVER_ID}" != "" ]; then
         echo "Server ${SERVER} already registered"
@@ -338,7 +378,7 @@ function register_server
 
             OPTION_NUM=1
 
-            for REGION in `mysql -u root -D ngos -NB -e "SELECT name FROM regions;"`
+            for REGION in `execute_sql_without_header "SELECT name FROM regions;"`
             do
                 echo "[${OPTION_NUM}] ${REGION}"
 
@@ -378,7 +418,7 @@ function register_server
 
 
 
-    REGION_ID=`mysql -u root -D ngos -NB -e "SELECT id FROM regions WHERE name='${REGION}';"`
+    REGION_ID=`execute_sql_without_header "SELECT id FROM regions WHERE name='${REGION}';"`
 
     if [ "${REGION_ID}" == "" ]; then
         echo "Region ${REGION} not found"
@@ -414,10 +454,10 @@ function register_server
 EOF
     `
 
-    PING_RESPONSE=`echo "${PING_REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/ping.php`
+    PING_RESPONSE=`echo "${PING_REQUEST_DATA}" | send_post_request https://${SERVER}/rest/ping.php`
 
     if [ "${PING_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
-        echo "Failed to ping server: ${SERVER}"
+        echo "Failed to ping server ${SERVER}: ${PING_RESPONSE}"
 
         return 1
     fi
@@ -428,10 +468,10 @@ EOF
 
     for ((i = 0; i < 10; i++))
     do
-        PING_RESPONSE=`curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php`
+        PING_RESPONSE=`ping_server ${SERVER}`
 
         if [ "${PING_RESPONSE:0:15}" != "{\"status\":\"OK\"}" ]; then
-            echo "Failed to ping server: ${SERVER}"
+            echo "Failed to ping server ${SERVER}: ${PING_RESPONSE}"
 
             return 1
         fi
@@ -443,18 +483,18 @@ EOF
 
 
 
-    mysql -u root -D ngos -e "INSERT INTO servers (region_id, address, delay, secret_key) VALUES ('${REGION_ID}', '${SERVER}', '${DELAY}', '${SECRET_KEY}');" || return 1
+    execute_sql "INSERT INTO servers (region_id, address, delay, secret_key) VALUES ('${REGION_ID}', '${SERVER}', '${DELAY}', '${SECRET_KEY}');" || return 1
 
 
 
-    for ADDRESS in `mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE address!='${SERVER_NAME}';"`
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address!='${SERVER_NAME}';"`
     do
         echo "Registering server ${ADDRESS} on server ${SERVER}"
 
 
 
-        ANOTHER_REGION_ID=`mysql -u root -D ngos -NB -e "SELECT region_id FROM servers WHERE address='${ADDRESS}';"`
-        ANOTHER_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
+        ANOTHER_REGION_ID=`execute_sql_without_header "SELECT region_id FROM servers WHERE address='${ADDRESS}';"`
+        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
 
         REGISTER_REQUEST_DATA=`cat << EOF
             {
@@ -468,10 +508,10 @@ EOF
 EOF
         `
 
-        REGISTER_RESPONSE=`echo "${REGISTER_REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://${SERVER}/rest/register.php`
+        REGISTER_RESPONSE=`echo "${REGISTER_REQUEST_DATA}" | send_post_request https://${SERVER}/rest/register.php`
 
         if [ "${REGISTER_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
-            echo "Failed to register server ${ADDRESS} on server ${SERVER}"
+            echo "Failed to register server ${ADDRESS} on server ${SERVER}: ${REGISTER_RESPONSE}"
 
             return 1
         fi
@@ -479,13 +519,13 @@ EOF
 
 
 
-    for ADDRESS in `mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE address!='${SERVER}' AND address!='${SERVER_NAME}';"`
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address!='${SERVER}' AND address!='${SERVER_NAME}';"`
     do
         echo "Registering server ${SERVER} on server ${ADDRESS}"
 
 
 
-        ANOTHER_SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
+        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
 
         REGISTER_REQUEST_DATA=`cat << EOF
             {
@@ -499,10 +539,10 @@ EOF
 EOF
         `
 
-        REGISTER_RESPONSE=`echo "${REGISTER_REQUEST_DATA}" | curl -k -s -X POST -H "Content-Type: application/json" -d @- https://${ADDRESS}/rest/register.php`
+        REGISTER_RESPONSE=`echo "${REGISTER_REQUEST_DATA}" | send_post_request https://${ADDRESS}/rest/register.php`
 
         if [ "${REGISTER_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
-            echo "Failed to register server ${ADDRESS} on server ${SERVER}"
+            echo "Failed to register server ${ADDRESS} on server ${SERVER}: ${REGISTER_RESPONSE}"
 
             return 1
         fi
@@ -528,7 +568,7 @@ function change_server_location
 
 function update_server_delays
 {
-    for SERVER in `mysql -u root -D ngos -NB -e "SELECT address FROM servers;"`
+    for SERVER in `execute_sql_without_header "SELECT address FROM servers;"`
     do
         echo "Updating delay to server: ${SERVER}"
 
@@ -538,10 +578,10 @@ function update_server_delays
 
         for ((i = 0; i < 10; i++))
         do
-            PING_RESPONSE=`curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php`
+            PING_RESPONSE=`ping_server ${SERVER}`
 
             if [ "${PING_RESPONSE:0:15}" != "{\"status\":\"OK\"}" ]; then
-                echo "Failed to ping server: ${SERVER}"
+                echo "Failed to ping server ${SERVER}: ${PING_RESPONSE}"
 
                 return 1
             fi
@@ -553,7 +593,7 @@ function update_server_delays
 
 
 
-        mysql -u root -D ngos -e "UPDATE servers SET delay='${DELAY}' WHERE address='${SERVER}';" || return 1
+        execute_sql "UPDATE servers SET delay='${DELAY}' WHERE address='${SERVER}';" || return 1
     done
 
 
@@ -573,7 +613,7 @@ function validate_setup
 
 
 
-    SERVER_NAME=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';"`
+    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';"`
 
     if [ "${SERVER_NAME}" == "" ]; then
         echo "Server name is invalid. Please specify new server name"
@@ -583,7 +623,7 @@ function validate_setup
 
 
 
-    SECRET_KEY=`mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
+    SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
 
     if [ ${#SECRET_KEY} -ne 1000 ]; then
         echo "Secret key is invalid. Please generate new secret key"
@@ -593,7 +633,7 @@ function validate_setup
 
 
 
-    INVALID_SERVERS=`mysql -u root -D ngos -NB -e "SELECT address FROM servers WHERE secret_key IS NULL OR LENGTH(secret_key) != 1000;"`
+    INVALID_SERVERS=`execute_sql_without_header "SELECT address FROM servers WHERE secret_key IS NULL OR LENGTH(secret_key) != 1000;"`
 
     if [ "${INVALID_SERVERS}" != "" ]; then
         echo "Servers with invalid secret keys:"
@@ -617,7 +657,7 @@ function validate_setup
 function print_server_name
 {
     echo "Server name:"
-    mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='server_name';" || return 1
+    execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';" || return 1
 
     return 0
 }
@@ -627,7 +667,7 @@ function print_server_name
 function print_secret_key
 {
     echo "Secret key:"
-    mysql -u root -D ngos -NB -e "SELECT value FROM properties WHERE name='secret_key';" || return 1
+    execute_sql_without_header "SELECT value FROM properties WHERE name='secret_key';" || return 1
 
     return 0
 }
@@ -637,7 +677,7 @@ function print_secret_key
 function print_servers
 {
     echo "Servers:"
-    mysql -u root -D ngos -e "SELECT t1.id, t1.address, t2.name as region, t1.delay, SUBSTRING(t1.secret_key, 1, 20) as secret_key FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id;" || return 1
+    execute_sql "SELECT t1.id, t1.address, t2.name as region, t1.delay, SUBSTRING(t1.secret_key, 1, 20) as secret_key FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id;" || return 1
 
     return 0
 }

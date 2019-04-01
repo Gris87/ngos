@@ -1,25 +1,28 @@
 <?php
     require_once "../common/functions.php";
 
+    
 
-
-    switch ($_SERVER["REQUEST_METHOD"])
+    function handle_request()
     {
-        case "GET":
+        switch ($_SERVER["REQUEST_METHOD"])
         {
-            handle_get();
-        }
-        break;
-
-        case "POST":
-        {
-            handle_post();
-        }
-        break;
-
-        default:
-        {
-            die("Unknown method");
+            case "GET":
+            {
+                handle_get();
+            }
+            break;
+    
+            case "POST":
+            {
+                handle_post();
+            }
+            break;
+    
+            default:
+            {
+                die("Unknown method");
+            }
         }
     }
 
@@ -310,4 +313,8 @@
         $data["status"] = "OK";
         echo json_encode($data);
     }
+    
+    
+    
+    handle_request();
 ?>
