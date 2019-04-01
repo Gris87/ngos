@@ -100,8 +100,6 @@ function deploy_app
 EOF
     `
 
-
-
     echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy.php
     echo ""
 
