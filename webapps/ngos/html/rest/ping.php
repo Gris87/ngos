@@ -12,13 +12,13 @@
                 handle_get();
             }
             break;
-    
+
             case "POST":
             {
                 handle_post();
             }
             break;
-    
+
             default:
             {
                 die("Unknown method");
@@ -116,8 +116,8 @@
         $data["status"] = "OK";
         echo json_encode($data);
     }
-    
-    
-    
+
+
+
     handle_request();
 ?>

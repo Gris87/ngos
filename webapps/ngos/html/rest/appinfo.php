@@ -12,13 +12,13 @@
                 handle_get();
             }
             break;
-    
+
             case "POST":
             {
                 handle_post();
             }
             break;
-    
+
             default:
             {
                 die("Unknown method");
@@ -39,8 +39,8 @@
     {
         // Nothing
     }
-    
-    
-    
+
+
+
     handle_request();
 ?>

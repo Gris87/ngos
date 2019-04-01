@@ -1,7 +1,7 @@
 <?php
     require_once "../common/functions.php";
 
-    
+
 
     function handle_request()
     {
@@ -12,13 +12,13 @@
                 handle_get();
             }
             break;
-    
+
             case "POST":
             {
                 handle_post();
             }
             break;
-    
+
             default:
             {
                 die("Unknown method");
@@ -137,7 +137,7 @@
 
 
 
-        $responses = [];
+        $responses  = [];
         $ping_total = 0;
 
         foreach ($curl_sessions as $curl_session)
@@ -159,7 +159,7 @@
 
 
         foreach ($responses as $response)
-        {            
+        {
             if ($response)
             {
                 $response = json_decode($response, true);
@@ -313,8 +313,8 @@
         $data["status"] = "OK";
         echo json_encode($data);
     }
-    
-    
-    
+
+
+
     handle_request();
 ?>

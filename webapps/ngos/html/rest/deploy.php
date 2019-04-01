@@ -16,13 +16,13 @@
                 handle_get();
             }
             break;
-    
+
             case "POST":
             {
                 handle_post();
             }
             break;
-    
+
             default:
             {
                 die("Unknown method");
@@ -78,7 +78,7 @@
 
 
             $sql = "UPDATE " . $GLOBALS["DB_TABLE_PROPERTIES"]
-                . " SET value='" . $res . "'"
+                . " SET value='" . $link->real_escape_string($res) . "'"
                 . " WHERE name='last_app_id'";
 
 
@@ -96,7 +96,7 @@
 
 
 
-    function handle_post_with_params($link, $data, $app_id, $codename, $name, $version, $content)
+    function handle_post_with_params($link, $data, $codename, $name, $version)
     {
         $link->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
@@ -114,12 +114,29 @@
 
 
 
+        $app_id = 0;
+
         if ($result->num_rows == 0)
         {
-            if (!isset($app_id))
+            if (
+                !isset($name)
+                ||
+                !is_string($name)
+                ||
+                $name == ""
+               )
             {
-                $app_id = obtain_next_app_id($link, $data);
+                $link->commit();
+                db_disconnect($link);
+
+                $data["message"] = "Invalid parameters";
+
+                die(json_encode($data));
             }
+
+
+
+            $app_id = obtain_next_app_id($link, $data);
 
 
 
@@ -165,22 +182,22 @@
 
 
 
-        $app_id   = @$_POST["app_id"];
         $codename = @$_POST["codename"];
         $name     = @$_POST["name"];
         $version  = @$_POST["version"];
-        $content  = @$_POST["content"];
 
         if (
             !isset($codename)
             ||
-            !isset($name)
-            ||
-            !isset($content)
+            !isset($version)
             ||
             !is_string($codename)
             ||
+            !is_int($version)
+            ||
             !preg_match(constant("CODENAME_REGEXP"), $codename)
+            ||
+            $version < 20190101000000
            )
         {
             $data["message"] = "Invalid parameters";
@@ -194,7 +211,7 @@
 
         if ($link)
         {
-            handle_post_with_params($link, $data, $app_id, $codename, $name, $version, $content);
+            handle_post_with_params($link, $data, $codename, $name, $version);
 
             db_disconnect($link);
         }
@@ -210,8 +227,8 @@
         $data["status"] = "OK";
         echo json_encode($data);
     }
-    
-    
-    
+
+
+
     handle_request();
 ?>
