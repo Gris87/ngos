@@ -17,13 +17,13 @@ SUBDIRS = \
 
 
 
-all: $(SUBDIRS) $(OUTPUT_DIR)/NGOS_kernel.bin $(OUTPUT_DIR)/NGOS_installer.bin
+all: $(SUBDIRS) $(OUTPUT_DIR)/deployment/com.ngos.kernel/NGOS_kernel.bin $(OUTPUT_DIR)/deployment/com.ngos.installer/NGOS_installer.bin
 
-$(OUTPUT_DIR)/NGOS_kernel.bin: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
+$(OUTPUT_DIR)/deployment/com.ngos.kernel/NGOS_kernel.bin: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -k src/os/kernel/build/kernel.elf -o $@
 
-$(OUTPUT_DIR)/NGOS_installer.bin: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/installer/build/installer.elf tools/qt/image_builder/build/image_builder
+$(OUTPUT_DIR)/deployment/com.ngos.installer/NGOS_installer.bin: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/installer/build/installer.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -i src/os/installer/build/installer.elf -o $@
 

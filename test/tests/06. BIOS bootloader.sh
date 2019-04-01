@@ -33,7 +33,7 @@ echo ""
 
 
 ( sleep 3 ; echo "screendump ${QEMU_SCREENSHOT}" ; echo "quit" ) | \
-    qemu-system-x86_64 -display none -drive file=../../build/NGOS_kernel.bin,format=raw -monitor stdio > /dev/null 2>&1
+    qemu-system-x86_64 -display none -drive file=../../build/deployment/com.ngos.kernel/NGOS_kernel.bin,format=raw -monitor stdio > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
     exit 1

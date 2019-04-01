@@ -961,7 +961,7 @@ function usage()
             FUNC_ATTRS_LENGTH=${#FUNC_ATTRS}
 
             echo -n "    ${FUNC_ATTRS}"
-            printf "%$((40 - FUNC_ATTRS_LENGTH))s" ""
+            printf "%$((50 - FUNC_ATTRS_LENGTH))s" ""
             echo " - ${TEXT[i]}"
         done
 

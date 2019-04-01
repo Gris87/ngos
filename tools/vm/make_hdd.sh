@@ -26,9 +26,9 @@ fi
 
 
 if [ "${OS_TYPE}" == "ngos" ]; then
-    KERNEL_IMAGE=../../build/NGOS_kernel.bin
+    KERNEL_IMAGE=../../build/deployment/com.ngos.kernel/NGOS_kernel.bin
 elif [ "${OS_TYPE}" == "ngos_installer" ]; then
-    KERNEL_IMAGE=../../build/NGOS_installer.bin
+    KERNEL_IMAGE=../../build/deployment/com.ngos.installer/NGOS_installer.bin
 elif [ "${OS_TYPE}" == "linux" ]; then
     KERNEL_IMAGE=../../../linux/arch/x86/boot/bzImage
 elif [ "${OS_TYPE}" == "win7" ]; then

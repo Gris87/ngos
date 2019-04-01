@@ -61,6 +61,8 @@ mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('3', 'Ir
 mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('4', 'China');"                     || exit 1
 mysql -u root -D ngos -e "INSERT IGNORE INTO regions (id, name) VALUES ('5', 'USA');"                       || exit 1
 
+mysql -u root -D ngos -e "INSERT IGNORE INTO vendors (name, password_crypted) VALUES ('NGOS', '');" || exit 1
+
 
 
 FIRST_SERVER=`mysql -u root -D ngos -NB -e "SELECT id FROM servers WHERE address='${FIRST_SERVER_ADDRESS}';"`
