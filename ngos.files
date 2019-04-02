@@ -1300,9 +1300,12 @@ webapps/ngos/html/common/constants.php
 webapps/ngos/html/common/functions.php
 webapps/ngos/html/index.php
 webapps/ngos/html/rest/appinfo.php
-webapps/ngos/html/rest/deploy.php
+webapps/ngos/html/rest/deploy_app.php
+webapps/ngos/html/rest/deploy_file.php
 webapps/ngos/html/rest/ping.php
 webapps/ngos/html/rest/register.php
+webapps/ngos/html/rest/replicate_app.php
+webapps/ngos/html/rest/replicate_file.php
 webapps/ngos/install.sh
 webapps/ngos/mariadb/create.sql
 webapps/ngos/setup.sh

@@ -60,7 +60,7 @@ function deploy_app_file
 EOF
     `
 
-    echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy.php
+    echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_file.php
     echo ""
 }
 
@@ -90,7 +90,6 @@ function deploy_app
 
     REQUEST_DATA=`cat << EOF
         {
-            "action":      "add_version",
             "vendor_id":   1,
             "codename":    "${CODENAME}",
             "owner_email": "admin@ngos.com",
@@ -101,7 +100,7 @@ function deploy_app
 EOF
     `
 
-    echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy.php
+    echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_app.php
     echo ""
 
 

@@ -211,15 +211,15 @@
         return $res;
     }
 
-       
-    
+
+
     function replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
-        
+
     }
 
-    
-    
+
+
     function handle_post_with_params($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
     {
         $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);
