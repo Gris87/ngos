@@ -44,6 +44,53 @@
 
 
 
+    function get_server_name($link, $data)
+    {
+        $res = "";
+
+
+
+        $sql = "SELECT"
+            . "     value"
+            . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
+            . " WHERE name='server_name'";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        if ($result->num_rows == 1)
+        {
+            $res = $result->fetch_row()[0];
+            $result->close();
+        }
+        else
+        {
+            $result->close();
+
+
+
+            $error_details = "Access violation";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+
+
+
+        return $res;
+    }
+
+
+
     function get_secret_key($link, $data)
     {
         $res = "";
@@ -65,9 +112,24 @@
         if ($result->num_rows == 1)
         {
             $res = $result->fetch_row()[0];
+            $result->close();
         }
+        else
+        {
+            $result->close();
 
-        $result->close();
+
+
+            $error_details = "Access violation";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
 
 
 
@@ -97,9 +159,24 @@
         if ($result->num_rows == 1)
         {
             $res = $result->fetch_row()[0];
+            $result->close();
         }
+        else
+        {
+            $result->close();
 
-        $result->close();
+
+
+            $error_details = "Access violation";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
 
 
 

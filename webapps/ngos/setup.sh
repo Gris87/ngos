@@ -1051,12 +1051,12 @@ function script_mode()
                 break
             fi
 
-            ATTRS+=($ATTR)
+            ATTRS+=("${ATTR}")
 
             shift
         done
 
-        ${COMMAND:2} ${ATTRS[@]} || return 1
+        ${COMMAND:2} "${ATTRS[@]}" || return 1
 
 
 
@@ -1079,7 +1079,7 @@ function script_mode()
 if [ ${SILENT_MODE} -eq 0 ]; then
     display_menu || exit 1
 else
-    script_mode $@ || exit 1
+    script_mode "$@" || exit 1
 fi
 
 

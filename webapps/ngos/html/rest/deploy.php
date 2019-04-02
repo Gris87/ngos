@@ -106,6 +106,13 @@
 
 
 
+    function replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
+    {
+
+    }
+
+
+
     function get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
         $res = 0;
@@ -167,7 +174,7 @@
             $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_APPS"]
                 . " (id, vendor_id, codename, owner_email, name, description, secret_key)"
                 . " VALUES("
-                . "  '" . $link->real_escape_string($res)      . "',"
+                . "  '" . $link->real_escape_string($res)         . "',"
                 . "  '" . $link->real_escape_string($vendor_id)   . "',"
                 . "  '" . $link->real_escape_string($codename)    . "',"
                 . "  '" . $link->real_escape_string($owner_email) . "',"
@@ -216,6 +223,7 @@
     function handle_post_for_add_version($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
     {
         $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);
+        replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
 
 
 
