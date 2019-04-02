@@ -203,9 +203,23 @@
         validate_server($link, $data, $my_address, $my_secret_key);
         validate_this_server($link, $data, $your_secret_key);
 
-        verify_server_with_ping($link, $data, $my_address, $my_secret_key, $address, $secret_key);
+
+
+        $own_address    = get_server_name($link, $data);
+        $own_secret_key = get_secret_key($link, $data);
+
+        verify_server_with_ping($link, $data, $own_address, $own_secret_key, $address, $secret_key);
+
+
 
         $delay = get_delay_to_server($link, $data, $address);
+
+
+
+        if ($own_address == $address && $own_secret_key == $secret_key)
+        {
+            set_region_id($link, $data, $region_id);
+        }
 
 
 

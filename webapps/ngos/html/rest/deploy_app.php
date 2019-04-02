@@ -106,13 +106,6 @@
 
 
 
-    function replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
-    {
-
-    }
-
-
-
     function get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
         $res = 0;
@@ -218,9 +211,16 @@
         return $res;
     }
 
+       
+    
+    function replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
+    {
+        
+    }
 
-
-    function handle_post_for_add_version($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
+    
+    
+    function handle_post_with_params($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
     {
         $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);
         replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
@@ -253,29 +253,6 @@
 
 
 
-    function handle_post_with_params($link, &$data, $action, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
-    {
-        switch ($action)
-        {
-            case "add_version":
-            {
-                handle_post_for_add_version($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
-            }
-            break;
-
-            default:
-            {
-                db_disconnect($link);
-
-                $data["message"] = "Invalid parameters";
-
-                die(json_encode($data));
-            }
-        }
-    }
-
-
-
     function handle_post()
     {
         header("Content-type: application/json");
@@ -291,7 +268,6 @@
 
 
 
-        $action      = @$_POST["action"];
         $vendor_id   = @$_POST["vendor_id"];
         $codename    = @$_POST["codename"];
         $owner_email = @$_POST["owner_email"];
@@ -302,23 +278,17 @@
 
 
         if (
-            !isset($action)
-            ||
             !isset($codename)
             ||
             !isset($version)
             ||
             !isset($secret_key)
             ||
-            !is_string($action)
-            ||
             !is_string($codename)
             ||
             !is_int($version)
             ||
             !is_string($secret_key)
-            ||
-            $action == ""
             ||
             !preg_match(constant("CODENAME_REGEXP"), $codename)
             ||
@@ -338,7 +308,7 @@
 
         if ($link)
         {
-            handle_post_with_params($link, $data, $action, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
+            handle_post_with_params($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
 
             db_disconnect($link);
         }

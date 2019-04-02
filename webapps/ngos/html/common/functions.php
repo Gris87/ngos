@@ -44,7 +44,7 @@
 
 
 
-    function get_server_name($link, $data)
+    function get_property_value($link, $data, $name)
     {
         $res = "";
 
@@ -53,7 +53,7 @@
         $sql = "SELECT"
             . "     value"
             . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
-            . " WHERE name='server_name'";
+            . " WHERE name='" . $link->real_escape_string($name) . "'";
 
 
 
@@ -91,16 +91,12 @@
 
 
 
-    function get_secret_key($link, $data)
+    function set_property_value($link, $data, $name, $value)
     {
-        $res = "";
-
-
-
         $sql = "SELECT"
             . "     value"
             . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
-            . " WHERE name='secret_key'";
+            . " WHERE name='" . $link->real_escape_string($name) . "'";
 
 
 
@@ -111,29 +107,54 @@
 
         if ($result->num_rows == 1)
         {
-            $res = $result->fetch_row()[0];
-            $result->close();
+            $sql = "UPDATE " . $GLOBALS["DB_TABLE_PROPERTIES"]
+                . " SET value='"  . $link->real_escape_string($value) . "'"
+                . " WHERE name='" . $link->real_escape_string($name)  . "'";
         }
         else
         {
-            $result->close();
-
-
-
-            $error_details = "Access violation";
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "Access error";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
+            $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_PROPERTIES"]
+                . " (name, value)"
+                . " VALUES("
+                . "  '" . $link->real_escape_string($name)  . "',"
+                . "  '" . $link->real_escape_string($value) . "'"
+                . ")";
         }
 
+        $result->close();
 
 
-        return $res;
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+    }
+
+
+
+    function get_server_name($link, $data)
+    {
+        return get_property_value($link, $data, "server_name");
+    }
+
+
+
+    function get_secret_key($link, $data)
+    {
+        return get_property_value($link, $data, "secret_key");
+    }
+
+
+
+    function get_region_id($link, $data)
+    {
+        return get_property_value($link, $data, "region_id");
+    }
+
+
+
+    function set_region_id($link, $data, $value)
+    {
+        return set_property_value($link, $data, "region_id", $value);
     }
 
 
