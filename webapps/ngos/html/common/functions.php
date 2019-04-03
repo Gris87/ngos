@@ -157,13 +157,6 @@
 
 
 
-    function set_secret_key($link, $data, $value)
-    {
-        return set_property_value($link, $data, "secret_key", $value);
-    }
-
-
-
     function set_region_id($link, $data, $value)
     {
         return set_property_value($link, $data, "region_id", $value);
