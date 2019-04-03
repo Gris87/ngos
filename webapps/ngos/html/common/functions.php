@@ -291,7 +291,7 @@
 
             if ($response["status"] != "OK")
             {
-                $error_details = "Failed to parse response from server: " . $server_url;
+                $error_details = "Invalid response from server: " . $server_url;
                 error_log($error_details);
 
                 db_disconnect($link);
@@ -386,7 +386,7 @@
 
                 if ($response["status"] != "OK")
                 {
-                    $error_details = "Failed to parse response from server: " . $server_url;
+                    $error_details = "Invalid response from server: " . $server_url;
                     error_log($error_details);
 
                     db_disconnect($link);

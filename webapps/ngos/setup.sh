@@ -169,9 +169,9 @@ function generate_secret_key
     SECRET_KEY_ID=`execute_sql_without_header "SELECT id FROM properties WHERE name = 'secret_key';"`
 
     if [ "${SECRET_KEY_ID}" == "" ]; then
-        SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
+        MY_SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
 
-        execute_sql "INSERT INTO properties (name, value) VALUES ('secret_key', '${SECRET_KEY}');" || return 1
+        execute_sql "INSERT INTO properties (name, value) VALUES ('secret_key', '${MY_SECRET_KEY}');" || return 1
     else
         if [ ${SILENT_MODE} -eq 0 ]; then
             while true
@@ -194,9 +194,9 @@ function generate_secret_key
         fi
 
         if [ ${CONFIRM} -eq 1 ]; then
-            SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
+            MY_SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
 
-            execute_sql "UPDATE properties SET value = '${SECRET_KEY}' WHERE name = 'secret_key';" || return 1
+            execute_sql "UPDATE properties SET value = '${MY_SECRET_KEY}' WHERE name = 'secret_key';" || return 1
         else
             echo "Canceled"
 
@@ -207,7 +207,7 @@ function generate_secret_key
 
 
     echo "Secret key:"
-    echo "${SECRET_KEY}"
+    echo "${MY_SECRET_KEY}"
 
     return 0
 }
@@ -326,9 +326,9 @@ function assign_secret_key
 
 
 
-    SERVER_ID=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${SERVER_NAME}';"`
+    MY_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER_NAME}';"`
 
-    if [ "${SERVER_ID}" == "" ]; then
+    if [ "${MY_SECRET_KEY}" == "" ]; then
         execute_sql "UPDATE servers SET secret_key = '${SECRET_KEY}' WHERE address = '${SERVER}';" || return 1
     else
         for ADDRESS in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
@@ -883,9 +883,9 @@ function validate_setup
 
 
 
-    SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" | tr -dc "a-zA-Z0-9"`
+    MY_SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" | tr -dc "a-zA-Z0-9"`
 
-    if [ ${#SECRET_KEY} -ne 1000 ]; then
+    if [ ${#MY_SECRET_KEY} -ne 1000 -o "${MY_SECRET_KEY}" != "`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER_NAME}';"`" ]; then
         echo "Secret key is invalid. Please generate new secret key"
 
         return 1
@@ -914,6 +914,34 @@ function validate_setup
 
         return 1
     fi
+
+
+
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
+    do
+        echo "Pinging server ${ADDRESS}"
+
+
+
+        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${ADDRESS}';"`
+
+        PING_REQUEST_DATA=`cat << EOF
+            {
+                "my_address":      "${SERVER_NAME}",
+                "my_secret_key":   "${MY_SECRET_KEY}",
+                "your_secret_key": "${ANOTHER_SECRET_KEY}"
+            }
+EOF
+        `
+
+        PING_RESPONSE=`echo "${PING_REQUEST_DATA}" | send_post_request https://${ADDRESS}/rest/ping.php`
+
+        if [ "${PING_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+            echo "Failed to ping server ${ADDRESS}: ${PING_RESPONSE}"
+
+            return 1
+        fi
+    done
 
 
 

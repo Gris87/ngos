@@ -45,10 +45,9 @@
         }
         else
         {
-            validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
-            
             $own_secret_key = get_secret_key($link, $data);
             
+            validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
             validate_server_with_ping($link, $data, $own_address, $own_secret_key, $address, $secret_key);
         }
 
