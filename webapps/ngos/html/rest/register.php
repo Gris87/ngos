@@ -53,7 +53,7 @@
         }
         else
         {
-            validate_server_with_ping($link, $data, $own_address, $own_secret_key, $address, $secret_key);
+            validate_server_with_ping($link, $data, $my_address, $my_secret_key, $address, $secret_key);
         }
 
 
