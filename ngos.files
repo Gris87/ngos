@@ -1302,6 +1302,7 @@ webapps/ngos/html/index.php
 webapps/ngos/html/rest/appinfo.php
 webapps/ngos/html/rest/deploy_app.php
 webapps/ngos/html/rest/deploy_file.php
+webapps/ngos/html/rest/location.php
 webapps/ngos/html/rest/ping.php
 webapps/ngos/html/rest/register.php
 webapps/ngos/html/rest/replicate_app.php

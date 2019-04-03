@@ -51,7 +51,9 @@ function ping_server
 {
     SERVER=$1
 
-    curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php
+    curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php || return 1
+
+    return 0
 }
 
 
@@ -60,7 +62,7 @@ function execute_sql
 {
     SQL=$1
 
-    mysql -u root -D ngos -e "${SQL}" || exit 1
+    mysql -u root -D ngos -e "${SQL}" || return 1
 
     return 0
 }
@@ -71,7 +73,7 @@ function execute_sql_without_header
 {
     SQL=$1
 
-    mysql -u root -D ngos -NB -e "${SQL}" || exit 1
+    mysql -u root -D ngos -NB -e "${SQL}" || return 1
 
     return 0
 }

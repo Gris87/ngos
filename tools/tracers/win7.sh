@@ -49,7 +49,7 @@ FINISH_FILTERS=(
 
 
 
-function execute_gdb_command()
+function execute_gdb_command
 {
     COMMAND=$1
     VERBOSE=$2

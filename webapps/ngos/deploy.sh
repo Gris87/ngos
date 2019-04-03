@@ -28,7 +28,9 @@ function send_post_request
 {
     SERVER=$1
 
-    curl -k -s -X POST -H "Content-Type: application/json" -d @- ${SERVER}
+    curl -k -s -X POST -H "Content-Type: application/json" -d @- ${SERVER} || return 1
+
+    return 0
 }
 
 
@@ -37,7 +39,7 @@ function execute_sql_without_header
 {
     SQL=$1
 
-    mysql -u ngos -pngos -D ngos -NB -e "${SQL}" || exit 1
+    mysql -u ngos -pngos -D ngos -NB -e "${SQL}" || return 1
 
     return 0
 }

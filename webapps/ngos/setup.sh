@@ -2,7 +2,7 @@
 
 # This script helps to perform all the required setup for the server
 # Author: Maxim Shvecov
-# Usage: sudo ./setup.sh
+# Usage: sudo ./setup.sh [-h] [--help] [...]
 
 
 
@@ -50,7 +50,9 @@ function ping_server
 {
     SERVER=$1
 
-    curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php
+    curl -k -s -w "%{time_total}" https://${SERVER}/rest/ping.php || return 1
+
+    return 0
 }
 
 
@@ -59,7 +61,9 @@ function send_post_request
 {
     SERVER=$1
 
-    curl -k -s -X POST -H "Content-Type: application/json" -d @- ${SERVER}
+    curl -k -s -X POST -H "Content-Type: application/json" -d @- ${SERVER} || return 1
+
+    return 0
 }
 
 
@@ -68,7 +72,7 @@ function execute_sql
 {
     SQL=$1
 
-    mysql -u root -D ngos -e "${SQL}" || exit 1
+    mysql -u root -D ngos -e "${SQL}" || return 1
 
     return 0
 }
@@ -79,7 +83,7 @@ function execute_sql_without_header
 {
     SQL=$1
 
-    mysql -u root -D ngos -NB -e "${SQL}" || exit 1
+    mysql -u root -D ngos -NB -e "${SQL}" || return 1
 
     return 0
 }
@@ -268,6 +272,16 @@ function assign_secret_key
 
             return 1
         fi
+    fi
+
+
+
+    SERVER_ID=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${SERVER}';"`
+
+    if [ "${SERVER_ID}" == "" ]; then
+        echo "Server ${SERVER} not found"
+
+        return 1
     fi
 
 
@@ -561,6 +575,26 @@ EOF
 
 function change_server_location
 {
+    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';"`
+
+    if [ "${SERVER_NAME}" == "" ]; then
+        echo "Server name is invalid. Please specify new server name"
+
+        return 1
+    fi
+
+
+
+    MY_SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" | tr -dc "a-zA-Z0-9"`
+
+    if [ ${#MY_SECRET_KEY} -ne 1000 ]; then
+        echo "Secret key is invalid. Please generate new secret key"
+
+        return 1
+    fi
+
+
+
     SERVER=$1
 
     if [ "${SERVER}" == "" ]; then
@@ -619,6 +653,16 @@ function change_server_location
 
 
 
+    SERVER_ID=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${SERVER}';"`
+
+    if [ "${SERVER_ID}" == "" ]; then
+        echo "Server ${SERVER} not found"
+
+        return 1
+    fi
+
+
+
     REGION=$2
 
     if [ "${REGION}" == "" ]; then
@@ -628,7 +672,7 @@ function change_server_location
 
 
 
-            echo "Choose server location:"
+            echo "Choose server location for ${SERVER}:"
 
 
 
@@ -687,6 +731,38 @@ function change_server_location
     fi
 
 
+
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers;"`
+    do
+        echo "Changing server ${SERVER} location on server ${ADDRESS}"
+
+
+
+        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${ADDRESS}';"`
+
+        LOCATION_REQUEST_DATA=`cat << EOF
+            {
+                "my_address":      "${SERVER_NAME}",
+                "my_secret_key":   "${MY_SECRET_KEY}",
+                "your_secret_key": "${ANOTHER_SECRET_KEY}",
+                "region_id":       ${REGION_ID},
+                "address":         "${SERVER}"
+            }
+EOF
+        `
+
+        LOCATION_RESPONSE=`echo "${LOCATION_REQUEST_DATA}" | send_post_request https://${ADDRESS}/rest/location.php`
+
+        if [ "${LOCATION_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+            echo "Failed to change server ${SERVER} location on server ${ADDRESS}: ${LOCATION_RESPONSE}"
+
+            return 1
+        fi
+    done
+
+
+
+    echo "Server ${SERVER} location changed to ${REGION}"
 
     return 0
 }
