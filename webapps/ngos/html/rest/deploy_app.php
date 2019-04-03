@@ -3,10 +3,6 @@
 
 
 
-    define("CODENAME_REGEXP", "/^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*){2,}$/");
-
-
-
     function handle_request()
     {
         switch ($_SERVER["REQUEST_METHOD"])
@@ -132,23 +128,11 @@
 
 
             if (
-                !isset($vendor_id)
+                !verify_vendor_id($vendor_id)
                 ||
-                !isset($owner_email)
+                !verify_email($owner_email)
                 ||
-                !isset($name)
-                ||
-                !is_int($vendor_id)
-                ||
-                !is_string($owner_email)
-                ||
-                !is_string($name)
-                ||
-                $vendor_id <= 0
-                ||
-                $owner_email == ""
-                ||
-                $name == ""
+                !verify_name($name)
                )
             {
                 db_disconnect($link);
@@ -278,23 +262,11 @@
 
 
         if (
-            !isset($codename)
+            !verify_codename($codename)
             ||
-            !isset($version)
+            !verify_version($version)
             ||
-            !isset($secret_key)
-            ||
-            !is_string($codename)
-            ||
-            !is_int($version)
-            ||
-            !is_string($secret_key)
-            ||
-            !preg_match(constant("CODENAME_REGEXP"), $codename)
-            ||
-            $version < 20190101000000
-            ||
-            strlen($secret_key) != 1000
+            !verify_secret_key($secret_key)
            )
         {
             $data["message"] = "Invalid parameters";

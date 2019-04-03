@@ -70,23 +70,11 @@
         $your_secret_key = @$_POST["your_secret_key"];
 
         if (
-            !isset($my_address)
+            !verify_address($my_address)
             ||
-            !isset($my_secret_key)
+            !verify_secret_key($my_secret_key)
             ||
-            !isset($your_secret_key)
-            ||
-            !is_string($my_address)
-            ||
-            !is_string($my_secret_key)
-            ||
-            !is_string($your_secret_key)
-            ||
-            $my_address == ""
-            ||
-            strlen($my_secret_key) != 1000
-            ||
-            strlen($your_secret_key) != 1000
+            !verify_secret_key($your_secret_key)
            )
         {
             $data["message"] = "Invalid parameters";
