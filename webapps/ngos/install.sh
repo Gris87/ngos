@@ -102,7 +102,7 @@ execute_sql "INSERT IGNORE INTO vendors (name, password_crypted) VALUES ('NGOS',
 
 
 
-FIRST_SERVER=`execute_sql_without_header "SELECT id FROM servers WHERE address='${FIRST_SERVER_ADDRESS}';"`
+FIRST_SERVER=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${FIRST_SERVER_ADDRESS}';"`
 
 if [ "${FIRST_SERVER}" == "" ]; then
     PING_TOTAL=0

@@ -58,7 +58,7 @@
         $sql = "SELECT"
             . "     value"
             . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
-            . " WHERE name='" . $link->real_escape_string($name) . "'";
+            . " WHERE name = '" . $link->real_escape_string($name) . "'";
 
 
 
@@ -101,7 +101,7 @@
         $sql = "SELECT"
             . "     value"
             . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
-            . " WHERE name='" . $link->real_escape_string($name) . "'";
+            . " WHERE name = '" . $link->real_escape_string($name) . "'";
 
 
 
@@ -113,8 +113,8 @@
         if ($result->num_rows == 1)
         {
             $sql = "UPDATE " . $GLOBALS["DB_TABLE_PROPERTIES"]
-                . " SET value='"  . $link->real_escape_string($value) . "'"
-                . " WHERE name='" . $link->real_escape_string($name)  . "'";
+                . " SET value = '"  . $link->real_escape_string($value) . "'"
+                . " WHERE name = '" . $link->real_escape_string($name)  . "'";
         }
         else
         {
@@ -173,7 +173,7 @@
         $sql = "SELECT"
             . "     secret_key"
             . " FROM " . $GLOBALS["DB_TABLE_SERVERS"]
-            . " WHERE address='" . $link->real_escape_string($address) . "'";
+            . " WHERE address = '" . $link->real_escape_string($address) . "'";
 
 
 

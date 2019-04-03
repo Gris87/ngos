@@ -99,7 +99,7 @@ function install_sources
 
 function setup_server_name
 {
-    SERVER_NAME_VALUE=`execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';"`
+    SERVER_NAME_VALUE=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';"`
 
     if [ "${SERVER_NAME_VALUE}" == "" ]; then
         SERVER_NAME=$1
@@ -142,7 +142,7 @@ function setup_server_name
             done
 
             if [ "${SERVER_NAME}" != "${SERVER_NAME_VALUE}" ]; then
-                execute_sql "UPDATE properties SET value='${SERVER_NAME}' WHERE name='server_name';" || return 1
+                execute_sql "UPDATE properties SET value = '${SERVER_NAME}' WHERE name = 'server_name';" || return 1
             fi
         else
             echo "Canceled"
@@ -162,7 +162,7 @@ function setup_server_name
 
 function generate_secret_key
 {
-    SECRET_KEY_ID=`execute_sql_without_header "SELECT id FROM properties WHERE name='secret_key';"`
+    SECRET_KEY_ID=`execute_sql_without_header "SELECT id FROM properties WHERE name = 'secret_key';"`
 
     if [ "${SECRET_KEY_ID}" == "" ]; then
         SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
@@ -192,7 +192,7 @@ function generate_secret_key
         if [ ${CONFIRM} -eq 1 ]; then
             SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
 
-            execute_sql "UPDATE properties SET value='${SECRET_KEY}' WHERE name='secret_key';" || return 1
+            execute_sql "UPDATE properties SET value = '${SECRET_KEY}' WHERE name = 'secret_key';" || return 1
         else
             echo "Canceled"
 
@@ -227,6 +227,7 @@ function assign_secret_key
 
 
 
+            unset OPTIONS
             OPTION_NUM=1
 
             for SERVER in `execute_sql_without_header "SELECT address FROM servers;"`
@@ -235,7 +236,7 @@ function assign_secret_key
 
                 echo -n "[${OPTION_NUM}] ${SERVER}"
                 printf "%$((60 - SERVER_LENGTH))s" ""
-                execute_sql_without_header "SELECT secret_key FROM servers WHERE address='${SERVER}';" | cut -c -20
+                execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER}';" | cut -c -20
 
                 OPTIONS[${OPTION_NUM}]=${SERVER}
                 OPTION_NUM=$((${OPTION_NUM} + 1))
@@ -288,7 +289,7 @@ function assign_secret_key
 
 
 
-    execute_sql "UPDATE servers SET secret_key='${SECRET_KEY}' WHERE address='${SERVER}';" || return 1
+    execute_sql "UPDATE servers SET secret_key = '${SECRET_KEY}' WHERE address = '${SERVER}';" || return 1
 
 
 
@@ -310,7 +311,7 @@ function update_sources
 
 function register_server
 {
-    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';"`
+    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';"`
 
     if [ "${SERVER_NAME}" == "" ]; then
         echo "Server name is invalid. Please specify new server name"
@@ -320,7 +321,7 @@ function register_server
 
 
 
-    MY_SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
+    MY_SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" | tr -dc "a-zA-Z0-9"`
 
     if [ ${#MY_SECRET_KEY} -ne 1000 ]; then
         echo "Secret key is invalid. Please generate new secret key"
@@ -350,7 +351,7 @@ function register_server
 
 
 
-    SERVER_ID=`execute_sql_without_header "SELECT id FROM servers WHERE address='${SERVER}';"`
+    SERVER_ID=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${SERVER}';"`
 
     if [ "${SERVER_ID}" != "" ]; then
         echo "Server ${SERVER} already registered"
@@ -376,6 +377,7 @@ function register_server
             OLD_IFS=${IFS}
             IFS=$'\n'
 
+            unset OPTIONS
             OPTION_NUM=1
 
             for REGION in `execute_sql_without_header "SELECT name FROM regions;"`
@@ -418,7 +420,7 @@ function register_server
 
 
 
-    REGION_ID=`execute_sql_without_header "SELECT id FROM regions WHERE name='${REGION}';"`
+    REGION_ID=`execute_sql_without_header "SELECT id FROM regions WHERE name = '${REGION}';"`
 
     if [ "${REGION_ID}" == "" ]; then
         echo "Region ${REGION} not found"
@@ -487,14 +489,14 @@ EOF
 
 
 
-    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address!='${SERVER_NAME}';"`
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address != '${SERVER_NAME}';"`
     do
         echo "Registering server ${ADDRESS} on server ${SERVER}"
 
 
 
-        ANOTHER_REGION_ID=`execute_sql_without_header "SELECT region_id FROM servers WHERE address='${ADDRESS}';"`
-        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
+        ANOTHER_REGION_ID=`execute_sql_without_header "SELECT region_id FROM servers WHERE address = '${ADDRESS}';"`
+        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${ADDRESS}';"`
 
         REGISTER_REQUEST_DATA=`cat << EOF
             {
@@ -519,13 +521,13 @@ EOF
 
 
 
-    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address!='${SERVER}' AND address!='${SERVER_NAME}';"`
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address != '${SERVER}' AND address != '${SERVER_NAME}';"`
     do
         echo "Registering server ${SERVER} on server ${ADDRESS}"
 
 
 
-        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address='${ADDRESS}';"`
+        ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${ADDRESS}';"`
 
         REGISTER_REQUEST_DATA=`cat << EOF
             {
@@ -559,7 +561,132 @@ EOF
 
 function change_server_location
 {
-    echo "TBD"
+    SERVER=$1
+
+    if [ "${SERVER}" == "" ]; then
+        while true
+        do
+            clear
+
+
+
+            echo "Change location for server:"
+
+
+
+            unset OPTIONS
+            OPTION_NUM=1
+
+            for SERVER in `execute_sql_without_header "SELECT address FROM servers ORDER BY region_id;"`
+            do
+                SERVER_LENGTH=${#SERVER}
+
+                echo -n "[${OPTION_NUM}] ${SERVER}"
+                printf "%$((60 - SERVER_LENGTH))s" ""
+                execute_sql_without_header "SELECT t2.name as region FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id WHERE t1.address = '${SERVER}';" || return 1
+
+                OPTIONS[${OPTION_NUM}]=${SERVER}
+                OPTION_NUM=$((${OPTION_NUM} + 1))
+            done
+
+            echo ""
+            echo "[0] Cancel"
+            OPTIONS[0]="~~~CANCEL~~~"
+
+
+
+            echo ""
+            echo -n "Option: "
+            read SELECTED_OPTION
+
+
+
+            SERVER=${OPTIONS[${SELECTED_OPTION}]}
+
+            if [ "${SERVER}" != "" ]; then
+                break
+            fi
+        done
+
+
+
+        if [ "${SERVER}" == "~~~CANCEL~~~" ]; then
+            echo "Canceled"
+
+            return 1
+        fi
+    fi
+
+
+
+    REGION=$2
+
+    if [ "${REGION}" == "" ]; then
+        while true
+        do
+            clear
+
+
+
+            echo "Choose server location:"
+
+
+
+            OLD_IFS=${IFS}
+            IFS=$'\n'
+
+            unset OPTIONS
+            OPTION_NUM=1
+
+            for REGION in `execute_sql_without_header "SELECT name FROM regions;"`
+            do
+                echo "[${OPTION_NUM}] ${REGION}"
+
+                OPTIONS[${OPTION_NUM}]=${REGION}
+                OPTION_NUM=$((${OPTION_NUM} + 1))
+            done
+
+            echo ""
+            echo "[0] Cancel"
+            OPTIONS[0]="~~~CANCEL~~~"
+
+            IFS=${OLD_IFS}
+
+
+
+            echo ""
+            echo -n "Option: "
+            read SELECTED_OPTION
+
+
+
+            REGION=${OPTIONS[${SELECTED_OPTION}]}
+
+            if [ "${REGION}" != "" ]; then
+                break
+            fi
+        done
+
+
+
+        if [ "${REGION}" == "~~~CANCEL~~~" ]; then
+            echo "Canceled"
+
+            return 1
+        fi
+    fi
+
+
+
+    REGION_ID=`execute_sql_without_header "SELECT id FROM regions WHERE name = '${REGION}';"`
+
+    if [ "${REGION_ID}" == "" ]; then
+        echo "Region ${REGION} not found"
+
+        return 1
+    fi
+
+
 
     return 0
 }
@@ -593,7 +720,7 @@ function update_server_delays
 
 
 
-        execute_sql "UPDATE servers SET delay='${DELAY}' WHERE address='${SERVER}';" || return 1
+        execute_sql "UPDATE servers SET delay = '${DELAY}' WHERE address = '${SERVER}';" || return 1
     done
 
 
@@ -605,7 +732,7 @@ function update_server_delays
 
 function validate_setup
 {
-    if [ ! -f /var/www/html/rest/deploy.php ]; then
+    if [ ! -f /var/www/html/rest/ping.php ]; then
         echo "NGOS webapp not installed"
 
         return 1
@@ -613,7 +740,7 @@ function validate_setup
 
 
 
-    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';"`
+    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';"`
 
     if [ "${SERVER_NAME}" == "" ]; then
         echo "Server name is invalid. Please specify new server name"
@@ -623,10 +750,20 @@ function validate_setup
 
 
 
-    SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name='secret_key';" | tr -dc "a-zA-Z0-9"`
+    SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" | tr -dc "a-zA-Z0-9"`
 
     if [ ${#SECRET_KEY} -ne 1000 ]; then
         echo "Secret key is invalid. Please generate new secret key"
+
+        return 1
+    fi
+
+
+
+    REGION_ID=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'region_id';"`
+
+    if [ "${REGION_ID}" == "" -o "${REGION_ID}" != "`execute_sql_without_header "SELECT region_id FROM servers WHERE address = '${SERVER_NAME}';"`" ]; then
+        echo "Server is not registered. Please register"
 
         return 1
     fi
@@ -657,7 +794,7 @@ function validate_setup
 function print_server_name
 {
     echo "Server name:"
-    execute_sql_without_header "SELECT value FROM properties WHERE name='server_name';" || return 1
+    execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';" || return 1
 
     return 0
 }
@@ -667,7 +804,7 @@ function print_server_name
 function print_secret_key
 {
     echo "Secret key:"
-    execute_sql_without_header "SELECT value FROM properties WHERE name='secret_key';" || return 1
+    execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" || return 1
 
     return 0
 }
@@ -877,6 +1014,7 @@ function display_menu
 
 
 
+        unset OPTIONS
         OPTION_NUM=1
 
         for ((s = 0; s < ${STEPS_COUNT}; s++))

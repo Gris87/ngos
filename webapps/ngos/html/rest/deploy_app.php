@@ -48,7 +48,7 @@
         $sql = "SELECT"
             . "     value"
             . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
-            . " WHERE name='last_app_id'";
+            . " WHERE name = 'last_app_id'";
 
 
 
@@ -65,8 +65,8 @@
 
 
             $sql = "UPDATE " . $GLOBALS["DB_TABLE_PROPERTIES"]
-                . " SET value='" . $link->real_escape_string($res) . "'"
-                . " WHERE name='last_app_id'";
+                . " SET value = '" . $link->real_escape_string($res) . "'"
+                . " WHERE name = 'last_app_id'";
 
 
 
@@ -112,7 +112,7 @@
             . "     id,"
             . "     secret_key"
             . " FROM " . $GLOBALS["DB_TABLE_APPS"]
-            . " WHERE codename='" . $link->real_escape_string($codename) . "'";
+            . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
 
 
 

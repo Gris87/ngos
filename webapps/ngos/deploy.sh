@@ -76,7 +76,7 @@ function deploy_app
 
 
 
-    SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM apps WHERE codename='${CODENAME}';" | tr -dc "a-zA-Z0-9"`
+    SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM apps WHERE codename = '${CODENAME}';" | tr -dc "a-zA-Z0-9"`
 
     if [ "${SECRET_KEY}" == "" ]; then
         SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
