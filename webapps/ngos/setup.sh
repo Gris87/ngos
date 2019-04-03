@@ -611,7 +611,7 @@ function change_server_location
             unset OPTIONS
             OPTION_NUM=1
 
-            for SERVER in `execute_sql_without_header "SELECT address FROM servers ORDER BY region_id;"`
+            for SERVER in `execute_sql_without_header "SELECT t1.address FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id ORDER BY t2.name;"`
             do
                 SERVER_LENGTH=${#SERVER}
 
@@ -890,7 +890,7 @@ function print_secret_key
 function print_servers
 {
     echo "Servers:"
-    execute_sql "SELECT t1.id, t1.address, t2.name as region, t1.delay, SUBSTRING(t1.secret_key, 1, 20) as secret_key FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id ORDER BY t1.address;" || return 1
+    execute_sql "SELECT t1.address, t2.name as region, t1.delay, SUBSTRING(t1.secret_key, 1, 20) as secret_key FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id ORDER BY t2.name;" || return 1
 
     return 0
 }
