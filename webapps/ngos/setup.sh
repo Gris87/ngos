@@ -234,7 +234,7 @@ function assign_secret_key
             unset OPTIONS
             OPTION_NUM=1
 
-            for SERVER in `execute_sql_without_header "SELECT address FROM servers;"`
+            for SERVER in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
             do
                 SERVER_LENGTH=${#SERVER}
 
@@ -394,7 +394,7 @@ function register_server
             unset OPTIONS
             OPTION_NUM=1
 
-            for REGION in `execute_sql_without_header "SELECT name FROM regions;"`
+            for REGION in `execute_sql_without_header "SELECT name FROM regions ORDER BY name;"`
             do
                 echo "[${OPTION_NUM}] ${REGION}"
 
@@ -503,7 +503,7 @@ EOF
 
 
 
-    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address != '${SERVER_NAME}';"`
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address != '${SERVER_NAME}' ORDER BY address;"`
     do
         echo "Registering server ${ADDRESS} on server ${SERVER}"
 
@@ -535,7 +535,7 @@ EOF
 
 
 
-    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address != '${SERVER}' AND address != '${SERVER_NAME}';"`
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers WHERE address != '${SERVER}' AND address != '${SERVER_NAME}' ORDER BY address;"`
     do
         echo "Registering server ${SERVER} on server ${ADDRESS}"
 
@@ -682,7 +682,7 @@ function change_server_location
             unset OPTIONS
             OPTION_NUM=1
 
-            for REGION in `execute_sql_without_header "SELECT name FROM regions;"`
+            for REGION in `execute_sql_without_header "SELECT name FROM regions ORDER BY name;"`
             do
                 echo "[${OPTION_NUM}] ${REGION}"
 
@@ -732,7 +732,7 @@ function change_server_location
 
 
 
-    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers;"`
+    for ADDRESS in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
     do
         echo "Changing server ${SERVER} location on server ${ADDRESS}"
 
@@ -771,7 +771,7 @@ EOF
 
 function update_server_delays
 {
-    for SERVER in `execute_sql_without_header "SELECT address FROM servers;"`
+    for SERVER in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
     do
         echo "Updating delay to server: ${SERVER}"
 
@@ -846,7 +846,7 @@ function validate_setup
 
 
 
-    INVALID_SERVERS=`execute_sql_without_header "SELECT address FROM servers WHERE secret_key IS NULL OR LENGTH(secret_key) != 1000;"`
+    INVALID_SERVERS=`execute_sql_without_header "SELECT address FROM servers WHERE secret_key IS NULL OR LENGTH(secret_key) != 1000 ORDER BY address;"`
 
     if [ "${INVALID_SERVERS}" != "" ]; then
         echo "Servers with invalid secret keys:"
@@ -890,7 +890,7 @@ function print_secret_key
 function print_servers
 {
     echo "Servers:"
-    execute_sql "SELECT t1.id, t1.address, t2.name as region, t1.delay, SUBSTRING(t1.secret_key, 1, 20) as secret_key FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id;" || return 1
+    execute_sql "SELECT t1.id, t1.address, t2.name as region, t1.delay, SUBSTRING(t1.secret_key, 1, 20) as secret_key FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id ORDER BY t1.address;" || return 1
 
     return 0
 }
