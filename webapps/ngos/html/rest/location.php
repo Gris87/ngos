@@ -62,8 +62,8 @@
 
 
         $sql = "UPDATE " . $GLOBALS["DB_TABLE_SERVERS"]
-            . " SET region_id = '" . $link->real_escape_string($region_id) . "'"
-            . " SET delay =     '" . $link->real_escape_string($delay)     . "'"
+            . " SET region_id = '" . $link->real_escape_string($region_id) . "',"
+            . "     delay     = '" . $link->real_escape_string($delay)     . "'"
             . " WHERE address = '" . $link->real_escape_string($address)   . "'";
 
 
