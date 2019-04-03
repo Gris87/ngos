@@ -247,6 +247,14 @@
 
 
 
+    function validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key)
+    {
+        validate_server($link, $data, $my_address, $my_secret_key);
+        validate_this_server($link, $data, $your_secret_key);
+    }
+
+
+
     function validate_server_with_ping($link, $data, $my_address, $my_secret_key, $address, $secret_key)
     {
         $server_url = "https://" . $address . "/rest/ping.php";

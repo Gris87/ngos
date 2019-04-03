@@ -44,8 +44,7 @@
 
     function handle_post_with_params($link, $data, $my_address, $my_secret_key, $your_secret_key)
     {
-        validate_server($link, $data, $my_address, $my_secret_key);
-        validate_this_server($link, $data, $your_secret_key);
+        validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
     }
 
 
