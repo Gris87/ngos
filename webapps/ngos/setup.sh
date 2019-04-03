@@ -328,7 +328,7 @@ function assign_secret_key
 
     MY_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER_NAME}';"`
 
-    if [ "${MY_SECRET_KEY}" == "" ]; then
+    if [ "${MY_SECRET_KEY}" == "" -o "${MY_SECRET_KEY}" == "NULL" ]; then
         execute_sql "UPDATE servers SET secret_key = '${SECRET_KEY}' WHERE address = '${SERVER}';" || return 1
     else
         for ADDRESS in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
@@ -885,8 +885,14 @@ function validate_setup
 
     MY_SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" | tr -dc "a-zA-Z0-9"`
 
-    if [ ${#MY_SECRET_KEY} -ne 1000 -o "${MY_SECRET_KEY}" != "`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER_NAME}';"`" ]; then
+    if [ ${#MY_SECRET_KEY} -ne 1000 ]; then
         echo "Secret key is invalid. Please generate new secret key"
+
+        return 1
+    fi
+
+    if [ "${MY_SECRET_KEY}" != "`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER_NAME}';"`" ]; then
+        echo "Server is not registered. Please register"
 
         return 1
     fi
