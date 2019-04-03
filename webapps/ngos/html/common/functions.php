@@ -413,7 +413,7 @@
 
 
 
-        return $ping_total * 100000;
+        return round($ping_total * 100000);
     }
 
 
