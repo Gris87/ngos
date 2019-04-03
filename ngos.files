@@ -1300,6 +1300,7 @@ webapps/ngos/html/common/constants.php
 webapps/ngos/html/common/functions.php
 webapps/ngos/html/index.php
 webapps/ngos/html/rest/appinfo.php
+webapps/ngos/html/rest/assign_secret_key.php
 webapps/ngos/html/rest/deploy_app.php
 webapps/ngos/html/rest/deploy_file.php
 webapps/ngos/html/rest/location.php

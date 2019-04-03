@@ -209,8 +209,6 @@ function generate_secret_key
     echo "Secret key:"
     echo "${SECRET_KEY}"
 
-
-
     return 0
 }
 
@@ -218,6 +216,26 @@ function generate_secret_key
 
 function assign_secret_key
 {
+    SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';"`
+
+    if [ "${SERVER_NAME}" == "" ]; then
+        echo "Server name is invalid. Please specify new server name"
+
+        return 1
+    fi
+
+
+
+    MY_SECRET_KEY=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'secret_key';" | tr -dc "a-zA-Z0-9"`
+
+    if [ ${#MY_SECRET_KEY} -ne 1000 ]; then
+        echo "Secret key is invalid. Please generate new secret key"
+
+        return 1
+    fi
+
+
+
     SERVER=$1
 
     if [ "${SERVER}" == "" ]; then
@@ -234,12 +252,17 @@ function assign_secret_key
             unset OPTIONS
             OPTION_NUM=1
 
-            for SERVER in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
+            for SERVER in `execute_sql_without_header "SELECT t1.address FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id ORDER BY t2.name, t1.address;"`
             do
+                REGION=`execute_sql_without_header "SELECT t2.name as region FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id WHERE t1.address = '${SERVER}';"`
+
                 SERVER_LENGTH=${#SERVER}
+                REGION_LENGTH=${#REGION}
 
                 echo -n "[${OPTION_NUM}] ${SERVER}"
                 printf "%$((60 - SERVER_LENGTH))s" ""
+                echo -n "${REGION}"
+                printf "%$((30 - REGION_LENGTH))s" ""
                 execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER}';" | cut -c -20
 
                 OPTIONS[${OPTION_NUM}]=${SERVER}
@@ -303,9 +326,43 @@ function assign_secret_key
 
 
 
-    execute_sql "UPDATE servers SET secret_key = '${SECRET_KEY}' WHERE address = '${SERVER}';" || return 1
+    SERVER_ID=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${SERVER_NAME}';"`
+
+    if [ "${SERVER_ID}" == "" ]; then
+        execute_sql "UPDATE servers SET secret_key = '${SECRET_KEY}' WHERE address = '${SERVER}';" || return 1
+    else
+        for ADDRESS in `execute_sql_without_header "SELECT address FROM servers ORDER BY address;"`
+        do
+            echo "Assigning secret key of server ${SERVER} on server ${ADDRESS}"
 
 
+
+            ANOTHER_SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${ADDRESS}';"`
+
+            ASSIGNMENT_REQUEST_DATA=`cat << EOF
+                {
+                    "my_address":      "${SERVER_NAME}",
+                    "my_secret_key":   "${MY_SECRET_KEY}",
+                    "your_secret_key": "${ANOTHER_SECRET_KEY}",
+                    "address":         "${SERVER}",
+                    "secret_key":      "${SECRET_KEY}"
+                }
+EOF
+            `
+
+            ASSIGNMENT_RESPONSE=`echo "${ASSIGNMENT_REQUEST_DATA}" | send_post_request https://${ADDRESS}/rest/assign_secret_key.php`
+
+            if [ "${ASSIGNMENT_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+                echo "Failed to assign secret key of server ${SERVER} on server ${ADDRESS}: ${ASSIGNMENT_RESPONSE}"
+
+                return 1
+            fi
+        done
+    fi
+
+
+
+    echo "Secret key assigned to server ${SERVER}"
 
     return 0
 }
@@ -921,8 +978,6 @@ function uninstall_sources
 
         if [ ${CONFIRM} -eq 1 ]; then
             rm -rf /var/www/html || return 1
-
-            echo "NGOS webapp sources uninstalled"
         else
             echo "Canceled"
 
@@ -935,6 +990,8 @@ function uninstall_sources
     fi
 
 
+
+    echo "NGOS webapp sources uninstalled"
 
     return 0
 }
@@ -964,8 +1021,6 @@ function drop_database
 
     if [ ${CONFIRM} -eq 1 ]; then
         mysql -u root -e "DROP DATABASE ngos" || return 1
-
-        echo "NGOS database dropped"
     else
         echo "Canceled"
 
@@ -973,6 +1028,8 @@ function drop_database
     fi
 
 
+
+    echo "NGOS database dropped"
 
     return 0
 }

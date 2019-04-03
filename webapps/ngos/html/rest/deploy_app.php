@@ -204,6 +204,13 @@
 
 
 
+    function replicate_app_version($link, $data, $app_version_id, $app_id, $version)
+    {
+
+    }
+
+
+
     function handle_post_with_params($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
     {
         $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);
@@ -228,6 +235,7 @@
 
 
         $app_version_id = $link->insert_id;
+        replicate_app_version($link, $data, $app_version_id, $app_id, $version);
 
 
 
