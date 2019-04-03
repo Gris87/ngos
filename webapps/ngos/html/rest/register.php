@@ -45,18 +45,20 @@
         $own_address    = get_server_name($link, $data);
         $own_secret_key = get_secret_key($link, $data);
 
-        validate_server_with_ping($link, $data, $own_address, $own_secret_key, $address, $secret_key);
-
-
-
-        $delay = get_delay_to_server($link, $data, $address);
-
 
 
         if ($own_address == $address && $own_secret_key == $secret_key)
         {
             set_region_id($link, $data, $region_id);
         }
+        else
+        {
+            validate_server_with_ping($link, $data, $own_address, $own_secret_key, $address, $secret_key);
+        }
+
+
+
+        $delay = get_delay_to_server($link, $data, $address);
 
 
 
