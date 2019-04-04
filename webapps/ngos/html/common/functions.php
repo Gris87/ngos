@@ -561,8 +561,10 @@
             . "     address,"
             . "     secret_key"
             . " FROM " . $GLOBALS["DB_TABLE_SERVERS"]
-            . " WHERE region_id = '" . $link->real_escape_string($region_id)  . "'"
-            . "   AND address != '"  . $link->real_escape_string($my_address) . "'";
+            . " WHERE"
+            . "     region_id =  '" . $link->real_escape_string($region_id)  . "'"
+            . "     AND"
+            . "     address   != '" . $link->real_escape_string($my_address) . "'";
 
 
 
