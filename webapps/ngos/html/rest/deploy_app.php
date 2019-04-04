@@ -167,7 +167,7 @@
         }
         else
         {
-            $row = $result->fetch_array();
+            $row = $result->fetch_assoc();
 
             $res            = (int)$row["id"];
             $app_secret_key = $row["secret_key"];
@@ -207,7 +207,7 @@
             "name"        => $name,
             "secret_key"  => $secret_key
         ];
-        
+
         replicate($link, $data, $replicate_data, "/rest/replicate_app.php");
     }
 
@@ -221,7 +221,7 @@
             "version"        => $version,
             "secret_key"     => $secret_key
         ];
-        
+
         replicate($link, $data, $replicate_data, "/rest/replicate_app_version.php");
     }
 

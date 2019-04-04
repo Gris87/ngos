@@ -462,10 +462,16 @@
 
         $result->close();
 
+        
 
+        $replicate_data["level"] = 0;
 
         foreach ($preferable_servers as &$server)
         {
+            $replicate_data["your_secret_key"] = $server["secret_key"];            
+            
+            
+            
             $curl_session = curl_init("https://" . $server["address"] . $path);
 
             curl_setopt($curl_session, CURLOPT_CONNECTTIMEOUT, 10);
@@ -558,7 +564,16 @@
 
     function replicate($link, $data, $replicate_data, $path)
     {
-        $region_id = get_region_id($link, $data);
+        $my_address    = get_server_name($link, $data);
+        $my_secret_key = get_secret_key($link, $data);
+        $region_id     = get_region_id($link, $data);
+        
+        
+        
+        $replicate_data["my_address"]    = $my_address;
+        $replicate_data["my_secret_key"] = $my_secret_key;
+        
+        
 
         replicate_to_regions($link, $data, $replicate_data, $path, $region_id);
         replicate_by_region($link, $data, $replicate_data, $path, $region_id);
@@ -676,5 +691,18 @@
                is_int($version)
                &&
                $version > 20190101000000;
+    }
+    
+    
+    
+    function verify_level($level)
+    {
+        return isset($level)
+               &&
+               is_int($level)
+               &&
+               $level >= 0
+               &&
+               $level <= 1;
     }
 ?>
