@@ -48,16 +48,34 @@ function execute_sql_without_header
 
 function deploy_app_file
 {
-    CONTENT=`base64 -w 0 ${FILEPATH}`
+    APP_ID=$1
+    APP_VERSION_ID=$2
+    SECRET_KEY=$3
+    FILENAME=$4
+    FILEPATH=$5
+
+
+
+    FILENAME_LENGTH=${#FILENAME}
+
+    echo -n "    ${FILENAME}"
+    printf "%$((40 - FILENAME_LENGTH))s" ""
+
+
+
+    HASH=`md5sum "${FILEPATH}" | awk '{ print $1 }'`
+    CONTENT=`base64 -w 0 "${FILEPATH}"`
 
 
 
     REQUEST_DATA=`cat << EOF
         {
-            "codename": "${CODENAME}",
-            "name":     "${NAME}",
-            "version":  "${VERSION}",
-            "content":  "${CONTENT}"
+            "app_id":         "${APP_ID}",
+            "app_version_id": "${APP_VERSION_ID}",
+            "filename":       "${FILENAME}",
+            "hash":           "${HASH}",
+            "content":        "${CONTENT}",
+            "secret_key":     "${SECRET_KEY}"
         }
 EOF
     `
@@ -77,6 +95,8 @@ function deploy_app
     CODENAME=$1
     NAME=$2
     VERSION=$3
+
+
 
     echo "Deploying ${NAME} (${CODENAME})"
 
@@ -128,7 +148,7 @@ EOF
 
     for file in `find ${APP_DIR} -type f`
     do
-        echo ${file:${APP_DIR_LENGTH}}
+        deploy_app_file ${APP_ID} ${APP_VERSION_ID} ${SECRET_KEY} "${file:${APP_DIR_LENGTH}}" "${file}" || return 1
     done
 
 

@@ -229,8 +229,8 @@ echo ""
 
 
 
-EFI_PE_ENTRY_OFFSET=`readelf -s ${BZ_IMAGE_ELF} | grep efi_pe_entry | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | cut -d " " -f 2`
-RELOCATED_OFFSET=`readelf    -s ${BZ_IMAGE_ELF} | grep relocated    | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | cut -d " " -f 2`
+EFI_PE_ENTRY_OFFSET=`readelf -s ${BZ_IMAGE_ELF} | grep efi_pe_entry | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | awk '{ print $2 }'`
+RELOCATED_OFFSET=`readelf    -s ${BZ_IMAGE_ELF} | grep relocated    | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | awk '{ print $2 }'`
 
 
 
