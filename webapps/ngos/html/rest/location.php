@@ -95,6 +95,8 @@
         $region_id       = @$_POST["region_id"];
         $address         = @$_POST["address"];
 
+
+
         if (
             !verify_address($my_address)
             ||
