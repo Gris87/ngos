@@ -35,73 +35,6 @@
 
 
 
-    function obtain_next_app_id($link, $data)
-    {
-        $res = 1;
-
-
-
-        $link->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-
-
-
-        $sql = "SELECT"
-            . "     value"
-            . " FROM " . DB_TABLE_PROPERTIES
-            . " WHERE name = 'last_app_id'";
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-        if ($result->num_rows == 1)
-        {
-            $res = (int)$result->fetch_row()[0] + 1;
-            $result->close();
-
-
-
-            $sql = "UPDATE " . DB_TABLE_PROPERTIES
-                . " SET value = '" . $link->real_escape_string($res) . "'"
-                . " WHERE name = 'last_app_id'";
-
-
-
-            $result2 = $link->query($sql);
-            die_if_sql_failed($result2, $link, $data, $sql);
-
-
-
-            $link->commit();
-        }
-        else
-        {
-            $result->close();
-            $link->commit();
-
-
-
-            $error_details = "Access violation";
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "Access error";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
-
-
-
-        return $res;
-    }
-
-
-
     function get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
         $res = 0;
@@ -144,14 +77,9 @@
 
 
 
-            $res = obtain_next_app_id($link, $data);
-
-
-
             $sql = "INSERT INTO " . DB_TABLE_APPS
-                . " (id, vendor_id, codename, owner_email, name, description, secret_key)"
+                . " (vendor_id, codename, owner_email, name, description, secret_key)"
                 . " VALUES("
-                . "  '" . $link->real_escape_string($res)         . "',"
                 . "  '" . $link->real_escape_string($vendor_id)   . "',"
                 . "  '" . $link->real_escape_string($codename)    . "',"
                 . "  '" . $link->real_escape_string($owner_email) . "',"
@@ -164,6 +92,10 @@
 
             $result2 = $link->query($sql);
             die_if_sql_failed($result2, $link, $data, $sql);
+
+
+
+            $res = $link->insert_id;
         }
         else
         {
@@ -193,6 +125,29 @@
 
 
         return $res;
+    }
+
+
+
+    function create_app_version_id($link, $data, $app_id, $version)
+    {
+        $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
+            . " (app_id, version, hash, completed)"
+            . " VALUES("
+            . "  '" . $link->real_escape_string($app_id)  . "',"
+            . "  '" . $link->real_escape_string($version) . "',"
+            . "  '00000000000000000000000000000000',"
+            . "  '0'"
+            . ")";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        return $link->insert_id;
     }
 
 
@@ -229,28 +184,25 @@
 
     function handle_post_with_params($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
     {
+        if (get_server_name($link, $data) != "10.83.230.9")
+        {
+            $error_details = "Access violation";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+
+
+
         $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);
         replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
 
-
-
-        $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
-            . " (app_id, version, hash, completed)"
-            . " VALUES("
-            . "  '" . $link->real_escape_string($app_id)  . "',"
-            . "  '" . $link->real_escape_string($version) . "',"
-            . "  '00000000000000000000000000000000',"
-            . "  '0'"
-            . ")";
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-        $app_version_id = $link->insert_id;
+        $app_version_id = create_app_version_id($link, $data, $app_id, $version);
         replicate_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key);
 
 
