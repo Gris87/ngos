@@ -35,9 +35,9 @@
 
 
 
-    function handle_post_with_params($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
+    function handle_post_with_params($link, $data, $my_address, $my_secret_key, $your_secret_key, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
-        
+        validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
     }
 
 
@@ -56,17 +56,25 @@
         $_POST = json_decode(file_get_contents('php://input'), true);
 
 
-
-        $app_id      = @$_POST["app_id"];
-        $vendor_id   = @$_POST["vendor_id"];
-        $codename    = @$_POST["codename"];
-        $owner_email = @$_POST["owner_email"];
-        $name        = @$_POST["name"];
-        $secret_key  = @$_POST["secret_key"];
+        $my_address      = @$_POST["my_address"];
+        $my_secret_key   = @$_POST["my_secret_key"];
+        $your_secret_key = @$_POST["your_secret_key"];
+        $app_id          = @$_POST["app_id"];
+        $vendor_id       = @$_POST["vendor_id"];
+        $codename        = @$_POST["codename"];
+        $owner_email     = @$_POST["owner_email"];
+        $name            = @$_POST["name"];
+        $secret_key      = @$_POST["secret_key"];
 
         
         
         if (
+            !verify_address($my_address)
+            ||
+            !verify_secret_key($my_secret_key)
+            ||
+            !verify_secret_key($your_secret_key)
+            ||
             !verify_app_id($app_id)
             ||
             !verify_vendor_id($vendor_id)
@@ -91,7 +99,7 @@
 
         if ($link)
         {
-            handle_post_with_params($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
+            handle_post_with_params($link, $data, $my_address, $my_secret_key, $your_secret_key, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
 
             db_disconnect($link);
         }
