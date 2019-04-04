@@ -64,6 +64,10 @@ EOF
 
     echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_file.php
     echo ""
+
+
+
+    return 0
 }
 
 
@@ -102,8 +106,20 @@ function deploy_app
 EOF
     `
 
-    echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_app.php
-    echo ""
+    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_app.php`
+
+
+
+    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .status`" != "OK" ]; then
+        echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"
+
+        return 1
+    fi
+
+
+
+    APP_ID=`echo ${DEPLOYMENT_RESPONSE} | jq -r .app_id`
+    APP_VERSION_ID=`echo ${DEPLOYMENT_RESPONSE} | jq -r .app_version_id`
 
 
 
@@ -114,6 +130,10 @@ EOF
     do
         echo ${file:${APP_DIR_LENGTH}}
     done
+
+
+
+    return 0
 }
 
 
@@ -130,8 +150,12 @@ function deploy_all
 
 
 
-    deploy_app "com.ngos.kernel"    "NGOS kernel"    "${VERSION}"
-    deploy_app "com.ngos.installer" "NGOS installer" "${VERSION}"
+    deploy_app "com.ngos.kernel"    "NGOS kernel"    "${VERSION}" || return 1
+    deploy_app "com.ngos.installer" "NGOS installer" "${VERSION}" || return 1
+
+
+
+    return 0
 }
 
 
@@ -176,6 +200,7 @@ function prepare_for_deployment
 
     if [ $? -ne 0 ]; then
         cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
+        cd ${CURRENT_PATH}/
 
         return 1
     fi
@@ -184,6 +209,10 @@ function prepare_for_deployment
 
     cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
     cd ${CURRENT_PATH}/
+
+
+
+    return 0
 }
 
 

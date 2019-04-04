@@ -43,9 +43,11 @@ tools/qt/build_config_maker/build/build_config_maker ${BUILD_CONFIG} NGOS_BUILD_
 make test-release >> ${BUILD_LOG} 2>&1
 
 if [ $? -ne 0 ]; then
-    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
-
     cat ${BUILD_LOG} 2>&1
+
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
+    cd ${WORKING_DIR}/
+
     exit 1
 fi
 

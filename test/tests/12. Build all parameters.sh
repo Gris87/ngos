@@ -29,10 +29,11 @@ function run_build
     make all                                                                >> ${BUILD_LOG} 2>&1
 
     if [ $? -ne 0 ]; then
+        cat ${BUILD_LOG} 2>&1
+
         cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
         cd ${WORKING_DIR}/
 
-        cat ${BUILD_LOG} 2>&1
         exit 1
     fi
 }
