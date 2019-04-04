@@ -5,6 +5,7 @@
 
     define("SECRET_KEY_REGEXP", "/^[\\w\\d]{1000,1000}$/");
     define("CODENAME_REGEXP",   "/^[a-z][a-z\\d_]*(\\.[a-z][a-z\\d_]*){2,}$/");
+    define("MD5_HASH_REGEXP",   "/^[0-9a-f]{32,32}$/");
 
 
 
@@ -811,6 +812,52 @@
                is_int($version)
                &&
                $version > 20190101000000;
+    }
+
+
+
+    function verify_filename($filename)
+    {
+        return isset($filename)
+               &&
+               is_string($filename)
+               &&
+               $filename != "";
+    }
+
+
+
+    function verify_compression_method($compression_method)
+    {
+        return isset($compression_method)
+               &&
+               is_int($compression_method)
+               &&
+               $compression_method >= 0
+               &&
+               $compression_method <= 1;
+    }
+
+
+
+    function verify_hash($hash)
+    {
+        return isset($hash)
+               &&
+               is_string($hash)
+               &&
+               preg_match(MD5_HASH_REGEXP, $hash);
+    }
+
+
+
+    function verify_content($content)
+    {
+        return isset($content)
+               &&
+               is_string($content)
+               &&
+               $content != "";
     }
 
 

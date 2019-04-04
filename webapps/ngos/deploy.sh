@@ -63,19 +63,41 @@ function deploy_app_file
 
 
 
+    COMPRESSION_METHOD=0
     HASH=`md5sum "${FILEPATH}" | awk '{ print $1 }'`
+
+
+
+    COMPRESSED_FILEPATH=`mktemp`
+    cat "${FILEPATH}" | xz > "${COMPRESSED_FILEPATH}"
+
+
+
+    UNCOMPRESSED_SIZE=`wc -c "${FILEPATH}"          | awk '{ print $1 }'`
+    COMPRESSED_SIZE=`wc -c "${COMPRESSED_FILEPATH}" | awk '{ print $1 }'`
+
+    if [ ${COMPRESSED_SIZE} -lt ${UNCOMPRESSED_SIZE} ]; then
+        FILEPATH=${COMPRESSED_FILEPATH}
+        COMPRESSION_METHOD=1
+    fi
+
+
+
     CONTENT=`base64 -w 0 "${FILEPATH}"`
+
+    rm "${COMPRESSED_FILEPATH}"
 
 
 
     REQUEST_DATA=`cat << EOF
         {
-            "app_id":         "${APP_ID}",
-            "app_version_id": "${APP_VERSION_ID}",
-            "filename":       "${FILENAME}",
-            "hash":           "${HASH}",
-            "content":        "${CONTENT}",
-            "secret_key":     "${SECRET_KEY}"
+            "app_id":             "${APP_ID}",
+            "app_version_id":     "${APP_VERSION_ID}",
+            "filename":           "${FILENAME}",
+            "compression_method": ${COMPRESSION_METHOD},
+            "hash":               "${HASH}",
+            "content":            "${CONTENT}",
+            "secret_key":         "${SECRET_KEY}"
         }
 EOF
     `
