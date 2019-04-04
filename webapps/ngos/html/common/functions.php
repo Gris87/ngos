@@ -431,10 +431,6 @@
 
 
 
-        $curl_multi = curl_multi_init();
-
-
-
         $last_region_id     = -1;
         $min_delay          = 0;
         $preferable_servers = [];
@@ -461,6 +457,10 @@
         }
 
         $result->close();
+        
+        
+        
+        $curl_multi = curl_multi_init();
 
 
 
@@ -557,7 +557,126 @@
 
     function replicate_by_region($link, $data, $replicate_data, $path, $region_id, $my_address)
     {
-
+        $sql = "SELECT"
+            . "     address,"
+            . "     secret_key"
+            . " FROM " . $GLOBALS["DB_TABLE_SERVERS"]
+            . " WHERE region_id = '" . $link->real_escape_string($region_id)  . "'"
+            . "   AND address != '"  . $link->real_escape_string($my_address) . "'"
+            . " ORDER BY region_id";
+                                
+                                
+                                
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+        
+        
+        
+        $servers = [];
+        
+        while ($row = $result->fetch_assoc())
+        {
+            array_push($servers, $row);
+        }
+        
+        $result->close();
+        
+        
+        
+        if (count($servers) > 0)
+        {
+            $curl_multi = curl_multi_init();
+            
+            
+            
+            $replicate_data["level"] = 1;
+            
+            foreach ($servers as &$server)
+            {
+                $replicate_data["your_secret_key"] = $server["secret_key"];
+                
+                
+                
+                $curl_session = curl_init("https://" . $server["address"] . $path);
+                
+                curl_setopt($curl_session, CURLOPT_CONNECTTIMEOUT, 10);
+                curl_setopt($curl_session, CURLOPT_HEADER,         false);
+                curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl_session, CURLOPT_SSL_VERIFYHOST, 0);
+                curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
+                curl_setopt($curl_session, CURLOPT_CUSTOMREQUEST,  "POST");
+                curl_setopt($curl_session, CURLOPT_HTTPHEADER,     array("Content-Type: application/json"));
+                curl_setopt($curl_session, CURLOPT_POSTFIELDS,     json_encode($replicate_data));
+                
+                curl_multi_add_handle($curl_multi, $curl_session);
+                $server["curl_session"] = $curl_session;
+            }
+            
+            
+            
+            $active = false;
+            
+            do
+            {
+                $status = curl_multi_exec($curl_multi, $active);
+                
+                if ($active)
+                {
+                    curl_multi_select($curl_multi);
+                }
+            } while ($active && $status == CURLM_OK);
+            
+            
+            
+            foreach ($servers as &$server)
+            {
+                $curl_session = $server["curl_session"];
+                
+                $server["response"] = curl_multi_getcontent($curl_session);
+                
+                curl_multi_remove_handle($curl_multi, $curl_session);
+                curl_close($curl_session);
+            }
+            
+            curl_multi_close($curl_multi);
+            
+            
+            
+            foreach ($servers as $server)
+            {
+                $response = $server["response"];
+                
+                if ($response)
+                {
+                    $response = json_decode($response, true);
+                    
+                    if ($response["status"] != "OK")
+                    {
+                        $error_details = "Invalid response from server https://" . $server["address"] . $path . " : " . json_encode($response);
+                        error_log($error_details);
+                        
+                        db_disconnect($link);
+                        
+                        $data["message"] = "Request error";
+                        $data["details"] = $error_details;
+                        
+                        die(json_encode($data));
+                    }
+                }
+                else
+                {
+                    $error_details = "Failed to get response from server https://" . $server["address"] . $path;
+                    error_log($error_details);
+                    
+                    db_disconnect($link);
+                    
+                    $data["message"] = "Request error";
+                    $data["details"] = $error_details;
+                    
+                    die(json_encode($data));
+                }
+            }
+        }
     }
 
 
