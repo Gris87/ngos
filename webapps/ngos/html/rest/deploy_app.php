@@ -199,14 +199,30 @@
 
     function replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
-
+        $replicate_data = [
+            "app_id"      => $app_id,
+            "vendor_id"   => $vendor_id,
+            "codename"    => $codename,
+            "owner_email" => $owner_email,
+            "name"        => $name,
+            "secret_key"  => $secret_key
+        ];
+        
+        replicate($link, $data, $replicate_data, "/rest/replicate_app.php");
     }
 
 
 
-    function replicate_app_version($link, $data, $app_version_id, $app_id, $version)
+    function replicate_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key)
     {
-
+        $replicate_data = [
+            "app_version_id" => $app_version_id,
+            "app_id"         => $app_id,
+            "version"        => $version,
+            "secret_key"     => $secret_key
+        ];
+        
+        replicate($link, $data, $replicate_data, "/rest/replicate_app_version.php");
     }
 
 
@@ -235,7 +251,7 @@
 
 
         $app_version_id = $link->insert_id;
-        replicate_app_version($link, $data, $app_version_id, $app_id, $version);
+        replicate_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key);
 
 
 

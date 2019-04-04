@@ -364,12 +364,7 @@
         {
             array_push($responses, curl_multi_getcontent($curl_session));
             $ping_total += curl_getinfo($curl_session, CURLINFO_TOTAL_TIME);
-        }
 
-
-
-        foreach ($curl_sessions as $curl_session)
-        {
             curl_multi_remove_handle($curl_multi, $curl_session);
             curl_close($curl_session);
         }
@@ -418,6 +413,169 @@
 
 
 
+    function replicate_to_regions($link, $data, $replicate_data, $path, $region_id)
+    {
+        $sql = "SELECT"
+            . "     region_id,"
+            . "     address,"
+            . "     delay,"
+            . "     secret_key"
+            . " FROM " . $GLOBALS["DB_TABLE_SERVERS"]
+            . " WHERE region_id != '" . $link->real_escape_string($region_id) . "'"
+            . " ORDER BY region_id";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        $curl_multi    = curl_multi_init();
+
+
+
+        $last_region_id     = -1;
+        $min_delay          = 0;
+        $preferable_servers = [];
+
+        while ($row = $result->fetch_assoc())
+        {
+            $cur_region_id = $row["region_id"];
+            $delay         = $row["delay"];
+
+            if ($last_region_id != $cur_region_id)
+            {
+                $last_region_id                     = $cur_region_id;
+                $min_delay                          = $delay;
+                $preferable_servers[$cur_region_id] = $row;
+            }
+            else
+            {
+                if ($delay < $min_delay)
+                {
+                    $min_delay                          = $delay;
+                    $preferable_servers[$cur_region_id] = $row;
+                }
+            }
+        }
+
+        $result->close();
+
+
+
+        foreach ($server as $preferable_servers)
+        {
+            $curl_session = curl_init("https://" . $server["address"] . $path);
+
+            curl_setopt($curl_session, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($curl_session, CURLOPT_HEADER,         false);
+            curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl_session, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
+
+            curl_multi_add_handle($curl_multi, $curl_session);
+            $server["curl_session"] = $curl_session;
+        }
+
+
+
+        $active = false;
+
+        do
+        {
+            $status = curl_multi_exec($curl_multi, $active);
+
+            if ($active)
+            {
+                curl_multi_select($curl_multi);
+            }
+        } while ($active && $status == CURLM_OK);
+
+
+
+        $responses  = [];
+
+        foreach ($server as $preferable_servers)
+        {
+            $curl_session = $server["curl_session"];
+
+            $server["response"] = curl_multi_getcontent($curl_session);
+
+            curl_multi_remove_handle($curl_multi, $curl_session);
+            curl_close($curl_session);
+        }
+
+        curl_multi_close($curl_multi);
+
+
+
+        foreach ($server as $preferable_servers)
+        {
+            $response = $server["response"];
+
+            if ($response)
+            {
+                $response = json_decode($response, true);
+
+                if ($response["status"] != "OK")
+                {
+                    $error_details = "Invalid response from server: https://" . $server["address"] . $path;
+                    error_log($error_details);
+
+                    db_disconnect($link);
+
+                    $data["message"] = "Request error";
+                    $data["details"] = $error_details;
+
+                    die(json_encode($data));
+                }
+            }
+            else
+            {
+                $error_details = "Failed to get response from server: https://" . $server["address"] . $path;
+                error_log($error_details);
+
+                db_disconnect($link);
+
+                $data["message"] = "Request error";
+                $data["details"] = $error_details;
+
+                die(json_encode($data));
+            }
+        }
+    }
+
+
+
+    function replicate_by_region($link, $data, $replicate_data, $path, $region_id)
+    {
+
+    }
+
+
+
+    function replicate($link, $data, $replicate_data, $path)
+    {
+        $region_id = get_region_id($link, $data);
+
+        replicate_to_regions($link, $data, $replicate_data, $path, $region_id);
+        replicate_by_region($link, $data, $replicate_data, $path, $region_id);
+    }
+
+
+
+    function verify_region_id($region_id)
+    {
+        return isset($region_id)
+               &&
+               is_int($region_id)
+               &&
+               $region_id > 0;
+    }
+
+
+
     function verify_address($address)
     {
         return isset($address)
@@ -444,35 +602,13 @@
 
 
 
-    function verify_region_id($region_id)
+    function verify_app_id($app_id)
     {
-        return isset($region_id)
+        return isset($app_id)
                &&
-               is_int($region_id)
+               is_int($app_id)
                &&
-               $region_id > 0;
-    }
-
-
-
-    function verify_codename($codename)
-    {
-        return isset($codename)
-               &&
-               is_string($codename)
-               &&
-               preg_match(constant("CODENAME_REGEXP"), $codename);
-    }
-
-
-
-    function verify_version($version)
-    {
-        return isset($version)
-               &&
-               is_int($version)
-               &&
-               $version > 20190101000000;
+               $app_id > 0;
     }
 
 
@@ -484,6 +620,17 @@
                is_int($vendor_id)
                &&
                $vendor_id > 0;
+    }
+
+
+
+    function verify_codename($codename)
+    {
+        return isset($codename)
+               &&
+               is_string($codename)
+               &&
+               preg_match(constant("CODENAME_REGEXP"), $codename);
     }
 
 
@@ -506,5 +653,16 @@
                is_string($name)
                &&
                $name != "";
+    }
+
+
+
+    function verify_version($version)
+    {
+        return isset($version)
+               &&
+               is_int($version)
+               &&
+               $version > 20190101000000;
     }
 ?>

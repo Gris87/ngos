@@ -1307,6 +1307,7 @@ webapps/ngos/html/rest/location.php
 webapps/ngos/html/rest/ping.php
 webapps/ngos/html/rest/register.php
 webapps/ngos/html/rest/replicate_app.php
+webapps/ngos/html/rest/replicate_app_version.php
 webapps/ngos/html/rest/replicate_file.php
 webapps/ngos/install.sh
 webapps/ngos/mariadb/create.sql
