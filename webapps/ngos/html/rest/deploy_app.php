@@ -169,7 +169,7 @@
         {
             $row = $result->fetch_array();
 
-            $res            = $row["id"];
+            $res            = (int)$row["id"];
             $app_secret_key = $row["secret_key"];
 
             $result->close();

@@ -64,6 +64,8 @@
         $name        = @$_POST["name"];
         $secret_key  = @$_POST["secret_key"];
 
+        
+        
         if (
             !verify_app_id($app_id)
             ||

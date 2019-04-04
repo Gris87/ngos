@@ -291,7 +291,7 @@
 
             if ($response["status"] != "OK")
             {
-                $error_details = "Invalid response from server: " . $server_url;
+                $error_details = "Invalid response from server " . $server_url . " : " . json_encode($response);
                 error_log($error_details);
 
                 db_disconnect($link);
@@ -304,7 +304,7 @@
         }
         else
         {
-            $error_details = "Failed to get response from server: " . $server_url;
+            $error_details = "Failed to get response from server " . $server_url;
             error_log($error_details);
 
             db_disconnect($link);
@@ -381,7 +381,7 @@
 
                 if ($response["status"] != "OK")
                 {
-                    $error_details = "Invalid response from server: " . $server_url;
+                    $error_details = "Invalid response from server " . $server_url . " : " . json_encode($response);
                     error_log($error_details);
 
                     db_disconnect($link);
@@ -394,7 +394,7 @@
             }
             else
             {
-                $error_details = "Failed to get response from server: " . $server_url;
+                $error_details = "Failed to get response from server " . $server_url;
                 error_log($error_details);
 
                 db_disconnect($link);
@@ -464,7 +464,7 @@
 
 
 
-        foreach ($server as $preferable_servers)
+        foreach ($preferable_servers as &$server)
         {
             $curl_session = curl_init("https://" . $server["address"] . $path);
 
@@ -473,6 +473,9 @@
             curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl_session, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($curl_session, CURLOPT_CUSTOMREQUEST,  "POST");
+            curl_setopt($curl_session, CURLOPT_HTTPHEADER,     array("Content-Type: application/json"));
+            curl_setopt($curl_session, CURLOPT_POSTFIELDS,     json_encode($replicate_data));
 
             curl_multi_add_handle($curl_multi, $curl_session);
             $server["curl_session"] = $curl_session;
@@ -494,7 +497,7 @@
 
 
 
-        foreach ($server as $preferable_servers)
+        foreach ($preferable_servers as &$server)
         {
             $curl_session = $server["curl_session"];
 
@@ -508,7 +511,7 @@
 
 
 
-        foreach ($server as $preferable_servers)
+        foreach ($preferable_servers as $server)
         {
             $response = $server["response"];
 
@@ -518,7 +521,7 @@
 
                 if ($response["status"] != "OK")
                 {
-                    $error_details = "Invalid response from server: https://" . $server["address"] . $path;
+                    $error_details = "Invalid response from server https://" . $server["address"] . $path . " : " . json_encode($response);
                     error_log($error_details);
 
                     db_disconnect($link);
@@ -531,7 +534,7 @@
             }
             else
             {
-                $error_details = "Failed to get response from server: https://" . $server["address"] . $path;
+                $error_details = "Failed to get response from server https://" . $server["address"] . $path;
                 error_log($error_details);
 
                 db_disconnect($link);
@@ -595,7 +598,7 @@
                &&
                is_string($secret_key)
                &&
-               preg_match(constant("SECRET_KEY_REGEXP"), $secret_key);
+               preg_match(SECRET_KEY_REGEXP, $secret_key);
     }
 
 
@@ -628,7 +631,7 @@
                &&
                is_string($codename)
                &&
-               preg_match(constant("CODENAME_REGEXP"), $codename);
+               preg_match(CODENAME_REGEXP, $codename);
     }
 
 
@@ -651,6 +654,17 @@
                is_string($name)
                &&
                $name != "";
+    }
+    
+    
+    
+    function verify_app_version_id($app_version_id)
+    {
+        return isset($app_version_id)
+               &&
+               is_int($app_version_id)
+               &&
+               $app_version_id > 0;
     }
 
 
