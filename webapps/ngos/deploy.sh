@@ -91,8 +91,8 @@ function deploy_app_file
 
     REQUEST_DATA=`cat << EOF
         {
-            "app_id":             "${APP_ID}",
-            "app_version_id":     "${APP_VERSION_ID}",
+            "app_id":             ${APP_ID},
+            "app_version_id":     ${APP_VERSION_ID},
             "filename":           "${FILENAME}",
             "compression_method": ${COMPRESSION_METHOD},
             "hash":               "${HASH}",
@@ -102,8 +102,18 @@ function deploy_app_file
 EOF
     `
 
-    echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_file.php
-    echo ""
+
+
+    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_file.php`
+
+    if [ "${DEPLOYMENT_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+        echo -e "[\e[31mFailed\e[0m]"
+        echo "Failed to upload file ${FILENAME}: ${DEPLOYMENT_RESPONSE}"
+
+        return 1
+    fi
+
+    echo -e "[\e[32mOK\e[0m]"
 
 
 

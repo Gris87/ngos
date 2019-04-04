@@ -49,6 +49,48 @@
 
             die(json_encode($data));
         }
+
+
+
+        validate_app_secret_key($link, $data, $app_id, $secret_key);
+
+
+
+        $file_content = base64_decode($content, true);
+
+        if (!$file_content)
+        {
+            $error_details = "Access violation";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+
+
+
+        $download_name = generate_download_name($compression_method);
+        file_put_contents("../downloads/" . $download_name, $file_content);
+
+
+
+        $sql = "INSERT INTO " . DB_TABLE_APP_FILES
+            . " (app_version_id, filename, download_name, hash)"
+            . " VALUES("
+            . "  '" . $link->real_escape_string($app_version_id) . "',"
+            . "  '" . $link->real_escape_string($filename)       . "',"
+            . "  '" . $link->real_escape_string($download_name)  . "',"
+            . "  '" . $link->real_escape_string($hash)           . "'"
+            . ")";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
     }
 
 

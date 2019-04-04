@@ -37,55 +37,7 @@
 
     function insert_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key)
     {
-        $sql = "SELECT"
-            . "     secret_key"
-            . " FROM " . DB_TABLE_APPS
-            . " WHERE id = '" . $link->real_escape_string($app_id) . "'";
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-        if ($result->num_rows == 1)
-        {
-            $app_secret_key = $result->fetch_row()[0];
-
-            $result->close();
-
-
-
-            if ($secret_key != $app_secret_key)
-            {
-                $error_details = "Access violation";
-                error_log($error_details);
-
-                db_disconnect($link);
-
-                $data["message"] = "Access error";
-                $data["details"] = $error_details;
-
-                die(json_encode($data));
-            }
-        }
-        else
-        {
-            $result->close();
-
-
-
-            $error_details = "Access violation";
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "Access error";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
+        validate_app_secret_key($link, $data, $app_id, $secret_key);
 
 
 
