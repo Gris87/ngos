@@ -148,8 +148,11 @@
     function handle_post_with_params($link, $data, $level, $my_address, $my_secret_key, $your_secret_key, $app_version_id, $app_id, $version, $secret_key)
     {
         validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
-        
-        forward_message_to_another_servers($link, $data, $level, $my_address, $my_secret_key, $app_version_id, $app_id, $version, $secret_key);
+
+        $own_address = get_server_name($link, $data);
+
+        insert_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key);
+        forward_message_to_another_servers($link, $data, $level, $own_address, $your_secret_key, $app_version_id, $app_id, $version, $secret_key);
     }
 
 
@@ -166,6 +169,7 @@
 
 
         $_POST = json_decode(file_get_contents('php://input'), true);
+
 
 
         $level           = @$_POST["level"];
