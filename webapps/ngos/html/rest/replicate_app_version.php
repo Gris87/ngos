@@ -39,7 +39,7 @@
     {
         $sql = "SELECT"
             . "     secret_key"
-            . " FROM " . $GLOBALS["DB_TABLE_APPS"]
+            . " FROM " . DB_TABLE_APPS
             . " WHERE id = '" . $link->real_escape_string($app_id) . "'";
 
 
@@ -89,7 +89,7 @@
 
 
 
-        $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_APP_VERSIONS"]
+        $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
             . " (id, app_id, version, hash, completed)"
             . " VALUES("
             . "  '" . $link->real_escape_string($app_version_id) . "',"

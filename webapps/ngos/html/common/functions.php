@@ -10,7 +10,7 @@
 
     function db_connect()
     {
-        $link = new mysqli($GLOBALS["DB_HOST"], $GLOBALS["DB_USER"], $GLOBALS["DB_PASSWORD"], $GLOBALS["DB_NAME"]);
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
         if ($link->connect_error)
         {
@@ -57,7 +57,7 @@
 
         $sql = "SELECT"
             . "     value"
-            . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
+            . " FROM " . DB_TABLE_PROPERTIES
             . " WHERE name = '" . $link->real_escape_string($name) . "'";
 
 
@@ -100,7 +100,7 @@
     {
         $sql = "SELECT"
             . "     value"
-            . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
+            . " FROM " . DB_TABLE_PROPERTIES
             . " WHERE name = '" . $link->real_escape_string($name) . "'";
 
 
@@ -112,13 +112,13 @@
 
         if ($result->num_rows == 1)
         {
-            $sql = "UPDATE " . $GLOBALS["DB_TABLE_PROPERTIES"]
+            $sql = "UPDATE " . DB_TABLE_PROPERTIES
                 . " SET value = '"  . $link->real_escape_string($value) . "'"
                 . " WHERE name = '" . $link->real_escape_string($name)  . "'";
         }
         else
         {
-            $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_PROPERTIES"]
+            $sql = "INSERT INTO " . DB_TABLE_PROPERTIES
                 . " (name, value)"
                 . " VALUES("
                 . "  '" . $link->real_escape_string($name)  . "',"
@@ -172,7 +172,7 @@
 
         $sql = "SELECT"
             . "     secret_key"
-            . " FROM " . $GLOBALS["DB_TABLE_SERVERS"]
+            . " FROM " . DB_TABLE_SERVERS
             . " WHERE address = '" . $link->real_escape_string($address) . "'";
 
 
@@ -420,7 +420,7 @@
             . "     address,"
             . "     delay,"
             . "     secret_key"
-            . " FROM " . $GLOBALS["DB_TABLE_SERVERS"]
+            . " FROM " . DB_TABLE_SERVERS
             . " WHERE region_id != '" . $link->real_escape_string($region_id) . "'"
             . " ORDER BY region_id";
 
@@ -560,7 +560,7 @@
         $sql = "SELECT"
             . "     address,"
             . "     secret_key"
-            . " FROM " . $GLOBALS["DB_TABLE_SERVERS"]
+            . " FROM " . DB_TABLE_SERVERS
             . " WHERE"
             . "     region_id =  '" . $link->real_escape_string($region_id)  . "'"
             . "     AND"

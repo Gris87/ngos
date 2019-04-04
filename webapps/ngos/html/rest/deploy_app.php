@@ -47,7 +47,7 @@
 
         $sql = "SELECT"
             . "     value"
-            . " FROM " . $GLOBALS["DB_TABLE_PROPERTIES"]
+            . " FROM " . DB_TABLE_PROPERTIES
             . " WHERE name = 'last_app_id'";
 
 
@@ -64,7 +64,7 @@
 
 
 
-            $sql = "UPDATE " . $GLOBALS["DB_TABLE_PROPERTIES"]
+            $sql = "UPDATE " . DB_TABLE_PROPERTIES
                 . " SET value = '" . $link->real_escape_string($res) . "'"
                 . " WHERE name = 'last_app_id'";
 
@@ -111,7 +111,7 @@
         $sql = "SELECT"
             . "     id,"
             . "     secret_key"
-            . " FROM " . $GLOBALS["DB_TABLE_APPS"]
+            . " FROM " . DB_TABLE_APPS
             . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
 
 
@@ -148,7 +148,7 @@
 
 
 
-            $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_APPS"]
+            $sql = "INSERT INTO " . DB_TABLE_APPS
                 . " (id, vendor_id, codename, owner_email, name, description, secret_key)"
                 . " VALUES("
                 . "  '" . $link->real_escape_string($res)         . "',"
@@ -234,7 +234,7 @@
 
 
 
-        $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_APP_VERSIONS"]
+        $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
             . " (app_id, version, hash, completed)"
             . " VALUES("
             . "  '" . $link->real_escape_string($app_id)  . "',"

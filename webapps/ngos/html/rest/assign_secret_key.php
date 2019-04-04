@@ -53,7 +53,7 @@
 
 
 
-        $sql = "UPDATE " . $GLOBALS["DB_TABLE_SERVERS"]
+        $sql = "UPDATE " . DB_TABLE_SERVERS
             . " SET secret_key = '" . $link->real_escape_string($secret_key) . "'"
             . " WHERE address = '"  . $link->real_escape_string($address)    . "'";
 

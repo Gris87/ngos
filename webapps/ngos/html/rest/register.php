@@ -61,7 +61,7 @@
 
 
 
-        $sql = "INSERT INTO " . $GLOBALS["DB_TABLE_SERVERS"]
+        $sql = "INSERT INTO " . DB_TABLE_SERVERS
             . " (region_id, address, delay, secret_key)"
             . " VALUES("
             . "  '" . $link->real_escape_string($region_id)  . "',"
