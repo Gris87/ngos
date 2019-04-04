@@ -431,7 +431,7 @@
 
 
 
-        $curl_multi    = curl_multi_init();
+        $curl_multi = curl_multi_init();
 
 
 
@@ -493,8 +493,6 @@
         } while ($active && $status == CURLM_OK);
 
 
-
-        $responses  = [];
 
         foreach ($server as $preferable_servers)
         {
