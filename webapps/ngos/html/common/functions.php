@@ -760,8 +760,6 @@
 
     function generate_download_name($compression_method)
     {
-        mkdir("../downloads");
-
         do
         {
             $res = exec("cat /dev/urandom | tr -dc \"a-zA-Z0-9\" | fold -w 245 | head -n 1");
