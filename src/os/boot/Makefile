@@ -1,6 +1,6 @@
 TARGET = boot
 
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr '[:upper:]' '[:lower:]')
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr "[:upper:]" "[:lower:]")
 
 SOURCE_ASM_DIR = asm
 OUTPUT_DIR     = build
@@ -22,7 +22,7 @@ ASMFLAGS = -c
 
 
 # Getting list of source files
-ASM_SOURCES = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/ -name '*.S' 2> /dev/null)
+ASM_SOURCES = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/ -name "*.S" 2> /dev/null)
 
 # Getting list of object files
 ASM_OBJ = $(addprefix $(OUTPUT_DIR)/,$(ASM_SOURCES:%.S=%.o))

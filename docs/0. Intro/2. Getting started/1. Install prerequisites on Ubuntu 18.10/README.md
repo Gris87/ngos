@@ -24,7 +24,7 @@ After this run commands with your user account:
 ```sh
 vncserver
 
-echo "#!/bin/sh"                                                >  ~/.vnc/xstartup
+echo '#!/bin/sh'                                                >  ~/.vnc/xstartup
 echo ""                                                         >> ~/.vnc/xstartup
 echo "# Uncomment the following two lines for normal desktop:"  >> ~/.vnc/xstartup
 echo "# unset SESSION_MANAGER"                                  >> ~/.vnc/xstartup

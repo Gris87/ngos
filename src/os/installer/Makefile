@@ -1,6 +1,6 @@
 TARGET = installer
 
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr '[:upper:]' '[:lower:]')
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr "[:upper:]" "[:lower:]")
 
 ASSETS_DIR     = assets
 SHARED_DIR     = ../shared
@@ -25,7 +25,7 @@ LD  = $(CROSS_COMPILE)ld
 
 
 
-ZIP         = $(shell grep "define NGOS_BUILD_KERNEL_COMPRESSION" ../../../include/buildconfig.h | cut -c 65- | tr '[:upper:]' '[:lower:]')
+ZIP         = $(shell grep "define NGOS_BUILD_KERNEL_COMPRESSION" ../../../include/buildconfig.h | cut -c 65- | tr "[:upper:]" "[:lower:]")
 ZIP_EXT     =
 ZIP_FLAGS   =
 ZIP_COMMAND =
@@ -49,7 +49,7 @@ endif
 
 
 
-VECTORIZATION_MODE = $(shell grep "define NGOS_BUILD_X86_64_VECTORIZATION_MODE" ../../../include/buildconfig.h | cut -c 79- | tr '[:upper:]' '[:lower:]')
+VECTORIZATION_MODE = $(shell grep "define NGOS_BUILD_X86_64_VECTORIZATION_MODE" ../../../include/buildconfig.h | cut -c 79- | tr "[:upper:]" "[:lower:]")
 
 
 
@@ -79,7 +79,7 @@ endif
 
 
 
-FUSED_MULTIPLY_ADD = $(shell grep "define NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD" ../../../include/buildconfig.h | cut -c 79- | tr '[:upper:]' '[:lower:]')
+FUSED_MULTIPLY_ADD = $(shell grep "define NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD" ../../../include/buildconfig.h | cut -c 79- | tr "[:upper:]" "[:lower:]")
 
 
 
@@ -95,7 +95,7 @@ endif
 
 
 
-RELEASE = $(shell grep "define NGOS_BUILD_RELEASE" ../../../include/buildconfig.h | cut -c 35- | tr '[:upper:]' '[:lower:]')
+RELEASE = $(shell grep "define NGOS_BUILD_RELEASE" ../../../include/buildconfig.h | cut -c 35- | tr "[:upper:]" "[:lower:]")
 
 
 
@@ -108,7 +108,7 @@ endif
 
 
 DEFINES = \
-	-DBUILD_TARGET_$(shell echo $(TARGET) | tr '[:lower:]' '[:upper:]')
+	-DBUILD_TARGET_$(shell echo $(TARGET) | tr "[:lower:]" "[:upper:]")
 
 
 
@@ -128,13 +128,13 @@ CXXFLAGS = -c -m64 -O3 -W -Wall -Werror -nostdinc -mno-red-zone -fPIE -ffreestan
 
 # Getting list of source files
 ASSETS_FILES           = $(shell find $(ASSETS_DIR)/ -type f | grep -ve .gitignore -ve generated/assets.S                            2> /dev/null)
-COMMON_ASM_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                    -name '*.S'   2> /dev/null)
-COMMON_CPP_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_CPP_DIR)/                                                 -name '*.cpp' 2> /dev/null)
-KERNELBASE_ASM_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                -name '*.S'   2> /dev/null)
-KERNELBASE_CPP_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_CPP_DIR)/ $(KERNELBASE_DIR)/$(TEST_CPP_DIR)/          -name '*.cpp' 2> /dev/null)
-ASM_SOURCES            = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                  -name '*.S'   2> /dev/null)
-CPP_SOURCES            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/                                              -name '*.cpp' 2> /dev/null)
-CPP_HEADERS            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(SHARED_DIR)/ ../include/ ../../../include/ -name '*.h'   2> /dev/null)
+COMMON_ASM_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                    -name "*.S"   2> /dev/null)
+COMMON_CPP_SOURCES     = $(shell find $(COMMON_DIR)/$(SOURCE_CPP_DIR)/                                                 -name "*.cpp" 2> /dev/null)
+KERNELBASE_ASM_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                -name "*.S"   2> /dev/null)
+KERNELBASE_CPP_SOURCES = $(shell find $(KERNELBASE_DIR)/$(SOURCE_CPP_DIR)/ $(KERNELBASE_DIR)/$(TEST_CPP_DIR)/          -name "*.cpp" 2> /dev/null)
+ASM_SOURCES            = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                  -name "*.S"   2> /dev/null)
+CPP_SOURCES            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/                                              -name "*.cpp" 2> /dev/null)
+CPP_HEADERS            = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(SHARED_DIR)/ ../include/ ../../../include/ -name "*.h"   2> /dev/null)
 
 # Getting list of object files
 ASSETS_OBJ         = $(OUTPUT_DIR)/$(ASSETS_DIR)/generated/assets.o
