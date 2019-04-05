@@ -371,7 +371,8 @@ EOF
 
 function update_sources
 {
-    cp -r html/. /var/www/html || return 1
+    cp -r html/. /var/www/html               || return 1
+    chown -R www-data:www-data /var/www/html || return 1
 
     echo "NGOS webapp sources updated"
 

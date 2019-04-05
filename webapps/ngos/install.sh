@@ -87,6 +87,7 @@ function execute_sql_without_header
 
 
 cp -r html/. /var/www/html
+chown -R www-data:www-data /var/www/html
 
 
 
