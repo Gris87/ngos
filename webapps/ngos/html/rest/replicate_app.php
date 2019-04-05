@@ -141,9 +141,14 @@
     {
         validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
 
-        $own_address = get_server_name($link, $data);
+
 
         insert_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
+
+
+
+        $own_address = get_server_name($link, $data);
+
         forward_message_to_another_servers($link, $data, $level, $own_address, $your_secret_key, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
     }
 

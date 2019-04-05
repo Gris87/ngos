@@ -35,6 +35,82 @@
 
 
 
+    function create_download_file($link, $data, $compression_method, $content)
+    {
+        $file_content = base64_decode($content, true);
+
+        if (!$file_content)
+        {
+            $error_details = "Invalid parameters";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "File broken";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+
+
+
+        $download_name = generate_download_name($compression_method);
+
+        if (!file_exists("../downloads"))
+        {
+            mkdir("../downloads");
+        }
+
+        file_put_contents("../downloads/" . $download_name, $file_content);
+
+
+
+        return $download_name;
+    }
+
+
+
+    function create_app_file_id($link, $data, $app_version_id, $filename, $download_name, $hash)
+    {
+        $sql = "INSERT INTO " . DB_TABLE_APP_FILES
+            . " (app_version_id, filename, download_name, hash)"
+            . " VALUES("
+            . "  '" . $link->real_escape_string($app_version_id) . "',"
+            . "  '" . $link->real_escape_string($filename)       . "',"
+            . "  '" . $link->real_escape_string($download_name)  . "',"
+            . "  '" . $link->real_escape_string($hash)           . "'"
+            . ")";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        return $link->insert_id;
+    }
+
+
+
+    function replicate_file($link, $data, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key)
+    {
+        $replicate_data = [
+            "app_file_id"    => $app_file_id,
+            "app_version_id" => $app_version_id,
+            "app_id"         => $app_id,
+            "filename"       => $filename,
+            "download_name"  => $download_name,
+            "hash"           => $hash,
+            "content"        => $content,
+            "secret_key"     => $secret_key
+        ];
+
+        replicate($link, $data, $replicate_data, "/rest/replicate_file.php");
+    }
+
+
+
     function handle_post_with_params($link, $data, $app_id, $app_version_id, $filename, $compression_method, $hash, $content, $secret_key)
     {
         if (get_server_name($link, $data) != "10.83.230.9")
@@ -56,46 +132,10 @@
 
 
 
-        $file_content = base64_decode($content, true);
+        $download_name = create_download_file($link, $data, $compression_method, $content);
+        $app_file_id   = create_app_file_id($link, $data, $app_version_id, $filename, $download_name, $hash);
 
-        if (!$file_content)
-        {
-            $error_details = "Access violation";
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "Access error";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
-
-
-
-        if (!file_exists("../downloads"))
-        {
-            mkdir("../downloads");
-        }
-
-        $download_name = generate_download_name($compression_method);
-        file_put_contents("../downloads/" . $download_name, $file_content);
-
-
-
-        $sql = "INSERT INTO " . DB_TABLE_APP_FILES
-            . " (app_version_id, filename, download_name, hash)"
-            . " VALUES("
-            . "  '" . $link->real_escape_string($app_version_id) . "',"
-            . "  '" . $link->real_escape_string($filename)       . "',"
-            . "  '" . $link->real_escape_string($download_name)  . "',"
-            . "  '" . $link->real_escape_string($hash)           . "'"
-            . ")";
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
+        replicate_file($link, $data, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key);
     }
 
 

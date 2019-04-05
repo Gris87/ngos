@@ -3,9 +3,10 @@
 
 
 
-    define("SECRET_KEY_REGEXP", "/^[\\w\\d]{1000,1000}$/");
-    define("CODENAME_REGEXP",   "/^[a-z][a-z\\d_]*(\\.[a-z][a-z\\d_]*){2,}$/");
-    define("MD5_HASH_REGEXP",   "/^[0-9a-f]{32,32}$/");
+    define("CODENAME_REGEXP",      "/^[a-z][a-z\\d_]*(\\.[a-z][a-z\\d_]*){2,}$/");
+    define("DOWNLOAD_NAME_REGEXP", "/^[\\w\\d]{249,249}\\.\\d{1,2}\\.(raw|xz)$/");
+    define("MD5_HASH_REGEXP",      "/^[0-9a-f]{32,32}$/");
+    define("SECRET_KEY_REGEXP",    "/^[\\w\\d]{1000,1000}$/");
 
 
 
@@ -756,19 +757,19 @@
         replicate_by_region($link, $data, $replicate_data, $path, $region_id, $my_address);
     }
 
-    
-    
+
+
     function random_string($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
         $res = "";
-        
+
         $max = strlen($keyspace) - 1;
-        
+
         for ($i = 0; $i < $length; ++$i)
         {
             $res .= $keyspace[random_int(0, $max)];
         }
-        
+
         return $res;
     }
 
@@ -778,7 +779,7 @@
     {
         do
         {
-            $res = random_string(245);
+            $res = random_string(249);
 
             switch ($compression_method)
             {
@@ -809,17 +810,6 @@
 
 
 
-    function verify_region_id($region_id)
-    {
-        return isset($region_id)
-               &&
-               is_int($region_id)
-               &&
-               $region_id > 0;
-    }
-
-
-
     function verify_address($address)
     {
         return isset($address)
@@ -835,17 +825,6 @@
 
 
 
-    function verify_secret_key($secret_key)
-    {
-        return isset($secret_key)
-               &&
-               is_string($secret_key)
-               &&
-               preg_match(SECRET_KEY_REGEXP, $secret_key);
-    }
-
-
-
     function verify_app_id($app_id)
     {
         return isset($app_id)
@@ -857,46 +836,13 @@
 
 
 
-    function verify_vendor_id($vendor_id)
+    function verify_app_file_id($app_file_id)
     {
-        return isset($vendor_id)
+        return isset($app_file_id)
                &&
-               is_int($vendor_id)
+               is_int($app_file_id)
                &&
-               $vendor_id > 0;
-    }
-
-
-
-    function verify_codename($codename)
-    {
-        return isset($codename)
-               &&
-               is_string($codename)
-               &&
-               preg_match(CODENAME_REGEXP, $codename);
-    }
-
-
-
-    function verify_email($email)
-    {
-        return isset($email)
-               &&
-               is_string($email)
-               &&
-               filter_var($email, FILTER_VALIDATE_EMAIL) != false;
-    }
-
-
-
-    function verify_name($name)
-    {
-        return isset($name)
-               &&
-               is_string($name)
-               &&
-               $name != "";
+               $app_file_id > 0;
     }
 
 
@@ -912,24 +858,13 @@
 
 
 
-    function verify_version($version)
+    function verify_codename($codename)
     {
-        return isset($version)
+        return isset($codename)
                &&
-               is_int($version)
+               is_string($codename)
                &&
-               $version > 20190101000000;
-    }
-
-
-
-    function verify_filename($filename)
-    {
-        return isset($filename)
-               &&
-               is_string($filename)
-               &&
-               $filename != "";
+               preg_match(CODENAME_REGEXP, $codename);
     }
 
 
@@ -947,17 +882,6 @@
 
 
 
-    function verify_hash($hash)
-    {
-        return isset($hash)
-               &&
-               is_string($hash)
-               &&
-               preg_match(MD5_HASH_REGEXP, $hash);
-    }
-
-
-
     function verify_content($content)
     {
         return isset($content)
@@ -965,6 +889,50 @@
                is_string($content)
                &&
                $content != "";
+    }
+
+
+
+    function verify_download_name($download_name)
+    {
+        return isset($download_name)
+               &&
+               is_string($download_name)
+               &&
+               preg_match(DOWNLOAD_NAME_REGEXP, $download_name);
+    }
+
+
+
+    function verify_email($email)
+    {
+        return isset($email)
+               &&
+               is_string($email)
+               &&
+               filter_var($email, FILTER_VALIDATE_EMAIL) != false;
+    }
+
+
+
+    function verify_filename($filename)
+    {
+        return isset($filename)
+               &&
+               is_string($filename)
+               &&
+               $filename != "";
+    }
+
+
+
+    function verify_hash($hash)
+    {
+        return isset($hash)
+               &&
+               is_string($hash)
+               &&
+               preg_match(MD5_HASH_REGEXP, $hash);
     }
 
 
@@ -978,5 +946,60 @@
                $level >= 0
                &&
                $level <= 1;
+    }
+
+
+
+    function verify_name($name)
+    {
+        return isset($name)
+               &&
+               is_string($name)
+               &&
+               $name != "";
+    }
+
+
+
+    function verify_region_id($region_id)
+    {
+        return isset($region_id)
+               &&
+               is_int($region_id)
+               &&
+               $region_id > 0;
+    }
+
+
+
+    function verify_secret_key($secret_key)
+    {
+        return isset($secret_key)
+               &&
+               is_string($secret_key)
+               &&
+               preg_match(SECRET_KEY_REGEXP, $secret_key);
+    }
+
+
+
+    function verify_vendor_id($vendor_id)
+    {
+        return isset($vendor_id)
+               &&
+               is_int($vendor_id)
+               &&
+               $vendor_id > 0;
+    }
+
+
+
+    function verify_version($version)
+    {
+        return isset($version)
+               &&
+               is_int($version)
+               &&
+               $version > 20190101000000;
     }
 ?>

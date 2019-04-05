@@ -37,10 +37,6 @@
 
     function insert_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key)
     {
-        validate_app_secret_key($link, $data, $app_id, $secret_key);
-
-
-
         $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
             . " (id, app_id, version, hash, completed)"
             . " VALUES("
@@ -101,9 +97,16 @@
     {
         validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
 
-        $own_address = get_server_name($link, $data);
+        validate_app_secret_key($link, $data, $app_id, $secret_key);
+
+
 
         insert_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key);
+
+
+
+        $own_address = get_server_name($link, $data);
+
         forward_message_to_another_servers($link, $data, $level, $own_address, $your_secret_key, $app_version_id, $app_id, $version, $secret_key);
     }
 
