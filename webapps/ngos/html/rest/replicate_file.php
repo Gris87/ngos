@@ -141,6 +141,7 @@
         validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
 
         validate_app_secret_key($link, $data, $app_id, $secret_key);
+        validate_app_version($link, $data, $app_version_id);
 
 
 

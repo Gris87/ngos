@@ -12,7 +12,7 @@ Boot part of kernel image is the first block of image with the size in 0x200 (51
 
 It is actually a PE header that let kernel image to be runnable via UEFI.
 
-Since it is a PE header, it should be started with the 'MZ' signature and should contain address of PE header at 0x3C offset.
+Since it is a PE header, it should be started with the "MZ" signature and should contain address of PE header at 0x3C offset.
 
 Boot part also ends with the 0xAA55 signature to make it bootable for BIOS bootloader. But in case of BIOS bootloader it just prints the message that the kernel should be loaded via UEFI.
 

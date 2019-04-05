@@ -80,12 +80,12 @@
 
 
 
-            $error_details = "Access violation";
+            $error_details = "Invalid server state";
             error_log($error_details);
 
             db_disconnect($link);
 
-            $data["message"] = "Access error";
+            $data["message"] = "Internal error";
             $data["details"] = $error_details;
 
             die(json_encode($data));
@@ -368,6 +368,61 @@
             db_disconnect($link);
 
             $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+    }
+
+
+
+    function validate_app_version($link, $data, $app_version_id)
+    {
+        $sql = "SELECT"
+            . "     completed"
+            . " FROM " . DB_TABLE_APP_VERSIONS
+            . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        if ($result->num_rows == 1)
+        {
+            $completed = $result->fetch_row()[0];
+
+            $result->close();
+
+
+
+            if ($completed != 0)
+            {
+                $error_details = "Invalid version state";
+                error_log($error_details);
+
+                db_disconnect($link);
+
+                $data["message"] = "Internal error";
+                $data["details"] = $error_details;
+
+                die(json_encode($data));
+            }
+        }
+        else
+        {
+            $result->close();
+
+
+
+            $error_details = "Invalid server state";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Internal error";
             $data["details"] = $error_details;
 
             die(json_encode($data));
