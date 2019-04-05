@@ -35,7 +35,80 @@
 
 
 
-    function create_download_file($link, $data, $compression_method, $content)
+    function check_file_hash($link, $data, $path, $hash)
+    {
+        $own_hash = calculate_download_file_hash($path);
+
+        if ($own_hash != $hash)
+        {
+            unlink($path);
+
+
+
+            $error_details = "Invalid parameters";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "File broken";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+    }
+
+
+
+    function avoid_duplicate_file($link, $data, $download_name, $path, $hash)
+    {
+        $sql = "SELECT"
+            . "     download_name"
+            . " FROM " . DB_TABLE_APP_FILES
+            . " WHERE hash = '" . $link->real_escape_string($hash) . "'";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        $files = [];
+
+        while ($row = $result->fetch_row())
+        {
+            array_push($files, $row[0]);
+        }
+
+        $result->close();
+
+
+
+        foreach ($files as $file)
+        {
+            $another_path = "../downloads/" . $file;
+
+            $output    = [];
+            $exit_code = 0;
+
+            exec("diff " . $path . " " . $another_path, $output, $exit_code);
+
+            if ($exit_code == 0)
+            {
+                unlink($path);
+
+                return $file;
+            }
+        }
+
+
+
+        return $download_name;
+    }
+
+
+
+    function create_download_file($link, $data, $compression_method, $hash, $content)
     {
         $file_content = base64_decode($content, true);
 
@@ -55,17 +128,22 @@
 
 
         $download_name = generate_download_name($compression_method);
+        $path          = "../downloads/" . $download_name;
 
         if (!file_exists("../downloads"))
         {
             mkdir("../downloads");
         }
 
-        file_put_contents("../downloads/" . $download_name, $file_content);
+        file_put_contents($path, $file_content);
 
 
 
-        return $download_name;
+        check_file_hash($link, $data, $path, $hash);
+
+
+
+        return avoid_duplicate_file($link, $data, $download_name, $path, $hash);
     }
 
 
@@ -113,7 +191,7 @@
 
     function handle_post_with_params($link, $data, $app_id, $app_version_id, $filename, $compression_method, $hash, $content, $secret_key)
     {
-        if (get_server_name($link, $data) != "10.83.230.9")
+        if (get_server_name($link, $data) != MASTER_SERVER)
         {
             $error_details = "Access violation";
             error_log($error_details);
@@ -133,7 +211,7 @@
 
 
 
-        $download_name = create_download_file($link, $data, $compression_method, $content);
+        $download_name = create_download_file($link, $data, $compression_method, $hash, $content);
         $app_file_id   = create_app_file_id($link, $data, $app_version_id, $filename, $download_name, $hash);
 
         replicate_file($link, $data, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key);

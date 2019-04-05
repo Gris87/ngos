@@ -43,7 +43,7 @@
             . "  '" . $link->real_escape_string($app_version_id) . "',"
             . "  '" . $link->real_escape_string($app_id)         . "',"
             . "  '" . $link->real_escape_string($version)        . "',"
-            . "  '00000000000000000000000000000000',"
+            . "  '',"
             . "  '0'"
             . ")";
 

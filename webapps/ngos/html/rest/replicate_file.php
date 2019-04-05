@@ -35,7 +35,27 @@
 
 
 
-    function create_download_file($link, $data, $download_name, $content)
+    function check_file_hash($link, $data, $path, $hash)
+    {
+        $own_hash = calculate_download_file_hash($path);
+
+        if ($own_hash != $hash)
+        {
+            $error_details = "Invalid parameters";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "File broken";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+    }
+
+
+
+    function create_download_file($link, $data, $download_name, $hash, $content)
     {
         $file_content = base64_decode($content, true);
 
@@ -54,18 +74,20 @@
 
 
 
-        if (!file_exists("../downloads/" . $download_name))
+        $path = "../downloads/" . $download_name;
+
+        if (!file_exists($path))
         {
             if (!file_exists("../downloads"))
             {
                 mkdir("../downloads");
             }
 
-            file_put_contents("../downloads/" . $download_name, $file_content);
+            file_put_contents($path, $file_content);
         }
         else
         {
-            // TODO: Validate
+            check_file_hash($link, $data, $path, $hash);
         }
     }
 
@@ -133,9 +155,6 @@
 
 
 
-
-
-
     function handle_post_with_params($link, $data, $level, $my_address, $my_secret_key, $your_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key)
     {
         validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
@@ -145,7 +164,7 @@
 
 
 
-        create_download_file($link, $data, $download_name, $content);
+        create_download_file($link, $data, $download_name, $hash, $content);
         insert_app_file($link, $data, $app_file_id, $app_version_id, $filename, $download_name, $hash);
 
 

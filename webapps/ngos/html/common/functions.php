@@ -814,6 +814,20 @@
 
 
 
+    function endsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+
+        if ($length == 0)
+        {
+            return true;
+        }
+
+        return substr($haystack, -$length) === $needle;
+    }
+
+
+
     function random_string($length, $keyspace = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
     {
         $res = "";
@@ -861,6 +875,25 @@
                 return $res;
             }
         } while(true);
+    }
+
+
+
+    function calculate_download_file_hash($path)
+    {
+        if (endsWith($path, ".raw"))
+        {
+            return exec("md5sum " . $path . " | awk '{ print $1 }'");
+        }
+        else
+        if (endsWith($path, ".xz"))
+        {
+            return exec("cat " . $path . " | unxz | md5sum | awk '{ print $1 }'");
+        }
+
+
+
+        return "";
     }
 
 

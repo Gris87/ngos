@@ -136,7 +136,7 @@
             . " VALUES("
             . "  '" . $link->real_escape_string($app_id)  . "',"
             . "  '" . $link->real_escape_string($version) . "',"
-            . "  '00000000000000000000000000000000',"
+            . "  '',"
             . "  '0'"
             . ")";
 
@@ -184,7 +184,7 @@
 
     function handle_post_with_params($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
     {
-        if (get_server_name($link, $data) != "10.83.230.9")
+        if (get_server_name($link, $data) != MASTER_SERVER)
         {
             $error_details = "Access violation";
             error_log($error_details);
