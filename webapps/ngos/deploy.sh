@@ -69,7 +69,7 @@ function deploy_app_file
 
 
     COMPRESSED_FILEPATH=`mktemp`
-    cat "${FILEPATH}" | xz > "${COMPRESSED_FILEPATH}"
+    cat "${FILEPATH}" | xz --lzma2=dict=128MiB > "${COMPRESSED_FILEPATH}"
 
 
 

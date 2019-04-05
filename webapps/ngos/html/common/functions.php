@@ -756,13 +756,29 @@
         replicate_by_region($link, $data, $replicate_data, $path, $region_id, $my_address);
     }
 
+    
+    
+    function random_string($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    {
+        $res = "";
+        
+        $max = strlen($keyspace) - 1;
+        
+        for ($i = 0; $i < $length; ++$i)
+        {
+            $res .= $keyspace[random_int(0, $max)];
+        }
+        
+        return $res;
+    }
+
 
 
     function generate_download_name($compression_method)
     {
         do
         {
-            $res = exec("cat /dev/urandom | tr -dc \"a-zA-Z0-9\" | fold -w 245 | head -n 1");
+            $res = random_string(245);
 
             switch ($compression_method)
             {
