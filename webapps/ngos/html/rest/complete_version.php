@@ -33,11 +33,113 @@
         // Nothing
     }
 
+    
+    
+    function complete_version($link, $data, $app_version_id)
+    {
+        return "";
+    }
+    
+    
+
+    function replicate_complete_version($link, $data, $app_id, $app_version_id, $hash, $secret_key)
+    {
+        $replicate_data = [
+            "app_id"         => $app_id,
+            "app_version_id" => $app_version_id,
+            "hash"           => $hash,
+            "secret_key"     => $secret_key
+        ];
+
+        replicate($link, $data, $replicate_data, "/rest/replicate_complete_version.php");
+    }
+
+
+
+    function handle_post_with_params($link, $data, $app_id, $app_version_id, $secret_key)
+    {
+        if (get_server_name($link, $data) != MASTER_SERVER)
+        {
+            $error_details = "Access violation";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Access error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+
+
+
+        validate_app_secret_key($link, $data, $app_id, $secret_key);
+        validate_app_version($link, $data, $app_version_id);
+
+        
+
+        $hash = complete_version($link, $data, $app_version_id);
+
+        replicate_complete_version($link, $data, $app_id, $app_version_id, $hash, $secret_key);
+    }
+
 
 
     function handle_post()
     {
-        // Nothing
+        header("Content-type: application/json");
+
+        $data =
+        [
+            "status" => "Failed"
+        ];
+
+
+
+        $_POST = json_decode(file_get_contents("php://input"), true);
+
+
+
+        $app_id         = @$_POST["app_id"];
+        $app_version_id = @$_POST["app_version_id"];
+        $secret_key     = @$_POST["secret_key"];
+
+
+
+        if (
+            !verify_app_id($app_id)
+            ||
+            !verify_app_version_id($app_version_id)
+            ||
+            !verify_secret_key($secret_key)
+           )
+        {
+            $data["message"] = "Invalid parameters";
+
+            die(json_encode($data));
+        }
+
+
+
+        $link = db_connect();
+
+        if ($link)
+        {
+            handle_post_with_params($link, $data, $app_id, $app_version_id, $secret_key);
+
+            db_disconnect($link);
+        }
+        else
+        {
+            $data["message"] = "Database connection error";
+
+            die(json_encode($data));
+        }
+
+
+
+        $data["status"] = "OK";
+        echo json_encode($data);
     }
 
 
