@@ -73,6 +73,11 @@
 
 
 
+        if (!file_exists("../downloads"))
+        {
+            mkdir("../downloads");
+        }
+
         $download_name = generate_download_name($compression_method);
         file_put_contents("../downloads/" . $download_name, $file_content);
 
