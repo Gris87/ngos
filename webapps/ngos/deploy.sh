@@ -163,6 +163,7 @@ EOF
 
 
     if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .status`" != "OK" ]; then
+        echo -e "[\e[31mDeployment failure\e[0m]"
         echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"
 
         return 1
@@ -182,6 +183,30 @@ EOF
     do
         deploy_app_file ${APP_ID} ${APP_VERSION_ID} ${SECRET_KEY} "${file:${APP_DIR_LENGTH}}" "${file}" || return 1
     done
+
+
+
+    REQUEST_DATA=`cat << EOF
+        {
+            "app_id":             ${APP_ID},
+            "app_version_id":     ${APP_VERSION_ID},
+            "secret_key":         "${SECRET_KEY}"
+        }
+EOF
+    `
+
+
+
+    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/complete_version.php`
+
+    if [ "${DEPLOYMENT_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+        echo -e "[\e[31mDeployment failure\e[0m]"
+        echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"
+
+        return 1
+    fi
+
+    echo -e "[\e[32mDeployed\e[0m]"
 
 
 
