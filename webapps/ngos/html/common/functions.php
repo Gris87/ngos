@@ -895,6 +895,13 @@
 
         return "";
     }
+    
+    
+    
+    function calculate_app_version_hash($link, $data, $app_version_id)
+    {   
+        return "00000000000000000000000000000000";
+    }
 
 
 
