@@ -1299,7 +1299,9 @@ webapps/ngos/html/.htaccess
 webapps/ngos/html/common/constants.php
 webapps/ngos/html/common/functions.php
 webapps/ngos/html/index.php
+webapps/ngos/html/rest/app_versions.php
 webapps/ngos/html/rest/appinfo.php
+webapps/ngos/html/rest/apps.php
 webapps/ngos/html/rest/assign_secret_key.php
 webapps/ngos/html/rest/complete_version.php
 webapps/ngos/html/rest/deploy_app.php
