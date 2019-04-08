@@ -931,18 +931,18 @@
 
 
 
-        $res = "00000000000000000000000000000000";
+        $res = pack("H*", "00000000000000000000000000000000");
 
         while ($row = $result->fetch_row())
         {
-            $res = bin2hex(pack('H*', $res) ^ pack('H*', $row[0]));
+            $res ^= pack("H*", $row[0]);
         }
 
         $result->close();
 
 
 
-        return $res;
+        return bin2hex($res);
     }
 
 
