@@ -1137,6 +1137,17 @@
                &&
                is_int($version)
                &&
-               $version > 20190101000000;
+               $version >= 20190101000000;
+    }
+
+
+
+    function verify_version_for_user($version)
+    {
+        return isset($version)
+               &&
+               is_int($version)
+               &&
+               $version >= 20190101;
     }
 ?>

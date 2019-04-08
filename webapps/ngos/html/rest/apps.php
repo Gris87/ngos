@@ -26,8 +26,8 @@
         }
     }
 
-    
-    
+
+
     function handle_get_for_app_id($link, &$data, $app_id)
     {
         $sql = "SELECT"
@@ -37,36 +37,36 @@
             . "     description"
             . " FROM " . DB_TABLE_APPS
             . " WHERE id = '" . $link->real_escape_string($app_id) . "'";
-                            
-                            
-                            
+
+
+
         $result = $link->query($sql);
         die_if_sql_failed($result, $link, $data, $sql);
-                            
-                            
-                            
+
+
+
         if ($result->num_rows == 0)
         {
             $result->close();
-            
-            
-            
+
+
+
             db_disconnect($link);
-            
+
             $data["message"] = "Application not found";
-            
+
             die(json_encode($data));
         }
-        
-        
-        
+
+
+
         $data["app"] = $result->fetch_assoc();
-        
+
         $result->close();
     }
-    
-    
-    
+
+
+
     function handle_get_for_codename($link, &$data, $codename)
     {
         $sql = "SELECT"
@@ -76,36 +76,36 @@
             . "     description"
             . " FROM " . DB_TABLE_APPS
             . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
-                            
-                            
-                            
+
+
+
         $result = $link->query($sql);
         die_if_sql_failed($result, $link, $data, $sql);
-                            
-        
-        
+
+
+
         if ($result->num_rows == 0)
         {
             $result->close();
-            
-            
-            
+
+
+
             db_disconnect($link);
-            
+
             $data["message"] = "Application not found";
-            
+
             die(json_encode($data));
         }
-        
-        
-        
+
+
+
         $data["app"] = $result->fetch_assoc();
-        
+
         $result->close();
     }
-    
-    
-    
+
+
+
     function handle_get_for_apps($link, &$data)
     {
         $sql = "SELECT"
@@ -114,118 +114,100 @@
             . "     name,"
             . "     description"
             . " FROM " . DB_TABLE_APPS;
-                                
-                                
-                                
+
+
+
         $result = $link->query($sql);
         die_if_sql_failed($result, $link, $data, $sql);
-                   
-        
-         
+
+
+
         $apps = [];
-                                
+
         while ($row = $result->fetch_assoc())
         {
             array_push($apps, $row);
         }
-        
+
         $result->close();
-        
-        
-        
+
+
+
         $data["apps"] = $apps;
     }
-    
-    
+
+
 
     function handle_get()
     {
         header("Content-type: application/json");
-        
+
         $data = [
             "status" => "Failed"
         ];
-        
-        
-        
+
+
+
         $app_id   = @$_GET["id"];
         $codename = @$_GET["codename"];
-        
-        if (isset($app_id))
+
+
+
+        $link = db_connect();
+
+        if ($link)
         {
-            $app_id = (int)$app_id;
-            
-            if (!verify_app_id($app_id))
+            if (isset($app_id))
             {
-                $data["message"] = "Invalid parameters";
-                
-                die(json_encode($data));
-            }
-            
-            
-            
-            $link = db_connect();
-            
-            if ($link)
-            {
+                $app_id = (int)$app_id;
+
+                if (!verify_app_id($app_id))
+                {
+                    db_disconnect($link);
+
+                    $data["message"] = "Invalid parameters";
+
+                    die(json_encode($data));
+                }
+
+
+
                 handle_get_for_app_id($link, $data, $app_id);
-                
-                db_disconnect($link);
             }
             else
+            if (isset($codename))
             {
-                $data["message"] = "Database connection error";
-                
-                die(json_encode($data));
-            }
-        }
-        else
-        if (isset($codename))
-        {
-            if (!verify_codename($codename))
-            {
-                $data["message"] = "Invalid parameters";
-                
-                die(json_encode($data));
-            }
-            
-            
-            
-            $link = db_connect();
-            
-            if ($link)
-            {
+                if (!verify_codename($codename))
+                {
+                    db_disconnect($link);
+
+                    $data["message"] = "Invalid parameters";
+
+                    die(json_encode($data));
+                }
+
+
+
                 handle_get_for_codename($link, $data, $codename);
-                
-                db_disconnect($link);
             }
             else
-            {
-                $data["message"] = "Database connection error";
-                
-                die(json_encode($data));
-            }
-        }
-        else
-        {
-            $link = db_connect();
-            
-            if ($link)
             {
                 handle_get_for_apps($link, $data);
-                
-                db_disconnect($link);
             }
-            else
-            {
-                $data["message"] = "Database connection error";
-                
-                die(json_encode($data));
-            }
+
+
+
+            db_disconnect($link);
         }
-        
-        
-        
+        else
+        {
+            $data["message"] = "Database connection error";
+
+            die(json_encode($data));
+        }
+
+
+
         $data["status"] = "OK";
         echo json_encode($data);
     }
