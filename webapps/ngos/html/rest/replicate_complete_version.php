@@ -38,29 +38,29 @@
     function complete_version($link, $data, $app_version_id, $hash)
     {
         $own_hash = calculate_app_version_hash($link, $data, $app_version_id);
-        
+
         if ($own_hash != $hash)
         {
             $error_details = "Invalid parameters";
             error_log($error_details);
-            
+
             db_disconnect($link);
-            
+
             $data["message"] = "Version broken";
             $data["details"] = $error_details;
-            
+
             die(json_encode($data));
         }
-        
-        
-        
+
+
+
         $sql = "UPDATE " . DB_TABLE_APP_VERSIONS
             . " SET hash      = '" . $link->real_escape_string($hash) . "',"
             . "     completed = '1'"
             . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
-                
-                
-                
+
+
+
         $result = $link->query($sql);
         die_if_sql_failed($result, $link, $data, $sql);
     }

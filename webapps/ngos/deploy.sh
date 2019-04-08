@@ -201,12 +201,15 @@ EOF
 
     if [ "${DEPLOYMENT_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
         echo -e "[\e[31mDeployment failure\e[0m]"
+        echo ""
         echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"
+        echo ""
 
         return 1
     fi
 
     echo -e "[\e[32mDeployed\e[0m]"
+    echo ""
 
 
 

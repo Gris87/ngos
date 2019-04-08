@@ -895,11 +895,53 @@
 
         return "";
     }
-    
-    
-    
+
+
+
     function calculate_app_version_hash($link, $data, $app_version_id)
-    {   
+    {
+        $sql = "SELECT"
+            . "     hash"
+            . " FROM " . DB_TABLE_APP_FILES
+            . " WHERE app_version_id = '" . $link->real_escape_string($app_version_id) . "'";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        if ($result->num_rows == 0)
+        {
+            $result->close();
+
+
+
+            $error_details = "Version is empty";
+            error_log($error_details);
+
+            db_disconnect($link);
+
+            $data["message"] = "Internal error";
+            $data["details"] = $error_details;
+
+            die(json_encode($data));
+        }
+
+
+
+        $res = "00000000000000000000000000000000";
+
+        while ($row = $result->fetch_row())
+        {
+            $res = bin2hex(pack('H*', $res) ^ pack('H*', $row[0]));
+        }
+
+        $result->close();
+
+
+
         return "00000000000000000000000000000000";
     }
 
