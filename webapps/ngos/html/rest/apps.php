@@ -131,7 +131,7 @@
             $app       = $row;
             $app["id"] = (int)$app["id"];
             
-            array_push($apps, $row);
+            array_push($apps, $app);
         }
 
         $result->close();

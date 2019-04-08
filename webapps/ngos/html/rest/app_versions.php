@@ -284,7 +284,7 @@
             $version["id"]      = (int)$version["id"];
             $version["version"] = (int)$version["version"];
             
-            array_push($versions, $row);
+            array_push($versions, $version);
         }
 
         $result->close();
