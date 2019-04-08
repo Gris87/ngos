@@ -134,7 +134,9 @@
 
 
 
-        $data["version"] = $result->fetch_assoc();
+        $data["version"]            = $result->fetch_assoc();
+        $data["version"]["id"]      = (int)$data["version"]["id"];
+        $data["version"]["version"] = (int)$data["version"]["version"];
 
         $result->close();
 
@@ -179,7 +181,9 @@
 
 
 
-        $data["version"] = $result->fetch_assoc();
+        $data["version"]            = $result->fetch_assoc();
+        $data["version"]["id"]      = (int)$data["version"]["id"];
+        $data["version"]["version"] = (int)$data["version"]["version"];
 
         $result->close();
 
@@ -242,7 +246,9 @@
 
 
 
-        $data["version"] = $result->fetch_assoc();
+        $data["version"]            = $result->fetch_assoc();
+        $data["version"]["id"]      = (int)$data["version"]["id"];
+        $data["version"]["version"] = (int)$data["version"]["version"];
 
         $result->close();
 
@@ -274,6 +280,10 @@
 
         while ($row = $result->fetch_assoc())
         {
+            $version            = $row;
+            $version["id"]      = (int)$version["id"];
+            $version["version"] = (int)$version["version"];
+            
             array_push($versions, $row);
         }
 

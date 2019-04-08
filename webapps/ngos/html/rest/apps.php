@@ -60,7 +60,8 @@
 
 
 
-        $data["app"] = $result->fetch_assoc();
+        $data["app"]       = $result->fetch_assoc();
+        $data["app"]["id"] = (int)$data["app"]["id"];
 
         $result->close();
     }
@@ -99,7 +100,8 @@
 
 
 
-        $data["app"] = $result->fetch_assoc();
+        $data["app"]       = $result->fetch_assoc();
+        $data["app"]["id"] = (int)$data["app"]["id"];
 
         $result->close();
     }
@@ -126,6 +128,9 @@
 
         while ($row = $result->fetch_assoc())
         {
+            $app       = $row;
+            $app["id"] = (int)$app["id"];
+            
             array_push($apps, $row);
         }
 
