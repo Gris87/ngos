@@ -92,7 +92,7 @@ MathZip:
 
 webapps:
 
-- Refactor
+- Ignore duplicate version
 - Replicate apps to registered server
 - Create web site
 
