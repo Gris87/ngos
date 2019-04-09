@@ -98,8 +98,6 @@ mysql -u root < mariadb/create.sql || exit 1
 execute_sql "INSERT IGNORE INTO regions (id, name) VALUES ('1', 'Russia / Saint-Petersburg');" || exit 1
 execute_sql "INSERT IGNORE INTO regions (id, name) VALUES ('2', 'Russia / Moscow');"           || exit 1
 execute_sql "INSERT IGNORE INTO regions (id, name) VALUES ('3', 'Ireland');"                   || exit 1
-execute_sql "INSERT IGNORE INTO regions (id, name) VALUES ('4', 'China');"                     || exit 1
-execute_sql "INSERT IGNORE INTO regions (id, name) VALUES ('5', 'USA');"                       || exit 1
 
 execute_sql "INSERT IGNORE INTO vendors (name, password_crypted) VALUES ('NGOS', '');" || exit 1
 
