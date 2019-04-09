@@ -494,27 +494,27 @@
             $result->close();
 
             if ($version_hash == $hash)
-            {   
+            {
                 $sql = "DELETE FROM " . DB_TABLE_APP_FILES
                     . " WHERE app_version_id = '" . $link->real_escape_string($app_version_id) . "'";
-                
-                
-                
+
+
+
                 $result = $link->query($sql);
                 die_if_sql_failed($result, $link, $data, $sql);
-                
-                
-                
+
+
+
                 $sql = "DELETE FROM " . DB_TABLE_APP_VERSIONS
                     . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
-                                    
-                                    
-                                    
+
+
+
                 $result = $link->query($sql);
                 die_if_sql_failed($result, $link, $data, $sql);
-                
-                
-                
+
+
+
                 return false;
             }
         }
