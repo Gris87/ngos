@@ -252,30 +252,7 @@ function prepare_for_deployment
 
 
 
-    make generate
-
-    if [ $? -ne 0 ]; then
-        cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
-        cd ${CURRENT_PATH}/
-
-        return 1
-    fi
-
-
-
-    make release
-
-    if [ $? -ne 0 ]; then
-        cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
-        cd ${CURRENT_PATH}/
-
-        return 1
-    fi
-
-
-
-    tools/qt/build_config_maker/build/build_config_maker ${BUILD_CONFIG} --reset
-    make all
+    make deployment
 
     if [ $? -ne 0 ]; then
         cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
