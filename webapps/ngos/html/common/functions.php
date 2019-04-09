@@ -166,6 +166,49 @@
 
 
 
+    function get_app_id_for_codename($link, &$data, $codename)
+    {
+        $res = 0;
+
+
+
+        $sql = "SELECT"
+            . "     id"
+            . " FROM " . DB_TABLE_APPS
+            . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        if ($result->num_rows == 1)
+        {
+            $res = $result->fetch_row()[0];
+            $result->close();
+        }
+        else
+        {
+            $result->close();
+
+
+
+            db_disconnect($link);
+
+            $data["message"] = "Application not found";
+
+            die(json_encode($data));
+        }
+
+
+
+        return $res;
+    }
+
+
+
     function get_server_secret_key($link, $data, $address)
     {
         $res = "";
@@ -336,9 +379,7 @@
 
         if ($result->num_rows == 1)
         {
-
             $app_secret_key = $result->fetch_row()[0];
-
             $result->close();
 
 
@@ -393,7 +434,6 @@
         if ($result->num_rows == 1)
         {
             $completed = $result->fetch_row()[0];
-
             $result->close();
 
 
@@ -954,9 +994,9 @@
                is_string($address)
                &&
                (
-                filter_var($address, FILTER_VALIDATE_IP) != false
+                filter_var($address, FILTER_VALIDATE_IP)
                 ||
-                filter_var($address, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) != false
+                filter_var($address, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)
                );
     }
 
@@ -1047,7 +1087,7 @@
                &&
                is_string($email)
                &&
-               filter_var($email, FILTER_VALIDATE_EMAIL) != false;
+               filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
 
@@ -1137,7 +1177,9 @@
                &&
                is_int($version)
                &&
-               $version >= 20190101000000;
+               $version >= 20190101000000
+               &&
+               $version <= 99999999999999;
     }
 
 
@@ -1148,6 +1190,8 @@
                &&
                is_int($version)
                &&
-               $version >= 20190101;
+               $version >= 20190101
+               &&
+               $version <= 99999999;
     }
 ?>

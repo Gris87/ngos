@@ -92,6 +92,8 @@ MathZip:
 
 webapps:
 
+- Refactor
+- Replicate apps to registered server
 - Create web site
 
 

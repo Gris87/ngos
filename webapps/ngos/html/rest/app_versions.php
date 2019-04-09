@@ -37,7 +37,8 @@
                 . "     download_name,"
                 . "     hash"
                 . " FROM " . DB_TABLE_APP_FILES
-                . " WHERE app_version_id = '" . $link->real_escape_string($app_version_id) . "'";
+                . " WHERE app_version_id = '" . $link->real_escape_string($app_version_id) . "'"
+                . " ORDER BY filename";
 
 
 
@@ -59,45 +60,6 @@
 
             $data["files"] = $files;
         }
-    }
-
-
-    function get_app_id_for_codename($link, &$data, $codename)
-    {
-        $sql = "SELECT"
-            . "     id"
-            . " FROM " . DB_TABLE_APPS
-            . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-        if ($result->num_rows == 0)
-        {
-            $result->close();
-
-
-
-            db_disconnect($link);
-
-            $data["message"] = "Application not found";
-
-            die(json_encode($data));
-        }
-
-
-
-        $res = $result->fetch_row()[0];
-
-        $result->close();
-
-
-
-        return $res;
     }
 
 
@@ -267,7 +229,8 @@
             . "     hash"
             . " FROM " . DB_TABLE_APP_VERSIONS
             . " WHERE app_id    = '" . $link->real_escape_string($app_id) . "'"
-            . "   AND completed = '1'";
+            . "   AND completed = '1'"
+            . " ORDER BY version";
 
 
 
@@ -283,7 +246,7 @@
             $version            = $row;
             $version["id"]      = (int)$version["id"];
             $version["version"] = (int)$version["version"];
-            
+
             array_push($versions, $version);
         }
 
@@ -372,7 +335,11 @@
                     {
                         $version = (int)$version;
 
-                        if (!verify_version_for_user($version))
+                        if (
+                            !verify_version_for_user($version)
+                            &&
+                            !verify_version($version)
+                           )
                         {
                             db_disconnect($link);
 
@@ -419,7 +386,11 @@
                     {
                         $version = (int)$version;
 
-                        if (!verify_version_for_user($version))
+                        if (
+                            !verify_version_for_user($version)
+                            &&
+                            !verify_version($version)
+                           )
                         {
                             db_disconnect($link);
 

@@ -90,8 +90,8 @@
 
 
 
-            $result2 = $link->query($sql);
-            die_if_sql_failed($result2, $link, $data, $sql);
+            $result = $link->query($sql);
+            die_if_sql_failed($result, $link, $data, $sql);
 
 
 
