@@ -1292,7 +1292,6 @@ tools/vm/start_vm.sh
 tools/vm/vbox/.gitignore
 tools/vm/vbox/start.sh
 tools/vm/vbox/template/NGOS_dev/vm.vbox
-webapps/install.sh
 webapps/ngos/.gitignore
 webapps/ngos/deploy.sh
 webapps/ngos/html/.htaccess

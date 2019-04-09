@@ -314,7 +314,7 @@ function assign_secret_key
 
     while [ ${#SECRET_KEY} -ne 1000 ];
     do
-        echo -n "Enter secret key for ${SERVER}: "
+        echo -n "Enter secret key for server ${SERVER}: "
         read SECRET_KEY
 
         SECRET_KEY=`echo "${SECRET_KEY}" | tr -dc "a-zA-Z0-9"`
@@ -405,13 +405,11 @@ function register_server
 
     SERVER=$1
 
-    if [ "${SERVER}" == "" ]; then
-        while [ "${SERVER}" == "" ];
-        do
-            echo -n "Enter server name: "
-            read SERVER
-        done
-    fi
+    while [ "${SERVER}" == "" ];
+    do
+        echo -n "Enter server name: "
+        read SERVER
+    done
 
 
 
@@ -507,7 +505,7 @@ function register_server
 
     while [ ${#SECRET_KEY} -ne 1000 ];
     do
-        echo -n "Enter secret key for ${SERVER}: "
+        echo -n "Enter secret key for server ${SERVER}: "
         read SECRET_KEY
 
         SECRET_KEY=`echo "${SECRET_KEY}" | tr -dc "a-zA-Z0-9"`
@@ -730,7 +728,7 @@ function change_server_location
 
 
 
-            echo "Choose server location for ${SERVER}:"
+            echo "Choose server location for server ${SERVER}:"
 
 
 
@@ -979,6 +977,26 @@ function print_secret_key
 
 
 
+function print_region
+{
+    REGION_ID=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'region_id';"`
+
+    if [ "${REGION_ID}" == "" ]; then
+        echo "Server is not registered. Please register"
+
+        return 1
+    fi
+
+
+
+    echo "Region:"
+    execute_sql_without_header "SELECT name FROM regions WHERE id = '${REGION_ID}';" || return 1
+
+    return 0
+}
+
+
+
 function print_servers
 {
     echo "Servers:"
@@ -1146,9 +1164,13 @@ function step3_options()
     FUNC[2]="print_secret_key"
     ATTRS[2]=""
 
-    TEXT[3]="Print servers"
-    FUNC[3]="print_servers"
+    TEXT[3]="Print region"
+    FUNC[3]="print_region"
     ATTRS[3]=""
+
+    TEXT[4]="Print servers"
+    FUNC[4]="print_servers"
+    ATTRS[4]=""
 
     return 0
 }
