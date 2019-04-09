@@ -28,6 +28,7 @@ Here is the output example:
 Available targets:
     all              - Build all the source code
     clean            - Delete all files that appears during the build process
+    deployment       - Prepare binaries for deployment
     config           - Build and run build_config_gui tool in order to update build configuration
     generate         - Build and run code_generator tool in order to update generated files
     verify           - Build and run code_verifier tool in order to verify the source code
