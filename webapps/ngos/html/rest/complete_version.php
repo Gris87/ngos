@@ -35,21 +35,28 @@
 
 
 
-    function complete_version($link, $data, $app_version_id)
+    function complete_version($link, &$data, $app_id, $app_version_id)
     {
         $hash = calculate_app_version_hash($link, $data, $app_version_id);
 
 
 
-        $sql = "UPDATE " . DB_TABLE_APP_VERSIONS
-            . " SET hash      = '" . $link->real_escape_string($hash) . "',"
-            . "     completed = '1'"
-            . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
+        if (avoid_duplicate_version($link, $data, $app_id, $hash))
+        {
+            $sql = "UPDATE " . DB_TABLE_APP_VERSIONS
+                . " SET hash      = '" . $link->real_escape_string($hash) . "',"
+                . "     completed = '1'"
+                . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
 
 
 
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
+            $result = $link->query($sql);
+            die_if_sql_failed($result, $link, $data, $sql);
+        }
+        else
+        {
+            data["ignored"] = true;
+        }
 
 
 
@@ -72,7 +79,7 @@
 
 
 
-    function handle_post_with_params($link, $data, $app_id, $app_version_id, $secret_key)
+    function handle_post_with_params($link, &$data, $app_id, $app_version_id, $secret_key)
     {
         if (get_server_name($link, $data) != MASTER_SERVER)
         {
@@ -94,7 +101,7 @@
 
 
 
-        $hash = complete_version($link, $data, $app_version_id);
+        $hash = complete_version($link, $data, $app_id, $app_version_id);
 
         replicate_complete_version($link, $data, $app_id, $app_version_id, $hash, $secret_key);
     }

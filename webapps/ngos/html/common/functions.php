@@ -471,6 +471,41 @@
 
 
 
+    function avoid_duplicate_version($link, $data, $app_id, $hash)
+    {
+        $sql = "SELECT"
+            . "     hash"
+            . " FROM " . DB_TABLE_APP_VERSIONS
+            . " WHERE app_id    = '" . $link->real_escape_string($app_id) . "'"
+            . "   AND completed = '1'"
+            . " ORDER BY version DESC"
+            . " LIMIT 1";
+
+
+
+        $result = $link->query($sql);
+        die_if_sql_failed($result, $link, $data, $sql);
+
+
+
+        if ($result->num_rows == 1)
+        {
+            $version_hash = $result->fetch_row()[0];
+            $result->close();
+
+            if ($version_hash == $hash)
+            {
+                return false;
+            }
+        }
+
+
+
+        return true;
+    }
+
+
+
     function get_delay_to_server($link, $data, $address)
     {
         $server_url = "https://" . $address . "/rest/ping.php";
