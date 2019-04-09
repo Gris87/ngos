@@ -35,7 +35,7 @@ fi
 
 
 
-SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';"`
+SERVER_NAME=`mysql -u ngos -pngos -D ngos -NB -e "SELECT value FROM properties WHERE name = 'server_name';"`
 
 if [ "${SERVER_NAME}" != "${MASTER_SERVER}" ]; then
     echo "This script should be run on master server only"
