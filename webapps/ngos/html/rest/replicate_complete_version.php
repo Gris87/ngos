@@ -35,7 +35,7 @@
 
 
 
-    function complete_version($link, $data, $app_id, $app_version_id, $hash)
+    function complete_version($link, &$data, $app_id, $app_version_id, $hash)
     {
         $own_hash = calculate_app_version_hash($link, $data, $app_version_id);
 
@@ -68,7 +68,7 @@
         }
         else
         {
-            data["ignored"] = true;
+            $data["ignored"] = true;
         }
     }
 
@@ -112,7 +112,7 @@
 
 
 
-    function handle_post_with_params($link, $data, $level, $my_address, $my_secret_key, $your_secret_key, $app_id, $app_version_id, $hash, $secret_key)
+    function handle_post_with_params($link, &$data, $level, $my_address, $my_secret_key, $your_secret_key, $app_id, $app_version_id, $hash, $secret_key)
     {
         validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
 

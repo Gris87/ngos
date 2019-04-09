@@ -55,7 +55,7 @@
         }
         else
         {
-            data["ignored"] = true;
+            $data["ignored"] = true;
         }
 
 
