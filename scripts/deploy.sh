@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script helps to simplify Git usage
+# This script helps to deploy latest binaries to web servers
 # Author: Maxim Shvecov
-# Usage: ./commit.sh MESSAGE
+# Usage: ./deploy.sh
 
 
 
@@ -12,7 +12,7 @@
 
 
 
-MESSAGE=$1
+CURRENT_PATH=`pwd`
 
 
 
@@ -30,23 +30,15 @@ fi
 
 
 
-if [ "${MESSAGE}" == "" ]; then
-    echo "Usage: ./commit.sh MESSAGE"
-
-    exit 1
-fi
-
-
-
 ###########################################################################################
 #    PROCESSING
 ###########################################################################################
 
 
 
-git add .
-git commit -a -m "${MESSAGE}"
-./scripts/push.sh
+cd webapps/ngos/
+./deploy.sh
+cd ${CURRENT_PATH}
 
 
 
