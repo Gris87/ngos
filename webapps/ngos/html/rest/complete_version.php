@@ -41,7 +41,7 @@
 
 
 
-        if (avoid_duplicate_version($link, $data, $app_id, $hash))
+        if (avoid_duplicate_version($link, $data, $app_id, $app_version_id, $hash))
         {
             $sql = "UPDATE " . DB_TABLE_APP_VERSIONS
                 . " SET hash      = '" . $link->real_escape_string($hash) . "',"

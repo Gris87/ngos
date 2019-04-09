@@ -199,7 +199,7 @@ EOF
 
     DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/complete_version.php`
 
-    if [ "${DEPLOYMENT_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
+    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .status`" != "OK" ]; then
         echo -e "[\e[31mDeployment failure\e[0m]"
         echo ""
         echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"
@@ -207,7 +207,14 @@ EOF
         return 1
     fi
 
-    echo -e "[\e[32mDeployed\e[0m]"
+
+
+    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .ignored`" != "true" ]; then
+        echo -e "[\e[32mDeployed\e[0m]"
+    else
+        echo -e "[\e[33mIgnored\e[0m]"
+    fi
+
     echo ""
 
 
