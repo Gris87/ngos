@@ -13,7 +13,7 @@
 
 
 CURRENT_PATH=`pwd`
-FIRST_SERVER_ADDRESS=10.83.230.9
+MASTER_SERVER=10.83.230.9
 
 
 
@@ -103,17 +103,17 @@ execute_sql "INSERT IGNORE INTO vendors (name, password_crypted) VALUES ('NGOS',
 
 
 
-FIRST_SERVER=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${FIRST_SERVER_ADDRESS}';"`
+FIRST_SERVER=`execute_sql_without_header "SELECT id FROM servers WHERE address = '${MASTER_SERVER}';"`
 
 if [ "${FIRST_SERVER}" == "" ]; then
     PING_TOTAL=0
 
     for ((i = 0; i < 10; i++))
     do
-        PING_RESPONSE=`ping_server ${FIRST_SERVER_ADDRESS}`
+        PING_RESPONSE=`ping_server ${MASTER_SERVER}`
 
         if [ "${PING_RESPONSE:0:15}" != "{\"status\":\"OK\"}" ]; then
-            echo "Failed to ping server ${FIRST_SERVER_ADDRESS}: ${PING_RESPONSE}"
+            echo "Failed to ping server ${MASTER_SERVER}: ${PING_RESPONSE}"
 
             exit 1
         fi
@@ -125,7 +125,7 @@ if [ "${FIRST_SERVER}" == "" ]; then
 
 
 
-    execute_sql "INSERT INTO servers (region_id, address, delay) VALUES ('3', '${FIRST_SERVER_ADDRESS}', '${DELAY}');" || exit 1
+    execute_sql "INSERT INTO servers (region_id, address, delay) VALUES ('3', '${MASTER_SERVER}', '${DELAY}');" || exit 1
 fi
 
 

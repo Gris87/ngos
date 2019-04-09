@@ -15,6 +15,33 @@
 CURRENT_PATH=`pwd`
 BUILD_CONFIG=include/buildconfig.h
 BUILD_CFG_BACKUP=/tmp/ngos_deploy_buildconfig.h
+MASTER_SERVER=10.83.230.9
+
+
+
+###########################################################################################
+#    VERIFICATION
+###########################################################################################
+
+
+
+APACHE_VERSION=`apache2 -v`
+
+if [ "${APACHE_VERSION}" == "" ]; then
+    echo "This script should be run on master server only"
+
+    exit 1
+fi
+
+
+
+SERVER_NAME=`execute_sql_without_header "SELECT value FROM properties WHERE name = 'server_name';"`
+
+if [ "${SERVER_NAME}" != "${MASTER_SERVER}" ]; then
+    echo "This script should be run on master server only"
+
+    exit 1
+fi
 
 
 
