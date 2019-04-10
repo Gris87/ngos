@@ -11,7 +11,7 @@ const char* usbSpeedToString(UsbSpeed speed)
         case UsbSpeed::FULL:           return "USB 1.1";
         case UsbSpeed::HIGH:           return "USB 2.0";
         case UsbSpeed::SUPER_OR_LATER: return "USB 3.0";
-    }
 
-    return "UNKNOWN";
+        default: return "UNKNOWN";
+    }
 }

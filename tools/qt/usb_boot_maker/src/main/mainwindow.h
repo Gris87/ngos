@@ -13,6 +13,7 @@
 #include "src/other/usbspeed.h"
 
 
+
 namespace Ui
 {
     class MainWindow;

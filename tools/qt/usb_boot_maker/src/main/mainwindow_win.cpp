@@ -63,8 +63,8 @@ const QRegularExpression vidPidRegExp(".+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]
 // Redefine VOLUME_DISK_EXTENTS from winioctl.h with the more space for Extents
 struct VOLUME_DISK_EXTENTS_REDEF
 {
-    DWORD NumberOfDiskExtents;
-    DISK_EXTENT Extents[8];
+    DWORD numberOfDiskExtents;
+    DISK_EXTENT extents[8];
 };
 
 
@@ -96,6 +96,12 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *r
                 }
                 break;
             }
+        }
+        break;
+
+        default:
+        {
+            // Nothing
         }
         break;
     }
@@ -1053,19 +1059,19 @@ bool checkDeviceType(UsbProperties *props)
 
 DWORD getDiskNumber(const HANDLE &deviceHandle)
 {
-    VOLUME_DISK_EXTENTS_REDEF DiskExtents;
-    STORAGE_DEVICE_NUMBER     DeviceNumber;
+    VOLUME_DISK_EXTENTS_REDEF diskExtents;
+    STORAGE_DEVICE_NUMBER     deviceNumber;
     DWORD                     size;
 
 
 
-    if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &DiskExtents, sizeof(DiskExtents), &size, nullptr))
+    if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &diskExtents, sizeof(diskExtents), &size, nullptr))
     {
-        // qDebug() << "        NumberOfDiskExtents:" << DiskExtents.NumberOfDiskExtents;
+        // qDebug() << "        NumberOfDiskExtents:" << diskExtents.NumberOfDiskExtents;
 
-        if (DiskExtents.NumberOfDiskExtents == 1)
+        if (diskExtents.NumberOfDiskExtents == 1)
         {
-            return DiskExtents.Extents[0].DiskNumber;
+            return diskExtents.Extents[0].DiskNumber;
         }
         else
         {
@@ -1073,9 +1079,9 @@ DWORD getDiskNumber(const HANDLE &deviceHandle)
         }
     }
     else
-    if (DeviceIoControl(deviceHandle, IOCTL_STORAGE_GET_DEVICE_NUMBER, nullptr, ZERO_SIZE, &DeviceNumber, sizeof(DeviceNumber), &size, nullptr))
+    if (DeviceIoControl(deviceHandle, IOCTL_STORAGE_GET_DEVICE_NUMBER, nullptr, ZERO_SIZE, &deviceNumber, sizeof(deviceNumber), &size, nullptr))
     {
-        return DeviceNumber.DeviceNumber;
+        return deviceNumber.DeviceNumber;
     }
     else
     {

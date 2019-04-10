@@ -30,7 +30,9 @@ NgosStatus KVM::init()
 
     if (CPU::hasFlag(X86Feature::HYPERVISOR))
     {
-        for (i64 id = HYPERVISORS_REGION_BEGIN; id < HYPERVISORS_REGION_END; id += HYPERVISORS_REGION_STEP)
+        u32 id = HYPERVISORS_REGION_BEGIN;
+
+        while (id < HYPERVISORS_REGION_END)
         {
             u32 ebx;
             u32 ecx;
@@ -59,6 +61,10 @@ NgosStatus KVM::init()
 
                 return NgosStatus::OK;
             }
+
+
+
+            id += HYPERVISORS_REGION_STEP;
         }
     }
 

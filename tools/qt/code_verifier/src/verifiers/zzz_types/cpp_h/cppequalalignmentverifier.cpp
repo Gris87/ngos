@@ -18,7 +18,7 @@ struct EqualEntry
 
 CppEqualAlignmentVerifier::CppEqualAlignmentVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mEqualExpressionRegExp("^( *)(?:(?:static|const) +)*(\\w[\\w<,>*& ]*)?( [&*]*)(\\w[\\w\\.\\->]*(?:\\[[^\\]]+\\])?)(( *)([+\\-*\\/|&^!<>=]*=)( *)(.*))?; *$")
+    , mEqualExpressionRegExp("^( *)((?:static|const) +)*(\\w[\\w<,>*& ]*)?( [&*]*)(\\w[\\w\\.\\->]*(?:\\[[^\\]]+\\])?)(( *)([+\\-*\\/|&^!<>=]*=)( *)(.*))?; *$")
 {
     // Nothing
 }
@@ -142,12 +142,13 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
 
             QString indent       = match.captured(1);
-            QString type         = match.captured(2);
-            QString reference    = match.captured(3);
-            QString name         = match.captured(4);
-            QString expression   = match.captured(5);
-            QString beforeSpaces = match.captured(6);
-            QString afterSpaces  = match.captured(8);
+            QString keywords     = match.captured(2);
+            QString type         = match.captured(3);
+            QString reference    = match.captured(4);
+            QString name         = match.captured(5);
+            QString expression   = match.captured(6);
+            QString beforeSpaces = match.captured(7);
+            QString afterSpaces  = match.captured(9);
 
 
 
@@ -171,11 +172,11 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
             EqualEntry equalEntry;
 
             equalEntry.indent       = indent.length() + (type == "" ? reference.length() - reference.trimmed().length() : 0);
-            equalEntry.nameIndex    = type != "" ? match.capturedStart(4) : equalEntry.indent;
+            equalEntry.nameIndex    = type != "" ? match.capturedStart(5) : equalEntry.indent;
             equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;
-            equalEntry.equalIndex   = match.capturedStart(7);
+            equalEntry.equalIndex   = match.capturedStart(8);
             equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;
-            equalEntry.valueIndex   = match.capturedStart(9);
+            equalEntry.valueIndex   = match.capturedStart(10);
 
 
 
@@ -187,6 +188,8 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
                     !name.startsWith("__pad")
                     &&
                     !name.startsWith("__reserved")
+                    &&
+                    !keywords.contains("const")
                    )
                 {
                     worker->addError(path, i, "Variable name should be named in camelcase");
