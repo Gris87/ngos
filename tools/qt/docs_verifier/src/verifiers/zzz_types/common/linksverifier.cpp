@@ -30,41 +30,48 @@ void LinksVerifier::verify(DocsWorkerThread *worker, const QString &path, const 
         {
             QRegularExpressionMatch match = matches.next();
 
+
+
             QString htmlLink = match.captured(0);
 
-
-
-            QNetworkRequest request;
-            request.setUrl(QUrl(htmlLink));
-
-            QNetworkAccessManager  manager;
-            QNetworkReply         *reply = manager.get(request);
-
-
-
-            QEventLoop waitLoop;
-
-            QObject::connect(reply, SIGNAL(metaDataChanged()),                  &waitLoop, SLOT(quit()));
-            QObject::connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));
-
-            waitLoop.exec();
-
-
-
-            QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-
             if (
-                !statusCode.isValid()
-                ||
-                statusCode.toInt() < 200
-                ||
-                statusCode.toInt() >= 400
+                !htmlLink.startsWith("http://localhost/")
+                &&
+                !htmlLink.startsWith("https://localhost/")
                )
             {
-                worker->addWarning(path, i, QString("Link is unavailable: %1").arg(htmlLink));
-            }
+                QNetworkRequest request;
+                request.setUrl(QUrl(htmlLink));
 
-            delete reply;
+                QNetworkAccessManager  manager;
+                QNetworkReply         *reply = manager.get(request);
+
+
+
+                QEventLoop waitLoop;
+
+                QObject::connect(reply, SIGNAL(metaDataChanged()),                  &waitLoop, SLOT(quit()));
+                QObject::connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));
+
+                waitLoop.exec();
+
+
+
+                QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+                if (
+                    !statusCode.isValid()
+                    ||
+                    statusCode.toInt() < 200
+                    ||
+                    statusCode.toInt() >= 400
+                   )
+                {
+                    worker->addWarning(path, i, QString("Link is unavailable: %1").arg(htmlLink));
+                }
+
+                delete reply;
+            }
         }
     }
 }

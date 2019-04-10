@@ -125,6 +125,8 @@ qint32 main(qint32 argc, char *argv[])
                     ||
                     filename.endsWith(".S")
                     ||
+                    filename.endsWith(".php")
+                    ||
                     filename == "Makefile"
                     ||
                     filename.endsWith(".pro")
@@ -139,6 +141,8 @@ qint32 main(qint32 argc, char *argv[])
                     ||
                     filename.endsWith(".xml")
                     ||
+                    filename.endsWith(".ts")
+                    ||
                     filename.endsWith(".vbox")
                     ||
                     filename.endsWith(".creator.shared")
@@ -148,6 +152,8 @@ qint32 main(qint32 argc, char *argv[])
                     filename.endsWith(".qrc")
                     ||
                     filename.endsWith(".txt")
+                    ||
+                    filename.endsWith(".sql")
                     ||
                     filename.endsWith(".rc")
                     ||
@@ -165,6 +171,8 @@ qint32 main(qint32 argc, char *argv[])
                     !filename.endsWith(".creator.user")
                     &&
                     !filename.endsWith(".patch")
+                    &&
+                    !filename.endsWith(".qm")
                     &&
                     !filename.endsWith(".bin")
                     &&
