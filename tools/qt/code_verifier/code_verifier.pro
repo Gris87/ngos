@@ -87,6 +87,7 @@ SOURCES += \
     src/verifiers/zzz_types/h/cpphdefinesverifier.cpp \
     src/verifiers/zzz_types/includes/qtincludesverifier.cpp \
     src/verifiers/zzz_types/php/phpindentverifier.cpp \
+    src/verifiers/zzz_types/php/phpstatementspacesverifier.cpp \
     src/verifiers/zzz_types/php/phpswitchverifier.cpp \
     src/verifiers/zzz_types/pri/qtpriverifier.cpp \
     src/verifiers/zzz_types/pro/qtproverifier.cpp \
@@ -136,6 +137,7 @@ HEADERS += \
     src/verifiers/zzz_types/h/cpphdefinesverifier.h \
     src/verifiers/zzz_types/includes/qtincludesverifier.h \
     src/verifiers/zzz_types/php/phpindentverifier.h \
+    src/verifiers/zzz_types/php/phpstatementspacesverifier.h \
     src/verifiers/zzz_types/php/phpswitchverifier.h \
     src/verifiers/zzz_types/pri/qtpriverifier.h \
     src/verifiers/zzz_types/pro/qtproverifier.h \
