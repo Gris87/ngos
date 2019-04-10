@@ -257,7 +257,7 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                         }
                         else
                         {
-                            worker->addError(path, k, QString("Unexpected behavior while alignment verification in position %1").arg(j + 1));
+                            worker->addError(path, k, QString("Unexpected behavior during alignment verification in position %1").arg(j + 1));
                         }
                     }
                 }

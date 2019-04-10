@@ -56,15 +56,16 @@ enum class VerificationFileType: quint64
     CPP      = (1ULL << 1),
     H        = (1ULL << 2),
     S        = (1ULL << 3),
-    MAKEFILE = (1ULL << 4),
-    PRO      = (1ULL << 5),
-    PRI      = (1ULL << 6),
-    LD       = (1ULL << 7),
-    SH       = (1ULL << 8),
-    INCLUDES = (1ULL << 9),
-    XML      = (1ULL << 10),
-    UI       = (1ULL << 11),
-    QRC      = (1ULL << 12)
+    PHP      = (1ULL << 4),
+    MAKEFILE = (1ULL << 5),
+    PRO      = (1ULL << 6),
+    PRI      = (1ULL << 7),
+    LD       = (1ULL << 8),
+    SH       = (1ULL << 9),
+    INCLUDES = (1ULL << 10),
+    XML      = (1ULL << 11),
+    UI       = (1ULL << 12),
+    QRC      = (1ULL << 13)
 };
 
 

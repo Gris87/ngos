@@ -318,7 +318,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
                                     }
                                     else
                                     {
-                                        worker->addError(path, n, "Unexpected behavior while NGOS Trace verification");
+                                        worker->addError(path, n, "Unexpected behavior during NGOS Trace verification");
                                     }
                                 }
                                 else
@@ -385,7 +385,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
             }
             else
             {
-                worker->addError(path, i, "Unexpected behavior while NGOS Trace verification");
+                worker->addError(path, i, "Unexpected behavior during NGOS Trace verification");
             }
         }
     }

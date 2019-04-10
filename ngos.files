@@ -885,6 +885,10 @@ tools/qt/code_verifier/src/verifiers/zzz_types/h/cpphdefinesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/h/cpphdefinesverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/includes/qtincludesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/includes/qtincludesverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/php/phpindentverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/php/phpindentverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/php/phpswitchverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/php/phpswitchverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/pri/qtpriverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/pri/qtpriverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/pro/qtproverifier.cpp

@@ -23,6 +23,7 @@
             {
                 die("Unknown method");
             }
+            break;
         }
     }
 
@@ -150,6 +151,7 @@
             {
                 die("Unknown level");
             }
+            break;
         }
     }
 

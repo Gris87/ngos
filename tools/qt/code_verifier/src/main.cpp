@@ -128,6 +128,11 @@ qint32 main(qint32 argc, char *argv[])
                     CodeWorkerThread::pushFile(path, VerificationFileType::S);
                 }
                 else
+                if (filename.endsWith(".php"))
+                {
+                    CodeWorkerThread::pushFile(path, VerificationFileType::PHP);
+                }
+                else
                 if (filename == "Makefile")
                 {
                     CodeWorkerThread::pushFile(path, VerificationFileType::MAKEFILE);
@@ -161,6 +166,8 @@ qint32 main(qint32 argc, char *argv[])
                 if (
                     filename.endsWith(".xml")
                     ||
+                    filename.endsWith(".ts")
+                    ||
                     filename.endsWith(".vbox")
                     ||
                     filename.endsWith(".creator.shared")
@@ -184,6 +191,8 @@ qint32 main(qint32 argc, char *argv[])
                     ||
                     filename.endsWith(".md")
                     ||
+                    filename.endsWith(".sql")
+                    ||
                     filename.endsWith(".rc")
                     ||
                     filename.endsWith(".config")
@@ -200,6 +209,8 @@ qint32 main(qint32 argc, char *argv[])
                     !filename.endsWith(".creator.user")
                     &&
                     !filename.endsWith(".patch")
+                    &&
+                    !filename.endsWith(".qm")
                     &&
                     !filename.endsWith(".bin")
                     &&

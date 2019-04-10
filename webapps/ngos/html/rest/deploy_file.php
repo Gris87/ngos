@@ -23,6 +23,7 @@
             {
                 die("Unknown method");
             }
+            break;
         }
     }
 
