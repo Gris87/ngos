@@ -218,18 +218,6 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                             path.endsWith(tempIncludeFile)
                             ||
                             (
-                             path.endsWith("_linux.cpp")
-                             &&
-                             QString(path.left(path.length() - 10) + ".cpp").endsWith(tempIncludeFile)
-                            )
-                            ||
-                            (
-                             path.endsWith("_win.cpp")
-                             &&
-                             QString(path.left(path.length() - 8) + ".cpp").endsWith(tempIncludeFile)
-                            )
-                            ||
-                            (
                              tempIncludeFile.startsWith("ui_")
                              &&
                              path.endsWith(tempIncludeFile.mid(3))

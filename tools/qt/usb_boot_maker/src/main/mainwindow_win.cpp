@@ -1044,7 +1044,7 @@ bool checkDeviceType(UsbProperties *props)
 
 
 
-        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : '') << usbSpeedToString(props->speed) << (props->isUASP ? ')' : '') << " device";
+        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ')' : "") << " device";
 
         if (props->isLowerSpeed)
         {
@@ -1320,14 +1320,12 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
 
 
     DWORD diskNumber = getDiskNumber(deviceHandle);
-
-    qDebug() << "        Disk number:" << diskNumber;
+    qDebug() << "        Disk number:" << diskNumber; // Ignore CppAlignmentVerifier
 
 
 
     quint64 diskSize = getDiskSize(diskNumber);
-
-    qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB";
+    qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB"; // Ignore CppAlignmentVerifier
 
     if (!diskSize) // diskSize == 0
     {
@@ -1348,14 +1346,12 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
     char driveLetters[27];
 
     getDriveLetters(diskNumber, driveLetters);
-
-    qDebug() << "        Drive letters:" << driveLetters;
+    qDebug() << "        Drive letters:" << driveLetters; // Ignore CppAlignmentVerifier
 
 
 
     QString diskLabel = getDiskLabel(diskNumber, driveLetters);
-
-    qDebug() << "        Disk label:" << diskLabel;
+    qDebug() << "        Disk label:" << diskLabel; // Ignore CppAlignmentVerifier
 
 
 
