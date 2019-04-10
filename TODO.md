@@ -67,7 +67,7 @@ C++ headers optimizer:
 
 - Implement tool
 - Investigate C++ headers hierarchy
-- Collapse C++ headers hierarchy for each C++ file
+- Extend C++ headers hierarchy for each C++ file
 - Iterate over all possible options for header inclusions
 - Try to delete some inclusions if it's not harmful for build
 
@@ -92,7 +92,6 @@ MathZip:
 
 webapps:
 
-- Ignore duplicate version
 - Replicate apps to registered server
 - Create web site
 
