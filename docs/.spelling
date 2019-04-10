@@ -311,6 +311,7 @@ UEFI_TEST_ASSERT
 UI
 update_ngos_files.sh
 updateScreenInfo
+usb_boot_maker
 validateCpu
 VBMI
 virtual_address_space
@@ -319,6 +320,7 @@ VL
 vm
 VM
 VNC
+webapps
 writability
 X11
 x86

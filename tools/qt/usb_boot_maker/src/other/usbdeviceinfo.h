@@ -12,7 +12,7 @@ struct UsbDeviceInfo
     QString title;
 };
 
-Q_DECLARE_METATYPE(UsbDeviceInfo *);
+Q_DECLARE_METATYPE(UsbDeviceInfo *); // TEST: NO
 
 
 

@@ -52,7 +52,7 @@ const QStringList genericStorageDrivers = QStringList()
         << "SCSI" // << "STORAGE"   // "STORAGE" is used by 'Storage Spaces" and stuff => DANGEROUS!
         // Non-USB card reader drivers - This list *MUST* start with "SD" (delimiter)
         // See http://itdoc.hitachi.co.jp/manuals/3021/30213B5200e/DMDS0094.HTM
-        // Also http://www.carrona.org/dvrref.php.
+        // Also http://www.carrona.org/dvrref.php
         << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
     ;
 
