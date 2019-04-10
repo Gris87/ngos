@@ -58,8 +58,8 @@ SOURCES += \
     src/main.cpp \
     src/main/aboutdialog.cpp \
     src/main/mainwindow.cpp \
-    src/main/mainwindow_win.cpp \
     src/main/mainwindow_linux.cpp \
+    src/main/mainwindow_win.cpp \
     src/other/usbspeed.cpp
 
 HEADERS += \

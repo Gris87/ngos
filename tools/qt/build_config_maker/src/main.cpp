@@ -15,7 +15,7 @@ void usage()
                 "    * PATH_TO_BUILDCONFIG_H - path to buildconfig.h file\n"
                 "    * BUILD_PARAMETER       - One of the parameters from buildconfig.h file\n"
                 "    * VALUE                 - What value should be assigned to the BUILD_PARAMETER\n"
-                "\n"
+                "\n" // Ignore CppSingleCharVerifier
                 "    --reset - Reset all parameters to their defaults"
                 );
     // Ignore CppAlignmentVerifier [END]

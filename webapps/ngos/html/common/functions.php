@@ -4,9 +4,9 @@
 
 
     define("CODENAME_REGEXP",      "/^[a-z][a-z\\d_]*(\\.[a-z][a-z\\d_]*){2,}$/");
-    define("DOWNLOAD_NAME_REGEXP", "/^[\\w\\d]{249,249}\\.\\d{1,2}\\.(raw|xz)$/");
+    define("DOWNLOAD_NAME_REGEXP", "/^\\w{249,249}\\.\\d{1,2}\\.(raw|xz)$/");
     define("MD5_HASH_REGEXP",      "/^[0-9a-f]{32,32}$/");
-    define("SECRET_KEY_REGEXP",    "/^[\\w\\d]{1000,1000}$/");
+    define("SECRET_KEY_REGEXP",    "/^\\w{1000,1000}$/");
 
 
 

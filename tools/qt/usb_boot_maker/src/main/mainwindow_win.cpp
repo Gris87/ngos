@@ -24,7 +24,7 @@
 #define ZERO_SIZE          0
 #define MEMBER_INDEX_FIRST 0
 
-#define MIN_DISK_SIZE (8 * 1024 * 1024)
+#define MIN_DISK_SIZE (8 << 20) // "<< 20" == "* 1024 * 1024"
 
 #define USB_CARD_READER_INDEX 1
 #define UASPSTOR_INDEX        4
@@ -63,13 +63,13 @@ const QRegularExpression vidPidRegExp(".+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]
 // Redefine VOLUME_DISK_EXTENTS from winioctl.h with the more space for Extents
 struct VOLUME_DISK_EXTENTS_REDEF
 {
-    DWORD numberOfDiskExtents;
+    DWORD       numberOfDiskExtents;
     DISK_EXTENT extents[8];
 };
 
 
 
-bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) // Ignore CppTypesVerifier
 {
     MSG *msg = (MSG *)message;
 
@@ -125,7 +125,7 @@ void handleUsbHubChildren(const SP_DEVINFO_DATA &deviceInfoData, const QString &
         if (ret == CR_SUCCESS)
         {
             QString deviceIdString = QString::fromWCharArray(deviceId);
-            qDebug() << "        USB found:" << deviceIdString;
+            qDebug() << "        USB found:" << deviceIdString; // Ignore CppAlignmentVerifier
 
             deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);
 
@@ -138,7 +138,7 @@ void handleUsbHubChildren(const SP_DEVINFO_DATA &deviceInfoData, const QString &
                 if (ret == CR_SUCCESS)
                 {
                     QString deviceIdString = QString::fromWCharArray(deviceId);
-                    qDebug() << "        USB found:" << deviceIdString;
+                    qDebug() << "        USB found:" << deviceIdString; // Ignore CppAlignmentVerifier
 
                     deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);
                 }
@@ -183,7 +183,7 @@ void handleUsbHubInterfaceData(const HDEVINFO &deviceInfoSet, const SP_DEVINFO_D
             if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))
             {
                 QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
-                qDebug() << "    USB Hub path:" << deviceInterfacePath;
+                qDebug() << "    USB Hub path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier
 
 
 
@@ -432,7 +432,7 @@ void handleDiskEnumeratorName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &de
             if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, &propertyRegDataType, buffer, requiredSize, nullptr))
             {
                 QString enumeratorName = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Disk enumerator:" << enumeratorName;
+                qDebug() << "    Disk enumerator:" << enumeratorName; // Ignore CppAlignmentVerifier
 
 
 
@@ -552,7 +552,7 @@ void handleDiskHardwareId(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &device
             if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, &propertyRegDataType, buffer, requiredSize, nullptr))
             {
                 QString hardwareId = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Hardware ID:" << hardwareId;
+                qDebug() << "    Hardware ID:" << hardwareId; // Ignore CppAlignmentVerifier
 
 
 
@@ -586,7 +586,7 @@ void handleDiskRemovalPolicy(DWORD removalPolicy, UsbProperties *props)
 
     props->isRemovable = removalPolicy == CM_REMOVAL_POLICY_EXPECT_ORDERLY_REMOVAL
                         ||
-                        removalPolicy  == CM_REMOVAL_POLICY_EXPECT_SURPRISE_REMOVAL;
+                        removalPolicy == CM_REMOVAL_POLICY_EXPECT_SURPRISE_REMOVAL;
 }
 
 void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
@@ -612,7 +612,7 @@ void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &dev
             if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, &propertyRegDataType, buffer, requiredSize, nullptr))
             {
                 DWORD removalPolicy = *((DWORD*)buffer);
-                qDebug() << "    Removal policy:" << removalPolicy;
+                qDebug() << "    Removal policy:" << removalPolicy; // Ignore CppAlignmentVerifier
 
 
 
@@ -657,7 +657,7 @@ void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &devi
             if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_FRIENDLYNAME, &propertyRegDataType, buffer, requiredSize, nullptr))
             {
                 QString friendlyName = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Friendly name:" << friendlyName;
+                qDebug() << "    Friendly name:" << friendlyName; // Ignore CppAlignmentVerifier
             }
             else
             {
@@ -704,8 +704,8 @@ void getVidPidFromDeviceId(const QString &deviceId, UsbProperties *props)
 
 
 
-        qDebug() << "    VID:" << vid << "(" << props->vid << ")";
-        qDebug() << "    PID:" << pid << "(" << props->pid << ")";
+        qDebug() << "    VID:" << vid << '(' << props->vid << ')';
+        qDebug() << "    PID:" << pid << '(' << props->pid << ')';
     }
     else
     {
@@ -731,9 +731,9 @@ bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)
     if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX, &connectionInfoEx, size, &connectionInfoEx, size, &size, nullptr))
     {
         if (
-            connectionInfoEx.DeviceDescriptor.idVendor != 0
+            connectionInfoEx.DeviceDescriptor.idVendor // connectionInfoEx.DeviceDescriptor.idVendor != 0
             ||
-            connectionInfoEx.DeviceDescriptor.idProduct != 0
+            connectionInfoEx.DeviceDescriptor.idProduct // connectionInfoEx.DeviceDescriptor.idProduct != 0
            )
         {
             props->vid   = connectionInfoEx.DeviceDescriptor.idVendor;
@@ -902,7 +902,7 @@ bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePath
 
 
             QString deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
-            qDebug() << "    Device interface path:" << deviceInterfacePath;
+            qDebug() << "    Device interface path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier
 
 
 
@@ -1005,9 +1005,9 @@ bool checkDeviceType(UsbProperties *props)
          !props->isUSB
          ||
          (
-          props->vid == 0
+          !props->vid // props->vid == 0
           &&
-          props->pid == 0
+          !props->pid // props->pid == 0
          )
         )
        )
@@ -1032,9 +1032,9 @@ bool checkDeviceType(UsbProperties *props)
         if (
             !props->isUSB
             &&
-            props->vid == 0
+            !props->vid // props->vid == 0
             &&
-            props->pid == 0
+            !props->pid // props->pid == 0
            )
         {
             qDebug() << "    Found non-USB non-removable device";
@@ -1044,7 +1044,7 @@ bool checkDeviceType(UsbProperties *props)
 
 
 
-        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ")" : "") << " device";
+        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : '') << usbSpeedToString(props->speed) << (props->isUASP ? ')' : '') << " device";
 
         if (props->isLowerSpeed)
         {
@@ -1223,7 +1223,7 @@ void getDriveLetters(DWORD diskNumber, char *letters)
 
 QString driveLettersHumanReadable(DWORD diskNumber, char *letters)
 {
-    if (letters[0] == 0)
+    if (!letters[0]) // letters[0] == 0
     {
         return "Disk " + QString::number(diskNumber);
     }
@@ -1261,7 +1261,7 @@ QString getDiskLabel(DWORD diskNumber, char *letters)
 
             if (DeviceIoControl(diskHandle, IOCTL_STORAGE_CHECK_VERIFY, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
             {
-                QSettings settings(QString("%1:/autorun.inf").arg(letters[0]), QSettings::IniFormat);
+                QSettings settings(QString("%1:/autorun.inf").arg(letters[0]), QSettings::IniFormat); // Ignore CppPunctuationVerifier
 
                 settings.beginGroup("autorun");
                 autorunLabel = settings.value("label", "").toString();
@@ -1329,7 +1329,7 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
 
     qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB";
 
-    if (diskSize == 0)
+    if (!diskSize) // diskSize == 0
     {
         qCritical() << "Device without media";
 
@@ -1415,7 +1415,7 @@ void handleDiskInterfaceData(const HDEVINFO &deviceInfoSet, SP_DEVICE_INTERFACE_
             if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))
             {
                 QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
-                qDebug() << "        Disk path:" << deviceInterfacePath;
+                qDebug() << "        Disk path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier
 
 
 

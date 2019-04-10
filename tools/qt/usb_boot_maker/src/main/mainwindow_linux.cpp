@@ -6,7 +6,7 @@
 
 
 
-bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) // Ignore CppTypesVerifier
 {
     return QMainWindow::nativeEvent(eventType, message, result);
 }

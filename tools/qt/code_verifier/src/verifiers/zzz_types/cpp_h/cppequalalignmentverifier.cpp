@@ -18,7 +18,7 @@ struct EqualEntry
 
 CppEqualAlignmentVerifier::CppEqualAlignmentVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mEqualExpressionRegExp("^( *)((?:static|const) +)*(\\w[\\w<,>*& ]*)?( [&*]*)(\\w[\\w\\.\\->]*(?:\\[[^\\]]+\\])?)(( *)([+\\-*\\/|&^!<>=]*=)( *)(.*))?; *$")
+    , mEqualExpressionRegExp("^( *)((?:static|const) +)*(\\w[\\w<,>*& ]*)?( [&*]*)(?:\\w+::)*(\\w[\\w\\.\\->]*(?:\\[[^\\]]+\\])?)(( *)([+\\-*\\/|&^!<>=]*=)( *)(.*))?; *$")
 {
     // Nothing
 }

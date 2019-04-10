@@ -6,7 +6,7 @@
 
 CppEnumClassVerifier::CppEnumClassVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(: *\\w[\\w\\d]*)?$")
+    , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(: *\\w+)?$")
 {
     // Nothing
 }

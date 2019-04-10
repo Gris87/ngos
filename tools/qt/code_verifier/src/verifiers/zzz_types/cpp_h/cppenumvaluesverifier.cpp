@@ -6,7 +6,7 @@
 
 CppEnumValuesVerifier::CppEnumValuesVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^ *[_A-Z][_A-Z0-9]*(?: *=.*)?,?(?: *\\/\\/.*)?$")
+    , mDefinitionRegExp("^ *[A-Z_][A-Z\\d_]*(?: *=.*)?,?(?: *\\/\\/.*)?$")
 {
     // Nothing
 }

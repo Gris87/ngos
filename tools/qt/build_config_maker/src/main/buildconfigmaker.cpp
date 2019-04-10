@@ -59,7 +59,7 @@ qint64 BuildConfigMaker::process()
             else
             if (line.startsWith("#define ") && defaultValue != "")
             {
-                line = line.left(line.lastIndexOf(' ') + 1) + defaultValue;
+                line         = line.left(line.lastIndexOf(' ') + 1) + defaultValue;
                 defaultValue = "";
             }
         }

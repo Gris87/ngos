@@ -22,6 +22,21 @@ CppIncludeVerifier::CppIncludeVerifier()
 
 void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
 {
+    if (
+        path.endsWith("_linux.cpp")
+        ||
+        path.endsWith("_linux.h")
+        ||
+        path.endsWith("_win.cpp")
+        ||
+        path.endsWith("_win.h")
+       )
+    {
+        return;
+    }
+
+
+
     qint64 fileHeaderOffset = 0;
 
     while (fileHeaderOffset < lines.length() && lines.at(fileHeaderOffset).startsWith("//"))
@@ -34,7 +49,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     qint64 startLine = -1;
     qint64 endLine   = -1;
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = fileHeaderOffset; i < lines.length(); ++i)
     {
         QString line = lines.at(i);
 
@@ -201,6 +216,18 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
                         if (
                             path.endsWith(tempIncludeFile)
+                            ||
+                            (
+                             path.endsWith("_linux.cpp")
+                             &&
+                             QString(path.left(path.length() - 10) + ".cpp").endsWith(tempIncludeFile)
+                            )
+                            ||
+                            (
+                             path.endsWith("_win.cpp")
+                             &&
+                             QString(path.left(path.length() - 8) + ".cpp").endsWith(tempIncludeFile)
+                            )
                             ||
                             (
                              tempIncludeFile.startsWith("ui_")

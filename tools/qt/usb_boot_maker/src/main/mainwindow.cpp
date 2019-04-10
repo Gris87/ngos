@@ -55,7 +55,7 @@ void MainWindow::on_startButton_clicked()
 {
     if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok)
     {
-        ui->startButton->setIcon(QIcon(":/assets/images/stop.png"));
+        ui->startButton->setIcon(QIcon(":/assets/images/stop.png")); // Ignore CppPunctuationVerifier
     }
 }
 
@@ -73,7 +73,7 @@ void MainWindow::languageToggled(bool checked)
 
 
 
-        mTranslator->load(":/assets/translations/language_" + mLanguage);
+        mTranslator->load(":/assets/translations/language_" + mLanguage); // Ignore CppPunctuationVerifier
         QApplication::installTranslator(mTranslator);
 
         ui->retranslateUi(this);
@@ -120,7 +120,7 @@ void MainWindow::updateUsbDevices()
 
 
 
-    ui->startButton->setEnabled(usbDevices.length() > 0);
+    ui->startButton->setEnabled(usbDevices.length()); // usbDevices.length() > 0
 }
 
 void MainWindow::prepareLanguages()
@@ -129,7 +129,7 @@ void MainWindow::prepareLanguages()
 
 
 
-    QStringList languages = QDir(":/assets/translations").entryList();
+    QStringList languages = QDir(":/assets/translations").entryList(); // Ignore CppPunctuationVerifier
 
     for (qint64 i = 0; i < languages.length(); ++i)
     {
@@ -156,9 +156,9 @@ void MainWindow::prepareLanguages()
 
 
         QString languageName = QLocale(language).nativeLanguageName();
-        languageName[0] = languageName.at(0).toUpper();
+        languageName[0]      = languageName.at(0).toUpper();
 
-        qDebug() << "Adding language:" << language << "|" << languageName;
+        qDebug() << "Adding language:" << language << '|' << languageName;
 
 
 
@@ -197,7 +197,7 @@ void MainWindow::loadWindowState()
     QSettings settings("NGOS", "usb_boot_maker");
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    mLanguage =     settings.value("Language", QLocale::system().name()).toString();
+    mLanguage =     settings.value("Language", QLocale::system().name()).toString(); // Ignore CppEqualAlignmentVerifier
     restoreGeometry(settings.value("MainWindow/geometry").toByteArray());
     restoreState(   settings.value("MainWindow/windowState").toByteArray());
     // Ignore CppAlignmentVerifier [END]

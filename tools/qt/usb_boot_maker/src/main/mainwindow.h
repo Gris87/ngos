@@ -30,7 +30,7 @@ public:
     ~MainWindow(); // TEST: NO
 
 protected:
-    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+    bool nativeEvent(const QByteArray &eventType, void *message, long *result); // Ignore CppTypesVerifier
 
 private slots:
     void on_actionExit_triggered(); // TEST: NO
