@@ -32,9 +32,7 @@ void PhpPunctuationVerifier::verify(CodeWorkerThread *worker, const QString &pat
                 ch == ':'
                )
             {
-                QChar chPrev1 = j >= 1                ? line.at(j - 1) : QChar();
                 QChar chNext1 = j < line.length() - 1 ? line.at(j + 1) : QChar();
-                QChar chNext2 = j < line.length() - 2 ? line.at(j + 2) : QChar();
 
                 if (
                     !
@@ -42,20 +40,6 @@ void PhpPunctuationVerifier::verify(CodeWorkerThread *worker, const QString &pat
                      chNext1 == ' '
                      ||
                      chNext1 == '\"'
-                     ||
-                     chNext1 == '\''
-                     ||
-                     (
-                      chNext1 == '\\'
-                      &&
-                      (
-                       chNext2 == '\"'
-                       ||
-                       chNext2 == 'n'
-                       ||
-                       chNext2 == 't'
-                      )
-                     )
                     )
                     &&
                     !
@@ -63,13 +47,7 @@ void PhpPunctuationVerifier::verify(CodeWorkerThread *worker, const QString &pat
                      ch == ':'
                      &&
                      (
-                      chPrev1 == ':'
-                      ||
-                      chNext1 == ':'
-                      ||
-                      chNext1 == '<'
-                      ||
-                      chNext1 == '%'
+                      chNext1 == '/'
                      )
                     )
                     &&

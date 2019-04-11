@@ -56,7 +56,7 @@ const QStringList genericStorageDrivers = QStringList()
         << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
     ;
 
-const QRegularExpression vidPidRegExp(".+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]+)\\\\.+");
+const QRegularExpression vidPidRegExp("^.+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]+)\\\\.+$");
 
 
 

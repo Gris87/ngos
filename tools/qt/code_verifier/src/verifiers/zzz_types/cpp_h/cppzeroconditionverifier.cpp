@@ -6,7 +6,7 @@
 
 CppZeroConditionVerifier::CppZeroConditionVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mIndexRegExp(".*index\\d* *(<=|>|==|!=) *\\d+.*")
+    , mIndexRegExp("^.*index\\d* *(<=|>|==|!=) *\\d+.*$")
 {
     // Nothing
 }

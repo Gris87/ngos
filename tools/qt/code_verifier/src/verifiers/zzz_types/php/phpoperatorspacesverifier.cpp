@@ -83,34 +83,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                            chNext1 == ' '
                           )
                          )
-                         ||
-                         (
-                          chPrev3 == 't'
-                          &&
-                          chPrev2 == 'o'
-                          &&
-                          chPrev1 == 'r'
-                          &&
-                          chNext1 == '('
-                         )
-                         ||
-                         (
-                          chPrev3 == 't'
-                          &&
-                          chPrev2 == 'o'
-                          &&
-                          chPrev1 == 'r'
-                          &&
-                          chNext2 == '('
-                         )
-                         ||
-                         (
-                          chPrev3 == 'o'
-                          &&
-                          chPrev2 == 'r'
-                          &&
-                          chNext1 == '('
-                         )
                         )
                         &&
                         !
@@ -118,8 +90,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                          ch == '-'
                          &&
                          (
-                          chNext1 == '>'
-                          ||
                           chPrev1 == '-'
                           ||
                           chNext1 == '-'
@@ -190,8 +160,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                           ||
                           chNext1 == '/'
                           ||
-                          chNext1 == '>'
-                          ||
                           (
                            chNext1 == '='
                            &&
@@ -205,44 +173,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                             chPrev1.isNull()
                             ||
                             chPrev1 == ' '
-                           )
-                          )
-                          ||
-                          (
-                           (
-                            chPrev1 == '_'
-                            ||
-                            chPrev1.isLetterOrNumber()
-                           )
-                           &&
-                           (
-                            chNext1.isNull()
-                            ||
-                            chNext1 == ' '
-                            ||
-                            chNext1 == ')'
-                           )
-                          )
-                          ||
-                          (
-                           (
-                            chNext1 == '_'
-                            ||
-                            chNext1 == '('
-                            ||
-                            chNext1 == ')'
-                            ||
-                            chNext1.isLetter()
-                           )
-                           &&
-                           (
-                            chPrev1.isNull()
-                            ||
-                            chPrev1 == ' '
-                            ||
-                            chPrev1 == '('
-                            ||
-                            chPrev1 == ')'
                            )
                           )
                           ||
@@ -294,8 +224,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                             chPrev1 == ' '
                            )
                           )
-                          ||
-                          line.contains("#include")
                           ||
                           line.contains('\"')
                          )
@@ -373,8 +301,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                             chPrev1 == ' '
                            )
                           )
-                          ||
-                          line.indexOf('>', j + 1) >= 0
                          )
                         )
                         &&
@@ -383,8 +309,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                          ch == '>'
                          &&
                          (
-                          chPrev1 == '-'
-                          ||
                           (
                            chPrev1 == '>'
                            &&
@@ -452,8 +376,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                             chPrev1 == ' '
                            )
                           )
-                          ||
-                          line.lastIndexOf('<', j - 1) >= 0
                          )
                         )
                         &&
@@ -555,10 +477,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                          ch == '&'
                          &&
                          (
-                          chPrev1 == '>'
-                          ||
-                          chNext1 == '>'
-                          ||
                           (
                            chPrev1 == '&'
                            &&
@@ -592,50 +510,6 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                             chPrev1.isNull()
                             ||
                             chPrev1 == ' '
-                           )
-                          )
-                          ||
-                          (
-                           chNext1 == '/'
-                           &&
-                           chNext2 == '*'
-                          )
-                          ||
-                          (
-                           (
-                            chPrev1 == '_'
-                            ||
-                            chPrev1.isLetterOrNumber()
-                           )
-                           &&
-                           (
-                            chNext1.isNull()
-                            ||
-                            chNext1 == ' '
-                            ||
-                            chNext1 == ')'
-                           )
-                          )
-                          ||
-                          (
-                           (
-                            chNext1 == '_'
-                            ||
-                            chNext1 == '('
-                            ||
-                            chNext1 == ')'
-                            ||
-                            chNext1.isLetter()
-                           )
-                           &&
-                           (
-                            chPrev1.isNull()
-                            ||
-                            chPrev1 == ' '
-                            ||
-                            chPrev1 == '('
-                            ||
-                            chPrev1 == ')'
                            )
                           )
                          )
@@ -710,7 +584,7 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                         !line.contains("regexp", Qt::CaseInsensitive)
                        )
                     {
-                        worker->addWarning(path, i, QString("Whitespace is missing for operator '%1' in position %2").arg(ch).arg(j + 1));
+                        worker->addError(path, i, QString("Whitespace is missing for operator '%1' in position %2").arg(ch).arg(j + 1));
                     }
                 }
 
