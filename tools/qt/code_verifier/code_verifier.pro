@@ -86,7 +86,15 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cppzeroconditionverifier.cpp \
     src/verifiers/zzz_types/h/cpphdefinesverifier.cpp \
     src/verifiers/zzz_types/includes/qtincludesverifier.cpp \
+    src/verifiers/zzz_types/php/phpalignmentverifier.cpp \
+    src/verifiers/zzz_types/php/phpblockdefinitionverifier.cpp \
+    src/verifiers/zzz_types/php/phpemptycodeverifier.cpp \
+    src/verifiers/zzz_types/php/phpequalalignmentverifier.cpp \
+    src/verifiers/zzz_types/php/phpforverifier.cpp \
     src/verifiers/zzz_types/php/phpindentverifier.cpp \
+    src/verifiers/zzz_types/php/phpoperatorspacesverifier.cpp \
+    src/verifiers/zzz_types/php/phppunctuationverifier.cpp \
+    src/verifiers/zzz_types/php/phpshiftverifier.cpp \
     src/verifiers/zzz_types/php/phpsinglelineifverifier.cpp \
     src/verifiers/zzz_types/php/phpsinglelinewhileverifier.cpp \
     src/verifiers/zzz_types/php/phpstatementspacesverifier.cpp \
@@ -138,7 +146,15 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cppzeroconditionverifier.h \
     src/verifiers/zzz_types/h/cpphdefinesverifier.h \
     src/verifiers/zzz_types/includes/qtincludesverifier.h \
+    src/verifiers/zzz_types/php/phpalignmentverifier.h \
+    src/verifiers/zzz_types/php/phpblockdefinitionverifier.h \
+    src/verifiers/zzz_types/php/phpemptycodeverifier.h \
+    src/verifiers/zzz_types/php/phpequalalignmentverifier.h \
+    src/verifiers/zzz_types/php/phpforverifier.h \
     src/verifiers/zzz_types/php/phpindentverifier.h \
+    src/verifiers/zzz_types/php/phpoperatorspacesverifier.h \
+    src/verifiers/zzz_types/php/phppunctuationverifier.h \
+    src/verifiers/zzz_types/php/phpshiftverifier.h \
     src/verifiers/zzz_types/php/phpsinglelineifverifier.h \
     src/verifiers/zzz_types/php/phpsinglelinewhileverifier.h \
     src/verifiers/zzz_types/php/phpstatementspacesverifier.h \
