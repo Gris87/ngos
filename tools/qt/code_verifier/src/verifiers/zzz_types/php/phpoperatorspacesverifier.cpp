@@ -15,6 +15,11 @@ inline bool isSpaceOrEmpty(const QChar &ch)
     return ch.isNull() || ch == ' ';
 }
 
+inline bool isVariableStart(const QChar &ch)
+{
+    return ch.isLetter() || ch == '_';
+}
+
 inline bool validateSignPlusCase1(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/)
 {
     // Cases:
@@ -568,14 +573,14 @@ inline bool validateSignAndCase2(const QChar &chPrev1, const QChar &/*chPrev2*/,
 inline bool validateSignAndCase3(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &chNext2, const QChar &/*chNext3*/)
 {
     // Cases:
-    //      " &$[a-z]"
+    //      " &$[a-z_]"
     //        ^
 
     return  chNext1 == '$'
             &&
             isSpaceOrEmpty(chPrev1)
             &&
-            chNext2.isLetter();
+            isVariableStart(chNext2);
 }
 
 inline bool validateSignAnd(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)

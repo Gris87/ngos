@@ -26,9 +26,9 @@ TEST_CASES(section1, bits64_other_task_utils);
 
 
 
-        TEST_ASSERT_EQUALS(*((u64*)taskStack),          0);
+        TEST_ASSERT_EQUALS(*((u64 *)taskStack),         0);
         TEST_ASSERT_EQUALS(putTaskStackEndMagic(&task), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(*((u64*)taskStack),          0x444E454B43415453);
+        TEST_ASSERT_EQUALS(*((u64 *)taskStack),         0x444E454B43415453);
     }
     TEST_CASE_END();
 }

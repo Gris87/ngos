@@ -611,7 +611,7 @@ void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &dev
 
             if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, &propertyRegDataType, buffer, requiredSize, nullptr))
             {
-                DWORD removalPolicy = *((DWORD*)buffer);
+                DWORD removalPolicy = *((DWORD *)buffer);
                 qDebug() << "    Removal policy:" << removalPolicy; // Ignore CppAlignmentVerifier
 
 
