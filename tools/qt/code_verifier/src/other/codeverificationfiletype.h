@@ -21,6 +21,7 @@
         | (quint64)VerificationFileType::CPP \
         | (quint64)VerificationFileType::H \
         | (quint64)VerificationFileType::S \
+        | (quint64)VerificationFileType::PHP \
         | (quint64)VerificationFileType::PRO \
         | (quint64)VerificationFileType::PRI \
         | (quint64)VerificationFileType::LD \
