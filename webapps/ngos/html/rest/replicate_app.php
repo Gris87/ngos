@@ -38,10 +38,12 @@
 
     function insert_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     secret_key"
             . " FROM " . DB_TABLE_APPS
             . " WHERE id = '" . $link->real_escape_string($app_id) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -56,6 +58,7 @@
 
 
 
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "INSERT INTO " . DB_TABLE_APPS
                 . " (id, vendor_id, codename, owner_email, name, description, secret_key)"
                 . " VALUES("
@@ -67,6 +70,7 @@
                 . "  '',"
                 . "  '" . $link->real_escape_string($secret_key)  . "'"
                 . ")";
+            // Ignore PhpAlignmentVerifier [END]
 
 
 

@@ -54,9 +54,11 @@
 
 
 
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "UPDATE " . DB_TABLE_SERVERS
             . " SET secret_key = '" . $link->real_escape_string($secret_key) . "'"
             . " WHERE address = '"  . $link->real_escape_string($address)    . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 

@@ -36,11 +36,7 @@ void PhpBlockDefinitionVerifier::verify(CodeWorkerThread *worker, const QString 
             &&
             lineTrimmed != '}'
             &&
-            lineTrimmed != "} \\"
-            &&
             !lineTrimmed.startsWith("} while(")
-            &&
-            !lineTrimmed.endsWith(';')
            )
         {
             worker->addError(path, i, "Code block should be closed on the new line");

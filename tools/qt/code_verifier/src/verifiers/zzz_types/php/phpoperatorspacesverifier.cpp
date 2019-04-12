@@ -29,7 +29,7 @@ inline bool validateSignPlusCase1(const QChar &chPrev1, const QChar &/*chPrev2*/
     //      "++"
     //       ^
 
-    return  chPrev1 == '+'
+    return chPrev1 == '+'
             ||
             chNext1 == '+';
 }
@@ -40,7 +40,7 @@ inline bool validateSignPlusCase2(const QChar &chPrev1, const QChar &/*chPrev2*/
     //      " += "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -49,7 +49,7 @@ inline bool validateSignPlusCase2(const QChar &chPrev1, const QChar &/*chPrev2*/
 
 inline bool validateSignPlus(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignPlusCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignPlusCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignPlusCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3);
 }
@@ -63,7 +63,7 @@ inline bool validateSignMinusCase1(const QChar &chPrev1, const QChar &/*chPrev2*
     //      "--"
     //       ^
 
-    return  chPrev1 == '-'
+    return chPrev1 == '-'
             ||
             chNext1 == '-';
 }
@@ -74,7 +74,7 @@ inline bool validateSignMinusCase2(const QChar &chPrev1, const QChar &/*chPrev2*
     //      " -= "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -89,7 +89,7 @@ inline bool validateSignMinusCase3(const QChar &/*chPrev1*/, const QChar &/*chPr
     //      "-$"
     //       ^
 
-    return  chNext1 == '>'
+    return chNext1 == '>'
             ||
             chNext1.isLetterOrNumber()
             ||
@@ -98,7 +98,7 @@ inline bool validateSignMinusCase3(const QChar &/*chPrev1*/, const QChar &/*chPr
 
 inline bool validateSignMinus(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignMinusCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignMinusCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignMinusCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
@@ -116,7 +116,7 @@ inline bool validateSignMultiplyCase1(const QChar &chPrev1, const QChar &/*chPre
     //      "*/"
     //       ^
 
-    return  chPrev1 == '*'
+    return chPrev1 == '*'
             ||
             chPrev1 == '/'
             ||
@@ -131,7 +131,7 @@ inline bool validateSignMultiplyCase2(const QChar &chPrev1, const QChar &/*chPre
     //      " *= "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -140,7 +140,7 @@ inline bool validateSignMultiplyCase2(const QChar &chPrev1, const QChar &/*chPre
 
 inline bool validateSignMultiply(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignMultiplyCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignMultiplyCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignMultiplyCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3);
 }
@@ -154,7 +154,7 @@ inline bool validateSignDivideCase1(const QChar &chPrev1, const QChar &/*chPrev2
     //      "/*"
     //       ^
 
-    return  chPrev1 == '*'
+    return chPrev1 == '*'
             ||
             chNext1 == '*';
 }
@@ -166,7 +166,7 @@ inline bool validateSignDivideCase2(const QChar &chPrev1, const QChar &/*chPrev2
     //      " // "
     //        ^
 
-    return  (
+    return (
                 chNext1 == '='
                 ||
                 chNext1 == '/'
@@ -183,7 +183,7 @@ inline bool validateSignDivideCase3(const QChar &chPrev1, const QChar &chPrev2, 
     //      " // "
     //         ^
 
-    return  chPrev1 == '/'
+    return chPrev1 == '/'
             &&
             isSpaceOrEmpty(chPrev2)
             &&
@@ -192,7 +192,7 @@ inline bool validateSignDivideCase3(const QChar &chPrev1, const QChar &chPrev2, 
 
 inline bool validateSignDivide(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignDivideCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignDivideCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignDivideCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
@@ -205,7 +205,7 @@ inline bool validateSignLessCase1(const QChar &chPrev1, const QChar &/*chPrev2*/
     //      " <= "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -219,7 +219,7 @@ inline bool validateSignLessCase2(const QChar &chPrev1, const QChar &/*chPrev2*/
     //      " <<= "
     //        ^
 
-    return  chNext1 == '<'
+    return chNext1 == '<'
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -241,7 +241,7 @@ inline bool validateSignLessCase3(const QChar &chPrev1, const QChar &chPrev2, co
     //      " <<= "
     //         ^
 
-    return  chPrev1 == '<'
+    return chPrev1 == '<'
             &&
             isSpaceOrEmpty(chPrev2)
             &&
@@ -262,7 +262,7 @@ inline bool validateSignLessCase4(const QChar &/*chPrev1*/, const QChar &/*chPre
     //      "<?php"
     //       ^
 
-    return  chNext1 == '?'
+    return chNext1 == '?'
             &&
             chNext2 == 'p'
             &&
@@ -271,7 +271,7 @@ inline bool validateSignLessCase4(const QChar &/*chPrev1*/, const QChar &/*chPre
 
 inline bool validateSignLess(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignLessCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignLessCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignLessCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
@@ -295,7 +295,7 @@ inline bool validateSignMoreCase2(const QChar &chPrev1, const QChar &/*chPrev2*/
     //      " >= "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -309,7 +309,7 @@ inline bool validateSignMoreCase3(const QChar &chPrev1, const QChar &/*chPrev2*/
     //      " >>= "
     //        ^
 
-    return  chNext1 == '>'
+    return chNext1 == '>'
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -331,7 +331,7 @@ inline bool validateSignMoreCase4(const QChar &chPrev1, const QChar &chPrev2, co
     //      " >>= "
     //         ^
 
-    return  chPrev1 == '>'
+    return chPrev1 == '>'
             &&
             isSpaceOrEmpty(chPrev2)
             &&
@@ -353,7 +353,7 @@ inline bool validateSignMoreCase5(const QChar &chPrev1, const QChar &chPrev2, co
     //      " => "
     //         ^
 
-    return  (
+    return (
                 chPrev1 == '?'
                 ||
                 chPrev1 == '='
@@ -366,7 +366,7 @@ inline bool validateSignMoreCase5(const QChar &chPrev1, const QChar &chPrev2, co
 
 inline bool validateSignMore(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignMoreCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignMoreCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignMoreCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
@@ -394,7 +394,7 @@ inline bool validateSignEqualCase1(const QChar &chPrev1, const QChar &chPrev2, c
     //      " .= "
     //         ^
 
-    return  (
+    return (
                 chPrev1 == '+'
                 ||
                 chPrev1 == '-'
@@ -432,7 +432,7 @@ inline bool validateSignEqualCase2(const QChar &chPrev1, const QChar &/*chPrev2*
     //      " => "
     //        ^
 
-    return  (
+    return (
                 chNext1 == '='
                 ||
                 chNext1 == '>'
@@ -452,7 +452,7 @@ inline bool validateSignEqualCase3(const QChar &chPrev1, const QChar &chPrev2, c
     //      " ||= "
     //          ^
 
-    return  (
+    return (
                 chPrev1 == '<'
                 ||
                 chPrev1 == '>'
@@ -475,7 +475,7 @@ inline bool validateSignEqualCase4(const QChar &chPrev1, const QChar &/*chPrev2*
     //      " === "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             chNext2 == '='
             &&
@@ -491,7 +491,7 @@ inline bool validateSignEqualCase5(const QChar &chPrev1, const QChar &chPrev2, c
     //      " !== "
     //         ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             (
                 chPrev1 == '='
@@ -511,7 +511,7 @@ inline bool validateSignEqualCase6(const QChar &chPrev1, const QChar &chPrev2, c
     //      " !== "
     //          ^
 
-    return  chPrev1 == '='
+    return chPrev1 == '='
             &&
             (
                 chPrev2 == '='
@@ -526,7 +526,7 @@ inline bool validateSignEqualCase6(const QChar &chPrev1, const QChar &chPrev2, c
 
 inline bool validateSignEqual(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignEqualCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignEqualCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignEqualCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
@@ -545,7 +545,7 @@ inline bool validateSignAndCase1(const QChar &chPrev1, const QChar &chPrev2, con
     //      " && "
     //         ^
 
-    return  chPrev1 == '&'
+    return chPrev1 == '&'
             &&
             isSpaceOrEmpty(chPrev2)
             &&
@@ -559,7 +559,7 @@ inline bool validateSignAndCase2(const QChar &chPrev1, const QChar &/*chPrev2*/,
     //      " && "
     //        ^
 
-    return  (
+    return (
                 chNext1 == '='
                 ||
                 chNext1 == '&'
@@ -576,7 +576,7 @@ inline bool validateSignAndCase3(const QChar &chPrev1, const QChar &/*chPrev2*/,
     //      " &$[a-z_]"
     //        ^
 
-    return  chNext1 == '$'
+    return chNext1 == '$'
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -585,7 +585,7 @@ inline bool validateSignAndCase3(const QChar &chPrev1, const QChar &/*chPrev2*/,
 
 inline bool validateSignAnd(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignAndCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignAndCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignAndCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
@@ -598,7 +598,7 @@ inline bool validateSignOrCase1(const QChar &chPrev1, const QChar &chPrev2, cons
     //      " || "
     //         ^
 
-    return  chPrev1 == '|'
+    return chPrev1 == '|'
             &&
             isSpaceOrEmpty(chPrev2)
             &&
@@ -612,7 +612,7 @@ inline bool validateSignOrCase2(const QChar &chPrev1, const QChar &/*chPrev2*/, 
     //      " || "
     //        ^
 
-    return  (
+    return (
                 chNext1 == '='
                 ||
                 chNext1 == '|'
@@ -625,7 +625,7 @@ inline bool validateSignOrCase2(const QChar &chPrev1, const QChar &/*chPrev2*/, 
 
 inline bool validateSignOr(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3)
 {
-    return  validateSignOrCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
+    return validateSignOrCase1(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3)
             ||
             validateSignOrCase2(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3);
 }
@@ -636,7 +636,7 @@ inline bool validateSignXorCase1(const QChar &chPrev1, const QChar &/*chPrev2*/,
     //      " ^= "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             isSpaceOrEmpty(chPrev1)
             &&
@@ -654,7 +654,7 @@ inline bool validateSignDotCase1(const QChar &chPrev1, const QChar &/*chPrev2*/,
     //      " .= "
     //        ^
 
-    return  chNext1 == '='
+    return chNext1 == '='
             &&
             isSpaceOrEmpty(chPrev1)
             &&

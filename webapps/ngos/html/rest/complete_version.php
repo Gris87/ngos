@@ -44,10 +44,12 @@
 
         if (avoid_duplicate_version($link, $data, $app_id, $app_version_id, $hash))
         {
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "UPDATE " . DB_TABLE_APP_VERSIONS
                 . " SET hash      = '" . $link->real_escape_string($hash) . "',"
                 . "     completed = '1'"
                 . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
+            // Ignore PhpAlignmentVerifier [END]
 
 
 

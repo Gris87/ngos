@@ -31,6 +31,7 @@
 
     function handle_get_for_app_id($link, &$data, $app_id)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id,"
             . "     codename,"
@@ -38,6 +39,7 @@
             . "     description"
             . " FROM " . DB_TABLE_APPS
             . " WHERE id = '" . $link->real_escape_string($app_id) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -71,6 +73,7 @@
 
     function handle_get_for_codename($link, &$data, $codename)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id,"
             . "     codename,"
@@ -78,6 +81,7 @@
             . "     description"
             . " FROM " . DB_TABLE_APPS
             . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -111,12 +115,14 @@
 
     function handle_get_for_apps($link, &$data)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id,"
             . "     codename,"
             . "     name,"
             . "     description"
             . " FROM " . DB_TABLE_APPS;
+        // Ignore PhpAlignmentVerifier [END]
 
 
 

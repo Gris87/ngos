@@ -62,6 +62,7 @@
 
 
 
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "INSERT INTO " . DB_TABLE_SERVERS
             . " (region_id, address, delay, secret_key)"
             . " VALUES("
@@ -70,6 +71,7 @@
             . "  '" . $link->real_escape_string($delay)      . "',"
             . "  '" . $link->real_escape_string($secret_key) . "'"
             . ")";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 

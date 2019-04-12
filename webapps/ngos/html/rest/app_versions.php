@@ -33,6 +33,7 @@
     {
         if ($include_files)
         {
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "SELECT"
                 . "     filename,"
                 . "     download_name,"
@@ -40,6 +41,7 @@
                 . " FROM " . DB_TABLE_APP_FILES
                 . " WHERE app_version_id = '" . $link->real_escape_string($app_version_id) . "'"
                 . " ORDER BY filename";
+            // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -67,6 +69,7 @@
 
     function handle_get_for_app_version_id($link, &$data, $app_version_id, $include_files)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id,"
             . "     version,"
@@ -74,6 +77,7 @@
             . " FROM " . DB_TABLE_APP_VERSIONS
             . " WHERE id        = '" . $link->real_escape_string($app_version_id) . "'"
             . "   AND completed = '1'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -112,6 +116,7 @@
 
     function handle_get_for_app_id_and_latest_version($link, &$data, $app_id, $include_files)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id,"
             . "     version,"
@@ -121,6 +126,7 @@
             . "   AND completed = '1'"
             . " ORDER BY version DESC"
             . " LIMIT 1";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -163,6 +169,7 @@
 
         if (verify_version($version))
         {
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "SELECT"
                 . "     id,"
                 . "     version,"
@@ -171,9 +178,11 @@
                 . " WHERE app_id    = '" . $link->real_escape_string($app_id) . "'"
                 . "   AND version   = '" . $link->real_escape_string($version) . "'"
                 . "   AND completed = '1'";
+            // Ignore PhpAlignmentVerifier [END]
         }
         else
         {
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "SELECT"
                 . "     id,"
                 . "     version,"
@@ -185,6 +194,7 @@
                 . "   AND completed =  '1'"
                 . " ORDER BY version DESC"
                 . " LIMIT 1";
+            // Ignore PhpAlignmentVerifier [END]
         }
 
 
@@ -224,6 +234,7 @@
 
     function handle_get_for_app_id($link, &$data, $app_id)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id,"
             . "     version,"
@@ -232,6 +243,7 @@
             . " WHERE app_id    = '" . $link->real_escape_string($app_id) . "'"
             . "   AND completed = '1'"
             . " ORDER BY version";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 

@@ -57,10 +57,12 @@
 
 
 
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     value"
             . " FROM " . DB_TABLE_PROPERTIES
             . " WHERE name = '" . $link->real_escape_string($name) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -100,10 +102,12 @@
 
     function set_property_value($link, $data, $name, $value)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     value"
             . " FROM " . DB_TABLE_PROPERTIES
             . " WHERE name = '" . $link->real_escape_string($name) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -114,18 +118,22 @@
 
         if ($result->num_rows == 1)
         {
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "UPDATE " . DB_TABLE_PROPERTIES
                 . " SET value = '"  . $link->real_escape_string($value) . "'"
                 . " WHERE name = '" . $link->real_escape_string($name)  . "'";
+            // Ignore PhpAlignmentVerifier [END]
         }
         else
         {
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "INSERT INTO " . DB_TABLE_PROPERTIES
                 . " (name, value)"
                 . " VALUES("
                 . "  '" . $link->real_escape_string($name)  . "',"
                 . "  '" . $link->real_escape_string($value) . "'"
                 . ")";
+            // Ignore PhpAlignmentVerifier [END]
         }
 
         $result->close();
@@ -172,10 +180,12 @@
 
 
 
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id"
             . " FROM " . DB_TABLE_APPS
             . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -215,10 +225,12 @@
 
 
 
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     secret_key"
             . " FROM " . DB_TABLE_SERVERS
             . " WHERE address = '" . $link->real_escape_string($address) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -365,10 +377,12 @@
 
     function validate_app_secret_key($link, $data, $app_id, $secret_key)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     secret_key"
             . " FROM " . DB_TABLE_APPS
             . " WHERE id = '" . $link->real_escape_string($app_id) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -419,10 +433,12 @@
 
     function validate_app_version($link, $data, $app_version_id)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     completed"
             . " FROM " . DB_TABLE_APP_VERSIONS
             . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -473,6 +489,7 @@
 
     function avoid_duplicate_version($link, $data, $app_id, $app_version_id, $hash)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     hash"
             . " FROM " . DB_TABLE_APP_VERSIONS
@@ -480,6 +497,7 @@
             . "   AND completed = '1'"
             . " ORDER BY version DESC"
             . " LIMIT 1";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -495,8 +513,10 @@
 
             if ($version_hash == $hash)
             {
+                // Ignore PhpAlignmentVerifier [BEGIN]
                 $sql = "DELETE FROM " . DB_TABLE_APP_FILES
                     . " WHERE app_version_id = '" . $link->real_escape_string($app_version_id) . "'";
+                // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -505,8 +525,10 @@
 
 
 
+                // Ignore PhpAlignmentVerifier [BEGIN]
                 $sql = "DELETE FROM " . DB_TABLE_APP_VERSIONS
                     . " WHERE id = '" . $link->real_escape_string($app_version_id) . "'";
+                // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -561,7 +583,7 @@
             {
                 curl_multi_select($curl_multi);
             }
-        } while ($active && $status == CURLM_OK);
+        } while($active && $status == CURLM_OK);
 
 
 
@@ -623,6 +645,7 @@
 
     function replicate_to_regions($link, $data, $replicate_data, $path, $region_id)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     region_id,"
             . "     address,"
@@ -631,6 +654,7 @@
             . " FROM " . DB_TABLE_SERVERS
             . " WHERE region_id != '" . $link->real_escape_string($region_id) . "'"
             . " ORDER BY region_id";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -707,7 +731,7 @@
             {
                 curl_multi_select($curl_multi);
             }
-        } while ($active && $status == CURLM_OK);
+        } while($active && $status == CURLM_OK);
 
 
 
@@ -765,6 +789,7 @@
 
     function replicate_by_region($link, $data, $replicate_data, $path, $region_id, $my_address)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     address,"
             . "     secret_key"
@@ -773,6 +798,7 @@
             . "     region_id =  '" . $link->real_escape_string($region_id)  . "'"
             . "     AND"
             . "     address   != '" . $link->real_escape_string($my_address) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -833,7 +859,7 @@
                 {
                     curl_multi_select($curl_multi);
                 }
-            } while ($active && $status == CURLM_OK);
+            } while($active && $status == CURLM_OK);
 
 
 
@@ -996,10 +1022,12 @@
 
     function calculate_app_version_hash($link, $data, $app_version_id)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     hash"
             . " FROM " . DB_TABLE_APP_FILES
             . " WHERE app_version_id = '" . $link->real_escape_string($app_version_id) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -1045,7 +1073,7 @@
 
     function verify_address($address)
     {
-        return  isset($address)
+        return isset($address)
                 &&
                 is_string($address)
                 &&
@@ -1060,7 +1088,7 @@
 
     function verify_app_id($app_id)
     {
-        return  isset($app_id)
+        return isset($app_id)
                 &&
                 is_int($app_id)
                 &&
@@ -1071,7 +1099,7 @@
 
     function verify_app_file_id($app_file_id)
     {
-        return  isset($app_file_id)
+        return isset($app_file_id)
                 &&
                 is_int($app_file_id)
                 &&
@@ -1082,7 +1110,7 @@
 
     function verify_app_version_id($app_version_id)
     {
-        return  isset($app_version_id)
+        return isset($app_version_id)
                 &&
                 is_int($app_version_id)
                 &&
@@ -1093,7 +1121,7 @@
 
     function verify_codename($codename)
     {
-        return  isset($codename)
+        return isset($codename)
                 &&
                 is_string($codename)
                 &&
@@ -1104,7 +1132,7 @@
 
     function verify_compression_method($compression_method)
     {
-        return  isset($compression_method)
+        return isset($compression_method)
                 &&
                 is_int($compression_method)
                 &&
@@ -1117,7 +1145,7 @@
 
     function verify_content($content)
     {
-        return  isset($content)
+        return isset($content)
                 &&
                 is_string($content)
                 &&
@@ -1128,7 +1156,7 @@
 
     function verify_download_name($download_name)
     {
-        return  isset($download_name)
+        return isset($download_name)
                 &&
                 is_string($download_name)
                 &&
@@ -1139,7 +1167,7 @@
 
     function verify_email($email)
     {
-        return  isset($email)
+        return isset($email)
                 &&
                 is_string($email)
                 &&
@@ -1150,7 +1178,7 @@
 
     function verify_filename($filename)
     {
-        return  isset($filename)
+        return isset($filename)
                 &&
                 is_string($filename)
                 &&
@@ -1161,7 +1189,7 @@
 
     function verify_hash($hash)
     {
-        return  isset($hash)
+        return isset($hash)
                 &&
                 is_string($hash)
                 &&
@@ -1172,7 +1200,7 @@
 
     function verify_level($level)
     {
-        return  isset($level)
+        return isset($level)
                 &&
                 is_int($level)
                 &&
@@ -1185,7 +1213,7 @@
 
     function verify_name($name)
     {
-        return  isset($name)
+        return isset($name)
                 &&
                 is_string($name)
                 &&
@@ -1196,7 +1224,7 @@
 
     function verify_region_id($region_id)
     {
-        return  isset($region_id)
+        return isset($region_id)
                 &&
                 is_int($region_id)
                 &&
@@ -1207,7 +1235,7 @@
 
     function verify_secret_key($secret_key)
     {
-        return  isset($secret_key)
+        return isset($secret_key)
                 &&
                 is_string($secret_key)
                 &&
@@ -1218,7 +1246,7 @@
 
     function verify_vendor_id($vendor_id)
     {
-        return  isset($vendor_id)
+        return isset($vendor_id)
                 &&
                 is_int($vendor_id)
                 &&
@@ -1229,7 +1257,7 @@
 
     function verify_version($version)
     {
-        return  isset($version)
+        return isset($version)
                 &&
                 is_int($version)
                 &&
@@ -1242,7 +1270,7 @@
 
     function verify_version_for_user($version)
     {
-        return  isset($version)
+        return isset($version)
                 &&
                 is_int($version)
                 &&

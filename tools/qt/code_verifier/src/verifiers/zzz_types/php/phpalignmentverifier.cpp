@@ -82,27 +82,13 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             ||
                             anotherLineTrimmed == '}'
                             ||
-                            anotherLineTrimmed == "};"
+                            anotherLineTrimmed == '('
+                            ||
+                            anotherLineTrimmed == ')'
                             ||
                             anotherLineTrimmed == "//"
                             ||
-                            anotherLineTrimmed == "/***"
-                            ||
-                            anotherLineTrimmed == "***"
-                            ||
-                            anotherLineTrimmed == "***/"
-                            ||
-                            anotherLineTrimmed.startsWith("} __attribute__((")
-                            ||
                             anotherLineTrimmed.startsWith("} while(")
-                            ||
-                            anotherLineTrimmed.startsWith("#if")
-                            ||
-                            anotherLineTrimmed.startsWith("#else")
-                            ||
-                            anotherLineTrimmed.startsWith("#elif")
-                            ||
-                            anotherLineTrimmed.startsWith("#endif")
                             ||
                             anotherLineTrimmed.startsWith("// Ignore PhpAlignmentVerifier [")
                            )
@@ -140,27 +126,13 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             ||
                             anotherLineTrimmed == '}'
                             ||
-                            anotherLineTrimmed == "};"
+                            anotherLineTrimmed == '('
+                            ||
+                            anotherLineTrimmed == ')'
                             ||
                             anotherLineTrimmed == "//"
                             ||
-                            anotherLineTrimmed == "/***"
-                            ||
-                            anotherLineTrimmed == "***"
-                            ||
-                            anotherLineTrimmed == "***/"
-                            ||
-                            anotherLineTrimmed.startsWith("} __attribute__((")
-                            ||
                             anotherLineTrimmed.startsWith("} while(")
-                            ||
-                            anotherLineTrimmed.startsWith("#if")
-                            ||
-                            anotherLineTrimmed.startsWith("#else")
-                            ||
-                            anotherLineTrimmed.startsWith("#elif")
-                            ||
-                            anotherLineTrimmed.startsWith("#endif")
                             ||
                             anotherLineTrimmed.startsWith("// Ignore PhpAlignmentVerifier [")
                            )
@@ -193,38 +165,13 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                         qint64 n = j;
 
                         while (
-                               n > 0
-                               &&
-                               (
-                                scannedLine.at(n) == '*'
-                                ||
-                                scannedLine.at(n) == '&'
-                               )
-                              )
-                        {
-                            --n;
-                        }
-
-                        while (
                                n < line.length()
                                &&
                                n < scannedLine.length()
                                &&
-                               (
-                                line.at(n) == ' '
-                                ||
-                                line.at(n) == '*'
-                                ||
-                                line.at(n) == '&'
-                               )
+                               line.at(n) == ' '
                                &&
-                               (
-                                scannedLine.at(n) == ' '
-                                ||
-                                scannedLine.at(n) == '*'
-                                ||
-                                scannedLine.at(n) == '&'
-                               )
+                               scannedLine.at(n) == ' '
                               )
                         {
                             ++n;
@@ -241,15 +188,7 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             if (
                                 scannedLine.at(n) == ' '
                                 ||
-                                scannedLine.at(n) == '*'
-                                ||
-                                scannedLine.at(n) == '&'
-                                ||
                                 line.at(n) == ' '
-                                ||
-                                line.at(n) == '*'
-                                ||
-                                line.at(n) == '&'
                                )
                             {
                                 worker->addWarning(path, k, QString("Alignment is invalid in position %1").arg(j + 1));

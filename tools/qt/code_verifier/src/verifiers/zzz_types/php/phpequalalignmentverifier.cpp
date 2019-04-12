@@ -7,7 +7,6 @@
 struct EqualEntry
 {
     qint64 indent;
-    qint64 nameIndex;
     qint64 beforeSpaces;
     qint64 equalIndex;
     qint64 afterSpaces;
@@ -18,7 +17,7 @@ struct EqualEntry
 
 PhpEqualAlignmentVerifier::PhpEqualAlignmentVerifier()
     : BaseCodeVerifier(VerificationFileType::PHP)
-    , mEqualExpressionRegExp("^( *)((?:static|const) +)*(\\w[\\w<,>*& ]*)?( [&*]*)(?:\\w+::)*(\\w[\\w\\.\\->]*(?:\\[[^\\]]+\\])?)(( *)([+\\-*\\/|&^!<>=]*=)( *)(.*))?; *$")
+    , mEqualExpressionRegExp("^( *)(\\$\\w[\\w\\->]*(?:\\[[^\\]]+\\])*)(( *)([+\\-*\\/<>=&|^!.]*=)( *)(.*))?; *$")
 {
     // Nothing
 }
@@ -39,11 +38,7 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
             QRegularExpressionMatch match = mEqualExpressionRegExp.match(line);
 
-            if (
-                line.contains("operator")
-                ||
-                !match.hasMatch()
-               )
+            if (!match.hasMatch())
             {
                 if (ranges.length()) // ranges.length() > 0
                 {
@@ -57,19 +52,6 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
                         if (first.indent != current.indent)
                         {
                             worker->addError(path, i, "Indentation is invalid");
-                        }
-
-
-
-                        if (
-                            first.nameIndex != current.nameIndex
-                            &&
-                            first.nameIndex != first.indent
-                            &&
-                            current.nameIndex != current.indent
-                           )
-                        {
-                            worker->addWarning(path, i, "Variable names should be aligned");
                         }
 
 
@@ -142,55 +124,26 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
 
             QString indent       = match.captured(1);
-            QString keywords     = match.captured(2);
-            QString type         = match.captured(3);
-            QString reference    = match.captured(4);
-            QString name         = match.captured(5);
-            QString expression   = match.captured(6);
-            QString beforeSpaces = match.captured(7);
-            QString afterSpaces  = match.captured(9);
-
-
-
-            if (
-                type == "return"
-                ||
-                type == "delete"
-                ||
-                type == "struct"
-                ||
-                type == "class"
-                ||
-                type.startsWith("typedef")
-               )
-            {
-                continue;
-            }
+            QString name         = match.captured(2);
+            QString expression   = match.captured(3);
+            QString beforeSpaces = match.captured(4);
+            QString afterSpaces  = match.captured(6);
 
 
 
             EqualEntry equalEntry;
 
-            equalEntry.indent       = indent.length() + (type == "" ? reference.length() - reference.trimmed().length() : 0);
-            equalEntry.nameIndex    = type != "" ? match.capturedStart(5) : equalEntry.indent;
+            equalEntry.indent       = indent.length();
             equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;
-            equalEntry.equalIndex   = match.capturedStart(8);
+            equalEntry.equalIndex   = match.capturedStart(5);
             equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;
-            equalEntry.valueIndex   = match.capturedStart(10);
+            equalEntry.valueIndex   = match.capturedStart(7);
 
 
 
             if (name != "")
             {
-                if (
-                    (name.at(0) < 'a' || name.at(0) > 'z')
-                    &&
-                    !name.startsWith("__pad")
-                    &&
-                    !name.startsWith("__reserved")
-                    &&
-                    !keywords.contains("const")
-                   )
+                if (name.at(1) < 'a' || name.at(1) > 'z')
                 {
                     worker->addError(path, i, "Variable name should be named in camelcase");
                 }

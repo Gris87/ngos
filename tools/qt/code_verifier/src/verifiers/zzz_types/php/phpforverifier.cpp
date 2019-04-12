@@ -74,6 +74,7 @@ qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
                 QString varName = initMatch.captured(1);
 
 
+
                 if (conditionMatch.captured(1) != varName)
                 {
                     worker->addError(path, row, QString("Invalid variable usage. Expected %1").arg(varName));

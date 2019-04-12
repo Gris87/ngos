@@ -62,10 +62,12 @@
 
     function avoid_duplicate_file($link, $data, $download_name, $path, $hash)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     download_name"
             . " FROM " . DB_TABLE_APP_FILES
             . " WHERE hash = '" . $link->real_escape_string($hash) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -151,6 +153,7 @@
 
     function create_app_file_id($link, $data, $app_version_id, $filename, $download_name, $hash)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "INSERT INTO " . DB_TABLE_APP_FILES
             . " (app_version_id, filename, download_name, hash)"
             . " VALUES("
@@ -159,6 +162,7 @@
             . "  '" . $link->real_escape_string($download_name)  . "',"
             . "  '" . $link->real_escape_string($hash)           . "'"
             . ")";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 

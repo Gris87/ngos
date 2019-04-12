@@ -42,11 +42,13 @@
 
 
 
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "SELECT"
             . "     id,"
             . "     secret_key"
             . " FROM " . DB_TABLE_APPS
             . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -78,6 +80,7 @@
 
 
 
+            // Ignore PhpAlignmentVerifier [BEGIN]
             $sql = "INSERT INTO " . DB_TABLE_APPS
                 . " (vendor_id, codename, owner_email, name, description, secret_key)"
                 . " VALUES("
@@ -88,6 +91,7 @@
                 . "  '',"
                 . "  '" . $link->real_escape_string($secret_key)  . "'"
                 . ")";
+            // Ignore PhpAlignmentVerifier [END]
 
 
 
@@ -132,6 +136,7 @@
 
     function create_app_version_id($link, $data, $app_id, $version)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
             . " (app_id, version, hash, completed)"
             . " VALUES("
@@ -140,6 +145,7 @@
             . "  '',"
             . "  '0'"
             . ")";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 

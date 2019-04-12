@@ -38,6 +38,7 @@
 
     function insert_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key)
     {
+        // Ignore PhpAlignmentVerifier [BEGIN]
         $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
             . " (id, app_id, version, hash, completed)"
             . " VALUES("
@@ -47,6 +48,7 @@
             . "  '',"
             . "  '0'"
             . ")";
+        // Ignore PhpAlignmentVerifier [END]
 
 
 
