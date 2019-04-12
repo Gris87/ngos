@@ -1044,7 +1044,7 @@ bool checkDeviceType(UsbProperties *props)
 
 
 
-        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ')' : "") << " device";
+        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? QString(')') : "") << " device";
 
         if (props->isLowerSpeed)
         {
@@ -1069,9 +1069,9 @@ DWORD getDiskNumber(const HANDLE &deviceHandle)
     {
         // qDebug() << "        NumberOfDiskExtents:" << diskExtents.NumberOfDiskExtents;
 
-        if (diskExtents.NumberOfDiskExtents == 1)
+        if (diskExtents.numberOfDiskExtents == 1)
         {
-            return diskExtents.Extents[0].DiskNumber;
+            return diskExtents.extents[0].DiskNumber;
         }
         else
         {
