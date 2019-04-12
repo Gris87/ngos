@@ -371,7 +371,7 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                            )
                            &&
                            (
-                            chPrev1.isNull()
+                            chPrev1 .isNull()
                             ||
                             chPrev1 == ' '
                            )
@@ -487,6 +487,22 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                             chPrev1 == ' '
                             ||
                             chPrev1 == '='
+                           )
+                          )
+                          ||
+                          (
+                           chNext1 == '>'
+                           &&
+                           (
+                            chNext2.isNull()
+                            ||
+                            chNext2 == ' '
+                           )
+                           &&
+                           (
+                            chPrev1.isNull()
+                            ||
+                            chPrev1 == ' '
                            )
                           )
                          )
