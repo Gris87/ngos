@@ -6,9 +6,9 @@
 
 PhpForVerifier::PhpForVerifier()
     : BaseCodeVerifier(VerificationFileType::PHP)
-    , mInitRegexp("^(?:(?:i64|qint64) (\\w)|(?:(?:char \\*)?(\\w+))) = .*$")
-    , mConditionRegexp("^(?:(\\w) [<>]=? |\\*(\\w+)).*$")
-    , mStepRegexp("^[+-]{0,2}(\\w+)(?: [+-]= .+)?$")
+    , mInitRegexp("^\\$(\\w) = .+$")
+    , mConditionRegexp("^\\$(\\w) [<>]=? .+$")
+    , mStepRegexp("^[+-]{0,2}\\$(\\w)(?: [+-]= .+)?$")
 {
     // Nothing
 }
@@ -73,21 +73,15 @@ qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
                 QString varName = initMatch.captured(1);
 
-                if (varName == "")
-                {
-                    varName = initMatch.captured(2);
-                }
 
-
-
-                if (varName.length() > 3 && conditionMatch.captured(1) != varName && conditionMatch.captured(2) != varName)
+                if (conditionMatch.captured(1) != varName)
                 {
                     worker->addError(path, row, QString("Invalid variable usage. Expected %1").arg(varName));
                 }
 
 
 
-                if (varName.length() > 3 && stepMatch.captured(1) != varName)
+                if (stepMatch.captured(1) != varName)
                 {
                     worker->addError(path, row, QString("Invalid variable usage. Expected %1").arg(varName));
                 }

@@ -80,14 +80,14 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
 
 
-                if (varName.length() > 3 && conditionMatch.captured(1) != varName && conditionMatch.captured(2) != varName)
+                if (conditionMatch.captured(1) != varName && conditionMatch.captured(2) != varName)
                 {
                     worker->addError(path, row, QString("Invalid variable usage. Expected %1").arg(varName));
                 }
 
 
 
-                if (varName.length() > 3 && stepMatch.captured(1) != varName)
+                if (stepMatch.captured(1) != varName)
                 {
                     worker->addError(path, row, QString("Invalid variable usage. Expected %1").arg(varName));
                 }

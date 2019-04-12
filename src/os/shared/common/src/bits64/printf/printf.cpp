@@ -281,7 +281,7 @@ i64 vsprintf(char *buffer, const char *format, va_list args)
 
     char *str;
 
-    for (str = buffer; *format; ++format)
+    for (str = buffer; *format; ++format) // Ignore CppForVerifier
     {
         if (*format != '%')
         {

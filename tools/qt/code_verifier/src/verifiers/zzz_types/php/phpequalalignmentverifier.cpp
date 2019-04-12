@@ -29,7 +29,7 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
     {
         QList<EqualEntry> ranges;
 
-        for (; i < lines.length(); ++i) // Ignore PhpForVerifier
+        for (; i < lines.length(); ++i) // Ignore CppForVerifier
         {
             QString line = lines.at(i);
             VERIFIER_IGNORE(line, "// Ignore PhpEqualAlignmentVerifier");
