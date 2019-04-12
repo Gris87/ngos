@@ -73,7 +73,38 @@ void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
 
 
-                                QString tail = switchLineTrimmed.mid(switchLineTrimmed.indexOf(':') + 1).trimmed();
+                                qint64 index = 0;
+
+                                do
+                                {
+                                    index = switchLineTrimmed.indexOf(':', index);
+
+                                    if (index < 0)
+                                    {
+                                        break;
+                                    }
+
+                                    if (
+                                        index < switchLineTrimmed.length() - 1
+                                        &&
+                                        (
+                                         switchLineTrimmed.at(index + 1) == '\''
+                                         ||
+                                         switchLineTrimmed.at(index + 1) == '\"'
+                                        )
+                                       )
+                                    {
+                                        ++index;
+
+                                        continue;
+                                    }
+
+                                    break;
+                                } while(true);
+
+
+
+                                QString tail = switchLineTrimmed.mid(index + 1).trimmed();
 
                                 if (
                                     !tail.startsWith("return ")
