@@ -77,6 +77,7 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglelinewhileverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppstatementspacesverifier.cpp \
@@ -95,6 +96,7 @@ SOURCES += \
     src/verifiers/zzz_types/php/phpoperatorspacesverifier.cpp \
     src/verifiers/zzz_types/php/phppunctuationverifier.cpp \
     src/verifiers/zzz_types/php/phpshiftverifier.cpp \
+    src/verifiers/zzz_types/php/phpsinglelineforverifier.cpp \
     src/verifiers/zzz_types/php/phpsinglelineifverifier.cpp \
     src/verifiers/zzz_types/php/phpsinglelinewhileverifier.cpp \
     src/verifiers/zzz_types/php/phpstatementspacesverifier.cpp \
@@ -137,6 +139,7 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.h \
     src/verifiers/zzz_types/cpp_h/cppshiftverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.h \
+    src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglelinewhileverifier.h \
     src/verifiers/zzz_types/cpp_h/cppstatementspacesverifier.h \
@@ -155,6 +158,7 @@ HEADERS += \
     src/verifiers/zzz_types/php/phpoperatorspacesverifier.h \
     src/verifiers/zzz_types/php/phppunctuationverifier.h \
     src/verifiers/zzz_types/php/phpshiftverifier.h \
+    src/verifiers/zzz_types/php/phpsinglelineforverifier.h \
     src/verifiers/zzz_types/php/phpsinglelineifverifier.h \
     src/verifiers/zzz_types/php/phpsinglelinewhileverifier.h \
     src/verifiers/zzz_types/php/phpstatementspacesverifier.h \

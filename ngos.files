@@ -867,6 +867,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglelinewhileverifier.cpp
@@ -903,6 +905,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/php/phppunctuationverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/php/phppunctuationverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/php/phpshiftverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/php/phpshiftverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/php/phpsinglelineforverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/php/phpsinglelineforverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/php/phpsinglelineifverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/php/phpsinglelineifverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/php/phpsinglelinewhileverifier.cpp
