@@ -138,17 +138,6 @@ inline bool validateSignMultiplyCase2(const QChar &chPrev1, const QChar &/*chPre
 inline bool validateSignMultiplyCase3(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
 {
     // Cases:
-    //      "[a-z0-9]* "
-    //               ^
-
-    return chPrev1.isLetterOrNumber()
-            &&
-            isSpaceOrEmpty(chNext1);
-}
-
-inline bool validateSignMultiplyCase4(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
-{
-    // Cases:
     //      " *[a-z_]"
     //      "(*[a-z_]"
     //      ")*[a-z_]"
@@ -170,6 +159,17 @@ inline bool validateSignMultiplyCase4(const QChar &chPrev1, const QChar &/*chPre
                 ||
                 chPrev1 == ')'
             );
+}
+
+inline bool validateSignMultiplyCase4(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
+{
+    // Cases:
+    //      "[a-z0-9]* "
+    //               ^
+
+    return chPrev1.isLetterOrNumber()
+            &&
+            isSpaceOrEmpty(chNext1);
 }
 
 inline bool validateSignMultiplyCase5(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &chNext2, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)

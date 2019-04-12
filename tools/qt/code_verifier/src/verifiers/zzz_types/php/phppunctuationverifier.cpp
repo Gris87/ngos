@@ -62,8 +62,6 @@ inline bool validateChar(const QChar &ch, const QChar &chPrev1, const QChar &chN
     //
     //      "?\""
     //      "?\\"
-    //       ^
-    //
     //      "? "
     //       ^
     if (
