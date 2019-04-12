@@ -82,10 +82,6 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             ||
                             anotherLineTrimmed == '}'
                             ||
-                            anotherLineTrimmed == '('
-                            ||
-                            anotherLineTrimmed == ')'
-                            ||
                             anotherLineTrimmed == "//"
                             ||
                             anotherLineTrimmed.startsWith("} while(")
@@ -125,10 +121,6 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             anotherLineTrimmed == '{'
                             ||
                             anotherLineTrimmed == '}'
-                            ||
-                            anotherLineTrimmed == '('
-                            ||
-                            anotherLineTrimmed == ')'
                             ||
                             anotherLineTrimmed == "//"
                             ||
