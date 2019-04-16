@@ -48,18 +48,24 @@ private slots:
 private:
     void prepareLanguages(); // TEST: NO
     QList<UsbDeviceInfo *> getUsbDevices(); // TEST: NO
+    void switchToState(State state); // TEST: NO
+    void handleGetLatestVersionState(); // TEST: NO
+    void handleGetFileListState(); // TEST: NO
+    void resetToInitialState(); // TEST: NO
     void addLog(const QString &text); // TEST: NO
 
     void saveWindowState(); // TEST: NO
     void loadWindowState(); // TEST: NO
 
-    Ui::MainWindow            *ui;
-    QTranslator               *mTranslator;
-    QTimer                    *mUpdateTimer;
-    QNetworkAccessManager     *mManager;
-    State                      mState;
-    QString                    mLanguage;
-    QHash<QString, QAction *>  mLanguageActions;
+    Ui::MainWindow                 *ui;
+    QTranslator                    *mTranslator;
+    QTimer                         *mUpdateTimer;
+    QNetworkAccessManager          *mManager;
+    State                           mState;
+    qint64                          mRequestTime;
+    QHash<QString, QNetworkReply *> mReplies;
+    QString                         mLanguage;
+    QHash<QString, QAction *>       mLanguageActions;
 };
 
 
