@@ -174,7 +174,7 @@ void MainWindow::latestVersionReplyFinished()
         QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());
         QJsonObject   json         = jsonDocument.object();
 
-        if (json["status"].toString() == "OK")
+        if (json["status"].toString("") == "OK")
         {
             QJsonValue version = json["version"];
 

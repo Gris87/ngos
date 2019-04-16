@@ -67,31 +67,56 @@
         <translation>About (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="69"/>
+        <location filename="../../src/main/mainwindow.cpp" line="80"/>
         <source>Format disk</source>
         <translation>Format disk</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="69"/>
+        <location filename="../../src/main/mainwindow.cpp" line="80"/>
         <source>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</source>
         <translation>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="107"/>
+        <location filename="../../src/main/mainwindow.cpp" line="115"/>
         <source>Language switched to %1</source>
         <translation>Language switched to %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="122"/>
+        <location filename="../../src/main/mainwindow.cpp" line="130"/>
         <source>Found devices: %1</source>
         <translation>Found devices: %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="167"/>
+        <location filename="../../src/main/mainwindow.cpp" line="188"/>
+        <location filename="../../src/main/mainwindow.cpp" line="193"/>
+        <location filename="../../src/main/mainwindow.cpp" line="202"/>
+        <location filename="../../src/main/mainwindow.cpp" line="213"/>
+        <location filename="../../src/main/mainwindow.cpp" line="218"/>
         <source>Failed to get information about latest version from server %1: %2</source>
         <translation>Failed to get information about latest version from server %1: %2</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="188"/>
+        <location filename="../../src/main/mainwindow.cpp" line="202"/>
+        <source>version field absent</source>
+        <translation>version field absent</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="193"/>
+        <source>hash field absent</source>
+        <translation>hash field absent</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="197"/>
+        <source>Response received from server %1 in %2 ms. Version: %3</source>
+        <translation>Response received from server %1 in %2 ms. Version: %3</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="373"/>
+        <source>Operation terminated by user</source>
+        <translation>Operation terminated by user</translation>
     </message>
 </context>
 </TS>
