@@ -6,7 +6,6 @@
 #include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonValue>
 #include <QMessageBox>
 #include <QNetworkRequest>
 #include <QUrl>
@@ -33,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
     , mState(State::INITIAL)
     , mRequestTime(0)
     , mReplies()
+    , mLatestVersions()
+    , mSelectedVersionInfo()
     , mLanguage()
     , mLanguageActions()
 {
@@ -178,12 +179,22 @@ void MainWindow::latestVersionReplyFinished()
         {
             QJsonValue version = json["version"];
 
-            if (version.type() != QJsonValue::Undefined)
+            if (version.type() == QJsonValue::Undefined)
             {
-                QJsonValue versionId   = version["version"];
+                addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));
+            }
+            else
+            {
+                QJsonValue versionId   = version["id"];
+                QJsonValue versionCode = version["version"];
                 QJsonValue versionHash = version["hash"];
 
                 if (versionId.type() == QJsonValue::Undefined)
+                {
+                    addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("id field absent")));
+                }
+                else
+                if (versionCode.type() == QJsonValue::Undefined)
                 {
                     addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));
                 }
@@ -194,12 +205,20 @@ void MainWindow::latestVersionReplyFinished()
                 }
                 else
                 {
-                    addLog(tr("Response received from server %1 in %2 ms. Version: %3").arg(server).arg(delay).arg(versionId.toVariant().toULongLong()));
+                    VersionInfo versionInfo;
+
+                    versionInfo.id      = versionId.toVariant().toULongLong();
+                    versionInfo.version = versionCode.toVariant().toULongLong();
+                    versionInfo.hash    = versionHash.toString("");
+                    versionInfo.server  = server;
+                    versionInfo.delay   = delay;
+
+                    mLatestVersions.insert(server, versionInfo);
+
+
+
+                    addLog(tr("Response received from server %1 in %2 ms. Version: %3").arg(server).arg(delay).arg(versionInfo.version));
                 }
-            }
-            else
-            {
-                addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));
             }
         }
         else
@@ -232,6 +251,85 @@ void MainWindow::latestVersionReplyFinished()
     if (!mReplies.size()) // mReplies.size() == 0
     {
         switchToState(State::GET_FILE_LIST);
+    }
+}
+
+void MainWindow::fileListReplyFinished()
+{
+    QNetworkReply *reply  = (QNetworkReply *)sender();
+    QString        server = reply->url().host();
+
+
+
+    if (!reply->error())
+    {
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());
+        QJsonObject   json         = jsonDocument.object();
+
+        if (json["status"].toString("") == "OK")
+        {
+            QJsonValue version = json["version"];
+
+            if (version.type() == QJsonValue::Undefined)
+            {
+                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
+            }
+            else
+            {
+                QJsonValue versionId   = version["id"];
+                QJsonValue versionCode = version["version"];
+                QJsonValue versionHash = version["hash"];
+
+                if (versionId.type() == QJsonValue::Undefined)
+                {
+                    addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("id field absent")));
+                }
+                else
+                if (versionCode.type() == QJsonValue::Undefined)
+                {
+                    addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
+                }
+                else
+                if (versionHash.type() == QJsonValue::Undefined)
+                {
+                    addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("hash field absent")));
+                }
+                else
+                {
+                    addLog(tr("File list received from server %1").arg(server));
+                }
+            }
+        }
+        else
+        {
+            QJsonValue message = json["message"];
+            QJsonValue details = json["details"];
+
+            QString messageStr = message.toString("");
+            QString detailsStr = details.toString("");
+
+            addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ")") : "")));
+        }
+    }
+    else
+    {
+        addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(reply->errorString()));
+    }
+
+
+
+    reply->deleteLater();
+
+    if (mReplies.remove(server) != 1)
+    {
+        qFatal("Unknown reply");
+    }
+
+
+
+    if (!mReplies.size()) // mReplies.size() == 0
+    {
+        switchToState(State::DOWNLOAD);
     }
 }
 
@@ -298,6 +396,7 @@ void MainWindow::switchToState(State state)
     {
         case State::GET_LATEST_VERSION: handleGetLatestVersionState(); break;
         case State::GET_FILE_LIST:      handleGetFileListState();      break;
+        case State::DOWNLOAD:           handleDownloadState();         break;
 
         case State::INITIAL:
         {
@@ -323,7 +422,7 @@ void MainWindow::handleGetLatestVersionState()
 
 
 
-        QNetworkRequest request(QUrl("https://" + server + "/rest/app_versions.php?codename=com.ngos.installer&version=latest&include_files=false"));
+        QNetworkRequest request(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=latest&include_files=false").arg(server)));
         QNetworkReply *reply = mManager->get(request);
 
         connect(reply, SIGNAL(finished()), this, SLOT(latestVersionReplyFinished()));
@@ -335,6 +434,106 @@ void MainWindow::handleGetLatestVersionState()
 }
 
 void MainWindow::handleGetFileListState()
+{
+    if (!mLatestVersions.size()) // mLatestVersions.size() == 0
+    {
+        switchToInitialState();
+
+        addLog(tr("Latest version is unavailable"));
+
+
+
+        return;
+    }
+
+
+
+    QHash<quint64, QList<const VersionInfo *>> versionGroups;
+
+    for (QHash<QString, VersionInfo>::iterator i = mLatestVersions.begin(); i != mLatestVersions.end(); ++i)
+    {
+        const VersionInfo *versionInfo = &i.value();
+
+        versionGroups[versionInfo->version].append(versionInfo);
+    }
+
+
+
+
+    qint64                      max          = 0;
+    QList<const VersionInfo *> *generalGroup = 0;
+
+    for (QHash<quint64, QList<const VersionInfo *>>::iterator i = versionGroups.begin(); i != versionGroups.end(); ++i)
+    {
+        QList<const VersionInfo *> *versions = &i.value();
+
+
+
+        const VersionInfo *firstVersionInfo = versions->constFirst();
+
+        for (qint64 j = 1; j < versions->length(); ++j)
+        {
+            const VersionInfo *versionInfo = versions->at(j);
+
+            if (
+                versionInfo->id != firstVersionInfo->id
+                ||
+                versionInfo->version != firstVersionInfo->version
+                ||
+                versionInfo->hash != firstVersionInfo->hash
+               )
+            {
+                switchToInitialState();
+
+                addLog(tr("Database is broken"));
+
+
+
+                return;
+            }
+        }
+
+
+
+        if (versions->length() > max)
+        {
+            max          = versions->length();
+            generalGroup = versions;
+        }
+    }
+
+
+
+    const VersionInfo *selectedVersionInfo = generalGroup->at(0);
+    qint64             min                 = selectedVersionInfo->delay;
+
+    for (qint64 i = 1; i < generalGroup->length(); ++i)
+    {
+        if (generalGroup->at(i)->delay < min)
+        {
+            selectedVersionInfo = generalGroup->at(i);
+            min                 = selectedVersionInfo->delay;
+        }
+    }
+
+
+
+    mSelectedVersionInfo = *selectedVersionInfo;
+    mLatestVersions.remove(selectedVersionInfo->server);
+
+
+
+    QNetworkRequest request(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=%2&include_files=true").arg(mSelectedVersionInfo.server).arg(mSelectedVersionInfo.version)));
+    QNetworkReply *reply = mManager->get(request);
+
+    connect(reply, SIGNAL(finished()), this, SLOT(fileListReplyFinished()));
+
+
+
+    mReplies.insert(mSelectedVersionInfo.server, reply);
+}
+
+void MainWindow::handleDownloadState()
 {
 
 }
@@ -363,15 +562,18 @@ void MainWindow::resetToInitialState()
 
 
 
-        mState = State::INITIAL;
-
-        ui->deviceComboBox->setEnabled(true);
-        ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier
-
-
+        switchToInitialState();
 
         addLog(tr("Operation terminated by user"));
     }
+}
+
+void MainWindow::switchToInitialState()
+{
+    mState = State::INITIAL;
+
+    ui->deviceComboBox->setEnabled(true);
+    ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier
 }
 
 void MainWindow::addLog(const QString &text)

@@ -68,7 +68,8 @@ HEADERS += \
     src/other/state.h \
     src/other/usbdeviceinfo.h \
     src/other/usbproperties.h \
-    src/other/usbspeed.h
+    src/other/usbspeed.h \
+    src/other/versioninfo.h
 
 FORMS += \
     src/main/aboutdialog.ui \

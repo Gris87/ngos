@@ -14,6 +14,7 @@
 #include "src/other/state.h"
 #include "src/other/usbdeviceinfo.h"
 #include "src/other/usbspeed.h"
+#include "src/other/versioninfo.h"
 
 
 
@@ -44,6 +45,7 @@ private slots:
     void updateUsbDevices(); // TEST: NO
     void ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &errors); // TEST: NO
     void latestVersionReplyFinished(); // TEST: NO
+    void fileListReplyFinished(); // TEST: NO
 
 private:
     void prepareLanguages(); // TEST: NO
@@ -51,7 +53,9 @@ private:
     void switchToState(State state); // TEST: NO
     void handleGetLatestVersionState(); // TEST: NO
     void handleGetFileListState(); // TEST: NO
+    void handleDownloadState(); // TEST: NO
     void resetToInitialState(); // TEST: NO
+    void switchToInitialState(); // TEST: NO
     void addLog(const QString &text); // TEST: NO
 
     void saveWindowState(); // TEST: NO
@@ -64,6 +68,8 @@ private:
     State                           mState;
     qint64                          mRequestTime;
     QHash<QString, QNetworkReply *> mReplies;
+    QHash<QString, VersionInfo>     mLatestVersions;
+    VersionInfo                     mSelectedVersionInfo;
     QString                         mLanguage;
     QHash<QString, QAction *>       mLanguageActions;
 };
