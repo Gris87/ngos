@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mReplies()
     , mLatestVersions()
     , mSelectedVersionInfo()
+    , mVersionFiles()
     , mLanguage()
     , mLanguageActions()
 {
@@ -168,6 +170,15 @@ void MainWindow::latestVersionReplyFinished()
 
 
 
+    reply->deleteLater();
+
+    if (mReplies.remove(server) != 1)
+    {
+        qFatal("Unknown reply");
+    }
+
+
+
     if (!reply->error())
     {
         qint64 delay = QDateTime::currentMSecsSinceEpoch() - mRequestTime;
@@ -179,7 +190,7 @@ void MainWindow::latestVersionReplyFinished()
         {
             QJsonValue version = json["version"];
 
-            if (version.type() == QJsonValue::Undefined)
+            if (version.isUndefined())
             {
                 addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));
             }
@@ -189,17 +200,17 @@ void MainWindow::latestVersionReplyFinished()
                 QJsonValue versionCode = version["version"];
                 QJsonValue versionHash = version["hash"];
 
-                if (versionId.type() == QJsonValue::Undefined)
+                if (versionId.isUndefined())
                 {
                     addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("id field absent")));
                 }
                 else
-                if (versionCode.type() == QJsonValue::Undefined)
+                if (versionCode.isUndefined())
                 {
                     addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));
                 }
                 else
-                if (versionHash.type() == QJsonValue::Undefined)
+                if (versionHash.isUndefined())
                 {
                     addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("hash field absent")));
                 }
@@ -239,15 +250,6 @@ void MainWindow::latestVersionReplyFinished()
 
 
 
-    reply->deleteLater();
-
-    if (mReplies.remove(server) != 1)
-    {
-        qFatal("Unknown reply");
-    }
-
-
-
     if (!mReplies.size()) // mReplies.size() == 0
     {
         switchToState(State::GET_FILE_LIST);
@@ -261,6 +263,15 @@ void MainWindow::fileListReplyFinished()
 
 
 
+    reply->deleteLater();
+
+    if (mReplies.remove(server) != 1)
+    {
+        qFatal("Unknown reply");
+    }
+
+
+
     if (!reply->error())
     {
         QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());
@@ -269,10 +280,16 @@ void MainWindow::fileListReplyFinished()
         if (json["status"].toString("") == "OK")
         {
             QJsonValue version = json["version"];
+            QJsonValue files   = json["files"];
 
-            if (version.type() == QJsonValue::Undefined)
+            if (version.isUndefined())
             {
                 addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
+            }
+            else
+            if (files.isUndefined())
+            {
+                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("files field absent")));
             }
             else
             {
@@ -280,22 +297,118 @@ void MainWindow::fileListReplyFinished()
                 QJsonValue versionCode = version["version"];
                 QJsonValue versionHash = version["hash"];
 
-                if (versionId.type() == QJsonValue::Undefined)
+                if (versionId.isUndefined())
                 {
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("id field absent")));
                 }
                 else
-                if (versionCode.type() == QJsonValue::Undefined)
+                if (versionCode.isUndefined())
                 {
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
                 }
                 else
-                if (versionHash.type() == QJsonValue::Undefined)
+                if (versionHash.isUndefined())
                 {
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("hash field absent")));
                 }
                 else
                 {
+                    if (
+                        mSelectedVersionInfo.id != versionId.toVariant().toULongLong()
+                        ||
+                        mSelectedVersionInfo.version != versionCode.toVariant().toULongLong()
+                        ||
+                        mSelectedVersionInfo.hash != versionHash.toString("")
+                       )
+                    {
+                        addLog(tr("File list received from server %1 did't match with stored value").arg(server));
+
+                        switchToState(State::GET_FILE_LIST);
+
+                        return;
+                    }
+
+
+
+                    quint64    resultHash[2] = { 0, 0 };
+                    QJsonArray filesArray    = files.toArray();
+
+                    for (qint64 i = 0; i < filesArray.size(); ++i)
+                    {
+                        QJsonValue fileHash = filesArray.at(i)["hash"];
+
+
+
+                        QByteArray fileHashBytes = QByteArray::fromHex(fileHash.toString("").toLatin1());
+
+                        if (fileHashBytes.length() != 16)
+                        {
+                            addLog(tr("File list received from server %1 did't match with stored value").arg(server));
+
+                            switchToState(State::GET_FILE_LIST);
+
+                            return;
+                        }
+
+
+
+                        resultHash[0] ^= ((quint64 *)fileHashBytes.data())[0];
+                        resultHash[1] ^= ((quint64 *)fileHashBytes.data())[1];
+                    }
+
+
+
+                    if (mSelectedVersionInfo.hash != QString::fromLatin1(QByteArray((char *)resultHash, 16).toHex()))
+                    {
+                        addLog(tr("File list received from server %1 did't match with stored value").arg(server));
+
+                        switchToState(State::GET_FILE_LIST);
+
+                        return;
+                    }
+
+
+
+                    mVersionFiles.clear();
+
+                    for (qint64 i = 0; i < filesArray.size(); ++i)
+                    {
+                        QJsonValue file = filesArray.at(i);
+
+                        QJsonValue fileDownloadName = file["download_name"];
+                        QJsonValue fileFilename     = file["filename"];
+                        QJsonValue fileHash         = file["hash"];
+
+
+
+                        if (
+                            fileDownloadName.isUndefined()
+                            ||
+                            fileFilename.isUndefined()
+                            ||
+                            fileHash.isUndefined()
+                           )
+                        {
+                            addLog(tr("File list received from server %1 did't match with stored value").arg(server));
+
+                            switchToState(State::GET_FILE_LIST);
+
+                            return;
+                        }
+
+
+
+                        FileInfo fileInfo;
+
+                        fileInfo.downloadName = fileDownloadName.toString("");
+                        fileInfo.filename     = fileFilename.toString("");
+                        fileInfo.hash         = fileHash.toString("");
+
+                        mVersionFiles.append(fileInfo);
+                    }
+
+
+
                     addLog(tr("File list received from server %1").arg(server));
                 }
             }
@@ -318,18 +431,43 @@ void MainWindow::fileListReplyFinished()
 
 
 
+    if (!mReplies.size()) // mReplies.size() == 0
+    {
+        switchToState(State::DOWNLOAD);
+    }
+}
+
+void MainWindow::downloadReplyFinished()
+{
+    QNetworkReply *reply    = (QNetworkReply *)sender();
+    QString        server   = reply->url().host();
+    FileInfo      *fileInfo = reply->property("fileinfo").value<FileInfo *>();
+
+
+
     reply->deleteLater();
 
-    if (mReplies.remove(server) != 1)
+    if (mReplies.remove(fileInfo->filename) != 1)
     {
         qFatal("Unknown reply");
     }
 
 
 
+    if (!reply->error())
+    {
+        addLog(tr("Downloaded file %1 from server %2").arg(fileInfo->filename).arg(server));
+    }
+    else
+    {
+        addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->filename).arg(server).arg(reply->errorString()));
+    }
+
+
+
     if (!mReplies.size()) // mReplies.size() == 0
     {
-        switchToState(State::DOWNLOAD);
+        switchToState(State::BURNING);
     }
 }
 
@@ -397,6 +535,7 @@ void MainWindow::switchToState(State state)
         case State::GET_LATEST_VERSION: handleGetLatestVersionState(); break;
         case State::GET_FILE_LIST:      handleGetFileListState();      break;
         case State::DOWNLOAD:           handleDownloadState();         break;
+        case State::BURNING:            handleBurningState();          break;
 
         case State::INITIAL:
         {
@@ -414,7 +553,11 @@ void MainWindow::switchToState(State state)
 
 void MainWindow::handleGetLatestVersionState()
 {
+    addLog(tr("Getting information about latest version from servers:"));
+
     mRequestTime = QDateTime::currentMSecsSinceEpoch();
+
+
 
     for (qint64 i = 0; i < servers.length(); ++i)
     {
@@ -535,7 +678,39 @@ void MainWindow::handleGetFileListState()
 
 void MainWindow::handleDownloadState()
 {
+    for (qint64 i = 0; i < mVersionFiles.length(); ++i)
+    {
+        FileInfo *fileInfo = &mVersionFiles[i];
 
+        QNetworkRequest request(QUrl(QString("https://%1/downloads/%2").arg(mSelectedVersionInfo.server).arg(fileInfo->downloadName)));
+        QNetworkReply *reply = mManager->get(request);
+
+
+
+        QVariant data;
+        data.setValue(fileInfo);
+
+        reply->setProperty("fileinfo", data);
+
+
+
+        connect(reply, SIGNAL(finished()), this, SLOT(downloadReplyFinished()));
+
+
+
+        mReplies.insert(fileInfo->filename, reply);
+    }
+}
+
+void MainWindow::handleBurningState()
+{
+    addLog(tr("Making bootable USB flash drive"));
+
+
+
+    switchToInitialState();
+
+    addLog(tr("Done"));
 }
 
 void MainWindow::resetToInitialState()

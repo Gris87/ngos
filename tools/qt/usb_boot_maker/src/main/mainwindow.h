@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <QTranslator>
 
+#include "src/other/fileinfo.h"
 #include "src/other/state.h"
 #include "src/other/usbdeviceinfo.h"
 #include "src/other/usbspeed.h"
@@ -46,6 +47,7 @@ private slots:
     void ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &errors); // TEST: NO
     void latestVersionReplyFinished(); // TEST: NO
     void fileListReplyFinished(); // TEST: NO
+    void downloadReplyFinished(); // TEST: NO
 
 private:
     void prepareLanguages(); // TEST: NO
@@ -54,6 +56,7 @@ private:
     void handleGetLatestVersionState(); // TEST: NO
     void handleGetFileListState(); // TEST: NO
     void handleDownloadState(); // TEST: NO
+    void handleBurningState(); // TEST: NO
     void resetToInitialState(); // TEST: NO
     void switchToInitialState(); // TEST: NO
     void addLog(const QString &text); // TEST: NO
@@ -70,6 +73,7 @@ private:
     QHash<QString, QNetworkReply *> mReplies;
     QHash<QString, VersionInfo>     mLatestVersions;
     VersionInfo                     mSelectedVersionInfo;
+    QList<FileInfo>                 mVersionFiles;
     QString                         mLanguage;
     QHash<QString, QAction *>       mLanguageActions;
 };

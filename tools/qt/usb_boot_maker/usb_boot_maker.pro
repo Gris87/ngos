@@ -65,6 +65,7 @@ SOURCES += \
 HEADERS += \
     src/main/aboutdialog.h \
     src/main/mainwindow.h \
+    src/other/fileinfo.h \
     src/other/state.h \
     src/other/usbdeviceinfo.h \
     src/other/usbproperties.h \
