@@ -83,9 +83,9 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *r
                 case DBT_DEVICEREMOVECOMPLETE:
                 case DBT_DEVNODES_CHANGED:
                 {
-                    if (!mUpdateTimer.isActive())
+                    if (!mUpdateTimer->isActive())
                     {
-                        mUpdateTimer.start(1000);
+                        mUpdateTimer->start(1000);
                     }
                 }
                 break;

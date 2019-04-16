@@ -6,9 +6,12 @@
 #include <QMainWindow>
 
 #include <QList>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QTimer>
 #include <QTranslator>
 
+#include "src/other/state.h"
 #include "src/other/usbdeviceinfo.h"
 #include "src/other/usbspeed.h"
 
@@ -39,6 +42,8 @@ private slots:
 
     void languageToggled(bool checked); // TEST: NO
     void updateUsbDevices(); // TEST: NO
+    void ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &errors); // TEST: NO
+    void latestVersionReplyFinished(); // TEST: NO
 
 private:
     void prepareLanguages(); // TEST: NO
@@ -50,9 +55,11 @@ private:
 
     Ui::MainWindow            *ui;
     QTranslator               *mTranslator;
+    QTimer                    *mUpdateTimer;
+    QNetworkAccessManager     *mManager;
+    State                      mState;
     QString                    mLanguage;
     QHash<QString, QAction *>  mLanguageActions;
-    QTimer                     mUpdateTimer;
 };
 
 

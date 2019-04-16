@@ -67,26 +67,31 @@
         <translation>О программе (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <location filename="../../src/main/mainwindow.cpp" line="69"/>
         <source>Format disk</source>
         <translation>Форматирование диска</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <location filename="../../src/main/mainwindow.cpp" line="69"/>
         <source>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</source>
         <translation>Вы действительно хотите отформатировать диск &quot;%1&quot;?
 Это действие удалит все данные с устройства!</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="83"/>
+        <location filename="../../src/main/mainwindow.cpp" line="107"/>
         <source>Language switched to %1</source>
         <translation>Язык изменен на %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="98"/>
+        <location filename="../../src/main/mainwindow.cpp" line="122"/>
         <source>Found devices: %1</source>
         <translation>Найдено устройств: %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="167"/>
+        <source>Failed to get information about latest version from server %1: %2</source>
+        <translation>Не удалось получить информацию о последней версии с сервера %1: %2</translation>
     </message>
 </context>
 </TS>

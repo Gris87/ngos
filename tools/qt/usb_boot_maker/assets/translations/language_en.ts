@@ -67,26 +67,31 @@
         <translation>About (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <location filename="../../src/main/mainwindow.cpp" line="69"/>
         <source>Format disk</source>
         <translation>Format disk</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="56"/>
+        <location filename="../../src/main/mainwindow.cpp" line="69"/>
         <source>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</source>
         <translation>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="83"/>
+        <location filename="../../src/main/mainwindow.cpp" line="107"/>
         <source>Language switched to %1</source>
         <translation>Language switched to %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="98"/>
+        <location filename="../../src/main/mainwindow.cpp" line="122"/>
         <source>Found devices: %1</source>
         <translation>Found devices: %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="167"/>
+        <source>Failed to get information about latest version from server %1: %2</source>
+        <translation>Failed to get information about latest version from server %1: %2</translation>
     </message>
 </context>
 </TS>

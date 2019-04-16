@@ -1,4 +1,4 @@
-QT += core gui widgets
+QT += core gui widgets network
 
 CONFIG += c++14
 
@@ -65,6 +65,7 @@ SOURCES += \
 HEADERS += \
     src/main/aboutdialog.h \
     src/main/mainwindow.h \
+    src/other/state.h \
     src/other/usbdeviceinfo.h \
     src/other/usbproperties.h \
     src/other/usbspeed.h

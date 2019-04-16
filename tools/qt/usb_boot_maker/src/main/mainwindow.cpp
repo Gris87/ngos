@@ -4,15 +4,31 @@
 #include <QDebug>
 #include <QDir>
 #include <QMessageBox>
+#include <QNetworkRequest>
+#include <QUrl>
 #include <QSettings>
 
 #include "src/main/aboutdialog.h"
 
 
 
+#define MASTER_SERVER "10.83.230.9"
+
+
+
+const QStringList servers = { MASTER_SERVER, "10.83.230.40", "10.83.230.42", "10.83.230.43", "10.83.230.41", "10.83.230.44" };
+
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow())
+    , mTranslator(new QTranslator(this))
+    , mUpdateTimer(new QTimer(this))
+    , mManager(new QNetworkAccessManager(this))
+    , mState(State::INITIAL)
+    , mLanguage()
+    , mLanguageActions()
 {
     ui->setupUi(this);
 
@@ -21,15 +37,19 @@ MainWindow::MainWindow(QWidget *parent)
     mTranslator = new QTranslator(this);
     prepareLanguages();
 
+
+
+    mUpdateTimer->setSingleShot(true);
+    connect(mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateUsbDevices()));
+
+
+
+    mManager = new QNetworkAccessManager(this);
+    connect(mManager, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)), this, SLOT(ignoreSslErrors(QNetworkReply *, const QList<QSslError> &)));
+
+
+
     loadWindowState();
-
-
-
-    mUpdateTimer.setSingleShot(true);
-    connect(&mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateUsbDevices()));
-
-
-
     updateUsbDevices();
 }
 
@@ -56,6 +76,16 @@ void MainWindow::on_startButton_clicked()
     if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok)
     {
         ui->startButton->setIcon(QIcon(":/assets/images/stop.png")); // Ignore CppPunctuationVerifier
+
+
+
+        for (qint64 i = 0; i < servers.length(); ++i)
+        {
+            QNetworkRequest request(QUrl("https://" + servers.at(i) + "/rest/app_versions.php?codename=com.ngos.installer&version=latest&include_files=false"));
+            QNetworkReply *reply = mManager->get(request);
+
+            connect(reply, SIGNAL(finished()), this, SLOT(latestVersionReplyFinished()));
+        }
     }
 }
 
@@ -86,7 +116,7 @@ void MainWindow::languageToggled(bool checked)
 
 void MainWindow::updateUsbDevices()
 {
-    mUpdateTimer.stop();
+    mUpdateTimer->stop();
 
 
 
@@ -121,6 +151,25 @@ void MainWindow::updateUsbDevices()
 
 
     ui->startButton->setEnabled(usbDevices.length()); // usbDevices.length() > 0
+}
+
+void MainWindow::ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &/*errors*/)
+{
+    reply->ignoreSslErrors();
+}
+
+void MainWindow::latestVersionReplyFinished()
+{
+    QNetworkReply *reply = (QNetworkReply *)sender();
+
+    if (!reply->error())
+    {
+        addLog("Nice");
+    }
+    else
+    {
+        addLog(tr("Failed to get information about latest version from server %1: %2").arg(reply->url().host()).arg(reply->errorString()));
+    }
 }
 
 void MainWindow::prepareLanguages()
