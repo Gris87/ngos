@@ -12,7 +12,7 @@
 
 MemoryMapDialog::MemoryMapDialog(HexGraphicsView *hexgraphicsview, QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::MemoryMapDialog)
+    , ui(new Ui::MemoryMapDialog())
     , mHexgraphicsview(hexgraphicsview)
     , mWorkers()
     , mWorkersCompleted(0)

@@ -40,7 +40,7 @@ QBrush whiteCellBrush(QColor("#FFFFFF"));
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow())
     , mIsExecuting(false)
     , mWaitingTimer()
     , mRestartThread(0)
