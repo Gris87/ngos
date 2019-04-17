@@ -10,16 +10,6 @@
 
 
 
-#define VERIFIER_REMOVE_COMMENTS(line) \
-    { \
-        qint64 index = line.indexOf("//"); \
-        \
-        if (index >= 0 && (!index || line.at(index - 1) != '\"') && (index >= line.length() - 2 || line.at(index + 2) != '\"')) \
-        { \
-            line = line.left(index); \
-        } \
-    }
-
 #define VERIFIER_IGNORE(line, comment) \
     if (line.contains(comment)) \
     { \
@@ -55,6 +45,101 @@ public:
 
 protected:
     virtual void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines); // TEST: NO
+
+    inline void removeComments(QString &line)
+    {
+        for (qint64 i = 0; i < line.length(); ++i)
+        {
+            if (line.at(i) == '\\')
+            {
+                ++i;
+
+                continue;
+            }
+
+            if (line.at(i) == '\"')
+            {
+                ++i;
+
+                while (i < line.length())
+                {
+                    if (line.at(i) == '\\')
+                    {
+                        i += 2;
+
+                        continue;
+                    }
+
+                    if (line.at(i) == '\"')
+                    {
+                        break;
+                    }
+
+                    ++i;
+                }
+
+                continue;
+            }
+
+            if (
+                i > 0
+                &&
+                line.at(i - 1) == '/'
+                &&
+                line.at(i) == '/'
+               )
+            {
+                line = line.left(i - 1);
+
+                break;
+            }
+        }
+    }
+
+    inline void removeStrings(QString &line)
+    {
+        for (qint64 i = 0; i < line.length(); ++i)
+        {
+            if (line.at(i) == '\\')
+            {
+                ++i;
+
+                continue;
+            }
+
+            if (line.at(i) == '\"')
+            {
+                qint64 startIndex = i;
+
+
+
+                ++i;
+
+                while (i < line.length())
+                {
+                    if (line.at(i) == '\\')
+                    {
+                        i += 2;
+
+                        continue;
+                    }
+
+                    if (line.at(i) == '\"')
+                    {
+                        break;
+                    }
+
+                    ++i;
+                }
+
+
+
+                line.remove(startIndex, i - startIndex + 1);
+
+                i = startIndex - 1;
+            }
+        }
+    }
 
 private:
     static QList<BaseCodeVerifier *> sVerifiers;

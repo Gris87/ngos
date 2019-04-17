@@ -16,6 +16,7 @@ void CppExternDeclaredVerifier::verify(CodeWorkerThread *worker, const QString &
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppExternDeclaredVerifier");
+        // removeComments(line); // Do not remove comments
 
 
 

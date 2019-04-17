@@ -21,6 +21,7 @@ void AsmIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "# AsmIndentVerifier");
+        // removeComments(line); // Can't remove comments
 
 
 

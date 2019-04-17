@@ -16,7 +16,7 @@ void PhpSingleLineIfVerifier::verify(CodeWorkerThread *worker, const QString &pa
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore PhpSingleLineIfVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

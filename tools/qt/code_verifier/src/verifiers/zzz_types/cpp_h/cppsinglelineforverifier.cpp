@@ -16,7 +16,7 @@ void CppSingleLineForVerifier::verify(CodeWorkerThread *worker, const QString &p
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppSingleLineForVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

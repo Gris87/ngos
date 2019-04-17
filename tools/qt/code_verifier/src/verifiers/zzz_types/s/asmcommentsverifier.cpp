@@ -20,6 +20,7 @@ void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "# AsmCommentsVerifier");
+        // removeComments(line); // Can't remove comments
 
 
 

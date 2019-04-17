@@ -27,6 +27,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppReleaseUsageVerifier");
+        removeComments(line);
 
 
 

@@ -16,7 +16,7 @@ void CppSingleLineIfVerifier::verify(CodeWorkerThread *worker, const QString &pa
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppSingleLineIfVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 
@@ -100,7 +100,7 @@ void CppSingleLineIfVerifier::verify(CodeWorkerThread *worker, const QString &pa
                 }
                 else
                 {
-                    worker->addError(path, i, "Single line if statement is prohibited");
+                    worker->addError(path, i, "Single line if statement is prohibited" + lineTrimmed);
                 }
             }
         }

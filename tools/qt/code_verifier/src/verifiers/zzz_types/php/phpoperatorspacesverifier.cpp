@@ -715,7 +715,7 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore PhpOperatorSpacesVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

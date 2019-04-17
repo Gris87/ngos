@@ -100,7 +100,7 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
         worker->addError(path, 1, QString("Expected \"#define %1\"").arg(defineName));
     }
 
-    if (lines.at(lines.length() - 2) != "#endif // " + defineName) // Ignore CppSingleLineIfVerifier
+    if (lines.at(lines.length() - 2) != "#endif // " + defineName)
     {
         worker->addError(path, lines.length() - 2, QString("Expected \"#endif // %1\"").arg(defineName));
     }

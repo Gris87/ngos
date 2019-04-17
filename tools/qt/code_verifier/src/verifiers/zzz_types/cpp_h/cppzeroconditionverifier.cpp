@@ -24,13 +24,13 @@ void CppZeroConditionVerifier::verify(CodeWorkerThread *worker, const QString &p
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppZeroConditionVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 
         QString lineTrimmed = line.trimmed();
 
-        if (lineTrimmed.contains("ASSERT("))
+        if (lineTrimmed.contains("_ASSERT"))
         {
             continue;
         }

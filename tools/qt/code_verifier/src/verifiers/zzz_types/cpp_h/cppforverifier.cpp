@@ -22,7 +22,7 @@ void CppForVerifier::verify(CodeWorkerThread *worker, const QString &path, const
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppForVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 
@@ -132,7 +132,7 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
                 {
                     QString line = lines.at(i);
                     VERIFIER_IGNORE(line, "// Ignore CppForVerifier");
-                    VERIFIER_REMOVE_COMMENTS(line);
+                    removeComments(line);
 
 
 

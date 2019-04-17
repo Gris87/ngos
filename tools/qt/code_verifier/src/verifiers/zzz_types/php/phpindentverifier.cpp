@@ -23,7 +23,7 @@ void PhpIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE_REGION(lines, i, line, "// Ignore PhpIndentVerifier");
-        // VERIFIER_REMOVE_COMMENTS(line); // Do not remove comments
+        removeComments(line);
 
 
 

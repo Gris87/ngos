@@ -32,7 +32,7 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
         {
             QString line = lines.at(i);
             VERIFIER_IGNORE(line, "// Ignore PhpEqualAlignmentVerifier");
-            VERIFIER_REMOVE_COMMENTS(line);
+            removeComments(line);
 
 
 
@@ -143,7 +143,11 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
             if (name != "")
             {
-                if (name.at(1) < 'a' || name.at(1) > 'z')
+                if (
+                    (name.at(1) < 'a' || name.at(1) > 'z')
+                    &&
+                    name != "$_POST"
+                   )
                 {
                     worker->addError(path, i, "Variable name should be named in camelcase");
                 }

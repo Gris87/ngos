@@ -101,7 +101,7 @@ void PhpPunctuationVerifier::verify(CodeWorkerThread *worker, const QString &pat
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore PhpPunctuationVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

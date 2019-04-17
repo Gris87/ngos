@@ -17,7 +17,8 @@ void PhpShiftVerifier::verify(CodeWorkerThread *worker, const QString &path, con
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore PhpShiftVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
+        removeStrings(line);
 
 
 

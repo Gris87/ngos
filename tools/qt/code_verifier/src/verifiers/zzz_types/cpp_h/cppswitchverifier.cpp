@@ -16,7 +16,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppSwitchVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

@@ -16,7 +16,7 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE_REGION(lines, i, line, "// Ignore PhpAlignmentVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

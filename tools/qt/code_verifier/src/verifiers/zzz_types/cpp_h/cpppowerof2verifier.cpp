@@ -17,7 +17,7 @@ void CppPowerOf2Verifier::verify(CodeWorkerThread *worker, const QString &path, 
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppPowerOf2Verifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

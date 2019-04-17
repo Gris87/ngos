@@ -23,7 +23,7 @@ void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppSingleCharVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 

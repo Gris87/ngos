@@ -19,7 +19,7 @@ void PhpForVerifier::verify(CodeWorkerThread *worker, const QString &path, const
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore PhpForVerifier");
-        VERIFIER_REMOVE_COMMENTS(line);
+        removeComments(line);
 
 
 
@@ -115,7 +115,7 @@ qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
                 {
                     QString line = lines.at(i);
                     VERIFIER_IGNORE(line, "// Ignore PhpForVerifier");
-                    VERIFIER_REMOVE_COMMENTS(line);
+                    removeComments(line);
 
 
 
