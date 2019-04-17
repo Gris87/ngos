@@ -46,7 +46,7 @@ public:
 protected:
     virtual void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines); // TEST: NO
 
-    inline void removeComments(QString &line)
+    inline void removeComments(QString &line) // TEST: NO
     {
         for (qint64 i = 0; i < line.length(); ++i)
         {
@@ -96,7 +96,7 @@ protected:
         }
     }
 
-    inline void removeStrings(QString &line)
+    inline void removeStrings(QString &line) // TEST: NO
     {
         for (qint64 i = 0; i < line.length(); ++i)
         {

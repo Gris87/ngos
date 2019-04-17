@@ -100,7 +100,7 @@ void CppSingleLineIfVerifier::verify(CodeWorkerThread *worker, const QString &pa
                 }
                 else
                 {
-                    worker->addError(path, i, "Single line if statement is prohibited" + lineTrimmed);
+                    worker->addError(path, i, "Single line if statement is prohibited");
                 }
             }
         }
