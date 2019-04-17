@@ -40,7 +40,8 @@ void LinksVerifier::verify(DocsWorkerThread *worker, const QString &path, const 
                 !htmlLink.startsWith("https://localhost/")
                )
             {
-                QNetworkRequest request(QUrl(htmlLink));
+                QNetworkRequest request;
+                request.setUrl(QUrl(htmlLink));
 
                 QNetworkAccessManager  manager;
                 QNetworkReply         *reply = manager.get(request);

@@ -740,13 +740,13 @@ void MainWindow::switchToState(State state)
 
         case State::INITIAL:
         {
-            qFatal("Unexpected state %u", mState);
+            qFatal("Unexpected state %u", (quint8)mState);
         }
         break;
 
         default:
         {
-            qFatal("Unknown state %u", mState);
+            qFatal("Unknown state %u", (quint8)mState);
         }
         break;
     }

@@ -27,42 +27,42 @@
         <translation>Device:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="180"/>
+        <location filename="../../src/main/mainwindow.ui" line="183"/>
         <source>File</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="186"/>
+        <location filename="../../src/main/mainwindow.ui" line="189"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="197"/>
+        <location filename="../../src/main/mainwindow.ui" line="200"/>
         <source>Help</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="211"/>
+        <location filename="../../src/main/mainwindow.ui" line="214"/>
         <source>Exit</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="214"/>
+        <location filename="../../src/main/mainwindow.ui" line="217"/>
         <source>Exit (Alt+X)</source>
         <translation>Exit (Alt+X)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="190"/>
+        <location filename="../../src/main/mainwindow.ui" line="193"/>
         <source>Language</source>
         <translation>Language</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="226"/>
+        <location filename="../../src/main/mainwindow.ui" line="229"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="229"/>
+        <location filename="../../src/main/mainwindow.ui" line="232"/>
         <source>About (F1)</source>
         <translation>About (F1)</translation>
     </message>
@@ -179,32 +179,32 @@ All data on the device will be destroyed!</translation>
         <translation>Failed to download file %1 from server %2: %3</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="756"/>
+        <location filename="../../src/main/mainwindow.cpp" line="757"/>
         <source>Getting information about latest version from servers:</source>
         <translation>Getting information about latest version from servers:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="785"/>
+        <location filename="../../src/main/mainwindow.cpp" line="786"/>
         <source>Latest version is unavailable</source>
         <translation>Latest version is unavailable</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="831"/>
+        <location filename="../../src/main/mainwindow.cpp" line="832"/>
         <source>Database is broken</source>
         <translation>Database is broke</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="907"/>
+        <location filename="../../src/main/mainwindow.cpp" line="908"/>
         <source>Making bootable USB flash drive</source>
         <translation>Making bootable USB flash drive</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="913"/>
+        <location filename="../../src/main/mainwindow.cpp" line="914"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="926"/>
+        <location filename="../../src/main/mainwindow.cpp" line="927"/>
         <source>Operation terminated by user</source>
         <translation>Operation terminated by user</translation>
     </message>

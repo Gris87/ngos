@@ -27,42 +27,42 @@
         <translation>Устройство:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="180"/>
+        <location filename="../../src/main/mainwindow.ui" line="183"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="186"/>
+        <location filename="../../src/main/mainwindow.ui" line="189"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="197"/>
+        <location filename="../../src/main/mainwindow.ui" line="200"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="211"/>
+        <location filename="../../src/main/mainwindow.ui" line="214"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="214"/>
+        <location filename="../../src/main/mainwindow.ui" line="217"/>
         <source>Exit (Alt+X)</source>
         <translation>Выход (Alt+X)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="190"/>
+        <location filename="../../src/main/mainwindow.ui" line="193"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="226"/>
+        <location filename="../../src/main/mainwindow.ui" line="229"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="229"/>
+        <location filename="../../src/main/mainwindow.ui" line="232"/>
         <source>About (F1)</source>
         <translation>О программе (F1)</translation>
     </message>
@@ -179,32 +179,32 @@ All data on the device will be destroyed!</source>
         <translation>Не удалось скачать файл %1 с сервера %2: %3</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="756"/>
+        <location filename="../../src/main/mainwindow.cpp" line="757"/>
         <source>Getting information about latest version from servers:</source>
         <translation>Получение информации о последней версии от серверов:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="785"/>
+        <location filename="../../src/main/mainwindow.cpp" line="786"/>
         <source>Latest version is unavailable</source>
         <translation>Последняя версия недоступна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="831"/>
+        <location filename="../../src/main/mainwindow.cpp" line="832"/>
         <source>Database is broken</source>
         <translation>База данных неисправна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="907"/>
+        <location filename="../../src/main/mainwindow.cpp" line="908"/>
         <source>Making bootable USB flash drive</source>
         <translation>Создание загрузочного USB флеш диска</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="913"/>
+        <location filename="../../src/main/mainwindow.cpp" line="914"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="926"/>
+        <location filename="../../src/main/mainwindow.cpp" line="927"/>
         <source>Operation terminated by user</source>
         <translation>Операция прекращена пользователем</translation>
     </message>
