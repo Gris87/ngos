@@ -1085,6 +1085,8 @@ tools/qt/usb_boot_maker/assets/translations/language_en.qm
 tools/qt/usb_boot_maker/assets/translations/language_en.ts
 tools/qt/usb_boot_maker/assets/translations/language_ru.qm
 tools/qt/usb_boot_maker/assets/translations/language_ru.ts
+tools/qt/usb_boot_maker/distrib/ssleay32.dll
+tools/qt/usb_boot_maker/distrib/xzdec.exe
 tools/qt/usb_boot_maker/README.md
 tools/qt/usb_boot_maker/Resources.qrc
 tools/qt/usb_boot_maker/Resources.rc
@@ -1098,11 +1100,13 @@ tools/qt/usb_boot_maker/src/main/mainwindow.h
 tools/qt/usb_boot_maker/src/main/mainwindow.ui
 tools/qt/usb_boot_maker/src/main/mainwindow_linux.cpp
 tools/qt/usb_boot_maker/src/main/mainwindow_win.cpp
+tools/qt/usb_boot_maker/src/other/fileinfo.h
 tools/qt/usb_boot_maker/src/other/state.h
 tools/qt/usb_boot_maker/src/other/usbdeviceinfo.h
 tools/qt/usb_boot_maker/src/other/usbproperties.h
 tools/qt/usb_boot_maker/src/other/usbspeed.cpp
 tools/qt/usb_boot_maker/src/other/usbspeed.h
+tools/qt/usb_boot_maker/src/other/versioninfo.h
 tools/qt/usb_boot_maker/usb_boot_maker.pro
 tools/tracers/assets/linux/.config
 tools/tracers/assets/linux/ngos_tracer.patch
