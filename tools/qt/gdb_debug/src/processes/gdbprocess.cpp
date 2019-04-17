@@ -33,7 +33,7 @@ GdbProcess::~GdbProcess()
 void GdbProcess::start(bool *isRunning)
 {
     mProcess.setWorkingDirectory(Global::sProjectDir);
-    mProcess.start("gdb 2>&1"); // Ignore CppOperatorSpacesVerifier
+    mProcess.start("gdb 2>&1");
     mProcess.waitForStarted();
 
 

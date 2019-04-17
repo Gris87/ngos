@@ -10,8 +10,8 @@
 #include <QMessageBox>
 #include <QNetworkRequest>
 #include <QProcess>
-#include <QUrl>
 #include <QSettings>
+#include <QUrl>
 
 #include "src/main/aboutdialog.h"
 
@@ -266,7 +266,7 @@ void MainWindow::latestVersionReplyFinished()
             QString messageStr = message.toString("");
             QString detailsStr = details.toString("");
 
-            addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ")") : "")));
+            addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ')') : "")));
         }
     }
     else
@@ -476,7 +476,7 @@ void MainWindow::fileListReplyFinished()
             QString messageStr = message.toString("");
             QString detailsStr = details.toString("");
 
-            addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ")") : "")));
+            addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ')') : "")));
 
             abortReplies();
             switchToState(State::GET_FILE_LIST);
@@ -729,7 +729,7 @@ void MainWindow::prepareLanguages()
 void MainWindow::switchToState(State state)
 {
     mState = state;
-    ui->statusProgressBar->setValue((int)mState);
+    ui->statusProgressBar->setValue((quint8)mState);
 
     switch (mState)
     {
@@ -800,7 +800,6 @@ void MainWindow::handleGetFileListState()
 
         versionGroups[versionInfo->version].append(versionInfo);
     }
-
 
 
 
@@ -949,7 +948,7 @@ void MainWindow::abortReplies()
 void MainWindow::switchToInitialState()
 {
     mState = State::INITIAL;
-    ui->statusProgressBar->setValue((int)mState);
+    ui->statusProgressBar->setValue((quint8)mState);
 
     ui->deviceComboBox->setEnabled(true);
     ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier

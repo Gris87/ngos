@@ -38,6 +38,8 @@ void LinksVerifier::verify(DocsWorkerThread *worker, const QString &path, const 
                 !htmlLink.startsWith("http://localhost/")
                 &&
                 !htmlLink.startsWith("https://localhost/")
+                &&
+                !htmlLink.startsWith("https://%")
                )
             {
                 QNetworkRequest request;
@@ -60,14 +62,12 @@ void LinksVerifier::verify(DocsWorkerThread *worker, const QString &path, const 
                 QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
                 if (
-                    !statusCode.isValid()
-                    ||
                     statusCode.toInt() < 200
                     ||
                     statusCode.toInt() >= 400
                    )
                 {
-                    worker->addWarning(path, i, QString("Link is unavailable: %1").arg(htmlLink));
+                    worker->addWarning(path, i, QString("Link is unavailable: %1 (%2)").arg(htmlLink).arg(statusCode.toInt()));
                 }
 
                 delete reply;

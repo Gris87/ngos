@@ -189,22 +189,22 @@ All data on the device will be destroyed!</source>
         <translation>Последняя версия недоступна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="832"/>
+        <location filename="../../src/main/mainwindow.cpp" line="831"/>
         <source>Database is broken</source>
         <translation>База данных неисправна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="908"/>
+        <location filename="../../src/main/mainwindow.cpp" line="907"/>
         <source>Making bootable USB flash drive</source>
         <translation>Создание загрузочного USB флеш диска</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="914"/>
+        <location filename="../../src/main/mainwindow.cpp" line="913"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="927"/>
+        <location filename="../../src/main/mainwindow.cpp" line="926"/>
         <source>Operation terminated by user</source>
         <translation>Операция прекращена пользователем</translation>
     </message>

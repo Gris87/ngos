@@ -15,7 +15,7 @@ QtPriVerifier::QtPriVerifier()
     // Nothing
 }
 
-void QtPriVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString & /*content*/, const QStringList &lines)
+void QtPriVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
     qint64 sourcesIndex   = -1;
     qint64 headersIndex   = -1;

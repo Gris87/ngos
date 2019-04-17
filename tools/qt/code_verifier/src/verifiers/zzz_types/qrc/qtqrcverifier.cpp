@@ -33,7 +33,7 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
     QString expectedContent;
 
     expectedContent.append("<RCC>\n");
-    expectedContent.append("    <qresource prefix=\"/\">\n"); // Ignore CppAlignmentVerifier // Ignore CppOperatorSpacesVerifier
+    expectedContent.append("    <qresource prefix=\"/\">\n"); // Ignore CppAlignmentVerifier
 
 
 

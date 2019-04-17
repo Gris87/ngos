@@ -654,8 +654,8 @@ bool CPU::hasEFlag(u64 mask)
         "popq    %1"        "\n\t"      // popq     %r12        # Get EFLAGS from the stack to f1. %r12 == f1
         "popfq"                         // popfq                # Restore EFLAGS from the stack
             :                           // Output parameters
-                "=&r" (f0),             // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
-                "=&r" (f1)              // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands // Ignore CppOperatorSpacesVerifier
+                "=&r" (f0),             // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands
+                "=&r" (f1)              // "r" == any general register, "=" - write only, "&" - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands
             :                           // Input parameters
                 "ri" (mask)             // "r" == any general register, or "i" == immediate integer operand is allowed
     );

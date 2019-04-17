@@ -189,22 +189,22 @@ All data on the device will be destroyed!</translation>
         <translation>Latest version is unavailable</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="832"/>
+        <location filename="../../src/main/mainwindow.cpp" line="831"/>
         <source>Database is broken</source>
         <translation>Database is broke</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="908"/>
+        <location filename="../../src/main/mainwindow.cpp" line="907"/>
         <source>Making bootable USB flash drive</source>
         <translation>Making bootable USB flash drive</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="914"/>
+        <location filename="../../src/main/mainwindow.cpp" line="913"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="927"/>
+        <location filename="../../src/main/mainwindow.cpp" line="926"/>
         <source>Operation terminated by user</source>
         <translation>Operation terminated by user</translation>
     </message>

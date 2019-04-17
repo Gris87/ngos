@@ -34,7 +34,7 @@ bool QemuProcess::start()
 
 
     mProcess.setWorkingDirectory(Global::sProjectDir + '/' + QEMU_WORKING_DIRECTORY);
-    mProcess.start("sh -c \"./" QEMU_APPLICATION " " + QString::number(MEMORY_SIZE_MB) + " > " + mOutputFile.fileName() + " 2>&1\""); // Ignore CppOperatorSpacesVerifier // Ignore CppSingleCharVerifier
+    mProcess.start("sh -c \"./" QEMU_APPLICATION " " + QString::number(MEMORY_SIZE_MB) + " > " + mOutputFile.fileName() + " 2>&1\""); // Ignore CppSingleCharVerifier
     mProcess.waitForStarted();
 
     return true;

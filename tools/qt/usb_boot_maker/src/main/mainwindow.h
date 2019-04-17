@@ -66,19 +66,19 @@ private:
     void saveWindowState(); // TEST: NO
     void loadWindowState(); // TEST: NO
 
-    Ui::MainWindow                 *ui;
-    QTranslator                    *mTranslator;
-    QTimer                         *mUpdateTimer;
-    QNetworkAccessManager          *mManager;
-    QTemporaryDir                  *mTemporaryDir;
-    State                           mState;
-    qint64                          mRequestTime;
-    QHash<QString, QNetworkReply *> mReplies;
-    QHash<QString, VersionInfo>     mLatestVersions;
-    VersionInfo                     mSelectedVersionInfo;
-    QList<FileInfo>                 mVersionFiles;
-    QString                         mLanguage;
-    QHash<QString, QAction *>       mLanguageActions;
+    Ui::MainWindow                  *ui;
+    QTranslator                     *mTranslator;
+    QTimer                          *mUpdateTimer;
+    QNetworkAccessManager           *mManager;
+    QTemporaryDir                   *mTemporaryDir;
+    State                            mState;
+    qint64                           mRequestTime;
+    QHash<QString, QNetworkReply *>  mReplies;
+    QHash<QString, VersionInfo>      mLatestVersions;
+    VersionInfo                      mSelectedVersionInfo;
+    QList<FileInfo>                  mVersionFiles;
+    QString                          mLanguage;
+    QHash<QString, QAction *>        mLanguageActions;
 };
 
 

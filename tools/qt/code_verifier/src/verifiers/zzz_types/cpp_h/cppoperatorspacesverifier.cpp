@@ -179,6 +179,7 @@ inline bool validateSignMultiplyCase5(const QChar &chPrev1, const QChar &/*chPre
     //      " *>>"
     //      " *>("
     //      " *>&"
+    //      " *>:"
     //        ^
 
     return chNext1 == '>'
@@ -193,6 +194,8 @@ inline bool validateSignMultiplyCase5(const QChar &chPrev1, const QChar &/*chPre
                 chNext2 == '('
                 ||
                 chNext2 == '&'
+                ||
+                chNext2 == ':'
             );
 }
 
@@ -200,10 +203,10 @@ inline bool validateSignMultiplyCase6(const QChar &chPrev1, const QChar &/*chPre
 {
     // Cases:
     //      " *)[a-z0-9]"
-    //      " *)&"
     //      " *)("
+    //      " *)&"
     //      " *),"
-    //      " *);"
+    //      " *); "
     //        ^
 
     return chNext1 == ')'
@@ -213,9 +216,9 @@ inline bool validateSignMultiplyCase6(const QChar &chPrev1, const QChar &/*chPre
             (
                 chNext2.isLetterOrNumber()
                 ||
-                chNext2 == '&'
-                ||
                 chNext2 == '('
+                ||
+                chNext2 == '&'
                 ||
                 chNext2 == ','
                 ||
@@ -224,6 +227,21 @@ inline bool validateSignMultiplyCase6(const QChar &chPrev1, const QChar &/*chPre
                     &&
                     isSpaceOrEmpty(chNext3)
                 )
+            );
+}
+
+inline bool validateSignMultiplyCase7(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &chNext2, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
+{
+    // Cases:
+    //      " *, "
+    //        ^
+
+    return chNext1 == ','
+            &&
+            isSpaceOrEmpty(chPrev1)
+            &&
+            (
+                isSpaceOrEmpty(chNext2)
             );
 }
 
@@ -239,7 +257,9 @@ inline bool validateSignMultiply(const QChar &chPrev1, const QChar &chPrev2, con
             ||
             validateSignMultiplyCase5(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index)
             ||
-            validateSignMultiplyCase6(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index);
+            validateSignMultiplyCase6(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index)
+            ||
+            validateSignMultiplyCase7(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index);
 }
 
 inline bool validateSignDivideCase1(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
@@ -632,6 +652,19 @@ inline bool validateSignAndCase4(const QChar &chPrev1, const QChar &/*chPrev2*/,
 inline bool validateSignAndCase5(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &chNext2, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
 {
     // Cases:
+    //      " &))"
+    //        ^
+
+    return chNext1 == ')'
+            &&
+            isSpaceOrEmpty(chPrev1)
+            &&
+            chNext2 == ')';
+}
+
+inline bool validateSignAndCase6(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &chNext2, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
+{
+    // Cases:
     //      " &/*"
     //        ^
 
@@ -652,7 +685,9 @@ inline bool validateSignAnd(const QChar &chPrev1, const QChar &chPrev2, const QC
             ||
             validateSignAndCase4(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index)
             ||
-            validateSignAndCase5(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index);
+            validateSignAndCase5(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index)
+            ||
+            validateSignAndCase6(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index);
 }
 
 inline bool validateSignOrCase1(const QChar &chPrev1, const QChar &chPrev2, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)

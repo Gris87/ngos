@@ -11,7 +11,7 @@ void usage()
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     Console::err(
-                "Usage: build_config_maker PATH_TO_BUILDCONFIG_H [--reset] {BUILD_PARAMETER=VALUE}\n" // Ignore CppOperatorSpacesVerifier
+                "Usage: build_config_maker PATH_TO_BUILDCONFIG_H [--reset] {BUILD_PARAMETER=VALUE}\n"
                 "    * PATH_TO_BUILDCONFIG_H - path to buildconfig.h file\n"
                 "    * BUILD_PARAMETER       - One of the parameters from buildconfig.h file\n"
                 "    * VALUE                 - What value should be assigned to the BUILD_PARAMETER\n"

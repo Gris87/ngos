@@ -84,7 +84,7 @@ HexGraphicsView::HexGraphicsView(QWidget *parent)
 
     QFontMetrics fontMetrics(mHexFont);
 
-    mCharWidth       = fontMetrics.width("0000000000000000  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |........  ........|") / 88.0; // Ignore CppOperatorSpacesVerifier
+    mCharWidth       = fontMetrics.width("0000000000000000  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |........  ........|") / 88.0;
     mLineHeight      = fontMetrics.height();
     mUnderscoreWidth = mCharWidth - UNDERSCORE_MARGIN;
 

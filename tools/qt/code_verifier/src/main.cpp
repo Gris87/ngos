@@ -214,6 +214,10 @@ qint32 main(qint32 argc, char *argv[])
                     &&
                     !filename.endsWith(".bin")
                     &&
+                    !filename.endsWith(".dll")
+                    &&
+                    !filename.endsWith(".exe")
+                    &&
                     !filename.endsWith(".hex")
                     &&
                     !filename.endsWith(".ttf")
