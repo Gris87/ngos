@@ -766,7 +766,9 @@ void MainWindow::handleGetLatestVersionState()
 
 
 
-        QNetworkRequest request(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=latest&include_files=false").arg(server)));
+        QNetworkRequest request;
+        request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=latest&include_files=false").arg(server)));
+
         QNetworkReply *reply = mManager->get(request);
 
         connect(reply, SIGNAL(finished()), this, SLOT(latestVersionReplyFinished()));
@@ -866,7 +868,9 @@ void MainWindow::handleGetFileListState()
 
 
 
-    QNetworkRequest request(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=%2&include_files=true").arg(mSelectedVersionInfo.server).arg(mSelectedVersionInfo.version)));
+    QNetworkRequest request;
+    request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=%2&include_files=true").arg(mSelectedVersionInfo.server).arg(mSelectedVersionInfo.version)));
+
     QNetworkReply *reply = mManager->get(request);
 
     connect(reply, SIGNAL(finished()), this, SLOT(fileListReplyFinished()));
@@ -882,7 +886,9 @@ void MainWindow::handleDownloadState()
     {
         FileInfo *fileInfo = &mVersionFiles[i];
 
-        QNetworkRequest request(QUrl(QString("https://%1/downloads/%2").arg(mSelectedVersionInfo.server).arg(fileInfo->downloadName)));
+        QNetworkRequest request;
+        request.setUrl(QUrl(QString("https://%1/downloads/%2").arg(mSelectedVersionInfo.server).arg(fileInfo->downloadName)));
+
         QNetworkReply *reply = mManager->get(request);
 
 

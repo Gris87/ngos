@@ -184,27 +184,27 @@ All data on the device will be destroyed!</translation>
         <translation>Getting information about latest version from servers:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="786"/>
+        <location filename="../../src/main/mainwindow.cpp" line="788"/>
         <source>Latest version is unavailable</source>
         <translation>Latest version is unavailable</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="831"/>
+        <location filename="../../src/main/mainwindow.cpp" line="833"/>
         <source>Database is broken</source>
         <translation>Database is broke</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="907"/>
+        <location filename="../../src/main/mainwindow.cpp" line="913"/>
         <source>Making bootable USB flash drive</source>
         <translation>Making bootable USB flash drive</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="913"/>
+        <location filename="../../src/main/mainwindow.cpp" line="919"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="926"/>
+        <location filename="../../src/main/mainwindow.cpp" line="932"/>
         <source>Operation terminated by user</source>
         <translation>Operation terminated by user</translation>
     </message>

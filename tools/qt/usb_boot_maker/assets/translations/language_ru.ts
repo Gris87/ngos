@@ -184,27 +184,27 @@ All data on the device will be destroyed!</source>
         <translation>Получение информации о последней версии от серверов:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="786"/>
+        <location filename="../../src/main/mainwindow.cpp" line="788"/>
         <source>Latest version is unavailable</source>
         <translation>Последняя версия недоступна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="831"/>
+        <location filename="../../src/main/mainwindow.cpp" line="833"/>
         <source>Database is broken</source>
         <translation>База данных неисправна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="907"/>
+        <location filename="../../src/main/mainwindow.cpp" line="913"/>
         <source>Making bootable USB flash drive</source>
         <translation>Создание загрузочного USB флеш диска</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="913"/>
+        <location filename="../../src/main/mainwindow.cpp" line="919"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="926"/>
+        <location filename="../../src/main/mainwindow.cpp" line="932"/>
         <source>Operation terminated by user</source>
         <translation>Операция прекращена пользователем</translation>
     </message>
