@@ -21,6 +21,8 @@ void LinksVerifier::verify(DocsWorkerThread *worker, const QString &path, const 
     for (qint64 i = 0; i < lines.length(); ++i)
     {
         QString line = lines.at(i);
+        VERIFIER_IGNORE(line, "// Ignore LinksVerifier");
+        removeComments(line);
 
 
 

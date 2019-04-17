@@ -39,7 +39,7 @@ const QStringList usbStorageDrivers = QStringList()
         // Standard MS USB storage driver
         << "USBSTOR"
         // USB card readers, with proprietary drivers (Realtek, etc...)
-        // Mostly "guessed" from https://carrona.org/dvrref.php
+        // Mostly "guessed" from https://carrona.org/dvrref.php // Ignore LinksVerifier
         << "RTSUER" << "CMIUCR" << "EUCR"
         // UASP Drivers *MUST* be listed after this, starting with "UASPSTOR"
         // (which is Microsoft's native UASP driver for Windows 8 and later)
@@ -52,7 +52,7 @@ const QStringList genericStorageDrivers = QStringList()
         << "SCSI" // << "STORAGE"   // "STORAGE" is used by 'Storage Spaces" and stuff => DANGEROUS!
         // Non-USB card reader drivers - This list *MUST* start with "SD" (delimiter)
         // See http://itdoc.hitachi.co.jp/manuals/3021/30213B5200e/DMDS0094.HTM
-        // Also https://carrona.org/dvrref.php
+        // Also https://carrona.org/dvrref.php // Ignore LinksVerifier
         << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
     ;
 
