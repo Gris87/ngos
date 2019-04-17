@@ -122,7 +122,7 @@ NgosStatus reservePciRomImages()
         EARLY_TEST_ASSERT(IORemap::sPoolOfSlots[6]                    == 6,                  NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(IORemap::sPoolOfSlots[7]                    == 7,                  NgosStatus::ASSERTION);
         // EARLY_TEST_ASSERT(IORemap::sFixmapPage[0].pte              == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
-        EARLY_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+        EARLY_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION);
 
 
 

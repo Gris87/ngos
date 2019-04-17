@@ -116,7 +116,7 @@ NgosStatus UEFI::initMemoryMap()
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[6]                    == 6,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[7]                    == 7,                  NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(IORemap::sFixmapPage[0].pte              == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+        COMMON_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION);
 
 
 
@@ -525,7 +525,7 @@ NgosStatus UEFI::initSystemTable()
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[6]                    == 6,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[7]                    == 7,                  NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(IORemap::sFixmapPage[0].pte              == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+        COMMON_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION);
 
 
 

@@ -101,10 +101,10 @@ NgosStatus IORemap::addPmdForFixmap()
 
 
 
-        COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+        COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd               != 0,    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(fixmap_pagetable_level2[506].pmd               != 0,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION); // Ignore CppShiftVerifier
+        COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION);
     }
 
 
