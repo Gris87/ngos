@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QNetworkRequest>
+#include <QProcess>
 #include <QUrl>
 #include <QSettings>
 
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mTranslator(new QTranslator(this))
     , mUpdateTimer(new QTimer(this))
     , mManager(new QNetworkAccessManager(this))
+    , mTemporaryDir(0)
     , mState(State::INITIAL)
     , mRequestTime(0)
     , mReplies()
@@ -60,6 +62,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    if (mTemporaryDir)
+    {
+        delete mTemporaryDir;
+    }
+
+
+
     saveWindowState();
 
     delete ui;
@@ -82,6 +91,23 @@ void MainWindow::on_startButton_clicked()
     {
         if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok)
         {
+            if (!mTemporaryDir)
+            {
+                mTemporaryDir = new QTemporaryDir();
+
+                if (!mTemporaryDir->isValid())
+                {
+                    addLog(tr("Failed to create temporary directory"));
+
+                    delete mTemporaryDir;
+                    mTemporaryDir = 0;
+
+                    return;
+                }
+            }
+
+
+
             ui->deviceComboBox->setEnabled(false);
             ui->startButton->setIcon(QIcon(":/assets/images/stop.png")); // Ignore CppPunctuationVerifier
 
@@ -285,11 +311,21 @@ void MainWindow::fileListReplyFinished()
             if (version.isUndefined())
             {
                 addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
+
+                abortReplies();
+                switchToState(State::GET_FILE_LIST);
+
+                return;
             }
             else
             if (files.isUndefined())
             {
                 addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("files field absent")));
+
+                abortReplies();
+                switchToState(State::GET_FILE_LIST);
+
+                return;
             }
             else
             {
@@ -300,16 +336,31 @@ void MainWindow::fileListReplyFinished()
                 if (versionId.isUndefined())
                 {
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("id field absent")));
+
+                    abortReplies();
+                    switchToState(State::GET_FILE_LIST);
+
+                    return;
                 }
                 else
                 if (versionCode.isUndefined())
                 {
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
+
+                    abortReplies();
+                    switchToState(State::GET_FILE_LIST);
+
+                    return;
                 }
                 else
                 if (versionHash.isUndefined())
                 {
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("hash field absent")));
+
+                    abortReplies();
+                    switchToState(State::GET_FILE_LIST);
+
+                    return;
                 }
                 else
                 {
@@ -323,6 +374,7 @@ void MainWindow::fileListReplyFinished()
                     {
                         addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
+                        abortReplies();
                         switchToState(State::GET_FILE_LIST);
 
                         return;
@@ -345,6 +397,7 @@ void MainWindow::fileListReplyFinished()
                         {
                             addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
+                            abortReplies();
                             switchToState(State::GET_FILE_LIST);
 
                             return;
@@ -362,6 +415,7 @@ void MainWindow::fileListReplyFinished()
                     {
                         addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
+                        abortReplies();
                         switchToState(State::GET_FILE_LIST);
 
                         return;
@@ -391,6 +445,7 @@ void MainWindow::fileListReplyFinished()
                         {
                             addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
+                            abortReplies();
                             switchToState(State::GET_FILE_LIST);
 
                             return;
@@ -422,11 +477,21 @@ void MainWindow::fileListReplyFinished()
             QString detailsStr = details.toString("");
 
             addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ")") : "")));
+
+            abortReplies();
+            switchToState(State::GET_FILE_LIST);
+
+            return;
         }
     }
     else
     {
         addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(reply->errorString()));
+
+        abortReplies();
+        switchToState(State::GET_FILE_LIST);
+
+        return;
     }
 
 
@@ -457,10 +522,145 @@ void MainWindow::downloadReplyFinished()
     if (!reply->error())
     {
         addLog(tr("Downloaded file %1 from server %2").arg(fileInfo->filename).arg(server));
+
+
+
+        qint64 index = fileInfo->filename.lastIndexOf('/');
+
+        if (index < 0)
+        {
+            index = 0;
+        }
+
+        if (!QDir().mkpath(mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->filename.left(index)))
+        {
+            addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+
+            abortReplies();
+            switchToState(State::GET_FILE_LIST);
+
+            return;
+        }
+
+
+
+        QByteArray content = reply->readAll();
+
+
+
+        QString filePath = mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->filename;
+        QFile file(filePath);
+
+        if (file.open(QIODevice::WriteOnly))
+        {
+            if (file.write(content) != content.length())
+            {
+                file.close();
+
+                addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+
+                abortReplies();
+                switchToState(State::GET_FILE_LIST);
+
+                return;
+            }
+
+            file.close();
+        }
+        else
+        {
+            addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+
+            abortReplies();
+            switchToState(State::GET_FILE_LIST);
+
+            return;
+        }
+
+
+
+        if (fileInfo->downloadName.endsWith(".xz"))
+        {
+            QProcess process;
+
+            process.start("xzdec", QStringList() << filePath, QIODevice::ReadOnly);
+            process.waitForFinished(-1);
+
+
+
+            if (!process.exitCode()) // process.exitCode() == 0
+            {
+                content = process.readAllStandardOutput();
+
+
+
+                QFile file(filePath);
+
+                if (file.open(QIODevice::WriteOnly))
+                {
+                    if (file.write(content) != content.length())
+                    {
+                        file.close();
+
+                        addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+
+                        abortReplies();
+                        switchToState(State::GET_FILE_LIST);
+
+                        return;
+                    }
+
+                    file.close();
+                }
+                else
+                {
+                    addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+
+                    abortReplies();
+                    switchToState(State::GET_FILE_LIST);
+
+                    return;
+                }
+            }
+            else
+            {
+                addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->filename).arg(server).arg(reply->errorString()));
+
+                abortReplies();
+                switchToState(State::GET_FILE_LIST);
+
+                return;
+            }
+        }
+        else
+        if (!fileInfo->downloadName.endsWith(".raw"))
+        {
+            qFatal("Unknown file format");
+        }
+
+
+
+        QCryptographicHash hash(QCryptographicHash::Md5);
+        hash.addData(content);
+
+        if (fileInfo->hash != QString::fromLatin1(hash.result().toHex()))
+        {
+            addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+
+            abortReplies();
+            switchToState(State::GET_FILE_LIST);
+
+            return;
+        }
     }
     else
     {
         addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->filename).arg(server).arg(reply->errorString()));
+
+        abortReplies();
+        switchToState(State::GET_FILE_LIST);
+
+        return;
     }
 
 
@@ -529,6 +729,7 @@ void MainWindow::prepareLanguages()
 void MainWindow::switchToState(State state)
 {
     mState = state;
+    ui->statusProgressBar->setValue((int)mState);
 
     switch (mState)
     {
@@ -723,29 +924,32 @@ void MainWindow::resetToInitialState()
         mState == State::DOWNLOAD
        )
     {
-        for (QHash<QString, QNetworkReply *>::iterator i = mReplies.begin(); i != mReplies.end(); ++i)
-        {
-            QNetworkReply *reply = i.value();
-
-            reply->blockSignals(true);
-            reply->abort();
-
-            reply->deleteLater();
-        }
-
-        mReplies.clear();
-
-
-
-        switchToInitialState();
-
         addLog(tr("Operation terminated by user"));
+
+        abortReplies();
+        switchToInitialState();
     }
+}
+
+void MainWindow::abortReplies()
+{
+    for (QHash<QString, QNetworkReply *>::iterator i = mReplies.begin(); i != mReplies.end(); ++i)
+    {
+        QNetworkReply *reply = i.value();
+
+        reply->blockSignals(true);
+        reply->abort();
+
+        reply->deleteLater();
+    }
+
+    mReplies.clear();
 }
 
 void MainWindow::switchToInitialState()
 {
     mState = State::INITIAL;
+    ui->statusProgressBar->setValue((int)mState);
 
     ui->deviceComboBox->setEnabled(true);
     ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier

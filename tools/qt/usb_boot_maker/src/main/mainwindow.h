@@ -8,6 +8,7 @@
 #include <QList>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QTemporaryDir>
 #include <QTimer>
 #include <QTranslator>
 
@@ -58,6 +59,7 @@ private:
     void handleDownloadState(); // TEST: NO
     void handleBurningState(); // TEST: NO
     void resetToInitialState(); // TEST: NO
+    void abortReplies(); // TEST: NO
     void switchToInitialState(); // TEST: NO
     void addLog(const QString &text); // TEST: NO
 
@@ -68,6 +70,7 @@ private:
     QTranslator                    *mTranslator;
     QTimer                         *mUpdateTimer;
     QNetworkAccessManager          *mManager;
+    QTemporaryDir                  *mTemporaryDir;
     State                           mState;
     qint64                          mRequestTime;
     QHash<QString, QNetworkReply *> mReplies;

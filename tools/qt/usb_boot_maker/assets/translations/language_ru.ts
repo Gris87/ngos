@@ -67,128 +67,144 @@
         <translation>О программе (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="83"/>
+        <location filename="../../src/main/mainwindow.cpp" line="92"/>
         <source>Format disk</source>
         <translation>Форматирование диска</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="83"/>
+        <location filename="../../src/main/mainwindow.cpp" line="92"/>
         <source>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</source>
         <translation>Вы действительно хотите отформатировать диск &quot;%1&quot;?
 Это действие удалит все данные с устройства!</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="118"/>
+        <location filename="../../src/main/mainwindow.cpp" line="100"/>
+        <source>Failed to create temporary directory</source>
+        <translation>Не удалось создать временную директорию</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="144"/>
         <source>Language switched to %1</source>
         <translation>Язык изменен на %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="133"/>
+        <location filename="../../src/main/mainwindow.cpp" line="159"/>
         <source>Found devices: %1</source>
         <translation>Найдено устройств: %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="195"/>
-        <location filename="../../src/main/mainwindow.cpp" line="205"/>
-        <location filename="../../src/main/mainwindow.cpp" line="210"/>
-        <location filename="../../src/main/mainwindow.cpp" line="215"/>
-        <location filename="../../src/main/mainwindow.cpp" line="243"/>
-        <location filename="../../src/main/mainwindow.cpp" line="248"/>
+        <location filename="../../src/main/mainwindow.cpp" line="221"/>
+        <location filename="../../src/main/mainwindow.cpp" line="231"/>
+        <location filename="../../src/main/mainwindow.cpp" line="236"/>
+        <location filename="../../src/main/mainwindow.cpp" line="241"/>
+        <location filename="../../src/main/mainwindow.cpp" line="269"/>
+        <location filename="../../src/main/mainwindow.cpp" line="274"/>
         <source>Failed to get information about latest version from server %1: %2</source>
         <translation>Не удалось получить информацию о последней версии с сервера %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="195"/>
-        <location filename="../../src/main/mainwindow.cpp" line="210"/>
-        <location filename="../../src/main/mainwindow.cpp" line="287"/>
-        <location filename="../../src/main/mainwindow.cpp" line="307"/>
+        <location filename="../../src/main/mainwindow.cpp" line="221"/>
+        <location filename="../../src/main/mainwindow.cpp" line="236"/>
+        <location filename="../../src/main/mainwindow.cpp" line="313"/>
+        <location filename="../../src/main/mainwindow.cpp" line="348"/>
         <source>version field absent</source>
         <translation>поле version отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="205"/>
-        <location filename="../../src/main/mainwindow.cpp" line="302"/>
+        <location filename="../../src/main/mainwindow.cpp" line="231"/>
+        <location filename="../../src/main/mainwindow.cpp" line="338"/>
         <source>id field absent</source>
         <translation>поле id отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="215"/>
-        <location filename="../../src/main/mainwindow.cpp" line="312"/>
+        <location filename="../../src/main/mainwindow.cpp" line="241"/>
+        <location filename="../../src/main/mainwindow.cpp" line="358"/>
         <source>hash field absent</source>
         <translation>поле hash отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="231"/>
+        <location filename="../../src/main/mainwindow.cpp" line="257"/>
         <source>Response received from server %1 in %2 ms. Version: %3</source>
         <translation>Получен ответ от сервера %1 за %2 мс. Версия: %3</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="287"/>
-        <location filename="../../src/main/mainwindow.cpp" line="292"/>
-        <location filename="../../src/main/mainwindow.cpp" line="302"/>
-        <location filename="../../src/main/mainwindow.cpp" line="307"/>
-        <location filename="../../src/main/mainwindow.cpp" line="312"/>
-        <location filename="../../src/main/mainwindow.cpp" line="424"/>
-        <location filename="../../src/main/mainwindow.cpp" line="429"/>
+        <location filename="../../src/main/mainwindow.cpp" line="313"/>
+        <location filename="../../src/main/mainwindow.cpp" line="323"/>
+        <location filename="../../src/main/mainwindow.cpp" line="338"/>
+        <location filename="../../src/main/mainwindow.cpp" line="348"/>
+        <location filename="../../src/main/mainwindow.cpp" line="358"/>
+        <location filename="../../src/main/mainwindow.cpp" line="479"/>
+        <location filename="../../src/main/mainwindow.cpp" line="489"/>
         <source>Failed to get file list from server %1: %2</source>
         <translation>Не удалось получить список файлов с сервера %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="292"/>
+        <location filename="../../src/main/mainwindow.cpp" line="323"/>
         <source>files field absent</source>
         <translation>поле files отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="324"/>
-        <location filename="../../src/main/mainwindow.cpp" line="346"/>
-        <location filename="../../src/main/mainwindow.cpp" line="363"/>
-        <location filename="../../src/main/mainwindow.cpp" line="392"/>
+        <location filename="../../src/main/mainwindow.cpp" line="375"/>
+        <location filename="../../src/main/mainwindow.cpp" line="398"/>
+        <location filename="../../src/main/mainwindow.cpp" line="416"/>
+        <location filename="../../src/main/mainwindow.cpp" line="446"/>
         <source>File list received from server %1 did&apos;t match with stored value</source>
         <translation>Список файлов, полученный с сервера %1, не соответствует сохраненному</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="412"/>
+        <location filename="../../src/main/mainwindow.cpp" line="467"/>
         <source>File list received from server %1</source>
         <translation>Список файлов получен с сервера %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="459"/>
+        <location filename="../../src/main/mainwindow.cpp" line="524"/>
         <source>Downloaded file %1 from server %2</source>
         <translation>Скачан файл %1 с сервера %2</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="463"/>
+        <location filename="../../src/main/mainwindow.cpp" line="537"/>
+        <location filename="../../src/main/mainwindow.cpp" line="560"/>
+        <location filename="../../src/main/mainwindow.cpp" line="572"/>
+        <location filename="../../src/main/mainwindow.cpp" line="605"/>
+        <location filename="../../src/main/mainwindow.cpp" line="617"/>
+        <location filename="../../src/main/mainwindow.cpp" line="648"/>
+        <source>Failed to store file %1</source>
+        <translation>Не удалось сохранить файл %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="627"/>
+        <location filename="../../src/main/mainwindow.cpp" line="658"/>
         <source>Failed to download file %1 from server %2: %3</source>
         <translation>Не удалось скачать файл %1 с сервера %2: %3</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="556"/>
+        <location filename="../../src/main/mainwindow.cpp" line="756"/>
         <source>Getting information about latest version from servers:</source>
         <translation>Получение информации о последней версии от серверов:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="585"/>
+        <location filename="../../src/main/mainwindow.cpp" line="785"/>
         <source>Latest version is unavailable</source>
         <translation>Последняя версия недоступна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="631"/>
+        <location filename="../../src/main/mainwindow.cpp" line="831"/>
         <source>Database is broken</source>
         <translation>База данных неисправна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="707"/>
+        <location filename="../../src/main/mainwindow.cpp" line="907"/>
         <source>Making bootable USB flash drive</source>
         <translation>Создание загрузочного USB флеш диска</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="713"/>
+        <location filename="../../src/main/mainwindow.cpp" line="913"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="742"/>
+        <location filename="../../src/main/mainwindow.cpp" line="926"/>
         <source>Operation terminated by user</source>
         <translation>Операция прекращена пользователем</translation>
     </message>

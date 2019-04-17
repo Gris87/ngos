@@ -54,6 +54,20 @@ win32 {
 
 
 
+# Copy files to build folder - BEGIN
+copydata.commands = \
+    $(COPY_FILE) \"$$shell_path($$PWD/distrib/*)\" \"$$shell_path($$OUT_PWD/$$DESTDIR)\"
+
+first.depends = $(first) copydata
+
+export(first.depends)
+export(copydata.commands)
+
+QMAKE_EXTRA_TARGETS += first copydata
+# Copy files to build folder - END
+
+
+
 SOURCES += \
     src/main.cpp \
     src/main/aboutdialog.cpp \
