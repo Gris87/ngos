@@ -5,20 +5,26 @@
 
 #include <QThread>
 
+#include "src/other/usbdeviceinfo.h"
+
 
 
 class BurnThread: public QThread
 {
 public:
-    BurnThread(); // TEST: NO
+    BurnThread(UsbDeviceInfo *deviceInfo); // TEST: NO
 
     void stop(); // TEST: NO
+
+    const UsbDeviceInfo& getSelectedUsb() const; // TEST: NO
+    bool isWorking() const; // TEST: NO
 
 protected:
     void run() override; // TEST: NO
 
 private:
-    bool mIsRunning;
+    bool          mIsRunning;
+    UsbDeviceInfo mSelectedUsb;
 };
 
 

@@ -674,12 +674,24 @@ void MainWindow::downloadReplyFinished()
 
 void MainWindow::burnFinished()
 {
+    bool success = mBurnThread->isWorking();
+
+    if (!success)
+    {
+        addLog(tr("Disk formatting failed"));
+    }
+
     delete mBurnThread;
     mBurnThread = 0;
 
+
+
     switchToInitialState();
 
-    addLog(tr("Done"));
+    if (success)
+    {
+        addLog(tr("Done"));
+    }
 }
 
 void MainWindow::prepareLanguages()
@@ -925,7 +937,7 @@ void MainWindow::handleBurningState()
 
 
 
-    mBurnThread = new BurnThread();
+    mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>());
     mBurnThread->start();
 
     connect(mBurnThread, SIGNAL(finished()), this, SLOT(burnFinished()));

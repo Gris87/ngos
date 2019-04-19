@@ -11,9 +11,9 @@
 #include <QSettings>
 #include <QTimer>
 #include <Windows.h>
+#include <cfgmgr32.h>
 #include <Dbt.h>
 #include <SetupAPI.h>
-#include <cfgmgr32.h>
 #include <usbioctl.h>
 
 #include "src/other/usbproperties.h"
@@ -1357,7 +1357,10 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
 
     UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();
 
-    deviceInfo->title = QString("%1 (%2) [%3]").arg(diskLabel).arg(driveLettersHumanReadable(diskNumber, driveLetters)).arg(diskSizeHumanReadable(diskSize));
+    deviceInfo->title      = QString("%1 (%2) [%3]").arg(diskLabel).arg(driveLettersHumanReadable(diskNumber, driveLetters)).arg(diskSizeHumanReadable(diskSize));
+    deviceInfo->diskNumber = diskNumber;
+    deviceInfo->diskSize   = diskSize;
+    deviceInfo->letters    = driveLetters;
 
     usbDevices->append(deviceInfo);
 }

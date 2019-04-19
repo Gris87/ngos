@@ -10,6 +10,9 @@
 struct UsbDeviceInfo
 {
     QString title;
+    quint64 diskNumber;
+    quint64 diskSize;
+    QString letters;
 };
 
 Q_DECLARE_METATYPE(UsbDeviceInfo *); // TEST: NO

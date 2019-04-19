@@ -67,134 +67,139 @@
         <translation>About (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="92"/>
+        <location filename="../../src/main/mainwindow.cpp" line="93"/>
         <source>Format disk</source>
         <translation>Format disk</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="92"/>
+        <location filename="../../src/main/mainwindow.cpp" line="93"/>
         <source>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</source>
         <translation>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="100"/>
+        <location filename="../../src/main/mainwindow.cpp" line="101"/>
         <source>Failed to create temporary directory</source>
         <translation>Failed to create temporary directory</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="144"/>
+        <location filename="../../src/main/mainwindow.cpp" line="145"/>
         <source>Language switched to %1</source>
         <translation>Language switched to %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="159"/>
+        <location filename="../../src/main/mainwindow.cpp" line="160"/>
         <source>Found devices: %1</source>
         <translation>Found devices: %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="221"/>
-        <location filename="../../src/main/mainwindow.cpp" line="231"/>
-        <location filename="../../src/main/mainwindow.cpp" line="236"/>
-        <location filename="../../src/main/mainwindow.cpp" line="241"/>
-        <location filename="../../src/main/mainwindow.cpp" line="269"/>
-        <location filename="../../src/main/mainwindow.cpp" line="274"/>
+        <location filename="../../src/main/mainwindow.cpp" line="222"/>
+        <location filename="../../src/main/mainwindow.cpp" line="232"/>
+        <location filename="../../src/main/mainwindow.cpp" line="237"/>
+        <location filename="../../src/main/mainwindow.cpp" line="242"/>
+        <location filename="../../src/main/mainwindow.cpp" line="270"/>
+        <location filename="../../src/main/mainwindow.cpp" line="275"/>
         <source>Failed to get information about latest version from server %1: %2</source>
         <translation>Failed to get information about latest version from server %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="221"/>
-        <location filename="../../src/main/mainwindow.cpp" line="236"/>
-        <location filename="../../src/main/mainwindow.cpp" line="313"/>
-        <location filename="../../src/main/mainwindow.cpp" line="348"/>
+        <location filename="../../src/main/mainwindow.cpp" line="222"/>
+        <location filename="../../src/main/mainwindow.cpp" line="237"/>
+        <location filename="../../src/main/mainwindow.cpp" line="314"/>
+        <location filename="../../src/main/mainwindow.cpp" line="349"/>
         <source>version field absent</source>
         <translation>version field absent</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="231"/>
-        <location filename="../../src/main/mainwindow.cpp" line="338"/>
+        <location filename="../../src/main/mainwindow.cpp" line="232"/>
+        <location filename="../../src/main/mainwindow.cpp" line="339"/>
         <source>id field absent</source>
         <translation>id field absent</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="241"/>
-        <location filename="../../src/main/mainwindow.cpp" line="358"/>
+        <location filename="../../src/main/mainwindow.cpp" line="242"/>
+        <location filename="../../src/main/mainwindow.cpp" line="359"/>
         <source>hash field absent</source>
         <translation>hash field absent</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="257"/>
+        <location filename="../../src/main/mainwindow.cpp" line="258"/>
         <source>Response received from server %1 in %2 ms. Version: %3</source>
         <translation>Response received from server %1 in %2 ms. Version: %3</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="313"/>
-        <location filename="../../src/main/mainwindow.cpp" line="323"/>
-        <location filename="../../src/main/mainwindow.cpp" line="338"/>
-        <location filename="../../src/main/mainwindow.cpp" line="348"/>
-        <location filename="../../src/main/mainwindow.cpp" line="358"/>
-        <location filename="../../src/main/mainwindow.cpp" line="479"/>
-        <location filename="../../src/main/mainwindow.cpp" line="489"/>
+        <location filename="../../src/main/mainwindow.cpp" line="314"/>
+        <location filename="../../src/main/mainwindow.cpp" line="324"/>
+        <location filename="../../src/main/mainwindow.cpp" line="339"/>
+        <location filename="../../src/main/mainwindow.cpp" line="349"/>
+        <location filename="../../src/main/mainwindow.cpp" line="359"/>
+        <location filename="../../src/main/mainwindow.cpp" line="480"/>
+        <location filename="../../src/main/mainwindow.cpp" line="490"/>
         <source>Failed to get file list from server %1: %2</source>
         <translation>Failed to get file list from server %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="323"/>
+        <location filename="../../src/main/mainwindow.cpp" line="324"/>
         <source>files field absent</source>
         <translation>files field absent</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="375"/>
-        <location filename="../../src/main/mainwindow.cpp" line="398"/>
-        <location filename="../../src/main/mainwindow.cpp" line="416"/>
-        <location filename="../../src/main/mainwindow.cpp" line="446"/>
+        <location filename="../../src/main/mainwindow.cpp" line="376"/>
+        <location filename="../../src/main/mainwindow.cpp" line="399"/>
+        <location filename="../../src/main/mainwindow.cpp" line="417"/>
+        <location filename="../../src/main/mainwindow.cpp" line="447"/>
         <source>File list received from server %1 did&apos;t match with stored value</source>
         <translation>File list received from server %1 did&apos;t match with stored value</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="467"/>
+        <location filename="../../src/main/mainwindow.cpp" line="468"/>
         <source>File list received from server %1</source>
         <translation>File list received from server %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="524"/>
+        <location filename="../../src/main/mainwindow.cpp" line="525"/>
         <source>Downloaded file %1 from server %2</source>
         <translation>Downloaded file %1 from server %2</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="537"/>
-        <location filename="../../src/main/mainwindow.cpp" line="560"/>
-        <location filename="../../src/main/mainwindow.cpp" line="572"/>
-        <location filename="../../src/main/mainwindow.cpp" line="605"/>
-        <location filename="../../src/main/mainwindow.cpp" line="617"/>
-        <location filename="../../src/main/mainwindow.cpp" line="648"/>
+        <location filename="../../src/main/mainwindow.cpp" line="538"/>
+        <location filename="../../src/main/mainwindow.cpp" line="561"/>
+        <location filename="../../src/main/mainwindow.cpp" line="573"/>
+        <location filename="../../src/main/mainwindow.cpp" line="606"/>
+        <location filename="../../src/main/mainwindow.cpp" line="618"/>
+        <location filename="../../src/main/mainwindow.cpp" line="649"/>
         <source>Failed to store file %1</source>
         <translation>Failed to store file %1</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="627"/>
-        <location filename="../../src/main/mainwindow.cpp" line="658"/>
+        <location filename="../../src/main/mainwindow.cpp" line="628"/>
+        <location filename="../../src/main/mainwindow.cpp" line="659"/>
         <source>Failed to download file %1 from server %2: %3</source>
         <translation>Failed to download file %1 from server %2: %3</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="757"/>
+        <location filename="../../src/main/mainwindow.cpp" line="681"/>
+        <source>Disk formatting failed</source>
+        <translation>Disk formatting failed</translation>
+    </message>
+    <message>
+        <location filename="../../src/main/mainwindow.cpp" line="780"/>
         <source>Getting information about latest version from servers:</source>
         <translation>Getting information about latest version from servers:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="788"/>
+        <location filename="../../src/main/mainwindow.cpp" line="811"/>
         <source>Latest version is unavailable</source>
         <translation>Latest version is unavailable</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="833"/>
+        <location filename="../../src/main/mainwindow.cpp" line="856"/>
         <source>Database is broken</source>
         <translation>Database is broke</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="913"/>
+        <location filename="../../src/main/mainwindow.cpp" line="936"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Making bootable USB flash drive on disk &quot;%1&quot;</translation>
     </message>
@@ -203,12 +208,12 @@ All data on the device will be destroyed!</translation>
         <translation type="vanished">Making bootable USB flash drive</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="919"/>
+        <location filename="../../src/main/mainwindow.cpp" line="693"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="932"/>
+        <location filename="../../src/main/mainwindow.cpp" line="948"/>
         <source>Operation terminated by user</source>
         <translation>Operation terminated by user</translation>
     </message>
