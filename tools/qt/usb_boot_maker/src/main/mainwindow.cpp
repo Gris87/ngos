@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mUpdateTimer(new QTimer(this))
     , mManager(new QNetworkAccessManager(this))
     , mTemporaryDir(0)
+    , mBurnThread(0)
     , mState(State::INITIAL)
     , mRequestTime(0)
     , mReplies()
@@ -671,6 +672,16 @@ void MainWindow::downloadReplyFinished()
     }
 }
 
+void MainWindow::burnFinished()
+{
+    delete mBurnThread;
+    mBurnThread = 0;
+
+    switchToInitialState();
+
+    addLog(tr("Done"));
+}
+
 void MainWindow::prepareLanguages()
 {
     QActionGroup *group = new QActionGroup(this);
@@ -910,30 +921,59 @@ void MainWindow::handleDownloadState()
 
 void MainWindow::handleBurningState()
 {
-    addLog(tr("Making bootable USB flash drive"));
+    addLog(tr("Making bootable USB flash drive on disk \"%1\"").arg(ui->deviceComboBox->currentText()));
 
 
 
-    switchToInitialState();
+    mBurnThread = new BurnThread();
+    mBurnThread->start();
 
-    addLog(tr("Done"));
+    connect(mBurnThread, SIGNAL(finished()), this, SLOT(burnFinished()));
 }
 
 void MainWindow::resetToInitialState()
 {
-    if (
-        mState == State::GET_LATEST_VERSION
-        ||
-        mState == State::GET_FILE_LIST
-        ||
-        mState == State::DOWNLOAD
-       )
-    {
-        addLog(tr("Operation terminated by user"));
+    addLog(tr("Operation terminated by user"));
 
-        abortReplies();
-        switchToInitialState();
+
+
+    switch (mState)
+    {
+        case State::GET_LATEST_VERSION:
+        case State::GET_FILE_LIST:
+        case State::DOWNLOAD:
+        {
+            abortReplies();
+        }
+        break;
+
+        case State::BURNING:
+        {
+            mBurnThread->blockSignals(true);
+            mBurnThread->stop();
+            mBurnThread->wait();
+
+            delete mBurnThread;
+            mBurnThread = 0;
+        }
+        break;
+
+        case State::INITIAL:
+        {
+            qFatal("Unexpected state %u", (quint8)mState);
+        }
+        break;
+
+        default:
+        {
+            qFatal("Unknown state %u", (quint8)mState);
+        }
+        break;
     }
+
+
+
+    switchToInitialState();
 }
 
 void MainWindow::abortReplies()

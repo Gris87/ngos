@@ -17,6 +17,7 @@
 #include "src/other/usbdeviceinfo.h"
 #include "src/other/usbspeed.h"
 #include "src/other/versioninfo.h"
+#include "src/threads/burnthread.h"
 
 
 
@@ -49,6 +50,7 @@ private slots:
     void latestVersionReplyFinished(); // TEST: NO
     void fileListReplyFinished(); // TEST: NO
     void downloadReplyFinished(); // TEST: NO
+    void burnFinished(); // TEST: NO
 
 private:
     void prepareLanguages(); // TEST: NO
@@ -71,6 +73,7 @@ private:
     QTimer                          *mUpdateTimer;
     QNetworkAccessManager           *mManager;
     QTemporaryDir                   *mTemporaryDir;
+    BurnThread                      *mBurnThread;
     State                            mState;
     qint64                           mRequestTime;
     QHash<QString, QNetworkReply *>  mReplies;

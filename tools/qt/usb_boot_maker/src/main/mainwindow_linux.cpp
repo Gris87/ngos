@@ -15,6 +15,7 @@ QList<UsbDeviceInfo *> MainWindow::getUsbDevices()
 {
     QList<UsbDeviceInfo *> res;
 
+    qFatal("Implement");
     // TODO: Implement
 
     return res;

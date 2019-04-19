@@ -195,8 +195,12 @@ All data on the device will be destroyed!</translation>
     </message>
     <message>
         <location filename="../../src/main/mainwindow.cpp" line="913"/>
+        <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
+        <translation>Making bootable USB flash drive on disk &quot;%1&quot;</translation>
+    </message>
+    <message>
         <source>Making bootable USB flash drive</source>
-        <translation>Making bootable USB flash drive</translation>
+        <translation type="vanished">Making bootable USB flash drive</translation>
     </message>
     <message>
         <location filename="../../src/main/mainwindow.cpp" line="919"/>

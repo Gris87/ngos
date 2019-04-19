@@ -74,7 +74,10 @@ SOURCES += \
     src/main/mainwindow.cpp \
     src/main/mainwindow_linux.cpp \
     src/main/mainwindow_win.cpp \
-    src/other/usbspeed.cpp
+    src/other/usbspeed.cpp \
+    src/threads/burnthread.cpp \
+    src/threads/burnthread_linux.cpp \
+    src/threads/burnthread_win.cpp
 
 HEADERS += \
     src/main/aboutdialog.h \
@@ -84,7 +87,8 @@ HEADERS += \
     src/other/usbdeviceinfo.h \
     src/other/usbproperties.h \
     src/other/usbspeed.h \
-    src/other/versioninfo.h
+    src/other/versioninfo.h \
+    src/threads/burnthread.h
 
 FORMS += \
     src/main/aboutdialog.ui \
