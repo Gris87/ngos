@@ -1150,7 +1150,7 @@ QString diskSizeHumanReadable(quint64 diskSize)
     return QString::number((quint64)floor(diskSize / 1000000.0)) + "MB";
 }
 
-void getDriveLetters(DWORD diskNumber, char *letters)
+void getDiskLetters(DWORD diskNumber, char *letters)
 {
     Q_ASSERT(letters);
 
@@ -1161,7 +1161,6 @@ void getDriveLetters(DWORD diskNumber, char *letters)
 
 
     char drives[128];
-
     DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);
 
     if (size > 0 && size <= sizeof(drives))
@@ -1221,7 +1220,7 @@ void getDriveLetters(DWORD diskNumber, char *letters)
     *curLetter = 0;
 }
 
-QString driveLettersHumanReadable(DWORD diskNumber, char *letters)
+QString diskLettersHumanReadable(DWORD diskNumber, char *letters)
 {
     if (!letters[0]) // letters[0] == 0
     {
@@ -1290,9 +1289,9 @@ QString getDiskLabel(DWORD diskNumber, char *letters)
 
 
         wchar_t volumeLabel[MAX_PATH];
-        wchar_t drivePath[] = { (wchar_t)letters[0], ':', '\\', 0 };
+        wchar_t diskPath[] = { (wchar_t)letters[0], ':', '\\', 0 };
 
-        if (GetVolumeInformation(drivePath, volumeLabel, sizeof(volumeLabel), nullptr, nullptr, nullptr, nullptr, ZERO_SIZE))
+        if (GetVolumeInformation(diskPath, volumeLabel, sizeof(volumeLabel), nullptr, nullptr, nullptr, nullptr, ZERO_SIZE))
         {
             QString volumeLabelString = QString::fromWCharArray(volumeLabel);
 
@@ -1343,24 +1342,24 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
 
 
 
-    char driveLetters[27];
+    char diskLetters[27];
 
-    getDriveLetters(diskNumber, driveLetters);
-    qDebug() << "        Drive letters:" << driveLetters; // Ignore CppAlignmentVerifier
+    getDiskLetters(diskNumber, diskLetters);
+    qDebug() << "        Disk letters:" << diskLetters; // Ignore CppAlignmentVerifier
 
 
 
-    QString diskLabel = getDiskLabel(diskNumber, driveLetters);
+    QString diskLabel = getDiskLabel(diskNumber, diskLetters);
     qDebug() << "        Disk label:" << diskLabel; // Ignore CppAlignmentVerifier
 
 
 
     UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();
 
-    deviceInfo->title      = QString("%1 (%2) [%3]").arg(diskLabel).arg(driveLettersHumanReadable(diskNumber, driveLetters)).arg(diskSizeHumanReadable(diskSize));
+    deviceInfo->title      = QString("%1 (%2) [%3]").arg(diskLabel).arg(diskLettersHumanReadable(diskNumber, diskLetters)).arg(diskSizeHumanReadable(diskSize));
     deviceInfo->diskNumber = diskNumber;
     deviceInfo->diskSize   = diskSize;
-    deviceInfo->letters    = driveLetters;
+    deviceInfo->letters    = diskLetters;
 
     usbDevices->append(deviceInfo);
 }

@@ -13,8 +13,8 @@
 
 #define ZERO_SIZE 0
 
-#define DRIVE_ACCESS_RETRIES 150
-#define DRIVE_ACCESS_TIMEOUT 100
+#define DISK_ACCESS_RETRIES 150
+#define DISK_ACCESS_TIMEOUT 100
 
 
 
@@ -34,7 +34,7 @@
 
 
 
-enum class LockDrive: quint8
+enum class LockDisk: quint8
 {
     NO,
     YES
@@ -58,7 +58,7 @@ enum class ShareWrite: quint8
 
 
 
-HANDLE getDiskHandle(BurnThread *thread, LockDrive lockDrive, Access writeAccess, ShareWrite shareWrite)
+HANDLE getDiskHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
 {
     Q_ASSERT(thread);
 
@@ -70,7 +70,7 @@ HANDLE getDiskHandle(BurnThread *thread, LockDrive lockDrive, Access writeAccess
 
     QString diskPath = "\\\\.\\PhysicalDrive" + QString::number(thread->getSelectedUsb().diskNumber);
 
-    for (qint64 i = 0; i < DRIVE_ACCESS_RETRIES && thread->isWorking(); ++i)
+    for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)
     {
         res = CreateFileA(diskPath.toLatin1().data()
                           , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : 0)
@@ -105,7 +105,7 @@ HANDLE getDiskHandle(BurnThread *thread, LockDrive lockDrive, Access writeAccess
         if (
             shareWrite == ShareWrite::NO
             &&
-            i > DRIVE_ACCESS_RETRIES / 3
+            i > DISK_ACCESS_RETRIES / 3
            )
         {
             qWarning() << "Could not obtain exclusive rights. Retrying with write sharing enabled...";
@@ -115,7 +115,7 @@ HANDLE getDiskHandle(BurnThread *thread, LockDrive lockDrive, Access writeAccess
 
 
 
-        QThread::msleep(DRIVE_ACCESS_TIMEOUT);
+        QThread::msleep(DISK_ACCESS_TIMEOUT);
     }
 
 
@@ -140,7 +140,7 @@ HANDLE getDiskHandle(BurnThread *thread, LockDrive lockDrive, Access writeAccess
 
 
 
-    if (lockDrive == LockDrive::YES)
+    if (lockDisk == LockDisk::YES)
     {
         DWORD size;
 
@@ -151,7 +151,7 @@ HANDLE getDiskHandle(BurnThread *thread, LockDrive lockDrive, Access writeAccess
 
 
 
-        for (qint64 i = 0; i < DRIVE_ACCESS_RETRIES && thread->isWorking(); ++i)
+        for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)
         {
             if (DeviceIoControl(res, FSCTL_LOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
             {
@@ -160,12 +160,59 @@ HANDLE getDiskHandle(BurnThread *thread, LockDrive lockDrive, Access writeAccess
 
 
 
-            QThread::msleep(DRIVE_ACCESS_TIMEOUT);
+            QThread::msleep(DISK_ACCESS_TIMEOUT);
         }
 
 
 
         qCritical() << "Could not lock disk:" << GetLastError();
+    }
+
+
+
+    return res;
+}
+
+QChar getUnusedDiskLetter()
+{
+    QChar res = 0;
+
+
+
+    QString drivesString;
+
+    char drives[128];
+    DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);
+
+    if (size > 0 && size <= sizeof(drives))
+    {
+        for (char *drive = drives; *drive; drive += strlen(drive) + 1)
+        {
+            drive[0] = QChar::toUpper(drive[0]);
+
+            if (drive[0] < 'A' || drive[0] > 'Z')
+            {
+                continue;
+            }
+
+            drivesString += drive[0];
+        }
+    }
+    else
+    {
+        qCritical() << "size is invalid";
+    }
+
+
+
+    for (qint64 i = 'C'; i <= 'Z'; ++i)
+    {
+        if (!drivesString.contains((char) i))
+        {
+            res = (char) i;
+
+            break;
+        }
     }
 
 
@@ -192,13 +239,14 @@ void unlockAndCloseHandle(HANDLE handle)
     }
 }
 
-void unmountVolumes(BurnThread *thread)
+void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(targetDiskLetter);
 
 
 
-    HANDLE diskHandle = getDiskHandle(thread, LockDrive::YES, Access::READ_ONLY, ShareWrite::NO);
+    HANDLE diskHandle = getDiskHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);
 
     if (diskHandle == INVALID_HANDLE_VALUE)
     {
@@ -218,12 +266,39 @@ void unmountVolumes(BurnThread *thread)
 
 
 
+    QString diskLetters = thread->getSelectedUsb().letters;
+
+    if (diskLetters != "")
+    {
+        for (qint64 i = 0; i < diskLetters.length(); ++i)
+        {
+            wchar_t diskPath[] = { diskLetters.at(i).unicode(), ':', '\\', 0 };
+
+            if (!DeleteVolumeMountPoint(diskPath))
+            {
+                qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
+            }
+        }
+
+        *targetDiskLetter = diskLetters.at(0);
+    }
+    else
+    {
+        *targetDiskLetter = getUnusedDiskLetter();
+    }
+
+    qDebug().nospace() << "Disk will be mounted to " << targetDiskLetter->toLatin1() << ':';
+
+
+
     unlockAndCloseHandle(diskHandle);
 }
 
 void BurnThread::run()
 {
-    unmountVolumes(this);
+    QChar targetDiskLetter;
+
+    unmountVolumes(this, &targetDiskLetter);
     CHECK_IF_TERMINATED();
 }
 
