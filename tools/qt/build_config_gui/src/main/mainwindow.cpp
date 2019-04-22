@@ -669,8 +669,8 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
 
         categoryItem->getLayout()->addWidget(parameterWidget);
 
-        connect(parameterWidget, SIGNAL(valueChanged()),          this, SLOT(parameterValueChanged()));
-        connect(parameterWidget, SIGNAL(detailsUpdated(QString)), this, SLOT(parameterDetailsUpdated(QString)));
+        connect(parameterWidget, SIGNAL(valueChanged()),                  this, SLOT(parameterValueChanged()));
+        connect(parameterWidget, SIGNAL(detailsUpdated(const QString &)), this, SLOT(parameterDetailsUpdated(const QString &)));
 
         mParameters.insert(id, parameterWidget);
     }
