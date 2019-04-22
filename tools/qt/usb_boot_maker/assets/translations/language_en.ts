@@ -20,6 +20,19 @@
     </message>
 </context>
 <context>
+    <name>BurnThread</name>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="280"/>
+        <source>Unmounted disk volume at %1</source>
+        <translation>Unmounted disk volume at %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="292"/>
+        <source>There is no any mounted volume</source>
+        <translation>There is no any mounted volume</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../../src/main/mainwindow.ui" line="47"/>
@@ -184,22 +197,22 @@ All data on the device will be destroyed!</translation>
         <translation>Disk formatting failed</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="780"/>
+        <location filename="../../src/main/mainwindow.cpp" line="785"/>
         <source>Getting information about latest version from servers:</source>
         <translation>Getting information about latest version from servers:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="811"/>
+        <location filename="../../src/main/mainwindow.cpp" line="816"/>
         <source>Latest version is unavailable</source>
         <translation>Latest version is unavailable</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="856"/>
+        <location filename="../../src/main/mainwindow.cpp" line="861"/>
         <source>Database is broken</source>
         <translation>Database is broke</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="936"/>
+        <location filename="../../src/main/mainwindow.cpp" line="941"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Making bootable USB flash drive on disk &quot;%1&quot;</translation>
     </message>
@@ -213,7 +226,7 @@ All data on the device will be destroyed!</translation>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="948"/>
+        <location filename="../../src/main/mainwindow.cpp" line="954"/>
         <source>Operation terminated by user</source>
         <translation>Operation terminated by user</translation>
     </message>

@@ -6,6 +6,7 @@
 
 
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <Windows.h>
 
@@ -274,7 +275,11 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
         {
             wchar_t diskPath[] = { diskLetters.at(i).unicode(), ':', '\\', 0 };
 
-            if (!DeleteVolumeMountPoint(diskPath))
+            if (DeleteVolumeMountPoint(diskPath))
+            {
+                thread->addLog(QCoreApplication::translate("BurnThread", "Unmounted disk volume at %1").arg(diskPath));
+            }
+            else
             {
                 qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
             }
@@ -284,6 +289,8 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
     }
     else
     {
+        thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted volume"));
+
         *targetDiskLetter = getUnusedDiskLetter();
     }
 

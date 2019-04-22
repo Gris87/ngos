@@ -51,6 +51,7 @@ private slots:
     void fileListReplyFinished(); // TEST: NO
     void downloadReplyFinished(); // TEST: NO
     void burnFinished(); // TEST: NO
+    void addLog(const QString &text); // TEST: NO
 
 private:
     void prepareLanguages(); // TEST: NO
@@ -63,7 +64,6 @@ private:
     void resetToInitialState(); // TEST: NO
     void abortReplies(); // TEST: NO
     void switchToInitialState(); // TEST: NO
-    void addLog(const QString &text); // TEST: NO
 
     void saveWindowState(); // TEST: NO
     void loadWindowState(); // TEST: NO

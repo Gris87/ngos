@@ -11,10 +11,14 @@
 
 class BurnThread: public QThread
 {
+    Q_OBJECT
+
 public:
     BurnThread(UsbDeviceInfo *deviceInfo); // TEST: NO
 
     void stop(); // TEST: NO
+
+    void addLog(const QString &text); // TEST: NO
 
     const UsbDeviceInfo& getSelectedUsb() const; // TEST: NO
     bool isWorking() const; // TEST: NO
@@ -25,6 +29,9 @@ protected:
 private:
     bool          mIsRunning;
     UsbDeviceInfo mSelectedUsb;
+
+signals:
+    void logAdded(const QString &text); // TEST: NO
 };
 
 

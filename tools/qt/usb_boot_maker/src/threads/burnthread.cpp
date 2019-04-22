@@ -16,6 +16,11 @@ void BurnThread::stop()
     mIsRunning = false;
 }
 
+void BurnThread::addLog(const QString &text)
+{
+    emit logAdded(text);
+}
+
 const UsbDeviceInfo& BurnThread::getSelectedUsb() const
 {
     return mSelectedUsb;
