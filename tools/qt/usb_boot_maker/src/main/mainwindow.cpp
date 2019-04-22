@@ -694,6 +694,11 @@ void MainWindow::burnFinished()
     }
 }
 
+void MainWindow::addLog(const QString &text)
+{
+    ui->logTextEdit->append(text);
+}
+
 void MainWindow::prepareLanguages()
 {
     QActionGroup *group = new QActionGroup(this);
@@ -940,7 +945,8 @@ void MainWindow::handleBurningState()
     mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>());
     mBurnThread->start();
 
-    connect(mBurnThread, SIGNAL(finished()), this, SLOT(burnFinished()));
+    connect(mBurnThread, SIGNAL(logAdded(const QString &)), this, SLOT(addLog(const QString &)));
+    connect(mBurnThread, SIGNAL(finished()),                this, SLOT(burnFinished()));
 }
 
 void MainWindow::resetToInitialState()
@@ -1010,11 +1016,6 @@ void MainWindow::switchToInitialState()
 
     ui->deviceComboBox->setEnabled(true);
     ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier
-}
-
-void MainWindow::addLog(const QString &text)
-{
-    ui->logTextEdit->append(text);
 }
 
 void MainWindow::saveWindowState()
