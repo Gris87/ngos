@@ -328,6 +328,7 @@ void handleVdsSoftwareProviderPack(BurnThread *thread, IUnknown *vdsSoftwareProv
     }
 
 
+
     // Use the pack interface to access the disks
     IEnumVdsObject *vdsDisks;
     status = vdsPack->QueryDisks(&vdsDisks);
