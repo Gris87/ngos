@@ -9,10 +9,14 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <Windows.h>
+#include <initguid.h>
+#include <objbase.h>
+#include <vds.h>
 
 
 
-#define ZERO_SIZE 0
+#define ZERO_SIZE          0
+#define AUTO_AUTH_SERVICES -1
 
 #define DISK_ACCESS_RETRIES 150
 #define DISK_ACCESS_TIMEOUT 100
@@ -174,6 +178,25 @@ HANDLE getDiskHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, 
     return res;
 }
 
+void unlockAndCloseHandle(HANDLE handle)
+{
+    Q_ASSERT(handle != INVALID_HANDLE_VALUE);
+
+
+
+    DWORD size;
+
+    if (!DeviceIoControl(handle, FSCTL_UNLOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "Could not unlock disk:" << GetLastError();
+    }
+
+    if (!CloseHandle(handle))
+    {
+        qCritical() << "CloseHandle failed:" << GetLastError();
+    }
+}
+
 QChar getUnusedDiskLetter()
 {
     QChar res = 0;
@@ -219,25 +242,6 @@ QChar getUnusedDiskLetter()
 
 
     return res;
-}
-
-void unlockAndCloseHandle(HANDLE handle)
-{
-    Q_ASSERT(handle != INVALID_HANDLE_VALUE);
-
-
-
-    DWORD size;
-
-    if (!DeviceIoControl(handle, FSCTL_UNLOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not unlock disk:" << GetLastError();
-    }
-
-    if (!CloseHandle(handle))
-    {
-        qCritical() << "CloseHandle failed:" << GetLastError();
-    }
 }
 
 void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
@@ -301,11 +305,208 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
     unlockAndCloseHandle(diskHandle);
 }
 
+void handleVdsSoftwareProviderPack(BurnThread *thread, IUnknown *vdsSoftwareProviderPackUnknown)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(vdsSoftwareProviderPackUnknown);
+
+
+
+    // Get VDS Pack
+    IVdsPack *vdsPack;
+    HRESULT   status = vdsSoftwareProviderPackUnknown->QueryInterface(IID_IVdsPack, (void **) &vdsPack);
+
+    vdsSoftwareProviderPackUnknown->Release();
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "vdsSoftwareProviderPackUnknown->QueryInterface failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+
+
+    // Use the pack interface to access the disks
+    IEnumVdsObject *vdsDisks;
+    status = vdsPack->QueryDisks(&vdsDisks);
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "vdsPack->QueryDisks failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+}
+
+void handleVdsSoftwareProviderPacks(BurnThread *thread, IEnumVdsObject *vdsSoftwareProviderPacks)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(vdsSoftwareProviderPacks);
+
+
+
+    IUnknown *vdsSoftwareProviderPackUnknown;
+    ULONG     fetched;
+
+    while (SUCCEEDED(vdsSoftwareProviderPacks->Next(1, &vdsSoftwareProviderPackUnknown, &fetched)))
+    {
+        handleVdsSoftwareProviderPack(thread, vdsSoftwareProviderPackUnknown);
+    }
+}
+
+void handleVdsProvider(BurnThread *thread, IUnknown *vdsProviderUnknown)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(vdsProviderUnknown);
+
+
+
+    // Get VDS Provider
+    IVdsProvider *vdsProvider;
+    HRESULT       status = vdsProviderUnknown->QueryInterface(IID_IVdsProvider, (void **) &vdsProvider);
+
+    vdsProviderUnknown->Release();
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "vdsProviderUnknown->QueryInterface failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    // Get VDS Software Provider
+    IVdsSwProvider *vdsSoftwareProvider;
+    status = vdsProvider->QueryInterface(IID_IVdsSwProvider, (void **) &vdsSoftwareProvider);
+
+    vdsProvider->Release();
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "vdsProvider->QueryInterface failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    // Get VDS Software Provider Packs
+    IEnumVdsObject *vdsSoftwareProviderPacks;
+    status = vdsSoftwareProvider->QueryPacks(&vdsSoftwareProviderPacks);
+
+    vdsSoftwareProvider->Release();
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "vdsSoftwareProvider->QueryPacks failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    handleVdsSoftwareProviderPacks(thread, vdsSoftwareProviderPacks);
+}
+
+void handleVdsProviders(BurnThread *thread, IEnumVdsObject *vdsProviders)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(vdsProviders);
+
+
+
+    IUnknown *vdsProviderUnknown;
+    ULONG     fetched;
+
+    while (SUCCEEDED(vdsProviders->Next(1, &vdsProviderUnknown, &fetched)))
+    {
+        handleVdsProvider(thread, vdsProviderUnknown);
+    }
+}
+
+void deletePartitions(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    // Initialize COM
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    CoInitializeSecurity(nullptr, AUTO_AUTH_SERVICES, nullptr, nullptr, RPC_C_AUTHN_LEVEL_CONNECT, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr);
+
+
+
+    // Create a VDS Loader Instance
+    IVdsServiceLoader *vdsLoader;
+    HRESULT            status = CoCreateInstance(CLSID_VdsLoader, nullptr, CLSCTX_LOCAL_SERVER | CLSCTX_REMOTE_SERVER, IID_IVdsServiceLoader, (void **) &vdsLoader);
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "CoCreateInstance failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    // Load the VDS Service
+    wchar_t     *machineName = { 0 };
+    IVdsService *vdsService;
+
+    status = vdsLoader->LoadService(machineName, &vdsService);
+
+    vdsLoader->Release();
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "vdsLoader->LoadService failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    // Query the VDS Service Providers
+    IEnumVdsObject *vdsProviders;
+    status = vdsService->QueryProviders(VDS_QUERY_SOFTWARE_PROVIDERS, &vdsProviders);
+
+    if (!SUCCEEDED(status))
+    {
+        qCritical() << "vdsService->QueryProviders failed:" << status;
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    handleVdsProviders(thread, vdsProviders);
+}
+
 void BurnThread::run()
 {
     QChar targetDiskLetter;
 
     unmountVolumes(this, &targetDiskLetter);
+    CHECK_IF_TERMINATED();
+
+    deletePartitions(this);
     CHECK_IF_TERMINATED();
 }
 

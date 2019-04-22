@@ -40,7 +40,7 @@ UI_DIR      = build/gen
 
 # Include libraries - BEGIN
 win32 {
-    LIBS += -lSetupAPI
+    LIBS += -lSetupAPI -lOle32
 }
 # Include libraries - END
 
