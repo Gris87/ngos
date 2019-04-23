@@ -21,12 +21,17 @@
 #define DISK_ACCESS_RETRIES 150
 #define DISK_ACCESS_TIMEOUT 100
 
+#define WRITE_RETRIES 100
+#define WRITE_TIMEOUT 100
+
+#define MAX_GPT_PARTITIONS 128
+
 
 
 #define CHECK_IF_THREAD_TERMINATED(thread) \
     if (!thread->isWorking()) \
     { \
-        return; \
+        goto out; \
     }
 
 
@@ -69,6 +74,10 @@ struct VOLUME_DISK_EXTENTS_REDEF
     DWORD       numberOfDiskExtents;
     DISK_EXTENT extents[8];
 };
+
+
+
+const GUID PARTITION_BASIC_DATA_GUID = { 0xEBD0A0A2L, 0xB9E5, 0x4433, {0x87, 0xC0, 0x68, 0xB6, 0xB7, 0x26, 0x99, 0xC7} };
 
 
 
@@ -550,13 +559,9 @@ bool handleVdsDisk(BurnThread *thread, IUnknown *vdsDiskUnknown)
 
 
 
-    thread->addLog(QCoreApplication::translate("BurnThread", "Deleting partitions on the disk"));
-
-
-
-    for (qint64 i = 0; i < numberOfPartitions; ++i)
+    for (qint64 i = 0; i < numberOfPartitions && thread->isWorking(); ++i)
     {
-        thread->addLog(QCoreApplication::translate("BurnThread", "Deleting partition %1 (offset: %2, size: %3)").arg(partionsPropArray[i].ulPartitionNumber).arg(partionsPropArray[i].ullOffset).arg(partitionSizeHumanReadable(partionsPropArray[i].ullSize)));
+        thread->addLog(QCoreApplication::translate("BurnThread", "Deleting partition %1 (offset: %2, size: %3)").arg(partionsPropArray[i].ulPartitionNumber).arg(partitionSizeHumanReadable(partionsPropArray[i].ullOffset)).arg(partitionSizeHumanReadable(partionsPropArray[i].ullSize)));
 
         status = vdsAdvancedDisk->DeletePartition(partionsPropArray[i].ullOffset, true, true);
 
@@ -590,7 +595,7 @@ bool handleVdsDisks(BurnThread *thread, IEnumVdsObject *vdsDisks)
     IUnknown *vdsDiskUnknown;
     ULONG     fetched;
 
-    while (vdsDisks->Next(1, &vdsDiskUnknown, &fetched) == S_OK)
+    while (vdsDisks->Next(1, &vdsDiskUnknown, &fetched) == S_OK && thread->isWorking())
     {
         if (handleVdsDisk(thread, vdsDiskUnknown))
         {
@@ -653,7 +658,7 @@ bool handleVdsSoftwareProviderPacks(BurnThread *thread, IEnumVdsObject *vdsSoftw
     IUnknown *vdsSoftwareProviderPackUnknown;
     ULONG     fetched;
 
-    while (vdsSoftwareProviderPacks->Next(1, &vdsSoftwareProviderPackUnknown, &fetched) == S_OK)
+    while (vdsSoftwareProviderPacks->Next(1, &vdsSoftwareProviderPackUnknown, &fetched) == S_OK && thread->isWorking())
     {
         if (handleVdsSoftwareProviderPack(thread, vdsSoftwareProviderPackUnknown))
         {
@@ -735,7 +740,7 @@ bool handleVdsProviders(BurnThread *thread, IEnumVdsObject *vdsProviders)
     IUnknown *vdsProviderUnknown;
     ULONG     fetched;
 
-    while (vdsProviders->Next(1, &vdsProviderUnknown, &fetched) == S_OK)
+    while (vdsProviders->Next(1, &vdsProviderUnknown, &fetched) == S_OK && thread->isWorking())
     {
         if (handleVdsProvider(thread, vdsProviderUnknown))
         {
@@ -824,14 +829,205 @@ void dismountVolume(BurnThread *thread, HANDLE volumeHandle)
         qCritical() << "DeviceIoControl failed:" << GetLastError();
 
         thread->stop();
-
-        return;
     }
 }
 
-void doSomething(BurnThread *thread)
+qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors, const QByteArray &buffer)
+{
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    DWORD size = numberOfSectors << 9; // "<< 9" == "* 512"
+    Q_ASSERT(buffer.size() == size);
+
+
+
+    LARGE_INTEGER ptr;
+    ptr.QuadPart = startSector << 9; // "<< 9" == "* 512"
+
+    if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
+    {
+        qCritical() << "SetFilePointerEx failed:" << GetLastError();
+
+        return -1;
+    }
+
+
+
+    if (!WriteFile(diskHandle, buffer.constData(), size, &size, nullptr))
+    {
+        qCritical() << "WriteFile failed:" << GetLastError();
+
+        return -1;
+    }
+
+
+
+    return size;
+}
+
+void clearGpt(BurnThread *thread, HANDLE diskHandle)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    QByteArray buffer(512, 0);
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Clearing GPT"));
+
+
+
+    qint64 sectorsCount = thread->getSelectedUsb().diskSize >> 9; // ">> 9" == "/ 512"
+
+    for (qint64 i = 0; i < 34 && thread->isWorking(); ++i)
+    {
+        for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)
+        {
+            if (writeSectors(diskHandle, i, 1, buffer) == 512)
+            {
+                break;
+            }
+            else
+            {
+                QThread::msleep(WRITE_TIMEOUT);
+            }
+        }
+    }
+
+    for (qint64 i = sectorsCount - 33; i < sectorsCount && thread->isWorking(); ++i)
+    {
+        for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)
+        {
+            if (writeSectors(diskHandle, i, 1, buffer) == 512)
+            {
+                break;
+            }
+            else
+            {
+                QThread::msleep(WRITE_TIMEOUT);
+            }
+        }
+    }
+}
+
+void initializeDisk(BurnThread *thread, HANDLE diskHandle)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    CREATE_DISK createDisk = { PARTITION_STYLE_RAW, {{0}} };
+    DWORD       size       = sizeof(createDisk);
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Initializing disk"));
+
+
+
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *) &createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "Could not delete disk layout:" << GetLastError();
+
+        thread->stop();
+    }
+
+
+
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "Could not refresh disk layout:" << GetLastError();
+
+        thread->stop();
+    }
+}
+
+void createPartition(BurnThread *thread, HANDLE diskHandle)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Creating GPT partition for UEFI"));
+
+
+
+    DRIVE_LAYOUT_INFORMATION_EX driveLayout = {0};
+
+    driveLayout.PartitionStyle = PARTITION_STYLE_GPT;
+    driveLayout.PartitionCount = 1;
+
+    driveLayout.PartitionEntry[0].PartitionStyle           = PARTITION_STYLE_GPT;
+    driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = 1 << 20; // 1 MB
+    driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 << 9); // "<< 9" == "* 512" // Last 33 sectors reserved for Secondary GPT header
+    driveLayout.PartitionEntry[0].PartitionNumber          = 1;
+    driveLayout.PartitionEntry[0].RewritePartition         = true;
+
+    driveLayout.PartitionEntry[0].Gpt.PartitionType = PARTITION_BASIC_DATA_GUID;
+    CoCreateGuid(&driveLayout.PartitionEntry[0].Gpt.PartitionId);
+    QString("Microsoft Basic Data").toWCharArray(driveLayout.PartitionEntry[0].Gpt.Name);
+
+
+
+    CREATE_DISK createDisk = { PARTITION_STYLE_GPT, {{0}} };
+
+    CoCreateGuid(&createDisk.Gpt.DiskId);
+    createDisk.Gpt.MaxPartitionCount = MAX_GPT_PARTITIONS;
+
+    driveLayout.Gpt.DiskId                        = createDisk.Gpt.DiskId;
+    driveLayout.Gpt.StartingUsableOffset.QuadPart = 34 << 9;                                              // "<< 9" == "* 512" // First 34 sectors reserved for Protective MBR and Primary GPT header
+    driveLayout.Gpt.UsableLength.QuadPart         = thread->getSelectedUsb().diskSize - ((34 + 33) << 9); // "<< 9" == "* 512" // Last 33 sectors reserved for Secondary GPT header
+    driveLayout.Gpt.MaxPartitionCount             = MAX_GPT_PARTITIONS;
+
+
+
+    DWORD size = sizeof(createDisk);
+
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *) &createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "Could not reset disk layout:" << GetLastError();
+
+        thread->stop();
+    }
+
+
+
+    size = sizeof(driveLayout);
+
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_SET_DRIVE_LAYOUT_EX, (BYTE *) &driveLayout, size, nullptr, 0, &size, nullptr))
+    {
+        qCritical() << "Could not set disk layout:" << GetLastError();
+
+        thread->stop();
+    }
+
+
+
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "Could not refresh disk layout:" << GetLastError();
+
+        thread->stop();
+    }
+}
+
+void formatDisk(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    HANDLE diskHandle = getPhysicalHandle(thread, LockDisk::YES, Access::READ_WRITE, ShareWrite::NO);
+
+    if (diskHandle == INVALID_HANDLE_VALUE)
+    {
+        thread->stop();
+
+        return;
+    }
 
 
 
@@ -839,14 +1035,41 @@ void doSomething(BurnThread *thread)
 
     if (volumeHandle == INVALID_HANDLE_VALUE)
     {
+        unlockAndCloseHandle(thread, diskHandle);
+
         thread->stop();
 
         return;
     }
 
+
+
     dismountVolume(thread, volumeHandle);
+    CHECK_IF_THREAD_TERMINATED(thread);
+
+    clearGpt(thread, diskHandle);
+    CHECK_IF_THREAD_TERMINATED(thread);
+
+    initializeDisk(thread, diskHandle);
+    CHECK_IF_THREAD_TERMINATED(thread);
+
+    createPartition(thread, diskHandle);
+    CHECK_IF_THREAD_TERMINATED(thread);
+
+
 
     unlockAndCloseHandle(thread, volumeHandle);
+    volumeHandle = INVALID_HANDLE_VALUE;
+
+
+
+out:
+    unlockAndCloseHandle(thread, diskHandle);
+
+    if (volumeHandle != INVALID_HANDLE_VALUE)
+    {
+        unlockAndCloseHandle(thread, volumeHandle);
+    }
 }
 
 void BurnThread::run()
@@ -859,7 +1082,7 @@ void BurnThread::run()
     deletePartitions(this);
     CHECK_IF_TERMINATED();
 
-    doSomething(this);
+    formatDisk(this);
     CHECK_IF_TERMINATED();
 }
 

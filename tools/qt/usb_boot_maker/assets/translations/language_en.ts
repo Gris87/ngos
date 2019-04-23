@@ -22,34 +22,52 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="299"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="456"/>
         <source>Unmounted disk volume %1</source>
         <translation>Unmounted disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="311"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="472"/>
         <source>There is no any mounted volume</source>
         <translation>There is no any mounted volume</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="393"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="555"/>
         <source>There is no partitions on the disk</source>
         <translation>There is no partitions on the disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="400"/>
-        <source>Deleting partitions on the disk</source>
-        <translation>Deleting partitions on the disk</translation>
+        <location filename="../../src/threads/burnthread_win.cpp" line="926"/>
+        <source>Initializing disk</source>
+        <translation>Initializing disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="406"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="954"/>
+        <source>Creating GPT partition for UEFI</source>
+        <translation>Creating GPT partition for UEFI</translation>
+    </message>
+    <message>
+        <source>Creating partition</source>
+        <translation type="vanished">Creating partition</translation>
+    </message>
+    <message>
+        <source>Deleting partitions on the disk</source>
+        <translation type="vanished">Deleting partitions on the disk</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="564"/>
         <source>Deleting partition %1 (offset: %2, size: %3)</source>
         <translation>Deleting partition %1 (offset: %2, size: %3)</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="412"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="570"/>
         <source>Failed to delete partition</source>
         <translation>Failed to delete partition</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="879"/>
+        <source>Clearing GPT</source>
+        <translation>Clearing GPT</translation>
     </message>
 </context>
 <context>
