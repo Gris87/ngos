@@ -22,14 +22,34 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="280"/>
-        <source>Unmounted disk volume at %1</source>
-        <translation>Отключен том диска в %1</translation>
+        <location filename="../../src/threads/burnthread_win.cpp" line="299"/>
+        <source>Unmounted disk volume %1</source>
+        <translation>Отключен том диска %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="292"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="311"/>
         <source>There is no any mounted volume</source>
         <translation>Не подключен ни один том диска</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="393"/>
+        <source>There is no partitions on the disk</source>
+        <translation>На диске нет разделов</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="400"/>
+        <source>Deleting partitions on the disk</source>
+        <translation>Удаление разделов на диске</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="406"/>
+        <source>Deleting partition %1 (offset: %2, size: %3)</source>
+        <translation>Удаление раздела %1 (позиция: %2, размер: %3)</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="412"/>
+        <source>Failed to delete partition</source>
+        <translation>Не удалось удалить раздел</translation>
     </message>
 </context>
 <context>

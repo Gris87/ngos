@@ -244,6 +244,21 @@ QChar getUnusedDiskLetter()
     return res;
 }
 
+QString partitionSizeHumanReadable(quint64 partitionSize)
+{
+    if (partitionSize >= 1000000000000)
+    {
+        return QString::number((quint64)floor(partitionSize / 1000000000000.0)) + "TB";
+    }
+
+    if (partitionSize >= 1000000000)
+    {
+        return QString::number((quint64)floor(partitionSize / 1000000000.0)) + "GB";
+    }
+
+    return QString::number((quint64)floor(partitionSize / 1000000.0)) + "MB";
+}
+
 void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
 {
     Q_ASSERT(thread);
@@ -281,7 +296,7 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
 
             if (DeleteVolumeMountPoint(diskPath))
             {
-                thread->addLog(QCoreApplication::translate("BurnThread", "Unmounted disk volume at %1").arg(diskPath));
+                thread->addLog(QCoreApplication::translate("BurnThread", "Unmounted disk volume %1").arg(diskPath));
             }
             else
             {
@@ -305,7 +320,136 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
     unlockAndCloseHandle(diskHandle);
 }
 
-void handleVdsSoftwareProviderPack(BurnThread *thread, IUnknown *vdsSoftwareProviderPackUnknown)
+bool handleVdsDisk(BurnThread *thread, IUnknown *vdsDiskUnknown)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(vdsDiskUnknown);
+
+
+
+    // Get the disk interface.
+    IVdsDisk *vdsDisk;
+    HRESULT   status = vdsDiskUnknown->QueryInterface(IID_IVdsDisk, (void **) &vdsDisk);
+
+    if (status != S_OK)
+    {
+        qCritical() << "vdsDiskUnknown->QueryInterface failed:" << status;
+
+        thread->stop();
+
+        return false;
+    }
+
+
+
+    // Get the disk properties
+    VDS_DISK_PROP vdsDiskProp;
+    status = vdsDisk->GetProperties(&vdsDiskProp);
+
+    if (status != S_OK)
+    {
+        qCritical() << "vdsDisk->GetProperties failed:" << status;
+
+        thread->stop();
+
+        return false;
+    }
+
+
+
+    // Isolate the disk we want
+    if (("\\\\?\\PhysicalDrive" + QString::number(thread->getSelectedUsb().diskNumber)) != QString::fromWCharArray(vdsDiskProp.pwszName))
+    {
+        vdsDisk->Release();
+
+        return false;
+    }
+
+
+
+    // Instantiate the AdvanceDisk interface for our disk.
+    IVdsAdvancedDisk *vdsAdvancedDisk;
+    status = vdsDisk->QueryInterface(IID_IVdsAdvancedDisk, (void **) &vdsAdvancedDisk);
+
+    vdsDisk->Release();
+
+    if (status != S_OK)
+    {
+        qCritical() << "vdsDisk->QueryInterface failed:" << status;
+
+        thread->stop();
+
+        return false;
+    }
+
+
+
+    // Query the partition data, so we can get the start offset, which we need for deletion
+    VDS_PARTITION_PROP *partionsPropArray;
+    LONG                numberOfPartitions;
+    status = vdsAdvancedDisk->QueryPartitions(&partionsPropArray, &numberOfPartitions);
+
+    if (status != S_OK || !numberOfPartitions) // numberOfPartitions == 0
+    {
+        thread->addLog(QCoreApplication::translate("BurnThread", "There is no partitions on the disk"));
+
+        return true;
+    }
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Deleting partitions on the disk"));
+
+
+
+    for (qint64 i = 0; i < numberOfPartitions; ++i)
+    {
+        thread->addLog(QCoreApplication::translate("BurnThread", "Deleting partition %1 (offset: %2, size: %3)").arg(partionsPropArray[i].ulPartitionNumber).arg(partionsPropArray[i].ullOffset).arg(partitionSizeHumanReadable(partionsPropArray[i].ullSize)));
+
+        status = vdsAdvancedDisk->DeletePartition(partionsPropArray[i].ullOffset, true, true);
+
+        if (status != S_OK)
+        {
+            thread->addLog(QCoreApplication::translate("BurnThread", "Failed to delete partition"));
+
+            thread->stop();
+
+            return false;
+        }
+    }
+
+
+
+    CoTaskMemFree(partionsPropArray);
+    vdsAdvancedDisk->Release();
+
+
+
+    return true;
+}
+
+bool handleVdsDisks(BurnThread *thread, IEnumVdsObject *vdsDisks)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(vdsDisks);
+
+
+
+    IUnknown *vdsDiskUnknown;
+    ULONG     fetched;
+
+    while (vdsDisks->Next(1, &vdsDiskUnknown, &fetched) == S_OK)
+    {
+        if (handleVdsDisk(thread, vdsDiskUnknown))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool handleVdsSoftwareProviderPack(BurnThread *thread, IUnknown *vdsSoftwareProviderPackUnknown)
 {
     Q_ASSERT(thread);
     Q_ASSERT(vdsSoftwareProviderPackUnknown);
@@ -318,13 +462,13 @@ void handleVdsSoftwareProviderPack(BurnThread *thread, IUnknown *vdsSoftwareProv
 
     vdsSoftwareProviderPackUnknown->Release();
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "vdsSoftwareProviderPackUnknown->QueryInterface failed:" << status;
 
         thread->stop();
 
-        return;
+        return false;
     }
 
 
@@ -333,17 +477,21 @@ void handleVdsSoftwareProviderPack(BurnThread *thread, IUnknown *vdsSoftwareProv
     IEnumVdsObject *vdsDisks;
     status = vdsPack->QueryDisks(&vdsDisks);
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "vdsPack->QueryDisks failed:" << status;
 
         thread->stop();
 
-        return;
+        return false;
     }
+
+
+
+    return handleVdsDisks(thread, vdsDisks);
 }
 
-void handleVdsSoftwareProviderPacks(BurnThread *thread, IEnumVdsObject *vdsSoftwareProviderPacks)
+bool handleVdsSoftwareProviderPacks(BurnThread *thread, IEnumVdsObject *vdsSoftwareProviderPacks)
 {
     Q_ASSERT(thread);
     Q_ASSERT(vdsSoftwareProviderPacks);
@@ -353,13 +501,18 @@ void handleVdsSoftwareProviderPacks(BurnThread *thread, IEnumVdsObject *vdsSoftw
     IUnknown *vdsSoftwareProviderPackUnknown;
     ULONG     fetched;
 
-    while (SUCCEEDED(vdsSoftwareProviderPacks->Next(1, &vdsSoftwareProviderPackUnknown, &fetched)))
+    while (vdsSoftwareProviderPacks->Next(1, &vdsSoftwareProviderPackUnknown, &fetched) == S_OK)
     {
-        handleVdsSoftwareProviderPack(thread, vdsSoftwareProviderPackUnknown);
+        if (handleVdsSoftwareProviderPack(thread, vdsSoftwareProviderPackUnknown))
+        {
+            return true;
+        }
     }
+
+    return false;
 }
 
-void handleVdsProvider(BurnThread *thread, IUnknown *vdsProviderUnknown)
+bool handleVdsProvider(BurnThread *thread, IUnknown *vdsProviderUnknown)
 {
     Q_ASSERT(thread);
     Q_ASSERT(vdsProviderUnknown);
@@ -372,13 +525,13 @@ void handleVdsProvider(BurnThread *thread, IUnknown *vdsProviderUnknown)
 
     vdsProviderUnknown->Release();
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "vdsProviderUnknown->QueryInterface failed:" << status;
 
         thread->stop();
 
-        return;
+        return false;
     }
 
 
@@ -389,13 +542,13 @@ void handleVdsProvider(BurnThread *thread, IUnknown *vdsProviderUnknown)
 
     vdsProvider->Release();
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "vdsProvider->QueryInterface failed:" << status;
 
         thread->stop();
 
-        return;
+        return false;
     }
 
 
@@ -406,21 +559,21 @@ void handleVdsProvider(BurnThread *thread, IUnknown *vdsProviderUnknown)
 
     vdsSoftwareProvider->Release();
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "vdsSoftwareProvider->QueryPacks failed:" << status;
 
         thread->stop();
 
-        return;
+        return false;
     }
 
 
 
-    handleVdsSoftwareProviderPacks(thread, vdsSoftwareProviderPacks);
+    return handleVdsSoftwareProviderPacks(thread, vdsSoftwareProviderPacks);
 }
 
-void handleVdsProviders(BurnThread *thread, IEnumVdsObject *vdsProviders)
+bool handleVdsProviders(BurnThread *thread, IEnumVdsObject *vdsProviders)
 {
     Q_ASSERT(thread);
     Q_ASSERT(vdsProviders);
@@ -430,10 +583,15 @@ void handleVdsProviders(BurnThread *thread, IEnumVdsObject *vdsProviders)
     IUnknown *vdsProviderUnknown;
     ULONG     fetched;
 
-    while (SUCCEEDED(vdsProviders->Next(1, &vdsProviderUnknown, &fetched)))
+    while (vdsProviders->Next(1, &vdsProviderUnknown, &fetched) == S_OK)
     {
-        handleVdsProvider(thread, vdsProviderUnknown);
+        if (handleVdsProvider(thread, vdsProviderUnknown))
+        {
+            return true;
+        }
     }
+
+    return false;
 }
 
 void deletePartitions(BurnThread *thread)
@@ -452,7 +610,7 @@ void deletePartitions(BurnThread *thread)
     IVdsServiceLoader *vdsLoader;
     HRESULT            status = CoCreateInstance(CLSID_VdsLoader, nullptr, CLSCTX_LOCAL_SERVER | CLSCTX_REMOTE_SERVER, IID_IVdsServiceLoader, (void **) &vdsLoader);
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "CoCreateInstance failed:" << status;
 
@@ -471,7 +629,7 @@ void deletePartitions(BurnThread *thread)
 
     vdsLoader->Release();
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "vdsLoader->LoadService failed:" << status;
 
@@ -486,7 +644,7 @@ void deletePartitions(BurnThread *thread)
     IEnumVdsObject *vdsProviders;
     status = vdsService->QueryProviders(VDS_QUERY_SOFTWARE_PROVIDERS, &vdsProviders);
 
-    if (!SUCCEEDED(status))
+    if (status != S_OK)
     {
         qCritical() << "vdsService->QueryProviders failed:" << status;
 
