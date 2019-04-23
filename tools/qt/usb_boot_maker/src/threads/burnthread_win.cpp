@@ -512,11 +512,9 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
         {
             wchar_t diskPath[] = { diskLetters.at(i).unicode(), ':', '\\', 0 };
 
-            if (DeleteVolumeMountPoint(diskPath))
-            {
-                thread->addLog(QCoreApplication::translate("BurnThread", "Unmounted disk volume %1").arg(diskPath));
-            }
-            else
+            thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(diskPath));
+
+            if (!DeleteVolumeMountPoint(diskPath))
             {
                 qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
 
@@ -530,7 +528,7 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
     }
     else
     {
-        thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted volume"));
+        thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted disk volume"));
 
         *targetDiskLetter = getUnusedDiskLetter();
     }
@@ -974,6 +972,23 @@ void clearGpt(BurnThread *thread, HANDLE diskHandle)
     }
 }
 
+void refreshDiskLayout(BurnThread *thread, HANDLE diskHandle)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    DWORD size;
+
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "Could not refresh disk layout:" << GetLastError();
+
+        thread->stop();
+    }
+}
+
 void initializeDisk(BurnThread *thread, HANDLE diskHandle)
 {
     Q_ASSERT(thread);
@@ -997,12 +1012,7 @@ void initializeDisk(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not refresh disk layout:" << GetLastError();
-
-        thread->stop();
-    }
+    refreshDiskLayout(thread, diskHandle);
 }
 
 void createPartition(BurnThread *thread, HANDLE diskHandle)
@@ -1067,12 +1077,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not refresh disk layout:" << GetLastError();
-
-        thread->stop();
-    }
+    refreshDiskLayout(thread, diskHandle);
 }
 
 bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*action*/, PVOID /*pData*/)
@@ -1082,7 +1087,7 @@ bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*ac
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_PROGRESS:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE:
         {
-            // Nothing
+            return true;
         }
         break;
 
@@ -1129,7 +1134,7 @@ bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*ac
         break;
     }
 
-    return true;
+    return false;
 }
 
 void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
@@ -1163,7 +1168,7 @@ void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
     pfFormatEx(volumeName, RemovableMedia, fsType, label, true, DEFAULT_CLUSTER_SIZE, formatExCallback);
 }
 
-void formatPartition(BurnThread *thread)
+void formatPartition(BurnThread *thread, HANDLE diskHandle)
 {
     Q_ASSERT(thread);
 
@@ -1192,6 +1197,10 @@ void formatPartition(BurnThread *thread)
 
         thread->stop();
     }
+
+
+
+    refreshDiskLayout(thread, diskHandle);
 }
 
 void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
@@ -1233,6 +1242,10 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
             QThread::msleep(WRITE_TIMEOUT);
         }
     }
+
+
+
+    refreshDiskLayout(thread, diskHandle);
 }
 
 void formatDisk(BurnThread *thread)
@@ -1284,7 +1297,7 @@ void formatDisk(BurnThread *thread)
 
 
 
-    formatPartition(thread);
+    formatPartition(thread, diskHandle);
     CHECK_IF_THREAD_TERMINATED(thread);
 
     writeProtectiveMbr(thread, diskHandle);
@@ -1301,6 +1314,29 @@ out:
     }
 }
 
+void mountVolumeByGuid(BurnThread *thread, wchar_t *diskPath, QString /*volumeName*/)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(diskPath);
+
+
+}
+
+void mountVolume(BurnThread *thread, QChar targetDiskLetter)
+{
+    Q_ASSERT(thread);
+
+
+
+    wchar_t diskPath[] = { targetDiskLetter.unicode(), ':', '\\', 0 };
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume to %1").arg(diskPath));
+
+
+
+    mountVolumeByGuid(thread, diskPath, getLogicalName(thread));
+}
+
 void BurnThread::run()
 {
     QChar targetDiskLetter;
@@ -1312,6 +1348,9 @@ void BurnThread::run()
     CHECK_IF_TERMINATED();
 
     formatDisk(this);
+    CHECK_IF_TERMINATED();
+
+    mountVolume(this, targetDiskLetter);
     CHECK_IF_TERMINATED();
 }
 
