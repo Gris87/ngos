@@ -77,6 +77,65 @@ struct VOLUME_DISK_EXTENTS_REDEF
 
 
 
+enum class FILE_SYSTEM_CALLBACK_COMMAND
+{
+    FCC_PROGRESS,
+    FCC_DONE_WITH_STRUCTURE,
+    FCC_UNKNOWN2,
+    FCC_INCOMPATIBLE_FILE_SYSTEM,
+    FCC_UNKNOWN4,
+    FCC_UNKNOWN5,
+    FCC_ACCESS_DENIED,
+    FCC_MEDIA_WRITE_PROTECTED,
+    FCC_VOLUME_IN_USE,
+    FCC_CANT_QUICK_FORMAT,
+    FCC_UNKNOWNA,
+    FCC_DONE,
+    FCC_BAD_LABEL,
+    FCC_UNKNOWND,
+    FCC_OUTPUT,
+    FCC_STRUCTURE_PROGRESS,
+    FCC_CLUSTER_SIZE_TOO_SMALL,
+    FCC_CLUSTER_SIZE_TOO_BIG,
+    FCC_VOLUME_TOO_SMALL,
+    FCC_VOLUME_TOO_BIG,
+    FCC_NO_MEDIA_IN_DRIVE,
+    FCC_UNKNOWN15,
+    FCC_UNKNOWN16,
+    FCC_UNKNOWN17,
+    FCC_DEVICE_NOT_READY,
+    FCC_CHECKDISK_PROGRESS,
+    FCC_UNKNOWN1A,
+    FCC_UNKNOWN1B,
+    FCC_UNKNOWN1C,
+    FCC_UNKNOWN1D,
+    FCC_UNKNOWN1E,
+    FCC_UNKNOWN1F,
+    FCC_READ_ONLY_MODE
+};
+
+
+
+typedef BOOLEAN (__stdcall *FILE_SYSTEM_CALLBACK)(
+    FILE_SYSTEM_CALLBACK_COMMAND command,
+    ULONG                        action,
+    PVOID                        pData
+);
+
+
+
+typedef void (WINAPI *FormatEx_t)(
+    WCHAR*               driveRoot,
+    MEDIA_TYPE           mediaType,
+    WCHAR*               fileSystemTypeName,
+    WCHAR*               label,
+    BOOL                 quickFormat,
+    ULONG                desiredUnitAllocationSize,
+    FILE_SYSTEM_CALLBACK callback
+);
+
+
+
 const GUID PARTITION_BASIC_DATA_GUID = { 0xEBD0A0A2L, 0xB9E5, 0x4433, {0x87, 0xC0, 0x68, 0xB6, 0xB7, 0x26, 0x99, 0xC7} };
 
 
@@ -1014,6 +1073,60 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
     }
 }
 
+void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(moduleHandle);
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Formatting partition to FAT32"));
+
+
+
+    FormatEx_t pfFormatEx = (FormatEx_t) GetProcAddress(moduleHandle, "FormatEx");
+
+    if (!pfFormatEx)
+    {
+        qCritical() << "GetProcAddress failed:" << GetLastError();
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    QString volumeName = getLogicalName(thread);
+}
+
+void formatPartition(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    HMODULE moduleHandle = LoadLibraryA("fmifs.dll");
+
+    if (moduleHandle != nullptr)
+    {
+        formatPartitionWithFmifs(thread, moduleHandle);
+
+        if (!FreeLibrary(moduleHandle))
+        {
+            qCritical() << "FreeLibrary failed:" << GetLastError();
+
+            thread->stop();
+        }
+    }
+    else
+    {
+        qCritical() << "LoadLibrary failed:" << GetLastError();
+
+        thread->stop();
+    }
+}
+
 void formatDisk(BurnThread *thread)
 {
     Q_ASSERT(thread);
@@ -1060,6 +1173,11 @@ void formatDisk(BurnThread *thread)
 
     unlockAndCloseHandle(thread, volumeHandle);
     volumeHandle = INVALID_HANDLE_VALUE;
+
+
+
+    formatPartition(thread);
+    CHECK_IF_THREAD_TERMINATED(thread);
 
 
 
