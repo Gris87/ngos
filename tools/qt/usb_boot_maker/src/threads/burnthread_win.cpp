@@ -63,7 +63,130 @@ enum class ShareWrite: quint8
 
 
 
-HANDLE getDiskHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
+// Redefine VOLUME_DISK_EXTENTS from winioctl.h with the more space for Extents
+struct VOLUME_DISK_EXTENTS_REDEF
+{
+    DWORD       numberOfDiskExtents;
+    DISK_EXTENT extents[8];
+};
+
+
+
+QString getPhysicalName(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    return "\\\\.\\PhysicalDrive" + QString::number(thread->getSelectedUsb().diskNumber);
+}
+
+QString getLogicalName(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    QString res;
+
+    char volumeName[MAX_PATH];
+    HANDLE volumeHandle = INVALID_HANDLE_VALUE;
+
+    do
+    {
+        if (volumeHandle == INVALID_HANDLE_VALUE)
+        {
+            volumeHandle = FindFirstVolumeA(volumeName, sizeof(volumeName));
+
+            if (volumeHandle == INVALID_HANDLE_VALUE)
+            {
+                qCritical() << "FindFirstVolume failed:" << GetLastError();
+
+                thread->stop();
+
+                break;
+            }
+        }
+        else
+        {
+            if (!FindNextVolumeA(volumeHandle, volumeName, sizeof(volumeName)))
+            {
+                qCritical() << "FindNextVolume failed:" << GetLastError();
+
+                thread->stop();
+
+                break;
+            }
+        }
+
+
+
+        size_t len = strlen(volumeName);
+        volumeName[len - 1] = 0;
+
+
+
+        HANDLE deviceHandle = CreateFileA(volumeName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+        if (deviceHandle == INVALID_HANDLE_VALUE)
+        {
+            qCritical() << "CreateFile failed:" << GetLastError();
+
+            continue;
+        }
+
+
+
+        VOLUME_DISK_EXTENTS_REDEF diskExtents;
+        DWORD                     size;
+
+        if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &diskExtents, sizeof(diskExtents), &size, nullptr))
+        {
+            if ((diskExtents.numberOfDiskExtents >= 1) && (diskExtents.extents[0].DiskNumber == thread->getSelectedUsb().diskNumber))
+            {
+                res = volumeName;
+            }
+        }
+        else
+        {
+            qCritical() << "DeviceIoControl failed:" << GetLastError();
+        }
+
+
+
+        if (!CloseHandle(deviceHandle))
+        {
+            qCritical() << "CloseHandle failed:" << GetLastError();
+
+            continue;
+        }
+
+
+
+        if (res != "")
+        {
+            break;
+        }
+    } while(true);
+
+
+
+    if (volumeHandle != INVALID_HANDLE_VALUE)
+    {
+        if (!FindVolumeClose(volumeHandle))
+        {
+            qCritical() << "FindVolumeClose failed:" << GetLastError();
+
+            thread->stop();
+        }
+    }
+
+
+
+    return res;
+}
+
+HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
 {
     Q_ASSERT(thread);
 
@@ -73,11 +196,9 @@ HANDLE getDiskHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, 
 
 
 
-    QString diskPath = "\\\\.\\PhysicalDrive" + QString::number(thread->getSelectedUsb().diskNumber);
-
     for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)
     {
-        res = CreateFileA(diskPath.toLatin1().data()
+        res = CreateFileA(path.toLatin1().data()
                           , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : 0)
                           , FILE_SHARE_READ | (shareWrite  == ShareWrite::YES    ? FILE_SHARE_WRITE : 0)
                           , nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -129,6 +250,8 @@ HANDLE getDiskHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, 
     {
         qCritical() << "Could not open disk:" << GetLastError();
 
+        thread->stop();
+
         return res;
     }
 
@@ -171,6 +294,8 @@ HANDLE getDiskHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, 
 
 
         qCritical() << "Could not lock disk:" << GetLastError();
+
+        thread->stop();
     }
 
 
@@ -178,8 +303,27 @@ HANDLE getDiskHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, 
     return res;
 }
 
-void unlockAndCloseHandle(HANDLE handle)
+HANDLE getPhysicalHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
 {
+    Q_ASSERT(thread);
+
+
+
+    return getHandle(thread, getPhysicalName(thread), lockDisk, writeAccess, shareWrite);
+}
+
+HANDLE getLogicalHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
+{
+    Q_ASSERT(thread);
+
+
+
+    return getHandle(thread, getLogicalName(thread), lockDisk, writeAccess, shareWrite);
+}
+
+void unlockAndCloseHandle(BurnThread *thread, HANDLE handle)
+{
+    Q_ASSERT(thread);
     Q_ASSERT(handle != INVALID_HANDLE_VALUE);
 
 
@@ -189,11 +333,15 @@ void unlockAndCloseHandle(HANDLE handle)
     if (!DeviceIoControl(handle, FSCTL_UNLOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
     {
         qCritical() << "Could not unlock disk:" << GetLastError();
+
+        thread->stop();
     }
 
     if (!CloseHandle(handle))
     {
         qCritical() << "CloseHandle failed:" << GetLastError();
+
+        thread->stop();
     }
 }
 
@@ -266,7 +414,7 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
 
 
 
-    HANDLE diskHandle = getDiskHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);
+    HANDLE diskHandle = getPhysicalHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);
 
     if (diskHandle == INVALID_HANDLE_VALUE)
     {
@@ -279,7 +427,7 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
 
     if (!thread->isWorking())
     {
-        unlockAndCloseHandle(diskHandle);
+        unlockAndCloseHandle(thread, diskHandle);
 
         return;
     }
@@ -301,6 +449,10 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
             else
             {
                 qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
+
+                thread->stop();
+
+                break;
             }
         }
 
@@ -317,7 +469,7 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
 
 
 
-    unlockAndCloseHandle(diskHandle);
+    unlockAndCloseHandle(thread, diskHandle);
 }
 
 bool handleVdsDisk(BurnThread *thread, IUnknown *vdsDiskUnknown)
@@ -658,6 +810,45 @@ void deletePartitions(BurnThread *thread)
     handleVdsProviders(thread, vdsProviders);
 }
 
+void dismountVolume(BurnThread *thread, HANDLE volumeHandle)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(volumeHandle != INVALID_HANDLE_VALUE);
+
+
+
+    DWORD size;
+
+    if (!DeviceIoControl(volumeHandle, FSCTL_DISMOUNT_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "DeviceIoControl failed:" << GetLastError();
+
+        thread->stop();
+
+        return;
+    }
+}
+
+void doSomething(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    HANDLE volumeHandle = getLogicalHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);
+
+    if (volumeHandle == INVALID_HANDLE_VALUE)
+    {
+        thread->stop();
+
+        return;
+    }
+
+    dismountVolume(thread, volumeHandle);
+
+    unlockAndCloseHandle(thread, volumeHandle);
+}
+
 void BurnThread::run()
 {
     QChar targetDiskLetter;
@@ -666,6 +857,9 @@ void BurnThread::run()
     CHECK_IF_TERMINATED();
 
     deletePartitions(this);
+    CHECK_IF_TERMINATED();
+
+    doSomething(this);
     CHECK_IF_TERMINATED();
 }
 
