@@ -22,34 +22,39 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="515"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="517"/>
         <source>Unmounted disk volume %1</source>
         <translation>Отключен том диска %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="531"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="533"/>
         <source>There is no any mounted volume</source>
         <translation>Не подключен ни один том диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="614"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="616"/>
         <source>There is no partitions on the disk</source>
         <translation>На диске нет разделов</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="985"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="987"/>
         <source>Initializing disk</source>
         <translation>Инициализация диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1013"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1015"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Создание раздела GPT для UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1083"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1172"/>
         <source>Formatting partition to FAT32</source>
         <translation>Форматирование раздела в FAT32</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1204"/>
+        <source>Writing protective MBR</source>
+        <translation>Создание записи MBR для GPT</translation>
     </message>
     <message>
         <source>Creating partition</source>
@@ -60,17 +65,17 @@
         <translation type="vanished">Удаление разделов на диске</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="623"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="625"/>
         <source>Deleting partition %1 (offset: %2, size: %3)</source>
         <translation>Удаление раздела %1 (позиция: %2, размер: %3)</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="629"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="631"/>
         <source>Failed to delete partition</source>
         <translation>Не удалось удалить раздел</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="938"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="940"/>
         <source>Clearing GPT</source>
         <translation>Очистка GPT</translation>
     </message>

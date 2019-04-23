@@ -8,6 +8,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QFile>
 #include <Windows.h>
 #include <initguid.h>
 #include <objbase.h>
@@ -24,7 +25,8 @@
 #define WRITE_RETRIES 100
 #define WRITE_TIMEOUT 100
 
-#define MAX_GPT_PARTITIONS 128
+#define MAX_GPT_PARTITIONS   128
+#define DEFAULT_CLUSTER_SIZE 4096
 
 
 
@@ -77,7 +79,7 @@ struct VOLUME_DISK_EXTENTS_REDEF
 
 
 
-enum class FILE_SYSTEM_CALLBACK_COMMAND
+enum class FILE_SYSTEM_CALLBACK_COMMAND: quint8
 {
     FCC_PROGRESS,
     FCC_DONE_WITH_STRUCTURE,
@@ -116,7 +118,7 @@ enum class FILE_SYSTEM_CALLBACK_COMMAND
 
 
 
-typedef BOOLEAN (__stdcall *FILE_SYSTEM_CALLBACK)(
+typedef bool (__stdcall *FILE_SYSTEM_CALLBACK)(
     FILE_SYSTEM_CALLBACK_COMMAND command,
     ULONG                        action,
     PVOID                        pData
@@ -1073,14 +1075,67 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
     }
 }
 
+bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*action*/, PVOID /*pData*/)
+{
+    switch (command)
+    {
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_PROGRESS:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE:
+        {
+            // Nothing
+        }
+        break;
+
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE_WITH_STRUCTURE:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN2:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_INCOMPATIBLE_FILE_SYSTEM:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN4:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN5:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_ACCESS_DENIED:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_MEDIA_WRITE_PROTECTED:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_IN_USE:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CANT_QUICK_FORMAT:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWNA:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_BAD_LABEL:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWND:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_OUTPUT:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_STRUCTURE_PROGRESS:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_SMALL:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_BIG:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_TOO_SMALL:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_TOO_BIG:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_NO_MEDIA_IN_DRIVE:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN15:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN16:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN17:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DEVICE_NOT_READY:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CHECKDISK_PROGRESS:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1A:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1B:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1C:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1D:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1E:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1F:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_READ_ONLY_MODE:
+        {
+            qCritical() << "Unexpected command:" << (quint8) command;
+        }
+        break;
+
+        default:
+        {
+            qCritical() << "Unknown command:" << (quint8) command;
+        }
+        break;
+    }
+
+    return true;
+}
+
 void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
 {
     Q_ASSERT(thread);
     Q_ASSERT(moduleHandle);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Formatting partition to FAT32"));
 
 
 
@@ -1097,12 +1152,24 @@ void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
 
 
 
-    QString volumeName = getLogicalName(thread);
+    wchar_t volumeName[MAX_PATH];
+    wchar_t fsType[8];
+    wchar_t label[16];
+
+    getLogicalName(thread).toWCharArray(volumeName);
+    QString("FAT32").toWCharArray(fsType);
+    QString("NGOS BOOT").toWCharArray(label);
+
+    pfFormatEx(volumeName, RemovableMedia, fsType, label, true, DEFAULT_CLUSTER_SIZE, formatExCallback);
 }
 
 void formatPartition(BurnThread *thread)
 {
     Q_ASSERT(thread);
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Formatting partition to FAT32"));
 
 
 
@@ -1124,6 +1191,47 @@ void formatPartition(BurnThread *thread)
         qCritical() << "LoadLibrary failed:" << GetLastError();
 
         thread->stop();
+    }
+}
+
+void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Writing protective MBR"));
+
+
+
+    QFile file(":/assets/binaries/protective_mbr.bin");
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qCritical() << "Failed to open :/assets/binaries/protective_mbr.bin";
+
+        thread->stop();
+
+        return;
+    }
+
+    QByteArray buffer = file.readAll();
+
+    file.close();
+
+
+
+    for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
+    {
+        if (writeSectors(diskHandle, 0, 1, buffer) == 512)
+        {
+            break;
+        }
+        else
+        {
+            QThread::msleep(WRITE_TIMEOUT);
+        }
     }
 }
 
@@ -1177,6 +1285,9 @@ void formatDisk(BurnThread *thread)
 
 
     formatPartition(thread);
+    CHECK_IF_THREAD_TERMINATED(thread);
+
+    writeProtectiveMbr(thread, diskHandle);
     CHECK_IF_THREAD_TERMINATED(thread);
 
 

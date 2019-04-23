@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>assets/binaries/protective_mbr.bin</file>
         <file>assets/images/about.png</file>
         <file>assets/images/exit.png</file>
         <file>assets/images/icon.ico</file>
