@@ -1,13 +1,11 @@
-BOOTSEG = 0x07C0                                                                # Address of boot sector in memory (0x7C00 >> 4)
-                                                                                #
 .code16                                                                         # Generate code in 16 bits mode
-.section ".bootsector_code", "ax"                                               # bootsector_code section (a - allocatable, x - executable)
+.section ".bootsector", "ax"                                                    # bootsector section (a - allocatable, x - executable)
                                                                                 #
 .globl  _start                                                                  # Make _start visible for linker
 _start:                                                                         # Global pointer to the entry point in order to make linker silent
                                                                                 #
 # ============================================================================= # =============================================================================
-# There is no UEFI                                                              # We will print message and reboot PC
+# We will print message and reboot PC                                           #
 # ============================================================================= # =============================================================================
                                                                                 #
     movw    %cs, %ax                                                            # Indirectly assign (via AX)...
@@ -41,10 +39,9 @@ bs_die:                                                                         
     ljmp    $0xF000, $0xFFF0                                                    # Reboot your PC if something goes wrong
                                                                                 #
 # ============================================================================= # =============================================================================
-# There is no UEFI                                                              # This section has a reboot message only
+# Data used for printing                                                        #
 # ============================================================================= # =============================================================================
                                                                                 #
-.section ".bootsector_data", "a"                                                # bootsector_data section (a - allocatable)
 reboot_msg:                                                                     # Reboot message
     .ascii  "Please use UEFI bootloader.\r\n"                                   # A lot of...
     .ascii  "\n"                                                                # bytes for...
@@ -52,8 +49,19 @@ reboot_msg:                                                                     
     .byte   0                                                                   # Ends with 0
                                                                                 #
 # ============================================================================= # =============================================================================
+# From offset 0x01B8, the MBR contains the partition table and signature data   #
+# ============================================================================= # =============================================================================
                                                                                 #
-.section ".boot_marker", "a"                                                    # boot_marker section (a - allocatable)
+    .org 0x01B8                                                                 # Reserved data in MBR starting from 0x01B8
                                                                                 #
-.globl  _boot_magic_number                                                      # Make _boot_magic_number visible for linker
-_boot_magic_number:  .word 0xAA55                                               # Insert magic number 0xAA55 at the end of 0x200 byte sector to make it bootable
+disk_signature:                                                                 # Label for disk signature
+    .long   0                                                                   # Put zero for now
+                                                                                #
+padding:                                                                        # Padding...
+    .word   0                                                                   # with 2 bytes
+                                                                                #
+partition_table:                                                                # Label for partition table
+    .fill   4 * 16, 1, 0                                                        # Fill 4 partition entries with 16 zero bytes
+                                                                                #
+boot_magic_number:                                                              # Label for magic number
+    .word   0xAA55                                                              # Insert magic number 0xAA55 at the end of 0x200 byte sector to make it bootable
