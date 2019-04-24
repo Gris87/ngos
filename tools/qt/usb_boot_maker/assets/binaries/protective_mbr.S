@@ -1,8 +1,15 @@
+BOOTSEG = 0x07C0                                                                # Address of boot sector in memory (0x7C00 >> 4)
+                                                                                #
 .code16                                                                         # Generate code in 16 bits mode
-.section ".bootsector", "ax"                                                    # bootsector section (a - allocatable, x - executable)
+.section ".bootsector_code", "ax"                                               # bootsector_code section (a - allocatable, x - executable)
                                                                                 #
 .globl  _start                                                                  # Make _start visible for linker
 _start:                                                                         # Global pointer to the entry point in order to make linker silent
+                                                                                #
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
+                                                                                #
+    ljmp    $(BOOTSEG), $(start2)                                               # Normalize the start address
+start2:                                                                         # Label used for normalization
                                                                                 #
 # ============================================================================= # =============================================================================
 # We will print message and reboot PC                                           #
@@ -42,6 +49,7 @@ bs_die:                                                                         
 # Data used for printing                                                        #
 # ============================================================================= # =============================================================================
                                                                                 #
+.section ".bootsector_data", "a"                                                # bootsector_data section (a - allocatable)
 reboot_msg:                                                                     # Reboot message
     .ascii  "Please use UEFI bootloader.\r\n"                                   # A lot of...
     .ascii  "\n"                                                                # bytes for...
@@ -49,19 +57,9 @@ reboot_msg:                                                                     
     .byte   0                                                                   # Ends with 0
                                                                                 #
 # ============================================================================= # =============================================================================
-# From offset 0x01B8, the MBR contains the partition table and signature data   #
-# ============================================================================= # =============================================================================
                                                                                 #
-    .org 0x01B8                                                                 # Reserved data in MBR starting from 0x01B8
+.section ".boot_marker", "a"                                                    # boot_marker section (a - allocatable)
                                                                                 #
-disk_signature:                                                                 # Label for disk signature
-    .long   0                                                                   # Put zero for now
-                                                                                #
-padding:                                                                        # Padding...
-    .word   0                                                                   # with 2 bytes
-                                                                                #
-partition_table:                                                                # Label for partition table
-    .fill   4 * 16, 1, 0                                                        # Fill 4 partition entries with 16 zero bytes
-                                                                                #
-boot_magic_number:                                                              # Label for magic number
+.globl  _boot_magic_number                                                      # Make _boot_magic_number visible for linker
+_boot_magic_number:                                                             # Label for magic number
     .word   0xAA55                                                              # Insert magic number 0xAA55 at the end of 0x200 byte sector to make it bootable
