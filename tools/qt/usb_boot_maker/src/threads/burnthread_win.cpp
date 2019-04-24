@@ -8,6 +8,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <Windows.h>
 #include <initguid.h>
@@ -1476,7 +1477,34 @@ void copyFiles(BurnThread *thread, const QString &diskPath)
 
 
 
-    qDebug() << diskPath << thread->getBinariesPath();
+    if (!QDir().mkpath(diskPath + "/EFI/BOOT"))
+    {
+        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to create folder %1").arg(diskPath + "/EFI/BOOT"));
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    if (!QFile(thread->getBinariesPath() + "/NGOS_installer.bin").copy(diskPath + "/EFI/BOOT/bootx64.efi"))
+    {
+        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to copy file %1").arg("NGOS_installer.bin"));
+
+        thread->stop();
+
+        return;
+    }
+}
+
+void createAutorun(BurnThread *thread, const QString &diskPath)
+{
+    Q_ASSERT(thread);
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Create autorun.inf file"));
 }
 
 void BurnThread::run()
@@ -1498,6 +1526,9 @@ void BurnThread::run()
     CHECK_IF_TERMINATED();
 
     copyFiles(this, diskPath);
+    CHECK_IF_TERMINATED();
+
+    createAutorun(this, diskPath);
     CHECK_IF_TERMINATED();
 }
 
