@@ -1,15 +1,8 @@
-BOOTSEG = 0x07C0                                                                # Address of boot sector in memory (0x7C00 >> 4)
-                                                                                #
 .code16                                                                         # Generate code in 16 bits mode
 .section ".bootsector_code", "ax"                                               # bootsector_code section (a - allocatable, x - executable)
                                                                                 #
 .globl  _start                                                                  # Make _start visible for linker
 _start:                                                                         # Global pointer to the entry point in order to make linker silent
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    ljmp    $(BOOTSEG), $(start2)                                               # Normalize the start address
-start2:                                                                         # Label used for normalization
                                                                                 #
 # ============================================================================= # =============================================================================
 # We will print message and reboot PC                                           #
