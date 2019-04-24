@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QSettings>
 #include <Windows.h>
 #include <initguid.h>
 #include <objbase.h>
@@ -1505,6 +1506,46 @@ void createAutorun(BurnThread *thread, const QString &diskPath)
 
 
     thread->addLog(QCoreApplication::translate("BurnThread", "Create autorun.inf file"));
+
+
+
+    if (!QFile(":/assets/images/icon.ico").copy(diskPath + "icon.ico"))
+    {
+        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to copy file %1").arg(":/assets/images/icon.ico"));
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    QSettings settings(diskPath + "autorun.inf", QSettings::IniFormat); // Ignore CppPunctuationVerifier
+
+    settings.beginGroup("autorun");
+    settings.setValue("label", "NGOS installer boot flash");
+    settings.setValue("icon", "icon.ico");
+    settings.endGroup();
+}
+
+void remountVolume(BurnThread *thread, const QString &diskPath)
+{
+    Q_ASSERT(thread);
+
+
+
+    if (!DeleteVolumeMountPointA(diskPath.toLatin1().data()))
+    {
+        qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
+
+        thread->stop();
+
+        return;
+    }
+
+
+
+    mountVolume(thread, (QString *) &diskPath);
 }
 
 void BurnThread::run()
@@ -1514,7 +1555,7 @@ void BurnThread::run()
     unmountVolumes(this, &targetDiskLetter);
     CHECK_IF_TERMINATED();
 
-    deletePartitions(this);
+ //   deletePartitions(this);
     CHECK_IF_TERMINATED();
 
     formatDisk(this);
@@ -1529,6 +1570,9 @@ void BurnThread::run()
     CHECK_IF_TERMINATED();
 
     createAutorun(this, diskPath);
+    CHECK_IF_TERMINATED();
+
+    remountVolume(this, diskPath);
     CHECK_IF_TERMINATED();
 }
 
