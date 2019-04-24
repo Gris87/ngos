@@ -1,100 +1,59 @@
-/********************************************************************************/
-/* GPT - A protective MBR that displays a notice if a user attempts to boot a   */
-/*       GPT drive in BIOS/Legacy mode.                                         */
-/*                                                                              */
-/* Copyright (c) 2019 Pete Batard <pete@akeo.ie>                                */
-/*                                                                              */
-/* This program is free software; you can redistribute it and/or modify it      */
-/* under the terms of the GNU General Public License as published by the Free   */
-/* Software Foundation, either version 3 of the License, or (at your option)    */
-/* any later version.                                                           */
-/*                                                                              */
-/* This program is distributed in the hope that it will be useful, but WITHOUT  */
-/* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        */
-/* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for    */
-/* more details.                                                                */
-/*                                                                              */
-/* You should have received a copy of the GNU General Public License along with */
-/* this program; if not, see <http://www.gnu.org/licenses/>.                    */
-/*                                                                              */
-/********************************************************************************/
-
-/********************************************************************************/
-/* GNU Assembler Settings:                                                      */
-/********************************************************************************/
-.intel_syntax noprefix
-.code16
-/********************************************************************************/
-
-/********************************************************************************/
-/* Constants:                                                                   */
-/********************************************************************************/
-MBR_ADDR      = 0x7c00
-MBR_SIZE      = 0x200
-MBR_RESERVED  = 0x1b8	# Start of the reserved section (partition table, etc.)
-PT_MAX        = 0x04	# Number of partition entries in the partition table
-PT_ENTRY_SIZE = 0x10	# Size of a partition entry in the partition table
-
-/********************************************************************************/
-/* MBR: This section resides at 0x00007c00 and is exactly 512 bytes             */
-/********************************************************************************/
-.section main, "ax"
-.globl mbr
-mbr:
-	inc  cx
-	dec  bx
-	inc  bp
-	dec  di
-	cld
-	xor  ax, ax
-	mov  ds, ax
-	mov  si, offset sep
-	call print_string
-	mov  si, offset hdr
-	call print_string
-	mov  si, offset sep
-	call print_string
-	mov  si, offset txt
-	call print_string
-	hlt
-
-print_string:
-	lodsb
-	cmp  al, 0x00
-	jz   0f
-	mov  ah, 0x0e
-	mov  bx, 0x0007
-	int  0x10
-	jmp  print_string
-0:	ret
-
-/********************************************************************************/
-/* Data section                                                                 */
-/********************************************************************************/
-sep:
-		.string "****************************************\r\n"
-hdr:
-		.string "*** ERROR: LEGACY BOOT OF UEFI MEDIA ***\r\n"
-txt:
-		.ascii "\r\n" \
-		"This drive can only boot in UEFI mode.\r\n" \
-		"It can not boot in BIOS/Legacy mode.\r\n" \
-		"\r\n" \
-		"If you want to boot this drive in BIOS/Legacy mode, you\r\n" \
-		"should recreate it in Rufus using the following settings:\r\n" \
-		"* Partition scheme -> MBR\r\n" \
-		"* Target system -> BIOS...\r\n" \
-		"\0"
-
-/********************************************************************************/
-/* From offset 0x1b8, the MBR contains the partition table and signature data   */
-/********************************************************************************/
-		.org MBR_RESERVED
-disk_signature:
-		.space 0x04
-filler:
-		.space 0x02
-partition_table:
-		.space PT_ENTRY_SIZE * PT_MAX
-mbr_signature:
-		.word 0xAA55
+BOOTSEG = 0x07C0                                                                # Address of boot sector in memory (0x7C00 >> 4)
+                                                                                #
+.code16                                                                         # Generate code in 16 bits mode
+.section ".bootsector_code", "ax"                                               # bootsector_code section (a - allocatable, x - executable)
+                                                                                #
+.globl  _start                                                                  # Make _start visible for linker
+_start:                                                                         # Global pointer to the entry point in order to make linker silent
+                                                                                #
+# ============================================================================= # =============================================================================
+# There is no UEFI                                                              # We will print message and reboot PC
+# ============================================================================= # =============================================================================
+                                                                                #
+    movw    %cs, %ax                                                            # Indirectly assign (via AX)...
+    movw    %ax, %ds                                                            # CS to DS
+    movw    %ax, %es                                                            # CS to ES
+    movw    %ax, %ss                                                            # CS to SS
+    xorw    %sp, %sp                                                            # Set SP to 0
+    sti                                                                         # Set Interrupt Flag (When the IF flag is set, the processor begins responding to external, maskable interrupts after the next instruction is executed.)
+    cld                                                                         # Clear Direction Flag (When the DF flag is set to 0, string operations increment the index registers (ESI and/or EDI))
+                                                                                #
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
+                                                                                #
+    movw   $(reboot_msg), %si                                                   # Store pointer of reboot message to SI
+                                                                                #
+msg_loop:                                                                       # Label for printing message
+    lodsb                                                                       # Load one byte from SI to AL
+    andb    %al, %al                                                            # IF AL == 0
+    jz      bs_die                                                              #   THEN jump to bs_die
+    movb    $0x0E, %ah                                                          #   ELSE set AH to 0x0E (Printing on the screen)
+    movw    $0x07, %bx                                                          #        set BX to 0x07 (BH=0 - first page, BL=7 - Light Gray)
+    int     $0x10                                                               #        Call interrupt 0x10 for printing character from AL on the screen
+    jmp     msg_loop                                                            #        Print next character
+                                                                                #
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
+                                                                                #
+bs_die:                                                                         # We will come to this label when reboot message printed
+    xorw    %ax, %ax                                                            # Set AX to 0 in order to let interrupt 0x16 to read key press
+    int     $0x16                                                               # Wait until user press some keyboard button
+    int     $0x19                                                               # Go to the bootstrap loader (It will try to reload from some bootable disk)
+                                                                                #
+    ljmp    $0xF000, $0xFFF0                                                    # Reboot your PC if something goes wrong
+                                                                                #
+# ============================================================================= # =============================================================================
+# There is no UEFI                                                              # This section has a reboot message only
+# ============================================================================= # =============================================================================
+                                                                                #
+.section ".bootsector_data", "a"                                                # bootsector_data section (a - allocatable)
+reboot_msg:                                                                     # Reboot message
+    .ascii  "Please use UEFI bootloader.\r\n"                                   # A lot of...
+    .ascii  "\n"                                                                # bytes for...
+    .ascii  "Remove disk and press any key to reboot...\r\n"                    # reboot message...
+    .byte   0                                                                   # Ends with 0
+                                                                                #
+# ============================================================================= # =============================================================================
+                                                                                #
+.section ".boot_marker", "a"                                                    # boot_marker section (a - allocatable)
+                                                                                #
+.globl  _boot_magic_number                                                      # Make _boot_magic_number visible for linker
+_boot_magic_number:  .word 0xAA55                                               # Insert magic number 0xAA55 at the end of 0x200 byte sector to make it bootable
