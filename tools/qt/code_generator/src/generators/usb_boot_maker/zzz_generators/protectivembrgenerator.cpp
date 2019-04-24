@@ -32,6 +32,7 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
     tempFile2.close();
 
 
+
     QString asmPath = path + ASM_PATH;
 
     if (!QFile(asmPath).exists())
@@ -56,7 +57,7 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
 
 
 
-    process.start("ld", QStringList() << "-T" << path + "/../../../src/os/boot/linker.ld" << tempFile1Path << "-o" << tempFile2Path);
+    process.start("ld", QStringList() << "--oformat" << "binary" << "-T" << path + "/../../../src/os/boot/linker.ld" << tempFile1Path << "-o" << tempFile2Path);
     process.waitForFinished(-1);
 
     if (process.exitCode() != 0)
@@ -68,21 +69,9 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
 
 
 
-    process.start("objcopy", QStringList() << "-O" << "binary" << tempFile2Path << tempFile1Path);
-    process.waitForFinished(-1);
-
-    if (process.exitCode() != 0)
-    {
-        Console::err(QString("Failed to compile %1:\n%2").arg(asmPath).arg(QString::fromUtf8(process.readAllStandardError())));
-
-        return false;
-    }
-
-
-
-    tempFile1.open();
-    QByteArray data = tempFile1.readAll();
-    tempFile1.close();
+    tempFile2.open();
+    QByteArray data = tempFile2.readAll();
+    tempFile2.close();
 
 
 
