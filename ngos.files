@@ -800,6 +800,10 @@ tools/qt/code_generator/src/generators/gdb_debug/zzz_generators/hexarraysgenerat
 tools/qt/code_generator/src/generators/gdb_debug/zzz_generators/hexarraysgenerator.h
 tools/qt/code_generator/src/generators/generator.cpp
 tools/qt/code_generator/src/generators/generator.h
+tools/qt/code_generator/src/generators/usb_boot_maker/usbbootmakergenerator.cpp
+tools/qt/code_generator/src/generators/usb_boot_maker/usbbootmakergenerator.h
+tools/qt/code_generator/src/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.cpp
+tools/qt/code_generator/src/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h
 tools/qt/code_generator/src/main.cpp
 tools/qt/code_verifier/.gitignore
 tools/qt/code_verifier/code_verifier.pro
@@ -1075,6 +1079,8 @@ tools/qt/test_verifier/src/threads/testworkerthread.cpp
 tools/qt/test_verifier/src/threads/testworkerthread.h
 tools/qt/test_verifier/test_verifier.pro
 tools/qt/usb_boot_maker/.gitignore
+tools/qt/usb_boot_maker/assets/binaries/protective_mbr.bin
+tools/qt/usb_boot_maker/assets/binaries/protective_mbr.S
 tools/qt/usb_boot_maker/assets/images/about.png
 tools/qt/usb_boot_maker/assets/images/exit.png
 tools/qt/usb_boot_maker/assets/images/icon.ico
@@ -1107,6 +1113,10 @@ tools/qt/usb_boot_maker/src/other/usbproperties.h
 tools/qt/usb_boot_maker/src/other/usbspeed.cpp
 tools/qt/usb_boot_maker/src/other/usbspeed.h
 tools/qt/usb_boot_maker/src/other/versioninfo.h
+tools/qt/usb_boot_maker/src/threads/burnthread.cpp
+tools/qt/usb_boot_maker/src/threads/burnthread.h
+tools/qt/usb_boot_maker/src/threads/burnthread_linux.cpp
+tools/qt/usb_boot_maker/src/threads/burnthread_win.cpp
 tools/qt/usb_boot_maker/usb_boot_maker.pro
 tools/tracers/assets/linux/.config
 tools/tracers/assets/linux/ngos_tracer.patch
