@@ -25,33 +25,33 @@ start2:                                                                         
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    movw    $(separator), %si                                                   # Store pointer of reboot message to SI
-    call    print_string
-    movw    $(header), %si                                                   # Store pointer of reboot message to SI
-    call    print_string
-    movw    $(separator), %si                                                   # Store pointer of reboot message to SI
-    call    print_string
-    movw    $(reboot_msg), %si                                                   # Store pointer of reboot message to SI
-    call    print_string
-
+    movw    $(separator), %si                                                   # Put address of separator to SI
+    call    print_string                                                        # Call print_string function
+    movw    $(header), %si                                                      # Put address of header to SI
+    call    print_string                                                        # Call print_string function
+    movw    $(separator), %si                                                   # Put address of separator to SI
+    call    print_string                                                        # Call print_string function
+    movw    $(reboot_msg), %si                                                  # Put address of reboot message to SI
+    call    print_string                                                        # Call print_string function
+                                                                                #
     xorw    %ax, %ax                                                            # Set AX to 0 in order to let interrupt 0x16 to read key press
     int     $0x16                                                               # Wait until user press some keyboard button
     int     $0x19                                                               # Go to the bootstrap loader (It will try to reload from some bootable disk)
                                                                                 #
     ljmp    $0xF000, $0xFFF0                                                    # Reboot your PC if something goes wrong
-
+                                                                                #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-print_string:                                                                   # Label for printing message
+print_string:                                                                   # print_string function
     lodsb                                                                       # Load one byte from SI to AL
     andb    %al, %al                                                            # IF AL == 0
-    jz      1f                                                                  #   THEN jump to bs_die
+    jz      1f                                                                  #   THEN jump to 1f
     movb    $0x0E, %ah                                                          #   ELSE set AH to 0x0E (Printing on the screen)
     movw    $0x07, %bx                                                          #        set BX to 0x07 (BH=0 - first page, BL=7 - Light Gray)
     int     $0x10                                                               #        Call interrupt 0x10 for printing character from AL on the screen
     jmp     print_string                                                        #        Print next character
-1:
-    ret
+1:                                                                              # Label for jumping when there is no more symbols
+    ret                                                                         # Return from the function
                                                                                 #
 # ============================================================================= # =============================================================================
 # Data used for printing                                                        #
@@ -67,7 +67,8 @@ header:                                                                         
     .byte   0                                                                   # Ends with 0
                                                                                 #
 reboot_msg:                                                                     # Reboot message
-    .ascii  "Please use UEFI bootloader.\r\n"                                   # A lot of...
+    .ascii  "\r\n"                                                              # A lot...
+    .ascii  "Please use UEFI bootloader.\r\n"                                   # of...
     .ascii  "\n"                                                                # bytes for...
     .ascii  "Remove disk and press any key to reboot...\r\n"                    # reboot message...
     .byte   0                                                                   # Ends with 0
