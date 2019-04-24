@@ -1,5 +1,5 @@
-#ifndef CODE_GENERATOR_SRC_GENERATORS_GDB_DEBUG_GDBDEBUGGENERATOR_H
-#define CODE_GENERATOR_SRC_GENERATORS_GDB_DEBUG_GDBDEBUGGENERATOR_H
+#ifndef CODE_GENERATOR_SRC_GENERATORS_USB_BOOT_MAKER_USBBOOTMAKERGENERATOR_H
+#define CODE_GENERATOR_SRC_GENERATORS_USB_BOOT_MAKER_USBBOOTMAKERGENERATOR_H
 
 
 
@@ -9,10 +9,10 @@
 
 
 
-class GdbDebugGenerator: public Generator
+class UsbBootMakerGenerator: public Generator
 {
 public:
-    GdbDebugGenerator(); // TEST: NO
+    UsbBootMakerGenerator(); // TEST: NO
 
     static bool generateAll(const QString &path); // TEST: NO
 
@@ -20,9 +20,9 @@ protected:
     virtual bool generate(const QString &path); // TEST: NO
 
 private:
-    static QList<GdbDebugGenerator *> sGenerators;
+    static QList<UsbBootMakerGenerator *> sGenerators;
 };
 
 
 
-#endif // CODE_GENERATOR_SRC_GENERATORS_GDB_DEBUG_GDBDEBUGGENERATOR_H
+#endif // CODE_GENERATOR_SRC_GENERATORS_USB_BOOT_MAKER_USBBOOTMAKERGENERATOR_H

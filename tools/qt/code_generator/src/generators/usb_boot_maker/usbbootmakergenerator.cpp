@@ -1,27 +1,27 @@
-#include "gdbdebuggenerator.h"
+#include "usbbootmakergenerator.h"
 
 #include <QDir>
 #include <console/console.h>
 
 
 
-QList<GdbDebugGenerator *> GdbDebugGenerator::sGenerators;
+QList<UsbBootMakerGenerator *> UsbBootMakerGenerator::sGenerators;
 
 
 
-GdbDebugGenerator::GdbDebugGenerator()
+UsbBootMakerGenerator::UsbBootMakerGenerator()
     : Generator()
 {
     sGenerators.append(this);
 }
 
-bool GdbDebugGenerator::generateAll(const QString &path)
+bool UsbBootMakerGenerator::generateAll(const QString &path)
 {
-    QString gdbDebugPath = path + "/tools/qt/gdb_debug";
+    QString usbBootMakerPath = path + "/tools/qt/usb_boot_maker";
 
-    if (!QDir(gdbDebugPath).exists())
+    if (!QDir(usbBootMakerPath).exists())
     {
-        Console::err(QString("%1 not found").arg(gdbDebugPath));
+        Console::err(QString("%1 not found").arg(usbBootMakerPath));
 
         return false;
     }
@@ -30,7 +30,7 @@ bool GdbDebugGenerator::generateAll(const QString &path)
 
     for (qint64 i = 0; i < sGenerators.length(); ++i)
     {
-        if (!sGenerators.at(i)->generate(gdbDebugPath))
+        if (!sGenerators.at(i)->generate(usbBootMakerPath))
         {
             return false;
         }
@@ -41,7 +41,7 @@ bool GdbDebugGenerator::generateAll(const QString &path)
     return true;
 }
 
-bool GdbDebugGenerator::generate(const QString &/*path*/)
+bool UsbBootMakerGenerator::generate(const QString &/*path*/)
 {
     return false;
 }
