@@ -22,42 +22,57 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="515"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="534"/>
         <source>Unmounting disk volume %1</source>
         <translation>Отключение тома диска %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="531"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="550"/>
         <source>There is no any mounted disk volume</source>
         <translation>Не подключен ни один том диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="614"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="633"/>
         <source>There is no partitions on the disk</source>
         <translation>На диске нет разделов</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1002"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1021"/>
         <source>Initializing disk</source>
         <translation>Инициализация диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1025"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1044"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Создание раздела GPT для UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1177"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1204"/>
+        <source>Disk formatting failed</source>
+        <translation>Не удалось отформатировать диск</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1218"/>
         <source>Formatting partition to FAT32</source>
         <translation>Форматирование раздела в FAT32</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1213"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1254"/>
         <source>Writing protective MBR</source>
         <translation>Создание записи MBR для GPT</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1333"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1380"/>
+        <source>Disk already mounted to %1</source>
+        <translation>Диск уже подключен к %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1393"/>
+        <source>Failed to mount disk</source>
+        <translation>Не удалось подключить диск</translation>
+    </message>
+    <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1408"/>
         <source>Mounting disk volume to %1</source>
         <translation>Подключение тома диска %1</translation>
     </message>
@@ -70,17 +85,17 @@
         <translation type="vanished">Удаление разделов на диске</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="623"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="642"/>
         <source>Deleting partition %1 (offset: %2, size: %3)</source>
         <translation>Удаление раздела %1 (позиция: %2, размер: %3)</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="629"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="648"/>
         <source>Failed to delete partition</source>
         <translation>Не удалось удалить раздел</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="938"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="957"/>
         <source>Clearing GPT</source>
         <translation>Очистка GPT</translation>
     </message>

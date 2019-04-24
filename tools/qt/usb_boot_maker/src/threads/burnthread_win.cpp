@@ -28,6 +28,8 @@
 #define MAX_GPT_PARTITIONS   128
 #define DEFAULT_CLUSTER_SIZE 4096
 
+#define MBR_RESERVED 0x01B8
+
 
 
 #define CHECK_IF_THREAD_TERMINATED(thread) \
@@ -413,6 +415,91 @@ void unlockAndCloseHandle(BurnThread *thread, HANDLE handle)
 
         thread->stop();
     }
+}
+
+void waitForLogical(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    QThread::msleep(200);
+
+    while (thread->isWorking())
+    {
+        if (getLogicalName(thread) != "")
+        {
+            break;
+        }
+
+        QThread::msleep(DISK_ACCESS_TIMEOUT);
+    }
+}
+
+QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors)
+{
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    LARGE_INTEGER ptr;
+    ptr.QuadPart = startSector << 9; // "<< 9" == "* 512"
+
+    if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
+    {
+        qCritical() << "SetFilePointerEx failed:" << GetLastError();
+
+        return QByteArray();
+    }
+
+
+
+    DWORD size = numberOfSectors << 9; // "<< 9" == "* 512"
+    QByteArray buffer(size, 0);
+
+    if (!ReadFile(diskHandle, buffer.data(), size, &size, nullptr))
+    {
+        qCritical() << "ReadFile failed:" << GetLastError();
+
+        return QByteArray();
+    }
+
+
+
+    return buffer;
+}
+
+qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors, const QByteArray &buffer)
+{
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    LARGE_INTEGER ptr;
+    ptr.QuadPart = startSector << 9; // "<< 9" == "* 512"
+
+    if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
+    {
+        qCritical() << "SetFilePointerEx failed:" << GetLastError();
+
+        return -1;
+    }
+
+
+
+    DWORD size = numberOfSectors << 9; // "<< 9" == "* 512"
+    Q_ASSERT(buffer.size() == size);
+
+    if (!WriteFile(diskHandle, buffer.constData(), size, &size, nullptr))
+    {
+        qCritical() << "WriteFile failed:" << GetLastError();
+
+        return -1;
+    }
+
+
+
+    return size;
 }
 
 QChar getUnusedDiskLetter()
@@ -891,41 +978,6 @@ void dismountVolume(BurnThread *thread, HANDLE volumeHandle)
     }
 }
 
-qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors, const QByteArray &buffer)
-{
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    DWORD size = numberOfSectors << 9; // "<< 9" == "* 512"
-    Q_ASSERT(buffer.size() == size);
-
-
-
-    LARGE_INTEGER ptr;
-    ptr.QuadPart = startSector << 9; // "<< 9" == "* 512"
-
-    if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
-    {
-        qCritical() << "SetFilePointerEx failed:" << GetLastError();
-
-        return -1;
-    }
-
-
-
-    if (!WriteFile(diskHandle, buffer.constData(), size, &size, nullptr))
-    {
-        qCritical() << "WriteFile failed:" << GetLastError();
-
-        return -1;
-    }
-
-
-
-    return size;
-}
-
 void clearGpt(BurnThread *thread, HANDLE diskHandle)
 {
     Q_ASSERT(thread);
@@ -996,7 +1048,7 @@ void initializeDisk(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    CREATE_DISK createDisk = { PARTITION_STYLE_RAW, {{0}} };
+    CREATE_DISK createDisk = { PARTITION_STYLE_RAW, {{ 0 }} };
     DWORD       size       = sizeof(createDisk);
 
     thread->addLog(QCoreApplication::translate("BurnThread", "Initializing disk"));
@@ -1026,7 +1078,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    DRIVE_LAYOUT_INFORMATION_EX driveLayout = {0};
+    DRIVE_LAYOUT_INFORMATION_EX driveLayout = { 0 };
 
     driveLayout.PartitionStyle = PARTITION_STYLE_GPT;
     driveLayout.PartitionCount = 1;
@@ -1043,7 +1095,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    CREATE_DISK createDisk = { PARTITION_STYLE_GPT, {{0}} };
+    CREATE_DISK createDisk = { PARTITION_STYLE_GPT, {{ 0 }} };
 
     CoCreateGuid(&createDisk.Gpt.DiskId);
     createDisk.Gpt.MaxPartitionCount = MAX_GPT_PARTITIONS;
@@ -1080,18 +1132,21 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
     refreshDiskLayout(thread, diskHandle);
 }
 
+bool formatSuccessful;
+
 bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*action*/, PVOID /*pData*/)
 {
     switch (command)
     {
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_PROGRESS:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_STRUCTURE_PROGRESS:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE:
+        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE_WITH_STRUCTURE:
         {
             return true;
         }
         break;
 
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE_WITH_STRUCTURE:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN2:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_INCOMPATIBLE_FILE_SYSTEM:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN4:
@@ -1104,7 +1159,6 @@ bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*ac
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_BAD_LABEL:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWND:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_OUTPUT:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_STRUCTURE_PROGRESS:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_SMALL:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_BIG:
         case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_TOO_SMALL:
@@ -1134,6 +1188,8 @@ bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*ac
         break;
     }
 
+    formatSuccessful = false;
+
     return false;
 }
 
@@ -1157,15 +1213,28 @@ void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
 
 
 
-    wchar_t volumeName[MAX_PATH];
-    wchar_t fsType[8];
-    wchar_t label[16];
+    wchar_t volumeName[MAX_PATH] = { 0 };
+    wchar_t fsType[8]            = { 0 };
+    wchar_t label[16]            = { 0 };
 
     getLogicalName(thread).toWCharArray(volumeName);
     QString("FAT32").toWCharArray(fsType);
     QString("NGOS BOOT").toWCharArray(label);
 
+
+
+    formatSuccessful = true;
+
     pfFormatEx(volumeName, RemovableMedia, fsType, label, true, DEFAULT_CLUSTER_SIZE, formatExCallback);
+
+    if (!formatSuccessful)
+    {
+        thread->addLog(QCoreApplication::translate("BurnThread", "Disk formatting failed"));
+
+        thread->stop();
+
+        return;
+    }
 }
 
 void formatPartition(BurnThread *thread, HANDLE diskHandle)
@@ -1214,26 +1283,13 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    QFile file(":/assets/binaries/protective_mbr.bin");
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        qCritical() << "Failed to open :/assets/binaries/protective_mbr.bin";
-
-        thread->stop();
-
-        return;
-    }
-
-    QByteArray buffer = file.readAll();
-
-    file.close();
-
-
+    QByteArray originalBuffer;
 
     for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
     {
-        if (writeSectors(diskHandle, 0, 1, buffer) == 512)
+        originalBuffer = readSectors(diskHandle, 0, 1);
+
+        if (originalBuffer.size() == 512)
         {
             break;
         }
@@ -1245,7 +1301,46 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    refreshDiskLayout(thread, diskHandle);
+    if (originalBuffer.size() == 512)
+    {
+        QFile file(":/assets/binaries/protective_mbr.bin");
+
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            qCritical() << "Failed to open :/assets/binaries/protective_mbr.bin";
+
+            thread->stop();
+
+            return;
+        }
+
+        QByteArray buffer = file.readAll();
+
+        file.close();
+
+
+
+        buffer.replace(MBR_RESERVED, 512 - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));
+        buffer.replace(510, 2, "\x55\xAA");
+
+
+
+        for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
+        {
+            if (writeSectors(diskHandle, 0, 1, buffer) == 512)
+            {
+                break;
+            }
+            else
+            {
+                QThread::msleep(WRITE_TIMEOUT);
+            }
+        }
+
+
+
+        refreshDiskLayout(thread, diskHandle);
+    }
 }
 
 void formatDisk(BurnThread *thread)
@@ -1295,12 +1390,18 @@ void formatDisk(BurnThread *thread)
     unlockAndCloseHandle(thread, volumeHandle);
     volumeHandle = INVALID_HANDLE_VALUE;
 
+    waitForLogical(thread);
+    CHECK_IF_THREAD_TERMINATED(thread);
+
 
 
     formatPartition(thread, diskHandle);
     CHECK_IF_THREAD_TERMINATED(thread);
 
     writeProtectiveMbr(thread, diskHandle);
+    CHECK_IF_THREAD_TERMINATED(thread);
+
+    waitForLogical(thread);
     CHECK_IF_THREAD_TERMINATED(thread);
 
 
@@ -1314,23 +1415,51 @@ out:
     }
 }
 
-void mountVolumeByGuid(BurnThread *thread, wchar_t *diskPath, QString /*volumeName*/)
+void mountVolumeByGuid(BurnThread *thread, QString *diskPath, const QString &volumeName)
 {
     Q_ASSERT(thread);
     Q_ASSERT(diskPath);
 
 
+
+    char mountedLetters[27];
+    DWORD size;
+
+    if (
+        GetVolumePathNamesForVolumeNameA(volumeName.toLatin1().data(), mountedLetters, sizeof(mountedLetters), &size)
+        &&
+        size > 1
+       )
+    {
+        (*diskPath)[0] = mountedLetters[0];
+
+        thread->addLog(QCoreApplication::translate("BurnThread", "Disk already mounted to %1").arg(*diskPath));
+
+        return;
+    }
+
+
+
+    if (!SetVolumeMountPointA(diskPath->toLatin1().data(), volumeName.toLatin1().data()))
+    {
+        qCritical() << "SetVolumeMountPoint failed:" << GetLastError();
+
+        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to mount disk"));
+
+        thread->stop();
+
+        return;
+    }
 }
 
-void mountVolume(BurnThread *thread, QChar targetDiskLetter)
+void mountVolume(BurnThread *thread, QString *diskPath)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(diskPath);
 
 
 
-    wchar_t diskPath[] = { targetDiskLetter.unicode(), ':', '\\', 0 };
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume to %1").arg(diskPath));
+    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume to %1").arg(*diskPath));
 
 
 
@@ -1350,7 +1479,9 @@ void BurnThread::run()
     formatDisk(this);
     CHECK_IF_TERMINATED();
 
-    mountVolume(this, targetDiskLetter);
+    QString diskPath = QString("%1:\\").arg(targetDiskLetter);
+
+    mountVolume(this, &diskPath);
     CHECK_IF_TERMINATED();
 }
 

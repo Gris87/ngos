@@ -332,7 +332,7 @@ void handleUsbStorageDriverList(const QString &usbStorageDriver, ULONG listSize,
             }
             else
             {
-                qWarning() << "CM_Get_Device_ID_ListA failed:" << ret;
+                qWarning() << "CM_Get_Device_ID_List failed:" << ret;
             }
 
 
@@ -371,7 +371,7 @@ void getDeviceIdList(QList<QStringList> *deviceIdList)
         }
         else
         {
-            qWarning() << "CM_Get_Device_ID_List_SizeA failed:" << ret;
+            qWarning() << "CM_Get_Device_ID_List_Size failed:" << ret;
         }
     }
 }
@@ -844,7 +844,7 @@ void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceI
             }
             else
             {
-                qCritical() << "CreateFileA failed:" << GetLastError();
+                qCritical() << "CreateFile failed:" << GetLastError();
             }
         }
         else
@@ -854,7 +854,7 @@ void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceI
     }
     else
     {
-        qCritical() << "CM_Locate_DevNodeA failed:" << ret;
+        qCritical() << "CM_Locate_DevNode failed:" << ret;
     }
 }
 
@@ -954,7 +954,7 @@ bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePath
     }
     else
     {
-        qCritical() << "CM_Locate_DevNodeA failed:" << ret;
+        qCritical() << "CM_Locate_DevNode failed:" << ret;
     }
 
 
@@ -1385,7 +1385,7 @@ void handleDiskDeviceInterfacePath(const QString &deviceInterfacePath, QList<Usb
     }
     else
     {
-        qCritical() << "CreateFileA failed:" << GetLastError();
+        qCritical() << "CreateFile failed:" << GetLastError();
     }
 }
 
