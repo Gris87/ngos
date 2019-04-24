@@ -22,80 +22,72 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="534"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="602"/>
         <source>Unmounting disk volume %1</source>
         <translation>Unmounting disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="550"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="618"/>
         <source>There is no any mounted disk volume</source>
         <translation>There is no any mounted disk volume</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="633"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="701"/>
         <source>There is no partitions on the disk</source>
         <translation>There is no partitions on the disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1021"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1054"/>
         <source>Initializing disk</source>
         <translation>Initializing disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1044"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1077"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Creating GPT partition for UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1204"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1232"/>
         <source>Disk formatting failed</source>
         <translation>Disk formatting failed</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1218"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1246"/>
         <source>Formatting partition to FAT32</source>
         <translation>Formatting partition to FAT32</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1254"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1282"/>
         <source>Writing protective MBR</source>
         <translation>Writing protective MBR</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1380"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1436"/>
         <source>Disk already mounted to %1</source>
         <translation>Disk already mounted to %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1393"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1447"/>
         <source>Failed to mount disk</source>
         <translation>Failed to mount disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1408"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1462"/>
         <source>Mounting disk volume to %1</source>
         <translation>Mounting disk volume to %1</translation>
     </message>
     <message>
-        <source>Creating partition</source>
-        <translation type="vanished">Creating partition</translation>
-    </message>
-    <message>
-        <source>Deleting partitions on the disk</source>
-        <translation type="vanished">Deleting partitions on the disk</translation>
-    </message>
-    <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="642"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="710"/>
         <source>Deleting partition %1 (offset: %2, size: %3)</source>
         <translation>Deleting partition %1 (offset: %2, size: %3)</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="648"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="716"/>
         <source>Failed to delete partition</source>
         <translation>Failed to delete partition</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="957"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="990"/>
         <source>Clearing GPT</source>
         <translation>Clearing GPT</translation>
     </message>
@@ -283,10 +275,6 @@ All data on the device will be destroyed!</translation>
         <location filename="../../src/main/mainwindow.cpp" line="941"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Making bootable USB flash drive on disk &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <source>Making bootable USB flash drive</source>
-        <translation type="vanished">Making bootable USB flash drive</translation>
     </message>
     <message>
         <location filename="../../src/main/mainwindow.cpp" line="693"/>
