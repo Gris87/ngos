@@ -14,13 +14,14 @@ class BurnThread: public QThread
     Q_OBJECT
 
 public:
-    BurnThread(UsbDeviceInfo *deviceInfo); // TEST: NO
+    BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath); // TEST: NO
 
     void stop(); // TEST: NO
 
     void addLog(const QString &text); // TEST: NO
 
     const UsbDeviceInfo& getSelectedUsb() const; // TEST: NO
+    const QString& getBinariesPath() const; // TEST: NO
     bool isWorking() const; // TEST: NO
 
 protected:
@@ -29,6 +30,7 @@ protected:
 private:
     bool          mIsRunning;
     UsbDeviceInfo mSelectedUsb;
+    QString       mBinariesPath;
 
 signals:
     void logAdded(const QString &text); // TEST: NO

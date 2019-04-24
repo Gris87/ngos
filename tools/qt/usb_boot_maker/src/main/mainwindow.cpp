@@ -942,7 +942,7 @@ void MainWindow::handleBurningState()
 
 
 
-    mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>());
+    mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>(), mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version));
     mBurnThread->start();
 
     connect(mBurnThread, SIGNAL(logAdded(const QString &)), this, SLOT(addLog(const QString &)));

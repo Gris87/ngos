@@ -1463,7 +1463,20 @@ void mountVolume(BurnThread *thread, QString *diskPath)
 
 
 
-    mountVolumeByGuid(thread, diskPath, getLogicalName(thread));
+    mountVolumeByGuid(thread, diskPath, getLogicalName(thread) + "\\");
+}
+
+void copyFiles(BurnThread *thread, const QString &diskPath)
+{
+    Q_ASSERT(thread);
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Copying files to disk"));
+
+
+
+    qDebug() << diskPath << thread->getBinariesPath();
 }
 
 void BurnThread::run()
@@ -1482,6 +1495,9 @@ void BurnThread::run()
     QString diskPath = QString("%1:\\").arg(targetDiskLetter);
 
     mountVolume(this, &diskPath);
+    CHECK_IF_TERMINATED();
+
+    copyFiles(this, diskPath);
     CHECK_IF_TERMINATED();
 }
 

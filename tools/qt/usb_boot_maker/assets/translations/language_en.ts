@@ -77,6 +77,11 @@
         <translation>Mounting disk volume to %1</translation>
     </message>
     <message>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1475"/>
+        <source>Copying files to disk</source>
+        <translation>Copying files to disk</translation>
+    </message>
+    <message>
         <location filename="../../src/threads/burnthread_win.cpp" line="710"/>
         <source>Deleting partition %1 (offset: %2, size: %3)</source>
         <translation>Deleting partition %1 (offset: %2, size: %3)</translation>
