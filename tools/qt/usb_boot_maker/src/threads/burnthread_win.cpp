@@ -438,6 +438,23 @@ void waitForLogical(BurnThread *thread)
     }
 }
 
+void refreshDiskLayout(BurnThread *thread, HANDLE diskHandle)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
+
+
+
+    DWORD size;
+
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
+    {
+        qCritical() << "Could not refresh disk layout:" << GetLastError();
+
+        thread->stop();
+    }
+}
+
 QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors)
 {
     Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
@@ -566,7 +583,7 @@ QString partitionSizeHumanReadable(quint64 partitionSize)
     return QString::number((quint64)floor(partitionSize / 1000000.0)) + "MB";
 }
 
-void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
+void unmountVolumes(BurnThread *thread, QString *targetDiskLetter)
 {
     Q_ASSERT(thread);
     Q_ASSERT(targetDiskLetter);
@@ -613,371 +630,20 @@ void unmountVolumes(BurnThread *thread, QChar *targetDiskLetter)
             }
         }
 
-        *targetDiskLetter = diskLetters.at(0);
+        *targetDiskLetter = QString("%1:\\").arg(diskLetters.at(0));
     }
     else
     {
         thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted disk volume"));
 
-        *targetDiskLetter = getUnusedDiskLetter();
+        *targetDiskLetter = QString("%1:\\").arg(getUnusedDiskLetter());
     }
 
-    qDebug().nospace() << "Disk will be mounted to " << targetDiskLetter->toLatin1() << ':';
+    qDebug().nospace() << "Disk will be mounted to " << targetDiskLetter->toLatin1().data();
 
 
 
     unlockAndCloseHandle(thread, diskHandle);
-}
-
-bool handleVdsDisk(BurnThread *thread, IUnknown *vdsDiskUnknown)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(vdsDiskUnknown);
-
-
-
-    // Get the disk interface.
-    IVdsDisk *vdsDisk;
-    HRESULT   status = vdsDiskUnknown->QueryInterface(IID_IVdsDisk, (void **) &vdsDisk);
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsDiskUnknown->QueryInterface failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    // Get the disk properties
-    VDS_DISK_PROP vdsDiskProp;
-    status = vdsDisk->GetProperties(&vdsDiskProp);
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsDisk->GetProperties failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    // Isolate the disk we want
-    if (("\\\\?\\PhysicalDrive" + QString::number(thread->getSelectedUsb().diskNumber)) != QString::fromWCharArray(vdsDiskProp.pwszName))
-    {
-        vdsDisk->Release();
-
-        return false;
-    }
-
-
-
-    // Instantiate the AdvanceDisk interface for our disk.
-    IVdsAdvancedDisk *vdsAdvancedDisk;
-    status = vdsDisk->QueryInterface(IID_IVdsAdvancedDisk, (void **) &vdsAdvancedDisk);
-
-    vdsDisk->Release();
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsDisk->QueryInterface failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    // Query the partition data, so we can get the start offset, which we need for deletion
-    VDS_PARTITION_PROP *partionsPropArray;
-    LONG                numberOfPartitions;
-    status = vdsAdvancedDisk->QueryPartitions(&partionsPropArray, &numberOfPartitions);
-
-    if (status != S_OK || !numberOfPartitions) // numberOfPartitions == 0
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "There is no partitions on the disk"));
-
-        return true;
-    }
-
-
-
-    for (qint64 i = 0; i < numberOfPartitions && thread->isWorking(); ++i)
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "Deleting partition %1 (offset: %2, size: %3)").arg(partionsPropArray[i].ulPartitionNumber).arg(partitionSizeHumanReadable(partionsPropArray[i].ullOffset)).arg(partitionSizeHumanReadable(partionsPropArray[i].ullSize)));
-
-        status = vdsAdvancedDisk->DeletePartition(partionsPropArray[i].ullOffset, true, true);
-
-        if (status != S_OK)
-        {
-            thread->addLog(QCoreApplication::translate("BurnThread", "Failed to delete partition"));
-
-            thread->stop();
-
-            return false;
-        }
-    }
-
-
-
-    CoTaskMemFree(partionsPropArray);
-    vdsAdvancedDisk->Release();
-
-
-
-    return true;
-}
-
-bool handleVdsDisks(BurnThread *thread, IEnumVdsObject *vdsDisks)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(vdsDisks);
-
-
-
-    IUnknown *vdsDiskUnknown;
-    ULONG     fetched;
-
-    while (vdsDisks->Next(1, &vdsDiskUnknown, &fetched) == S_OK && thread->isWorking())
-    {
-        if (handleVdsDisk(thread, vdsDiskUnknown))
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool handleVdsSoftwareProviderPack(BurnThread *thread, IUnknown *vdsSoftwareProviderPackUnknown)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(vdsSoftwareProviderPackUnknown);
-
-
-
-    // Get VDS Pack
-    IVdsPack *vdsPack;
-    HRESULT   status = vdsSoftwareProviderPackUnknown->QueryInterface(IID_IVdsPack, (void **) &vdsPack);
-
-    vdsSoftwareProviderPackUnknown->Release();
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsSoftwareProviderPackUnknown->QueryInterface failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    // Use the pack interface to access the disks
-    IEnumVdsObject *vdsDisks;
-    status = vdsPack->QueryDisks(&vdsDisks);
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsPack->QueryDisks failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    return handleVdsDisks(thread, vdsDisks);
-}
-
-bool handleVdsSoftwareProviderPacks(BurnThread *thread, IEnumVdsObject *vdsSoftwareProviderPacks)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(vdsSoftwareProviderPacks);
-
-
-
-    IUnknown *vdsSoftwareProviderPackUnknown;
-    ULONG     fetched;
-
-    while (vdsSoftwareProviderPacks->Next(1, &vdsSoftwareProviderPackUnknown, &fetched) == S_OK && thread->isWorking())
-    {
-        if (handleVdsSoftwareProviderPack(thread, vdsSoftwareProviderPackUnknown))
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool handleVdsProvider(BurnThread *thread, IUnknown *vdsProviderUnknown)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(vdsProviderUnknown);
-
-
-
-    // Get VDS Provider
-    IVdsProvider *vdsProvider;
-    HRESULT       status = vdsProviderUnknown->QueryInterface(IID_IVdsProvider, (void **) &vdsProvider);
-
-    vdsProviderUnknown->Release();
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsProviderUnknown->QueryInterface failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    // Get VDS Software Provider
-    IVdsSwProvider *vdsSoftwareProvider;
-    status = vdsProvider->QueryInterface(IID_IVdsSwProvider, (void **) &vdsSoftwareProvider);
-
-    vdsProvider->Release();
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsProvider->QueryInterface failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    // Get VDS Software Provider Packs
-    IEnumVdsObject *vdsSoftwareProviderPacks;
-    status = vdsSoftwareProvider->QueryPacks(&vdsSoftwareProviderPacks);
-
-    vdsSoftwareProvider->Release();
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsSoftwareProvider->QueryPacks failed:" << status;
-
-        thread->stop();
-
-        return false;
-    }
-
-
-
-    return handleVdsSoftwareProviderPacks(thread, vdsSoftwareProviderPacks);
-}
-
-bool handleVdsProviders(BurnThread *thread, IEnumVdsObject *vdsProviders)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(vdsProviders);
-
-
-
-    IUnknown *vdsProviderUnknown;
-    ULONG     fetched;
-
-    while (vdsProviders->Next(1, &vdsProviderUnknown, &fetched) == S_OK && thread->isWorking())
-    {
-        if (handleVdsProvider(thread, vdsProviderUnknown))
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-void deletePartitions(BurnThread *thread)
-{
-    Q_ASSERT(thread);
-
-
-
-    // Initialize COM
-    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-    CoInitializeSecurity(nullptr, AUTO_AUTH_SERVICES, nullptr, nullptr, RPC_C_AUTHN_LEVEL_CONNECT, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr);
-
-
-
-    // Create a VDS Loader Instance
-    IVdsServiceLoader *vdsLoader;
-    HRESULT            status = CoCreateInstance(CLSID_VdsLoader, nullptr, CLSCTX_LOCAL_SERVER | CLSCTX_REMOTE_SERVER, IID_IVdsServiceLoader, (void **) &vdsLoader);
-
-    if (status != S_OK)
-    {
-        qCritical() << "CoCreateInstance failed:" << status;
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    // Load the VDS Service
-    wchar_t     *machineName = { 0 };
-    IVdsService *vdsService;
-
-    status = vdsLoader->LoadService(machineName, &vdsService);
-
-    vdsLoader->Release();
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsLoader->LoadService failed:" << status;
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    // Query the VDS Service Providers
-    IEnumVdsObject *vdsProviders;
-    status = vdsService->QueryProviders(VDS_QUERY_SOFTWARE_PROVIDERS, &vdsProviders);
-
-    if (status != S_OK)
-    {
-        qCritical() << "vdsService->QueryProviders failed:" << status;
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    handleVdsProviders(thread, vdsProviders);
-}
-
-void dismountVolume(BurnThread *thread, HANDLE volumeHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(volumeHandle != INVALID_HANDLE_VALUE);
-
-
-
-    DWORD size;
-
-    if (!DeviceIoControl(volumeHandle, FSCTL_DISMOUNT_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "DeviceIoControl failed:" << GetLastError();
-
-        thread->stop();
-    }
 }
 
 void clearGpt(BurnThread *thread, HANDLE diskHandle)
@@ -1023,23 +689,6 @@ void clearGpt(BurnThread *thread, HANDLE diskHandle)
                 QThread::msleep(WRITE_TIMEOUT);
             }
         }
-    }
-}
-
-void refreshDiskLayout(BurnThread *thread, HANDLE diskHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    DWORD size;
-
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not refresh disk layout:" << GetLastError();
-
-        thread->stop();
     }
 }
 
@@ -1375,9 +1024,6 @@ void formatDisk(BurnThread *thread)
 
 
 
-    dismountVolume(thread, volumeHandle);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
     clearGpt(thread, diskHandle);
     CHECK_IF_THREAD_TERMINATED(thread);
 
@@ -1461,7 +1107,7 @@ void mountVolume(BurnThread *thread, QString *diskPath)
 
 
 
-    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume to %1").arg(*diskPath));
+    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume %1").arg(*diskPath));
 
 
 
@@ -1550,18 +1196,13 @@ void remountVolume(BurnThread *thread, const QString &diskPath)
 
 void BurnThread::run()
 {
-    QChar targetDiskLetter;
+    QString diskPath;
 
-    unmountVolumes(this, &targetDiskLetter);
-    CHECK_IF_TERMINATED();
-
- //   deletePartitions(this);
+    unmountVolumes(this, &diskPath);
     CHECK_IF_TERMINATED();
 
     formatDisk(this);
     CHECK_IF_TERMINATED();
-
-    QString diskPath = QString("%1:\\").arg(targetDiskLetter);
 
     mountVolume(this, &diskPath);
     CHECK_IF_TERMINATED();
