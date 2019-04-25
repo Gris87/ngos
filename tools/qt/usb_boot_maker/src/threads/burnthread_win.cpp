@@ -12,14 +12,10 @@
 #include <QFile>
 #include <QSettings>
 #include <Windows.h>
-#include <initguid.h>
-#include <objbase.h>
-#include <vds.h>
 
 
 
-#define ZERO_SIZE          0
-#define AUTO_AUTH_SERVICES -1
+#define ZERO_SIZE 0
 
 #define DISK_ACCESS_RETRIES 150
 #define DISK_ACCESS_TIMEOUT 100
@@ -1166,7 +1162,7 @@ void createAutorun(BurnThread *thread, const QString &diskPath)
 
 
 
-    QSettings settings(diskPath + "autorun.inf", QSettings::IniFormat); // Ignore CppPunctuationVerifier
+    QSettings settings(diskPath + "autorun.inf", QSettings::IniFormat);
 
     settings.beginGroup("autorun");
     settings.setValue("label", "NGOS installer boot flash");
