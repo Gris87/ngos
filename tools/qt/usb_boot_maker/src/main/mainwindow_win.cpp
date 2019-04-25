@@ -1160,7 +1160,7 @@ void getDiskLetters(DWORD diskNumber, char *letters)
 
 
 
-    char drives[128];
+    char  drives[128];
     DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);
 
     if (size > 0 && size <= sizeof(drives))

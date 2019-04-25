@@ -59,7 +59,11 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
         }
         else
         {
-            if (!path.endsWith(".ts"))
+            if (
+                !path.endsWith(".ts")
+                &&
+                !path.endsWith(".S")
+               )
             {
                 expectedContent.append(QString("        <file>%1</file>\n").arg(path.mid(parentFolder.length()))); // Ignore CppAlignmentVerifier
             }

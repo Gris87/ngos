@@ -22,78 +22,78 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="617"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="637"/>
         <source>Unmounting disk volume %1</source>
         <translation>Отключение тома диска %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="633"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="653"/>
         <source>There is no any mounted disk volume</source>
         <translation>Не подключен ни один том диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="701"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="721"/>
         <source>Initializing disk</source>
         <translation>Инициализация диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="724"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="744"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Создание раздела GPT для UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="879"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="899"/>
         <source>Disk formatting failed</source>
         <translation>Не удалось отформатировать диск</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="893"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="913"/>
         <source>Formatting partition to FAT32</source>
         <translation>Форматирование раздела в FAT32</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="929"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="949"/>
         <source>Writing protective MBR</source>
         <translation>Создание записи MBR для GPT</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1080"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1105"/>
         <source>Disk already mounted to %1</source>
         <translation>Диск уже подключен к %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1091"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1116"/>
         <source>Failed to mount disk</source>
         <translation>Не удалось подключить диск</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1106"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1131"/>
         <source>Mounting disk volume %1</source>
         <translation>Подключение тома диска %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1119"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1144"/>
         <source>Copying files to disk</source>
         <translation>Копирование файлов на диск</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1125"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1150"/>
         <source>Failed to create folder %1</source>
         <translation>Не удалось создать папку %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1136"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1156"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1161"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1181"/>
         <source>Failed to copy file %1</source>
         <translation>Не удалось скопировать файл %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1150"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1175"/>
         <source>Create autorun.inf file</source>
         <translation>Создание файла autorun.inf</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="654"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="674"/>
         <source>Clearing GPT</source>
         <translation>Очистка GPT</translation>
     </message>
@@ -106,42 +106,42 @@
         <translation>Устройство:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="183"/>
+        <location filename="../../src/main/mainwindow.ui" line="180"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="189"/>
+        <location filename="../../src/main/mainwindow.ui" line="186"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="200"/>
+        <location filename="../../src/main/mainwindow.ui" line="197"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="214"/>
+        <location filename="../../src/main/mainwindow.ui" line="211"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="217"/>
+        <location filename="../../src/main/mainwindow.ui" line="214"/>
         <source>Exit (Alt+X)</source>
         <translation>Выход (Alt+X)</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="193"/>
+        <location filename="../../src/main/mainwindow.ui" line="190"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="229"/>
+        <location filename="../../src/main/mainwindow.ui" line="226"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.ui" line="232"/>
+        <location filename="../../src/main/mainwindow.ui" line="229"/>
         <source>About (F1)</source>
         <translation>О программе (F1)</translation>
     </message>
@@ -263,22 +263,22 @@ All data on the device will be destroyed!</source>
         <translation>Не удалось отформатировать диск</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="785"/>
+        <location filename="../../src/main/mainwindow.cpp" line="790"/>
         <source>Getting information about latest version from servers:</source>
         <translation>Получение информации о последней версии от серверов:</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="816"/>
+        <location filename="../../src/main/mainwindow.cpp" line="825"/>
         <source>Latest version is unavailable</source>
         <translation>Последняя версия недоступна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="861"/>
+        <location filename="../../src/main/mainwindow.cpp" line="870"/>
         <source>Database is broken</source>
         <translation>База данных неисправна</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="941"/>
+        <location filename="../../src/main/mainwindow.cpp" line="955"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Создание загрузочного USB флеш диска на устройстве &quot;%1&quot;</translation>
     </message>
@@ -288,7 +288,7 @@ All data on the device will be destroyed!</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="954"/>
+        <location filename="../../src/main/mainwindow.cpp" line="969"/>
         <source>Operation terminated by user</source>
         <translation>Операция прекращена пользователем</translation>
     </message>

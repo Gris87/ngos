@@ -118,23 +118,27 @@ enum class FILE_SYSTEM_CALLBACK_COMMAND: quint8
 
 
 
+// Ignore CppAlignmentVerifier [BEGIN]
 typedef bool (__stdcall *FILE_SYSTEM_CALLBACK)(
     FILE_SYSTEM_CALLBACK_COMMAND command,
     ULONG                        action,
     PVOID                        pData
 );
+// Ignore CppAlignmentVerifier [END]
 
 
 
+// Ignore CppAlignmentVerifier [BEGIN]
 typedef void (WINAPI *FormatEx_t)(
-    WCHAR*               driveRoot,
-    MEDIA_TYPE           mediaType,
-    WCHAR*               fileSystemTypeName,
-    WCHAR*               label,
-    BOOL                 quickFormat,
-    ULONG                desiredUnitAllocationSize,
-    FILE_SYSTEM_CALLBACK callback
+    WCHAR                *driveRoot,
+    MEDIA_TYPE            mediaType,
+    WCHAR                *fileSystemTypeName,
+    WCHAR                *label,
+    BOOL                  quickFormat,
+    ULONG                 desiredUnitAllocationSize,
+    FILE_SYSTEM_CALLBACK  callback
 );
+// Ignore CppAlignmentVerifier [END]
 
 
 
@@ -159,7 +163,7 @@ QString getLogicalName(BurnThread *thread)
 
     QString res;
 
-    char volumeName[MAX_PATH];
+    char   volumeName[MAX_PATH];
     HANDLE volumeHandle = INVALID_HANDLE_VALUE;
 
     do
@@ -191,7 +195,7 @@ QString getLogicalName(BurnThread *thread)
 
 
 
-        size_t len = strlen(volumeName);
+        size_t len          = strlen(volumeName);
         volumeName[len - 1] = 0;
 
 
@@ -268,10 +272,12 @@ HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Acc
 
     for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)
     {
+        // Ignore CppAlignmentVerifier [BEGIN]
         res = CreateFileA(path.toLatin1().data()
-                          , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : 0)
-                          , FILE_SHARE_READ | (shareWrite  == ShareWrite::YES    ? FILE_SHARE_WRITE : 0)
-                          , nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+                            , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : 0)
+                            , FILE_SHARE_READ | (shareWrite  == ShareWrite::YES    ? FILE_SHARE_WRITE : 0)
+                            , nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -293,7 +299,7 @@ HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Acc
 
 
 
-        if (i == 0)
+        if (!i) // i == 0
         {
             qDebug() << "Waiting for access to disk";
         }
@@ -525,7 +531,7 @@ QChar getUnusedDiskLetter()
 
     QString drivesString;
 
-    char drives[128];
+    char  drives[128];
     DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);
 
     if (size > 0 && size <= sizeof(drives))
@@ -716,7 +722,7 @@ void initializeDisk(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *) &createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *)&createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
     {
         qCritical() << "Could not delete disk layout:" << GetLastError();
 
@@ -770,7 +776,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
     DWORD size = sizeof(createDisk);
 
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *) &createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *)&createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
     {
         qCritical() << "Could not reset disk layout:" << GetLastError();
 
@@ -781,7 +787,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
     size = sizeof(driveLayout);
 
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_SET_DRIVE_LAYOUT_EX, (BYTE *) &driveLayout, size, nullptr, 0, &size, nullptr))
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_SET_DRIVE_LAYOUT_EX, (BYTE *)&driveLayout, size, nullptr, 0, &size, nullptr))
     {
         qCritical() << "Could not set disk layout:" << GetLastError();
 
@@ -1085,7 +1091,7 @@ void mountVolumeByGuid(BurnThread *thread, QString *diskPath, const QString &vol
 
 
 
-    char mountedLetters[27];
+    char  mountedLetters[27];
     DWORD size;
 
     if (
@@ -1126,7 +1132,7 @@ void mountVolume(BurnThread *thread, QString *diskPath)
 
 
 
-    mountVolumeByGuid(thread, diskPath, getLogicalName(thread) + "\\");
+    mountVolumeByGuid(thread, diskPath, getLogicalName(thread) + '\\');
 }
 
 void copyFiles(BurnThread *thread, const QString &diskPath)
@@ -1206,7 +1212,7 @@ void remountVolume(BurnThread *thread, const QString &diskPath)
 
 
 
-    mountVolume(thread, (QString *) &diskPath);
+    mountVolume(thread, (QString *)&diskPath);
 }
 
 void BurnThread::run()
