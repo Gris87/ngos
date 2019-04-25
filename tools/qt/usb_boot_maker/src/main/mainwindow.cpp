@@ -699,6 +699,11 @@ void MainWindow::addLog(const QString &text)
     ui->logTextEdit->append(text);
 }
 
+void MainWindow::burnProgress(quint8 current, quint8 maximum)
+{
+    ui->statusProgressBar->setValue(40 + current * 100 / maximum);
+}
+
 void MainWindow::prepareLanguages()
 {
     QActionGroup *group = new QActionGroup(this);
@@ -757,7 +762,6 @@ void MainWindow::prepareLanguages()
 void MainWindow::switchToState(State state)
 {
     mState = state;
-    ui->statusProgressBar->setValue((quint8)mState);
 
     switch (mState)
     {
@@ -768,13 +772,13 @@ void MainWindow::switchToState(State state)
 
         case State::INITIAL:
         {
-            qFatal("Unexpected state %u", (quint8)mState);
+            qFatal("Unexpected state %u", (quint8) mState);
         }
         break;
 
         default:
         {
-            qFatal("Unknown state %u", (quint8)mState);
+            qFatal("Unknown state %u", (quint8) mState);
         }
         break;
     }
@@ -782,6 +786,7 @@ void MainWindow::switchToState(State state)
 
 void MainWindow::handleGetLatestVersionState()
 {
+    ui->statusProgressBar->setValue(10);
     addLog(tr("Getting information about latest version from servers:"));
 
     mRequestTime = QDateTime::currentMSecsSinceEpoch();
@@ -809,6 +814,10 @@ void MainWindow::handleGetLatestVersionState()
 
 void MainWindow::handleGetFileListState()
 {
+    ui->statusProgressBar->setValue(20);
+
+
+
     if (!mLatestVersions.size()) // mLatestVersions.size() == 0
     {
         switchToInitialState();
@@ -910,6 +919,10 @@ void MainWindow::handleGetFileListState()
 
 void MainWindow::handleDownloadState()
 {
+    ui->statusProgressBar->setValue(30);
+
+
+
     for (qint64 i = 0; i < mVersionFiles.length(); ++i)
     {
         FileInfo *fileInfo = &mVersionFiles[i];
@@ -938,6 +951,7 @@ void MainWindow::handleDownloadState()
 
 void MainWindow::handleBurningState()
 {
+    ui->statusProgressBar->setValue(40);
     addLog(tr("Making bootable USB flash drive on disk \"%1\"").arg(ui->deviceComboBox->currentText()));
 
 
@@ -946,6 +960,7 @@ void MainWindow::handleBurningState()
     mBurnThread->start();
 
     connect(mBurnThread, SIGNAL(logAdded(const QString &)), this, SLOT(addLog(const QString &)));
+    connect(mBurnThread, SIGNAL(progress(quint8, quint8)),  this, SLOT(burnProgress(quint8, quint8)));
     connect(mBurnThread, SIGNAL(finished()),                this, SLOT(burnFinished()));
 }
 
@@ -978,13 +993,13 @@ void MainWindow::resetToInitialState()
 
         case State::INITIAL:
         {
-            qFatal("Unexpected state %u", (quint8)mState);
+            qFatal("Unexpected state %u", (quint8) mState);
         }
         break;
 
         default:
         {
-            qFatal("Unknown state %u", (quint8)mState);
+            qFatal("Unknown state %u", (quint8) mState);
         }
         break;
     }
@@ -1012,7 +1027,7 @@ void MainWindow::abortReplies()
 void MainWindow::switchToInitialState()
 {
     mState = State::INITIAL;
-    ui->statusProgressBar->setValue((quint8)mState);
+    ui->statusProgressBar->setValue(0);
 
     ui->deviceComboBox->setEnabled(true);
     ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier

@@ -23,6 +23,11 @@ void BurnThread::addLog(const QString &text)
     emit logAdded(text);
 }
 
+void BurnThread::notifyProgress(quint8 current, quint8 maximum)
+{
+    emit progress(current, maximum);
+}
+
 const UsbDeviceInfo& BurnThread::getSelectedUsb() const
 {
     return mSelectedUsb;

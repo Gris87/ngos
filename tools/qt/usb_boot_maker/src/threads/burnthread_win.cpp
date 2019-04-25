@@ -579,6 +579,20 @@ QString partitionSizeHumanReadable(quint64 partitionSize)
     return QString::number((quint64)floor(partitionSize / 1000000.0)) + "MB";
 }
 
+quint8 currentStep;
+
+void notifyNextStep(BurnThread *thread)
+{
+    Q_ASSERT(thread);
+
+
+
+    ++currentStep;
+
+    Q_ASSERT(currentStep <= 11);
+    thread->notifyProgress(currentStep, 11);
+}
+
 void unmountVolumes(BurnThread *thread, QString *targetDiskLetter)
 {
     Q_ASSERT(thread);
@@ -1021,12 +1035,15 @@ void formatDisk(BurnThread *thread)
 
 
     clearGpt(thread, diskHandle);
+    notifyNextStep(thread);
     CHECK_IF_THREAD_TERMINATED(thread);
 
     initializeDisk(thread, diskHandle);
+    notifyNextStep(thread);
     CHECK_IF_THREAD_TERMINATED(thread);
 
     createPartition(thread, diskHandle);
+    notifyNextStep(thread);
     CHECK_IF_THREAD_TERMINATED(thread);
 
 
@@ -1040,9 +1057,11 @@ void formatDisk(BurnThread *thread)
 
 
     formatPartition(thread, diskHandle);
+    notifyNextStep(thread);
     CHECK_IF_THREAD_TERMINATED(thread);
 
     writeProtectiveMbr(thread, diskHandle);
+    notifyNextStep(thread);
     CHECK_IF_THREAD_TERMINATED(thread);
 
     waitForLogical(thread);
@@ -1192,24 +1211,34 @@ void remountVolume(BurnThread *thread, const QString &diskPath)
 
 void BurnThread::run()
 {
+    currentStep = 0;
+
+
+
     QString diskPath;
 
     unmountVolumes(this, &diskPath);
+    notifyNextStep(this);
     CHECK_IF_TERMINATED();
 
     formatDisk(this);
+    notifyNextStep(this);
     CHECK_IF_TERMINATED();
 
     mountVolume(this, &diskPath);
+    notifyNextStep(this);
     CHECK_IF_TERMINATED();
 
     copyFiles(this, diskPath);
+    notifyNextStep(this);
     CHECK_IF_TERMINATED();
 
     createAutorun(this, diskPath);
+    notifyNextStep(this);
     CHECK_IF_TERMINATED();
 
     remountVolume(this, diskPath);
+    notifyNextStep(this);
     CHECK_IF_TERMINATED();
 }
 

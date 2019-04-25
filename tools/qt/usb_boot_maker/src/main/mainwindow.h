@@ -52,6 +52,7 @@ private slots:
     void downloadReplyFinished(); // TEST: NO
     void burnFinished(); // TEST: NO
     void addLog(const QString &text); // TEST: NO
+    void burnProgress(quint8 current, quint8 maximum); // TEST: NO
 
 private:
     void prepareLanguages(); // TEST: NO

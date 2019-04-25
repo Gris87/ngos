@@ -19,6 +19,7 @@ public:
     void stop(); // TEST: NO
 
     void addLog(const QString &text); // TEST: NO
+    void notifyProgress(quint8 current, quint8 maximum); // TEST: NO
 
     const UsbDeviceInfo& getSelectedUsb() const; // TEST: NO
     const QString& getBinariesPath() const; // TEST: NO
@@ -34,6 +35,7 @@ private:
 
 signals:
     void logAdded(const QString &text); // TEST: NO
+    void progress(quint8 current, quint8 maximum); // TEST: NO
 };
 
 
