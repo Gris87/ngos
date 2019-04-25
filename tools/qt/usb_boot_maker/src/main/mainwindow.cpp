@@ -17,11 +17,11 @@
 
 
 
-#define MASTER_SERVER "10.83.230.9"
+#define MASTER_SERVER "cps-etl-srv.northeurope.cloudapp.azure.com"
 
 
 
-const QStringList servers = { MASTER_SERVER, "10.83.230.40", "10.83.230.42", "10.83.230.43", "10.83.230.41", "10.83.230.44" };
+const QStringList servers = { MASTER_SERVER };
 
 
 

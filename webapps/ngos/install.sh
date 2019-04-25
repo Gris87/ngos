@@ -13,7 +13,7 @@
 
 
 CURRENT_PATH=`pwd`
-MASTER_SERVER=10.83.230.9
+MASTER_SERVER=cps-etl-srv.northeurope.cloudapp.azure.com
 
 
 

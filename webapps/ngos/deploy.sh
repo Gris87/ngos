@@ -15,7 +15,7 @@
 CURRENT_PATH=`pwd`
 BUILD_CONFIG=include/buildconfig.h
 BUILD_CFG_BACKUP=/tmp/ngos_deploy_buildconfig.h
-MASTER_SERVER=10.83.230.9
+MASTER_SERVER=cps-etl-srv.northeurope.cloudapp.azure.com
 
 
 

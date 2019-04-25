@@ -1,5 +1,5 @@
 <?php
-    define("MASTER_SERVER", "10.83.230.9");
+    define("MASTER_SERVER", "cps-etl-srv.northeurope.cloudapp.azure.com");
 
     define("DB_HOST",     "localhost");
     define("DB_USER",     "ngos");
