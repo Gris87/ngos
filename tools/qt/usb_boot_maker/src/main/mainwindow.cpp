@@ -772,13 +772,13 @@ void MainWindow::switchToState(State state)
 
         case State::INITIAL:
         {
-            qFatal("Unexpected state %u", (quint8) mState);
+            qFatal("Unexpected state %u", (quint8)mState);
         }
         break;
 
         default:
         {
-            qFatal("Unknown state %u", (quint8) mState);
+            qFatal("Unknown state %u", (quint8)mState);
         }
         break;
     }
@@ -993,13 +993,13 @@ void MainWindow::resetToInitialState()
 
         case State::INITIAL:
         {
-            qFatal("Unexpected state %u", (quint8) mState);
+            qFatal("Unexpected state %u", (quint8)mState);
         }
         break;
 
         default:
         {
-            qFatal("Unknown state %u", (quint8) mState);
+            qFatal("Unknown state %u", (quint8)mState);
         }
         break;
     }
