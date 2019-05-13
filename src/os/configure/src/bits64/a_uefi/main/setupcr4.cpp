@@ -21,10 +21,10 @@ NgosStatus setupCr4()
 
 
     cr4 |= X86_CR4_PAE
-        | X86_CR4_PGE
-        | X86_CR4_OSFXSR        // Requires X86Feature::FXSR
-        | X86_CR4_OSXMMEXCPT    // Requires X86Feature::XMM
-        | X86_CR4_OSXSAVE;      // Requires X86Feature::XSAVE
+        |  X86_CR4_PGE
+        |  X86_CR4_OSFXSR        // Requires X86Feature::FXSR
+        |  X86_CR4_OSXMMEXCPT    // Requires X86Feature::XMM
+        |  X86_CR4_OSXSAVE;      // Requires X86Feature::XSAVE
 
     UEFI_LVVV(("cr4 = 0x%016lX", cr4));
 
