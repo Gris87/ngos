@@ -60,5 +60,5 @@ rm qt-unified-linux-x64-online.run
 ```
 
 Please choose following items during Qt installation:
-* Qt -> Qt 5.12.1 -> Desktop gcc 64 bit
-* Qt -> Qt 5.12.1 -> Sources
+* Qt -> Qt 5.12.3 -> Desktop gcc 64 bit
+* Qt -> Qt 5.12.3 -> Sources
