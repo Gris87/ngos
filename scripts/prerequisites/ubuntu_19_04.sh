@@ -98,15 +98,15 @@ export PATH="${PREFIX}/bin:${PATH}"
 
 
 echo ""
-echo -e "\e[33m-------------------- gcc-8 --------------------\e[0m"
+echo -e "\e[33m-------------------- gcc-9 --------------------\e[0m"
 echo ""
 
 
 
 add-apt-repository -y ppa:jonathonf/gcc
 apt-get update
-apt-get install -y gcc-8 g++-8
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+apt-get install -y gcc-9 g++-9
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
 
 
 
