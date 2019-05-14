@@ -1,4 +1,4 @@
 build/
-*.user
 *.cflags
 *.cxxflags
+*.user
