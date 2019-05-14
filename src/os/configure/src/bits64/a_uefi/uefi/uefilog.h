@@ -46,6 +46,43 @@
         Serial::printf message; \
     }
 
+#define __UEFI_PRINT_LT(message) \
+    if (Console::canPrint()) \
+    { \
+        Serial::print("TRACE:     "); \
+        Console::print("TRACE:     "); \
+        \
+        Serial::print(__PRETTY_FUNCTION__); \
+        Console::print(__PRETTY_FUNCTION__); \
+        \
+        Serial::printf message; \
+        \
+        /* HACK: Temporary fix for PIE. Try to find another solution */ \
+        /* Console::println(printfBuffer); */ \
+        char *__temp; \
+        \
+        asm volatile( \
+            "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
+                :                             /* Output parameters*/ \
+                    "=D" (__temp)             /* "D" == RDI, "=" - write only // Ignore CppSingleCharVerifier*/ \
+        ); \
+        \
+        Console::println(__temp); \
+    } \
+    else \
+    if (UEFI::canPrint()) \
+    { \
+        UEFI::print("TRACE:     "); \
+        UEFI::print(__PRETTY_FUNCTION__); \
+        UEFI::printf message; \
+    } \
+    else \
+    { \
+        Serial::print("TRACE:     "); \
+        Serial::print(__PRETTY_FUNCTION__); \
+        Serial::printf message; \
+    }
+
 
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_FATAL || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_FATAL
@@ -130,42 +167,7 @@
 
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
-#define UEFI_LT(message) \
-    if (Console::canPrint()) \
-    { \
-        Serial::print("TRACE:     "); \
-        Console::print("TRACE:     "); \
-        \
-        Serial::print(__PRETTY_FUNCTION__); \
-        Console::print(__PRETTY_FUNCTION__); \
-        \
-        Serial::printf message; \
-        \
-        /* HACK: Temporary fix for PIE. Try to find another solution */ \
-        /* Console::println(printfBuffer); */ \
-        char *__temp; \
-        \
-        asm volatile( \
-            "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
-                :                             /* Output parameters*/ \
-                    "=D" (__temp)             /* "D" == RDI, "=" - write only // Ignore CppSingleCharVerifier*/ \
-        ); \
-        \
-        Console::println(__temp); \
-    } \
-    else \
-    if (UEFI::canPrint()) \
-    { \
-        UEFI::print("TRACE:     "); \
-        UEFI::print(__PRETTY_FUNCTION__); \
-        UEFI::printf message; \
-    } \
-    else \
-    { \
-        Serial::print("TRACE:     "); \
-        Serial::print(__PRETTY_FUNCTION__); \
-        Serial::printf message; \
-    }
+#define UEFI_LT(message) __UEFI_PRINT_LT(message)
 #else
 #define UEFI_LT(message)
 #endif

@@ -33,6 +33,29 @@
         Console::println(__temp); \
     }
 
+#define __EARLY_PRINT_LT(message) \
+    Serial::print("TRACE:     "); \
+    Serial::print(__PRETTY_FUNCTION__); \
+    Serial::printf message; \
+    \
+    if (Console::canPrint()) \
+    { \
+        Console::print("TRACE:     "); \
+        Console::print(__PRETTY_FUNCTION__); \
+        \
+        /* HACK: Temporary fix for PIE. Try to find another solution */ \
+        /* Console::println(printfBuffer); */ \
+        char *__temp; \
+        \
+        asm volatile( \
+            "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
+                :                             /* Output parameters*/ \
+                    "=D" (__temp)             /* "D" == RDI, "=" - write only // Ignore CppSingleCharVerifier*/ \
+        ); \
+        \
+        Console::println(__temp); \
+    }
+
 
 
 #if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_FATAL || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_FATAL
@@ -117,28 +140,7 @@
 
 
 #if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
-#define EARLY_LT(message) \
-    Serial::print("TRACE:     "); \
-    Serial::print(__PRETTY_FUNCTION__); \
-    Serial::printf message; \
-    \
-    if (Console::canPrint()) \
-    { \
-        Console::print("TRACE:     "); \
-        Console::print(__PRETTY_FUNCTION__); \
-        \
-        /* HACK: Temporary fix for PIE. Try to find another solution */ \
-        /* Console::println(printfBuffer); */ \
-        char *__temp; \
-        \
-        asm volatile( \
-            "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
-                :                             /* Output parameters*/ \
-                    "=D" (__temp)             /* "D" == RDI, "=" - write only // Ignore CppSingleCharVerifier*/ \
-        ); \
-        \
-        Console::println(__temp); \
-    }
+#define EARLY_LT(message) __EARLY_PRINT_LT(message)
 #else
 #define EARLY_LT(message)
 #endif

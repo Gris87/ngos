@@ -3,16 +3,32 @@
 
 
 
+#if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
+#include <src/bits64/a_uefi/uefi/uefiassert.h>
+#elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
+#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
+#else
 #include <buildconfig.h>
 #include <common/src/bits64/serial/serial.h>
 #include <ngos/status.h>
+#endif
 
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
 #if NGOS_BUILD_RELEASE == OPTION_NO
+#if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
+#define __COMMON_PRINT_ASSERT(message) __UEFI_PRINT_ASSERT(message)
+#elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
+#define __COMMON_PRINT_ASSERT(message) __EARLY_PRINT_ASSERT(message)
+#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
+#define __COMMON_PRINT_ASSERT(message) __EARLY_PRINT_ASSERT(message)
+#else
 #define __COMMON_PRINT_ASSERT(message) \
     Serial::printf message;
+#endif
 
 
 

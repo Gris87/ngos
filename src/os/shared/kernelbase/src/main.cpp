@@ -45,10 +45,12 @@ void kernelMain(BootParams *params)
 
 
 
-#ifdef BUILD_TARGET_INSTALLER               // Defined in Makefile
+#if defined(BUILD_TARGET_INSTALLER)                                             // Defined in Makefile
     EARLY_LI(("NGOS installer started"));
-#else
+#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
     EARLY_LI(("NGOS kernel started"));
+#else
+    EARLY_LI(("UNKNOWN started"));
 #endif
 
 
