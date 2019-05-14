@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.2.4. Install prerequisites on CentOS 7.6
+0.2.5. Install prerequisites on CentOS 7.6
 ------------------------------------------
 
 Please follow instructions below in order to obtain the required software

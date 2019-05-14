@@ -9,10 +9,11 @@ Prerequisites
 
 You need to install prerequisites before starting work with this project.
 
-* [Install prerequisites on Ubuntu 18.10](1.%20Install%20prerequisites%20on%20Ubuntu%2018.10/README.md)
-* [Install prerequisites on Ubuntu 18.04](2.%20Install%20prerequisites%20on%20Ubuntu%2018.04/README.md)
-* [Install prerequisites on Ubuntu 16.04](3.%20Install%20prerequisites%20on%20Ubuntu%2016.04/README.md)
-* [Install prerequisites on CentOS 7.6](4.%20Install%20prerequisites%20on%20CentOS%207.6/README.md)
+* [Install prerequisites on Ubuntu 19.04](1.%20Install%20prerequisites%20on%20Ubuntu%2019.04/README.md)
+* [Install prerequisites on Ubuntu 18.10](2.%20Install%20prerequisites%20on%20Ubuntu%2018.10/README.md)
+* [Install prerequisites on Ubuntu 18.04](3.%20Install%20prerequisites%20on%20Ubuntu%2018.04/README.md)
+* [Install prerequisites on Ubuntu 16.04](4.%20Install%20prerequisites%20on%20Ubuntu%2016.04/README.md)
+* [Install prerequisites on CentOS 7.6](5.%20Install%20prerequisites%20on%20CentOS%207.6/README.md)
 
 Configuring Qt Creator
 ----------------------

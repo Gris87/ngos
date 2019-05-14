@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.2.2. Install prerequisites on Ubuntu 18.04
+0.2.1. Install prerequisites on Ubuntu 19.04
 --------------------------------------------
 
 Please follow instructions below in order to obtain the required software

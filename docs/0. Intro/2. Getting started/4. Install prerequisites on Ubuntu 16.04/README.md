@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.2.3. Install prerequisites on Ubuntu 16.04
+0.2.4. Install prerequisites on Ubuntu 16.04
 --------------------------------------------
 
 Please follow instructions below in order to obtain the required software

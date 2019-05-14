@@ -4,10 +4,11 @@
 3rd_party/Makefile
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
-docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 18.10/README.md
-docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 18.04/README.md
-docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 16.04/README.md
-docs/0. Intro/2. Getting started/4. Install prerequisites on CentOS 7.6/README.md
+docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 19.04/README.md
+docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 18.10/README.md
+docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 18.04/README.md
+docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 16.04/README.md
+docs/0. Intro/2. Getting started/5. Install prerequisites on CentOS 7.6/README.md
 docs/0. Intro/2. Getting started/Configuring Qt Creator 01.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 02.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 03.png
@@ -87,6 +88,7 @@ scripts/prerequisites/install.sh
 scripts/prerequisites/ubuntu_16_04.sh
 scripts/prerequisites/ubuntu_18_04.sh
 scripts/prerequisites/ubuntu_18_10.sh
+scripts/prerequisites/ubuntu_19_04.sh
 scripts/pull.sh
 scripts/push.sh
 scripts/update_ngos_files.sh
@@ -1365,3 +1367,4 @@ webapps/prerequisites/install.sh
 webapps/prerequisites/ubuntu_16_04.sh
 webapps/prerequisites/ubuntu_18_04.sh
 webapps/prerequisites/ubuntu_18_10.sh
+webapps/prerequisites/ubuntu_19_04.sh
