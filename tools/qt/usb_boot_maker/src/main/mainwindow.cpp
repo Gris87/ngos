@@ -787,7 +787,7 @@ void MainWindow::switchToState(State state)
 void MainWindow::handleGetLatestVersionState()
 {
     ui->statusProgressBar->setValue(10);
-    addLog(tr("Getting information about latest version from servers:"));
+    addLog(tr("Getting information about latest version from servers"));
 
     mRequestTime = QDateTime::currentMSecsSinceEpoch();
 
