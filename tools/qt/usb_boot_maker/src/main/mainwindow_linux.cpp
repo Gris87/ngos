@@ -87,25 +87,48 @@ void handleDisk(const QString &deviceName, quint64 diskSize, QList<UsbDeviceInfo
     {
         QString line = process.readLine().simplified();
 
-        if (line == "ID_BUS=usb")
+        if (line.startsWith("ID_BUS="))
         {
-            good = true;
+            QString bus = line.mid(7).toUpper();
+            qDebug() << "    Disk bus:" << bus; // Ignore CppAlignmentVerifier
+
+            if (bus == "USB")
+            {
+                good = true;
+            }
 
             break;
         }
     }
 
+
+
     if (good)
     {
+        QString diskLabel = getDiskLabel(deviceName);
+        qDebug() << "    Disk label:" << diskLabel; // Ignore CppAlignmentVerifier
+
+
+
         UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();
 
-        deviceInfo->title      = QString("%1 (/dev/%2) [%3]").arg(getDiskLabel(deviceName)).arg(deviceName).arg(diskSizeHumanReadable(diskSize));
+        deviceInfo->title      = QString("%1 (/dev/%2) [%3]").arg(diskLabel).arg(deviceName).arg(diskSizeHumanReadable(diskSize));
         deviceInfo->diskNumber = 0;
         deviceInfo->diskSize   = diskSize;
         deviceInfo->letters    = "";
         deviceInfo->deviceName = deviceName;
 
         usbDevices->append(deviceInfo);
+
+
+
+        qDebug() << "";
+        qDebug() << "    Found USB device";
+    }
+    else
+    {
+        qDebug() << "";
+        qDebug() << "    Found non-USB non-removable device";
     }
 }
 
@@ -133,9 +156,16 @@ void updateDisks(QList<UsbDeviceInfo *> *usbDevices)
 
             if (ok)
             {
+                QString deviceName = parts.at(0);
+
+                qDebug() << "";
+                qDebug().nospace() << "Disk found /dev/" << deviceName.toUtf8().data() << ' ' << diskSizeHumanReadable(diskSize).toUtf8().data();
+
+
+
                 if (diskSize >= MIN_DISK_SIZE)
                 {
-                    handleDisk(parts.at(0), diskSize, usbDevices);
+                    handleDisk(deviceName, diskSize, usbDevices);
                 }
                 else
                 {

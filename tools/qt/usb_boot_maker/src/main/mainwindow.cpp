@@ -584,7 +584,7 @@ void MainWindow::downloadReplyFinished()
         {
             QProcess process;
 
-            process.start("xzdec", QStringList() << filePath, QIODevice::ReadOnly);
+            process.start("xzcat", QStringList() << filePath, QIODevice::ReadOnly);
             process.waitForFinished(-1);
 
 
@@ -625,7 +625,7 @@ void MainWindow::downloadReplyFinished()
             }
             else
             {
-                addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->filename).arg(server).arg(reply->errorString()));
+                addLog(tr("Failed to decompress file %1").arg(fileInfo->filename));
 
                 abortReplies();
                 switchToState(State::GET_FILE_LIST);
