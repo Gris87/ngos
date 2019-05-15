@@ -67,7 +67,7 @@ sudo partprobe ${LOOPDEV}
 
 
 
-sudo mkfs.vfat -s2 -F32 ${LOOPDEV}p1
+sudo mkfs.fat -F32 -s2 ${LOOPDEV}p1
 
 
 
