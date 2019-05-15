@@ -1094,7 +1094,7 @@ tools/qt/usb_boot_maker/assets/translations/language_en.ts
 tools/qt/usb_boot_maker/assets/translations/language_ru.qm
 tools/qt/usb_boot_maker/assets/translations/language_ru.ts
 tools/qt/usb_boot_maker/distrib/ssleay32.dll
-tools/qt/usb_boot_maker/distrib/xzdec.exe
+tools/qt/usb_boot_maker/distrib/xzcat.exe
 tools/qt/usb_boot_maker/README.md
 tools/qt/usb_boot_maker/Resources.qrc
 tools/qt/usb_boot_maker/Resources.rc

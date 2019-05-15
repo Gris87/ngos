@@ -264,8 +264,8 @@ All data on the device will be destroyed!</source>
     </message>
     <message>
         <location filename="../../src/main/mainwindow.cpp" line="790"/>
-        <source>Getting information about latest version from servers:</source>
-        <translation>Получение информации о последней версии от серверов:</translation>
+        <source>Getting information about latest version from servers</source>
+        <translation>Получение информации о последней версии от серверов</translation>
     </message>
     <message>
         <location filename="../../src/main/mainwindow.cpp" line="825"/>
