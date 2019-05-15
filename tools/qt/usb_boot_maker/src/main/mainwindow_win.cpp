@@ -1360,6 +1360,7 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
     deviceInfo->diskNumber = diskNumber;
     deviceInfo->diskSize   = diskSize;
     deviceInfo->letters    = diskLetters;
+    deviceInfo->deviceName = "";
 
     usbDevices->append(deviceInfo);
 }

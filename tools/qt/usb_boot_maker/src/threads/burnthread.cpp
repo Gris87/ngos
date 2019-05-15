@@ -11,6 +11,7 @@ BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)
     mSelectedUsb.diskNumber = deviceInfo->diskNumber;
     mSelectedUsb.diskSize   = deviceInfo->diskSize;
     mSelectedUsb.letters    = deviceInfo->letters;
+    mSelectedUsb.deviceName = deviceInfo->deviceName;
 }
 
 void BurnThread::stop()
