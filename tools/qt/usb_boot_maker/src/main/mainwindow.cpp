@@ -33,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
     , mManager(new QNetworkAccessManager(this))
     , mTemporaryDir(0)
     , mBurnThread(0)
+#ifdef Q_OS_LINUX
+    , mUsbMonitorThread(0)
+#endif
     , mState(State::INITIAL)
     , mRequestTime(0)
     , mReplies()
@@ -55,6 +58,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+#ifdef Q_OS_LINUX
+    mUsbMonitorThread = new UsbMonitorThread();
+    mUsbMonitorThread->start();
+
+    connect(mUsbMonitorThread, SIGNAL(usbStatusChanged()), this, SLOT(usbStatusChanged()));
+#endif
+
+
+
     prepareLanguages();
     loadWindowState();
 
@@ -67,6 +79,15 @@ MainWindow::~MainWindow()
     {
         delete mTemporaryDir;
     }
+
+
+
+#ifdef Q_OS_LINUX
+    mUsbMonitorThread->stop();
+    mUsbMonitorThread->wait();
+
+    delete mUsbMonitorThread;
+#endif
 
 
 
@@ -183,6 +204,18 @@ void MainWindow::updateUsbDevices()
 
 
     ui->startButton->setEnabled(usbDevices.length()); // usbDevices.length() > 0
+}
+
+void MainWindow::usbStatusChanged()
+{
+    if (!mUpdateTimer->isActive())
+    {
+#ifdef Q_OS_WIN
+        mUpdateTimer->start(1000);
+#else
+        mUpdateTimer->start(3000);
+#endif
+    }
 }
 
 void MainWindow::ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &/*errors*/)

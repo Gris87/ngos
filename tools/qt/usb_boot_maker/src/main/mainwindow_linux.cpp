@@ -74,7 +74,10 @@ QString getDiskLabel(const QString &deviceName)
 
 
 
-            return res;
+            if (res != "")
+            {
+                return res;
+            }
         }
 
 

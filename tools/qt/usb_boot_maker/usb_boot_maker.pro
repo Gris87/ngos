@@ -42,6 +42,10 @@ UI_DIR      = build/gen
 win32 {
     LIBS += -lSetupAPI -lOle32
 }
+
+unix {
+    LIBS += -ludev
+}
 # Include libraries - END
 
 
@@ -79,7 +83,8 @@ SOURCES += \
     src/other/usbspeed.cpp \
     src/threads/burnthread.cpp \
     src/threads/burnthread_linux.cpp \
-    src/threads/burnthread_win.cpp
+    src/threads/burnthread_win.cpp \
+    src/threads/usbmonitorthread_linux.cpp
 
 HEADERS += \
     src/main/aboutdialog.h \
@@ -90,7 +95,8 @@ HEADERS += \
     src/other/usbproperties.h \
     src/other/usbspeed.h \
     src/other/versioninfo.h \
-    src/threads/burnthread.h
+    src/threads/burnthread.h \
+    src/threads/usbmonitorthread.h
 
 FORMS += \
     src/main/aboutdialog.ui \

@@ -18,6 +18,7 @@
 #include "src/other/usbspeed.h"
 #include "src/other/versioninfo.h"
 #include "src/threads/burnthread.h"
+#include "src/threads/usbmonitorthread.h"
 
 
 
@@ -46,6 +47,7 @@ private slots:
 
     void languageToggled(bool checked); // TEST: NO
     void updateUsbDevices(); // TEST: NO
+    void usbStatusChanged(); // TEST: NO
     void ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &errors); // TEST: NO
     void latestVersionReplyFinished(); // TEST: NO
     void fileListReplyFinished(); // TEST: NO
@@ -75,6 +77,11 @@ private:
     QNetworkAccessManager           *mManager;
     QTemporaryDir                   *mTemporaryDir;
     BurnThread                      *mBurnThread;
+
+#ifdef Q_OS_LINUX
+    UsbMonitorThread                *mUsbMonitorThread;
+#endif
+
     State                            mState;
     qint64                           mRequestTime;
     QHash<QString, QNetworkReply *>  mReplies;
