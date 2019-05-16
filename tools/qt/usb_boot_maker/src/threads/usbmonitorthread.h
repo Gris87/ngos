@@ -23,7 +23,7 @@ private:
     bool mIsRunning;
 
 signals:
-    void usbStatusChanged(); // TEST: NO
+    void usbStatusChanged(quint16); // TEST: NO
 };
 
 

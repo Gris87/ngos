@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
     mUsbMonitorThread = new UsbMonitorThread();
     mUsbMonitorThread->start();
 
-    connect(mUsbMonitorThread, SIGNAL(usbStatusChanged()), this, SLOT(usbStatusChanged()));
+    connect(mUsbMonitorThread, SIGNAL(usbStatusChanged(quint16)), this, SLOT(usbStatusChanged(quint16)));
 #endif
 
 
@@ -206,15 +206,11 @@ void MainWindow::updateUsbDevices()
     ui->startButton->setEnabled(usbDevices.length()); // usbDevices.length() > 0
 }
 
-void MainWindow::usbStatusChanged()
+void MainWindow::usbStatusChanged(quint16 delay)
 {
     if (!mUpdateTimer->isActive())
     {
-#ifdef Q_OS_WIN
-        mUpdateTimer->start(1000);
-#else
-        mUpdateTimer->start(3000);
-#endif
+        mUpdateTimer->start(delay);
     }
 }
 

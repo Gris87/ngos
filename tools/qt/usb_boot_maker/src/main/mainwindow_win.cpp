@@ -83,7 +83,7 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *r
                 case DBT_DEVICEREMOVECOMPLETE:
                 case DBT_DEVNODES_CHANGED:
                 {
-                    usbStatusChanged();
+                    usbStatusChanged(1000);
                 }
                 break;
 

@@ -47,7 +47,7 @@ private slots:
 
     void languageToggled(bool checked); // TEST: NO
     void updateUsbDevices(); // TEST: NO
-    void usbStatusChanged(); // TEST: NO
+    void usbStatusChanged(quint16 delay); // TEST: NO
     void ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &errors); // TEST: NO
     void latestVersionReplyFinished(); // TEST: NO
     void fileListReplyFinished(); // TEST: NO

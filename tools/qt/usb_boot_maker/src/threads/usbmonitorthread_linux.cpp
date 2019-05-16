@@ -45,6 +45,12 @@ void UsbMonitorThread::run()
 
 
 
+    timeval timeout;
+    timeout.tv_sec  = 1;
+    timeout.tv_usec = 0;
+
+
+
     while (mIsRunning)
     {
         fd_set fds;
@@ -52,14 +58,26 @@ void UsbMonitorThread::run()
         FD_ZERO(&fds);
         FD_SET(fd, &fds);
 
-        select(fd + 1, &fds, nullptr, nullptr, nullptr);
+
+
+        select(fd + 1, &fds, nullptr, nullptr, &timeout);
 
         if (FD_ISSET(fd, &fds))
         {
             udev_device *dev = udev_monitor_receive_device(monitor);
+            QString action(udev_device_get_action(dev));
             udev_device_unref(dev);
 
-            emit usbStatusChanged();
+
+
+            if (action == "add")
+            {
+                emit usbStatusChanged(3000);
+            }
+            else
+            {
+                emit usbStatusChanged(1000);
+            }
         }
     }
 
