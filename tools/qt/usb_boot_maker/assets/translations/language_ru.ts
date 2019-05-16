@@ -254,7 +254,7 @@ All data on the device will be destroyed!</source>
     <message>
         <location filename="../../src/main/mainwindow.cpp" line="628"/>
         <source>Failed to decompress file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось распаковать файл %1</translation>
     </message>
     <message>
         <location filename="../../src/main/mainwindow.cpp" line="659"/>
