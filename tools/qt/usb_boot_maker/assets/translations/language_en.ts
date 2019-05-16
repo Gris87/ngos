@@ -22,78 +22,85 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="637"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="121"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="635"/>
         <source>Unmounting disk volume %1</source>
         <translation>Unmounting disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="653"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="135"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="651"/>
         <source>There is no any mounted disk volume</source>
         <translation>There is no any mounted disk volume</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="721"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="719"/>
         <source>Initializing disk</source>
         <translation>Initializing disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="744"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="160"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="742"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Creating GPT partition for UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="899"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="897"/>
         <source>Disk formatting failed</source>
         <translation>Disk formatting failed</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="913"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="174"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="911"/>
         <source>Formatting partition to FAT32</source>
         <translation>Formatting partition to FAT32</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="949"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="188"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="947"/>
         <source>Writing protective MBR</source>
         <translation>Writing protective MBR</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1105"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1103"/>
         <source>Disk already mounted to %1</source>
         <translation>Disk already mounted to %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1116"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1114"/>
         <source>Failed to mount disk</source>
         <translation>Failed to mount disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1131"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="298"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1129"/>
         <source>Mounting disk volume %1</source>
         <translation>Mounting disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1144"/>
+        <location filename="../../src/threads/burnthread.cpp" line="28"/>
         <source>Copying files to disk</source>
         <translation>Copying files to disk</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1150"/>
+        <location filename="../../src/threads/burnthread.cpp" line="34"/>
         <source>Failed to create folder %1</source>
         <translation>Failed to create folder %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1161"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1181"/>
+        <location filename="../../src/threads/burnthread.cpp" line="45"/>
+        <location filename="../../src/threads/burnthread.cpp" line="61"/>
         <source>Failed to copy file %1</source>
         <translation>Failed to copy file %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1175"/>
+        <location filename="../../src/threads/burnthread.cpp" line="55"/>
         <source>Create autorun.inf file</source>
         <translation>Create autorun.inf file</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="674"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="146"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="672"/>
         <source>Clearing GPT</source>
         <translation>Clearing GPT</translation>
     </message>

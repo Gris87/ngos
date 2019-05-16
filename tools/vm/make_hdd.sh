@@ -67,7 +67,7 @@ sudo partprobe ${LOOPDEV}
 
 
 
-sudo mkfs.fat -F32 -s2 ${LOOPDEV}p1
+sudo mkfs.fat -F32 -s2 -n "UEFI BOOT" ${LOOPDEV}p1
 
 
 
