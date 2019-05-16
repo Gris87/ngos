@@ -1139,6 +1139,8 @@ void remountVolume(BurnThread *thread, const QString &diskPath)
 
 
 
+    thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(diskPath));
+
     if (!DeleteVolumeMountPointA(diskPath.toLatin1().data()))
     {
         qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
