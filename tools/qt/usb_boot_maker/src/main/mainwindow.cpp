@@ -701,7 +701,7 @@ void MainWindow::addLog(const QString &text)
 
 void MainWindow::burnProgress(quint8 current, quint8 maximum)
 {
-    ui->statusProgressBar->setValue(40 + current * 100 / maximum);
+    ui->statusProgressBar->setValue(40 + current * 60 / maximum);
 }
 
 void MainWindow::prepareLanguages()

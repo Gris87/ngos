@@ -87,7 +87,14 @@ void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
 
 
     tempFile.open();
-    qDebug() << tempFile.readAll().data();
+    QByteArray output = tempFile.readAll().trimmed();
+
+    if (output.length() > 0)
+    {
+        qDebug() << "";
+        qDebug() << output.data();
+    }
+
     tempFile.close();
 }
 
@@ -175,7 +182,7 @@ void formatPartition(BurnThread *thread, QProcess *suProcess)
 
 
 
-    execWithSu(thread, suProcess, "mkfs.fat -F32 -s2 /dev/" + thread->getSelectedUsb().deviceName + '1');
+    execWithSu(thread, suProcess, "mkfs.fat -F32 -s2 -n \"NGOS BOOT\" /dev/" + thread->getSelectedUsb().deviceName + '1');
 }
 
 void writeProtectiveMbr(BurnThread *thread, QProcess *suProcess)
@@ -317,6 +324,7 @@ void BurnThread::run()
 
     QProcess suProcess;
     suProcess.start("pkexec", QStringList() << "sh");
+    execWithSu(this, &suProcess, "echo \"root access granted\"");
 
     QString diskPath;
 

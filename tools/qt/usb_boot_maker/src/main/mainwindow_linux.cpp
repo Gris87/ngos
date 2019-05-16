@@ -8,11 +8,17 @@
 
 #include <QDebug>
 #include <QProcess>
+#include <QRegularExpression>
+#include <QSettings>
 #include <QtMath>
 
 
 
 #define MIN_DISK_SIZE (8 << 20) // "<< 20" == "* 1024 * 1024"
+
+
+
+const QRegularExpression mountPointRegExp("^.+ on (.+) type .+$");
 
 
 
@@ -47,19 +53,61 @@ QString getDiskLabel(const QString &deviceName)
 
 
         QProcess process;
-        process.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName + QString::number(partitionNumber));
+        process.start("sh", QStringList() << "-c" << "mount | grep /dev/" + deviceName + QString::number(partitionNumber));
         process.waitForFinished(-1);
 
 
 
-        while (process.canReadLine())
-        {
-            QString line = process.readLine().simplified();
+        QRegularExpressionMatch match = mountPointRegExp.match(process.readLine().trimmed());
 
+        if (match.hasMatch())
+        {
+            QString mountPoint = match.captured(1);
+
+
+
+            QSettings settings(mountPoint + "/autorun.inf", QSettings::IniFormat);
+
+            settings.beginGroup("autorun");
+            QString res = settings.value("label", "").toString();
+            settings.endGroup();
+
+
+
+            return res;
+        }
+
+
+
+        QProcess process2;
+        process2.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName + QString::number(partitionNumber));
+        process2.waitForFinished(-1);
+
+
+
+        QString res;
+
+        while (process2.canReadLine())
+        {
+            QString line = process2.readLine().simplified();
+
+            if (line.startsWith("ID_FS_LABEL_ENC="))
+            {
+                res = line.mid(16);
+            }
+            else
             if (line.startsWith("ID_FS_LABEL="))
             {
-                return line.mid(12);
+                if (res == "")
+                {
+                    res = line.mid(12);
+                }
             }
+        }
+
+        if (res != "")
+        {
+            return res;
         }
     }
 
