@@ -53,12 +53,18 @@ QString getDiskLabel(const QString &deviceName)
 
 
         QProcess process;
-        process.start("sh", QStringList() << "-c" << "mount | grep /dev/" + deviceName + QString::number(partitionNumber));
+        process.start("udisksctl", QStringList() << "mount" << "-b" << "/dev/" + deviceName + QString::number(partitionNumber));
         process.waitForFinished(-1);
 
 
 
-        QRegularExpressionMatch match = mountPointRegExp.match(process.readLine().trimmed());
+        QProcess process2;
+        process2.start("sh", QStringList() << "-c" << "mount | grep /dev/" + deviceName + QString::number(partitionNumber));
+        process2.waitForFinished(-1);
+
+
+
+        QRegularExpressionMatch match = mountPointRegExp.match(process2.readLine().trimmed());
 
         if (match.hasMatch())
         {
@@ -82,17 +88,17 @@ QString getDiskLabel(const QString &deviceName)
 
 
 
-        QProcess process2;
-        process2.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName + QString::number(partitionNumber));
-        process2.waitForFinished(-1);
+        QProcess process3;
+        process3.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName + QString::number(partitionNumber));
+        process3.waitForFinished(-1);
 
 
 
         QString res;
 
-        while (process2.canReadLine())
+        while (process3.canReadLine())
         {
-            QString line = process2.readLine().simplified();
+            QString line = process3.readLine().simplified();
 
             if (line.startsWith("ID_FS_LABEL_ENC="))
             {
