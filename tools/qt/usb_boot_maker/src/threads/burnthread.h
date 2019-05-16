@@ -18,6 +18,9 @@ public:
 
     void stop(); // TEST: NO
 
+    void copyFiles(const QString &diskPath);
+    void createAutorun(const QString &diskPath);
+
     void addLog(const QString &text); // TEST: NO
     void notifyProgress(quint8 current, quint8 maximum); // TEST: NO
 

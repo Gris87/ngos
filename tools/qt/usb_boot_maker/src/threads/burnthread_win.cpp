@@ -8,9 +8,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
-#include <QDir>
 #include <QFile>
-#include <QSettings>
 #include <Windows.h>
 
 
@@ -1135,66 +1133,6 @@ void mountVolume(BurnThread *thread, QString *diskPath)
     mountVolumeByGuid(thread, diskPath, getLogicalName(thread) + '\\');
 }
 
-void copyFiles(BurnThread *thread, const QString &diskPath)
-{
-    Q_ASSERT(thread);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Copying files to disk"));
-
-
-
-    if (!QDir().mkpath(diskPath + "/EFI/BOOT"))
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to create folder %1").arg(diskPath + "/EFI/BOOT"));
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    if (!QFile(thread->getBinariesPath() + "/NGOS_installer.bin").copy(diskPath + "/EFI/BOOT/bootx64.efi"))
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to copy file %1").arg("NGOS_installer.bin"));
-
-        thread->stop();
-
-        return;
-    }
-}
-
-void createAutorun(BurnThread *thread, const QString &diskPath)
-{
-    Q_ASSERT(thread);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Create autorun.inf file"));
-
-
-
-    if (!QFile(":/assets/images/icon.ico").copy(diskPath + "icon.ico"))
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to copy file %1").arg(":/assets/images/icon.ico"));
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    QSettings settings(diskPath + "autorun.inf", QSettings::IniFormat);
-
-    settings.beginGroup("autorun");
-    settings.setValue("label", "NGOS installer boot flash");
-    settings.setValue("icon", "icon.ico");
-    settings.endGroup();
-}
-
 void remountVolume(BurnThread *thread, const QString &diskPath)
 {
     Q_ASSERT(thread);
@@ -1235,11 +1173,11 @@ void BurnThread::run()
     notifyNextStep(this);
     CHECK_IF_TERMINATED();
 
-    copyFiles(this, diskPath);
+    copyFiles(diskPath);
     notifyNextStep(this);
     CHECK_IF_TERMINATED();
 
-    createAutorun(this, diskPath);
+    createAutorun(diskPath);
     notifyNextStep(this);
     CHECK_IF_TERMINATED();
 

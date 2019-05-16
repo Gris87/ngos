@@ -8,6 +8,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QTemporaryFile>
@@ -34,7 +35,8 @@
 
 
 
-const QRegularExpression mountPointRegExp("^.+ on (.+) type .+$");
+const QRegularExpression mountPointRegExp("^(.+) on (.+) type .+$");
+const QRegularExpression mountedRegExp("^Mounted .+ at (.+)\\.$");
 
 
 
@@ -48,8 +50,8 @@ void notifyNextStep(BurnThread *thread)
 
     ++currentStep;
 
-    Q_ASSERT(currentStep <= 6);
-    thread->notifyProgress(currentStep, 6);
+    Q_ASSERT(currentStep <= 10);
+    thread->notifyProgress(currentStep, 10);
 }
 
 void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
@@ -85,7 +87,6 @@ void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
 
 
     tempFile.open();
-    qDebug() << "";
     qDebug() << tempFile.readAll().data();
     tempFile.close();
 }
@@ -93,6 +94,7 @@ void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
 void unmountVolumes(BurnThread *thread, QProcess *suProcess)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
 
 
 
@@ -113,12 +115,16 @@ void unmountVolumes(BurnThread *thread, QProcess *suProcess)
 
         if (match.hasMatch())
         {
-            QString mountPoint = match.captured(1);
+            QString partition  = match.captured(1);
+            QString mountPoint = match.captured(2);
+
             thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(mountPoint));
 
 
 
-            execWithSu(thread, suProcess, "umount " + mountPoint);
+            QProcess process2;
+            process2.start("udisksctl", QStringList() << "unmount" << "-b" << partition);
+            process2.waitForFinished(-1);
 
             found = true;
         }
@@ -133,6 +139,7 @@ void unmountVolumes(BurnThread *thread, QProcess *suProcess)
 void clearGpt(BurnThread *thread, QProcess *suProcess)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
 
 
 
@@ -146,6 +153,7 @@ void clearGpt(BurnThread *thread, QProcess *suProcess)
 void createPartition(BurnThread *thread, QProcess *suProcess)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
 
 
 
@@ -159,6 +167,7 @@ void createPartition(BurnThread *thread, QProcess *suProcess)
 void formatPartition(BurnThread *thread, QProcess *suProcess)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
 
 
 
@@ -166,12 +175,13 @@ void formatPartition(BurnThread *thread, QProcess *suProcess)
 
 
 
-    execWithSu(thread, suProcess, "mkfs.fat -F32 -s2 /dev/" + thread->getSelectedUsb().deviceName + "1");
+    execWithSu(thread, suProcess, "mkfs.fat -F32 -s2 /dev/" + thread->getSelectedUsb().deviceName + '1');
 }
 
 void writeProtectiveMbr(BurnThread *thread, QProcess *suProcess)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
 
 
 
@@ -234,6 +244,7 @@ void writeProtectiveMbr(BurnThread *thread, QProcess *suProcess)
 void formatDisk(BurnThread *thread, QProcess *suProcess)
 {
     Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
 
 
 
@@ -252,6 +263,50 @@ void formatDisk(BurnThread *thread, QProcess *suProcess)
     writeProtectiveMbr(thread, suProcess);
     notifyNextStep(thread);
     CHECK_IF_THREAD_TERMINATED(thread);
+
+
+
+    thread->msleep(5000);
+}
+
+void mountVolume(BurnThread *thread, QProcess *suProcess, QString *diskPath)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
+    Q_ASSERT(diskPath);
+
+
+
+    QProcess process;
+    process.start("udisksctl", QStringList() << "mount" << "-b" << "/dev/" + thread->getSelectedUsb().deviceName + '1');
+    process.waitForFinished(-1);
+
+
+
+    if (*diskPath == "")
+    {
+        QRegularExpressionMatch match = mountedRegExp.match(process.readAll());
+
+        if (match.hasMatch())
+        {
+            *diskPath = match.captured(1);
+        }
+    }
+
+
+
+    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume %1").arg(*diskPath));
+}
+
+void remountVolume(BurnThread *thread, QProcess *suProcess, const QString &diskPath)
+{
+    Q_ASSERT(thread);
+    Q_ASSERT(suProcess);
+
+
+
+    unmountVolumes(thread, suProcess);
+    mountVolume(thread, suProcess, (QString *)&diskPath);
 }
 
 void BurnThread::run()
@@ -263,6 +318,8 @@ void BurnThread::run()
     QProcess suProcess;
     suProcess.start("pkexec", QStringList() << "sh");
 
+    QString diskPath;
+
 
 
     unmountVolumes(this, &suProcess);
@@ -270,6 +327,22 @@ void BurnThread::run()
     CHECK_IF_TERMINATED();
 
     formatDisk(this, &suProcess);
+    notifyNextStep(this);
+    CHECK_IF_TERMINATED();
+
+    mountVolume(this, &suProcess, &diskPath);
+    notifyNextStep(this);
+    CHECK_IF_TERMINATED();
+
+    copyFiles(diskPath);
+    notifyNextStep(this);
+    CHECK_IF_TERMINATED();
+
+    createAutorun(diskPath);
+    notifyNextStep(this);
+    CHECK_IF_TERMINATED();
+
+    remountVolume(this, &suProcess, diskPath);
     notifyNextStep(this);
     CHECK_IF_TERMINATED();
 

@@ -1,5 +1,9 @@
 #include "burnthread.h"
 
+#include <QDir>
+#include <QFile>
+#include <QSettings>
+
 
 
 BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)
@@ -17,6 +21,58 @@ BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)
 void BurnThread::stop()
 {
     mIsRunning = false;
+}
+
+void BurnThread::copyFiles(const QString &diskPath)
+{
+    addLog(tr("Copying files to disk"));
+
+
+
+    if (!QDir().mkpath(diskPath + "/EFI/BOOT"))
+    {
+        addLog(tr("Failed to create folder %1").arg(diskPath + "/EFI/BOOT"));
+
+        stop();
+
+        return;
+    }
+
+
+
+    if (!QFile(getBinariesPath() + "/NGOS_installer.bin").copy(diskPath + "/EFI/BOOT/bootx64.efi"))
+    {
+        addLog(tr("Failed to copy file %1").arg("NGOS_installer.bin"));
+
+        stop();
+
+        return;
+    }
+}
+
+void BurnThread::createAutorun(const QString &diskPath)
+{
+    addLog(tr("Create autorun.inf file"));
+
+
+
+    if (!QFile(":/assets/images/icon.ico").copy(diskPath + "/icon.ico"))
+    {
+        addLog(tr("Failed to copy file %1").arg(":/assets/images/icon.ico"));
+
+        stop();
+
+        return;
+    }
+
+
+
+    QSettings settings(diskPath + "/autorun.inf", QSettings::IniFormat);
+
+    settings.beginGroup("autorun");
+    settings.setValue("label", "NGOS installer boot flash");
+    settings.setValue("icon", "icon.ico");
+    settings.endGroup();
 }
 
 void BurnThread::addLog(const QString &text)
