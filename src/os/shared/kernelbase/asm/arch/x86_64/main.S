@@ -266,6 +266,12 @@ END_ENTRY(dynamic_pagetable_pages)                                              
                                                                                 #
                                                                                 #
                                                                                 #
+DECLARE_PAGE(video_ram_pagetable_pages)                                         # Declaration for video_ram_pagetable_pages variable
+    .fill   EARLY_VIDEO_RAM_PAGE_TABLES * PAGE_SIZE, 1, 0                       # List of pages that we can use for video ram
+END_ENTRY(video_ram_pagetable_pages)                                            # End of declaration for video_ram_pagetable_pages variable
+                                                                                #
+                                                                                #
+                                                                                #
 DECLARE_PAGE(init_pagetable)                                                    # Declaration for init_pagetable variable
     .fill   512, 8, 0                                                           # Put 512 PGD entries
 END_ENTRY(init_pagetable)                                                       # End of declaration for init_pagetable variable

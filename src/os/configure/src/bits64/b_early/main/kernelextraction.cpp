@@ -1,5 +1,6 @@
 #include <bootparams/bootparams.h>
 #include <buildconfig.h>
+#include <common/src/bits64/assets/assets.h>
 #include <ngos/linkage.h>
 
 #include "src/bits64/b_early/early/earlyassert.h"
@@ -21,6 +22,16 @@ u64 extractKernel(KernelDescriptor *kernelDescriptor, BootParams *params, u8 *de
     EARLY_ASSERT(params,              "params is null",              0);
     EARLY_ASSERT(decompressedAddress, "decompressedAddress is null", 0);
     EARLY_ASSERT(pageTable,           "pageTable is null",           0);
+
+
+
+    EARLY_ASSERT_EXECUTION(Assets::init(), 0);
+    EARLY_LVV(("Assets initialized"));
+
+
+
+    EARLY_ASSERT_EXECUTION(Console::init(params), 0);
+    EARLY_LVV(("Console initialized"));
 
 
 

@@ -1,3 +1,4 @@
+#include <common/src/bits64/assets/assets.h>
 #include <kernelbase/src/bits64/a_early/early/earlyassert.h>
 #include <kernelbase/src/bits64/a_early/early/earlylog.h>
 #include <kernelbase/src/bits64/other/kerneldefines.h>
@@ -14,10 +15,11 @@ extern PGD   early_pagetable[PTRS_PER_PGD];                                    /
 extern P4D   early_pagetable_level4[PTRS_PER_P4D];                             // early_pagetable_level4 declared in main.S file
 #endif
 
-extern PUD   early_pagetable_level3[PTRS_PER_PUD];                             // early_pagetable_level3 declared in main.S file
-extern PMD   early_pagetable_level2[PTRS_PER_PMD];                             // early_pagetable_level2 declared in main.S file
-extern PMD   fixmap_pagetable_level2[PTRS_PER_PMD];                            // fixmap_pagetable_level2 declared in main.S file
-extern PMD   dynamic_pagetable_pages[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD]; // dynamic_pagetable_pages declared in main.S file
+extern PUD   early_pagetable_level3[PTRS_PER_PUD];                                 // early_pagetable_level3 declared in main.S file
+extern PMD   early_pagetable_level2[PTRS_PER_PMD];                                 // early_pagetable_level2 declared in main.S file
+extern PMD   fixmap_pagetable_level2[PTRS_PER_PMD];                                // fixmap_pagetable_level2 declared in main.S file
+extern PMD   dynamic_pagetable_pages[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD];     // dynamic_pagetable_pages declared in main.S file
+extern PMD   video_ram_pagetable_pages[EARLY_VIDEO_RAM_PAGE_TABLES][PTRS_PER_PMD]; // video_ram_pagetable_pages declared in main.S file
 
 
 
@@ -328,6 +330,71 @@ NgosStatus adaptVirtualAddressSpacePageTable(u64 imageLocation)
     return NgosStatus::OK;
 }
 
+NgosStatus adaptVideoRamPageTable(u64 imageLocation, BootParams *params, PGD *pgd)
+{
+    EARLY_LT((" | imageLocation = 0x%p, params = 0x%p, pgd = 0x%p", imageLocation, params, pgd));
+
+    EARLY_ASSERT(imageLocation, "imageLocation is null", NgosStatus::ASSERTION);
+    EARLY_ASSERT(params,        "params is null",        NgosStatus::ASSERTION);
+    EARLY_ASSERT(pgd,           "pgd is null",           NgosStatus::ASSERTION);
+
+
+
+    u8 pageIndex = 0;
+
+    // HACK: Temporary fix for PIE. Try to find another solution
+    u64 videoRamPagetablePages;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "leaq    video_ram_pagetable_pages(%%rip), %0"  // leaq    video_ram_pagetable_pages(%rip), %rbp     # Get address of video_ram_pagetable_pages variable to RBP. %RBP == videoRamPagetablePages
+            :                                           // Output parameters
+                "=r" (videoRamPagetablePages)           // "r" == any general register, "=" - write only
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
+    EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    P4D *p4d = (P4D *)(videoRamPagetablePages + pageIndex * PAGE_SIZE);
+    ++pageIndex;
+#endif
+
+    EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    PUD *pud = (PUD *)(videoRamPagetablePages + pageIndex * PAGE_SIZE);
+    ++pageIndex;
+
+    EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    PMD *pmd = (PMD *)(videoRamPagetablePages + pageIndex * PAGE_SIZE);
+    ++pageIndex;
+
+
+
+#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
+    EARLY_LVVV(("p4d = 0x%p", p4d));
+#endif
+
+    EARLY_LVVV(("pud = 0x%p", pud));
+    EARLY_LVVV(("pmd = 0x%p", pmd));
+
+
+
+#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
+    pgd[pgdIndex(imageLocation)].pgd = (u64)p4d       | KERNEL_PAGE_TABLE_FLAGS;
+    p4d[pgdIndex(imageLocation)].p4d = (u64)pud       | KERNEL_PAGE_TABLE_FLAGS;
+#else
+    pgd[pgdIndex(imageLocation)].pgd = (u64)pud       | KERNEL_PAGE_TABLE_FLAGS;
+#endif
+
+    pud[pudIndex(imageLocation)].pud = (u64)pmd       | KERNEL_PAGE_TABLE_FLAGS;
+    pmd[pmdIndex(imageLocation)].pmd = (imageLocation | KERNEL_PAGE_LARGE_EXEC_FLAGS) & ~PAGE_FLAG_GLOBAL;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 {
     EARLY_LT((" | imageLocation = 0x%p, pgd = 0x%p", imageLocation, pgd));
@@ -347,19 +414,19 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 
 
 
-    u8 dynamicPageIndex = 0;
+    u8 pageIndex = 0;
 
     // HACK: Temporary fix for PIE. Try to find another solution
     // #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    //     EARLY_TEST_ASSERT(dynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
-    //     P4D *p4d = (P4D *)((u64)&dynamic_pagetable_pages[dynamicPageIndex++] + imageLocation);
+    //     EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    //     P4D *p4d = (P4D *)((u64)&dynamic_pagetable_pages[pageIndex++] + imageLocation);
     // #endif
     //
-    // EARLY_TEST_ASSERT(dynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
-    // PUD *pud = (PUD *)((u64)&dynamic_pagetable_pages[dynamicPageIndex++] + imageLocation);
+    // EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    // PUD *pud = (PUD *)((u64)&dynamic_pagetable_pages[pageIndex++] + imageLocation);
     //
-    // EARLY_TEST_ASSERT(dynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
-    // PMD *pmd = (PMD *)((u64)&dynamic_pagetable_pages[dynamicPageIndex++] + imageLocation);
+    // EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    // PMD *pmd = (PMD *)((u64)&dynamic_pagetable_pages[pageIndex++] + imageLocation);
 
     u64 dynamicPagetablePages;
 
@@ -374,18 +441,18 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    EARLY_TEST_ASSERT(dynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
-    P4D *p4d = (P4D *)(dynamicPagetablePages + dynamicPageIndex * PAGE_SIZE);
-    ++dynamicPageIndex;
+    EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    P4D *p4d = (P4D *)(dynamicPagetablePages + pageIndex * PAGE_SIZE);
+    ++pageIndex;
 #endif
 
-    EARLY_TEST_ASSERT(dynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
-    PUD *pud = (PUD *)(dynamicPagetablePages + dynamicPageIndex * PAGE_SIZE);
-    ++dynamicPageIndex;
+    EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    PUD *pud = (PUD *)(dynamicPagetablePages + pageIndex * PAGE_SIZE);
+    ++pageIndex;
 
-    EARLY_TEST_ASSERT(dynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
-    PMD *pmd = (PMD *)(dynamicPagetablePages + dynamicPageIndex * PAGE_SIZE);
-    ++dynamicPageIndex;
+    EARLY_TEST_ASSERT(pageIndex < EARLY_DYNAMIC_PAGE_TABLES, NgosStatus::ASSERTION);
+    PMD *pmd = (PMD *)(dynamicPagetablePages + pageIndex * PAGE_SIZE);
+    ++pageIndex;
 
 
 
@@ -414,11 +481,22 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 }
 
 CPP_EXTERN_C
-NgosStatus adaptPageTable(u64 imageLocation)
+NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 {
     EARLY_LT((" | imageLocation = 0x%p", imageLocation));
 
     EARLY_ASSERT(imageLocation, "imageLocation is null", NgosStatus::ASSERTION);
+
+
+
+    EARLY_ASSERT_EXECUTION(Assets::init(), NgosStatus::ASSERTION);
+    EARLY_LVV(("Assets initialized"));
+
+
+
+    EARLY_ASSERT_EXECUTION(Console::init(params), NgosStatus::ASSERTION);
+    EARLY_LVV(("Console initialized"));
+
 
 
 
@@ -439,9 +517,10 @@ NgosStatus adaptPageTable(u64 imageLocation)
 
 
 
-    EARLY_ASSERT_EXECUTION(adaptPredefinedPageTable(imageLocation, pgd),     NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(adaptVirtualAddressSpacePageTable(imageLocation), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(adaptLastResortPageTable(imageLocation, pgd),     NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptPredefinedPageTable(imageLocation, pgd),       NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptVirtualAddressSpacePageTable(imageLocation),   NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptVideoRamPageTable(imageLocation, params, pgd), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptLastResortPageTable(imageLocation, pgd),       NgosStatus::ASSERTION);
 
     EARLY_ASSERT_EXECUTION(AddressConversion::setPhysicalDeltaBaseOnLocation(imageLocation), NgosStatus::ASSERTION);
 
@@ -455,5 +534,5 @@ NgosStatus adaptPageTable(u64 imageLocation)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::FAILED;
 }
