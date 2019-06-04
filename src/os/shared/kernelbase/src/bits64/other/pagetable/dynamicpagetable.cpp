@@ -69,10 +69,19 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 lev
 
         if (level > 2)
         {
-            PGD *pgdNext = (PGD *)allocateDynamicPage();
-            COMMON_TEST_ASSERT(pgdNext, NgosStatus::ASSERTION);
+            PGD *pgdNext;
 
-            setPgd(pgd, AddressConversion::physicalAddress((pgd_value)pgdNext | KERNEL_PAGE_TABLE_FLAGS));
+            if (pgd->pgd)
+            {
+                pgdNext = (PGD *)pgdPageVirtualAddress(*pgd);
+            }
+            else
+            {
+                pgdNext = (PGD *)allocateDynamicPage();
+                COMMON_TEST_ASSERT(pgdNext, NgosStatus::ASSERTION);
+
+                setPgd(pgd, AddressConversion::physicalAddress((pgd_value)pgdNext | KERNEL_PAGE_TABLE_FLAGS));
+            }
 
             COMMON_ASSERT_EXECUTION(initializeDynamicPageIdentity(pgdNext, address, next, level - 1), NgosStatus::ASSERTION);
         }
@@ -111,6 +120,15 @@ NgosStatus addDynamicIdentityMap(u64 start, u64 end)
 #else
     COMMON_ASSERT_EXECUTION(initializeDynamicPageIdentity(early_pagetable, start, end, 4), NgosStatus::ASSERTION);
 #endif
+
+
+
+    while (start < end)
+    {
+        COMMON_ASSERT_EXECUTION(invlpg((u8 *)start), NgosStatus::ASSERTION);
+
+        start += PMD_SIZE;
+    }
 
 
 
