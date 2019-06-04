@@ -113,8 +113,8 @@ virtual_address_space:                                                          
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
     pushq   %rsi                                                                # Push address of boot parameters (RSI) to the stack
-    leaq    early_pagetable(%rip), %rdi                                         # Put address of early_pagetable variable to RDI
-    movq    $(511 * 8), %rsi                                                    # We should clear all PGD entries except the last one
+    leaq    dynamic_pagetable_pages(%rip), %rdi                                 # Put address of dynamic_pagetable_pages variable to RDI
+    movq    EARLY_DYNAMIC_PAGE_TABLES * PAGE_SIZE, %rsi                         # We should clear all entries
     call    memzero                                                             # Call memzero function
     popq    %rsi                                                                # Restore address of boot parameters back to RSI from the stack
                                                                                 #
@@ -260,15 +260,15 @@ END_ENTRY(fixmap_pagetable_level1)                                              
                                                                                 #
                                                                                 #
                                                                                 #
-DECLARE_PAGE(dynamic_pagetable_pages)                                           # Declaration for dynamic_pagetable_pages variable
-    .fill   EARLY_DYNAMIC_PAGE_TABLES * PAGE_SIZE, 1, 0                         # List of pages that we can dynamically update in runtime
-END_ENTRY(dynamic_pagetable_pages)                                              # End of declaration for dynamic_pagetable_pages variable
-                                                                                #
-                                                                                #
-                                                                                #
 DECLARE_PAGE(video_ram_pagetable_pages)                                         # Declaration for video_ram_pagetable_pages variable
     .fill   EARLY_VIDEO_RAM_PAGE_TABLES * PAGE_SIZE, 1, 0                       # List of pages that we can use for video ram
 END_ENTRY(video_ram_pagetable_pages)                                            # End of declaration for video_ram_pagetable_pages variable
+                                                                                #
+                                                                                #
+                                                                                #
+DECLARE_PAGE(dynamic_pagetable_pages)                                           # Declaration for dynamic_pagetable_pages variable
+    .fill   EARLY_DYNAMIC_PAGE_TABLES * PAGE_SIZE, 1, 0                         # List of pages that we can dynamically update in runtime
+END_ENTRY(dynamic_pagetable_pages)                                              # End of declaration for dynamic_pagetable_pages variable
                                                                                 #
                                                                                 #
                                                                                 #

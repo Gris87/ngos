@@ -125,10 +125,7 @@ NgosStatus clearDynamicIdentityMap(u64 start, u64 end)
 
 
 
-    i64 startIndex = pgdIndex(start);
-    i64 endIndex   = pgdIndex(end);
-
-    memzero(&early_pagetable[startIndex], (endIndex - startIndex + 1) * sizeof(early_pagetable[0]));
+    memzero(dynamic_pagetable_pages, sizeof(dynamic_pagetable_pages));
 
 
 
