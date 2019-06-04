@@ -21,6 +21,7 @@
 #include <kernelbase/src/bits64/a_early/main/setupstackcanary.h>
 #include <kernelbase/src/bits64/a_early/main/setupuefimemorymap.h>
 #include <kernelbase/src/bits64/a_early/main/setupuefisystemtable.h>
+#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
 #include <kernelbase/test/bits64/a_early/sections/section1/testcase.h>
 #include <ngos/linkage.h>
 #include <pagetable/utils.h>
@@ -35,13 +36,29 @@ extern PGD init_pagetable[PTRS_PER_PGD];  // init_pagetable declared in main.S f
 CPP_EXTERN_C
 void kernelMain(BootParams *params)
 { // Ignore CppNgosTraceVerifier
+    // We can't output at the moment
+    // EARLY_LT((" | params = 0x%p", params));
+
+
+
+    EARLY_ASSERT_EXECUTION(setupBootParams(params));
+    EARLY_LI(("Setup boot parameters completed"));
+
+
+
+    EARLY_ASSERT_EXECUTION(Assets::init());
+    EARLY_LI(("Assets initialized"));
+
+
+
+    EARLY_ASSERT_EXECUTION(Console::init(&bootParams));
+    EARLY_LI(("Console initialized"));
+
+
+
     EARLY_LT((" | params = 0x%p", params));
 
     EARLY_ASSERT(params, "params is null");
-
-
-
-    EARLY_ASSERT_EXECUTION(Serial::initConsole());
 
 
 
@@ -61,9 +78,6 @@ void kernelMain(BootParams *params)
     EARLY_ASSERT_EXECUTION(FPU::init());
     EARLY_LI(("FPU initialized"));
 
-    EARLY_ASSERT_EXECUTION(Assets::init());
-    EARLY_LI(("Assets initialized"));
-
 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
@@ -76,9 +90,6 @@ void kernelMain(BootParams *params)
 #endif
 
 
-
-    EARLY_ASSERT_EXECUTION(setupBootParams(params));
-    EARLY_LI(("Setup boot parameters completed"));
 
     EARLY_ASSERT_EXECUTION(setupCr4Shadow());
     EARLY_LI(("Setup CR4 shadow completed"));

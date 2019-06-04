@@ -483,9 +483,12 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 CPP_EXTERN_C
 NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 {
-    EARLY_LT((" | imageLocation = 0x%p", imageLocation));
+    // We can't output at the moment
+    // EARLY_LT((" | imageLocation = 0x%p", imageLocation));
 
-    EARLY_ASSERT(imageLocation, "imageLocation is null", NgosStatus::ASSERTION);
+
+
+    EARLY_ASSERT_EXECUTION(Serial::initConsole(), NgosStatus::ASSERTION);
 
 
 
@@ -497,6 +500,11 @@ NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
     EARLY_ASSERT_EXECUTION(Console::init(params), NgosStatus::ASSERTION);
     EARLY_LVV(("Console initialized"));
 
+
+
+    EARLY_LT((" | imageLocation = 0x%p", imageLocation));
+
+    EARLY_ASSERT(imageLocation, "imageLocation is null", NgosStatus::ASSERTION);
 
 
 
