@@ -114,7 +114,7 @@ virtual_address_space:                                                          
                                                                                 #
     pushq   %rsi                                                                # Push address of boot parameters (RSI) to the stack
     leaq    dynamic_pagetable_pages(%rip), %rdi                                 # Put address of dynamic_pagetable_pages variable to RDI
-    movq    EARLY_DYNAMIC_PAGE_TABLES * PAGE_SIZE, %rsi                         # We should clear all entries
+    movq    $(EARLY_DYNAMIC_PAGE_TABLES * PAGE_SIZE), %rsi                      # We should clear all entries
     call    memzero                                                             # Call memzero function
     popq    %rsi                                                                # Restore address of boot parameters back to RSI from the stack
                                                                                 #

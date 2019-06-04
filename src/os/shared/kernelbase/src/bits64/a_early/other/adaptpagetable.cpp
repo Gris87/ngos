@@ -659,5 +659,9 @@ NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 
 
 
+    EARLY_ASSERT_EXECUTION(Console::noMorePrint(), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
