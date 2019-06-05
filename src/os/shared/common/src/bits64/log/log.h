@@ -18,14 +18,14 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 #if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
-#define __COMMON_PRINT_LOG(level, message) __UEFI_PRINT_LOG(level, message)
-#define __COMMON_PRINT_LT(message)         __UEFI_PRINT_LT(message)
+#define __COMMON_PRINT_LOG(level, message) __UEFI_PRINT_LOG(level, message)  // TEST: NO
+#define __COMMON_PRINT_LT(message)         __UEFI_PRINT_LT(message)          // TEST: NO
 #elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
-#define __COMMON_PRINT_LOG(level, message) __EARLY_PRINT_LOG(level, message)
-#define __COMMON_PRINT_LT(message)         __EARLY_PRINT_LT(message)
+#define __COMMON_PRINT_LOG(level, message) __EARLY_PRINT_LOG(level, message) // TEST: NO
+#define __COMMON_PRINT_LT(message)         __EARLY_PRINT_LT(message)         // TEST: NO
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
-#define __COMMON_PRINT_LOG(level, message) __EARLY_PRINT_LOG(level, message)
-#define __COMMON_PRINT_LT(message)         __EARLY_PRINT_LT(message)
+#define __COMMON_PRINT_LOG(level, message) __EARLY_PRINT_LOG(level, message) // TEST: NO
+#define __COMMON_PRINT_LT(message)         __EARLY_PRINT_LT(message)         // TEST: NO
 #else
 #define __COMMON_PRINT_LOG(level, message) \
     Serial::print(level); \
@@ -121,7 +121,7 @@
 
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
-#define COMMON_LT(message) __COMMON_PRINT_LT(message)
+#define COMMON_LT(message) __COMMON_PRINT_LT(message) // TEST: NO
 #else
 #define COMMON_LT(message)
 #endif

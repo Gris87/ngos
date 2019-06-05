@@ -12,6 +12,17 @@ CppDefinesVerifier::CppDefinesVerifier()
 
 void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
+    if (
+        path.endsWith("src/os/shared/common/src/bits64/log/assert.h")
+        ||
+        path.endsWith("src/os/shared/common/src/bits64/log/log.h")
+       )
+    {
+        return;
+    }
+
+
+
     qint64 fileHeaderOffset = 0;
 
     while (fileHeaderOffset < lines.length() && lines.at(fileHeaderOffset).startsWith("//"))

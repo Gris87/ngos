@@ -69,7 +69,7 @@ void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
 
 
 
-    suProcess->write(QString(command + " > " + tempFilePath + "\n").toUtf8());
+    suProcess->write(QString(command + " > " + tempFilePath + '\n').toUtf8());
     suProcess->write("echo \">>>>>> END <<<<<<\"\n");
     suProcess->waitForBytesWritten(-1);
     suProcess->waitForReadyRead(-1);
@@ -89,7 +89,7 @@ void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
     tempFile.open();
     QByteArray output = tempFile.readAll().trimmed();
 
-    if (output.length() > 0)
+    if (output.length()) // output.length() > 0
     {
         qDebug() << "";
         qDebug() << output.data();
@@ -168,7 +168,7 @@ void createPartition(BurnThread *thread, QProcess *suProcess)
 
 
 
-    execWithSu(thread, suProcess, "sgdisk --new 1::-0 --typecode=1:0700 --change-name=1:\"Microsoft Basic Data\" /dev/" + thread->getSelectedUsb().deviceName);
+    execWithSu(thread, suProcess, "sgdisk --new 1::-0 --typecode=1:0700 --change-name=1:\"Microsoft Basic Data\" /dev/" + thread->getSelectedUsb().deviceName); // Ignore CppPunctuationVerifier
 }
 
 void formatPartition(BurnThread *thread, QProcess *suProcess)
@@ -357,7 +357,7 @@ void BurnThread::run()
 
 
 out:
-    suProcess.write(QString("kill -9 " + QString::number(suProcess.processId()) + "\n").toUtf8());
+    suProcess.write(QString("kill -9 " + QString::number(suProcess.processId()) + '\n').toUtf8());
     suProcess.waitForBytesWritten(-1);
     suProcess.waitForReadyRead(-1);
 }

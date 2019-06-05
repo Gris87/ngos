@@ -41,7 +41,7 @@ void UsbMonitorThread::run()
     udev_monitor_filter_add_match_subsystem_devtype(monitor, "usb", nullptr);
     udev_monitor_enable_receiving(monitor);
 
-    int fd = udev_monitor_get_fd(monitor);
+    qint64 fd = udev_monitor_get_fd(monitor);
 
 
 

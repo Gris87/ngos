@@ -43,6 +43,30 @@ TEST_CASES(section1, bits64_other_pagetable_addressconversion);
 
 
 
+    TEST_CASE("virtualAddress()");
+    {
+        u64 temp = AddressConversion::sPhysicalDelta;
+
+        TEST_ASSERT_NOT_EQUALS(temp, 0);
+        TEST_ASSERT_EQUALS(AddressConversion::virtualAddress(0), -temp);
+        TEST_ASSERT_EQUALS(AddressConversion::virtualAddress(temp), 0);
+
+        AddressConversion::sPhysicalDelta = 0;
+
+        TEST_ASSERT_EQUALS(AddressConversion::virtualAddress(0),   0);
+        TEST_ASSERT_EQUALS(AddressConversion::virtualAddress(500), 500);
+
+        AddressConversion::sPhysicalDelta = 1000;
+
+        TEST_ASSERT_EQUALS(AddressConversion::virtualAddress(2000), 1000);
+        TEST_ASSERT_EQUALS(AddressConversion::virtualAddress(2500), 1500);
+
+        AddressConversion::sPhysicalDelta = temp;
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("setPhysicalDeltaBaseOnLocation()");
     {
         u64 temp = AddressConversion::sPhysicalDelta;
