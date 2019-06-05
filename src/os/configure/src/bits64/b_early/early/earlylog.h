@@ -33,6 +33,8 @@
         Console::println(__temp); \
     }
 
+
+
 #define __EARLY_PRINT_LT(message) \
     Serial::print("TRACE:     "); \
     Serial::print(__PRETTY_FUNCTION__); \

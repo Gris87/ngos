@@ -1119,6 +1119,8 @@ tools/qt/usb_boot_maker/src/threads/burnthread.cpp
 tools/qt/usb_boot_maker/src/threads/burnthread.h
 tools/qt/usb_boot_maker/src/threads/burnthread_linux.cpp
 tools/qt/usb_boot_maker/src/threads/burnthread_win.cpp
+tools/qt/usb_boot_maker/src/threads/usbmonitorthread.h
+tools/qt/usb_boot_maker/src/threads/usbmonitorthread_linux.cpp
 tools/qt/usb_boot_maker/usb_boot_maker.pro
 tools/tracers/assets/linux/.config
 tools/tracers/assets/linux/ngos_tracer.patch

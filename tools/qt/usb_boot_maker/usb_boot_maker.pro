@@ -60,15 +60,15 @@ win32 {
 
 # Copy files to build folder - BEGIN
 win32 {
-copydata.commands = \
-    $(COPY_FILE) \"$$shell_path($$PWD/distrib/*)\" \"$$shell_path($$OUT_PWD/$$DESTDIR)\"
+    copydata.commands = \
+        $(COPY_FILE) \"$$shell_path($$PWD/distrib/*)\" \"$$shell_path($$OUT_PWD/$$DESTDIR)\"
 
-first.depends = $(first) copydata
+    first.depends = $(first) copydata
 
-export(first.depends)
-export(copydata.commands)
+    export(first.depends)
+    export(copydata.commands)
 
-QMAKE_EXTRA_TARGETS += first copydata
+    QMAKE_EXTRA_TARGETS += first copydata
 }
 # Copy files to build folder - END
 

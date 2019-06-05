@@ -46,6 +46,8 @@
         Serial::printf message; \
     }
 
+
+
 #define __UEFI_PRINT_LT(message) \
     if (Console::canPrint()) \
     { \

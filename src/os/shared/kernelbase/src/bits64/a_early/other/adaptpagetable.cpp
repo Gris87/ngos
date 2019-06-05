@@ -9,11 +9,11 @@
 
 
 
-extern void *_start;                                                           // _start declared in main.S file // Ignore CppEqualAlignmentVerifier
-extern PGD   early_pagetable[PTRS_PER_PGD];                                    // early_pagetable declared in main.S file
+extern void *_start;                                                               // _start declared in main.S file // Ignore CppEqualAlignmentVerifier
+extern PGD   early_pagetable[PTRS_PER_PGD];                                        // early_pagetable declared in main.S file
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-extern P4D   early_pagetable_level4[PTRS_PER_P4D];                             // early_pagetable_level4 declared in main.S file
+extern P4D   early_pagetable_level4[PTRS_PER_P4D];                                 // early_pagetable_level4 declared in main.S file
 #endif
 
 extern PUD   early_pagetable_level3[PTRS_PER_PUD];                                 // early_pagetable_level3 declared in main.S file
