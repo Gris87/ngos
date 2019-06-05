@@ -73,15 +73,22 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 lev
 
             if (pgd->pgd)
             {
-                pgdNext = (PGD *)pgdPageVirtualAddress(*pgd);
+                pgdNext = (PGD *)AddressConversion::virtualAddress(pgdPageVirtualAddress(*pgd));
             }
             else
             {
                 pgdNext = (PGD *)allocateDynamicPage();
-                COMMON_TEST_ASSERT(pgdNext, NgosStatus::ASSERTION);
 
                 setPgd(pgd, AddressConversion::physicalAddress((pgd_value)pgdNext | KERNEL_PAGE_TABLE_FLAGS));
             }
+
+
+
+            COMMON_LVVV(("pgdNext = 0x%p", pgdNext));
+
+            COMMON_TEST_ASSERT(pgdNext, NgosStatus::ASSERTION);
+
+
 
             COMMON_ASSERT_EXECUTION(initializeDynamicPageIdentity(pgdNext, address, next, level - 1), NgosStatus::ASSERTION);
         }

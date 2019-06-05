@@ -26,6 +26,15 @@ public:
         return address + sPhysicalDelta;
     }
 
+    static inline u64 virtualAddress(u64 address)
+    {
+        COMMON_LT((" | address = 0x%p", address));
+
+
+
+        return address - sPhysicalDelta;
+    }
+
     static inline NgosStatus setPhysicalDeltaBaseOnLocation(u64 location)
     {
         COMMON_LT((" | location = 0x%016lX", location));

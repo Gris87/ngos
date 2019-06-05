@@ -41,7 +41,6 @@ TEST_CASES(section1, bits64_other_ioremap_ioremap);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1000, 0x1000, (void **)&params), NgosStatus::OK);
         TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF200000);
-        TEST_ASSERT_EQUALS(params->header.signature,                                   BOOT_PARAMS_HEADER_SIGNATURE);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                     0);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                 7);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                   7);
@@ -74,7 +73,6 @@ TEST_CASES(section1, bits64_other_ioremap_ioremap);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1000, 0x2050, (void **)&params), NgosStatus::OK);
         TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF240000);
-        TEST_ASSERT_EQUALS(params->header.signature,                                   BOOT_PARAMS_HEADER_SIGNATURE);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                     1);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                 7);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                   6);
@@ -108,16 +106,6 @@ TEST_CASES(section1, bits64_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(IORemap::sFixmapPage[65].pte,                               0x8000000000002163);
         TEST_ASSERT_EQUALS(IORemap::sFixmapPage[66].pte,                               0x8000000000003163);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[67], 445 * 8),               true);
-
-        params->header.signature = 0xAABBCCDDEEFF0011;
-
-        TEST_ASSERT_EQUALS(((BootParams *)0xFFFFFFFFFF200000)->header.signature,       0xAABBCCDDEEFF0011);
-        TEST_ASSERT_EQUALS(params->header.signature,                                   0xAABBCCDDEEFF0011);
-
-        params->header.signature = BOOT_PARAMS_HEADER_SIGNATURE;
-
-        TEST_ASSERT_EQUALS(((BootParams *)0xFFFFFFFFFF200000)->header.signature,       BOOT_PARAMS_HEADER_SIGNATURE);
-        TEST_ASSERT_EQUALS(params->header.signature,                                   BOOT_PARAMS_HEADER_SIGNATURE);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1234, 0x1050, (void **)&params), NgosStatus::OK);
         TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF280234);
