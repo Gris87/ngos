@@ -6,7 +6,7 @@ NGOS:
 - Simplify build option taking in Makefiles
 - Add tests for structure sizes
 - Complete with interruptions
-- Implement graphics for kernel
+- Implement boot screen for kernel
 - Per CPU?
 - Initialization via multiple CPU cores
 
@@ -22,6 +22,7 @@ Code verifier:
 - Verify for `0x[0-9]*[a-f]`
 - Verify for void functions
 - Verify for headers in assembler
+- Verify for function asserts
 
 
 
@@ -75,10 +76,6 @@ C++ headers optimizer:
 
 USB Boot Maker:
 
-- Request servers for installer latest version
-- Store delays
-- Download installer from server with the lowest delay
-- Burn installer on USB
 - Verify code
 
 
