@@ -370,16 +370,16 @@ NgosStatus adaptPredefinedPageTable(u64 imageLocation, PGD *pgd)
 
 
 
-    pgd[511].pgd += delta;
+    setPgd(&pgd[511], pgdValue(pgd[511]) + delta);
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    p4d[511].p4d += delta;
+    setP4d(&p4d[511], p4dValue(p4d[511]) + delta);
 #endif
 
-    pud[510].pud += delta;
-    pud[511].pud += delta;
+    setPud(&pud[510], pudValue(pud[510]) + delta);
+    setPud(&pud[511], pudValue(pud[511]) + delta);
 
-    pmd[506].pmd += delta;
+    setPmd(&pmd[506], pmdValue(pmd[506]) + delta);
 
 
 
@@ -438,13 +438,13 @@ NgosStatus adaptVirtualAddressSpacePageTable(u64 imageLocation)
     {
         if (pmdPresent(pmd[i]))
         {
-            if ((i64)(pmd[i].pmd + delta) >= 0)
+            if ((i64)(pmdValue(pmd[i]) + delta) >= 0)
             {
-                pmd[i].pmd += delta;
+                setPmd(&pmd[i], pmdValue(pmd[i]) + delta);
             }
             else
             {
-                pmd[i].pmd = 0;
+                setPmd(&pmd[i], 0);
             }
         }
     }
@@ -532,7 +532,7 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 
 
 
-    if (pgd[pgdId].pgd)
+    if (pgdValue(pgd[pgdId]))
     {
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         p4d = (P4D *)pgdPageVirtualAddress(pgd[pgdId]);
@@ -543,37 +543,38 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
     else
     {
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-        p4d            = (P4D *)allocateDynamicPage(dynamicPagetablePages);
-        pgd[pgdId].pgd = (u64)p4d | KERNEL_PAGE_TABLE_FLAGS;
+        p4d = (P4D *)allocateDynamicPage(dynamicPagetablePages);
+        setPgd(&pgd[pgdId], (u64)p4d | KERNEL_PAGE_TABLE_FLAGS);
 #else
-        pud            = (PUD *)allocateDynamicPage(dynamicPagetablePages);
-        pgd[pgdId].pgd = (u64)pud | KERNEL_PAGE_TABLE_FLAGS;
+        pud = (PUD *)allocateDynamicPage(dynamicPagetablePages);
+        setPgd(&pgd[pgdId], (u64)pud | KERNEL_PAGE_TABLE_FLAGS);
 #endif
     }
 
 
+
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    if (p4d[p4dId].p4d)
+    if (p4dValue(p4d[p4dId]))
     {
         pud = (PUD *)p4dPageVirtualAddress(p4d[p4dId]);
     }
     else
     {
-        pud            = (PUD *)allocateDynamicPage(dynamicPagetablePages);
-        pg4[p4dId].p4d = (u64)pud | KERNEL_PAGE_TABLE_FLAGS;
+        pud = (PUD *)allocateDynamicPage(dynamicPagetablePages);
+        setP4d(&p4d[p4dId], (u64)pud | KERNEL_PAGE_TABLE_FLAGS);
     }
 #endif
 
 
 
-    if (pud[pudId].pud)
+    if (pudValue(pud[pudId]))
     {
         pmd = (PMD *)pudPageVirtualAddress(pud[pudId]);
     }
     else
     {
-        pmd            = (PMD *)allocateDynamicPage(dynamicPagetablePages);
-        pud[pudId].pud = (u64)pmd | KERNEL_PAGE_TABLE_FLAGS;
+        pmd = (PMD *)allocateDynamicPage(dynamicPagetablePages);
+        setPud(&pud[pudId], (u64)pmd | KERNEL_PAGE_TABLE_FLAGS);
     }
 
 
@@ -587,9 +588,9 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 
 
 
-    EARLY_TEST_ASSERT(pmd[pmdId].pmd == 0, NgosStatus::ASSERTION);
+    EARLY_TEST_ASSERT(pmdValue(pmd[pmdId]) == 0, NgosStatus::ASSERTION);
 
-    pmd[pmdId].pmd = (imageLocation | KERNEL_PAGE_LARGE_EXEC_FLAGS) & ~PAGE_FLAG_GLOBAL;
+    setPmd(&pmd[pmdId], (imageLocation | KERNEL_PAGE_LARGE_EXEC_FLAGS) & ~PAGE_FLAG_GLOBAL);
 
 
 
@@ -600,7 +601,7 @@ CPP_EXTERN_C
 NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 {
     // We can't output at the moment
-    // EARLY_LT((" | imageLocation = 0x%p", imageLocation));
+    // EARLY_LT((" | imageLocation = 0x%p, params = 0x%p", imageLocation, params)); // Commented to avoid error because Console is uninitialized
 
 
 
@@ -618,7 +619,7 @@ NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 
 
 
-    EARLY_LT((" | imageLocation = 0x%p", imageLocation));
+    EARLY_LT((" | imageLocation = 0x%p, params = 0x%p", imageLocation, params));
 
     EARLY_ASSERT(imageLocation, "imageLocation is null", NgosStatus::ASSERTION);
     EARLY_ASSERT(params,        "params is null",        NgosStatus::ASSERTION);

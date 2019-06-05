@@ -16,6 +16,7 @@
 
 
 
+// Ignore CppAlignmentVerifier [BEGIN]
 #if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
 #define __COMMON_PRINT_LOG(level, message) __UEFI_PRINT_LOG(level, message)
 #define __COMMON_PRINT_LT(message)         __UEFI_PRINT_LT(message)
@@ -38,7 +39,6 @@
 
 
 
-// Ignore CppAlignmentVerifier [BEGIN]
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_FATAL || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_FATAL
 #define COMMON_LF(message) \
     __COMMON_PRINT_LOG("FATAL:     ", message);

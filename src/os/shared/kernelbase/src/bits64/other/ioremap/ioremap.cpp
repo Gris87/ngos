@@ -92,9 +92,9 @@ NgosStatus IORemap::addPmdForFixmap()
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         for (i64 i = 0; i < PTRS_PER_PMD; ++i)
         {
-            if (fixmap_pagetable_level2[i].pmd)
+            if (pmdValue(fixmap_pagetable_level2[i]))
             {
-                COMMON_LVVV(("fixmap_pagetable_level2[%d] = 0x%016lX", i, fixmap_pagetable_level2[i].pmd));
+                COMMON_LVVV(("pmdValue(fixmap_pagetable_level2[%d]) = 0x%016lX", i, pmdValue(fixmap_pagetable_level2[i])));
             }
         }
 #endif
@@ -102,8 +102,8 @@ NgosStatus IORemap::addPmdForFixmap()
 
 
         COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[0], 504 * 8) == true, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(fixmap_pagetable_level2[505].pmd               != 0,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(fixmap_pagetable_level2[506].pmd               != 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(pmdValue(fixmap_pagetable_level2[505])         != 0,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(pmdValue(fixmap_pagetable_level2[506])         != 0,    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(memempty(&fixmap_pagetable_level2[507], 5 * 8) == true, NgosStatus::ASSERTION);
     }
 
@@ -165,9 +165,9 @@ NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
 
     for (i64 i = 0; i < numberOfPages; ++i)
     {
-        COMMON_TEST_ASSERT(sFixmapPage[startPteForSlot + i].pte == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(pteValue(sFixmapPage[startPteForSlot + i]) == 0, NgosStatus::ASSERTION);
 
-        sFixmapPage[startPteForSlot + i].pte = (start + i * PAGE_SIZE) | KERNEL_PAGE_FLAGS;
+        setPte(&sFixmapPage[startPteForSlot + i], (start + i * PAGE_SIZE) | KERNEL_PAGE_FLAGS);
     }
 
 
@@ -254,9 +254,9 @@ NgosStatus IORemap::removeFixedMapping(u64 address, u64 size)
 
     for (i64 i = 0; i < numberOfPages; ++i)
     {
-        COMMON_TEST_ASSERT(sFixmapPage[startPteForSlot + i].pte != 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(pteValue(sFixmapPage[startPteForSlot + i]) != 0, NgosStatus::ASSERTION);
 
-        sFixmapPage[startPteForSlot + i].pte = 0;
+        setPte(&sFixmapPage[startPteForSlot + i], 0);
 
         COMMON_ASSERT_EXECUTION(invlpg((u8 *)(start + i * PAGE_SIZE)), NgosStatus::ASSERTION);
     }

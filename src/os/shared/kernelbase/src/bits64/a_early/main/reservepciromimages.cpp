@@ -7,6 +7,7 @@
 #include <kernelbase/src/bits64/other/e820/e820.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
+#include <pagetable/utils.h>
 
 
 
@@ -85,9 +86,9 @@ NgosStatus reservePciRomImages()
 
         for (i64 i = 0; i < PTRS_PER_PTE; ++i)
         {
-            if (IORemap::sFixmapPage[i].pte)
+            if (pteValue(IORemap::sFixmapPage[i]))
             {
-                EARLY_LVVV(("IORemap::sFixmapPage[%d].pte = 0x%016lX", i, IORemap::sFixmapPage[i].pte));
+                EARLY_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016lX", i, pteValue(IORemap::sFixmapPage[i])));
             }
         }
 #endif
@@ -121,7 +122,7 @@ NgosStatus reservePciRomImages()
         EARLY_TEST_ASSERT(IORemap::sPoolOfSlots[5]                    == 5,                  NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(IORemap::sPoolOfSlots[6]                    == 6,                  NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(IORemap::sPoolOfSlots[7]                    == 7,                  NgosStatus::ASSERTION);
-        // EARLY_TEST_ASSERT(IORemap::sFixmapPage[0].pte              == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
+        // EARLY_TEST_ASSERT(pteValue(IORemap::sFixmapPage[0])        == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
         EARLY_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION);
 
 

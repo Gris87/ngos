@@ -71,7 +71,7 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 lev
         {
             PGD *pgdNext;
 
-            if (pgd->pgd)
+            if (pgdValue(*pgd))
             {
                 pgdNext = (PGD *)AddressConversion::virtualAddress(pgdPageVirtualAddress(*pgd));
             }
