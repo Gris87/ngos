@@ -6,6 +6,7 @@
 #include <kernelbase/src/bits64/other/bootparams/bootparams.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
+#include <pagetable/utils.h>
 
 
 
@@ -79,9 +80,9 @@ NgosStatus UEFI::initMemoryMap()
 
         for (i64 i = 0; i < PTRS_PER_PTE; ++i)
         {
-            if (IORemap::sFixmapPage[i].pte)
+            if (pteValue(IORemap::sFixmapPage[i]))
             {
-                COMMON_LVVV(("IORemap::sFixmapPage[%d].pte = 0x%016lX", i, IORemap::sFixmapPage[i].pte));
+                COMMON_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016lX", i, pteValue(IORemap::sFixmapPage[i])));
             }
         }
 #endif
@@ -115,7 +116,7 @@ NgosStatus UEFI::initMemoryMap()
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[5]                    == 5,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[6]                    == 6,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[7]                    == 7,                  NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(IORemap::sFixmapPage[0].pte              == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(pteValue(IORemap::sFixmapPage[0])        == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION);
 
 
@@ -488,9 +489,9 @@ NgosStatus UEFI::initSystemTable()
 
         for (i64 i = 0; i < PTRS_PER_PTE; ++i)
         {
-            if (IORemap::sFixmapPage[i].pte)
+            if (pteValue(IORemap::sFixmapPage[i]))
             {
-                COMMON_LVVV(("IORemap::sFixmapPage[%d].pte = 0x%016lX", i, IORemap::sFixmapPage[i].pte));
+                COMMON_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016lX", i, pteValue(IORemap::sFixmapPage[i])));
             }
         }
 #endif
@@ -524,7 +525,7 @@ NgosStatus UEFI::initSystemTable()
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[5]                    == 6,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[6]                    == 6,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(IORemap::sPoolOfSlots[7]                    == 7,                  NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(IORemap::sFixmapPage[0].pte              == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(pteValue(IORemap::sFixmapPage[0])        == 0x800000003E357163, NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(memempty(&IORemap::sFixmapPage[1], 511 * 8) == true,               NgosStatus::ASSERTION);
 
 

@@ -17,7 +17,7 @@
 
 
 
-// Ignore CppAlignmentVerifier [BEGIN]
+// Ignore CppAlignmentVerifier [BEGIN] // Ignore CppReleaseUsageVerifier
 #if NGOS_BUILD_RELEASE == OPTION_NO
 #if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
 #define __COMMON_PRINT_ASSERT(message) __UEFI_PRINT_ASSERT(message)
