@@ -108,30 +108,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
 
 
-        QString modifiedContent = content;
-
-        do
-        {
-            qint64 index = modifiedContent.indexOf("\n    asm volatile");
-
-            if (index < 0)
-            {
-                break;
-            }
-
-            qint64 index2 = modifiedContent.indexOf(");\n", index + 17);
-
-            if (index2 < 0)
-            {
-                break;
-            }
-
-            modifiedContent.remove(index, index2 - index + 3);
-        } while(true);
-
-
-
-        if (!modifiedContent.contains(expectedContent))
+        if (!content.contains(expectedContent))
         {
             worker->addError(path, -1, QString("Expected lines not found:\n%1").arg(expectedContent));
         }
