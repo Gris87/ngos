@@ -266,7 +266,7 @@ echo "(gdb) dump binary memory ${MEMORY_DUMP} 0 0x000A0000"
 echo "dump binary memory ${MEMORY_DUMP} 0 0x000A0000" > ${GDB_FIFO}
 sleep 10
 
-hexdump -C ${MEMORY_DUMP} | grep -v "^00001" | grep -v "^0009f" | grep -v "^\*$" > ${MEMORY_DUMP}.hex
+hexdump -C ${MEMORY_DUMP} | grep -v "^00001" | grep -v "^000872" | grep -v "^0009f2" | grep -v "^\*$" > ${MEMORY_DUMP}.hex
 
 
 

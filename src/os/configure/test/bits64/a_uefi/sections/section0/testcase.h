@@ -52,13 +52,6 @@ NgosStatus startTestSection0()
 
     INIT_TEST_SECTION();
 
-    asm volatile(
-        "pushq   %rbp"          "\n\t"
-        "movq    %rsp, %rbp"    "\n\t"
-        "andq    $-0x40, %rsp"  "\n\t"
-        "subq    $0x30, %rsp"   "\n\t"
-    );
-
     CALL_TEST_CASES(section0, __include_asm_bitutils);
     CALL_TEST_CASES(section0, __include_asm_instructions);
     CALL_TEST_CASES(section0, __include_bootparams_memorymapentry);
@@ -90,11 +83,6 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_types);
     CALL_TEST_CASES(section0, bits64_a_uefi_uefi_uefi);
     CALL_TEST_CASES(section0, bits64_types);
-
-    asm volatile(
-        "movq    %rbp, %rsp"    "\n\t"
-        "popq    %rbp"          "\n\t"
-    );
 
     SUMMARY_TEST_SECTION();
 }

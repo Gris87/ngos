@@ -454,13 +454,12 @@ NgosStatus adaptVirtualAddressSpacePageTable(u64 imageLocation)
     return NgosStatus::OK;
 }
 
-NgosStatus adaptVideoRamPageTable(u64 imageLocation, BootParams *params, PGD *pgd)
+NgosStatus adaptVideoRamPageTable(BootParams *params, PGD *pgd)
 {
-    EARLY_LT((" | imageLocation = 0x%p, params = 0x%p, pgd = 0x%p", imageLocation, params, pgd));
+    EARLY_LT((" | params = 0x%p, pgd = 0x%p", params, pgd));
 
-    EARLY_ASSERT(imageLocation, "imageLocation is null", NgosStatus::ASSERTION);
-    EARLY_ASSERT(params,        "params is null",        NgosStatus::ASSERTION);
-    EARLY_ASSERT(pgd,           "pgd is null",           NgosStatus::ASSERTION);
+    EARLY_ASSERT(params, "params is null", NgosStatus::ASSERTION);
+    EARLY_ASSERT(pgd,    "pgd is null",    NgosStatus::ASSERTION);
 
 
 
@@ -645,7 +644,7 @@ NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 
     EARLY_ASSERT_EXECUTION(adaptPredefinedPageTable(imageLocation, pgd),       NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(adaptVirtualAddressSpacePageTable(imageLocation),   NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(adaptVideoRamPageTable(imageLocation, params, pgd), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptVideoRamPageTable(params, pgd),                NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(adaptLastResortPageTable(imageLocation, pgd),       NgosStatus::ASSERTION);
 
     EARLY_ASSERT_EXECUTION(AddressConversion::setPhysicalDeltaBaseOnLocation(imageLocation), NgosStatus::ASSERTION);

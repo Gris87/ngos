@@ -16,9 +16,9 @@
 
 
 #define TEST_CASES(section, name) \
-        void __testcases__##section##__##name(TestResults &__results) \
+        void __testcases__##section##__##name(TestResults *__results) \
         { \
-            UEFI_LT((" | __results = ..."));
+            UEFI_LT((" | __results = 0x%p", __results));
 
 #define TEST_CASES_END() \
         }
@@ -60,17 +60,51 @@
 #endif
 
 #define TEST_CASE_END() \
-            __results.testPassed(); \
+            __results->testPassed(); \
             \
             break; \
         } while(true);
-// Ignore CppAlignmentVerifier [END]
 
 
 
-#define INIT_TEST_SECTION()            TestResults __results;
+#define INIT_TEST_SECTION() \
+    TestResults *__results; \
+    \
+    asm volatile( \
+        "pushq   %%rbp"                 "\n\t" \
+        "movq    %%rsp, %%rbp"          "\n\t" \
+        "andq    $-0x40, %%rsp"         "\n\t" \
+        "pushq   %%rbp"                 "\n\t" \
+        "subq    $0x28, %%rsp"          "\n\t" \
+        "movq    %%rsp, %0"             "\n\t" \
+        "movq    %0, %%rdi"             "\n\t" \
+        "call    _ZN11TestResultsC1Ev"  "\n\t" \
+            : \
+                "=r" (__results) \
+    );
+
+
+
 #define CALL_TEST_CASES(section, name) __testcases__##section##__##name(__results);
-#define SUMMARY_TEST_SECTION()         return __results.summary();
+
+
+
+#define SUMMARY_TEST_SECTION() \
+    NgosStatus __res = __results->summary(); \
+    \
+    asm volatile( \
+        "movq    %0, %%rdx"     "\n\t" \
+        "addq    $0x28, %%rsp"  "\n\t" \
+        "popq    %%rbp"         "\n\t" \
+        "movq    %%rbp, %%rsp"  "\n\t" \
+        "popq    %%rbp"         "\n\t" \
+        "movq    %%rdx, %0"     "\n\t" \
+            :   \
+            : "r" (__results) \
+    ); \
+    \
+    return __res;
+// Ignore CppAlignmentVerifier [END]
 
 
 
@@ -80,7 +114,7 @@
 
 
 #define TEST_FAILED(description) \
-        __results.testFailed(__FILE__, __LINE__, description); \
+        __results->testFailed(__FILE__, __LINE__, description); \
         break;
 
 

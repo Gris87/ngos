@@ -51,7 +51,7 @@ NgosStatus KvmClock::init()
 
 
 
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
         {
             COMMON_LVVV(("CpuHotplug::sSteps:"));
             COMMON_LVVV(("-------------------------------------"));
