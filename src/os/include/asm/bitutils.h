@@ -38,7 +38,7 @@ public:
             asm volatile(
                 "orb     %1, %0"                                    // orb     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, '+' - read and write
                     :                                               // Input parameters
                         "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
@@ -62,7 +62,7 @@ public:
             asm volatile(
                 "lock orb    %1, %0"                                // lock orb    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, '+' - read and write
                     :                                               // Input parameters
                         "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
@@ -86,7 +86,7 @@ public:
             asm volatile(
                 "andb    %1, %0"                                    // andb    %rax, (%rbx) # Clears bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, '+' - read and write
                     :                                               // Input parameters
                         "i" ((u8)~CONST_BIT_IN_U8(bit))             // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
@@ -110,7 +110,7 @@ public:
             asm volatile(
                 "lock andb   %1, %0"                                // lock andb   %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Clears bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, '+' - read and write
                     :                                               // Input parameters
                         "i" ((u8)~CONST_BIT_IN_U8(bit))             // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
@@ -134,7 +134,7 @@ public:
             asm volatile(
                 "xorb    %1, %0"                                    // xorb    %rax, (%rbx) # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, '+' - read and write
                     :                                               // Input parameters
                         "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
@@ -158,7 +158,7 @@ public:
             asm volatile(
                 "lock xorb   %1, %0"                                // lock xorb   %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, '+' - read and write
                     :                                               // Input parameters
                         "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
