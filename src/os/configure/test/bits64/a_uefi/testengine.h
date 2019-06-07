@@ -71,16 +71,16 @@
     TestResults *__results; \
     \
     asm volatile( \
-        "pushq   %%rbp"                 "\n\t" \
-        "movq    %%rsp, %%rbp"          "\n\t" \
-        "andq    $-0x40, %%rsp"         "\n\t" \
-        "pushq   %%rbp"                 "\n\t" \
-        "subq    $0x28, %%rsp"          "\n\t" \
-        "movq    %%rsp, %0"             "\n\t" \
-        "movq    %0, %%rdi"             "\n\t" \
-        "call    _ZN11TestResultsC1Ev"  "\n\t" \
-            : \
-                "=r" (__results) \
+        "pushq   %%rbp"                 "\n\t"  /* pushq   %rbp                     # Store RBP to stack                                               */ \
+        "movq    %%rsp, %%rbp"          "\n\t"  /* movq    %rsp, %rbp               # Store RSP value in RBP                                           */ \
+        "andq    $-0x40, %%rsp"         "\n\t"  /* andq    $-0x40, %rsp             # Make RSP aligned                                                 */ \
+        "pushq   %%rbp"                 "\n\t"  /* pushq   %rbp                     # Store RBP to stack                                               */ \
+        "subq    $0x28, %%rsp"          "\n\t"  /* subq    $0x28, %rsp              # Allocate space on stack. The value selected to keep RSP aligned  */ \
+        "movq    %%rsp, %0"             "\n\t"  /* movq    %rsp, %rbp               # Make __results variable to point on RSP. %RBP == __results       */ \
+        "movq    %0, %%rdi"             "\n\t"  /* movq    %rbp, %rdi               # Provide __results variable as RDI register                       */ \
+        "call    _ZN11TestResultsC1Ev"  "\n\t"  /* call    _ZN11TestResultsC1Ev     # Call TestResults::TestResults() to initialize __results variable */ \
+            :                                   /* Output parameters */ \
+                "=r" (__results)                /* "r" == any general register, "=" - write only */ \
     );
 
 
@@ -93,14 +93,10 @@
     NgosStatus __res = __results->summary(); \
     \
     asm volatile( \
-        "movq    %0, %%rdx"     "\n\t" \
-        "addq    $0x28, %%rsp"  "\n\t" \
-        "popq    %%rbp"         "\n\t" \
-        "movq    %%rbp, %%rsp"  "\n\t" \
-        "popq    %%rbp"         "\n\t" \
-        "movq    %%rdx, %0"     "\n\t" \
-            :   \
-            : "r" (__results) \
+        "addq    $0x28, %rsp"   "\n\t"  /* subq    $0x28, %rsp  # Release space on stack. The value selected to keep RSP aligned */ \
+        "popq    %rbp"          "\n\t"  /* popq    %rbp         # Restore RBP from stack                                         */ \
+        "movq    %rbp, %rsp"    "\n\t"  /* movq    %rbp, %rsp   # Restore RSP from RBP                                           */ \
+        "popq    %rbp"          "\n\t"  /* popq    %rbp         # Restore RBP from stack                                         */ \
     ); \
     \
     return __res;

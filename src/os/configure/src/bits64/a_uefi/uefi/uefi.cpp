@@ -642,9 +642,9 @@ UefiStatus UEFI::exitBootServices(u64 mapKey)
 
 
     asm volatile(
-        "pushq   %rbp"          "\n\t"
-        "movq    %rsp, %rbp"    "\n\t"
-        "andq    $-0x10, %rsp"  "\n\t"
+        "pushq   %rbp"          "\n\t"  // pushq   %rbp         # Store RBP to stack
+        "movq    %rsp, %rbp"    "\n\t"  // movq    %rsp, %rbp   # Store RSP value in RBP
+        "andq    $-0x10, %rsp"  "\n\t"  // andq    $-0x10, %rsp # Make RSP aligned
     );
 
 
@@ -654,8 +654,8 @@ UefiStatus UEFI::exitBootServices(u64 mapKey)
 
 
     asm volatile(
-        "movq    %rbp, %rsp"    "\n\t"
-        "popq    %rbp"          "\n\t"
+        "movq    %rbp, %rsp"    "\n\t"  // movq    %rbp, %rsp   # Restore RSP from RBP
+        "popq    %rbp"          "\n\t"  // popq    %rbp         # Restore RBP from stack
     );
 
 
