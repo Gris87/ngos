@@ -44,7 +44,7 @@ void TestResults::testFailed(const char *filename, u64 line, const char *descrip
     asm volatile(
         "leaq    printfBuffer(%%rip), %0" // leaq    printfBuffer(%rip), %rbx   # Get address of printfBuffer variable to RBX. %RBX == tempBuffer
             :                             // Output parameters
-                "=r" (tempBuffer)         // "r" == any general register, "=" - write only
+                "=r" (tempBuffer)         // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -85,7 +85,7 @@ NgosStatus TestResults::summary()
     asm volatile(
         "leaq    printfBuffer(%%rip), %0" // leaq    printfBuffer(%rip), %rbp   # Get address of printfBuffer variable to RBP. %RBP == tempBuffer
             :                             // Output parameters
-                "=r" (tempBuffer)         // "r" == any general register, "=" - write only
+                "=r" (tempBuffer)         // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 

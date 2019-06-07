@@ -151,7 +151,7 @@ i64 Serial::printf(const char *format, ...)
     asm volatile(
         "leaq    printfBuffer(%%rip), %0" // leaq    printfBuffer(%rip), %rbx   # Get address of printfBuffer variable to RBX. %RBX == tempBuffer
             :                             // Output parameters
-                "=r" (tempBuffer)         // "r" == any general register, "=" - write only
+                "=r" (tempBuffer)         // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 

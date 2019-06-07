@@ -38,9 +38,9 @@ public:
             asm volatile(
                 "orb     %1, %0"                                    // orb     %rax, (%rbx) # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
                     :                                               // Input parameters
-                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
                         "memory"                                    // Inform gcc that memory will be changed
             );
@@ -62,9 +62,9 @@ public:
             asm volatile(
                 "lock orb    %1, %0"                                // lock orb    %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
                     :                                               // Input parameters
-                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
                         "memory"                                    // Inform gcc that memory will be changed
             );
@@ -86,9 +86,9 @@ public:
             asm volatile(
                 "andb    %1, %0"                                    // andb    %rax, (%rbx) # Clears bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
                     :                                               // Input parameters
-                        "i" ((u8)~CONST_BIT_IN_U8(bit))             // "i" == integer constant // Ignore CppSingleCharVerifier
+                        "i" ((u8)~CONST_BIT_IN_U8(bit))             // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
                         "memory"                                    // Inform gcc that memory will be changed
             );
@@ -110,9 +110,9 @@ public:
             asm volatile(
                 "lock andb   %1, %0"                                // lock andb   %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Clears bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
                     :                                               // Input parameters
-                        "i" ((u8)~CONST_BIT_IN_U8(bit))             // "i" == integer constant // Ignore CppSingleCharVerifier
+                        "i" ((u8)~CONST_BIT_IN_U8(bit))             // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
                         "memory"                                    // Inform gcc that memory will be changed
             );
@@ -134,9 +134,9 @@ public:
             asm volatile(
                 "xorb    %1, %0"                                    // xorb    %rax, (%rbx) # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
                     :                                               // Input parameters
-                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
                         "memory"                                    // Inform gcc that memory will be changed
             );
@@ -158,9 +158,9 @@ public:
             asm volatile(
                 "lock xorb   %1, %0"                                // lock xorb   %rax, (%rbx) # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
                     :                                               // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // "m" == use memory, "+" - read and write
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))     // 'm' - use memory, "+" - read and write
                     :                                               // Input parameters
-                        "i" (CONST_BIT_IN_U8(bit))                  // "i" == integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                  // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                               // Clobber list
                         "memory"                                    // Inform gcc that memory will be changed
             );
@@ -189,9 +189,9 @@ public:
         asm volatile(
             "rep; bsfw    %1, %0"   // bsfw    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                   // Output parameters
-                    "=r" (res)      // "r" == any general register, "=" - write only
+                    "=r" (res)      // 'r' - any general register, '=' - write only
                 :                   // Input parameters
-                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" (value)     // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -213,9 +213,9 @@ public:
         asm volatile(
             "rep; bsfl    %1, %0"   // bsfl    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                   // Output parameters
-                    "=r" (res)      // "r" == any general register, "=" - write only
+                    "=r" (res)      // 'r' - any general register, '=' - write only
                 :                   // Input parameters
-                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" (value)     // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -237,9 +237,9 @@ public:
         asm volatile(
             "rep; bsfq    %1, %0"   // bsfq    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                   // Output parameters
-                    "=r" (res)      // "r" == any general register, "=" - write only
+                    "=r" (res)      // 'r' - any general register, '=' - write only
                 :                   // Input parameters
-                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" (value)     // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -261,9 +261,9 @@ public:
         asm volatile(
             "rep; bsfw    %1, %0"       // bsfw    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                       // Output parameters
-                    "=r" (res)          // "r" == any general register, "=" - write only
+                    "=r" (res)          // 'r' - any general register, '=' - write only
                 :                       // Input parameters
-                    "r" ((u16)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" ((u16)~value)   // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -285,9 +285,9 @@ public:
         asm volatile(
             "rep; bsfl    %1, %0"       // bsfl    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                       // Output parameters
-                    "=r" (res)          // "r" == any general register, "=" - write only
+                    "=r" (res)          // 'r' - any general register, '=' - write only
                 :                       // Input parameters
-                    "r" ((u32)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" ((u32)~value)   // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -309,9 +309,9 @@ public:
         asm volatile(
             "rep; bsfq    %1, %0"       // bsfq    %rdx, %rax # or tzcnt   %rdx, %rax if CPU supported # Find first bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                       // Output parameters
-                    "=r" (res)          // "r" == any general register, "=" - write only
+                    "=r" (res)          // 'r' - any general register, '=' - write only
                 :                       // Input parameters
-                    "r" ((u64)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" ((u64)~value)   // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -333,9 +333,9 @@ public:
         asm volatile(
             "bsrw    %1, %0"        // bsrw    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                   // Output parameters
-                    "=r" (res)      // "r" == any general register, "=" - write only
+                    "=r" (res)      // 'r' - any general register, '=' - write only
                 :                   // Input parameters
-                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" (value)     // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -357,9 +357,9 @@ public:
         asm volatile(
             "bsrl    %1, %0"        // bsrl    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                   // Output parameters
-                    "=r" (res)      // "r" == any general register, "=" - write only
+                    "=r" (res)      // 'r' - any general register, '=' - write only
                 :                   // Input parameters
-                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" (value)     // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -381,9 +381,9 @@ public:
         asm volatile(
             "bsrq    %1, %0"        // bsrq    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                   // Output parameters
-                    "=r" (res)      // "r" == any general register, "=" - write only
+                    "=r" (res)      // 'r' - any general register, '=' - write only
                 :                   // Input parameters
-                    "r" (value)     // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" (value)     // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -405,9 +405,9 @@ public:
         asm volatile(
             "bsrw    %1, %0"            // bsrw    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                       // Output parameters
-                    "=r" (res)          // "r" == any general register, "=" - write only
+                    "=r" (res)          // 'r' - any general register, '=' - write only
                 :                       // Input parameters
-                    "r" ((u16)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" ((u16)~value)   // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -429,9 +429,9 @@ public:
         asm volatile(
             "bsrl    %1, %0"            // bsrl    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                       // Output parameters
-                    "=r" (res)          // "r" == any general register, "=" - write only
+                    "=r" (res)          // 'r' - any general register, '=' - write only
                 :                       // Input parameters
-                    "r" ((u32)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" ((u32)~value)   // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -453,9 +453,9 @@ public:
         asm volatile(
             "bsrq    %1, %0"            // bsrq    %rdx, %rax # Find last bit in RDX and store result in RAX. %rax == res. %rdx == value
                 :                       // Output parameters
-                    "=r" (res)          // "r" == any general register, "=" - write only
+                    "=r" (res)          // 'r' - any general register, '=' - write only
                 :                       // Input parameters
-                    "r" ((u64)~value)   // "r" == any general register // Ignore CppSingleCharVerifier
+                    "r" ((u64)~value)   // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 

@@ -25,7 +25,7 @@ TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
         asm volatile(
             "leaq    _ZN3CPU6sFlagsE(%%rip), %0"    // leaq    _ZN3CPU6sFlagsE(%rip), %rbp  # Get address of CPU::sFlags variable to RBP. %RBP == flags
                 :                                   // Output parameters
-                    "=r" (flags)                    // "r" == any general register, "=" - write only
+                    "=r" (flags)                    // 'r' - any general register, '=' - write only
         );
         // Ignore CppAlignmentVerifier [END]
 
@@ -60,7 +60,7 @@ TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
         asm volatile(
             "leaq    _ZN3CPU5sBugsE(%%rip), %0"     // leaq    _ZN3CPU5sBugsE(%rip), %rbp  # Get address of CPU::sBugs variable to RBP. %RBP == bugs
                 :                                   // Output parameters
-                    "=r" (bugs)                     // "r" == any general register, "=" - write only
+                    "=r" (bugs)                     // 'r' - any general register, '=' - write only
         );
         // Ignore CppAlignmentVerifier [END]
 

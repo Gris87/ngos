@@ -142,7 +142,7 @@ i64 UEFI::printf(const char *format, ...)
     asm volatile(
         "leaq    printfBuffer(%%rip), %0" // leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == tempBuffer
             :                             // Output parameters
-                "=r" (tempBuffer)         // "r" == any general register, "=" - write only
+                "=r" (tempBuffer)         // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 

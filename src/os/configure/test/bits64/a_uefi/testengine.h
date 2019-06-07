@@ -80,7 +80,7 @@
         "movq    %0, %%rdi"             "\n\t"  /* movq    %rbp, %rdi               # Provide __results variable as RDI register                       */ \
         "call    _ZN11TestResultsC1Ev"  "\n\t"  /* call    _ZN11TestResultsC1Ev     # Call TestResults::TestResults() to initialize __results variable */ \
             :                                   /* Output parameters */ \
-                "=r" (__results)                /* "r" == any general register, "=" - write only */ \
+                "=r" (__results)                /* 'r' - any general register, '=' - write only */ \
     );
 
 
