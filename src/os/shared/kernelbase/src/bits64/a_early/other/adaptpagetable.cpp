@@ -642,10 +642,10 @@ NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 
 
 
-    EARLY_ASSERT_EXECUTION(adaptPredefinedPageTable(imageLocation, pgd),       NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(adaptVirtualAddressSpacePageTable(imageLocation),   NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(adaptVideoRamPageTable(params, pgd),                NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(adaptLastResortPageTable(imageLocation, pgd),       NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptPredefinedPageTable(imageLocation, pgd),     NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptVirtualAddressSpacePageTable(imageLocation), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptVideoRamPageTable(params, pgd),              NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(adaptLastResortPageTable(imageLocation, pgd),     NgosStatus::ASSERTION);
 
     EARLY_ASSERT_EXECUTION(AddressConversion::setPhysicalDeltaBaseOnLocation(imageLocation), NgosStatus::ASSERTION);
 
