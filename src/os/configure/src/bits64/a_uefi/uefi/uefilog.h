@@ -29,7 +29,7 @@
         asm volatile( \
             "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
                 :                             /* Output parameters*/ \
-                    "=D" (__temp)             /* 'D' - RDI, '=' - write only // Ignore CppSingleCharVerifier*/ \
+                    "=D" (__temp)             /* 'D' - RDI, '=' - write only */ \
         ); \
         \
         Console::println(__temp); \
@@ -66,7 +66,7 @@
         asm volatile( \
             "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
                 :                             /* Output parameters*/ \
-                    "=D" (__temp)             /* 'D' - RDI, '=' - write only // Ignore CppSingleCharVerifier*/ \
+                    "=D" (__temp)             /* 'D' - RDI, '=' - write only */ \
         ); \
         \
         Console::println(__temp); \
