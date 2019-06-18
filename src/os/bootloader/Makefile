@@ -1,4 +1,4 @@
-TARGET = configure
+TARGET = bootloader
 
 ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr "[:upper:]" "[:lower:]")
 

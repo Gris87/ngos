@@ -11,6 +11,7 @@ include/stdinc/
 src/apps/ls/
 src/libs/qt/
 src/os/boot/
+src/os/bootloader/
 src/os/configure/
 src/os/include/
 src/os/installer/
