@@ -11,12 +11,15 @@ void usage()
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     Console::err(
-                "Usage: image_builder -b PATH_TO_BOOT_ELF -c PATH_TO_CONFIGURE_ELF (-k PATH_TO_KERNEL_ELF | -i PATH_TO_INSTALLER_ELF) -o PATH_TO_RESULT_IMAGE\n"
+                "Usage: image_builder -b PATH_TO_BOOT_ELF (-c PATH_TO_CONFIGURE_ELF (-k PATH_TO_KERNEL_ELF | -i PATH_TO_INSTALLER_ELF) | -t PATH_TO_TEXT_ELF) -o PATH_TO_RESULT_IMAGE\n"
                 "    * -b PATH_TO_BOOT_ELF      - specify path to boot.elf file\n"
                 "    * -c PATH_TO_CONFIGURE_ELF - specify path to configure.elf file\n"
                 "    * -k PATH_TO_KERNEL_ELF    - specify path to kernel.elf file\n"
                 "    * -i PATH_TO_INSTALLER_ELF - specify path to installer.elf file\n"
-                "    * -o PATH_TO_RESULT_IMAGE  - specify path to result kernel image"
+                "    * -t PATH_TO_TEXT_ELF      - specify path to text.elf file\n"
+                "    * -o PATH_TO_RESULT_IMAGE  - specify path to result kernel image\n"
+                "\n"
+                "If you specify argument \"-t PATH_TO_TEXT_ELF\" it will replace existing .configure section and .kernel section in boot.elf file with a single .text section"
                 );
     // Ignore CppAlignmentVerifier [END]
 }
@@ -35,6 +38,7 @@ qint32 main(qint32 argc, char *argv[])
     QString configureElfPath;
     QString kernelElfPath;
     QString installerElfPath;
+    QString textElfPath;
     QString resultImagePath;
 
     for (qint64 i = 1; i < arguments.length(); ++i)
@@ -129,6 +133,28 @@ qint32 main(qint32 argc, char *argv[])
             installerElfPath = arguments.at(i);
         }
         else
+        if (arg == "-t")
+        {
+            if (i >= arguments.length() - 1)
+            {
+                usage();
+
+                Console::err(QString("Additional argument missing for %1").arg(arg));
+
+                return 1;
+            }
+
+            if (textElfPath != "")
+            {
+                Console::err("PATH_TO_TEXT_ELF is already specified");
+
+                return 1;
+            }
+
+            ++i;
+            textElfPath = arguments.at(i);
+        }
+        else
         if (arg == "-o")
         {
             if (i >= arguments.length() - 1)
@@ -169,6 +195,7 @@ qint32 main(qint32 argc, char *argv[])
     Console::out(QString("PATH_TO_CONFIGURE_ELF = %1").arg(configureElfPath));
     Console::out(QString("PATH_TO_KERNEL_ELF    = %1").arg(kernelElfPath));
     Console::out(QString("PATH_TO_INSTALLER_ELF = %1").arg(installerElfPath));
+    Console::out(QString("PATH_TO_TEXT_ELF      = %1").arg(textElfPath));
     Console::out(QString("PATH_TO_RESULT_IMAGE  = %1").arg(resultImagePath));
     Console::out("");
 
@@ -187,35 +214,59 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (configureElfPath == "")
+    if (textElfPath == "")
     {
-        usage();
+        if (configureElfPath == "")
+        {
+            usage();
 
-        Console::err("PATH_TO_CONFIGURE_ELF is not specified");
+            Console::err("PATH_TO_CONFIGURE_ELF is not specified");
 
-        return 1;
+            return 1;
+        }
+
+
+
+        if (kernelElfPath == "" && installerElfPath == "")
+        {
+            usage();
+
+            Console::err("PATH_TO_KERNEL_ELF is not specified");
+
+            return 1;
+        }
+
+
+
+        if (kernelElfPath != "" && installerElfPath != "")
+        {
+            usage();
+
+            Console::err("You should specify PATH_TO_KERNEL_ELF or PATH_TO_INSTALLER_ELF");
+
+            return 1;
+        }
     }
-
-
-
-    if (kernelElfPath == "" && installerElfPath == "")
+    else
     {
-        usage();
-
-        Console::err("PATH_TO_KERNEL_ELF is not specified");
-
-        return 1;
-    }
+        if (configureElfPath != "")
+        {
+            Console::err("PATH_TO_CONFIGURE_ELF ignored");
+        }
 
 
 
-    if (kernelElfPath != "" && installerElfPath != "")
-    {
-        usage();
+        if (kernelElfPath != "")
+        {
+            Console::err("PATH_TO_KERNEL_ELF ignored");
+        }
 
-        Console::err("You should specify PATH_TO_KERNEL_ELF or PATH_TO_INSTALLER_ELF");
 
-        return 1;
+
+        if (installerElfPath != "")
+        {
+            Console::err("PATH_TO_INSTALLER_ELF ignored");
+        }
     }
 
 
@@ -231,7 +282,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    ImageBuilder imageBuilder(bootElfPath, configureElfPath, kernelElfPath, installerElfPath, resultImagePath);
+    ImageBuilder imageBuilder(bootElfPath, configureElfPath, kernelElfPath, installerElfPath, textElfPath, resultImagePath);
     qint64 res = imageBuilder.process();
 
     Console::out(QString("Image built in %1 ms").arg(QDateTime::currentMSecsSinceEpoch() - startTime));

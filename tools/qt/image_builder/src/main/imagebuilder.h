@@ -13,7 +13,7 @@
 class ImageBuilder
 {
 public:
-    ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &installerElfPath, const QString &resultImagePath); // TEST: NO
+    ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &installerElfPath, const QString &textElfPath, const QString &resultImagePath); // TEST: NO
 
     qint64 process(); // TEST: NO
 
@@ -40,6 +40,7 @@ private:
     QString     mConfigureElfPath;
     QString     mKernelElfPath;
     QString     mInstallerElfPath;
+    QString     mTextElfPath;
     QString     mResultImagePath;
     ElfObject   mBootElfObject;
     ElfObject   mConfigureElfObject;

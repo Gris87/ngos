@@ -10,6 +10,8 @@
 
 #define RELOC_SECTION_SIZE 0x40
 
+#define TEXT_SECTION_NAME 0x000000747865742E
+
 
 
 #if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
@@ -22,11 +24,12 @@
 
 
 
-ImageBuilder::ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &installerElfPath, const QString &resultImagePath)
+ImageBuilder::ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &installerElfPath, const QString &textElfPath, const QString &resultImagePath)
     : mBootElfPath(bootElfPath)
     , mConfigureElfPath(configureElfPath)
     , mKernelElfPath(kernelElfPath)
     , mInstallerElfPath(installerElfPath)
+    , mTextElfPath(textElfPath)
     , mResultImagePath(resultImagePath)
     , mBootElfObject()
     , mConfigureElfObject()
@@ -59,63 +62,75 @@ qint64 ImageBuilder::process()
 
 
 
-    if (!mConfigureElfObject.read(mConfigureElfPath))
+    if (mTextElfPath == "")
     {
-        Console::err(QString("Failed to read %1 file").arg(mConfigureElfPath));
+        if (!mConfigureElfObject.read(mConfigureElfPath))
+        {
+            Console::err(QString("Failed to read %1 file").arg(mConfigureElfPath));
 
-        return 3;
+            return 3;
+        }
+
+
+
+        if (mKernelElfPath != "")
+        {
+            if (!mKernelElfObject.read(mKernelElfPath))
+            {
+                Console::err(QString("Failed to read %1 file").arg(mKernelElfPath));
+
+                return 4;
+            }
+
+
+
+            QFile file(mKernelElfPath + COMPRESSED_EXTENSION);
+
+            if (!file.open(QIODevice::ReadOnly))
+            {
+                Console::err(QString("Failed to read %1 file").arg(mKernelElfPath + COMPRESSED_EXTENSION));
+
+                return 5;
+            }
+
+            mKernelElf = file.readAll();
+            file.close();
+        }
+
+
+
+        if (mInstallerElfPath != "")
+        {
+            if (!mInstallerElfObject.read(mInstallerElfPath))
+            {
+                Console::err(QString("Failed to read %1 file").arg(mInstallerElfPath));
+
+                return 6;
+            }
+
+
+
+            QFile file(mInstallerElfPath + COMPRESSED_EXTENSION);
+
+            if (!file.open(QIODevice::ReadOnly))
+            {
+                Console::err(QString("Failed to read %1 file").arg(mInstallerElfPath + COMPRESSED_EXTENSION));
+
+                return 7;
+            }
+
+            mInstallerElf = file.readAll();
+            file.close();
+        }
     }
-
-
-
-    if (mKernelElfPath != "")
+    else
     {
-        if (!mKernelElfObject.read(mKernelElfPath))
+        if (!mConfigureElfObject.read(mTextElfPath))
         {
-            Console::err(QString("Failed to read %1 file").arg(mKernelElfPath));
+            Console::err(QString("Failed to read %1 file").arg(mTextElfPath));
 
-            return 4;
+            return 3;
         }
-
-
-
-        QFile file(mKernelElfPath + COMPRESSED_EXTENSION);
-
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            Console::err(QString("Failed to read %1 file").arg(mKernelElfPath + COMPRESSED_EXTENSION));
-
-            return 5;
-        }
-
-        mKernelElf = file.readAll();
-        file.close();
-    }
-
-
-
-    if (mInstallerElfPath != "")
-    {
-        if (!mInstallerElfObject.read(mInstallerElfPath))
-        {
-            Console::err(QString("Failed to read %1 file").arg(mInstallerElfPath));
-
-            return 6;
-        }
-
-
-
-        QFile file(mInstallerElfPath + COMPRESSED_EXTENSION);
-
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            Console::err(QString("Failed to read %1 file").arg(mInstallerElfPath + COMPRESSED_EXTENSION));
-
-            return 7;
-        }
-
-        mInstallerElf = file.readAll();
-        file.close();
     }
 
 
@@ -124,7 +139,14 @@ qint64 ImageBuilder::process()
 
     if (bssSection) // bssSection != 0
     {
-        Console::err("Configure part image should not contain .bss section. Try to use __attribute__ ((section (\".noinit\"))) for your variables");
+        if (mTextElfPath == "")
+        {
+            Console::err("Configure part image should not contain .bss section. Try to use __attribute__ ((section (\".noinit\"))) for your variables");
+        }
+        else
+        {
+            Console::err("Text section should not contain .bss section. Try to use __attribute__ ((section (\".noinit\"))) for your variables");
+        }
 
         return 8;
     }
@@ -333,6 +355,8 @@ bool ImageBuilder::updateRelocSection()
     section.sizeOfRawData    = size;
     section.pointerToRawData = offset;
 
+
+
     return true;
 }
 
@@ -350,22 +374,42 @@ bool ImageBuilder::updateConfigSection()
     section.sizeOfRawData    = size;
     section.pointerToRawData = offset;
 
+
+
+    if (mTextElfPath != "")
+    {
+        *((quint64 *)&section.name) = TEXT_SECTION_NAME;
+    }
+
+
+
     return true;
 }
 
 bool ImageBuilder::updateKernelSection()
 {
-    quint32 offset = mKernelStart;
-    quint32 size   = mKernelEnd - mKernelStart;
-
-
-
     ImageSectionHeader &section = mPEHeader->sections[SECTION_KERNEL];
 
-    section.misc.virtualSize = size;
-    section.virtualAddress   = offset;
-    section.sizeOfRawData    = size;
-    section.pointerToRawData = offset;
+
+
+    if (mTextElfPath == "")
+    {
+        quint32 offset = mKernelStart;
+        quint32 size   = mKernelEnd - mKernelStart;
+
+        section.misc.virtualSize = size;
+        section.virtualAddress   = offset;
+        section.sizeOfRawData    = size;
+        section.pointerToRawData = offset;
+    }
+    else
+    {
+        memset(&section, 0, sizeof(ImageSectionHeader));
+
+        --mPEHeader->coffHeader.numberOfSections;
+    }
+
+
 
     return true;
 }

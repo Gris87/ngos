@@ -27,7 +27,10 @@ void PEHeader::print()
 
     for (qint64 i = 0; i < NUMBER_OF_SECTIONS; ++i)
     {
-        sections[i].print();
+        if (QString(sections[i].name) != "")
+        {
+            sections[i].print();
+        }
     }
 }
 
@@ -60,9 +63,12 @@ bool PEHeader::verify()
 
     for (qint64 i = 0; i < NUMBER_OF_SECTIONS; ++i)
     {
-        if (!sections[i].verify())
+        if (QString(sections[i].name) != "")
         {
-            return false;
+            if (!sections[i].verify())
+            {
+                return false;
+            }
         }
     }
 

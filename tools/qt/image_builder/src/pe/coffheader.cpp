@@ -30,7 +30,11 @@ bool COFFHeader::verify()
         return false;
     }
 
-    if (numberOfSections != NUMBER_OF_SECTIONS)
+    if (
+        numberOfSections != NUMBER_OF_SECTIONS
+        &&
+        numberOfSections != NUMBER_OF_SECTIONS - 1
+       )
     {
         Console::err(QString("Wrong COFF Header numberOfSections: 0x%1").arg(numberOfSections, 4, 16, QChar('0')));
 
