@@ -170,34 +170,37 @@ qint64 ImageBuilder::process()
 
 
 
-    if (mKernelElfPath != "")
+    if (mTextElfPath == "")
     {
-        KernelDescriptor kernelDescriptor;
+        if (mKernelElfPath != "")
+        {
+            KernelDescriptor kernelDescriptor;
 
-        kernelDescriptor.imageSize   = mKernelElfObject.getFileSize();
-        kernelDescriptor.contentSize = mKernelElf.size();
+            kernelDescriptor.imageSize   = mKernelElfObject.getFileSize();
+            kernelDescriptor.contentSize = mKernelElf.size();
 
-        mResultImage.append((char *)&kernelDescriptor, sizeof(kernelDescriptor));
-        mResultImage.append(mKernelElf);
+            mResultImage.append((char *)&kernelDescriptor, sizeof(kernelDescriptor));
+            mResultImage.append(mKernelElf);
+        }
+
+
+
+        if (mInstallerElfPath != "")
+        {
+            KernelDescriptor kernelDescriptor;
+
+            kernelDescriptor.imageSize   = mInstallerElfObject.getFileSize();
+            kernelDescriptor.contentSize = mInstallerElf.size();
+
+            mResultImage.append((char *)&kernelDescriptor, sizeof(kernelDescriptor));
+            mResultImage.append(mInstallerElf);
+        }
+
+
+
+        mKernelStart = mConfigEnd;
+        mKernelEnd   = mResultImage.size();
     }
-
-
-
-    if (mInstallerElfPath != "")
-    {
-        KernelDescriptor kernelDescriptor;
-
-        kernelDescriptor.imageSize   = mInstallerElfObject.getFileSize();
-        kernelDescriptor.contentSize = mInstallerElf.size();
-
-        mResultImage.append((char *)&kernelDescriptor, sizeof(kernelDescriptor));
-        mResultImage.append(mInstallerElf);
-    }
-
-
-
-    mKernelStart = mConfigEnd;
-    mKernelEnd   = mResultImage.size();
 
 
 
