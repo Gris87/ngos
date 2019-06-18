@@ -22,7 +22,7 @@ Image builder tool is a special tool that allow user to build kernel image from 
 ### Usage
 
 ```sh
-Usage: image_builder -b PATH_TO_BOOT_ELF (-c PATH_TO_CONFIGURE_ELF (-k PATH_TO_KERNEL_ELF | -i PATH_TO_INSTALLER_ELF) | -t PATH_TO_TEXT_ELF) -o PATH_TO_RESULT_IMAGE
+image_builder -b PATH_TO_BOOT_ELF (-c PATH_TO_CONFIGURE_ELF (-k PATH_TO_KERNEL_ELF | -i PATH_TO_INSTALLER_ELF) | -t PATH_TO_TEXT_ELF) -o PATH_TO_RESULT_IMAGE
     * -b PATH_TO_BOOT_ELF      - specify path to boot.elf file
     * -c PATH_TO_CONFIGURE_ELF - specify path to configure.elf file
     * -k PATH_TO_KERNEL_ELF    - specify path to kernel.elf file
