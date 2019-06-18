@@ -184,7 +184,6 @@ ngos.creator
 ngos.creator.shared
 ngos.files
 ngos.includes
-NGOS_kernel.bin
 noinit
 numberOfRvaAndSizes
 NX

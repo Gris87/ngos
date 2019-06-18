@@ -40,9 +40,9 @@ void BurnThread::copyFiles(const QString &diskPath)
 
 
 
-    if (!QFile(getBinariesPath() + "/NGOS_installer.bin").copy(diskPath + "/EFI/BOOT/bootx64.efi"))
+    if (!QFile(getBinariesPath() + "/ngos.efi").copy(diskPath + "/EFI/BOOT/bootx64.efi"))
     {
-        addLog(tr("Failed to copy file %1").arg("NGOS_installer.bin"));
+        addLog(tr("Failed to copy file %1").arg("ngos.efi"));
 
         stop();
 

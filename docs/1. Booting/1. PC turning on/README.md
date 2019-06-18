@@ -116,7 +116,7 @@ Here we waits for user interaction and reboot PC when user press some button.
 Let's see the results.
 
 ```sh
-qemu-system-x86_64 -drive file=build/deployment/com.ngos.kernel/NGOS_kernel.bin,format=raw
+qemu-system-x86_64 -drive file=build/deployment/com.ngos.kernel/ngos.efi,format=raw
 ```
 
 <p align="center">
