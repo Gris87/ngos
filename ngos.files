@@ -28,6 +28,7 @@ docs/0. Intro/6. Source code/1. NGOS/1. Boot part/README.md
 docs/0. Intro/6. Source code/1. NGOS/2. Configure part/README.md
 docs/0. Intro/6. Source code/1. NGOS/3. Kernel part/README.md
 docs/0. Intro/6. Source code/1. NGOS/4. Installer part/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/README.md
 docs/0. Intro/6. Source code/1. NGOS/README.md
 docs/0. Intro/6. Source code/2. Libraries/1. Qt/README.md
 docs/0. Intro/6. Source code/2. Libraries/README.md
@@ -105,6 +106,18 @@ src/os/boot/Image structure.png
 src/os/boot/linker.ld
 src/os/boot/Makefile
 src/os/boot/README.md
+src/os/bootloader/.gitignore
+src/os/bootloader/asm/arch/x86_64/main.S
+src/os/bootloader/assets/.gitignore
+src/os/bootloader/assets/generate_assets.sh
+src/os/bootloader/assets/glyphs/console.bin
+src/os/bootloader/Image structure.png
+src/os/bootloader/linker.ld
+src/os/bootloader/Makefile
+src/os/bootloader/README.md
+src/os/bootloader/src/main.cpp
+src/os/bootloader/test/bits64/a_uefi/testresults.cpp
+src/os/bootloader/test/bits64/a_uefi/testresults.h
 src/os/configure/.gitignore
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S
 src/os/configure/asm/arch/x86_64/bits64/test/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/testavxvaddps.S

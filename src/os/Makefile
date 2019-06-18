@@ -2,7 +2,8 @@ SUBDIRS = \
 	boot \
 	configure \
 	kernel \
-	installer
+	installer \
+	bootloader
 
 
 
