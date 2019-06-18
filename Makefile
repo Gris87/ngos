@@ -14,9 +14,9 @@ SUBDIRS = \
 
 
 TARGET_APPS = \
-	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/NGOS_bootloader.bin \
-	$(OUTPUT_DIR)/deployment/com.ngos.kernel/NGOS_kernel.bin \
-	$(OUTPUT_DIR)/deployment/com.ngos.installer/NGOS_installer.bin
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.kernel/ngos.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.installer/ngos.efi
 
 
 
@@ -26,15 +26,15 @@ TARGET_APPS = \
 
 all: $(SUBDIRS) $(TARGET_APPS)
 
-$(OUTPUT_DIR)/deployment/com.ngos.bootloader/NGOS_bootloader.bin: src/os/boot/build/boot.elf src/os/bootloader/build/bootloader.elf tools/qt/image_builder/build/image_builder
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi: src/os/boot/build/boot.elf src/os/bootloader/build/bootloader.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader/build/bootloader.elf -o $@
 
-$(OUTPUT_DIR)/deployment/com.ngos.kernel/NGOS_kernel.bin: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
+$(OUTPUT_DIR)/deployment/com.ngos.kernel/ngos.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -k src/os/kernel/build/kernel.elf -o $@
 
-$(OUTPUT_DIR)/deployment/com.ngos.installer/NGOS_installer.bin: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/installer/build/installer.elf tools/qt/image_builder/build/image_builder
+$(OUTPUT_DIR)/deployment/com.ngos.installer/ngos.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/installer/build/installer.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -i src/os/installer/build/installer.elf -o $@
 
