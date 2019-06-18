@@ -22,12 +22,15 @@ Image builder tool is a special tool that allow user to build kernel image from 
 ### Usage
 
 ```sh
-image_builder -b PATH_TO_BOOT_ELF -c PATH_TO_CONFIGURE_ELF (-k PATH_TO_KERNEL_ELF | -i PATH_TO_INSTALLER_ELF) -o PATH_TO_RESULT_IMAGE
+Usage: image_builder -b PATH_TO_BOOT_ELF (-c PATH_TO_CONFIGURE_ELF (-k PATH_TO_KERNEL_ELF | -i PATH_TO_INSTALLER_ELF) | -t PATH_TO_TEXT_ELF) -o PATH_TO_RESULT_IMAGE
     * -b PATH_TO_BOOT_ELF      - specify path to boot.elf file
     * -c PATH_TO_CONFIGURE_ELF - specify path to configure.elf file
     * -k PATH_TO_KERNEL_ELF    - specify path to kernel.elf file
     * -i PATH_TO_INSTALLER_ELF - specify path to installer.elf file
+    * -t PATH_TO_TEXT_ELF      - specify path to text.elf file
     * -o PATH_TO_RESULT_IMAGE  - specify path to result kernel image
+
+If you specify argument "-t PATH_TO_TEXT_ELF" it will replace existing .configure section and .kernel section in boot.elf file with a single .text section
 ```
 
 ### How to ...
@@ -54,3 +57,5 @@ The structure of kernel image can be displayed on figure below:
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/1.%20Image%20builder/Image%20structure.png?raw=true" alt="Image structure"/>
 </p>
+
+It is also possible to provide path to some text.elf file. In this case, Image builder will replace .config section and .kernel section with .text section that contain data from text.elf file.

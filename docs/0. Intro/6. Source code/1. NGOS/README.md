@@ -16,7 +16,7 @@ Please follow links below to get more details for these parts:
 * [Kernel part](3.%20Kernel%20part/README.md)
 * [Installer part](4.%20Installer%20part/README.md)
 
-Another important part of the kernel is Bootloader.
+Another important part of the kernel is Bootloader.<br/>
 Bootloader is the first thing that starts at PC start up. It can load NGOS or some another OS or application (like memory test, HDD test, partition tool, etc.).
 
 * [Bootloader](5.%20Bootloader/README.md)

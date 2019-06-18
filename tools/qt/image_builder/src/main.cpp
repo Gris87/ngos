@@ -18,7 +18,7 @@ void usage()
                 "    * -i PATH_TO_INSTALLER_ELF - specify path to installer.elf file\n"
                 "    * -t PATH_TO_TEXT_ELF      - specify path to text.elf file\n"
                 "    * -o PATH_TO_RESULT_IMAGE  - specify path to result kernel image\n"
-                "\n"
+                "\n" // Ignore CppSingleCharVerifier
                 "If you specify argument \"-t PATH_TO_TEXT_ELF\" it will replace existing .configure section and .kernel section in boot.elf file with a single .text section"
                 );
     // Ignore CppAlignmentVerifier [END]

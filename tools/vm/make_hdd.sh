@@ -16,6 +16,7 @@ VM_NAME="NGOS_dev"
 OS_TYPE=$1
 
 SINGLE_IMAGE=1
+BOOTLOADER_IMAGE=../../build/deployment/com.ngos.bootloader/*
 
 
 
@@ -78,8 +79,8 @@ if [ ${SINGLE_IMAGE} -eq 1 ]; then
     sudo mkdir -p ${MOUNTDIR}/EFI/BOOT/
     sudo mkdir -p ${MOUNTDIR}/EFI/NGOS/
 
-    sudo cp -r ../../build/deployment/com.ngos.bootloader/* ${MOUNTDIR}/EFI/BOOT/
-    sudo cp ${KERNEL_IMAGE}                                 ${MOUNTDIR}/EFI/NGOS/ngos.efi
+    sudo cp -r ${BOOTLOADER_IMAGE} ${MOUNTDIR}/EFI/BOOT/
+    sudo cp ${KERNEL_IMAGE}        ${MOUNTDIR}/EFI/NGOS/ngos.efi
 else
     sudo cp -r ${KERNEL_IMAGE} ${MOUNTDIR}/
 fi
