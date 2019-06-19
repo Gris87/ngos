@@ -3,7 +3,7 @@
 
 
 
-#if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
 #include <common/src/bits64/early/earlylog.h>
@@ -17,7 +17,7 @@
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
-#if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                                // Defined in Makefile
 #define __COMMON_PRINT_LOG(level, message) __UEFI_PRINT_LOG(level, message)  // TEST: NO
 #define __COMMON_PRINT_LT(message)         __UEFI_PRINT_LT(message)          // TEST: NO
 #elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile

@@ -3,7 +3,7 @@
 
 
 
-#if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
 #include <common/src/bits64/early/earlyassert.h>
@@ -19,7 +19,7 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 #if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
-#if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
 #define __COMMON_PRINT_ASSERT(message) __UEFI_PRINT_ASSERT(message) // TEST: NO
 #elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
 #define __COMMON_PRINT_ASSERT(message) __EARLY_PRINT_ASSERT(message) // TEST: NO

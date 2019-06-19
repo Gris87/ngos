@@ -1,6 +1,7 @@
 #include <ngos/linkage.h>
 #include <uefi/uefistatus.h>
 #include <uefi/uefisystemtable.h>
+#include <uefibase/test/bits64/sections/section0/testcase.h>
 
 
 
