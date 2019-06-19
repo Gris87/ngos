@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___INCLUDE_TYPES_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___INCLUDE_TYPES_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_TYPES_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_TYPES_H
 
 
 
@@ -64,8 +64,7 @@
 #include <uefi/uefitableheader.h>
 #include <uefi/uefitime.h>
 #include <uefi/uefitimecapabilicies.h>
-
-#include "test/bits64/a_uefi/testengine.h"
+#include <uefibase/test/bits64/testengine.h>
 
 
 
@@ -219,4 +218,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___INCLUDE_TYPES_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_TYPES_H

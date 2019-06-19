@@ -1,27 +1,26 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE2_SSE2_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE2_SSE2_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE2_SSE2_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE2_SSE2_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
-
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2addpd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2divpd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2maxpd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2minpd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2mulpd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddb.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddq.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddw.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubb.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubq.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubw.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2sqrtpd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2subpd.h"
-#include "test/bits64/a_uefi/testengine.h"
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2addpd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2divpd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2maxpd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2minpd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2mulpd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddb.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddq.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2paddw.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubb.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubq.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2psubw.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2sqrtpd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/asm_testsse2subpd.h>
+#include <uefibase/test/bits64/testengine.h>
 
 
 
@@ -585,4 +584,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE2_SSE2_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE2_SSE2_H

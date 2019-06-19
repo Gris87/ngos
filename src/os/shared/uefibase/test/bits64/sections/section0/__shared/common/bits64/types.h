@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_TYPES_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_TYPES_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_TYPES_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_TYPES_H
 
 
 
@@ -19,8 +19,7 @@
 #include <common/src/bits64/fpu/xfeature/xfeaturepkrustate.h>
 #include <common/src/bits64/fpu/xsavestate.h>
 #include <common/src/bits64/fpu/xstateheader.h>
-
-#include "test/bits64/a_uefi/testengine.h"
+#include <uefibase/test/bits64/testengine.h>
 
 
 
@@ -81,4 +80,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_TYPES_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_TYPES_H

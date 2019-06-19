@@ -1,42 +1,41 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0_TESTCASE_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0_TESTCASE_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_TESTCASE_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_TESTCASE_H
 
 
 
 #include <buildconfig.h>
-
-#include "test/bits64/a_uefi/sections/section0/__include/asm/bitutils.h"
-#include "test/bits64/a_uefi/sections/section0/__include/asm/instructions.h"
-#include "test/bits64/a_uefi/sections/section0/__include/bootparams/memorymapentry.h"
-#include "test/bits64/a_uefi/sections/section0/__include/elf/rela.h"
-#include "test/bits64/a_uefi/sections/section0/__include/elf/symbol.h"
-#include "test/bits64/a_uefi/sections/section0/__include/ngos/linkage.h"
-#include "test/bits64/a_uefi/sections/section0/__include/ngos/types.h"
-#include "test/bits64/a_uefi/sections/section0/__include/ngos/utils.h"
-#include "test/bits64/a_uefi/sections/section0/__include/pagetable/utils.h"
-#include "test/bits64/a_uefi/sections/section0/__include/types.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/cpu/cpu.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/avx.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx2/avx2.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512bw/avx512bw.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512cd/avx512cd.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512dq/avx512dq.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512f/avx512f.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512vl/avx512vl.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/fma3/fma3.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse/sse.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse2/sse2.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse3/sse3.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse41/sse41.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/sse42/sse42.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/memory/memory.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/printf/printf.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/random/random.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/string/string.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/types.h"
-#include "test/bits64/a_uefi/sections/section0/bits64/a_uefi/uefi/uefi.h"
-#include "test/bits64/a_uefi/sections/section0/bits64/types.h"
-#include "test/bits64/a_uefi/testengine.h"
+#include <uefibase/test/bits64/sections/section0/__include/asm/bitutils.h>
+#include <uefibase/test/bits64/sections/section0/__include/asm/instructions.h>
+#include <uefibase/test/bits64/sections/section0/__include/bootparams/memorymapentry.h>
+#include <uefibase/test/bits64/sections/section0/__include/elf/rela.h>
+#include <uefibase/test/bits64/sections/section0/__include/elf/symbol.h>
+#include <uefibase/test/bits64/sections/section0/__include/ngos/linkage.h>
+#include <uefibase/test/bits64/sections/section0/__include/ngos/types.h>
+#include <uefibase/test/bits64/sections/section0/__include/ngos/utils.h>
+#include <uefibase/test/bits64/sections/section0/__include/pagetable/utils.h>
+#include <uefibase/test/bits64/sections/section0/__include/types.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/avx.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx2/avx2.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512bw/avx512bw.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512cd/avx512cd.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512dq/avx512dq.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512f/avx512f.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/avx512vl.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/fma3.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse/sse.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/sse2.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/sse3.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse41/sse41.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse42/sse42.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/string/string.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/types.h>
+#include <uefibase/test/bits64/sections/section0/bits64/a_uefi/uefi/uefi.h>
+#include <uefibase/test/bits64/sections/section0/bits64/types.h>
+#include <uefibase/test/bits64/testengine.h>
 
 
 
@@ -93,4 +92,4 @@ NgosStatus startTestSection0()
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0_TESTCASE_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_TESTCASE_H

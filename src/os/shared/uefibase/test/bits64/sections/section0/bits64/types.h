@@ -1,10 +1,11 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0_BITS64_TYPES_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0_BITS64_TYPES_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_BITS64_TYPES_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_BITS64_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/src/bits64/other/uefibootmemorymap.h>
+#include <uefibase/test/bits64/testengine.h>
 
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecode.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatedecoder.h"
@@ -25,7 +26,6 @@
 #include "src/bits64/b_early/other/memoryarea.h"
 #include "src/bits64/b_early/other/pagetable/pageallocationcontext.h"
 #include "src/bits64/other/kerneldescriptor.h"
-#include "test/bits64/a_uefi/testengine.h"
 
 
 
@@ -97,4 +97,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0_BITS64_TYPES_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_BITS64_TYPES_H

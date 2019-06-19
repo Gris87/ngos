@@ -9,13 +9,13 @@
 #include <uefibase/src/bits64/main/setupgraphics.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/test/bits64/sections/section0/testcase.h>
 
 #include "src/bits64/a_uefi/main/exitbootservices.h"
 #include "src/bits64/a_uefi/main/setupbootparams.h"
 #include "src/bits64/a_uefi/main/setupcr4.h"
 #include "src/bits64/a_uefi/main/setupkernellocation.h"
 #include "src/bits64/a_uefi/main/setuppciio.h"
-#include "test/bits64/a_uefi/sections/section0/testcase.h"
 
 
 

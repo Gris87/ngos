@@ -1,16 +1,15 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512BW_AVX512BW_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512BW_AVX512BW_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512BW_AVX512BW_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512BW_AVX512BW_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
-
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpbroadcastb.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpbroadcastw.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpsllvw.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpsrlvw.h"
-#include "test/bits64/a_uefi/testengine.h"
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpbroadcastb.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpbroadcastw.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpsllvw.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512bw/asm_testavx512bwvpsrlvw.h>
+#include <uefibase/test/bits64/testengine.h>
 
 
 
@@ -444,4 +443,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512BW_AVX512BW_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512BW_AVX512BW_H

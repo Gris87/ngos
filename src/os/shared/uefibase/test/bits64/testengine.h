@@ -1,13 +1,12 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_TESTENGINE_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_TESTENGINE_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_TESTENGINE_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_TESTENGINE_H
 
 
 
 #include <buildconfig.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
-
-#include "test/bits64/a_uefi/testresults.h"
+#include <uefibase/test/bits64/testresults.h>
 
 
 
@@ -163,4 +162,4 @@
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_TESTENGINE_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_TESTENGINE_H

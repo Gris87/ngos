@@ -1,21 +1,20 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/cpu/cpu.h>
-
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvaddps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvdivps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvmaxps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvminps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvmulps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvrcpps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvrsqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvsqrtps.h"
-#include "test/bits64/a_uefi/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvsubps.h"
-#include "test/bits64/a_uefi/testengine.h"
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvaddps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvdivps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvmaxps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvminps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvmulps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvrcpps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvrsqrtps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvsqrtps.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvsubps.h>
+#include <uefibase/test/bits64/testengine.h>
 
 
 
@@ -415,4 +414,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX_AVX_H
