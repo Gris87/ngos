@@ -237,12 +237,6 @@ src/os/configure/src/bits64/a_uefi/main/setuppciio.cpp
 src/os/configure/src/bits64/a_uefi/main/setuppciio.h
 src/os/configure/src/bits64/a_uefi/other/pciregisters.h
 src/os/configure/src/bits64/a_uefi/other/uefibootmemorymap.h
-src/os/configure/src/bits64/a_uefi/uefi/uefi.cpp
-src/os/configure/src/bits64/a_uefi/uefi/uefi.h
-src/os/configure/src/bits64/a_uefi/uefi/uefiassert.h
-src/os/configure/src/bits64/a_uefi/uefi/uefilog.h
-src/os/configure/src/bits64/b_early/early/earlyassert.h
-src/os/configure/src/bits64/b_early/early/earlylog.h
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/decompress.cpp
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/decompress.h
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/compressionmethod.h
@@ -569,6 +563,8 @@ src/os/shared/common/src/bits64/cpu/model/intel.h
 src/os/shared/common/src/bits64/cpu/msr/msr.cpp
 src/os/shared/common/src/bits64/cpu/msr/msr.h
 src/os/shared/common/src/bits64/cpu/msr/msrregisters.h
+src/os/shared/common/src/bits64/early/earlyassert.h
+src/os/shared/common/src/bits64/early/earlylog.h
 src/os/shared/common/src/bits64/fpu/fpu.cpp
 src/os/shared/common/src/bits64/fpu/fpu.h
 src/os/shared/common/src/bits64/fpu/fpustate.h
@@ -604,8 +600,6 @@ src/os/shared/common/src/bits64/string/string.cpp
 src/os/shared/common/src/bits64/string/string.h
 src/os/shared/kernelbase/asm/arch/x86_64/bits64/a_early/main/setupidthandlers.S
 src/os/shared/kernelbase/asm/arch/x86_64/main.S
-src/os/shared/kernelbase/src/bits64/a_early/early/earlyassert.h
-src/os/shared/kernelbase/src/bits64/a_early/early/earlylog.h
 src/os/shared/kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h
 src/os/shared/kernelbase/src/bits64/a_early/main/disableirq.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/disableirq.h
@@ -722,6 +716,10 @@ src/os/shared/kernelbase/test/bits64/a_early/sections/section1/testcase.h
 src/os/shared/kernelbase/test/bits64/a_early/testengine.h
 src/os/shared/kernelbase/test/bits64/a_early/testresults.cpp
 src/os/shared/kernelbase/test/bits64/a_early/testresults.h
+src/os/shared/uefibase/src/bits64/uefi/uefi.cpp
+src/os/shared/uefibase/src/bits64/uefi/uefi.h
+src/os/shared/uefibase/src/bits64/uefi/uefiassert.h
+src/os/shared/uefibase/src/bits64/uefi/uefilog.h
 test/.gitignore
 test/start.sh
 test/tests/01. Code verification.sh
