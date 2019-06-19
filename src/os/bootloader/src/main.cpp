@@ -1,5 +1,6 @@
 #include <ngos/linkage.h>
 #include <uefi/uefisystemtable.h>
+#include <uefi/uefistatus.h>
 
 
 
@@ -10,7 +11,7 @@ u8 __reserved_for_bss __attribute__ ((section (".noinit")));
 
 
 CPP_EXTERN_C
-i64 uefiMain(uefi_handle /*imageHandle*/, UefiSystemTable * /*systemTable*/, u64 /*kernelLocation*/)
+UefiStatus uefiMain(uefi_handle /*imageHandle*/, UefiSystemTable * /*systemTable*/, u64 /*kernelLocation*/)
 {
-    return 0;
+    return UefiStatus::SUCCESS;
 }
