@@ -5,6 +5,7 @@ ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cu
 ASSETS_DIR     = assets
 SHARED_DIR     = ../shared
 COMMON_DIR     = $(SHARED_DIR)/common
+UEFIBASE_DIR   = $(SHARED_DIR)/uefibase
 SOURCE_ASM_DIR = asm
 SOURCE_CPP_DIR = src
 TEST_CPP_DIR   = test
@@ -62,21 +63,25 @@ CXXFLAGS = -c -m64 -O3 -W -Wall -Werror -nostdinc -mno-red-zone -fPIE -ffreestan
 
 
 # Getting list of source files
-ASSETS_FILES       = $(shell find $(ASSETS_DIR)/ -type f | grep -ve .gitignore -ve generated/assets.S                            2> /dev/null)
-COMMON_ASM_SOURCES = $(shell find $(COMMON_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                    -name "*.S"   2> /dev/null)
-COMMON_CPP_SOURCES = $(shell find $(COMMON_DIR)/$(SOURCE_CPP_DIR)/                                                 -name "*.cpp" 2> /dev/null)
-ASM_SOURCES        = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                  -name "*.S"   2> /dev/null)
-CPP_SOURCES        = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/                                              -name "*.cpp" 2> /dev/null)
-CPP_HEADERS        = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(SHARED_DIR)/ ../include/ ../../../include/ -name "*.h"   2> /dev/null)
+ASSETS_FILES         = $(shell find $(ASSETS_DIR)/ -type f | grep -ve .gitignore -ve generated/assets.S                            2> /dev/null)
+COMMON_ASM_SOURCES   = $(shell find $(COMMON_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                    -name "*.S"   2> /dev/null)
+COMMON_CPP_SOURCES   = $(shell find $(COMMON_DIR)/$(SOURCE_CPP_DIR)/                                                 -name "*.cpp" 2> /dev/null)
+UEFIBASE_ASM_SOURCES = $(shell find $(UEFIBASE_DIR)/$(SOURCE_ASM_DIR)/arch/$(ARCH)/                                  -name "*.S"   2> /dev/null)
+UEFIBASE_CPP_SOURCES = $(shell find $(UEFIBASE_DIR)/$(SOURCE_CPP_DIR)/ $(UEFIBASE_DIR)/$(TEST_CPP_DIR)/              -name "*.cpp" 2> /dev/null)
+ASM_SOURCES          = $(shell find $(SOURCE_ASM_DIR)/arch/$(ARCH)/                                                  -name "*.S"   2> /dev/null)
+CPP_SOURCES          = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/                                              -name "*.cpp" 2> /dev/null)
+CPP_HEADERS          = $(shell find $(SOURCE_CPP_DIR)/ $(TEST_CPP_DIR)/ $(SHARED_DIR)/ ../include/ ../../../include/ -name "*.h"   2> /dev/null)
 
 # Getting list of object files
-ASSETS_OBJ     = $(OUTPUT_DIR)/$(ASSETS_DIR)/generated/assets.o
-COMMON_ASM_OBJ = $(addprefix $(OUTPUT_DIR)/,$(COMMON_ASM_SOURCES:../shared/common/%.S=shared/common/%.o))
-COMMON_CPP_OBJ = $(addprefix $(OUTPUT_DIR)/,$(COMMON_CPP_SOURCES:../shared/common/%.cpp=shared/common/%.o))
-ASM_OBJ        = $(addprefix $(OUTPUT_DIR)/,$(ASM_SOURCES:%.S=%.o))
-CPP_OBJ        = $(addprefix $(OUTPUT_DIR)/,$(CPP_SOURCES:%.cpp=%.o))
+ASSETS_OBJ       = $(OUTPUT_DIR)/$(ASSETS_DIR)/generated/assets.o
+COMMON_ASM_OBJ   = $(addprefix $(OUTPUT_DIR)/,$(COMMON_ASM_SOURCES:../shared/common/%.S=shared/common/%.o))
+COMMON_CPP_OBJ   = $(addprefix $(OUTPUT_DIR)/,$(COMMON_CPP_SOURCES:../shared/common/%.cpp=shared/common/%.o))
+UEFIBASE_ASM_OBJ = $(addprefix $(OUTPUT_DIR)/,$(UEFIBASE_ASM_SOURCES:../shared/uefibase/%.S=shared/uefibase/%.o))
+UEFIBASE_CPP_OBJ = $(addprefix $(OUTPUT_DIR)/,$(UEFIBASE_CPP_SOURCES:../shared/uefibase/%.cpp=shared/uefibase/%.o))
+ASM_OBJ          = $(addprefix $(OUTPUT_DIR)/,$(ASM_SOURCES:%.S=%.o))
+CPP_OBJ          = $(addprefix $(OUTPUT_DIR)/,$(CPP_SOURCES:%.cpp=%.o))
 
-OBJECTS = $(ASSETS_OBJ) $(COMMON_ASM_OBJ) $(COMMON_CPP_OBJ) $(ASM_OBJ) $(CPP_OBJ)
+OBJECTS = $(ASSETS_OBJ) $(COMMON_ASM_OBJ) $(COMMON_CPP_OBJ) $(UEFIBASE_ASM_OBJ) $(UEFIBASE_CPP_OBJ) $(ASM_OBJ) $(CPP_OBJ)
 
 
 
