@@ -3,9 +3,8 @@
 #include <common/src/bits64/printf/printf.h>
 #include <ngos/utils.h>
 #include <page/macros.h>
-
-#include "src/bits64/a_uefi/uefi/uefiassert.h"
-#include "src/bits64/a_uefi/uefi/uefilog.h"
+#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 
 
 

@@ -6,9 +6,9 @@
 #if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
-#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <common/src/bits64/early/earlylog.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
-#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <common/src/bits64/early/earlylog.h>
 #else
 #include <buildconfig.h>
 #include <common/src/bits64/serial/serial.h>

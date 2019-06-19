@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <kernelbase/test/bits64/a_early/testresults.h>
 #include <ngos/utils.h>
 

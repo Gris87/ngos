@@ -1,8 +1,8 @@
 #include "setupstackcanary.h"
 
 #include <common/src/bits64/random/random.h>
-#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
-#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <kernelbase/src/bits64/other/irq/irqstack.h>
 #include <kernelbase/src/bits64/other/task/task.h>
 

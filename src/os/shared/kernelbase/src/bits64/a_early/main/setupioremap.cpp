@@ -1,7 +1,7 @@
 #include "setupioremap.h"
 
-#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
-#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 
 

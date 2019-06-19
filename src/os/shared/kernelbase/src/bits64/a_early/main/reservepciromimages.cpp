@@ -1,8 +1,8 @@
 #include "reservepciromimages.h"
 
 #include <common/src/bits64/memory/memory.h>
-#include <kernelbase/src/bits64/a_early/early/earlyassert.h>
-#include <kernelbase/src/bits64/a_early/early/earlylog.h>
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <kernelbase/src/bits64/other/bootparams/bootparams.h>
 #include <kernelbase/src/bits64/other/e820/e820.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
