@@ -7,8 +7,7 @@
 #include <uefi/types.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisystemtable.h>
-
-#include "src/bits64/a_uefi/other/uefibootmemorymap.h"
+#include <uefibase/src/bits64/other/uefibootmemorymap.h>
 
 
 

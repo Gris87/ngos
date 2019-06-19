@@ -5,8 +5,7 @@
 
 #include <bootparams/bootparams.h>
 #include <ngos/status.h>
-
-#include "src/bits64/a_uefi/other/uefibootmemorymap.h"
+#include <uefibase/src/bits64/other/uefibootmemorymap.h>
 
 
 

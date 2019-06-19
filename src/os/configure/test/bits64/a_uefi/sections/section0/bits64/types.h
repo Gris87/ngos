@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <uefibase/src/bits64/other/uefibootmemorymap.h>
 
-#include "src/bits64/a_uefi/other/uefibootmemorymap.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecode.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatedecoder.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/memberfooter.h"
