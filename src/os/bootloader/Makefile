@@ -44,7 +44,8 @@ endif
 
 
 DEFINES = \
-	-DBUILD_TARGET_$(shell echo $(TARGET) | tr "[:lower:]" "[:upper:]")
+	-DBUILD_TARGET_$(shell echo $(TARGET) | tr "[:lower:]" "[:upper:]") \
+	-DUEFI_APPLICATION
 
 
 
