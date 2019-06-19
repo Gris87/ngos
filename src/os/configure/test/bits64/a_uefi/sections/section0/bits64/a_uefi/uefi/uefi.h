@@ -5,7 +5,7 @@
 
 #include <buildconfig.h>
 
-#include "src/bits64/a_uefi/uefi/uefi.h"
+#include <uefibase/src/bits64/uefi/uefi.h>
 #include "test/bits64/a_uefi/testengine.h"
 
 

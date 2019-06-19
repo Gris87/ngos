@@ -1,13 +1,12 @@
 #include "procesself.h"
 
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/memory/memory.h>
 #include <elf/programheadertableentry.h>
 #include <elf/rela.h>
 #include <elf/relatype.h>
 #include <elf/sectionheadertableentry.h>
-
-#include "src/bits64/b_early/early/earlyassert.h"
-#include "src/bits64/b_early/early/earlylog.h"
 
 
 

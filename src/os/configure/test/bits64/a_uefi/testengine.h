@@ -5,8 +5,8 @@
 
 #include <buildconfig.h>
 #include <ngos/utils.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 
-#include "src/bits64/a_uefi/uefi/uefilog.h"
 #include "test/bits64/a_uefi/testresults.h"
 
 

@@ -1,9 +1,9 @@
 #include "filterlzma2.h"
 
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <ngos/linkage.h>
 
-#include "src/bits64/b_early/early/earlyassert.h"
-#include "src/bits64/b_early/early/earlylog.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h"
 
 

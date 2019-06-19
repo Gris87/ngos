@@ -4,7 +4,7 @@
 
 
 #if defined(BUILD_TARGET_CONFIGURE)                                             // Defined in Makefile
-#include <src/bits64/a_uefi/uefi/uefilog.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 #elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
 #include <kernelbase/src/bits64/a_early/early/earlylog.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile

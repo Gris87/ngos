@@ -6,6 +6,8 @@
 #include <common/src/bits64/serial/serial.h>
 #include <ngos/linkage.h>
 #include <uefi/uefisystemtable.h>
+#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 
 #include "src/bits64/a_uefi/main/exitbootservices.h"
 #include "src/bits64/a_uefi/main/setupbootparams.h"
@@ -13,8 +15,6 @@
 #include "src/bits64/a_uefi/main/setupgraphics.h"
 #include "src/bits64/a_uefi/main/setupkernellocation.h"
 #include "src/bits64/a_uefi/main/setuppciio.h"
-#include "src/bits64/a_uefi/uefi/uefiassert.h"
-#include "src/bits64/a_uefi/uefi/uefilog.h"
 #include "test/bits64/a_uefi/sections/section0/testcase.h"
 
 

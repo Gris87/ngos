@@ -5,8 +5,8 @@
 #include <ngos/utils.h>
 #include <uefi/uefiloadedimageprotocol.h>
 
-#include "src/bits64/a_uefi/uefi/uefiassert.h"
-#include "src/bits64/a_uefi/uefi/uefilog.h"
+#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 #include "src/bits64/other/configuredefines.h"
 #include "src/bits64/other/kerneldescriptor.h"
 

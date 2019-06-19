@@ -3,10 +3,10 @@
 #include <bootparams/pciromimagewithinfo.h>
 #include <common/src/bits64/memory/memory.h>
 #include <uefi/uefipciioprotocol.h>
+#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 
 #include "src/bits64/a_uefi/other/pciregisters.h"
-#include "src/bits64/a_uefi/uefi/uefiassert.h"
-#include "src/bits64/a_uefi/uefi/uefilog.h"
 
 
 

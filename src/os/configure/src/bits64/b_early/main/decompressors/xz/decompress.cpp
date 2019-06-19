@@ -1,10 +1,10 @@
 #include "decompress.h"
 
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/memory/memory.h>
 #include <ngos/utils.h>
 
-#include "src/bits64/b_early/early/earlyassert.h"
-#include "src/bits64/b_early/early/earlylog.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/blockheader.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/filter.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/filterbcj.h"
