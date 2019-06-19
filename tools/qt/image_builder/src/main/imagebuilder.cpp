@@ -129,7 +129,7 @@ qint64 ImageBuilder::process()
         {
             Console::err(QString("Failed to read %1 file").arg(mTextElfPath));
 
-            return 3;
+            return 8;
         }
     }
 
@@ -148,7 +148,7 @@ qint64 ImageBuilder::process()
             Console::err("Text section should not contain .bss section. Try to use __attribute__ ((section (\".noinit\"))) for your variables");
         }
 
-        return 8;
+        return 9;
     }
 
 
@@ -212,7 +212,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Invalid Boot part image");
 
-        return 9;
+        return 10;
     }
 
 
@@ -223,7 +223,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Failed to find PE Header");
 
-        return 10;
+        return 11;
     }
 
     Console::out(QString("PE Header location: 0x%1").arg(peHeaderLocation, 8, 16, QChar('0')));
@@ -236,7 +236,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Failed to update PE Optional Header");
 
-        return 11;
+        return 12;
     }
 
 
@@ -245,7 +245,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Failed to update .reloc section");
 
-        return 12;
+        return 13;
     }
 
 
@@ -254,7 +254,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Failed to update .config section");
 
-        return 13;
+        return 14;
     }
 
 
@@ -263,7 +263,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Failed to update .kernel section");
 
-        return 14;
+        return 15;
     }
 
 
@@ -277,7 +277,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Invalid PE Header");
 
-        return 15;
+        return 16;
     }
 
 
@@ -286,7 +286,7 @@ qint64 ImageBuilder::process()
     {
         Console::err("Failed to write disk image");
 
-        return 16;
+        return 17;
     }
 
 
