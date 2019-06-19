@@ -1,6 +1,6 @@
 TARGET = kernel
 
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr "[:upper:]" "[:lower:]")
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_ARCH_//g" | tr "[:upper:]" "[:lower:]")
 
 ASSETS_DIR     = assets
 SHARED_DIR     = ../shared
@@ -25,7 +25,7 @@ LD  = $(CROSS_COMPILE)ld
 
 
 
-ZIP         = $(shell grep "define NGOS_BUILD_KERNEL_COMPRESSION" ../../../include/buildconfig.h | cut -c 65- | tr "[:upper:]" "[:lower:]")
+ZIP         = $(shell grep "define NGOS_BUILD_KERNEL_COMPRESSION" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_KERNEL_COMPRESSION_//g" | tr "[:upper:]" "[:lower:]")
 ZIP_EXT     =
 ZIP_FLAGS   =
 ZIP_COMMAND =
@@ -49,7 +49,7 @@ endif
 
 
 
-VECTORIZATION_MODE = $(shell grep "define NGOS_BUILD_X86_64_VECTORIZATION_MODE" ../../../include/buildconfig.h | cut -c 79- | tr "[:upper:]" "[:lower:]")
+VECTORIZATION_MODE = $(shell grep "define NGOS_BUILD_X86_64_VECTORIZATION_MODE" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_X86_64_VECTORIZATION_MODE_//g" | tr "[:upper:]" "[:lower:]")
 
 
 
@@ -79,7 +79,7 @@ endif
 
 
 
-FUSED_MULTIPLY_ADD = $(shell grep "define NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD" ../../../include/buildconfig.h | cut -c 79- | tr "[:upper:]" "[:lower:]")
+FUSED_MULTIPLY_ADD = $(shell grep "define NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_X86_64_FUSED_MULTIPLY_ADD_//g" | tr "[:upper:]" "[:lower:]")
 
 
 
@@ -95,7 +95,7 @@ endif
 
 
 
-RELEASE = $(shell grep "define NGOS_BUILD_RELEASE" ../../../include/buildconfig.h | cut -c 35- | tr "[:upper:]" "[:lower:]")
+RELEASE = $(shell grep "define NGOS_BUILD_RELEASE" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_//g" | tr "[:upper:]" "[:lower:]")
 
 
 

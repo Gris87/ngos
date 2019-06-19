@@ -1,6 +1,6 @@
 TARGET = bootloader
 
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr "[:upper:]" "[:lower:]")
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_ARCH_//g" | tr "[:upper:]" "[:lower:]")
 
 ASSETS_DIR     = assets
 SHARED_DIR     = ../shared
@@ -31,7 +31,7 @@ FMA_FLAGS = -mno-fma
 
 
 
-RELEASE = $(shell grep "define NGOS_BUILD_RELEASE" ../../../include/buildconfig.h | cut -c 35- | tr "[:upper:]" "[:lower:]")
+RELEASE = $(shell grep "define NGOS_BUILD_RELEASE" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_//g" | tr "[:upper:]" "[:lower:]")
 
 
 

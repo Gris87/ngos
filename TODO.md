@@ -3,7 +3,6 @@ TODO List
 
 NGOS:
 
-- Simplify build option taking in Makefiles
 - Add tests for structure sizes
 - Complete with interruptions
 - Implement boot screen for kernel

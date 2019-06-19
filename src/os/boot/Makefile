@@ -1,6 +1,6 @@
 TARGET = boot
 
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | cut -c 37- | tr "[:upper:]" "[:lower:]")
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | awk '{print $3}' | sed -r "s/OPTION_ARCH_//g" | tr "[:upper:]" "[:lower:]")
 
 SOURCE_ASM_DIR = asm
 OUTPUT_DIR     = build
