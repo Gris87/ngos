@@ -1,10 +1,10 @@
 #include <bootparams/bootparams.h>
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/fpu/fpu.h>
-#include <common/src/bits64/serial/serial.h>
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
+#include <common/src/bits64/fpu/fpu.h>
+#include <common/src/bits64/serial/serial.h>
 #include <kernelbase/src/bits64/a_early/main/disableirq.h>
 #include <kernelbase/src/bits64/a_early/main/reservepciromimages.h>
 #include <kernelbase/src/bits64/a_early/main/setupbootparams.h>

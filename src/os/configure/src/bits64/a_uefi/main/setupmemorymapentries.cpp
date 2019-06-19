@@ -1,7 +1,6 @@
 #include "setupmemorymapentries.h"
 
 #include <page/macros.h>
-
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

@@ -2,7 +2,6 @@
 
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/flags.h>
-
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

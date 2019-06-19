@@ -1,13 +1,13 @@
 #include "setupidthandlers.h"
 
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <gdt/segments.h>
 #include <idt/flags.h>
 #include <idt/idtdescriptor.h>
 #include <idt/idtregister.h>
 #include <idt/macros.h>
 #include <idt/types.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
 #include <kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h>
 #include <ngos/linkage.h>
 
