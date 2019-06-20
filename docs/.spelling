@@ -305,6 +305,7 @@ rodata
 runtime
 screenInfo
 section0
+section1
 sectionAlignment
 segments.h
 serial.cpp
@@ -324,6 +325,7 @@ text.elf
 timestamp
 ttyS0
 uefiMain
+uefibase
 updateScreenInfo
 update_ngos_files.sh
 usb_boot_maker

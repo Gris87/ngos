@@ -162,7 +162,11 @@ We can get address of some asset with [Assets::getAssetEntry()](https://github.c
 
 ```
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-    if (startTestSection0() != NgosStatus::OK)
+    if (
+        startTestSection0() != NgosStatus::OK
+        ||
+        startTestSection1() != NgosStatus::OK
+       )
     {
         UEFI_LF(("Test failure"));
 
@@ -172,7 +176,7 @@ We can get address of some asset with [Assets::getAssetEntry()](https://github.c
 ```
 
 This code block is only working if kernel was built with the tests.<br/>
-It just perform checking for the set of tests located in [src/os/configure/test/bits64/a_uefi/sections/section0](../../../src/os/configure/test/bits64/a_uefi/sections/section0) folder.<br/>
+It just perform checking for the set of tests located in [src/os/shared/uefibase/test/bits64/sections/section0](../../../src/os/shared/uefibase/test/bits64/sections/section0) folder and in [src/os/configure/test/bits64/a_uefi/sections/section1](../../../src/os/configure/test/bits64/a_uefi/sections/section1) folder.<br/>
 In case of issue we leave uefiMain() function.
 
 ### Setup boot parameters
