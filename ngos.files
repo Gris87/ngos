@@ -115,6 +115,8 @@ src/os/bootloader/Image structure.png
 src/os/bootloader/linker.ld
 src/os/bootloader/Makefile
 src/os/bootloader/README.md
+src/os/bootloader/src/bits64/main/bootloader.cpp
+src/os/bootloader/src/bits64/main/bootloader.h
 src/os/bootloader/src/main.cpp
 src/os/configure/.gitignore
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S

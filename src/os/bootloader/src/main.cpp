@@ -13,6 +13,8 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
+#include "src/bits64/main/bootloader.h"
+
 
 
 // DO NOT DELETE IT!!!
@@ -135,6 +137,11 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
     }
 
     UEFI_LI(("Setup graphics completed"));
+
+
+
+    UEFI_ASSERT_EXECUTION(Bootloader::init(), UefiStatus::ABORTED);
+    UEFI_LI(("Bootloader initialized"));
 
 
 
