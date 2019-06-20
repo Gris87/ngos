@@ -13,7 +13,9 @@ public:
     static NgosStatus init(); // TEST: NO
 
 private:
-    static void *sApplicationPath;
+    static NgosStatus initApplicationPath(); // TEST: NO
+
+    static char *sApplicationPath;
 };
 
 

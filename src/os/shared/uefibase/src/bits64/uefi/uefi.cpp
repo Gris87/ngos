@@ -1,8 +1,10 @@
 #include "uefi.h"
 
 #include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
 #include <ngos/utils.h>
 #include <page/macros.h>
+#include <uefi/uefidevicepathtotextprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -186,6 +188,52 @@ bool UEFI::canPrint()
 
 
     return sTextOutput;
+}
+
+char* UEFI::devicePathToString(UefiDevicePath *path)
+{
+    UEFI_LT((" | path = 0x%p", path));
+
+    UEFI_ASSERT(path, "path is null", 0);
+
+
+
+    UefiGuid                      protocol                 = UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
+    UefiDevicePathToTextProtocol *devicePathToTextProtocol = 0;
+
+    if (sBootServices->locateProtocol(&protocol, 0, (void **)&devicePathToTextProtocol) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to locate protocol for UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL"));
+
+        return 0;
+    }
+
+
+
+    uefi_char16 *pathStr = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
+    u64          size    = strlen(pathStr) + 1;
+
+
+
+    char *res;
+
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to allocate pool(%u) for string", size));
+
+        return 0;
+    }
+
+
+
+    for (i64 i = 0; i < (i64)size; ++i)
+    {
+        res[i] = pathStr[i];
+    }
+
+
+
+    return res;
 }
 
 UefiStatus UEFI::createEvent(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)

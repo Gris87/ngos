@@ -42,6 +42,43 @@ i64 strnlen(const char *str, i64 maxlen)
     return str2 - str;
 }
 
+i64 strlen(const u16 *str)
+{
+    COMMON_LT((" | str = 0x%p", str));
+
+    COMMON_ASSERT(str, "str is null", 0);
+
+
+
+    const u16 *str2 = str;
+
+    while (*str2) // *str2 != 0
+    {
+        ++str2;
+    }
+
+    return str2 - str;
+}
+
+i64 strnlen(const u16 *str, i64 maxlen)
+{
+    // COMMON_LT((" | str = 0x%p, maxlen = %d", str, maxlen)); // Commented to avoid bad looking logs
+
+    COMMON_ASSERT(str, "str is null", 0);
+
+
+
+    const u16 *str2 = str;
+
+    while (*str2 && maxlen) // *str2 != 0 && maxlen != 0
+    {
+        ++str2;
+        --maxlen;
+    }
+
+    return str2 - str;
+}
+
 i8 strcmp(const char *str1, const char *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
