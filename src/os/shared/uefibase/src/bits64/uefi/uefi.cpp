@@ -233,7 +233,28 @@ char* UEFI::devicePathToString(UefiDevicePath *path)
 
 
 
+    if (freePool(pathStr) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to free pool(0x%p)", pathStr));
+
+        return 0;
+    }
+
+
+
     return res;
+}
+
+UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
+{
+    UEFI_LT((" | device = 0x%p, fileName = 0x%p", device, fileName));
+
+    UEFI_ASSERT(device,   "device is null",   0);
+    UEFI_ASSERT(fileName, "fileName is null", 0);
+
+
+
+    return 0;
 }
 
 UefiStatus UEFI::createEvent(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)

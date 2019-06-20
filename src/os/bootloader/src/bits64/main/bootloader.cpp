@@ -1,12 +1,13 @@
 #include "bootloader.h"
 
-#include <uefi/uefiloadedimageprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
 
 
-char *Bootloader::sApplicationPath;
+UefiLoadedImageProtocol *Bootloader::sImage;
+char                    *Bootloader::sApplicationPath;
+UefiDevicePath          *Bootloader::sDevicePath;
 
 
 
@@ -16,7 +17,44 @@ NgosStatus Bootloader::init()
 
 
 
+    UEFI_ASSERT_EXECUTION(initImage(),           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initApplicationPath(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initDevicePath(),      NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initImage()
+{
+    UEFI_LT((""));
+
+
+
+    UefiGuid    protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+    uefi_handle handle   = UEFI::getImageHandle();
+
+
+
+    if (UEFI::handleProtocol(handle, &protocol, (void **)&sImage) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_LOADED_IMAGE_PROTOCOL", handle));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_LOADED_IMAGE_PROTOCOL", handle, sImage));
+
+
+
+    UEFI_LVVV(("Loaded image:"));
+    UEFI_LVVV(("-------------------------------------"));
+
+    UEFI_LVVV(("sImage->imageBase = 0x%p", sImage->imageBase));
+    UEFI_LVVV(("sImage->imageSize = %u",   sImage->imageSize));
+
+    UEFI_LVVV(("-------------------------------------"));
 
 
 
@@ -29,41 +67,36 @@ NgosStatus Bootloader::initApplicationPath()
 
 
 
-    UefiGuid                 protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
-    uefi_handle              handle   = UEFI::getImageHandle();
-    UefiLoadedImageProtocol *image    = 0;
-
-
-
-    if (UEFI::handleProtocol(handle, &protocol, (void **)&image) != UefiStatus::SUCCESS)
-    {
-        UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_LOADED_IMAGE_PROTOCOL", handle));
-
-        return NgosStatus::FAILED;
-    }
-
-    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_LOADED_IMAGE_PROTOCOL", handle, image));
-
-
-
-    UEFI_LVVV(("Loaded image:"));
-    UEFI_LVVV(("-------------------------------------"));
-
-    UEFI_LVVV(("image->imageBase = 0x%p", image->imageBase));
-    UEFI_LVVV(("image->imageSize = %u",   image->imageSize));
-
-    UEFI_LVVV(("-------------------------------------"));
-
-
-
-    sApplicationPath = UEFI::devicePathToString(image->filePath);
+    sApplicationPath = UEFI::devicePathToString(sImage->filePath);
 
     if (!sApplicationPath)
     {
+        UEFI_LF(("Failed to get application path"));
+
         return NgosStatus::FAILED;
     }
 
     UEFI_LVVV(("sApplicationPath = %s", sApplicationPath));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initDevicePath()
+{
+    UEFI_LT((""));
+
+
+
+    sDevicePath = UEFI::fileDevicePath(sImage->deviceHandle, sApplicationPath);
+
+    if (!sDevicePath)
+    {
+        UEFI_LF(("Failed to get device path"));
+
+        return NgosStatus::FAILED;
+    }
 
 
 

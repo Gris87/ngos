@@ -4,6 +4,8 @@
 
 
 #include <ngos/status.h>
+#include <uefi/uefidevicepath.h>
+#include <uefi/uefiloadedimageprotocol.h>
 
 
 
@@ -13,9 +15,13 @@ public:
     static NgosStatus init(); // TEST: NO
 
 private:
+    static NgosStatus initImage(); // TEST: NO
     static NgosStatus initApplicationPath(); // TEST: NO
+    static NgosStatus initDevicePath(); // TEST: NO
 
-    static char *sApplicationPath;
+    static UefiLoadedImageProtocol *sImage;
+    static char                    *sApplicationPath;
+    static UefiDevicePath          *sDevicePath;
 };
 
 
