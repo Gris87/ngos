@@ -16,6 +16,7 @@
 #include "src/bits64/a_uefi/main/setupcr4.h"
 #include "src/bits64/a_uefi/main/setupkernellocation.h"
 #include "src/bits64/a_uefi/main/setuppciio.h"
+#include "test/bits64/a_uefi/sections/section1/testcase.h"
 
 
 
@@ -219,7 +220,11 @@ BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 
 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-    if (startTestSection0() != NgosStatus::OK)
+    if (
+        startTestSection0() != NgosStatus::OK
+        ||
+        startTestSection1() != NgosStatus::OK
+       )
     {
         UEFI_LF(("Test failure"));
 

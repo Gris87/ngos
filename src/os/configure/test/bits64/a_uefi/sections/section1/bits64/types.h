@@ -1,10 +1,9 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_BITS64_TYPES_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_BITS64_TYPES_H
+#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_BITS64_TYPES_H
+#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_BITS64_TYPES_H
 
 
 
 #include <buildconfig.h>
-#include <uefibase/src/bits64/other/uefibootmemorymap.h>
 #include <uefibase/test/bits64/testengine.h>
 
 #include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecode.h"
@@ -33,14 +32,10 @@
 
 
 
-TEST_CASES(section0, bits64_types);
+TEST_CASES(section1, bits64_types);
 {
     TEST_CASE("Size of structures");
     {
-        TEST_ASSERT_EQUALS(sizeof(UefiBootMemoryMap), 48);
-
-
-
 #if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
         TEST_ASSERT_EQUALS(sizeof(InflateCode), 4);
 
@@ -97,4 +92,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0_BITS64_TYPES_H
+#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_BITS64_TYPES_H
