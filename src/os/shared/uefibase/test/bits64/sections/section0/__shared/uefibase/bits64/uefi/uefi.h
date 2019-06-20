@@ -13,7 +13,7 @@
 
 
 
-TEST_CASES(section0, bits64_a_uefi_uefi_uefi);
+TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
 {
     TEST_CASE("memoryMapHasHeadroom()");
     {

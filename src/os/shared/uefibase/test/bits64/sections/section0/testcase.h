@@ -33,8 +33,8 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/string/string.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/types.h>
-#include <uefibase/test/bits64/sections/section0/bits64/a_uefi/uefi/uefi.h>
-#include <uefibase/test/bits64/sections/section0/bits64/types.h>
+#include <uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/types.h>
+#include <uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/uefi/uefi.h>
 #include <uefibase/test/bits64/testengine.h>
 
 
@@ -80,8 +80,8 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_random_random);
     CALL_TEST_CASES(section0, __shared_common_bits64_string_string);
     CALL_TEST_CASES(section0, __shared_common_bits64_types);
-    CALL_TEST_CASES(section0, bits64_a_uefi_uefi_uefi);
-    CALL_TEST_CASES(section0, bits64_types);
+    CALL_TEST_CASES(section0, __shared_uefibase_bits64_types);
+    CALL_TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
 
     SUMMARY_TEST_SECTION();
 }

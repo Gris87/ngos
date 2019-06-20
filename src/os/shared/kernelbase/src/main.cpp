@@ -22,7 +22,7 @@
 #include <kernelbase/src/bits64/a_early/main/setupuefimemorymap.h>
 #include <kernelbase/src/bits64/a_early/main/setupuefisystemtable.h>
 #include <kernelbase/src/bits64/other/bootparams/bootparams.h>
-#include <kernelbase/test/bits64/a_early/sections/section1/testcase.h>
+#include <kernelbase/test/bits64/a_early/sections/section2/testcase.h>
 #include <ngos/linkage.h>
 #include <pagetable/utils.h>
 
@@ -81,7 +81,7 @@ void kernelMain(BootParams *params)
 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-    if (startTestSection1() != NgosStatus::OK)
+    if (startTestSection2() != NgosStatus::OK)
     {
         EARLY_LF(("Test failure"));
 
