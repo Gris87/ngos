@@ -6,6 +6,8 @@
 #include <common/src/bits64/serial/serial.h>
 #include <ngos/linkage.h>
 #include <uefi/uefisystemtable.h>
+#include <uefibase/src/bits64/main/setupbootparams.h>
+#include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/main/setupgraphics.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
@@ -74,7 +76,7 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
     UEFI_LI(("NGOS Bootloader starting up"));
-    UEFI_LV(("Kernel started at address 0x%p", kernelLocation));
+    UEFI_LV(("Bootloader started at address 0x%p", kernelLocation));
 
 
 
@@ -84,6 +86,11 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
     UEFI_ASSERT_EXECUTION(printCpuFlags(), UefiStatus::ABORTED);
 #endif
+
+
+
+    UEFI_ASSERT_EXECUTION(setupCr4(), UefiStatus::ABORTED);
+    UEFI_LI(("Setup CR4 completed"));
 
 
 
@@ -104,6 +111,30 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
         return UefiStatus::ABORTED;
     }
 #endif
+
+
+
+    BootParams params;
+
+    if (setupBootParams(&params, kernelLocation) != NgosStatus::OK)
+    {
+        UEFI_LF(("Failed to setup boot parameters"));
+
+        return UefiStatus::ABORTED;
+    }
+
+    UEFI_LI(("Setup boot parameters completed"));
+
+
+
+    if (setupGraphics(params) != NgosStatus::OK)
+    {
+        UEFI_LF(("Failed to setup graphics"));
+
+        return UefiStatus::ABORTED;
+    }
+
+    UEFI_LI(("Setup graphics completed"));
 
 
 
