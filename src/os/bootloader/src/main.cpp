@@ -127,7 +127,7 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    if (setupGraphics(params) != NgosStatus::OK)
+    if (setupGraphics(&params) != NgosStatus::OK)
     {
         UEFI_LF(("Failed to setup graphics"));
 

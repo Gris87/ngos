@@ -1,6 +1,7 @@
 #include "setupbootparams.h"
 
 #include <common/src/bits64/memory/memory.h>
+#include <uefibase/src/bits64/main/setupbootparams.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -30,10 +31,7 @@ NgosStatus setupBootParams(BootParams **params, u64 kernelLocation)
 
 
 
-    memzero(*params, sizeof(BootParams));
-
-    (*params)->header.signature      = BOOT_PARAMS_HEADER_SIGNATURE;
-    (*params)->header.kernelLocation = kernelLocation;
+    UEFI_ASSERT_EXECUTION(setupBootParams(*params, kernelLocation), NgosStatus::ASSERTION);
 
 
 
