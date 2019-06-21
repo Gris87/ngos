@@ -5,6 +5,7 @@
 #include <ngos/utils.h>
 #include <page/macros.h>
 #include <uefi/uefidevicepathtotextprotocol.h>
+#include <uefi/uefifilepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -266,6 +267,33 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
 
     UEFI_ASSERT(device,   "device is null",   0);
     UEFI_ASSERT(fileName, "fileName is null", 0);
+
+
+
+    u64 fileNameSize = strlen(fileName) + 1;
+    u64 size         = sizeof(UefiFilePath) + fileNameSize << 1; // "<< 1" == "* 2"
+
+
+
+    UefiFilePath *filePath;
+
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&filePath) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to allocate pool(%u) for device path", size));
+
+        return 0;
+    }
+
+
+
+    filePath->header.type    = UefiDevicePathType::MEDIA_DEVICE_PATH;
+    filePath->header.subType = UefiDevicePathSubType::MEDIA_FILEPATH_DP;
+    filePath->header.length  = size;
+
+    for (i64 i = 0; i < (i64)fileNameSize; ++i)
+    {
+        filePath->pathName[i] = fileName[i];
+    }
 
 
 

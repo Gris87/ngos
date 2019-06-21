@@ -266,8 +266,11 @@ src/os/include/uefi/uefibootservices.h
 src/os/include/uefi/ueficapsuleheader.h
 src/os/include/uefi/ueficonfigurationtable.h
 src/os/include/uefi/uefidevicepath.h
+src/os/include/uefi/uefidevicepathsubtype.h
 src/os/include/uefi/uefidevicepathtotextprotocol.h
+src/os/include/uefi/uefidevicepathtype.h
 src/os/include/uefi/uefieventtype.h
+src/os/include/uefi/uefifilepath.h
 src/os/include/uefi/uefigraphicsoutputbltoperation.h
 src/os/include/uefi/uefigraphicsoutputbltpixel.h
 src/os/include/uefi/uefigraphicsoutputmodeinformation.h

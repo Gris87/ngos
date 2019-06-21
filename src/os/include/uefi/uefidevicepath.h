@@ -4,14 +4,16 @@
 
 
 #include <ngos/types.h>
+#include <uefi/uefidevicepathsubtype.h>
+#include <uefi/uefidevicepathtype.h>
 
 
 
 struct UefiDevicePath
 {
-    u8 type;
-    u8 subType;
-    u8 length[2];
+    UefiDevicePathType    type;
+    UefiDevicePathSubType subType;
+    u16                   length;
 };
 
 
