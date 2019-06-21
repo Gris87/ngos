@@ -1,5 +1,6 @@
 #include "bootloader.h"
 
+#include <common/src/bits64/string/string.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -76,7 +77,11 @@ NgosStatus Bootloader::initApplicationPath()
         return NgosStatus::FAILED;
     }
 
+
+
     UEFI_LVVV(("sApplicationPath = %s", sApplicationPath));
+
+    UEFI_TEST_ASSERT(strcmp(sApplicationPath, "\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
 
 
 
