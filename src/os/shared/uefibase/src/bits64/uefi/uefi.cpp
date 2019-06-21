@@ -192,7 +192,7 @@ bool UEFI::canPrint()
 
 char* UEFI::convertToAscii(uefi_char16 *str)
 {
-    UEFI_LT((" | str = 0x%p", path));
+    UEFI_LT((" | str = 0x%p", str));
 
     UEFI_ASSERT(str, "str is null", 0);
 
