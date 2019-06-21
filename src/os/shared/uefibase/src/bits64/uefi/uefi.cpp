@@ -190,6 +190,39 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
+char* UEFI::convertToAscii(uefi_char16 *str)
+{
+    UEFI_LT((" | str = 0x%p", path));
+
+    UEFI_ASSERT(str, "str is null", 0);
+
+
+
+    u64 size = strlen(str) + 1;
+
+
+
+    char *res;
+
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to allocate pool(%u) for string", size));
+
+        return 0;
+    }
+
+
+
+    for (i64 i = 0; i < (i64)size; ++i)
+    {
+        res[i] = str[i];
+    }
+
+
+
+    return res;
+}
+
 char* UEFI::devicePathToString(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
@@ -211,25 +244,7 @@ char* UEFI::devicePathToString(UefiDevicePath *path)
 
 
     uefi_char16 *pathStr = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
-    u64          size    = strlen(pathStr) + 1;
-
-
-
-    char *res;
-
-    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
-    {
-        UEFI_LE(("Failed to allocate pool(%u) for string", size));
-
-        return 0;
-    }
-
-
-
-    for (i64 i = 0; i < (i64)size; ++i)
-    {
-        res[i] = pathStr[i];
-    }
+    char        *res     = convertToAscii(pathStr);
 
 
 

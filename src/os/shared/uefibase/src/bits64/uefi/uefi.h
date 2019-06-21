@@ -27,6 +27,7 @@ public:
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
+    static char* convertToAscii(uefi_char16 *str); // TEST: NO
     static char* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* fileDevicePath(uefi_handle device, const char *fileName); // TEST: NO
 
