@@ -30,6 +30,8 @@ public:
     static char* convertToAscii(uefi_char16 *str); // TEST: NO
     static char* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* fileDevicePath(uefi_handle device, const char *fileName); // TEST: NO
+    static UefiDevicePath* nextDevicePath(UefiDevicePath *path); // TEST: NO
+    static NgosStatus setDevicePathEndNode(UefiDevicePath *path); // TEST: NO
 
     static UefiStatus createEvent(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
     static UefiStatus setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime); // TEST: NO

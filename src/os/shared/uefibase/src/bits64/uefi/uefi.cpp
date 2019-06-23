@@ -271,7 +271,8 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
 
 
     u64 fileNameSize = strlen(fileName) + 1;
-    u64 size         = sizeof(UefiFilePath) + fileNameSize << 1; // "<< 1" == "* 2"
+    u64 filePathSize = sizeof(UefiFilePath) + fileNameSize << 1; // "<< 1" == "* 2"
+    u64 size         = filePathSize + sizeof(UefiDevicePath);
 
 
 
@@ -288,7 +289,7 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
 
     filePath->header.type    = UefiDevicePathType::MEDIA_DEVICE_PATH;
     filePath->header.subType = UefiDevicePathSubType::MEDIA_FILEPATH_DP;
-    filePath->header.length  = size;
+    filePath->header.length  = filePathSize;
 
     for (i64 i = 0; i < (i64)fileNameSize; ++i)
     {
@@ -297,7 +298,39 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
 
 
 
+    UEFI_ASSERT_EXECUTION(setDevicePathEndNode(nextDevicePath(&filePath->header)), 0);
+
+
+
     return 0;
+}
+
+UefiDevicePath* UEFI::nextDevicePath(UefiDevicePath *path)
+{
+    UEFI_LT((" | path = 0x%p", path));
+
+    UEFI_ASSERT(path, "path is null", 0);
+
+
+
+    return (UefiDevicePath *)((u64)path + path->length);
+}
+
+NgosStatus UEFI::setDevicePathEndNode(UefiDevicePath *path)
+{
+    UEFI_LT((" | path = 0x%p", path));
+
+    UEFI_ASSERT(path, "path is null", NgosStatus::ASSERTION);
+
+
+
+    path->type    = UefiDevicePathType::END_DEVICE_PATH_TYPE;
+    path->subType = UefiDevicePathSubType::END_ENTIRE_DEVICE_PATH_SUBTYPE;
+    path->length  = sizeof(UefiDevicePath);
+
+
+
+    return NgosStatus::OK;
 }
 
 UefiStatus UEFI::createEvent(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)

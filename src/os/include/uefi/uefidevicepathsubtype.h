@@ -70,7 +70,11 @@ enum class UefiDevicePathSubType : u8
 
     // UefiDevicePathType::BBS_DEVICE_PATH
 
-    BBS_BBS_DP = 0x01
+    BBS_BBS_DP = 0x01,
+
+    // UefiDevicePathType::END_DEVICE_PATH_TYPE
+
+    END_ENTIRE_DEVICE_PATH_SUBTYPE = 0xFF
 };
 
 
