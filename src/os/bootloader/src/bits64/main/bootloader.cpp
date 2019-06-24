@@ -1,6 +1,7 @@
 #include "bootloader.h"
 
 #include <common/src/bits64/string/string.h>
+#include <uefi/uefiblockioprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -9,6 +10,8 @@
 UefiLoadedImageProtocol *Bootloader::sImage;
 UefiDevicePath          *Bootloader::sDevicePath;
 char                    *Bootloader::sApplicationDirPath;
+u64                      Bootloader::sNumberOfVolumes;
+VolumeInfo              *Bootloader::sVolumes;
 
 
 
@@ -242,6 +245,151 @@ NgosStatus Bootloader::initApplicationDirPath(char *applicationPath)
 NgosStatus Bootloader::initVolumes()
 {
     UEFI_LT((""));
+
+
+
+    UefiGuid     blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
+    u64          blockIoSize     = 0;
+    uefi_handle *blockIoHandles  = 0;
+
+
+
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &blockIoProtocol, 0, &blockIoSize, blockIoHandles) == UefiStatus::BUFFER_TOO_SMALL)
+    {
+        UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoSize));
+
+        if (initBlockIoProtocol(&blockIoProtocol, blockIoSize) != NgosStatus::OK)
+        {
+            UEFI_LF(("Failed to setup UEFI_BLOCK_IO_PROTOCOL"));
+
+            return NgosStatus::FAILED;
+        }
+
+        UEFI_LV(("Setup UEFI_BLOCK_IO_PROTOCOL completed"));
+    }
+    else
+    {
+        UEFI_LW(("Handle for UEFI_BLOCK_IO_PROTOCOL not found"));
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size)
+{
+    UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
+
+    UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+
+
+
+    uefi_handle *blockIoHandles = 0;
+
+
+
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&blockIoHandles) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to allocate pool(%u) for handles for UEFI_BLOCK_IO_PROTOCOL", size));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles, size));
+
+
+
+    NgosStatus status = NgosStatus::FAILED;
+
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, blockIoHandles) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Located handles(0x%p) for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
+
+        status = initBlockIoProtocol(protocol, size, blockIoHandles);
+    }
+    else
+    {
+        UEFI_LF(("Failed to locate handles(0x%p) for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
+    }
+
+
+
+    if (UEFI::freePool(blockIoHandles) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
+    }
+    else
+    {
+        UEFI_LE(("Failed to release pool(0x%p) for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
+    }
+
+
+
+    return status;
+}
+
+NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_handle *blockIoHandles)
+{
+    UEFI_LT((" | protocol = 0x%p, size = %u, graphicsHandles = 0x%p", protocol, size, graphicsHandles));
+
+    UEFI_ASSERT(protocol,       "protocol is null",       NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0,       "size is zero",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(blockIoHandles, "blockIoHandles is null", NgosStatus::ASSERTION);
+
+
+
+    sNumberOfVolumes = size / sizeof(uefi_handle);
+    UEFI_LVVV(("sNumberOfVolumes = %u", sNumberOfVolumes));
+
+
+
+    u64 volumesSize = sNumberOfVolumes * sizeof(VolumeInfo);
+
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, volumesSize, (void **)&sVolumes) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to allocate pool(%u) for volumes", volumesSize));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for volumes", sVolumes, volumesSize));
+
+
+
+    for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(initVolume(&sVolumes[i], protocol, blockIoHandles[i]), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle)
+{
+    UEFI_LT((" | volume = 0x%p, protocol = 0x%p, handle = 0x%p", volume, protocol, handle));
+
+    UEFI_ASSERT(volume,   "volume is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(handle,   "handle is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
+
+
+
+    volume->deviceHandle = handle;
+
+
+
+    if (UEFI::handleProtocol(handle, protocol, (void **)&volume->blockIoProtocol) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_BLOCK_IO_PROTOCOL", handle));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_BLOCK_IO_PROTOCOL", handle, volume->blockIoProtocol));
 
 
 

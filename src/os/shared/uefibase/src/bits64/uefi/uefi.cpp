@@ -250,7 +250,7 @@ char* UEFI::parentDirectory(char *path)
 
     UEFI_TEST_ASSERT(size > 0, 0);
 
-    size = size - path + 1;
+    size = size - (u64)path + 1;
 
 
 

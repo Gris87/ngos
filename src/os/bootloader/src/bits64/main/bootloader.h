@@ -4,6 +4,7 @@
 
 
 #include <ngos/status.h>
+#include <src/bits64/other/volumeinfo.h>
 #include <uefi/uefidevicepath.h>
 #include <uefi/uefiloadedimageprotocol.h>
 
@@ -22,10 +23,15 @@ private:
     static NgosStatus initDevicePath(char *applicationPath); // TEST: NO
     static NgosStatus initApplicationDirPath(char *applicationPath); // TEST: NO
     static NgosStatus initVolumes(); // TEST: NO
+    static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size); // TEST: NO
+    static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
+    static NgosStatus initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
     static char                    *sApplicationDirPath;
+    static u64                      sNumberOfVolumes;
+    static VolumeInfo              *sVolumes;
 };
 
 

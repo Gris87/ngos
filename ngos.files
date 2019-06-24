@@ -117,6 +117,7 @@ src/os/bootloader/Makefile
 src/os/bootloader/README.md
 src/os/bootloader/src/bits64/main/bootloader.cpp
 src/os/bootloader/src/bits64/main/bootloader.h
+src/os/bootloader/src/bits64/other/volumeinfo.h
 src/os/bootloader/src/main.cpp
 src/os/configure/.gitignore
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S
@@ -262,6 +263,8 @@ src/os/include/uefi/config/uefiugaioconfigurationtable.h
 src/os/include/uefi/macros.h
 src/os/include/uefi/types.h
 src/os/include/uefi/uefiallocatetype.h
+src/os/include/uefi/uefiblockiomedia.h
+src/os/include/uefi/uefiblockioprotocol.h
 src/os/include/uefi/uefibootservices.h
 src/os/include/uefi/ueficapsuleheader.h
 src/os/include/uefi/ueficonfigurationtable.h
