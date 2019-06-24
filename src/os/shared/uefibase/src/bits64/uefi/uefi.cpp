@@ -1,5 +1,6 @@
 #include "uefi.h"
 
+#include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
 #include <ngos/utils.h>
@@ -212,6 +213,8 @@ char* UEFI::convertToAscii(uefi_char16 *str)
         return 0;
     }
 
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
+
 
 
     for (i64 i = 0; i < (i64)size; ++i)
@@ -242,6 +245,8 @@ char* UEFI::devicePathToString(UefiDevicePath *path)
         return 0;
     }
 
+    UEFI_LVV(("Located(0x%p) protocol for UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL", devicePathToTextProtocol));
+
 
 
     uefi_char16 *pathStr = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
@@ -249,12 +254,41 @@ char* UEFI::devicePathToString(UefiDevicePath *path)
 
 
 
-    if (freePool(pathStr) != UefiStatus::SUCCESS)
+    if (freePool(pathStr) == UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to free pool(0x%p)", pathStr));
+        UEFI_LVV(("Released pool(0x%p) for string", pathStr));
+    }
+    else
+    {
+        UEFI_LE(("Failed to free pool(0x%p) for string", pathStr));
 
         return 0;
     }
+
+
+
+    return res;
+}
+
+UefiDevicePath* UEFI::devicePathFromHandle(uefi_handle handle)
+{
+    UEFI_LT((" | handle = 0x%p", handle));
+
+    UEFI_ASSERT(handle, "handle is null", 0);
+
+
+
+    UefiGuid        protocol = UEFI_DEVICE_PATH_PROTOCOL_GUID;
+    UefiDevicePath *res;
+
+    if (handleProtocol(handle, &protocol, (void **)&res) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_DEVICE_PATH_PROTOCOL", handle));
+
+        return 0;
+    }
+
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_DEVICE_PATH_PROTOCOL", handle, res));
 
 
 
@@ -270,22 +304,38 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
 
 
 
+    UefiDevicePath *parentDevicePath = devicePathFromHandle(device);
+    UEFI_TEST_ASSERT(parentDevicePath != 0, 0);
+
+    u64 parentDevicePathSize = getDevicePathSize(parentDevicePath);
+    UEFI_TEST_ASSERT(parentDevicePathSize > 0, 0);
+
+
+
     u64 fileNameSize = strlen(fileName) + 1;
-    u64 filePathSize = sizeof(UefiFilePath) + fileNameSize << 1; // "<< 1" == "* 2"
-    u64 size         = filePathSize + sizeof(UefiDevicePath);
+    u64 filePathSize = sizeof(UefiFilePath) + (fileNameSize << 1); // "<< 1" == "* 2"
+    u64 size         = parentDevicePathSize + filePathSize + sizeof(UefiDevicePath);
 
 
 
-    UefiFilePath *filePath;
+    UefiDevicePath *res;
 
-    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&filePath) != UefiStatus::SUCCESS)
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
         UEFI_LE(("Failed to allocate pool(%u) for device path", size));
 
         return 0;
     }
 
+    UEFI_LVV(("Allocated pool(0x%p, %u) for device path", res, size));
 
+
+
+    memcpy(res, parentDevicePath, parentDevicePathSize);
+
+
+
+    UefiFilePath *filePath = (UefiFilePath *)((u64)res + parentDevicePathSize);
 
     filePath->header.type    = UefiDevicePathType::MEDIA_DEVICE_PATH;
     filePath->header.subType = UefiDevicePathSubType::MEDIA_FILEPATH_DP;
@@ -298,14 +348,14 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
 
 
 
-    UEFI_ASSERT_EXECUTION(setDevicePathEndNode(nextDevicePath(&filePath->header)), 0);
+    UEFI_ASSERT_EXECUTION(setDevicePathEndNode(nextDevicePathNode(&filePath->header)), 0);
 
 
 
-    return 0;
+    return res;
 }
 
-UefiDevicePath* UEFI::nextDevicePath(UefiDevicePath *path)
+UefiDevicePath* UEFI::nextDevicePathNode(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
@@ -331,6 +381,37 @@ NgosStatus UEFI::setDevicePathEndNode(UefiDevicePath *path)
 
 
     return NgosStatus::OK;
+}
+
+bool UEFI::isDevicePathEndType(UefiDevicePath *path)
+{
+    UEFI_LT((" | path = 0x%p", path));
+
+    UEFI_ASSERT(path, "path is null", false);
+
+
+
+    return path->type == UefiDevicePathType::END_DEVICE_PATH_TYPE;
+}
+
+u64 UEFI::getDevicePathSize(UefiDevicePath *path)
+{
+    UEFI_LT((" | path = 0x%p", path));
+
+    UEFI_ASSERT(path, "path is null", 0);
+
+
+
+    UefiDevicePath *currentDevicePath = path;
+
+    while (!isDevicePathEndType(currentDevicePath))
+    {
+        currentDevicePath = nextDevicePathNode(currentDevicePath);
+    }
+
+
+
+    return (u64)currentDevicePath - (u64)path;
 }
 
 UefiStatus UEFI::createEvent(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)

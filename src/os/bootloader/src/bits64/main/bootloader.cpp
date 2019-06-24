@@ -105,5 +105,32 @@ NgosStatus Bootloader::initDevicePath()
 
 
 
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+    {
+        UEFI_LVVV(("sDevicePath:"));
+        UEFI_LVVV(("-------------------------------------"));
+
+        UefiDevicePath *currentDevicePath = sDevicePath;
+
+        do
+        {
+            UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
+            UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
+            UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
+
+            if (UEFI::isDevicePathEndType(currentDevicePath))
+            {
+                break;
+            }
+
+            currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+        } while (true);
+
+        UEFI_LVVV(("-------------------------------------"));
+    }
+#endif
+
+
+
     return NgosStatus::OK;
 }
