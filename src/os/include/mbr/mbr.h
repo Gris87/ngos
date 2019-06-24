@@ -15,7 +15,7 @@ struct Mbr
    u32          diskSignature;
    u16          __pad;
    MbrPartition partitions[4];
-   u16          MBRSignature;
+   u16          mbrSignature;
 };
 
 
