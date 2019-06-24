@@ -1,12 +1,13 @@
-#ifndef BOOTLOADER_H
-#define BOOTLOADER_H
+#ifndef BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADER_H
+#define BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADER_H
 
 
 
 #include <ngos/status.h>
-#include <src/bits64/other/volumeinfo.h>
 #include <uefi/uefidevicepath.h>
 #include <uefi/uefiloadedimageprotocol.h>
+
+#include "src/bits64/other/volumeinfo.h"
 
 
 
@@ -26,6 +27,7 @@ private:
     static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size); // TEST: NO
     static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
     static NgosStatus initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle); // TEST: NO
+    static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
@@ -36,4 +38,4 @@ private:
 
 
 
-#endif // BOOTLOADER_H
+#endif // BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADER_H

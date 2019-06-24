@@ -1,0 +1,20 @@
+#ifndef BOOTLOADER_SRC_BITS64_OTHER_VOLUMETYPE_H
+#define BOOTLOADER_SRC_BITS64_OTHER_VOLUMETYPE_H
+
+
+
+#include <ngos/types.h>
+
+
+
+enum class VolumeType: u8
+{
+    INTERNAL,
+    EXTERNAL,
+    OPTICAL,
+    NETWORK
+};
+
+
+
+#endif // BOOTLOADER_SRC_BITS64_OTHER_VOLUMETYPE_H

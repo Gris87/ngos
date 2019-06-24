@@ -118,6 +118,7 @@ src/os/bootloader/README.md
 src/os/bootloader/src/bits64/main/bootloader.cpp
 src/os/bootloader/src/bits64/main/bootloader.h
 src/os/bootloader/src/bits64/other/volumeinfo.h
+src/os/bootloader/src/bits64/other/volumetype.h
 src/os/bootloader/src/main.cpp
 src/os/configure/.gitignore
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S
@@ -233,11 +234,17 @@ src/os/include/gdt/flags.h
 src/os/include/gdt/gdtdescriptor.h
 src/os/include/gdt/gdtregister.h
 src/os/include/gdt/segments.h
+src/os/include/gpt/gptdata.h
+src/os/include/gpt/gptentry.h
+src/os/include/gpt/gptheader.h
+src/os/include/guid/guid.h
 src/os/include/idt/flags.h
 src/os/include/idt/idtdescriptor.h
 src/os/include/idt/idtregister.h
 src/os/include/idt/macros.h
 src/os/include/idt/types.h
+src/os/include/mbr/mbr.h
+src/os/include/mbr/mbrpartition.h
 src/os/include/page/macros.h
 src/os/include/pagetable/flags.h
 src/os/include/pagetable/macros.h

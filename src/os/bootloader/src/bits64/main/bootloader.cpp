@@ -20,6 +20,7 @@ NgosStatus Bootloader::init()
     UEFI_LT((""));
 
 
+
     char *applicationPath;
 
     UEFI_ASSERT_EXECUTION(initImage(),                             NgosStatus::ASSERTION);
@@ -274,6 +275,56 @@ NgosStatus Bootloader::initVolumes()
 
 
 
+    UEFI_LVVV(("sNumberOfVolumes = %u", sNumberOfVolumes));
+
+    // UEFI_TEST_ASSERT(sNumberOfVolumes == 3, NgosStatus::ASSERTION); // Commented due to value variation
+
+
+
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+    {
+        UEFI_LVVV(("sVolumes:"));
+        UEFI_LVVV(("-------------------------------------"));
+
+        for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
+        {
+            UEFI_LVVV(("sVolumes[%d].deviceHandle    = 0x%p", i, sVolumes[i].deviceHandle));
+            UEFI_LVVV(("sVolumes[%d].blockIoProtocol = 0x%p", i, sVolumes[i].blockIoProtocol));
+
+
+
+            UEFI_LVVV(("sVolumes[%d].devicePath:", i));
+            UEFI_LVVV(("....................................."));
+
+            UefiDevicePath *currentDevicePath = sVolumes[i].devicePath;
+
+            do
+            {
+                UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
+                UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
+                UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
+
+                if (UEFI::isDevicePathEndType(currentDevicePath))
+                {
+                    break;
+                }
+
+                currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+            } while (true);
+
+            UEFI_LVVV(("....................................."));
+
+
+
+            UEFI_LVVV(("sVolumes[%d].type = %u", i, sVolumes[i].type));
+        }
+
+        UEFI_LVVV(("-------------------------------------"));
+    }
+#endif
+
+
+
     return NgosStatus::OK;
 }
 
@@ -382,14 +433,77 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_h
 
 
 
-    if (UEFI::handleProtocol(handle, protocol, (void **)&volume->blockIoProtocol) != UefiStatus::SUCCESS)
+    if (UEFI::handleProtocol(volume->deviceHandle, protocol, (void **)&volume->blockIoProtocol) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_BLOCK_IO_PROTOCOL", handle));
+        UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_BLOCK_IO_PROTOCOL", volume->deviceHandle));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_BLOCK_IO_PROTOCOL", handle, volume->blockIoProtocol));
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_BLOCK_IO_PROTOCOL", volume->deviceHandle, volume->blockIoProtocol));
+
+
+
+    volume->devicePath = UEFI::devicePathFromHandle(volume->deviceHandle);
+
+
+
+    UEFI_ASSERT_EXECUTION(initVolumeType(volume), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
+{
+    UEFI_LT((" | volume = 0x%p", volume));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+
+
+
+    volume->type = VolumeType::INTERNAL;
+
+    if (volume->blockIoProtocol->media->blockSize == 2048)
+    {
+        volume->type = VolumeType::OPTICAL;
+    }
+
+
+
+    UefiDevicePath *currentDevicePath = volume->devicePath;
+
+    while (!UEFI::isDevicePathEndType(currentDevicePath))
+    {
+        if (currentDevicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH)
+        {
+            if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_CDROM_DP)
+            {
+                volume->type = VolumeType::OPTICAL;
+            }
+        }
+        else
+        if (currentDevicePath->type == UefiDevicePathType::MESSAGING_DEVICE_PATH)
+        {
+            if (
+                currentDevicePath->subType == UefiDevicePathSubType::MSG_USB_DP
+                ||
+                currentDevicePath->subType == UefiDevicePathSubType::MSG_USB_CLASS_DP
+                ||
+                currentDevicePath->subType == UefiDevicePathSubType::MSG_1394_DP
+                ||
+                currentDevicePath->subType == UefiDevicePathSubType::MSG_FIBRECHANNEL_DP
+               )
+            {
+                volume->type = VolumeType::EXTERNAL;
+            }
+        }
+
+
+
+        currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+    }
 
 
 

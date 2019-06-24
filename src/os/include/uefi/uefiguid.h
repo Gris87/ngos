@@ -3,17 +3,11 @@
 
 
 
-#include <ngos/types.h>
+#include <guid/guid.h>
 
 
 
-struct UefiGuid
-{
-    u32 data1;
-    u16 data2;
-    u16 data3;
-    u8  data4[8];
-};
+typedef Guid UefiGuid;
 
 
 
