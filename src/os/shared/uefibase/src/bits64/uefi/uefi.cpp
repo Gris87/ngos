@@ -227,6 +227,50 @@ char* UEFI::convertToAscii(uefi_char16 *str)
     return res;
 }
 
+char* UEFI::parentDirectory(char *path)
+{
+    UEFI_LT((" | path = 0x%p", path));
+
+    UEFI_ASSERT(path, "path is null", 0);
+
+
+
+    u64   size = 0;
+    char *str  = path;
+
+    while (*str)
+    {
+        if (*str == '\\')
+        {
+            size = str - path + 1;
+        }
+
+        ++str;
+    }
+
+
+
+    char *res;
+
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to allocate pool(%u) for string", size));
+
+        return 0;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
+
+
+
+    memcpy(res, path, size - 1);
+    res[size - 1] = 0;
+
+
+
+    return res;
+}
+
 char* UEFI::devicePathToString(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
@@ -250,7 +294,19 @@ char* UEFI::devicePathToString(UefiDevicePath *path)
 
 
     uefi_char16 *pathStr = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
-    char        *res     = convertToAscii(pathStr);
+
+    if (!pathStr) // pathStr == 0
+    {
+        UEFI_LE(("Failed to allocate pool(0x%p) for string", pathStr));
+
+        return 0;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p) for string", pathStr));
+
+
+
+    char *res = convertToAscii(pathStr);
 
 
 

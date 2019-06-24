@@ -28,6 +28,8 @@ public:
     static bool canPrint(); // TEST: NO
 
     static char* convertToAscii(uefi_char16 *str); // TEST: NO
+    static char* parentDirectory(char *path); // TEST: NO
+
     static char* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* devicePathFromHandle(uefi_handle handle); // TEST: NO
     static UefiDevicePath* fileDevicePath(uefi_handle device, const char *fileName); // TEST: NO

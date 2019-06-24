@@ -7,8 +7,8 @@
 
 
 UefiLoadedImageProtocol *Bootloader::sImage;
-char                    *Bootloader::sApplicationPath;
 UefiDevicePath          *Bootloader::sDevicePath;
+char                    *Bootloader::sApplicationDirPath;
 
 
 
@@ -17,10 +17,77 @@ NgosStatus Bootloader::init()
     UEFI_LT((""));
 
 
+    char *applicationPath;
 
-    UEFI_ASSERT_EXECUTION(initImage(),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initApplicationPath(), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initDevicePath(),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initImage(),                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initApplicationPath(&applicationPath),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initDevicePath(applicationPath),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initApplicationDirPath(applicationPath), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumes(),                           NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::cleanUpPath(char *path)
+{
+    UEFI_LT((" | path = %s", path));
+
+    UEFI_ASSERT(path, "path is null", NgosStatus::ASSERTION);
+
+
+
+    u64 source = 0;
+    u64 dest   = 0;
+
+    while (path[source])
+    {
+        if (
+            path[source] == '/'
+            ||
+            path[source] == '\\'
+           )
+        {
+            if (!dest) // dest == 0
+            {
+                ++source;
+            }
+            else
+            {
+                path[dest] = '\\';
+                ++dest;
+
+                do
+                {
+                    ++source;
+                } while ((path[source] == '/') || (path[source] == '\\'));
+            }
+        }
+        else
+        {
+            path[dest] = path[source];
+            ++source;
+            ++dest;
+        }
+    }
+
+
+
+    if (dest > 0 && path[dest - 1] == '\\')
+    {
+        --dest;
+    }
+
+    path[dest] = 0;
+
+
+
+    if (!path[0]) // path[0] == 0
+    {
+        path[0] = '\\';
+        path[1] = '\0';
+    }
 
 
 
@@ -62,15 +129,17 @@ NgosStatus Bootloader::initImage()
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initApplicationPath()
+NgosStatus Bootloader::initApplicationPath(char **applicationPath)
 {
-    UEFI_LT((""));
+    UEFI_LT((" | applicationPath = 0x%p", applicationPath));
+
+    UEFI_ASSERT(applicationPath, "applicationPath is null", NgosStatus::ASSERTION);
 
 
 
-    sApplicationPath = UEFI::devicePathToString(sImage->filePath);
+    *applicationPath = UEFI::devicePathToString(sImage->filePath);
 
-    if (!sApplicationPath)
+    if (!(*applicationPath))
     {
         UEFI_LF(("Failed to get application path"));
 
@@ -79,22 +148,24 @@ NgosStatus Bootloader::initApplicationPath()
 
 
 
-    UEFI_LVVV(("sApplicationPath = %s", sApplicationPath));
+    UEFI_LVVV(("sApplicationPath = %s", *applicationPath));
 
-    UEFI_TEST_ASSERT(strcmp(sApplicationPath, "\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(strcmp(*applicationPath, "\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initDevicePath()
+NgosStatus Bootloader::initDevicePath(char *applicationPath)
 {
-    UEFI_LT((""));
+    UEFI_LT((" | applicationPath = %s", applicationPath));
+
+    UEFI_ASSERT(applicationPath, "applicationPath is null", NgosStatus::ASSERTION);
 
 
 
-    sDevicePath = UEFI::fileDevicePath(sImage->deviceHandle, sApplicationPath);
+    sDevicePath = UEFI::fileDevicePath(sImage->deviceHandle, applicationPath);
 
     if (!sDevicePath)
     {
@@ -129,6 +200,48 @@ NgosStatus Bootloader::initDevicePath()
         UEFI_LVVV(("-------------------------------------"));
     }
 #endif
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initApplicationDirPath(char *applicationPath)
+{
+    UEFI_LT((" | applicationPath = %s", applicationPath));
+
+    UEFI_ASSERT(applicationPath, "applicationPath is null", NgosStatus::ASSERTION);
+
+
+
+    char *sApplicationDirPath = UEFI::parentDirectory(applicationPath);
+    UEFI_ASSERT_EXECUTION(cleanUpPath(sApplicationDirPath), NgosStatus::ASSERTION);
+
+    UEFI_LVVV(("sApplicationDirPath = %s", sApplicationDirPath));
+
+    UEFI_TEST_ASSERT(strcmp(sApplicationDirPath, "EFI\\BOOT") == 0, NgosStatus::ASSERTION);
+
+
+
+    if (UEFI::freePool(applicationPath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for string", applicationPath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to free pool(0x%p) for string", applicationPath));
+
+        return NgosStatus::FAILED;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumes()
+{
+    UEFI_LT((""));
 
 
 
