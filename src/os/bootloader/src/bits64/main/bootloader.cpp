@@ -1,7 +1,10 @@
 #include "bootloader.h"
 
+#include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
+#include <gpt/utils.h>
 #include <uefi/uefiblockioprotocol.h>
+#include <uefi/uefiharddrivedevicepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -320,6 +323,7 @@ NgosStatus Bootloader::initVolumes()
             UEFI_LVVV(("sVolumes[%d].gptData.header        = 0x%p", i, sVolumes[i].gptData.header));
             UEFI_LVVV(("sVolumes[%d].gptData.entries       = 0x%p", i, sVolumes[i].gptData.entries));
             UEFI_LVVV(("sVolumes[%d].type                  = %u (%s)", i, sVolumes[i].type, volumeTypeToString(sVolumes[i].type)));
+            UEFI_LVVV(("sVolumes[%d].name                  = %s", i, sVolumes[i].name));
         }
 
         UEFI_LVVV(("-------------------------------------"));
@@ -436,7 +440,7 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_h
     UEFI_ASSERT_EXECUTION(initVolumeBlockIoProtocol(volume, protocol, handle), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeDevicePath(volume, handle),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeGptData(volume),                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initVolumeType(volume),                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeTypeAndName(volume),                       NgosStatus::ASSERTION);
 
 
 
@@ -564,6 +568,71 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
         }
 
         UEFI_LVV(("Successfully read GPT header"));
+
+
+
+        if (isGptValid(volume->gptData))
+        {
+            size = volume->gptData.header->entryCount * volume->gptData.header->entrySize;
+
+            if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&volume->gptData.entries) != UefiStatus::SUCCESS)
+            {
+                UEFI_LF(("Failed to allocate pool(%u) for GPT entries", size));
+
+                return NgosStatus::FAILED;
+            }
+
+            UEFI_LVV(("Allocated pool(0x%p, %u) for GPT entries", volume->gptData.entries, size));
+
+
+
+            if (volume->blockIoProtocol->readBlocks(volume->blockIoProtocol, volume->blockIoProtocol->media->mediaId, volume->gptData.header->entryLba, size, (void *)volume->gptData.entries) != UefiStatus::SUCCESS)
+            {
+                UEFI_LF(("Failed to read GPT entries"));
+
+                return NgosStatus::FAILED;
+            }
+
+            UEFI_LVV(("Successfully read GPT entries"));
+
+
+
+            for (i64 i = 0; i < volume->gptData.header->entryCount; ++i)
+            {
+                volume->gptData.entries[i].name[35] = 0;
+            }
+        }
+        else
+        {
+            if (UEFI::freePool(volume->gptData.protectiveMbr) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for GPT protective MBR", volume->gptData.protectiveMbr));
+            }
+            else
+            {
+                UEFI_LE(("Failed to free pool(0x%p) for GPT protective MBR", volume->gptData.protectiveMbr));
+
+                return NgosStatus::FAILED;
+            }
+
+
+
+            if (UEFI::freePool(volume->gptData.header) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for GPT header", volume->gptData.header));
+            }
+            else
+            {
+                UEFI_LE(("Failed to free pool(0x%p) for GPT header", volume->gptData.header));
+
+                return NgosStatus::FAILED;
+            }
+
+
+
+            volume->gptData.protectiveMbr = 0;
+            volume->gptData.header        = 0;
+        }
     }
 
 
@@ -571,7 +640,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
+NgosStatus Bootloader::initVolumeTypeAndName(VolumeInfo *volume)
 {
     UEFI_LT((" | volume = 0x%p", volume));
 
@@ -580,6 +649,7 @@ NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
 
 
     volume->type = VolumeType::INTERNAL;
+    volume->name = "UNKNOWN";
 
     if (volume->blockIoProtocol->media->blockSize == 2048)
     {
@@ -597,6 +667,10 @@ NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
             if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_CDROM_DP)
             {
                 volume->type = VolumeType::OPTICAL;
+            }
+            else
+            {
+                UEFI_ASSERT_EXECUTION(initVolumeName(volume, currentDevicePath), NgosStatus::ASSERTION);
             }
         }
         else
@@ -619,6 +693,54 @@ NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
 
 
         currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeName(VolumeInfo *volume, UefiDevicePath *devicePath)
+{
+    UEFI_LT((" | volume = 0x%p", volume));
+
+    UEFI_ASSERT(volume,                                                    "volume is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(devicePath,                                                "devicePath is null",    NgosStatus::ASSERTION);
+    UEFI_ASSERT(devicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH, "devicePath is invalid", NgosStatus::ASSERTION);
+
+
+
+    if (devicePath->subType == UefiDevicePathSubType::MEDIA_HARDDRIVE_DP)
+    {
+        UefiHardDriveDevicePath *hardDrivePath = (UefiHardDriveDevicePath *)devicePath;
+
+        if (hardDrivePath->signatureType == UefiHardDriveDevicePathSignatureType::GUID)
+        {
+            for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
+            {
+                VolumeInfo *previousVolume = &sVolumes[i];
+
+                if (volume == previousVolume)
+                {
+                    break;
+                }
+
+                if (previousVolume->gptData.entries)
+                {
+                    for (i64 j = 0; j < previousVolume->gptData.header->entryCount; ++j)
+                    {
+                        GptEntry *gptEntry = &previousVolume->gptData.entries[j];
+
+                        if (!memcmp((const char *)&gptEntry->partitionUniqueGuid, (const char *)hardDrivePath->signature, sizeof(hardDrivePath->signature))) // memcmp((const char *)gptEntry->partitionUniqueGuid, (const char *)hardDrivePath->signature, sizeof(hardDrivePath->signature)) == 0
+                        {
+                            volume->name = UEFI::convertToAscii(gptEntry->name);
+
+                            return NgosStatus::OK;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

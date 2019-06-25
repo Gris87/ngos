@@ -10,8 +10,8 @@
 
 struct UefiInputKey
 {
-    u16         scanCode;
-    uefi_char16 unicodeChar;
+    u16    scanCode;
+    char16 unicodeChar;
 };
 
 

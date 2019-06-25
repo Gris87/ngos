@@ -237,6 +237,7 @@ src/os/include/gdt/segments.h
 src/os/include/gpt/gptdata.h
 src/os/include/gpt/gptentry.h
 src/os/include/gpt/gptheader.h
+src/os/include/gpt/utils.h
 src/os/include/guid/guid.h
 src/os/include/idt/flags.h
 src/os/include/idt/idtdescriptor.h
@@ -289,6 +290,9 @@ src/os/include/uefi/uefigraphicsoutputprotocol.h
 src/os/include/uefi/uefigraphicsoutputprotocolmode.h
 src/os/include/uefi/uefigraphicspixelformat.h
 src/os/include/uefi/uefiguid.h
+src/os/include/uefi/uefiharddrivedevicepath.h
+src/os/include/uefi/uefiharddrivedevicepathmbrtype.h
+src/os/include/uefi/uefiharddrivedevicepathsignaturetype.h
 src/os/include/uefi/uefiinputkey.h
 src/os/include/uefi/uefiinterfacetype.h
 src/os/include/uefi/uefiloadedimageprotocol.h

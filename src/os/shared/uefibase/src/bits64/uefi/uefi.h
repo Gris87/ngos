@@ -27,7 +27,7 @@ public:
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
-    static char* convertToAscii(uefi_char16 *str); // TEST: NO
+    static char* convertToAscii(char16 *str); // TEST: NO
     static char* parentDirectory(char *path); // TEST: NO
 
     static char* devicePathToString(UefiDevicePath *path); // TEST: NO
@@ -61,7 +61,7 @@ public:
     static UefiSystemTable* getSystemTable(); // TEST: NO
 
 private:
-    static void print(uefi_char16 *ch); // TEST: NO
+    static void print(char16 *ch); // TEST: NO
 
     static uefi_handle                    sImageHandle;
     static UefiSystemTable               *sSystemTable;

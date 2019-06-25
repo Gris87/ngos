@@ -56,14 +56,14 @@ struct UefiBootServices
     UefiStatus (UEFI_API *installConfigurationTable)(UefiGuid *guid, void *table); // TEST: NO
 
     UefiStatus (UEFI_API *loadImage)(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, u64 sourceSize, uefi_handle *imageHandle); // TEST: NO
-    UefiStatus (UEFI_API *startImage)(uefi_handle imageHandle, u64 *exitDataSize, uefi_char16 **exitData); // TEST: NO
-    UefiStatus (UEFI_API *exit)(uefi_handle imageHandle, UefiStatus exitStatus, u64 exitDataSize, uefi_char16 *exitData); // TEST: NO
+    UefiStatus (UEFI_API *startImage)(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData); // TEST: NO
+    UefiStatus (UEFI_API *exit)(uefi_handle imageHandle, UefiStatus exitStatus, u64 exitDataSize, char16 *exitData); // TEST: NO
     UefiStatus (UEFI_API *unloadImage)(uefi_handle imageHandle); // TEST: NO
     UefiStatus (UEFI_API *exitBootServices)(uefi_handle imageHandle, u64 mapKey); // TEST: NO
 
     UefiStatus (UEFI_API *getNextMonotonicCount)(u64 *count); // TEST: NO
     UefiStatus (UEFI_API *stall)(u64 microseconds); // TEST: NO
-    UefiStatus (UEFI_API *setWatchdogTimer)(u64 timeout, u64 watchdogCode, u64 dataSize, uefi_char16 *watchdogData); // TEST: NO
+    UefiStatus (UEFI_API *setWatchdogTimer)(u64 timeout, u64 watchdogCode, u64 dataSize, char16 *watchdogData); // TEST: NO
 
     UefiStatus (UEFI_API *connectController)(uefi_handle controllerHandle, uefi_handle *driverImageHandle, UefiDevicePath *remainingDevicePath, bool recursive); // TEST: NO
     UefiStatus (UEFI_API *disconnectController)(uefi_handle controllerHandle, uefi_handle driverImageHandle, uefi_handle childHandle); // TEST: NO

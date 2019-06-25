@@ -16,8 +16,8 @@
 
 struct UefiDevicePathToTextProtocol
 {
-    uefi_char16* (UEFI_API *convertDeviceNodeToText)(const UefiDevicePath *deviceNode, bool displayOnly, bool allowShortcuts); // TEST: NO
-    uefi_char16* (UEFI_API *convertDevicePathToText)(const UefiDevicePath *devicePath, bool displayOnly, bool allowShortcuts); // TEST: NO
+    char16* (UEFI_API *convertDeviceNodeToText)(const UefiDevicePath *deviceNode, bool displayOnly, bool allowShortcuts); // TEST: NO
+    char16* (UEFI_API *convertDevicePathToText)(const UefiDevicePath *devicePath, bool displayOnly, bool allowShortcuts); // TEST: NO
 };
 
 

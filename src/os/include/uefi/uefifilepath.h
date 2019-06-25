@@ -12,7 +12,7 @@
 struct UefiFilePath
 {
     UefiDevicePath header;
-    uefi_char16    pathName[0];
+    char16         pathName[0];
 };
 
 

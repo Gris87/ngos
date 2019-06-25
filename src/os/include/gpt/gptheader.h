@@ -8,6 +8,12 @@
 
 
 
+#define GPT_HEADER_SIGNATURE  0x5452415020494645 // "EFI PART"
+#define GPT_HEADER_REVISION   0x00010000
+#define GPT_HEADER_ENTRY_SIZE 128
+
+
+
 struct GptHeader
 {
    u64  signature;

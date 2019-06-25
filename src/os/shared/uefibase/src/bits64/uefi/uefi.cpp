@@ -69,7 +69,7 @@ void UEFI::print(char ch)
 
 
 
-    uefi_char16 buffer[2] = { (uefi_char16)ch, 0 };
+    char16 buffer[2] = { (char16)ch, 0 };
     print(buffer);
 }
 
@@ -85,11 +85,11 @@ void UEFI::print(const char *str)
     {
         if (*str == '\n')
         {
-            uefi_char16 nl[2] = { '\r', 0 };
+            char16 nl[2] = { '\r', 0 };
             print(nl);
         }
 
-        uefi_char16 ch[2] = { (uefi_char16)(*str), 0 };
+        char16 ch[2] = { (char16)(*str), 0 };
         print(ch);
 
         ++str;
@@ -102,7 +102,7 @@ void UEFI::println()
 
 
 
-    uefi_char16 nl[3] = { '\r', '\n', 0 };
+    char16 nl[3] = { '\r', '\n', 0 };
     print(nl);
 }
 
@@ -112,7 +112,7 @@ void UEFI::println(char ch)
 
 
 
-    uefi_char16 buffer[4] = { (uefi_char16)ch, '\r', '\n', 0 };
+    char16 buffer[4] = { (char16)ch, '\r', '\n', 0 };
     print(buffer);
 }
 
@@ -126,7 +126,7 @@ void UEFI::println(const char *str)
 
     print(str);
 
-    uefi_char16 nl[3] = { '\r', '\n', 0 };
+    char16 nl[3] = { '\r', '\n', 0 };
     print(nl);
 }
 
@@ -192,7 +192,7 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-char* UEFI::convertToAscii(uefi_char16 *str)
+char* UEFI::convertToAscii(char16 *str)
 {
     UEFI_LT((" | str = 0x%p", str));
 
@@ -297,7 +297,7 @@ char* UEFI::devicePathToString(UefiDevicePath *path)
 
 
 
-    uefi_char16 *pathStr = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
+    char16 *pathStr = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
 
     if (!pathStr) // pathStr == 0
     {
@@ -966,7 +966,7 @@ UefiSystemTable* UEFI::getSystemTable()
     return sSystemTable;
 }
 
-void UEFI::print(uefi_char16 *ch)
+void UEFI::print(char16 *ch)
 {
     // UEFI_LT((" | ch = 0x%p", ch)); // Commented to avoid infinite loop
 

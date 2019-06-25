@@ -8,6 +8,9 @@
 
 
 
+#define MBR_BOOT_SIGNATURE 0xAA55
+
+
 
 struct Mbr
 {

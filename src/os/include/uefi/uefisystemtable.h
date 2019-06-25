@@ -17,7 +17,7 @@ struct UefiSystemTable
 {
     UefiTableHeader                header;
 
-    uefi_char16                   *firmwareVendor;
+    char16                        *firmwareVendor;
     u32                            firmwareRevision;
 
     uefi_handle                    stdinHandle;

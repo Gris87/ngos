@@ -418,8 +418,8 @@ NgosStatus UEFI::initSystemTable()
     // Print vendor name
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
     {
-        uefi_char16 *uefiVendor;
-        char         vendor[128];
+        char16 *uefiVendor;
+        char    vendor[128];
 
 
 
@@ -427,8 +427,8 @@ NgosStatus UEFI::initSystemTable()
 
 
 
-        u8           i  = 0;
-        uefi_char16 *ch = uefiVendor;
+        u8      i  = 0;
+        char16 *ch = uefiVendor;
 
         while (*ch)
         {

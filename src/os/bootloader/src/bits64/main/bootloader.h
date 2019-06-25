@@ -31,7 +31,8 @@ private:
     static NgosStatus initVolumeBlockIoProtocol(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeDevicePath(VolumeInfo *volume, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeGptData(VolumeInfo *volume); // TEST: NO
-    static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initVolumeTypeAndName(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initVolumeName(VolumeInfo *volume, UefiDevicePath *devicePath); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
