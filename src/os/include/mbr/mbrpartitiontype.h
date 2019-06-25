@@ -249,7 +249,6 @@ enum class MbrPartitionType: u8
     GPT_HYBRID_MBR                    = 0xED,
     GPT_PROTECTIVE_MBR                = 0xEE,
     UEFI_SYSTEM_PARTITION             = 0xEF,
-
     PA_RISC_LINUX_BOOT_LOADER         = 0xF0,
     RESERVED_F1                       = 0xF1,
     SPERRY_FAT                        = 0xF2,
