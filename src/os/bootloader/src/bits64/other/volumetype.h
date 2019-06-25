@@ -17,4 +17,19 @@ enum class VolumeType: u8
 
 
 
+inline const char* volumeTypeToString(VolumeType type)
+{
+    switch (type)
+    {
+        case VolumeType::INTERNAL: return "INTERNAL";
+        case VolumeType::EXTERNAL: return "EXTERNAL";
+        case VolumeType::OPTICAL:  return "OPTICAL";
+        case VolumeType::NETWORK:  return "NETWORK";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // BOOTLOADER_SRC_BITS64_OTHER_VOLUMETYPE_H

@@ -245,6 +245,7 @@ src/os/include/idt/macros.h
 src/os/include/idt/types.h
 src/os/include/mbr/mbr.h
 src/os/include/mbr/mbrpartition.h
+src/os/include/mbr/mbrpartitiontype.h
 src/os/include/page/macros.h
 src/os/include/pagetable/flags.h
 src/os/include/pagetable/macros.h

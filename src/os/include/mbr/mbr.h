@@ -15,8 +15,8 @@ struct Mbr
    u32          diskSignature;
    u16          __pad;
    MbrPartition partitions[4];
-   u16          mbrSignature;
-};
+   u16          bootSignature;
+} __attribute__((packed));
 
 
 

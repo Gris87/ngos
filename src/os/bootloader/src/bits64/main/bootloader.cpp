@@ -316,7 +316,10 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-            UEFI_LVVV(("sVolumes[%d].type = %u", i, sVolumes[i].type));
+            UEFI_LVVV(("sVolumes[%d].gptData.protectiveMbr = 0x%p", i, sVolumes[i].gptData.protectiveMbr));
+            UEFI_LVVV(("sVolumes[%d].gptData.header        = 0x%p", i, sVolumes[i].gptData.header));
+            UEFI_LVVV(("sVolumes[%d].gptData.entries       = 0x%p", i, sVolumes[i].gptData.entries));
+            UEFI_LVVV(("sVolumes[%d].type                  = %u (%s)", i, sVolumes[i].type, volumeTypeToString(sVolumes[i].type)));
         }
 
         UEFI_LVVV(("-------------------------------------"));
@@ -424,8 +427,28 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_h
     UEFI_LT((" | volume = 0x%p, protocol = 0x%p, handle = 0x%p", volume, protocol, handle));
 
     UEFI_ASSERT(volume,   "volume is null",   NgosStatus::ASSERTION);
-    UEFI_ASSERT(handle,   "handle is null",   NgosStatus::ASSERTION);
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(handle,   "handle is null",   NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(initVolumeDeviceHandle(volume, handle),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeBlockIoProtocol(volume, protocol, handle), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeDevicePath(volume, handle),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeGptData(volume),                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeType(volume),                              NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeDeviceHandle(VolumeInfo *volume, uefi_handle handle)
+{
+    UEFI_LT((" | volume = 0x%p, handle = 0x%p", volume, handle));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(handle, "handle is null", NgosStatus::ASSERTION);
 
 
 
@@ -433,22 +456,115 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_h
 
 
 
-    if (UEFI::handleProtocol(volume->deviceHandle, protocol, (void **)&volume->blockIoProtocol) != UefiStatus::SUCCESS)
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeBlockIoProtocol(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle)
+{
+    UEFI_LT((" | volume = 0x%p, protocol = 0x%p, handle = 0x%p", volume, protocol, handle));
+
+    UEFI_ASSERT(volume,   "volume is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(handle,   "handle is null",   NgosStatus::ASSERTION);
+
+
+
+    if (UEFI::handleProtocol(handle, protocol, (void **)&volume->blockIoProtocol) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_BLOCK_IO_PROTOCOL", volume->deviceHandle));
+        UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_BLOCK_IO_PROTOCOL", handle));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_BLOCK_IO_PROTOCOL", volume->deviceHandle, volume->blockIoProtocol));
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_BLOCK_IO_PROTOCOL", handle, volume->blockIoProtocol));
 
 
 
-    volume->devicePath = UEFI::devicePathFromHandle(volume->deviceHandle);
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeDevicePath(VolumeInfo *volume, uefi_handle handle)
+{
+    UEFI_LT((" | volume = 0x%p, handle = 0x%p", volume, handle));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(handle, "handle is null", NgosStatus::ASSERTION);
 
 
 
-    UEFI_ASSERT_EXECUTION(initVolumeType(volume), NgosStatus::ASSERTION);
+    volume->devicePath = UEFI::devicePathFromHandle(handle);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
+{
+    UEFI_LT((" | volume = 0x%p", volume));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+
+
+
+    volume->gptData.protectiveMbr = 0;
+    volume->gptData.header        = 0;
+    volume->gptData.entries       = 0;
+
+
+
+    if (
+        volume->blockIoProtocol->media->mediaPresent
+        ||
+        volume->blockIoProtocol->media->logicalPartition
+       )
+    {
+        u64 size = sizeof(Mbr);
+
+        if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&volume->gptData.protectiveMbr) != UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Failed to allocate pool(%u) for GPT protective MBR", size));
+
+            return NgosStatus::FAILED;
+        }
+
+        UEFI_LVV(("Allocated pool(0x%p, %u) for GPT protective MBR", volume->gptData.protectiveMbr, size));
+
+
+
+        if (volume->blockIoProtocol->readBlocks(volume->blockIoProtocol, volume->blockIoProtocol->media->mediaId, 0, size, (void *)volume->gptData.protectiveMbr) != UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Failed to read GPT protective MBR"));
+
+            return NgosStatus::FAILED;
+        }
+
+        UEFI_LVV(("Successfully read GPT protective MBR"));
+
+
+
+        size = sizeof(GptHeader);
+
+        if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&volume->gptData.header) != UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Failed to allocate pool(%u) for GPT header", size));
+
+            return NgosStatus::FAILED;
+        }
+
+        UEFI_LVV(("Allocated pool(0x%p, %u) for GPT header", volume->gptData.header, size));
+
+
+
+        if (volume->blockIoProtocol->readBlocks(volume->blockIoProtocol, volume->blockIoProtocol->media->mediaId, 1, size, (void *)volume->gptData.header) != UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Failed to read GPT header"));
+
+            return NgosStatus::FAILED;
+        }
+
+        UEFI_LVV(("Successfully read GPT header"));
+    }
 
 
 

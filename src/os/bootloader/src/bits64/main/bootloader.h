@@ -27,6 +27,10 @@ private:
     static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size); // TEST: NO
     static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
     static NgosStatus initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle); // TEST: NO
+    static NgosStatus initVolumeDeviceHandle(VolumeInfo *volume, uefi_handle handle); // TEST: NO
+    static NgosStatus initVolumeBlockIoProtocol(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle); // TEST: NO
+    static NgosStatus initVolumeDevicePath(VolumeInfo *volume, uefi_handle handle); // TEST: NO
+    static NgosStatus initVolumeGptData(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;

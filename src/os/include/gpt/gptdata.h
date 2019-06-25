@@ -9,7 +9,7 @@
 
 
 
-struct GtpData
+struct GptData
 {
     Mbr       *protectiveMbr;
     GptHeader *header;
