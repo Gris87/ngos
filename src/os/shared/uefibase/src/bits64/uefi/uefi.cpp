@@ -948,13 +948,13 @@ UefiStatus UEFI::exitBootServices(u64 mapKey)
     return res;
 }
 
-UefiStatus UEFI::setWatchdogTimer(u64 timeout, u64 watchdogCode, u64 dataSize, char16 *watchdogData)
+UefiStatus UEFI::disableWatchdogTimer()
 {
-    UEFI_LT((" | timeout = 0x%p, watchdogCode = 0x%p, dataSize = 0x%p, watchdogData = 0x%p", timeout, watchdogCode, dataSize, watchdogData));
+    UEFI_LT((""));
 
 
 
-    return sBootServices->setWatchdogTimer(timeout, watchdogCode, dataSize, watchdogData);
+    return sBootServices->setWatchdogTimer(0, 0, 0, 0);
 }
 
 uefi_handle UEFI::getImageHandle()

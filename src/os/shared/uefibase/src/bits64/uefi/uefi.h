@@ -57,7 +57,7 @@ public:
 
     static UefiStatus exitBootServices(u64 mapKey); // TEST: NO
 
-    static UefiStatus setWatchdogTimer(u64 timeout, u64 watchdogCode, u64 dataSize, char16 *watchdogData); // TEST: NO
+    static UefiStatus disableWatchdogTimer(); // TEST: NO
 
     static uefi_handle getImageHandle(); // TEST: NO
     static UefiSystemTable* getSystemTable(); // TEST: NO

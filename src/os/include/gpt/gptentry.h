@@ -10,12 +10,12 @@
 
 struct GptEntry
 {
-   Guid   partitionTypeGuid;
-   Guid   partitionUniqueGuid;
-   u64    startLba;
-   u64    endLba;
-   u64    attributes;
-   char16 name[36];
+    Guid   partitionTypeGuid;
+    Guid   partitionUniqueGuid;
+    u64    startLba;
+    u64    endLba;
+    u64    attributes;
+    char16 name[36];
 };
 
 

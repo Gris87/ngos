@@ -1,5 +1,7 @@
 #include "bootloader.h"
 
+#include <common/src/bits64/assets/assets.h>
+#include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 #include <gpt/utils.h>
@@ -15,6 +17,7 @@ UefiDevicePath          *Bootloader::sDevicePath;
 char                    *Bootloader::sApplicationDirPath;
 u64                      Bootloader::sNumberOfVolumes;
 VolumeInfo              *Bootloader::sVolumes;
+Image                   *Bootloader::sBackgroundImage;
 
 
 
@@ -31,6 +34,7 @@ NgosStatus Bootloader::init()
     UEFI_ASSERT_EXECUTION(initDevicePath(applicationPath),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initApplicationDirPath(applicationPath), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumes(),                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initImages(),                            NgosStatus::ASSERTION);
 
 
 
@@ -95,6 +99,27 @@ NgosStatus Bootloader::cleanUpPath(char *path)
         path[0] = '\\';
         path[1] = '\0';
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::loadImageFromDiskOrAssets(const char *path, Image **image)
+{
+    UEFI_LT((" | path = %s, image = 0x%p", path, image));
+
+    UEFI_ASSERT(path,  "path is null",  NgosStatus::ASSERTION);
+    UEFI_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+
+
+
+    AssetEntry *asset = Assets::getAssetEntry(path);
+    UEFI_TEST_ASSERT(asset != 0, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, image), NgosStatus::ASSERTION);
 
 
 
@@ -742,6 +767,19 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume, UefiDevicePath *device
             }
         }
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initImages()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(loadImageFromDiskOrAssets("images/background.jpg", &sBackgroundImage), NgosStatus::ASSERTION);
 
 
 

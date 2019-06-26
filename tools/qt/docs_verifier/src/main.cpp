@@ -188,6 +188,8 @@ qint32 main(qint32 argc, char *argv[])
                     &&
                     !filename.endsWith(".png")
                     &&
+                    !filename.endsWith(".jpg")
+                    &&
                     !filename.endsWith(".gif")
                     &&
                     !filename.endsWith(".svg")
