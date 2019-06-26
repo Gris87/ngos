@@ -111,6 +111,20 @@ src/os/bootloader/asm/arch/x86_64/main.S
 src/os/bootloader/assets/.gitignore
 src/os/bootloader/assets/generate_assets.sh
 src/os/bootloader/assets/glyphs/console.bin
+src/os/bootloader/assets/images/arrow_left.png
+src/os/bootloader/assets/images/arrow_right.png
+src/os/bootloader/assets/images/background.jpg
+src/os/bootloader/assets/images/button_focused.9.png
+src/os/bootloader/assets/images/button_hover.9.png
+src/os/bootloader/assets/images/button_normal.9.png
+src/os/bootloader/assets/images/button_pressed.9.png
+src/os/bootloader/assets/images/cursor.png
+src/os/bootloader/assets/images/os_ngos.png
+src/os/bootloader/assets/images/os_ubuntu.png
+src/os/bootloader/assets/images/os_windows.png
+src/os/bootloader/assets/images/pointer.png
+src/os/bootloader/assets/images/reboot.png
+src/os/bootloader/assets/images/shutdown.png
 src/os/bootloader/Image structure.png
 src/os/bootloader/linker.ld
 src/os/bootloader/Makefile
