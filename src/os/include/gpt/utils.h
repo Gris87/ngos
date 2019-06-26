@@ -7,7 +7,7 @@
 
 
 
-inline bool isGptValid(const GptData &data)
+inline bool isGptValid(const GptData &data) // TEST: NO
 {
     if (
         !data.protectiveMbr // data.protectiveMbr == 0
