@@ -401,6 +401,7 @@ src/os/shared/common/src/bits64/graphics/image.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdecoder.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkerheader.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkertype.h
 src/os/shared/common/src/bits64/graphics/png/png.cpp
 src/os/shared/common/src/bits64/graphics/png/png.h

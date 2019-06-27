@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/graphics/jpeg/jpegdecoder.h>
+#include <common/src/bits64/graphics/jpeg/jpegmarkerheader.h>
 #include <ngos/status.h>
 
 
@@ -16,12 +17,12 @@ public:
 
 private:
     static NgosStatus skip(JpegDecoder *decoder, u64 count); // TEST: NO
-    static NgosStatus skipMarker(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus decodeStartOfFrameBaselineDCT(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus decodeDefineHuffmanTableMarker(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus decodeDefineQuantizationTableMarker(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus decodeDefineRestartIntervalMarker(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus decodeStartOfScanMarker(JpegDecoder *decoder); // TEST: NO
+    static NgosStatus skipMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeStartOfFrameBaselineDCT(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
 };
 
 

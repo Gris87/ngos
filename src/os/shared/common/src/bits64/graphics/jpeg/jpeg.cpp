@@ -1,8 +1,8 @@
 #include "jpeg.h"
 
-#include <common/src/bits64/graphics/jpeg/jpegmarkertype.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <ngos/utils.h>
 
 
 
@@ -40,16 +40,18 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
     do
     {
-        if (decoder.size < 2 || decoder.data[0] != JPEG_MARKER_SPLITTER)
+        JpegMarkerHeader *marker = (JpegMarkerHeader *)decoder.data;
+
+
+
+        if (decoder.size < 2 || marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
         {
             return NgosStatus::INVALID_DATA;
         }
 
 
 
-        JpegMarkerType markerType = (JpegMarkerType)decoder.data[1];
-
-        COMMON_LVVV(("markerType = 0x%02X (%s)", markerType, jpegMarkerTypeToString(markerType)));
+        COMMON_LVVV(("marker->type = 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
 
 
 
@@ -62,29 +64,35 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
         NgosStatus status;
 
-        switch (markerType)
+        switch (marker->type)
         {
+            case JpegMarkerType::START_OF_FRAME_BASELINE_DCT:
+            {
+                status = decodeStartOfFrameBaselineDCT(&decoder, marker);
+            }
+            break;
+
             case JpegMarkerType::DEFINE_HUFFMAN_TABLE:
             {
-                status = decodeDefineHuffmanTableMarker(&decoder);
+                status = decodeDefineHuffmanTableMarker(&decoder, marker);
             }
             break;
 
             case JpegMarkerType::DEFINE_QUANTIZATION_TABLE:
             {
-                status = decodeDefineQuantizationTableMarker(&decoder);
+                status = decodeDefineQuantizationTableMarker(&decoder, marker);
             }
             break;
 
             case JpegMarkerType::DEFINE_RESTART_INTERVAL:
             {
-                status = decodeDefineRestartIntervalMarker(&decoder);
+                status = decodeDefineRestartIntervalMarker(&decoder, marker);
             }
             break;
 
             case JpegMarkerType::START_OF_SCAN:
             {
-                status = decodeStartOfScanMarker(&decoder);
+                status = decodeStartOfScanMarker(&decoder, marker);
             }
             break;
 
@@ -108,7 +116,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             case JpegMarkerType::APPLICATION_9:
             case JpegMarkerType::COMMENT:
             {
-                status = skipMarker(&decoder);
+                status = skipMarker(&decoder, marker);
             }
             break;
 
@@ -123,7 +131,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             case JpegMarkerType::RESTART_6:
             case JpegMarkerType::RESTART_7:
             {
-                COMMON_LF(("Unexpected marker type: %u", markerType));
+                COMMON_LF(("Unexpected marker type: %u", marker->type));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -131,7 +139,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
             default:
             {
-                COMMON_LF(("Unknown marker type: %u", markerType));
+                COMMON_LF(("Unknown marker type: %u", marker->type));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -173,66 +181,72 @@ NgosStatus Jpeg::skip(JpegDecoder *decoder, u64 count)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::skipMarker(JpegDecoder *decoder)
+NgosStatus Jpeg::skipMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
+
+
+
+    return skip(decoder, ntohs(marker->length));
+}
+
+NgosStatus Jpeg::decodeStartOfFrameBaselineDCT(JpegDecoder *decoder, JpegMarkerHeader *marker)
+{
+    COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeStartOfFrameBaselineDCT(JpegDecoder *decoder)
+NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder)
+NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder)
+NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder)
+NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder)
-{
-    COMMON_LT((" | decoder = 0x%p", decoder));
-
-    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
 
 
 

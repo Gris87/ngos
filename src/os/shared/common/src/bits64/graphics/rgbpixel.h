@@ -12,7 +12,7 @@ struct RgbPixel
     u8 blue;
     u8 green;
     u8 red;
-};
+} __attribute__((packed));
 
 
 

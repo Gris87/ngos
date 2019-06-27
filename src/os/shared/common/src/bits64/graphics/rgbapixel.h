@@ -13,7 +13,7 @@ struct RgbaPixel
     u8 green;
     u8 red;
     u8 alpha;
-};
+} __attribute__((packed));
 
 
 
