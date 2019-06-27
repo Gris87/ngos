@@ -3,14 +3,20 @@
 
 
 
+#include <common/src/bits64/graphics/image.h>
+#include <common/src/bits64/graphics/jpeg/jpegquantizationtable.h>
+#include <common/src/bits64/graphics/jpeg/jpegstartofframebaselinedctmarker.h>
 #include <ngos/types.h>
 
 
 
 struct JpegDecoder
 {
-    u8  *data;
-    u64  size;
+    u8                                *data;
+    u64                                size;
+    Image                            **image;
+    JpegQuantizationTable*             quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT];
+    JpegStartOfFrameBaselineDctMarker *startOfFrameMarker;
 };
 
 

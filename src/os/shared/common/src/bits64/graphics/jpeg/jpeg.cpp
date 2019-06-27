@@ -1,7 +1,10 @@
 #include "jpeg.h"
 
+#include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
+#include <common/src/bits64/graphics/jpeg/jpegstartofframebaselinedctmarker.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/memory.h>
 #include <ngos/utils.h>
 
 
@@ -19,15 +22,16 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    JpegDecoder decoder;
-
-    decoder.data = data;
-    decoder.size = size;
-
-    if (*((u16 *)&decoder.data[0]) != JPEG_START_OF_IMAGE_SIGNATURE)
+    if (*((u16 *)&data[0]) != JPEG_START_OF_IMAGE_SIGNATURE)
     {
         return NgosStatus::INVALID_DATA;
     }
+
+
+
+    JpegDecoder decoder;
+
+    COMMON_ASSERT_EXECUTION(initDecoder(&decoder, data, size, image), NgosStatus::ASSERTION);
 
 
 
@@ -68,7 +72,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
         {
             case JpegMarkerType::START_OF_FRAME_BASELINE_DCT:
             {
-                status = decodeStartOfFrameBaselineDCT(&decoder, marker);
+                status = decodeStartOfFrameBaselineDct(&decoder, marker);
             }
             break;
 
@@ -114,6 +118,12 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             case JpegMarkerType::APPLICATION_7:
             case JpegMarkerType::APPLICATION_8:
             case JpegMarkerType::APPLICATION_9:
+            case JpegMarkerType::APPLICATION_10:
+            case JpegMarkerType::APPLICATION_11:
+            case JpegMarkerType::APPLICATION_12:
+            case JpegMarkerType::APPLICATION_13:
+            case JpegMarkerType::APPLICATION_14:
+            case JpegMarkerType::APPLICATION_15:
             case JpegMarkerType::COMMENT:
             {
                 status = skipMarker(&decoder, marker);
@@ -157,6 +167,31 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
     return NgosStatus::OK;
 }
 
+NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **image)
+{
+    COMMON_LT((" | decoder = 0x%p, data = 0x%p, size = %u, image = 0x%p", decoder, data, size, image));
+
+    COMMON_ASSERT(decoder,  "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(data,     "data is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(image,    "image is null",   NgosStatus::ASSERTION);
+
+
+
+    decoder->data               = data;
+    decoder->size               = size;
+    decoder->image              = image;
+    decoder->startOfFrameMarker = 0;
+
+    memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
+
+    *image = 0;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Jpeg::skip(JpegDecoder *decoder, u64 count)
 {
     COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count));
@@ -193,12 +228,77 @@ NgosStatus Jpeg::skipMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
     return skip(decoder, ntohs(marker->length));
 }
 
-NgosStatus Jpeg::decodeStartOfFrameBaselineDCT(JpegDecoder *decoder, JpegMarkerHeader *marker)
+NgosStatus Jpeg::decodeStartOfFrameBaselineDct(JpegDecoder *decoder, JpegMarkerHeader *marker)
 {
     COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
+
+
+
+    if (skipMarker(decoder, marker) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    JpegStartOfFrameBaselineDctMarker *startOfFrameMarker = (JpegStartOfFrameBaselineDctMarker *)marker;
+
+    COMMON_LVVV(("startOfFrameMarker->dataPrecision = %u", startOfFrameMarker->dataPrecision));
+
+    if (startOfFrameMarker->dataPrecision != JPEG_START_OF_FRAME_DEFAULT_PRECISION)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    u16 length = ntohs(marker->length);
+
+    COMMON_LVVV(("length = %u", length));
+
+    if (sizeof(JpegStartOfFrameBaselineDctMarker) + startOfFrameMarker->numberOfComponents * sizeof(JpegStartOfFrameBaselineDctComponent) != (u16)(length + 2))
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    u16 width  = ntohs(startOfFrameMarker->width);
+    u16 height = ntohs(startOfFrameMarker->height);
+
+    COMMON_LVVV(("width  = %u", width));
+    COMMON_LVVV(("height = %u", height));
+
+    if (
+        !width // width == 0
+        ||
+        !height // height == 0
+       )
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    u8 numberOfComponents = startOfFrameMarker->numberOfComponents;
+
+    COMMON_LVVV(("numberOfComponents = %u", numberOfComponents));
+
+    if (
+        numberOfComponents != 3
+        &&
+        numberOfComponents != 1
+       )
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    decoder->startOfFrameMarker = startOfFrameMarker;
 
 
 
@@ -214,6 +314,13 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
+    if (skipMarker(decoder, marker) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -223,6 +330,49 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
+
+
+
+    if (skipMarker(decoder, marker) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    JpegDefineQuantizationTableMarker *quantizationTableMarker = (JpegDefineQuantizationTableMarker *)marker;
+
+    u64 length = ntohs(marker->length) - 2;
+    u64 count  = length / sizeof(JpegQuantizationTable);
+
+    COMMON_LVVV(("length = %u", length));
+    COMMON_LVVV(("count  = %u", count));
+
+    if (count * sizeof(JpegQuantizationTable) != length)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    for (i64 i = 0; i < (i64)count; ++i)
+    {
+        JpegQuantizationTable *table   = &quantizationTableMarker->tables[i];
+        u8                     tableId = table->id;
+
+        COMMON_LVVV(("tableId  = %u", tableId));
+
+        if (tableId >= JPEG_QUANTIZATION_TABLE_COUNT)
+        {
+            return NgosStatus::INVALID_DATA;
+        }
+
+
+
+        COMMON_TEST_ASSERT(decoder->quantizationTables[tableId] == 0, NgosStatus::ASSERTION);
+
+        decoder->quantizationTables[tableId] = table;
+    }
 
 
 

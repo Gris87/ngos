@@ -17,7 +17,7 @@ struct JpegMarkerHeader
     u8             separator;
     JpegMarkerType type;
     u16            length;
-};
+} __attribute__((packed));
 
 
 

@@ -41,6 +41,12 @@ enum class JpegMarkerType: u8
     APPLICATION_7                  = 0xE7,
     APPLICATION_8                  = 0xE8,
     APPLICATION_9                  = 0xE9,
+    APPLICATION_10                 = 0xEA,
+    APPLICATION_11                 = 0xEB,
+    APPLICATION_12                 = 0xEC,
+    APPLICATION_13                 = 0xED,
+    APPLICATION_14                 = 0xEE,
+    APPLICATION_15                 = 0xEF,
     COMMENT                        = 0xFE,
     END_OF_IMAGE                   = 0xD9
 };
@@ -80,6 +86,12 @@ inline const char* jpegMarkerTypeToString(JpegMarkerType type) // TEST: NO
         case JpegMarkerType::APPLICATION_7:                  return "APPLICATION_7";
         case JpegMarkerType::APPLICATION_8:                  return "APPLICATION_8";
         case JpegMarkerType::APPLICATION_9:                  return "APPLICATION_9";
+        case JpegMarkerType::APPLICATION_10:                 return "APPLICATION_10";
+        case JpegMarkerType::APPLICATION_11:                 return "APPLICATION_11";
+        case JpegMarkerType::APPLICATION_12:                 return "APPLICATION_12";
+        case JpegMarkerType::APPLICATION_13:                 return "APPLICATION_13";
+        case JpegMarkerType::APPLICATION_14:                 return "APPLICATION_14";
+        case JpegMarkerType::APPLICATION_15:                 return "APPLICATION_15";
         case JpegMarkerType::COMMENT:                        return "COMMENT";
         case JpegMarkerType::END_OF_IMAGE:                   return "END_OF_IMAGE";
 
