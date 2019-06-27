@@ -184,7 +184,7 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
 
     memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
 
-    *image = 0;
+    *decoder->image = 0;
 
 
 
@@ -297,6 +297,44 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
+    for (i64 i = 0; i < numberOfComponents; ++i)
+    {
+        JpegStartOfFrameComponent *component = &startOfFrameMarker->components[i];
+
+        JpegStartOfFrameComponentId componentId         = component->id;
+        u8                          samplingFactorX     = component->samplingFactorX;
+        u8                          samplingFactorY     = component->samplingFactorY;
+        u8                          quantizationTableId = component->quantizationTableId;
+
+        COMMON_LVVV(("componentId         = %u (%s)", componentId, jpegStartOfFrameComponentIdToString(componentId)));
+        COMMON_LVVV(("samplingFactorX     = %u", samplingFactorX));
+        COMMON_LVVV(("samplingFactorY     = %u", samplingFactorY));
+        COMMON_LVVV(("quantizationTableId = %u", quantizationTableId));
+
+        if (
+            (u8)componentId < (u8)JpegStartOfFrameComponentId::Y
+            ||
+            (u8)componentId > (u8)JpegStartOfFrameComponentId::Q
+            ||
+            !samplingFactorX // samplingFactorX == 0
+            ||
+            !samplingFactorY // samplingFactorY == 0
+            ||
+            !IS_POWER_OF_2(samplingFactorX)
+            ||
+            !IS_POWER_OF_2(samplingFactorY)
+            ||
+            quantizationTableId >= JPEG_QUANTIZATION_TABLE_COUNT
+            ||
+            !decoder->quantizationTables[quantizationTableId]
+           )
+        {
+            return NgosStatus::INVALID_DATA;
+        }
+    }
+
+
+
     decoder->startOfFrameMarker = startOfFrameMarker;
 
 
@@ -384,6 +422,13 @@ NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMar
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
+
+
+
+    if (skipMarker(decoder, marker) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
 
 
 

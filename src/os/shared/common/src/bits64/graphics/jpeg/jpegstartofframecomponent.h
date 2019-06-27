@@ -3,16 +3,17 @@
 
 
 
+#include <common/src/bits64/graphics/jpeg/jpegstartofframecomponentid.h>
 #include <ngos/types.h>
 
 
 
 struct JpegStartOfFrameComponent
 {
-    u8  id;
-    u8  samplingFactorX: 4,
-        samplingFactorY: 4;
-    u8  quantizationTableId;
+    JpegStartOfFrameComponentId id;
+    u8                          samplingFactorY: 4,
+                                samplingFactorX: 4;
+    u8                          quantizationTableId;
 } __attribute__((packed));
 
 
