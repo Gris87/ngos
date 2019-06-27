@@ -405,8 +405,8 @@ src/os/shared/common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.
 src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkerheader.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkertype.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegquantizationtable.h
-src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframebaselinedctcomponent.h
-src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframebaselinedctmarker.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframecomponent.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframemarker.h
 src/os/shared/common/src/bits64/graphics/png/png.cpp
 src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngheader.h

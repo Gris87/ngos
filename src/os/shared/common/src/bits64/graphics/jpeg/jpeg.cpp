@@ -1,7 +1,7 @@
 #include "jpeg.h"
 
 #include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
-#include <common/src/bits64/graphics/jpeg/jpegstartofframebaselinedctmarker.h>
+#include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
@@ -70,9 +70,9 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
         switch (marker->type)
         {
-            case JpegMarkerType::START_OF_FRAME_BASELINE_DCT:
+            case JpegMarkerType::START_OF_FRAME:
             {
-                status = decodeStartOfFrameBaselineDct(&decoder, marker);
+                status = decodeStartOfFrame(&decoder, marker);
             }
             break;
 
@@ -131,7 +131,6 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             break;
 
             case JpegMarkerType::START_OF_IMAGE:
-            case JpegMarkerType::START_OF_FRAME_PROGRESSIVE_DCT:
             case JpegMarkerType::RESTART_0:
             case JpegMarkerType::RESTART_1:
             case JpegMarkerType::RESTART_2:
@@ -228,7 +227,7 @@ NgosStatus Jpeg::skipMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
     return skip(decoder, ntohs(marker->length));
 }
 
-NgosStatus Jpeg::decodeStartOfFrameBaselineDct(JpegDecoder *decoder, JpegMarkerHeader *marker)
+NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *marker)
 {
     COMMON_LT((" | decoder = 0x%p, marker = 0x%p", decoder, marker));
 
@@ -244,7 +243,7 @@ NgosStatus Jpeg::decodeStartOfFrameBaselineDct(JpegDecoder *decoder, JpegMarkerH
 
 
 
-    JpegStartOfFrameBaselineDctMarker *startOfFrameMarker = (JpegStartOfFrameBaselineDctMarker *)marker;
+    JpegStartOfFrameMarker *startOfFrameMarker = (JpegStartOfFrameMarker *)marker;
 
     COMMON_LVVV(("startOfFrameMarker->dataPrecision = %u", startOfFrameMarker->dataPrecision));
 
@@ -259,7 +258,7 @@ NgosStatus Jpeg::decodeStartOfFrameBaselineDct(JpegDecoder *decoder, JpegMarkerH
 
     COMMON_LVVV(("length = %u", length));
 
-    if (sizeof(JpegStartOfFrameBaselineDctMarker) + startOfFrameMarker->numberOfComponents * sizeof(JpegStartOfFrameBaselineDctComponent) != (u16)(length + 2))
+    if (sizeof(JpegStartOfFrameMarker) + startOfFrameMarker->numberOfComponents * sizeof(JpegStartOfFrameComponent) != (u16)(length + 2))
     {
         return NgosStatus::INVALID_DATA;
     }

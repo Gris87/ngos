@@ -19,7 +19,7 @@ private:
     static NgosStatus initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **image); // TEST: NO
     static NgosStatus skip(JpegDecoder *decoder, u64 count); // TEST: NO
     static NgosStatus skipMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
-    static NgosStatus decodeStartOfFrameBaselineDct(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
