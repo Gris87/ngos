@@ -6,6 +6,7 @@
 #include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/graphics/jpeg/jpegdecoder.h>
 #include <common/src/bits64/graphics/jpeg/jpegmarkerheader.h>
+#include <common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h>
 #include <ngos/status.h>
 
 
@@ -24,7 +25,7 @@ private:
     static NgosStatus decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
-    static NgosStatus decodeImageData(JpegDecoder *decoder); // TEST: NO
+    static NgosStatus decodeImageData(JpegDecoder *decoder, JpegStartOfScanMarker *startOfScanMarker); // TEST: NO
 };
 
 

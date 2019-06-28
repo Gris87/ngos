@@ -4,7 +4,6 @@
 #include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegdefinerestartintervalmarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
-#include <common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
@@ -590,6 +589,13 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
+    if (!decoder->startOfFrameMarker)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
     JpegStartOfScanMarker *startOfScanMarker = (JpegStartOfScanMarker *)marker;
 
 
@@ -609,6 +615,8 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
         numberOfComponents != 3
         &&
         numberOfComponents != 1
+        &&
+        numberOfComponents != decoder->startOfFrameMarker->numberOfComponents
        )
     {
         return NgosStatus::INVALID_DATA;
@@ -633,6 +641,8 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
             ||
             (u8)componentId > (u8)JpegComponentId::Q
             ||
+            decoder->startOfFrameMarker->components[i].id != componentId
+            ||
             huffmanDcTableId >= JPEG_HUFFMAN_TABLE_COUNT
             ||
             huffmanAcTableId >= JPEG_HUFFMAN_TABLE_COUNT
@@ -648,21 +658,25 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    if (!decoder->startOfFrameMarker)
-    {
-        return NgosStatus::INVALID_DATA;
-    }
+    COMMON_TEST_ASSERT(((u8 *)startOfScanMarker)[length + 2 - 3] == 0,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((u8 *)startOfScanMarker)[length + 2 - 2] == 0x3F, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((u8 *)startOfScanMarker)[length + 2 - 1] == 0,    NgosStatus::ASSERTION);
 
 
 
-    return decodeImageData(decoder);
+    return decodeImageData(decoder, startOfScanMarker);
 }
 
-NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
+NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder, JpegStartOfScanMarker *startOfScanMarker)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, startOfScanMarker = 0x%p", decoder, startOfScanMarker));
 
-    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,           "decoder is null",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(startOfScanMarker, "startOfScanMarker is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_LVV(("Loading image data from address 0x%p", decoder->data));
 
 
 
