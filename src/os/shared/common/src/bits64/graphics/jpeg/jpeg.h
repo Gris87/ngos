@@ -24,6 +24,7 @@ private:
     static NgosStatus decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeImageData(JpegDecoder *decoder); // TEST: NO
 };
 
 

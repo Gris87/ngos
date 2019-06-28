@@ -4,6 +4,7 @@
 #include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegdefinerestartintervalmarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
+#include <common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
@@ -310,20 +311,20 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
     {
         JpegStartOfFrameComponent *component = &startOfFrameMarker->components[i];
 
-        JpegStartOfFrameComponentId componentId         = component->id;
-        u8                          samplingFactorX     = component->samplingFactorX;
-        u8                          samplingFactorY     = component->samplingFactorY;
-        u8                          quantizationTableId = component->quantizationTableId;
+        JpegComponentId componentId         = component->id;
+        u8              samplingFactorX     = component->samplingFactorX;
+        u8              samplingFactorY     = component->samplingFactorY;
+        u8              quantizationTableId = component->quantizationTableId;
 
-        COMMON_LVVV(("componentId         = %u (%s)", componentId, jpegStartOfFrameComponentIdToString(componentId)));
+        COMMON_LVVV(("componentId         = %u (%s)", componentId, jpegComponentIdToString(componentId)));
         COMMON_LVVV(("samplingFactorX     = %u", samplingFactorX));
         COMMON_LVVV(("samplingFactorY     = %u", samplingFactorY));
         COMMON_LVVV(("quantizationTableId = %u", quantizationTableId));
 
         if (
-            (u8)componentId < (u8)JpegStartOfFrameComponentId::Y
+            (u8)componentId < (u8)JpegComponentId::Y
             ||
-            (u8)componentId > (u8)JpegStartOfFrameComponentId::Q
+            (u8)componentId > (u8)JpegComponentId::Q
             ||
             !samplingFactorX // samplingFactorX == 0
             ||
@@ -573,6 +574,95 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(marker,  "marker is null",  NgosStatus::ASSERTION);
+
+
+
+    u16 length = ntohs(marker->length);
+
+    COMMON_LVVV(("length = %u", length));
+
+
+
+    if (skip(decoder, length) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    JpegStartOfScanMarker *startOfScanMarker = (JpegStartOfScanMarker *)marker;
+
+
+
+    if (sizeof(JpegStartOfScanMarker) + startOfScanMarker->numberOfComponents * sizeof(JpegStartOfScanComponent) + 3 != (u16)(length + 2)) // "+ 3" because we have to ignore the last 3 bytes in JpegStartOfScanMarker
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    u8 numberOfComponents = startOfScanMarker->numberOfComponents;
+
+    COMMON_LVVV(("numberOfComponents = %u", numberOfComponents));
+
+    if (
+        numberOfComponents != 3
+        &&
+        numberOfComponents != 1
+       )
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    for (i64 i = 0; i < numberOfComponents; ++i)
+    {
+        JpegStartOfScanComponent *component = &startOfScanMarker->components[i];
+
+        JpegComponentId componentId      = component->id;
+        u8              huffmanDcTableId = component->huffmanDcTableId;
+        u8              huffmanAcTableId = component->huffmanAcTableId;
+
+        COMMON_LVVV(("componentId      = %u (%s)", componentId, jpegComponentIdToString(componentId)));
+        COMMON_LVVV(("huffmanDcTableId = %u", huffmanDcTableId));
+        COMMON_LVVV(("huffmanAcTableId = %u", huffmanAcTableId));
+
+        if (
+            (u8)componentId < (u8)JpegComponentId::Y
+            ||
+            (u8)componentId > (u8)JpegComponentId::Q
+            ||
+            huffmanDcTableId >= JPEG_HUFFMAN_TABLE_COUNT
+            ||
+            huffmanAcTableId >= JPEG_HUFFMAN_TABLE_COUNT
+            ||
+            !decoder->huffmanDcTables[huffmanDcTableId]
+            ||
+            !decoder->huffmanAcTables[huffmanAcTableId]
+           )
+        {
+            return NgosStatus::INVALID_DATA;
+        }
+    }
+
+
+
+    if (!decoder->startOfFrameMarker)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    return decodeImageData(decoder);
+}
+
+NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 

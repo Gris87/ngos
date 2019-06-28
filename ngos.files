@@ -400,6 +400,7 @@ src/os/shared/common/src/bits64/graphics/graphics.h
 src/os/shared/common/src/bits64/graphics/image.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegcomponentid.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdecoder.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdefinehuffmantablemarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h
@@ -409,8 +410,9 @@ src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkerheader.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkertype.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegquantizationtable.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframecomponent.h
-src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframecomponentid.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframemarker.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofscancomponent.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h
 src/os/shared/common/src/bits64/graphics/png/png.cpp
 src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngheader.h
