@@ -11,7 +11,7 @@
 
 void* malloc(u64 size)
 {
-    COMMON_LT((" | size = %u", count));
+    COMMON_LT((" | size = %u", size));
 
     COMMON_ASSERT(size > 0, "size is zero", 0);
 

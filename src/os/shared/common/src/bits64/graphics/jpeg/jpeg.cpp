@@ -446,7 +446,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
         u64 tableSize = sizeof(JpegHuffmanTable) + totalNumberOfSymbols;
 
-        table   = (JpegHuffmanTable *)((u64)table + tableSize);
+        table  =  (JpegHuffmanTable *)((u64)table + tableSize);
         length -= tableSize;
     }
 
@@ -485,7 +485,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
     length    -= 2;
-    u64 count  = length / sizeof(JpegQuantizationTable);
+    u64 count =  length / sizeof(JpegQuantizationTable);
 
     COMMON_LVVV(("length = %u", length));
     COMMON_LVVV(("count  = %u", count));

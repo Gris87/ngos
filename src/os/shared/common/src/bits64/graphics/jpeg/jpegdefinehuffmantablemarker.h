@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/graphics/jpeg/jpegmarkerheader.h>
 #include <common/src/bits64/graphics/jpeg/jpeghuffmantable.h>
+#include <common/src/bits64/graphics/jpeg/jpegmarkerheader.h>
 
 
 
@@ -12,7 +12,7 @@ struct JpegDefineHuffmanTableMarker
 {
     JpegMarkerHeader header;
     JpegHuffmanTable tables[0];
-};
+} __attribute__((packed));
 
 
 
