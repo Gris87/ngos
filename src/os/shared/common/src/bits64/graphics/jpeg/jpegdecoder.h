@@ -13,18 +13,24 @@
 
 
 
+#define JPEG_NUMBER_OF_COMPONENTS 3
+
+
+
 struct JpegDecoder
 {
     u8                      *data;
     u64                      size;
     Image                  **image;
-    JpegQuantizationTable*   quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT];
     JpegStartOfFrameMarker  *startOfFrameMarker;
+    JpegStartOfScanMarker   *startOfScanMarker;
+    u16                      restartInterval;
+    u16                      mcuBlockCountX;
+    u16                      mcuBlockCountY;
+    JpegQuantizationTable*   quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT];
     JpegHuffmanTable*        huffmanDcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegHuffmanTable*        huffmanAcTables[JPEG_HUFFMAN_TABLE_COUNT];
-    u16                      restartInterval;
-    JpegStartOfScanMarker   *startOfScanMarker;
-    JpegComponent            components[3];
+    JpegComponent            components[JPEG_NUMBER_OF_COMPONENTS];
 };
 
 

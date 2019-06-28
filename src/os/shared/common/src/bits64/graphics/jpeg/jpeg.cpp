@@ -185,8 +185,10 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     decoder->size               = size;
     decoder->image              = image;
     decoder->startOfFrameMarker = 0;
-    decoder->restartInterval    = 0;
     decoder->startOfScanMarker  = 0;
+    decoder->restartInterval    = 0;
+    decoder->mcuBlockCountX     = 0;
+    decoder->mcuBlockCountY     = 0;
 
     memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
     memzero(decoder->huffmanDcTables,    sizeof(decoder->huffmanDcTables));
@@ -308,6 +310,9 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
+    u8 samplingFactorXMax = 0;
+    u8 samplingFactorYMax = 0;
+
     for (i64 i = 0; i < numberOfComponents; ++i)
     {
         JpegStartOfFrameComponent *component        = &startOfFrameMarker->components[i];
@@ -350,6 +355,63 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         generalComponent->samplingFactorX   = samplingFactorX;
         generalComponent->samplingFactorY   = samplingFactorY;
         generalComponent->quantizationTable = decoder->quantizationTables[quantizationTableId];
+
+        if (samplingFactorX > samplingFactorXMax)
+        {
+            samplingFactorXMax = samplingFactorX;
+        }
+
+        if (samplingFactorY > samplingFactorYMax)
+        {
+            samplingFactorYMax = samplingFactorY;
+        }
+    }
+
+
+
+    if (numberOfComponents == 1)
+    {
+        decoder->components[0].samplingFactorX = 1;
+        decoder->components[0].samplingFactorY = 1;
+        samplingFactorXMax                     = 1;
+        samplingFactorYMax                     = 1;
+    }
+
+
+
+    COMMON_LVVV(("samplingFactorXMax = %u", samplingFactorXMax));
+    COMMON_LVVV(("samplingFactorYMax = %u", samplingFactorYMax));
+
+
+
+    u8 mcuBlockSizeX = samplingFactorXMax << 3; // "<< 3" == "* 8"
+    u8 mcuBlockSizeY = samplingFactorYMax << 3; // "<< 3" == "* 8"
+
+    COMMON_LVVV(("mcuBlockSizeX = %u", mcuBlockSizeX));
+    COMMON_LVVV(("mcuBlockSizeY = %u", mcuBlockSizeY));
+
+
+
+    decoder->mcuBlockCountX = (width  + mcuBlockSizeX - 1) / mcuBlockSizeX;
+    decoder->mcuBlockCountY = (height + mcuBlockSizeY - 1) / mcuBlockSizeY;
+
+    COMMON_LVVV(("decoder->mcuBlockCountX = %u", decoder->mcuBlockCountX));
+    COMMON_LVVV(("decoder->mcuBlockCountY = %u", decoder->mcuBlockCountY));
+
+
+
+    for (i64 i = 0; i < numberOfComponents; ++i)
+    {
+        JpegComponent *generalComponent = &decoder->components[i];
+
+        generalComponent->width  = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
+        generalComponent->height = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
+        generalComponent->stride = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
+
+        COMMON_LVVV(("generalComponent->id     = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
+        COMMON_LVVV(("generalComponent->width  = %u", generalComponent->width));
+        COMMON_LVVV(("generalComponent->height = %u", generalComponent->height));
+        COMMON_LVVV(("generalComponent->stride = %u", generalComponent->stride));
     }
 
 
