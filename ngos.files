@@ -401,7 +401,9 @@ src/os/shared/common/src/bits64/graphics/image.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdecoder.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegdefinehuffmantablemarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpeghuffmantable.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkerheader.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegmarkertype.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegquantizationtable.h

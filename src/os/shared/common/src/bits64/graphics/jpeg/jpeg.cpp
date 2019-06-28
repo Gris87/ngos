@@ -1,5 +1,6 @@
 #include "jpeg.h"
 
+#include <common/src/bits64/graphics/jpeg/jpegdefinehuffmantablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
 #include <common/src/bits64/log/assert.h>
@@ -352,6 +353,64 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
     if (skipMarker(decoder, marker) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    JpegDefineHuffmanTableMarker *huffmanTableMarker = (JpegDefineHuffmanTableMarker *)marker;
+
+
+
+    u16 length = ntohs(marker->length);
+
+    COMMON_LVVV(("length = %u", length));
+
+
+
+    JpegHuffmanTable *table = &huffmanTableMarker->tables[0];
+
+    while (length >= 17)
+    {
+        u8 tableId = table->id;
+
+        COMMON_LVVV(("tableId = %u", tableId));
+
+        if (tableId >= JPEG_HUFFMAN_TABLE_COUNT)
+        {
+            return NgosStatus::INVALID_DATA;
+        }
+
+
+
+        u8 tableType = table->type;
+
+        COMMON_LVVV(("tableType = %u (%s)", tableType, jpegHuffmanTableTypeToString(tableType)));
+
+        COMMON_TEST_ASSERT(tableType == JPEG_HUFFMAN_TABLE_TYPE_DC || tableType == JPEG_HUFFMAN_TABLE_TYPE_AC, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(table->__reserved == 0,                                                             NgosStatus::ASSERTION);
+
+
+
+        u16 totalNumberOfSymbols = 0;
+
+        for (i64 i = 0; i < (i64)sizeof(table->numberOfSymbols); ++i)
+        {
+            totalNumberOfSymbols += table->numberOfSymbols[i];
+        }
+
+        COMMON_LVVV(("totalNumberOfSymbols = %u", totalNumberOfSymbols));
+
+
+
+        table   = (JpegHuffmanTable *)((u64)table + sizeof(JpegHuffmanTable) + totalNumberOfSymbols);
+        length -= totalNumberOfSymbols;
+    }
+
+
+
+    if (length) // length != 0
     {
         return NgosStatus::INVALID_DATA;
     }
