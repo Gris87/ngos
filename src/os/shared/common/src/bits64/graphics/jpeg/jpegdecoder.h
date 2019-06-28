@@ -20,6 +20,7 @@ struct JpegDecoder
     JpegStartOfFrameMarker  *startOfFrameMarker;
     JpegHuffmanTable*        huffmanDcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegHuffmanTable*        huffmanAcTables[JPEG_HUFFMAN_TABLE_COUNT];
+    u16                      restartInterval;
 };
 
 
