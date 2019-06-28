@@ -348,7 +348,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
     }
 
     image->width    = width;
-    image->width    = height;
+    image->height   = height;
     image->hasAlpha = false;
 
 
