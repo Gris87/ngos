@@ -186,10 +186,12 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     decoder->image              = image;
     decoder->startOfFrameMarker = 0;
     decoder->restartInterval    = 0;
+    decoder->startOfScanMarker  = 0;
 
     memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
     memzero(decoder->huffmanDcTables,    sizeof(decoder->huffmanDcTables));
     memzero(decoder->huffmanAcTables,    sizeof(decoder->huffmanAcTables));
+    memzero(decoder->components,         sizeof(decoder->components));
 
     *decoder->image = 0;
 
@@ -308,7 +310,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
     for (i64 i = 0; i < numberOfComponents; ++i)
     {
-        JpegStartOfFrameComponent *component = &startOfFrameMarker->components[i];
+        JpegStartOfFrameComponent *component        = &startOfFrameMarker->components[i];
+        JpegComponent             *generalComponent = &decoder->components[i];
 
         JpegComponentId componentId         = component->id;
         u8              samplingFactorX     = component->samplingFactorX;
@@ -340,6 +343,13 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         {
             return NgosStatus::INVALID_DATA;
         }
+
+
+
+        generalComponent->id                = componentId;
+        generalComponent->samplingFactorX   = samplingFactorX;
+        generalComponent->samplingFactorY   = samplingFactorY;
+        generalComponent->quantizationTable = decoder->quantizationTables[quantizationTableId];
     }
 
 
@@ -626,7 +636,8 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
     for (i64 i = 0; i < numberOfComponents; ++i)
     {
-        JpegStartOfScanComponent *component = &startOfScanMarker->components[i];
+        JpegStartOfScanComponent *component        = &startOfScanMarker->components[i];
+        JpegComponent            *generalComponent = &decoder->components[i];
 
         JpegComponentId componentId      = component->id;
         u8              huffmanDcTableId = component->huffmanDcTableId;
@@ -643,6 +654,8 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
             ||
             componentId != decoder->startOfFrameMarker->components[i].id
             ||
+            componentId != generalComponent->id
+            ||
             huffmanDcTableId >= JPEG_HUFFMAN_TABLE_COUNT
             ||
             huffmanAcTableId >= JPEG_HUFFMAN_TABLE_COUNT
@@ -654,6 +667,11 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
         {
             return NgosStatus::INVALID_DATA;
         }
+
+
+
+        generalComponent->huffmanDcTable = decoder->huffmanDcTables[huffmanDcTableId];
+        generalComponent->huffmanAcTable = decoder->huffmanAcTables[huffmanAcTableId];
     }
 
 
@@ -664,19 +682,64 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    return decodeImageData(decoder, startOfScanMarker);
+    decoder->startOfScanMarker = startOfScanMarker;
+
+
+
+    return decodeImageData(decoder);
 }
 
-NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder, JpegStartOfScanMarker *startOfScanMarker)
+NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 {
-    COMMON_LT((" | decoder = 0x%p, startOfScanMarker = 0x%p", decoder, startOfScanMarker));
+    COMMON_LT((" | decoder = 0x%p", decoder));
 
-    COMMON_ASSERT(decoder,           "decoder is null",           NgosStatus::ASSERTION);
-    COMMON_ASSERT(startOfScanMarker, "startOfScanMarker is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 
     COMMON_LVV(("Loading image data from address 0x%p", decoder->data));
+
+
+/*
+    u64            mcuBlockX           = 0;
+    u64            mcuBlockY           = 0;
+    u8             numberOfComponents  = decoder->startOfScanMarker->numberOfComponents;
+    u16            restartInterval     = decoder->restartInterval;
+    u16            blocksBeforeRestart = restartInterval;
+    JpegMarkerType nextRestartMarker   = JpegMarkerType::RESTART_0;
+
+    do
+    {
+        for (i64 i = 0; i < numberOfComponents; ++i)
+        {
+
+        }
+
+        ++mcuBlockX;
+
+        if (restartInterval)
+        {
+            --blocksBeforeRestart;
+
+            if (!blocksBeforeRestart) // blocksBeforeRestart == 0
+            {
+
+            }
+        }
+
+        break;
+    } while(true);
+*/
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 

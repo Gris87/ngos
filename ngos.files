@@ -400,6 +400,7 @@ src/os/shared/common/src/bits64/graphics/graphics.h
 src/os/shared/common/src/bits64/graphics/image.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegcomponent.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegcomponentid.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdecoder.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegdefinehuffmantablemarker.h
