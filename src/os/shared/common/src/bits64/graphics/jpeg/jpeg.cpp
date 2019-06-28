@@ -641,7 +641,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
             ||
             (u8)componentId > (u8)JpegComponentId::Q
             ||
-            decoder->startOfFrameMarker->components[i].id != componentId
+            componentId != decoder->startOfFrameMarker->components[i].id
             ||
             huffmanDcTableId >= JPEG_HUFFMAN_TABLE_COUNT
             ||
