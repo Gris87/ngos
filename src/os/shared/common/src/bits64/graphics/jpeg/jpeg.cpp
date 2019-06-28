@@ -69,14 +69,12 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-        if (skip(&decoder, 2) != NgosStatus::OK)
-        {
-            status = NgosStatus::INVALID_DATA;
+        status = skip(&decoder, 2);
 
+        if (status != NgosStatus::OK)
+        {
             break;
         }
-
-
 
 
 
