@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/graphics/jpeg/jpegdefinehuffmantablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
+#include <common/src/bits64/graphics/jpeg/jpegdefinerestartintervalmarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/log/assert.h>
@@ -184,6 +185,7 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     decoder->size               = size;
     decoder->image              = image;
     decoder->startOfFrameMarker = 0;
+    decoder->restartInterval    = 0;
 
     memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
     memzero(decoder->huffmanDcTables,    sizeof(decoder->huffmanDcTables));
@@ -241,7 +243,13 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    if (skipMarker(decoder, marker) != NgosStatus::OK)
+    u16 length = ntohs(marker->length);
+
+    COMMON_LVVV(("length = %u", length));
+
+
+
+    if (skip(decoder, length) != NgosStatus::OK)
     {
         return NgosStatus::INVALID_DATA;
     }
@@ -258,10 +266,6 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
     }
 
 
-
-    u16 length = ntohs(marker->length);
-
-    COMMON_LVVV(("length = %u", length));
 
     if (sizeof(JpegStartOfFrameMarker) + startOfFrameMarker->numberOfComponents * sizeof(JpegStartOfFrameComponent) != (u16)(length + 2))
     {
@@ -359,6 +363,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
+    COMMON_TEST_ASSERT(decoder->startOfFrameMarker == 0, NgosStatus::ASSERTION);
+
     decoder->startOfFrameMarker = startOfFrameMarker;
 
 
@@ -375,24 +381,20 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-    if (skipMarker(decoder, marker) != NgosStatus::OK)
-    {
-        return NgosStatus::INVALID_DATA;
-    }
-
-
-
-    JpegDefineHuffmanTableMarker *huffmanTableMarker = (JpegDefineHuffmanTableMarker *)marker;
-
-
-
     u16 length = ntohs(marker->length);
 
     COMMON_LVVV(("length = %u", length));
 
 
 
-    JpegHuffmanTable *table = &huffmanTableMarker->tables[0];
+    if (skip(decoder, length) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    JpegHuffmanTable *table = &((JpegDefineHuffmanTableMarker *)marker)->tables[0];
 
     while (length >= 17)
     {
@@ -469,16 +471,20 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-    if (skipMarker(decoder, marker) != NgosStatus::OK)
+    u16 length = ntohs(marker->length);
+
+    COMMON_LVVV(("length = %u", length));
+
+
+
+    if (skip(decoder, length) != NgosStatus::OK)
     {
         return NgosStatus::INVALID_DATA;
     }
 
 
 
-    JpegDefineQuantizationTableMarker *quantizationTableMarker = (JpegDefineQuantizationTableMarker *)marker;
-
-    u64 length = ntohs(marker->length) - 2;
+    length    -= 2;
     u64 count  = length / sizeof(JpegQuantizationTable);
 
     COMMON_LVVV(("length = %u", length));
@@ -493,7 +499,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
     for (i64 i = 0; i < (i64)count; ++i)
     {
-        JpegQuantizationTable *table   = &quantizationTableMarker->tables[i];
+        JpegQuantizationTable *table   = &((JpegDefineQuantizationTableMarker *)marker)->tables[i];
         u8                     tableId = table->id;
 
         COMMON_LVVV(("tableId  = %u", tableId));
@@ -524,10 +530,37 @@ NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMar
 
 
 
-    if (skipMarker(decoder, marker) != NgosStatus::OK)
+    u16 length = ntohs(marker->length);
+
+    COMMON_LVVV(("length = %u", length));
+
+
+
+    if (skip(decoder, length) != NgosStatus::OK)
     {
         return NgosStatus::INVALID_DATA;
     }
+
+
+
+    JpegDefineRestartIntervalMarker *restartIntervalMarker = (JpegDefineRestartIntervalMarker *)marker;
+
+
+
+    u16 restartInterval = restartIntervalMarker->restartInterval;
+
+    COMMON_LVVV(("restartInterval = %u", restartInterval));
+
+    if (!restartInterval) // restartInterval == 0
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    COMMON_TEST_ASSERT(decoder->restartInterval == 0, NgosStatus::ASSERTION);
+
+    decoder->restartInterval = restartInterval;
 
 
 
