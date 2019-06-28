@@ -12,7 +12,7 @@ struct JpegDefineQuantizationTableMarker
 {
     JpegMarkerHeader      header;
     JpegQuantizationTable tables[0];
-};
+} __attribute__((packed));
 
 
 

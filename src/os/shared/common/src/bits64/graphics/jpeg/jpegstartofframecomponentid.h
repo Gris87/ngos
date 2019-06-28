@@ -28,11 +28,11 @@ inline const char* jpegStartOfFrameComponentIdToString(JpegStartOfFrameComponent
 
     switch (type)
     {
-        case JpegStartOfFrameComponentId::Y:  return "Y";
+        case JpegStartOfFrameComponentId::Y:  return "Y"; // Ignore CppSingleCharVerifier
         case JpegStartOfFrameComponentId::CR: return "CR";
         case JpegStartOfFrameComponentId::CB: return "CB";
-        case JpegStartOfFrameComponentId::I:  return "I";
-        case JpegStartOfFrameComponentId::Q:  return "Q";
+        case JpegStartOfFrameComponentId::I:  return "I"; // Ignore CppSingleCharVerifier
+        case JpegStartOfFrameComponentId::Q:  return "Q"; // Ignore CppSingleCharVerifier
 
         default: return "UNKNOWN";
     }

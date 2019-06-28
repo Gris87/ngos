@@ -11,7 +11,7 @@ struct JpegDefineRestartIntervalMarker
 {
     JpegMarkerHeader header;
     u16              restartInterval;
-};
+} __attribute__((packed));
 
 
 
