@@ -214,8 +214,8 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     decoder->mcuBlockCountY     = 0;
 
     memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
-    memzero(decoder->huffmanDcTables,    sizeof(decoder->huffmanDcTables));
-    memzero(decoder->huffmanAcTables,    sizeof(decoder->huffmanAcTables));
+    memzero(decoder->vlcDcTables,        sizeof(decoder->vlcDcTables));
+    memzero(decoder->vlcAcTables,        sizeof(decoder->vlcAcTables));
     memzero(decoder->components,         sizeof(decoder->components));
 
     *decoder->image = 0;
@@ -230,6 +230,21 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
     COMMON_LT((" | decoder = 0x%p", decoder));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    for (i64 i = 0; i < JPEG_HUFFMAN_TABLE_COUNT; ++i)
+    {
+        if (decoder->vlcDcTables[i])
+        {
+            COMMON_ASSERT_EXECUTION(free(decoder->vlcDcTables[i]), NgosStatus::ASSERTION);
+        }
+
+        if (decoder->vlcAcTables[i])
+        {
+            COMMON_ASSERT_EXECUTION(free(decoder->vlcAcTables[i]), NgosStatus::ASSERTION);
+        }
+    }
 
 
 
@@ -524,28 +539,87 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
+        i64 remain = 65536;
+        i64 spread = remain;
+
+        JpegVlcCode *vlc = (JpegVlcCode *)malloc(remain * sizeof(JpegVlcCode));
+
+        if (tableType == JPEG_HUFFMAN_TABLE_TYPE_DC)
+        {
+            COMMON_TEST_ASSERT(decoder->vlcDcTables[tableId] == 0, NgosStatus::ASSERTION);
+
+            decoder->vlcDcTables[tableId] = vlc;
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(decoder->vlcAcTables[tableId] == 0, NgosStatus::ASSERTION);
+
+            decoder->vlcAcTables[tableId] = vlc;
+        }
+
+
+
         u16 totalNumberOfSymbols = 0;
 
-        for (i64 i = 0; i < (i64)sizeof(table->numberOfSymbols); ++i)
+        for (i64 i = 0; i < JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT; ++i)
         {
-            totalNumberOfSymbols += table->numberOfSymbols[i];
+            spread >>= 1;
+
+            // COMMON_LVVV(("spread = %d", spread)); // Commented to avoid too frequent logs
+
+
+
+            u8 numberOfSymbols = table->numberOfSymbols[i];
+
+            COMMON_LVVV(("numberOfSymbols = %u", numberOfSymbols));
+
+            if (!numberOfSymbols) // numberOfSymbols == 0
+            {
+                continue;
+            }
+
+
+
+            remain -= numberOfSymbols << (16 - i - 1);
+
+            COMMON_LVVV(("remain = %d", remain));
+
+            if (remain < 0)
+            {
+                return NgosStatus::INVALID_DATA;
+            }
+
+
+
+            for (i64 j = 0; j < numberOfSymbols; ++j)
+            {
+                u8 code = table->symbols[totalNumberOfSymbols + j];
+
+                // COMMON_LVVV(("code = 0x%02X", code)); // Commented to avoid too frequent logs
+
+                for (i64 k = 0; k < spread; ++k)
+                {
+                    vlc->bits = i + 1;
+                    vlc->code = code;
+                    ++vlc;
+                }
+            }
+
+
+
+            totalNumberOfSymbols += numberOfSymbols;
         }
 
         COMMON_LVVV(("totalNumberOfSymbols = %u", totalNumberOfSymbols));
 
 
 
-        if (tableType == JPEG_HUFFMAN_TABLE_TYPE_DC)
+        while (remain > 0)
         {
-            COMMON_TEST_ASSERT(decoder->huffmanDcTables[tableId] == 0, NgosStatus::ASSERTION);
+            --remain;
 
-            decoder->huffmanDcTables[tableId] = table;
-        }
-        else
-        {
-            COMMON_TEST_ASSERT(decoder->huffmanAcTables[tableId] == 0, NgosStatus::ASSERTION);
-
-            decoder->huffmanAcTables[tableId] = table;
+            vlc->bits = 0;
+            ++vlc;
         }
 
 
@@ -754,9 +828,9 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
             ||
             huffmanAcTableId >= JPEG_HUFFMAN_TABLE_COUNT
             ||
-            !decoder->huffmanDcTables[huffmanDcTableId]
+            !decoder->vlcDcTables[huffmanDcTableId]
             ||
-            !decoder->huffmanAcTables[huffmanAcTableId]
+            !decoder->vlcAcTables[huffmanAcTableId]
            )
         {
             return NgosStatus::INVALID_DATA;
@@ -764,8 +838,8 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-        generalComponent->huffmanDcTable = decoder->huffmanDcTables[huffmanDcTableId];
-        generalComponent->huffmanAcTable = decoder->huffmanAcTables[huffmanAcTableId];
+        generalComponent->vlcDcTable = decoder->vlcDcTables[huffmanDcTableId];
+        generalComponent->vlcAcTable = decoder->vlcAcTables[huffmanAcTableId];
     }
 
 

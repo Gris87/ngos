@@ -9,6 +9,7 @@
 #include <common/src/bits64/graphics/jpeg/jpegquantizationtable.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h>
+#include <common/src/bits64/graphics/jpeg/jpegvlccode.h>
 #include <ngos/types.h>
 
 
@@ -28,8 +29,8 @@ struct JpegDecoder
     u16                      mcuBlockCountX;
     u16                      mcuBlockCountY;
     JpegQuantizationTable*   quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT];
-    JpegHuffmanTable*        huffmanDcTables[JPEG_HUFFMAN_TABLE_COUNT];
-    JpegHuffmanTable*        huffmanAcTables[JPEG_HUFFMAN_TABLE_COUNT];
+    JpegVlcCode*             vlcDcTables[JPEG_HUFFMAN_TABLE_COUNT];
+    JpegVlcCode*             vlcAcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegComponent            components[JPEG_NUMBER_OF_COMPONENTS];
 };
 

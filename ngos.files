@@ -414,6 +414,7 @@ src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframecomponent.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframemarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofscancomponent.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegvlccode.h
 src/os/shared/common/src/bits64/graphics/png/png.cpp
 src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngheader.h

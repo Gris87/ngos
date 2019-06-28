@@ -4,8 +4,8 @@
 
 
 #include <common/src/bits64/graphics/jpeg/jpegcomponentid.h>
-#include <common/src/bits64/graphics/jpeg/jpeghuffmantable.h>
 #include <common/src/bits64/graphics/jpeg/jpegquantizationtable.h>
+#include <common/src/bits64/graphics/jpeg/jpegvlccode.h>
 #include <ngos/types.h>
 
 
@@ -19,8 +19,8 @@ struct JpegComponent
     u64                    height;
     u64                    stride;
     JpegQuantizationTable *quantizationTable;
-    JpegHuffmanTable      *huffmanDcTable;
-    JpegHuffmanTable      *huffmanAcTable;
+    JpegVlcCode           *vlcDcTable;
+    JpegVlcCode           *vlcAcTable;
 };
 
 

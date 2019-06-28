@@ -11,6 +11,8 @@
 
 #define JPEG_HUFFMAN_TABLE_COUNT 4
 
+#define JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT 16
+
 #define JPEG_HUFFMAN_TABLE_TYPE_DC 0
 #define JPEG_HUFFMAN_TABLE_TYPE_AC 1
 
@@ -22,7 +24,7 @@ struct JpegHuffmanTable
         type:       1,
         __reserved: 3;
 
-    u8  numberOfSymbols[16];
+    u8  numberOfSymbols[JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT];
     u8  symbols[0];
 } __attribute__((packed));
 
