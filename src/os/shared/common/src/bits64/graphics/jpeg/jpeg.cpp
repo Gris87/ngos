@@ -41,12 +41,16 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
     if (skip(&decoder, 2) != NgosStatus::OK)
     {
+        COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
+
         return NgosStatus::INVALID_DATA;
     }
 
 
 
-    do
+    NgosStatus status = NgosStatus::OK;
+
+    while (status == NgosStatus::OK)
     {
         JpegMarkerHeader *marker = (JpegMarkerHeader *)decoder.data;
 
@@ -54,7 +58,9 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
         if (decoder.size < 2 || marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
         {
-            return NgosStatus::INVALID_DATA;
+            status = NgosStatus::INVALID_DATA;
+
+            break;
         }
 
 
@@ -65,12 +71,14 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
         if (skip(&decoder, 2) != NgosStatus::OK)
         {
-            return NgosStatus::INVALID_DATA;
+            status = NgosStatus::INVALID_DATA;
+
+            break;
         }
 
 
 
-        NgosStatus status;
+
 
         switch (marker->type)
         {
@@ -106,7 +114,16 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
             case JpegMarkerType::END_OF_IMAGE:
             {
-                COMMON_TEST_ASSERT(decoder.size == 0, NgosStatus::ASSERTION);
+                if (decoder.size) // decoder.size != 0
+                {
+                    status = NgosStatus::INVALID_DATA;
+
+                    break;
+                }
+
+
+
+                COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
 
                 return NgosStatus::OK;
             }
@@ -146,7 +163,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             {
                 COMMON_LF(("Unexpected marker type: %u", marker->type));
 
-                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                status = NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
             break;
 
@@ -154,20 +171,28 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             {
                 COMMON_LF(("Unknown marker type: %u", marker->type));
 
-                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                status = NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
             break;
         }
-
-        if (status != NgosStatus::OK)
-        {
-            return status;
-        }
-    } while(true);
+    }
 
 
 
-    return NgosStatus::OK;
+    if (*decoder.image)
+    {
+        COMMON_ASSERT_EXECUTION(free(*decoder.image), NgosStatus::ASSERTION);
+
+        *decoder.image = 0;
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
+
+
+
+    return status;
 }
 
 NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **image)
@@ -196,6 +221,17 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     memzero(decoder->components,         sizeof(decoder->components));
 
     *decoder->image = 0;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 
