@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/graphics/image.h>
+#include <common/src/bits64/graphics/jpeg/jpeghuffmantable.h>
 #include <common/src/bits64/graphics/jpeg/jpegquantizationtable.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
 #include <ngos/types.h>
@@ -17,6 +18,8 @@ struct JpegDecoder
     Image                  **image;
     JpegQuantizationTable*   quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT];
     JpegStartOfFrameMarker  *startOfFrameMarker;
+    JpegHuffmanTable*        huffmanDcTables[JPEG_HUFFMAN_TABLE_COUNT];
+    JpegHuffmanTable*        huffmanAcTables[JPEG_HUFFMAN_TABLE_COUNT];
 };
 
 

@@ -184,6 +184,8 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     decoder->startOfFrameMarker = 0;
 
     memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
+    memzero(decoder->huffmanDcTables,    sizeof(decoder->huffmanDcTables));
+    memzero(decoder->huffmanAcTables,    sizeof(decoder->huffmanAcTables));
 
     *decoder->image = 0;
 
@@ -404,13 +406,30 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-        table   = (JpegHuffmanTable *)((u64)table + sizeof(JpegHuffmanTable) + totalNumberOfSymbols);
-        length -= totalNumberOfSymbols;
+        if (tableType == JPEG_HUFFMAN_TABLE_TYPE_DC)
+        {
+            COMMON_TEST_ASSERT(decoder->huffmanDcTables[tableId] == 0, NgosStatus::ASSERTION);
+
+            decoder->huffmanDcTables[tableId] = table;
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(decoder->huffmanAcTables[tableId] == 0, NgosStatus::ASSERTION);
+
+            decoder->huffmanAcTables[tableId] = table;
+        }
+
+
+
+        u64 tableSize = sizeof(JpegHuffmanTable) + totalNumberOfSymbols;
+
+        table   = (JpegHuffmanTable *)((u64)table + tableSize);
+        length -= tableSize;
     }
 
 
 
-    if (length) // length != 0
+    if (length != 2)
     {
         return NgosStatus::INVALID_DATA;
     }
