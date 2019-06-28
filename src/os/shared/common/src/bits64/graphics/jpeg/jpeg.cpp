@@ -3,8 +3,10 @@
 #include <common/src/bits64/graphics/jpeg/jpegdefinehuffmantablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
+#include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
 #include <ngos/utils.h>
 
@@ -335,6 +337,25 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
             return NgosStatus::INVALID_DATA;
         }
     }
+
+
+
+    Image *image = (Image *)malloc(sizeof(Image) + width * height * sizeof(RgbPixel));
+
+    if (!image)
+    {
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+    image->width    = width;
+    image->width    = height;
+    image->hasAlpha = false;
+
+
+
+    COMMON_TEST_ASSERT(*decoder->image == 0, NgosStatus::ASSERTION);
+
+    *decoder->image = image;
 
 
 

@@ -420,6 +420,8 @@ src/os/shared/common/src/bits64/log/log.h
 src/os/shared/common/src/bits64/memory/asm_memcpy.h
 src/os/shared/common/src/bits64/memory/asm_memset.h
 src/os/shared/common/src/bits64/memory/asm_memzero.h
+src/os/shared/common/src/bits64/memory/malloc.cpp
+src/os/shared/common/src/bits64/memory/malloc.h
 src/os/shared/common/src/bits64/memory/memory.cpp
 src/os/shared/common/src/bits64/memory/memory.h
 src/os/shared/common/src/bits64/printf/printf.cpp
