@@ -868,7 +868,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     COMMON_LVV(("Loading image data from address 0x%p", decoder->data));
 
 
-/*
+
     u64            mcuBlockX           = 0;
     u64            mcuBlockY           = 0;
     u8             numberOfComponents  = decoder->startOfScanMarker->numberOfComponents;
@@ -883,7 +883,23 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
         }
 
+
+
         ++mcuBlockX;
+
+        if (mcuBlockX >= decoder->mcuBlockCountX)
+        {
+            mcuBlockX = 0;
+
+            ++mcuBlockY;
+
+            if (mcuBlockY >= decoder->mcuBlockCountY)
+            {
+                break;
+            }
+        }
+
+
 
         if (restartInterval)
         {
@@ -891,19 +907,70 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
             if (!blocksBeforeRestart) // blocksBeforeRestart == 0
             {
+                blocksBeforeRestart = restartInterval;
 
+                COMMON_ASSERT_EXECUTION(alignBits(decoder), NgosStatus::ASSERTION);
+
+
+
+                JpegMarkerHeader *marker = (JpegMarkerHeader *)decoder->data;
+
+
+
+                if (decoder->size < 2 || marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
+                {
+                    return NgosStatus::INVALID_DATA;
+                }
+
+
+
+                COMMON_LVVV(("marker->type = 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+
+
+
+                if (skip(decoder, 2) != NgosStatus::OK)
+                {
+                    return NgosStatus::INVALID_DATA;
+                }
+
+
+
+                if (marker->type != nextRestartMarker)
+                {
+                    return NgosStatus::INVALID_DATA;
+                }
+
+
+
+                if (nextRestartMarker == JpegMarkerType::RESTART_7)
+                {
+                    nextRestartMarker = JpegMarkerType::RESTART_0;
+                }
+                else
+                {
+                    nextRestartMarker = (JpegMarkerType)((u8)nextRestartMarker + 1);
+                }
             }
         }
-
-        break;
     } while(true);
-*/
+
 
 
     return NgosStatus::OK;
 }
 
 NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::alignBits(JpegDecoder *decoder)
 {
     COMMON_LT((" | decoder = 0x%p", decoder));
 

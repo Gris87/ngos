@@ -28,6 +28,7 @@ private:
     static NgosStatus decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeImageData(JpegDecoder *decoder); // TEST: NO
     static NgosStatus decodeMcuBlock(JpegDecoder *decoder); // TEST: NO
+    static NgosStatus alignBits(JpegDecoder *decoder); // TEST: NO
 };
 
 
