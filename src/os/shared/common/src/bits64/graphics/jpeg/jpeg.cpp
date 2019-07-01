@@ -212,6 +212,8 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     decoder->restartInterval    = 0;
     decoder->mcuBlockCountX     = 0;
     decoder->mcuBlockCountY     = 0;
+    decoder->bitBuffer          = 0;
+    decoder->bitsAvailable      = 0;
 
     memzero(decoder->quantizationTables, sizeof(decoder->quantizationTables));
     memzero(decoder->vlcDcTables,        sizeof(decoder->vlcDcTables));
@@ -909,15 +911,24 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
             {
                 blocksBeforeRestart = restartInterval;
 
+
+
                 COMMON_ASSERT_EXECUTION(alignBits(decoder), NgosStatus::ASSERTION);
 
 
 
-                JpegMarkerHeader *marker = (JpegMarkerHeader *)decoder->data;
+                u64 markerData;
+
+                if (readBits(decoder, 16, &markerData) != NgosStatus::OK)
+                {
+                    return NgosStatus::INVALID_DATA;
+                }
+
+                JpegMarkerHeader *marker = (JpegMarkerHeader *)&markerData;
 
 
 
-                if (decoder->size < 2 || marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
+                if (marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
                 {
                     return NgosStatus::INVALID_DATA;
                 }
@@ -925,13 +936,6 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
                 COMMON_LVVV(("marker->type = 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
-
-
-
-                if (skip(decoder, 2) != NgosStatus::OK)
-                {
-                    return NgosStatus::INVALID_DATA;
-                }
 
 
 
@@ -970,11 +974,93 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder)
     return NgosStatus::OK;
 }
 
+NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
+{
+    COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count));
+
+    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+
+
+
+    while (decoder->bitsAvailable < count)
+    {
+        if (!decoder->size) // decoder->size == 0
+        {
+            return NgosStatus::INVALID_DATA;
+        }
+
+
+
+        decoder->bitBuffer     =  (decoder->bitBuffer << 8) | (*decoder->data);
+        decoder->bitsAvailable += 8;
+
+        ++decoder->data;
+        --decoder->size;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
+{
+    COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res));
+
+    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,       "res is null",     NgosStatus::ASSERTION);
+
+
+
+    if (bufferBits(decoder, count) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    *res                   =  (decoder->bitBuffer >> (decoder->bitsAvailable - count)) & ((1ULL << count) - 1);
+    decoder->bitsAvailable -= count;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::skipBits(JpegDecoder *decoder, u8 count)
+{
+    COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count));
+
+    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+
+
+
+    if (bufferBits(decoder, count) != NgosStatus::OK)
+    {
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    decoder->bitsAvailable -= count;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Jpeg::alignBits(JpegDecoder *decoder)
 {
     COMMON_LT((" | decoder = 0x%p", decoder));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    decoder->bitsAvailable &= 0xF8;
 
 
 

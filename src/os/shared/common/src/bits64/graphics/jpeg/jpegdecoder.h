@@ -28,6 +28,8 @@ struct JpegDecoder
     u16                      restartInterval;
     u16                      mcuBlockCountX;
     u16                      mcuBlockCountY;
+    u64                      bitBuffer;
+    u8                       bitsAvailable;
     JpegQuantizationTable*   quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT];
     JpegVlcCode*             vlcDcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegVlcCode*             vlcAcTables[JPEG_HUFFMAN_TABLE_COUNT];
