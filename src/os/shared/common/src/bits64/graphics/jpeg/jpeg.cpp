@@ -630,6 +630,8 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
         COMMON_LVVV(("totalNumberOfSymbols = %u", totalNumberOfSymbols));
 
+        COMMON_TEST_ASSERT(totalNumberOfSymbols <= 256, NgosStatus::ASSERTION);
+
 
 
         while (remain > 0)
