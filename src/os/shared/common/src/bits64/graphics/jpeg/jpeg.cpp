@@ -29,6 +29,8 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
     if (*((u16 *)&data[0]) != JPEG_START_OF_IMAGE_SIGNATURE)
     {
+        COMMON_LE(("Data is not a JPEG image"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -40,16 +42,16 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    if (skip(&decoder, 2) != NgosStatus::OK)
+    NgosStatus status = skip(&decoder, 2);
+
+    if (status != NgosStatus::OK)
     {
         COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
 
-        return NgosStatus::INVALID_DATA;
+        return status;
     }
 
 
-
-    NgosStatus status = NgosStatus::OK;
 
     while (status == NgosStatus::OK)
     {
@@ -59,6 +61,8 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
         if (decoder.size < 2 || marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
         {
+            COMMON_LE(("Invalid separator(0x%02X) value in JPEG marker", marker->separator));
+
             status = NgosStatus::INVALID_DATA;
 
             break;
@@ -115,6 +119,8 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             {
                 if (decoder.size) // decoder.size != 0
                 {
+                    COMMON_LE(("There is some data found after JpegMarkerType::END_OF_IMAGE marker"));
+
                     status = NgosStatus::INVALID_DATA;
 
                     break;
@@ -265,6 +271,8 @@ NgosStatus Jpeg::skip(JpegDecoder *decoder, u64 count)
 
     if (count > decoder->size)
     {
+        COMMON_LE(("There is no more bytes to read"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -305,9 +313,11 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    if (skip(decoder, length) != NgosStatus::OK)
+    NgosStatus status = skip(decoder, length);
+
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::INVALID_DATA;
+        return status;
     }
 
 
@@ -318,13 +328,17 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
     if (startOfFrameMarker->dataPrecision != JPEG_START_OF_FRAME_DEFAULT_PRECISION)
     {
-        return NgosStatus::INVALID_DATA;
+        COMMON_LE(("JPEG decoder doesn't support data precision = %u", startOfFrameMarker->dataPrecision));
+
+        return NgosStatus::NOT_SUPPORTED;
     }
 
 
 
     if (sizeof(JpegStartOfFrameMarker) + startOfFrameMarker->numberOfComponents * sizeof(JpegStartOfFrameComponent) != (u16)(length + 2))
     {
+        COMMON_LE(("Invalid JpegMarkerType::START_OF_FRAME marker"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -342,6 +356,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         !height // height == 0
        )
     {
+        COMMON_LE(("Empty JPEG image"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -357,7 +373,9 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         numberOfComponents != 1
        )
     {
-        return NgosStatus::INVALID_DATA;
+        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components"));
+
+        return NgosStatus::NOT_SUPPORTED;
     }
 
 
@@ -396,6 +414,13 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
             quantizationTableId >= JPEG_QUANTIZATION_TABLE_COUNT
            )
         {
+            COMMON_LE(("Invalid JPEG component:"));
+
+            COMMON_LE(("componentId         = %u (%s)", componentId, jpegComponentIdToString(componentId)));
+            COMMON_LE(("samplingFactorX     = %u", samplingFactorX));
+            COMMON_LE(("samplingFactorY     = %u", samplingFactorY));
+            COMMON_LE(("quantizationTableId = %u", quantizationTableId));
+
             return NgosStatus::INVALID_DATA;
         }
 
@@ -470,6 +495,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
     if (!image)
     {
+        COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
+
         return NgosStatus::OUT_OF_MEMORY;
     }
 
@@ -509,9 +536,11 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-    if (skip(decoder, length) != NgosStatus::OK)
+    NgosStatus status = skip(decoder, length);
+
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::INVALID_DATA;
+        return status;
     }
 
 
@@ -526,6 +555,8 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
         if (tableId >= JPEG_HUFFMAN_TABLE_COUNT)
         {
+            COMMON_LE(("Huffman table id(%u) is more than %u", tableId, JPEG_HUFFMAN_TABLE_COUNT));
+
             return NgosStatus::INVALID_DATA;
         }
 
@@ -587,6 +618,8 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
             if (remain < 0)
             {
+                COMMON_LE(("Invalid JpegMarkerType::DEFINE_HUFFMAN_TABLE marker"));
+
                 return NgosStatus::INVALID_DATA;
             }
 
@@ -637,6 +670,8 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
     if (length != 2)
     {
+        COMMON_LE(("Invalid JpegMarkerType::DEFINE_HUFFMAN_TABLE marker"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -660,9 +695,11 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-    if (skip(decoder, length) != NgosStatus::OK)
+    NgosStatus status = skip(decoder, length);
+
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::INVALID_DATA;
+        return status;
     }
 
     length -= 2;
@@ -685,6 +722,8 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
         if (tableId >= JPEG_QUANTIZATION_TABLE_COUNT)
         {
+            COMMON_LE(("Quantization table id(%u) is more than %u", tableId, JPEG_QUANTIZATION_TABLE_COUNT));
+
             return NgosStatus::INVALID_DATA;
         }
 
@@ -837,6 +876,8 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
     if (length) // length != 0
     {
+        COMMON_LE(("Invalid JpegMarkerType::DEFINE_QUANTIZATION_TABLE marker"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -860,8 +901,19 @@ NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMar
 
 
 
-    if (skip(decoder, length) != NgosStatus::OK)
+    NgosStatus status = skip(decoder, length);
+
+    if (status != NgosStatus::OK)
     {
+        return status;
+    }
+
+
+
+    if (length != sizeof(JpegDefineRestartIntervalMarker) - 2)
+    {
+        COMMON_LE(("Invalid JpegMarkerType::DEFINE_RESTART_INTERVAL marker"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -877,6 +929,8 @@ NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMar
 
     if (!restartInterval) // restartInterval == 0
     {
+        COMMON_LE(("Invalid JpegMarkerType::DEFINE_RESTART_INTERVAL marker"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -906,15 +960,19 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    if (skip(decoder, length) != NgosStatus::OK)
+    NgosStatus status = skip(decoder, length);
+
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::INVALID_DATA;
+        return status;
     }
 
 
 
     if (!decoder->startOfFrameMarker)
     {
+        COMMON_LE(("JpegMarkerType::START_OF_FRAME marker not found before JpegMarkerType::START_OF_SCAN marker"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -926,6 +984,8 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
     if (sizeof(JpegStartOfScanMarker) + startOfScanMarker->numberOfComponents * sizeof(JpegStartOfScanComponent) + 3 != (u16)(length + 2)) // "+ 3" because we have to ignore the last 3 bytes in JpegStartOfScanMarker
     {
+        COMMON_LE(("Invalid JpegMarkerType::START_OF_SCAN marker"));
+
         return NgosStatus::INVALID_DATA;
     }
 
@@ -943,7 +1003,9 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
         numberOfComponents != decoder->startOfFrameMarker->numberOfComponents
        )
     {
-        return NgosStatus::INVALID_DATA;
+        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components"));
+
+        return NgosStatus::NOT_SUPPORTED;
     }
 
 
@@ -977,6 +1039,12 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
             !decoder->vlcAcTables[huffmanAcTableId]
            )
         {
+            COMMON_LE(("Invalid JPEG component:"));
+
+            COMMON_LE(("componentId      = %u (%s)", componentId, jpegComponentIdToString(componentId)));
+            COMMON_LE(("huffmanDcTableId = %u", huffmanDcTableId));
+            COMMON_LE(("huffmanAcTableId = %u", huffmanAcTableId));
+
             return NgosStatus::INVALID_DATA;
         }
 
@@ -1024,9 +1092,11 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     {
         for (i64 i = 0; i < numberOfComponents; ++i)
         {
-            if (decodeMcuBlock(decoder, mcuBlockX, mcuBlockY, &decoder->components[i]) != NgosStatus::OK)
+            NgosStatus status = decodeMcuBlock(decoder, &decoder->components[i]);
+
+            if (status != NgosStatus::OK)
             {
-                return NgosStatus::INVALID_DATA;
+                return status;
             }
         }
 
@@ -1058,15 +1128,24 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
+                for (i64 i = 0; i < numberOfComponents; ++i)
+                {
+                    decoder->components[i].dcpred = 0;
+                }
+
+
+
                 COMMON_ASSERT_EXECUTION(alignBits(decoder), NgosStatus::ASSERTION);
 
 
 
                 u64 markerData;
 
-                if (readBits(decoder, 16, &markerData) != NgosStatus::OK)
+                NgosStatus status = readBits(decoder, 16, &markerData);
+
+                if (status != NgosStatus::OK)
                 {
-                    return NgosStatus::INVALID_DATA;
+                    return status;
                 }
 
                 JpegMarkerHeader *marker = (JpegMarkerHeader *)&markerData;
@@ -1075,6 +1154,8 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
                 if (marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
                 {
+                    COMMON_LE(("Invalid separator(0x%02X) value in JPEG restart marker", marker->separator));
+
                     return NgosStatus::INVALID_DATA;
                 }
 
@@ -1086,6 +1167,8 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
                 if (marker->type != nextRestartMarker)
                 {
+                    COMMON_LE(("Unexpected restart marker %u (%s). Expecting for %u (%s)", marker->type, marker->type, nextRestartMarker, nextRestartMarker));
+
                     return NgosStatus::INVALID_DATA;
                 }
 
@@ -1108,14 +1191,41 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, u64 mcuBlockX, u64 mcuBlockY, JpegComponent *component)
+NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
+{
+    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
+
+    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
+
+
+
+    for (i64 i = 0; i < component->samplingFactorY; ++i)
+    {
+        for (i64 j = 0; j < component->samplingFactorX; ++j)
+        {
+            NgosStatus status = decodeMcuBlockSample(decoder, j, i, component);
+
+            if (status != NgosStatus::OK)
+            {
+                return status;
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 samplingY, JpegComponent *component)
 {
     COMMON_LT((" | decoder = 0x%p", decoder));
 
-    COMMON_ASSERT(decoder,                             "decoder is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(mcuBlockX < decoder->mcuBlockCountX, "mcuBlockX is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(mcuBlockY < decoder->mcuBlockCountY, "mcuBlockY is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(component,                           "component is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,                                "decoder is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(component,                              "component is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(samplingX < component->samplingFactorX, "samplingX is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(samplingY < component->samplingFactorY, "samplingY is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -1135,6 +1245,8 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
     {
         if (!decoder->size) // decoder->size == 0
         {
+            COMMON_LE(("There is no more bytes to read"));
+
             return NgosStatus::INVALID_DATA;
         }
 
@@ -1162,9 +1274,11 @@ NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
 
 
 
-    if (bufferBits(decoder, count) != NgosStatus::OK)
+    NgosStatus status = bufferBits(decoder, count);
+
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::INVALID_DATA;
+        return status;
     }
 
 
@@ -1186,9 +1300,11 @@ NgosStatus Jpeg::skipBits(JpegDecoder *decoder, u8 count)
 
 
 
-    if (bufferBits(decoder, count) != NgosStatus::OK)
+    NgosStatus status = bufferBits(decoder, count);
+
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::INVALID_DATA;
+        return status;
     }
 
 
