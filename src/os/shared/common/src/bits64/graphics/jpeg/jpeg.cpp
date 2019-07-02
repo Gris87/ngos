@@ -251,16 +251,6 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
 
 
 
-    for (i64 i = 0; i < JPEG_NUMBER_OF_COMPONENTS; ++i)
-    {
-        if (decoder->components[i].pixels)
-        {
-            COMMON_ASSERT_EXECUTION(free(decoder->components[i].pixels), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
     return NgosStatus::OK;
 }
 
@@ -467,18 +457,11 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         generalComponent->width  = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
         generalComponent->height = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
         generalComponent->stride = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
-        generalComponent->pixels = (u8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY << 3); // "<< 3" == "* 8"
 
         COMMON_LVVV(("generalComponent->id     = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
         COMMON_LVVV(("generalComponent->width  = %u", generalComponent->width));
         COMMON_LVVV(("generalComponent->height = %u", generalComponent->height));
         COMMON_LVVV(("generalComponent->stride = %u", generalComponent->stride));
-        COMMON_LVVV(("generalComponent->pixels = 0x%p", generalComponent->pixels));
-
-        if (!generalComponent->pixels)
-        {
-            return NgosStatus::OUT_OF_MEMORY;
-        }
     }
 
 
