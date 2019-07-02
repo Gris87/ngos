@@ -415,6 +415,8 @@ src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofframemarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofscancomponent.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpegvlccode.h
+src/os/shared/common/src/bits64/graphics/jpeg/jpegzigzagorder.cpp
+src/os/shared/common/src/bits64/graphics/jpeg/jpegzigzagorder.h
 src/os/shared/common/src/bits64/graphics/png/png.cpp
 src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngheader.h

@@ -4,7 +4,6 @@
 
 
 #include <common/src/bits64/graphics/jpeg/jpegcomponentid.h>
-#include <common/src/bits64/graphics/jpeg/jpegquantizationtable.h>
 #include <common/src/bits64/graphics/jpeg/jpegvlccode.h>
 #include <ngos/types.h>
 
@@ -18,9 +17,10 @@ struct JpegComponent
     u64                    width;
     u64                    height;
     u64                    stride;
-    JpegQuantizationTable *quantizationTable;
+    u16                   *quantizationTable;
     JpegVlcCode           *vlcDcTable;
     JpegVlcCode           *vlcAcTable;
+    u8                    *pixels;
 };
 
 

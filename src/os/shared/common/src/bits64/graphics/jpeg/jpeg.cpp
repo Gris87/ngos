@@ -4,6 +4,7 @@
 #include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegdefinerestartintervalmarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
+#include <common/src/bits64/graphics/jpeg/jpegzigzagorder.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
@@ -250,6 +251,16 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
 
 
 
+    for (i64 i = 0; i < JPEG_NUMBER_OF_COMPONENTS; ++i)
+    {
+        if (decoder->components[i].pixels)
+        {
+            COMMON_ASSERT_EXECUTION(free(decoder->components[i].pixels), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -393,8 +404,6 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
             !IS_POWER_OF_2(samplingFactorY)
             ||
             quantizationTableId >= JPEG_QUANTIZATION_TABLE_COUNT
-            ||
-            !decoder->quantizationTables[quantizationTableId]
            )
         {
             return NgosStatus::INVALID_DATA;
@@ -458,11 +467,18 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         generalComponent->width  = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
         generalComponent->height = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
         generalComponent->stride = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
+        generalComponent->pixels = (u8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY << 3); // "<< 3" == "* 8"
 
         COMMON_LVVV(("generalComponent->id     = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
         COMMON_LVVV(("generalComponent->width  = %u", generalComponent->width));
         COMMON_LVVV(("generalComponent->height = %u", generalComponent->height));
         COMMON_LVVV(("generalComponent->stride = %u", generalComponent->stride));
+        COMMON_LVVV(("generalComponent->pixels = 0x%p", generalComponent->pixels));
+
+        if (!generalComponent->pixels)
+        {
+            return NgosStatus::OUT_OF_MEMORY;
+        }
     }
 
 
@@ -664,38 +680,179 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
         return NgosStatus::INVALID_DATA;
     }
 
+    length -= 2;
 
 
-    length    -= 2;
-    u64 count =  length / sizeof(JpegQuantizationTable);
 
-    COMMON_LVVV(("length = %u", length));
-    COMMON_LVVV(("count  = %u", count));
+    JpegQuantizationTable *table = ((JpegDefineQuantizationTableMarker *)marker)->tables;
 
-    if (count * sizeof(JpegQuantizationTable) != length)
+    while (length > 0)
     {
-        return NgosStatus::INVALID_DATA;
-    }
+        --length;
+
+        u8 tableId        = table->id;
+        u8 tablePrecision = table->precision;
+
+        COMMON_LVVV(("tableId        = %u", tableId));
+        COMMON_LVVV(("tablePrecision = %u", tablePrecision));
 
 
-
-    for (i64 i = 0; i < (i64)count; ++i)
-    {
-        JpegQuantizationTable *table   = &((JpegDefineQuantizationTableMarker *)marker)->tables[i];
-        u8                     tableId = table->id;
-
-        COMMON_LVVV(("tableId  = %u", tableId));
 
         if (tableId >= JPEG_QUANTIZATION_TABLE_COUNT)
         {
             return NgosStatus::INVALID_DATA;
         }
 
+        u16 *tableData = decoder->quantizationTables[tableId];
 
 
-        COMMON_TEST_ASSERT(decoder->quantizationTables[tableId] == 0, NgosStatus::ASSERTION);
 
-        decoder->quantizationTables[tableId] = table;
+        u8 count;
+
+        if (tablePrecision)
+        {
+            if (length < (JPEG_QUANTIZATION_TABLE_SIZE << 1)) // "<< 1" == "* 2"
+            {
+                for (i64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
+                {
+                    tableData[i] = 1;
+                }
+
+                count = length >> 1; // ">> 1" == "/ 2"
+            }
+            else
+            {
+                count = JPEG_QUANTIZATION_TABLE_SIZE;
+            }
+        }
+        else
+        {
+            if (length < JPEG_QUANTIZATION_TABLE_SIZE)
+            {
+                for (i64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
+                {
+                    tableData[i] = 1;
+                }
+
+                count = length;
+            }
+            else
+            {
+                count = JPEG_QUANTIZATION_TABLE_SIZE;
+            }
+        }
+
+
+
+        u8 *naturalOrder;
+
+        switch (count)
+        {
+            case (2 * 2):
+            {
+                // Ignore CppAlignmentVerifier [BEGIN]
+                asm volatile(
+                    "leaq    jpegNaturalOrder2(%%rip), %0"  // leaq    jpegNaturalOrder2(%rip), %rbx     # Get address of jpegNaturalOrder2 variable to RBX. %RBX == naturalOrder
+                        :                                   // Output parameters
+                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+                );
+                // Ignore CppAlignmentVerifier [END]
+            }
+            break;
+
+            case (3 * 3):
+            {
+                // Ignore CppAlignmentVerifier [BEGIN]
+                asm volatile(
+                    "leaq    jpegNaturalOrder3(%%rip), %0"  // leaq    jpegNaturalOrder3(%rip), %rbx     # Get address of jpegNaturalOrder3 variable to RBX. %RBX == naturalOrder
+                        :                                   // Output parameters
+                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+                );
+                // Ignore CppAlignmentVerifier [END]
+            }
+            break;
+
+            case (4 * 4):
+            {
+                // Ignore CppAlignmentVerifier [BEGIN]
+                asm volatile(
+                    "leaq    jpegNaturalOrder4(%%rip), %0"  // leaq    jpegNaturalOrder4(%rip), %rbx     # Get address of jpegNaturalOrder4 variable to RBX. %RBX == naturalOrder
+                        :                                   // Output parameters
+                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+                );
+                // Ignore CppAlignmentVerifier [END]
+            }
+            break;
+
+            case (5 * 5):
+            {
+                // Ignore CppAlignmentVerifier [BEGIN]
+                asm volatile(
+                    "leaq    jpegNaturalOrder5(%%rip), %0"  // leaq    jpegNaturalOrder5(%rip), %rbx     # Get address of jpegNaturalOrder5 variable to RBX. %RBX == naturalOrder
+                        :                                   // Output parameters
+                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+                );
+                // Ignore CppAlignmentVerifier [END]
+            }
+            break;
+
+            case (6 * 6):
+            {
+                // Ignore CppAlignmentVerifier [BEGIN]
+                asm volatile(
+                    "leaq    jpegNaturalOrder6(%%rip), %0"  // leaq    jpegNaturalOrder6(%rip), %rbx     # Get address of jpegNaturalOrder6 variable to RBX. %RBX == naturalOrder
+                        :                                   // Output parameters
+                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+                );
+                // Ignore CppAlignmentVerifier [END]
+            }
+            break;
+
+            case (7 * 7):
+            {
+                // Ignore CppAlignmentVerifier [BEGIN]
+                asm volatile(
+                    "leaq    jpegNaturalOrder7(%%rip), %0"  // leaq    jpegNaturalOrder7(%rip), %rbx     # Get address of jpegNaturalOrder7 variable to RBX. %RBX == naturalOrder
+                        :                                   // Output parameters
+                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+                );
+                // Ignore CppAlignmentVerifier [END]
+            }
+            break;
+
+            default:
+            {
+                // Ignore CppAlignmentVerifier [BEGIN]
+                asm volatile(
+                    "leaq    jpegNaturalOrder8(%%rip), %0"  // leaq    jpegNaturalOrder8(%rip), %rbx     # Get address of jpegNaturalOrder8 variable to RBX. %RBX == naturalOrder
+                        :                                   // Output parameters
+                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+                );
+                // Ignore CppAlignmentVerifier [END]
+            }
+            break;
+        }
+
+
+
+        for (i64 i = 0; i < count; ++i)
+        {
+            tableData[naturalOrder[i]] = tablePrecision ? ntohs(((u16 *)table->data16)[i]) : ((u8 *)table->data8)[i];
+        }
+
+
+
+        u8 tableSize = (tablePrecision ? count << 1 : count) + 1; // "<< 1" == "* 2"
+
+        table = (JpegQuantizationTable *)((u64)table + tableSize);
+        length -= tableSize - 1;
+    }
+
+
+
+    if (length) // length != 0
+    {
+        return NgosStatus::INVALID_DATA;
     }
 
 
@@ -882,7 +1039,10 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     {
         for (i64 i = 0; i < numberOfComponents; ++i)
         {
-
+            if (decodeMcuBlock(decoder, mcuBlockX, mcuBlockY, &decoder->components[i]) != NgosStatus::OK)
+            {
+                return NgosStatus::INVALID_DATA;
+            }
         }
 
 
@@ -963,11 +1123,14 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder)
+NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, u64 mcuBlockX, u64 mcuBlockY, JpegComponent *component)
 {
     COMMON_LT((" | decoder = 0x%p", decoder));
 
-    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,                             "decoder is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(mcuBlockX < decoder->mcuBlockCountX, "mcuBlockX is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(mcuBlockY < decoder->mcuBlockCountY, "mcuBlockY is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(component,                           "component is null",    NgosStatus::ASSERTION);
 
 
 

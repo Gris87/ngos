@@ -14,7 +14,8 @@
 
 
 
-#define JPEG_NUMBER_OF_COMPONENTS 3
+#define JPEG_NUMBER_OF_COMPONENTS    3
+#define JPEG_QUANTIZATION_TABLE_SIZE 64
 
 
 
@@ -30,7 +31,7 @@ struct JpegDecoder
     u16                      mcuBlockCountY;
     u64                      bitBuffer;
     u8                       bitsAvailable;
-    JpegQuantizationTable*   quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT];
+    u16                      quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT][JPEG_QUANTIZATION_TABLE_SIZE];
     JpegVlcCode*             vlcDcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegVlcCode*             vlcAcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegComponent            components[JPEG_NUMBER_OF_COMPONENTS];
