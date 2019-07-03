@@ -7,7 +7,7 @@
 
 
 
-extern u8 jpegZigZagOrder[64]; // jpegZigZagOrder declared in jpegzigzagorder.cpp file
+extern u8 jpegNaturalOrder[64]; // jpegNaturalOrder declared in jpegzigzagorder.cpp file
 
 
 

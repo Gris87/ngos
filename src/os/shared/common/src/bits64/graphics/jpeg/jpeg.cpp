@@ -1152,13 +1152,13 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-    u8 *zigZagOrder;
+    u8 *naturalOrder;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    jpegZigZagOrder(%%rip), %0"    // leaq    jpegZigZagOrder(%rip), %rbx     # Get address of jpegZigZagOrder variable to RBX. %RBX == zigZagOrder
+        "leaq    jpegNaturalOrder(%%rip), %0"   // leaq    jpegNaturalOrder(%rip), %rbx     # Get address of jpegNaturalOrder variable to RBX. %RBX == naturalOrder
             :                                   // Output parameters
-                "=r" (zigZagOrder)              // 'r' - any general register, '=' - write only
+                "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -1236,7 +1236,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-        block[zigZagOrder[coefficient]] = vlcValue * component->quantizationTable[coefficient];
+        block[naturalOrder[coefficient]] = vlcValue * component->quantizationTable[coefficient];
     } while(coefficient < 63);
 
 
