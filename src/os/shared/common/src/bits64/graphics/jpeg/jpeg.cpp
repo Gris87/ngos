@@ -1234,7 +1234,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 s
     u8 vlcCode;
     u8 vlcValue;
 
-    NgosStatus status = getVlc(decoder, component->vlcDcTable, 0, &vlcValue);
+    NgosStatus status = getVlc(decoder, component->vlcDcTable, &vlcCode, &vlcValue);
 
     if (status != NgosStatus::OK)
     {
@@ -1307,6 +1307,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *va
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(vlc,     "vlc is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(code,    "code is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(value,   "value is null",   NgosStatus::ASSERTION);
 
 
@@ -1343,11 +1344,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *va
 
 
     u64 valueTemp = vlc[vlcId].code;
-
-    if (code)
-    {
-        *code = valueTemp;
-    }
+    *code         = valueTemp;
 
 
 
@@ -1435,7 +1432,6 @@ NgosStatus Jpeg::getBits(JpegDecoder *decoder, u8 count, u64 *res)
 
 
     *res = (decoder->bitBuffer >> (decoder->bitsAvailable - count)) & ((1ULL << count) - 1);
-
 
 
 
