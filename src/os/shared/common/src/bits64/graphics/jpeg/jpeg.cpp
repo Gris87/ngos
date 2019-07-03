@@ -1009,19 +1009,48 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     u16            restartInterval     = decoder->restartInterval;
     u16            blocksBeforeRestart = restartInterval;
     JpegMarkerType nextRestartMarker   = JpegMarkerType::RESTART_0;
-    u8             componentDataBuffer[JPEG_NUMBER_OF_COMPONENTS][JPEG_MAXIMUM_SAMPLING_FACTOR][JPEG_MAXIMUM_SAMPLING_FACTOR][64];
+    u8*            componentDataBuffer[JPEG_NUMBER_OF_COMPONENTS];
 
-    do
+
+
+    NgosStatus status = NgosStatus::OK;
+
+
+
+    for (i64 i = 0; i < numberOfComponents; ++i)
+    {
+        componentDataBuffer[i] = (u8 *)malloc(decoder->components[i].samplingFactorX * decoder->components[i].samplingFactorY << 6); // "<< 6" == "* 64"
+
+        if (!componentDataBuffer[i])
+        {
+            COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
+
+            status = NgosStatus::OUT_OF_MEMORY;
+
+            break;
+        }
+    }
+
+
+
+    while (status == NgosStatus::OK)
     {
         for (i64 i = 0; i < numberOfComponents; ++i)
         {
-            NgosStatus status = decodeMcuBlock(decoder, &decoder->components[i], (u8 *)componentDataBuffer[i]);
+            status = decodeMcuBlock(decoder, &decoder->components[i], componentDataBuffer[i]);
 
             if (status != NgosStatus::OK)
             {
-                return status;
+                break;
             }
         }
+
+        if (status != NgosStatus::OK)
+        {
+            break;
+        }
+
+
 
 
 
@@ -1064,11 +1093,11 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
                 u64 markerData;
 
-                NgosStatus status = readBits(decoder, 16, &markerData);
+                status = readBits(decoder, 16, &markerData);
 
                 if (status != NgosStatus::OK)
                 {
-                    return status;
+                    break;
                 }
 
                 JpegMarkerHeader *marker = (JpegMarkerHeader *)&markerData;
@@ -1079,7 +1108,9 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
                 {
                     COMMON_LE(("Invalid separator(0x%02X) value in JPEG restart marker", marker->separator));
 
-                    return NgosStatus::INVALID_DATA;
+                    status = NgosStatus::INVALID_DATA;
+
+                    break;
                 }
 
 
@@ -1092,7 +1123,9 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
                 {
                     COMMON_LE(("Unexpected restart marker %u (%s). Expecting for %u (%s)", marker->type, marker->type, nextRestartMarker, nextRestartMarker));
 
-                    return NgosStatus::INVALID_DATA;
+                    status = NgosStatus::INVALID_DATA;
+
+                    break;
                 }
 
 
@@ -1111,7 +1144,17 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-    return NgosStatus::OK;
+    for (i64 i = 0; i < numberOfComponents; ++i)
+    {
+        if (componentDataBuffer[i])
+        {
+            COMMON_ASSERT_EXECUTION(free(componentDataBuffer[i]), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return status;
 }
 
 NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u8 *componentDataBuffer)
@@ -1243,24 +1286,14 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
     for (i64 i = 0; i < 64; i += 8)
     {
-        NgosStatus status = handleRowIDCT(decoder, &block[i]);
-
-        if (status != NgosStatus::OK)
-        {
-            return status;
-        }
+        COMMON_ASSERT_EXECUTION(handleRowIDCT(decoder, &block[i]), NgosStatus::ASSERTION);
     }
 
 
 
     for (i64 i = 0; i < 8; ++i)
     {
-        NgosStatus status = handleColIDCT(decoder, &block[i], sampleDataBuffer, component->sampleStride);
-
-        if (status != NgosStatus::OK)
-        {
-            return status;
-        }
+        COMMON_ASSERT_EXECUTION(handleColIDCT(decoder, &block[i], sampleDataBuffer, component->sampleStride), NgosStatus::ASSERTION);
     }
 
 
