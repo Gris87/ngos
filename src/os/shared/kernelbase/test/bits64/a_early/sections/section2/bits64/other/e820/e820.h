@@ -91,7 +91,7 @@ TEST_CASES(section2, bits64_other_e820_e820);
     {
         E820Table table;
 
-        table.count = 10;
+        table.count            = 10;
         table.entries[0].start = 0x5000;
         table.entries[0].size  = 0x4000;
         table.entries[0].type  = MemoryMapEntryType::NVS;
@@ -214,7 +214,7 @@ TEST_CASES(section2, bits64_other_e820_e820);
     {
         E820Table table;
 
-        table.count = 2;
+        table.count            = 2;
         table.entries[0].start = 0x01000000;
         table.entries[0].size  = 0x00500000;
         table.entries[0].type  = MemoryMapEntryType::RAM;

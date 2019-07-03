@@ -22,4 +22,4 @@ test_verifier PATH
 ### How to ...
 
 Test verifier tool will check all C++ headers in specified PATH argument for the declared functions.<br/>
-It will inform you if there is no tests for declared functions.
+It will inform you if there are no tests for declared functions.

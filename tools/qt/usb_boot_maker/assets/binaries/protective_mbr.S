@@ -50,7 +50,7 @@ print_string:                                                                   
     movw    $0x07, %bx                                                          #        set BX to 0x07 (BH=0 - first page, BL=7 - Light Gray)
     int     $0x10                                                               #        Call interrupt 0x10 for printing character from AL on the screen
     jmp     print_string                                                        #        Print next character
-1:                                                                              # Label for jumping when there is no more symbols
+1:                                                                              # Label for jumping when there are no more symbols
     ret                                                                         # Return from the function
                                                                                 #
 # ============================================================================= # =============================================================================

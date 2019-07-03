@@ -170,7 +170,7 @@ coff_header:                                                                    
 
 Here we are saying to UEFI that kernel was built for x86_64 architecture.<br/>
 We have 3 sections that we will describe below.<br/>
-There is no any timestamp and symbols.<br/>
+There are no any timestamp and symbols.<br/>
 The sizeOfOptionalHeader is calculating by the provided labels.<br/>
 In characteristics field we are saying that the image is executable and there is no any debug information.
 

@@ -29,7 +29,9 @@ private:
     static NgosStatus decodeImageData(JpegDecoder *decoder); // TEST: NO
     static NgosStatus decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component); // TEST: NO
     static NgosStatus decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 samplingY, JpegComponent *component); // TEST: NO
+    static NgosStatus getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *value); // TEST: NO
     static NgosStatus bufferBits(JpegDecoder *decoder, u8 count); // TEST: NO
+    static NgosStatus getBits(JpegDecoder *decoder, u8 count, u64 *res); // TEST: NO
     static NgosStatus readBits(JpegDecoder *decoder, u8 count, u64 *res); // TEST: NO
     static NgosStatus skipBits(JpegDecoder *decoder, u8 count); // TEST: NO
     static NgosStatus alignBits(JpegDecoder *decoder); // TEST: NO

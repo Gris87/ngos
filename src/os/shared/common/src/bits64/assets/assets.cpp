@@ -49,22 +49,22 @@ NgosStatus Assets::init()
 
 
 
-        sEntries[sEntriesCount].filename = (const char *)currentAddress;
-        currentAddress += strlen(sEntries[sEntriesCount].filename) + 1;
+        sEntries[sEntriesCount].filename =  (const char *)currentAddress;
+        currentAddress                   += strlen(sEntries[sEntriesCount].filename) + 1;
 
         COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);
 
 
 
-        sEntries[sEntriesCount].contentSize = *(u64 *)currentAddress;
-        currentAddress += sizeof(sEntries[sEntriesCount].contentSize);
+        sEntries[sEntriesCount].contentSize =  (*(u64 *)currentAddress);
+        currentAddress                      += sizeof(sEntries[sEntriesCount].contentSize);
 
         COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);
 
 
 
-        sEntries[sEntriesCount].content = currentAddress;
-        currentAddress += sEntries[sEntriesCount].contentSize;
+        sEntries[sEntriesCount].content =  currentAddress;
+        currentAddress                  += sEntries[sEntriesCount].contentSize;
 
 
 

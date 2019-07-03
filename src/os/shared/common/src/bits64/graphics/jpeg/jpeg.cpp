@@ -271,7 +271,7 @@ NgosStatus Jpeg::skip(JpegDecoder *decoder, u64 count)
 
     if (count > decoder->size)
     {
-        COMMON_LE(("There is no more bytes to read"));
+        COMMON_LE(("There are no more bytes to read"));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -479,9 +479,11 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
     {
         JpegComponent *generalComponent = &decoder->components[i];
 
+        // Ignore CppAlignmentVerifier [BEGIN]
         generalComponent->width  = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
         generalComponent->height = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
         generalComponent->stride = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
+        // Ignore CppAlignmentVerifier [END]
 
         COMMON_LVVV(("generalComponent->id     = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
         COMMON_LVVV(("generalComponent->width  = %u", generalComponent->width));
@@ -772,7 +774,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
         switch (count)
         {
-            case (2 * 2):
+            case 4: // 2 * 2
             {
                 // Ignore CppAlignmentVerifier [BEGIN]
                 asm volatile(
@@ -784,7 +786,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
             }
             break;
 
-            case (3 * 3):
+            case 9: // 3 * 3
             {
                 // Ignore CppAlignmentVerifier [BEGIN]
                 asm volatile(
@@ -796,7 +798,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
             }
             break;
 
-            case (4 * 4):
+            case 16: // 4 * 4
             {
                 // Ignore CppAlignmentVerifier [BEGIN]
                 asm volatile(
@@ -808,7 +810,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
             }
             break;
 
-            case (5 * 5):
+            case 25: // 5 * 5
             {
                 // Ignore CppAlignmentVerifier [BEGIN]
                 asm volatile(
@@ -820,7 +822,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
             }
             break;
 
-            case (6 * 6):
+            case 36: // 6 * 6
             {
                 // Ignore CppAlignmentVerifier [BEGIN]
                 asm volatile(
@@ -832,7 +834,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
             }
             break;
 
-            case (7 * 7):
+            case 49: // 7 * 7
             {
                 // Ignore CppAlignmentVerifier [BEGIN]
                 asm volatile(
@@ -868,7 +870,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
         u8 tableSize = (tablePrecision ? count << 1 : count) + 1; // "<< 1" == "* 2"
 
-        table = (JpegQuantizationTable *)((u64)table + tableSize);
+        table  =  (JpegQuantizationTable *)((u64)table + tableSize);
         length -= tableSize - 1;
     }
 
@@ -1220,7 +1222,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
 
 NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 samplingY, JpegComponent *component)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, samplingX = %u, samplingY = %u, component = 0x%p", decoder, samplingX, samplingY, component));
 
     COMMON_ASSERT(decoder,                                "decoder is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(component,                              "component is null",    NgosStatus::ASSERTION);
@@ -1228,6 +1230,155 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 s
     COMMON_ASSERT(samplingY < component->samplingFactorY, "samplingY is invalid", NgosStatus::ASSERTION);
 
 
+
+    u8 vlcCode;
+    u8 vlcValue;
+
+    NgosStatus status = getVlc(decoder, component->vlcDcTable, 0, &vlcValue);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
+    }
+
+
+
+    u64 block[64];
+    memzero(&block[1], sizeof(block) - sizeof(block[0]));
+
+
+
+    component->dcpred += vlcValue;
+    block[0]          =  component->dcpred * component->quantizationTable[0];
+
+
+
+    u16 coef = 0;
+
+    do
+    {
+        NgosStatus status = getVlc(decoder, component->vlcAcTable, &vlcCode, &vlcValue);
+
+        if (status != NgosStatus::OK)
+        {
+            return status;
+        }
+
+
+
+        if (!vlcCode) // vlcCode == 0
+        {
+            break;
+        }
+
+
+
+        if (!(vlcCode & 0x0F) && (vlcCode != 0xF0))
+        {
+            COMMON_LE(("Invalid VLC code found"));
+
+            return NgosStatus::INVALID_DATA;
+        }
+
+
+
+        coef += (vlcCode >> 4) + 1;
+
+        if (coef > 63)
+        {
+            COMMON_LE(("Invalid coefficient value"));
+
+            return NgosStatus::INVALID_DATA;
+        }
+
+
+
+        block[coef] = vlcValue * component->quantizationTable[coef];
+    } while(coef < 63);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *value)
+{
+    COMMON_LT((" | decoder = 0x%p, vlc = 0x%p, code = 0x%p, value = 0x%p", decoder, vlc, code, value));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(vlc,     "vlc is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(value,   "value is null",   NgosStatus::ASSERTION);
+
+
+
+    u64 vlcId;
+
+    NgosStatus status = getBits(decoder, 16, &vlcId);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
+    }
+
+
+
+    u8 bits = vlc[vlcId].bits;
+
+    if (!bits) // bits == 0
+    {
+        COMMON_LE(("Zero bits found in VLC"));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    status = skipBits(decoder, bits);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
+    }
+
+
+
+    u64 valueTemp = vlc[vlcId].code;
+
+    if (code)
+    {
+        *code = valueTemp;
+    }
+
+
+
+    bits = valueTemp & 0x0F;
+
+    if (!bits) // bits == 0
+    {
+        *value = 0;
+
+        return NgosStatus::OK;
+    }
+
+
+
+    status = readBits(decoder, bits, &valueTemp);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
+    }
+
+
+
+    if (valueTemp < (u64)(1 << (bits - 1)))
+    {
+        valueTemp += (0xFFFFFFFFFFFFFFFF << bits) + 1;
+    }
+
+
+
+    *value = valueTemp;
 
     return NgosStatus::OK;
 }
@@ -1245,7 +1396,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
     {
         if (!decoder->size) // decoder->size == 0
         {
-            COMMON_LE(("There is no more bytes to read"));
+            COMMON_LE(("There are no more bytes to read"));
 
             return NgosStatus::INVALID_DATA;
         }
@@ -1264,7 +1415,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
+NgosStatus Jpeg::getBits(JpegDecoder *decoder, u8 count, u64 *res)
 {
     COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res));
 
@@ -1283,7 +1434,33 @@ NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
 
 
 
-    *res                   =  (decoder->bitBuffer >> (decoder->bitsAvailable - count)) & ((1ULL << count) - 1);
+    *res = (decoder->bitBuffer >> (decoder->bitsAvailable - count)) & ((1ULL << count) - 1);
+
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
+{
+    COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res));
+
+    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,       "res is null",     NgosStatus::ASSERTION);
+
+
+
+    NgosStatus status = getBits(decoder, count, res);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
+    }
+
+
+
     decoder->bitsAvailable -= count;
 
 
