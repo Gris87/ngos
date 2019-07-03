@@ -16,8 +16,8 @@ struct JpegComponent
     u8               samplingFactorY;
     u64              width;
     u64              height;
-    u64              stride;
-    u64              dcpred;
+    u64              sampleStride;
+    i64              dcpred;
     u16             *quantizationTable;
     JpegVlcCode     *vlcDcTable;
     JpegVlcCode     *vlcAcTable;

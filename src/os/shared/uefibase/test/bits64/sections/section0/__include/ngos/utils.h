@@ -199,6 +199,18 @@ TEST_CASES(section0, __include_ngos_utils);
 
 
 
+    TEST_CASE("CLAMP()");
+    {
+        TEST_ASSERT_EQUALS(CLAMP(0, 0, 5),    0);
+        TEST_ASSERT_EQUALS(CLAMP(10, 1, 3),   3);
+        TEST_ASSERT_EQUALS(CLAMP(-5, -10, 0), -5);
+        TEST_ASSERT_EQUALS(CLAMP(5, 6, 7),    6);
+        TEST_ASSERT_EQUALS(CLAMP(5, 3, 4),    4);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("htons()");
     {
         TEST_ASSERT_EQUALS(htons(0x01),   0x0100);
@@ -248,6 +260,18 @@ TEST_CASES(section0, __include_ngos_utils);
     {
         TEST_ASSERT_EQUALS(ntohll(0x01),               0x0100000000000000);
         TEST_ASSERT_EQUALS(ntohll(0x0102030405060708), 0x0807060504030201);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("clamp()");
+    {
+        TEST_ASSERT_EQUALS(clamp(0, 0, 5),    0);
+        TEST_ASSERT_EQUALS(clamp(10, 1, 3),   3);
+        TEST_ASSERT_EQUALS(clamp(-5, -10, 0), -5);
+        TEST_ASSERT_EQUALS(clamp(5, 6, 7),    6);
+        TEST_ASSERT_EQUALS(clamp(5, 3, 4),    4);
     }
     TEST_CASE_END();
 }

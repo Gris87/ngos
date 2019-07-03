@@ -7,27 +7,29 @@
 
 
 
-#define __ROUND_MASK(x, y) ((__typeof__(x))((y) - 1))           // TEST: NO
-#define ROUND_UP(x, y) ((((x) - 1) | __ROUND_MASK(x, y)) + 1)   // TEST: NO
-#define ROUND_DOWN(x, y) ((x) & ~__ROUND_MASK(x, y))            // TEST: NO
+#define __ROUND_MASK(x, y) ((__typeof__(x))((y) - 1))                   // TEST: NO
+#define ROUND_UP(x, y) ((((x) - 1) | __ROUND_MASK(x, y)) + 1)           // TEST: NO
+#define ROUND_DOWN(x, y) ((x) & ~__ROUND_MASK(x, y))                    // TEST: NO
 
 
 
-#define WORD_BIT(wordId, bitId) ((wordId << 5) + bitId)         // TEST: NO // "<< 5" == "* 32"
+#define WORD_BIT(wordId, bitId) ((wordId << 5) + bitId)                 // TEST: NO // "<< 5" == "* 32"
 
 
 
-#define IS_POWER_OF_2(a) (!((a) & ((a) - 1)))                   // TEST: NO
+#define IS_POWER_OF_2(a) (!((a) & ((a) - 1)))                           // TEST: NO
 
 
 
-#define MIN(a, b) (a) < (b) ? (a) : (b)                         // TEST: NO
-#define MIN_TYPED(type, a, b) MIN((type)(a), (type)(b))         // TEST: NO
+#define MIN(a, b) (a) < (b) ? (a) : (b)                                 // TEST: NO
+#define MIN_TYPED(type, a, b) MIN((type)(a), (type)(b))                 // TEST: NO
 
-#define MAX(a, b) (a) > (b) ? (a) : (b)                         // TEST: NO
-#define MAX_TYPED(type, a, b) MAX((type)(a), (type)(b))         // TEST: NO
+#define MAX(a, b) (a) > (b) ? (a) : (b)                                 // TEST: NO
+#define MAX_TYPED(type, a, b) MAX((type)(a), (type)(b))                 // TEST: NO
 
-#define ABS(a) ((a) >= 0 ? (a) : -(a))                          // TEST: NO // Ignore CppOperatorSpacesVerifier
+#define ABS(a) ((a) >= 0 ? (a) : -(a))                                  // TEST: NO // Ignore CppOperatorSpacesVerifier
+
+#define CLAMP(a, minValue, maxValue) MIN(MAX(a, minValue), maxValue)    // TEST: NO
 
 
 
@@ -84,6 +86,46 @@ inline u64 ntohll(u64 value) // TEST: NO
         |   (value >> 56);
 }
 // Ignore CppAlignmentVerifier [END]
+
+inline u8 clamp(u8 value, u8 minValue, u8 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
+
+inline u16 clamp(u16 value, u16 minValue, u16 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
+
+inline u32 clamp(u32 value, u32 minValue, u32 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
+
+inline u64 clamp(u64 value, u64 minValue, u64 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
+
+inline i8 clamp(i8 value, i8 minValue, i8 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
+
+inline i16 clamp(i16 value, i16 minValue, i16 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
+
+inline i32 clamp(i32 value, i32 minValue, i32 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
+
+inline i64 clamp(i64 value, i64 minValue, i64 maxValue) // TEST: NO
+{
+    return value < minValue ? minValue : (value > maxValue ? maxValue : value);
+}
 
 
 

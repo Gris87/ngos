@@ -8,6 +8,10 @@
 
 
 
+#define JPEG_MAXIMUM_SAMPLING_FACTOR (1 << (4 - 1))
+
+
+
 struct JpegStartOfFrameComponent
 {
     JpegComponentId id;

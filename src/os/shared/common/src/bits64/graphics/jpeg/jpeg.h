@@ -27,9 +27,11 @@ private:
     static NgosStatus decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeImageData(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component); // TEST: NO
-    static NgosStatus decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 samplingY, JpegComponent *component); // TEST: NO
-    static NgosStatus getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *value); // TEST: NO
+    static NgosStatus decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u8 *componentDataBuffer); // TEST: NO
+    static NgosStatus decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *component, u8 *sampleDataBuffer); // TEST: NO
+    static NgosStatus getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *value); // TEST: NO
+    static NgosStatus handleRowIDCT(JpegDecoder *decoder, i64 *block); // TEST: NO
+    static NgosStatus handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataBuffer, u64 sampleStride); // TEST: NO
     static NgosStatus bufferBits(JpegDecoder *decoder, u8 count); // TEST: NO
     static NgosStatus getBits(JpegDecoder *decoder, u8 count, u64 *res); // TEST: NO
     static NgosStatus readBits(JpegDecoder *decoder, u8 count, u64 *res); // TEST: NO

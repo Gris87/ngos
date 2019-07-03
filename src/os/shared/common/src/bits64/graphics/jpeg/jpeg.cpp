@@ -14,6 +14,17 @@
 
 
 
+#define W1 2841
+#define W2 2676
+#define W3 2408
+#define W5 1609
+#define W6 1108
+#define W7 565
+
+#define CLAMP_TO_BYTE(a) clamp((i64)(a), (i64)0x00, (i64)0xFF);
+
+
+
 NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 {
     COMMON_LT((" | data = 0x%p, size = %u, image = 0x%p", data, size, image));
@@ -166,7 +177,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             case JpegMarkerType::RESTART_6:
             case JpegMarkerType::RESTART_7:
             {
-                COMMON_LF(("Unexpected marker type: %u", marker->type));
+                COMMON_LF(("Unexpected marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
 
                 status = NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -174,7 +185,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
             default:
             {
-                COMMON_LF(("Unknown marker type: %u", marker->type));
+                COMMON_LF(("Unknown marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
 
                 status = NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -480,15 +491,15 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         JpegComponent *generalComponent = &decoder->components[i];
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        generalComponent->width  = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
-        generalComponent->height = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
-        generalComponent->stride = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
+        generalComponent->width        = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
+        generalComponent->height       = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
+        generalComponent->sampleStride = generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
         // Ignore CppAlignmentVerifier [END]
 
-        COMMON_LVVV(("generalComponent->id     = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
-        COMMON_LVVV(("generalComponent->width  = %u", generalComponent->width));
-        COMMON_LVVV(("generalComponent->height = %u", generalComponent->height));
-        COMMON_LVVV(("generalComponent->stride = %u", generalComponent->stride));
+        COMMON_LVVV(("generalComponent->id           = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
+        COMMON_LVVV(("generalComponent->width        = %u", generalComponent->width));
+        COMMON_LVVV(("generalComponent->height       = %u", generalComponent->height));
+        COMMON_LVVV(("generalComponent->sampleStride = %u", generalComponent->sampleStride));
     }
 
 
@@ -770,100 +781,9 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-        u8 *naturalOrder;
-
-        switch (count)
-        {
-            case 4: // 2 * 2
-            {
-                // Ignore CppAlignmentVerifier [BEGIN]
-                asm volatile(
-                    "leaq    jpegNaturalOrder2(%%rip), %0"  // leaq    jpegNaturalOrder2(%rip), %rbx     # Get address of jpegNaturalOrder2 variable to RBX. %RBX == naturalOrder
-                        :                                   // Output parameters
-                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
-                );
-                // Ignore CppAlignmentVerifier [END]
-            }
-            break;
-
-            case 9: // 3 * 3
-            {
-                // Ignore CppAlignmentVerifier [BEGIN]
-                asm volatile(
-                    "leaq    jpegNaturalOrder3(%%rip), %0"  // leaq    jpegNaturalOrder3(%rip), %rbx     # Get address of jpegNaturalOrder3 variable to RBX. %RBX == naturalOrder
-                        :                                   // Output parameters
-                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
-                );
-                // Ignore CppAlignmentVerifier [END]
-            }
-            break;
-
-            case 16: // 4 * 4
-            {
-                // Ignore CppAlignmentVerifier [BEGIN]
-                asm volatile(
-                    "leaq    jpegNaturalOrder4(%%rip), %0"  // leaq    jpegNaturalOrder4(%rip), %rbx     # Get address of jpegNaturalOrder4 variable to RBX. %RBX == naturalOrder
-                        :                                   // Output parameters
-                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
-                );
-                // Ignore CppAlignmentVerifier [END]
-            }
-            break;
-
-            case 25: // 5 * 5
-            {
-                // Ignore CppAlignmentVerifier [BEGIN]
-                asm volatile(
-                    "leaq    jpegNaturalOrder5(%%rip), %0"  // leaq    jpegNaturalOrder5(%rip), %rbx     # Get address of jpegNaturalOrder5 variable to RBX. %RBX == naturalOrder
-                        :                                   // Output parameters
-                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
-                );
-                // Ignore CppAlignmentVerifier [END]
-            }
-            break;
-
-            case 36: // 6 * 6
-            {
-                // Ignore CppAlignmentVerifier [BEGIN]
-                asm volatile(
-                    "leaq    jpegNaturalOrder6(%%rip), %0"  // leaq    jpegNaturalOrder6(%rip), %rbx     # Get address of jpegNaturalOrder6 variable to RBX. %RBX == naturalOrder
-                        :                                   // Output parameters
-                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
-                );
-                // Ignore CppAlignmentVerifier [END]
-            }
-            break;
-
-            case 49: // 7 * 7
-            {
-                // Ignore CppAlignmentVerifier [BEGIN]
-                asm volatile(
-                    "leaq    jpegNaturalOrder7(%%rip), %0"  // leaq    jpegNaturalOrder7(%rip), %rbx     # Get address of jpegNaturalOrder7 variable to RBX. %RBX == naturalOrder
-                        :                                   // Output parameters
-                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
-                );
-                // Ignore CppAlignmentVerifier [END]
-            }
-            break;
-
-            default:
-            {
-                // Ignore CppAlignmentVerifier [BEGIN]
-                asm volatile(
-                    "leaq    jpegNaturalOrder8(%%rip), %0"  // leaq    jpegNaturalOrder8(%rip), %rbx     # Get address of jpegNaturalOrder8 variable to RBX. %RBX == naturalOrder
-                        :                                   // Output parameters
-                            "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
-                );
-                // Ignore CppAlignmentVerifier [END]
-            }
-            break;
-        }
-
-
-
         for (i64 i = 0; i < count; ++i)
         {
-            tableData[naturalOrder[i]] = tablePrecision ? ntohs(((u16 *)table->data16)[i]) : ((u8 *)table->data8)[i];
+            tableData[i] = tablePrecision ? ntohs(((u16 *)table->data16)[i]) : ((u8 *)table->data8)[i];
         }
 
 
@@ -1089,12 +1009,13 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     u16            restartInterval     = decoder->restartInterval;
     u16            blocksBeforeRestart = restartInterval;
     JpegMarkerType nextRestartMarker   = JpegMarkerType::RESTART_0;
+    u8             componentDataBuffer[JPEG_NUMBER_OF_COMPONENTS][JPEG_MAXIMUM_SAMPLING_FACTOR][JPEG_MAXIMUM_SAMPLING_FACTOR][64];
 
     do
     {
         for (i64 i = 0; i < numberOfComponents; ++i)
         {
-            NgosStatus status = decodeMcuBlock(decoder, &decoder->components[i]);
+            NgosStatus status = decodeMcuBlock(decoder, &decoder->components[i], (u8 *)componentDataBuffer[i]);
 
             if (status != NgosStatus::OK)
             {
@@ -1193,12 +1114,13 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
+NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u8 *componentDataBuffer)
 {
-    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
+    COMMON_LT((" | decoder = 0x%p, component = 0x%p, componentDataBuffer = 0x%p", decoder, component, componentDataBuffer));
 
-    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,             "decoder is null",             NgosStatus::ASSERTION);
+    COMMON_ASSERT(component,           "component is null",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(componentDataBuffer, "componentDataBuffer is null", NgosStatus::ASSERTION);
 
 
 
@@ -1206,7 +1128,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
     {
         for (i64 j = 0; j < component->samplingFactorX; ++j)
         {
-            NgosStatus status = decodeMcuBlockSample(decoder, j, i, component);
+            NgosStatus status = decodeMcuBlockSample(decoder, component, componentDataBuffer + (i * component->samplingFactorX + j) * 64);
 
             if (status != NgosStatus::OK)
             {
@@ -1220,19 +1142,30 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 samplingY, JpegComponent *component)
+NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *component, u8 *sampleDataBuffer)
 {
-    COMMON_LT((" | decoder = 0x%p, samplingX = %u, samplingY = %u, component = 0x%p", decoder, samplingX, samplingY, component));
+    COMMON_LT((" | decoder = 0x%p, component = 0x%p, sampleDataBuffer = 0x%p", decoder, component, sampleDataBuffer));
 
-    COMMON_ASSERT(decoder,                                "decoder is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(component,                              "component is null",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(samplingX < component->samplingFactorX, "samplingX is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(samplingY < component->samplingFactorY, "samplingY is invalid", NgosStatus::ASSERTION);
-
+    COMMON_ASSERT(decoder,          "decoder is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(component,        "component is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(sampleDataBuffer, "sampleDataBuffer is null", NgosStatus::ASSERTION);
 
 
-    u8 vlcCode;
-    u8 vlcValue;
+
+    u8 *zigZagOrder;
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "leaq    jpegZigZagOrder(%%rip), %0"    // leaq    jpegZigZagOrder(%rip), %rbx     # Get address of jpegZigZagOrder variable to RBX. %RBX == zigZagOrder
+            :                                   // Output parameters
+                "=r" (zigZagOrder)              // 'r' - any general register, '=' - write only
+    );
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    u8  vlcCode;
+    i64 vlcValue;
 
     NgosStatus status = getVlc(decoder, component->vlcDcTable, &vlcCode, &vlcValue);
 
@@ -1241,9 +1174,12 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 s
         return status;
     }
 
+    // COMMON_LVVV(("vlcCode  = %u", vlcCode));  // Commented to avoid too frequent logs
+    // COMMON_LVVV(("vlcValue = %d", vlcValue)); // Commented to avoid too frequent logs
 
 
-    u64 block[64];
+
+    i64 block[64];
     memzero(&block[1], sizeof(block) - sizeof(block[0]));
 
 
@@ -1251,9 +1187,11 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 s
     component->dcpred += vlcValue;
     block[0]          =  component->dcpred * component->quantizationTable[0];
 
+    // COMMON_LVVV(("component->dcpred = %d", component->dcpred)); // Commented to avoid too frequent logs
 
 
-    u16 coef = 0;
+
+    u16 coefficient = 0;
 
     do
     {
@@ -1263,6 +1201,9 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 s
         {
             return status;
         }
+
+        // COMMON_LVVV(("vlcCode  = %u", vlcCode));  // Commented to avoid too frequent logs
+        // COMMON_LVVV(("vlcValue = %d", vlcValue)); // Commented to avoid too frequent logs
 
 
 
@@ -1282,9 +1223,11 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 s
 
 
 
-        coef += (vlcCode >> 4) + 1;
+        coefficient += (vlcCode >> 4) + 1;
 
-        if (coef > 63)
+        // COMMON_LVVV(("coefficient = %u", coefficient)); // Commented to avoid too frequent logs
+
+        if (coefficient > 63)
         {
             COMMON_LE(("Invalid coefficient value"));
 
@@ -1293,15 +1236,39 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, u64 samplingX, u64 s
 
 
 
-        block[coef] = vlcValue * component->quantizationTable[coef];
-    } while(coef < 63);
+        block[zigZagOrder[coefficient]] = vlcValue * component->quantizationTable[coefficient];
+    } while(coefficient < 63);
+
+
+
+    for (i64 i = 0; i < 64; i += 8)
+    {
+        NgosStatus status = handleRowIDCT(decoder, &block[i]);
+
+        if (status != NgosStatus::OK)
+        {
+            return status;
+        }
+    }
+
+
+
+    for (i64 i = 0; i < 8; ++i)
+    {
+        NgosStatus status = handleColIDCT(decoder, &block[i], sampleDataBuffer, component->sampleStride);
+
+        if (status != NgosStatus::OK)
+        {
+            return status;
+        }
+    }
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *value)
+NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *value)
 {
     COMMON_LT((" | decoder = 0x%p, vlc = 0x%p, code = 0x%p, value = 0x%p", decoder, vlc, code, value));
 
@@ -1321,9 +1288,13 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *va
         return status;
     }
 
+    // COMMON_LVVV(("vlcId = %u", vlcId)); // Commented to avoid too frequent logs
+
 
 
     u8 bits = vlc[vlcId].bits;
+
+    // COMMON_LVVV(("bits = %u", bits)); // Commented to avoid too frequent logs
 
     if (!bits) // bits == 0
     {
@@ -1343,12 +1314,16 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *va
 
 
 
-    u64 valueTemp = vlc[vlcId].code;
+    i64 valueTemp = vlc[vlcId].code;
     *code         = valueTemp;
+
+    // COMMON_LVVV(("valueTemp = %d", valueTemp)); // Commented to avoid too frequent logs
 
 
 
     bits = valueTemp & 0x0F;
+
+    // COMMON_LVVV(("bits = %u", bits)); // Commented to avoid too frequent logs
 
     if (!bits) // bits == 0
     {
@@ -1359,23 +1334,215 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, u8 *va
 
 
 
-    status = readBits(decoder, bits, &valueTemp);
+    status = readBits(decoder, bits, (u64 *)&valueTemp);
 
     if (status != NgosStatus::OK)
     {
         return status;
     }
 
+    // COMMON_LVVV(("valueTemp = %d", valueTemp)); // Commented to avoid too frequent logs
 
 
-    if (valueTemp < (u64)(1 << (bits - 1)))
+
+    if (valueTemp < (1 << (bits - 1)))
     {
         valueTemp += (0xFFFFFFFFFFFFFFFF << bits) + 1;
+
+        // COMMON_LVVV(("valueTemp = %d", valueTemp)); // Commented to avoid too frequent logs
     }
 
 
 
     *value = valueTemp;
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::handleRowIDCT(JpegDecoder *decoder, i64 *block)
+{
+    COMMON_LT((" | decoder = 0x%p, block = 0x%p", decoder, block));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(block,   "block is null",   NgosStatus::ASSERTION);
+
+
+
+    i64 x0 = (block[0] << 11) + 128;
+    i64 x1 = block[4] << 11;
+    i64 x2 = block[6];
+    i64 x3 = block[2];
+    i64 x4 = block[1];
+    i64 x5 = block[7];
+    i64 x6 = block[5];
+    i64 x7 = block[3];
+    i64 x8 = W7 * (x4 + x5);
+
+    if (
+        !x1 // x1 == 0
+        &&
+        !x2 // x2 == 0
+        &&
+        !x3 // x3 == 0
+        &&
+        !x4 // x4 == 0
+        &&
+        !x5 // x5 == 0
+        &&
+        !x6 // x6 == 0
+        &&
+        !x7 // x7 == 0
+       )
+    {
+        x0       = block[0] << 3;
+        block[0] = x0;
+        block[1] = x0;
+        block[2] = x0;
+        block[3] = x0;
+        block[4] = x0;
+        block[5] = x0;
+        block[6] = x0;
+        block[7] = x0;
+
+        return NgosStatus::OK;
+    }
+
+
+
+    x4 =  x8 + (W1 - W7) * x4;
+    x5 =  x8 - (W1 + W7) * x5;
+    x8 =  W3 * (x6 + x7);
+    x6 =  x8 - (W3 - W5) * x6;
+    x7 =  x8 - (W3 + W5) * x7;
+    x8 =  x0 + x1;
+    x0 -= x1;
+    x1 =  W6 * (x3 + x2);
+    x2 =  x1 - (W2 + W6) * x2;
+    x3 =  x1 + (W2 - W6) * x3;
+    x1 =  x4 + x6;
+    x4 -= x6;
+    x6 =  x5 + x7;
+    x5 -= x7;
+    x7 =  x8 + x3;
+    x8 -= x3;
+    x3 =  x0 + x2;
+    x0 -= x2;
+    x2 =  (181 * (x4 + x5) + 128) >> 8;
+    x4 =  (181 * (x4 - x5) + 128) >> 8;
+
+
+
+    block[0] = (x7 + x1) >> 8;
+    block[1] = (x3 + x2) >> 8;
+    block[2] = (x0 + x4) >> 8;
+    block[3] = (x8 + x6) >> 8;
+    block[4] = (x8 - x6) >> 8;
+    block[5] = (x0 - x4) >> 8;
+    block[6] = (x3 - x2) >> 8;
+    block[7] = (x7 - x1) >> 8;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataBuffer, u64 sampleStride)
+{
+    COMMON_LT((" | decoder = 0x%p, block = 0x%p, sampleDataBuffer = 0x%p, sampleStride = %u", decoder, block, sampleDataBuffer, sampleStride));
+
+    COMMON_ASSERT(decoder,          "decoder is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(block,            "block is null",            NgosStatus::ASSERTION);
+    COMMON_ASSERT(sampleDataBuffer, "sampleDataBuffer is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(sampleStride > 0, "sampleStride is zero",     NgosStatus::ASSERTION);
+
+
+
+    i64 x0 = (block[0] << 8) + 8192;
+    i64 x1 = block[8 * 4] << 8;
+    i64 x2 = block[8 * 6];
+    i64 x3 = block[8 * 2];
+    i64 x4 = block[8 * 1];
+    i64 x5 = block[8 * 7];
+    i64 x6 = block[8 * 5];
+    i64 x7 = block[8 * 3];
+    i64 x8 = W7 * (x4 + x5) + 4;
+
+    if (
+        !x1 // x1 == 0
+        &&
+        !x2 // x2 == 0
+        &&
+        !x3 // x3 == 0
+        &&
+        !x4 // x4 == 0
+        &&
+        !x5 // x5 == 0
+        &&
+        !x6 // x6 == 0
+        &&
+        !x7 // x7 == 0
+       )
+    {
+        x0 = CLAMP_TO_BYTE(((block[0] + 32) >> 6) + 128);
+
+        for (i64 i = 0; i < 8; ++i)
+        {
+            *sampleDataBuffer = x0;
+            sampleDataBuffer += sampleStride;
+        }
+
+        return NgosStatus::OK;
+    }
+
+
+
+    x4 =  (x8 + (W1 - W7) * x4) >> 3;
+    x5 =  (x8 - (W1 + W7) * x5) >> 3;
+    x8 =  W3 * (x6 + x7) + 4;
+    x6 =  (x8 - (W3 - W5) * x6) >> 3;
+    x7 =  (x8 - (W3 + W5) * x7) >> 3;
+    x8 =  x0 + x1;
+    x0 -= x1;
+    x1 =  W6 * (x3 + x2) + 4;
+    x2 =  (x1 - (W2 + W6) * x2) >> 3;
+    x3 =  (x1 + (W2 - W6) * x3) >> 3;
+    x1 =  x4 + x6;
+    x4 -= x6;
+    x6 =  x5 + x7;
+    x5 -= x7;
+    x7 =  x8 + x3;
+    x8 -= x3;
+    x3 =  x0 + x2;
+    x0 -= x2;
+    x2 =  (181 * (x4 + x5) + 128) >> 8;
+    x4 =  (181 * (x4 - x5) + 128) >> 8;
+
+
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x7 + x1) >> 14) + 128);
+    sampleDataBuffer += sampleStride;
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x3 + x2) >> 14) + 128);
+    sampleDataBuffer += sampleStride;
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x0 + x4) >> 14) + 128);
+    sampleDataBuffer += sampleStride;
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x8 + x6) >> 14) + 128);
+    sampleDataBuffer += sampleStride;
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x8 - x6) >> 14) + 128);
+    sampleDataBuffer += sampleStride;
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x0 - x4) >> 14) + 128);
+    sampleDataBuffer += sampleStride;
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x3 - x2) >> 14) + 128);
+    sampleDataBuffer += sampleStride;
+
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x7 - x1) >> 14) + 128);
+
+
 
     return NgosStatus::OK;
 }
