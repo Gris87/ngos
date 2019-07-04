@@ -64,13 +64,13 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    while (status == NgosStatus::OK)
+    while (status == NgosStatus::OK && decoder.size >= 2)
     {
         JpegMarkerHeader *marker = (JpegMarkerHeader *)decoder.data;
 
 
 
-        if (decoder.size < 2 || marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
+        if (marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
         {
             COMMON_LE(("Invalid separator(0x%02X) value in JPEG marker", marker->separator));
 
@@ -1594,18 +1594,62 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
     {
         if (!decoder->size) // decoder->size == 0
         {
-            COMMON_LE(("There are no more bytes to read"));
+            decoder->bitBuffer     =  (decoder->bitBuffer << 8) | 0xFF;
+            decoder->bitsAvailable += 8;
 
-            return NgosStatus::INVALID_DATA;
+            continue;
         }
 
 
 
-        decoder->bitBuffer     =  (decoder->bitBuffer << 8) | (*decoder->data);
-        decoder->bitsAvailable += 8;
+        u8 newByte = *decoder->data;
 
         ++decoder->data;
         --decoder->size;
+
+        decoder->bitBuffer     =  (decoder->bitBuffer << 8) | newByte;
+        decoder->bitsAvailable += 8;
+
+
+
+        if (newByte == 0xFF)
+        {
+            if (!decoder->size) // decoder->size == 0
+            {
+                COMMON_LE(("There are no more bytes to read"));
+
+                return NgosStatus::INVALID_DATA;
+            }
+
+
+
+            newByte = *decoder->data;
+
+            ++decoder->data;
+            --decoder->size;
+
+
+
+            if (newByte != 0 && newByte != 0xFF)
+            {
+                if (newByte == (u8)JpegMarkerType::END_OF_IMAGE)
+                {
+                    decoder->size = 0;
+                }
+                else
+                {
+                    if ((newByte & 0xF8) != 0xD0)
+                    {
+                        COMMON_LE(("Invalid byte found during bits buffering"));
+
+                        return NgosStatus::INVALID_DATA;
+                    }
+
+                    decoder->bitBuffer     =  (decoder->bitBuffer << 8) | newByte;
+                    decoder->bitsAvailable += 8;
+                }
+            }
+        }
     }
 
 
