@@ -1003,13 +1003,14 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
+    u8* componentDataBuffer[JPEG_NUMBER_OF_COMPONENTS];
+
     u64            mcuBlockX           = 0;
     u64            mcuBlockY           = 0;
     u8             numberOfComponents  = decoder->startOfScanMarker->numberOfComponents;
     u16            restartInterval     = decoder->restartInterval;
     u16            blocksBeforeRestart = restartInterval;
     JpegMarkerType nextRestartMarker   = JpegMarkerType::RESTART_0;
-    u8*            componentDataBuffer[JPEG_NUMBER_OF_COMPONENTS];
 
 
 
@@ -1041,6 +1042,8 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
             if (status != NgosStatus::OK)
             {
+                COMMON_LE(("Failed to decode MCU block at position (%u, %u) with component %d", mcuBlockX, mcuBlockY, i));
+
                 break;
             }
         }
@@ -1049,8 +1052,6 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
         {
             break;
         }
-
-
 
 
 
@@ -1140,7 +1141,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
                 }
             }
         }
-    } while(true);
+    }
 
 
 
@@ -1171,7 +1172,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, 
     {
         for (i64 j = 0; j < component->samplingFactorX; ++j)
         {
-            NgosStatus status = decodeMcuBlockSample(decoder, component, componentDataBuffer + (i * component->samplingFactorX + j) * 64);
+            NgosStatus status = decodeMcuBlockSample(decoder, component, componentDataBuffer + ((i * component->samplingFactorX + j) << 6)); // "<< 6" == "* 64"
 
             if (status != NgosStatus::OK)
             {
@@ -1259,7 +1260,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
         if (!(vlcCode & 0x0F) && (vlcCode != 0xF0))
         {
-            COMMON_LE(("Invalid VLC code found"));
+            COMMON_LE(("Invalid VLC code found: 0x%02X", vlcCode));
 
             return NgosStatus::INVALID_DATA;
         }
@@ -1272,7 +1273,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
         if (coefficient > 63)
         {
-            COMMON_LE(("Invalid coefficient value"));
+            COMMON_LE(("Invalid coefficient value: %u", coefficient));
 
             return NgosStatus::INVALID_DATA;
         }
@@ -1293,7 +1294,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
     for (i64 i = 0; i < 8; ++i)
     {
-        COMMON_ASSERT_EXECUTION(handleColIDCT(decoder, &block[i], sampleDataBuffer, component->sampleStride), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(handleColIDCT(decoder, &block[i], &sampleDataBuffer[i], component->sampleStride), NgosStatus::ASSERTION);
     }
 
 
@@ -1303,7 +1304,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *value)
 {
-    COMMON_LT((" | decoder = 0x%p, vlc = 0x%p, code = 0x%p, value = 0x%p", decoder, vlc, code, value));
+    // COMMON_LT((" | decoder = 0x%p, vlc = 0x%p, code = 0x%p, value = 0x%p", decoder, vlc, code, value)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(vlc,     "vlc is null",     NgosStatus::ASSERTION);
@@ -1394,7 +1395,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *v
 
 NgosStatus Jpeg::handleRowIDCT(JpegDecoder *decoder, i64 *block)
 {
-    COMMON_LT((" | decoder = 0x%p, block = 0x%p", decoder, block));
+    // COMMON_LT((" | decoder = 0x%p, block = 0x%p", decoder, block)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(block,   "block is null",   NgosStatus::ASSERTION);
@@ -1481,7 +1482,7 @@ NgosStatus Jpeg::handleRowIDCT(JpegDecoder *decoder, i64 *block)
 
 NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataBuffer, u64 sampleStride)
 {
-    COMMON_LT((" | decoder = 0x%p, block = 0x%p, sampleDataBuffer = 0x%p, sampleStride = %u", decoder, block, sampleDataBuffer, sampleStride));
+    // COMMON_LT((" | decoder = 0x%p, block = 0x%p, sampleDataBuffer = 0x%p, sampleStride = %u", decoder, block, sampleDataBuffer, sampleStride)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,          "decoder is null",          NgosStatus::ASSERTION);
     COMMON_ASSERT(block,            "block is null",            NgosStatus::ASSERTION);
@@ -1491,13 +1492,13 @@ NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataB
 
 
     i64 x0 = (block[0] << 8) + 8192;
-    i64 x1 = block[8 * 4] << 8;
-    i64 x2 = block[8 * 6];
-    i64 x3 = block[8 * 2];
-    i64 x4 = block[8 * 1];
-    i64 x5 = block[8 * 7];
-    i64 x6 = block[8 * 5];
-    i64 x7 = block[8 * 3];
+    i64 x1 = block[32] << 8;            // 32 == 8 * 4
+    i64 x2 = block[48];                 // 48 == 8 * 6
+    i64 x3 = block[16];                 // 16 == 8 * 2
+    i64 x4 = block[8];                  // 8  == 8 * 1
+    i64 x5 = block[56];                 // 56 == 8 * 7
+    i64 x6 = block[40];                 // 40 == 8 * 5
+    i64 x7 = block[24];                 // 24 == 8 * 3
     i64 x8 = W7 * (x4 + x5) + 4;
 
     if (
@@ -1520,8 +1521,8 @@ NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataB
 
         for (i64 i = 0; i < 8; ++i)
         {
-            *sampleDataBuffer = x0;
-            sampleDataBuffer += sampleStride;
+            *sampleDataBuffer =  x0;
+            sampleDataBuffer  += sampleStride;
         }
 
         return NgosStatus::OK;
@@ -1552,26 +1553,26 @@ NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataB
 
 
 
-    *sampleDataBuffer = CLAMP_TO_BYTE(((x7 + x1) >> 14) + 128);
-    sampleDataBuffer += sampleStride;
+    *sampleDataBuffer =  CLAMP_TO_BYTE(((x7 + x1) >> 14) + 128);
+    sampleDataBuffer  += sampleStride;
 
-    *sampleDataBuffer = CLAMP_TO_BYTE(((x3 + x2) >> 14) + 128);
-    sampleDataBuffer += sampleStride;
+    *sampleDataBuffer =  CLAMP_TO_BYTE(((x3 + x2) >> 14) + 128);
+    sampleDataBuffer  += sampleStride;
 
-    *sampleDataBuffer = CLAMP_TO_BYTE(((x0 + x4) >> 14) + 128);
-    sampleDataBuffer += sampleStride;
+    *sampleDataBuffer =  CLAMP_TO_BYTE(((x0 + x4) >> 14) + 128);
+    sampleDataBuffer  += sampleStride;
 
-    *sampleDataBuffer = CLAMP_TO_BYTE(((x8 + x6) >> 14) + 128);
-    sampleDataBuffer += sampleStride;
+    *sampleDataBuffer =  CLAMP_TO_BYTE(((x8 + x6) >> 14) + 128);
+    sampleDataBuffer  += sampleStride;
 
-    *sampleDataBuffer = CLAMP_TO_BYTE(((x8 - x6) >> 14) + 128);
-    sampleDataBuffer += sampleStride;
+    *sampleDataBuffer =  CLAMP_TO_BYTE(((x8 - x6) >> 14) + 128);
+    sampleDataBuffer  += sampleStride;
 
-    *sampleDataBuffer = CLAMP_TO_BYTE(((x0 - x4) >> 14) + 128);
-    sampleDataBuffer += sampleStride;
+    *sampleDataBuffer =  CLAMP_TO_BYTE(((x0 - x4) >> 14) + 128);
+    sampleDataBuffer  += sampleStride;
 
-    *sampleDataBuffer = CLAMP_TO_BYTE(((x3 - x2) >> 14) + 128);
-    sampleDataBuffer += sampleStride;
+    *sampleDataBuffer =  CLAMP_TO_BYTE(((x3 - x2) >> 14) + 128);
+    sampleDataBuffer  += sampleStride;
 
     *sampleDataBuffer = CLAMP_TO_BYTE(((x7 - x1) >> 14) + 128);
 
@@ -1582,7 +1583,7 @@ NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataB
 
 NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 {
-    COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count));
+    // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
@@ -1614,7 +1615,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 
 NgosStatus Jpeg::getBits(JpegDecoder *decoder, u8 count, u64 *res)
 {
-    COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res));
+    // COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
@@ -1640,7 +1641,7 @@ NgosStatus Jpeg::getBits(JpegDecoder *decoder, u8 count, u64 *res)
 
 NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
 {
-    COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res));
+    // COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
@@ -1666,7 +1667,7 @@ NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
 
 NgosStatus Jpeg::skipBits(JpegDecoder *decoder, u8 count)
 {
-    COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count));
+    // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);

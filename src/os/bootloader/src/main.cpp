@@ -145,10 +145,5 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_ASSERT_EXECUTION(UEFI::disableWatchdogTimer(), UefiStatus, UefiStatus::SUCCESS, UefiStatus::ABORTED);
-    UEFI_LI(("Watchdog disabled"));
-
-
-
     return UefiStatus::SUCCESS;
 }

@@ -49,6 +49,10 @@ NgosStatus UEFI::init(uefi_handle imageHandle, UefiSystemTable *systemTable)
 
 
 
+    UEFI_ASSERT_EXECUTION(disableWatchdogTimer(), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 

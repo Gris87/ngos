@@ -54,7 +54,7 @@ enum class JpegMarkerType: u8
 
 inline const char* jpegMarkerTypeToString(JpegMarkerType type) // TEST: NO
 {
-    COMMON_LT((" | type = %u", type));
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 
 
 

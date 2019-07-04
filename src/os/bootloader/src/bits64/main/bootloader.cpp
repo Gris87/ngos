@@ -415,7 +415,7 @@ NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size)
 
 NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_handle *blockIoHandles)
 {
-    UEFI_LT((" | protocol = 0x%p, size = %u, graphicsHandles = 0x%p", protocol, size, graphicsHandles));
+    UEFI_LT((" | protocol = 0x%p, size = %u, blockIoHandles = 0x%p", protocol, size, blockIoHandles));
 
     UEFI_ASSERT(protocol,       "protocol is null",       NgosStatus::ASSERTION);
     UEFI_ASSERT(size > 0,       "size is zero",           NgosStatus::ASSERTION);

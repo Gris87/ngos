@@ -4,6 +4,8 @@
 
 
 #include <ngos/types.h>
+#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 
 
 
@@ -19,6 +21,10 @@ enum class VolumeType: u8
 
 inline const char* volumeTypeToString(VolumeType type) // TEST: NO
 {
+    // UEFI_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case VolumeType::INTERNAL: return "INTERNAL";
