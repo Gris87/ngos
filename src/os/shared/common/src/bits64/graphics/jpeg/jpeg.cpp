@@ -268,6 +268,16 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
 
 
 
+    for (i64 i = 0; i < JPEG_NUMBER_OF_COMPONENTS; ++i)
+    {
+        if (decoder->components[i].dataBuffer)
+        {
+            COMMON_ASSERT_EXECUTION(free(decoder->components[i].dataBuffer), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -494,12 +504,25 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         generalComponent->width        = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
         generalComponent->height       = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
         generalComponent->sampleStride = generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
+        generalComponent->dataBuffer   = (u8 *)malloc(generalComponent->samplingFactorX * generalComponent->samplingFactorY << 6); // "<< 6" == "* 64"
         // Ignore CppAlignmentVerifier [END]
+
+
+
+        if (!generalComponent->dataBuffer)
+        {
+            COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+
 
         COMMON_LVVV(("generalComponent->id           = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
         COMMON_LVVV(("generalComponent->width        = %u", generalComponent->width));
         COMMON_LVVV(("generalComponent->height       = %u", generalComponent->height));
         COMMON_LVVV(("generalComponent->sampleStride = %u", generalComponent->sampleStride));
+        COMMON_LVVV(("generalComponent->dataBuffer   = 0x%p", generalComponent->dataBuffer));
     }
 
 
@@ -1003,8 +1026,6 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-    u8* componentDataBuffer[JPEG_NUMBER_OF_COMPONENTS];
-
     u64            mcuBlockX           = 0;
     u64            mcuBlockY           = 0;
     u8             numberOfComponents  = decoder->startOfScanMarker->numberOfComponents;
@@ -1016,29 +1037,11 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
     NgosStatus status = NgosStatus::OK;
 
-
-
-    for (i64 i = 0; i < numberOfComponents; ++i)
-    {
-        componentDataBuffer[i] = (u8 *)malloc(decoder->components[i].samplingFactorX * decoder->components[i].samplingFactorY << 6); // "<< 6" == "* 64"
-
-        if (!componentDataBuffer[i])
-        {
-            COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
-
-            status = NgosStatus::OUT_OF_MEMORY;
-
-            break;
-        }
-    }
-
-
-
     while (status == NgosStatus::OK)
     {
         for (i64 i = 0; i < numberOfComponents; ++i)
         {
-            status = decodeMcuBlock(decoder, &decoder->components[i], componentDataBuffer[i]);
+            status = decodeMcuBlock(decoder, &decoder->components[i]);
 
             if (status != NgosStatus::OK)
             {
@@ -1145,26 +1148,15 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-    for (i64 i = 0; i < numberOfComponents; ++i)
-    {
-        if (componentDataBuffer[i])
-        {
-            COMMON_ASSERT_EXECUTION(free(componentDataBuffer[i]), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
     return status;
 }
 
-NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u8 *componentDataBuffer)
+NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
 {
-    COMMON_LT((" | decoder = 0x%p, component = 0x%p, componentDataBuffer = 0x%p", decoder, component, componentDataBuffer));
+    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
 
-    COMMON_ASSERT(decoder,             "decoder is null",             NgosStatus::ASSERTION);
-    COMMON_ASSERT(component,           "component is null",           NgosStatus::ASSERTION);
-    COMMON_ASSERT(componentDataBuffer, "componentDataBuffer is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
 
 
 
@@ -1172,7 +1164,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, 
     {
         for (i64 j = 0; j < component->samplingFactorX; ++j)
         {
-            NgosStatus status = decodeMcuBlockSample(decoder, component, componentDataBuffer + ((i * component->samplingFactorX + j) << 6)); // "<< 6" == "* 64"
+            NgosStatus status = decodeMcuBlockSample(decoder, component, component->dataBuffer + ((i * component->samplingFactorX + j) << 6)); // "<< 6" == "* 64"
 
             if (status != NgosStatus::OK)
             {

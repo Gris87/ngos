@@ -21,6 +21,7 @@ struct JpegComponent
     u16             *quantizationTable;
     JpegVlcCode     *vlcDcTable;
     JpegVlcCode     *vlcAcTable;
+    u8              *dataBuffer;
 };
 
 

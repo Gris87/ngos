@@ -27,7 +27,7 @@ private:
     static NgosStatus decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeImageData(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u8 *componentDataBuffer); // TEST: NO
+    static NgosStatus decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component); // TEST: NO
     static NgosStatus decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *component, u8 *sampleDataBuffer); // TEST: NO
     static NgosStatus getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *value); // TEST: NO
     static NgosStatus handleRowIDCT(JpegDecoder *decoder, i64 *block); // TEST: NO
