@@ -21,7 +21,21 @@
 #define W6 1108
 #define W7 565
 
-#define CLAMP_TO_BYTE(a) clamp((i64)(a), (i64)0x00, (i64)0xFF);
+#define CF4A (-9)
+#define CF4B (111)
+#define CF4C (29)
+#define CF4D (-3)
+#define CF3A (28)
+#define CF3B (109)
+#define CF3C (-9)
+#define CF3X (104)
+#define CF3Y (27)
+#define CF3Z (-3)
+#define CF2A (139)
+#define CF2B (-11)
+
+#define CLAMP_TO_BYTE(a) clamp((i64)(a), (i64)0x00, (i64)0xFF)
+#define CHROMA_FILTER(a) CLAMP_TO_BYTE(((a) + 64) >> 7)
 
 
 
@@ -504,10 +518,10 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         JpegComponent *generalComponent = &decoder->components[i];
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        generalComponent->width        = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
-        generalComponent->height       = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
-        generalComponent->sampleStride = generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
-        generalComponent->dataBuffer   = (u8 *)malloc(generalComponent->samplingFactorX * generalComponent->samplingFactorY << 6); // "<< 6" == "* 64"
+        generalComponent->width      = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
+        generalComponent->height     = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
+        generalComponent->stride     = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
+        generalComponent->dataBuffer = (u8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY << 3); // "<< 3" == "* 8"
         // Ignore CppAlignmentVerifier [END]
 
 
@@ -521,11 +535,11 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-        COMMON_LVVV(("generalComponent->id           = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
-        COMMON_LVVV(("generalComponent->width        = %u", generalComponent->width));
-        COMMON_LVVV(("generalComponent->height       = %u", generalComponent->height));
-        COMMON_LVVV(("generalComponent->sampleStride = %u", generalComponent->sampleStride));
-        COMMON_LVVV(("generalComponent->dataBuffer   = 0x%p", generalComponent->dataBuffer));
+        COMMON_LVVV(("generalComponent->id         = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
+        COMMON_LVVV(("generalComponent->width      = %u", generalComponent->width));
+        COMMON_LVVV(("generalComponent->height     = %u", generalComponent->height));
+        COMMON_LVVV(("generalComponent->stride     = %u", generalComponent->stride));
+        COMMON_LVVV(("generalComponent->dataBuffer = 0x%p", generalComponent->dataBuffer));
     }
 
 
@@ -1044,7 +1058,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     {
         for (i64 i = 0; i < numberOfComponents; ++i)
         {
-            status = decodeMcuBlock(decoder, &decoder->components[i]);
+            status = decodeMcuBlock(decoder, &decoder->components[i], mcuBlockX, mcuBlockY);
 
             if (status != NgosStatus::OK)
             {
@@ -1151,15 +1165,24 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
+    if (status == NgosStatus::OK)
+    {
+        status = convertToRgb(decoder);
+    }
+
+
+
     return status;
 }
 
-NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
+NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u64 mcuBlockX, u64 mcuBlockY)
 {
-    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
+    COMMON_LT((" | decoder = 0x%p, component = 0x%p, mcuBlockX = %u, mcuBlockY = %u", decoder, component, mcuBlockX, mcuBlockY));
 
-    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,                             "decoder is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(component,                           "component is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(mcuBlockX < decoder->mcuBlockCountX, "mcuBlockX is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(mcuBlockY < decoder->mcuBlockCountY, "mcuBlockY is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -1167,7 +1190,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component)
     {
         for (i64 j = 0; j < component->samplingFactorX; ++j)
         {
-            NgosStatus status = decodeMcuBlockSample(decoder, component, component->dataBuffer + ((i * component->samplingFactorX + j) << 6)); // "<< 6" == "* 64"
+            NgosStatus status = decodeMcuBlockSample(decoder, component, component->dataBuffer + (((mcuBlockY * component->samplingFactorY + i) * component->stride + mcuBlockX * component->samplingFactorX + j) << 3)); // "<< 3" == "* 8"
 
             if (status != NgosStatus::OK)
             {
@@ -1289,7 +1312,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
     for (i64 i = 0; i < 8; ++i)
     {
-        COMMON_ASSERT_EXECUTION(handleColIDCT(decoder, &block[i], &sampleDataBuffer[i], component->sampleStride), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(handleColIDCT(decoder, &block[i], &sampleDataBuffer[i], component->stride), NgosStatus::ASSERTION);
     }
 
 
@@ -1475,14 +1498,14 @@ NgosStatus Jpeg::handleRowIDCT(JpegDecoder *decoder, i64 *block)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataBuffer, u64 sampleStride)
+NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataBuffer, u64 stride)
 {
-    // COMMON_LT((" | decoder = 0x%p, block = 0x%p, sampleDataBuffer = 0x%p, sampleStride = %u", decoder, block, sampleDataBuffer, sampleStride)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | decoder = 0x%p, block = 0x%p, sampleDataBuffer = 0x%p, stride = %u", decoder, block, sampleDataBuffer, stride)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,          "decoder is null",          NgosStatus::ASSERTION);
     COMMON_ASSERT(block,            "block is null",            NgosStatus::ASSERTION);
     COMMON_ASSERT(sampleDataBuffer, "sampleDataBuffer is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(sampleStride > 0, "sampleStride is zero",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(stride > 0,       "stride is zero",           NgosStatus::ASSERTION);
 
 
 
@@ -1517,7 +1540,7 @@ NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataB
         for (i64 i = 0; i < 8; ++i)
         {
             *sampleDataBuffer =  x0;
-            sampleDataBuffer  += sampleStride;
+            sampleDataBuffer  += stride;
         }
 
         return NgosStatus::OK;
@@ -1548,28 +1571,231 @@ NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataB
 
 
 
-    *sampleDataBuffer =  CLAMP_TO_BYTE(((x7 + x1) >> 14) + 128);
-    sampleDataBuffer  += sampleStride;
-
-    *sampleDataBuffer =  CLAMP_TO_BYTE(((x3 + x2) >> 14) + 128);
-    sampleDataBuffer  += sampleStride;
-
-    *sampleDataBuffer =  CLAMP_TO_BYTE(((x0 + x4) >> 14) + 128);
-    sampleDataBuffer  += sampleStride;
-
-    *sampleDataBuffer =  CLAMP_TO_BYTE(((x8 + x6) >> 14) + 128);
-    sampleDataBuffer  += sampleStride;
-
-    *sampleDataBuffer =  CLAMP_TO_BYTE(((x8 - x6) >> 14) + 128);
-    sampleDataBuffer  += sampleStride;
-
-    *sampleDataBuffer =  CLAMP_TO_BYTE(((x0 - x4) >> 14) + 128);
-    sampleDataBuffer  += sampleStride;
-
-    *sampleDataBuffer =  CLAMP_TO_BYTE(((x3 - x2) >> 14) + 128);
-    sampleDataBuffer  += sampleStride;
-
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x7 + x1) >> 14) + 128);     sampleDataBuffer += stride;
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x3 + x2) >> 14) + 128);     sampleDataBuffer += stride;
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x0 + x4) >> 14) + 128);     sampleDataBuffer += stride;
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x8 + x6) >> 14) + 128);     sampleDataBuffer += stride;
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x8 - x6) >> 14) + 128);     sampleDataBuffer += stride;
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x0 - x4) >> 14) + 128);     sampleDataBuffer += stride;
+    *sampleDataBuffer = CLAMP_TO_BYTE(((x3 - x2) >> 14) + 128);     sampleDataBuffer += stride;
     *sampleDataBuffer = CLAMP_TO_BYTE(((x7 - x1) >> 14) + 128);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    u8  numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
+    u16 width              = (*decoder->image)->width;
+    u16 height             = (*decoder->image)->height;
+
+
+
+    for (i64 i = 0; i < numberOfComponents; ++i)
+    {
+        JpegComponent *component = &decoder->components[i];
+
+        while (
+               component->width < width
+               ||
+               component->height < height
+              )
+        {
+            if (component->width < width)
+            {
+                NgosStatus status = upsampleX(decoder, component);
+
+                if (status != NgosStatus::OK)
+                {
+                    return status;
+                }
+            }
+
+            if (component->height < height)
+            {
+                NgosStatus status = upsampleY(decoder, component);
+
+                if (status != NgosStatus::OK)
+                {
+                    return status;
+                }
+            }
+        }
+
+        COMMON_TEST_ASSERT(component->width  == width,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(component->height == height, NgosStatus::ASSERTION);
+    }
+
+
+
+    if (numberOfComponents == 3)
+    {
+
+    }
+    else
+    if (numberOfComponents == 1)
+    {
+
+    }
+    else
+    {
+
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::upsampleX(JpegDecoder *decoder, JpegComponent *component)
+{
+    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
+
+    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
+
+
+
+    u8 *out = (u8 *)malloc((component->width * component->height) << 1); // "<< 1" == "* 2"
+
+    if (!out)
+    {
+        COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+
+
+    u8 *cin  = component->dataBuffer;
+    u8 *cout = out;
+
+    u16 width  = component->width;
+    u16 height = component->height;
+    u64 stride = component->stride;
+
+    u16 width2 = width << 1; // "<< 1" == "* 2"
+
+
+
+    for (i64 y = 0; y < height; ++y)
+    {
+        cout[0] = CHROMA_FILTER(CF2A * cin[0] + CF2B * cin[1]);
+        cout[1] = CHROMA_FILTER(CF3X * cin[0] + CF3Y * cin[1] + CF3Z * cin[2]);
+        cout[2] = CHROMA_FILTER(CF3A * cin[0] + CF3B * cin[1] + CF3C * cin[2]);
+
+
+
+        for (i64 x = 0; x < width - 3; ++x)
+        {
+            cout[(x << 1) + 3] = CHROMA_FILTER(CF4A * cin[x] + CF4B * cin[x + 1] + CF4C * cin[x + 2] + CF4D * cin[x + 3]);
+            cout[(x << 1) + 4] = CHROMA_FILTER(CF4D * cin[x] + CF4C * cin[x + 1] + CF4B * cin[x + 2] + CF4A * cin[x + 3]);
+        }
+
+
+
+        cin  += stride;
+        cout += width2;
+
+
+
+        cout[-3] = CHROMA_FILTER(CF3A * cin[-1] + CF3B * cin[-2] + CF3C * cin[-3]);
+        cout[-2] = CHROMA_FILTER(CF3X * cin[-1] + CF3Y * cin[-2] + CF3Z * cin[-3]);
+        cout[-1] = CHROMA_FILTER(CF2A * cin[-1] + CF2B * cin[-2]);
+    }
+
+
+
+    component->width  = width2;
+    component->stride = width2;
+
+
+
+    COMMON_ASSERT_EXECUTION(free(component->dataBuffer), NgosStatus::ASSERTION);
+    component->dataBuffer = out;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Jpeg::upsampleY(JpegDecoder *decoder, JpegComponent *component)
+{
+    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
+
+    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
+
+
+
+    u8 *out = (u8 *)malloc((component->width * component->height) << 1); // "<< 1" == "* 2"
+
+    if (!out)
+    {
+        COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+
+
+    u8 *cin  = component->dataBuffer;
+    u8 *cout = out;
+
+    u16 width  = component->width;
+    u16 height = component->height;
+    u64 stride = component->stride;
+
+    u16 stride2 = stride << 1; // "<< 1" == "* 2"
+
+
+
+    for (i64 x = 0; x < width; ++x)
+    {
+        cin  = &component->dataBuffer[x];
+        cout = &out[x];
+
+
+
+        *cout =  CHROMA_FILTER(CF2A * cin[0] + CF2B * cin[stride]);                         cout += width;
+        *cout =  CHROMA_FILTER(CF3X * cin[0] + CF3Y * cin[stride] + CF3Z * cin[stride2]);   cout += width;
+        *cout =  CHROMA_FILTER(CF3A * cin[0] + CF3B * cin[stride] + CF3C * cin[stride2]);   cout += width;
+        cin   += stride;
+
+
+
+        for (i64 y = height - 3;  y;  --y)
+        {
+            *cout =  CHROMA_FILTER(CF4A * cin[-stride] + CF4B * cin[0] + CF4C * cin[stride] + CF4D * cin[stride2]);     cout += width;
+            *cout =  CHROMA_FILTER(CF4D * cin[-stride] + CF4C * cin[0] + CF4B * cin[stride] + CF4A * cin[stride2]);     cout += width;
+            cin   += stride;
+        }
+
+
+
+        cin   += stride;
+        *cout =  CHROMA_FILTER(CF3A * cin[0] + CF3B * cin[-stride] + CF3C * cin[-stride2]);     cout += width;
+        *cout =  CHROMA_FILTER(CF3X * cin[0] + CF3Y * cin[-stride] + CF3Z * cin[-stride2]);     cout += width;
+        *cout =  CHROMA_FILTER(CF2A * cin[0] + CF2B * cin[-stride]);
+    }
+
+
+
+    component->height <<= 1;
+    component->stride =   width;
+
+
+
+    COMMON_ASSERT_EXECUTION(free(component->dataBuffer), NgosStatus::ASSERTION);
+    component->dataBuffer = out;
 
 
 
