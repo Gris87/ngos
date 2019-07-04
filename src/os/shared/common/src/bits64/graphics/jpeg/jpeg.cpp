@@ -1593,9 +1593,10 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
 
 
-    u8  numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
-    u16 width              = (*decoder->image)->width;
-    u16 height             = (*decoder->image)->height;
+    u8   numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
+    u16  width              = (*decoder->image)->width;
+    u16  height             = (*decoder->image)->height;
+    u8  *out                = (*decoder->image)->data;
 
 
 
@@ -1638,16 +1639,52 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
     if (numberOfComponents == 3)
     {
+        u8 *pY  = decoder->components[0].dataBuffer;
+        u8 *pCb = decoder->components[1].dataBuffer;
+        u8 *pCr = decoder->components[2].dataBuffer;
 
+        for (i64 i = 0; i < height; ++i)
+        {
+            for (i64 j = 0; j < width; ++j)
+            {
+                i64 y  = *pY << 8;
+                i64 cb = *pCb - 128;
+                i64 cr = *pCr - 128;
+
+                *out = CLAMP_TO_BYTE((y            + 359 * cr + 128) >> 8);     ++out;
+                *out = CLAMP_TO_BYTE((y -  88 * cb - 183 * cr + 128) >> 8);     ++out;
+                *out = CLAMP_TO_BYTE((y + 454 * cb            + 128) >> 8);     ++out;
+
+                ++pY;
+                ++pCb;
+                ++pCr;
+            }
+        }
     }
     else
     if (numberOfComponents == 1)
     {
+        u8 *pC = decoder->components[0].dataBuffer;
 
+        for (i64 i = 0; i < height; ++i)
+        {
+            for (i64 j = 0; j < width; ++j)
+            {
+                u8 c = *pC;
+
+                *out = c;   ++out;
+                *out = c;   ++out;
+                *out = c;   ++out;
+
+                ++pC;
+            }
+        }
     }
     else
     {
+        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components"));
 
+        return NgosStatus::NOT_SUPPORTED;
     }
 
 
