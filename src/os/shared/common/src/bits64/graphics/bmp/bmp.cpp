@@ -149,12 +149,12 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
     RgbPixel    *pixelData = (RgbPixel *)newImage->data;
     u8           byteValue = 0;
 
-    for (i64 y = 0; y < height; ++y)
+    for (i64 y = height - 1; y >= 0; --y)
     {
         u8 *imageByte =  imageData;
         imageData     += stride;
 
-        RgbPixel *pixel = pixelData + (height - 1 - y) * width;
+        RgbPixel *pixel = pixelData + y * width;
 
         switch (bitsPerPixel)
         {
