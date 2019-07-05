@@ -87,6 +87,21 @@ TEST_CASES(section0, __include_ngos_utils);
 
 
 
+    TEST_CASE("DIV_UP()");
+    {
+        TEST_ASSERT_EQUALS(DIV_UP(4, 2), 2);
+        TEST_ASSERT_EQUALS(DIV_UP(5, 2), 3);
+        TEST_ASSERT_EQUALS(DIV_UP(6, 2), 3);
+
+        TEST_ASSERT_EQUALS(DIV_UP(4, 3), 2);
+        TEST_ASSERT_EQUALS(DIV_UP(5, 3), 2);
+        TEST_ASSERT_EQUALS(DIV_UP(6, 3), 2);
+        TEST_ASSERT_EQUALS(DIV_UP(7, 3), 3);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("WORD_BIT()");
     {
         TEST_ASSERT_EQUALS(WORD_BIT(0, 0),   0);

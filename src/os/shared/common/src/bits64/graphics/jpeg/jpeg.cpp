@@ -505,8 +505,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    decoder->mcuBlockCountX = (width  + mcuBlockSizeX - 1) / mcuBlockSizeX;
-    decoder->mcuBlockCountY = (height + mcuBlockSizeY - 1) / mcuBlockSizeY;
+    decoder->mcuBlockCountX = DIV_UP(width,  mcuBlockSizeX);
+    decoder->mcuBlockCountY = DIV_UP(height, mcuBlockSizeY);
 
     COMMON_LVVV(("decoder->mcuBlockCountX = %u", decoder->mcuBlockCountX));
     COMMON_LVVV(("decoder->mcuBlockCountY = %u", decoder->mcuBlockCountY));
@@ -518,8 +518,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         JpegComponent *generalComponent = &decoder->components[i];
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        generalComponent->width      = (width  * generalComponent->samplingFactorX + samplingFactorXMax - 1) / samplingFactorXMax;
-        generalComponent->height     = (height * generalComponent->samplingFactorY + samplingFactorYMax - 1) / samplingFactorYMax;
+        generalComponent->width      = DIV_UP(width  * generalComponent->samplingFactorX, samplingFactorXMax);
+        generalComponent->height     = DIV_UP(height * generalComponent->samplingFactorY, samplingFactorYMax);
         generalComponent->stride     = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
         generalComponent->dataBuffer = (u8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY << 3); // "<< 3" == "* 8"
         // Ignore CppAlignmentVerifier [END]

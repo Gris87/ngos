@@ -13,6 +13,10 @@
 
 
 
+#define DIV_UP(x, y) (((x) + (y) - 1) / (y))                            // TEST: NO
+
+
+
 #define WORD_BIT(wordId, bitId) ((wordId << 5) + bitId)                 // TEST: NO // "<< 5" == "* 32"
 
 
