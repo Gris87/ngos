@@ -1,5 +1,6 @@
 #include "bmp.h"
 
+#include <common/src/bits64/graphics/bmp/bmpcolormap.h>
 #include <common/src/bits64/graphics/bmp/bmpheader.h>
 #include <common/src/bits64/graphics/bmp/bmpinformationheader.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
@@ -42,18 +43,12 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    u16 imageOffset = bmpHeader->imageOffset;
-
-
-
     if (bmpHeader->size != size)
     {
         COMMON_LE(("Invalid BMP image"));
 
         return NgosStatus::INVALID_DATA;
     }
-
-    COMMON_TEST_ASSERT(imageOffset == sizeof(BmpHeader) + sizeof(BmpInformationHeader), NgosStatus::ASSERTION);
 
 
 
@@ -90,6 +85,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
+    u16 imageOffset  = bmpHeader->imageOffset;
     u32 width        = bmpInfoHeader->width;
     u32 height       = bmpInfoHeader->height;
     u16 bitsPerPixel = bmpInfoHeader->bitsPerPixel;
@@ -116,6 +112,8 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
     stride = ROUND_UP(stride, 4);
 
+    COMMON_LVVV(("stride = %u", stride));
+
 
 
     if (imageOffset + stride * height > size)
@@ -129,7 +127,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
     Image *newImage = (Image *)malloc(sizeof(Image) + width * height * sizeof(RgbPixel));
 
-    if (!image)
+    if (!newImage)
     {
         COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
 
@@ -143,6 +141,133 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
     *image = newImage;
+
+
+
+    BmpColorMap *colorMap  = (BmpColorMap *)((u64)bmpInfoHeader + sizeof(BmpInformationHeader));
+    u8          *imageData = (u8 *)((u64)bmpHeader + imageOffset);
+    RgbPixel    *pixelData = (RgbPixel *)newImage->data;
+    u8           byteValue = 0;
+
+    for (i64 y = 0; y < height; ++y)
+    {
+        u8 *imageByte =  imageData;
+        imageData     += stride;
+
+        RgbPixel *pixel = pixelData + (height - 1 - y) * width;
+
+        switch (bitsPerPixel)
+        {
+            case 1:
+            {
+                for (i64 x = 0; x < width; ++x)
+                {
+                    u8 index = x & 0x07;
+
+                    if (!index) // index == 0
+                    {
+                        byteValue = *imageByte;
+                        ++imageByte;
+                    }
+
+                    index = (byteValue >> (7 - index)) & 0x01;
+
+
+
+                    pixel->blue  = colorMap[index].blue;
+                    pixel->green = colorMap[index].green;
+                    pixel->red   = colorMap[index].red;
+
+                    ++pixel;
+                }
+            }
+            break;
+
+            case 4:
+            {
+                for (i64 x = 0; x <= width - 2; x += 2)
+                {
+                    byteValue = *imageByte;
+                    ++imageByte;
+
+                    u8 index  = byteValue >> 4;
+                    u8 index2 = byteValue & 0x0f;
+
+
+
+                    pixel->blue  = colorMap[index].blue;
+                    pixel->green = colorMap[index].green;
+                    pixel->red   = colorMap[index].red;
+
+                    ++pixel;
+
+
+
+                    pixel->blue  = colorMap[index2].blue;
+                    pixel->green = colorMap[index2].green;
+                    pixel->red   = colorMap[index2].red;
+
+                    ++pixel;
+                }
+
+                if (width & 0x01)
+                {
+                    byteValue = *imageByte;
+                    ++imageByte;
+
+                    u8 index = byteValue >> 4;
+
+
+
+                    pixel->blue  = colorMap[index].blue;
+                    pixel->green = colorMap[index].green;
+                    pixel->red   = colorMap[index].red;
+
+                    ++pixel;
+                }
+            }
+            break;
+
+            case 8:
+            {
+                for (i64 x = 0; x < width; ++x)
+                {
+                    u8 index = *imageByte;
+                    ++imageByte;
+
+
+
+                    pixel->blue  = colorMap[index].blue;
+                    pixel->green = colorMap[index].green;
+                    pixel->red   = colorMap[index].red;
+
+                    ++pixel;
+                }
+            }
+            break;
+
+            case 24:
+            {
+                for (i64 x = 0; x < width; ++x)
+                {
+                    pixel->blue  = *imageByte;  ++imageByte;
+                    pixel->green = *imageByte;  ++imageByte;
+                    pixel->red   = *imageByte;  ++imageByte;
+
+                    ++pixel;
+                }
+            }
+            break;
+
+            default:
+            {
+                COMMON_LE(("Not supported BMP bits per pixel value: %u", bitsPerPixel));
+
+                return NgosStatus::NOT_SUPPORTED;
+            }
+            break;
+        }
+    }
 
 
 

@@ -394,6 +394,7 @@ src/os/shared/common/src/bits64/fpu/xsavestate.h
 src/os/shared/common/src/bits64/fpu/xstateheader.h
 src/os/shared/common/src/bits64/graphics/bmp/bmp.cpp
 src/os/shared/common/src/bits64/graphics/bmp/bmp.h
+src/os/shared/common/src/bits64/graphics/bmp/bmpcolormap.h
 src/os/shared/common/src/bits64/graphics/bmp/bmpcompressionmethod.h
 src/os/shared/common/src/bits64/graphics/bmp/bmpheader.h
 src/os/shared/common/src/bits64/graphics/bmp/bmpinformationheader.h
