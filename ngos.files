@@ -113,7 +113,7 @@ src/os/bootloader/assets/generate_assets.sh
 src/os/bootloader/assets/glyphs/console.bin
 src/os/bootloader/assets/images/arrow_left.png
 src/os/bootloader/assets/images/arrow_right.png
-src/os/bootloader/assets/images/background.bmp
+src/os/bootloader/assets/images/background.jpg
 src/os/bootloader/assets/images/button_focused.9.png
 src/os/bootloader/assets/images/button_hover.9.png
 src/os/bootloader/assets/images/button_normal.9.png
