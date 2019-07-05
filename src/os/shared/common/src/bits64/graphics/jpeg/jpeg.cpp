@@ -1593,10 +1593,10 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
 
 
-    u8   numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
-    u16  width              = (*decoder->image)->width;
-    u16  height             = (*decoder->image)->height;
-    u8  *out                = (*decoder->image)->data;
+    u8        numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
+    u16       width              = (*decoder->image)->width;
+    u16       height             = (*decoder->image)->height;
+    RgbPixel *pixel              = (RgbPixel *)(*decoder->image)->data;
 
 
 
@@ -1651,13 +1651,17 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
                 i64 cb = *pCb - 128;
                 i64 cr = *pCr - 128;
 
-                *out = CLAMP_TO_BYTE((y            + 359 * cr + 128) >> 8);     ++out;
-                *out = CLAMP_TO_BYTE((y -  88 * cb - 183 * cr + 128) >> 8);     ++out;
-                *out = CLAMP_TO_BYTE((y + 454 * cb            + 128) >> 8);     ++out;
-
                 ++pY;
                 ++pCb;
                 ++pCr;
+
+
+
+                pixel->blue  = CLAMP_TO_BYTE((y            + 359 * cr + 128) >> 8);
+                pixel->green = CLAMP_TO_BYTE((y -  88 * cb - 183 * cr + 128) >> 8);
+                pixel->red   = CLAMP_TO_BYTE((y + 454 * cb            + 128) >> 8);
+
+                ++pixel;
             }
         }
     }
@@ -1671,12 +1675,15 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
             for (i64 j = 0; j < width; ++j)
             {
                 u8 c = *pC;
-
-                *out = c;   ++out;
-                *out = c;   ++out;
-                *out = c;   ++out;
-
                 ++pC;
+
+
+
+                pixel->blue  = c;
+                pixel->green = c;
+                pixel->red   = c;
+
+                ++pixel;
             }
         }
     }
