@@ -21,6 +21,7 @@ private:
     static NgosStatus releaseDecoder(JpegDecoder *decoder); // TEST: NO
     static NgosStatus skip(JpegDecoder *decoder, u64 count); // TEST: NO
     static NgosStatus skipMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
+    static NgosStatus decodeMarker(JpegDecoder *decoder); // TEST: NO
     static NgosStatus decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO
     static NgosStatus decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegMarkerHeader *marker); // TEST: NO

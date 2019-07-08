@@ -52,6 +52,10 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
+    *image = 0;
+
+
+
     if (*((u16 *)&data[0]) != JPEG_START_OF_IMAGE_SIGNATURE)
     {
         COMMON_LE(("Data is not a JPEG image"));
@@ -69,142 +73,26 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
     NgosStatus status = skip(&decoder, 2);
 
-    if (status != NgosStatus::OK)
+    while (status == NgosStatus::OK && decoder.size >= 2)
     {
-        COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
-
-        return status;
+        status = decodeMarker(&decoder);
     }
 
 
 
-    while (status == NgosStatus::OK && decoder.size >= 2)
+    if (
+        status == NgosStatus::OK
+        &&
+        (
+         decoder.size // decoder.size > 0
+         ||
+         !(*decoder.image)
+        )
+       )
     {
-        JpegMarkerHeader *marker = (JpegMarkerHeader *)decoder.data;
+        COMMON_LE(("Invalid JPEG image"));
 
-
-
-        if (marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
-        {
-            COMMON_LE(("Invalid separator(0x%02X) value in JPEG marker", marker->separator));
-
-            status = NgosStatus::INVALID_DATA;
-
-            break;
-        }
-
-
-
-        COMMON_LVVV(("marker->type = 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
-
-
-
-        status = skip(&decoder, 2);
-
-        if (status != NgosStatus::OK)
-        {
-            break;
-        }
-
-
-
-        switch (marker->type)
-        {
-            case JpegMarkerType::START_OF_FRAME:
-            {
-                status = decodeStartOfFrame(&decoder, marker);
-            }
-            break;
-
-            case JpegMarkerType::DEFINE_HUFFMAN_TABLE:
-            {
-                status = decodeDefineHuffmanTableMarker(&decoder, marker);
-            }
-            break;
-
-            case JpegMarkerType::DEFINE_QUANTIZATION_TABLE:
-            {
-                status = decodeDefineQuantizationTableMarker(&decoder, marker);
-            }
-            break;
-
-            case JpegMarkerType::DEFINE_RESTART_INTERVAL:
-            {
-                status = decodeDefineRestartIntervalMarker(&decoder, marker);
-            }
-            break;
-
-            case JpegMarkerType::START_OF_SCAN:
-            {
-                status = decodeStartOfScanMarker(&decoder, marker);
-            }
-            break;
-
-            case JpegMarkerType::END_OF_IMAGE:
-            {
-                if (decoder.size) // decoder.size != 0
-                {
-                    COMMON_LE(("There is some data found after JpegMarkerType::END_OF_IMAGE marker"));
-
-                    status = NgosStatus::INVALID_DATA;
-
-                    break;
-                }
-
-
-
-                COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
-
-                return NgosStatus::OK;
-            }
-            break;
-
-            case JpegMarkerType::APPLICATION_0:
-            case JpegMarkerType::APPLICATION_1:
-            case JpegMarkerType::APPLICATION_2:
-            case JpegMarkerType::APPLICATION_3:
-            case JpegMarkerType::APPLICATION_4:
-            case JpegMarkerType::APPLICATION_5:
-            case JpegMarkerType::APPLICATION_6:
-            case JpegMarkerType::APPLICATION_7:
-            case JpegMarkerType::APPLICATION_8:
-            case JpegMarkerType::APPLICATION_9:
-            case JpegMarkerType::APPLICATION_10:
-            case JpegMarkerType::APPLICATION_11:
-            case JpegMarkerType::APPLICATION_12:
-            case JpegMarkerType::APPLICATION_13:
-            case JpegMarkerType::APPLICATION_14:
-            case JpegMarkerType::APPLICATION_15:
-            case JpegMarkerType::COMMENT:
-            {
-                status = skipMarker(&decoder, marker);
-            }
-            break;
-
-            case JpegMarkerType::START_OF_IMAGE:
-            case JpegMarkerType::RESTART_0:
-            case JpegMarkerType::RESTART_1:
-            case JpegMarkerType::RESTART_2:
-            case JpegMarkerType::RESTART_3:
-            case JpegMarkerType::RESTART_4:
-            case JpegMarkerType::RESTART_5:
-            case JpegMarkerType::RESTART_6:
-            case JpegMarkerType::RESTART_7:
-            {
-                COMMON_LF(("Unexpected marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
-
-                status = NgosStatus::UNEXPECTED_BEHAVIOUR;
-            }
-            break;
-
-            default:
-            {
-                COMMON_LF(("Unknown marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
-
-                status = NgosStatus::UNEXPECTED_BEHAVIOUR;
-            }
-            break;
-        }
+        status = NgosStatus::INVALID_DATA;
     }
 
 
@@ -254,8 +142,6 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     memzero(decoder->vlcDcTables,        sizeof(decoder->vlcDcTables));
     memzero(decoder->vlcAcTables,        sizeof(decoder->vlcAcTables));
     memzero(decoder->components,         sizeof(decoder->components));
-
-    *decoder->image = 0;
 
 
 
@@ -334,6 +220,113 @@ NgosStatus Jpeg::skipMarker(JpegDecoder *decoder, JpegMarkerHeader *marker)
 
 
     return skip(decoder, ntohs(marker->length));
+}
+
+NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    JpegMarkerHeader *marker = (JpegMarkerHeader *)decoder->data;
+
+
+
+    if (marker->separator != JPEG_MARKER_HEADER_SEPARATOR)
+    {
+        COMMON_LE(("Invalid separator(0x%02X) value in JPEG marker", marker->separator));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    COMMON_LVVV(("marker->type = 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+
+
+
+    NgosStatus status = skip(decoder, 2);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
+    }
+
+
+
+    switch (marker->type)
+    {
+        case JpegMarkerType::START_OF_FRAME:            return decodeStartOfFrame(decoder, marker);
+        case JpegMarkerType::DEFINE_HUFFMAN_TABLE:      return decodeDefineHuffmanTableMarker(decoder, marker);
+        case JpegMarkerType::DEFINE_QUANTIZATION_TABLE: return decodeDefineQuantizationTableMarker(decoder, marker);
+        case JpegMarkerType::DEFINE_RESTART_INTERVAL:   return decodeDefineRestartIntervalMarker(decoder, marker);
+        case JpegMarkerType::START_OF_SCAN:             return decodeStartOfScanMarker(decoder, marker);
+
+        case JpegMarkerType::END_OF_IMAGE:
+        {
+            if (decoder->size) // decoder->size != 0
+            {
+                COMMON_LE(("There is some data found after JpegMarkerType::END_OF_IMAGE marker"));
+
+                return NgosStatus::INVALID_DATA;
+            }
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case JpegMarkerType::APPLICATION_0:
+        case JpegMarkerType::APPLICATION_1:
+        case JpegMarkerType::APPLICATION_2:
+        case JpegMarkerType::APPLICATION_3:
+        case JpegMarkerType::APPLICATION_4:
+        case JpegMarkerType::APPLICATION_5:
+        case JpegMarkerType::APPLICATION_6:
+        case JpegMarkerType::APPLICATION_7:
+        case JpegMarkerType::APPLICATION_8:
+        case JpegMarkerType::APPLICATION_9:
+        case JpegMarkerType::APPLICATION_10:
+        case JpegMarkerType::APPLICATION_11:
+        case JpegMarkerType::APPLICATION_12:
+        case JpegMarkerType::APPLICATION_13:
+        case JpegMarkerType::APPLICATION_14:
+        case JpegMarkerType::APPLICATION_15:
+        case JpegMarkerType::COMMENT:
+        {
+            return skipMarker(decoder, marker);
+        }
+        break;
+
+        case JpegMarkerType::START_OF_IMAGE:
+        case JpegMarkerType::RESTART_0:
+        case JpegMarkerType::RESTART_1:
+        case JpegMarkerType::RESTART_2:
+        case JpegMarkerType::RESTART_3:
+        case JpegMarkerType::RESTART_4:
+        case JpegMarkerType::RESTART_5:
+        case JpegMarkerType::RESTART_6:
+        case JpegMarkerType::RESTART_7:
+        {
+            COMMON_LF(("Unexpected marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+
+        default:
+        {
+            COMMON_LF(("Unknown marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *marker)

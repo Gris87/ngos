@@ -23,6 +23,10 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
+    *image = 0;
+
+
+
     BmpHeader *bmpHeader = (BmpHeader *)data;
 
     if (

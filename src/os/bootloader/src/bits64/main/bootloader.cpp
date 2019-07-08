@@ -97,7 +97,7 @@ NgosStatus Bootloader::cleanUpPath(char *path)
     if (!path[0]) // path[0] == 0
     {
         path[0] = '\\';
-        path[1] = '\0';
+        path[1] = 0;
     }
 
 
@@ -779,7 +779,7 @@ NgosStatus Bootloader::initImages()
 
 
 
-    UEFI_ASSERT_EXECUTION(loadImageFromDiskOrAssets("images/background.jpg", &sBackgroundImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(loadImageFromDiskOrAssets("images/arrow_left.png", &sBackgroundImage), NgosStatus::ASSERTION);
 
 
 

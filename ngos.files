@@ -422,6 +422,9 @@ src/os/shared/common/src/bits64/graphics/jpeg/jpegzigzagorder.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/jpegzigzagorder.h
 src/os/shared/common/src/bits64/graphics/png/png.cpp
 src/os/shared/common/src/bits64/graphics/png/png.h
+src/os/shared/common/src/bits64/graphics/png/pngchunk.h
+src/os/shared/common/src/bits64/graphics/png/pngchunktype.h
+src/os/shared/common/src/bits64/graphics/png/pngdecoder.h
 src/os/shared/common/src/bits64/graphics/png/pngheader.h
 src/os/shared/common/src/bits64/graphics/rgbapixel.h
 src/os/shared/common/src/bits64/graphics/rgbpixel.h
