@@ -1,6 +1,5 @@
 #include "png.h"
 
-#include <common/src/bits64/graphics/png/lib/chunks/pngimageheader.h>
 #include <common/src/bits64/graphics/png/lib/pngheader.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
@@ -134,8 +133,9 @@ NgosStatus Png::initDecoder(PngDecoder *decoder, Image **image)
 
 
 
-    decoder->image       = image;
-    decoder->imageHeader = 0;
+    decoder->image                 = image;
+    decoder->imageHeader           = 0;
+    decoder->standardRgbColorSpace = 0;
 
 
 
@@ -333,12 +333,29 @@ NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk
 
 
 
-    if (chunkLength != sizeof(PngImageHeader))
+    if (chunkLength != sizeof(PngStandardRgbColorSpace))
     {
         COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngImageHeader)));
 
         return NgosStatus::INVALID_DATA;
     }
+
+
+
+    PngStandardRgbColorSpace *standardRgbColorSpace = (PngStandardRgbColorSpace *)&chunk->data;
+
+    COMMON_LVVV(("standardRgbColorSpace->renderingIntent = %u (%s)", standardRgbColorSpace->renderingIntent, pngRenderingIntentToString(standardRgbColorSpace->renderingIntent)));
+
+
+
+    if (decoder->standardRgbColorSpace)
+    {
+        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    decoder->standardRgbColorSpace = standardRgbColorSpace;
 
 
 

@@ -421,6 +421,7 @@ src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimageheader.h
+src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngstandardrgbcolorspace.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngchunk.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngchunktype.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngcolortype.h
@@ -428,6 +429,7 @@ src/os/shared/common/src/bits64/graphics/png/lib/pngcompressionmethod.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngfiltermethod.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngheader.h
 src/os/shared/common/src/bits64/graphics/png/lib/pnginterlacemethod.h
+src/os/shared/common/src/bits64/graphics/png/lib/pngrenderingintent.h
 src/os/shared/common/src/bits64/graphics/png/png.cpp
 src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngdecoder.h

@@ -5,14 +5,16 @@
 
 #include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngimageheader.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngstandardrgbcolorspace.h>
 #include <ngos/types.h>
 
 
 
 struct PngDecoder
 {
-    Image          **image;
-    PngImageHeader  *imageHeader;
+    Image                    **image;
+    PngImageHeader            *imageHeader;
+    PngStandardRgbColorSpace  *standardRgbColorSpace;
 };
 
 
