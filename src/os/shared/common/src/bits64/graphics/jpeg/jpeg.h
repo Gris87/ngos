@@ -34,7 +34,7 @@ private:
     static NgosStatus handleRowIDCT(i64 *block); // TEST: NO
     static NgosStatus handleColIDCT(i64 *block, u8 *sampleDataBuffer, u64 stride); // TEST: NO
     static NgosStatus convertToRgb(JpegDecoder *decoder); // TEST: NO
-    static NgosStatus upsampleX(JpegComponent *c); // TEST: NO
+    static NgosStatus upsampleX(JpegComponent *component); // TEST: NO
     static NgosStatus upsampleY(JpegComponent *component); // TEST: NO
     static NgosStatus bufferBits(JpegDecoder *decoder, u8 count); // TEST: NO
     static NgosStatus getBits(JpegDecoder *decoder, u8 count, u64 *res); // TEST: NO
