@@ -49,7 +49,7 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    COMMON_LF(("Failed to load image from not supported image format"));
+    COMMON_LC(("Failed to load image from not supported image format"));
 
     *image = 0;
 

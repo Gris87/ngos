@@ -51,7 +51,7 @@ NgosStatus free(void *address)
     }
     else
     {
-        COMMON_LE(("Failed to free pool(0x%p)", address));
+        COMMON_LC(("Failed to free pool(0x%p)", address));
 
         return NgosStatus::FAILED;
     }

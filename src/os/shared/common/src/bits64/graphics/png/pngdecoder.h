@@ -4,13 +4,15 @@
 
 
 #include <common/src/bits64/graphics/image.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngimageheader.h>
 #include <ngos/types.h>
 
 
 
 struct PngDecoder
 {
-    Image **image;
+    Image          **image;
+    PngImageHeader  *imageHeader;
 };
 
 

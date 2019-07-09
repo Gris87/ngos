@@ -9,14 +9,14 @@
 
 
 
-enum class PngFilterMethod: u32
+enum class PngFilterMethod: u8
 {
     ADAPTIVE = 0
 };
 
 
 
-inline char* pngFilterMethodToString(PngFilterMethod method) // TEST: NO
+inline const char* pngFilterMethodToString(PngFilterMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

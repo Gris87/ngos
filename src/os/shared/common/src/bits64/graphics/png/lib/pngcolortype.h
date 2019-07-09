@@ -9,7 +9,7 @@
 
 
 
-enum class PngColorType: u32
+enum class PngColorType: u8
 {
     GREYSCALE           = 0,
     RGB                 = 2,
@@ -20,7 +20,7 @@ enum class PngColorType: u32
 
 
 
-inline char* pngColorTypeToString(PngColorType type) // TEST: NO
+inline const char* pngColorTypeToString(PngColorType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

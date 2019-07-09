@@ -309,7 +309,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
         case JpegMarkerType::RESTART_6:
         case JpegMarkerType::RESTART_7:
         {
-            COMMON_LF(("Unexpected marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+            COMMON_LC(("Unexpected marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -317,7 +317,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
 
         default:
         {
-            COMMON_LF(("Unknown marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+            COMMON_LC(("Unknown marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -404,7 +404,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         numberOfComponents != 1
        )
     {
-        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components"));
+        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components only"));
 
         return NgosStatus::NOT_SUPPORTED;
     }
@@ -958,7 +958,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
         numberOfComponents != decoder->startOfFrameMarker->numberOfComponents
        )
     {
-        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components"));
+        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components only"));
 
         return NgosStatus::NOT_SUPPORTED;
     }
@@ -1682,7 +1682,7 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
     }
     else
     {
-        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components"));
+        COMMON_LE(("JPEG decoder supports images with 1 or 3 color components only"));
 
         return NgosStatus::NOT_SUPPORTED;
     }

@@ -96,6 +96,23 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
+    if (
+        !width // width == 0
+        ||
+        !height // height == 0
+        ||
+        width > 0xFFFF
+        ||
+        height > 0xFFFF
+       )
+    {
+        COMMON_LE(("BMP image has invalid size %u x %u", width, height));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
     u64 stride;
 
     switch (bitsPerPixel)
