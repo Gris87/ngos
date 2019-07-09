@@ -6,6 +6,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <ngos/linkage.h>
 
 
 
@@ -26,6 +27,8 @@ void* malloc(u64 size)
     }
 
     COMMON_LVV(("Allocated pool(0x%p, %u)", res, size));
+#else
+    AVOID_UNUSED(size); // TODO: Remove it when implemented
 #endif
 
 
@@ -52,6 +55,8 @@ NgosStatus free(void *address)
 
         return NgosStatus::FAILED;
     }
+#else
+    AVOID_UNUSED(address); // TODO: Remove it when implemented
 #endif
 
 

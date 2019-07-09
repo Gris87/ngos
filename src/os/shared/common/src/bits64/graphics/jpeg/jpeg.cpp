@@ -1298,14 +1298,14 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
     for (i64 i = 0; i < 64; i += 8)
     {
-        COMMON_ASSERT_EXECUTION(handleRowIDCT(decoder, &block[i]), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(handleRowIDCT(&block[i]), NgosStatus::ASSERTION);
     }
 
 
 
     for (i64 i = 0; i < 8; ++i)
     {
-        COMMON_ASSERT_EXECUTION(handleColIDCT(decoder, &block[i], &sampleDataBuffer[i], component->stride), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(handleColIDCT(&block[i], &sampleDataBuffer[i], component->stride), NgosStatus::ASSERTION);
     }
 
 
@@ -1404,12 +1404,11 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *v
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::handleRowIDCT(JpegDecoder *decoder, i64 *block)
+NgosStatus Jpeg::handleRowIDCT(i64 *block)
 {
-    // COMMON_LT((" | decoder = 0x%p, block = 0x%p", decoder, block)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | block = 0x%p", block)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(block,   "block is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(block, "block is null", NgosStatus::ASSERTION);
 
 
 
@@ -1491,11 +1490,10 @@ NgosStatus Jpeg::handleRowIDCT(JpegDecoder *decoder, i64 *block)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::handleColIDCT(JpegDecoder *decoder, i64 *block, u8 *sampleDataBuffer, u64 stride)
+NgosStatus Jpeg::handleColIDCT(i64 *block, u8 *sampleDataBuffer, u64 stride)
 {
-    // COMMON_LT((" | decoder = 0x%p, block = 0x%p, sampleDataBuffer = 0x%p, stride = %u", decoder, block, sampleDataBuffer, stride)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | block = 0x%p, sampleDataBuffer = 0x%p, stride = %u", block, sampleDataBuffer, stride)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(decoder,          "decoder is null",          NgosStatus::ASSERTION);
     COMMON_ASSERT(block,            "block is null",            NgosStatus::ASSERTION);
     COMMON_ASSERT(sampleDataBuffer, "sampleDataBuffer is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(stride > 0,       "stride is zero",           NgosStatus::ASSERTION);
@@ -1605,7 +1603,7 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
         {
             if (component->width < width)
             {
-                NgosStatus status = upsampleX(decoder, component);
+                NgosStatus status = upsampleX(component);
 
                 if (status != NgosStatus::OK)
                 {
@@ -1615,7 +1613,7 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
             if (component->height < height)
             {
-                NgosStatus status = upsampleY(decoder, component);
+                NgosStatus status = upsampleY(component);
 
                 if (status != NgosStatus::OK)
                 {
@@ -1694,11 +1692,10 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::upsampleX(JpegDecoder *decoder, JpegComponent *component)
+NgosStatus Jpeg::upsampleX(JpegComponent *component)
 {
-    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
+    COMMON_LT((" | component = 0x%p", component));
 
-    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
     COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
 
 
@@ -1766,11 +1763,10 @@ NgosStatus Jpeg::upsampleX(JpegDecoder *decoder, JpegComponent *component)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::upsampleY(JpegDecoder *decoder, JpegComponent *component)
+NgosStatus Jpeg::upsampleY(JpegComponent *component)
 {
-    COMMON_LT((" | decoder = 0x%p, component = 0x%p", decoder, component));
+    COMMON_LT((" | component = 0x%p", component));
 
-    COMMON_ASSERT(decoder,   "decoder is null",   NgosStatus::ASSERTION);
     COMMON_ASSERT(component, "component is null", NgosStatus::ASSERTION);
 
 

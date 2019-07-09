@@ -4,6 +4,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>
+#include <ngos/linkage.h>
 #include <ngos/utils.h>
 
 
@@ -52,12 +53,11 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
 
     while (status == NgosStatus::OK && size >= sizeof(PngChunk) + 4) // 4 == size of CRC
     {
-        u32          chunkLength      = ntohl(chunk->length);
-        PngChunkType chunkType        = chunk->type;
-        u64          totalChunkLength = sizeof(PngChunk) + chunkLength + 4; // 4 == size of CRC
+        u32 chunkLength      = ntohl(chunk->length);
+        u64 totalChunkLength = sizeof(PngChunk) + chunkLength + 4; // 4 == size of CRC
 
         COMMON_LVVV(("chunkLength      = %u", chunkLength));
-        COMMON_LVVV(("chunkType        = 0x%08X (%s)", chunkType, pngChunkTypeToString(chunkType)));
+        COMMON_LVVV(("chunk->type      = 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
         COMMON_LVVV(("totalChunkLength = %u", totalChunkLength));
         COMMON_LVVV(("size             = %u", size));
 
@@ -144,6 +144,10 @@ NgosStatus Png::releaseDecoder(PngDecoder *decoder)
 
 
 
+    AVOID_UNUSED(decoder); // TODO: Remove it when implemented
+
+
+
     return NgosStatus::OK;
 }
 
@@ -189,6 +193,11 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 /*ch
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(decoder);  // TODO: Remove it when implemented
+    AVOID_UNUSED(chunk);    // TODO: Remove it when implemented
 
 
 

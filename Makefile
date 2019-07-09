@@ -58,7 +58,7 @@ help:
 	@echo "    config           - Build and run build_config_gui tool in order to update build configuration"
 	@echo "    generate         - Build and run code_generator tool in order to update generated files"
 	@echo "    verify           - Build and run code_verifier tool in order to verify the source code"
-	@echo "    verify-tests     - Build and run test_verifier tool in order to verify test filling"
+	@echo "    verify-tests     - Build and run test_verifier tool in order to verify test coverage"
 	@echo "    verify-docs      - Build and run docs_verifier tool in order to verify documents"
 	@echo "    test             - Perform kernel testing"
 	@echo "    run-gdb-debug    - Build the source code in debug mode and run gdb_debug tool"

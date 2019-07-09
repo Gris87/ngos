@@ -10,7 +10,7 @@ NGOS
 
 Test verifier tool is checking that all declared functions has tests for testing such functions.
 
-Please fill your source code with the tests as much as possible. Use comment `// TEST: NO` if it's not needed to provide tests for some functions.
+Please cover your source code with the tests as much as possible. Use comment `// TEST: NO` if it's not needed to provide tests for some functions.
 
 ### Usage
 

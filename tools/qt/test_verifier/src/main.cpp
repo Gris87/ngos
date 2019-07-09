@@ -205,7 +205,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
         Console::err("");
-        Console::err(QString("Tests filled on %1 %").arg(100 - messages.length() * 100.0 / testEntries.length()));
+        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / testEntries.length()));
         Console::err("");
 
         return 1;
@@ -214,7 +214,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
     Console::out("");
-    Console::out("Tests filled on 100 %");
+    Console::out("Tests covered on 100 %");
     Console::out("");
 
 
