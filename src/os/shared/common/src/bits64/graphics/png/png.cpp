@@ -1,6 +1,6 @@
 #include "png.h"
 
-#include <common/src/bits64/graphics/png/pngheader.h>
+#include <common/src/bits64/graphics/png/lib/pngheader.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>

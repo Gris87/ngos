@@ -1,9 +1,9 @@
-#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_PNGHEADER_H
-#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_PNGHEADER_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_LIB_PNGHEADER_H
+#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_LIB_PNGHEADER_H
 
 
 
-#include <common/src/bits64/graphics/png/pngchunk.h>
+#include <common/src/bits64/graphics/png/lib/pngchunk.h>
 #include <ngos/types.h>
 
 
@@ -20,4 +20,4 @@ struct PngHeader
 
 
 
-#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_PNGHEADER_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_LIB_PNGHEADER_H

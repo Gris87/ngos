@@ -1,8 +1,8 @@
 #include "bmp.h"
 
-#include <common/src/bits64/graphics/bmp/bmpcolormap.h>
-#include <common/src/bits64/graphics/bmp/bmpheader.h>
-#include <common/src/bits64/graphics/bmp/bmpinformationheader.h>
+#include <common/src/bits64/graphics/bmp/lib/bmpcolormap.h>
+#include <common/src/bits64/graphics/bmp/lib/bmpheader.h>
+#include <common/src/bits64/graphics/bmp/lib/bmpinformationheader.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>

@@ -4,7 +4,7 @@
 
 
 #include <common/src/bits64/graphics/image.h>
-#include <common/src/bits64/graphics/png/pngchunk.h>
+#include <common/src/bits64/graphics/png/lib/pngchunk.h>
 #include <common/src/bits64/graphics/png/pngdecoder.h>
 #include <ngos/status.h>
 

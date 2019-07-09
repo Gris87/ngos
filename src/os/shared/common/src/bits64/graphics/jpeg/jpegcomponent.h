@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/graphics/jpeg/jpegcomponentid.h>
 #include <common/src/bits64/graphics/jpeg/jpegvlccode.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegcomponentid.h>
 #include <ngos/types.h>
 
 

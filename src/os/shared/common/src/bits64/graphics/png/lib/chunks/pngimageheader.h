@@ -1,12 +1,12 @@
-#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_PNGIMAGEHEADER_H
-#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_PNGIMAGEHEADER_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_LIB_CHUNKS_PNGIMAGEHEADER_H
+#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_LIB_CHUNKS_PNGIMAGEHEADER_H
 
 
 
-#include <common/src/bits64/graphics/png/pngcolortype.h>
-#include <common/src/bits64/graphics/png/pngcompressionmethod.h>
-#include <common/src/bits64/graphics/png/pngfiltermethod.h>
-#include <common/src/bits64/graphics/png/pnginterlacemethod.h>
+#include <common/src/bits64/graphics/png/lib/pngcolortype.h>
+#include <common/src/bits64/graphics/png/lib/pngcompressionmethod.h>
+#include <common/src/bits64/graphics/png/lib/pngfiltermethod.h>
+#include <common/src/bits64/graphics/png/lib/pnginterlacemethod.h>
 #include <ngos/types.h>
 
 
@@ -20,8 +20,8 @@ struct PngImageHeader
     PngCompressionMethod compressionMethod;
     PngFilterMethod      filterMethod;
     PngInterlaceMethod   interlaceMethod;
-};
+} __attribute__((packed));
 
 
 
-#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_PNGIMAGEHEADER_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_PNG_LIB_CHUNKS_PNGIMAGEHEADER_H

@@ -1,10 +1,10 @@
-#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_JPEGDEFINEHUFFMANTABLEMARKER_H
-#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_JPEGDEFINEHUFFMANTABLEMARKER_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_LIB_JPEGDEFINEHUFFMANTABLEMARKER_H
+#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_LIB_JPEGDEFINEHUFFMANTABLEMARKER_H
 
 
 
-#include <common/src/bits64/graphics/jpeg/jpeghuffmantable.h>
-#include <common/src/bits64/graphics/jpeg/jpegmarkerheader.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpeghuffmantable.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegmarkerheader.h>
 
 
 
@@ -16,4 +16,4 @@ struct JpegDefineHuffmanTableMarker
 
 
 
-#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_JPEGDEFINEHUFFMANTABLEMARKER_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_LIB_JPEGDEFINEHUFFMANTABLEMARKER_H

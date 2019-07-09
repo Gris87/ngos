@@ -1,10 +1,10 @@
 #include "jpeg.h"
 
-#include <common/src/bits64/graphics/jpeg/jpegdefinehuffmantablemarker.h>
-#include <common/src/bits64/graphics/jpeg/jpegdefinequantizationtablemarker.h>
-#include <common/src/bits64/graphics/jpeg/jpegdefinerestartintervalmarker.h>
-#include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
-#include <common/src/bits64/graphics/jpeg/jpegzigzagorder.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegdefinehuffmantablemarker.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegdefinequantizationtablemarker.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegdefinerestartintervalmarker.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegstartofframemarker.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
@@ -1650,9 +1650,11 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
 
 
+                // Ignore CppAlignmentVerifier [BEGIN]
                 pixel->blue  = CLAMP_TO_BYTE((y            + 359 * cr + 128) >> 8);
                 pixel->green = CLAMP_TO_BYTE((y -  88 * cb - 183 * cr + 128) >> 8);
                 pixel->red   = CLAMP_TO_BYTE((y + 454 * cb            + 128) >> 8);
+                // Ignore CppAlignmentVerifier [END]
 
                 ++pixel;
             }
@@ -1809,7 +1811,7 @@ NgosStatus Jpeg::upsampleY(JpegDecoder *decoder, JpegComponent *component)
 
 
 
-        for (i64 y = height - 3;  y;  --y)
+        for (i64 y = 0; y < height - 3; ++y)
         {
             *cout =  CHROMA_FILTER(CF4A * cin[-stride] + CF4B * cin[0] + CF4C * cin[stride] + CF4D * cin[stride2]);     cout += width;
             *cout =  CHROMA_FILTER(CF4D * cin[-stride] + CF4C * cin[0] + CF4B * cin[stride] + CF4A * cin[stride2]);     cout += width;
@@ -1888,7 +1890,11 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 
 
 
-            if (newByte != 0 && newByte != 0xFF)
+            if (
+                newByte // newByte != 0
+                &&
+                newByte != 0xFF
+               )
             {
                 if (newByte == (u8)JpegMarkerType::END_OF_IMAGE)
                 {

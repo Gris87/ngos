@@ -1,11 +1,11 @@
 #include "graphics.h"
 
 #include <common/src/bits64/graphics/bmp/bmp.h>
-#include <common/src/bits64/graphics/bmp/bmpheader.h>
+#include <common/src/bits64/graphics/bmp/lib/bmpheader.h>
 #include <common/src/bits64/graphics/jpeg/jpeg.h>
-#include <common/src/bits64/graphics/jpeg/jpegmarkertype.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegmarkertype.h>
+#include <common/src/bits64/graphics/png/lib/pngheader.h>
 #include <common/src/bits64/graphics/png/png.h>
-#include <common/src/bits64/graphics/png/pngheader.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 

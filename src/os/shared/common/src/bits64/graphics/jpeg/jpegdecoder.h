@@ -5,11 +5,11 @@
 
 #include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/graphics/jpeg/jpegcomponent.h>
-#include <common/src/bits64/graphics/jpeg/jpeghuffmantable.h>
-#include <common/src/bits64/graphics/jpeg/jpegquantizationtable.h>
-#include <common/src/bits64/graphics/jpeg/jpegstartofframemarker.h>
-#include <common/src/bits64/graphics/jpeg/jpegstartofscanmarker.h>
 #include <common/src/bits64/graphics/jpeg/jpegvlccode.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpeghuffmantable.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegquantizationtable.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegstartofframemarker.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h>
 #include <ngos/types.h>
 
 

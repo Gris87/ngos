@@ -1,10 +1,10 @@
-#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_JPEGDEFINEQUANTIZATIONTABLEMARKER_H
-#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_JPEGDEFINEQUANTIZATIONTABLEMARKER_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_LIB_JPEGDEFINEQUANTIZATIONTABLEMARKER_H
+#define OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_LIB_JPEGDEFINEQUANTIZATIONTABLEMARKER_H
 
 
 
-#include <common/src/bits64/graphics/jpeg/jpegmarkerheader.h>
-#include <common/src/bits64/graphics/jpeg/jpegquantizationtable.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegmarkerheader.h>
+#include <common/src/bits64/graphics/jpeg/lib/jpegquantizationtable.h>
 
 
 
@@ -16,4 +16,4 @@ struct JpegDefineQuantizationTableMarker
 
 
 
-#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_JPEGDEFINEQUANTIZATIONTABLEMARKER_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_GRAPHICS_JPEG_LIB_JPEGDEFINEQUANTIZATIONTABLEMARKER_H
