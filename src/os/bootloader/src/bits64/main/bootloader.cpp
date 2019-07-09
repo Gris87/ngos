@@ -779,7 +779,7 @@ NgosStatus Bootloader::initImages()
 
 
 
-    UEFI_ASSERT_EXECUTION(loadImageFromDiskOrAssets("images/background.jpg", &sBackgroundImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(loadImageFromDiskOrAssets("images/arrow_left.png", &sBackgroundImage), NgosStatus::ASSERTION);
 
 
 
