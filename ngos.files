@@ -455,6 +455,10 @@ src/os/shared/common/src/bits64/serial/serial.cpp
 src/os/shared/common/src/bits64/serial/serial.h
 src/os/shared/common/src/bits64/string/string.cpp
 src/os/shared/common/src/bits64/string/string.h
+src/os/shared/common/src/bits64/zlib/zlib.cpp
+src/os/shared/common/src/bits64/zlib/zlib.h
+src/os/shared/common/src/bits64/zlib/zlibcompressionmethod.h
+src/os/shared/common/src/bits64/zlib/zlibheader.h
 src/os/shared/kernelbase/asm/arch/x86_64/bits64/a_early/main/setupidthandlers.S
 src/os/shared/kernelbase/asm/arch/x86_64/main.S
 src/os/shared/kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h

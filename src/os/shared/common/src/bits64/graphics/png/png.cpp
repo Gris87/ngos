@@ -7,6 +7,7 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/zlib/zlib.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 
@@ -526,6 +527,15 @@ NgosStatus Png::decompressImageData(PngDecoder *decoder)
         COMMON_LE(("Failed to allocate space for decompressed image data buffer. Out of space"));
 
         return NgosStatus::OUT_OF_MEMORY;
+    }
+
+
+
+    NgosStatus status = ZLib::decompress(decoder->imageDataBuffer, buffer, decoder->imageDataSize, decompressedSize);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
     }
 
 

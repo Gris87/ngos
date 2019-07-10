@@ -3,6 +3,7 @@ TODO List
 
 NGOS:
 
+- Provide text representations for all enums
 - Add tests for structure sizes
 - Complete with interruptions
 - Implement boot screen for kernel
