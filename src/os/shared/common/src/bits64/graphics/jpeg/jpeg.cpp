@@ -622,6 +622,15 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
         JpegVlcCode *vlc = (JpegVlcCode *)malloc(remain * sizeof(JpegVlcCode));
 
+        if (!vlc)
+        {
+            COMMON_LE(("Failed to allocate space for VLC codes. Out of space"));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+
+
         if (tableType == JPEG_HUFFMAN_TABLE_TYPE_DC)
         {
             COMMON_TEST_ASSERT(decoder->vlcDcTables[tableId] == 0, NgosStatus::ASSERTION);

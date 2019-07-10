@@ -6,6 +6,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>
+#include <common/src/bits64/memory/memory.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 
@@ -138,6 +139,9 @@ NgosStatus Png::initDecoder(PngDecoder *decoder, Image **image)
     decoder->standardRgbColorSpace   = 0;
     decoder->imageGamma              = 0;
     decoder->physicalPixelDimensions = 0;
+    decoder->imageDataBuffer         = 0;
+    decoder->imageDataSize           = 0;
+    decoder->imageDataAllocatedSize  = 0;
 
 
 
@@ -152,7 +156,10 @@ NgosStatus Png::releaseDecoder(PngDecoder *decoder)
 
 
 
-    AVOID_UNUSED(decoder); // TODO: Remove it when implemented
+    if (decoder->imageDataBuffer)
+    {
+        COMMON_ASSERT_EXECUTION(free(decoder->imageDataBuffer), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -449,7 +456,7 @@ NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chu
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 /*chunkLength*/)
+NgosStatus Png::decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -458,7 +465,7 @@ NgosStatus Png::decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 /*chun
 
 
 
-    return NgosStatus::OK;
+    return addImageDataToBuffer(decoder, chunk->data, chunkLength);
 }
 
 NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth)
@@ -522,6 +529,77 @@ NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth)
         }
         break;
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
+{
+    COMMON_LT((" | decoder = 0x%p, data = 0x%p, count = %u", decoder, data, count));
+
+    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(data,      "data is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+
+
+
+    u64 oldSize          = decoder->imageDataSize;
+    u64 newSize          = oldSize + count;
+    u64 oldAllocatedSize = decoder->imageDataAllocatedSize;
+
+
+
+    if (newSize > oldAllocatedSize)
+    {
+        u64 newAllocatedSize;
+
+        if (oldAllocatedSize) // oldAllocatedSize != 0
+        {
+            newAllocatedSize = oldAllocatedSize << 1;
+
+            if (newSize > newAllocatedSize)
+            {
+                newAllocatedSize = newSize;
+            }
+        }
+        else
+        {
+            newAllocatedSize = newSize;
+        }
+
+
+
+        u8 *buffer = (u8 *)malloc(newAllocatedSize);
+
+        if (!buffer)
+        {
+            COMMON_LE(("Failed to allocate space for image data buffer. Out of space"));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+
+
+        if (oldAllocatedSize) // oldAllocatedSize != 0
+        {
+            memcpy(buffer, decoder->imageDataBuffer, oldSize);
+
+            COMMON_ASSERT_EXECUTION(free(decoder->imageDataBuffer), NgosStatus::ASSERTION);
+        }
+
+
+
+        decoder->imageDataBuffer        = buffer;
+        decoder->imageDataAllocatedSize = newAllocatedSize;
+    }
+
+
+
+    memcpy(&decoder->imageDataBuffer[oldSize], data, count);
+
+    decoder->imageDataSize = newSize;
 
 
 

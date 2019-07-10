@@ -25,6 +25,7 @@ private:
     static NgosStatus decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
     static NgosStatus decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
     static NgosStatus checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth); // TEST: NO
+    static NgosStatus addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count); // TEST: NO
 };
 
 

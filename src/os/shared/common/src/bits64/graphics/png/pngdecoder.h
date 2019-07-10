@@ -19,6 +19,9 @@ struct PngDecoder
     PngStandardRgbColorSpace    *standardRgbColorSpace;
     PngImageGamma               *imageGamma;
     PngPhysicalPixelDimensions  *physicalPixelDimensions;
+    u8                          *imageDataBuffer;
+    u64                          imageDataSize;
+    u64                          imageDataAllocatedSize;
 };
 
 
