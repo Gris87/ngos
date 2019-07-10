@@ -57,7 +57,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
     if (compressionInfo != 7)
     {
-        COMMON_LE(("zlib supports inflate with sliding window of 32k only"));
+        COMMON_LE(("zlib supports inflate with sliding window of 32KB only"));
 
         return NgosStatus::NOT_SUPPORTED;
     }
