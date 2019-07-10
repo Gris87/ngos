@@ -133,9 +133,11 @@ NgosStatus Png::initDecoder(PngDecoder *decoder, Image **image)
 
 
 
-    decoder->image                 = image;
-    decoder->imageHeader           = 0;
-    decoder->standardRgbColorSpace = 0;
+    decoder->image                   = image;
+    decoder->imageHeader             = 0;
+    decoder->standardRgbColorSpace   = 0;
+    decoder->imageGamma              = 0;
+    decoder->physicalPixelDimensions = 0;
 
 
 
@@ -169,12 +171,17 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
     switch (chunk->type)
     {
         case PngChunkType::SRGB: return decodeStandardRgbColorSpace(decoder, chunk, chunkLength);
+        case PngChunkType::GAMA: return decodeImageGamma(decoder, chunk, chunkLength);
+        case PngChunkType::PHYS: return decodePhysicalPixelDimensions(decoder, chunk, chunkLength);
+        case PngChunkType::IDAT: return decodeImageData(decoder, chunk, chunkLength);
 
-        case PngChunkType::GAMA:
-        case PngChunkType::PHYS:
-        case PngChunkType::TEXT:
-        case PngChunkType::IDAT:
         case PngChunkType::IEND:
+        {
+            // Nothing
+        }
+        break;
+
+        case PngChunkType::TEXT:
         {
             COMMON_LVV(("Ignore PNG chunk 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
         }
@@ -335,7 +342,7 @@ NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk
 
     if (chunkLength != sizeof(PngStandardRgbColorSpace))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngImageHeader)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngStandardRgbColorSpace)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -356,6 +363,98 @@ NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk
     }
 
     decoder->standardRgbColorSpace = standardRgbColorSpace;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+{
+    COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
+
+
+
+    if (chunkLength != sizeof(PngImageGamma))
+    {
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngImageGamma)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    PngImageGamma *imageGamma = (PngImageGamma *)&chunk->data;
+
+    COMMON_LVVV(("imageGamma->gamma = %u", ntohl(imageGamma->gamma)));
+
+    COMMON_TEST_ASSERT(decoder->standardRgbColorSpace == 0 || imageGamma->gamma == htonl(PNG_DEFAULT_IMAGE_GAMMA), NgosStatus::ASSERTION);
+
+
+
+    if (decoder->imageGamma)
+    {
+        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    decoder->imageGamma = imageGamma;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+{
+    COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
+
+
+
+    if (chunkLength != sizeof(PngPhysicalPixelDimensions))
+    {
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngPhysicalPixelDimensions)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    PngPhysicalPixelDimensions *physicalPixelDimensions = (PngPhysicalPixelDimensions *)&chunk->data;
+
+    COMMON_LVVV(("physicalPixelDimensions->pixelsPerUnitX = %u", ntohl(physicalPixelDimensions->pixelsPerUnitX)));
+    COMMON_LVVV(("physicalPixelDimensions->pixelsPerUnitY = %u", ntohl(physicalPixelDimensions->pixelsPerUnitY)));
+    COMMON_LVVV(("physicalPixelDimensions->unitSpecifier  = %u (%s)", physicalPixelDimensions->unitSpecifier, pngUnitSpecifierToString(physicalPixelDimensions->unitSpecifier)));
+
+
+
+    if (decoder->physicalPixelDimensions)
+    {
+        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    decoder->physicalPixelDimensions = physicalPixelDimensions;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 /*chunkLength*/)
+{
+    COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
 
 
 
