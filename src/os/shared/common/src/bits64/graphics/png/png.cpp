@@ -89,6 +89,13 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
 
 
 
+    if (status == NgosStatus::OK)
+    {
+        status = decodeImage(&decoder);
+    }
+
+
+
     if (
         status == NgosStatus::OK
         &&
@@ -468,6 +475,72 @@ NgosStatus Png::decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 chunkL
     return addImageDataToBuffer(decoder, chunk->data, chunkLength);
 }
 
+NgosStatus Png::decodeImage(PngDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    NgosStatus status = decompressImageData(decoder);
+
+    if (status != NgosStatus::OK)
+    {
+        return status;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::decompressImageData(PngDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    if (!decoder->imageDataBuffer)
+    {
+        COMMON_LE(("IDAT chunk not found in PNG image"));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    u64 decompressedSize;
+    COMMON_ASSERT_EXECUTION(getImageDataDecompressedSize(decoder, &decompressedSize), NgosStatus::ASSERTION);
+
+    COMMON_LVVV(("decompressedSize = %u", decompressedSize));
+
+
+
+    u8 *buffer = (u8 *)malloc(decompressedSize);
+
+    if (!buffer)
+    {
+        COMMON_LE(("Failed to allocate space for decompressed image data buffer. Out of space"));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(free(decoder->imageDataBuffer), NgosStatus::ASSERTION);
+
+    decoder->imageDataBuffer        = buffer;
+    decoder->imageDataSize          = decompressedSize;
+    decoder->imageDataAllocatedSize = decompressedSize;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth)
 {
     COMMON_LT((" | colorType = %u, bitDepth = %u", colorType, bitDepth));
@@ -600,6 +673,120 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
     memcpy(&decoder->imageDataBuffer[oldSize], data, count);
 
     decoder->imageDataSize = newSize;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, u64 *size)
+{
+    COMMON_LT((" | decoder = 0x%p, size = 0x%p", decoder, size));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size,    "size is null",    NgosStatus::ASSERTION);
+
+
+
+    *size = 0;
+
+    u16 width  = (*decoder->image)->width;
+    u16 height = (*decoder->image)->height;
+
+    u8 bitsPerPixel;
+    COMMON_ASSERT_EXECUTION(getNumberOfBitsPerPixel(decoder, &bitsPerPixel), NgosStatus::ASSERTION);
+
+
+
+    switch (decoder->imageHeader->interlaceMethod)
+    {
+        case PngInterlaceMethod::NONE:
+        {
+            COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock(width, height, bitsPerPixel, size), NgosStatus::ASSERTION);
+        }
+        break;
+
+        case PngInterlaceMethod::ADAM_7:
+        {
+            COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock((width + 7) >> 3, (height + 7) >> 3, bitsPerPixel, size), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock((width + 3) >> 2, (height + 3) >> 3, bitsPerPixel, size), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock((width + 1) >> 1, (height + 1) >> 2, bitsPerPixel, size), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock((width + 0),      (height + 0) >> 1, bitsPerPixel, size), NgosStatus::ASSERTION);
+
+            if (width > 1)
+            {
+                COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock((width + 0) >> 1, (height + 1) >> 1, bitsPerPixel, size), NgosStatus::ASSERTION);
+
+                if (width > 2)
+                {
+                    COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock((width + 1) >> 2, (height + 3) >> 2, bitsPerPixel, size), NgosStatus::ASSERTION);
+
+                    if (width > 4)
+                    {
+                        COMMON_ASSERT_EXECUTION(getImageDataDecompressedSizeForBlock((width + 3) >> 3, (height + 7) >> 3, bitsPerPixel, size), NgosStatus::ASSERTION);
+                    }
+                }
+            }
+        }
+        break;
+
+        default:
+        {
+            COMMON_LE(("Unknown interlace method %u (%s)", decoder->imageHeader->interlaceMethod, pngInterlaceMethodToString(decoder->imageHeader->interlaceMethod)));
+
+            return NgosStatus::INVALID_DATA;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::getImageDataDecompressedSizeForBlock(u16 width, u16 height, u8 bitsPerPixel, u64 *size)
+{
+    COMMON_LT((" | width = %u, height = %u, bitsPerPixel = %u, size = 0x%p", width, height, bitsPerPixel, size));
+
+    COMMON_ASSERT(width > 0,        "width is zero",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0,       "height is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(bitsPerPixel > 0, "bitsPerPixel is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size,             "size is null",         NgosStatus::ASSERTION);
+
+
+
+    *size += (((width >> 3) * bitsPerPixel) + DIV_UP((width & 7) * bitsPerPixel, 8) + 1) * height;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::getNumberOfBitsPerPixel(PngDecoder *decoder, u8 *res)
+{
+    COMMON_LT((" | decoder = 0x%p, res = 0x%p", decoder, res));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,     "res is null",     NgosStatus::ASSERTION);
+
+
+
+    switch (decoder->imageHeader->colorType)
+    {
+        case PngColorType::GREYSCALE:           *res = decoder->imageHeader->bitDepth;      break;
+        case PngColorType::RGB:                 *res = decoder->imageHeader->bitDepth * 3;  break;
+        case PngColorType::PALETTE:             *res = decoder->imageHeader->bitDepth;      break;
+        case PngColorType::GREYSCALE_AND_ALPHA: *res = decoder->imageHeader->bitDepth << 1; break; // "<< 1" == "* 2"
+        case PngColorType::RGBA:                *res = decoder->imageHeader->bitDepth << 2; break; // "<< 2" == "* 4"
+
+        default:
+        {
+            COMMON_LC(("Unexpected PNG color type: 0x%02X (%s)", decoder->imageHeader->colorType, pngColorTypeToString(decoder->imageHeader->colorType)));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
 
 
 
