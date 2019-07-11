@@ -21,7 +21,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
     if (
-        expectedCompressedSize < 6
+        expectedCompressedSize < sizeof(ZLibHeader) + 4
         ||
         ntohs(*((u16 *)compressedAddress)) % 31 // ntohs(*((u16 *)compressedAddress)) % 31 != 0
        )
