@@ -1,5 +1,6 @@
 #include "zlib.h"
 
+#include <common/src/bits64/checksum/adler.h>
 #include <common/src/bits64/inflate/inflate.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
@@ -107,7 +108,11 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
 
-    currentPointer += compressedSize;
+    u32 adler32Checksum = ntohl(*(u32 *)((u64)currentPointer + compressedSize));
+
+    COMMON_LVVV(("adler32Checksum = 0x%08X", adler32Checksum));
+
+    COMMON_TEST_ASSERT(adler32Checksum == Adler::adler32(decompressedAddress, uncompressedSize), NgosStatus::ASSERTION);
 
 
 

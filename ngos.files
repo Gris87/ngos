@@ -349,6 +349,8 @@ src/os/shared/common/asm/arch/x86_64/bits64/memory/memzero.S
 src/os/shared/common/src/bits64/assets/assetentry.h
 src/os/shared/common/src/bits64/assets/assets.cpp
 src/os/shared/common/src/bits64/assets/assets.h
+src/os/shared/common/src/bits64/checksum/adler.cpp
+src/os/shared/common/src/bits64/checksum/adler.h
 src/os/shared/common/src/bits64/console/console.cpp
 src/os/shared/common/src/bits64/console/console.h
 src/os/shared/common/src/bits64/console/lib/glyphdata.h
