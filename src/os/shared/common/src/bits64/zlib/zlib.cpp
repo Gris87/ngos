@@ -74,5 +74,42 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
 
+    u8  *currentPointer   = compressedAddress + sizeof(ZLibHeader);
+    u64  compressedSize   = 0;
+    u64  uncompressedSize = 0;
+
+    NgosStatus status = inflate(currentPointer, decompressedAddress, &compressedSize, &uncompressedSize);
+
+    if (status != NgosStatus::OK)
+    {
+        COMMON_LE(("Failed to inflate compressed image data"));
+
+        return status;
+    }
+
+    COMMON_LVV(("Image data inflated"));
+
+
+
+    COMMON_LVVV(("compressedSize   = %u", compressedSize));
+    COMMON_LVVV(("uncompressedSize = %u", uncompressedSize));
+
+    if (
+        compressedSize != expectedCompressedSize - sizeof(ZLibHeader) - 4
+        ||
+        uncompressedSize != expectedDecompressedSize
+       )
+    {
+        COMMON_LE(("Unexpected compressed/decompressed size after inflating"));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    currentPointer += compressedSize;
+
+
+
     return NgosStatus::OK;
 }
