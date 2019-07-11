@@ -1,5 +1,6 @@
 #include "png.h"
 
+#include <common/src/bits64/checksum/crc.h>
 #include <common/src/bits64/graphics/png/lib/pngheader.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
@@ -183,6 +184,14 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
 
 
 
+    u32 crc32Checksum = ntohl(*(u32 *)((u64)&chunk->data + chunkLength));
+
+    COMMON_LVVV(("crc32Checksum = 0x%08X", crc32Checksum));
+
+    COMMON_TEST_ASSERT(crc32Checksum == Crc::crc32((u8 *)&chunk->type, sizeof(chunk->type) + chunkLength), NgosStatus::ASSERTION);
+
+
+
     switch (chunk->type)
     {
         case PngChunkType::SRGB: return decodeStandardRgbColorSpace(decoder, chunk, chunkLength);
@@ -235,6 +244,14 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
         return NgosStatus::INVALID_DATA;
     }
+
+
+
+    u32 crc32Checksum = ntohl(*(u32 *)((u64)&chunk->data + chunkLength));
+
+    COMMON_LVVV(("crc32Checksum = 0x%08X", crc32Checksum));
+
+    COMMON_TEST_ASSERT(crc32Checksum == Crc::crc32((u8 *)&chunk->type, sizeof(chunk->type) + chunkLength), NgosStatus::ASSERTION);
 
 
 

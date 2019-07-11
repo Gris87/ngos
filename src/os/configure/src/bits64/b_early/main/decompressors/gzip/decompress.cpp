@@ -1,5 +1,6 @@
 #include "decompress.h"
 
+#include <common/src/bits64/checksum/crc.h>
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/inflate/inflate.h>
@@ -14,63 +15,6 @@
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
-u32 gzipCrc32Table[256];
-
-
-
-NgosStatus gzipInitCrc()
-{
-    EARLY_LT((""));
-
-
-
-    for (i64 i = 0; i < 256; ++i)
-    {
-        u32 crc32 = i;
-
-        for (i64 j = 0; j < 8; ++j)
-        {
-            if (crc32 & 1)
-            {
-                crc32 = (crc32 >> 1) ^ 0xEDB88320;
-            }
-            else
-            {
-                crc32 >>= 1;
-            }
-        }
-
-        gzipCrc32Table[i] = crc32;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-u32 gzipCrc32(const u8 *buffer, i64 size, u32 crc)
-{
-    EARLY_LT((" | buffer = 0x%p, size = %u, crc = 0x%08X", buffer, size, crc));
-
-    EARLY_ASSERT(buffer,   "buffer is null",  0);
-    EARLY_ASSERT(size > 0, "size is invalid", 0);
-
-
-
-    crc = ~crc;
-
-    for (i64 i = 0; i < size; ++i)
-    {
-        crc = gzipCrc32Table[buffer[i] ^ (crc & 0xFF)] ^ (crc >> 8);
-    }
-
-    return ~crc;
-}
-#endif
-
-
-
 NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expectedCompressedSize, u64 expectedDecompressedSize)
 {
     EARLY_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, expectedCompressedSize = %u, expectedDecompressedSize = %u", compressedAddress, decompressedAddress, expectedCompressedSize, expectedDecompressedSize));
@@ -79,12 +23,6 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
     EARLY_ASSERT(decompressedAddress,          "decompressedAddress is null",      NgosStatus::ASSERTION);
     EARLY_ASSERT(expectedCompressedSize > 0,   "expectedCompressedSize is zero",   NgosStatus::ASSERTION);
     EARLY_ASSERT(expectedDecompressedSize > 0, "expectedDecompressedSize is zero", NgosStatus::ASSERTION);
-
-
-
-#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
-    EARLY_ASSERT_EXECUTION(gzipInitCrc(), NgosStatus::ASSERTION);
-#endif
 
 
 
@@ -157,8 +95,8 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-        EARLY_TEST_ASSERT(memberFooter->crc32     == gzipCrc32(decompressedAddress, uncompressedSize, 0), NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberFooter->inputSize == uncompressedSize,                                    NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberFooter->crc32     == Crc::crc32(decompressedAddress, uncompressedSize), NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberFooter->inputSize == uncompressedSize,                                  NgosStatus::ASSERTION);
     }
 
 

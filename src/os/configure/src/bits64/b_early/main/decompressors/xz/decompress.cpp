@@ -1,5 +1,6 @@
 #include "decompress.h"
 
+#include <common/src/bits64/checksum/crc.h>
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/memory/memory.h>
@@ -19,94 +20,6 @@
 
 
 #define MAX_AMOUNT_OF_FILTERS 4
-
-
-
-#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
-u32 xzCrc32Table[256];
-u64 xzCrc64Table[256];
-
-
-
-NgosStatus xzInitCrc()
-{
-    EARLY_LT((""));
-
-
-
-    for (i64 i = 0; i < 256; ++i)
-    {
-        u32 crc32 = i;
-        u64 crc64 = i;
-
-        for (i64 j = 0; j < 8; ++j)
-        {
-            if (crc32 & 1)
-            {
-                crc32 = (crc32 >> 1) ^ 0xEDB88320;
-            }
-            else
-            {
-                crc32 >>= 1;
-            }
-
-            if (crc64 & 1)
-            {
-                crc64 = (crc64 >> 1) ^ 0xC96C5795D7870F42;
-            }
-            else
-            {
-                crc64 >>= 1;
-            }
-        }
-
-        xzCrc32Table[i] = crc32;
-        xzCrc64Table[i] = crc64;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-u32 xzCrc32(const u8 *buffer, i64 size, u32 crc)
-{
-    EARLY_LT((" | buffer = 0x%p, size = %u, crc = 0x%08X", buffer, size, crc));
-
-    EARLY_ASSERT(buffer,   "buffer is null",  0);
-    EARLY_ASSERT(size > 0, "size is invalid", 0);
-
-
-
-    crc = ~crc;
-
-    for (i64 i = 0; i < size; ++i)
-    {
-        crc = xzCrc32Table[buffer[i] ^ (crc & 0xFF)] ^ (crc >> 8);
-    }
-
-    return ~crc;
-}
-
-u64 xzCrc64(const u8 *buffer, i64 size, u64 crc)
-{
-    EARLY_LT((" | buffer = 0x%p, size = %u, crc = 0x%016lX", buffer, size, crc));
-
-    EARLY_ASSERT(buffer,   "buffer is null",  0);
-    EARLY_ASSERT(size > 0, "size is invalid", 0);
-
-
-
-    crc = ~crc;
-
-    for (i64 i = 0; i < size; ++i)
-    {
-        crc = xzCrc64Table[buffer[i] ^ (crc & 0xFF)] ^ (crc >> 8);
-    }
-
-    return ~crc;
-}
-#endif
 
 
 
@@ -159,16 +72,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
     u8 *originalDecompressedAddress = decompressedAddress;
-
-
-
-#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
-    EARLY_ASSERT_EXECUTION(xzInitCrc(), NgosStatus::ASSERTION);
-#endif
-
-
-
-    u8 *currentPointer = compressedAddress;
+    u8 *currentPointer              = compressedAddress;
 
     StreamHeader *streamHeader    = (StreamHeader *)currentPointer;
     StreamFlag    typeOfCheckFlag = (StreamFlag)(streamHeader->streamFlags & (xz_stream_flags)StreamFlag::TYPE_OF_CHECK_MASK);
@@ -186,7 +90,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
         EARLY_TEST_ASSERT((*((u64 *)streamHeader->signature) & 0xFFFFFFFFFFFF) == XZ_STREAM_HEADER_SIGNATURE,                                                      NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(streamHeader->streamFlags                            == 0x0400,                                                                          NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(streamHeader->crc32                                  == xzCrc32((u8 *)&streamHeader->streamFlags, sizeof(streamHeader->streamFlags), 0), NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(streamHeader->crc32                                  == Crc::crc32((u8 *)&streamHeader->streamFlags, sizeof(streamHeader->streamFlags)), NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(typeOfCheckFlag                                      == StreamFlag::TYPE_OF_CHECK_CRC64,                                                 NgosStatus::ASSERTION);
     }
 
@@ -291,7 +195,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             EARLY_LVVV(("blockHeaderCrc32 = 0x%08X", blockHeaderCrc32));
 
-            EARLY_TEST_ASSERT(blockHeaderCrc32 == xzCrc32(currentPointer, realBlockHeaderSize - 4, 0), NgosStatus::ASSERTION);
+            EARLY_TEST_ASSERT(blockHeaderCrc32 == Crc::crc32(currentPointer, realBlockHeaderSize - 4), NgosStatus::ASSERTION);
 
 
 
@@ -378,7 +282,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
                 EARLY_LVVV(("blockCrc32 = 0x%08X", blockCrc32));
 
-                EARLY_TEST_ASSERT(blockCrc32 == xzCrc32(decompressedAddress, uncompressedSize, 0), NgosStatus::ASSERTION);
+                EARLY_TEST_ASSERT(blockCrc32 == Crc::crc32(decompressedAddress, uncompressedSize), NgosStatus::ASSERTION);
 
 
 
@@ -394,7 +298,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
                 EARLY_LVVV(("blockCrc64 = 0x%016lX", blockCrc64));
 
-                EARLY_TEST_ASSERT(blockCrc64 == xzCrc64(decompressedAddress, uncompressedSize, 0), NgosStatus::ASSERTION);
+                EARLY_TEST_ASSERT(blockCrc64 == Crc::crc64(decompressedAddress, uncompressedSize), NgosStatus::ASSERTION);
 
 
 
@@ -464,7 +368,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             EARLY_LVVV(("indexCrc32 = 0x%08X", indexCrc32));
 
-            EARLY_TEST_ASSERT(indexCrc32 == xzCrc32(currentPointer, currentIndexPointer - currentPointer, 0), NgosStatus::ASSERTION);
+            EARLY_TEST_ASSERT(indexCrc32 == Crc::crc32(currentPointer, currentIndexPointer - currentPointer), NgosStatus::ASSERTION);
 
 
 
@@ -495,7 +399,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-                EARLY_TEST_ASSERT(streamFooter->crc32        == xzCrc32((u8 *)&streamFooter->backwardSize, sizeof(streamFooter->backwardSize) + sizeof(streamFooter->streamFlags), 0), NgosStatus::ASSERTION);
+                EARLY_TEST_ASSERT(streamFooter->crc32        == Crc::crc32((u8 *)&streamFooter->backwardSize, sizeof(streamFooter->backwardSize) + sizeof(streamFooter->streamFlags)), NgosStatus::ASSERTION);
                 EARLY_TEST_ASSERT(streamFooter->backwardSize == (indexSize >> 2) - 1,                                                                                                  NgosStatus::ASSERTION); // "<< 2" == "* 4"
                 EARLY_TEST_ASSERT(streamFooter->streamFlags  == streamHeader->streamFlags,                                                                                             NgosStatus::ASSERTION);
                 EARLY_TEST_ASSERT(streamFooter->signature    == XZ_STREAM_FOOTER_SIGNATURE,                                                                                            NgosStatus::ASSERTION);
