@@ -11,6 +11,7 @@
 
 enum class ZLibCompressionMethod: u8
 {
+    NONE    = 0,
     DEFLATE = 8
 };
 
@@ -24,6 +25,7 @@ inline const char* zlibCompressionMethodToString(ZLibCompressionMethod method) /
 
     switch (method)
     {
+        case ZLibCompressionMethod::NONE:    return "NONE";
         case ZLibCompressionMethod::DEFLATE: return "DEFLATE";
 
         default: return "UNKNOWN";
