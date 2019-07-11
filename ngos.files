@@ -158,13 +158,6 @@ src/os/configure/src/bits64/a_uefi/other/pciregisters.h
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/decompress.cpp
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/decompress.h
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/compressionmethod.h
-src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflate.cpp
-src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflate.h
-src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflateblocktype.h
-src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecode.h
-src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecodetype.h
-src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatedecoder.h
-src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatefixedcodes.h
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/memberextraflags.h
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/memberflags.h
 src/os/configure/src/bits64/b_early/main/decompressors/gzip/lib/memberfooter.h
@@ -438,6 +431,13 @@ src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngdecoder.h
 src/os/shared/common/src/bits64/graphics/rgbapixel.h
 src/os/shared/common/src/bits64/graphics/rgbpixel.h
+src/os/shared/common/src/bits64/inflate/inflate.cpp
+src/os/shared/common/src/bits64/inflate/inflate.h
+src/os/shared/common/src/bits64/inflate/inflateblocktype.h
+src/os/shared/common/src/bits64/inflate/inflatecode.h
+src/os/shared/common/src/bits64/inflate/inflatecodetype.h
+src/os/shared/common/src/bits64/inflate/inflatedecoder.h
+src/os/shared/common/src/bits64/inflate/inflatefixedcodes.h
 src/os/shared/common/src/bits64/log/assert.h
 src/os/shared/common/src/bits64/log/log.h
 src/os/shared/common/src/bits64/memory/asm_memcpy.h
