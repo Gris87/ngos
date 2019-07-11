@@ -3,7 +3,6 @@
 
 
 
-#include <buildconfig.h>
 #include <ngos/types.h>
 
 
