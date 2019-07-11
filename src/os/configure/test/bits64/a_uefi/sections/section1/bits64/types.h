@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/inflate/inflatecode.h>
+#include <common/src/bits64/inflate/inflatedecoder.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecode.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatedecoder.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/memberfooter.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/memberheader.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/blockheader.h"

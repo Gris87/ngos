@@ -3,14 +3,8 @@
 
 
 
-#include <buildconfig.h>
+#include <common/src/bits64/inflate/inflatecode.h>
 #include <ngos/types.h>
-
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecode.h"
-
-
-
-#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
 
 
 
@@ -103,10 +97,6 @@ InflateCode fixedDistanceCodes[32] =
     {16, 5, 4},   {24, 5, 769},   {20, 5, 49},  {28, 5, 12289}, {18, 5, 13}, {26, 5, 3073},
     {22, 5, 193}, {64, 5, 0}
 };
-
-
-
-#endif
 
 
 

@@ -3,12 +3,7 @@
 
 
 
-#include <buildconfig.h>
 #include <ngos/types.h>
-
-
-
-#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
 
 
 
@@ -26,10 +21,6 @@ struct InflateDecoder
         u8  bitsAvailable;
     } temp;
 };
-
-
-
-#endif
 
 
 

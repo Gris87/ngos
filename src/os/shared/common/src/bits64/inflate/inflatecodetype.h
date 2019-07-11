@@ -3,12 +3,7 @@
 
 
 
-#include <buildconfig.h>
 #include <ngos/types.h>
-
-
-
-#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
 
 
 
@@ -18,10 +13,6 @@ enum class InflateCodeType: u8
     LENGTHS,
     DISTANCES
 };
-
-
-
-#endif
 
 
 

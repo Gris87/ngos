@@ -8,20 +8,12 @@
 
 
 
-#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
-
-
-
 struct InflateCode
 {
     u8  operation;
     u8  bits;
     u16 value;
 };
-
-
-
-#endif
 
 
 

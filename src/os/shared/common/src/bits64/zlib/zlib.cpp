@@ -1,5 +1,6 @@
 #include "zlib.h"
 
+#include <common/src/bits64/inflate/inflate.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/zlib/zlibcompressionmethod.h>

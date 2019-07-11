@@ -3,16 +3,11 @@
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/memory/memory.h>
-
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflateblocktype.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecode.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatecodetype.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatedecoder.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/inflate/inflatefixedcodes.h"
-
-
-
-#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
+#include <common/src/bits64/inflate/inflateblocktype.h>
+#include <common/src/bits64/inflate/inflatecode.h>
+#include <common/src/bits64/inflate/inflatecodetype.h>
+#include <common/src/bits64/inflate/inflatedecoder.h>
+#include <common/src/bits64/inflate/inflatefixedcodes.h>
 
 
 
@@ -1159,7 +1154,3 @@ NgosStatus inflate(u8 *compressedAddress, u8 *decompressedAddress, u64 *compress
 
     return NgosStatus::OK;
 }
-
-
-
-#endif

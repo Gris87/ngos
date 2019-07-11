@@ -3,21 +3,12 @@
 
 
 
-#include <buildconfig.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 
 
 
-#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
-
-
-
 NgosStatus inflate(u8 *compressedAddress, u8 *decompressedAddress, u64 *compressedSize, u64 *uncompressedSize); // TEST: NO
-
-
-
-#endif
 
 
 
