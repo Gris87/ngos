@@ -38,7 +38,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     ZLibHeader *zlibHeader = (ZLibHeader *)compressedAddress;
 
     ZLibCompressionMethod compressionMethod = (ZLibCompressionMethod)zlibHeader->compressionMethod;
-    //u8                    compressionInfo   = zlibHeader->compressionInfo;
+    u8                    compressionInfo   = zlibHeader->compressionInfo;
     u8                    presetDictionary  = zlibHeader->presetDictionary;
 
     COMMON_LVVV(("compressionMethod            = %u (%s)", compressionMethod, zlibCompressionMethodToString(compressionMethod)));
@@ -57,14 +57,14 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     }
 
 
-/*
+
     if (compressionInfo != 7)
     {
         COMMON_LE(("zlib supports inflate with sliding window of 32KB only"));
 
         return NgosStatus::NOT_SUPPORTED;
     }
-*/
+
 
 
     if (presetDictionary)

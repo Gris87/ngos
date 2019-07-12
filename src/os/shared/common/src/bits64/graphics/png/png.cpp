@@ -725,7 +725,7 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
     return status;
 }
 
-NgosStatus Png::processImageWithAdam7Interlace(PngDecoder * /*decoder*/)
+NgosStatus Png::processImageWithAdam7Interlace(PngDecoder *decoder)
 {
     COMMON_LT((" | decoder = 0x%p", decoder));
 
