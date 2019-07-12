@@ -97,6 +97,10 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
+    COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
+
+
+
     if (status != NgosStatus::OK)
     {
         if (*decoder.image)
@@ -106,10 +110,6 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
             *decoder.image = 0;
         }
     }
-
-
-
-    COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
 
 
 
