@@ -33,13 +33,15 @@ private:
     static NgosStatus processImageWithAdam7Interlace(PngDecoder *decoder); // TEST: NO
     static NgosStatus unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 height); // TEST: NO
     static NgosStatus unfilterLine(PngDecoder *decoder, u8 *inLine, u8 *outLine, u8 *previousLine, PngFilterType filterType, u8 byteWidth, u32 bytesPerLine); // TEST: NO
-    static u8 paethPredictor(u8 a, u8 b, u8 c); // TEST: NO
     static NgosStatus removePaddingBits(PngDecoder *decoder, u8 *in, u8 *out, i64 inLineBits, i64 outLineBits, u16 height); // TEST: NO
     static NgosStatus checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth); // TEST: NO
     static NgosStatus addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count); // TEST: NO
     static NgosStatus getImageDataDecompressedSize(PngDecoder *decoder, u64 *size); // TEST: NO
     static NgosStatus getImageDataDecompressedSizeForBlock(PngDecoder *decoder, u16 width, u16 height, u64 *size); // TEST: NO
     static NgosStatus getRawImageSize(PngDecoder *decoder, u64 *size); // TEST: NO
+    static u8 paethPredictor(u8 a, u8 b, u8 c); // TEST: NO
+    static u8 readBitFromReversedStream(i64 *bitPointer, u8 *bitStream); // TEST: NO
+    static NgosStatus setBitOfReversedStream(i64 *bitPointer, u8 *bitStream, u8 bit); // TEST: NO
 };
 
 

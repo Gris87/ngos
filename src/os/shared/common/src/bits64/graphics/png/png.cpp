@@ -877,21 +877,6 @@ NgosStatus Png::unfilterLine(PngDecoder *decoder, u8 *inLine, u8 *outLine, u8 *p
     return NgosStatus::OK;
 }
 
-u8 Png::paethPredictor(u8 a, u8 b, u8 c)
-{
-    COMMON_LT((" | a = %u, b = %u, c = %u", a, b, c));
-
-
-
-    i16 p = a + b - c;
-
-    u16 pa = ABS(p - a);
-    u16 pb = ABS(p - b);
-    u16 pc = ABS(p - c);
-
-    return MIN(pa, MIN(pb, pc));
-}
-
 NgosStatus Png::removePaddingBits(PngDecoder *decoder, u8 *in, u8 *out, i64 inLineBits, i64 outLineBits, u16 height)
 {
     COMMON_LT((" | decoder = 0x%p, in = 0x%p, out = 0x%p, inLineBits = %d, outLineBits = %d, height = %u", decoder, in, out, inLineBits, outLineBits, height));
@@ -902,6 +887,26 @@ NgosStatus Png::removePaddingBits(PngDecoder *decoder, u8 *in, u8 *out, i64 inLi
     COMMON_ASSERT(inLineBits > 0,  "inLineBits is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(outLineBits > 0, "outLineBits is zero", NgosStatus::ASSERTION);
     COMMON_ASSERT(height > 0,      "height is zero",      NgosStatus::ASSERTION);
+
+
+
+    i64 diff          = inLineBits - outLineBits;
+    i64 inBitPointer  = 0;
+    i64 outBitPointer = 0;
+
+
+
+    for (i64 i = 0; i < height; ++i)
+    {
+        for(i64 j = 0; j < outLineBits; ++j)
+        {
+            u8 bit = readBitFromReversedStream(&inBitPointer, in);
+
+            COMMON_ASSERT_EXECUTION(setBitOfReversedStream(&outBitPointer, out, bit), NgosStatus::ASSERTION);
+        }
+
+        inBitPointer += diff;
+    }
 
 
 
@@ -1145,6 +1150,65 @@ NgosStatus Png::getRawImageSize(PngDecoder *decoder, u64 *size)
 
 
     *size = ((numberOfPixels >> 3) * bitsPerPixel) + DIV_UP((numberOfPixels & 7) * bitsPerPixel, 8);
+
+
+
+    return NgosStatus::OK;
+}
+
+u8 Png::paethPredictor(u8 a, u8 b, u8 c)
+{
+    COMMON_LT((" | a = %u, b = %u, c = %u", a, b, c));
+
+
+
+    i16 p = a + b - c;
+
+    u16 pa = ABS(p - a);
+    u16 pb = ABS(p - b);
+    u16 pc = ABS(p - c);
+
+    return MIN(pa, MIN(pb, pc));
+}
+
+u8 Png::readBitFromReversedStream(i64 *bitPointer, u8 *bitStream)
+{
+    COMMON_LT((" | bitPointer = 0x%p, bitStream = 0x%p", bitPointer, bitStream));
+
+    COMMON_ASSERT(bitPointer, "bitPointer is null", 0);
+    COMMON_ASSERT(bitStream,  "bitStream is null",  0);
+
+
+
+    u8 res = (u8)((bitStream[(*bitPointer) >> 3] >> (7 - ((*bitPointer) & 0x7))) & 1);
+
+    ++(*bitPointer);
+
+
+
+    return res;
+}
+
+NgosStatus Png::setBitOfReversedStream(i64 *bitPointer, u8 *bitStream, u8 bit)
+{
+    COMMON_LT((" | bitPointer = 0x%p, bitStream = 0x%p, bit = %u", bitPointer, bitStream, bit));
+
+    COMMON_ASSERT(bitPointer,           "bitPointer is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(bitStream,            "bitStream is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(bit == 0 || bit == 1, "bit is invalid",     NgosStatus::ASSERTION);
+
+
+
+    if (bit == 0)
+    {
+        bitStream[(*bitPointer) >> 3] |= (1 << (7 - ((*bitPointer) & 0x7)));
+    }
+    else
+    {
+        bitStream[(*bitPointer) >> 3] &= (u8)(~(1 << (7 - ((*bitPointer) & 0x7))));
+    }
+
+    ++(*bitPointer);
 
 
 
