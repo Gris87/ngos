@@ -23,7 +23,6 @@ struct PngDecoder
     u64                          imageDataSize;
     u64                          imageDataAllocatedSize;
     u8                          *rawImageBuffer;
-    u64                          rawImageSize;
     u8                           bitsPerPixel;
 };
 
