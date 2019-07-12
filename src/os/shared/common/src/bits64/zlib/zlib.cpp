@@ -6,6 +6,7 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/zlib/zlibcompressionmethod.h>
 #include <common/src/bits64/zlib/zlibheader.h>
+#include <ngos/linkage.h>
 #include <ngos/utils.h>
 
 
@@ -37,7 +38,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     ZLibHeader *zlibHeader = (ZLibHeader *)compressedAddress;
 
     ZLibCompressionMethod compressionMethod = (ZLibCompressionMethod)zlibHeader->compressionMethod;
-    u8                    compressionInfo   = zlibHeader->compressionInfo;
+    //u8                    compressionInfo   = zlibHeader->compressionInfo;
     u8                    presetDictionary  = zlibHeader->presetDictionary;
 
     COMMON_LVVV(("compressionMethod            = %u (%s)", compressionMethod, zlibCompressionMethodToString(compressionMethod)));
@@ -56,14 +57,14 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     }
 
 
-
+/*
     if (compressionInfo != 7)
     {
         COMMON_LE(("zlib supports inflate with sliding window of 32KB only"));
 
         return NgosStatus::NOT_SUPPORTED;
     }
-
+*/
 
 
     if (presetDictionary)
@@ -109,6 +110,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
     u32 adler32Checksum = ntohl(*(u32 *)((u64)currentPointer + compressedSize));
+    AVOID_UNUSED(adler32Checksum);
 
     COMMON_LVVV(("adler32Checksum = 0x%08X", adler32Checksum));
 

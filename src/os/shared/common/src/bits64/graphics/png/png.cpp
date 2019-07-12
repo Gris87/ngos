@@ -152,7 +152,6 @@ NgosStatus Png::initDecoder(PngDecoder *decoder, Image **image)
     decoder->imageDataSize           = 0;
     decoder->imageDataAllocatedSize  = 0;
     decoder->rawImageBuffer          = 0;
-    decoder->rawImageSize            = 0;
     decoder->bitsPerPixel            = 0;
 
 
@@ -175,7 +174,15 @@ NgosStatus Png::releaseDecoder(PngDecoder *decoder)
 
 
 
-    if (decoder->rawImageBuffer)
+    if (
+        decoder->rawImageBuffer
+        &&
+        (
+         !(*decoder->image)
+         ||
+         decoder->rawImageBuffer != (u8 *)&(*decoder->image)->data
+        )
+       )
     {
         COMMON_ASSERT_EXECUTION(free(decoder->rawImageBuffer), NgosStatus::ASSERTION);
     }
@@ -195,6 +202,7 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
 
 
     u32 crc32Checksum = ntohl(*(u32 *)((u64)&chunk->data + chunkLength));
+    AVOID_UNUSED(crc32Checksum);
 
     COMMON_LVVV(("crc32Checksum = 0x%08X", crc32Checksum));
 
@@ -258,6 +266,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
 
     u32 crc32Checksum = ntohl(*(u32 *)((u64)&chunk->data + chunkLength));
+    AVOID_UNUSED(crc32Checksum);
 
     COMMON_LVVV(("crc32Checksum = 0x%08X", crc32Checksum));
 
@@ -590,9 +599,7 @@ NgosStatus Png::decompressImageData(PngDecoder *decoder)
 
     COMMON_ASSERT_EXECUTION(free(decoder->imageDataBuffer), NgosStatus::ASSERTION);
 
-    decoder->imageDataBuffer        = buffer;
-    decoder->imageDataSize          = decompressedSize;
-    decoder->imageDataAllocatedSize = decompressedSize;
+    decoder->imageDataBuffer = buffer;
 
 
 
@@ -607,24 +614,38 @@ NgosStatus Png::convertImageDataToImage(PngDecoder *decoder)
 
 
 
-    u64 rawImageSize;
-    COMMON_ASSERT_EXECUTION(getRawImageSize(decoder, &rawImageSize), NgosStatus::ASSERTION);
-
-    COMMON_LVVV(("rawImageSize = %u", rawImageSize));
-
-
-
-    u8 *buffer = (u8 *)malloc(rawImageSize);
-
-    if (!buffer)
+    if (
+        (
+         decoder->imageHeader->colorType == PngColorType::RGB
+         ||
+         decoder->imageHeader->colorType == PngColorType::RGBA
+        )
+        &&
+        decoder->imageHeader->bitDepth == 8
+       )
     {
-        COMMON_LE(("Failed to allocate space for raw image buffer. Out of space"));
-
-        return NgosStatus::OUT_OF_MEMORY;
+        decoder->rawImageBuffer = (u8 *)&(*decoder->image)->data;
     }
+    else
+    {
+        u64 rawImageSize;
+        COMMON_ASSERT_EXECUTION(getRawImageSize(decoder, &rawImageSize), NgosStatus::ASSERTION);
 
-    decoder->rawImageBuffer = buffer;
-    decoder->rawImageSize   = rawImageSize;
+        COMMON_LVVV(("rawImageSize = %u", rawImageSize));
+
+
+
+        u8 *buffer = (u8 *)malloc(rawImageSize);
+
+        if (!buffer)
+        {
+            COMMON_LE(("Failed to allocate space for raw image buffer. Out of space"));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+        decoder->rawImageBuffer = buffer;
+    }
 
 
 
@@ -692,7 +713,7 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
             return status;
         }
 
-        status = removePaddingBits(decoder, decoder->imageDataBuffer, decoder->rawImageBuffer, DIV_UP(width * bitsPerPixel, 8) * 8, width * bitsPerPixel, height);
+        status = removePaddingBits(decoder->imageDataBuffer, decoder->rawImageBuffer, DIV_UP(width * bitsPerPixel, 8) * 8, width * bitsPerPixel, height);
     }
     else
     {
@@ -704,7 +725,7 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
     return status;
 }
 
-NgosStatus Png::processImageWithAdam7Interlace(PngDecoder *decoder)
+NgosStatus Png::processImageWithAdam7Interlace(PngDecoder * /*decoder*/)
 {
     COMMON_LT((" | decoder = 0x%p", decoder));
 
@@ -742,7 +763,7 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
 
 
 
-        NgosStatus status = unfilterLine(decoder, inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine);
+        NgosStatus status = unfilterLine(inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine);
 
         if (status != NgosStatus::OK)
         {
@@ -759,11 +780,10 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
     return NgosStatus::OK;
 }
 
-NgosStatus Png::unfilterLine(PngDecoder *decoder, u8 *inLine, u8 *outLine, u8 *previousLine, PngFilterType filterType, u8 byteWidth, u32 bytesPerLine)
+NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilterType filterType, u8 byteWidth, u32 bytesPerLine)
 {
-    COMMON_LT((" | decoder = 0x%p, inLine = 0x%p, outLine = 0x%p, previousLine = 0x%p, filterType = %u, byteWidth = %u, bytesPerLine = %u", decoder, inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine));
+    COMMON_LT((" | inLine = 0x%p, outLine = 0x%p, previousLine = 0x%p, filterType = %u, byteWidth = %u, bytesPerLine = %u", inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine));
 
-    COMMON_ASSERT(decoder,                                    "decoder is null",         NgosStatus::ASSERTION);
     COMMON_ASSERT(inLine,                                     "inLine is null",          NgosStatus::ASSERTION);
     COMMON_ASSERT(outLine,                                    "outLine is null",         NgosStatus::ASSERTION);
     COMMON_ASSERT(byteWidth > 0 && byteWidth <= 8,            "byteWidth is invalid",    NgosStatus::ASSERTION);
@@ -877,11 +897,10 @@ NgosStatus Png::unfilterLine(PngDecoder *decoder, u8 *inLine, u8 *outLine, u8 *p
     return NgosStatus::OK;
 }
 
-NgosStatus Png::removePaddingBits(PngDecoder *decoder, u8 *in, u8 *out, i64 inLineBits, i64 outLineBits, u16 height)
+NgosStatus Png::removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBits, u16 height)
 {
-    COMMON_LT((" | decoder = 0x%p, in = 0x%p, out = 0x%p, inLineBits = %d, outLineBits = %d, height = %u", decoder, in, out, inLineBits, outLineBits, height));
+    COMMON_LT((" | in = 0x%p, out = 0x%p, inLineBits = %d, outLineBits = %d, height = %u", in, out, inLineBits, outLineBits, height));
 
-    COMMON_ASSERT(decoder,         "decoder is null",     NgosStatus::ASSERTION);
     COMMON_ASSERT(in,              "in is null",          NgosStatus::ASSERTION);
     COMMON_ASSERT(out,             "out is null",         NgosStatus::ASSERTION);
     COMMON_ASSERT(inLineBits > 0,  "inLineBits is zero",  NgosStatus::ASSERTION);
