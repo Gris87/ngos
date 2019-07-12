@@ -628,21 +628,7 @@ NgosStatus Png::convertImageDataToImage(PngDecoder *decoder)
 
 
 
-    NgosStatus status;
-
-    switch (decoder->imageHeader->interlaceMethod)
-    {
-        case PngInterlaceMethod::NONE:   status = processImageWithoutInterlace(decoder);   break;
-        case PngInterlaceMethod::ADAM_7: status = processImageWithAdam7Interlace(decoder); break;
-
-        default:
-        {
-            COMMON_LE(("Unknown interlace method %u (%s)", decoder->imageHeader->interlaceMethod, pngInterlaceMethodToString(decoder->imageHeader->interlaceMethod)));
-
-            return NgosStatus::UNEXPECTED_BEHAVIOUR;
-        }
-        break;
-    }
+    NgosStatus status = processImageInterlace(decoder);
 
     if (status != NgosStatus::OK)
     {
@@ -654,7 +640,71 @@ NgosStatus Png::convertImageDataToImage(PngDecoder *decoder)
     return NgosStatus::OK;
 }
 
+NgosStatus Png::processImageInterlace(PngDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    switch (decoder->imageHeader->interlaceMethod)
+    {
+        case PngInterlaceMethod::NONE:   return processImageWithoutInterlace(decoder);
+        case PngInterlaceMethod::ADAM_7: return processImageWithAdam7Interlace(decoder);
+
+        default:
+        {
+            COMMON_LE(("Unknown interlace method %u (%s)", decoder->imageHeader->interlaceMethod, pngInterlaceMethodToString(decoder->imageHeader->interlaceMethod)));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+}
+
 NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    u16 width        = (*decoder->image)->width;
+    u16 height       = (*decoder->image)->height;
+    u8  bitsPerPixel = decoder->bitsPerPixel;
+
+
+
+    NgosStatus status;
+
+    if (
+        bitsPerPixel < 8
+        &&
+        width * bitsPerPixel != DIV_UP(width * bitsPerPixel, 8) * 8
+       )
+    {
+        status = unfilter(decoder, decoder->imageDataBuffer, decoder->imageDataBuffer, width, height);
+
+        if (status != NgosStatus::OK)
+        {
+            return status;
+        }
+
+        status = removePaddingBits(decoder, decoder->imageDataBuffer, decoder->rawImageBuffer, DIV_UP(width * bitsPerPixel, 8) * 8, width * bitsPerPixel, height);
+    }
+    else
+    {
+        status = unfilter(decoder, decoder->imageDataBuffer, decoder->rawImageBuffer, width, height);
+    }
+
+
+
+    return status;
+}
+
+NgosStatus Png::processImageWithAdam7Interlace(PngDecoder *decoder)
 {
     COMMON_LT((" | decoder = 0x%p", decoder));
 
@@ -665,11 +715,193 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Png::processImageWithAdam7Interlace(PngDecoder *decoder)
+NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 height)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, in = 0x%p, out = 0x%p, width = %u, height = %u", decoder, in, out, width, height));
 
-    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,    "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(in,         "in is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(out,        "out is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is zero",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is zero",  NgosStatus::ASSERTION);
+
+
+
+    u8   bitsPerPixel = decoder->bitsPerPixel;
+    u8   byteWidth    = DIV_UP(bitsPerPixel, 8);
+    u32  bytesPerLine = DIV_UP(width * bitsPerPixel, 8);
+    u8  *previousLine = 0;
+
+    for (i64 i = 0; i < height; ++i)
+    {
+        u8 *inLine  = &in[i * (bytesPerLine + 1)]; // +1 because each line starts with filterType byte
+        u8 *outLine = &out[i * bytesPerLine];
+
+        PngFilterType filterType = (PngFilterType)*inLine;
+        ++inLine;
+
+
+
+        NgosStatus status = unfilterLine(decoder, inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine);
+
+        if (status != NgosStatus::OK)
+        {
+            return status;
+        }
+
+
+
+        previousLine = outLine;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::unfilterLine(PngDecoder *decoder, u8 *inLine, u8 *outLine, u8 *previousLine, PngFilterType filterType, u8 byteWidth, u32 bytesPerLine)
+{
+    COMMON_LT((" | decoder = 0x%p, inLine = 0x%p, outLine = 0x%p, previousLine = 0x%p, filterType = %u, byteWidth = %u, bytesPerLine = %u", decoder, inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine));
+
+    COMMON_ASSERT(decoder,                                    "decoder is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(inLine,                                     "inLine is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(outLine,                                    "outLine is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(byteWidth > 0 && byteWidth <= 8,            "byteWidth is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(bytesPerLine > 0 && bytesPerLine <= 524280, "bytesPerLine is invalid", NgosStatus::ASSERTION);
+
+
+
+    // COMMON_LVVV(("filterType = %u (%s)", filterType, pngFilterTypeToString(filterType))); // Commented to avoid too frequent logs
+
+
+
+    switch (filterType)
+    {
+        case PngFilterType::NONE:
+        {
+            memcpy(outLine, inLine, bytesPerLine);
+        }
+        break;
+
+        case PngFilterType::SUB:
+        {
+            memcpy(outLine, inLine, byteWidth);
+
+            for (i64 i = byteWidth; i < bytesPerLine; ++i)
+            {
+                outLine[i] = inLine[i] + outLine[i - byteWidth];
+            }
+        }
+        break;
+
+        case PngFilterType::UP:
+        {
+            if (previousLine)
+            {
+                for (i64 i = 0; i < bytesPerLine; ++i)
+                {
+                    outLine[i] = inLine[i] + previousLine[i];
+                }
+            }
+            else
+            {
+                memcpy(outLine, inLine, bytesPerLine);
+            }
+        }
+        break;
+
+        case PngFilterType::AVERAGE:
+        {
+            if (previousLine)
+            {
+                for (i64 i = 0; i < byteWidth; ++i)
+                {
+                    outLine[i] = inLine[i] + (previousLine[i] >> 1);
+                }
+
+                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                {
+                    outLine[i] = inLine[i] + ((outLine[i - byteWidth] + previousLine[i]) >> 1);
+                }
+            }
+            else
+            {
+                memcpy(outLine, inLine, byteWidth);
+
+                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                {
+                    outLine[i] = inLine[i] + (outLine[i - byteWidth] >> 1);
+                }
+            }
+        }
+        break;
+
+        case PngFilterType::PAETH:
+        {
+            if (previousLine)
+            {
+                for (i64 i = 0; i < byteWidth; ++i)
+                {
+                    outLine[i] = (inLine[i] + previousLine[i]); // paethPredictor(0, previousLine[i], 0) is always previousLine[i]
+                }
+
+                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                {
+                    outLine[i] = (inLine[i] + paethPredictor(outLine[i - byteWidth], previousLine[i], previousLine[i - byteWidth]));
+                }
+            }
+            else
+            {
+                memcpy(outLine, inLine, byteWidth);
+
+                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                {
+                    // paethPredictor(outLine[i - byteWidth], 0, 0) is always outLine[i - byteWidth]
+                    outLine[i] = (inLine[i] + outLine[i - byteWidth]);
+                }
+            }
+        }
+        break;
+
+        default:
+        {
+            COMMON_LE(("Unknown filter type %u (%s)", filterType, pngFilterTypeToString(filterType)));
+
+            return NgosStatus::INVALID_DATA;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+u8 Png::paethPredictor(u8 a, u8 b, u8 c)
+{
+    COMMON_LT((" | a = %u, b = %u, c = %u", a, b, c));
+
+
+
+    i16 p = a + b - c;
+
+    u16 pa = ABS(p - a);
+    u16 pb = ABS(p - b);
+    u16 pc = ABS(p - c);
+
+    return MIN(pa, MIN(pb, pc));
+}
+
+NgosStatus Png::removePaddingBits(PngDecoder *decoder, u8 *in, u8 *out, i64 inLineBits, i64 outLineBits, u16 height)
+{
+    COMMON_LT((" | decoder = 0x%p, in = 0x%p, out = 0x%p, inLineBits = %d, outLineBits = %d, height = %u", decoder, in, out, inLineBits, outLineBits, height));
+
+    COMMON_ASSERT(decoder,         "decoder is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(in,              "in is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(out,             "out is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(inLineBits > 0,  "inLineBits is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(outLineBits > 0, "outLineBits is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0,      "height is zero",      NgosStatus::ASSERTION);
 
 
 
