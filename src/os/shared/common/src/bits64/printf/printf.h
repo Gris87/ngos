@@ -13,7 +13,7 @@ extern char printfBuffer[1024]; // printfBuffer declared in printf.cpp file
 
 
 i64 vsprintf(char *buffer, const char *format, va_list args); // TEST: NO
-i64 sprintf(char *buffer, const char *format, ...); // TEST: NO
+i64 sprintf(char *buffer, const char *format, ...);
 
 
 

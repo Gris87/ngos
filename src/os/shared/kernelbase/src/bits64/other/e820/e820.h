@@ -17,8 +17,6 @@ public:
     static NgosStatus updateRange(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType); // TEST: NO
     static NgosStatus updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType); // TEST: NO
 
-    static const char* getTypeName(MemoryMapEntryType type); // TEST: NO
-
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else

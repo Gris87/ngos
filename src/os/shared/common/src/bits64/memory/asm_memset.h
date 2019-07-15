@@ -9,7 +9,7 @@
 
 
 CPP_EXTERN_C
-void* memset(void *dest, u8 ch, u64 length); // TEST: NO
+void* memset(void *dest, u8 ch, u64 length); // TEST: MODULE=memory.h
 
 
 

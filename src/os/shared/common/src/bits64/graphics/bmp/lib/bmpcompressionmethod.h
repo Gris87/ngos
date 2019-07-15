@@ -23,7 +23,7 @@ enum class BmpCompressionMethod: u32
 
 
 
-inline const char* bmpCompressionMethodToString(BmpCompressionMethod method) // TEST: NO
+inline const char* bmpCompressionMethodToString(BmpCompressionMethod method) 
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

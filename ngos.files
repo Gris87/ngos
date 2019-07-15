@@ -246,6 +246,7 @@ src/os/include/gpt/gptentry.h
 src/os/include/gpt/gptheader.h
 src/os/include/gpt/utils.h
 src/os/include/guid/guid.h
+src/os/include/guid/utils.h
 src/os/include/idt/flags.h
 src/os/include/idt/idtdescriptor.h
 src/os/include/idt/idtregister.h
@@ -569,6 +570,7 @@ src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/brk/
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/cpu/cpumask.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/dmi/dmi.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/e820/e820.h
+src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/hypervisor/kvm/kvm.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/ioremap/ioremap.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/ioremap/utils.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/memorymanager/memoryblockregion.h
@@ -576,7 +578,6 @@ src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/memo
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/pagetable/addressconversion.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/pagetable/dynamicpagetable.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/task/utils.h
-src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/other/uefi/uefi.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/bits64/types.h
 src/os/shared/kernelbase/test/bits64/a_early/sections/section2/testcase.h
 src/os/shared/kernelbase/test/bits64/a_early/testengine.h
@@ -691,11 +692,14 @@ src/os/shared/uefibase/test/bits64/sections/section0/__include/asm/instructions.
 src/os/shared/uefibase/test/bits64/sections/section0/__include/bootparams/memorymapentry.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/elf/rela.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/elf/symbol.h
+src/os/shared/uefibase/test/bits64/sections/section0/__include/guid/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/ngos/linkage.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/ngos/types.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/ngos/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/pagetable/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/types.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/adler.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/crc.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvaddps.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvdivps.h
@@ -808,6 +812,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/prin
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/string/string.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/types.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/other/uefibootmemorymap.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/types.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/uefi/uefi.h
 src/os/shared/uefibase/test/bits64/sections/section0/testcase.h

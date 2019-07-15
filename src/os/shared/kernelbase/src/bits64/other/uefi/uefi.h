@@ -43,7 +43,6 @@ private:
 #endif
     static NgosStatus initConfigurationTables(); // TEST: NO
     static NgosStatus initMemoryAttributes(); // TEST: NO
-    static bool isGuidEquals(const UefiGuid &guid1, const UefiGuid &guid2);
 
     static UefiMemoryMapInfo                             sMemoryMap;
     static UefiSystemTable                               sSystemTable;

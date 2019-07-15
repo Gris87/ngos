@@ -16,7 +16,7 @@ struct MemoryMapEntry
 
 
 
-    inline u64 end() // TEST: NO
+    inline u64 end() 
     {
         return start + size;
     }

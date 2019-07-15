@@ -15,6 +15,37 @@
 
 TEST_CASES(section0, __include_asm_bitutils);
 {
+    TEST_CASE("CONST_BIT_ADDRESS()");
+    {
+        u64 buffer = 0x65198732AADCBF97;
+
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 0),  (u8 *)((u64)&buffer));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 3),  (u8 *)((u64)&buffer));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 8),  (u8 *)((u64)&buffer + 1));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 13), (u8 *)((u64)&buffer + 1));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 17), (u8 *)((u64)&buffer + 2));
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("CONST_BIT_IN_U8()");
+    {
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(0), 1);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(1), 2);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(2), 4);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(3), 8);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(4), 16);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(5), 32);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(6), 64);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(7), 128);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(8), 1);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(9), 2);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("test()");
     {
         u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };

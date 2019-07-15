@@ -27,16 +27,16 @@ public:
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
-    static char* convertToAscii(char16 *str); // TEST: NO
-    static char* parentDirectory(char *path); // TEST: NO
+    static char* convertToAscii(char16 *str);
+    static char* parentDirectory(char *path);
 
     static char* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* devicePathFromHandle(uefi_handle handle); // TEST: NO
     static UefiDevicePath* fileDevicePath(uefi_handle device, const char *fileName); // TEST: NO
-    static UefiDevicePath* nextDevicePathNode(UefiDevicePath *path); // TEST: NO
-    static NgosStatus setDevicePathEndNode(UefiDevicePath *path); // TEST: NO
-    static bool isDevicePathEndType(UefiDevicePath *path); // TEST: NO
-    static u64 getDevicePathSize(UefiDevicePath *path); // TEST: NO
+    static UefiDevicePath* nextDevicePathNode(UefiDevicePath *path);
+    static NgosStatus setDevicePathEndNode(UefiDevicePath *path);
+    static bool isDevicePathEndType(UefiDevicePath *path);
+    static u64 getDevicePathSize(UefiDevicePath *path);
 
     static UefiStatus createEvent(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
     static UefiStatus setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime); // TEST: NO

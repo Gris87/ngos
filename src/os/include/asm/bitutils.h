@@ -10,15 +10,15 @@
 
 
 
-#define CONST_BIT_ADDRESS(address, bit) (u8 *)((u64)(address) + ((bit) >> 3)) // TEST: NO // ">> 3" == "/ 8"
-#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))                 // TEST: NO
+#define CONST_BIT_ADDRESS(address, bit) (u8 *)((u64)(address) + ((bit) >> 3))  // ">> 3" == "/ 8"
+#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))                 
 
 
 
 class BitUtils
 {
 public:
-    static inline bool test(u8 *address, u64 bit) // TEST: NO
+    static inline bool test(u8 *address, u64 bit) 
     {
         if (IS_CONSTANT(bit))
         {
@@ -30,7 +30,7 @@ public:
         }
     }
 
-    static inline NgosStatus set(u8 *address, u64 bit) // TEST: NO
+    static inline NgosStatus set(u8 *address, u64 bit) 
     {
         if (IS_CONSTANT(bit))
         {
@@ -54,7 +54,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus setSafe(u8 *address, u64 bit) // TEST: NO
+    static inline NgosStatus setSafe(u8 *address, u64 bit) 
     {
         if (IS_CONSTANT(bit))
         {
@@ -78,7 +78,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus clear(u8 *address, u64 bit) // TEST: NO
+    static inline NgosStatus clear(u8 *address, u64 bit) 
     {
         if (IS_CONSTANT(bit))
         {
@@ -102,7 +102,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus clearSafe(u8 *address, u64 bit) // TEST: NO
+    static inline NgosStatus clearSafe(u8 *address, u64 bit) 
     {
         if (IS_CONSTANT(bit))
         {
@@ -126,7 +126,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus invert(u8 *address, u64 bit) // TEST: NO
+    static inline NgosStatus invert(u8 *address, u64 bit) 
     {
         if (IS_CONSTANT(bit))
         {
@@ -150,7 +150,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus invertSafe(u8 *address, u64 bit) // TEST: NO
+    static inline NgosStatus invertSafe(u8 *address, u64 bit) 
     {
         if (IS_CONSTANT(bit))
         {
@@ -174,7 +174,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline u8 findFirstBit16(u16 value) // TEST: NO
+    static inline u8 findFirstBit16(u16 value) 
     {
         if (!value) // value == 0
         {
@@ -198,7 +198,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findFirstBit32(u32 value) // TEST: NO
+    static inline u8 findFirstBit32(u32 value) 
     {
         if (!value) // value == 0
         {
@@ -222,7 +222,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findFirstBit64(u64 value) // TEST: NO
+    static inline u8 findFirstBit64(u64 value) 
     {
         if (!value) // value == 0
         {
@@ -246,7 +246,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findFirstZero16(u16 value) // TEST: NO
+    static inline u8 findFirstZero16(u16 value) 
     {
         if (value == (u16)-1LL)
         {
@@ -270,7 +270,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findFirstZero32(u32 value) // TEST: NO
+    static inline u8 findFirstZero32(u32 value) 
     {
         if (value == (u32)-1LL)
         {
@@ -294,7 +294,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findFirstZero64(u64 value) // TEST: NO
+    static inline u8 findFirstZero64(u64 value) 
     {
         if (value == (u64)-1LL)
         {
@@ -318,7 +318,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findLastBit16(u16 value) // TEST: NO
+    static inline u8 findLastBit16(u16 value) 
     {
         if (!value) // value == 0
         {
@@ -342,7 +342,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findLastBit32(u32 value) // TEST: NO
+    static inline u8 findLastBit32(u32 value) 
     {
         if (!value) // value == 0
         {
@@ -366,7 +366,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findLastBit64(u64 value) // TEST: NO
+    static inline u8 findLastBit64(u64 value) 
     {
         if (!value) // value == 0
         {
@@ -390,7 +390,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findLastZero16(u16 value) // TEST: NO
+    static inline u8 findLastZero16(u16 value) 
     {
         if (value == (u16)-1LL)
         {
@@ -414,7 +414,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findLastZero32(u32 value) // TEST: NO
+    static inline u8 findLastZero32(u32 value) 
     {
         if (value == (u32)-1LL)
         {
@@ -438,7 +438,7 @@ public:
         return res + 1;
     }
 
-    static inline u8 findLastZero64(u64 value) // TEST: NO
+    static inline u8 findLastZero64(u64 value) 
     {
         if (value == (u64)-1LL)
         {
@@ -462,7 +462,7 @@ public:
         return res + 1;
     }
 
-    static inline i8 getCountOrder16(u16 value) // TEST: NO
+    static inline i8 getCountOrder16(u16 value) 
     {
         if (value & (value - 1))
         {
@@ -474,7 +474,7 @@ public:
         }
     }
 
-    static inline i8 getCountOrder32(u32 value) // TEST: NO
+    static inline i8 getCountOrder32(u32 value) 
     {
         if (value & (value - 1))
         {
@@ -486,7 +486,7 @@ public:
         }
     }
 
-    static inline i8 getCountOrder64(u64 value) // TEST: NO
+    static inline i8 getCountOrder64(u64 value) 
     {
         if (value & (value - 1))
         {

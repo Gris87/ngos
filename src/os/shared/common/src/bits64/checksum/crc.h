@@ -10,8 +10,8 @@
 class Crc
 {
 public:
-    static u32 crc32(u8 *data, u64 length); // TEST: NO
-    static u64 crc64(u8 *data, u64 length); // TEST: NO
+    static u32 crc32(u8 *data, u64 length); 
+    static u64 crc64(u8 *data, u64 length); 
 };
 
 

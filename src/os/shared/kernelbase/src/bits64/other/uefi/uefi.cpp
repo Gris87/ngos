@@ -3,6 +3,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
+#include <guid/utils.h>
 #include <kernelbase/src/bits64/other/bootparams/bootparams.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
@@ -10,7 +11,7 @@
 
 
 
-#define UEFI_MEMORY_MAP_DESCRIPTOR(i) ((UefiMemoryDescriptor *)((u64)UEFI::sMemoryMap.map + (i * UEFI::sMemoryMap.descriptorSize))) // TEST: NO
+#define UEFI_MEMORY_MAP_DESCRIPTOR(i) ((UefiMemoryDescriptor *)((u64)UEFI::sMemoryMap.map + ((i) * UEFI::sMemoryMap.descriptorSize)))
 
 
 
@@ -885,25 +886,4 @@ NgosStatus UEFI::initMemoryAttributes()
 
 
     return NgosStatus::OK;
-}
-
-bool UEFI::isGuidEquals(const UefiGuid &guid1, const UefiGuid &guid2)
-{ // Ignore CppNgosTraceVerifier
-    COMMON_LT((" | guid1 = {%08X-%04X-%04X-%02X%02X%02X%02X%02X%02X%02X%02X}, guid2 = {%08X-%04X-%04X-%02X%02X%02X%02X%02X%02X%02X%02X}", guid1.data1, guid1.data2, guid1.data3, guid1.data4[0], guid1.data4[1], guid1.data4[2], guid1.data4[3], guid1.data4[4], guid1.data4[5], guid1.data4[6], guid1.data4[7], guid2.data1, guid2.data2, guid2.data3, guid2.data4[0], guid2.data4[1], guid2.data4[2], guid2.data4[3], guid2.data4[4], guid2.data4[5], guid2.data4[6], guid2.data4[7]));
-
-
-
-    COMMON_TEST_ASSERT(sizeof(UefiGuid) == 16, false);
-
-
-
-    return !(
-            ((u64 *)&guid1)[0]
-            ^
-            ((u64 *)&guid2)[0]
-            ^
-            ((u64 *)&guid1)[1]
-            ^
-            ((u64 *)&guid2)[1]
-        );
 }

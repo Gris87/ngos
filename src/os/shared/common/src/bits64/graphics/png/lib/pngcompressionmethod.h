@@ -16,7 +16,7 @@ enum class PngCompressionMethod: u8
 
 
 
-inline const char* pngCompressionMethodToString(PngCompressionMethod method) // TEST: NO
+inline const char* pngCompressionMethodToString(PngCompressionMethod method) 
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

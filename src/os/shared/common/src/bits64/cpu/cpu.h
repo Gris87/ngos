@@ -14,49 +14,49 @@
 class CPU
 {
 public:
-    static NgosStatus init(); // TEST: NO
+    static NgosStatus init(); 
 
-    static NgosStatus toString(char *buffer, u16 size); // TEST: NO
-    static NgosStatus flagsToString(char *buffer, u16 size); // TEST: NO
-    static NgosStatus bugsToString(char *buffer, u16 size); // TEST: NO
-    static NgosStatus check(const char **wantedFlag); // TEST: NO
+    static NgosStatus toString(char *buffer, u16 size); 
+    static NgosStatus flagsToString(char *buffer, u16 size); 
+    static NgosStatus bugsToString(char *buffer, u16 size); 
+    static NgosStatus check(const char **wantedFlag); 
 
-    static NgosStatus setFlag(X86Feature flag); // TEST: NO
-    static NgosStatus clearFlag(X86Feature flag); // TEST: NO
-    static bool hasFlag(X86Feature flag); // TEST: NO
+    static NgosStatus setFlag(X86Feature flag); 
+    static NgosStatus clearFlag(X86Feature flag); 
+    static bool hasFlag(X86Feature flag); 
 
-    static NgosStatus setBug(X86Bug bug); // TEST: NO
-    static NgosStatus clearBug(X86Bug bug); // TEST: NO
-    static bool hasBug(X86Bug bug); // TEST: NO
+    static NgosStatus setBug(X86Bug bug); 
+    static NgosStatus clearBug(X86Bug bug); 
+    static bool hasBug(X86Bug bug); 
 
-    static bool isCpuIdLevelSupported(u32 cpuidLevel); // TEST: NO
+    static bool isCpuIdLevelSupported(u32 cpuidLevel); 
 
-    static bool hasEFlag(u64 mask); // TEST: NO
-    static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
+    static bool hasEFlag(u64 mask); 
+    static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    static NgosStatus initCpuFeatures(); // TEST: NO
-    static NgosStatus doPreprocessing(); // TEST: NO
-    static NgosStatus doIntelPreprocessing(); // TEST: NO
-    static NgosStatus doAmdPreprocessing(); // TEST: NO
-    static NgosStatus initScatteredFeatures(); // TEST: NO
-    static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count); // TEST: NO
-    static NgosStatus initSpeculationControl(); // TEST: NO
-    static NgosStatus doPostprocessing(); // TEST: NO
-    static NgosStatus doIntelPostprocessing(); // TEST: NO
-    static NgosStatus doAmdPostprocessing(); // TEST: NO
-    static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO
-    static NgosStatus initCpuBugs(); // TEST: NO
-    static NgosStatus getIntelMicrocodeRevision(); // TEST: NO
-    static bool isIntelBadSpectreMicrocode(); // TEST: NO
-    static bool isCpuNoSpeculation(); // TEST: NO
-    static bool isCpuNoMeltdown(); // TEST: NO
-    static bool isCpuNoSpecStoreBypass(); // TEST: NO
-    static bool isCpuNoL1TF(); // TEST: NO
+    static NgosStatus initCpuFeatures(); 
+    static NgosStatus doPreprocessing(); 
+    static NgosStatus doIntelPreprocessing(); 
+    static NgosStatus doAmdPreprocessing(); 
+    static NgosStatus initScatteredFeatures(); 
+    static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count); 
+    static NgosStatus initSpeculationControl(); 
+    static NgosStatus doPostprocessing(); 
+    static NgosStatus doIntelPostprocessing(); 
+    static NgosStatus doAmdPostprocessing(); 
+    static NgosStatus filterFeaturesDependentOnCpuid(); 
+    static NgosStatus initCpuBugs(); 
+    static NgosStatus getIntelMicrocodeRevision(); 
+    static bool isIntelBadSpectreMicrocode(); 
+    static bool isCpuNoSpeculation(); 
+    static bool isCpuNoMeltdown(); 
+    static bool isCpuNoSpecStoreBypass(); 
+    static bool isCpuNoL1TF(); 
 
     static u32       sVendor[3];
     static CpuVendor sCpuVendor;

@@ -12,7 +12,7 @@ class KVM
 {
 public:
     static NgosStatus init(); // TEST: NO
-    static bool hasFeature(KvmFeature feature); // TEST: NO
+    static bool hasFeature(KvmFeature feature);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

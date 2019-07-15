@@ -16,7 +16,7 @@ extern const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // c
 
 
 
-inline NgosStatus initCpuFeaturesNames() // TEST: NO
+inline NgosStatus initCpuFeaturesNames() 
 {
     COMMON_LT((""));
 

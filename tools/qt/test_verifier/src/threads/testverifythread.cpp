@@ -80,18 +80,70 @@ void TestVerifyThread::run()
 
 void TestVerifyThread::processTestEntry(const TestEntry &entry)
 {
-    qint64 index = entry.getPath().lastIndexOf("/src/");
+    QString testFolder;
+
+
+
+    qint64 index = entry.getPath().lastIndexOf("/src/os/include/");
 
     if (index < 0)
     {
-        addMessage(entry.getPath(), QString("Failed to get src folder for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));
+        index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
 
-        return;
+        if (index < 0)
+        {
+            index = entry.getPath().lastIndexOf("/include/");
+        }
     }
 
 
 
-    QString testFolder = entry.getPath().left(index) + "/test";
+    if (index >= 0)
+    {
+        QString parentFolder = entry.getPath().left(index);
+
+        do
+        {
+            if (QFile::exists(parentFolder + "/ngos.files"))
+            {
+                break;
+            }
+
+
+
+            index = parentFolder.lastIndexOf('/');
+
+            if (index < 0)
+            {
+                addMessage(entry.getPath(), "Failed to get relative path");
+
+                return;
+            }
+
+            parentFolder = parentFolder.left(index);
+        } while(true);
+
+
+
+        testFolder = parentFolder + "/src/os/shared/uefibase/test";
+    }
+    else
+    {
+        index = entry.getPath().lastIndexOf("/src/");
+
+        if (index < 0)
+        {
+            addMessage(entry.getPath(), QString("Failed to get src folder for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));
+
+            return;
+        }
+
+
+
+        testFolder = entry.getPath().left(index) + "/test";
+    }
+
+
 
     if (!QDir(testFolder).exists())
     {

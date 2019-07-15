@@ -57,7 +57,7 @@ inline u8 inb(u16 port) // TEST: NO
     return value;
 }
 
-inline NgosStatus rdrand(u64 *value) // TEST: NO
+inline NgosStatus rdrand(u64 *value)
 {
     bool ok;
     u8   retry = RDRAND_RETRY_LOOPS;
@@ -93,7 +93,7 @@ inline NgosStatus rdrand(u64 *value) // TEST: NO
     return NgosStatus::FAILED;
 }
 
-inline u64 rdtsc() // TEST: NO
+inline u64 rdtsc()
 {
     u32 eax;
     u32 edx;
@@ -153,7 +153,7 @@ inline NgosStatus writeCr4(u64 value) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline bool bt(u8 *address, u64 bit) // TEST: NO
+inline bool bt(u8 *address, u64 bit)
 {
     bool res;
 
@@ -172,7 +172,7 @@ inline bool bt(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline bool bts(u8 *address, u64 bit) // TEST: NO
+inline bool bts(u8 *address, u64 bit)
 {
     bool res;
 
@@ -193,7 +193,7 @@ inline bool bts(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline bool btsSafe(u8 *address, u64 bit) // TEST: NO
+inline bool btsSafe(u8 *address, u64 bit)
 {
     bool res;
 
@@ -214,7 +214,7 @@ inline bool btsSafe(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btsPure(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btsPure(u8 *address, u64 bit)
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -231,7 +231,7 @@ inline NgosStatus btsPure(u8 *address, u64 bit) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus btsPureSafe(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btsPureSafe(u8 *address, u64 bit)
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -248,7 +248,7 @@ inline NgosStatus btsPureSafe(u8 *address, u64 bit) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline bool btr(u8 *address, u64 bit) // TEST: NO
+inline bool btr(u8 *address, u64 bit)
 {
     bool res;
 
@@ -269,7 +269,7 @@ inline bool btr(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline bool btrSafe(u8 *address, u64 bit) // TEST: NO
+inline bool btrSafe(u8 *address, u64 bit)
 {
     bool res;
 
@@ -290,7 +290,7 @@ inline bool btrSafe(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btrPure(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btrPure(u8 *address, u64 bit)
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -307,7 +307,7 @@ inline NgosStatus btrPure(u8 *address, u64 bit) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus btrPureSafe(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btrPureSafe(u8 *address, u64 bit)
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -324,7 +324,7 @@ inline NgosStatus btrPureSafe(u8 *address, u64 bit) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline bool btc(u8 *address, u64 bit) // TEST: NO
+inline bool btc(u8 *address, u64 bit)
 {
     bool res;
 
@@ -345,7 +345,7 @@ inline bool btc(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline bool btcSafe(u8 *address, u64 bit) // TEST: NO
+inline bool btcSafe(u8 *address, u64 bit)
 {
     bool res;
 
@@ -366,7 +366,7 @@ inline bool btcSafe(u8 *address, u64 bit) // TEST: NO
     return res;
 }
 
-inline NgosStatus btcPure(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btcPure(u8 *address, u64 bit)
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -383,7 +383,7 @@ inline NgosStatus btcPure(u8 *address, u64 bit) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus btcPureSafe(u8 *address, u64 bit) // TEST: NO
+inline NgosStatus btcPureSafe(u8 *address, u64 bit)
 {
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(

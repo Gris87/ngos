@@ -7,7 +7,7 @@
 
 
 
-u64 simpleRandom(u64 seed = 0); // TEST: NO
+u64 simpleRandom(u64 seed = 0); 
 
 
 

@@ -20,7 +20,7 @@ enum class PngFilterType: u8
 
 
 
-inline const char* pngFilterTypeToString(PngFilterType type) // TEST: NO
+inline const char* pngFilterTypeToString(PngFilterType type) 
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

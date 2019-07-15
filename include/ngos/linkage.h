@@ -44,7 +44,7 @@
 
 
 
-#define IS_CONSTANT(x) __builtin_constant_p(x) // TEST: NO
+#define IS_CONSTANT(x) __builtin_constant_p(x)
 
 
 

@@ -10,7 +10,7 @@
 class Adler
 {
 public:
-    static u32 adler32(u8 *data, u64 length); // TEST: NO
+    static u32 adler32(u8 *data, u64 length); 
 };
 
 
