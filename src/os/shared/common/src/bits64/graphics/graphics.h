@@ -11,7 +11,7 @@
 class Graphics
 {
 public:
-    static NgosStatus loadImage(u8 *data, u64 size, Image **image); 
+    static NgosStatus loadImage(u8 *data, u64 size, Image **image); // TEST: NO
 };
 
 

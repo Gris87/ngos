@@ -1187,7 +1187,17 @@ u8 Png::paethPredictor(u8 a, u8 b, u8 c)
     u16 pb = ABS(p - b);
     u16 pc = ABS(p - c);
 
-    return MIN(pa, MIN(pb, pc));
+    if (pc < pa && pc < pb)
+    {
+        return c;
+    }
+
+    if (pb < pa)
+    {
+        return b;
+    }
+
+    return a;
 }
 
 u8 Png::readBitFromReversedStream(i64 *bitPointer, u8 *bitStream)

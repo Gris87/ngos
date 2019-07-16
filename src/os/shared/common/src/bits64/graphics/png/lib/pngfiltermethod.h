@@ -16,7 +16,7 @@ enum class PngFilterMethod: u8
 
 
 
-inline const char* pngFilterMethodToString(PngFilterMethod method) 
+inline const char* pngFilterMethodToString(PngFilterMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

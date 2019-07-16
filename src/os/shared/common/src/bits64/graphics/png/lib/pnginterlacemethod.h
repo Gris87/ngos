@@ -17,7 +17,7 @@ enum class PngInterlaceMethod: u8
 
 
 
-inline const char* pngInterlaceMethodToString(PngInterlaceMethod method) 
+inline const char* pngInterlaceMethodToString(PngInterlaceMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

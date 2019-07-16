@@ -807,6 +807,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse41/sse41.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse42/asm_testsse42pcmpgtq.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse42/sse42.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/png/png.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h

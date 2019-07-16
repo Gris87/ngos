@@ -22,7 +22,7 @@ enum class PngChunkType: u32
 
 
 
-inline char* pngChunkTypeToString(PngChunkType type) 
+inline char* pngChunkTypeToString(PngChunkType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

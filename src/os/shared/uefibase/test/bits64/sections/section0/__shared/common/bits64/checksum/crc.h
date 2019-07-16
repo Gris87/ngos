@@ -28,9 +28,9 @@ TEST_CASES(section0, __shared_common_bits64_checksum_crc);
             temp3[i] = i * 19;
         }
 
-        TEST_ASSERT_EQUALS(Crc::crc32(temp1, sizeof(temp1)), 0);
-        TEST_ASSERT_EQUALS(Crc::crc32(temp2, sizeof(temp2)), 0);
-        TEST_ASSERT_EQUALS(Crc::crc32(temp3, sizeof(temp3)), 0);
+        TEST_ASSERT_EQUALS(Crc::crc32(temp1, sizeof(temp1)), 0x3BA79CCF);
+        TEST_ASSERT_EQUALS(Crc::crc32(temp2, sizeof(temp2)), 0xA6C977D8);
+        TEST_ASSERT_EQUALS(Crc::crc32(temp3, sizeof(temp3)), 0x981FA0FF);
     }
     TEST_CASE_END();
 
@@ -49,9 +49,9 @@ TEST_CASES(section0, __shared_common_bits64_checksum_crc);
             temp3[i] = i * 19;
         }
 
-        TEST_ASSERT_EQUALS(Crc::crc64(temp1, sizeof(temp1)), 0);
-        TEST_ASSERT_EQUALS(Crc::crc64(temp2, sizeof(temp2)), 0);
-        TEST_ASSERT_EQUALS(Crc::crc64(temp3, sizeof(temp3)), 0);
+        TEST_ASSERT_EQUALS(Crc::crc64(temp1, sizeof(temp1)), 0x795E41105C8EC855);
+        TEST_ASSERT_EQUALS(Crc::crc64(temp2, sizeof(temp2)), 0xC9ABC0CE4C2FEF10);
+        TEST_ASSERT_EQUALS(Crc::crc64(temp3, sizeof(temp3)), 0x7D487F5A6914336D);
     }
     TEST_CASE_END();
 }

@@ -19,7 +19,7 @@ enum class PngRenderingIntent: u8
 
 
 
-inline const char* pngRenderingIntentToString(PngRenderingIntent intent) 
+inline const char* pngRenderingIntentToString(PngRenderingIntent intent) // TEST: NO
 {
     // COMMON_LT((" | intent = %u", intent)); // Commented to avoid bad looking logs
 
