@@ -703,7 +703,7 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
     if (
         bitsPerPixel < 8
         &&
-        width * bitsPerPixel != DIV_UP(width * bitsPerPixel, 8) * 8
+        width * bitsPerPixel != DIV_UP(width * bitsPerPixel, 8) << 3 // "<< 3" == "* 8"
        )
     {
         status = unfilter(decoder, decoder->imageDataBuffer, decoder->imageDataBuffer, width, height);
@@ -713,7 +713,7 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
             return status;
         }
 
-        status = removePaddingBits(decoder->imageDataBuffer, decoder->rawImageBuffer, DIV_UP(width * bitsPerPixel, 8) * 8, width * bitsPerPixel, height);
+        status = removePaddingBits(decoder->imageDataBuffer, decoder->rawImageBuffer, DIV_UP(width * bitsPerPixel, 8) << 3, width * bitsPerPixel, height); // "<< 3" == "* 8"
     }
     else
     {
@@ -917,7 +917,7 @@ NgosStatus Png::removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBi
 
     for (i64 i = 0; i < height; ++i)
     {
-        for(i64 j = 0; j < outLineBits; ++j)
+        for (i64 j = 0; j < outLineBits; ++j)
         {
             u8 bit = readBitFromReversedStream(&inBitPointer, in);
 

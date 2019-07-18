@@ -62,7 +62,7 @@ u32 Crc::crc32(u8 *data, u64 length)
 
     while (length)
     {
-        crc = crc32Table[*data ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = crc32Table[*data ^ (crc & 0xFF)] ^ (crc >> 8); // Ignore CppOperatorSpacesVerifier
 
         ++data;
         --length;
@@ -84,7 +84,7 @@ u64 Crc::crc64(u8 *data, u64 length)
 
     while (length)
     {
-        crc = crc64Table[*data ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = crc64Table[*data ^ (crc & 0xFF)] ^ (crc >> 8); // Ignore CppOperatorSpacesVerifier
 
         ++data;
         --length;

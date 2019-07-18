@@ -57,8 +57,12 @@ void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
                         for (qint64 j = startLine; j <= endLine; ++j)
                         {
-                            QString switchLine        = lines.at(j);
+                            QString switchLine = lines.at(j);
+                            removeComments(switchLine);
+
                             QString switchLineTrimmed = switchLine.trimmed();
+
+
 
                             if (
                                 switchLineTrimmed.startsWith("case ")

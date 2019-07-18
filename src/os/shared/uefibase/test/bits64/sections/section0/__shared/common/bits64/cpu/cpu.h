@@ -58,7 +58,7 @@ TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
 
     TEST_CASE("isCpuIdLevelSupported()");
     {
-        u32 temp = CPU::sCpuidLevel;
+        u32 temp         = CPU::sCpuidLevel;
         CPU::sCpuidLevel = 5;
 
         TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(1), true);

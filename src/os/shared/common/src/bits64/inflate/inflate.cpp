@@ -1,13 +1,13 @@
 #include "inflate.h"
 
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/inflate/inflateblocktype.h>
 #include <common/src/bits64/inflate/inflatecode.h>
 #include <common/src/bits64/inflate/inflatecodetype.h>
 #include <common/src/bits64/inflate/inflatedecoder.h>
 #include <common/src/bits64/inflate/inflatefixedcodes.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/memory.h>
 
 
 
@@ -20,10 +20,10 @@
 
 inline u64 readBits(InflateDecoder *decoder, u8 count)
 {
-    // EARLY_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
-    EARLY_ASSERT(decoder,   "decoder is null", 0);
-    EARLY_ASSERT(count > 0, "count is zero",   0);
+    COMMON_ASSERT(decoder,   "decoder is null", 0);
+    COMMON_ASSERT(count > 0, "count is zero",   0);
 
 
 
@@ -47,12 +47,12 @@ inline u64 readBits(InflateDecoder *decoder, u8 count)
 
 NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCodes, InflateCode *table, u8 *bits)
 {
-    EARLY_LT((" | codeType = %d, lengthBuffer = 0x%p, numberOfCodes = %u, table = 0x%p, bits = 0x%p", codeType, lengthBuffer, numberOfCodes, table, bits));
+    COMMON_LT((" | codeType = %d, lengthBuffer = 0x%p, numberOfCodes = %u, table = 0x%p, bits = 0x%p", codeType, lengthBuffer, numberOfCodes, table, bits));
 
-    EARLY_ASSERT(lengthBuffer,      "lengthBuffer is null",  NgosStatus::ASSERTION);
-    EARLY_ASSERT(numberOfCodes > 0, "numberOfCodes is zero", NgosStatus::ASSERTION);
-    EARLY_ASSERT(table,             "table is null",         NgosStatus::ASSERTION);
-    EARLY_ASSERT(bits,              "bits is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(lengthBuffer,      "lengthBuffer is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(numberOfCodes > 0, "numberOfCodes is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(table,             "table is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(bits,              "bits is null",          NgosStatus::ASSERTION);
 
 
 
@@ -97,14 +97,14 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-#if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
         // Commented to avoid too frequent logs
-        // EARLY_LVVV(("count:"));
+        // COMMON_LVVV(("count:"));
         //
         // for (i64 i = 0; i <= MAX_BITS; ++i)
         // {
-        //     EARLY_LVVV(("count[%d] = %u", i, count[i]));
+        //     COMMON_LVVV(("count[%d] = %u", i, count[i]));
         // }
     }
 #endif
@@ -120,7 +120,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     if (!max) // max == 0
     {
-        EARLY_LF(("Symbols to code not found"));
+        COMMON_LF(("Symbols to code not found"));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -152,9 +152,9 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    EARLY_LVVV(("root = %u", root));
-    EARLY_LVVV(("min  = %u", min));
-    EARLY_LVVV(("max  = %u", max));
+    COMMON_LVVV(("root = %u", root));
+    COMMON_LVVV(("min  = %u", min));
+    COMMON_LVVV(("max  = %u", max));
 
 
 
@@ -167,7 +167,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
         if (left < 0)
         {
-            EARLY_LF(("Over-subscribed"));
+            COMMON_LF(("Over-subscribed"));
 
             return NgosStatus::INVALID_DATA;
         }
@@ -175,7 +175,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    EARLY_LVVV(("left = %d", left));
+    COMMON_LVVV(("left = %d", left));
 
 
 
@@ -189,7 +189,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         )
        )
     {
-        EARLY_LF(("Incomplete set"));
+        COMMON_LF(("Incomplete set"));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -224,14 +224,14 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-#if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
         // Commented to avoid too frequent logs
-        // EARLY_LVVV(("offsets:"));
+        // COMMON_LVVV(("offsets:"));
         //
         // for (i64 i = 0; i <= MAX_BITS; ++i)
         // {
-        //     EARLY_LVVV(("offsets[%d] = %u", i, offsets[i]));
+        //     COMMON_LVVV(("offsets[%d] = %u", i, offsets[i]));
         // }
     }
 #endif
@@ -274,7 +274,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
         default:
         {
-            EARLY_LF(("Unknown code type: %d", codeType));
+            COMMON_LF(("Unknown code type: %d", codeType));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -283,9 +283,9 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    EARLY_LVVV(("base  = 0x%p", base));
-    EARLY_LVVV(("extra = 0x%p", extra));
-    EARLY_LVVV(("end   = %d",   end));
+    COMMON_LVVV(("base  = 0x%p", base));
+    COMMON_LVVV(("extra = 0x%p", extra));
+    COMMON_LVVV(("end   = %d",   end));
 
 
 
@@ -493,13 +493,13 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes, u8 lengthBits, InflateCode *distanceCodes, u8 distanceBits)
 {
-    EARLY_LT((" | decoder = 0x%p, lengthCodes = 0x%p, lengthBits = %u, distanceCodes = 0x%p, distanceBits = %u", decoder, lengthCodes, lengthBits, distanceCodes, distanceBits));
+    COMMON_LT((" | decoder = 0x%p, lengthCodes = 0x%p, lengthBits = %u, distanceCodes = 0x%p, distanceBits = %u", decoder, lengthCodes, lengthBits, distanceCodes, distanceBits));
 
-    EARLY_ASSERT(decoder,          "decoder is null",       NgosStatus::ASSERTION);
-    EARLY_ASSERT(lengthCodes,      "lengthCodes is null",   NgosStatus::ASSERTION);
-    EARLY_ASSERT(lengthBits > 0,   "lengthBits is zero",    NgosStatus::ASSERTION);
-    EARLY_ASSERT(distanceCodes,    "distanceCodes is null", NgosStatus::ASSERTION);
-    EARLY_ASSERT(distanceBits > 0, "distanceBits is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,          "decoder is null",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(lengthCodes,      "lengthCodes is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(lengthBits > 0,   "lengthBits is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(distanceCodes,    "distanceCodes is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(distanceBits > 0, "distanceBits is zero",  NgosStatus::ASSERTION);
 
 
 
@@ -559,10 +559,10 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
 
-        // EARLY_LVVV(("codeIndex        = %u", codeIndex));      // Commented to avoid too frequent logs
-        // EARLY_LVVV(("code.operation   = %u", code.operation)); // Commented to avoid too frequent logs
-        // EARLY_LVVV(("code.bits        = %u", code.bits));      // Commented to avoid too frequent logs
-        // EARLY_LVVV(("code.value       = %u", code.value));     // Commented to avoid too frequent logs
+        // COMMON_LVVV(("codeIndex        = %u", codeIndex));      // Commented to avoid too frequent logs
+        // COMMON_LVVV(("code.operation   = %u", code.operation)); // Commented to avoid too frequent logs
+        // COMMON_LVVV(("code.bits        = %u", code.bits));      // Commented to avoid too frequent logs
+        // COMMON_LVVV(("code.value       = %u", code.value));     // Commented to avoid too frequent logs
 
 
 
@@ -577,7 +577,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
 
-        EARLY_ASSERT(!(code.operation & 64), "Invalid literal/length code", NgosStatus::ASSERTION);
+        COMMON_ASSERT(!(code.operation & 64), "Invalid literal/length code", NgosStatus::ASSERTION);
 
 
 
@@ -596,8 +596,8 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
                 length += readBits(decoder, extra);
             }
 
-            // EARLY_LVVV(("length = %u", length)); // Commented to avoid too frequent logs
-            // EARLY_LVVV(("extra  = %u", extra));  // Commented to avoid too frequent logs
+            // COMMON_LVVV(("length = %u", length)); // Commented to avoid too frequent logs
+            // COMMON_LVVV(("extra  = %u", extra));  // Commented to avoid too frequent logs
 
 
 
@@ -648,10 +648,10 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
 
-            // EARLY_LVVV(("codeIndex        = %u", codeIndex));      // Commented to avoid too frequent logs
-            // EARLY_LVVV(("code.operation   = %u", code.operation)); // Commented to avoid too frequent logs
-            // EARLY_LVVV(("code.bits        = %u", code.bits));      // Commented to avoid too frequent logs
-            // EARLY_LVVV(("code.value       = %u", code.value));     // Commented to avoid too frequent logs
+            // COMMON_LVVV(("codeIndex        = %u", codeIndex));      // Commented to avoid too frequent logs
+            // COMMON_LVVV(("code.operation   = %u", code.operation)); // Commented to avoid too frequent logs
+            // COMMON_LVVV(("code.bits        = %u", code.bits));      // Commented to avoid too frequent logs
+            // COMMON_LVVV(("code.value       = %u", code.value));     // Commented to avoid too frequent logs
 
 
 
@@ -659,7 +659,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
 
-            EARLY_ASSERT(!(code.operation & 64), "Invalid literal/length code", NgosStatus::ASSERTION);
+            COMMON_ASSERT(!(code.operation & 64), "Invalid literal/length code", NgosStatus::ASSERTION);
 
 
 
@@ -671,12 +671,12 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
                 offset += readBits(decoder, extra2);
             }
 
-            // EARLY_LVVV(("offset = %u", offset)); // Commented to avoid too frequent logs
-            // EARLY_LVVV(("extra  = %u", extra));  // Commented to avoid too frequent logs
+            // COMMON_LVVV(("offset = %u", offset)); // Commented to avoid too frequent logs
+            // COMMON_LVVV(("extra  = %u", extra));  // Commented to avoid too frequent logs
 
 
 
-            EARLY_ASSERT(offset > 0 && offset <= decoder->outPosition, "offset is too big", NgosStatus::ASSERTION);
+            COMMON_ASSERT(offset > 0 && offset <= decoder->outPosition, "offset is too big", NgosStatus::ASSERTION);
 
 
 
@@ -707,23 +707,23 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 NgosStatus decodeNotCompressedBlock(InflateDecoder *decoder)
 {
-    EARLY_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p", decoder));
 
-    EARLY_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 
     u16 length  = *((u16 *)(decoder->in + decoder->inPosition));
     u16 nlength = *((u16 *)(decoder->in + decoder->inPosition + 2));
 
-    EARLY_LVVV(("length  = %u", length));
-    EARLY_LVVV(("nlength = %u", nlength));
+    COMMON_LVVV(("length  = %u", length));
+    COMMON_LVVV(("nlength = %u", nlength));
 
 
 
     if (length != (nlength ^ 0xFFFF))   // nlength is the inverted length value
     {
-        EARLY_LF(("Invalid not compressed length %u and nlength %u", length, nlength));
+        COMMON_LF(("Invalid not compressed length %u and nlength %u", length, nlength));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -745,7 +745,7 @@ NgosStatus decodeNotCompressedBlock(InflateDecoder *decoder)
     }
     else
     {
-        EARLY_LF(("Unexpected length value"));
+        COMMON_LF(("Unexpected length value"));
 
         return NgosStatus::UNEXPECTED_BEHAVIOUR;
     }
@@ -757,15 +757,15 @@ NgosStatus decodeNotCompressedBlock(InflateDecoder *decoder)
 
 NgosStatus decodeCompressedFixedHuffmanBlock(InflateDecoder *decoder)
 {
-    EARLY_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p", decoder));
 
-    EARLY_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 
     if (decodeHuffmanBlock(decoder, fixedLengthCodes, 9, fixedDistanceCodes, 5) != NgosStatus::OK)
     {
-        EARLY_LF(("Failed to decode Huffman block"));
+        COMMON_LF(("Failed to decode Huffman block"));
 
         return NgosStatus::FAILED;
     }
@@ -775,9 +775,9 @@ NgosStatus decodeCompressedFixedHuffmanBlock(InflateDecoder *decoder)
 
 NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 {
-    EARLY_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p", decoder));
 
-    EARLY_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 
@@ -790,15 +790,15 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
     u8  numberOfDistance = 1   + readBits(decoder, 5); // 1-32
     u8  numberOfCodes    = 4   + readBits(decoder, 4); // 4-19
 
-    EARLY_LVVV(("numberOfLength   = %u", numberOfLength));
-    EARLY_LVVV(("numberOfDistance = %u", numberOfDistance));
-    EARLY_LVVV(("numberOfCodes    = %u", numberOfCodes));
+    COMMON_LVVV(("numberOfLength   = %u", numberOfLength));
+    COMMON_LVVV(("numberOfDistance = %u", numberOfDistance));
+    COMMON_LVVV(("numberOfCodes    = %u", numberOfCodes));
 
 
 
     if (numberOfLength > 286 || numberOfDistance > 30)
     {
-        EARLY_LF(("Too many length or distance symbols"));
+        COMMON_LF(("Too many length or distance symbols"));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -815,7 +815,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
     {
         lengthBuffer[order[currentCodeIndex]] = readBits(decoder, 3);
 
-        // EARLY_LVVV(("currentCodeIndex = %u, lengthBuffer[%u] = %u", currentCodeIndex, order[currentCodeIndex], lengthBuffer[order[currentCodeIndex]])); // Commented to avoid too frequent logs
+        // COMMON_LVVV(("currentCodeIndex = %u, lengthBuffer[%u] = %u", currentCodeIndex, order[currentCodeIndex], lengthBuffer[order[currentCodeIndex]])); // Commented to avoid too frequent logs
 
         ++currentCodeIndex;
     }
@@ -824,21 +824,21 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
     {
         lengthBuffer[order[currentCodeIndex]] = 0;
 
-        // EARLY_LVVV(("currentCodeIndex = %u, lengthBuffer[%u] = %u", currentCodeIndex, order[currentCodeIndex], lengthBuffer[order[currentCodeIndex]])); // Commented to avoid too frequent logs
+        // COMMON_LVVV(("currentCodeIndex = %u, lengthBuffer[%u] = %u", currentCodeIndex, order[currentCodeIndex], lengthBuffer[order[currentCodeIndex]])); // Commented to avoid too frequent logs
 
         ++currentCodeIndex;
     }
 
 
 
-#if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
         // Commented to avoid too frequent logs
-        // EARLY_LVVV(("lengthBuffer:"));
+        // COMMON_LVVV(("lengthBuffer:"));
         //
         // for (i64 i = 0; i < LENGTH_CODE_COUNT; ++i)
         // {
-        //     EARLY_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
+        //     COMMON_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
         // }
     }
 #endif
@@ -851,12 +851,12 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
     if (buildTree(InflateCodeType::CODES, lengthBuffer, LENGTH_CODE_COUNT, lengthCodes, &lengthBits) != NgosStatus::OK)
     {
-        EARLY_LF(("Invalid code lengths set"));
+        COMMON_LF(("Invalid code lengths set"));
 
         return NgosStatus::INVALID_DATA;
     }
 
-    EARLY_LVVV(("lengthBits = %u", lengthBits));
+    COMMON_LVVV(("lengthBits = %u", lengthBits));
 
 
 
@@ -883,11 +883,11 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
             ++decoder->inPosition;
         } while(true);
 
-        // EARLY_LVVV(("currentCodeIndex = %u", currentCodeIndex)); // Commented to avoid too frequent logs
-        // EARLY_LVVV(("codeIndex        = %u", codeIndex));        // Commented to avoid too frequent logs
-        // EARLY_LVVV(("code.operation   = %u", code.operation));   // Commented to avoid too frequent logs
-        // EARLY_LVVV(("code.bits        = %u", code.bits));        // Commented to avoid too frequent logs
-        // EARLY_LVVV(("code.value       = %u", code.value));       // Commented to avoid too frequent logs
+        // COMMON_LVVV(("currentCodeIndex = %u", currentCodeIndex)); // Commented to avoid too frequent logs
+        // COMMON_LVVV(("codeIndex        = %u", codeIndex));        // Commented to avoid too frequent logs
+        // COMMON_LVVV(("code.operation   = %u", code.operation));   // Commented to avoid too frequent logs
+        // COMMON_LVVV(("code.bits        = %u", code.bits));        // Commented to avoid too frequent logs
+        // COMMON_LVVV(("code.value       = %u", code.value));       // Commented to avoid too frequent logs
 
 
 
@@ -906,7 +906,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         {
             if (!currentCodeIndex) // currentCodeIndex == 0
             {
-                EARLY_LF(("Invalid bit length repeat"));
+                COMMON_LF(("Invalid bit length repeat"));
 
                 return NgosStatus::INVALID_DATA;
             }
@@ -918,7 +918,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
             if (currentCodeIndex + copyCount > numberOfLength + numberOfDistance)
             {
-                EARLY_LF(("Invalid bit length repeat"));
+                COMMON_LF(("Invalid bit length repeat"));
 
                 return NgosStatus::INVALID_DATA;
             }
@@ -937,7 +937,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
             if (currentCodeIndex + copyCount > numberOfLength + numberOfDistance)
             {
-                EARLY_LF(("Invalid bit length repeat"));
+                COMMON_LF(("Invalid bit length repeat"));
 
                 return NgosStatus::INVALID_DATA;
             }
@@ -952,7 +952,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
             if (currentCodeIndex + copyCount > numberOfLength + numberOfDistance)
             {
-                EARLY_LF(("Invalid bit length repeat"));
+                COMMON_LF(("Invalid bit length repeat"));
 
                 return NgosStatus::INVALID_DATA;
             }
@@ -962,7 +962,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         }
         else
         {
-            EARLY_LF(("Invalid bit length"));
+            COMMON_LF(("Invalid bit length"));
 
             return NgosStatus::INVALID_DATA;
         }
@@ -970,20 +970,20 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
 
 
-    EARLY_LVVV(("currentCodeIndex = %u", currentCodeIndex));
+    COMMON_LVVV(("currentCodeIndex = %u", currentCodeIndex));
 
-    EARLY_ASSERT(currentCodeIndex == numberOfLength + numberOfDistance, "Invalid currentCodeIndex", NgosStatus::ASSERTION);
+    COMMON_ASSERT(currentCodeIndex == numberOfLength + numberOfDistance, "Invalid currentCodeIndex", NgosStatus::ASSERTION);
 
 
 
-#if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
         // Commented to avoid too frequent logs
-        // EARLY_LVVV(("lengthBuffer:"));
+        // COMMON_LVVV(("lengthBuffer:"));
         //
         // for (i64 i = 0; i < currentCodeIndex; ++i)
         // {
-        //     EARLY_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
+        //     COMMON_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
         // }
     }
 #endif
@@ -994,12 +994,12 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
     if (buildTree(InflateCodeType::LENGTHS, lengthBuffer, numberOfLength, lengthCodes, &lengthBits) != NgosStatus::OK)
     {
-        EARLY_LF(("invalid literal/lengths set"));
+        COMMON_LF(("invalid literal/lengths set"));
 
         return NgosStatus::INVALID_DATA;
     }
 
-    EARLY_LVVV(("lengthBits = %u", lengthBits));
+    COMMON_LVVV(("lengthBits = %u", lengthBits));
 
 
 
@@ -1009,18 +1009,18 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
     if (buildTree(InflateCodeType::DISTANCES, lengthBuffer + numberOfLength, numberOfDistance, distanceCodes, &distanceBits) != NgosStatus::OK)
     {
-        EARLY_LF(("invalid distances set"));
+        COMMON_LF(("invalid distances set"));
 
         return NgosStatus::INVALID_DATA;
     }
 
-    EARLY_LVVV(("distanceBits = %u", distanceBits));
+    COMMON_LVVV(("distanceBits = %u", distanceBits));
 
 
 
     if (decodeHuffmanBlock(decoder, lengthCodes, lengthBits, distanceCodes, distanceBits) != NgosStatus::OK)
     {
-        EARLY_LF(("Failed to decode Huffman block"));
+        COMMON_LF(("Failed to decode Huffman block"));
 
         return NgosStatus::FAILED;
     }
@@ -1032,9 +1032,9 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
 NgosStatus runInflate(InflateDecoder *decoder)
 {
-    EARLY_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p", decoder));
 
-    EARLY_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 
@@ -1043,7 +1043,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
         bool             blockFinal = readBits(decoder, 1);                     // first bit      BFINAL  BFINAL is set if and only if this is the last block of the data set.
         InflateBlockType blockType  = (InflateBlockType)(readBits(decoder, 2)); // next 2 bits    BTYPE   BTYPE specifies how the data are compressed
 
-        EARLY_LVVV(("blockFinal = %s", blockFinal ? "true" : "false"));
+        COMMON_LVVV(("blockFinal = %s", blockFinal ? "true" : "false"));
 
 
 
@@ -1051,11 +1051,11 @@ NgosStatus runInflate(InflateDecoder *decoder)
         {
             case InflateBlockType::NO_COMPRESSION:
             {
-                EARLY_LVVV(("blockType = InflateBlockType::NO_COMPRESSION"));
+                COMMON_LVVV(("blockType = InflateBlockType::NO_COMPRESSION"));
 
                 if (decodeNotCompressedBlock(decoder) != NgosStatus::OK)
                 {
-                    EARLY_LF(("Failed to decode not compressed block"));
+                    COMMON_LF(("Failed to decode not compressed block"));
 
                     return NgosStatus::FAILED;
                 }
@@ -1064,11 +1064,11 @@ NgosStatus runInflate(InflateDecoder *decoder)
 
             case InflateBlockType::COMPRESSED_FIXED_HUFFMAN:
             {
-                EARLY_LVVV(("blockType = InflateBlockType::COMPRESSED_FIXED_HUFFMAN"));
+                COMMON_LVVV(("blockType = InflateBlockType::COMPRESSED_FIXED_HUFFMAN"));
 
                 if (decodeCompressedFixedHuffmanBlock(decoder) != NgosStatus::OK)
                 {
-                    EARLY_LF(("Failed to decode compressed fixed Huffman block"));
+                    COMMON_LF(("Failed to decode compressed fixed Huffman block"));
 
                     return NgosStatus::FAILED;
                 }
@@ -1077,11 +1077,11 @@ NgosStatus runInflate(InflateDecoder *decoder)
 
             case InflateBlockType::COMPRESSED_DYNAMIC_HUFFMAN:
             {
-                EARLY_LVVV(("blockType = InflateBlockType::COMPRESSED_DYNAMIC_HUFFMAN"));
+                COMMON_LVVV(("blockType = InflateBlockType::COMPRESSED_DYNAMIC_HUFFMAN"));
 
                 if (decodeCompressedDynamicHuffmanBlock(decoder) != NgosStatus::OK)
                 {
-                    EARLY_LF(("Failed to decode compressed dynamic Huffman block"));
+                    COMMON_LF(("Failed to decode compressed dynamic Huffman block"));
 
                     return NgosStatus::FAILED;
                 }
@@ -1090,7 +1090,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
 
             case InflateBlockType::UNKNOWN:
             {
-                EARLY_LF(("Unexpected blockType: InflateBlockType::UNKNOWN"));
+                COMMON_LF(("Unexpected blockType: InflateBlockType::UNKNOWN"));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -1098,7 +1098,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
 
             default:
             {
-                EARLY_LF(("Unexpected blockType: %u", blockType));
+                COMMON_LF(("Unexpected blockType: %u", blockType));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -1120,12 +1120,12 @@ NgosStatus runInflate(InflateDecoder *decoder)
 
 NgosStatus inflate(u8 *compressedAddress, u8 *decompressedAddress, u64 *compressedSize, u64 *uncompressedSize)
 {
-    EARLY_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, compressedSize = 0x%p, uncompressedSize = 0x%p", compressedAddress, decompressedAddress, compressedSize, uncompressedSize));
+    COMMON_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, compressedSize = 0x%p, uncompressedSize = 0x%p", compressedAddress, decompressedAddress, compressedSize, uncompressedSize));
 
-    EARLY_ASSERT(compressedAddress,   "compressedAddress is null",   NgosStatus::ASSERTION);
-    EARLY_ASSERT(decompressedAddress, "decompressedAddress is null", NgosStatus::ASSERTION);
-    EARLY_ASSERT(compressedSize,      "compressedSize is null",      NgosStatus::ASSERTION);
-    EARLY_ASSERT(uncompressedSize,    "uncompressedSize is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(compressedAddress,   "compressedAddress is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(decompressedAddress, "decompressedAddress is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(compressedSize,      "compressedSize is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(uncompressedSize,    "uncompressedSize is null",    NgosStatus::ASSERTION);
 
 
 

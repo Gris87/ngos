@@ -9,12 +9,12 @@
 
 struct ZLibHeader
 {
-    u8 compressionMethod: 4,
-       compressionInfo:   4;
+    u8  compressionMethod: 4,
+        compressionInfo:   4;
 
-    u8 checkBits:        5,
-       presetDictionary: 1,
-       compressionLevel: 2;
+    u8  checkBits:        5,
+        presetDictionary: 1,
+        compressionLevel: 2;
 } __attribute__((packed));
 
 

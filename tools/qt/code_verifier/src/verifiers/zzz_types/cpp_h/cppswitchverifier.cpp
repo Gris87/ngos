@@ -57,8 +57,12 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
                         for (qint64 j = startLine; j <= endLine; ++j)
                         {
-                            QString switchLine        = lines.at(j);
+                            QString switchLine = lines.at(j);
+                            removeComments(switchLine);
+
                             QString switchLineTrimmed = switchLine.trimmed();
+
+
 
                             if (
                                 switchLineTrimmed.startsWith("case ")
@@ -183,7 +187,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     j == startLine
                                     ||
                                     (
-                                     !lines.at(j - 1).trimmed().endsWith("break;")
+                                     !lines.at(j - 1).contains("break;")
                                      &&
                                      !lines.at(j - 1).contains("return ")
                                     )

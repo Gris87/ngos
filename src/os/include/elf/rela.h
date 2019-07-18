@@ -7,9 +7,9 @@
 
 
 
-#define ELF_RELA_SYMBOL(info)       ((info) >> 32)                              
-#define ELF_RELA_TYPE(info)         ((info) & 0xFFFFFFFF)                       
-#define ELF_RELA_INFO(symbol, type) (((symbol) << 32) + ((type) & 0xFFFFFFFF))  
+#define ELF_RELA_SYMBOL(info)       ((info) >> 32)
+#define ELF_RELA_TYPE(info)         ((info) & 0xFFFFFFFF)
+#define ELF_RELA_INFO(symbol, type) (((symbol) << 32) + ((type) & 0xFFFFFFFF))
 
 
 

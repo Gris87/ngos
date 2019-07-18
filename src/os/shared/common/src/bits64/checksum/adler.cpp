@@ -20,6 +20,7 @@ u32 Adler::adler32(u8 *data, u64 length)
     while (length)
     {
         // at least 380368439 sums can be done before the sums overflow, saving a lot of module divisions
+        //
         u64 count =  length > 380368439 ? 380368439 : length;
         length    -= count;
 

@@ -488,6 +488,7 @@ inline bool validateSignEqualCase1(const QChar &chPrev1, const QChar &chPrev2, c
     //      " -= "
     //      " *= "
     //      " /= "
+    //      " %= "
     //      " <= "
     //      " >= "
     //      " == "
@@ -505,6 +506,8 @@ inline bool validateSignEqualCase1(const QChar &chPrev1, const QChar &chPrev2, c
                 chPrev1 == '*'
                 ||
                 chPrev1 == '/'
+                ||
+                chPrev1 == '%'
                 ||
                 chPrev1 == '<'
                 ||

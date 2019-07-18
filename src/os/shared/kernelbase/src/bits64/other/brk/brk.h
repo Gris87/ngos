@@ -10,7 +10,7 @@
 class BRK
 {
 public:
-    static NgosStatus init(); 
+    static NgosStatus init();
 
     static NgosStatus allocate(u64 size, u64 align, u8 **result);
 
