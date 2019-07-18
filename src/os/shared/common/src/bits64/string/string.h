@@ -9,8 +9,8 @@
 
 i64 strlen(const char *str);
 i64 strnlen(const char *str, i64 maxlen);
-i64 strlen(const u16 *str);
-i64 strnlen(const u16 *str, i64 maxlen);
+i64 strlen(const char16 *str);
+i64 strnlen(const char16 *str, i64 maxlen);
 i8 strcmp(const char *str1, const char *str2);
 i8 strncmp(const char *str1, const char *str2, i64 length);
 

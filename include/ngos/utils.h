@@ -17,7 +17,7 @@
 
 
 
-#define WORD_BIT(wordId, bitId) ((wordId << 5) + bitId)                  // "<< 5" == "* 32"
+#define WORD_BIT(wordId, bitId) ((wordId << 5) + bitId) // "<< 5" == "* 32"
 
 
 
@@ -31,7 +31,7 @@
 #define MAX(a, b) (a) > (b) ? (a) : (b)
 #define MAX_TYPED(type, a, b) MAX((type)(a), (type)(b))
 
-#define ABS(a) ((a) >= 0 ? (a) : -(a))                                   // Ignore CppOperatorSpacesVerifier
+#define ABS(a) ((a) >= 0 ? (a) : -(a)) // Ignore CppOperatorSpacesVerifier
 
 #define CLAMP(a, minValue, maxValue) MIN(MAX(a, minValue), maxValue)
 

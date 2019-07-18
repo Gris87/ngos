@@ -58,7 +58,7 @@ INCLUDE_PATH = \
 
 
 
-ASMFLAGS = -c $(INCLUDE_PATH)
+ASMFLAGS = -c $(DEFINES) $(INCLUDE_PATH)
 CXXFLAGS = -c -m64 -O3 -W -Wall -Werror -nostdinc -mno-red-zone -fPIE -ffreestanding -fno-strict-aliasing -fno-stack-protector -fomit-frame-pointer -fno-exceptions -fno-asynchronous-unwind-tables -fno-unwind-tables -std=c++17 $(VECTORIZATION_FLAGS) $(FMA_FLAGS) $(DEBUG_FLAGS) $(DEFINES) $(INCLUDE_PATH)
 LDFLAGS  = -pie --no-dynamic-linker
 

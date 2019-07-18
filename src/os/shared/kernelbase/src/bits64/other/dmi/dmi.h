@@ -33,7 +33,7 @@ private:
 #endif
     static NgosStatus initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3); // TEST: NO
     static NgosStatus initFromSmbios(UefiSmbiosConfigurationTable *smbios); // TEST: NO
-    static NgosStatus iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry); // TEST: NO
+    static NgosStatus iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry);
     static NgosStatus decodeDmiEntry(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveDmiBiosEntry(DmiBiosEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry); // TEST: NO
@@ -45,7 +45,7 @@ private:
     static NgosStatus saveIdentity(DmiIdentity id, u8 *address, u64 size); // TEST: NO
     static NgosStatus saveUuid(DmiStoredUuid id, const DmiUuid &uuid); // TEST: NO
     static NgosStatus getString(u8 *address, u64 size, u8 **destination); // TEST: NO
-    static u8 checksum(u8 *address, u64 size, u8 checksumValue); // TEST: NO
+    static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
     static u32              sVersion;
     static u16              sNumberOfSmbiosStructures;

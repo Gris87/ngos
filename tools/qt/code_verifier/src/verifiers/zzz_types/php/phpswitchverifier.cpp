@@ -182,7 +182,7 @@ void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     j == startLine
                                     ||
                                     (
-                                     !lines.at(j - 1).trimmed().endsWith("break;")
+                                     !lines.at(j - 1).contains("break;")
                                      &&
                                      !lines.at(j - 1).contains("return ")
                                     )

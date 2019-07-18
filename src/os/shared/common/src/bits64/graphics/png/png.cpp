@@ -1187,6 +1187,8 @@ u8 Png::paethPredictor(u8 a, u8 b, u8 c)
     u16 pb = ABS(p - b);
     u16 pc = ABS(p - c);
 
+
+
     if (pc < pa && pc < pb)
     {
         return c;

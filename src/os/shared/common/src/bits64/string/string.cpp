@@ -42,7 +42,7 @@ i64 strnlen(const char *str, i64 maxlen)
     return str2 - str;
 }
 
-i64 strlen(const u16 *str)
+i64 strlen(const char16 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
@@ -60,7 +60,7 @@ i64 strlen(const u16 *str)
     return str2 - str;
 }
 
-i64 strnlen(const u16 *str, i64 maxlen)
+i64 strnlen(const char16 *str, i64 maxlen)
 {
     // COMMON_LT((" | str = 0x%p, maxlen = %d", str, maxlen)); // Commented to avoid bad looking logs
 
