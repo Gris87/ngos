@@ -46,7 +46,7 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_TEST_ASSERT(header->identification.fileData      == ElfData::LEAST_SIGNIFICANT_BYTE,          0);
         EARLY_TEST_ASSERT(header->identification.version       == ElfFileVersion::CURRENT,                  0);
         EARLY_TEST_ASSERT(header->identification.osAbi         == ElfOsAbi::SYSTEM_V,                       0);
-        EARLY_TEST_ASSERT(header->type                         == ElfType::EXECUTABLE,                      0);
+        EARLY_TEST_ASSERT(header->type                         == ElfType::DYNAMIC_LIBRARY,                 0);
         EARLY_TEST_ASSERT(header->machine                      == ElfMachine::MACHINE_X86_64,               0);
         EARLY_TEST_ASSERT(header->version                      == ElfVersion::CURRENT,                      0);
         EARLY_TEST_ASSERT(header->entryPoint                   == 0xFFFFFFFF80000000,                       0);

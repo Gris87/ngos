@@ -16,7 +16,7 @@ extern const char* cpuBugsNames[AMOUNT_OF_WORDS_FOR_X86_BUGS << 5]; // cpuBugsNa
 
 
 
-inline NgosStatus initCpuBugsNames() 
+inline NgosStatus initCpuBugsNames() // TEST: NO
 {
     COMMON_LT((""));
 

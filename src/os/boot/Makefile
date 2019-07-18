@@ -18,6 +18,7 @@ LD = $(CROSS_COMPILE)ld
 
 
 ASMFLAGS = -c
+LDFLAGS  =
 
 
 
@@ -34,7 +35,7 @@ OBJECTS = $(ASM_OBJ)
 all: $(OUTPUT_DIR)/$(TARGET).elf
 
 $(OUTPUT_DIR)/$(TARGET).elf: $(OBJECTS) linker.ld
-	$(LD) -T linker.ld $(OBJECTS) -o $(OUTPUT_DIR)/$(TARGET).elf
+	$(LD) $(LDFLAGS) -T linker.ld $(OBJECTS) -o $(OUTPUT_DIR)/$(TARGET).elf
 
 $(OUTPUT_DIR)/%.o: %.S
 	$(MKDIR) $(@D)

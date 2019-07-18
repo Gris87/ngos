@@ -247,7 +247,11 @@ bool ElfObject::verifyHeader()
 
 
 
-    if (mHeader->type != ElfType::EXECUTABLE)
+    if (
+        mHeader->type != ElfType::EXECUTABLE
+        &&
+        mHeader->type != ElfType::DYNAMIC_LIBRARY
+       )
     {
         qDebug() << "ELF type is invalid";
 

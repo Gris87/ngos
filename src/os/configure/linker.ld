@@ -29,5 +29,12 @@ SECTIONS
 
 
 
+    /DISCARD/       : { *(.dynamic) }
+    /DISCARD/       : { *(.dynsym) }
+    /DISCARD/       : { *(.dynstr) }
+    /DISCARD/       : { *(.hash) }
+
+
+
     . = ASSERT(_start == 0, "Invalid entry point!");
 }

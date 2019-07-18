@@ -60,6 +60,7 @@ INCLUDE_PATH = \
 
 ASMFLAGS = -c $(INCLUDE_PATH)
 CXXFLAGS = -c -m64 -O3 -W -Wall -Werror -nostdinc -mno-red-zone -fPIE -ffreestanding -fno-strict-aliasing -fno-stack-protector -fomit-frame-pointer -fno-exceptions -fno-asynchronous-unwind-tables -fno-unwind-tables -std=c++17 $(VECTORIZATION_FLAGS) $(FMA_FLAGS) $(DEBUG_FLAGS) $(DEFINES) $(INCLUDE_PATH)
+LDFLAGS  = -pie --no-dynamic-linker
 
 
 
@@ -89,7 +90,7 @@ OBJECTS = $(ASSETS_OBJ) $(COMMON_ASM_OBJ) $(COMMON_CPP_OBJ) $(UEFIBASE_ASM_OBJ) 
 all: $(OUTPUT_DIR)/$(TARGET).elf
 
 $(OUTPUT_DIR)/$(TARGET).elf: $(OBJECTS) linker.ld
-	$(LD) -T linker.ld $(OBJECTS) -o $(OUTPUT_DIR)/$(TARGET).elf
+	$(LD) $(LDFLAGS) -T linker.ld $(OBJECTS) -o $(OUTPUT_DIR)/$(TARGET).elf
 
 $(ASSETS_OBJ): $(ASSETS_FILES)
 	sh -c "cd $(ASSETS_DIR)/ && ./generate_assets.sh"

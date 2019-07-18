@@ -88,8 +88,8 @@ _start:                                                                         
 # Jump to virtual address space                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    movq    $(virtual_address_space), %rax                                      # Put address of virtual_address_space label in virtual address space to RAX
-    jmp     *%rax                                                               # Jump to virtual_address_space label in virtual address space
+    #movq    $(virtual_address_space), %rax                                      # Put address of virtual_address_space label in virtual address space to RAX
+    #jmp     *%rax                                                               # Jump to virtual_address_space label in virtual address space
                                                                                 #
 virtual_address_space:                                                          # Label for jumping to virtual address space
                                                                                 #
@@ -162,9 +162,12 @@ virtual_address_space:                                                          
                                                                                 #
     movq    %rsi, %rdi                                                          # Put address of boot parameters (RSI) to RDI
                                                                                 #
-    pushq   $(kernelMain_exit)                                                  # Push address of kernelMain_exit label to the stack in order to let us come back from the kernelMain function
+    leaq    kernelMain_exit(%rip), %rax                                         # Put address of kernelMain_exit label to RAX
+    leaq    kernelMain(%rip), %rbx                                              # Put address of kernelMain function to RBX
+                                                                                #
+    pushq   %rax                                                                # Push address of kernelMain_exit label to the stack in order to let us come back from the kernelMain function
     pushq   $(GDT_KERNEL_CS)                                                    # Push GDT_KERNEL_CS to the stack will tell long return to go in 64 bit mode and it will setup CS register as well
-    pushq   $(kernelMain)                                                       # Push address of kernelMain function to the stack
+    pushq   %rbx                                                                # Push address of kernelMain function to the stack
     lretq                                                                       # Call long return will make us jump to kernelMain function in 64 bit mode
 kernelMain_exit:                                                                # Label that we gonna use for returning from kernelMain function
                                                                                 #

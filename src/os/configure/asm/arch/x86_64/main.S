@@ -36,7 +36,7 @@ _start:                                                                         
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
     movq    ASM_OFFSET_BOOT_PARAM_KERNEL_LOCATION(%rsi), %rax                   # Get the relocated address of kernel
-    leaq    relocated_address(%rax), %rax                                       # Get address of relocated_address label in relocated address space
+    addq    $(relocated_address - _start), %rax                                 # Get address of relocated_address label in relocated address space
     jmp     *%rax                                                               # Jump to relocated_address label in relocated address space
                                                                                 #
 relocated_address:                                                              # Label for relocated address

@@ -11,23 +11,23 @@
 class FPU
 {
 public:
-    static NgosStatus init(); 
+    static NgosStatus init(); // TEST: NO
 
 private:
-    static NgosStatus initMxcsrMask(); 
-    static NgosStatus initFXState(); 
-    static NgosStatus initXState(); 
-    static NgosStatus initXFeaturesOffsetsAndSizes(); 
-    static NgosStatus initStateSizes(); 
-    static NgosStatus copyStateFromFPU(); 
-    static NgosStatus copyStateToFPU(); 
-    static const char* getFeatureName(u8 xFeature); 
-    static bool isXFeatureSupervisor(u8 xFeature); 
-    static bool isXFeatureUser(u8 xFeature); 
-    static bool isXFeatureAligned(u8 xFeature); 
+    static NgosStatus initMxcsrMask(); // TEST: NO
+    static NgosStatus initFXState(); // TEST: NO
+    static NgosStatus initXState(); // TEST: NO
+    static NgosStatus initXFeaturesOffsetsAndSizes(); // TEST: NO
+    static NgosStatus initStateSizes(); // TEST: NO
+    static NgosStatus copyStateFromFPU(); // TEST: NO
+    static NgosStatus copyStateToFPU(); // TEST: NO
+    static const char* getFeatureName(u8 xFeature); // TEST: NO
+    static bool isXFeatureSupervisor(u8 xFeature); // TEST: NO
+    static bool isXFeatureUser(u8 xFeature); // TEST: NO
+    static bool isXFeatureAligned(u8 xFeature); // TEST: NO
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
-    static u32 expectedStateSize(); 
+    static u32 expectedStateSize(); // TEST: NO
 #endif
 
     static FpuState              sState;

@@ -259,9 +259,9 @@ bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, co
         }
 
         if (
-            line.startsWith("TEST_CASE(\"" + entry.getName() + '\"')
-            ||
-            line.startsWith("TEST_CASE(\"" + entry.getName() + '.')
+            line.startsWith("TEST_CASE(\"")
+            &&
+            line.contains(entry.getName())
            )
         {
             if (expectedPath != "")
