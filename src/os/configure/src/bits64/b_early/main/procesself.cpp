@@ -46,7 +46,7 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_TEST_ASSERT(header->identification.fileData      == ElfData::LEAST_SIGNIFICANT_BYTE,          0);
         EARLY_TEST_ASSERT(header->identification.version       == ElfFileVersion::CURRENT,                  0);
         EARLY_TEST_ASSERT(header->identification.osAbi         == ElfOsAbi::SYSTEM_V,                       0);
-        EARLY_TEST_ASSERT(header->type                         == ElfType::DYNAMIC_LIBRARY,                 0);
+        EARLY_TEST_ASSERT(header->type                         == ElfType::EXECUTABLE,                      0);
         EARLY_TEST_ASSERT(header->machine                      == ElfMachine::MACHINE_X86_64,               0);
         EARLY_TEST_ASSERT(header->version                      == ElfVersion::CURRENT,                      0);
         EARLY_TEST_ASSERT(header->entryPoint                   == 0xFFFFFFFF80000000,                       0);
@@ -57,8 +57,8 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_TEST_ASSERT(header->programHeaderTableEntrySize  == sizeof(ElfProgramHeaderTableEntry),       0);
         EARLY_TEST_ASSERT(header->programHeaderTableEntryCount == 1,                                        0);
         EARLY_TEST_ASSERT(header->sectionHeaderTableEntrySize  == sizeof(ElfSectionHeaderTableEntry),       0);
-        EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount >= 37,                                       0);
-        EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount <= 38,                                       0);
+        EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount >= 40,                                       0);
+        EARLY_TEST_ASSERT(header->sectionHeaderTableEntryCount <= 41,                                       0);
         EARLY_TEST_ASSERT(header->sectionHeaderTableNamesIndex == header->sectionHeaderTableEntryCount - 1, 0);
     }
 

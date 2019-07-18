@@ -43,8 +43,7 @@ public:
 
 
 
-        u64 *physicalDeltaAddress = (u64 *)(location + (u64)&sPhysicalDelta - (u64)&_start);
-        *physicalDeltaAddress     = location - (u64)&_start;
+        sPhysicalDelta = location - (u64)&_start;
 
 
 

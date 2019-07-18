@@ -88,8 +88,11 @@ _start:                                                                         
 # Jump to virtual address space                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    #movq    $(virtual_address_space), %rax                                      # Put address of virtual_address_space label in virtual address space to RAX
-    #jmp     *%rax                                                               # Jump to virtual_address_space label in virtual address space
+    movq    relocated_virtual_address(%rip), %rax                               # Put address of virtual_address_space label in virtual address space to RAX
+    jmp     *%rax                                                               # Jump to virtual_address_space label in virtual address space
+                                                                                #
+relocated_virtual_address:                                                      # Label that holds address of virtual address space and should be changed during relocation
+    .quad   virtual_address_space                                               # Put address of virtual_address_space label
                                                                                 #
 virtual_address_space:                                                          # Label for jumping to virtual address space
                                                                                 #
