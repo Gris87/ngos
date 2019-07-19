@@ -11,10 +11,11 @@
 
 enum class VolumeType: u8
 {
-    INTERNAL,
-    EXTERNAL,
-    OPTICAL,
-    NETWORK
+    NONE     = 0,
+    INTERNAL = 1,
+    EXTERNAL = 2,
+    OPTICAL  = 3,
+    NETWORK  = 4
 };
 
 
@@ -27,6 +28,7 @@ inline const char* volumeTypeToString(VolumeType type) // TEST: NO
 
     switch (type)
     {
+        case VolumeType::NONE:     return "NONE";
         case VolumeType::INTERNAL: return "INTERNAL";
         case VolumeType::EXTERNAL: return "EXTERNAL";
         case VolumeType::OPTICAL:  return "OPTICAL";

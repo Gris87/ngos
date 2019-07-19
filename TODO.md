@@ -5,6 +5,7 @@ NGOS:
 
 - Provide text representations for all enums
 - Add tests for structure sizes
+- Add tests for enum strings
 - Complete with interruptions
 - Implement boot screen for kernel
 - Per CPU?

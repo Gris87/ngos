@@ -19,11 +19,8 @@ TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
 {
     TEST_CASE("convertToAscii()");
     {
-        char16 temp1[] = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', 0};
-        char16 temp2[] = {'T', 'e', 's', 't', 0};
-
-        char *res1 = UEFI::convertToAscii(temp1);
-        char *res2 = UEFI::convertToAscii(temp2);
+        char *res1 = UEFI::convertToAscii(L"Hello World");
+        char *res2 = UEFI::convertToAscii(L"Test");
 
         TEST_ASSERT_EQUALS(strcmp(res1, "Hello World"), 0);
         TEST_ASSERT_EQUALS(strcmp(res2, "Test"),        0);

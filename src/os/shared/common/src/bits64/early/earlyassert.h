@@ -82,7 +82,7 @@
         \
         if (__exec_result != NgosStatus::OK) \
         { \
-            __EARLY_PRINT_ASSERT(("ASSERT:    %s:%u | Execution \"%s\" failed with error code 0x%016lX", __FILE__, __LINE__, #command, __exec_result)); \
+            __EARLY_PRINT_ASSERT(("ASSERT:    %s:%u | Execution \"%s\" failed with error code 0x%016lX (%s)", __FILE__, __LINE__, #command, __exec_result, ngosStatusToString(__exec_result))); \
             return; \
         } \
     }
@@ -93,7 +93,7 @@
         \
         if (__exec_result != NgosStatus::OK) \
         { \
-            __EARLY_PRINT_ASSERT(("ASSERT:    %s:%u | Execution \"%s\" failed with error code 0x%016lX", __FILE__, __LINE__, #command, __exec_result)); \
+            __EARLY_PRINT_ASSERT(("ASSERT:    %s:%u | Execution \"%s\" failed with error code 0x%016lX (%s)", __FILE__, __LINE__, #command, __exec_result, ngosStatusToString(__exec_result))); \
             return returnValue; \
         } \
     }

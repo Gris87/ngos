@@ -196,7 +196,7 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-char* UEFI::convertToAscii(char16 *str)
+char* UEFI::convertToAscii(const char16 *str)
 {
     UEFI_LT((" | str = 0x%p", str));
 
