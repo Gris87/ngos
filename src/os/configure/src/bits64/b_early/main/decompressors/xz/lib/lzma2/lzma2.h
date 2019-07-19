@@ -44,7 +44,7 @@
 #define STATES 12
 
 // The lowest 7 states indicate that the previous state was a literal.
-#define LIT_STATES 7
+#define LITERAL_STATES 7
 
 // Each literal coder is divided in three sections:
 // - 0x001-0x0FF: Without match byte

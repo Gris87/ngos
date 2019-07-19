@@ -4,6 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <ngos/types.h>
 
 
@@ -21,23 +23,51 @@
 // - Long repeat: Multi-byte match at a recently seen distance
 // - Short repeat: One-byte repeat at a recently seen distance
 //
-// The symbol names are in from STATE_oldest_older_previous. REP means
-// either Short or Long repeated match, and NONLIT means any non-literal.
+// The symbol names are in form: oldest_older_previous. REPEAT means
+// either Short or Long repeated match, and NONLITERAL means any non-literal.
+
 enum class LzmaState: u8
 {
-    STATE_LIT_LIT,
-    STATE_MATCH_LIT_LIT,
-    STATE_REP_LIT_LIT,
-    STATE_SHORTREP_LIT_LIT,
-    STATE_MATCH_LIT,
-    STATE_REP_LIT,
-    STATE_SHORTREP_LIT,
-    STATE_LIT_MATCH,
-    STATE_LIT_LONGREP,
-    STATE_LIT_SHORTREP,
-    STATE_NONLIT_MATCH,
-    STATE_NONLIT_REP
+    LITERAL_LITERAL             = 0,
+    MATCH_LITERAL_LITERAL       = 1,
+    REPEAT_LITERAL_LITERAL      = 2,
+    SHORTREPEAT_LITERAL_LITERAL = 3,
+    MATCH_LITERAL               = 4,
+    REPEAT_LITERAL              = 5,
+    SHORTREPEAT_LITERAL         = 6,
+    LITERAL_MATCH               = 7,
+    LITERAL_LONGREPEAT          = 8,
+    LITERAL_SHORTREPEAT         = 9,
+    NONLITERAL_MATCH            = 10,
+    NONLITERAL_REPEAT           = 11
 };
+
+
+
+inline const char* lzmaStateToString(LzmaState state) // TEST: NO
+{
+    // EARLY_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    switch (state)
+    {
+        case LzmaState::LITERAL_LITERAL:             return "LITERAL_LITERAL";
+        case LzmaState::MATCH_LITERAL_LITERAL:       return "MATCH_LITERAL_LITERAL";
+        case LzmaState::REPEAT_LITERAL_LITERAL:      return "REPEAT_LITERAL_LITERAL";
+        case LzmaState::SHORTREPEAT_LITERAL_LITERAL: return "SHORTREPEAT_LITERAL_LITERAL";
+        case LzmaState::MATCH_LITERAL:               return "MATCH_LITERAL";
+        case LzmaState::REPEAT_LITERAL:              return "REPEAT_LITERAL";
+        case LzmaState::SHORTREPEAT_LITERAL:         return "SHORTREPEAT_LITERAL";
+        case LzmaState::LITERAL_MATCH:               return "LITERAL_MATCH";
+        case LzmaState::LITERAL_LONGREPEAT:          return "LITERAL_LONGREPEAT";
+        case LzmaState::LITERAL_SHORTREPEAT:         return "LITERAL_SHORTREPEAT";
+        case LzmaState::NONLITERAL_MATCH:            return "NONLITERAL_MATCH";
+        case LzmaState::NONLITERAL_REPEAT:           return "NONLITERAL_REPEAT";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

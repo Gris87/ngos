@@ -75,21 +75,21 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
     u8 *currentPointer              = compressedAddress;
 
     StreamHeader *streamHeader    = (StreamHeader *)currentPointer;
-    StreamFlag    typeOfCheckFlag = (StreamFlag)(streamHeader->streamFlags & (xz_stream_flags)StreamFlag::TYPE_OF_CHECK_MASK);
+    StreamFlag    typeOfCheckFlag = (StreamFlag)(streamHeader->streamFlags & TYPE_OF_CHECK_MASK);
 
 
 
     // Validation
     {
         EARLY_LVVV(("streamHeader->signature   = 0x%02X %.4s 0x%02X", streamHeader->signature[0], &streamHeader->signature[1], streamHeader->signature[5]));
-        EARLY_LVVV(("streamHeader->streamFlags = 0x%04X",             streamHeader->streamFlags));
+        EARLY_LVVV(("streamHeader->streamFlags = 0x%04X (%s)",        streamHeader->streamFlags, streamFlagsToString(streamHeader->streamFlags)));
         EARLY_LVVV(("streamHeader->crc32       = 0x%08X",             streamHeader->crc32));
-        EARLY_LVVV(("typeOfCheckFlag           = 0x%04X",             typeOfCheckFlag));
+        EARLY_LVVV(("typeOfCheckFlag           = 0x%04X (%s)",        typeOfCheckFlag, streamFlagToString(typeOfCheckFlag)));
 
 
 
         EARLY_TEST_ASSERT((*((u64 *)streamHeader->signature) & 0xFFFFFFFFFFFF) == XZ_STREAM_HEADER_SIGNATURE,                                                      NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(streamHeader->streamFlags                            == 0x0400,                                                                          NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(streamHeader->streamFlags                            == (xz_stream_flags)StreamFlag::TYPE_OF_CHECK_CRC64,                                NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(streamHeader->crc32                                  == Crc::crc32((u8 *)&streamHeader->streamFlags, sizeof(streamHeader->streamFlags)), NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(typeOfCheckFlag                                      == StreamFlag::TYPE_OF_CHECK_CRC64,                                                 NgosStatus::ASSERTION);
     }
@@ -110,8 +110,8 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            EARLY_LVVV(("blockHeader->blockHeaderSize = %u",     blockHeader->blockHeaderSize));
-            EARLY_LVVV(("blockHeader->blockFlags      = 0x%02X", blockHeader->blockFlags));
+            EARLY_LVVV(("blockHeader->blockHeaderSize = %u", blockHeader->blockHeaderSize));
+            EARLY_LVVV(("blockHeader->blockFlags      = 0x%02X (%s)", blockHeader->blockFlags, blockFlagsToString(blockHeader->blockFlags)));
 
 
 
@@ -152,7 +152,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            u8 numberOfFilters = (blockHeader->blockFlags & (xz_block_flags)BlockFlag::NUMBER_OF_FILTERS_MASK) + 1; // + 1 because numberOfFilters has value 1-4 not 0-3
+            u8 numberOfFilters = (blockHeader->blockFlags & NUMBER_OF_FILTERS_MASK) + 1; // + 1 because numberOfFilters has value 1-4 not 0-3
 
             EARLY_LVVV(("numberOfFilters = %u", numberOfFilters));
 
@@ -307,7 +307,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
             else
             if (typeOfCheckFlag != StreamFlag::NONE)
             {
-                EARLY_LF(("Unsupported type of check 0x%04X", typeOfCheckFlag));
+                EARLY_LF(("Unsupported type of check 0x%04X (%s)", typeOfCheckFlag, streamFlagToString(typeOfCheckFlag)));
 
                 return NgosStatus::NOT_SUPPORTED;
             }
@@ -392,10 +392,10 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             // Validation
             {
-                EARLY_LVVV(("streamFooter->crc32        = 0x%08X",  streamFooter->crc32));
-                EARLY_LVVV(("streamFooter->backwardSize = %u",      streamFooter->backwardSize));
-                EARLY_LVVV(("streamFooter->streamFlags  = 0x%04X",  streamFooter->streamFlags));
-                EARLY_LVVV(("streamFooter->signature    = %.2s",   &streamFooter->signature));
+                EARLY_LVVV(("streamFooter->crc32        = 0x%08X",       streamFooter->crc32));
+                EARLY_LVVV(("streamFooter->backwardSize = %u",           streamFooter->backwardSize));
+                EARLY_LVVV(("streamFooter->streamFlags  = 0x%04X (%s)",  streamFooter->streamFlags, streamFlagsToString(streamFooter->streamFlags)));
+                EARLY_LVVV(("streamFooter->signature    = %.2s",        &streamFooter->signature));
 
 
 

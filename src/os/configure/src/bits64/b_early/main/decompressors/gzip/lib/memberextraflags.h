@@ -22,8 +22,8 @@ typedef u8 gzip_member_extra_flags;
 enum class MemberExtraFlag: gzip_member_extra_flags
 {
     NONE         = 0,
-    DEFLATE_SLOW = 0x02,
-    DEFLATE_FAST = 0x04
+    DEFLATE_SLOW = (1ULL << 1),
+    DEFLATE_FAST = (1ULL << 2)
 };
 
 

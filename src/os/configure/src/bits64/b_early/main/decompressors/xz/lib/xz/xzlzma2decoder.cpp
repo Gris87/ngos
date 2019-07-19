@@ -494,12 +494,12 @@ inline NgosStatus lzmaSetStateLiteral(LzmaState *state)
 
 
 
-    if (*state <= LzmaState::STATE_SHORTREP_LIT_LIT)
+    if (*state <= LzmaState::SHORTREPEAT_LITERAL_LITERAL)
     {
-        *state = LzmaState::STATE_LIT_LIT;
+        *state = LzmaState::LITERAL_LITERAL;
     }
     else
-    if (*state <= LzmaState::STATE_LIT_SHORTREP)
+    if (*state <= LzmaState::LITERAL_SHORTREPEAT)
     {
         *state = (LzmaState)((u8)(*state) - 3);
     }
@@ -507,6 +507,8 @@ inline NgosStatus lzmaSetStateLiteral(LzmaState *state)
     {
         *state = (LzmaState)((u8)(*state) - 6);
     }
+
+    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
 
 
 
@@ -522,7 +524,9 @@ inline NgosStatus lzmaSetStateMatch(LzmaState *state)
 
 
 
-    *state = (u8)(*state) < LIT_STATES ? LzmaState::STATE_LIT_MATCH : LzmaState::STATE_NONLIT_MATCH;
+    *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_MATCH : LzmaState::NONLITERAL_MATCH;
+
+    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
 
 
 
@@ -538,7 +542,9 @@ inline NgosStatus lzmaSetStateLongRepeat(LzmaState *state)
 
 
 
-    *state = (u8)(*state) < LIT_STATES ? LzmaState::STATE_LIT_LONGREP : LzmaState::STATE_NONLIT_REP;
+    *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_LONGREPEAT : LzmaState::NONLITERAL_REPEAT;
+
+    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
 
 
 
@@ -554,7 +560,9 @@ inline NgosStatus lzmaSetStateShortRepeat(LzmaState *state)
 
 
 
-    *state = (u8)(*state) < LIT_STATES ? LzmaState::STATE_LIT_SHORTREP : LzmaState::STATE_NONLIT_REP;
+    *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_SHORTREPEAT : LzmaState::NONLITERAL_REPEAT;
+
+    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
 
 
 
@@ -564,11 +572,11 @@ inline NgosStatus lzmaSetStateShortRepeat(LzmaState *state)
 // Test if the previous symbol was a Literal.
 inline bool lzmaIsLiteralState(LzmaState state)
 {
-    // EARLY_LT((" | state = %d", state)); // Commented to avoid too frequent logs
+    // EARLY_LT((" | state = %u", state)); // Commented to avoid too frequent logs
 
 
 
-    return (u8)state < LIT_STATES;
+    return (u8)state < LITERAL_STATES;
 }
 
 // Get the index of the appropriate probability array for decoding
@@ -880,7 +888,7 @@ NgosStatus lzmaReset(XzLzma2Decoder *decoder)
 
 
 
-    decoder->lzma.state   = LzmaState::STATE_LIT_LIT;
+    decoder->lzma.state   = LzmaState::LITERAL_LITERAL;
     decoder->lzma.repeat0 = 0;
     decoder->lzma.repeat1 = 0;
     decoder->lzma.repeat2 = 0;
@@ -1148,8 +1156,9 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
     while (buffer->inPosition < buffer->inSize || decoder->lzma2.sequence == Lzma2Sequence::SEQ_LZMA_RUN)
     {
-        EARLY_LVVV(("buffer->inPosition = %u", buffer->inPosition));
-        EARLY_LVVV(("buffer->inSize     = %u", buffer->inSize));
+        EARLY_LVVV(("buffer->inPosition      = %u", buffer->inPosition));
+        EARLY_LVVV(("buffer->inSize          = %u", buffer->inSize));
+        EARLY_LVVV(("decoder->lzma2.sequence = %u (%s)", decoder->lzma2.sequence, lzma2SequenceToString(decoder->lzma2.sequence)));
 
 
 
@@ -1157,8 +1166,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
         {
             case Lzma2Sequence::SEQ_CONTROL:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_CONTROL"));
-
                 // LZMA2 control byte
                 //
                 // Exact values:
@@ -1257,8 +1264,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_UNCOMPRESSED_1:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_UNCOMPRESSED_1"));
-
                 decoder->lzma2.uncompressed += (u32)buffer->in[buffer->inPosition++] << 8;
                 decoder->lzma2.sequence     =  Lzma2Sequence::SEQ_UNCOMPRESSED_2;
             }
@@ -1266,8 +1271,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_UNCOMPRESSED_2:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_UNCOMPRESSED_2"));
-
                 decoder->lzma2.uncompressed += (u32)buffer->in[buffer->inPosition++] + 1;
                 decoder->lzma2.sequence     =  Lzma2Sequence::SEQ_COMPRESSED_0;
             }
@@ -1275,8 +1278,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_COMPRESSED_0:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_COMPRESSED_0"));
-
                 decoder->lzma2.compressed = (u32)buffer->in[buffer->inPosition++] << 8;
                 decoder->lzma2.sequence   = Lzma2Sequence::SEQ_COMPRESSED_1;
             }
@@ -1284,8 +1285,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_COMPRESSED_1:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_COMPRESSED_1"));
-
                 decoder->lzma2.compressed += (u32)buffer->in[buffer->inPosition++] + 1;
                 decoder->lzma2.sequence   =  decoder->lzma2.nextSequence;
             }
@@ -1293,8 +1292,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_PROPERTIES:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_PROPERTIES"));
-
                 if (lzmaDecodeProperties(decoder, buffer->in[buffer->inPosition++]) != NgosStatus::OK)
                 {
                     return XzResult::XZ_DATA_ERROR;
@@ -1306,8 +1303,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_LZMA_PREPARE:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_LZMA_PREPARE"));
-
                 if (decoder->lzma2.compressed < RC_INIT_BYTES)
                 {
                     return XzResult::XZ_DATA_ERROR;
@@ -1325,8 +1320,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_LZMA_RUN:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_LZMA_RUN"));
-
                 // Set dictionary limit to indicate how much we want
                 // to be encoded at maximum. Decode new data into the
                 // dictionary. Flush the new data from dictionary to
@@ -1378,8 +1371,6 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_COPY:
             {
-                EARLY_LVVV(("decoder->lzma2.sequence = Lzma2Sequence::SEQ_COPY"));
-
                 EARLY_ASSERT_EXECUTION(dictionaryUncompressed(&decoder->dictionary, buffer, &decoder->lzma2.compressed), XzResult::XZ_DATA_ERROR);
 
                 if (decoder->lzma2.compressed > 0)
@@ -1393,7 +1384,7 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             default:
             {
-                EARLY_LF(("Unknown decoder->lzma2.sequence %d", decoder->lzma2.sequence));
+                EARLY_LF(("Unknown decoder->lzma2.sequence: %u (%s)", decoder->lzma2.sequence, lzma2SequenceToString(decoder->lzma2.sequence)));
 
                 return XzResult::XZ_DATA_ERROR;
             }
