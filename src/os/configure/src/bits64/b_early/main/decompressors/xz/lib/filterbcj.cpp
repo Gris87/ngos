@@ -43,11 +43,11 @@ NgosStatus filterBCJ(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeOfP
 
 
 
-    XzResult res = runXzBcjDecoder(&decoder, &xzBuffer);
+    NgosStatus status = runXzBcjDecoder(&decoder, &xzBuffer);
 
-    if (res != XzResult::XZ_STREAM_END)
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::FAILED;
+        return status;
     }
 
     return NgosStatus::OK;

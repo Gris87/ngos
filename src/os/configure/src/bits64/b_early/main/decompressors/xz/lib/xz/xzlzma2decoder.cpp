@@ -1143,12 +1143,12 @@ NgosStatus lzma2DecodeLzma(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
 // Take care of the LZMA2 control layer, and forward the job of actual LZMA
 // decoding or copying of uncompressed chunks to other functions.
-XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
+NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 {
     EARLY_LT((" | decoder = 0x%p, buffer = 0x%p", decoder, buffer));
 
-    EARLY_ASSERT(decoder, "decoder is null", XzResult::XZ_DATA_ERROR);
-    EARLY_ASSERT(buffer,  "buffer is null",  XzResult::XZ_DATA_ERROR);
+    EARLY_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    EARLY_ASSERT(buffer,  "buffer is null",  NgosStatus::ASSERTION);
 
 
 
@@ -1196,7 +1196,7 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                 // properties and reset the LZMA state.
                 //
                 // Values that don't match anything described above
-                // are invalid and we return XzResult::XZ_DATA_ERROR.
+                // are invalid and we return NgosStatus::INVALID_DATA.
 
                 temp = buffer->in[buffer->inPosition++];
 
@@ -1204,7 +1204,7 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
                 if (!temp) // temp == 0x00
                 {
-                    return XzResult::XZ_STREAM_END;
+                    return NgosStatus::OK;
                 }
 
                 if (temp >= 0xE0 || temp == 0x01)
@@ -1212,12 +1212,12 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                     decoder->lzma2.needProperties      = true;
                     decoder->lzma2.needDictionaryReset = false;
 
-                    EARLY_ASSERT_EXECUTION(dictionaryReset(&decoder->dictionary, buffer), XzResult::XZ_DATA_ERROR);
+                    EARLY_ASSERT_EXECUTION(dictionaryReset(&decoder->dictionary, buffer), NgosStatus::ASSERTION);
                 }
                 else
                 if (decoder->lzma2.needDictionaryReset)
                 {
-                    return XzResult::XZ_DATA_ERROR;
+                    return NgosStatus::INVALID_DATA;
                 }
 
                 if (temp >= 0x80)
@@ -1237,7 +1237,7 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                     else
                     if (decoder->lzma2.needProperties)
                     {
-                        return XzResult::XZ_DATA_ERROR;
+                        return NgosStatus::INVALID_DATA;
                     }
                     else
                     {
@@ -1245,7 +1245,7 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
                         if (temp >= 0xA0)
                         {
-                            EARLY_ASSERT_EXECUTION(lzmaReset(decoder), XzResult::XZ_DATA_ERROR);
+                            EARLY_ASSERT_EXECUTION(lzmaReset(decoder), NgosStatus::ASSERTION);
                         }
                     }
                 }
@@ -1253,7 +1253,7 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                 {
                     if (temp > 0x02)
                     {
-                        return XzResult::XZ_DATA_ERROR;
+                        return NgosStatus::INVALID_DATA;
                     }
 
                     decoder->lzma2.sequence     = Lzma2Sequence::SEQ_COMPRESSED_0;
@@ -1294,7 +1294,7 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
             {
                 if (lzmaDecodeProperties(decoder, buffer->in[buffer->inPosition++]) != NgosStatus::OK)
                 {
-                    return XzResult::XZ_DATA_ERROR;
+                    return NgosStatus::INVALID_DATA;
                 }
 
                 decoder->lzma2.sequence = Lzma2Sequence::SEQ_LZMA_PREPARE;
@@ -1305,12 +1305,12 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
             {
                 if (decoder->lzma2.compressed < RC_INIT_BYTES)
                 {
-                    return XzResult::XZ_DATA_ERROR;
+                    return NgosStatus::INVALID_DATA;
                 }
 
                 if (!rcReadInit(&decoder->rc, buffer))
                 {
-                    return XzResult::XZ_OK;
+                    return NgosStatus::OK;
                 }
 
                 decoder->lzma2.compressed -= RC_INIT_BYTES;
@@ -1328,11 +1328,11 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                 // the output buffer yet, we may run this loop
                 // multiple times without changing decoder->lzma2.sequence.
 
-                EARLY_ASSERT_EXECUTION(dictionaryLimit(&decoder->dictionary, MIN_TYPED(u64, buffer->outSize - buffer->outPosition, decoder->lzma2.uncompressed)), XzResult::XZ_DATA_ERROR);
+                EARLY_ASSERT_EXECUTION(dictionaryLimit(&decoder->dictionary, MIN_TYPED(u64, buffer->outSize - buffer->outPosition, decoder->lzma2.uncompressed)), NgosStatus::ASSERTION);
 
                 if (lzma2DecodeLzma(decoder, buffer) != NgosStatus::OK)
                 {
-                    return XzResult::XZ_DATA_ERROR;
+                    return NgosStatus::INVALID_DATA;
                 }
 
                 decoder->lzma2.uncompressed -= dictionaryFlush(&decoder->dictionary, buffer);
@@ -1347,10 +1347,10 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                         !rcIsFinished(&decoder->rc)
                        )
                     {
-                        return XzResult::XZ_DATA_ERROR;
+                        return NgosStatus::INVALID_DATA;
                     }
 
-                    EARLY_ASSERT_EXECUTION(rcReset(&decoder->rc), XzResult::XZ_DATA_ERROR);
+                    EARLY_ASSERT_EXECUTION(rcReset(&decoder->rc), NgosStatus::ASSERTION);
                     decoder->lzma2.sequence = Lzma2Sequence::SEQ_CONTROL;
                 }
                 else
@@ -1364,18 +1364,18 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                     )
                    )
                 {
-                    return XzResult::XZ_OK;
+                    return NgosStatus::OK;
                 }
             }
             break;
 
             case Lzma2Sequence::SEQ_COPY:
             {
-                EARLY_ASSERT_EXECUTION(dictionaryUncompressed(&decoder->dictionary, buffer, &decoder->lzma2.compressed), XzResult::XZ_DATA_ERROR);
+                EARLY_ASSERT_EXECUTION(dictionaryUncompressed(&decoder->dictionary, buffer, &decoder->lzma2.compressed), NgosStatus::ASSERTION);
 
                 if (decoder->lzma2.compressed > 0)
                 {
-                    return XzResult::XZ_OK;
+                    return NgosStatus::OK;
                 }
 
                 decoder->lzma2.sequence = Lzma2Sequence::SEQ_CONTROL;
@@ -1386,13 +1386,13 @@ XzResult runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
             {
                 EARLY_LF(("Unknown decoder->lzma2.sequence: %u (%s)", decoder->lzma2.sequence, lzma2SequenceToString(decoder->lzma2.sequence)));
 
-                return XzResult::XZ_DATA_ERROR;
+                return NgosStatus::INVALID_DATA;
             }
             break;
         }
     }
 
-    return XzResult::XZ_OK;
+    return NgosStatus::OK;
 }
 
 

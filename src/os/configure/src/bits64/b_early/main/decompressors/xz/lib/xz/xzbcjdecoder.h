@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <ngos/status.h>
 #include <ngos/types.h>
 
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzresult.h"
 
 
 
@@ -23,7 +23,7 @@ struct XzBcjDecoder
 
 
 
-XzResult runXzBcjDecoder(XzBcjDecoder *decoder, XzBuffer *buffer); // TEST: NO
+NgosStatus runXzBcjDecoder(XzBcjDecoder *decoder, XzBuffer *buffer); // TEST: NO
 
 
 

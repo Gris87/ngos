@@ -188,8 +188,6 @@ src/os/configure/src/bits64/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h
 src/os/configure/src/bits64/b_early/main/decompressors/xz/lib/xz/xzbuffer.h
 src/os/configure/src/bits64/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.cpp
 src/os/configure/src/bits64/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h
-src/os/configure/src/bits64/b_early/main/decompressors/xz/lib/xz/xzmode.h
-src/os/configure/src/bits64/b_early/main/decompressors/xz/lib/xz/xzresult.h
 src/os/configure/src/bits64/b_early/main/kernelextraction.cpp
 src/os/configure/src/bits64/b_early/main/procesself.cpp
 src/os/configure/src/bits64/b_early/main/procesself.h

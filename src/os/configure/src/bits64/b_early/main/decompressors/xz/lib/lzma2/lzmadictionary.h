@@ -6,8 +6,6 @@
 #include <buildconfig.h>
 #include <ngos/types.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzmode.h"
-
 
 
 #if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
@@ -57,9 +55,6 @@ struct LzmaDictionary
     // together with "full" to detect corrupt input that would make us
     // read beyond the beginning of the uncompressed stream.
     u32 size;
-
-    // Operation mode
-    XzMode mode;
 };
 
 

@@ -59,7 +59,6 @@ NgosStatus filterLZMA2(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeO
     XzLzma2Decoder decoder;
     XzBuffer       xzBuffer;
 
-    decoder.dictionary.mode           = XzMode::XZ_SINGLE;
     decoder.dictionary.size           = dictionarySize;
     decoder.lzma.length               = 0;
     decoder.lzma2.sequence            = Lzma2Sequence::SEQ_CONTROL;
@@ -75,11 +74,11 @@ NgosStatus filterLZMA2(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeO
 
 
 
-    XzResult res = runXzLzma2Decoder(&decoder, &xzBuffer);
+    NgosStatus status = runXzLzma2Decoder(&decoder, &xzBuffer);
 
-    if (res != XzResult::XZ_STREAM_END)
+    if (status != NgosStatus::OK)
     {
-        return NgosStatus::FAILED;
+        return status;
     }
 
 

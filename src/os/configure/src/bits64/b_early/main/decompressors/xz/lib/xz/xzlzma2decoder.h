@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <ngos/status.h>
 #include <ngos/types.h>
 
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
@@ -12,7 +13,6 @@
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzresult.h"
 
 
 
@@ -46,7 +46,7 @@ struct XzLzma2Decoder
 
 
 
-XzResult runXzLzma2Decoder(XzLzma2Decoder *s, XzBuffer *b); // TEST: NO
+NgosStatus runXzLzma2Decoder(XzLzma2Decoder *s, XzBuffer *b); // TEST: NO
 
 
 

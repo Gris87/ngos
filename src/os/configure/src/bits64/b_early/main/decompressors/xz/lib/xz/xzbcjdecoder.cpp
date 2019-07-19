@@ -149,12 +149,12 @@ u64 bcjX86(XzBcjDecoder *decoder, u8 *buffer, u64 size)
 }
 #endif
 
-XzResult runXzBcjDecoder(XzBcjDecoder *decoder, XzBuffer *buffer)
+NgosStatus runXzBcjDecoder(XzBcjDecoder *decoder, XzBuffer *buffer)
 {
     EARLY_LT((" | decoder = 0x%p, buffer = 0x%p", decoder, buffer));
 
-    EARLY_ASSERT(decoder, "decoder is null", XzResult::XZ_DATA_ERROR);
-    EARLY_ASSERT(buffer,  "buffer is null",  XzResult::XZ_DATA_ERROR);
+    EARLY_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    EARLY_ASSERT(buffer,  "buffer is null",  NgosStatus::ASSERTION);
 
 
 
@@ -164,7 +164,7 @@ XzResult runXzBcjDecoder(XzBcjDecoder *decoder, XzBuffer *buffer)
 
 
 
-    return XzResult::XZ_STREAM_END;
+    return NgosStatus::OK;
 }
 
 
