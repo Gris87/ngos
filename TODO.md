@@ -4,8 +4,8 @@ TODO List
 NGOS:
 
 - Provide text representations for all enums
-- Add tests for structure sizes
-- Add tests for enum strings
+- Replace char with char8
+- Check UEFI_LT in verifier for bootloader
 - Complete with interruptions
 - Implement boot screen for kernel
 - Per CPU?
@@ -24,6 +24,8 @@ Code verifier:
 - Verify for void functions
 - Verify for headers in assembler
 - Verify for function asserts
+- Verify for char type
+- Verify for enum strings
 
 
 

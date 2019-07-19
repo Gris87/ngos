@@ -4,6 +4,11 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
@@ -23,6 +28,49 @@ enum class MemberFlag: gzip_member_flags
     NAME        = (1ULL << 3),
     COMMENT     = (1ULL << 4)
 };
+
+
+
+inline const char* memberFlagToString(MemberFlag flag) // TEST: NO
+{
+    // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    switch (flag)
+    {
+        case MemberFlag::NONE:       return "NONE";
+        case MemberFlag::TEXT:       return "TEXT";
+        case MemberFlag::HEADER_CRC: return "HEADER_CRC";
+        case MemberFlag::EXTRA:      return "EXTRA";
+        case MemberFlag::NAME:       return "NAME";
+        case MemberFlag::COMMENT:    return "COMMENT";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char* memberFlagsToString(gzip_member_flags flags) // TEST: NO
+{
+    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char res[58];
+
+    FLAGS_TO_STRING(res, flags, memberFlagToString, MemberFlag);
+
+    return res;
+}
 
 
 

@@ -36,10 +36,10 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
     {
         EARLY_LVVV(("memberHeader->signature         = 0x%04X",      memberHeader->signature));
         EARLY_LVVV(("memberHeader->compressionMethod = %u (%s)",     memberHeader->compressionMethod, compressionMethodToString(memberHeader->compressionMethod)));
-        EARLY_LVVV(("memberHeader->flags             = 0x%02X",      memberHeader->flags));
+        EARLY_LVVV(("memberHeader->flags             = 0x%02X (%s)", memberHeader->flags, memberFlagsToString(memberHeader->flags)));
         EARLY_LVVV(("memberHeader->modificationTime  = %u",          memberHeader->modificationTime));
         EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X (%s)", memberHeader->extraFlags, memberExtraFlagsToString(memberHeader->extraFlags)));
-        EARLY_LVVV(("memberHeader->operatingSystem   = %u",          memberHeader->operatingSystem));
+        EARLY_LVVV(("memberHeader->operatingSystem   = %u (%s)",     memberHeader->operatingSystem, operatingSystemToString(memberHeader->operatingSystem)));
 
 
 

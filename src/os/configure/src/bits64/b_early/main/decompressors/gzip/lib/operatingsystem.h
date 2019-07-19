@@ -33,6 +33,36 @@ enum class OperatingSystem: u8
 
 
 
+inline const char* operatingSystemToString(OperatingSystem system) // TEST: NO
+{
+    // EARLY_LT((" | system = %u", system)); // Commented to avoid bad looking logs
+
+
+
+    switch (system)
+    {
+        case OperatingSystem::FAT_FILESYSTEM:  return "FAT_FILESYSTEM";
+        case OperatingSystem::AMIGA:           return "AMIGA";
+        case OperatingSystem::VMS:             return "VMS";
+        case OperatingSystem::UNIX:            return "UNIX";
+        case OperatingSystem::VM_CMS:          return "VM_CMS";
+        case OperatingSystem::ATARI_TOS:       return "ATARI_TOS";
+        case OperatingSystem::HPFS_FILESYSTEM: return "HPFS_FILESYSTEM";
+        case OperatingSystem::MACINTOSH:       return "MACINTOSH";
+        case OperatingSystem::Z_SYSTEM:        return "Z_SYSTEM";
+        case OperatingSystem::CP_M:            return "CP_M";
+        case OperatingSystem::TOPS_20:         return "TOPS_20";
+        case OperatingSystem::NTFS_FILESYSTEM: return "NTFS_FILESYSTEM";
+        case OperatingSystem::QDOS:            return "QDOS";
+        case OperatingSystem::ACORN_RISCOS:    return "ACORN_RISCOS";
+        case OperatingSystem::UNKNOWN:         return "UNKNOWN";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif
 
 

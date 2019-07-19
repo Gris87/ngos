@@ -8,6 +8,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
@@ -60,45 +61,7 @@ inline const char* memberExtraFlagsToString(gzip_member_extra_flags flags) // TE
 
     static char res[43];
 
-    char *cur = res;
-    *cur      = 0;
-
-    u8 unknownCount = 0;
-
-
-
-    for (i64 i = 0; i < (i64)(sizeof(flags) << 3); ++i) // "<< 3" == "* 8"
-    {
-        u64 flag = (1ULL << i);
-
-        if (flags & flag)
-        {
-            const char *flagString = memberExtraFlagToString((MemberExtraFlag)flag);
-
-            if (!strcmp(flagString, "UNKNOWN")) // strcmp(flagString, "UNKNOWN") == 0
-            {
-                ++unknownCount;
-            }
-            else
-            {
-                if (cur != res)
-                {
-                    cur = strapp(cur, " | ");
-                }
-
-                cur = strapp(cur, flagString);
-            }
-        }
-    }
-
-
-
-    if (unknownCount) // unknownCount != 0
-    {
-        sprintf(cur, " | UNKNOWN x %u", unknownCount);
-    }
-
-
+    FLAGS_TO_STRING(res, flags, memberExtraFlagToString, MemberExtraFlag);
 
     return res;
 }

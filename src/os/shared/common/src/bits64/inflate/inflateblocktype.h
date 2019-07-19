@@ -3,17 +3,36 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
 #include <ngos/types.h>
 
 
 
 enum class InflateBlockType: u8
 {
-    NO_COMPRESSION,
-    COMPRESSED_FIXED_HUFFMAN,
-    COMPRESSED_DYNAMIC_HUFFMAN,
-    UNKNOWN
+    NO_COMPRESSION             = 0,
+    COMPRESSED_FIXED_HUFFMAN   = 1,
+    COMPRESSED_DYNAMIC_HUFFMAN = 2
 };
+
+
+
+inline const char* inflateBlockTypeToString(InflateBlockType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case InflateBlockType::NO_COMPRESSION:             return "NO_COMPRESSION";
+        case InflateBlockType::COMPRESSED_FIXED_HUFFMAN:   return "COMPRESSED_FIXED_HUFFMAN";
+        case InflateBlockType::COMPRESSED_DYNAMIC_HUFFMAN: return "COMPRESSED_DYNAMIC_HUFFMAN";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

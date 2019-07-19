@@ -48,4 +48,61 @@
 
 
 
+#define FLAGS_TO_STRING(res, flags, typeToString, type) \
+    { \
+        char *cur = res; \
+        *cur      = 0; \
+        \
+        u8 unknownCount = 0; \
+        \
+        \
+        \
+        for (i64 i = 0; i < (i64)(sizeof(flags) << 3); ++i) \
+        { \
+            u64 flag = (1ULL << i); \
+            \
+            if (flags & flag) \
+            { \
+                const char *flagString = typeToString((type)flag); \
+                \
+                if (!strcmp(flagString, "UNKNOWN")) \
+                { \
+                    ++unknownCount; \
+                } \
+                else \
+                { \
+                    if (cur != res) \
+                    { \
+                        cur = strapp(cur, " | "); \
+                    } \
+                    \
+                    cur = strapp(cur, flagString); \
+                } \
+            } \
+        } \
+        \
+        \
+        \
+        if (unknownCount) \
+        { \
+            if (cur != res) \
+            { \
+                cur = strapp(cur, " | "); \
+            } \
+            \
+            \
+            \
+            if (unknownCount == 1) \
+            { \
+                strapp(cur, "UNKNOWN"); \
+            } \
+            else \
+            { \
+                sprintf(cur, "UNKNOWN x %u", unknownCount); \
+            } \
+        } \
+    }
+
+
+
 #endif // NGOS_LINKAGE_H
