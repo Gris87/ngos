@@ -76,6 +76,8 @@
                         cur = strapp(cur, " | "); \
                     } \
                     \
+                    \
+                    \
                     cur = strapp(cur, flagString); \
                 } \
             } \
