@@ -58,7 +58,7 @@ inline const char* memberExtraFlagsToString(gzip_member_extra_flags flags) // TE
 
 
 
-    static char res[45];
+    static char res[43];
 
     char *cur = res;
     *cur      = 0;
@@ -67,7 +67,7 @@ inline const char* memberExtraFlagsToString(gzip_member_extra_flags flags) // TE
 
 
 
-    for (i64 i = 0; i < sizeof(flags) << 3; ++i) // "<< 3" == "* 8"
+    for (i64 i = 0; i < (i64)(sizeof(flags) << 3); ++i) // "<< 3" == "* 8"
     {
         u64 flag = (1ULL << i);
 
@@ -95,7 +95,7 @@ inline const char* memberExtraFlagsToString(gzip_member_extra_flags flags) // TE
 
     if (unknownCount) // unknownCount != 0
     {
-        sprintf(cur, " | (UNKNOWN x %u)", unknownCount);
+        sprintf(cur, " | UNKNOWN x %u", unknownCount);
     }
 
 

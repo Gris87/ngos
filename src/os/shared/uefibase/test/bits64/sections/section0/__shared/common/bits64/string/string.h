@@ -27,9 +27,9 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
 
     TEST_CASE("strlen()");
     {
-        TEST_ASSERT_EQUALS(strlen(L""),         0);
-        TEST_ASSERT_EQUALS(strlen(L"abcd"),     4);
-        TEST_ASSERT_EQUALS(strlen(L"abcdefgh"), 8);
+        TEST_ASSERT_EQUALS(strlen(u""),         0);
+        TEST_ASSERT_EQUALS(strlen(u"abcd"),     4);
+        TEST_ASSERT_EQUALS(strlen(u"abcdefgh"), 8);
     }
     TEST_CASE_END();
 
@@ -53,15 +53,15 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
 
     TEST_CASE("strnlen()");
     {
-        TEST_ASSERT_EQUALS(strnlen(L"abcd", 0),  0);
-        TEST_ASSERT_EQUALS(strnlen(L"abcd", 1),  1);
-        TEST_ASSERT_EQUALS(strnlen(L"abcd", 5),  4);
-        TEST_ASSERT_EQUALS(strnlen(L"abcd", -1), 4);
+        TEST_ASSERT_EQUALS(strnlen(u"abcd", 0),  0);
+        TEST_ASSERT_EQUALS(strnlen(u"abcd", 1),  1);
+        TEST_ASSERT_EQUALS(strnlen(u"abcd", 5),  4);
+        TEST_ASSERT_EQUALS(strnlen(u"abcd", -1), 4);
 
-        TEST_ASSERT_EQUALS(strnlen(L"abcdefgh", 0),  0);
-        TEST_ASSERT_EQUALS(strnlen(L"abcdefgh", 3),  3);
-        TEST_ASSERT_EQUALS(strnlen(L"abcdefgh", 10), 8);
-        TEST_ASSERT_EQUALS(strnlen(L"abcdefgh", -1), 8);
+        TEST_ASSERT_EQUALS(strnlen(u"abcdefgh", 0),  0);
+        TEST_ASSERT_EQUALS(strnlen(u"abcdefgh", 3),  3);
+        TEST_ASSERT_EQUALS(strnlen(u"abcdefgh", 10), 8);
+        TEST_ASSERT_EQUALS(strnlen(u"abcdefgh", -1), 8);
     }
     TEST_CASE_END();
 

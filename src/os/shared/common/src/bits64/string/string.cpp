@@ -97,8 +97,8 @@ i8 strcmp(const char *str1, const char *str2)
 
     do
     {
-        char c1 = *str1;
-        char c2 = *str2;
+        u8 c1 = *str1;
+        u8 c2 = *str2;
 
         if (c1 != c2)
         {
@@ -135,8 +135,8 @@ i8 strncmp(const char *str1, const char *str2, i64 length)
 
     while (length) // length != 0
     {
-        char c1 = *str1;
-        char c2 = *str2;
+        u8 c1 = *str1;
+        u8 c2 = *str2;
 
         if (c1 != c2)
         {
