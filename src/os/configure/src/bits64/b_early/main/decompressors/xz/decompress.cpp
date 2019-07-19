@@ -110,7 +110,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            EARLY_LVVV(("blockHeader->blockHeaderSize = %u", blockHeader->blockHeaderSize));
+            EARLY_LVVV(("blockHeader->blockHeaderSize = %u",          blockHeader->blockHeaderSize));
             EARLY_LVVV(("blockHeader->blockFlags      = 0x%02X (%s)", blockHeader->blockFlags, blockFlagsToString(blockHeader->blockFlags)));
 
 
