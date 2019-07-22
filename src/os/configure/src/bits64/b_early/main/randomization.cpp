@@ -9,6 +9,7 @@
 
 #include "src/bits64/b_early/other/memoryarea.h"
 #include "src/bits64/b_early/other/pagetable/pagetable.h"
+#include "src/bits64/b_early/other/unavailablememoryarea.h"
 
 
 
@@ -19,19 +20,6 @@
 #define PRIME_NUMBER_2         0x7FFFFFFFFFFFFF5B
 #define PRIME_NUMBER_3         0x7FFFFFFFFFFFFEFD
 #define PRIME_NUMBER_4         2017
-
-
-
-enum class UnavailableMemoryArea: u8
-{
-    MEMORY_AREA_ZERO_PAGE,
-    MEMORY_AREA_BOOT_PARAMS,
-    MEMORY_AREA_RELOCATED_KERNEL,
-    MEMORY_AREA_UEFI_MEMORY_MAP,
-    MEMORY_AREA_MEMORY_MAP,
-    MEMORY_AREA_VIDEO_RAM,
-    AMOUNT_OF_MEMORY_AREAS
-};
 
 
 
@@ -172,9 +160,9 @@ inline NgosStatus addUnavailableMemoryArea(MemoryArea *areas, UnavailableMemoryA
 {
     EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016lx, size = 0x%016lx, addToIdentityMap = %u", areas, areaId, address, size, addToIdentityMap));
 
-    EARLY_ASSERT(areas,                                                            "areas is null",     NgosStatus::ASSERTION);
-    EARLY_ASSERT((u64)areaId < (u64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS, "areaId is invalid", NgosStatus::ASSERTION);
-    EARLY_ASSERT(size > 0,                                                         "size is zero",      NgosStatus::ASSERTION);
+    EARLY_ASSERT(areas,                                             "areas is null",     NgosStatus::ASSERTION);
+    EARLY_ASSERT((u64)areaId < (u64)UnavailableMemoryArea::MAXIMUM, "areaId is invalid", NgosStatus::ASSERTION);
+    EARLY_ASSERT(size > 0,                                          "size is zero",      NgosStatus::ASSERTION);
 
 
 
@@ -202,12 +190,12 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 
 
 
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_ZERO_PAGE,        0,                                  PMD_SIZE,                                                          false), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_BOOT_PARAMS,      (u64)params,                        sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_RELOCATED_KERNEL, params->header.kernelLocation,      params->header.allocatedKernelSize,                                true),  NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_UEFI_MEMORY_MAP,  (u64)params->uefi.memoryMap.map,    params->uefi.memoryMap.size,                                       false), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_MEMORY_MAP,       (u64)params->memoryMapEntries,      params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_AREA_VIDEO_RAM,        params->screenInfo.frameBufferBase, params->screenInfo.frameBufferSize,                                true),  NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::ZERO_PAGE,        0,                                  PMD_SIZE,                                                          false), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::BOOT_PARAMS,      (u64)params,                        sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::RELOCATED_KERNEL, params->header.kernelLocation,      params->header.allocatedKernelSize,                                true),  NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::UEFI_MEMORY_MAP,  (u64)params->uefi.memoryMap.map,    params->uefi.memoryMap.size,                                       false), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_MAP,       (u64)params->memoryMapEntries,      params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::VIDEO_RAM,        params->screenInfo.frameBufferBase, params->screenInfo.frameBufferSize,                                true),  NgosStatus::ASSERTION);
 
     // We don't need to include params->pciRomImages to areas
 
@@ -218,9 +206,9 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
         EARLY_LVVV(("Unavailable memory areas:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (i64 i = 0; i < (i64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS; ++i)
+        for (i64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
         {
-            EARLY_LVVV(("#%-3d: 0x%p-0x%p", i, areas[i].start, areas[i].end));
+            EARLY_LVVV(("#%-16s: 0x%p-0x%p", unavailableMemoryAreaToString((UnavailableMemoryArea)i), areas[i].start, areas[i].end));
         }
 
         EARLY_LVVV(("params->pciRomImages:"));

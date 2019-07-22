@@ -9,10 +9,24 @@
 
 enum class ElfClass: u8
 {
-    NONE,
-    CLASS_32,
-    CLASS_64
+    NONE     = 0,
+    CLASS_32 = 1,
+    CLASS_64 = 2
 };
+
+
+
+inline const char* elfClassToString(ElfClass elfClass) // TEST: NO
+{
+    switch (elfClass)
+    {
+        case ElfClass::NONE:     return "NONE";
+        case ElfClass::CLASS_32: return "CLASS_32";
+        case ElfClass::CLASS_64: return "CLASS_64";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

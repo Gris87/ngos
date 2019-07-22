@@ -198,6 +198,7 @@ src/os/configure/src/bits64/b_early/other/pagetable/asm_switchtofivelevelpaging.
 src/os/configure/src/bits64/b_early/other/pagetable/pageallocationcontext.h
 src/os/configure/src/bits64/b_early/other/pagetable/pagetable.cpp
 src/os/configure/src/bits64/b_early/other/pagetable/pagetable.h
+src/os/configure/src/bits64/b_early/other/unavailablememoryarea.h
 src/os/configure/src/bits64/other/asm/generated/asmoffsets.h
 src/os/configure/src/bits64/other/configuredefines.h
 src/os/configure/src/bits64/other/kerneldescriptor.h

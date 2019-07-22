@@ -9,9 +9,22 @@
 
 enum class ElfFileVersion: u8
 {
-    NONE,
-    CURRENT
+    NONE    = 0,
+    CURRENT = 1
 };
+
+
+
+inline const char* elfFileVersionToString(ElfFileVersion version) // TEST: NO
+{
+    switch (version)
+    {
+        case ElfFileVersion::NONE:    return "NONE";
+        case ElfFileVersion::CURRENT: return "CURRENT";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

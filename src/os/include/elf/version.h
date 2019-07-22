@@ -9,9 +9,22 @@
 
 enum class ElfVersion: u32
 {
-    NONE,
-    CURRENT
+    NONE    = 0,
+    CURRENT = 1
 };
+
+
+
+inline const char* elfVersionToString(ElfVersion version) // TEST: NO
+{
+    switch (version)
+    {
+        case ElfVersion::NONE:    return "NONE";
+        case ElfVersion::CURRENT: return "CURRENT";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

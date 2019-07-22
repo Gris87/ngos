@@ -9,23 +9,50 @@
 
 enum class ElfMachine: u16
 {
-    NONE                = 0x00,
-    MACHINE_M32         = 0x01,
-    MACHINE_SPARC       = 0x02,
-    MACHINE_X86         = 0x03,
-    MACHINE_68K         = 0x04,
-    MACHINE_88K         = 0x05,
-    MACHINE_860         = 0x07,
-    MACHINE_MIPS        = 0x08,
-    MACHINE_POWER_PC    = 0x14,
-    MACHINE_S390        = 0x16,
-    MACHINE_ARM         = 0x28,
-    MACHINE_SUPERH      = 0x2A,
-    MACHINE_IA_64       = 0x32,
-    MACHINE_X86_64      = 0x3E,
-    MACHINE_AARCH64     = 0xB7,
-    MACHINE_RISC_V      = 0xF3
+    NONE             = 0x0000,
+    MACHINE_M32      = 0x0001,
+    MACHINE_SPARC    = 0x0002,
+    MACHINE_X86      = 0x0003,
+    MACHINE_68K      = 0x0004,
+    MACHINE_88K      = 0x0005,
+    MACHINE_860      = 0x0007,
+    MACHINE_MIPS     = 0x0008,
+    MACHINE_POWER_PC = 0x0014,
+    MACHINE_S390     = 0x0016,
+    MACHINE_ARM      = 0x0028,
+    MACHINE_SUPERH   = 0x002A,
+    MACHINE_IA_64    = 0x0032,
+    MACHINE_X86_64   = 0x003E,
+    MACHINE_AARCH64  = 0x00B7,
+    MACHINE_RISC_V   = 0x00F3
 };
+
+
+
+inline const char* elfMachineToString(ElfMachine machine) // TEST: NO
+{
+    switch (machine)
+    {
+        case ElfMachine::NONE:             return "NONE";
+        case ElfMachine::MACHINE_M32:      return "MACHINE_M32";
+        case ElfMachine::MACHINE_SPARC:    return "MACHINE_SPARC";
+        case ElfMachine::MACHINE_X86:      return "MACHINE_X86";
+        case ElfMachine::MACHINE_68K:      return "MACHINE_68K";
+        case ElfMachine::MACHINE_88K:      return "MACHINE_88K";
+        case ElfMachine::MACHINE_860:      return "MACHINE_860";
+        case ElfMachine::MACHINE_MIPS:     return "MACHINE_MIPS";
+        case ElfMachine::MACHINE_POWER_PC: return "MACHINE_POWER_PC";
+        case ElfMachine::MACHINE_S390:     return "MACHINE_S390";
+        case ElfMachine::MACHINE_ARM:      return "MACHINE_ARM";
+        case ElfMachine::MACHINE_SUPERH:   return "MACHINE_SUPERH";
+        case ElfMachine::MACHINE_IA_64:    return "MACHINE_IA_64";
+        case ElfMachine::MACHINE_X86_64:   return "MACHINE_X86_64";
+        case ElfMachine::MACHINE_AARCH64:  return "MACHINE_AARCH64";
+        case ElfMachine::MACHINE_RISC_V:   return "MACHINE_RISC_V";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

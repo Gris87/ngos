@@ -9,10 +9,24 @@
 
 enum class ElfData: u8
 {
-    NONE,
-    LEAST_SIGNIFICANT_BYTE,
-    MOST_SIGNIFICANT_BYTE
+    NONE                   = 0,
+    LEAST_SIGNIFICANT_BYTE = 1 ,
+    MOST_SIGNIFICANT_BYTE  = 2
 };
+
+
+
+inline const char* elfDataToString(ElfData data) // TEST: NO
+{
+    switch (data)
+    {
+        case ElfData::NONE:                   return "NONE";
+        case ElfData::LEAST_SIGNIFICANT_BYTE: return "LEAST_SIGNIFICANT_BYTE";
+        case ElfData::MOST_SIGNIFICANT_BYTE:  return "MOST_SIGNIFICANT_BYTE";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 
