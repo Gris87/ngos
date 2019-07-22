@@ -389,6 +389,7 @@ src/os/shared/common/src/bits64/fpu/xfeature/xfeaturempxboundconfigandstatusregi
 src/os/shared/common/src/bits64/fpu/xfeature/xfeaturempxboundregistersstate.h
 src/os/shared/common/src/bits64/fpu/xfeature/xfeaturepkrustate.h
 src/os/shared/common/src/bits64/fpu/xfeatureflags.h
+src/os/shared/common/src/bits64/fpu/xfeaturetypeflags.h
 src/os/shared/common/src/bits64/fpu/xsavestate.h
 src/os/shared/common/src/bits64/fpu/xstateheader.h
 src/os/shared/common/src/bits64/graphics/bmp/bmp.cpp

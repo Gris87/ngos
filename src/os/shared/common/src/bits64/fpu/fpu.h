@@ -21,23 +21,22 @@ private:
     static NgosStatus initStateSizes(); // TEST: NO
     static NgosStatus copyStateFromFPU(); // TEST: NO
     static NgosStatus copyStateToFPU(); // TEST: NO
-    static const char* getFeatureName(u8 xFeature); // TEST: NO
-    static bool isXFeatureSupervisor(u8 xFeature); // TEST: NO
-    static bool isXFeatureUser(u8 xFeature); // TEST: NO
-    static bool isXFeatureAligned(u8 xFeature); // TEST: NO
+    static bool isXFeatureSupervisor(XFeature xFeature); // TEST: NO
+    static bool isXFeatureUser(XFeature xFeature); // TEST: NO
+    static bool isXFeatureAligned(XFeature xFeature); // TEST: NO
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
     static u32 expectedStateSize(); // TEST: NO
 #endif
 
-    static FpuState              sState;
-    static u32                   sStateKernelSize;
-    static u32                   sStateUserSize;
-    static u32                   sMxcsrMask;
-    static x_features_type_flags sXFeaturesMask;
-    static u32                   sXFeaturesOffsets[XFEATURE_MAX];
-    static u32                   sXFeaturesCompactedOffsets[XFEATURE_MAX];
-    static u32                   sXFeaturesSizes[XFEATURE_MAX];
+    static FpuState             sState;
+    static u32                  sStateKernelSize;
+    static u32                  sStateUserSize;
+    static u32                  sMxcsrMask;
+    static x_feature_type_flags sXFeatures;
+    static u32                  sXFeaturesOffsets[(u64)XFeature::MAXIMUM];
+    static u32                  sXFeaturesCompactedOffsets[(u64)XFeature::MAXIMUM];
+    static u32                  sXFeaturesSizes[(u64)XFeature::MAXIMUM];
 };
 
 

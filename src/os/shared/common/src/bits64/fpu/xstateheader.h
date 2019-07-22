@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/bits64/fpu/xfeature.h>
+#include <common/src/bits64/fpu/xfeaturetypeflags.h>
 #include <ngos/types.h>
 
 
@@ -15,9 +15,9 @@
 
 struct XStateHeader
 {
-    x_features_type_flags xFeatures;
-    u64                   xComponents;
-    u64                   __reserved[6];
+    x_feature_type_flags xFeatures;
+    u64                  xComponents;
+    u64                  __reserved[6];
 } __attribute__((packed));
 
 

@@ -21,14 +21,14 @@
 
 
 
-FpuState              FPU::sState;
-u32                   FPU::sStateKernelSize;
-u32                   FPU::sStateUserSize;
-u32                   FPU::sMxcsrMask;
-x_features_type_flags FPU::sXFeaturesMask;
-u32                   FPU::sXFeaturesOffsets[XFEATURE_MAX];
-u32                   FPU::sXFeaturesCompactedOffsets[XFEATURE_MAX];
-u32                   FPU::sXFeaturesSizes[XFEATURE_MAX];
+FpuState             FPU::sState;
+u32                  FPU::sStateKernelSize;
+u32                  FPU::sStateUserSize;
+u32                  FPU::sMxcsrMask;
+x_feature_type_flags FPU::sXFeatures;
+u32                  FPU::sXFeaturesOffsets[(u64)XFeature::MAXIMUM];
+u32                  FPU::sXFeaturesCompactedOffsets[(u64)XFeature::MAXIMUM];
+u32                  FPU::sXFeaturesSizes[(u64)XFeature::MAXIMUM];
 
 
 
@@ -75,9 +75,9 @@ NgosStatus FPU::init()
         COMMON_LVVV(("sStateKernelSize                = %u",       sStateKernelSize));
         COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
         COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));
-        COMMON_LVVV(("sXFeaturesMask                  = 0x%016lX", sXFeaturesMask));
+        COMMON_LVVV(("sXFeatures                      = 0x%016lX", sXFeatures));
 
-        for (i64 i = 0; i < XFEATURE_MAX; ++i)
+        for (i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {
             COMMON_LVVV(("sXFeaturesOffsets[%d]          = 0x%08X", i, sXFeaturesOffsets[i]));
             COMMON_LVVV(("sXFeaturesCompactedOffsets[%d] = 0x%08X", i, sXFeaturesCompactedOffsets[i]));
@@ -149,7 +149,7 @@ NgosStatus FPU::init()
         // COMMON_TEST_ASSERT(sStateKernelSize                == 2696,               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sStateUserSize                  == 2696,               NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sMxcsrMask                         == 0x0000FFFF,         NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sXFeaturesMask                  == 0x000000000000021B, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeatures                      == 0x000000000000021B, NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sXFeaturesOffsets[0]               == 0x00000000,         NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[0]      == 0x00000000,         NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sXFeaturesSizes[0]                 == 0x000000A0,         NgosStatus::ASSERTION);
@@ -246,9 +246,9 @@ NgosStatus FPU::initXState()
     u32 ignored;
 
     COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, 0, &eax, &ignored, &ignored, &edx), NgosStatus::ASSERTION);
-    sXFeaturesMask = eax | ((u64)edx << 32);
+    sXFeatures = eax | ((u64)edx << 32);
 
-    COMMON_TEST_ASSERT((sXFeaturesMask & XFEATURE_MASK_FPU_SSE) == XFEATURE_MASK_FPU_SSE, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((sXFeatures & XFEATURE_MASK_FPU_SSE) == XFEATURE_MASK_FPU_SSE, NgosStatus::ASSERTION);
 
 
 
@@ -257,12 +257,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::AVX)
             &&
-            (sXFeaturesMask & (x_features_type_flags)XFeature::AVX)
+            (sXFeatures & (x_feature_type_flags)XFeatureTypeFlag::AVX)
            )
         {
             COMMON_LVV(("Disabling XFeature::AVX since X86Feature::AVX not supported"));
 
-            sXFeaturesMask &= ~(x_features_type_flags)XFeature::AVX;
+            sXFeatures &= ~(x_feature_type_flags)XFeatureTypeFlag::AVX;
         }
 
 
@@ -270,12 +270,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::MPX)
             &&
-            (sXFeaturesMask & ((x_features_type_flags)XFeature::MPX_BOUND_REGISTERS | (x_features_type_flags)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS))
+            (sXFeatures & ((x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_REGISTERS | (x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS))
            )
         {
             COMMON_LVV(("Disabling XFeature::MPX_BOUND_REGISTERS and XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS since X86Feature::MPX not supported"));
 
-            sXFeaturesMask &= ~((x_features_type_flags)XFeature::MPX_BOUND_REGISTERS | (x_features_type_flags)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS);
+            sXFeatures &= ~((x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_REGISTERS | (x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS);
         }
 
 
@@ -283,12 +283,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::AVX512F)
             &&
-            (sXFeaturesMask & ((x_features_type_flags)XFeature::AVX512_OPMASK | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_0_TO_15 | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_16_TO_31))
+            (sXFeatures & ((x_feature_type_flags)XFeatureTypeFlag::AVX512_OPMASK | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15 | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31))
            )
         {
             COMMON_LVV(("Disabling XFeature::AVX512_OPMASK, XFeature::AVX512_ZMM_FROM_0_TO_15 and XFeature::AVX512_ZMM_FROM_16_TO_31 since X86Feature::AVX512F not supported"));
 
-            sXFeaturesMask &= ~((x_features_type_flags)XFeature::AVX512_OPMASK | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_0_TO_15 | (x_features_type_flags)XFeature::AVX512_ZMM_FROM_16_TO_31);
+            sXFeatures &= ~((x_feature_type_flags)XFeatureTypeFlag::AVX512_OPMASK | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15 | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31);
         }
 
 
@@ -296,12 +296,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::INTEL_PT)
             &&
-            (sXFeaturesMask & (x_features_type_flags)XFeature::PT)
+            (sXFeatures & (x_feature_type_flags)XFeatureTypeFlag::PT)
            )
         {
             COMMON_LVV(("Disabling XFeature::PT since X86Feature::INTEL_PT not supported"));
 
-            sXFeaturesMask &= ~(x_features_type_flags)XFeature::PT;
+            sXFeatures &= ~(x_feature_type_flags)XFeatureTypeFlag::PT;
         }
 
 
@@ -309,27 +309,27 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::PKU)
             &&
-            (sXFeaturesMask & (x_features_type_flags)XFeature::PKRU)
+            (sXFeatures & (x_feature_type_flags)XFeatureTypeFlag::PKRU)
            )
         {
             COMMON_LVV(("Disabling XFeature::PKRU since X86Feature::PKU not supported"));
 
-            sXFeaturesMask &= ~(x_features_type_flags)XFeature::PKRU;
+            sXFeatures &= ~(x_feature_type_flags)XFeatureTypeFlag::PKRU;
         }
     }
 
 
 
-    if (sXFeaturesMask & XFEATURE_MASK_SUPERVISOR)
+    if (sXFeatures & XFEATURE_MASK_SUPERVISOR)
     {
         COMMON_LVV(("Disabling X features that required in supervisor"));
 
-        sXFeaturesMask &= ~XFEATURE_MASK_SUPERVISOR;
+        sXFeatures &= ~XFEATURE_MASK_SUPERVISOR;
     }
 
 
 
-    COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeaturesMask), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures), NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(initXFeaturesOffsetsAndSizes(), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(initStateSizes(),               NgosStatus::ASSERTION);
@@ -351,17 +351,19 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
     u32 lastGoodOffset = sizeof(FXSaveState) + sizeof(XStateHeader);
 #endif
 
-    sXFeaturesOffsets[XFEATURE_FPU] = 0;
-    sXFeaturesSizes[XFEATURE_FPU]   = sizeof(FXSaveState) - sizeof(FXSaveState::xmm) - sizeof(FXSaveState::__reserved) - sizeof(FXSaveState::__pad);
+    sXFeaturesOffsets[(u64)XFeature::FPU] = 0;
+    sXFeaturesSizes[(u64)XFeature::FPU]   = sizeof(FXSaveState) - sizeof(FXSaveState::xmm) - sizeof(FXSaveState::__reserved) - sizeof(FXSaveState::__pad);
 
-    sXFeaturesOffsets[XFEATURE_SSE] = sXFeaturesSizes[XFEATURE_FPU];
-    sXFeaturesSizes[XFEATURE_SSE]   = sizeof(FXSaveState::xmm);
+    sXFeaturesOffsets[(u64)XFeature::SSE] = sXFeaturesSizes[(u64)XFeature::FPU];
+    sXFeaturesSizes[(u64)XFeature::SSE]   = sizeof(FXSaveState::xmm);
 
 
 
-    for (i64 i = XFEATURE_SSE + 1; i < XFEATURE_MAX; ++i)
+    for (i64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
     {
-        if (sXFeaturesMask & (1ULL << i))
+        XFeature feature = (XFeature)i;
+
+        if (sXFeatures & (1ULL << i))
         {
             u32 ignored;
 
@@ -370,9 +372,9 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
-            if (isXFeatureSupervisor(i))
+            if (isXFeatureSupervisor(feature))
             {
-                COMMON_LF(("Can't get offset of X feature %s", getFeatureName(i)));
+                COMMON_LF(("Can't get offset of X feature %s", xFeatureToString(feature)));
 
                 sXFeaturesOffsets[i] = 0;
             }
@@ -392,17 +394,19 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
-        sXFeaturesCompactedOffsets[XFEATURE_FPU]     = sXFeaturesOffsets[XFEATURE_FPU];
-        sXFeaturesCompactedOffsets[XFEATURE_SSE]     = sXFeaturesOffsets[XFEATURE_SSE];
-        sXFeaturesCompactedOffsets[XFEATURE_SSE + 1] = sizeof(FXSaveState) + sizeof(XStateHeader);
+        sXFeaturesCompactedOffsets[(u64)XFeature::FPU]     = sXFeaturesOffsets[(u64)XFeature::FPU];
+        sXFeaturesCompactedOffsets[(u64)XFeature::SSE]     = sXFeaturesOffsets[(u64)XFeature::SSE];
+        sXFeaturesCompactedOffsets[(u64)XFeature::SSE + 1] = sizeof(FXSaveState) + sizeof(XStateHeader);
 
-        for (i64 i = XFEATURE_SSE + 2; i < XFEATURE_MAX; ++i)
+        for (i64 i = (i64)XFeature::SSE + 2; i < (i64)XFeature::MAXIMUM; ++i)
         {
+            XFeature feature = (XFeature)i;
+
             sXFeaturesCompactedOffsets[i] = sXFeaturesCompactedOffsets[i - 1] + sXFeaturesSizes[i - 1];
 
-            if (isXFeatureAligned(i))
+            if (isXFeatureAligned(feature))
             {
-                COMMON_LVV(("X feature %s should be aligned to 64 bytes", getFeatureName(i)));
+                COMMON_LVV(("X feature %s should be aligned to 64 bytes", xFeatureToString(feature)));
 
                 sXFeaturesCompactedOffsets[i] = ROUND_UP(sXFeaturesCompactedOffsets[i], 64);
             }
@@ -473,7 +477,7 @@ NgosStatus FPU::copyStateFromFPU()
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
         // We need to set bit 63 of xComponents field to avoid General Protection during xrstors64 call
-        sState.xsave.header.xComponents = XCOMPONENTS_COMPACTED_FORMAT | sXFeaturesMask;
+        sState.xsave.header.xComponents = XCOMPONENTS_COMPACTED_FORMAT | sXFeatures;
 
         COMMON_ASSERT_EXECUTION(xrstors64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
@@ -513,42 +517,9 @@ NgosStatus FPU::copyStateToFPU()
     return NgosStatus::OK;
 }
 
-const char* FPU::getFeatureName(u8 xFeature)
+bool FPU::isXFeatureSupervisor(XFeature xFeature)
 {
     COMMON_LT((" | xFeature = %u", xFeature));
-
-    COMMON_ASSERT(xFeature < XFEATURE_MAX, "xFeature is invalid", 0);
-
-
-
-    switch (xFeature)
-    {
-        case XFEATURE_FPU:                                   return "XFEATURE_FPU";
-        case XFEATURE_SSE:                                   return "XFEATURE_SSE";
-        case XFEATURE_AVX:                                   return "XFEATURE_AVX";
-        case XFEATURE_MPX_BOUND_REGISTERS:                   return "XFEATURE_MPX_BOUND_REGISTERS";
-        case XFEATURE_MPX_BOUND_CONFIG_AND_STATUS_REGISTERS: return "XFEATURE_MPX_BOUND_CONFIG_AND_STATUS_REGISTERS";
-        case XFEATURE_AVX512_OPMASK:                         return "XFEATURE_AVX512_OPMASK";
-        case XFEATURE_AVX512_ZMM_FROM_0_TO_15:               return "XFEATURE_AVX512_ZMM_FROM_0_TO_15";
-        case XFEATURE_AVX512_ZMM_FROM_16_TO_31:              return "XFEATURE_AVX512_ZMM_FROM_16_TO_31";
-        case XFEATURE_PT:                                    return "XFEATURE_PT";
-        case XFEATURE_PKRU:                                  return "XFEATURE_PKRU";
-
-        default:
-        {
-            COMMON_LF(("Unknown X feature: %u", xFeature));
-
-            return "UNKNOWN";
-        }
-        break;
-    }
-}
-
-bool FPU::isXFeatureSupervisor(u8 xFeature)
-{
-    COMMON_LT((" | xFeature = %u", xFeature));
-
-    COMMON_ASSERT(xFeature < XFEATURE_MAX, "xFeature is invalid", 0);
 
 
 
@@ -556,22 +527,20 @@ bool FPU::isXFeatureSupervisor(u8 xFeature)
     u32 ignored;
 
     // if xFeature is supervisor state then ECX[0] = 1, otherwise ECX[0] = 0
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, xFeature, &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (u64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
 
 
 
     bool res = !!(ecx & (x_feature_flags)XFeatureFlag::SUPERVISOR);
 
-    COMMON_TEST_ASSERT(!!((1ULL << xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
+    COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
 
     return res;
 }
 
-bool FPU::isXFeatureUser(u8 xFeature)
+bool FPU::isXFeatureUser(XFeature xFeature)
 {
     COMMON_LT((" | xFeature = %u", xFeature));
-
-    COMMON_ASSERT(xFeature < XFEATURE_MAX, "xFeature is invalid", 0);
 
 
 
@@ -579,22 +548,20 @@ bool FPU::isXFeatureUser(u8 xFeature)
     u32 ignored;
 
     // if xFeature is supervisor state then ECX[0] = 1, otherwise ECX[0] = 0
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, xFeature, &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (u64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
 
 
 
     bool res = !(ecx & (x_feature_flags)XFeatureFlag::SUPERVISOR);
 
-    COMMON_TEST_ASSERT(!!((1ULL << xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
+    COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
 
     return res;
 }
 
-bool FPU::isXFeatureAligned(u8 xFeature)
+bool FPU::isXFeatureAligned(XFeature xFeature)
 {
     COMMON_LT((" | xFeature = %u", xFeature));
-
-    COMMON_ASSERT(xFeature < XFEATURE_MAX, "xFeature is invalid", 0);
 
 
 
@@ -603,7 +570,7 @@ bool FPU::isXFeatureAligned(u8 xFeature)
 
     // The value returned by ECX[1] indicates the alignment of xFeature
     // when the compacted format of the extended region of an XSAVE area is used
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, xFeature, &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (u64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
 
 
 
@@ -619,30 +586,32 @@ u32 FPU::expectedStateSize()
 
     u32 res = sizeof(FXSaveState) + sizeof(XStateHeader);
 
-    for (i64 i = XFEATURE_SSE + 1; i < XFEATURE_MAX; ++i)
+    for (i64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
     {
-        if (sXFeaturesMask & (1ULL << i))
+        XFeature feature = (XFeature)i;
+
+        if (sXFeatures & (1ULL << i))
         {
             u32 featureSize = sXFeaturesSizes[i];
             u32 featureStructSize;
 
 
 
-            switch (i)
+            switch (feature)
             {
-                case XFEATURE_AVX:                                   featureStructSize = sizeof(XFeatureAvxState);                              break;
-                case XFEATURE_MPX_BOUND_REGISTERS:                   featureStructSize = sizeof(XFeatureMpxBoundRegistersState);                break;
-                case XFEATURE_MPX_BOUND_CONFIG_AND_STATUS_REGISTERS: featureStructSize = sizeof(XFeatureMpxBoundConfigAndStatusRegistersState); break;
-                case XFEATURE_AVX512_OPMASK:                         featureStructSize = sizeof(XFeatureAvx512OpmaskState);                     break;
-                case XFEATURE_AVX512_ZMM_FROM_0_TO_15:               featureStructSize = sizeof(XFeatureAvx512ZmmFrom0To15State);               break;
-                case XFEATURE_AVX512_ZMM_FROM_16_TO_31:              featureStructSize = sizeof(XFeatureAvx512ZmmFrom16To31State);              break;
-                case XFEATURE_PKRU:                                  featureStructSize = sizeof(XFeaturePkruState);                             break;
+                case XFeature::AVX:                                   featureStructSize = sizeof(XFeatureAvxState);                              break;
+                case XFeature::MPX_BOUND_REGISTERS:                   featureStructSize = sizeof(XFeatureMpxBoundRegistersState);                break;
+                case XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS: featureStructSize = sizeof(XFeatureMpxBoundConfigAndStatusRegistersState); break;
+                case XFeature::AVX512_OPMASK:                         featureStructSize = sizeof(XFeatureAvx512OpmaskState);                     break;
+                case XFeature::AVX512_ZMM_FROM_0_TO_15:               featureStructSize = sizeof(XFeatureAvx512ZmmFrom0To15State);               break;
+                case XFeature::AVX512_ZMM_FROM_16_TO_31:              featureStructSize = sizeof(XFeatureAvx512ZmmFrom16To31State);              break;
+                case XFeature::PKRU:                                  featureStructSize = sizeof(XFeaturePkruState);                             break;
 
-                case XFEATURE_FPU:
-                case XFEATURE_SSE:
-                case XFEATURE_PT:
+                case XFeature::FPU:
+                case XFeature::SSE:
+                case XFeature::PT:
                 {
-                    COMMON_LF(("Unsupported X feature: %s", getFeatureName(i)));
+                    COMMON_LF(("Unsupported X feature: %s", xFeatureToString(feature)));
 
                     return 0;
                 }
@@ -650,7 +619,7 @@ u32 FPU::expectedStateSize()
 
                 default:
                 {
-                    COMMON_LF(("Unknown X feature: %s", getFeatureName(i)));
+                    COMMON_LF(("Unknown X feature: %s", xFeatureToString(feature)));
 
                     return 0;
                 }
@@ -659,7 +628,7 @@ u32 FPU::expectedStateSize()
 
 
 
-            COMMON_LVVV(("X feature %s: featureSize = %u, featureStructSize = %u", getFeatureName(i), featureSize, featureStructSize));
+            COMMON_LVVV(("X feature %s: featureSize = %u, featureStructSize = %u", xFeatureToString(feature), featureSize, featureStructSize));
 
             COMMON_TEST_ASSERT(featureSize != 0,                 0);
             COMMON_TEST_ASSERT(featureSize == featureStructSize, 0);
@@ -669,17 +638,17 @@ u32 FPU::expectedStateSize()
             if (
                 !CPU::hasFlag(X86Feature::XSAVES)
                 &&
-                isXFeatureSupervisor(i)
+                isXFeatureSupervisor(feature)
                )
             {
-                COMMON_LF(("X feature %s is supervisor, but X86Feature::XSAVES not supported", getFeatureName(i)));
+                COMMON_LF(("X feature %s is supervisor, but X86Feature::XSAVES not supported", xFeatureToString(feature)));
             }
 
 
 
-            if (isXFeatureAligned(i))
+            if (isXFeatureAligned(feature))
             {
-                COMMON_LVV(("X feature %s should be aligned to 64 bytes", getFeatureName(i)));
+                COMMON_LVV(("X feature %s should be aligned to 64 bytes", xFeatureToString(feature)));
 
                 res = ROUND_UP(res, 64);
             }
