@@ -46,100 +46,10 @@ public:
 protected:
     virtual void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines); // TEST: NO
 
-    inline void removeComments(QString &line) // TEST: NO
-    {
-        for (qint64 i = 0; i < line.length(); ++i)
-        {
-            if (line.at(i) == '\\')
-            {
-                ++i;
+    void removeComments(QString &line); // TEST: NO
+    void removeStrings(QString &line); // TEST: NO
 
-                continue;
-            }
-
-            if (line.at(i) == '\"')
-            {
-                ++i;
-
-                while (i < line.length())
-                {
-                    if (line.at(i) == '\\')
-                    {
-                        i += 2;
-
-                        continue;
-                    }
-
-                    if (line.at(i) == '\"')
-                    {
-                        break;
-                    }
-
-                    ++i;
-                }
-
-                continue;
-            }
-
-            if (
-                i > 0
-                &&
-                line.at(i - 1) == '/'
-                &&
-                line.at(i) == '/'
-               )
-            {
-                line = line.left(i - 1);
-
-                break;
-            }
-        }
-    }
-
-    inline void removeStrings(QString &line) // TEST: NO
-    {
-        for (qint64 i = 0; i < line.length(); ++i)
-        {
-            if (line.at(i) == '\\')
-            {
-                ++i;
-
-                continue;
-            }
-
-            if (line.at(i) == '\"')
-            {
-                qint64 startIndex = i;
-
-
-
-                ++i;
-
-                while (i < line.length())
-                {
-                    if (line.at(i) == '\\')
-                    {
-                        i += 2;
-
-                        continue;
-                    }
-
-                    if (line.at(i) == '\"')
-                    {
-                        break;
-                    }
-
-                    ++i;
-                }
-
-
-
-                line.remove(startIndex, i - startIndex + 1);
-
-                i = startIndex - 1;
-            }
-        }
-    }
+    QString traceCommandFromPath(const QString &path); // TEST: NO
 
 private:
     static QList<BaseCodeVerifier *> sVerifiers;

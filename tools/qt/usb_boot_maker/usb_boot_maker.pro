@@ -80,7 +80,6 @@ SOURCES += \
     src/main/mainwindow.cpp \
     src/main/mainwindow_linux.cpp \
     src/main/mainwindow_win.cpp \
-    src/other/usbspeed.cpp \
     src/threads/burnthread.cpp \
     src/threads/burnthread_linux.cpp \
     src/threads/burnthread_win.cpp \

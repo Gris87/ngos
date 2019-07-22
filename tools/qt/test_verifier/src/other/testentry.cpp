@@ -101,36 +101,9 @@ QString TestEntry::getTestModule() const
 
 QString TestEntry::toString() const
 {
-    QString type;
-
-    switch (mType)
-    {
-        case TestEntryType::INTERNAL_FUNCTION:
-        {
-            type = "INTERNAL FUNCTION";
-        }
-        break;
-
-        case TestEntryType::DEFINE:
-        {
-            type = "DEFINE";
-        }
-        break;
-
-        case TestEntryType::FUNCTION:
-        {
-            type = "FUNCTION";
-        }
-        break;
-
-        default:
-        {
-            Console::err(QString("Unknown test entry type: %1").arg((qint64)mType));
-
-            type = "UNKNOWN";
-        }
-        break;
-    }
-
-    return QString("%1 | %2 | %3 | %4").arg(type, 17, QChar(' ')).arg(mPath + ':' + QString::number(mLine + 1), -120, QChar(' ')).arg(mName, 35, QChar(' ')).arg(mTestModule);
+    return QString("%1 | %2 | %3 | %4")
+            .arg(testEntryTypeToString(mType), 17, QChar(' '))
+            .arg(mPath + ':' + QString::number(mLine + 1), -120, QChar(' '))
+            .arg(mName, 35, QChar(' '))
+            .arg(mTestModule);
 }

@@ -14,4 +14,16 @@ enum class UefiEventType: u32
 
 
 
+inline const char* uefiEventTypeToString(UefiEventType type) // TEST: NO
+{
+    switch (type)
+    {
+        case UefiEventType::TIMER: return "TIMER";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // UEFI_UEFIEVENTTYPE_H

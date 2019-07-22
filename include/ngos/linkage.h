@@ -48,6 +48,7 @@
 
 
 
+// Ignore CppAlignmentVerifier [BEGIN]
 #define FLAGS_TO_STRING(res, flags, typeToString, type) \
     { \
         char *cur = res; \
@@ -104,6 +105,7 @@
             } \
         } \
     }
+// Ignore CppAlignmentVerifier [END]
 
 
 

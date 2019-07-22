@@ -25,7 +25,6 @@
 //
 // The symbol names are in form: oldest_older_previous. REPEAT means
 // either Short or Long repeated match, and NONLITERAL means any non-literal.
-
 enum class LzmaState: u8
 {
     LITERAL_LITERAL             = 0,

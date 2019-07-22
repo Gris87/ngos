@@ -119,7 +119,13 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
                 qint64 endRow = row + 1;
 
-                while (endRow < lines.length() && lines.at(endRow) != spaces + '}')
+                while (
+                       endRow < lines.length()
+                       &&
+                       lines.at(endRow) != spaces + '}'
+                       &&
+                       lines.at(endRow) != spaces + "} \\"
+                      )
                 {
                     ++endRow;
                 }

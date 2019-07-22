@@ -727,7 +727,7 @@ NgosStatus Bootloader::initVolumeTypeAndName(VolumeInfo *volume)
 
 NgosStatus Bootloader::initVolumeName(VolumeInfo *volume, UefiDevicePath *devicePath)
 {
-    UEFI_LT((" | volume = 0x%p", volume));
+    UEFI_LT((" | volume = 0x%p, devicePath = 0x%p", volume, devicePath));
 
     UEFI_ASSERT(volume,                                                    "volume is null",        NgosStatus::ASSERTION);
     UEFI_ASSERT(devicePath,                                                "devicePath is null",    NgosStatus::ASSERTION);

@@ -5,7 +5,7 @@
 
 
 
-CpuHotplugStep CpuHotplug::sSteps[(u64)CpuHotplugState::MAX];
+CpuHotplugStep CpuHotplug::sSteps[(u64)CpuHotplugState::MAXIMUM];
 
 
 

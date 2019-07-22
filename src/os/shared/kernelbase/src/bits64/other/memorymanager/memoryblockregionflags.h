@@ -19,4 +19,23 @@ enum class MemoryBlockRegionFlag: memory_block_region_flags
 
 
 
+inline const char* memoryBlockRegionFlagToString(MemoryBlockRegionFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    switch (flag)
+    {
+        case MemoryBlockRegionFlag::NONE:    return "NONE";
+        case MemoryBlockRegionFlag::HOTPLUG: return "HOTPLUG";
+        case MemoryBlockRegionFlag::MIRROR:  return "MIRROR";
+        case MemoryBlockRegionFlag::NOMAP:   return "NOMAP";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_MEMORYMANAGER_MEMORYBLOCKREGIONFLAGS_H

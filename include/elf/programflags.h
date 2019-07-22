@@ -19,4 +19,19 @@ enum class ElfProgramFlag: elf_program_flags
 
 
 
+inline const char* elfProgramFlagToString(ElfProgramFlag flag) // TEST: NO
+{
+    switch (flag)
+    {
+        case ElfProgramFlag::NONE:       return "NONE";
+        case ElfProgramFlag::EXECUTABLE: return "EXECUTABLE";
+        case ElfProgramFlag::WRITABLE:   return "WRITABLE";
+        case ElfProgramFlag::READABLE:   return "READABLE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // ELF_PROGRAMFLAGS_H

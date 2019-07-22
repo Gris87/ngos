@@ -7,9 +7,13 @@
 
 
 
+#define ELF_SECTION_TYPE_OS_LOW 0x60000000
+
+
+
 enum class ElfSectionType: u32
 {
-    NONE           = 0x00000000,
+    NONE           = 0,
     PROGBITS       = 0x00000001,
     SYMTAB         = 0x00000002,
     STRTAB         = 0x00000003,
@@ -26,9 +30,37 @@ enum class ElfSectionType: u32
     PREINIT_ARRAY  = 0x00000010,
     GROUP          = 0x00000011,
     SYMTAB_SHNDX   = 0x00000012,
-    NUM            = 0x00000013,
-    LOOS           = 0x60000000
+    NUM            = 0x00000013
 };
+
+
+
+inline const char* elfSectionTypeToString(ElfSectionType type) // TEST: NO
+{
+    switch (type)
+    {
+        case ElfSectionType::NONE:          return "NONE";
+        case ElfSectionType::PROGBITS:      return "PROGBITS";
+        case ElfSectionType::SYMTAB:        return "SYMTAB";
+        case ElfSectionType::STRTAB:        return "STRTAB";
+        case ElfSectionType::RELA:          return "RELA";
+        case ElfSectionType::HASH:          return "HASH";
+        case ElfSectionType::DYNAMIC:       return "DYNAMIC";
+        case ElfSectionType::NOTE:          return "NOTE";
+        case ElfSectionType::NOBITS:        return "NOBITS";
+        case ElfSectionType::REL:           return "REL";
+        case ElfSectionType::SHLIB:         return "SHLIB";
+        case ElfSectionType::DYNSYM:        return "DYNSYM";
+        case ElfSectionType::INIT_ARRAY:    return "INIT_ARRAY";
+        case ElfSectionType::FINI_ARRAY:    return "FINI_ARRAY";
+        case ElfSectionType::PREINIT_ARRAY: return "PREINIT_ARRAY";
+        case ElfSectionType::GROUP:         return "GROUP";
+        case ElfSectionType::SYMTAB_SHNDX:  return "SYMTAB_SHNDX";
+        case ElfSectionType::NUM:           return "NUM";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

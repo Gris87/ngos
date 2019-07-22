@@ -29,4 +29,31 @@ enum class ElfRelaType: u8
 
 
 
+inline const char* elfRelaTypeToString(ElfRelaType type) // TEST: NO
+{
+    switch (type)
+    {
+        case ElfRelaType::NONE:      return "NONE";
+        case ElfRelaType::D64:       return "D64";
+        case ElfRelaType::PC32:      return "PC32";
+        case ElfRelaType::GOT32:     return "GOT32";
+        case ElfRelaType::PLT32:     return "PLT32";
+        case ElfRelaType::COPY:      return "COPY";
+        case ElfRelaType::GLOB_DAT:  return "GLOB_DAT";
+        case ElfRelaType::JUMP_SLOT: return "JUMP_SLOT";
+        case ElfRelaType::RELATIVE:  return "RELATIVE";
+        case ElfRelaType::GOTPCREL:  return "GOTPCREL";
+        case ElfRelaType::D32:       return "D32";
+        case ElfRelaType::D32S:      return "D32S";
+        case ElfRelaType::D16:       return "D16";
+        case ElfRelaType::PC16:      return "PC16";
+        case ElfRelaType::D8:        return "D8";
+        case ElfRelaType::PC8:       return "PC8";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // ELF_RELATYPE_H

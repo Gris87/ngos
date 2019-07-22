@@ -9,7 +9,7 @@
 
 enum class ElfMachine: u16
 {
-    NONE             = 0x0000,
+    NONE             = 0,
     MACHINE_M32      = 0x0001,
     MACHINE_SPARC    = 0x0002,
     MACHINE_X86      = 0x0003,

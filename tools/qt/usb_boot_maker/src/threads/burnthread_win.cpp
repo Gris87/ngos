@@ -44,7 +44,7 @@
 
 
 
-enum class LockDisk: quint8
+enum class LockDisk: quint8 // Ignore CppEnumVerifier
 {
     NO,
     YES
@@ -52,7 +52,7 @@ enum class LockDisk: quint8
 
 
 
-enum class Access: quint8
+enum class Access: quint8 // Ignore CppEnumVerifier
 {
     READ_ONLY,
     READ_WRITE
@@ -60,7 +60,7 @@ enum class Access: quint8
 
 
 
-enum class ShareWrite: quint8
+enum class ShareWrite: quint8 // Ignore CppEnumVerifier
 {
     NO,
     YES
@@ -77,7 +77,7 @@ struct VOLUME_DISK_EXTENTS_REDEF
 
 
 
-enum class FILE_SYSTEM_CALLBACK_COMMAND: quint8
+enum class FILE_SYSTEM_CALLBACK_COMMAND: quint8 // Ignore CppEnumVerifier
 {
     FCC_PROGRESS,
     FCC_DONE_WITH_STRUCTURE,

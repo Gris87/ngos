@@ -17,4 +17,19 @@ enum class UefiTimerDelay: u32
 
 
 
+inline const char* uefiTimerDelayToString(UefiTimerDelay delay) // TEST: NO
+{
+    switch (delay)
+    {
+        case UefiTimerDelay::CANCEL:   return "CANCEL";
+        case UefiTimerDelay::PERIODIC: return "PERIODIC";
+        case UefiTimerDelay::RELATIVE: return "RELATIVE";
+        case UefiTimerDelay::MAXIMUM:  return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // UEFI_UEFITIMERDELAY_H

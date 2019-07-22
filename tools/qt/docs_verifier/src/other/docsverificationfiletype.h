@@ -20,4 +20,18 @@ enum class VerificationFileType: quint64
 
 
 
+inline const char* verificationFileTypeToString(VerificationFileType type) // TEST: NO
+{
+    switch (type)
+    {
+        case VerificationFileType::NONE: return "NONE";
+        case VerificationFileType::TEXT: return "TEXT";
+        case VerificationFileType::MD:   return "MD";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // DOCS_VERIFIER_SRC_OTHER_DOCSVERIFICATIONFILETYPE_H

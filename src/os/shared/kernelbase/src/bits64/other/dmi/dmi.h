@@ -54,8 +54,8 @@ private:
     static u8               sChassisType;
     static u64              sNumberOfMemoryDevices;
     static DmiMemoryDevice *sMemoryDevices;
-    static const char*      sIdentities[(u64)DmiIdentity::MAX];
-    static DmiUuid*         sUuids[(u64)DmiStoredUuid::MAX];
+    static const char*      sIdentities[(u64)DmiIdentity::MAXIMUM];
+    static DmiUuid*         sUuids[(u64)DmiStoredUuid::MAXIMUM];
 };
 
 

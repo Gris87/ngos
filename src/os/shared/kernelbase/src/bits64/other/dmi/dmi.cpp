@@ -17,8 +17,8 @@ u64              DMI::sStructureTableAddress;
 u8               DMI::sChassisType;
 u64              DMI::sNumberOfMemoryDevices;
 DmiMemoryDevice *DMI::sMemoryDevices;
-const char*      DMI::sIdentities[(u64)DmiIdentity::MAX];
-DmiUuid*         DMI::sUuids[(u64)DmiStoredUuid::MAX];
+const char*      DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
+DmiUuid*         DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
 
 
 
@@ -126,15 +126,15 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sIdentities:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)DmiIdentity::MAX; ++i)
+            for (i64 i = 0; i < (i64)DmiIdentity::MAXIMUM; ++i)
             {
                 if (sIdentities[i])
                 {
-                    COMMON_LVVV(("#%-3d: 0x%p | %s", i, sIdentities[i], sIdentities[i]));
+                    COMMON_LVVV(("#%-23s: 0x%p | %s", dmiIdentityToString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
                 }
                 else
                 {
-                    COMMON_LVVV(("#%-3d: 0x%p", i, sIdentities[i]));
+                    COMMON_LVVV(("#%-23s: 0x%p", dmiIdentityToString((DmiIdentity)i), sIdentities[i]));
                 }
             }
 
@@ -145,15 +145,15 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sUuids:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)DmiStoredUuid::MAX; ++i)
+            for (i64 i = 0; i < (i64)DmiStoredUuid::MAXIMUM; ++i)
             {
                 if (sUuids[i])
                 {
-                    COMMON_LVVV(("#%-3d: 0x%p | {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", i, sUuids[i], sUuids[i]->data1, sUuids[i]->data2, sUuids[i]->data3, sUuids[i]->data4, sUuids[i]->data5, sUuids[i]->data6[0], sUuids[i]->data6[1], sUuids[i]->data6[2], sUuids[i]->data6[3], sUuids[i]->data6[4], sUuids[i]->data6[5]));
+                    COMMON_LVVV(("#%-11s: 0x%p | {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i], sUuids[i]->data1, sUuids[i]->data2, sUuids[i]->data3, sUuids[i]->data4, sUuids[i]->data5, sUuids[i]->data6[0], sUuids[i]->data6[1], sUuids[i]->data6[2], sUuids[i]->data6[3], sUuids[i]->data6[4], sUuids[i]->data6[5]));
                 }
                 else
                 {
-                    COMMON_LVVV(("#%-3d: 0x%p", i, sUuids[i]));
+                    COMMON_LVVV(("#%-11s: 0x%p", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i]));
                 }
             }
 
@@ -173,7 +173,7 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sMemoryDevices[0].device     != 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sMemoryDevices[0].bank       == 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sMemoryDevices[0].size       == 1073741824,         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAX        == 18,                 NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 18,                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]               != 0,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[2]               != 0,                  NgosStatus::ASSERTION);
@@ -192,7 +192,7 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sIdentities[15]              != 0,                  NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sIdentities[16]           != 0,                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[17]           != 0,                  NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAX      == 1,                  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM  == 1,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sUuids[0]                    != 0,                  NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sUuids[0]->data1          == 0x9FAE0773,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sUuids[0]->data2          == 0xF53F,             NgosStatus::ASSERTION); // Commented due to value variation

@@ -62,8 +62,7 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cppblockorderverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppdefinesverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppemptycodeverifier.cpp \
-    src/verifiers/zzz_types/cpp_h/cppenumclassverifier.cpp \
-    src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cppenumverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppexterndeclaredverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppforverifier.cpp \
@@ -124,8 +123,7 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cppblockorderverifier.h \
     src/verifiers/zzz_types/cpp_h/cppdefinesverifier.h \
     src/verifiers/zzz_types/cpp_h/cppemptycodeverifier.h \
-    src/verifiers/zzz_types/cpp_h/cppenumclassverifier.h \
-    src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.h \
+    src/verifiers/zzz_types/cpp_h/cppenumverifier.h \
     src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.h \
     src/verifiers/zzz_types/cpp_h/cppexterndeclaredverifier.h \
     src/verifiers/zzz_types/cpp_h/cppforverifier.h \

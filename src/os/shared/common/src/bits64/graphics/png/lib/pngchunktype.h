@@ -9,7 +9,7 @@
 
 
 
-enum class PngChunkType: u32
+enum class PngChunkType: u32 // Ignore CppEnumVerifier
 {
     IHDR = 0x52444849,  // "IHDR"
     SRGB = 0x42475273,  // "sRGB"

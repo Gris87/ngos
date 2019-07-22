@@ -18,4 +18,20 @@ enum class UefiGraphicsOutputBltOperation: u32
 
 
 
+inline const char* uefiGraphicsOutputBltOperationToString(UefiGraphicsOutputBltOperation operation) // TEST: NO
+{
+    switch (operation)
+    {
+        case UefiGraphicsOutputBltOperation::VIDEO_FILL:          return "VIDEO_FILL";
+        case UefiGraphicsOutputBltOperation::VIDEO_TO_BLT_BUFFER: return "VIDEO_TO_BLT_BUFFER";
+        case UefiGraphicsOutputBltOperation::BLT_BUFFER_TO_VIDEO: return "BLT_BUFFER_TO_VIDEO";
+        case UefiGraphicsOutputBltOperation::VIDEO_TO_VIDEO:      return "VIDEO_TO_VIDEO";
+        case UefiGraphicsOutputBltOperation::MAXIMUM:             return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // UEFI_UEFIGRAPHICSOUTPUTBLTOPERATION_H

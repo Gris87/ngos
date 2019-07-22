@@ -250,7 +250,7 @@ src/os/include/idt/flags.h
 src/os/include/idt/idtdescriptor.h
 src/os/include/idt/idtregister.h
 src/os/include/idt/macros.h
-src/os/include/idt/types.h
+src/os/include/idt/type.h
 src/os/include/mbr/mbr.h
 src/os/include/mbr/mbrpartition.h
 src/os/include/mbr/mbrpartitiontype.h
@@ -358,8 +358,6 @@ src/os/shared/common/src/bits64/console/console.h
 src/os/shared/common/src/bits64/console/lib/glyphdata.h
 src/os/shared/common/src/bits64/cpu/cpu.cpp
 src/os/shared/common/src/bits64/cpu/cpu.h
-src/os/shared/common/src/bits64/cpu/cpubugs.h
-src/os/shared/common/src/bits64/cpu/cpufeatures.h
 src/os/shared/common/src/bits64/cpu/cpuvendor.h
 src/os/shared/common/src/bits64/cpu/flags.h
 src/os/shared/common/src/bits64/cpu/generated/cpubugsnames.h
@@ -369,6 +367,10 @@ src/os/shared/common/src/bits64/cpu/model/intel.h
 src/os/shared/common/src/bits64/cpu/msr/msr.cpp
 src/os/shared/common/src/bits64/cpu/msr/msr.h
 src/os/shared/common/src/bits64/cpu/msr/msrregisters.h
+src/os/shared/common/src/bits64/cpu/x86bug.h
+src/os/shared/common/src/bits64/cpu/x86bugword.h
+src/os/shared/common/src/bits64/cpu/x86feature.h
+src/os/shared/common/src/bits64/cpu/x86featureword.h
 src/os/shared/common/src/bits64/early/earlyassert.h
 src/os/shared/common/src/bits64/early/earlylog.h
 src/os/shared/common/src/bits64/fpu/fpu.cpp
@@ -953,10 +955,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppdefinesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppdefinesverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppemptycodeverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppemptycodeverifier.h
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumclassverifier.cpp
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumclassverifier.h
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.cpp
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumvaluesverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppenumverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppequalalignmentverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppexterndeclaredverifier.cpp
@@ -1201,7 +1201,6 @@ tools/qt/usb_boot_maker/src/other/fileinfo.h
 tools/qt/usb_boot_maker/src/other/state.h
 tools/qt/usb_boot_maker/src/other/usbdeviceinfo.h
 tools/qt/usb_boot_maker/src/other/usbproperties.h
-tools/qt/usb_boot_maker/src/other/usbspeed.cpp
 tools/qt/usb_boot_maker/src/other/usbspeed.h
 tools/qt/usb_boot_maker/src/other/versioninfo.h
 tools/qt/usb_boot_maker/src/threads/burnthread.cpp

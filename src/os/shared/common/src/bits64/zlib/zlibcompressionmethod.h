@@ -17,7 +17,7 @@ enum class ZLibCompressionMethod: u8
 
 
 
-inline const char* zlibCompressionMethodToString(ZLibCompressionMethod method) // TEST: NO
+inline const char* zLibCompressionMethodToString(ZLibCompressionMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

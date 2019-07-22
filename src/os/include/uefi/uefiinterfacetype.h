@@ -15,4 +15,17 @@ enum class UefiInterfaceType: u32
 
 
 
+inline const char* uefiInterfaceTypeToString(UefiInterfaceType type) // TEST: NO
+{
+    switch (type)
+    {
+        case UefiInterfaceType::NATIVE_INTERFACE: return "NATIVE_INTERFACE";
+        case UefiInterfaceType::PCODE_INTERFACE:  return "PCODE_INTERFACE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // UEFI_UEFIINTERFACETYPE_H

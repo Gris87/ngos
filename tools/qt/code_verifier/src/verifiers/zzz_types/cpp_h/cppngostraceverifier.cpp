@@ -8,73 +8,16 @@
 
 CppNgosTraceVerifier::CppNgosTraceVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^(struct|class|union|enum( class)?) (\\w+)(: \\w+)?$")
+    , mDefinitionRegExp("^(struct|class|union|enum( class)?) (\\w+)(: \\w+)?(?: *\\/\\/.*)?$")
 {
     // Nothing
 }
 
 void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    QString traceCommand;
+    QString traceCommand = traceCommandFromPath(path);
 
-    if (path.contains("/src/os/configure/"))
-    {
-        if (path.contains("uefi/"))
-        {
-            traceCommand = "UEFI_LT";
-        }
-        else
-        if (path.contains("early/"))
-        {
-            traceCommand = "EARLY_LT";
-        }
-        else
-        {
-            traceCommand = "COMMON_LT";
-        }
-    }
-    else
-    if (path.contains("/src/os/kernel/"))
-    {
-        if (path.contains("early/"))
-        {
-            traceCommand = "EARLY_LT";
-        }
-        else
-        {
-            traceCommand = "COMMON_LT";
-        }
-    }
-    else
-    if (path.contains("/src/os/installer/"))
-    {
-        if (path.contains("early/"))
-        {
-            traceCommand = "EARLY_LT";
-        }
-        else
-        {
-            traceCommand = "COMMON_LT";
-        }
-    }
-    else
-    if (path.contains("/src/os/shared/kernelbase/"))
-    {
-        if (path.contains("early/"))
-        {
-            traceCommand = "EARLY_LT";
-        }
-        else
-        {
-            traceCommand = "COMMON_LT";
-        }
-    }
-    else
-    if (path.contains("/src/os/shared/common/"))
-    {
-        traceCommand = "COMMON_LT";
-    }
-    else
+    if (traceCommand == "")
     {
         return;
     }

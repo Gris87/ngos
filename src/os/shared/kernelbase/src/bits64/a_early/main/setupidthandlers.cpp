@@ -7,7 +7,7 @@
 #include <idt/idtdescriptor.h>
 #include <idt/idtregister.h>
 #include <idt/macros.h>
-#include <idt/types.h>
+#include <idt/type.h>
 #include <kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h>
 #include <ngos/linkage.h>
 

@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/bits64/cpu/cpubugs.h>
-#include <common/src/bits64/cpu/cpufeatures.h>
 #include <common/src/bits64/cpu/cpuvendor.h>
+#include <common/src/bits64/cpu/x86bug.h>
+#include <common/src/bits64/cpu/x86feature.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 
@@ -75,8 +75,8 @@ private:
     static u32       sPower;
     static u8        sPhysicalBits;
     static u8        sVirtualBits;
-    static u32       sFlags[AMOUNT_OF_WORDS_FOR_X86_FEATURES];
-    static u32       sBugs[AMOUNT_OF_WORDS_FOR_X86_BUGS];
+    static u32       sFlags[(u64)x86FeatureWord::MAXIMUM];
+    static u32       sBugs[(u64)x86BugWord::MAXIMUM];
 };
 
 

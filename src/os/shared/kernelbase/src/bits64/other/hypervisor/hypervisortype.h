@@ -15,4 +15,21 @@ enum class HypervisorType: u8
 
 
 
+inline const char* hypervisorTypeToString(HypervisorType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case HypervisorType::NONE: return "NONE";
+        case HypervisorType::KVM:  return "KVM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_HYPERVISOR_HYPERVISORTYPE_H

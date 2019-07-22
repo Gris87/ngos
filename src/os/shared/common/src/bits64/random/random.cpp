@@ -2,7 +2,7 @@
 
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/cpu/cpufeatures.h>
+#include <common/src/bits64/cpu/x86feature.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 

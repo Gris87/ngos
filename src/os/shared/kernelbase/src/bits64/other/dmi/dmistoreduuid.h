@@ -10,8 +10,25 @@
 enum class DmiStoredUuid: u8
 {
     SYSTEM_UUID,
-    MAX
+    MAXIMUM
 };
+
+
+
+inline const char* dmiStoredUuidToString(DmiStoredUuid uuid) // TEST: NO
+{
+    // COMMON_LT((" | uuid = %u", uuid)); // Commented to avoid bad looking logs
+
+
+
+    switch (uuid)
+    {
+        case DmiStoredUuid::SYSTEM_UUID: return "SYSTEM_UUID";
+        case DmiStoredUuid::MAXIMUM:     return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 
