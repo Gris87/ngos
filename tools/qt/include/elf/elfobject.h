@@ -6,11 +6,10 @@
 #include <QHash>
 #include <QList>
 #include <QString>
-
-#include "elfheader.h"
-#include "elfprogramheadertableentry.h"
-#include "elfsectionheadertableentry.h"
-#include "elfsymbol.h"
+#include <elf/header.h>
+#include <elf/programheadertableentry.h>
+#include <elf/sectionheadertableentry.h>
+#include <elf/symbol.h>
 
 
 

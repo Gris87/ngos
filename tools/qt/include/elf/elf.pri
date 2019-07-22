@@ -1,3 +1,8 @@
+INCLUDEPATH += \
+    $$PWD/../../../../include/     # include/
+
+
+
 SOURCES += \
     $$PWD/elfobject.cpp
 

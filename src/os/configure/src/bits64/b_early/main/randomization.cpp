@@ -246,7 +246,7 @@ NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAre
 
 
 
-    for (i64 i = 0; i < (i64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS; ++i)
+    for (i64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
     {
         if (
             end > (i64)unavailableMemoryAreas[i].start
@@ -598,7 +598,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
 
 
 
-    MemoryArea unavailableMemoryAreas[(u64)UnavailableMemoryArea::AMOUNT_OF_MEMORY_AREAS];
+    MemoryArea unavailableMemoryAreas[(u64)UnavailableMemoryArea::MAXIMUM];
 
     EARLY_ASSERT_EXECUTION(initUnavailableMemoryAreas(params, unavailableMemoryAreas), NgosStatus::ASSERTION);
 
