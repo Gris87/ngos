@@ -3,7 +3,6 @@
 
 
 
-#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
