@@ -9,9 +9,10 @@
 
 enum class TaskState: u8
 {
-    UNRUNNABLE,
-    RUNNABLE,
-    STOPPED
+    NONE       = 0,
+    UNRUNNABLE = 1,
+    RUNNABLE   = 2,
+    STOPPED    = 3
 };
 
 
@@ -24,6 +25,7 @@ inline const char* taskStateToString(TaskState state) // TEST: NO
 
     switch (state)
     {
+        case TaskState::NONE:       return "NONE";
         case TaskState::UNRUNNABLE: return "UNRUNNABLE";
         case TaskState::RUNNABLE:   return "RUNNABLE";
         case TaskState::STOPPED:    return "STOPPED";

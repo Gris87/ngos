@@ -9,9 +9,9 @@
 
 enum class InflateCodeType: u8
 {
-    CODES,
-    LENGTHS,
-    DISTANCES
+    CODES     = 0,
+    LENGTHS   = 1,
+    DISTANCES = 2
 };
 
 

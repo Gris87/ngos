@@ -9,7 +9,7 @@
 
 enum class MbrPartitionType: u8
 {
-    EMPTY                             = 0x00,
+    NONE                              = 0,
     FAT12                             = 0x01,
     XENIX_ROOT                        = 0x02,
     XENIX_USER                        = 0x03,
@@ -273,7 +273,7 @@ inline const char* mbrPartitionTypeToString(MbrPartitionType type) // TEST: NO
 {
     switch (type)
     {
-        case MbrPartitionType::EMPTY:                             return "EMPTY";
+        case MbrPartitionType::NONE:                              return "NONE";
         case MbrPartitionType::FAT12:                             return "FAT12";
         case MbrPartitionType::XENIX_ROOT:                        return "XENIX_ROOT";
         case MbrPartitionType::XENIX_USER:                        return "XENIX_USER";

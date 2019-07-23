@@ -9,9 +9,9 @@
 
 enum class UefiHardDriveDevicePathSignatureType: u8
 {
-    NO_DISK_SIGNATURE = 0x00,
-    MBR               = 0x01,
-    GUID              = 0x02
+    NO_DISK_SIGNATURE = 0,
+    MBR               = 1,
+    GUID              = 2
 };
 
 

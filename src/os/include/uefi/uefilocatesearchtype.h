@@ -9,9 +9,9 @@
 
 enum class UefiLocateSearchType: u32
 {
-    ALL_HANDLES,
-    BY_REGISTER_NOTIFY,
-    BY_PROTOCOL
+    ALL_HANDLES        = 0,
+    BY_REGISTER_NOTIFY = 1,
+    BY_PROTOCOL        = 2
 };
 
 

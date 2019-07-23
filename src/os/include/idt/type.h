@@ -9,6 +9,7 @@
 
 enum class IdtType: u8
 {
+    NONE           = 0,
     GATE_TASK      = 0x5,
     GATE_CALL      = 0xC,
     GATE_INTERRUPT = 0xE,
@@ -21,6 +22,7 @@ inline const char* idtTypeToString(IdtType type) // TEST: NO
 {
     switch (type)
     {
+        case IdtType::NONE:           return "NONE";
         case IdtType::GATE_TASK:      return "GATE_TASK";
         case IdtType::GATE_CALL:      return "GATE_CALL";
         case IdtType::GATE_INTERRUPT: return "GATE_INTERRUPT";

@@ -9,7 +9,7 @@
 
 enum class FixMap: u16
 {
-    END
+    MAXIMUM
 };
 
 
@@ -22,7 +22,7 @@ inline const char* fixMapToString(FixMap map) // TEST: NO
 
     switch (map)
     {
-        case FixMap::END: return "END";
+        case FixMap::MAXIMUM: return "MAXIMUM";
 
         default: return "UNKNOWN";
     }

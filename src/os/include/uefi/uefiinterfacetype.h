@@ -9,8 +9,8 @@
 
 enum class UefiInterfaceType: u32
 {
-    NATIVE_INTERFACE,
-    PCODE_INTERFACE
+    NATIVE_INTERFACE = 0,
+    PCODE_INTERFACE  = 1
 };
 
 

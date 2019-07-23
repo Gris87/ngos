@@ -9,6 +9,7 @@
 
 enum class UefiDevicePathType : u8
 {
+    NONE                  = 0,
     HARDWARE_DEVICE_PATH  = 0x01,
     ACPI_DEVICE_PATH      = 0x02,
     MESSAGING_DEVICE_PATH = 0x03,
@@ -23,6 +24,7 @@ inline const char* uefiDevicePathTypeToString(UefiDevicePathType type) // TEST: 
 {
     switch (type)
     {
+        case UefiDevicePathType::NONE:                  return "NONE";
         case UefiDevicePathType::HARDWARE_DEVICE_PATH:  return "HARDWARE_DEVICE_PATH";
         case UefiDevicePathType::ACPI_DEVICE_PATH:      return "ACPI_DEVICE_PATH";
         case UefiDevicePathType::MESSAGING_DEVICE_PATH: return "MESSAGING_DEVICE_PATH";

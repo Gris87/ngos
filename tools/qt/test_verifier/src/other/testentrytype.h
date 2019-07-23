@@ -9,9 +9,10 @@
 
 enum class TestEntryType: quint8
 {
-    INTERNAL_FUNCTION,
-    DEFINE,
-    FUNCTION
+    NONE              = 0,
+    INTERNAL_FUNCTION = 1,
+    DEFINE            = 2,
+    FUNCTION          = 3
 };
 
 
@@ -20,6 +21,7 @@ inline const char* testEntryTypeToString(TestEntryType type) // TEST: NO
 {
     switch (type)
     {
+        case TestEntryType::NONE:              return "NONE";
         case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL_FUNCTION";
         case TestEntryType::DEFINE:            return "DEFINE";
         case TestEntryType::FUNCTION:          return "FUNCTION";

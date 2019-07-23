@@ -9,13 +9,14 @@
 
 enum class MemoryMapEntryType: u8
 {
-    RAM,
-    ACPI,
-    NVS,
-    PERSISTENT_MEMORY,
-    UNUSABLE,
-    RESERVED,
-    RESERVED_BY_KERNEL
+    NONE               = 0,
+    RAM                = 1,
+    ACPI               = 2,
+    NVS                = 3,
+    PERSISTENT_MEMORY  = 4,
+    UNUSABLE           = 5,
+    RESERVED           = 6,
+    RESERVED_BY_KERNEL = 7
 };
 
 
@@ -24,6 +25,7 @@ inline const char* memoryMapEntryTypeToString(MemoryMapEntryType type) // TEST: 
 {
     switch (type)
     {
+        case MemoryMapEntryType::NONE:               return "NONE";
         case MemoryMapEntryType::RAM:                return "RAM";
         case MemoryMapEntryType::ACPI:               return "ACPI";
         case MemoryMapEntryType::NVS:                return "NVS";

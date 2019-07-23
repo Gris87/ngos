@@ -7,7 +7,7 @@
 CppEnumVerifier::CppEnumVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
     , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(?:: *(\\w+))?$")
-    , mValueRegExp("^ *([A-Z_][A-Z\\d_]*)(?: *=.*)?,?(?: *\\/\\/.*)?$")
+    , mValueRegExp("^ *([A-Z_][A-Z\\d_]*)(?: *= *([^,]+))?,?(?: *\\/\\/.*)?$")
 {
     // Nothing
 }
@@ -44,6 +44,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                 if (enumType != "")
                 {
                     QStringList values;
+                    QStringList valuesNumeric;
                     qint64      maxValueLength = 0;
 
 
@@ -64,9 +65,11 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                             if (match.hasMatch())
                             {
-                                QString value = match.captured(1);
+                                QString value        = match.captured(1);
+                                QString valueNumeric = match.captured(2);
 
                                 values.append(value);
+                                valuesNumeric.append(valueNumeric);
 
                                 if (value.length() > maxValueLength)
                                 {
@@ -151,9 +154,61 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                     if (enumName.endsWith("Flag"))
                     {
-                        if (!enumType.endsWith("_flags"))
+                        QString expectedEnumType = "";
+
+                        for (qint64 j = 0; j < enumNameFromLowerCase.length(); ++j)
                         {
-                            worker->addError(path, i, "Enum type should use unique type for flags");
+                            QChar ch = enumNameFromLowerCase.at(j);
+
+                            if (ch.isUpper())
+                            {
+                                expectedEnumType += '_';
+                                expectedEnumType += ch.toLower();
+                            }
+                            else
+                            {
+                                expectedEnumType += ch;
+                            }
+                        }
+
+                        expectedEnumType += 's';
+
+
+
+                        if (enumType != expectedEnumType)
+                        {
+                            worker->addError(path, i, "Enum should use type " + expectedEnumType + " for flags");
+                        }
+
+
+
+                        if (values.contains("MAXIMUM"))
+                        {
+                            worker->addError(path, i, "Enum value MAXIMUM not allowed for flags");
+                        }
+                        else
+                        {
+                            if (values.contains("NONE"))
+                            {
+                                if (values.first() != "NONE")
+                                {
+                                    worker->addError(path, i, "Enum value NONE should be first");
+                                }
+
+                                if (valuesNumeric.first() != '0')
+                                {
+                                    worker->addError(path, i, "Numeric value of NONE should be zero");
+                                }
+                            }
+                            else
+                            {
+                                worker->addError(path, i, "Enum value NONE should be first");
+                            }
+
+                            if (valuesNumeric.contains(""))
+                            {
+                                worker->addError(path, i, "Numeric values should be provided for enum");
+                            }
                         }
 
 
@@ -227,6 +282,53 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                            )
                         {
                             worker->addError(path, i, "Enum type expecting to be one of the standard types");
+                        }
+
+
+
+                        if (values.contains("MAXIMUM"))
+                        {
+                            if (values.last() != "MAXIMUM")
+                            {
+                                worker->addError(path, i, "Enum value MAXIMUM should be last");
+                            }
+
+                            if (values.contains("NONE"))
+                            {
+                                worker->addError(path, i, "Enum value NONE not allowed when value MAXIMUM present");
+                            }
+
+                            if (valuesNumeric.count("") != valuesNumeric.length())
+                            {
+                                worker->addError(path, i, "Numeric values of the enum are not allowed when value MAXIMUM present");
+                            }
+                        }
+                        else
+                        {
+                            if (values.contains("NONE"))
+                            {
+                                if (values.first() != "NONE")
+                                {
+                                    worker->addError(path, i, "Enum value NONE should be first");
+                                }
+
+                                if (valuesNumeric.first() != '0')
+                                {
+                                    worker->addError(path, i, "Numeric value of NONE should be zero");
+                                }
+                            }
+                            else
+                            {
+                                if (valuesNumeric.first() != '0')
+                                {
+                                    worker->addError(path, i, "Enum value NONE should be first");
+                                }
+                            }
+
+                            if (valuesNumeric.contains(""))
+                            {
+                                worker->addError(path, i, "Numeric values should be provided for enum");
+                            }
                         }
                     }
                 }

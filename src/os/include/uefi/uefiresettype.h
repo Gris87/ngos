@@ -9,9 +9,9 @@
 
 enum class UefiResetType: u32
 {
-    COLD,
-    WARM,
-    SHUTDOWN
+    COLD     = 0,
+    WARM     = 1,
+    SHUTDOWN = 2
 };
 
 

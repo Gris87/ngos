@@ -9,7 +9,7 @@
 
 enum class ElfOsAbi: u8
 {
-    SYSTEM_V         = 0x00,
+    SYSTEM_V         = 0,
     HP_UX            = 0x01,
     NETBSD           = 0x02,
     LINUX            = 0x03,

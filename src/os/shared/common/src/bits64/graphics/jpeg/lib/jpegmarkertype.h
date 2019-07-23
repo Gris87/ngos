@@ -16,6 +16,7 @@
 
 enum class JpegMarkerType: u8
 {
+    NONE                      = 0,
     START_OF_IMAGE            = 0xD8,
     START_OF_FRAME            = 0xC0,
     DEFINE_HUFFMAN_TABLE      = 0xC4,
@@ -60,6 +61,7 @@ inline const char* jpegMarkerTypeToString(JpegMarkerType type) // TEST: NO
 
     switch (type)
     {
+        case JpegMarkerType::NONE:                      return "NONE";
         case JpegMarkerType::START_OF_IMAGE:            return "START_OF_IMAGE";
         case JpegMarkerType::START_OF_FRAME:            return "START_OF_FRAME";
         case JpegMarkerType::DEFINE_HUFFMAN_TABLE:      return "DEFINE_HUFFMAN_TABLE";

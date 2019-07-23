@@ -7,7 +7,7 @@
 
 
 
-enum class CpuHotplugState: u8
+enum class CpuHotplugState: u8 // Ignore CppEnumVerifier
 {
     OFFLINE,
     BP_PREPARE_DYNAMIC,

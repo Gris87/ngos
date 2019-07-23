@@ -9,8 +9,8 @@
 
 enum class HypervisorType: u8
 {
-    NONE,
-    KVM
+    NONE = 0,
+    KVM  = 1
 };
 
 
