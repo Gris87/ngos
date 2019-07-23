@@ -3,13 +3,14 @@
 
 
 
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
 
 typedef u32 elf_program_flags;
 
-enum class ElfProgramFlag: elf_program_flags
+enum class ElfProgramFlag: elf_program_flags // Ignore CppEnumVerifier
 {
     NONE       = 0,
     EXECUTABLE = (1ULL << 0),

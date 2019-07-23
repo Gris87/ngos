@@ -65,7 +65,7 @@ inline const char* streamFlagsToString(xz_stream_flags flags) // TEST: NO
 
 
 
-    static char res[103];
+    static char res[80];
 
     FLAGS_TO_STRING(res, flags, streamFlagToString, StreamFlag);
 

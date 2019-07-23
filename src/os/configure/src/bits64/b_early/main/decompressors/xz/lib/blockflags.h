@@ -23,7 +23,7 @@
 
 typedef u8 xz_block_flags;
 
-enum class BlockFlag: xz_block_flags
+enum class BlockFlag: xz_block_flags // Ignore CppEnumVerifier
 {
     NONE                      = 0,
     COMPRESSED_SIZE_PRESENT   = (1ULL << 6),

@@ -6,7 +6,7 @@
 
 CppEnumVerifier::CppEnumVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(: *\\w+)?$")
+    , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(?:: *(\\w+))?$")
     , mValueRegExp("^ *([A-Z_][A-Z\\d_]*)(?: *=.*)?,?(?: *\\/\\/.*)?$")
 {
     // Nothing
@@ -106,8 +106,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
 
                     // Ignore CppAlignmentVerifier [BEGIN]
-                    QString toStringFunction = "inline const char* " + enumNameFromLowerCase + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
+                    QString toStringFunction = "\n\n\n";
 
+                    toStringFunction += "inline const char* " + enumNameFromLowerCase + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
                     toStringFunction += "{\n";
 
 
@@ -117,9 +118,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                     if (traceCommand != "")
                     {
                         toStringFunction += "    // " + traceCommand + "((\" | " + variableName + " = %u\", " + variableName + ")); // Commented to avoid bad looking logs\n";
-                        toStringFunction += '\n';
-                        toStringFunction += '\n';
-                        toStringFunction += '\n';
+                        toStringFunction += "\n\n\n";
                     }
 
 
@@ -139,13 +138,97 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                     toStringFunction += '\n';
                     toStringFunction += "        default: return \"UNKNOWN\";\n";
                     toStringFunction += "    }\n";
-                    toStringFunction += '}';
+                    toStringFunction += "}\n";
+                    toStringFunction += "\n\n\n";
 
                     if (!content.contains(toStringFunction))
                     {
                         worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
                     }
                     // Ignore CppAlignmentVerifier [END]
+
+
+
+                    if (enumName.endsWith("Flag"))
+                    {
+                        if (!enumType.endsWith("_flags"))
+                        {
+                            worker->addError(path, i, "Enum type should use unique type for flags");
+                        }
+
+
+
+                        quint64 totalStringSize = 13; // Length of "UNKNOWN x 99" + zero byte
+
+                        for (qint64 j = 0; j < values.length(); ++j)
+                        {
+                            const QString &value = values.at(j);
+
+                            if (value != "NONE")
+                            {
+                                totalStringSize += values.at(j).length() + 3; // 3 == length of " | "
+                            }
+                        }
+
+
+
+                        // Ignore CppAlignmentVerifier [BEGIN]
+                        toStringFunction =  "\n\n\n";
+                        toStringFunction += "inline const char* " + enumNameFromLowerCase + "sToString(" + enumType + " flags) // TEST: NO\n";
+                        toStringFunction += "{\n";
+
+
+
+                        if (traceCommand != "")
+                        {
+                            toStringFunction += "    // " + traceCommand + "((\" | flags = %u\", flags)); // Commented to avoid bad looking logs\n";
+                            toStringFunction += "\n\n\n";
+                        }
+
+
+
+                        toStringFunction += "    if (!flags)\n";
+                        toStringFunction += "    {\n";
+                        toStringFunction += "        return \"NONE\";\n";
+                        toStringFunction += "    }\n";
+                        toStringFunction += "\n\n\n";
+                        toStringFunction += "    static char res[" + QString::number(totalStringSize) + "];\n";
+                        toStringFunction += '\n';
+                        toStringFunction += "    FLAGS_TO_STRING(res, flags, " + enumNameFromLowerCase + "ToString, " + enumName + ");\n";
+                        toStringFunction += '\n';
+                        toStringFunction += "    return res;\n";
+                        toStringFunction += "}\n";
+                        toStringFunction += "\n\n\n";
+
+                        if (!content.contains(toStringFunction))
+                        {
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                        }
+                        // Ignore CppAlignmentVerifier [END]
+                    }
+                    else
+                    {
+                        if (
+                            enumType != "u8"
+                            &&
+                            enumType != "u16"
+                            &&
+                            enumType != "u32"
+                            &&
+                            enumType != "u64"
+                            &&
+                            enumType != "quint8"
+                            &&
+                            enumType != "quint16"
+                            &&
+                            enumType != "quint32"
+                            &&
+                            enumType != "quint64"
+                           )
+                        {
+                            worker->addError(path, i, "Enum type expecting to be one of the standard types");
+                        }
+                    }
                 }
                 else
                 {

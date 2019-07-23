@@ -257,12 +257,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::AVX)
             &&
-            (sXFeatures & (x_feature_type_flags)XFeatureTypeFlag::AVX)
+            hasFlag(XFeatureTypeFlag::AVX)
            )
         {
             COMMON_LVV(("Disabling XFeature::AVX since X86Feature::AVX not supported"));
 
-            sXFeatures &= ~(x_feature_type_flags)XFeatureTypeFlag::AVX;
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX), NgosStatus::ASSERTION);
         }
 
 
@@ -270,12 +270,17 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::MPX)
             &&
-            (sXFeatures & ((x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_REGISTERS | (x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS))
+            (
+             hasFlag(XFeatureTypeFlag::MPX_BOUND_REGISTERS)
+             ||
+             hasFlag(XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS)
+            )
            )
         {
             COMMON_LVV(("Disabling XFeature::MPX_BOUND_REGISTERS and XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS since X86Feature::MPX not supported"));
 
-            sXFeatures &= ~((x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_REGISTERS | (x_feature_type_flags)XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS);
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::MPX_BOUND_REGISTERS),                   NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS), NgosStatus::ASSERTION);
         }
 
 
@@ -283,12 +288,20 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::AVX512F)
             &&
-            (sXFeatures & ((x_feature_type_flags)XFeatureTypeFlag::AVX512_OPMASK | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15 | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31))
+            (
+             hasFlag(XFeatureTypeFlag::AVX512_OPMASK)
+             ||
+             hasFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15)
+             ||
+             hasFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31)
+            )
            )
         {
             COMMON_LVV(("Disabling XFeature::AVX512_OPMASK, XFeature::AVX512_ZMM_FROM_0_TO_15 and XFeature::AVX512_ZMM_FROM_16_TO_31 since X86Feature::AVX512F not supported"));
 
-            sXFeatures &= ~((x_feature_type_flags)XFeatureTypeFlag::AVX512_OPMASK | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15 | (x_feature_type_flags)XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31);
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_OPMASK),            NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15),  NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31), NgosStatus::ASSERTION);
         }
 
 
@@ -296,12 +309,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::INTEL_PT)
             &&
-            (sXFeatures & (x_feature_type_flags)XFeatureTypeFlag::PT)
+            hasFlag(XFeatureTypeFlag::PT)
            )
         {
             COMMON_LVV(("Disabling XFeature::PT since X86Feature::INTEL_PT not supported"));
 
-            sXFeatures &= ~(x_feature_type_flags)XFeatureTypeFlag::PT;
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::PT), NgosStatus::ASSERTION);
         }
 
 
@@ -309,12 +322,12 @@ NgosStatus FPU::initXState()
         if (
             !CPU::hasFlag(X86Feature::PKU)
             &&
-            (sXFeatures & (x_feature_type_flags)XFeatureTypeFlag::PKRU)
+            hasFlag(XFeatureTypeFlag::PKRU)
            )
         {
             COMMON_LVV(("Disabling XFeature::PKRU since X86Feature::PKU not supported"));
 
-            sXFeatures &= ~(x_feature_type_flags)XFeatureTypeFlag::PKRU;
+            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::PKRU), NgosStatus::ASSERTION);
         }
     }
 
@@ -363,7 +376,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
     {
         XFeature feature = (XFeature)i;
 
-        if (sXFeatures & (1ULL << i))
+        if (isXFeatureEnabled(feature))
         {
             u32 ignored;
 
@@ -577,6 +590,50 @@ bool FPU::isXFeatureAligned(XFeature xFeature)
     return ecx & (x_feature_flags)XFeatureFlag::ALIGNED;
 }
 
+bool FPU::isXFeatureEnabled(XFeature xFeature)
+{
+    COMMON_LT((" | xFeature = %u", xFeature));
+
+
+
+    return sXFeatures & (1ULL << (u64)xFeature);
+}
+
+NgosStatus FPU::setFlag(XFeatureTypeFlag flag)
+{
+    COMMON_LT((" | flag = %u", flag));
+
+
+
+    sXFeatures |= (x_feature_type_flags)flag;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus FPU::clearFlag(XFeatureTypeFlag flag)
+{
+    COMMON_LT((" | flag = %u", flag));
+
+
+
+    sXFeatures &= ~(x_feature_type_flags)flag;
+
+
+
+    return NgosStatus::OK;
+}
+
+bool FPU::hasFlag(XFeatureTypeFlag flag)
+{
+    COMMON_LT((" | flag = %u", flag));
+
+
+
+    return sXFeatures & (x_feature_type_flags)flag;
+}
+
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
 u32 FPU::expectedStateSize()
 {
@@ -590,7 +647,7 @@ u32 FPU::expectedStateSize()
     {
         XFeature feature = (XFeature)i;
 
-        if (sXFeatures & (1ULL << i))
+        if (isXFeatureEnabled(feature))
         {
             u32 featureSize = sXFeaturesSizes[i];
             u32 featureStructSize;

@@ -3,6 +3,11 @@
 
 
 
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
@@ -32,6 +37,28 @@ inline const char* xFeatureFlagToString(XFeatureFlag flag) // TEST: NO
 
         default: return "UNKNOWN";
     }
+}
+
+
+
+inline const char* xFeatureFlagsToString(x_feature_flags flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char res[36];
+
+    FLAGS_TO_STRING(res, flags, xFeatureFlagToString, XFeatureFlag);
+
+    return res;
 }
 
 

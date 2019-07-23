@@ -3,6 +3,7 @@
 
 
 
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
@@ -14,7 +15,7 @@
 
 typedef u64 elf_section_flags;
 
-enum class ElfSectionFlag: elf_section_flags
+enum class ElfSectionFlag: elf_section_flags // Ignore CppEnumVerifier
 {
     NONE               = 0,
     WRITE              = (1ULL << 0),

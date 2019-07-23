@@ -3,6 +3,11 @@
 
 
 
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
@@ -34,6 +39,28 @@ inline const char* memoryBlockRegionFlagToString(MemoryBlockRegionFlag flag) // 
 
         default: return "UNKNOWN";
     }
+}
+
+
+
+inline const char* memoryBlockRegionFlagsToString(memory_block_region_flags flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char res[40];
+
+    FLAGS_TO_STRING(res, flags, memoryBlockRegionFlagToString, MemoryBlockRegionFlag);
+
+    return res;
 }
 
 

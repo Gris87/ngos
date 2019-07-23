@@ -24,6 +24,11 @@ private:
     static bool isXFeatureSupervisor(XFeature xFeature); // TEST: NO
     static bool isXFeatureUser(XFeature xFeature); // TEST: NO
     static bool isXFeatureAligned(XFeature xFeature); // TEST: NO
+    static bool isXFeatureEnabled(XFeature xFeature);
+
+    static NgosStatus setFlag(XFeatureTypeFlag flag);
+    static NgosStatus clearFlag(XFeatureTypeFlag flag);
+    static bool hasFlag(XFeatureTypeFlag flag);
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
     static u32 expectedStateSize(); // TEST: NO
