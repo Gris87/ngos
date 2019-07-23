@@ -10,10 +10,10 @@
 enum class IdtType: u8
 {
     NONE           = 0,
-    GATE_TASK      = 0x5,
-    GATE_CALL      = 0xC,
-    GATE_INTERRUPT = 0xE,
-    GATE_TRAP      = 0xF
+    GATE_TASK      = 0x05,
+    GATE_CALL      = 0x0C,
+    GATE_INTERRUPT = 0x0E,
+    GATE_TRAP      = 0x0F
 };
 
 
