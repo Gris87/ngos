@@ -1,12 +1,12 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFOOTER_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFOOTER_H
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMFOOTER_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMFOOTER_H
 
 
 
 #include <buildconfig.h>
 #include <ngos/types.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/streamflags.h"
+#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamflags.h"
 
 
 
@@ -18,7 +18,7 @@
 
 
 
-struct StreamFooter
+struct XzStreamFooter
 {
     u32             crc32;
     u32             backwardSize;
@@ -32,4 +32,4 @@ struct StreamFooter
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFOOTER_H
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMFOOTER_H

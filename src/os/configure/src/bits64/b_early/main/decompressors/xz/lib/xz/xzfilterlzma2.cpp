@@ -1,4 +1,4 @@
-#include "filterlzma2.h"
+#include "xzfilterlzma2.h"
 
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>

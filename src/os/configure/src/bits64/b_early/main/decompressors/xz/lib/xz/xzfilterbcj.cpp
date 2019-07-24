@@ -1,4 +1,4 @@
-#include "filterbcj.h"
+#include "xzfilterbcj.h"
 
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>

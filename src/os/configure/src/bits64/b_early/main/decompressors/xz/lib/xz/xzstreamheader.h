@@ -1,12 +1,12 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMHEADER_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMHEADER_H
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMHEADER_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMHEADER_H
 
 
 
 #include <buildconfig.h>
 #include <ngos/types.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/streamflags.h"
+#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamflags.h"
 
 
 
@@ -18,7 +18,7 @@
 
 
 
-struct StreamHeader
+struct XzStreamHeader
 {
     u8              signature[6];
     xz_stream_flags streamFlags;
@@ -31,4 +31,4 @@ struct StreamHeader
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMHEADER_H
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMHEADER_H

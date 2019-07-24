@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_BLOCKFLAGS_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_BLOCKFLAGS_H
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBLOCKFLAGS_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBLOCKFLAGS_H
 
 
 
@@ -23,7 +23,7 @@
 
 typedef u8 xz_block_flags;
 
-enum class BlockFlag: xz_block_flags // Ignore CppEnumVerifier
+enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier
 {
     NONE                      = 0,
     COMPRESSED_SIZE_PRESENT   = (1ULL << 6),
@@ -32,7 +32,7 @@ enum class BlockFlag: xz_block_flags // Ignore CppEnumVerifier
 
 
 
-inline const char* blockFlagToString(BlockFlag flag) // TEST: NO
+inline const char* xzBlockFlagToString(XzBlockFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -40,9 +40,9 @@ inline const char* blockFlagToString(BlockFlag flag) // TEST: NO
 
     switch (flag)
     {
-        case BlockFlag::NONE:                      return "NONE";
-        case BlockFlag::COMPRESSED_SIZE_PRESENT:   return "COMPRESSED_SIZE_PRESENT";
-        case BlockFlag::UNCOMPRESSED_SIZE_PRESENT: return "UNCOMPRESSED_SIZE_PRESENT";
+        case XzBlockFlag::NONE:                      return "NONE";
+        case XzBlockFlag::COMPRESSED_SIZE_PRESENT:   return "COMPRESSED_SIZE_PRESENT";
+        case XzBlockFlag::UNCOMPRESSED_SIZE_PRESENT: return "UNCOMPRESSED_SIZE_PRESENT";
 
         default: return "UNKNOWN";
     }
@@ -50,7 +50,7 @@ inline const char* blockFlagToString(BlockFlag flag) // TEST: NO
 
 
 
-inline const char* blockFlagsToString(xz_block_flags flags) // TEST: NO
+inline const char* xzBlockFlagsToString(xz_block_flags flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -67,7 +67,7 @@ inline const char* blockFlagsToString(xz_block_flags flags) // TEST: NO
 
     static char res[67];
 
-    FLAGS_TO_STRING(res, flags, blockFlagToString, BlockFlag);
+    FLAGS_TO_STRING(res, flags, xzBlockFlagToString, XzBlockFlag);
 
     return res;
 }
@@ -78,4 +78,4 @@ inline const char* blockFlagsToString(xz_block_flags flags) // TEST: NO
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_BLOCKFLAGS_H
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBLOCKFLAGS_H

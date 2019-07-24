@@ -10,18 +10,18 @@
 
 #include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
 #include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/blockheader.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/filter.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/streamfooter.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/streamheader.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
+#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
+#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzfilter.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h"
+#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
+#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
 #include "src/bits64/b_early/other/memoryarea.h"
 #include "src/bits64/b_early/other/pagetable/pageallocationcontext.h"
 #include "src/bits64/other/kerneldescriptor.h"
@@ -49,9 +49,9 @@ TEST_CASES(section1, bits64_types);
 
 
 #if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
-        TEST_ASSERT_EQUALS(sizeof(BlockHeader), 2);
+        TEST_ASSERT_EQUALS(sizeof(XzBlockHeader), 2);
 
-        TEST_ASSERT_EQUALS(sizeof(Filter), 24);
+        TEST_ASSERT_EQUALS(sizeof(XzFilter), 24);
 
         TEST_ASSERT_EQUALS(sizeof(Lzma2Decoder), 12);
 
@@ -63,9 +63,9 @@ TEST_CASES(section1, bits64_types);
 
         TEST_ASSERT_EQUALS(sizeof(LzmaRcDecoder), 40);
 
-        TEST_ASSERT_EQUALS(sizeof(StreamFooter), 12);
+        TEST_ASSERT_EQUALS(sizeof(XzStreamFooter), 12);
 
-        TEST_ASSERT_EQUALS(sizeof(StreamHeader), 12);
+        TEST_ASSERT_EQUALS(sizeof(XzStreamHeader), 12);
 
         TEST_ASSERT_EQUALS(sizeof(XzBcjDecoder), 4);
 

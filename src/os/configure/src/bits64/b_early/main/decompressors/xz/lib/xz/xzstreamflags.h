@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFLAGS_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFLAGS_H
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMFLAGS_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMFLAGS_H
 
 
 
@@ -23,7 +23,7 @@
 
 typedef u16 xz_stream_flags;
 
-enum class StreamFlag: xz_stream_flags
+enum class XzStreamFlag: xz_stream_flags
 {
     NONE                 = 0,
     TYPE_OF_CHECK_CRC32  = (1ULL << 8),
@@ -33,7 +33,7 @@ enum class StreamFlag: xz_stream_flags
 
 
 
-inline const char* streamFlagToString(StreamFlag flag) // TEST: NO
+inline const char* xzStreamFlagToString(XzStreamFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -41,10 +41,10 @@ inline const char* streamFlagToString(StreamFlag flag) // TEST: NO
 
     switch (flag)
     {
-        case StreamFlag::NONE:                 return "NONE";
-        case StreamFlag::TYPE_OF_CHECK_CRC32:  return "TYPE_OF_CHECK_CRC32";
-        case StreamFlag::TYPE_OF_CHECK_CRC64:  return "TYPE_OF_CHECK_CRC64";
-        case StreamFlag::TYPE_OF_CHECK_SHA256: return "TYPE_OF_CHECK_SHA256";
+        case XzStreamFlag::NONE:                 return "NONE";
+        case XzStreamFlag::TYPE_OF_CHECK_CRC32:  return "TYPE_OF_CHECK_CRC32";
+        case XzStreamFlag::TYPE_OF_CHECK_CRC64:  return "TYPE_OF_CHECK_CRC64";
+        case XzStreamFlag::TYPE_OF_CHECK_SHA256: return "TYPE_OF_CHECK_SHA256";
 
         default: return "UNKNOWN";
     }
@@ -52,7 +52,7 @@ inline const char* streamFlagToString(StreamFlag flag) // TEST: NO
 
 
 
-inline const char* streamFlagsToString(xz_stream_flags flags) // TEST: NO
+inline const char* xzStreamFlagsToString(xz_stream_flags flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -67,7 +67,7 @@ inline const char* streamFlagsToString(xz_stream_flags flags) // TEST: NO
 
     static char res[80];
 
-    FLAGS_TO_STRING(res, flags, streamFlagToString, StreamFlag);
+    FLAGS_TO_STRING(res, flags, xzStreamFlagToString, XzStreamFlag);
 
     return res;
 }
@@ -78,4 +78,4 @@ inline const char* streamFlagsToString(xz_stream_flags flags) // TEST: NO
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_STREAMFLAGS_H
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZSTREAMFLAGS_H
