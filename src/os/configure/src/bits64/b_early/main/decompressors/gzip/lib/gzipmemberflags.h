@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBERFLAGS_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBERFLAGS_H
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERFLAGS_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERFLAGS_H
 
 
 
@@ -19,7 +19,7 @@
 
 typedef u8 gzip_member_flags;
 
-enum class MemberFlag: gzip_member_flags
+enum class GzipMemberFlag: gzip_member_flags
 {
     NONE        = 0,
     TEXT        = (1ULL << 0),
@@ -31,7 +31,7 @@ enum class MemberFlag: gzip_member_flags
 
 
 
-inline const char* memberFlagToString(MemberFlag flag) // TEST: NO
+inline const char* gzipMemberFlagToString(GzipMemberFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -39,12 +39,12 @@ inline const char* memberFlagToString(MemberFlag flag) // TEST: NO
 
     switch (flag)
     {
-        case MemberFlag::NONE:       return "NONE";
-        case MemberFlag::TEXT:       return "TEXT";
-        case MemberFlag::HEADER_CRC: return "HEADER_CRC";
-        case MemberFlag::EXTRA:      return "EXTRA";
-        case MemberFlag::NAME:       return "NAME";
-        case MemberFlag::COMMENT:    return "COMMENT";
+        case GzipMemberFlag::NONE:       return "NONE";
+        case GzipMemberFlag::TEXT:       return "TEXT";
+        case GzipMemberFlag::HEADER_CRC: return "HEADER_CRC";
+        case GzipMemberFlag::EXTRA:      return "EXTRA";
+        case GzipMemberFlag::NAME:       return "NAME";
+        case GzipMemberFlag::COMMENT:    return "COMMENT";
 
         default: return "UNKNOWN";
     }
@@ -52,7 +52,7 @@ inline const char* memberFlagToString(MemberFlag flag) // TEST: NO
 
 
 
-inline const char* memberFlagsToString(gzip_member_flags flags) // TEST: NO
+inline const char* gzipMemberFlagsToString(gzip_member_flags flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -67,7 +67,7 @@ inline const char* memberFlagsToString(gzip_member_flags flags) // TEST: NO
 
     static char res[58];
 
-    FLAGS_TO_STRING(res, flags, memberFlagToString, MemberFlag);
+    FLAGS_TO_STRING(res, flags, gzipMemberFlagToString, GzipMemberFlag);
 
     return res;
 }
@@ -78,4 +78,4 @@ inline const char* memberFlagsToString(gzip_member_flags flags) // TEST: NO
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBERFLAGS_H
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERFLAGS_H

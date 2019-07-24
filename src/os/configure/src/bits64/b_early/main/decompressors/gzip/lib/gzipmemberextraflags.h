@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBEREXTRAFLAGS_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBEREXTRAFLAGS_H
+#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBEREXTRAFLAGS_H
+#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBEREXTRAFLAGS_H
 
 
 
@@ -19,7 +19,7 @@
 
 typedef u8 gzip_member_extra_flags;
 
-enum class MemberExtraFlag: gzip_member_extra_flags
+enum class GzipMemberExtraFlag: gzip_member_extra_flags
 {
     NONE         = 0,
     DEFLATE_SLOW = (1ULL << 1),
@@ -28,7 +28,7 @@ enum class MemberExtraFlag: gzip_member_extra_flags
 
 
 
-inline const char* memberExtraFlagToString(MemberExtraFlag flag) // TEST: NO
+inline const char* gzipMemberExtraFlagToString(GzipMemberExtraFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -36,9 +36,9 @@ inline const char* memberExtraFlagToString(MemberExtraFlag flag) // TEST: NO
 
     switch (flag)
     {
-        case MemberExtraFlag::NONE:         return "NONE";
-        case MemberExtraFlag::DEFLATE_SLOW: return "DEFLATE_SLOW";
-        case MemberExtraFlag::DEFLATE_FAST: return "DEFLATE_FAST";
+        case GzipMemberExtraFlag::NONE:         return "NONE";
+        case GzipMemberExtraFlag::DEFLATE_SLOW: return "DEFLATE_SLOW";
+        case GzipMemberExtraFlag::DEFLATE_FAST: return "DEFLATE_FAST";
 
         default: return "UNKNOWN";
     }
@@ -46,7 +46,7 @@ inline const char* memberExtraFlagToString(MemberExtraFlag flag) // TEST: NO
 
 
 
-inline const char* memberExtraFlagsToString(gzip_member_extra_flags flags) // TEST: NO
+inline const char* gzipMemberExtraFlagsToString(gzip_member_extra_flags flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -61,7 +61,7 @@ inline const char* memberExtraFlagsToString(gzip_member_extra_flags flags) // TE
 
     static char res[43];
 
-    FLAGS_TO_STRING(res, flags, memberExtraFlagToString, MemberExtraFlag);
+    FLAGS_TO_STRING(res, flags, gzipMemberExtraFlagToString, GzipMemberExtraFlag);
 
     return res;
 }
@@ -72,4 +72,4 @@ inline const char* memberExtraFlagsToString(gzip_member_extra_flags flags) // TE
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_MEMBEREXTRAFLAGS_H
+#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBEREXTRAFLAGS_H

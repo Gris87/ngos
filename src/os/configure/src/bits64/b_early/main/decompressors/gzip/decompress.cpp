@@ -6,8 +6,8 @@
 #include <common/src/bits64/inflate/inflate.h>
 #include <common/src/bits64/memory/memory.h>
 
-#include "src/bits64/b_early/main/decompressors/gzip/lib/memberfooter.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/memberheader.h"
+#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
+#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
 
 
 
@@ -28,27 +28,27 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
     u8 *currentPointer = compressedAddress;
 
-    MemberHeader *memberHeader = (MemberHeader *)currentPointer;
+    GzipMemberHeader *memberHeader = (GzipMemberHeader *)currentPointer;
 
 
 
     // Validation
     {
         EARLY_LVVV(("memberHeader->signature         = 0x%04X",      memberHeader->signature));
-        EARLY_LVVV(("memberHeader->compressionMethod = %u (%s)",     memberHeader->compressionMethod, compressionMethodToString(memberHeader->compressionMethod)));
-        EARLY_LVVV(("memberHeader->flags             = 0x%02X (%s)", memberHeader->flags, memberFlagsToString(memberHeader->flags)));
+        EARLY_LVVV(("memberHeader->compressionMethod = %u (%s)",     memberHeader->compressionMethod, gzipCompressionMethodToString(memberHeader->compressionMethod)));
+        EARLY_LVVV(("memberHeader->flags             = 0x%02X (%s)", memberHeader->flags, gzipMemberFlagsToString(memberHeader->flags)));
         EARLY_LVVV(("memberHeader->modificationTime  = %u",          memberHeader->modificationTime));
-        EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X (%s)", memberHeader->extraFlags, memberExtraFlagsToString(memberHeader->extraFlags)));
-        EARLY_LVVV(("memberHeader->operatingSystem   = %u (%s)",     memberHeader->operatingSystem, operatingSystemToString(memberHeader->operatingSystem)));
+        EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X (%s)", memberHeader->extraFlags, gzipMemberExtraFlagsToString(memberHeader->extraFlags)));
+        EARLY_LVVV(("memberHeader->operatingSystem   = %u (%s)",     memberHeader->operatingSystem, gzipOperatingSystemToString(memberHeader->operatingSystem)));
 
 
 
-        EARLY_TEST_ASSERT(memberHeader->signature         == GZIP_MEMBER_HEADER_SIGNATURE,                           NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberHeader->compressionMethod == CompressionMethod::DEFLATE,                             NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberHeader->flags             == (gzip_member_flags)MemberFlag::NONE,                    NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberHeader->modificationTime  == 0,                                                      NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberHeader->extraFlags        == (gzip_member_extra_flags)MemberExtraFlag::DEFLATE_SLOW, NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberHeader->operatingSystem   == OperatingSystem::UNIX,                                  NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->signature         == GZIP_MEMBER_HEADER_SIGNATURE,                               NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->compressionMethod == GzipCompressionMethod::DEFLATE,                             NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->flags             == (gzip_member_flags)GzipMemberFlag::NONE,                    NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->modificationTime  == 0,                                                          NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->extraFlags        == (gzip_member_extra_flags)GzipMemberExtraFlag::DEFLATE_SLOW, NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->operatingSystem   == GzipOperatingSystem::UNIX,                                  NgosStatus::ASSERTION);
     }
 
 
@@ -84,7 +84,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-    MemberFooter *memberFooter = (MemberFooter *)currentPointer;
+    GzipMemberFooter *memberFooter = (GzipMemberFooter *)currentPointer;
 
 
 

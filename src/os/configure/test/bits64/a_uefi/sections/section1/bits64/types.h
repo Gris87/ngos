@@ -8,8 +8,8 @@
 #include <common/src/bits64/inflate/inflatedecoder.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/b_early/main/decompressors/gzip/lib/memberfooter.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/memberheader.h"
+#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
+#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/blockheader.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/filter.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
@@ -41,9 +41,9 @@ TEST_CASES(section1, bits64_types);
 
         TEST_ASSERT_EQUALS(sizeof(InflateDecoder), 40);
 
-        TEST_ASSERT_EQUALS(sizeof(MemberFooter), 8);
+        TEST_ASSERT_EQUALS(sizeof(GzipMemberFooter), 8);
 
-        TEST_ASSERT_EQUALS(sizeof(MemberHeader), 10);
+        TEST_ASSERT_EQUALS(sizeof(GzipMemberHeader), 10);
 #endif
 
 
