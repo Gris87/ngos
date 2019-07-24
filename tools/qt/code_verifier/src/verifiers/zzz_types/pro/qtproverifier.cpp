@@ -47,7 +47,7 @@
 
 
 QtProVerifier::QtProVerifier()
-    : BaseCodeVerifier(VerificationFileType::PRO)
+    : BaseCodeVerifier(CodeVerificationFileType::PRO)
 {
     // Nothing
 }

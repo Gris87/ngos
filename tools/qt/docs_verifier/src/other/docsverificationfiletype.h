@@ -11,7 +11,7 @@
 
 
 
-enum class VerificationFileType: quint64
+enum class DocsVerificationFileType: quint64
 {
     NONE = 0,
     TEXT = (1ULL << 0),
@@ -20,13 +20,13 @@ enum class VerificationFileType: quint64
 
 
 
-inline const char* verificationFileTypeToString(VerificationFileType type) // TEST: NO
+inline const char* verificationFileTypeToString(DocsVerificationFileType type) // TEST: NO
 {
     switch (type)
     {
-        case VerificationFileType::NONE: return "NONE";
-        case VerificationFileType::TEXT: return "TEXT";
-        case VerificationFileType::MD:   return "MD";
+        case DocsVerificationFileType::NONE: return "NONE";
+        case DocsVerificationFileType::TEXT: return "TEXT";
+        case DocsVerificationFileType::MD:   return "MD";
 
         default: return "UNKNOWN";
     }

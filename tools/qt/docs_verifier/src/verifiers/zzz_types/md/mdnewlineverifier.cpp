@@ -5,7 +5,7 @@
 
 
 MdNewLineVerifier::MdNewLineVerifier()
-    : BaseDocsVerifier(VerificationFileType::MD)
+    : BaseDocsVerifier(DocsVerificationFileType::MD)
 {
     // Nothing
 }

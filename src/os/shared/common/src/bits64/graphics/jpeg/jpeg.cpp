@@ -1144,7 +1144,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
                 if (marker->type != nextRestartMarker)
                 {
-                    COMMON_LE(("Unexpected restart marker %u (%s). Expecting for %u (%s)", marker->type, marker->type, nextRestartMarker, nextRestartMarker));
+                    COMMON_LE(("Unexpected restart marker %u (%s). Expecting for %u (%s)", marker->type, jpegMarkerTypeToString(marker->type), nextRestartMarker, jpegMarkerTypeToString(nextRestartMarker)));
 
                     status = NgosStatus::INVALID_DATA;
 

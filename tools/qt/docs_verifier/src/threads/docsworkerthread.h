@@ -19,7 +19,7 @@ public:
     DocsWorkerThread(); // TEST: NO
 
     static quint64 getAmountOfFiles(); // TEST: NO
-    static void pushFile(const QString &path, VerificationFileType verifications); // TEST: NO
+    static void pushFile(const QString &path, DocsVerificationFileType verifications); // TEST: NO
     static void pushFile(DocsFileInfo *fileInfo); // TEST: NO
     static DocsFileInfo* popFile(); // TEST: NO
     static void noMoreFiles(); // TEST: NO

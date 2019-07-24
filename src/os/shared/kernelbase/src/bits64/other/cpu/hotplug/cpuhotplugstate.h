@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -23,6 +24,36 @@ enum class CpuHotplugState: u8 // Ignore CppEnumVerifier
 inline const char* cpuHotplugStateToString(CpuHotplugState state) // TEST: NO
 {
     // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    static char res[24];
+
+
+
+    if (
+        (u64)state > (u64)CpuHotplugState::BP_PREPARE_DYNAMIC
+        &&
+        (u64)state < (u64)CpuHotplugState::BP_PREPARE_DYNAMIC_END
+       )
+    {
+        sprintf(res, "BP_PREPARE_DYNAMIC + %u", (u64)state - (u64)CpuHotplugState::BP_PREPARE_DYNAMIC);
+
+        return res;
+    }
+
+
+
+    if (
+        (u64)state > (u64)CpuHotplugState::AP_ONLINE_DYNAMIC
+        &&
+        (u64)state < (u64)CpuHotplugState::AP_ONLINE_DYNAMIC_END
+       )
+    {
+        sprintf(res, "AP_ONLINE_DYNAMIC + %u", (u64)state - (u64)CpuHotplugState::AP_ONLINE_DYNAMIC);
+
+        return res;
+    }
 
 
 

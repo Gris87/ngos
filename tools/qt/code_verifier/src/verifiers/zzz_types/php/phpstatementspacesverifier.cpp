@@ -5,7 +5,7 @@
 
 
 PhpStatementSpacesVerifier::PhpStatementSpacesVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
 {
     // Nothing
 }

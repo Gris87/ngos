@@ -19,7 +19,7 @@ public:
     CodeWorkerThread(); // TEST: NO
 
     static quint64 getAmountOfFiles(); // TEST: NO
-    static void pushFile(const QString &path, VerificationFileType verifications); // TEST: NO
+    static void pushFile(const QString &path, CodeVerificationFileType verifications); // TEST: NO
     static void pushFile(CodeFileInfo *fileInfo); // TEST: NO
     static CodeFileInfo* popFile(); // TEST: NO
     static void noMoreFiles(); // TEST: NO

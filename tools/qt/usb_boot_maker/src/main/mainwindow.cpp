@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
 #ifdef Q_OS_LINUX
     , mUsbMonitorThread(0)
 #endif
-    , mState(State::INITIAL)
+    , mState(UsbBootMakerState::INITIAL)
     , mRequestTime(0)
     , mReplies()
     , mLatestVersions()
@@ -109,7 +109,7 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_startButton_clicked()
 {
-    if (mState == State::INITIAL)
+    if (mState == UsbBootMakerState::INITIAL)
     {
         if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok)
         {
@@ -133,7 +133,7 @@ void MainWindow::on_startButton_clicked()
             ui->deviceComboBox->setEnabled(false);
             ui->startButton->setIcon(QIcon(":/assets/images/stop.png")); // Ignore CppPunctuationVerifier
 
-            switchToState(State::GET_LATEST_VERSION);
+            switchToState(UsbBootMakerState::GET_LATEST_VERSION);
         }
     }
     else
@@ -308,7 +308,7 @@ void MainWindow::latestVersionReplyFinished()
 
     if (!mReplies.size()) // mReplies.size() == 0
     {
-        switchToState(State::GET_FILE_LIST);
+        switchToState(UsbBootMakerState::GET_FILE_LIST);
     }
 }
 
@@ -343,7 +343,7 @@ void MainWindow::fileListReplyFinished()
                 addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
 
                 abortReplies();
-                switchToState(State::GET_FILE_LIST);
+                switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                 return;
             }
@@ -353,7 +353,7 @@ void MainWindow::fileListReplyFinished()
                 addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("files field absent")));
 
                 abortReplies();
-                switchToState(State::GET_FILE_LIST);
+                switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                 return;
             }
@@ -368,7 +368,7 @@ void MainWindow::fileListReplyFinished()
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("id field absent")));
 
                     abortReplies();
-                    switchToState(State::GET_FILE_LIST);
+                    switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                     return;
                 }
@@ -378,7 +378,7 @@ void MainWindow::fileListReplyFinished()
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
 
                     abortReplies();
-                    switchToState(State::GET_FILE_LIST);
+                    switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                     return;
                 }
@@ -388,7 +388,7 @@ void MainWindow::fileListReplyFinished()
                     addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("hash field absent")));
 
                     abortReplies();
-                    switchToState(State::GET_FILE_LIST);
+                    switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                     return;
                 }
@@ -405,7 +405,7 @@ void MainWindow::fileListReplyFinished()
                         addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
                         abortReplies();
-                        switchToState(State::GET_FILE_LIST);
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                         return;
                     }
@@ -428,7 +428,7 @@ void MainWindow::fileListReplyFinished()
                             addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
                             abortReplies();
-                            switchToState(State::GET_FILE_LIST);
+                            switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                             return;
                         }
@@ -446,7 +446,7 @@ void MainWindow::fileListReplyFinished()
                         addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
                         abortReplies();
-                        switchToState(State::GET_FILE_LIST);
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                         return;
                     }
@@ -476,7 +476,7 @@ void MainWindow::fileListReplyFinished()
                             addLog(tr("File list received from server %1 did't match with stored value").arg(server));
 
                             abortReplies();
-                            switchToState(State::GET_FILE_LIST);
+                            switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                             return;
                         }
@@ -509,7 +509,7 @@ void MainWindow::fileListReplyFinished()
             addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ')') : "")));
 
             abortReplies();
-            switchToState(State::GET_FILE_LIST);
+            switchToState(UsbBootMakerState::GET_FILE_LIST);
 
             return;
         }
@@ -519,7 +519,7 @@ void MainWindow::fileListReplyFinished()
         addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(reply->errorString()));
 
         abortReplies();
-        switchToState(State::GET_FILE_LIST);
+        switchToState(UsbBootMakerState::GET_FILE_LIST);
 
         return;
     }
@@ -528,7 +528,7 @@ void MainWindow::fileListReplyFinished()
 
     if (!mReplies.size()) // mReplies.size() == 0
     {
-        switchToState(State::DOWNLOAD);
+        switchToState(UsbBootMakerState::DOWNLOAD);
     }
 }
 
@@ -567,7 +567,7 @@ void MainWindow::downloadReplyFinished()
             addLog(tr("Failed to store file %1").arg(fileInfo->filename));
 
             abortReplies();
-            switchToState(State::GET_FILE_LIST);
+            switchToState(UsbBootMakerState::GET_FILE_LIST);
 
             return;
         }
@@ -590,7 +590,7 @@ void MainWindow::downloadReplyFinished()
                 addLog(tr("Failed to store file %1").arg(fileInfo->filename));
 
                 abortReplies();
-                switchToState(State::GET_FILE_LIST);
+                switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                 return;
             }
@@ -602,7 +602,7 @@ void MainWindow::downloadReplyFinished()
             addLog(tr("Failed to store file %1").arg(fileInfo->filename));
 
             abortReplies();
-            switchToState(State::GET_FILE_LIST);
+            switchToState(UsbBootMakerState::GET_FILE_LIST);
 
             return;
         }
@@ -635,7 +635,7 @@ void MainWindow::downloadReplyFinished()
                         addLog(tr("Failed to store file %1").arg(fileInfo->filename));
 
                         abortReplies();
-                        switchToState(State::GET_FILE_LIST);
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                         return;
                     }
@@ -647,7 +647,7 @@ void MainWindow::downloadReplyFinished()
                     addLog(tr("Failed to store file %1").arg(fileInfo->filename));
 
                     abortReplies();
-                    switchToState(State::GET_FILE_LIST);
+                    switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                     return;
                 }
@@ -657,7 +657,7 @@ void MainWindow::downloadReplyFinished()
                 addLog(tr("Failed to decompress file %1").arg(fileInfo->filename));
 
                 abortReplies();
-                switchToState(State::GET_FILE_LIST);
+                switchToState(UsbBootMakerState::GET_FILE_LIST);
 
                 return;
             }
@@ -678,7 +678,7 @@ void MainWindow::downloadReplyFinished()
             addLog(tr("Failed to store file %1").arg(fileInfo->filename));
 
             abortReplies();
-            switchToState(State::GET_FILE_LIST);
+            switchToState(UsbBootMakerState::GET_FILE_LIST);
 
             return;
         }
@@ -688,7 +688,7 @@ void MainWindow::downloadReplyFinished()
         addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->filename).arg(server).arg(reply->errorString()));
 
         abortReplies();
-        switchToState(State::GET_FILE_LIST);
+        switchToState(UsbBootMakerState::GET_FILE_LIST);
 
         return;
     }
@@ -697,7 +697,7 @@ void MainWindow::downloadReplyFinished()
 
     if (!mReplies.size()) // mReplies.size() == 0
     {
-        switchToState(State::BURNING);
+        switchToState(UsbBootMakerState::BURNING);
     }
 }
 
@@ -788,18 +788,18 @@ void MainWindow::prepareLanguages()
     }
 }
 
-void MainWindow::switchToState(State state)
+void MainWindow::switchToState(UsbBootMakerState state)
 {
     mState = state;
 
     switch (mState)
     {
-        case State::GET_LATEST_VERSION: handleGetLatestVersionState(); break;
-        case State::GET_FILE_LIST:      handleGetFileListState();      break;
-        case State::DOWNLOAD:           handleDownloadState();         break;
-        case State::BURNING:            handleBurningState();          break;
+        case UsbBootMakerState::GET_LATEST_VERSION: handleGetLatestVersionState(); break;
+        case UsbBootMakerState::GET_FILE_LIST:      handleGetFileListState();      break;
+        case UsbBootMakerState::DOWNLOAD:           handleDownloadState();         break;
+        case UsbBootMakerState::BURNING:            handleBurningState();          break;
 
-        case State::INITIAL:
+        case UsbBootMakerState::INITIAL:
         {
             qFatal("Unexpected state %u", (quint8)mState);
         }
@@ -1001,15 +1001,15 @@ void MainWindow::resetToInitialState()
 
     switch (mState)
     {
-        case State::GET_LATEST_VERSION:
-        case State::GET_FILE_LIST:
-        case State::DOWNLOAD:
+        case UsbBootMakerState::GET_LATEST_VERSION:
+        case UsbBootMakerState::GET_FILE_LIST:
+        case UsbBootMakerState::DOWNLOAD:
         {
             abortReplies();
         }
         break;
 
-        case State::BURNING:
+        case UsbBootMakerState::BURNING:
         {
             mBurnThread->blockSignals(true);
             mBurnThread->stop();
@@ -1020,7 +1020,7 @@ void MainWindow::resetToInitialState()
         }
         break;
 
-        case State::INITIAL:
+        case UsbBootMakerState::INITIAL:
         {
             qFatal("Unexpected state %u", (quint8)mState);
         }
@@ -1055,7 +1055,7 @@ void MainWindow::abortReplies()
 
 void MainWindow::switchToInitialState()
 {
-    mState = State::INITIAL;
+    mState = UsbBootMakerState::INITIAL;
     ui->statusProgressBar->setValue(0);
 
     ui->deviceComboBox->setEnabled(true);

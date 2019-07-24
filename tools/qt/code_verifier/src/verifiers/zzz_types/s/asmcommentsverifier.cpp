@@ -9,7 +9,7 @@
 
 
 AsmCommentsVerifier::AsmCommentsVerifier()
-    : BaseCodeVerifier(VerificationFileType::S)
+    : BaseCodeVerifier(CodeVerificationFileType::S)
 {
     // Nothing
 }

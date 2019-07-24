@@ -9,7 +9,7 @@
 
 
 MdStructureVerifier::MdStructureVerifier()
-    : BaseDocsVerifier(VerificationFileType::MD)
+    : BaseDocsVerifier(DocsVerificationFileType::MD)
     , mSectionIdRegExp("^(\\d+\\.).*$")
     , mLinkRegExp("\\[([^\\]]*)\\]\\(([^)]*)\\)")
 {

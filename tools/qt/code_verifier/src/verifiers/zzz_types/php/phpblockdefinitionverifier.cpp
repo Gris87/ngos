@@ -5,7 +5,7 @@
 
 
 PhpBlockDefinitionVerifier::PhpBlockDefinitionVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
 {
     // Nothing
 }

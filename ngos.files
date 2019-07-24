@@ -1201,7 +1201,7 @@ tools/qt/usb_boot_maker/src/main/mainwindow.ui
 tools/qt/usb_boot_maker/src/main/mainwindow_linux.cpp
 tools/qt/usb_boot_maker/src/main/mainwindow_win.cpp
 tools/qt/usb_boot_maker/src/other/fileinfo.h
-tools/qt/usb_boot_maker/src/other/state.h
+tools/qt/usb_boot_maker/src/other/usbbootmakerstate.h
 tools/qt/usb_boot_maker/src/other/usbdeviceinfo.h
 tools/qt/usb_boot_maker/src/other/usbproperties.h
 tools/qt/usb_boot_maker/src/other/usbspeed.h

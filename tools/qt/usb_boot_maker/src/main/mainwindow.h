@@ -13,7 +13,7 @@
 #include <QTranslator>
 
 #include "src/other/fileinfo.h"
-#include "src/other/state.h"
+#include "src/other/usbbootmakerstate.h"
 #include "src/other/usbdeviceinfo.h"
 #include "src/other/usbspeed.h"
 #include "src/other/versioninfo.h"
@@ -59,7 +59,7 @@ private slots:
 private:
     void prepareLanguages(); // TEST: NO
     QList<UsbDeviceInfo *> getUsbDevices(); // TEST: NO
-    void switchToState(State state); // TEST: NO
+    void switchToState(UsbBootMakerState state); // TEST: NO
     void handleGetLatestVersionState(); // TEST: NO
     void handleGetFileListState(); // TEST: NO
     void handleDownloadState(); // TEST: NO
@@ -82,7 +82,7 @@ private:
     UsbMonitorThread                *mUsbMonitorThread;
 #endif
 
-    State                            mState;
+    UsbBootMakerState                mState;
     qint64                           mRequestTime;
     QHash<QString, QNetworkReply *>  mReplies;
     QHash<QString, VersionInfo>      mLatestVersions;

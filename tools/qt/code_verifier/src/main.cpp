@@ -115,52 +115,52 @@ qint32 main(qint32 argc, char *argv[])
             {
                 if (filename.endsWith(".cpp"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::CPP);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::CPP);
                 }
                 else
                 if (filename.endsWith(".h"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::H);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::H);
                 }
                 else
                 if (filename.endsWith(".S"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::S);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::S);
                 }
                 else
                 if (filename.endsWith(".php"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::PHP);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::PHP);
                 }
                 else
                 if (filename == "Makefile")
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::MAKEFILE);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::MAKEFILE);
                 }
                 else
                 if (filename.endsWith(".pro"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::PRO);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::PRO);
                 }
                 else
                 if (filename.endsWith(".pri"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::PRI);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::PRI);
                 }
                 else
                 if (filename.endsWith(".ld"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::LD);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::LD);
                 }
                 else
                 if (filename.endsWith(".sh"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::SH);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::SH);
                 }
                 else
                 if (filename.endsWith(".includes"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::INCLUDES);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::INCLUDES);
                 }
                 else
                 if (
@@ -173,17 +173,17 @@ qint32 main(qint32 argc, char *argv[])
                     filename.endsWith(".creator.shared")
                    )
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::XML);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::XML);
                 }
                 else
                 if (filename.endsWith(".ui"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::UI);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::UI);
                 }
                 else
                 if (filename.endsWith(".qrc"))
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::QRC);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::QRC);
                 }
                 else
                 if (
@@ -200,7 +200,7 @@ qint32 main(qint32 argc, char *argv[])
                     filename.endsWith(".files")
                    )
                 {
-                    CodeWorkerThread::pushFile(path, VerificationFileType::TEXT);
+                    CodeWorkerThread::pushFile(path, CodeVerificationFileType::TEXT);
                 }
                 else
                 if (

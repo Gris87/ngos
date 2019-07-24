@@ -26,7 +26,7 @@ quint64 CodeWorkerThread::getAmountOfFiles()
     return sAmountOfFiles;
 }
 
-void CodeWorkerThread::pushFile(const QString &path, VerificationFileType verifications)
+void CodeWorkerThread::pushFile(const QString &path, CodeVerificationFileType verifications)
 {
     pushFile(new CodeFileInfo(path, verifications));
 }

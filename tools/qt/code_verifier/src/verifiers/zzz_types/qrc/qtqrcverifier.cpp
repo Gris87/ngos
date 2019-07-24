@@ -8,7 +8,7 @@
 
 
 QtQrcVerifier::QtQrcVerifier()
-    : BaseCodeVerifier(VerificationFileType::QRC)
+    : BaseCodeVerifier(CodeVerificationFileType::QRC)
 {
     // Nothing
 }

@@ -115,7 +115,7 @@ qint32 main(qint32 argc, char *argv[])
             {
                 if (filename.endsWith(".md"))
                 {
-                    DocsWorkerThread::pushFile(path, VerificationFileType::MD);
+                    DocsWorkerThread::pushFile(path, DocsVerificationFileType::MD);
                 }
                 else
                 if (
@@ -162,7 +162,7 @@ qint32 main(qint32 argc, char *argv[])
                     filename.endsWith(".files")
                    )
                 {
-                    DocsWorkerThread::pushFile(path, VerificationFileType::TEXT);
+                    DocsWorkerThread::pushFile(path, DocsVerificationFileType::TEXT);
                 }
                 else
                 if (

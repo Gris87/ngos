@@ -7,7 +7,7 @@ quint64                   BaseCodeVerifier::sAmountOfVerifications = 0;
 
 
 
-BaseCodeVerifier::BaseCodeVerifier(VerificationFileType verification)
+BaseCodeVerifier::BaseCodeVerifier(CodeVerificationFileType verification)
     : BaseCodeVerifier((quint64)verification)
 {
     // Nothing

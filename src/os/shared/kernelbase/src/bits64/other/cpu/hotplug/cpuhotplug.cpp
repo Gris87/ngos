@@ -56,7 +56,7 @@ NgosStatus CpuHotplug::allocateDynamicState(CpuHotplugState state, CpuHotplugSta
     COMMON_LT((" | state = %u, res = 0x%p", state, res));
 
     COMMON_ASSERT(state == CpuHotplugState::BP_PREPARE_DYNAMIC || state == CpuHotplugState::AP_ONLINE_DYNAMIC, "state is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(res, "res is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,                                                                                         "res is null",      NgosStatus::ASSERTION);
 
 
 

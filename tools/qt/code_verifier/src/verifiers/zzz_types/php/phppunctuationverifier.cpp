@@ -5,7 +5,7 @@
 
 
 PhpPunctuationVerifier::PhpPunctuationVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
 {
     // Nothing
 }

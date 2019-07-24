@@ -11,46 +11,46 @@
 
 #define VERIFICATION_COMMON_CPP \
     ( \
-        (quint64)VerificationFileType::CPP \
-        | (quint64)VerificationFileType::H \
+        (quint64)CodeVerificationFileType::CPP \
+        | (quint64)CodeVerificationFileType::H \
     )
 
 #define VERIFICATION_AVOID_TABS \
     ( \
-        (quint64)VerificationFileType::TEXT \
-        | (quint64)VerificationFileType::CPP \
-        | (quint64)VerificationFileType::H \
-        | (quint64)VerificationFileType::S \
-        | (quint64)VerificationFileType::PHP \
-        | (quint64)VerificationFileType::PRO \
-        | (quint64)VerificationFileType::PRI \
-        | (quint64)VerificationFileType::LD \
-        | (quint64)VerificationFileType::SH \
-        | (quint64)VerificationFileType::INCLUDES \
-        | (quint64)VerificationFileType::XML \
-        | (quint64)VerificationFileType::UI \
-        | (quint64)VerificationFileType::QRC \
+        (quint64)CodeVerificationFileType::TEXT \
+        | (quint64)CodeVerificationFileType::CPP \
+        | (quint64)CodeVerificationFileType::H \
+        | (quint64)CodeVerificationFileType::S \
+        | (quint64)CodeVerificationFileType::PHP \
+        | (quint64)CodeVerificationFileType::PRO \
+        | (quint64)CodeVerificationFileType::PRI \
+        | (quint64)CodeVerificationFileType::LD \
+        | (quint64)CodeVerificationFileType::SH \
+        | (quint64)CodeVerificationFileType::INCLUDES \
+        | (quint64)CodeVerificationFileType::XML \
+        | (quint64)CodeVerificationFileType::UI \
+        | (quint64)CodeVerificationFileType::QRC \
     )
 
 #define VERIFICATION_INDENT_SPACES \
     ( \
-        (quint64)VerificationFileType::PRO \
-        | (quint64)VerificationFileType::PRI \
-        | (quint64)VerificationFileType::LD \
-        | (quint64)VerificationFileType::SH \
-        | (quint64)VerificationFileType::INCLUDES \
-        | (quint64)VerificationFileType::XML \
-        | (quint64)VerificationFileType::QRC \
+        (quint64)CodeVerificationFileType::PRO \
+        | (quint64)CodeVerificationFileType::PRI \
+        | (quint64)CodeVerificationFileType::LD \
+        | (quint64)CodeVerificationFileType::SH \
+        | (quint64)CodeVerificationFileType::INCLUDES \
+        | (quint64)CodeVerificationFileType::XML \
+        | (quint64)CodeVerificationFileType::QRC \
     )
 
 #define VERIFICATION_INDENT_TABS \
     ( \
-        (quint64)VerificationFileType::MAKEFILE \
+        (quint64)CodeVerificationFileType::MAKEFILE \
     )
 
 
 
-enum class VerificationFileType: quint64
+enum class CodeVerificationFileType: quint64
 {
     NONE     = 0,
     TEXT     = (1ULL << 0),
@@ -71,25 +71,25 @@ enum class VerificationFileType: quint64
 
 
 
-inline const char* verificationFileTypeToString(VerificationFileType type) // TEST: NO
+inline const char* verificationFileTypeToString(CodeVerificationFileType type) // TEST: NO
 {
     switch (type)
     {
-        case VerificationFileType::NONE:     return "NONE";
-        case VerificationFileType::TEXT:     return "TEXT";
-        case VerificationFileType::CPP:      return "CPP";
-        case VerificationFileType::H:        return "H"; // Ignore CppSingleCharVerifier
-        case VerificationFileType::S:        return "S"; // Ignore CppSingleCharVerifier
-        case VerificationFileType::PHP:      return "PHP";
-        case VerificationFileType::MAKEFILE: return "MAKEFILE";
-        case VerificationFileType::PRO:      return "PRO";
-        case VerificationFileType::PRI:      return "PRI";
-        case VerificationFileType::LD:       return "LD";
-        case VerificationFileType::SH:       return "SH";
-        case VerificationFileType::INCLUDES: return "INCLUDES";
-        case VerificationFileType::XML:      return "XML";
-        case VerificationFileType::UI:       return "UI";
-        case VerificationFileType::QRC:      return "QRC";
+        case CodeVerificationFileType::NONE:     return "NONE";
+        case CodeVerificationFileType::TEXT:     return "TEXT";
+        case CodeVerificationFileType::CPP:      return "CPP";
+        case CodeVerificationFileType::H:        return "H"; // Ignore CppSingleCharVerifier
+        case CodeVerificationFileType::S:        return "S"; // Ignore CppSingleCharVerifier
+        case CodeVerificationFileType::PHP:      return "PHP";
+        case CodeVerificationFileType::MAKEFILE: return "MAKEFILE";
+        case CodeVerificationFileType::PRO:      return "PRO";
+        case CodeVerificationFileType::PRI:      return "PRI";
+        case CodeVerificationFileType::LD:       return "LD";
+        case CodeVerificationFileType::SH:       return "SH";
+        case CodeVerificationFileType::INCLUDES: return "INCLUDES";
+        case CodeVerificationFileType::XML:      return "XML";
+        case CodeVerificationFileType::UI:       return "UI";
+        case CodeVerificationFileType::QRC:      return "QRC";
 
         default: return "UNKNOWN";
     }

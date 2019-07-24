@@ -36,7 +36,7 @@
 class BaseCodeVerifier
 {
 public:
-    BaseCodeVerifier(VerificationFileType verification); // TEST: NO
+    BaseCodeVerifier(CodeVerificationFileType verification); // TEST: NO
     BaseCodeVerifier(quint64 verification); // TEST: NO
 
     static void verifyAll(CodeWorkerThread *worker, CodeFileInfo *fileInfo, const QString &content, const QStringList &lines); // TEST: NO

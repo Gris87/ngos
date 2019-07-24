@@ -2,7 +2,7 @@
 
 
 
-CodeFileInfo::CodeFileInfo(const QString &path, VerificationFileType verificationFileType)
+CodeFileInfo::CodeFileInfo(const QString &path, CodeVerificationFileType verificationFileType)
     : mPath(path)
     , mVerificationFileType(verificationFileType)
 {
@@ -14,7 +14,7 @@ QString CodeFileInfo::getPath() const
     return mPath;
 }
 
-VerificationFileType CodeFileInfo::getVerificationFileType() const
+CodeVerificationFileType CodeFileInfo::getVerificationFileType() const
 {
     return mVerificationFileType;
 }

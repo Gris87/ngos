@@ -16,7 +16,7 @@ struct EqualEntry
 
 
 PhpEqualAlignmentVerifier::PhpEqualAlignmentVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
     , mEqualExpressionRegExp("^( *)(\\$\\w[\\w\\->]*(?:\\[[^\\]]+\\])*)(( *)([+\\-*\\/<>=&|^!.]*=)( *)(.*))?; *$")
 {
     // Nothing

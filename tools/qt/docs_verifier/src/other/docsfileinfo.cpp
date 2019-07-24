@@ -2,7 +2,7 @@
 
 
 
-DocsFileInfo::DocsFileInfo(const QString &path, VerificationFileType verificationFileType)
+DocsFileInfo::DocsFileInfo(const QString &path, DocsVerificationFileType verificationFileType)
     : mPath(path)
     , mVerificationFileType(verificationFileType)
 {
@@ -14,7 +14,7 @@ QString DocsFileInfo::getPath() const
     return mPath;
 }
 
-VerificationFileType DocsFileInfo::getVerificationFileType() const
+DocsVerificationFileType DocsFileInfo::getVerificationFileType() const
 {
     return mVerificationFileType;
 }

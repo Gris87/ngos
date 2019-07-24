@@ -5,7 +5,7 @@
 
 
 PhpSingleLineForVerifier::PhpSingleLineForVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
 {
     // Nothing
 }

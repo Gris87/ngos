@@ -5,7 +5,7 @@
 
 
 PhpSwitchVerifier::PhpSwitchVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
 {
     // Nothing
 }

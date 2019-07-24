@@ -9,7 +9,7 @@
 
 
 PhpIndentVerifier::PhpIndentVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
 {
     // Nothing
 }

@@ -5,7 +5,7 @@
 
 
 PhpForVerifier::PhpForVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
     , mInitRegexp("^\\$(\\w) = .+$")
     , mConditionRegexp("^\\$(\\w) [<>]=? .+$")
     , mStepRegexp("^[+-]{0,2}\\$(\\w)(?: [+-]= .+)?$")

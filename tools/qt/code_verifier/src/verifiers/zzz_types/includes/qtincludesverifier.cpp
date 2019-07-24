@@ -8,7 +8,7 @@
 
 
 QtIncludesVerifier::QtIncludesVerifier()
-    : BaseCodeVerifier(VerificationFileType::INCLUDES)
+    : BaseCodeVerifier(CodeVerificationFileType::INCLUDES)
 {
     // Nothing
 }

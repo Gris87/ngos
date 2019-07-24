@@ -8,7 +8,7 @@
 
 
 CppHDefinesVerifier::CppHDefinesVerifier()
-    : BaseCodeVerifier(VerificationFileType::H)
+    : BaseCodeVerifier(CodeVerificationFileType::H)
 {
     // Nothing
 }

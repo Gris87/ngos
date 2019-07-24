@@ -10,7 +10,7 @@
 
 
 QtPriVerifier::QtPriVerifier()
-    : BaseCodeVerifier(VerificationFileType::PRI)
+    : BaseCodeVerifier(CodeVerificationFileType::PRI)
 {
     // Nothing
 }

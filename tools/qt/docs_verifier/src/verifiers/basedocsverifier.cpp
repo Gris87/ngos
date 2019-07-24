@@ -7,7 +7,7 @@ quint64                   BaseDocsVerifier::sAmountOfVerifications = 0;
 
 
 
-BaseDocsVerifier::BaseDocsVerifier(VerificationFileType verification)
+BaseDocsVerifier::BaseDocsVerifier(DocsVerificationFileType verification)
     : BaseDocsVerifier((quint64)verification)
 {
     // Nothing

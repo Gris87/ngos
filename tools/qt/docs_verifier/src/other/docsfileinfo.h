@@ -12,14 +12,14 @@
 class DocsFileInfo
 {
 public:
-    DocsFileInfo(const QString &path, VerificationFileType verificationFileType); // TEST: NO
+    DocsFileInfo(const QString &path, DocsVerificationFileType verificationFileType); // TEST: NO
 
     QString getPath() const; // TEST: NO
-    VerificationFileType getVerificationFileType() const; // TEST: NO
+    DocsVerificationFileType getVerificationFileType() const; // TEST: NO
 
 private:
     QString              mPath;
-    VerificationFileType mVerificationFileType;
+    DocsVerificationFileType mVerificationFileType;
 };
 
 

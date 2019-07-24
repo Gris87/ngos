@@ -5,7 +5,7 @@
 
 
 PhpAlignmentVerifier::PhpAlignmentVerifier()
-    : BaseCodeVerifier(VerificationFileType::PHP)
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)
 {
     // Nothing
 }

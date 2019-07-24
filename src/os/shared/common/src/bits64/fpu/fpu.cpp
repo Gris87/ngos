@@ -70,18 +70,18 @@ NgosStatus FPU::init()
             COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016lX", i, sState.fxsave.xmm[i][1]));
         }
 
-        COMMON_LVVV(("sState.xsave.header.xFeatures   = 0x%08X",   sState.xsave.header.xFeatures));
-        COMMON_LVVV(("sState.xsave.header.xComponents = 0x%08X",   sState.xsave.header.xComponents));
-        COMMON_LVVV(("sStateKernelSize                = %u",       sStateKernelSize));
-        COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
-        COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));
-        COMMON_LVVV(("sXFeatures                      = 0x%016lX", sXFeatures));
+        COMMON_LVVV(("sState.xsave.header.xFeatures   = 0x%016lX (%s)", sState.xsave.header.xFeatures, xFeatureTypeFlagsToString(sState.xsave.header.xFeatures)));
+        COMMON_LVVV(("sState.xsave.header.xComponents = 0x%016lX",      sState.xsave.header.xComponents));
+        COMMON_LVVV(("sStateKernelSize                = %u",            sStateKernelSize));
+        COMMON_LVVV(("sStateUserSize                  = %u",            sStateUserSize));
+        COMMON_LVVV(("sMxcsrMask                      = 0x%08X",        sMxcsrMask));
+        COMMON_LVVV(("sXFeatures                      = 0x%016lX (%s)", sXFeatures, xFeatureTypeFlagsToString(sXFeatures)));
 
         for (i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {
-            COMMON_LVVV(("sXFeaturesOffsets[%d]          = 0x%08X", i, sXFeaturesOffsets[i]));
-            COMMON_LVVV(("sXFeaturesCompactedOffsets[%d] = 0x%08X", i, sXFeaturesCompactedOffsets[i]));
-            COMMON_LVVV(("sXFeaturesSizes[%d]            = 0x%08X", i, sXFeaturesSizes[i]));
+            COMMON_LVVV(("sXFeaturesOffsets[%-37s]          = 0x%08X", xFeatureToString((XFeature)i), sXFeaturesOffsets[i]));
+            COMMON_LVVV(("sXFeaturesCompactedOffsets[%-37s] = 0x%08X", xFeatureToString((XFeature)i), sXFeaturesCompactedOffsets[i]));
+            COMMON_LVVV(("sXFeaturesSizes[%-37s]            = 0x%08X", xFeatureToString((XFeature)i), sXFeaturesSizes[i]));
         }
 
 

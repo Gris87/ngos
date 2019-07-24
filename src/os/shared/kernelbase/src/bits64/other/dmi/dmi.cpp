@@ -350,9 +350,9 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
 
         COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));
 
-        COMMON_LVVV(("dmiEntryHeader->type   = %u",     dmiEntryHeader->type));
-        COMMON_LVVV(("dmiEntryHeader->length = %u",     dmiEntryHeader->length));
-        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X", dmiEntryHeader->handle));
+        COMMON_LVVV(("dmiEntryHeader->type   = %u (%s)", dmiEntryHeader->type, dmiEntryTypeToString(dmiEntryHeader->type)));
+        COMMON_LVVV(("dmiEntryHeader->length = %u",      dmiEntryHeader->length));
+        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X",  dmiEntryHeader->handle));
 
 
 
@@ -429,7 +429,7 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
 
         default:
         {
-            COMMON_LVV(("Ignoring DMI entry at address 0x%p with type %u", header, header->type));
+            COMMON_LVV(("Ignoring DMI entry at address 0x%p with type %u (%s)", header, header->type, dmiEntryTypeToString(header->type)));
         }
         break;
     }

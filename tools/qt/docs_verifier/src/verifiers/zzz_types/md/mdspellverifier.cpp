@@ -8,7 +8,7 @@
 
 
 MdSpellVerifier::MdSpellVerifier()
-    : BaseDocsVerifier(VerificationFileType::MD)
+    : BaseDocsVerifier(DocsVerificationFileType::MD)
 {
     // Nothing
 }

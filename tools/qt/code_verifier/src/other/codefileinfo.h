@@ -12,14 +12,14 @@
 class CodeFileInfo
 {
 public:
-    CodeFileInfo(const QString &path, VerificationFileType verificationFileType); // TEST: NO
+    CodeFileInfo(const QString &path, CodeVerificationFileType verificationFileType); // TEST: NO
 
     QString getPath() const; // TEST: NO
-    VerificationFileType getVerificationFileType() const; // TEST: NO
+    CodeVerificationFileType getVerificationFileType() const; // TEST: NO
 
 private:
     QString              mPath;
-    VerificationFileType mVerificationFileType;
+    CodeVerificationFileType mVerificationFileType;
 };
 
 

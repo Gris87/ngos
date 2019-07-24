@@ -36,7 +36,7 @@
 class BaseDocsVerifier
 {
 public:
-    BaseDocsVerifier(VerificationFileType verification); // TEST: NO
+    BaseDocsVerifier(DocsVerificationFileType verification); // TEST: NO
     BaseDocsVerifier(quint64 verification); // TEST: NO
 
     static void verifyAll(DocsWorkerThread *worker, DocsFileInfo *fileInfo, const QString &content, const QStringList &lines); // TEST: NO
