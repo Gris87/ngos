@@ -24,8 +24,8 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_LVVV(("header->identification.fileClass     = %u (%s)",     header->identification.fileClass, elfClassToString(header->identification.fileClass)));
         EARLY_LVVV(("header->identification.fileData      = %u (%s)",     header->identification.fileData, elfDataToString(header->identification.fileData)));
         EARLY_LVVV(("header->identification.version       = %u (%s)",     header->identification.version, elfFileVersionToString(header->identification.version)));
-        EARLY_LVVV(("header->identification.osAbi         = 0x%02X",      header->identification.osAbi));
-        EARLY_LVVV(("header->type                         = %u",          header->type));
+        EARLY_LVVV(("header->identification.osAbi         = 0x%02X (%s)", header->identification.osAbi, elfOsAbiToString(header->identification.osAbi)));
+        EARLY_LVVV(("header->type                         = %u (%s)",     header->type, elfTypeToString(header->type)));
         EARLY_LVVV(("header->machine                      = 0x%04X (%s)", header->machine, elfMachineToString(header->machine)));
         EARLY_LVVV(("header->version                      = %u (%s)",     header->version, elfVersionToString(header->version)));
         EARLY_LVVV(("header->entryPoint                   = 0x%016lX",    header->entryPoint));
@@ -70,7 +70,7 @@ u64 getElfMemorySize(ElfHeader *header)
     {
         ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((u64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
 
-        EARLY_LVVV(("programHeader[%d]->type            = %u",       i, programHeader->type));
+        EARLY_LVVV(("programHeader[%d]->type            = %u (%s)",  i, programHeader->type, elfProgramTypeToString(programHeader->type)));
         EARLY_LVVV(("programHeader[%d]->flags           = 0x%08X",   i, programHeader->flags));
         EARLY_LVVV(("programHeader[%d]->offset          = 0x%016lX", i, programHeader->offset));
         EARLY_LVVV(("programHeader[%d]->virtualAddress  = 0x%016lX", i, programHeader->virtualAddress));
@@ -104,7 +104,7 @@ NgosStatus loadElfToAddress(ElfHeader *header, u64 address)
         }
         else
         {
-            EARLY_LVV(("Ignoring program header with the type %u", programHeader->type));
+            EARLY_LVV(("Ignoring program header with the type %u (%s)", programHeader->type, elfProgramTypeToString(programHeader->type)));
         }
     }
 
@@ -141,16 +141,16 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
     {
         ElfSectionHeaderTableEntry *sectionHeader = (ElfSectionHeaderTableEntry *)((u64)header + header->sectionHeaderTableOffset + i * header->sectionHeaderTableEntrySize);
 
-        // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",   i, sectionHeader->nameOffset));     // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->type           = %u",       i, sectionHeader->type));           // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->flags          = 0x%016lX", i, sectionHeader->flags));          // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->virtualAddress = 0x%016lX", i, sectionHeader->virtualAddress)); // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->offset         = 0x%016lX", i, sectionHeader->offset));         // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->size           = %u",       i, sectionHeader->size));           // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->link           = %u",       i, sectionHeader->link));           // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->info           = %u",       i, sectionHeader->info));           // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->align          = %u",       i, sectionHeader->align));          // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->entrySize      = %u",       i, sectionHeader->entrySize));      // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",   i, sectionHeader->nameOffset));                                          // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->type           = %u (%s)",  i, sectionHeader->type, elfSectionTypeToString(sectionHeader->type)));   // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->flags          = 0x%016lX", i, sectionHeader->flags));                                               // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->virtualAddress = 0x%016lX", i, sectionHeader->virtualAddress));                                      // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->offset         = 0x%016lX", i, sectionHeader->offset));                                              // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->size           = %u",       i, sectionHeader->size));                                                // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->link           = %u",       i, sectionHeader->link));                                                // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->info           = %u",       i, sectionHeader->info));                                                // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->align          = %u",       i, sectionHeader->align));                                               // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->entrySize      = %u",       i, sectionHeader->entrySize));                                           // Commented to avoid too frequent logs
 
 
 
@@ -167,10 +167,10 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
                 ElfRelaType relaType = (ElfRelaType)ELF_RELA_TYPE(rela.info);
 
-                // EARLY_LVVV(("relas[%d].offset   = 0x%016lX", j, rela.offset)); // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].info     = 0x%016lX", j, rela.info));   // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].addend   = %d",       j, rela.addend)); // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].relaType = %u",       j, relaType));    // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].offset   = 0x%016lX", j, rela.offset));                               // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].info     = 0x%016lX", j, rela.info));                                 // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].addend   = %d",       j, rela.addend));                               // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].relaType = %u (%s)",  j, relaType, elfRelaTypeToString(relaType)));   // Commented to avoid too frequent logs
 
                 if (rela.offset >= 0xFFFFFFFF80000000)
                 {
@@ -208,7 +208,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
                         default:
                         {
-                            // EARLY_LVV(("Ignoring RELA entry with the type %u", relaType)); // Commented to avoid too frequent logs
+                            // EARLY_LVV(("Ignoring RELA entry with the type %u (%s)", relaType, elfRelaTypeToString(relaType))); // Commented to avoid too frequent logs
                         }
                         break;
                     }
@@ -217,7 +217,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
         }
         else
         {
-            // EARLY_LVV(("Ignoring section header with the type %u", sectionHeader->type)); // Commented to avoid too frequent logs
+            // EARLY_LVV(("Ignoring section header with the type %u (%s)", sectionHeader->type, elfSectionTypeToString(sectionHeader->type))); // Commented to avoid too frequent logs
         }
     }
 
