@@ -668,7 +668,7 @@ u32 FPU::expectedStateSize()
                 case XFeature::SSE:
                 case XFeature::PT:
                 {
-                    COMMON_LF(("Unsupported X feature: %s", xFeatureToString(feature)));
+                    COMMON_LF(("Unexpected X feature %u (%s)", feature, xFeatureToString(feature)));
 
                     return 0;
                 }
@@ -676,7 +676,7 @@ u32 FPU::expectedStateSize()
 
                 default:
                 {
-                    COMMON_LF(("Unknown X feature: %s", xFeatureToString(feature)));
+                    COMMON_LF(("Unknown X feature %u (%s)", feature, xFeatureToString(feature)));
 
                     return 0;
                 }

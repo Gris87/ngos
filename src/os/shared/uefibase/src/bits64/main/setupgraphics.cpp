@@ -105,7 +105,7 @@ NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop,
         case UefiGraphicsPixelFormat::BLT_ONLY:
         case UefiGraphicsPixelFormat::MAXIMUM:
         {
-            UEFI_LF(("Invalid pixel format %d (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
+            UEFI_LF(("Unexpected pixel format %u (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -113,7 +113,7 @@ NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop,
 
         default:
         {
-            UEFI_LF(("Unknown pixel format %d (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
+            UEFI_LF(("Unknown pixel format %u (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -191,7 +191,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
 
             u64 screenResolution = info->horizontalResolution * info->verticalResolution;
 
-            UEFI_LVVV(("info->pixelFormat          = %d (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
+            UEFI_LVVV(("info->pixelFormat          = %u (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
             UEFI_LVVV(("info->horizontalResolution = %u", info->horizontalResolution));
             UEFI_LVVV(("info->verticalResolution   = %u", info->verticalResolution));
             UEFI_LVVV(("screenResolution           = %u", screenResolution));

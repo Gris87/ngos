@@ -9,9 +9,9 @@
 
 enum class UefiHardDriveDevicePathSignatureType: u8
 {
-    NO_DISK_SIGNATURE = 0,
-    MBR               = 1,
-    GUID              = 2
+    NONE = 0,
+    MBR  = 1,
+    GUID = 2
 };
 
 
@@ -20,9 +20,9 @@ inline const char* uefiHardDriveDevicePathSignatureTypeToString(UefiHardDriveDev
 {
     switch (type)
     {
-        case UefiHardDriveDevicePathSignatureType::NO_DISK_SIGNATURE: return "NO_DISK_SIGNATURE";
-        case UefiHardDriveDevicePathSignatureType::MBR:               return "MBR";
-        case UefiHardDriveDevicePathSignatureType::GUID:              return "GUID";
+        case UefiHardDriveDevicePathSignatureType::NONE: return "NONE";
+        case UefiHardDriveDevicePathSignatureType::MBR:  return "MBR";
+        case UefiHardDriveDevicePathSignatureType::GUID: return "GUID";
 
         default: return "UNKNOWN";
     }

@@ -9,9 +9,9 @@
 
 enum class UefiHardDriveDevicePathMbrType: u8
 {
-    NONE                       = 0,
-    PCAT                       = 0x01,
-    EFI_PARTITION_TABLE_HEADER = 0x02
+    NONE                        = 0,
+    PCAT                        = 0x01,
+    UEFI_PARTITION_TABLE_HEADER = 0x02
 };
 
 
@@ -20,9 +20,9 @@ inline const char* uefiHardDriveDevicePathMbrTypeToString(UefiHardDriveDevicePat
 {
     switch (type)
     {
-        case UefiHardDriveDevicePathMbrType::NONE:                       return "NONE";
-        case UefiHardDriveDevicePathMbrType::PCAT:                       return "PCAT";
-        case UefiHardDriveDevicePathMbrType::EFI_PARTITION_TABLE_HEADER: return "EFI_PARTITION_TABLE_HEADER";
+        case UefiHardDriveDevicePathMbrType::NONE:                        return "NONE";
+        case UefiHardDriveDevicePathMbrType::PCAT:                        return "PCAT";
+        case UefiHardDriveDevicePathMbrType::UEFI_PARTITION_TABLE_HEADER: return "UEFI_PARTITION_TABLE_HEADER";
 
         default: return "UNKNOWN";
     }

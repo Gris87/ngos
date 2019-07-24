@@ -825,7 +825,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-        UEFI_LVVV(("type          = %u",       memoryDescriptor->type));
+        UEFI_LVVV(("type          = %u (%s)",  memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type)));
         UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
         UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
         UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
@@ -835,7 +835,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
         if (memoryDescriptor->type != UefiMemoryType::CONVENTIONAL_MEMORY)
         {
-            UEFI_LVV(("Skipped memory descriptor 0x%p because type = %u", memoryDescriptor, memoryDescriptor->type));
+            UEFI_LVV(("Skipped memory descriptor 0x%p because type = %u (%s)", memoryDescriptor, memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type)));
 
             continue;
         }

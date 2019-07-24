@@ -477,7 +477,7 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
         if (!cur[0]) // cur[0] == 0
         {
             ++stringId;
-            COMMON_LVVV(("String #%d: %s", stringId, begin));
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 
@@ -572,7 +572,7 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         if (!cur[0]) // cur[0] == 0
         {
             ++stringId;
-            COMMON_LVVV(("String #%d: %s", stringId, begin));
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 
@@ -687,7 +687,7 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
         if (!cur[0]) // cur[0] == 0
         {
             ++stringId;
-            COMMON_LVVV(("String #%d: %s", stringId, begin));
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 
@@ -812,7 +812,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         if (!cur[0]) // cur[0] == 0
         {
             ++stringId;
-            COMMON_LVVV(("String #%d: %s", stringId, begin));
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 
@@ -1016,7 +1016,7 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
         if (!cur[0]) // cur[0] == 0
         {
             ++stringId;
-            COMMON_LVVV(("String #%d: %s", stringId, begin));
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 

@@ -515,7 +515,7 @@ NgosStatus CPU::check(const char **wantedFlag)
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unknown CPU vendor"));
+            COMMON_LF(("Unexpected CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
 
             return NgosStatus::NOT_SUPPORTED;
         }
@@ -523,7 +523,7 @@ NgosStatus CPU::check(const char **wantedFlag)
 
         default:
         {
-            COMMON_LF(("Unexpected CPU vendor %u", sCpuVendor));
+            COMMON_LF(("Unknown CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
 
             return NgosStatus::NOT_SUPPORTED;
         }
@@ -954,13 +954,13 @@ NgosStatus CPU::doPreprocessing()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unknown CPU vendor"));
+            COMMON_LF(("Unexpected CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
         }
         break;
 
         default:
         {
-            COMMON_LF(("Unexpected CPU vendor %u", sCpuVendor));
+            COMMON_LF(("Unknown CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
         }
         break;
     }
@@ -1209,13 +1209,13 @@ NgosStatus CPU::doPostprocessing()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unknown CPU vendor"));
+            COMMON_LF(("Unexpected CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
         }
         break;
 
         default:
         {
-            COMMON_LF(("Unexpected CPU vendor %u", sCpuVendor));
+            COMMON_LF(("Unknown CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
         }
         break;
     }
