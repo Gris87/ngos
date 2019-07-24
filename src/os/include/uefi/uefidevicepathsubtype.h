@@ -10,6 +10,8 @@
 
 enum class UefiDevicePathSubType : u8 // Ignore CppEnumVerifier
 {
+    NONE = 0,
+
     // UefiDevicePathType::HARDWARE_DEVICE_PATH
 
     HW_PCI_DP        = 0x01,
