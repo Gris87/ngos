@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/cpu/cpufamily.h>
 #include <ngos/types.h>
 
 
@@ -21,19 +22,28 @@ enum class AmdCpuModel: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char* amdCpuModelToString(AmdCpuModel model) // TEST: NO
+inline const char* amdCpuModelToString(CpuFamily family, AmdCpuModel model) // TEST: NO
 {
-    // COMMON_LT((" | model = %u", model)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
 
 
 
-    switch (model)
+    switch (family)
     {
-        case AmdCpuModel::FAMILY_23_NAPLES:         return "FAMILY_23_NAPLES";
-        case AmdCpuModel::FAMILY_23_PINNACLE_RIDGE: return "FAMILY_23_PINNACLE_RIDGE";
-        case AmdCpuModel::FAMILY_23_RAVEN_RIDGE:    return "FAMILY_23_RAVEN_RIDGE";
-        case AmdCpuModel::FAMILY_23_ROME:           return "FAMILY_23_ROME";
-        case AmdCpuModel::FAMILY_23_MATISSE:        return "FAMILY_23_MATISSE";
+        case CpuFamily::AMD_FAMILY_23:
+        {
+            switch (model)
+            {
+                case AmdCpuModel::FAMILY_23_NAPLES:         return "FAMILY_23_NAPLES";
+                case AmdCpuModel::FAMILY_23_PINNACLE_RIDGE: return "FAMILY_23_PINNACLE_RIDGE";
+                case AmdCpuModel::FAMILY_23_RAVEN_RIDGE:    return "FAMILY_23_RAVEN_RIDGE";
+                case AmdCpuModel::FAMILY_23_ROME:           return "FAMILY_23_ROME";
+                case AmdCpuModel::FAMILY_23_MATISSE:        return "FAMILY_23_MATISSE";
+
+                default: return "UNKNOWN";
+            }
+        }
+        break;
 
         default: return "UNKNOWN";
     }

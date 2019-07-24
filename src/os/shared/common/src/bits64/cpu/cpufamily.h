@@ -3,11 +3,12 @@
 
 
 
+#include <common/src/bits64/cpu/cpuvendor.h>
 #include <ngos/types.h>
 
 
 
-enum class CpuFamily: u16
+enum class CpuFamily: u16 // Ignore CppEnumVerifier
 {
     NONE           = 0,
     INTEL_FAMILY_6 = 6,
@@ -16,17 +17,35 @@ enum class CpuFamily: u16
 
 
 
-inline const char* cpuFamilyToString(CpuFamily family) // TEST: NO
+inline const char* cpuFamilyToString(CpuVendor vendor, CpuFamily family) // TEST: NO
 {
-    // COMMON_LT((" | family = %u", family)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | vendor = %u, family = %u", vendor, family)); // Commented to avoid bad looking logs
 
 
 
-    switch (family)
+    switch (vendor)
     {
-        case CpuFamily::NONE:           return "NONE";
-        case CpuFamily::INTEL_FAMILY_6: return "INTEL_FAMILY_6";
-        case CpuFamily::AMD_FAMILY_23:  return "AMD_FAMILY_23";
+        case CpuVendor::INTEL:
+        {
+            switch (family)
+            {
+                case CpuFamily::INTEL_FAMILY_6: return "INTEL_FAMILY_6";
+
+                default: return "UNKNOWN";
+            }
+        }
+        break;
+
+        case CpuVendor::AMD:
+        {
+            switch (family)
+            {
+                case CpuFamily::AMD_FAMILY_23: return "AMD_FAMILY_23";
+
+                default: return "UNKNOWN";
+            }
+        }
+        break;
 
         default: return "UNKNOWN";
     }

@@ -364,6 +364,7 @@ src/os/shared/common/src/bits64/cpu/flags.h
 src/os/shared/common/src/bits64/cpu/generated/cpubugsnames.h
 src/os/shared/common/src/bits64/cpu/generated/cpufeaturesnames.h
 src/os/shared/common/src/bits64/cpu/model/amd.h
+src/os/shared/common/src/bits64/cpu/model/cpumodel.h
 src/os/shared/common/src/bits64/cpu/model/intel.h
 src/os/shared/common/src/bits64/cpu/msr/msr.cpp
 src/os/shared/common/src/bits64/cpu/msr/msr.h

@@ -5,6 +5,7 @@
 #include <common/src/bits64/cpu/generated/cpubugsnames.h>
 #include <common/src/bits64/cpu/generated/cpufeaturesnames.h>
 #include <common/src/bits64/cpu/model/amd.h>
+#include <common/src/bits64/cpu/model/cpumodel.h>
 #include <common/src/bits64/cpu/model/intel.h>
 #include <common/src/bits64/cpu/msr/msr.h>
 #include <common/src/bits64/cpu/msr/msrregisters.h>
@@ -135,8 +136,8 @@ NgosStatus CPU::init()
         COMMON_LVVV(("sModelName          = %.48s",   sModelName));
         COMMON_LVVV(("sCpuidLevel         = 0x%08X",  sCpuidLevel));
         COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X",  sExtendedCpuidLevel));
-        COMMON_LVVV(("sFamily             = %u (%s)", sFamily, cpuFamilyToString(sFamily)));
-        COMMON_LVVV(("sModel              = %u",      sModel));
+        COMMON_LVVV(("sFamily             = %u (%s)", sFamily, cpuFamilyToString(sCpuVendor, sFamily)));
+        COMMON_LVVV(("sModel              = %u (%s)", sModel, cpuModelToString(sCpuVendor, sFamily, sModel)));
         COMMON_LVVV(("sStepping           = %u",      sStepping));
         COMMON_LVVV(("sMicrocodeRevision  = 0x%08X",  sMicrocodeRevision));
         COMMON_LVVV(("sX86CoreIdBits      = %d",      sX86CoreIdBits));
