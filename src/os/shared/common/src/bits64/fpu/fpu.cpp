@@ -376,7 +376,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
     {
         XFeature feature = (XFeature)i;
 
-        if (isXFeatureEnabled(feature))
+        if (hasFeature(feature))
         {
             u32 ignored;
 
@@ -590,7 +590,33 @@ bool FPU::isXFeatureAligned(XFeature xFeature)
     return ecx & (x_feature_flags)XFeatureFlag::ALIGNED;
 }
 
-bool FPU::isXFeatureEnabled(XFeature xFeature)
+NgosStatus FPU::setFeature(XFeature xFeature)
+{
+    COMMON_LT((" | xFeature = %u", xFeature));
+
+
+
+    sXFeatures |= (1ULL << (u64)xFeature);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus FPU::clearFeature(XFeature xFeature)
+{
+    COMMON_LT((" | xFeature = %u", xFeature));
+
+
+
+    sXFeatures &= ~(1ULL << (u64)xFeature);
+
+
+
+    return NgosStatus::OK;
+}
+
+bool FPU::hasFeature(XFeature xFeature)
 {
     COMMON_LT((" | xFeature = %u", xFeature));
 
@@ -647,7 +673,7 @@ u32 FPU::expectedStateSize()
     {
         XFeature feature = (XFeature)i;
 
-        if (isXFeatureEnabled(feature))
+        if (hasFeature(feature))
         {
             u32 featureSize = sXFeaturesSizes[i];
             u32 featureStructSize;

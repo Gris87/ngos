@@ -24,7 +24,10 @@ private:
     static bool isXFeatureSupervisor(XFeature xFeature); // TEST: NO
     static bool isXFeatureUser(XFeature xFeature); // TEST: NO
     static bool isXFeatureAligned(XFeature xFeature); // TEST: NO
-    static bool isXFeatureEnabled(XFeature xFeature);
+
+    static NgosStatus setFeature(XFeature xFeature);
+    static NgosStatus clearFeature(XFeature xFeature);
+    static bool hasFeature(XFeature xFeature);
 
     static NgosStatus setFlag(XFeatureTypeFlag flag);
     static NgosStatus clearFlag(XFeatureTypeFlag flag);

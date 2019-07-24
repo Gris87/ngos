@@ -18,7 +18,7 @@ public:
     DocsVerificationFileType getVerificationFileType() const; // TEST: NO
 
 private:
-    QString              mPath;
+    QString                  mPath;
     DocsVerificationFileType mVerificationFileType;
 };
 

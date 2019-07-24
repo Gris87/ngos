@@ -18,7 +18,7 @@ public:
     CodeVerificationFileType getVerificationFileType() const; // TEST: NO
 
 private:
-    QString              mPath;
+    QString                  mPath;
     CodeVerificationFileType mVerificationFileType;
 };
 

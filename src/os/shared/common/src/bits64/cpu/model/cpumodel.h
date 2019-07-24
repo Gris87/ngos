@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/cpu/cpuvendor.h>
 #include <common/src/bits64/cpu/cpufamily.h>
+#include <common/src/bits64/cpu/cpuvendor.h>
 #include <common/src/bits64/cpu/model/amd.h>
 #include <common/src/bits64/cpu/model/intel.h>
 #include <ngos/types.h>

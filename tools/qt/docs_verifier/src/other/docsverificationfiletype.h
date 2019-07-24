@@ -20,7 +20,7 @@ enum class DocsVerificationFileType: quint64
 
 
 
-inline const char* verificationFileTypeToString(DocsVerificationFileType type) // TEST: NO
+inline const char* docsVerificationFileTypeToString(DocsVerificationFileType type) // TEST: NO
 {
     switch (type)
     {

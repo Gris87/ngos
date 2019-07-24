@@ -4,6 +4,7 @@
 
 
 #include <kernelbase/src/bits64/other/hypervisor/kvm/kvmfeature.h>
+#include <kernelbase/src/bits64/other/hypervisor/kvm/kvmfeaturetypeflags.h>
 #include <ngos/status.h>
 
 
@@ -12,7 +13,14 @@ class KVM
 {
 public:
     static NgosStatus init(); // TEST: NO
+
+    static NgosStatus setFeature(KvmFeature feature);
+    static NgosStatus clearFeature(KvmFeature feature);
     static bool hasFeature(KvmFeature feature);
+
+    static NgosStatus setFlag(KvmFeatureTypeFlag flag);
+    static NgosStatus clearFlag(KvmFeatureTypeFlag flag);
+    static bool hasFlag(KvmFeatureTypeFlag flag);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -21,7 +29,7 @@ private:
 #endif
     static NgosStatus initPlatform(u32 id); // TEST: NO
 
-    static u32 sFeatures;
+    static kvm_feature_type_flags sFeatures;
 };
 
 

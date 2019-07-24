@@ -4,6 +4,8 @@
 #include <common/src/bits64/inflate/inflate.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/zlib/zlibcompressioninfo.h>
+#include <common/src/bits64/zlib/zlibcompressionlevel.h>
 #include <common/src/bits64/zlib/zlibcompressionmethod.h>
 #include <common/src/bits64/zlib/zlibheader.h>
 #include <ngos/linkage.h>
@@ -38,14 +40,15 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     ZLibHeader *zlibHeader = (ZLibHeader *)compressedAddress;
 
     ZLibCompressionMethod compressionMethod = (ZLibCompressionMethod)zlibHeader->compressionMethod;
-    u8                    compressionInfo   = zlibHeader->compressionInfo;
+    ZLibCompressionInfo   compressionInfo   = (ZLibCompressionInfo)zlibHeader->compressionInfo;
     u8                    presetDictionary  = zlibHeader->presetDictionary;
+    ZLibCompressionLevel  compressionLevel  = (ZLibCompressionLevel)zlibHeader->compressionLevel;
 
     COMMON_LVVV(("compressionMethod            = %u (%s)", compressionMethod, zLibCompressionMethodToString(compressionMethod)));
-    COMMON_LVVV(("compressionInfo              = %u", compressionInfo));
-    COMMON_LVVV(("zlibHeader->checkBits        = 0x%02X", zlibHeader->checkBits));
-    COMMON_LVVV(("presetDictionary             = %u", presetDictionary));
-    COMMON_LVVV(("zlibHeader->compressionLevel = %u", zlibHeader->compressionLevel));
+    COMMON_LVVV(("compressionInfo              = %u (%s)", compressionInfo, zLibCompressionInfoToString(compressionInfo)));
+    COMMON_LVVV(("zlibHeader->checkBits        = 0x%02X",  zlibHeader->checkBits));
+    COMMON_LVVV(("presetDictionary             = %u",      presetDictionary));
+    COMMON_LVVV(("compressionLevel             = %u (%s)", compressionLevel, zLibCompressionLevelToString(compressionLevel)));
 
 
 
@@ -58,9 +61,9 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
 
-    if (compressionInfo != 7)
+    if ((u64)compressionInfo > (u64)ZLibCompressionInfo::WINDOW_32K)
     {
-        COMMON_LE(("zlib supports inflate with sliding window of 32KB only"));
+        COMMON_LE(("zlib supports inflate with sliding window up to 32KB only"));
 
         return NgosStatus::NOT_SUPPORTED;
     }

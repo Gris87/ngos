@@ -71,7 +71,7 @@ enum class CodeVerificationFileType: quint64
 
 
 
-inline const char* verificationFileTypeToString(CodeVerificationFileType type) // TEST: NO
+inline const char* codeVerificationFileTypeToString(CodeVerificationFileType type) // TEST: NO
 {
     switch (type)
     {

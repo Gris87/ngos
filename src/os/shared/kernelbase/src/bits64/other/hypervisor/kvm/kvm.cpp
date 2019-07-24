@@ -18,7 +18,7 @@
 
 
 
-u32 KVM::sFeatures;
+kvm_feature_type_flags KVM::sFeatures;
 
 
 
@@ -73,13 +73,74 @@ NgosStatus KVM::init()
     return NgosStatus::NOT_FOUND;
 }
 
+NgosStatus KVM::setFeature(KvmFeature feature)
+{
+    COMMON_LT((" | feature = %u", feature));
+
+
+
+    sFeatures |= (1ULL << (u64)feature);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus KVM::clearFeature(KvmFeature feature)
+{
+    COMMON_LT((" | feature = %u", feature));
+
+
+
+    sFeatures &= ~(1ULL << (u64)feature);
+
+
+
+    return NgosStatus::OK;
+}
+
 bool KVM::hasFeature(KvmFeature feature)
 {
     COMMON_LT((" | feature = %u", feature));
 
 
 
-    return sFeatures & (1ULL << (u8)feature);
+    return sFeatures & (1ULL << (u64)feature);
+}
+
+NgosStatus KVM::setFlag(KvmFeatureTypeFlag flag)
+{
+    COMMON_LT((" | flag = %u", flag));
+
+
+
+    sFeatures |= (kvm_feature_type_flags)flag;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus KVM::clearFlag(KvmFeatureTypeFlag flag)
+{
+    COMMON_LT((" | flag = %u", flag));
+
+
+
+    sFeatures &= ~(kvm_feature_type_flags)flag;
+
+
+
+    return NgosStatus::OK;
+}
+
+bool KVM::hasFlag(KvmFeatureTypeFlag flag)
+{
+    COMMON_LT((" | flag = %u", flag));
+
+
+
+    return sFeatures & (kvm_feature_type_flags)flag;
 }
 
 NgosStatus KVM::initPlatform(u32 id)
@@ -99,7 +160,7 @@ NgosStatus KVM::initPlatform(u32 id)
 
     // Validation
     {
-        COMMON_LVVV(("sFeatures = 0x%08X", sFeatures));
+        COMMON_LVVV(("sFeatures = 0x%08X (%s)", sFeatures, kvmFeatureTypeFlagsToString(sFeatures)));
 
 
 
