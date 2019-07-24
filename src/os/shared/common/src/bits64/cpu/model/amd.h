@@ -7,10 +7,6 @@
 
 
 
-#define AMD_FAMILY_23 23
-
-
-
 enum class AmdCpuModel: u8 // Ignore CppEnumVerifier
 {
     FAMILY_23_NAPLES         = 1,

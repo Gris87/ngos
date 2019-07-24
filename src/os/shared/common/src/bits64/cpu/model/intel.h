@@ -7,10 +7,6 @@
 
 
 
-#define INTEL_FAMILY_6 6
-
-
-
 enum class IntelCpuModel: u8 // Ignore CppEnumVerifier
 {
     FAMILY_6_SKYLAKE_SERVER     = 85,

@@ -358,6 +358,7 @@ src/os/shared/common/src/bits64/console/console.h
 src/os/shared/common/src/bits64/console/lib/glyphdata.h
 src/os/shared/common/src/bits64/cpu/cpu.cpp
 src/os/shared/common/src/bits64/cpu/cpu.h
+src/os/shared/common/src/bits64/cpu/cpufamily.h
 src/os/shared/common/src/bits64/cpu/cpuvendor.h
 src/os/shared/common/src/bits64/cpu/flags.h
 src/os/shared/common/src/bits64/cpu/generated/cpubugsnames.h

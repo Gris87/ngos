@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/cpu/cpufamily.h>
 #include <common/src/bits64/cpu/cpuvendor.h>
 #include <common/src/bits64/cpu/x86bug.h>
 #include <common/src/bits64/cpu/x86feature.h>
@@ -63,7 +64,7 @@ private:
     static u32       sModelName[12];
     static u32       sCpuidLevel;
     static u32       sExtendedCpuidLevel;
-    static u16       sFamily;
+    static CpuFamily sFamily;
     static u8        sModel;
     static u8        sStepping;
     static u32       sMicrocodeRevision;

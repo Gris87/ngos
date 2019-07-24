@@ -24,10 +24,10 @@
 #define VENDOR_AMD_2   0x69746E65   // enti
 #define VENDOR_AMD_3   0x444D4163   // cAMD
 
-#define INTEL_MINIMAL_FAMILY INTEL_FAMILY_6
+#define INTEL_MINIMAL_FAMILY (u16)CpuFamily::INTEL_FAMILY_6
 #define INTEL_MINIMAL_MODEL  60
 
-#define AMD_MINIMAL_FAMILY AMD_FAMILY_23
+#define AMD_MINIMAL_FAMILY (u16)CpuFamily::AMD_FAMILY_23
 #define AMD_MINIMAL_MODEL  1
 
 #define CPUID_LEVEL_LOWER_BOUND     0x00000001
@@ -51,7 +51,7 @@ CpuVendor CPU::sCpuVendor;
 u32       CPU::sModelName[12];
 u32       CPU::sCpuidLevel;
 u32       CPU::sExtendedCpuidLevel;
-u16       CPU::sFamily;
+CpuFamily CPU::sFamily;
 u8        CPU::sModel;
 u8        CPU::sStepping;
 u32       CPU::sMicrocodeRevision;
@@ -115,38 +115,38 @@ NgosStatus CPU::init()
 
     // Validation
     {
-        COMMON_LVVV(("sVendor[0]          = 0x%08X", sVendor[0]));
-        COMMON_LVVV(("sVendor[1]          = 0x%08X", sVendor[1]));
-        COMMON_LVVV(("sVendor[2]          = 0x%08X", sVendor[2]));
-        COMMON_LVVV(("sVendor             = %.12s",  sVendor));
-        COMMON_LVVV(("sCpuVendor          = %u",     sCpuVendor));
-        COMMON_LVVV(("sModelName[0]       = 0x%08X", sModelName[0]));
-        COMMON_LVVV(("sModelName[1]       = 0x%08X", sModelName[1]));
-        COMMON_LVVV(("sModelName[2]       = 0x%08X", sModelName[2]));
-        COMMON_LVVV(("sModelName[3]       = 0x%08X", sModelName[3]));
-        COMMON_LVVV(("sModelName[4]       = 0x%08X", sModelName[4]));
-        COMMON_LVVV(("sModelName[5]       = 0x%08X", sModelName[5]));
-        COMMON_LVVV(("sModelName[6]       = 0x%08X", sModelName[6]));
-        COMMON_LVVV(("sModelName[7]       = 0x%08X", sModelName[7]));
-        COMMON_LVVV(("sModelName[8]       = 0x%08X", sModelName[8]));
-        COMMON_LVVV(("sModelName[9]       = 0x%08X", sModelName[9]));
-        COMMON_LVVV(("sModelName[10]      = 0x%08X", sModelName[10]));
-        COMMON_LVVV(("sModelName[11]      = 0x%08X", sModelName[11]));
-        COMMON_LVVV(("sModelName          = %.48s",  sModelName));
-        COMMON_LVVV(("sCpuidLevel         = 0x%08X", sCpuidLevel));
-        COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X", sExtendedCpuidLevel));
-        COMMON_LVVV(("sFamily             = %u",     sFamily));
-        COMMON_LVVV(("sModel              = %u",     sModel));
-        COMMON_LVVV(("sStepping           = %u",     sStepping));
-        COMMON_LVVV(("sMicrocodeRevision  = 0x%08X", sMicrocodeRevision));
-        COMMON_LVVV(("sX86CoreIdBits      = %d",     sX86CoreIdBits));
-        COMMON_LVVV(("sCacheLineFlushSize = %u",     sCacheLineFlushSize));
-        COMMON_LVVV(("sCacheAlignment     = %u",     sCacheAlignment));
-        COMMON_LVVV(("sCacheMaxRmid       = %d",     sCacheMaxRmid));
-        COMMON_LVVV(("sCacheOccScale      = %d",     sCacheOccScale));
-        COMMON_LVVV(("sPower              = %u",     sPower));
-        COMMON_LVVV(("sPhysicalBits       = %u",     sPhysicalBits));
-        COMMON_LVVV(("sVirtualBits        = %u",     sVirtualBits));
+        COMMON_LVVV(("sVendor[0]          = 0x%08X",  sVendor[0]));
+        COMMON_LVVV(("sVendor[1]          = 0x%08X",  sVendor[1]));
+        COMMON_LVVV(("sVendor[2]          = 0x%08X",  sVendor[2]));
+        COMMON_LVVV(("sVendor             = %.12s",   sVendor));
+        COMMON_LVVV(("sCpuVendor          = %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+        COMMON_LVVV(("sModelName[0]       = 0x%08X",  sModelName[0]));
+        COMMON_LVVV(("sModelName[1]       = 0x%08X",  sModelName[1]));
+        COMMON_LVVV(("sModelName[2]       = 0x%08X",  sModelName[2]));
+        COMMON_LVVV(("sModelName[3]       = 0x%08X",  sModelName[3]));
+        COMMON_LVVV(("sModelName[4]       = 0x%08X",  sModelName[4]));
+        COMMON_LVVV(("sModelName[5]       = 0x%08X",  sModelName[5]));
+        COMMON_LVVV(("sModelName[6]       = 0x%08X",  sModelName[6]));
+        COMMON_LVVV(("sModelName[7]       = 0x%08X",  sModelName[7]));
+        COMMON_LVVV(("sModelName[8]       = 0x%08X",  sModelName[8]));
+        COMMON_LVVV(("sModelName[9]       = 0x%08X",  sModelName[9]));
+        COMMON_LVVV(("sModelName[10]      = 0x%08X",  sModelName[10]));
+        COMMON_LVVV(("sModelName[11]      = 0x%08X",  sModelName[11]));
+        COMMON_LVVV(("sModelName          = %.48s",   sModelName));
+        COMMON_LVVV(("sCpuidLevel         = 0x%08X",  sCpuidLevel));
+        COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X",  sExtendedCpuidLevel));
+        COMMON_LVVV(("sFamily             = %u (%s)", sFamily, cpuFamilyToString(sFamily)));
+        COMMON_LVVV(("sModel              = %u",      sModel));
+        COMMON_LVVV(("sStepping           = %u",      sStepping));
+        COMMON_LVVV(("sMicrocodeRevision  = 0x%08X",  sMicrocodeRevision));
+        COMMON_LVVV(("sX86CoreIdBits      = %d",      sX86CoreIdBits));
+        COMMON_LVVV(("sCacheLineFlushSize = %u",      sCacheLineFlushSize));
+        COMMON_LVVV(("sCacheAlignment     = %u",      sCacheAlignment));
+        COMMON_LVVV(("sCacheMaxRmid       = %d",      sCacheMaxRmid));
+        COMMON_LVVV(("sCacheOccScale      = %d",      sCacheOccScale));
+        COMMON_LVVV(("sPower              = %u",      sPower));
+        COMMON_LVVV(("sPhysicalBits       = %u",      sPhysicalBits));
+        COMMON_LVVV(("sVirtualBits        = %u",      sVirtualBits));
 
 
 
@@ -193,7 +193,7 @@ NgosStatus CPU::init()
         COMMON_TEST_ASSERT(sCpuidLevel                      >= CPUID_LEVEL_LOWER_BOUND && sCpuidLevel <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sExtendedCpuidLevel           == 0x80000008,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sExtendedCpuidLevel              >= EXT_CPUID_LEVEL_LOWER_BOUND && sExtendedCpuidLevel <= EXT_CPUID_LEVEL_UPPER_BOUND, NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sFamily                       == 6,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFamily                       == CpuFamily::INTEL_FAMILY_6,                                                         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sModel                        == 94,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sStepping                     == 3,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMicrocodeRevision            == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
@@ -485,7 +485,7 @@ NgosStatus CPU::check(const char **wantedFlag)
         case CpuVendor::INTEL:
         {
             if (
-                sFamily != INTEL_MINIMAL_FAMILY
+                (u16)sFamily != INTEL_MINIMAL_FAMILY
                 ||
                 sModel < INTEL_MINIMAL_MODEL
                )
@@ -498,10 +498,10 @@ NgosStatus CPU::check(const char **wantedFlag)
         case CpuVendor::AMD:
         {
             if (
-                sFamily < AMD_MINIMAL_FAMILY
+                (u16)sFamily < AMD_MINIMAL_FAMILY
                 ||
                 (
-                 sFamily == AMD_MINIMAL_FAMILY
+                 (u16)sFamily == AMD_MINIMAL_FAMILY
                  &&
                  sModel < AMD_MINIMAL_MODEL
                 )
@@ -760,19 +760,21 @@ NgosStatus CPU::initCpuFeatures()
             //
             // https://en.wikipedia.org/wiki/CPUID#EAX=1:_Processor_Info_and_Feature_Bits
             //
-            sFamily   = (tfms >> 8) & 0x0F;   // 11:8 - Family
-            sModel    = (tfms >> 4) & 0x0F;   // 7:4 - Model
-            sStepping = tfms & 0x0F;          // 3:0 - Stepping
+            u16 family = (tfms >> 8) & 0x0F;   // 11:8 - Family
+            sModel     = (tfms >> 4) & 0x0F;   // 7:4 - Model
+            sStepping  = tfms & 0x0F;          // 3:0 - Stepping
 
-            if (sFamily == 15)
+            if (family == 15)
             {
-                sFamily += (tfms >> 20) & 0xFF; // 27:20 - Extended Family
+                family += (tfms >> 20) & 0xFF; // 27:20 - Extended Family
             }
 
-            if (sFamily >= 6)
+            if (family >= 6)
             {
                 sModel += ((tfms >> 16) & 0x0F) << 4; // 19:16 - Extended Model
             }
+
+            sFamily = (CpuFamily)family;
 
 
 
@@ -1662,7 +1664,7 @@ bool CPU::isCpuNoSpecStoreBypass()
             (
                 sCpuVendor == CpuVendor::INTEL
                 &&
-                sFamily == INTEL_FAMILY_6
+                sFamily == CpuFamily::INTEL_FAMILY_6
                 &&
                 (
                     sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_LANDING
@@ -1683,7 +1685,7 @@ bool CPU::isCpuNoL1TF()
             (
                 sCpuVendor == CpuVendor::INTEL
                 &&
-                sFamily == INTEL_FAMILY_6
+                sFamily == CpuFamily::INTEL_FAMILY_6
                 &&
                 (
                     sModel == (u8)IntelCpuModel::FAMILY_6_AIRMONT_MID
