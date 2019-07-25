@@ -177,7 +177,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         if (enumType != expectedEnumType)
                         {
-                            worker->addError(path, i, "Enum should use type " + expectedEnumType + " for flags");
+                            worker->addError(path, i, QString("Enum should use type %1 for flags").arg(expectedEnumType));
                         }
 
 

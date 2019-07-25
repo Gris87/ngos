@@ -53,6 +53,7 @@ SOURCES += \
     src/verifiers/basecodeverifier.cpp \
     src/verifiers/zzz_types/common/avoidtabsverifier.cpp \
     src/verifiers/zzz_types/common/blanklinesverifier.cpp \
+    src/verifiers/zzz_types/common/hexverifier.cpp \
     src/verifiers/zzz_types/common/indentspacesverifier.cpp \
     src/verifiers/zzz_types/common/indenttabsverifier.cpp \
     src/verifiers/zzz_types/common/lineseparatorverifier.cpp \
@@ -114,6 +115,7 @@ HEADERS += \
     src/verifiers/basecodeverifier.h \
     src/verifiers/zzz_types/common/avoidtabsverifier.h \
     src/verifiers/zzz_types/common/blanklinesverifier.h \
+    src/verifiers/zzz_types/common/hexverifier.h \
     src/verifiers/zzz_types/common/indentspacesverifier.h \
     src/verifiers/zzz_types/common/indenttabsverifier.h \
     src/verifiers/zzz_types/common/lineseparatorverifier.h \

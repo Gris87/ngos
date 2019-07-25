@@ -47,13 +47,13 @@
 #define LITERAL_STATES 7
 
 // Each literal coder is divided in three sections:
-// - 0x001-0x0FF: Without match byte
-// - 0x101-0x1FF: With match byte; match bit is 0
-// - 0x201-0x2FF: With match byte; match bit is 1
+// - 0x0001-0x00FF: Without match byte
+// - 0x0101-0x01FF: With match byte; match bit is 0
+// - 0x0201-0x02FF: With match byte; match bit is 1
 //
 // Match byte is used when the previous LZMA symbol was something else than
 // a literal (that is, it was some kind of match).
-#define LITERAL_CODER_SIZE 0x300
+#define LITERAL_CODER_SIZE 0x0300
 
 // Maximum number of literal coders
 #define LITERAL_CODERS_MAX (1ULL << 4)

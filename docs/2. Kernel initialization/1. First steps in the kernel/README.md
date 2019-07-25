@@ -401,7 +401,7 @@ The table contains 8-byte entries. Each entry has the following structure:
     <img src="https://github.com/Gris87/ngos/blob/master/docs/2.%20Kernel%20initialization/1.%20First%20steps%20in%20the%20kernel/GDT%20entry.png?raw=true" alt="GDT entry"/>
 </p>
 
-What "Limit 0:15" means is that the field contains bits 0-15 of the limit value. The base is a 32 bit value containing the linear address where the segment begins. The limit, a 20 bit value, tells the maximum addressable unit (either in 1 byte units, or in pages). Hence, if you choose page granularity (4 KB) and set the limit value to 0xFFFFF the segment will span the full 4 GiB address space. Here is the structure of the access byte and flags:
+What "Limit 0:15" means is that the field contains bits 0-15 of the limit value. The base is a 32 bit value containing the linear address where the segment begins. The limit, a 20 bit value, tells the maximum addressable unit (either in 1 byte units, or in pages). Hence, if you choose page granularity (4 KB) and set the limit value to 0x000FFFFF the segment will span the full 4 GiB address space. Here is the structure of the access byte and flags:
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/docs/2.%20Kernel%20initialization/1.%20First%20steps%20in%20the%20kernel/GDT%20flags.png?raw=true" alt="GDT flags"/>
@@ -415,7 +415,7 @@ The bit fields are:
 * DC: Direction bit/Conforming bit.
     * Direction bit for data selectors: Tells the direction. 0 the segment grows up. 1 the segment grows down, ie. the offset has to be greater than the limit.
     * Conforming bit for code selectors:
-        * If 1 code in this segment can be executed from an equal or lower privilege level. For example, code in ring 3 can far-jump to conforming code in a ring 2 segment. The privl-bits represent the highest privilege level that is allowed to execute the segment. For example, code in ring 0 cannot far-jump to a conforming code segment with privl==0x2, while code in ring 2 and 3 can. Note that the privilege level remains the same, ie. a far-jump form ring 3 to a privl==2-segment remains in ring 3 after the jump.
+        * If 1 code in this segment can be executed from an equal or lower privilege level. For example, code in ring 3 can far-jump to conforming code in a ring 2 segment. The privl-bits represent the highest privilege level that is allowed to execute the segment. For example, code in ring 0 cannot far-jump to a conforming code segment with privl==0x02, while code in ring 2 and 3 can. Note that the privilege level remains the same, ie. a far-jump form ring 3 to a privl==2-segment remains in ring 3 after the jump.
         * If 0 code in this segment can only be executed from the ring set in privl.
 * RW: Readable bit/Writable bit.
     * Readable bit for code selectors: Whether read access for this segment is allowed. Write access is never allowed for code segments.

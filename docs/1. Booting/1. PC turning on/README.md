@@ -22,10 +22,10 @@ Unified Extensible Firmware Interface (UEFI) is a successor to BIOS.
 
 BIOS booting is not supporting in NGOS, but we should anyway display some information to user in this case.
 
-BIOS loads first 0x200 (512) bytes (boot sector) from hard disk in order to check that BIOS can start booting from this hard disk.<br/>
+BIOS loads first 0x0200 (512) bytes (boot sector) from hard disk in order to check that BIOS can start booting from this hard disk.<br/>
 Such boot sector should be also terminated with a special magic number 0xAA55 to indicate that this sector is bootable.
 
-The source code for these 0x200 bytes can be found in [Boot](../../../src/os/boot/) part.
+The source code for these 0x0200 bytes can be found in [Boot](../../../src/os/boot/) part.
 
 If you check [src/os/boot/linker.ld](../../../src/os/boot/linker.ld) file you will see the following:
 
@@ -132,7 +132,7 @@ The source code for PE Header can also be found in [Boot](../../../src/os/boot/)
 If you already checked [src/os/boot/asm/arch/x86_64/main.S](../../../src/os/boot/asm/arch/x86_64/main.S) file then you probably knows that image starting with MZ characters (MS-DOS Header):
 
 ```
-    .ascii  "MZ"                                                                # Start boot sector with MZ characters (MS-DOS Header) in order to let UEFI to skip 0x200 bytes
+    .ascii  "MZ"                                                                # Start boot sector with MZ characters (MS-DOS Header) in order to let UEFI to skip 0x0200 bytes
 ```
 
 But UEFI didn't rely on MS-DOS Header. The most interesting thing for UEFI is PE Header.
@@ -242,10 +242,10 @@ There are a lot of ignored fields. Let's explain the remaining ones.
 
 We are putting 0x020B signature to identify 64 bit version of PE Optional Header.<br/>
 majorLinkerVersion and minorLinkerVersion set for some modern linker version.<br/>
-addressOfEntryPoint will be filled by image_builder, but in most cases the value is 0x240 (0x200 bytes for Boot part and 0x40 byte for .reloc section).<br/>
+addressOfEntryPoint will be filled by image_builder, but in most cases the value is 0x0240 (0x0200 bytes for Boot part and 0x40 byte for .reloc section).<br/>
 sectionAlignment and fileAlignment set to 0x10 in order to make kernel running in aligned place.<br/>
 sizeOfImage is the total size of image. We will put the value during image build procedure.<br/>
-sizeOfHeaders set to 0x200. It is the size of whole Boot part.<br/>
+sizeOfHeaders set to 0x0200. It is the size of whole Boot part.<br/>
 subsystem set to 0x0A that means that the image is UEFI application.<br/>
 numberOfRvaAndSizes usually set to 15 data_directory records, but we should have at least 6. Probably because BaseRelocationTable is required for x86_64.
 
@@ -317,11 +317,11 @@ We have 3 sections here:
 * .config section
 * .kernel section
 
-.reloc section is required for UEFI in order to run this image. It is located at 0x200 offset right after the Boot part and contains 0x40 bytes.
+.reloc section is required for UEFI in order to run this image. It is located at 0x0200 offset right after the Boot part and contains 0x40 bytes.
 
 Since UEFI binaries are executed in physical mode, UEFI cannot guarantee that a given binary can be loaded at its preferred address. UEFI does _try_ to load a binary at it's preferred address, but if it can't do so, it will load it at another address and then relocate the binary using the contents of the .reloc section.
 
-.config section is located at 0x240 (0x200 + 0x40) offset, next to .reloc section. This section contains the code from Configure part. It is a entry point for NGOS kernel.
+.config section is located at 0x0240 (0x0200 + 0x40) offset, next to .reloc section. This section contains the code from Configure part. It is a entry point for NGOS kernel.
 
 .kernel section is located after the .config section and contains raw or compressed kernel.elf file or installer.elf file. This section starts with [KernelDescriptor](../../../src/os/configure/src/bits64/other/kerneldescriptor.h) that indicates the size of included image.
 

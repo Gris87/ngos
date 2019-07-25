@@ -20,6 +20,6 @@ It is actually doing the following:
 * Choose random location for kernel
 * Jump to the kernel
 
-Entry point is located at 0x240 (0x200 + 0x40) offset right after the Boot part and .reloc section.
+Entry point is located at 0x0240 (0x0200 + 0x40) offset right after the Boot part and .reloc section.
 
 You can check it with the source code in [src/os/configure/asm/arch/x86_64/main.S](../../../../../src/os/configure/asm/arch/x86_64/main.S) file.

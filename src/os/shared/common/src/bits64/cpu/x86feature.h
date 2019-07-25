@@ -290,7 +290,7 @@ enum class X86Feature: u16 // Ignore CppEnumVerifier
 
     //
     // Auxiliary flags: NGOS defined - For features scattered in various
-    // CPUID levels like 0x6, 0xA etc, word 14
+    // CPUID levels like 0x06, 0x0A etc, word 14
     //
     APERFMPERF          = WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 0),    // P-State hardware coordination feedback capability (APERF/MPERF MSRs)
     EPB                 = WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 1),    // IA32_ENERGY_PERF_BIAS support

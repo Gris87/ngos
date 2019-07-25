@@ -3,9 +3,7 @@ TODO List
 
 NGOS:
 
-- Provide text representations for all enums
 - Replace char with char8
-- Check UEFI_LT in verifier for bootloader
 - Complete with interruptions
 - Implement boot screen for kernel
 - Per CPU?
@@ -20,12 +18,10 @@ NGOS:
 
 Code verifier:
 
-- Verify for `0x[0-9]*[a-f]`
 - Verify for void functions
 - Verify for headers in assembler
 - Verify for function asserts
 - Verify for char type
-- Verify for enum strings
 - Verify for usage of COMMON_, EARLY_, EUFI_ in wrong location
 - Verify files for non-ascii characters
 

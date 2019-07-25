@@ -627,13 +627,13 @@ NgosStatus lzmaDecodeLiteral(XzLzma2Decoder *decoder)
 
     if (lzmaIsLiteralState(decoder->lzma.state))
     {
-        symbol = rcDecodeBitTree(&decoder->rc, probs, 0x100);
+        symbol = rcDecodeBitTree(&decoder->rc, probs, 0x0100);
     }
     else
     {
         symbol    = 1;
         matchByte = dictionaryGet(&decoder->dictionary, decoder->lzma.repeat0) << 1;
-        offset    = 0x100;
+        offset    = 0x0100;
 
         do
         {
@@ -652,7 +652,7 @@ NgosStatus lzmaDecodeLiteral(XzLzma2Decoder *decoder)
                 symbol <<= 1;
                 offset &=  ~matchBit;
             }
-        } while(symbol < 0x100);
+        } while(symbol < 0x0100);
     }
 
 

@@ -12,7 +12,7 @@ The structure of kernel image can be displayed on figure below:
     <img src="https://github.com/Gris87/ngos/blob/master/docs/1.%20Booting/1.%20PC%20turning%20on/Image%20structure.png?raw=true" alt="Image structure"/>
 </p>
 
-As you can see addressOfEntryPoint field of PE Optional Header is pointing to 0x240 offset, right after .reloc section, at the first byte of .config section.<br/>
+As you can see addressOfEntryPoint field of PE Optional Header is pointing to 0x0240 offset, right after .reloc section, at the first byte of .config section.<br/>
 But what is the place of that first instruction?
 
 If you check [src/os/configure/linker.ld](../../../src/os/configure/linker.ld) file you will see the following:

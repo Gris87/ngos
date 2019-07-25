@@ -158,7 +158,7 @@ NgosStatus printPgd(PGD *pgd)
 
 inline NgosStatus addUnavailableMemoryArea(MemoryArea *areas, UnavailableMemoryArea areaId, u64 address, u64 size, bool addToIdentityMap)
 {
-    EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016lx, size = 0x%016lx, addToIdentityMap = %u", areas, areaId, address, size, addToIdentityMap));
+    EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016lX, size = 0x%016lX, addToIdentityMap = %u", areas, areaId, address, size, addToIdentityMap));
 
     EARLY_ASSERT(areas,                                             "areas is null",     NgosStatus::ASSERTION);
     EARLY_ASSERT((u64)areaId < (u64)UnavailableMemoryArea::MAXIMUM, "areaId is invalid", NgosStatus::ASSERTION);

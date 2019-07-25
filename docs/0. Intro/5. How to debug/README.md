@@ -45,14 +45,14 @@ After that you can load symbols with the commands:
 
 ```
 (gdb) add-symbol-file-all src/os/configure/build/configure.elf 0x3E40F220
-(gdb) add-symbol-file-all src/os/configure/build/configure.elf 0x2000000
+(gdb) add-symbol-file-all src/os/configure/build/configure.elf 0x02000000
 (gdb) add-symbol-file-all src/os/kernel/build/kernel.elf -0xFFFFFFFF80000000+0x10000000
 (gdb) add-symbol-file-all src/os/kernel/build/kernel.elf -0xFFFFFFFF80000000+0xFFFFFFFF80000000
 ```
 
 Where:
 * 0x3E40F220 - Address of first kernel instruction when UEFI loads image in memory
-* 0x2000000 - Address of relocated kernel in low address space
+* 0x02000000 - Address of relocated kernel in low address space
 * 0x10000000 - Random address of kernel in Physical address space
 * 0xFFFFFFFF80000000 - Random address of kernel in Virtual address space
 
@@ -71,10 +71,10 @@ Here is the list of useful GDB commands:
 
 * `symbol-file` - call this command to remove all symbols that you may load again with `add-symbol-file-all`
 * `dump binary memory result.bin 0x0000000000000000 0x000000003FFFFFFF` - this command dumps memory range to the external file on your hard disk
-* `x/10xg 0x1000000` - dumps ten 64 bit integers in HEX format. Please check `help x` for more output options
-* `x/60i 0x1000000` - prints 60 instructions starting from specified address
+* `x/10xg 0x01000000` - dumps ten 64 bit integers in HEX format. Please check `help x` for more output options
+* `x/60i 0x01000000` - prints 60 instructions starting from specified address
 * `x/60i $pc` - prints 60 instructions starting from current instruction
-* `br *0x1000000` - puts breakpoint at specified address
+* `br *0x01000000` - puts breakpoint at specified address
 * `c` - continue execution until breakpoint reached or Ctrl+C pressed
 * `ni` - execute current instruction. Jump over function call
 * `si` - execute current instruction. Step into function call

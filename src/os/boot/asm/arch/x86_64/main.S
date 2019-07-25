@@ -8,7 +8,7 @@ _start:                                                                         
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    .ascii  "MZ"                                                                # Start boot sector with MZ characters (MS-DOS Header) in order to let UEFI to skip 0x200 bytes
+    .ascii  "MZ"                                                                # Start boot sector with MZ characters (MS-DOS Header) in order to let UEFI to skip 0x0200 bytes
                                                                                 #
     ljmp    $(BOOTSEG), $(start2)                                               # Normalize the start address
 start2:                                                                         # Label used for normalization
@@ -215,4 +215,4 @@ section_table:                                                                  
                                                                                 #
 .globl  _boot_magic_number                                                      # Make _boot_magic_number visible for linker
 _boot_magic_number:                                                             # Label for magic number
-    .word   0xAA55                                                              # Insert magic number 0xAA55 at the end of 0x200 byte sector to make it bootable
+    .word   0xAA55                                                              # Insert magic number 0xAA55 at the end of 0x0200 byte sector to make it bootable

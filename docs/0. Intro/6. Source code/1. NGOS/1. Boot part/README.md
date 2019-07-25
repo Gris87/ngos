@@ -8,7 +8,7 @@ NGOS
     <img src="https://github.com/Gris87/ngos/blob/master/src/os/boot/Image%20structure.png?raw=true" alt="Image structure"/>
 </p>
 
-Boot part of kernel image is the first block of image with the size in 0x200 (512) bytes.
+Boot part of kernel image is the first block of image with the size in 0x0200 (512) bytes.
 
 It is actually a PE header that let kernel image to be runnable via UEFI.
 

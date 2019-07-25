@@ -212,7 +212,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
                     ++imageByte;
 
                     u8 index  = byteValue >> 4;
-                    u8 index2 = byteValue & 0x0f;
+                    u8 index2 = byteValue & 0x0F;
 
 
 

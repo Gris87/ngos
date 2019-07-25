@@ -27,9 +27,9 @@ VM_LINUX_ELF=../../../${OS_NAME}/vmlinux
 
 INITIAL_BREAKPOINT=0x3FFA3343
 INITIAL_ADDRESS=0x39E6B4F0
-PREFERRED_ADDRESS=0x1400000
-RELOCATED_ADDRESS=0x35214B0
-RANDOM_PHYSICAL_ADDRESS=0x3600000
+PREFERRED_ADDRESS=0x01400000
+RELOCATED_ADDRESS=0x035214B0
+RANDOM_PHYSICAL_ADDRESS=0x03600000
 RANDOM_VIRTUAL_ADDRESS=0xFFFFFFFF81000000
 
 
@@ -249,23 +249,23 @@ execute_gdb_command "add-symbol-file-all ${VM_LINUX_ELF} -0xFFFFFFFF81000000+${R
 
 if [ "${BREAKPOINT}" != "" ]; then
     if [ `echo "${BREAKPOINT}" | grep 0xffffffff8` != "" ]; then
-        execute_gdb_command "tbreak *0x3ff93288" -v
+        execute_gdb_command "tbreak *0x3FF93288" -v
         execute_gdb_command "continue" -v
-        execute_gdb_command "tbreak *0x39e6a4f0" -v
+        execute_gdb_command "tbreak *0x39E6A4F0" -v
         execute_gdb_command "continue" -v
-        execute_gdb_command "tbreak *0x39e6a57e" -v
+        execute_gdb_command "tbreak *0x39E6A57E" -v
         execute_gdb_command "continue" -v
-        execute_gdb_command "tbreak *0x1400200" -v
+        execute_gdb_command "tbreak *0x01400200" -v
         execute_gdb_command "continue" -v
-        execute_gdb_command "tbreak *0x14002e7" -v
+        execute_gdb_command "tbreak *0x014002E7" -v
         execute_gdb_command "continue" -v
-        execute_gdb_command "tbreak *0x35224c0" -v
+        execute_gdb_command "tbreak *0x035224C0" -v
         execute_gdb_command "continue" -v
-        execute_gdb_command "tbreak *0x3522501" -v
+        execute_gdb_command "tbreak *0x03522501" -v
         execute_gdb_command "continue" -v
         execute_gdb_command "tbreak *${RANDOM_PHYSICAL_ADDRESS}" -v
         execute_gdb_command "continue" -v
-        execute_gdb_command "tbreak *${RANDOM_PHYSICAL_ADDRESS}+0x5b" -v
+        execute_gdb_command "tbreak *${RANDOM_PHYSICAL_ADDRESS}+0x5B" -v
         execute_gdb_command "continue" -v
     fi
 

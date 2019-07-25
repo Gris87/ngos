@@ -943,6 +943,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/common/avoidtabsverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/common/avoidtabsverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/common/blanklinesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/common/blanklinesverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/common/hexverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/common/hexverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/common/indentspacesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/common/indentspacesverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/common/indenttabsverifier.cpp

@@ -53,7 +53,7 @@ void MdSpellVerifier::verify(DocsWorkerThread *worker, const QString &path, cons
 
             if (index >= 0)
             {
-                worker->addError(path, spellLine.left(index).trimmed().toLongLong() - 1, "Spell issue found. Fix it or add an exception to docs/.spelling: " + spellLine.mid(index + 1).trimmed());
+                worker->addError(path, spellLine.left(index).trimmed().toLongLong() - 1, QString("Spell issue found. Fix it or add an exception to docs/.spelling: %1").arg(spellLine.mid(index + 1).trimmed()));
             }
         }
     }
