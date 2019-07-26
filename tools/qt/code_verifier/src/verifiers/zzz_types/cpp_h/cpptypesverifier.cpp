@@ -33,12 +33,9 @@ void CppTypesVerifier::verify(CodeWorkerThread *worker, const QString &path, con
 
         while (matches.hasNext())
         {
-            QRegularExpressionMatch match = matches.next();
+            matches.next();
 
-            if (match.hasMatch())
-            {
-                worker->addWarning(path, i, QString("Please use more formal data type: %1").arg(path.contains("/src/os/configure/") ? "u8/i8/u16/i16/u32/i32/u64/i64" : "quint8/qint8/quint16/qint16/quint32/qint32/quint64/qint64"));
-            }
+            worker->addWarning(path, i, QString("Please use more formal data type: %1").arg(path.contains("/src/os/configure/") ? "u8/i8/u16/i16/u32/i32/u64/i64" : "quint8/qint8/quint16/qint16/quint32/qint32/quint64/qint64"));
         }
     }
 }

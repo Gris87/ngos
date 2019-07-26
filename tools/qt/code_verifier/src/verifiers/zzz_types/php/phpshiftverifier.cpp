@@ -28,7 +28,7 @@ void PhpShiftVerifier::verify(CodeWorkerThread *worker, const QString &path, con
         {
             QRegularExpressionMatch match = matches.next();
 
-            if (match.hasMatch() && isPowerOf2(match.captured(1)))
+            if (isPowerOf2(match.captured(1)))
             {
                 worker->addWarning(path, i, QString("%1 can be replaced with shift").arg(match.captured(0)));
             }
