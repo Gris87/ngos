@@ -25,7 +25,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
     if (
-        expectedCompressedSize < sizeof(ZLibHeader) + 4
+        expectedCompressedSize < sizeof(ZLibHeader) + 4 // + 4 for Adler32 checksum
         ||
         ntohs(*((u16 *)compressedAddress)) % 31 // ntohs(*((u16 *)compressedAddress)) % 31 != 0
        )
@@ -92,7 +92,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
         return status;
     }
 
-    COMMON_LVV(("Image data inflated"));
+    COMMON_LVV(("Compressed data inflated"));
 
 
 
@@ -100,7 +100,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     COMMON_LVVV(("uncompressedSize = %u", uncompressedSize));
 
     if (
-        compressedSize != expectedCompressedSize - sizeof(ZLibHeader) - 4
+        compressedSize != expectedCompressedSize - sizeof(ZLibHeader) - 4 // - 4 for Adler32 checksum
         ||
         uncompressedSize != expectedDecompressedSize
        )
