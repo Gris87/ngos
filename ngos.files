@@ -939,6 +939,8 @@ tools/qt/code_verifier/src/threads/codeworkerthread.cpp
 tools/qt/code_verifier/src/threads/codeworkerthread.h
 tools/qt/code_verifier/src/verifiers/basecodeverifier.cpp
 tools/qt/code_verifier/src/verifiers/basecodeverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/common/asciitextverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/common/asciitextverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/common/avoidtabsverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/common/avoidtabsverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/common/blanklinesverifier.cpp

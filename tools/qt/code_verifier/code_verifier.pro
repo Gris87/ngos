@@ -51,6 +51,7 @@ SOURCES += \
     src/other/codemessageinfo.cpp \
     src/threads/codeworkerthread.cpp \
     src/verifiers/basecodeverifier.cpp \
+    src/verifiers/zzz_types/common/asciitextverifier.cpp \
     src/verifiers/zzz_types/common/avoidtabsverifier.cpp \
     src/verifiers/zzz_types/common/blanklinesverifier.cpp \
     src/verifiers/zzz_types/common/hexverifier.cpp \
@@ -113,6 +114,7 @@ HEADERS += \
     src/other/codeverificationfiletype.h \
     src/threads/codeworkerthread.h \
     src/verifiers/basecodeverifier.h \
+    src/verifiers/zzz_types/common/asciitextverifier.h \
     src/verifiers/zzz_types/common/avoidtabsverifier.h \
     src/verifiers/zzz_types/common/blanklinesverifier.h \
     src/verifiers/zzz_types/common/hexverifier.h \

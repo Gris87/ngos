@@ -23,7 +23,6 @@ Code verifier:
 - Verify for function asserts
 - Verify for char type
 - Verify for usage of COMMON_, EARLY_, EUFI_ in wrong location
-- Verify files for non-ascii characters
 
 
 
