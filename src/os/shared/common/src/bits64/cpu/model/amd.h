@@ -8,6 +8,7 @@
 
 
 
+// Taken from https://en.wikichip.org/wiki/amd/cpuid
 enum class AmdCpuModel: u8 // Ignore CppEnumVerifier
 {
     FAMILY_23_NAPLES         = 1,

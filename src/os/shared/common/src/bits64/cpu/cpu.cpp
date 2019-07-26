@@ -26,10 +26,10 @@
 #define VENDOR_AMD_3   0x444D4163   // cAMD
 
 #define INTEL_MINIMAL_FAMILY (u16)CpuFamily::INTEL_FAMILY_6
-#define INTEL_MINIMAL_MODEL  60
+#define INTEL_MINIMAL_MODEL  (u8)IntelCpuModel::FAMILY_6_HASWELL_S
 
 #define AMD_MINIMAL_FAMILY (u16)CpuFamily::AMD_FAMILY_23
-#define AMD_MINIMAL_MODEL  1
+#define AMD_MINIMAL_MODEL  (u8)AmdCpuModel::FAMILY_23_NAPLES
 
 #define CPUID_LEVEL_LOWER_BOUND     0x00000001
 #define CPUID_LEVEL_UPPER_BOUND     0x0000FFFF
@@ -1588,7 +1588,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_MOBILE
+                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_Y_U
                 &&
                 (
                     (
@@ -1612,7 +1612,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_DESKTOP
+                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_DT_H_S_X
                 &&
                 (
                     (
