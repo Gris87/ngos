@@ -22,7 +22,7 @@ enum class ZLibCompressionInfo: u8
 
 
 
-inline const char* zLibCompressionInfoToString(ZLibCompressionInfo info) // TEST: NO
+inline const char8* zLibCompressionInfoToString(ZLibCompressionInfo info) // TEST: NO
 {
     // COMMON_LT((" | info = %u", info)); // Commented to avoid bad looking logs
 

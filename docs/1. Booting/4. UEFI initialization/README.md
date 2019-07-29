@@ -109,11 +109,11 @@ Please refer to [How to debug chapter](../../0.%20Intro/5.%20How%20to%20debug/RE
 
 
 
-    const char *wantedCpuFlag = 0;
+    const char8 *wantedCpuFlag = 0;
 
     if (CPU::check(&wantedCpuFlag) != NgosStatus::OK)
     {
-        char buffer[1024];
+        char8 buffer[1024];
 
         UEFI_ASSERT_EXECUTION(UEFI::clearScreen(), UefiStatus, UefiStatus::SUCCESS, 0);
 

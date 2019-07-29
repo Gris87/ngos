@@ -16,7 +16,7 @@ enum class InflateCodeType: u8
 
 
 
-inline const char* inflateCodeTypeToString(InflateCodeType type) // TEST: NO
+inline const char8* inflateCodeTypeToString(InflateCodeType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

@@ -25,7 +25,7 @@ enum class KvmFeature: u8
 
 
 
-inline const char* kvmFeatureToString(KvmFeature feature) // TEST: NO
+inline const char8* kvmFeatureToString(KvmFeature feature) // TEST: NO
 {
     // COMMON_LT((" | feature = %u", feature)); // Commented to avoid bad looking logs
 

@@ -18,7 +18,7 @@ enum class InflateBlockType: u8
 
 
 
-inline const char* inflateBlockTypeToString(InflateBlockType type) // TEST: NO
+inline const char8* inflateBlockTypeToString(InflateBlockType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

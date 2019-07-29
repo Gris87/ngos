@@ -12,7 +12,7 @@
 
 
 
-extern const char* cpuFeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // cpuFeaturesNames declared in cpu.cpp file // "<< 5" == "* 32"
+extern const char8* cpuFeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // cpuFeaturesNames declared in cpu.cpp file // "<< 5" == "* 32"
 
 
 

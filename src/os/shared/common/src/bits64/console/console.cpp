@@ -43,7 +43,7 @@ NgosStatus Console::init(BootParams *params)
     return NgosStatus::OK;
 }
 
-void Console::print(char ch)
+void Console::print(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
@@ -119,7 +119,7 @@ void Console::print(char ch)
     }
 }
 
-void Console::print(const char *str)
+void Console::print(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 
@@ -149,7 +149,7 @@ void Console::println()
     newLine();
 }
 
-void Console::println(char ch)
+void Console::println(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
@@ -159,7 +159,7 @@ void Console::println(char ch)
     newLine();
 }
 
-void Console::println(const char *str)
+void Console::println(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 

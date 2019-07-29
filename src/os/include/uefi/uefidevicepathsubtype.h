@@ -82,7 +82,7 @@ enum class UefiDevicePathSubType : u8 // Ignore CppEnumVerifier
 
 
 
-inline const char* uefiDevicePathSubTypeToString(UefiDevicePathType type, UefiDevicePathSubType subtype) // TEST: NO
+inline const char8* uefiDevicePathSubTypeToString(UefiDevicePathType type, UefiDevicePathSubType subtype) // TEST: NO
 {
     switch (type)
     {

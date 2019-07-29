@@ -21,13 +21,13 @@ enum class CpuHotplugState: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char* cpuHotplugStateToString(CpuHotplugState state) // TEST: NO
+inline const char8* cpuHotplugStateToString(CpuHotplugState state) // TEST: NO
 {
     // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 
 
 
-    static char res[24];
+    static char8 res[24];
 
 
 

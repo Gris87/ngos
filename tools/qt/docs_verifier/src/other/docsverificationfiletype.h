@@ -4,6 +4,7 @@
 
 
 #include <Qt>
+#include <ngos/types.h>
 
 
 
@@ -20,7 +21,7 @@ enum class DocsVerificationFileType: quint64
 
 
 
-inline const char* docsVerificationFileTypeToString(DocsVerificationFileType type) // TEST: NO
+inline const char8* docsVerificationFileTypeToString(DocsVerificationFileType type) // TEST: NO
 {
     switch (type)
     {

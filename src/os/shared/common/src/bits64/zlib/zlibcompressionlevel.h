@@ -19,7 +19,7 @@ enum class ZLibCompressionLevel: u8
 
 
 
-inline const char* zLibCompressionLevelToString(ZLibCompressionLevel level) // TEST: NO
+inline const char8* zLibCompressionLevelToString(ZLibCompressionLevel level) // TEST: NO
 {
     // COMMON_LT((" | level = %u", level)); // Commented to avoid bad looking logs
 

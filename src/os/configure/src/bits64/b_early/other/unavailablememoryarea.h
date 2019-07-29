@@ -20,7 +20,7 @@ enum class UnavailableMemoryArea: u8
 
 
 
-inline const char* unavailableMemoryAreaToString(UnavailableMemoryArea area) // TEST: NO
+inline const char8* unavailableMemoryAreaToString(UnavailableMemoryArea area) // TEST: NO
 {
     // EARLY_LT((" | area = %u", area)); // Commented to avoid bad looking logs
 

@@ -23,7 +23,7 @@ enum class AmdCpuModel: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char* amdCpuModelToString(CpuFamily family, AmdCpuModel model) // TEST: NO
+inline const char8* amdCpuModelToString(CpuFamily family, AmdCpuModel model) // TEST: NO
 {
     // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
 

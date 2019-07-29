@@ -24,7 +24,7 @@ enum class XFeature: u8
 
 
 
-inline const char* xFeatureToString(XFeature feature) // TEST: NO
+inline const char8* xFeatureToString(XFeature feature) // TEST: NO
 {
     // COMMON_LT((" | feature = %u", feature)); // Commented to avoid bad looking logs
 

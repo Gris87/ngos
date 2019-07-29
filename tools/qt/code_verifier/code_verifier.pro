@@ -37,7 +37,8 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    ../include/     # tools/qt/include/
+    ../../../include/ \     # include/
+    ../include/             # tools/qt/include/
 
 
 
@@ -70,6 +71,7 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cppforverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppincludeverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppindentverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cppngoslogsverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppngostestverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppngostraceverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppoperatorspacesverifier.cpp \
@@ -133,6 +135,7 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cppforverifier.h \
     src/verifiers/zzz_types/cpp_h/cppincludeverifier.h \
     src/verifiers/zzz_types/cpp_h/cppindentverifier.h \
+    src/verifiers/zzz_types/cpp_h/cppngoslogsverifier.h \
     src/verifiers/zzz_types/cpp_h/cppngostestverifier.h \
     src/verifiers/zzz_types/cpp_h/cppngostraceverifier.h \
     src/verifiers/zzz_types/cpp_h/cppoperatorspacesverifier.h \

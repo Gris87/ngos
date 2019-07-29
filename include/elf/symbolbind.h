@@ -23,7 +23,7 @@ enum class ElfSymbolBind: u8
 
 
 
-inline const char* elfSymbolBindToString(ElfSymbolBind bind) // TEST: NO
+inline const char8* elfSymbolBindToString(ElfSymbolBind bind) // TEST: NO
 {
     switch (bind)
     {

@@ -18,7 +18,7 @@ enum class UefiGraphicsPixelFormat: u32
 
 
 
-inline const char* uefiGraphicsPixelFormatToString(UefiGraphicsPixelFormat format) // TEST: NO
+inline const char8* uefiGraphicsPixelFormatToString(UefiGraphicsPixelFormat format) // TEST: NO
 {
     switch (format)
     {

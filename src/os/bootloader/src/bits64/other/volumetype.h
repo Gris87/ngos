@@ -20,7 +20,7 @@ enum class VolumeType: u8
 
 
 
-inline const char* volumeTypeToString(VolumeType type) // TEST: NO
+inline const char8* volumeTypeToString(VolumeType type) // TEST: NO
 {
     // UEFI_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

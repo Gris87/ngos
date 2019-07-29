@@ -17,7 +17,7 @@ enum class UefiAllocateType: u32
 
 
 
-inline const char* uefiAllocateTypeToString(UefiAllocateType type) // TEST: NO
+inline const char8* uefiAllocateTypeToString(UefiAllocateType type) // TEST: NO
 {
     switch (type)
     {

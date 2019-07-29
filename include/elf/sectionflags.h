@@ -33,7 +33,7 @@ enum class ElfSectionFlag: elf_section_flags // Ignore CppEnumVerifier
 
 
 
-inline const char* elfSectionFlagToString(ElfSectionFlag flag) // TEST: NO
+inline const char8* elfSectionFlagToString(ElfSectionFlag flag) // TEST: NO
 {
     switch (flag)
     {

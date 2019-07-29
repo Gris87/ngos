@@ -55,7 +55,7 @@ enum class IntelCpuModel: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char* intelCpuModelToString(CpuFamily family, IntelCpuModel model) // TEST: NO
+inline const char8* intelCpuModelToString(CpuFamily family, IntelCpuModel model) // TEST: NO
 {
     // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
 

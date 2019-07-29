@@ -43,7 +43,7 @@ enum class LzmaState: u8
 
 
 
-inline const char* lzmaStateToString(LzmaState state) // TEST: NO
+inline const char8* lzmaStateToString(LzmaState state) // TEST: NO
 {
     // EARLY_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 

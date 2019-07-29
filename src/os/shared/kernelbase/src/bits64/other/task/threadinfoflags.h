@@ -21,7 +21,7 @@ enum class ThreadInfoFlag: thread_info_flags
 
 
 
-inline const char* threadInfoFlagToString(ThreadInfoFlag flag) // TEST: NO
+inline const char8* threadInfoFlagToString(ThreadInfoFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -37,7 +37,7 @@ inline const char* threadInfoFlagToString(ThreadInfoFlag flag) // TEST: NO
 
 
 
-inline const char* threadInfoFlagsToString(thread_info_flags flags) // TEST: NO
+inline const char8* threadInfoFlagsToString(thread_info_flags flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -50,7 +50,7 @@ inline const char* threadInfoFlagsToString(thread_info_flags flags) // TEST: NO
 
 
 
-    static char res[13];
+    static char8 res[13];
 
     FLAGS_TO_STRING(res, flags, threadInfoFlagToString, ThreadInfoFlag);
 

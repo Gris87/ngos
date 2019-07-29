@@ -29,7 +29,7 @@ enum class Lzma2Sequence: u8
 
 
 
-inline const char* lzma2SequenceToString(Lzma2Sequence sequence) // TEST: NO
+inline const char8* lzma2SequenceToString(Lzma2Sequence sequence) // TEST: NO
 {
     // EARLY_LT((" | sequence = %u", sequence)); // Commented to avoid bad looking logs
 

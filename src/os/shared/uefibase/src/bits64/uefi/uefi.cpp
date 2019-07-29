@@ -67,7 +67,7 @@ UefiStatus UEFI::clearScreen()
     return sTextOutput->clearScreen(sTextOutput);
 }
 
-void UEFI::print(char ch)
+void UEFI::print(char8 ch)
 {
     // UEFI_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
@@ -77,7 +77,7 @@ void UEFI::print(char ch)
     print(buffer);
 }
 
-void UEFI::print(const char *str)
+void UEFI::print(const char8 *str)
 {
     // UEFI_LT((" | str = 0x%p", str)); // Commented to avoid infinite loop
 
@@ -110,7 +110,7 @@ void UEFI::println()
     print(nl);
 }
 
-void UEFI::println(char ch)
+void UEFI::println(char8 ch)
 {
     // UEFI_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
@@ -120,7 +120,7 @@ void UEFI::println(char ch)
     print(buffer);
 }
 
-void UEFI::println(const char *str)
+void UEFI::println(const char8 *str)
 {
     // UEFI_LT((" | str = 0x%p", str)); // Commented to avoid infinite loop
 
@@ -134,7 +134,7 @@ void UEFI::println(const char *str)
     print(nl);
 }
 
-i64 UEFI::printf(const char *format, ...)
+i64 UEFI::printf(const char8 *format, ...)
 {
     // UEFI_LT((" | format = 0x%p", format)); // Commented to avoid infinite loop
 
@@ -143,7 +143,7 @@ i64 UEFI::printf(const char *format, ...)
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    char *tempBuffer;
+    char8 *tempBuffer;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -196,7 +196,7 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-char* UEFI::convertToAscii(const char16 *str)
+char8* UEFI::convertToAscii(const char16 *str)
 {
     UEFI_LT((" | str = 0x%p", str));
 
@@ -208,7 +208,7 @@ char* UEFI::convertToAscii(const char16 *str)
 
 
 
-    char *res;
+    char8 *res;
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
@@ -231,7 +231,7 @@ char* UEFI::convertToAscii(const char16 *str)
     return res;
 }
 
-char* UEFI::parentDirectory(char *path)
+char8* UEFI::parentDirectory(const char8 *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
@@ -239,8 +239,8 @@ char* UEFI::parentDirectory(char *path)
 
 
 
-    u64   size = 0;
-    char *str  = path;
+    u64          size = 0;
+    const char8 *str  = path;
 
     while (*str)
     {
@@ -258,7 +258,7 @@ char* UEFI::parentDirectory(char *path)
 
 
 
-    char *res;
+    char8 *res;
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
@@ -279,7 +279,7 @@ char* UEFI::parentDirectory(char *path)
     return res;
 }
 
-char* UEFI::devicePathToString(UefiDevicePath *path)
+char8* UEFI::devicePathToString(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
@@ -314,7 +314,7 @@ char* UEFI::devicePathToString(UefiDevicePath *path)
 
 
 
-    char *res = convertToAscii(pathStr);
+    char8 *res = convertToAscii(pathStr);
 
 
 
@@ -359,7 +359,7 @@ UefiDevicePath* UEFI::devicePathFromHandle(uefi_handle handle)
     return res;
 }
 
-UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char *fileName)
+UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char8 *fileName)
 {
     UEFI_LT((" | device = 0x%p, fileName = 0x%p", device, fileName));
 

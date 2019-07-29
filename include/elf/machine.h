@@ -29,7 +29,7 @@ enum class ElfMachine: u16
 
 
 
-inline const char* elfMachineToString(ElfMachine machine) // TEST: NO
+inline const char8* elfMachineToString(ElfMachine machine) // TEST: NO
 {
     switch (machine)
     {

@@ -16,7 +16,7 @@ enum class ElfClass: u8
 
 
 
-inline const char* elfClassToString(ElfClass elfClass) // TEST: NO
+inline const char8* elfClassToString(ElfClass elfClass) // TEST: NO
 {
     switch (elfClass)
     {

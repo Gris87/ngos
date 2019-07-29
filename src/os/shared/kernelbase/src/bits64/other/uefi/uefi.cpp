@@ -420,7 +420,7 @@ NgosStatus UEFI::initSystemTable()
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
     {
         char16 *uefiVendor;
-        char    vendor[128];
+        char8   vendor[128];
 
 
 

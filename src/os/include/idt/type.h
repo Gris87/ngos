@@ -18,7 +18,7 @@ enum class IdtType: u8
 
 
 
-inline const char* idtTypeToString(IdtType type) // TEST: NO
+inline const char8* idtTypeToString(IdtType type) // TEST: NO
 {
     switch (type)
     {

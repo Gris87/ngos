@@ -30,7 +30,7 @@ enum class x86FeatureWord: u8
 
 
 
-inline const char* x86FeatureWordToString(x86FeatureWord word) // TEST: NO
+inline const char8* x86FeatureWordToString(x86FeatureWord word) // TEST: NO
 {
     // COMMON_LT((" | word = %u", word)); // Commented to avoid bad looking logs
 

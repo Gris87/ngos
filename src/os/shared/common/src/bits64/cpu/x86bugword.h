@@ -15,7 +15,7 @@ enum class x86BugWord: u8
 
 
 
-inline const char* x86BugWordToString(x86BugWord word) // TEST: NO
+inline const char8* x86BugWordToString(x86BugWord word) // TEST: NO
 {
     // COMMON_LT((" | word = %u", word)); // Commented to avoid bad looking logs
 

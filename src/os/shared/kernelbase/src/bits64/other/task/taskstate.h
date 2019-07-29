@@ -17,7 +17,7 @@ enum class TaskState: u8
 
 
 
-inline const char* taskStateToString(TaskState state) // TEST: NO
+inline const char8* taskStateToString(TaskState state) // TEST: NO
 {
     // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 

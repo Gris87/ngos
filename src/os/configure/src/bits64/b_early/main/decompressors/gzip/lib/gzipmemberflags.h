@@ -31,7 +31,7 @@ enum class GzipMemberFlag: gzip_member_flags
 
 
 
-inline const char* gzipMemberFlagToString(GzipMemberFlag flag) // TEST: NO
+inline const char8* gzipMemberFlagToString(GzipMemberFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -52,7 +52,7 @@ inline const char* gzipMemberFlagToString(GzipMemberFlag flag) // TEST: NO
 
 
 
-inline const char* gzipMemberFlagsToString(gzip_member_flags flags) // TEST: NO
+inline const char8* gzipMemberFlagsToString(gzip_member_flags flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -65,7 +65,7 @@ inline const char* gzipMemberFlagsToString(gzip_member_flags flags) // TEST: NO
 
 
 
-    static char res[58];
+    static char8 res[58];
 
     FLAGS_TO_STRING(res, flags, gzipMemberFlagToString, GzipMemberFlag);
 

@@ -977,6 +977,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppincludeverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppincludeverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppindentverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppindentverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppngoslogsverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppngoslogsverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppngostestverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppngostestverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppngostraceverifier.cpp

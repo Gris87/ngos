@@ -49,7 +49,7 @@ NgosStatus Assets::init()
 
 
 
-        sEntries[sEntriesCount].filename =  (const char *)currentAddress;
+        sEntries[sEntriesCount].filename =  (const char8 *)currentAddress;
         currentAddress                   += strlen(sEntries[sEntriesCount].filename) + 1;
 
         COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);
@@ -84,7 +84,7 @@ NgosStatus Assets::init()
     return NgosStatus::OK;
 }
 
-AssetEntry* Assets::getAssetEntry(const char *filename)
+AssetEntry* Assets::getAssetEntry(const char8 *filename)
 {
     COMMON_LT((" | filename = 0x%p", filename));
 

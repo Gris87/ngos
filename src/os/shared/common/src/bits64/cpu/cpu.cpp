@@ -44,8 +44,8 @@
 
 
 
-const char* cpuFeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // "<< 5" == "* 32"
-const char* cpuBugsNames[(u64)x86BugWord::MAXIMUM << 5]; // "<< 5" == "* 32"
+const char8* cpuFeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // "<< 5" == "* 32"
+const char8* cpuBugsNames[(u64)x86BugWord::MAXIMUM << 5]; // "<< 5" == "* 32"
 
 u32       CPU::sVendor[3];
 CpuVendor CPU::sCpuVendor;
@@ -175,7 +175,7 @@ NgosStatus CPU::init()
         // COMMON_TEST_ASSERT(sVendor[0]                    == 0x756E6547,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sVendor[1]                    == 0x49656E69,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sVendor[2]                    == 0x6C65746E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(strncmp((const char *)sVendor, "GenuineIntel", 12) == 0,                                                            NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(strncmp((const char8 *)sVendor, "GenuineIntel", 12) == 0,                                                           NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sCpuVendor                    == CpuVendor::INTEL,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sModelName[0]                 == 0x65746E49,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sModelName[1]                 == 0x6F43206C,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
@@ -189,7 +189,7 @@ NgosStatus CPU::init()
         // COMMON_TEST_ASSERT(sModelName[9]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sModelName[10]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sModelName[11]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(strncmp((const char *)sModelName, "Intel Core Processor (Skylake)", 48) == 0,                                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(strncmp((const char8 *)sModelName, "Intel Core Processor (Skylake)", 48) == 0,                                      NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sCpuidLevel                   == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sCpuidLevel                      >= CPUID_LEVEL_LOWER_BOUND && sCpuidLevel <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sExtendedCpuidLevel           == 0x80000008,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
@@ -233,7 +233,7 @@ NgosStatus CPU::init()
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::toString(char *buffer, u16 size)
+NgosStatus CPU::toString(char8 *buffer, u16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -269,7 +269,7 @@ NgosStatus CPU::toString(char *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::flagsToString(char *buffer, u16 size)
+NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -292,7 +292,7 @@ NgosStatus CPU::flagsToString(char *buffer, u16 size)
         {
             if (flag & (1ULL << j))
             {
-                const char *featureName = cpuFeaturesNames[WORD_BIT(i, j)];
+                const char8 *featureName = cpuFeaturesNames[WORD_BIT(i, j)];
 
                 if (*featureName)
                 {
@@ -330,7 +330,7 @@ NgosStatus CPU::flagsToString(char *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::bugsToString(char *buffer, u16 size)
+NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -353,7 +353,7 @@ NgosStatus CPU::bugsToString(char *buffer, u16 size)
         {
             if (bug & (1ULL << j))
             {
-                const char *bugName = cpuBugsNames[WORD_BIT(i, j)];
+                const char8 *bugName = cpuBugsNames[WORD_BIT(i, j)];
 
                 if (*bugName)
                 {
@@ -391,7 +391,7 @@ NgosStatus CPU::bugsToString(char *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::check(const char **wantedFlag)
+NgosStatus CPU::check(const char8 **wantedFlag)
 {
     COMMON_LT((" | wantedFlag = 0x%p", wantedFlag));
 

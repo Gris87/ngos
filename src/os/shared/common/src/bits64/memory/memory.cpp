@@ -5,7 +5,7 @@
 
 
 
-i8 memcmp(const char *str1, const char *str2, i64 length)
+i8 memcmp(const void *str1, const void *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -21,18 +21,21 @@ i8 memcmp(const char *str1, const char *str2, i64 length)
 
 
 
+    u8 *s1 = (u8 *)str1;
+    u8 *s2 = (u8 *)str2;
+
     while (length > 0)
     {
-        u8 c1 = *str1;
-        u8 c2 = *str2;
+        u8 c1 = *s1;
+        u8 c2 = *s2;
 
         if (c1 != c2)
         {
             return c1 < c2 ? -1 : 1;
         }
 
-        ++str1;
-        ++str2;
+        ++s1;
+        ++s2;
         --length;
     }
 

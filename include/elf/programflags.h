@@ -19,7 +19,7 @@ enum class ElfProgramFlag: elf_program_flags // Ignore CppEnumVerifier
 
 
 
-inline const char* elfProgramFlagToString(ElfProgramFlag flag) // TEST: NO
+inline const char8* elfProgramFlagToString(ElfProgramFlag flag) // TEST: NO
 {
     switch (flag)
     {

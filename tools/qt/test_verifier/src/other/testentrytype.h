@@ -4,6 +4,7 @@
 
 
 #include <Qt>
+#include <ngos/types.h>
 
 
 
@@ -17,7 +18,7 @@ enum class TestEntryType: quint8
 
 
 
-inline const char* testEntryTypeToString(TestEntryType type) // TEST: NO
+inline const char8* testEntryTypeToString(TestEntryType type) // TEST: NO
 {
     switch (type)
     {

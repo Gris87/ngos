@@ -45,7 +45,7 @@ enum class UefiStatus: u64
 
 
 
-inline const char* uefiStatusToString(UefiStatus status) // TEST: NO
+inline const char8* uefiStatusToString(UefiStatus status) // TEST: NO
 {
     switch (status)
     {

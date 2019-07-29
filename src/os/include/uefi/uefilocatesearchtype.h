@@ -16,7 +16,7 @@ enum class UefiLocateSearchType: u32
 
 
 
-inline const char* uefiLocateSearchTypeToString(UefiLocateSearchType type) // TEST: NO
+inline const char8* uefiLocateSearchTypeToString(UefiLocateSearchType type) // TEST: NO
 {
     switch (type)
     {

@@ -4,6 +4,7 @@
 
 
 #include <Qt>
+#include <ngos/types.h>
 
 
 
@@ -71,7 +72,7 @@ enum class CodeVerificationFileType: quint64
 
 
 
-inline const char* codeVerificationFileTypeToString(CodeVerificationFileType type) // TEST: NO
+inline const char8* codeVerificationFileTypeToString(CodeVerificationFileType type) // TEST: NO
 {
     switch (type)
     {

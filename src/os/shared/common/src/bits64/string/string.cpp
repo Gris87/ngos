@@ -5,7 +5,7 @@
 
 
 
-i64 strlen(const char *str)
+i64 strlen(const char8 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
@@ -13,7 +13,7 @@ i64 strlen(const char *str)
 
 
 
-    const char *str2 = str;
+    const char8 *str2 = str;
 
     while (*str2) // *str2 != 0
     {
@@ -41,7 +41,7 @@ i64 strlen(const char16 *str)
     return str2 - str;
 }
 
-i64 strnlen(const char *str, i64 maxlen)
+i64 strnlen(const char8 *str, i64 maxlen)
 {
     // COMMON_LT((" | str = 0x%p, maxlen = %d", str, maxlen)); // Commented to avoid bad looking logs
 
@@ -49,7 +49,7 @@ i64 strnlen(const char *str, i64 maxlen)
 
 
 
-    const char *str2 = str;
+    const char8 *str2 = str;
 
     while (*str2 && maxlen) // *str2 != 0 && maxlen != 0
     {
@@ -79,7 +79,7 @@ i64 strnlen(const char16 *str, i64 maxlen)
     return str2 - str;
 }
 
-i8 strcmp(const char *str1, const char *str2)
+i8 strcmp(const char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
@@ -117,7 +117,7 @@ i8 strcmp(const char *str1, const char *str2)
     return 0;
 }
 
-i8 strncmp(const char *str1, const char *str2, i64 length)
+i8 strncmp(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -156,7 +156,7 @@ i8 strncmp(const char *str1, const char *str2, i64 length)
     return 0;
 }
 
-char* strcat(char *str1, const char *str2)
+char8* strcat(char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
@@ -165,7 +165,7 @@ char* strcat(char *str1, const char *str2)
 
 
 
-    char *cur = str1;
+    char8 *cur = str1;
 
     while (*cur) // *cur != 0
     {
@@ -222,7 +222,7 @@ char16* strcat(char16 *str1, const char16 *str2)
     return str1;
 }
 
-char* strapp(char *str1, const char *str2)
+char8* strapp(char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
@@ -232,7 +232,7 @@ char* strapp(char *str1, const char *str2)
 
 
 
-    char *cur = str1;
+    char8 *cur = str1;
 
     while (*str2) // *str2 != 0
     {

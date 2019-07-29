@@ -61,7 +61,7 @@ NgosStatus Serial::initConsole()
     return NgosStatus::OK;
 }
 
-void Serial::print(char ch)
+void Serial::print(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid infinite loop
 
@@ -81,7 +81,7 @@ void Serial::print(char ch)
     COMMON_ASSERT_EXECUTION(outb(ch, DEFAULT_SERIAL_PORT + TXR));
 }
 
-void Serial::print(const char *str)
+void Serial::print(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid infinite loop
 
@@ -108,21 +108,21 @@ void Serial::println()
 
 
 
-    char nl[2] = { '\n', 0 };
+    char8 nl[2] = { '\n', 0 };
     print(nl);
 }
 
-void Serial::println(char ch)
+void Serial::println(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
 
 
-    char buffer[3] = { ch, '\n', 0 };
+    char8 buffer[3] = { ch, '\n', 0 };
     print(buffer);
 }
 
-void Serial::println(const char *str)
+void Serial::println(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid infinite loop
 
@@ -132,11 +132,11 @@ void Serial::println(const char *str)
 
     print(str);
 
-    char nl[2] = { '\n', 0 };
+    char8 nl[2] = { '\n', 0 };
     print(nl);
 }
 
-i64 Serial::printf(const char *format, ...)
+i64 Serial::printf(const char8 *format, ...)
 {
     // COMMON_LT((" | format = 0x%p", format)); // Commented to avoid infinite loop
 
@@ -145,7 +145,7 @@ i64 Serial::printf(const char *format, ...)
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    char *tempBuffer;
+    char8 *tempBuffer;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(

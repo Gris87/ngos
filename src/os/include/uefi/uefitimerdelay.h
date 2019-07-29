@@ -17,7 +17,7 @@ enum class UefiTimerDelay: u32
 
 
 
-inline const char* uefiTimerDelayToString(UefiTimerDelay delay) // TEST: NO
+inline const char8* uefiTimerDelayToString(UefiTimerDelay delay) // TEST: NO
 {
     switch (delay)
     {

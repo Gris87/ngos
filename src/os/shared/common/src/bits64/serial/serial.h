@@ -13,12 +13,12 @@ class Serial
 public:
     static NgosStatus initConsole(); // TEST: NO
 
-    static void print(char ch); // TEST: NO
-    static void print(const char *str); // TEST: NO
+    static void print(char8 ch); // TEST: NO
+    static void print(const char8 *str); // TEST: NO
     static void println(); // TEST: NO
-    static void println(char ch); // TEST: NO
-    static void println(const char *str); // TEST: NO
-    static i64 printf(const char *format, ...); // TEST: NO
+    static void println(char8 ch); // TEST: NO
+    static void println(const char8 *str); // TEST: NO
+    static i64 printf(const char8 *format, ...); // TEST: NO
 };
 
 

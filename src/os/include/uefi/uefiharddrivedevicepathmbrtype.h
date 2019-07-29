@@ -16,7 +16,7 @@ enum class UefiHardDriveDevicePathMbrType: u8
 
 
 
-inline const char* uefiHardDriveDevicePathMbrTypeToString(UefiHardDriveDevicePathMbrType type) // TEST: NO
+inline const char8* uefiHardDriveDevicePathMbrTypeToString(UefiHardDriveDevicePathMbrType type) // TEST: NO
 {
     switch (type)
     {

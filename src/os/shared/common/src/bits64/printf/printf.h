@@ -8,12 +8,12 @@
 
 
 
-extern char printfBuffer[1024]; // printfBuffer declared in printf.cpp file
+extern char8 printfBuffer[1024]; // printfBuffer declared in printf.cpp file
 
 
 
-i64 vsprintf(char *buffer, const char *format, va_list args); // TEST: NO
-i64 sprintf(char *buffer, const char *format, ...);
+i64 vsprintf(char8 *buffer, const char8 *format, va_list args); // TEST: NO
+i64 sprintf(char8 *buffer, const char8 *format, ...);
 
 
 

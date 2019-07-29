@@ -20,7 +20,7 @@ enum class ElfSymbolVisibility: u8
 
 
 
-inline const char* elfSymbolVisibilityToString(ElfSymbolVisibility visibility) // TEST: NO
+inline const char8* elfSymbolVisibilityToString(ElfSymbolVisibility visibility) // TEST: NO
 {
     switch (visibility)
     {

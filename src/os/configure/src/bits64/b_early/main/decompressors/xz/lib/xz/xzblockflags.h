@@ -32,7 +32,7 @@ enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier
 
 
 
-inline const char* xzBlockFlagToString(XzBlockFlag flag) // TEST: NO
+inline const char8* xzBlockFlagToString(XzBlockFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -50,7 +50,7 @@ inline const char* xzBlockFlagToString(XzBlockFlag flag) // TEST: NO
 
 
 
-inline const char* xzBlockFlagsToString(xz_block_flags flags) // TEST: NO
+inline const char8* xzBlockFlagsToString(xz_block_flags flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -65,7 +65,7 @@ inline const char* xzBlockFlagsToString(xz_block_flags flags) // TEST: NO
 
 
 
-    static char res[67];
+    static char8 res[67];
 
     FLAGS_TO_STRING(res, flags, xzBlockFlagToString, XzBlockFlag);
 

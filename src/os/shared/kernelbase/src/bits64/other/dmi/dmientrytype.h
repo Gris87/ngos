@@ -59,7 +59,7 @@ enum class DmiEntryType: u8
 
 
 
-inline const char* dmiEntryTypeToString(DmiEntryType type) // TEST: NO
+inline const char8* dmiEntryTypeToString(DmiEntryType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

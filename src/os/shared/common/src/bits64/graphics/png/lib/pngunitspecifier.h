@@ -17,7 +17,7 @@ enum class PngUnitSpecifier: u8
 
 
 
-inline const char* pngUnitSpecifierToString(PngUnitSpecifier specifier) // TEST: NO
+inline const char8* pngUnitSpecifierToString(PngUnitSpecifier specifier) // TEST: NO
 {
     // COMMON_LT((" | specifier = %u", specifier)); // Commented to avoid bad looking logs
 

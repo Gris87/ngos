@@ -17,15 +17,15 @@ class Bootloader
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus cleanUpPath(char *path); // TEST: NO
+    static NgosStatus cleanUpPath(char8 *path); // TEST: NO
 
-    static NgosStatus loadImageFromDiskOrAssets(const char *path, Image **image); // TEST: NO
+    static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
 private:
     static NgosStatus initImage(); // TEST: NO
-    static NgosStatus initApplicationPath(char **applicationPath); // TEST: NO
-    static NgosStatus initDevicePath(char *applicationPath); // TEST: NO
-    static NgosStatus initApplicationDirPath(char *applicationPath); // TEST: NO
+    static NgosStatus initApplicationPath(char8 **applicationPath); // TEST: NO
+    static NgosStatus initDevicePath(char8 *applicationPath); // TEST: NO
+    static NgosStatus initApplicationDirPath(char8 *applicationPath); // TEST: NO
     static NgosStatus initVolumes(); // TEST: NO
     static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size); // TEST: NO
     static NgosStatus initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
@@ -40,7 +40,7 @@ private:
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
-    static char                    *sApplicationDirPath;
+    static char8                   *sApplicationDirPath;
     static u64                      sNumberOfVolumes;
     static VolumeInfo              *sVolumes;
     static Image                   *sBackgroundImage;

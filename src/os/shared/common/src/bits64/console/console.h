@@ -14,11 +14,11 @@ class Console
 public:
     static NgosStatus init(BootParams *params); // TEST: NO
 
-    static void print(char ch); // TEST: NO
-    static void print(const char *str); // TEST: NO
+    static void print(char8 ch); // TEST: NO
+    static void print(const char8 *str); // TEST: NO
     static void println(); // TEST: NO
-    static void println(char ch); // TEST: NO
-    static void println(const char *str); // TEST: NO
+    static void println(char8 ch); // TEST: NO
+    static void println(const char8 *str); // TEST: NO
 
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO

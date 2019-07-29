@@ -27,7 +27,7 @@ enum class ElfProgramType: u32
 
 
 
-inline const char* elfProgramTypeToString(ElfProgramType type) // TEST: NO
+inline const char8* elfProgramTypeToString(ElfProgramType type) // TEST: NO
 {
     switch (type)
     {

@@ -15,7 +15,7 @@ enum class ElfFileVersion: u8
 
 
 
-inline const char* elfFileVersionToString(ElfFileVersion version) // TEST: NO
+inline const char8* elfFileVersionToString(ElfFileVersion version) // TEST: NO
 {
     switch (version)
     {

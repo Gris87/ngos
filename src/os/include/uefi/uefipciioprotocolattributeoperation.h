@@ -19,7 +19,7 @@ enum class UefiPciIoProtocolAttributeOperation: u32
 
 
 
-inline const char* uefiPciIoProtocolAttributeOperationToString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
+inline const char8* uefiPciIoProtocolAttributeOperationToString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
 {
     switch (operation)
     {

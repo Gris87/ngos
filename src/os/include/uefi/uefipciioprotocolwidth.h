@@ -26,7 +26,7 @@ enum class UefiPciIoProtocolWidth: u32
 
 
 
-inline const char* uefiPciIoProtocolWidthToString(UefiPciIoProtocolWidth width) // TEST: NO
+inline const char8* uefiPciIoProtocolWidthToString(UefiPciIoProtocolWidth width) // TEST: NO
 {
     switch (width)
     {

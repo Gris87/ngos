@@ -139,23 +139,28 @@ void BaseCodeVerifier::removeStrings(QString &line) // TEST: NO
     }
 }
 
-QString BaseCodeVerifier::traceCommandFromPath(const QString &path)
+QString BaseCodeVerifier::logPrefixFromPath(const QString &path)
 {
     if (path.contains("/src/os/bootloader/"))
     {
-        return "UEFI_LT";
+        return "UEFI";
     }
     else
     if (path.contains("/src/os/configure/"))
     {
         if (path.contains("uefi/"))
         {
-            return "UEFI_LT";
+            return "UEFI";
         }
         else
         if (path.contains("early/"))
         {
-            return "EARLY_LT";
+            return "EARLY";
+        }
+        else
+        if (path.endsWith("/src/os/configure/src/main.cpp"))
+        {
+            return "UEFI";
         }
     }
     else
@@ -163,7 +168,7 @@ QString BaseCodeVerifier::traceCommandFromPath(const QString &path)
     {
         if (path.contains("early/"))
         {
-            return "EARLY_LT";
+            return "EARLY";
         }
     }
     else
@@ -171,7 +176,7 @@ QString BaseCodeVerifier::traceCommandFromPath(const QString &path)
     {
         if (path.contains("early/"))
         {
-            return "EARLY_LT";
+            return "EARLY";
         }
     }
     else
@@ -179,23 +184,46 @@ QString BaseCodeVerifier::traceCommandFromPath(const QString &path)
     {
         if (path.contains("early/"))
         {
-            return "EARLY_LT";
+            return "EARLY";
+        }
+        else
+        if (path.endsWith("/src/os/shared/kernelbase/src/main.cpp"))
+        {
+            return "EARLY";
         }
         else
         {
-            return "COMMON_LT";
+            return "COMMON";
         }
     }
     else
     if (path.contains("/src/os/shared/uefibase/"))
     {
-        return "UEFI_LT";
+        return "UEFI";
     }
     else
     if (path.contains("/src/os/shared/common/"))
     {
-        return "COMMON_LT";
+        if (
+            path.endsWith("/src/os/shared/common/src/bits64/early/earlyassert.h")
+            ||
+            path.endsWith("/src/os/shared/common/src/bits64/early/earlylog.h")
+           )
+        {
+            return "EARLY";
+        }
+        else
+        {
+            return "COMMON";
+        }
     }
 
     return "";
+}
+
+QString BaseCodeVerifier::traceCommandFromPath(const QString &path)
+{
+    QString res = logPrefixFromPath(path);
+
+    return res == "" ? "" : (res + "_LT");
 }

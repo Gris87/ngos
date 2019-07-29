@@ -12,7 +12,7 @@
 
 
 
-extern const char* cpuBugsNames[(u64)x86BugWord::MAXIMUM << 5]; // cpuBugsNames declared in cpu.cpp file // "<< 5" == "* 32"
+extern const char8* cpuBugsNames[(u64)x86BugWord::MAXIMUM << 5]; // cpuBugsNames declared in cpu.cpp file // "<< 5" == "* 32"
 
 
 

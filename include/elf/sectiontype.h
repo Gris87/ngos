@@ -35,7 +35,7 @@ enum class ElfSectionType: u32
 
 
 
-inline const char* elfSectionTypeToString(ElfSectionType type) // TEST: NO
+inline const char8* elfSectionTypeToString(ElfSectionType type) // TEST: NO
 {
     switch (type)
     {

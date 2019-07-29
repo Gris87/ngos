@@ -33,7 +33,7 @@ enum class XzStreamFlag: xz_stream_flags
 
 
 
-inline const char* xzStreamFlagToString(XzStreamFlag flag) // TEST: NO
+inline const char8* xzStreamFlagToString(XzStreamFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -52,7 +52,7 @@ inline const char* xzStreamFlagToString(XzStreamFlag flag) // TEST: NO
 
 
 
-inline const char* xzStreamFlagsToString(xz_stream_flags flags) // TEST: NO
+inline const char8* xzStreamFlagsToString(xz_stream_flags flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -65,7 +65,7 @@ inline const char* xzStreamFlagsToString(xz_stream_flags flags) // TEST: NO
 
 
 
-    static char res[80];
+    static char8 res[80];
 
     FLAGS_TO_STRING(res, flags, xzStreamFlagToString, XzStreamFlag);
 

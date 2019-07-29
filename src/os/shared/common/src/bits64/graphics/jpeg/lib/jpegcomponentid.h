@@ -21,7 +21,7 @@ enum class JpegComponentId: u8
 
 
 
-inline const char* jpegComponentIdToString(JpegComponentId id) // TEST: NO
+inline const char8* jpegComponentIdToString(JpegComponentId id) // TEST: NO
 {
     // COMMON_LT((" | id = %u", id)); // Commented to avoid bad looking logs
 

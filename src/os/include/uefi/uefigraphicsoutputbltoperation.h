@@ -18,7 +18,7 @@ enum class UefiGraphicsOutputBltOperation: u32
 
 
 
-inline const char* uefiGraphicsOutputBltOperationToString(UefiGraphicsOutputBltOperation operation) // TEST: NO
+inline const char8* uefiGraphicsOutputBltOperationToString(UefiGraphicsOutputBltOperation operation) // TEST: NO
 {
     switch (operation)
     {

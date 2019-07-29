@@ -22,13 +22,13 @@ enum class PngChunkType: u32 // Ignore CppEnumVerifier
 
 
 
-inline char* pngChunkTypeToString(PngChunkType type) // TEST: NO
+inline char8* pngChunkTypeToString(PngChunkType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 
 
 
-    static char res[5] __attribute__ ((section (".noinit")));
+    static char8 res[5];
 
     *((u32 *)res) = (u32)type;
     COMMON_TEST_ASSERT(res[4] == 0, 0);

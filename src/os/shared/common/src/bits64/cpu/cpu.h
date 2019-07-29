@@ -17,10 +17,10 @@ class CPU
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus toString(char *buffer, u16 size); // TEST: NO
-    static NgosStatus flagsToString(char *buffer, u16 size); // TEST: NO
-    static NgosStatus bugsToString(char *buffer, u16 size); // TEST: NO
-    static NgosStatus check(const char **wantedFlag); // TEST: NO
+    static NgosStatus toString(char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus flagsToString(char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus bugsToString(char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus check(const char8 **wantedFlag); // TEST: NO
 
     static NgosStatus setFlag(X86Feature flag);
     static NgosStatus clearFlag(X86Feature flag);

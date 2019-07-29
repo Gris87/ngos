@@ -49,6 +49,7 @@ protected:
     void removeComments(QString &line); // TEST: NO
     void removeStrings(QString &line); // TEST: NO
 
+    QString logPrefixFromPath(const QString &path); // TEST: NO
     QString traceCommandFromPath(const QString &path); // TEST: NO
 
 private:

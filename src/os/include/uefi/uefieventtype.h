@@ -15,7 +15,7 @@ enum class UefiEventType: u32
 
 
 
-inline const char* uefiEventTypeToString(UefiEventType type) // TEST: NO
+inline const char8* uefiEventTypeToString(UefiEventType type) // TEST: NO
 {
     switch (type)
     {

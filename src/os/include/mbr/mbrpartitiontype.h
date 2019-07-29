@@ -269,7 +269,7 @@ enum class MbrPartitionType: u8
 
 
 
-inline const char* mbrPartitionTypeToString(MbrPartitionType type) // TEST: NO
+inline const char8* mbrPartitionTypeToString(MbrPartitionType type) // TEST: NO
 {
     switch (type)
     {

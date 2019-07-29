@@ -30,7 +30,7 @@ struct JpegHuffmanTable
 
 
 
-inline const char* jpegHuffmanTableTypeToString(u8 type) // TEST: NO
+inline const char8* jpegHuffmanTableTypeToString(u8 type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

@@ -17,7 +17,7 @@ enum class CpuVendor: u8
 
 
 
-inline const char* cpuVendorToString(CpuVendor vendor) // TEST: NO
+inline const char8* cpuVendorToString(CpuVendor vendor) // TEST: NO
 {
     // COMMON_LT((" | vendor = %u", vendor)); // Commented to avoid bad looking logs
 

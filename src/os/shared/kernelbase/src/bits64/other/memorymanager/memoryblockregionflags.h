@@ -24,7 +24,7 @@ enum class MemoryBlockRegionFlag: memory_block_region_flags
 
 
 
-inline const char* memoryBlockRegionFlagToString(MemoryBlockRegionFlag flag) // TEST: NO
+inline const char8* memoryBlockRegionFlagToString(MemoryBlockRegionFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -43,7 +43,7 @@ inline const char* memoryBlockRegionFlagToString(MemoryBlockRegionFlag flag) // 
 
 
 
-inline const char* memoryBlockRegionFlagsToString(memory_block_region_flags flags) // TEST: NO
+inline const char8* memoryBlockRegionFlagsToString(memory_block_region_flags flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -56,7 +56,7 @@ inline const char* memoryBlockRegionFlagsToString(memory_block_region_flags flag
 
 
 
-    static char res[40];
+    static char8 res[40];
 
     FLAGS_TO_STRING(res, flags, memoryBlockRegionFlagToString, MemoryBlockRegionFlag);
 

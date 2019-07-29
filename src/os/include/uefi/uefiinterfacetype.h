@@ -15,7 +15,7 @@ enum class UefiInterfaceType: u32
 
 
 
-inline const char* uefiInterfaceTypeToString(UefiInterfaceType type) // TEST: NO
+inline const char8* uefiInterfaceTypeToString(UefiInterfaceType type) // TEST: NO
 {
     switch (type)
     {

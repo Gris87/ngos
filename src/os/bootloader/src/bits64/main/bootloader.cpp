@@ -14,7 +14,7 @@
 
 UefiLoadedImageProtocol *Bootloader::sImage;
 UefiDevicePath          *Bootloader::sDevicePath;
-char                    *Bootloader::sApplicationDirPath;
+char8                   *Bootloader::sApplicationDirPath;
 u64                      Bootloader::sNumberOfVolumes;
 VolumeInfo              *Bootloader::sVolumes;
 Image                   *Bootloader::sBackgroundImage;
@@ -27,7 +27,7 @@ NgosStatus Bootloader::init()
 
 
 
-    char *applicationPath;
+    char8 *applicationPath;
 
     UEFI_ASSERT_EXECUTION(initImage(),                             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initApplicationPath(&applicationPath),   NgosStatus::ASSERTION);
@@ -41,7 +41,7 @@ NgosStatus Bootloader::init()
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::cleanUpPath(char *path)
+NgosStatus Bootloader::cleanUpPath(char8 *path)
 {
     UEFI_LT((" | path = %s", path));
 
@@ -105,7 +105,7 @@ NgosStatus Bootloader::cleanUpPath(char *path)
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::loadImageFromDiskOrAssets(const char *path, Image **image)
+NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **image)
 {
     UEFI_LT((" | path = %s, image = 0x%p", path, image));
 
@@ -161,7 +161,7 @@ NgosStatus Bootloader::initImage()
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initApplicationPath(char **applicationPath)
+NgosStatus Bootloader::initApplicationPath(char8 **applicationPath)
 {
     UEFI_LT((" | applicationPath = 0x%p", applicationPath));
 
@@ -189,7 +189,7 @@ NgosStatus Bootloader::initApplicationPath(char **applicationPath)
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initDevicePath(char *applicationPath)
+NgosStatus Bootloader::initDevicePath(char8 *applicationPath)
 {
     UEFI_LT((" | applicationPath = %s", applicationPath));
 
@@ -238,7 +238,7 @@ NgosStatus Bootloader::initDevicePath(char *applicationPath)
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initApplicationDirPath(char *applicationPath)
+NgosStatus Bootloader::initApplicationDirPath(char8 *applicationPath)
 {
     UEFI_LT((" | applicationPath = %s", applicationPath));
 
@@ -246,7 +246,7 @@ NgosStatus Bootloader::initApplicationDirPath(char *applicationPath)
 
 
 
-    char *sApplicationDirPath = UEFI::parentDirectory(applicationPath);
+    char8 *sApplicationDirPath = UEFI::parentDirectory(applicationPath);
     UEFI_ASSERT_EXECUTION(cleanUpPath(sApplicationDirPath), NgosStatus::ASSERTION);
 
     UEFI_LVVV(("sApplicationDirPath = %s", sApplicationDirPath));
@@ -756,7 +756,7 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume, UefiDevicePath *device
                     {
                         GptEntry *gptEntry = &previousVolume->gptData.entries[j];
 
-                        if (!memcmp((const char *)&gptEntry->partitionUniqueGuid, (const char *)hardDrivePath->signature, sizeof(hardDrivePath->signature))) // memcmp((const char *)gptEntry->partitionUniqueGuid, (const char *)hardDrivePath->signature, sizeof(hardDrivePath->signature)) == 0
+                        if (!memcmp((const char8 *)&gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature))) // memcmp((const char8 *)gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature)) == 0
                         {
                             volume->name = UEFI::convertToAscii(gptEntry->name);
 

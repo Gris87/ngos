@@ -91,7 +91,7 @@ NgosStatus printCpuFlags()
 
 
 
-    char buffer[1024];
+    char8 buffer[1024];
 
     UEFI_ASSERT_EXECUTION(CPU::flagsToString(buffer, 1024), NgosStatus::ASSERTION);
 
@@ -164,11 +164,11 @@ BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 
 
 
 
-    const char *wantedCpuFlag = 0;
+    const char8 *wantedCpuFlag = 0;
 
     if (CPU::check(&wantedCpuFlag) != NgosStatus::OK)
     {
-        char buffer[1024];
+        char8 buffer[1024];
 
         UEFI::clearScreen(); // Do not check with UEFI_ASSERT_EXECUTION
 

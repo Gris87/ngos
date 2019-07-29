@@ -19,7 +19,7 @@ struct VolumeInfo
     UefiDevicePath      *devicePath;
     GptData              gptData;
     VolumeType           type;
-    const char          *name;
+    const char8         *name;
 };
 
 

@@ -111,7 +111,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                     // Ignore CppAlignmentVerifier [BEGIN]
                     QString toStringFunction = "\n\n\n";
 
-                    toStringFunction += "inline const char* " + enumNameFromLowerCase + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
+                    toStringFunction += "inline const char8* " + enumNameFromLowerCase + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
                     toStringFunction += "{\n";
 
 
@@ -229,7 +229,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         // Ignore CppAlignmentVerifier [BEGIN]
                         toStringFunction =  "\n\n\n";
-                        toStringFunction += "inline const char* " + enumNameFromLowerCase + "sToString(" + enumType + " flags) // TEST: NO\n";
+                        toStringFunction += "inline const char8* " + enumNameFromLowerCase + "sToString(" + enumType + " flags) // TEST: NO\n";
                         toStringFunction += "{\n";
 
 
@@ -247,7 +247,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         toStringFunction += "        return \"NONE\";\n";
                         toStringFunction += "    }\n";
                         toStringFunction += "\n\n\n";
-                        toStringFunction += "    static char res[" + QString::number(totalStringSize) + "];\n";
+                        toStringFunction += "    static char8 res[" + QString::number(totalStringSize) + "];\n";
                         toStringFunction += '\n';
                         toStringFunction += "    FLAGS_TO_STRING(res, flags, " + enumNameFromLowerCase + "ToString, " + enumName + ");\n";
                         toStringFunction += '\n';

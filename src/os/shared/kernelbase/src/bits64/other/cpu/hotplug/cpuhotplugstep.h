@@ -14,7 +14,7 @@ typedef NgosStatus (*cpu_up_down_action) (u64 cpu);
 
 struct CpuHotplugStep
 {
-    const char         *name;
+    const char8        *name;
     cpu_up_down_action  upAction;
     cpu_up_down_action  downAction;
     bool                multipleInstances;

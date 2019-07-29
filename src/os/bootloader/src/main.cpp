@@ -30,7 +30,7 @@ NgosStatus printCpuFlags()
 
 
 
-    char buffer[1024];
+    char8 buffer[1024];
 
     UEFI_ASSERT_EXECUTION(CPU::flagsToString(buffer, 1024), NgosStatus::ASSERTION);
 

@@ -38,6 +38,11 @@ UI_DIR      = build/gen
 
 
 
+INCLUDEPATH += \
+    ../../../include/   # include/
+
+
+
 # Include libraries - BEGIN
 win32 {
     LIBS += -lSetupAPI -lOle32

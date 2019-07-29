@@ -17,7 +17,7 @@ enum class CpuFamily: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char* cpuFamilyToString(CpuVendor vendor, CpuFamily family) // TEST: NO
+inline const char8* cpuFamilyToString(CpuVendor vendor, CpuFamily family) // TEST: NO
 {
     // COMMON_LT((" | vendor = %u, family = %u", vendor, family)); // Commented to avoid bad looking logs
 

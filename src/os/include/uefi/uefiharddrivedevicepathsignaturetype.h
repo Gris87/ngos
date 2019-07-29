@@ -16,7 +16,7 @@ enum class UefiHardDriveDevicePathSignatureType: u8
 
 
 
-inline const char* uefiHardDriveDevicePathSignatureTypeToString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
+inline const char8* uefiHardDriveDevicePathSignatureTypeToString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
 {
     switch (type)
     {

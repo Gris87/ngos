@@ -9,10 +9,10 @@
 
 struct DmiMemoryDevice
 {
-    const char *device;
-    const char *bank;
-    u64         size;
-    u16         handle;
+    const char8 *device;
+    const char8 *bank;
+    u64          size;
+    u16          handle;
 };
 
 

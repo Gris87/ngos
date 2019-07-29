@@ -20,7 +20,7 @@ enum class PngColorType: u8
 
 
 
-inline const char* pngColorTypeToString(PngColorType type) // TEST: NO
+inline const char8* pngColorTypeToString(PngColorType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

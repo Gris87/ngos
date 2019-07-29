@@ -16,7 +16,7 @@ enum class UefiResetType: u32
 
 
 
-inline const char* uefiResetTypeToString(UefiResetType type) // TEST: NO
+inline const char8* uefiResetTypeToString(UefiResetType type) // TEST: NO
 {
     switch (type)
     {

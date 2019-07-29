@@ -4,6 +4,7 @@
 
 
 #include <Qt>
+#include <ngos/types.h>
 
 
 
@@ -18,7 +19,7 @@ enum class UsbBootMakerState: quint8
 
 
 
-inline const char* usbBootMakerStateToString(UsbBootMakerState state) // TEST: NO
+inline const char8* usbBootMakerStateToString(UsbBootMakerState state) // TEST: NO
 {
     switch (state)
     {

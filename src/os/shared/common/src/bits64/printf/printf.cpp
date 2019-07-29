@@ -17,11 +17,11 @@
 
 
 
-char printfBuffer[1024];
+char8 printfBuffer[1024];
 
 
 
-i64 parseDigits(const char **str)
+i64 parseDigits(const char8 **str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 
@@ -41,7 +41,7 @@ i64 parseDigits(const char **str)
     return res;
 }
 
-char* number(char *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
+char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 {
     // COMMON_LT((" | str = 0x%p, value = %d, base = %u, size = %d, precision = %d, flags = %u", str, value, base, size, precision, flags)); // Commented to avoid infinite loop
 
@@ -57,12 +57,12 @@ char* number(char *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 
 
 
-    static const char *digitsLower = "0123456789abcdef";
-    static const char *digitsUpper = "0123456789ABCDEF";
+    static const char8 *digitsLower = "0123456789abcdef";
+    static const char8 *digitsUpper = "0123456789ABCDEF";
 
 
 
-    const char *digits;
+    const char8 *digits;
 
     if (flags & FLAG_SMALL)
     {
@@ -75,7 +75,7 @@ char* number(char *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 
 
 
-    char pad;
+    char8 pad;
 
     if (flags & FLAG_LEFT)
     {
@@ -97,7 +97,7 @@ char* number(char *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 
 
 
-    char sign = 0;
+    char8 sign = 0;
 
     if (flags & FLAG_SIGN)
     {
@@ -139,7 +139,7 @@ char* number(char *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 
 
 
-    char temp[66];
+    char8 temp[66];
 
     i64 i = 0;
 
@@ -270,7 +270,7 @@ char* number(char *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
     return str;
 }
 
-i64 vsprintf(char *buffer, const char *format, va_list args)
+i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 {
     // COMMON_LT((" | buffer = 0x%p, format = 0x%p, args = ...", buffer, format)); // Commented to avoid infinite loop
 
@@ -279,7 +279,7 @@ i64 vsprintf(char *buffer, const char *format, va_list args)
 
 
 
-    char *str;
+    char8 *str;
 
     for (str = buffer; *format; ++format) // Ignore CppForVerifier
     {
@@ -403,7 +403,7 @@ i64 vsprintf(char *buffer, const char *format, va_list args)
 
 
 
-        char qualifier = 0;
+        char8 qualifier = 0;
 
         if (*format == 'h' || *format == 'l' || *format == 'L')
         {
@@ -432,7 +432,7 @@ i64 vsprintf(char *buffer, const char *format, va_list args)
                     }
                 }
 
-                *str = (char)va_arg(args, i32);
+                *str = (char8)va_arg(args, i32);
                 ++str;
 
                 while (fieldWidth > 0)
@@ -449,8 +449,8 @@ i64 vsprintf(char *buffer, const char *format, va_list args)
 
             case 's':
             {
-                const char *str2   = va_arg(args, char *);
-                i64         length = strnlen(str2, precision);
+                const char8 *str2   = va_arg(args, char8 *);
+                i64          length = strnlen(str2, precision);
 
                 if (!(flags & FLAG_LEFT))
                 {
@@ -598,7 +598,7 @@ i64 vsprintf(char *buffer, const char *format, va_list args)
     return str - buffer;
 }
 
-i64 sprintf(char *buffer, const char *format, ...)
+i64 sprintf(char8 *buffer, const char8 *format, ...)
 {
     COMMON_LT((" | buffer = 0x%p, format = 0x%p", buffer, format));
 

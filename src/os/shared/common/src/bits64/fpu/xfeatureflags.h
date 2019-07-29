@@ -23,7 +23,7 @@ enum class XFeatureFlag: x_feature_flags
 
 
 
-inline const char* xFeatureFlagToString(XFeatureFlag flag) // TEST: NO
+inline const char8* xFeatureFlagToString(XFeatureFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -41,7 +41,7 @@ inline const char* xFeatureFlagToString(XFeatureFlag flag) // TEST: NO
 
 
 
-inline const char* xFeatureFlagsToString(x_feature_flags flags) // TEST: NO
+inline const char8* xFeatureFlagsToString(x_feature_flags flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
@@ -54,7 +54,7 @@ inline const char* xFeatureFlagsToString(x_feature_flags flags) // TEST: NO
 
 
 
-    static char res[36];
+    static char8 res[36];
 
     FLAGS_TO_STRING(res, flags, xFeatureFlagToString, XFeatureFlag);
 

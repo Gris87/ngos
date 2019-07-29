@@ -17,7 +17,7 @@ u64              DMI::sStructureTableAddress;
 u8               DMI::sChassisType;
 u64              DMI::sNumberOfMemoryDevices;
 DmiMemoryDevice *DMI::sMemoryDevices;
-const char*      DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
+const char8*     DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
 DmiUuid*         DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
 
 
@@ -89,8 +89,8 @@ NgosStatus DMI::init()
 
             for (i64 i = 0; i < (i64)sNumberOfMemoryDevices; ++i)
             {
-                const char *device;
-                const char *bank;
+                const char8 *device;
+                const char8 *bank;
 
 
 

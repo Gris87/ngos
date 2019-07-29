@@ -26,7 +26,7 @@ void TestResults::testPassed()
     ++mPassed;
 }
 
-void TestResults::testFailed(const char *filename, u64 line, const char *description)
+void TestResults::testFailed(const char8 *filename, u64 line, const char8 *description)
 {
     UEFI_LT((" | filename = 0x%p, line = %u, description = 0x%p", filename, line, description));
 
@@ -37,7 +37,7 @@ void TestResults::testFailed(const char *filename, u64 line, const char *descrip
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    char *tempBuffer;
+    char8 *tempBuffer;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -78,7 +78,7 @@ NgosStatus TestResults::summary()
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    char *tempBuffer;
+    char8 *tempBuffer;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(

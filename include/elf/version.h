@@ -15,7 +15,7 @@ enum class ElfVersion: u32
 
 
 
-inline const char* elfVersionToString(ElfVersion version) // TEST: NO
+inline const char8* elfVersionToString(ElfVersion version) // TEST: NO
 {
     switch (version)
     {

@@ -31,7 +31,7 @@ enum class ElfOsAbi: u8
 
 
 
-inline const char* elfOsAbiToString(ElfOsAbi abi) // TEST: NO
+inline const char8* elfOsAbiToString(ElfOsAbi abi) // TEST: NO
 {
     switch (abi)
     {

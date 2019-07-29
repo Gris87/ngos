@@ -27,7 +27,7 @@ enum class ElfSymbolType: u8
 
 
 
-inline const char* elfSymbolTypeToString(ElfSymbolType type) // TEST: NO
+inline const char8* elfSymbolTypeToString(ElfSymbolType type) // TEST: NO
 {
     switch (type)
     {

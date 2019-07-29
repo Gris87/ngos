@@ -3,7 +3,10 @@ TODO List
 
 NGOS:
 
-- Replace char with char8
+- Add remaining tests
+- Fix generator
+- Refactor
+
 - Complete with interruptions
 - Implement boot screen for kernel
 - Per CPU?
@@ -12,6 +15,7 @@ NGOS:
 - Add option for optimization level `-O2 | -O3`
 - Add option to disable inline
 - Add stack protector to build
+
 - All resources for one application (Turbo mode)
 
 
@@ -21,8 +25,6 @@ Code verifier:
 - Verify for void functions
 - Verify for headers in assembler
 - Verify for function asserts
-- Verify for char type
-- Verify for usage of COMMON_, EARLY_, EUFI_ in wrong location
 
 
 

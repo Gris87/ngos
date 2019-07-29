@@ -9,7 +9,7 @@ CpuHotplugStep CpuHotplug::sSteps[(u64)CpuHotplugState::MAXIMUM];
 
 
 
-NgosStatus CpuHotplug::setupState(CpuHotplugState state, const char *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances)
+NgosStatus CpuHotplug::setupState(CpuHotplugState state, const char8 *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances)
 {
     COMMON_LT((" | state = %u, name = 0x%p, upAction = 0x%p, downAction = 0x%p, multipleInstances = %u", state, name, upAction, downAction, multipleInstances));
 
@@ -31,7 +31,7 @@ NgosStatus CpuHotplug::setupState(CpuHotplugState state, const char *name, cpu_u
     return NgosStatus::OK;
 }
 
-NgosStatus CpuHotplug::storeCallbacks(CpuHotplugState state, const char *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances)
+NgosStatus CpuHotplug::storeCallbacks(CpuHotplugState state, const char8 *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances)
 {
     COMMON_LT((" | state = %u, name = 0x%p, upAction = 0x%p, downAction = 0x%p, multipleInstances = %u", state, name, upAction, downAction, multipleInstances));
 

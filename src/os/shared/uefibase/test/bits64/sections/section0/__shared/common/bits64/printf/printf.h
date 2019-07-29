@@ -17,7 +17,7 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 TEST_CASES(section0, __shared_common_bits64_printf_printf);
 {
-    char buffer[1024];
+    char8 buffer[1024];
 
 
 

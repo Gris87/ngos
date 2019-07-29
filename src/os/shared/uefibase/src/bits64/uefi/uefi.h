@@ -17,22 +17,22 @@ public:
     static NgosStatus init(uefi_handle imageHandle, UefiSystemTable *systemTable); // TEST: NO
 
     static UefiStatus clearScreen(); // TEST: NO
-    static void print(char ch); // TEST: NO
-    static void print(const char *str); // TEST: NO
+    static void print(char8 ch); // TEST: NO
+    static void print(const char8 *str); // TEST: NO
     static void println(); // TEST: NO
-    static void println(char ch); // TEST: NO
-    static void println(const char *str); // TEST: NO
-    static i64 printf(const char *format, ...); // TEST: NO
+    static void println(char8 ch); // TEST: NO
+    static void println(const char8 *str); // TEST: NO
+    static i64 printf(const char8 *format, ...); // TEST: NO
 
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
-    static char* convertToAscii(const char16 *str);
-    static char* parentDirectory(char *path);
+    static char8* convertToAscii(const char16 *str);
+    static char8* parentDirectory(const char8 *path);
 
-    static char* devicePathToString(UefiDevicePath *path); // TEST: NO
+    static char8* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* devicePathFromHandle(uefi_handle handle); // TEST: NO
-    static UefiDevicePath* fileDevicePath(uefi_handle device, const char *fileName); // TEST: NO
+    static UefiDevicePath* fileDevicePath(uefi_handle device, const char8 *fileName); // TEST: NO
     static UefiDevicePath* nextDevicePathNode(UefiDevicePath *path);
     static NgosStatus setDevicePathEndNode(UefiDevicePath *path);
     static bool isDevicePathEndType(UefiDevicePath *path);

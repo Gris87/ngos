@@ -22,7 +22,7 @@ enum class NgosStatus: u64
 
 
 
-inline const char* ngosStatusToString(NgosStatus status) // TEST: NO
+inline const char8* ngosStatusToString(NgosStatus status) // TEST: NO
 {
     switch (status)
     {

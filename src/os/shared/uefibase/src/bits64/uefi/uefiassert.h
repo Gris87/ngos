@@ -22,7 +22,7 @@
         \
         /* HACK: Temporary fix for PIE. Try to find another solution */ \
         /* Console::println(printfBuffer); */ \
-        char *__temp; \
+        char8 *__temp; \
         \
         asm volatile( \
             "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \

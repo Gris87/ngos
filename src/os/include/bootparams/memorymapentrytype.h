@@ -21,7 +21,7 @@ enum class MemoryMapEntryType: u8
 
 
 
-inline const char* memoryMapEntryTypeToString(MemoryMapEntryType type) // TEST: NO
+inline const char8* memoryMapEntryTypeToString(MemoryMapEntryType type) // TEST: NO
 {
     switch (type)
     {

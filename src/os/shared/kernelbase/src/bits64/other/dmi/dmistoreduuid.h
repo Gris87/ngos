@@ -15,7 +15,7 @@ enum class DmiStoredUuid: u8
 
 
 
-inline const char* dmiStoredUuidToString(DmiStoredUuid uuid) // TEST: NO
+inline const char8* dmiStoredUuidToString(DmiStoredUuid uuid) // TEST: NO
 {
     // COMMON_LT((" | uuid = %u", uuid)); // Commented to avoid bad looking logs
 

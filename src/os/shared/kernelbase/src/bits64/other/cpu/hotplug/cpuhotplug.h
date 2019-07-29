@@ -12,14 +12,14 @@
 class CpuHotplug
 {
 public:
-    static NgosStatus setupState(CpuHotplugState state, const char *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances); // TEST: NO
+    static NgosStatus setupState(CpuHotplugState state, const char8 *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    static NgosStatus storeCallbacks(CpuHotplugState state, const char *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances); // TEST: NO
+    static NgosStatus storeCallbacks(CpuHotplugState state, const char8 *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances); // TEST: NO
     static NgosStatus allocateDynamicState(CpuHotplugState state, CpuHotplugState *res); // TEST: NO
 
     static CpuHotplugStep sSteps[(u64)CpuHotplugState::MAXIMUM];

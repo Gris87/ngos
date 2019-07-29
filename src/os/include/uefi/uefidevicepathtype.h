@@ -20,7 +20,7 @@ enum class UefiDevicePathType : u8
 
 
 
-inline const char* uefiDevicePathTypeToString(UefiDevicePathType type) // TEST: NO
+inline const char8* uefiDevicePathTypeToString(UefiDevicePathType type) // TEST: NO
 {
     switch (type)
     {

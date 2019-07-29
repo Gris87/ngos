@@ -11,7 +11,7 @@
 
 
 
-inline const char* cpuModelToString(CpuVendor vendor, CpuFamily family, u8 model) // TEST: NO
+inline const char8* cpuModelToString(CpuVendor vendor, CpuFamily family, u8 model) // TEST: NO
 {
     // COMMON_LT((" | vendor = %u, family = %u, model = %u", vendor, family, model)); // Commented to avoid bad looking logs
 

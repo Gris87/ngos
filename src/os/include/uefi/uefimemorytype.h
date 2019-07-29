@@ -29,7 +29,7 @@ enum class UefiMemoryType: u32
 
 
 
-inline const char* uefiMemoryTypeToString(UefiMemoryType type) // TEST: NO
+inline const char8* uefiMemoryTypeToString(UefiMemoryType type) // TEST: NO
 {
     switch (type)
     {

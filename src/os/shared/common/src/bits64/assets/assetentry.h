@@ -9,9 +9,9 @@
 
 struct AssetEntry
 {
-    const char *filename;
-    u64         contentSize;
-    u8         *content;
+    const char8 *filename;
+    u64          contentSize;
+    u8          *content;
 };
 
 

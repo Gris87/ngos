@@ -19,8 +19,8 @@ TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
 {
     TEST_CASE("convertToAscii()");
     {
-        char *res1 = UEFI::convertToAscii(u"Hello World");
-        char *res2 = UEFI::convertToAscii(u"Test");
+        char8 *res1 = UEFI::convertToAscii(u"Hello World");
+        char8 *res2 = UEFI::convertToAscii(u"Test");
 
         TEST_ASSERT_EQUALS(strcmp(res1, "Hello World"), 0);
         TEST_ASSERT_EQUALS(strcmp(res2, "Test"),        0);
@@ -34,11 +34,8 @@ TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
 
     TEST_CASE("parentDirectory()");
     {
-        const char *temp1 = "\\EFI\\BOOT\\bootx64.efi";
-        const char *temp2 = "\\EFI\\BOOT\\images\\background.jpg";
-
-        char *res1 = UEFI::parentDirectory((char *)temp1);
-        char *res2 = UEFI::parentDirectory((char *)temp2);
+        char8 *res1 = UEFI::parentDirectory("\\EFI\\BOOT\\bootx64.efi");
+        char8 *res2 = UEFI::parentDirectory("\\EFI\\BOOT\\images\\background.jpg");
 
         TEST_ASSERT_EQUALS(strcmp(res1, "\\EFI\\BOOT"),         0);
         TEST_ASSERT_EQUALS(strcmp(res2, "\\EFI\\BOOT\\images"), 0);

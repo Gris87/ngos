@@ -32,7 +32,7 @@ enum class DmiIdentity: u8
 
 
 
-inline const char* dmiIdentityToString(DmiIdentity identity) // TEST: NO
+inline const char8* dmiIdentityToString(DmiIdentity identity) // TEST: NO
 {
     // COMMON_LT((" | identity = %u", identity)); // Commented to avoid bad looking logs
 

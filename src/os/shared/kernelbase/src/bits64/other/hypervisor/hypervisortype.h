@@ -15,7 +15,7 @@ enum class HypervisorType: u8
 
 
 
-inline const char* hypervisorTypeToString(HypervisorType type) // TEST: NO
+inline const char8* hypervisorTypeToString(HypervisorType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

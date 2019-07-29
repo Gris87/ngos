@@ -51,8 +51,8 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 #define FLAGS_TO_STRING(res, flags, typeToString, type) \
     { \
-        char *cur = res; \
-        *cur      = 0; \
+        char8 *cur = res; \
+        *cur       = 0; \
         \
         u8 unknownCount = 0; \
         \
@@ -64,7 +64,7 @@
             \
             if (flags & flag) \
             { \
-                const char *flagString = typeToString((type)flag); \
+                const char8 *flagString = typeToString((type)flag); \
                 \
                 if (!strcmp(flagString, "UNKNOWN")) \
                 { \

@@ -33,7 +33,7 @@ enum class GzipOperatingSystem: u8
 
 
 
-inline const char* gzipOperatingSystemToString(GzipOperatingSystem system) // TEST: NO
+inline const char8* gzipOperatingSystemToString(GzipOperatingSystem system) // TEST: NO
 {
     // EARLY_LT((" | system = %u", system)); // Commented to avoid bad looking logs
 

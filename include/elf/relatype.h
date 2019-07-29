@@ -29,7 +29,7 @@ enum class ElfRelaType: u8
 
 
 
-inline const char* elfRelaTypeToString(ElfRelaType type) // TEST: NO
+inline const char8* elfRelaTypeToString(ElfRelaType type) // TEST: NO
 {
     switch (type)
     {
