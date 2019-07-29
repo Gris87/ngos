@@ -147,6 +147,7 @@ NgosStatus Png::initDecoder(PngDecoder *decoder, Image **image)
     decoder->imageHeader             = 0;
     decoder->standardRgbColorSpace   = 0;
     decoder->imageGamma              = 0;
+    decoder->significantBits         = 0;
     decoder->physicalPixelDimensions = 0;
     decoder->imageDataBuffer         = 0;
     decoder->imageDataSize           = 0;
@@ -214,6 +215,7 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
     {
         case PngChunkType::SRGB: return decodeStandardRgbColorSpace(decoder, chunk, chunkLength);
         case PngChunkType::GAMA: return decodeImageGamma(decoder, chunk, chunkLength);
+        case PngChunkType::SBIT: return decodeSignificantBits(decoder, chunk, chunkLength);
         case PngChunkType::PHYS: return decodePhysicalPixelDimensions(decoder, chunk, chunkLength);
         case PngChunkType::IDAT: return decodeImageData(decoder, chunk, chunkLength);
 
@@ -475,6 +477,57 @@ NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunk
     }
 
     decoder->imageGamma = imageGamma;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+{
+    COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
+
+
+
+    if (chunkLength != sizeof(PngSignificantBits))
+    {
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngSignificantBits)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    PngSignificantBits *significantBits = (PngSignificantBits *)&chunk->data;
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("significantBits->redBits   = %u", significantBits->redBits));
+        COMMON_LVVV(("significantBits->greenBits = %u", significantBits->greenBits));
+        COMMON_LVVV(("significantBits->blueBits  = %u", significantBits->blueBits));
+        COMMON_LVVV(("significantBits->alphaBits = %u", significantBits->alphaBits));
+
+        COMMON_TEST_ASSERT(significantBits->redBits   == 8, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(significantBits->greenBits == 8, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(significantBits->blueBits  == 8, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(significantBits->alphaBits == 8, NgosStatus::ASSERTION);
+    }
+
+
+
+    if (decoder->significantBits)
+    {
+        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    decoder->significantBits = significantBits;
 
 
 

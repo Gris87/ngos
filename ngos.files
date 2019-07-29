@@ -425,6 +425,7 @@ src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimagegamma.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimageheader.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h
+src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngsignificantbits.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngstandardrgbcolorspace.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngchunk.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngchunktype.h

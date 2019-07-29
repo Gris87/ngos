@@ -27,6 +27,7 @@ private:
     static NgosStatus decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
     static NgosStatus decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
     static NgosStatus decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
+    static NgosStatus decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
     static NgosStatus decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
     static NgosStatus decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength); // TEST: NO
     static NgosStatus decodeImage(PngDecoder *decoder); // TEST: NO

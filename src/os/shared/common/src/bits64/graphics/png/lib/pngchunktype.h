@@ -14,6 +14,7 @@ enum class PngChunkType: u32 // Ignore CppEnumVerifier
     IHDR = 0x52444849,  // "IHDR"
     SRGB = 0x42475273,  // "sRGB"
     GAMA = 0x414D4167,  // "gAMA"
+    SBIT = 0x54494273,  // "sBIT"
     PHYS = 0x73594870,  // "pHYs"
     TEXT = 0x74584574,  // "tEXt"
     IDAT = 0x54414449,  // "IDAT"
