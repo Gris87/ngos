@@ -37,7 +37,13 @@ void CppTypesVerifier::verify(CodeWorkerThread *worker, const QString &path, con
 
             if (path.contains("/tools/qt/"))
             {
-                if (match.captured(0) != "char")
+                QString type = match.captured(0);
+
+                if (
+                    type != "char"
+                    &&
+                    type != "wchar_t"
+                   )
                 {
                     worker->addWarning(path, i, "Please use more formal data type: quint8/qint8/quint16/qint16/quint32/qint32/quint64/qint64");
                 }
