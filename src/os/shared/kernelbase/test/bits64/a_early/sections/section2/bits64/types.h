@@ -6,11 +6,16 @@
 #include <buildconfig.h>
 #include <kernelbase/src/bits64/other/e820/e820table.h>
 #include <kernelbase/src/bits64/other/irq/irqstack.h>
+#include <kernelbase/src/bits64/other/ioremap/fixmap.h>
+#include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/src/bits64/other/memorymanager/memoryblock.h>
 #include <kernelbase/src/bits64/other/memorymanager/memoryblockregion.h>
 #include <kernelbase/src/bits64/other/memorymanager/memoryblocktype.h>
+#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
+#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
 #include <kernelbase/src/bits64/other/task/task.h>
 #include <kernelbase/src/bits64/other/task/threadinfo.h>
+#include <kernelbase/src/bits64/other/uefi/uefi.h>
 #include <kernelbase/test/bits64/a_early/testengine.h>
 
 
@@ -23,25 +28,21 @@ TEST_CASES(section2, bits64_types);
 {
     TEST_CASE("Size of structures");
     {
-        TEST_ASSERT_EQUALS(sizeof(E820Table), 3080);
-
-        TEST_ASSERT_EQUALS(sizeof(MemoryBlock), 64);
-
-        TEST_ASSERT_EQUALS(sizeof(MemoryBlockRegion), 24);
-
-        TEST_ASSERT_EQUALS(sizeof(MemoryBlockType), 32);
-
-        TEST_ASSERT_EQUALS(sizeof(Task), 24);
-
-        TEST_ASSERT_EQUALS(sizeof(ThreadInfo), 4);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("Size of unions");
-    {
-        TEST_ASSERT_EQUALS(sizeof(IrqStack), 16384);
+        TEST_ASSERT_EQUALS(sizeof(AddressConversion),     1);
+        TEST_ASSERT_EQUALS(sizeof(E820Table),             3080);
+        TEST_ASSERT_EQUALS(sizeof(IrqStack),              16384);
+        TEST_ASSERT_EQUALS(sizeof(FixMap),                1);
+        TEST_ASSERT_EQUALS(sizeof(IORemap),               1);
+        TEST_ASSERT_EQUALS(sizeof(MemoryBlock),           64);
+        TEST_ASSERT_EQUALS(sizeof(MemoryBlockRegion),     24);
+        TEST_ASSERT_EQUALS(sizeof(MemoryBlockRegionFlag), 1);
+        TEST_ASSERT_EQUALS(sizeof(MemoryBlockType),       32);
+        TEST_ASSERT_EQUALS(sizeof(MemoryManager),         1);
+        TEST_ASSERT_EQUALS(sizeof(Task),                  24);
+        TEST_ASSERT_EQUALS(sizeof(TaskState),             1);
+        TEST_ASSERT_EQUALS(sizeof(ThreadInfo),            4);
+        TEST_ASSERT_EQUALS(sizeof(ThreadInfoFlag),        4);
+        TEST_ASSERT_EQUALS(sizeof(UEFI),                  1);
     }
     TEST_CASE_END();
 }

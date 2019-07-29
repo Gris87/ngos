@@ -7,7 +7,7 @@
 
 
 
-enum class FixMap: u16
+enum class FixMap: u8
 {
     MAXIMUM
 };

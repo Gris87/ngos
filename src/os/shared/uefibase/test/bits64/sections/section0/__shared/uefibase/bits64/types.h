@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <uefibase/src/bits64/uefi/uefi.h>
 #include <uefibase/src/bits64/other/uefibootmemorymap.h>
 #include <uefibase/test/bits64/testengine.h>
 
@@ -17,6 +18,7 @@ TEST_CASES(section0, __shared_uefibase_bits64_types);
 {
     TEST_CASE("Size of structures");
     {
+        TEST_ASSERT_EQUALS(sizeof(UEFI),              1);
         TEST_ASSERT_EQUALS(sizeof(UefiBootMemoryMap), 48);
     }
     TEST_CASE_END();

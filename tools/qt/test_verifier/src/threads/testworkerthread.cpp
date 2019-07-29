@@ -287,11 +287,14 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
         }
         else
         {
-            QRegularExpressionMatch match = mDefinitionRegExp.match(line);
-
-            if (match.hasMatch())
+            if (!path.contains("/tools/qt/"))
             {
-                addTestStructureEntry(path, i, match.captured(1));
+                QRegularExpressionMatch match = mDefinitionRegExp.match(line);
+
+                if (match.hasMatch())
+                {
+                    addTestStructureEntry(path, i, match.captured(1));
+                }
             }
         }
     }
