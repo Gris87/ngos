@@ -31,44 +31,24 @@ TEST_CASES(section0, __shared_common_bits64_types);
 {
     TEST_CASE("Size of structures");
     {
-        TEST_ASSERT_EQUALS(sizeof(AssetEntry), 24);
-
-        TEST_ASSERT_EQUALS(sizeof(GlyphData), 5);
-
-        TEST_ASSERT_EQUALS(sizeof(FSaveState), 112);
-
-        TEST_ASSERT_EQUALS(sizeof(FXSaveState), 512);
-
-        TEST_ASSERT_EQUALS(sizeof(Register128Bit), 16);
-        TEST_ASSERT_EQUALS(sizeof(Register256Bit), 32);
-        TEST_ASSERT_EQUALS(sizeof(Register512Bit), 64);
-
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512OpmaskState), 64);
-
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom0To15State), 512);
-
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom16To31State), 1024);
-
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvxState), 256);
-
+        TEST_ASSERT_EQUALS(sizeof(AssetEntry),                                    24);
+        TEST_ASSERT_EQUALS(sizeof(FSaveState),                                    112);
+        TEST_ASSERT_EQUALS(sizeof(FXSaveState),                                   512);
+        TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
+        TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
+        TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);
+        TEST_ASSERT_EQUALS(sizeof(Register128Bit),                                16);
+        TEST_ASSERT_EQUALS(sizeof(Register256Bit),                                32);
+        TEST_ASSERT_EQUALS(sizeof(Register512Bit),                                64);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512OpmaskState),                     64);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom0To15State),               512);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom16To31State),              1024);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvxState),                              256);
         TEST_ASSERT_EQUALS(sizeof(XFeatureMpxBoundConfigAndStatusRegistersState), 64);
-
-        TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),               16);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureMpxBoundRegistersState), 64);
-
-        TEST_ASSERT_EQUALS(sizeof(XFeaturePkruState), 8);
-
-        TEST_ASSERT_EQUALS(sizeof(XSaveState), 576);
-
-        TEST_ASSERT_EQUALS(sizeof(XStateHeader), 64);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("Size of unions");
-    {
-        TEST_ASSERT_EQUALS(sizeof(FpuState), 4096);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureMpxBoundRegistersState),                64);
+        TEST_ASSERT_EQUALS(sizeof(XFeaturePkruState),                             8);
+        TEST_ASSERT_EQUALS(sizeof(XSaveState),                                    576);
+        TEST_ASSERT_EQUALS(sizeof(XStateHeader),                                  64);
     }
     TEST_CASE_END();
 }
