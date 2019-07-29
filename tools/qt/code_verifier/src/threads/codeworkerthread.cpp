@@ -23,7 +23,7 @@ CodeWorkerThread::CodeWorkerThread()
 
 quint64 CodeWorkerThread::getAmountOfFiles()
 {
-    return sAmountOfFiles;
+    return sAmountOfFiles - 1;
 }
 
 void CodeWorkerThread::pushFile(const QString &path, CodeVerificationFileType verifications)

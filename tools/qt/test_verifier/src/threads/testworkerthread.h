@@ -10,6 +10,7 @@
 #include <QSemaphore>
 
 #include "src/other/testentry.h"
+#include "src/other/teststructureentry.h"
 
 
 
@@ -24,6 +25,7 @@ public:
     static void noMoreFiles(); // TEST: NO
 
     const QList<TestEntry>& getTestEntries() const; // TEST: NO
+    const QList<TestStructureEntry>& getTestStructureEntries() const; // TEST: NO
 
 protected:
     void run() override; // TEST: NO
@@ -33,15 +35,18 @@ private:
     void processLines(const QString &path, const QStringList &lines); // TEST: NO
 
     void addTestEntry(TestEntryType type, const QString &path, qint64 lineNum, const QString &name, QString testModule, const QString &line, const QString &prevLine); // TEST: NO
+    void addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name); // TEST: NO
 
     static quint64     sAmountOfFiles;
     static QStringList sFiles;
     static QMutex      sFilesMutex;
     static QSemaphore  sFilesSemaphore;
 
-    QList<TestEntry>   mTestEntries;
-    QRegularExpression mDefineRegexp;
-    QRegularExpression mFunctionRegexp;
+    QList<TestEntry>          mTestEntries;
+    QList<TestStructureEntry> mTestStructureEntries;
+    QRegularExpression        mDefineRegexp;
+    QRegularExpression        mFunctionRegexp;
+    QRegularExpression        mDefinitionRegExp;
 };
 
 

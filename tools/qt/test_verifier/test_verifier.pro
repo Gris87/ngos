@@ -50,6 +50,7 @@ SOURCES += \
     src/main.cpp \
     src/other/testentry.cpp \
     src/other/testmessageinfo.cpp \
+    src/other/teststructureentry.cpp \
     src/threads/testverifythread.cpp \
     src/threads/testworkerthread.cpp
 
@@ -57,5 +58,6 @@ HEADERS += \
     src/other/testentry.h \
     src/other/testentrytype.h \
     src/other/testmessageinfo.h \
+    src/other/teststructureentry.h \
     src/threads/testverifythread.h \
     src/threads/testworkerthread.h

@@ -14,15 +14,17 @@ QSemaphore  TestWorkerThread::sFilesSemaphore;
 TestWorkerThread::TestWorkerThread()
     : QThread()
     , mTestEntries()
+    , mTestStructureEntries()
     , mDefineRegexp("^#define +(\\w+)\\(([^)]*)\\) +(.+)$")
     , mFunctionRegexp("^(?:(?:static|const|inline) +)*(?:\\w[\\w<,>*& ]* )?(~?\\w+|operator(<|<=|>|>=|==|!=|\\||\\|\\||&|&&|^|~|!|-|\\+|\\*|\\/))\\([^)]*\\);?.*$")
+    , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+)(?:: +\\w+)?(?: *\\/\\/.*)?$")
 {
     // Nothing
 }
 
 quint64 TestWorkerThread::getAmountOfFiles()
 {
-    return sAmountOfFiles;
+    return sAmountOfFiles - 1;
 }
 
 void TestWorkerThread::pushFile(const QString &path)
@@ -66,6 +68,11 @@ void TestWorkerThread::noMoreFiles()
 const QList<TestEntry>& TestWorkerThread::getTestEntries() const
 {
     return mTestEntries;
+}
+
+const QList<TestStructureEntry>& TestWorkerThread::getTestStructureEntries() const
+{
+    return mTestStructureEntries;
 }
 
 void TestWorkerThread::run()
@@ -278,6 +285,15 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
                 addTestEntry(TestEntryType::FUNCTION, path, i, match.captured(1), testModule, line, prevLine);
             }
         }
+        else
+        {
+            QRegularExpressionMatch match = mDefinitionRegExp.match(line);
+
+            if (match.hasMatch())
+            {
+                addTestStructureEntry(path, i, match.captured(1));
+            }
+        }
     }
 }
 
@@ -307,4 +323,9 @@ void TestWorkerThread::addTestEntry(TestEntryType type, const QString &path, qin
 
         mTestEntries.append(TestEntry(type, path, lineNum, name + "()", testModule));
     }
+}
+
+void TestWorkerThread::addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name)
+{
+    mTestStructureEntries.append(TestStructureEntry(path, lineNum, name));
 }

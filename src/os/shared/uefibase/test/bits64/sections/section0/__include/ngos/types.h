@@ -26,6 +26,9 @@ TEST_CASES(section0, __include_ngos_types);
         TEST_ASSERT_EQUALS(sizeof(u16), 2);
         TEST_ASSERT_EQUALS(sizeof(u32), 4);
         TEST_ASSERT_EQUALS(sizeof(u64), 8);
+
+        TEST_ASSERT_EQUALS(sizeof(char8),  1);
+        TEST_ASSERT_EQUALS(sizeof(char16), 2);
     }
     TEST_CASE_END();
 

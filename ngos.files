@@ -442,6 +442,8 @@ src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngdecoder.h
 src/os/shared/common/src/bits64/graphics/rgbapixel.h
 src/os/shared/common/src/bits64/graphics/rgbpixel.h
+src/os/shared/common/src/bits64/gui/gui.cpp
+src/os/shared/common/src/bits64/gui/gui.h
 src/os/shared/common/src/bits64/inflate/inflate.cpp
 src/os/shared/common/src/bits64/inflate/inflate.h
 src/os/shared/common/src/bits64/inflate/inflateblocktype.h
@@ -1177,6 +1179,8 @@ tools/qt/test_verifier/src/other/testentry.h
 tools/qt/test_verifier/src/other/testentrytype.h
 tools/qt/test_verifier/src/other/testmessageinfo.cpp
 tools/qt/test_verifier/src/other/testmessageinfo.h
+tools/qt/test_verifier/src/other/teststructureentry.cpp
+tools/qt/test_verifier/src/other/teststructureentry.h
 tools/qt/test_verifier/src/threads/testverifythread.cpp
 tools/qt/test_verifier/src/threads/testverifythread.h
 tools/qt/test_verifier/src/threads/testworkerthread.cpp

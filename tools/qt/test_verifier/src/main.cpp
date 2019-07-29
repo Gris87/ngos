@@ -138,21 +138,28 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    QList<TestEntry> testEntries;
+    QList<TestEntry>          testEntries;
+    QList<TestStructureEntry> testStructureEntries;
 
     for (qint64 i = 0; i < workers.length(); ++i)
     {
         TestWorkerThread *worker = workers.at(i);
 
         worker->wait();
+
         TestVerifyThread::pushTestEntries(worker->getTestEntries());
         testEntries.append(worker->getTestEntries());
+
+        TestVerifyThread::pushTestStructureEntries(worker->getTestStructureEntries());
+        testStructureEntries.append(worker->getTestStructureEntries());
+
         delete worker;
     }
 
 
 
     TestVerifyThread::noMoreTestEntries();
+    TestVerifyThread::noMoreTestStructureEntries();
 
 
 
@@ -172,6 +179,21 @@ qint32 main(qint32 argc, char *argv[])
 
     Console::out("");
     Console::out(QString("Entries for testing: %1").arg(testEntries.length()));
+
+
+
+    qSort(testStructureEntries.begin(), testStructureEntries.end());
+
+    Console::out("");
+    Console::out("Found structure entries for testing:");
+
+    for (qint64 i = 0; i < testStructureEntries.length(); ++i)
+    {
+        Console::out(testStructureEntries.at(i).toString());
+    }
+
+    Console::out("");
+    Console::out(QString("Structure entries for testing: %1").arg(testStructureEntries.length()));
 
 
 
@@ -205,7 +227,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
         Console::err("");
-        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / testEntries.length()));
+        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / (testEntries.length() + testStructureEntries.length())));
         Console::err("");
 
         return 1;
