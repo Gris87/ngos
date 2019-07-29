@@ -15,24 +15,9 @@ void CppNgosLogsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 {
     QString logPrefix = logPrefixFromPath(path);
 
-    bool checkUefi   = true;
-    bool checkEarly  = true;
-    bool checkCommon = true;
-
-    if (logPrefix == "UEFI")
-    {
-        checkUefi = false;
-    }
-
-    if (logPrefix == "EARLY")
-    {
-        checkEarly = false;
-    }
-
-    if (logPrefix == "COMMON")
-    {
-        checkCommon = false;
-    }
+    bool checkUefi   = (logPrefix != "UEFI");
+    bool checkEarly  = (logPrefix != "EARLY");
+    bool checkCommon = (logPrefix != "COMMON");
 
 
 
@@ -64,7 +49,7 @@ void CppNgosLogsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
                 mDefinitionRegExp.match(line.mid(index + 6)).hasMatch()
                )
             {
-                worker->addError(path, i, "UEFI logging is prohibited");
+                worker->addError(path, i, "EARLY logging is prohibited");
             }
         }
 
@@ -78,7 +63,7 @@ void CppNgosLogsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
                 mDefinitionRegExp.match(line.mid(index + 7)).hasMatch()
                )
             {
-                worker->addError(path, i, "UEFI logging is prohibited");
+                worker->addError(path, i, "COMMON logging is prohibited");
             }
         }
     }

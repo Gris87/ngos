@@ -6,7 +6,7 @@
 
 CppTypesVerifier::CppTypesVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("\\b(((un)?signed +(char|short|int|long)?)|char|short|int|long|char8_t|char16_t)\\b")
+    , mDefinitionRegExp("\\b(((un)?signed +(char|short|int|long)?)|char|short|int|long|char8_t|char16_t|char32_t|wchar_t)\\b")
 {
     // Nothing
 }
@@ -39,7 +39,6 @@ void CppTypesVerifier::verify(CodeWorkerThread *worker, const QString &path, con
             {
                 if (match.captured(0) != "char")
                 {
-
                     worker->addWarning(path, i, "Please use more formal data type: quint8/qint8/quint16/qint16/quint32/qint32/quint64/qint64");
                 }
             }
