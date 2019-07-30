@@ -155,6 +155,8 @@ src/os/bootloader/src/bits64/main/bootloader.h
 src/os/bootloader/src/bits64/other/volumeinfo.h
 src/os/bootloader/src/bits64/other/volumetype.h
 src/os/bootloader/src/main.cpp
+src/os/bootloader/test/bits64/sections/section1/bits64/types.h
+src/os/bootloader/test/bits64/sections/section1/testcase.h
 src/os/configure/.gitignore
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S
 src/os/configure/asm/arch/x86_64/main.S
