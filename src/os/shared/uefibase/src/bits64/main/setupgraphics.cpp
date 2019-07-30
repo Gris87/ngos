@@ -357,7 +357,7 @@ NgosStatus setupGraphics(BootParams *params)
 
 
 
-    Guid     graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+    Guid         graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
     u64          graphicsSize     = 0;
     uefi_handle *graphicsHandles  = 0;
 

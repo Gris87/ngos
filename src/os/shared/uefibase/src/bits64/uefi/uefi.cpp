@@ -287,7 +287,7 @@ char8* UEFI::devicePathToString(UefiDevicePath *path)
 
 
 
-    Guid                      protocol                 = UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
+    Guid                          protocol                 = UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
     UefiDevicePathToTextProtocol *devicePathToTextProtocol = 0;
 
     if (sBootServices->locateProtocol(&protocol, 0, (void **)&devicePathToTextProtocol) != UefiStatus::SUCCESS)
@@ -342,7 +342,7 @@ UefiDevicePath* UEFI::devicePathFromHandle(uefi_handle handle)
 
 
 
-    Guid        protocol = UEFI_DEVICE_PATH_PROTOCOL_GUID;
+    Guid            protocol = UEFI_DEVICE_PATH_PROTOCOL_GUID;
     UefiDevicePath *res;
 
     if (handleProtocol(handle, &protocol, (void **)&res) != UefiStatus::SUCCESS)

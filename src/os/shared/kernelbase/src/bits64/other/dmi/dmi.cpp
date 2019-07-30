@@ -18,7 +18,7 @@ u8               DMI::sChassisType;
 u64              DMI::sNumberOfMemoryDevices;
 DmiMemoryDevice *DMI::sMemoryDevices;
 const char8*     DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
-Uuid*         DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
+Uuid*            DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
 
 
 
@@ -1078,8 +1078,8 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
 
 
 
-    COMMON_TEST_ASSERT(sUuids[(u64)id] == 0,  NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sizeof(Uuid) == 16, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sUuids[(u64)id] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sizeof(Uuid) == 16,   NgosStatus::ASSERTION);
 
 
 

@@ -132,7 +132,7 @@ NgosStatus Bootloader::initImage()
 
 
 
-    Guid    protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+    Guid        protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
     uefi_handle handle   = UEFI::getImageHandle();
 
 
@@ -277,7 +277,7 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-    Guid     blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
+    Guid         blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
     u64          blockIoSize     = 0;
     uefi_handle *blockIoHandles  = 0;
 
