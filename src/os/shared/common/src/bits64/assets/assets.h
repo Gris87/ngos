@@ -19,11 +19,7 @@ public:
     static NgosStatus init(); // TEST: NO
     static AssetEntry* getAssetEntry(const char8 *filename); // TEST: NO
 
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
 private:
-#endif
     static u8         sEntriesCount;
     static AssetEntry sEntries[ASSET_ENTRIES_COUNT];
 };
