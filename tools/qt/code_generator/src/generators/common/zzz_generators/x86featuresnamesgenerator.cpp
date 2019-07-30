@@ -79,7 +79,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    qint64  currentWord  = 0;
+    qint64  currentWord      = 0;
     qint64  lastFeatureIndex = 0;
     QString lastFeatureWord  = "";
 
