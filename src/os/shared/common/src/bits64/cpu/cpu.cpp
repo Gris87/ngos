@@ -2,8 +2,8 @@
 
 #include <asm/bitutils.h>
 #include <common/src/bits64/cpu/flags.h>
-#include <common/src/bits64/cpu/generated/cpubugsnames.h>
-#include <common/src/bits64/cpu/generated/cpufeaturesnames.h>
+#include <common/src/bits64/cpu/generated/x86bugsnames.h>
+#include <common/src/bits64/cpu/generated/x86featuresnames.h>
 #include <common/src/bits64/cpu/model/amd.h>
 #include <common/src/bits64/cpu/model/cpumodel.h>
 #include <common/src/bits64/cpu/model/intel.h>
@@ -44,9 +44,6 @@
 
 
 
-const char8* cpuFeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // "<< 5" == "* 32"
-const char8* cpuBugsNames[(u64)x86BugWord::MAXIMUM << 5]; // "<< 5" == "* 32"
-
 u32       CPU::sVendor[3];
 CpuVendor CPU::sCpuVendor;
 u32       CPU::sModelName[12];
@@ -75,8 +72,8 @@ NgosStatus CPU::init()
 
 
 
-    COMMON_ASSERT_EXECUTION(initCpuFeaturesNames(), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(initCpuBugsNames(),     NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initX86FeaturesNames(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initX86BugsNames(),     NgosStatus::ASSERTION);
 
 
 
@@ -292,7 +289,7 @@ NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
         {
             if (flag & (1ULL << j))
             {
-                const char8 *featureName = cpuFeaturesNames[WORD_BIT(i, j)];
+                const char8 *featureName = x86FeaturesNames[WORD_BIT(i, j)];
 
                 if (*featureName)
                 {
@@ -353,7 +350,7 @@ NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
         {
             if (bug & (1ULL << j))
             {
-                const char8 *bugName = cpuBugsNames[WORD_BIT(i, j)];
+                const char8 *bugName = x86BugsNames[WORD_BIT(i, j)];
 
                 if (*bugName)
                 {
@@ -473,7 +470,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
 
         if (!hasFlag(flag))
         {
-            *wantedFlag = cpuFeaturesNames[(u64)flag];
+            *wantedFlag = x86FeaturesNames[(u64)flag];
 
             return NgosStatus::NOT_SUPPORTED;
         }

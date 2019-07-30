@@ -1,4 +1,4 @@
-#include "cpufeaturesnamesgenerator.h"
+#include "x86featuresnamesgenerator.h"
 
 #include <QFile>
 #include <QRegularExpression>
@@ -6,18 +6,18 @@
 
 
 
-#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/bits64/cpu/cpufeatures.h"
-#define FILE_PATH          "/src/os/shared/common/src/bits64/cpu/generated/cpufeaturesnames.h"
+#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/bits64/cpu/x86feature.h"
+#define FILE_PATH          "/src/os/shared/common/src/bits64/cpu/generated/x86featuresnames.cpp"
 
 
 
-CpuFeaturesNamesGenerator::CpuFeaturesNamesGenerator()
+X86FeaturesNamesGenerator::X86FeaturesNamesGenerator()
     : CommonGenerator()
 {
     // Nothing
 }
 
-bool CpuFeaturesNamesGenerator::generate(const QString &path)
+bool X86FeaturesNamesGenerator::generate(const QString &path)
 {
     QFile file(path + ORIGINAL_FILE_PATH);
 
@@ -33,28 +33,13 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    qint64      amountOfWords = 0;
     QStringList features;
 
     for (qint64 i = 0; i < originalLines.length(); ++i)
     {
         QString originalLine = originalLines.at(i).trimmed();
 
-        if (originalLine.startsWith("#define AMOUNT_OF_WORDS_FOR_X86_FEATURES"))
-        {
-            bool ok;
-
-            amountOfWords = originalLine.mid(41).trimmed().toLongLong(&ok);
-
-            if (!ok)
-            {
-                Console::err(QString("Failed to get amount of words from string: %1").arg(originalLine));
-
-                return false;
-            }
-        }
-        else
-        if (originalLine.contains("WORD_BIT(") && !originalLine.startsWith("#define WORD_BIT("))
+        if (originalLine.contains("WORD_BIT("))
         {
             features.append(originalLine);
         }
@@ -62,33 +47,25 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    if (amountOfWords <= 0)
-    {
-        Console::err("Failed to get amount of words");
-
-        return false;
-    }
-
-
-
     QStringList lines;
 
-    lines.append("#include <common/src/bits64/cpu/cpufeatures.h>");
+    lines.append("#include \"x86featuresnames.h\"");
+    addOneBlankLine(lines);
     lines.append("#include <common/src/bits64/log/assert.h>");
     lines.append("#include <common/src/bits64/log/log.h>");
-    lines.append("#include <ngos/status.h>");
+    lines.append("#include <ngos/utils.h>");
 
     addThreeBlankLines(lines);
 
 
 
-    lines.append("extern const char* cpuFeaturesNames[AMOUNT_OF_WORDS_FOR_X86_FEATURES << 5]; // cpuFeaturesNames declared in cpu.cpp file // \"<< 5\" == \"* 32\"");
+    lines.append("const char8* x86FeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // \"<< 5\" == \"* 32\"");
     addThreeBlankLines(lines);
 
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    lines.append("inline NgosStatus initCpuFeaturesNames() // TEST: NO");
+    lines.append("NgosStatus initX86FeaturesNames()");
     lines.append(QString('{'));
     lines.append("    COMMON_LT((\"\"));");
     addThreeBlankLines(lines);
@@ -96,13 +73,13 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\((\\w+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$");
+    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\(([\\w:]+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$");
 
     QStringList wordBlock;
 
 
 
-    qint64  currentWord      = 0;
+    qint64  currentWord  = 0;
     qint64  lastFeatureIndex = 0;
     QString lastFeatureWord  = "";
 
@@ -186,13 +163,13 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
 
             for (qint64 i = 0; i < 32; ++i)
             {
-                wordBlock.append(QString("    cpuFeaturesNames[WORD_BIT(%1, %2)] %3 \"\";").arg(featureWord).arg(i).arg('=', i > 9 ? 1 : 2, QChar(' ')));
+                wordBlock.append(QString("    x86FeaturesNames[WORD_BIT(%1, %2)] %3 \"\";").arg(featureWord).arg(i).arg('=', i > 9 ? 1 : 2, QChar(' ')));
             }
         }
 
 
 
-        wordBlock[bit] = QString("    cpuFeaturesNames[WORD_BIT(%1, %2)] %3 \"%4\";").arg(featureWord).arg(bit).arg('=', bit > 9 ? 1 : 2, QChar(' ')).arg(featureName);
+        wordBlock[bit] = QString("    x86FeaturesNames[WORD_BIT(%1, %2)] %3 \"%4\";").arg(featureWord).arg(bit).arg('=', bit > 9 ? 1 : 2, QChar(' ')).arg(featureName);
 
 
 
@@ -211,7 +188,6 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
     addOneBlankLine(lines);
 
     lines.append(wordBlock);
-    ++currentWord;
 
     addThreeBlankLines(lines);
     lines.append("    return NgosStatus::OK;");
@@ -220,18 +196,9 @@ bool CpuFeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    if (currentWord != amountOfWords)
-    {
-        Console::err("List of features is invalid");
-
-        return false;
-    }
-
-
-
     return save(path + FILE_PATH, lines);
 }
 
 
 
-CpuFeaturesNamesGenerator cpuFeaturesNamesGeneratorInstance;
+X86FeaturesNamesGenerator x86FeaturesNamesGeneratorInstance;

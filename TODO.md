@@ -3,7 +3,6 @@ TODO List
 
 NGOS:
 
-- Fix generator
 - Refactor
 
 - Complete with interruptions
@@ -16,6 +15,15 @@ NGOS:
 - Add stack protector to build
 
 - All resources for one application (Turbo mode)
+
+
+
+Bootloader:
+
+- Implement GUI
+- Find all OS and create buttons
+- Find all tools and create buttons
+- Start external application
 
 
 
@@ -104,7 +112,7 @@ webapps:
 
 
 
-Common:
+Generic:
 
 - Write documentation
 - Jenkins
