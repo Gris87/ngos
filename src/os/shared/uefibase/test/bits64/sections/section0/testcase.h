@@ -14,6 +14,7 @@
 #include <uefibase/test/bits64/sections/section0/__include/ngos/types.h>
 #include <uefibase/test/bits64/sections/section0/__include/ngos/utils.h>
 #include <uefibase/test/bits64/sections/section0/__include/pagetable/utils.h>
+#include <uefibase/test/bits64/sections/section0/__include/uuid/utils.h>
 #include <uefibase/test/bits64/sections/section0/__include/types.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/adler.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/crc.h>
@@ -66,6 +67,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __include_ngos_types);
     CALL_TEST_CASES(section0, __include_ngos_utils);
     CALL_TEST_CASES(section0, __include_pagetable_utils);
+    CALL_TEST_CASES(section0, __include_uuid_utils);
     CALL_TEST_CASES(section0, __include_types);
     CALL_TEST_CASES(section0, __shared_common_bits64_checksum_adler);
     CALL_TEST_CASES(section0, __shared_common_bits64_checksum_crc);
