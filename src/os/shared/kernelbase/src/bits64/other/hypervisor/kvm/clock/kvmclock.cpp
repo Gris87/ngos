@@ -60,7 +60,7 @@ NgosStatus KvmClock::init()
             {
                 if (CpuHotplug::sSteps[i].name)
                 {
-                    COMMON_LVVV(("#%-23s: %10s | 0x%p | 0x%p | %s", cpuHotplugStateToString((CpuHotplugState)i), CpuHotplug::sSteps[i].name, CpuHotplug::sSteps[i].upAction, CpuHotplug::sSteps[i].downAction, CpuHotplug::sSteps[i].multipleInstances ? "multiple" : "single"));
+                    COMMON_LVVV(("%-23s: %10s | 0x%p | 0x%p | %s", cpuHotplugStateToString((CpuHotplugState)i), CpuHotplug::sSteps[i].name, CpuHotplug::sSteps[i].upAction, CpuHotplug::sSteps[i].downAction, CpuHotplug::sSteps[i].multipleInstances ? "multiple" : "single"));
                 }
             }
 

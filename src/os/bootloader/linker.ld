@@ -20,7 +20,7 @@ SECTIONS
 
     .noinit          : {
         *(.noinit)
-        *(.bss)
+        *(.bss*)
     }
 
     _end = .;

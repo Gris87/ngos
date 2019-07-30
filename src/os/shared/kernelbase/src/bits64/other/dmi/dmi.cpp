@@ -130,11 +130,11 @@ NgosStatus DMI::init()
             {
                 if (sIdentities[i])
                 {
-                    COMMON_LVVV(("#%-23s: 0x%p | %s", dmiIdentityToString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
+                    COMMON_LVVV(("%-23s: 0x%p | %s", dmiIdentityToString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
                 }
                 else
                 {
-                    COMMON_LVVV(("#%-23s: 0x%p", dmiIdentityToString((DmiIdentity)i), sIdentities[i]));
+                    COMMON_LVVV(("%-23s: 0x%p", dmiIdentityToString((DmiIdentity)i), sIdentities[i]));
                 }
             }
 
@@ -149,11 +149,11 @@ NgosStatus DMI::init()
             {
                 if (sUuids[i])
                 {
-                    COMMON_LVVV(("#%-11s: 0x%p | {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i], sUuids[i]->data1, sUuids[i]->data2, sUuids[i]->data3, sUuids[i]->data4, sUuids[i]->data5, sUuids[i]->data6[0], sUuids[i]->data6[1], sUuids[i]->data6[2], sUuids[i]->data6[3], sUuids[i]->data6[4], sUuids[i]->data6[5]));
+                    COMMON_LVVV(("%-11s: 0x%p | {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i], sUuids[i]->data1, sUuids[i]->data2, sUuids[i]->data3, sUuids[i]->data4, sUuids[i]->data5, sUuids[i]->data6[0], sUuids[i]->data6[1], sUuids[i]->data6[2], sUuids[i]->data6[3], sUuids[i]->data6[4], sUuids[i]->data6[5]));
                 }
                 else
                 {
-                    COMMON_LVVV(("#%-11s: 0x%p", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i]));
+                    COMMON_LVVV(("%-11s: 0x%p", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i]));
                 }
             }
 

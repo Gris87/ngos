@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 #include <uefibase/test/bits64/testengine.h>
 
@@ -83,6 +84,22 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
 
 
 
+    TEST_CASE("strcmp()");
+    {
+        TEST_ASSERT_EQUALS(strcmp(u"aa", u"aa"), 0);
+        TEST_ASSERT_EQUALS(strcmp(u"aa", u"ab"), -1);
+        TEST_ASSERT_EQUALS(strcmp(u"ab", u"aa"), 1);
+
+        TEST_ASSERT_EQUALS(strcmp(u"abcdef", u"abcdef"), 0);
+        TEST_ASSERT_EQUALS(strcmp(u"abcdef", u"abcdeh"), -1);
+        TEST_ASSERT_EQUALS(strcmp(u"abcdeh", u"abcdef"), 1);
+        TEST_ASSERT_EQUALS(strcmp(u"abc",    u"abcdef"), -1);
+        TEST_ASSERT_EQUALS(strcmp(u"abcdeg", u"abc"),    1);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("strncmp()");
     {
         TEST_ASSERT_EQUALS(strncmp("aa", "aa", -1), 0);
@@ -99,6 +116,147 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strncmp("abcdeg", "abcf", 3), 0);
         TEST_ASSERT_EQUALS(strncmp("abcdeg", "abd",  3), -1);
         TEST_ASSERT_EQUALS(strncmp("abcdeg", "abb",  3), 1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strncmp()");
+    {
+        TEST_ASSERT_EQUALS(strncmp(u"aa", u"aa", -1), 0);
+        TEST_ASSERT_EQUALS(strncmp(u"aa", u"ab", -1), -1);
+        TEST_ASSERT_EQUALS(strncmp(u"ab", u"aa", -1), 1);
+
+        TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abcdef", -1), 0);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abcdeh", -1), -1);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdeh", u"abcdef", -1), 1);
+        TEST_ASSERT_EQUALS(strncmp(u"abc",    u"abcdef", -1), -1);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abc",    -1), 1);
+
+        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abc",  3), 0);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abcf", 3), 0);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abd",  3), -1);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abb",  3), 1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strcat()");
+    {
+        char8 temp[15];
+        memzero(temp, sizeof(temp));
+
+        TEST_ASSERT_EQUALS(strcat(temp, "aa"), temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aa"), 0);
+
+        TEST_ASSERT_EQUALS(strcat(temp, "bbb"),   temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbb"), 0);
+
+        TEST_ASSERT_EQUALS(strcat(temp, "cc"),      temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbcc"), 0);
+
+        TEST_ASSERT_EQUALS(strcat(temp, "dddd"),        temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbccdddd"), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strcat()");
+    {
+        char16 temp[15];
+        memzero(temp, sizeof(temp));
+
+        TEST_ASSERT_EQUALS(strcat(temp, u"aa"), temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aa"), 0);
+
+        TEST_ASSERT_EQUALS(strcat(temp, u"bbb"),   temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbb"), 0);
+
+        TEST_ASSERT_EQUALS(strcat(temp, u"cc"),      temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbcc"), 0);
+
+        TEST_ASSERT_EQUALS(strcat(temp, u"dddd"),        temp);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbccdddd"), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strapp()");
+    {
+        char8 temp[15];
+        memzero(temp, sizeof(temp));
+
+        char8 *cur = &temp[0];
+
+
+
+        cur = strapp(cur, "aa");
+
+        TEST_ASSERT_EQUALS(cur,                temp + 2);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aa"), 0);
+
+
+
+        cur = strapp(cur, "bbb");
+
+        TEST_ASSERT_EQUALS(cur,                   temp + 5);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbb"), 0);
+
+
+
+        cur = strapp(cur, "cc");
+
+        TEST_ASSERT_EQUALS(cur,                     temp + 7);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbcc"), 0);
+
+
+
+        cur = strapp(cur, "dddd");
+
+        TEST_ASSERT_EQUALS(cur,                         temp + 11);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbccdddd"), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strapp()");
+    {
+        char16 temp[15];
+        memzero(temp, sizeof(temp));
+
+        char16 *cur = &temp[0];
+
+
+
+        cur = strapp(cur, u"aa");
+
+        TEST_ASSERT_EQUALS(cur,                 temp + 2);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aa"), 0);
+
+
+
+        cur = strapp(cur, u"bbb");
+
+        TEST_ASSERT_EQUALS(cur,                    temp + 5);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbb"), 0);
+
+
+
+        cur = strapp(cur, u"cc");
+
+        TEST_ASSERT_EQUALS(cur,                      temp + 7);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbcc"), 0);
+
+
+
+        cur = strapp(cur, u"dddd");
+
+        TEST_ASSERT_EQUALS(cur,                          temp + 11);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbccdddd"), 0);
     }
     TEST_CASE_END();
 }

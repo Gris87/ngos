@@ -33,7 +33,7 @@ SECTIONS
 
     .bss         :       {
         _bss_begin = .;
-        *(.bss)
+        *(.bss*)
         _bss_end = .;
     }
 

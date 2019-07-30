@@ -14,6 +14,7 @@
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
 #include "src/bits64/main/bootloader.h"
+#include "test/bits64/sections/section1/testcase.h"
 
 
 
@@ -106,7 +107,11 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-    if (startTestSection0() != NgosStatus::OK)
+    if (
+        startTestSection0() != NgosStatus::OK
+        ||
+        startTestSection1() != NgosStatus::OK
+       )
     {
         UEFI_LF(("Test failure"));
 

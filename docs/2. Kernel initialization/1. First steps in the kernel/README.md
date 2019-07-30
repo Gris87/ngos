@@ -54,7 +54,7 @@ SECTIONS
         _assets_end = .;
     }
 
-    . = ALIGN(4);
+    . = ALIGN(64);
     .stack       :       {
         *(.stack)
         _stack_begin = .;
@@ -62,11 +62,24 @@ SECTIONS
 
     .bss         :       {
         _bss_begin = .;
-        *(.bss)
+        *(.bss*)
         _bss_end = .;
     }
 
+    .brk         :       {
+        _brk_begin = .;
+        . += 64 * 1024;
+        _brk_end = .;
+    }
+
     _end = .;
+
+
+
+    /DISCARD/    : { *(.dynamic) }
+    /DISCARD/    : { *(.dynsym) }
+    /DISCARD/    : { *(.dynstr) }
+    /DISCARD/    : { *(.hash) }
 
 
 

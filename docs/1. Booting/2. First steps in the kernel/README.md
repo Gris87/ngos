@@ -42,10 +42,17 @@ SECTIONS
 
     .noinit         : {
         *(.noinit)
-        *(.bss)
+        *(.bss*)
     }
 
     _end = .;
+
+
+
+    /DISCARD/       : { *(.dynamic) }
+    /DISCARD/       : { *(.dynsym) }
+    /DISCARD/       : { *(.dynstr) }
+    /DISCARD/       : { *(.hash) }
 
 
 

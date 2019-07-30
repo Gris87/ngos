@@ -21,8 +21,8 @@
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
 #include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
 #include "src/bits64/b_early/other/memoryarea.h"
-#include "src/bits64/b_early/other/unavailablememoryarea.h"
 #include "src/bits64/b_early/other/pagetable/pageallocationcontext.h"
+#include "src/bits64/b_early/other/unavailablememoryarea.h"
 #include "src/bits64/other/kerneldescriptor.h"
 
 

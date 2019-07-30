@@ -1,12 +1,12 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_TESTCASE_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_TESTCASE_H
+#ifndef BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
+#define BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "test/bits64/a_uefi/sections/section1/bits64/types.h"
+#include "test/bits64/sections/section1/bits64/types.h"
 
 
 
@@ -33,4 +33,4 @@ NgosStatus startTestSection1()
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_TESTCASE_H
+#endif // BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H

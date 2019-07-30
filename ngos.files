@@ -770,6 +770,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmsub213pd.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmsub213ps.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/fma3.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fpu.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse/asm_testsseaddps.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse/asm_testssedivps.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse/asm_testssemaxps.h

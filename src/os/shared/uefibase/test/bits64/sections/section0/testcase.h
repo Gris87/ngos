@@ -14,8 +14,8 @@
 #include <uefibase/test/bits64/sections/section0/__include/ngos/types.h>
 #include <uefibase/test/bits64/sections/section0/__include/ngos/utils.h>
 #include <uefibase/test/bits64/sections/section0/__include/pagetable/utils.h>
-#include <uefibase/test/bits64/sections/section0/__include/uuid/utils.h>
 #include <uefibase/test/bits64/sections/section0/__include/types.h>
+#include <uefibase/test/bits64/sections/section0/__include/uuid/utils.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/adler.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/crc.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h>
@@ -27,6 +27,7 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512f/avx512f.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/avx512vl.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/fma3.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fpu.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse/sse.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse2/sse2.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/sse3.h>
@@ -67,8 +68,8 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __include_ngos_types);
     CALL_TEST_CASES(section0, __include_ngos_utils);
     CALL_TEST_CASES(section0, __include_pagetable_utils);
-    CALL_TEST_CASES(section0, __include_uuid_utils);
     CALL_TEST_CASES(section0, __include_types);
+    CALL_TEST_CASES(section0, __include_uuid_utils);
     CALL_TEST_CASES(section0, __shared_common_bits64_checksum_adler);
     CALL_TEST_CASES(section0, __shared_common_bits64_checksum_crc);
     CALL_TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
@@ -80,6 +81,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_avx512vl_avx512vl);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_fma3_fma3);
+    CALL_TEST_CASES(section0, __shared_common_bits64_fpu_fpu);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_sse2_sse2);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_sse3_sse3);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_sse41_sse41);

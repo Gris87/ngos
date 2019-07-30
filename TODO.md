@@ -3,7 +3,6 @@ TODO List
 
 NGOS:
 
-- Add remaining tests
 - Fix generator
 - Refactor
 
@@ -35,12 +34,13 @@ Docs verifier:
 - Verify for How to Build
 - Verify for Scripts
 - Verify for amount of links (amount of tools/libraries/applications)
+- Implement script that will check for .spelling file in order to make it simpler
 
 
 
 Tests verifier:
 
-- Verify for structure sizes
+- ...
 
 
 
@@ -73,6 +73,14 @@ C++ headers optimizer:
 - Extend C++ headers hierarchy for each C++ file
 - Iterate over all possible options for header inclusions
 - Try to delete some inclusions if it's not harmful for build
+
+
+
+QMake:
+
+- Implement tool
+- Move all projects to Qt pro files
+- Compile projects with own qmake
 
 
 

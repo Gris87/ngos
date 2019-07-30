@@ -13,7 +13,11 @@ class FPU
 public:
     static NgosStatus init(); // TEST: NO
 
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
 private:
+#endif
     static NgosStatus initMxcsrMask(); // TEST: NO
     static NgosStatus initFXState(); // TEST: NO
     static NgosStatus initXState(); // TEST: NO

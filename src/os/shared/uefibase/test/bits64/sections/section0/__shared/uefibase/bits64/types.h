@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/src/bits64/uefi/uefi.h>
 #include <uefibase/src/bits64/other/uefibootmemorymap.h>
+#include <uefibase/src/bits64/uefi/uefi.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

@@ -117,6 +117,44 @@ i8 strcmp(const char8 *str1, const char8 *str2)
     return 0;
 }
 
+i8 strcmp(const char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    if (str1 == str2)
+    {
+        return 0;
+    }
+
+
+
+    do
+    {
+        u16 c1 = *str1;
+        u16 c2 = *str2;
+
+        if (c1 != c2)
+        {
+            return c1 < c2 ? -1 : 1;
+        }
+
+        if (!c1) // c1 == 0
+        {
+            break;
+        }
+
+        ++str1;
+        ++str2;
+    } while(true);
+
+    return 0;
+}
+
 i8 strncmp(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
@@ -137,6 +175,45 @@ i8 strncmp(const char8 *str1, const char8 *str2, i64 length)
     {
         u8 c1 = *str1;
         u8 c2 = *str2;
+
+        if (c1 != c2)
+        {
+            return c1 < c2 ? -1 : 1;
+        }
+
+        if (!c1) // c1 == 0
+        {
+            break;
+        }
+
+        ++str1;
+        ++str2;
+        --length;
+    }
+
+    return 0;
+}
+
+i8 strncmp(const char16 *str1, const char16 *str2, i64 length)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    if (str1 == str2)
+    {
+        return 0;
+    }
+
+
+
+    while (length) // length != 0
+    {
+        u16 c1 = *str1;
+        u16 c2 = *str2;
 
         if (c1 != c2)
         {
