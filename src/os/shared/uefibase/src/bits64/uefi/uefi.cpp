@@ -287,7 +287,7 @@ char8* UEFI::devicePathToString(UefiDevicePath *path)
 
 
 
-    UefiGuid                      protocol                 = UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
+    Guid                      protocol                 = UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
     UefiDevicePathToTextProtocol *devicePathToTextProtocol = 0;
 
     if (sBootServices->locateProtocol(&protocol, 0, (void **)&devicePathToTextProtocol) != UefiStatus::SUCCESS)
@@ -342,7 +342,7 @@ UefiDevicePath* UEFI::devicePathFromHandle(uefi_handle handle)
 
 
 
-    UefiGuid        protocol = UEFI_DEVICE_PATH_PROTOCOL_GUID;
+    Guid        protocol = UEFI_DEVICE_PATH_PROTOCOL_GUID;
     UefiDevicePath *res;
 
     if (handleProtocol(handle, &protocol, (void **)&res) != UefiStatus::SUCCESS)
@@ -547,7 +547,7 @@ UefiStatus UEFI::freePool(void *buffer)
     return sBootServices->freePool(buffer);
 }
 
-UefiStatus UEFI::handleProtocol(uefi_handle handle, UefiGuid *protocol, void **interface)
+UefiStatus UEFI::handleProtocol(uefi_handle handle, Guid *protocol, void **interface)
 {
     UEFI_LT((" | handle = 0x%p, protocol = 0x%p, interface = 0x%p", handle, protocol, interface));
 
@@ -560,7 +560,7 @@ UefiStatus UEFI::handleProtocol(uefi_handle handle, UefiGuid *protocol, void **i
     return sBootServices->handleProtocol(handle, protocol, interface);
 }
 
-UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, UefiGuid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer)
+UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer)
 {
     UEFI_LT((" | searchType = %d, protocol = 0x%p, searchKey = 0x%p, bufferSize = 0x%p, buffer = 0x%p", searchType, protocol, searchKey, bufferSize, buffer));
 

@@ -4,7 +4,7 @@
 
 
 #include <kernelbase/src/bits64/other/dmi/dmientryheader.h>
-#include <kernelbase/src/bits64/other/dmi/dmiuuid.h>
+#include <uuid/uuid.h>
 
 
 
@@ -15,7 +15,7 @@ struct DmiSystemEntry
     u8             productName;
     u8             version;
     u8             serialNumber;
-    DmiUuid        uuid;
+    Uuid           uuid;
     u8             wakeUpTime;
     u8             skuNumber;
     u8             family;

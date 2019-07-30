@@ -3,14 +3,14 @@
 
 
 
-#include <uefi/uefiguid.h>
+#include <guid/guid.h>
 
 
 
 struct UefiConfigurationTable
 {
-    UefiGuid  vendorGuid;
-    void     *vendorTable;
+    Guid  vendorGuid;
+    void *vendorTable;
 };
 
 

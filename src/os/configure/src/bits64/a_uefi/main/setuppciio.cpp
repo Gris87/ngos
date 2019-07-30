@@ -99,7 +99,7 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
     return NgosStatus::FAILED;
 }
 
-NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size, uefi_handle *pciIoHandles)
+NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi_handle *pciIoHandles)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u, pciIoHandles = 0x%p", params, protocol, size, pciIoHandles));
 
@@ -244,7 +244,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size, 
     return NgosStatus::OK;
 }
 
-NgosStatus setupPciIoProtocol(BootParams *params, UefiGuid *protocol, u64 size)
+NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u", params, protocol, size));
 
@@ -306,7 +306,7 @@ NgosStatus setupPciIo(BootParams *params)
 
 
 
-    UefiGuid     pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
+    Guid     pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
     u64          pciIoSize     = 0;
     uefi_handle *pciIoHandles  = 0;
 

@@ -52,6 +52,6 @@ QString TestStructureEntry::getName() const
 QString TestStructureEntry::toString() const
 {
     return QString("%1 | %2")
-            .arg(mPath + ':' + QString::number(mLine + 1), -120, QChar(' '))
-            .arg(mName, 35, QChar(' '));
+            .arg(mPath + ':' + QString::number(mLine + 1), -130, QChar(' '))
+            .arg(mName, 50, QChar(' '));
 }

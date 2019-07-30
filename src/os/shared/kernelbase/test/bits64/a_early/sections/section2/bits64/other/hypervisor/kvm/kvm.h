@@ -15,9 +15,34 @@
 
 TEST_CASES(section2, bits64_other_hypervisor_kvm_kvm);
 {
-    TEST_CASE("hasFeature()");
+    TEST_CASE("setFeature()/clearFeature()/hasFeature()");
     {
         TEST_ASSERT_EQUALS(KVM::sFeatures, 0);
+
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE),  false);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE2), false);
+
+        TEST_ASSERT_EQUALS(KVM::setFeature(KvmFeature::CLOCKSOURCE),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE),  true);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE2), false);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                            0x00000001);
+
+        TEST_ASSERT_EQUALS(KVM::setFeature(KvmFeature::CLOCKSOURCE2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE),  true);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE2), true);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                            0x00000009);
+
+        TEST_ASSERT_EQUALS(KVM::clearFeature(KvmFeature::CLOCKSOURCE), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE),   false);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE2),  true);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                             0x00000008);
+
+        TEST_ASSERT_EQUALS(KVM::clearFeature(KvmFeature::CLOCKSOURCE2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE),    false);
+        TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE2),   false);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                              0);
+
+
 
         KVM::sFeatures = 0x01000A93;
 
@@ -33,6 +58,56 @@ TEST_CASES(section2, bits64_other_hypervisor_kvm_kvm);
         TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::ASYNC_PF_VMEXIT),    false);
         TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::PV_SEND_IPI),        true);
         TEST_ASSERT_EQUALS(KVM::hasFeature(KvmFeature::CLOCKSOURCE_STABLE), true);
+
+        KVM::sFeatures = 0;
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("setFlag()/clearFlag()/hasFlag()");
+    {
+        TEST_ASSERT_EQUALS(KVM::sFeatures, 0);
+
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE),  false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE2), false);
+
+        TEST_ASSERT_EQUALS(KVM::setFlag(KvmFeatureTypeFlag::CLOCKSOURCE),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE),  true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE2), false);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                                 0x00000001);
+
+        TEST_ASSERT_EQUALS(KVM::setFlag(KvmFeatureTypeFlag::CLOCKSOURCE2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE),  true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE2), true);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                                 0x00000009);
+
+        TEST_ASSERT_EQUALS(KVM::clearFlag(KvmFeatureTypeFlag::CLOCKSOURCE), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE),   false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE2),  true);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                                  0x00000008);
+
+        TEST_ASSERT_EQUALS(KVM::clearFlag(KvmFeatureTypeFlag::CLOCKSOURCE2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE),    false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE2),   false);
+        TEST_ASSERT_EQUALS(KVM::sFeatures,                                   0);
+
+
+
+        KVM::sFeatures = 0x01000A93;
+
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE),        true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::NOP_IO_DELAY),       true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::MMU_OP),             false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE2),       false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::ASYNC_PF),           true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::STEAL_TIME),         false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::PV_EOI),             false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::PV_UNHALT),          true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::PV_TLB_FLUSH),       true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::ASYNC_PF_VMEXIT),    false);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::PV_SEND_IPI),        true);
+        TEST_ASSERT_EQUALS(KVM::hasFlag(KvmFeatureTypeFlag::CLOCKSOURCE_STABLE), true);
 
         KVM::sFeatures = 0;
     }

@@ -3,16 +3,16 @@
 
 
 
-#include <uefi/uefiguid.h>
+#include <guid/guid.h>
 
 
 
 struct UefiCapsuleHeader
 {
-    UefiGuid capsuleGuid;
-    u32      headerSize;
-    u32      flags;
-    u32      capsuleImageSize;
+    Guid capsuleGuid;
+    u32  headerSize;
+    u32  flags;
+    u32  capsuleImageSize;
 };
 
 

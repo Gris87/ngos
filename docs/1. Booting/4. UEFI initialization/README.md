@@ -279,7 +279,7 @@ As you can see [setupKernelLocation()](https://github.com/Gris87/ngos/blob/maste
 First of all, we will get information about loaded image:
 
 ```
-    UefiGuid                 protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+    Guid                     protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
     uefi_handle              handle   = UEFI::getImageHandle();
     UefiLoadedImageProtocol *image    = 0;
 

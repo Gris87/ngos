@@ -296,7 +296,6 @@ src/os/include/uefi/uefigraphicsoutputmodeinformation.h
 src/os/include/uefi/uefigraphicsoutputprotocol.h
 src/os/include/uefi/uefigraphicsoutputprotocolmode.h
 src/os/include/uefi/uefigraphicspixelformat.h
-src/os/include/uefi/uefiguid.h
 src/os/include/uefi/uefiharddrivedevicepath.h
 src/os/include/uefi/uefiharddrivedevicepathmbrtype.h
 src/os/include/uefi/uefiharddrivedevicepathsignaturetype.h
@@ -326,6 +325,8 @@ src/os/include/uefi/uefitime.h
 src/os/include/uefi/uefitimecapabilicies.h
 src/os/include/uefi/uefitimerdelay.h
 src/os/include/uefi/uefitpl.h
+src/os/include/uuid/utils.h
+src/os/include/uuid/uuid.h
 src/os/installer/.gitignore
 src/os/installer/assets/.gitignore
 src/os/installer/assets/generate_assets.sh
@@ -529,7 +530,6 @@ src/os/shared/kernelbase/src/bits64/other/dmi/dmientrytype.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmiidentity.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmimemorydevice.h
 src/os/shared/kernelbase/src/bits64/other/dmi/dmistoreduuid.h
-src/os/shared/kernelbase/src/bits64/other/dmi/dmiuuid.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmibiosentry.h
 src/os/shared/kernelbase/src/bits64/other/dmi/entry/dmichassisentry.h

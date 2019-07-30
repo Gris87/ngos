@@ -4,8 +4,6 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/inflate/inflatecode.h>
-#include <common/src/bits64/inflate/inflatedecoder.h>
 #include <uefibase/test/bits64/testengine.h>
 
 #include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"

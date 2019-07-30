@@ -22,6 +22,7 @@
 #include <elf/symbol.h>
 #include <gdt/gdtdescriptor.h>
 #include <gdt/gdtregister.h>
+#include <guid/guid.h>
 #include <idt/idtdescriptor.h>
 #include <idt/idtregister.h>
 #include <ngos/status.h>
@@ -51,7 +52,6 @@
 #include <uefi/uefigraphicsoutputmodeinformation.h>
 #include <uefi/uefigraphicsoutputprotocol.h>
 #include <uefi/uefigraphicsoutputprotocolmode.h>
-#include <uefi/uefiguid.h>
 #include <uefi/uefiinputkey.h>
 #include <uefi/uefiloadedimageprotocol.h>
 #include <uefi/uefimemorydescriptor.h>
@@ -69,6 +69,7 @@
 #include <uefi/uefitime.h>
 #include <uefi/uefitimecapabilicies.h>
 #include <uefibase/test/bits64/testengine.h>
+#include <uuid/uuid.h>
 
 
 
@@ -105,6 +106,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(ElfVersion),                                   4);
         TEST_ASSERT_EQUALS(sizeof(GdtDescriptor),                                8);
         TEST_ASSERT_EQUALS(sizeof(GdtRegister),                                  10);
+        TEST_ASSERT_EQUALS(sizeof(Guid),                                         16);
         TEST_ASSERT_EQUALS(sizeof(IdtDescriptor),                                16);
         TEST_ASSERT_EQUALS(sizeof(IdtRegister),                                  10);
         TEST_ASSERT_EQUALS(sizeof(MemoryMapEntry),                               24);
@@ -127,7 +129,6 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiGraphicsOutputModeInformation),            36);
         TEST_ASSERT_EQUALS(sizeof(UefiGraphicsOutputProtocol),                   32);
         TEST_ASSERT_EQUALS(sizeof(UefiGraphicsOutputProtocolMode),               40);
-        TEST_ASSERT_EQUALS(sizeof(UefiGuid),                                     16);
         TEST_ASSERT_EQUALS(sizeof(UefiHcdpConfigurationTable),                   1);
         TEST_ASSERT_EQUALS(sizeof(UefiHobListConfigurationTable),                1);
         TEST_ASSERT_EQUALS(sizeof(UefiInfo),                                     40);
@@ -159,6 +160,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiTime),                                     16);
         TEST_ASSERT_EQUALS(sizeof(UefiTimeCapabilities),                         12);
         TEST_ASSERT_EQUALS(sizeof(UefiUgaIoConfigurationTable),                  1);
+        TEST_ASSERT_EQUALS(sizeof(Uuid),                                         16);
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         TEST_ASSERT_EQUALS(sizeof(P4D), 8);

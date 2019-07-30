@@ -3,12 +3,12 @@
 
 
 
+#include <guid/guid.h>
 #include <uefi/macros.h>
 #include <uefi/types.h>
 #include <uefi/uefiallocatetype.h>
 #include <uefi/uefidevicepath.h>
 #include <uefi/uefieventtype.h>
-#include <uefi/uefiguid.h>
 #include <uefi/uefiinterfacetype.h>
 #include <uefi/uefilocatesearchtype.h>
 #include <uefi/uefimemorydescriptor.h>
@@ -45,15 +45,15 @@ struct UefiBootServices
     UefiStatus (UEFI_API *closeEvent)(uefi_event event); // TEST: NO
     UefiStatus (UEFI_API *checkEvent)(uefi_event event); // TEST: NO
 
-    UefiStatus (UEFI_API *installProtocolInterface)(uefi_handle *handle, UefiGuid *protocol, UefiInterfaceType interfaceType, void *interface); // TEST: NO
-    UefiStatus (UEFI_API *reinstallProtocolInterface)(uefi_handle handle, UefiGuid *protocol, void *oldInterface, void *newInterface); // TEST: NO
-    UefiStatus (UEFI_API *uninstallProtocolInterface)(uefi_handle handle, UefiGuid *protocol, void *interface); // TEST: NO
-    UefiStatus (UEFI_API *handleProtocol)(uefi_handle handle, UefiGuid *protocol, void **interface); // TEST: NO
-    UefiStatus (UEFI_API *pcHandleProtocol)(uefi_handle handle, UefiGuid *protocol, void **interface); // TEST: NO
-    UefiStatus (UEFI_API *registerProtocolNotify)(UefiGuid *protocol, uefi_event event, void **registration); // TEST: NO
-    UefiStatus (UEFI_API *locateHandle)(UefiLocateSearchType searchType, UefiGuid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer); // TEST: NO
-    UefiStatus (UEFI_API *locateDevicePath)(UefiGuid *protocol, UefiDevicePath **devicePath, uefi_handle *device); // TEST: NO
-    UefiStatus (UEFI_API *installConfigurationTable)(UefiGuid *guid, void *table); // TEST: NO
+    UefiStatus (UEFI_API *installProtocolInterface)(uefi_handle *handle, Guid *protocol, UefiInterfaceType interfaceType, void *interface); // TEST: NO
+    UefiStatus (UEFI_API *reinstallProtocolInterface)(uefi_handle handle, Guid *protocol, void *oldInterface, void *newInterface); // TEST: NO
+    UefiStatus (UEFI_API *uninstallProtocolInterface)(uefi_handle handle, Guid *protocol, void *interface); // TEST: NO
+    UefiStatus (UEFI_API *handleProtocol)(uefi_handle handle, Guid *protocol, void **interface); // TEST: NO
+    UefiStatus (UEFI_API *pcHandleProtocol)(uefi_handle handle, Guid *protocol, void **interface); // TEST: NO
+    UefiStatus (UEFI_API *registerProtocolNotify)(Guid *protocol, uefi_event event, void **registration); // TEST: NO
+    UefiStatus (UEFI_API *locateHandle)(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer); // TEST: NO
+    UefiStatus (UEFI_API *locateDevicePath)(Guid *protocol, UefiDevicePath **devicePath, uefi_handle *device); // TEST: NO
+    UefiStatus (UEFI_API *installConfigurationTable)(Guid *guid, void *table); // TEST: NO
 
     UefiStatus (UEFI_API *loadImage)(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, u64 sourceSize, uefi_handle *imageHandle); // TEST: NO
     UefiStatus (UEFI_API *startImage)(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData); // TEST: NO
@@ -68,13 +68,13 @@ struct UefiBootServices
     UefiStatus (UEFI_API *connectController)(uefi_handle controllerHandle, uefi_handle *driverImageHandle, UefiDevicePath *remainingDevicePath, bool recursive); // TEST: NO
     UefiStatus (UEFI_API *disconnectController)(uefi_handle controllerHandle, uefi_handle driverImageHandle, uefi_handle childHandle); // TEST: NO
 
-    UefiStatus (UEFI_API *openProtocol)(uefi_handle handle, UefiGuid *protocol, void **interface, uefi_handle agentHandle, uefi_handle controllerHandle, u32 attributes); // TEST: NO
-    UefiStatus (UEFI_API *closeProtocol)(uefi_handle handle, UefiGuid *protocol, uefi_handle agentHandle, uefi_handle controllerHandle); // TEST: NO
-    UefiStatus (UEFI_API *openProtocolInformation)(uefi_handle handle, UefiGuid *protocol, UefiOpenProtocolInformationEntry **entryBuffer, u64 *entryCount); // TEST: NO
+    UefiStatus (UEFI_API *openProtocol)(uefi_handle handle, Guid *protocol, void **interface, uefi_handle agentHandle, uefi_handle controllerHandle, u32 attributes); // TEST: NO
+    UefiStatus (UEFI_API *closeProtocol)(uefi_handle handle, Guid *protocol, uefi_handle agentHandle, uefi_handle controllerHandle); // TEST: NO
+    UefiStatus (UEFI_API *openProtocolInformation)(uefi_handle handle, Guid *protocol, UefiOpenProtocolInformationEntry **entryBuffer, u64 *entryCount); // TEST: NO
 
-    UefiStatus (UEFI_API *protocolsPerHandle)(uefi_handle handle, UefiGuid ***protocolBuffer, u64 *protocolBufferCount); // TEST: NO
-    UefiStatus (UEFI_API *locateHandleBuffer)(UefiLocateSearchType searchType, UefiGuid *protocol, void *searchKey, u64 *noHandles, uefi_handle **buffer); // TEST: NO
-    UefiStatus (UEFI_API *locateProtocol)(UefiGuid *protocol, void *registration, void **interface); // TEST: NO
+    UefiStatus (UEFI_API *protocolsPerHandle)(uefi_handle handle, Guid ***protocolBuffer, u64 *protocolBufferCount); // TEST: NO
+    UefiStatus (UEFI_API *locateHandleBuffer)(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *noHandles, uefi_handle **buffer); // TEST: NO
+    UefiStatus (UEFI_API *locateProtocol)(Guid *protocol, void *registration, void **interface); // TEST: NO
     UefiStatus (UEFI_API *installMultipleProtocolInterfaces)(uefi_handle *handle, ...); // TEST: NO
     UefiStatus (UEFI_API *uninstallMultipleProtocolInterfaces)(uefi_handle handle, ...); // TEST: NO
 
@@ -82,7 +82,7 @@ struct UefiBootServices
 
     void (UEFI_API *copyMem)(void *destination, void *source, u64 length); // TEST: NO
     void (UEFI_API *setMem)(void *buffer, u64 size, u8 value); // TEST: NO
-    UefiStatus (UEFI_API *createEventEx)(u32 type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, const void *notifyContext, const UefiGuid eventGroup, uefi_event *event); // TEST: NO
+    UefiStatus (UEFI_API *createEventEx)(u32 type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, const void *notifyContext, const Guid eventGroup, uefi_event *event); // TEST: NO
 };
 
 

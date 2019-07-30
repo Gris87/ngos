@@ -1,8 +1,8 @@
 #include "setupgraphics.h"
 
+#include <guid/guid.h>
 #include <ngos/linkage.h>
 #include <uefi/uefigraphicsoutputprotocol.h>
-#include <uefi/uefiguid.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -132,7 +132,7 @@ NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop,
     return NgosStatus::OK;
 }
 
-NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u64 size, uefi_handle *graphicsHandles)
+NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 size, uefi_handle *graphicsHandles)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u, graphicsHandles = 0x%p", params, protocol, size, graphicsHandles));
 
@@ -295,7 +295,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u
     return NgosStatus::OK;
 }
 
-NgosStatus setupGraphicsOutputProtocol(BootParams *params, UefiGuid *protocol, u64 size)
+NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 size)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u", params, protocol, size));
 
@@ -357,7 +357,7 @@ NgosStatus setupGraphics(BootParams *params)
 
 
 
-    UefiGuid     graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+    Guid     graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
     u64          graphicsSize     = 0;
     uefi_handle *graphicsHandles  = 0;
 

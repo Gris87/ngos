@@ -3,9 +3,9 @@
 
 
 
+#include <guid/guid.h>
 #include <uefi/types.h>
 #include <uefi/ueficapsuleheader.h>
-#include <uefi/uefiguid.h>
 #include <uefi/uefimemorydescriptor.h>
 #include <uefi/uefiresettype.h>
 #include <uefi/uefistatus.h>
@@ -27,9 +27,9 @@ struct UefiRuntimeServices
     UefiStatus (UEFI_API *setVirtualAddressMap)(u64 memoryMapSize, u64 descriptorSize, u32 descriptorVersion, UefiMemoryDescriptor *virtualMap); // TEST: NO
     UefiStatus (UEFI_API *convertPointer)(u64 debugDisposition, void **address); // TEST: NO
 
-    UefiStatus (UEFI_API *getVariable)(char16 *variableName, UefiGuid *vendorGuid, u32 *attributes, u64 *dataSize, void *data); // TEST: NO
-    UefiStatus (UEFI_API *getNextVariableName)(u64 *variableNameSize, char16 *variableName, UefiGuid *vendorGuid); // TEST: NO
-    UefiStatus (UEFI_API *setVariable)(char16 *variableName, UefiGuid *vendorGuid, u32 attributes, u64 dataSize, void *data); // TEST: NO
+    UefiStatus (UEFI_API *getVariable)(char16 *variableName, Guid *vendorGuid, u32 *attributes, u64 *dataSize, void *data); // TEST: NO
+    UefiStatus (UEFI_API *getNextVariableName)(u64 *variableNameSize, char16 *variableName, Guid *vendorGuid); // TEST: NO
+    UefiStatus (UEFI_API *setVariable)(char16 *variableName, Guid *vendorGuid, u32 attributes, u64 dataSize, void *data); // TEST: NO
 
     UefiStatus (UEFI_API *getNextHighMonotonicCount)(u32 *highCount); // TEST: NO
     UefiStatus (UEFI_API *resetSystem)(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData); // TEST: NO

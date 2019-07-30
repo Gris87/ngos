@@ -18,7 +18,7 @@ u8               DMI::sChassisType;
 u64              DMI::sNumberOfMemoryDevices;
 DmiMemoryDevice *DMI::sMemoryDevices;
 const char8*     DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
-DmiUuid*         DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
+Uuid*         DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
 
 
 
@@ -1072,24 +1072,24 @@ NgosStatus DMI::saveIdentity(DmiIdentity id, u8 *address, u64 size)
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::saveUuid(DmiStoredUuid id, const DmiUuid &uuid)
+NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
 { // Ignore CppNgosTraceVerifier
     COMMON_LT((" | id = %u, uuid = {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", id, uuid.data1, uuid.data2, uuid.data3, uuid.data4, uuid.data5, uuid.data6[0], uuid.data6[1], uuid.data6[2], uuid.data6[3], uuid.data6[4], uuid.data6[5]));
 
 
 
     COMMON_TEST_ASSERT(sUuids[(u64)id] == 0,  NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sizeof(DmiUuid) == 16, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sizeof(Uuid) == 16, NgosStatus::ASSERTION);
 
 
 
     u8 *brkAddress;
 
-    COMMON_ASSERT_EXECUTION(BRK::allocate(sizeof(DmiUuid), 1, &brkAddress), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BRK::allocate(sizeof(Uuid), 1, &brkAddress), NgosStatus::ASSERTION);
     ((u64 *)brkAddress)[0] = ((u64 *)&uuid)[0];
     ((u64 *)brkAddress)[1] = ((u64 *)&uuid)[1];
 
-    sUuids[(u64)id] = (DmiUuid *)brkAddress;
+    sUuids[(u64)id] = (Uuid *)brkAddress;
 
 
 

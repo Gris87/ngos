@@ -43,7 +43,7 @@ private:
     static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveIdentity(DmiIdentity id, u8 *address, u64 size); // TEST: NO
-    static NgosStatus saveUuid(DmiStoredUuid id, const DmiUuid &uuid); // TEST: NO
+    static NgosStatus saveUuid(DmiStoredUuid id, const Uuid &uuid); // TEST: NO
     static NgosStatus getString(u8 *address, u64 size, u8 **destination); // TEST: NO
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
@@ -55,7 +55,7 @@ private:
     static u64              sNumberOfMemoryDevices;
     static DmiMemoryDevice *sMemoryDevices;
     static const char8*     sIdentities[(u64)DmiIdentity::MAXIMUM];
-    static DmiUuid*         sUuids[(u64)DmiStoredUuid::MAXIMUM];
+    static Uuid*         sUuids[(u64)DmiStoredUuid::MAXIMUM];
 };
 
 

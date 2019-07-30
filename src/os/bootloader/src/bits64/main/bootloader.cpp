@@ -132,7 +132,7 @@ NgosStatus Bootloader::initImage()
 
 
 
-    UefiGuid    protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+    Guid    protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
     uefi_handle handle   = UEFI::getImageHandle();
 
 
@@ -277,7 +277,7 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-    UefiGuid     blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
+    Guid     blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
     u64          blockIoSize     = 0;
     uefi_handle *blockIoHandles  = 0;
 
@@ -360,7 +360,7 @@ NgosStatus Bootloader::initVolumes()
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size)
+NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
@@ -413,7 +413,7 @@ NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size)
     return status;
 }
 
-NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_handle *blockIoHandles)
+NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle *blockIoHandles)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u, blockIoHandles = 0x%p", protocol, size, blockIoHandles));
 
@@ -451,7 +451,7 @@ NgosStatus Bootloader::initBlockIoProtocol(UefiGuid *protocol, u64 size, uefi_ha
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initVolume(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle)
+NgosStatus Bootloader::initVolume(VolumeInfo *volume, Guid *protocol, uefi_handle handle)
 {
     UEFI_LT((" | volume = 0x%p, protocol = 0x%p, handle = 0x%p", volume, protocol, handle));
 
@@ -488,7 +488,7 @@ NgosStatus Bootloader::initVolumeDeviceHandle(VolumeInfo *volume, uefi_handle ha
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initVolumeBlockIoProtocol(VolumeInfo *volume, UefiGuid *protocol, uefi_handle handle)
+NgosStatus Bootloader::initVolumeBlockIoProtocol(VolumeInfo *volume, Guid *protocol, uefi_handle handle)
 {
     UEFI_LT((" | volume = 0x%p, protocol = 0x%p, handle = 0x%p", volume, protocol, handle));
 
