@@ -35,16 +35,17 @@ docs/0. Intro/6. Source code/2. Libraries/README.md
 docs/0. Intro/6. Source code/3. Applications/1. ls/README.md
 docs/0. Intro/6. Source code/3. Applications/README.md
 docs/0. Intro/6. Source code/README.md
-docs/0. Intro/7. Tools/1. Image builder/Image structure.png
-docs/0. Intro/7. Tools/1. Image builder/README.md
-docs/0. Intro/7. Tools/2. Code generator/README.md
-docs/0. Intro/7. Tools/3. Code verifier/README.md
-docs/0. Intro/7. Tools/4. Test verifier/README.md
-docs/0. Intro/7. Tools/5. Docs verifier/README.md
-docs/0. Intro/7. Tools/6. Build config maker/README.md
-docs/0. Intro/7. Tools/7. Build config GUI/README.md
-docs/0. Intro/7. Tools/8. GDB debug/README.md
-docs/0. Intro/7. Tools/9. USB boot maker/README.md
+docs/0. Intro/7. Tools/01. QMake/README.md
+docs/0. Intro/7. Tools/02. Image builder/Image structure.png
+docs/0. Intro/7. Tools/02. Image builder/README.md
+docs/0. Intro/7. Tools/03. Code generator/README.md
+docs/0. Intro/7. Tools/04. Code verifier/README.md
+docs/0. Intro/7. Tools/05. Test verifier/README.md
+docs/0. Intro/7. Tools/06. Docs verifier/README.md
+docs/0. Intro/7. Tools/07. Build config maker/README.md
+docs/0. Intro/7. Tools/08. Build config GUI/README.md
+docs/0. Intro/7. Tools/09. GDB debug/README.md
+docs/0. Intro/7. Tools/10. USB boot maker/README.md
 docs/0. Intro/7. Tools/README.md
 docs/0. Intro/8. Scripts/README.md
 docs/0. Intro/README.md
@@ -1177,6 +1178,13 @@ tools/qt/include/elf/elf.pri
 tools/qt/include/elf/elfobject.cpp
 tools/qt/include/elf/elfobject.h
 tools/qt/Makefile
+tools/qt/qmake/.gitignore
+tools/qt/qmake/qmake.pro
+tools/qt/qmake/README.md
+tools/qt/qmake/Screenshot.png
+tools/qt/qmake/src/main.cpp
+tools/qt/qmake/src/main/qmake.cpp
+tools/qt/qmake/src/main/qmake.h
 tools/qt/test_verifier/.gitignore
 tools/qt/test_verifier/README.md
 tools/qt/test_verifier/Screenshot.png
