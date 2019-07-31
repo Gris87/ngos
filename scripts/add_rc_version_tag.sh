@@ -2,7 +2,7 @@
 
 # This script helps to add tag for new RC version
 # Author: Maxim Shvecov
-# Usage: ./add_rc_version_tag.sh
+# Usage: ./scripts/add_rc_version_tag.sh
 
 
 

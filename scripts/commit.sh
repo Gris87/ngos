@@ -2,7 +2,7 @@
 
 # This script helps to simplify Git usage
 # Author: Maxim Shvecov
-# Usage: ./commit.sh MESSAGE
+# Usage: ./scripts/commit.sh MESSAGE
 
 
 
@@ -31,7 +31,7 @@ fi
 
 
 if [ "${MESSAGE}" == "" ]; then
-    echo "Usage: ./commit.sh MESSAGE"
+    echo "Usage: ./scripts/commit.sh MESSAGE"
 
     exit 1
 fi

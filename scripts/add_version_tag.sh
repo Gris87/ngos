@@ -2,7 +2,7 @@
 
 # This script helps to add tag for new version
 # Author: Maxim Shvecov
-# Usage: ./add_version_tag.sh
+# Usage: ./scripts/add_version_tag.sh
 
 
 

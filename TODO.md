@@ -32,6 +32,7 @@ Code verifier:
 - Verify for void functions
 - Verify for headers in assembler
 - Verify for function asserts
+- Verify for log alignment
 
 
 
@@ -42,7 +43,6 @@ Docs verifier:
 - Verify for How to Build
 - Verify for Scripts
 - Verify for amount of links (amount of tools/libraries/applications)
-- Implement script that will check for .spelling file in order to make it simpler
 
 
 

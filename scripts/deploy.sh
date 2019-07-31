@@ -2,7 +2,7 @@
 
 # This script helps to deploy latest binaries to web servers
 # Author: Maxim Shvecov
-# Usage: ./deploy.sh
+# Usage: ./scripts/deploy.sh
 
 
 

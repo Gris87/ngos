@@ -2,7 +2,7 @@
 
 # This script helps to update ngos.files file
 # Author: Maxim Shvecov
-# Usage: ./update_ngos_files.sh
+# Usage: ./scripts/update_ngos_files.sh
 
 
 
