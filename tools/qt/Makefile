@@ -6,6 +6,7 @@ SUBDIRS = \
 	docs_verifier \
 	gdb_debug \
 	image_builder \
+	qmake \
 	test_verifier \
 	usb_boot_maker
 
