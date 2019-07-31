@@ -259,10 +259,7 @@ function assign_secret_key
                 SERVER_LENGTH=${#SERVER}
                 REGION_LENGTH=${#REGION}
 
-                echo -n "[${OPTION_NUM}] ${SERVER}"
-                printf "%$((60 - SERVER_LENGTH))s" ""
-                echo -n "${REGION}"
-                printf "%$((30 - REGION_LENGTH))s" ""
+                printf "[%s] %s%$((60 - SERVER_LENGTH))s%s%$((30 - REGION_LENGTH))s" "${OPTION_NUM}" "${SERVER}" "" "${REGION}" ""
                 execute_sql_without_header "SELECT secret_key FROM servers WHERE address = '${SERVER}';" | cut -c -20
 
                 OPTIONS[${OPTION_NUM}]=${SERVER}
@@ -671,8 +668,7 @@ function change_server_location
             do
                 SERVER_LENGTH=${#SERVER}
 
-                echo -n "[${OPTION_NUM}] ${SERVER}"
-                printf "%$((60 - SERVER_LENGTH))s" ""
+                printf "[%s] %s%$((60 - SERVER_LENGTH))s" "${OPTION_NUM}" "${SERVER}" ""
                 execute_sql_without_header "SELECT t2.name as region FROM servers AS t1 INNER JOIN regions as t2 ON t1.region_id = t2.id WHERE t1.address = '${SERVER}';" || return 1
 
                 OPTIONS[${OPTION_NUM}]=${SERVER}
@@ -1328,9 +1324,7 @@ function usage()
             FUNC_ATTRS=`echo "--${FUNC[i]} ${ATTRS[i]}"`
             FUNC_ATTRS_LENGTH=${#FUNC_ATTRS}
 
-            echo -n "    ${FUNC_ATTRS}"
-            printf "%$((50 - FUNC_ATTRS_LENGTH))s" ""
-            echo " - ${TEXT[i]}"
+            printf "    %s%$((50 - FUNC_ATTRS_LENGTH))s - %s\n" "${FUNC_ATTRS}" "" "${TEXT[i]}"
         done
 
 

@@ -85,8 +85,7 @@ function deploy_app_file
 
     FILENAME_LENGTH=${#FILENAME}
 
-    echo -n "    ${FILENAME}"
-    printf "%$((40 - FILENAME_LENGTH))s" ""
+    printf "    %s%$((40 - FILENAME_LENGTH))s" "${FILENAME}" ""
 
 
 

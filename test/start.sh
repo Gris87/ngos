@@ -67,8 +67,7 @@ do
 
 
 
-    echo -n "${TEST_NAME}..."
-    printf "%$((40 - TEST_NAME_LENGTH))s" ""
+    printf "%s...%$((40 - TEST_NAME_LENGTH))s" "${TEST_NAME}" ""
 
     cd tests/
     "./${SHELL_SCRIPT}" > "../logs/${SHELL_SCRIPT}.log" 2>&1
