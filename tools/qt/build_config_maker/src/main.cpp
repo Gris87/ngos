@@ -108,11 +108,14 @@ qint32 main(qint32 argc, char *argv[])
 
 
     BuildConfigMaker maker(buildConfigPath, reset, parameters);
+
     qint64 res = maker.process();
 
     Console::out("");
     Console::out(QString("Build config modified in %1 ms").arg(QDateTime::currentMSecsSinceEpoch() - startTime));
     Console::out("");
+
+
 
     return res;
 }

@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.6. Build config maker
--------------------------
+0.7.07. Build config maker
+--------------------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/build_config_maker/Screenshot.png?raw=true" alt="Screenshot"/>

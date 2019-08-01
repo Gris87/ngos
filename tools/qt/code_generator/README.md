@@ -7,4 +7,4 @@ code_generator
 
 Code generator tool is special tool for generating some parts of code.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/2.%20Code%20generator/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/03.%20Code%20generator/README.md).

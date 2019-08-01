@@ -7,4 +7,4 @@ gdb_debug
 
 GDB debug is a special tool that allow to simplify interaction with gdb.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/8.%20GDB%20debug/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/09.%20GDB%20debug/README.md).

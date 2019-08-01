@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.3. Code verifier
---------------------
+0.7.04. Code verifier
+---------------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/code_verifier/Screenshot.png?raw=true" alt="Screenshot"/>

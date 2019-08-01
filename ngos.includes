@@ -27,6 +27,7 @@ tools/qt/gdb_debug/
 tools/qt/gdb_debug/build/gen/
 tools/qt/image_builder/
 tools/qt/include/
+tools/qt/qmake/
 tools/qt/test_verifier/
 tools/qt/usb_boot_maker/
 tools/qt/usb_boot_maker/build/gen/

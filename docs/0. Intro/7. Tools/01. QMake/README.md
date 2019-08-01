@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.1. QMake
-------------
+0.7.01. QMake
+-------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/qmake/Screenshot.png?raw=true" alt="Screenshot"/>
@@ -14,6 +14,7 @@ We are using own qmake tool that parses pro files and generates required optimal
 
 ```sh
 qmake PATH_TO_PRO_FILE
+    * PATH_TO_PRO_FILE - path to pro file
 ```
 
 ### How to ...

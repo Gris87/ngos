@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.1. Image builder
---------------------
+0.7.02. Image builder
+---------------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/image_builder/Screenshot.png?raw=true" alt="Screenshot"/>
@@ -55,7 +55,7 @@ Since UEFI binaries are executed in physical mode, UEFI cannot guarantee that a 
 The structure of kernel image can be displayed on figure below:
 
 <p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/1.%20Image%20builder/Image%20structure.png?raw=true" alt="Image structure"/>
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/02.%20Image%20builder/Image%20structure.png?raw=true" alt="Image structure"/>
 </p>
 
 It is also possible to provide path to some text.elf file. In this case, Image builder will replace .config section and .kernel section with .text section that contain data from text.elf file.

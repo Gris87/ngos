@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.7. Build config GUI
------------------------
+0.7.08. Build config GUI
+------------------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/build_config_gui/Screenshot.png?raw=true" alt="Screenshot"/>

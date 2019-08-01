@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.5. Docs verifier
---------------------
+0.7.06. Docs verifier
+---------------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/docs_verifier/Screenshot.png?raw=true" alt="Screenshot"/>

@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.8. GDB debug
-----------------
+0.7.09. GDB debug
+-----------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/gdb_debug/Screenshot.png?raw=true" alt="Screenshot"/>

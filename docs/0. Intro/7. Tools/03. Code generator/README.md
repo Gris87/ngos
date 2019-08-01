@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.2. Code generator
----------------------
+0.7.03. Code generator
+----------------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/code_generator/Screenshot.png?raw=true" alt="Screenshot"/>

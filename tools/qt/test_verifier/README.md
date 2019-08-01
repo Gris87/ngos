@@ -7,4 +7,4 @@ test_verifier
 
 Test verifier tool is special tool for checking that all source code are covered by tests.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/4.%20Test%20verifier/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/05.%20Test%20verifier/README.md).

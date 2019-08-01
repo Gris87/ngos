@@ -7,4 +7,4 @@ code_verifier
 
 Code verifier tool is special tool for verifying code for several issues.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/3.%20Code%20verifier/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/04.%20Code%20verifier/README.md).

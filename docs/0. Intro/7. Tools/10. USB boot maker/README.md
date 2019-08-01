@@ -1,8 +1,8 @@
 NGOS
 ====
 
-0.7.9. USB boot maker
----------------------
+0.7.10. USB boot maker
+----------------------
 
 <p align="center">
     <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/usb_boot_maker/Screenshot.png?raw=true" alt="Screenshot"/>

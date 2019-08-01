@@ -7,8 +7,8 @@ NGOS
 All configuration parameters are defined in [include/buildconfig.h](../../../include/buildconfig.h) file.
 
 You can use the following tools to avoid manually editing of this file:
-* [Build config maker](../7.%20Tools/6.%20Build%20config%20maker/README.md)
-* [Build config GUI](../7.%20Tools/7.%20Build%20config%20GUI/README.md)
+* [Build config maker](../7.%20Tools/07.%20Build%20config%20maker/README.md)
+* [Build config GUI](../7.%20Tools/08.%20Build%20config%20GUI/README.md)
 
 ### ========== General parameters ==========
 

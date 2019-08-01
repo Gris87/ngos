@@ -81,7 +81,7 @@
         </font>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;GDB debug tool allows you to simplify interaction with GDB during debugging.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;a href=&quot;https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/8.%20GDB%20debug/README.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Read more...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;GDB debug tool allows you to simplify interaction with GDB during debugging.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;a href=&quot;https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/09.%20GDB%20debug/README.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Read more...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>

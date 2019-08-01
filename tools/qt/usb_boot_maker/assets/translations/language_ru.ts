@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../../src/main/aboutdialog.ui" line="84"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;a href=&quot;https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/9.%20USB%20boot%20maker/README.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Read more...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;USB boot maker позволяет создавать загрузочный USB флеш диск, готовый для установки NGOS.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;a href=&quot;https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/9.%20USB%20boot%20maker/README.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Подробнее...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;a href=&quot;https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/10.%20USB%20boot%20maker/README.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Read more...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;USB boot maker позволяет создавать загрузочный USB флеш диск, готовый для установки NGOS.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;a href=&quot;https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/10.%20USB%20boot%20maker/README.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Подробнее...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../src/main/aboutdialog.ui" line="131"/>

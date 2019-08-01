@@ -7,4 +7,4 @@ qmake
 
 We are using own qmake tool that parses pro files and generates required optimal Makefiles.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/1.%20QMake/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/01.%20QMake/README.md).

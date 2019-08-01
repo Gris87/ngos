@@ -47,7 +47,6 @@ fi
 
 
 
-
 rm ${SPELLING_TEMP} > /dev/null 2>&1
 
 
