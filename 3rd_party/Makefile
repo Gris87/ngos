@@ -33,4 +33,4 @@ $(TARGET_FREETYPE): $(FREETYPE_DIR)
 
 
 $(FREETYPE_DIR):
-	sh -c "./fetch_freetype.sh"
+	./fetch_freetype.sh

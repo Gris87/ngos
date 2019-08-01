@@ -10,7 +10,7 @@ all: $(SUBDIRS)
 clean: $(SUBDIRS)
 
 $(SUBDIRS):
-	$(MAKE) -C $@ $(MAKECMDGOALS)
+	sh -c "cd $@ && qmake $@.pro && make $(MAKECMDGOALS)"
 
 
 
