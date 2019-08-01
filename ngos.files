@@ -116,18 +116,23 @@ scripts/pull.sh
 scripts/push.sh
 scripts/simplify_spelling.sh
 scripts/update_ngos_files.sh
-src/apps/ls/Makefile
+src/apps/.gitignore
+src/apps/apps.pro
+src/apps/ls/.gitignore
+src/apps/ls/ls.pro
 src/apps/ls/README.md
-src/apps/Makefile
-src/libs/Makefile
-src/libs/qt/Makefile
+src/libs/.gitignore
+src/libs/libs.pro
+src/libs/qt/.gitignore
+src/libs/qt/qt.pro
 src/libs/qt/README.md
 src/Makefile
+src/os/.gitignore
 src/os/boot/.gitignore
 src/os/boot/asm/arch/x86_64/main.S
+src/os/boot/boot.pro
 src/os/boot/Image structure.png
 src/os/boot/linker.ld
-src/os/boot/Makefile
 src/os/boot/README.md
 src/os/bootloader/.gitignore
 src/os/bootloader/asm/arch/x86_64/main.S
@@ -347,7 +352,7 @@ src/os/kernel/Image structure.png
 src/os/kernel/linker.ld
 src/os/kernel/Makefile
 src/os/kernel/README.md
-src/os/Makefile
+src/os/os.pro
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memcpy.S
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memset.S
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memzero.S
