@@ -72,7 +72,7 @@ NgosStatus Bootloader::cleanUpPath(char8 *path)
                 do
                 {
                     ++source;
-                } while ((path[source] == '/') || (path[source] == '\\'));
+                } while((path[source] == '/') || (path[source] == '\\'));
             }
         }
         else
@@ -227,7 +227,7 @@ NgosStatus Bootloader::initDevicePath(char8 *applicationPath)
             }
 
             currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
-        } while (true);
+        } while(true);
 
         UEFI_LVVV(("-------------------------------------"));
     }
@@ -338,7 +338,7 @@ NgosStatus Bootloader::initVolumes()
                 }
 
                 currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
-            } while (true);
+            } while(true);
 
             UEFI_LVVV(("....................................."));
 
