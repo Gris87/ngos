@@ -121,12 +121,15 @@ src/apps/apps.pro
 src/apps/ls/.gitignore
 src/apps/ls/ls.pro
 src/apps/ls/README.md
+src/apps/ls/src/main.cpp
 src/libs/.gitignore
 src/libs/libs.pro
 src/libs/qt/.gitignore
 src/libs/qt/qt.pro
 src/libs/qt/README.md
 src/Makefile
+src/libs/qt/src/qt.cpp
+src/libs/qt/src/qt.h
 src/os/.gitignore
 src/os/boot/.gitignore
 src/os/boot/asm/arch/x86_64/main.S

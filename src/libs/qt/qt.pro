@@ -33,3 +33,11 @@ MOC_DIR     = build/gen
 RCC_DIR     = build/gen
 UI_DIR      = build/gen
 # Target dirs - END
+
+
+
+SOURCES += \
+    src/qt.cpp
+
+HEADERS += \
+    src/qt.h
