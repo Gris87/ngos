@@ -124,6 +124,7 @@ PGE
 PMD
 PTE
 PciRomImageWithInfo
+QEMU
 QHash
 QMap
 RAX
