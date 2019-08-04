@@ -22,7 +22,7 @@ private:
     qint64 generateSubdirsMakefile(const QString &workingDirectory); // TEST: NO
     qint64 generateApplicationMakefile(const QString &workingDirectory); // TEST: NO
     qint64 generateLibraryMakefile(const QString &workingDirectory); // TEST: NO
-    qint64 save(const QString &workingDirectory, const QStringList &lines);
+    qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = "");
 
     QString                    mPathToProFile;
     QRegularExpression         mCommentRegexp;

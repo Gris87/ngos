@@ -243,13 +243,29 @@ qint64 QMake::generateSubdirsMakefile(const QString &workingDirectory)
 
     QStringList lines;
 
-    lines.append("# Makefile tools:");
+    lines.append("####################################");
+    lines.append("# Makefile definitions:");
+    lines.append("####################################");
+    lines.append("");
+    lines.append("");
+    lines.append("");
     lines.append("QMAKE = " + qApp->applicationFilePath());
     lines.append("");
     lines.append("");
     lines.append("");
+    lines.append("####################################");
     lines.append("# Project specific definitions:");
+    lines.append("####################################");
+    lines.append("");
+    lines.append("");
+    lines.append("");
     lines.append("SUBDIRS = " + mEntries.value("SUBDIRS").join(' '));
+    lines.append("");
+    lines.append("");
+    lines.append("");
+    lines.append("####################################");
+    lines.append("# Targets:");
+    lines.append("####################################");
     lines.append("");
     lines.append("");
     lines.append("");
@@ -259,21 +275,12 @@ qint64 QMake::generateSubdirsMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("");
     lines.append("");
-    lines.append("Makefile: " + mMakefileDependencies.join(' '));
-    lines.append("\t$(QMAKE) " + mMakefileDependencies.at(0));
-    lines.append("");
-    lines.append("");
-    lines.append("");
     lines.append("$(SUBDIRS):");
-    lines.append("\t$(MAKE) -C $@ $(MAKECMDGOALS)");
-    lines.append("");
-    lines.append("");
-    lines.append("");
-    lines.append(".PHONY: $(SUBDIRS)");
+    lines.append("\tsh -c \"cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && $(QMAKE) $@.pro && make -j`nproc` $(MAKECMDGOALS)\"");
 
 
 
-    return save(workingDirectory, lines);
+    return save(workingDirectory, lines, "$(SUBDIRS)");
 }
 
 qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
@@ -290,7 +297,7 @@ qint64 QMake::generateLibraryMakefile(const QString &workingDirectory)
     return 0;
 }
 
-qint64 QMake::save(const QString &workingDirectory, const QStringList &lines)
+qint64 QMake::save(const QString &workingDirectory, const QStringList &lines, const QString &phony)
 {
     QFile file(workingDirectory + "/Makefile");
 
@@ -309,6 +316,20 @@ qint64 QMake::save(const QString &workingDirectory, const QStringList &lines)
     file.write("\n\n\n");
     file.write(lines.join('\n').toUtf8());
     file.write("\n");
+
+    if (phony != "")
+    {
+        file.write("\n\n\n");
+        file.write(QString(".PHONY: %1\n").arg(phony).toUtf8());
+    }
+
+    file.write("\n\n\n");
+    file.write("####################################\n");
+    file.write("# Makefile target:\n");
+    file.write("####################################\n");
+    file.write("\n\n\n");
+    file.write(QString("Makefile: $(QMAKE) %1\n").arg(mMakefileDependencies.join(' ')).toUtf8());
+    file.write(QString("\t$(QMAKE) %1\n").arg(mMakefileDependencies.at(0)).toUtf8());
 
 
 
