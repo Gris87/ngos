@@ -5,8 +5,7 @@
 
 
 
-#define WORKERS_COUNT 8
-#define SCENE_WIDTH   4096
+#define SCENE_WIDTH 4096
 
 
 
@@ -29,10 +28,11 @@ MemoryMapDialog::MemoryMapDialog(HexGraphicsView *hexgraphicsview, QWidget *pare
 
 
 
-    quint64 total = MEMORY_SIZE_MB * MB_SIZE;
-    quint64 part  = total / WORKERS_COUNT;
+    qint64  workersCount = QThread::idealThreadCount();
+    quint64 total        = MEMORY_SIZE_MB * MB_SIZE;
+    quint64 part         = total / workersCount;
 
-    for (qint64 i = 0; i < WORKERS_COUNT; ++i)
+    for (qint64 i = 0; i < workersCount; ++i)
     {
         MemoryMapThread *worker = new MemoryMapThread(mHexgraphicsview, i * part, (i + 1) * part);
         connect(worker, SIGNAL(finished()), this, SLOT(workerFinished()));
@@ -44,7 +44,7 @@ MemoryMapDialog::MemoryMapDialog(HexGraphicsView *hexgraphicsview, QWidget *pare
 
 MemoryMapDialog::~MemoryMapDialog()
 {
-    for (qint64 i = 0; i < WORKERS_COUNT; ++i)
+    for (qint64 i = 0; i < mWorkers.length(); ++i)
     {
         MemoryMapThread *worker = mWorkers.at(i);
 
@@ -74,11 +74,11 @@ void MemoryMapDialog::workerFinished()
 {
     ++mWorkersCompleted;
 
-    if (mWorkersCompleted == WORKERS_COUNT)
+    if (mWorkersCompleted == mWorkers.length())
     {
         QList<MemoryMapInfo> memoryMapBlocks;
 
-        for (qint64 i = 0; i < WORKERS_COUNT; ++i)
+        for (qint64 i = 0; i < mWorkers.length(); ++i)
         {
             MemoryMapThread *worker = mWorkers.at(i);
 

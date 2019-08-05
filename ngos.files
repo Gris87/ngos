@@ -1193,6 +1193,8 @@ tools/qt/qmake/Screenshot.png
 tools/qt/qmake/src/main.cpp
 tools/qt/qmake/src/main/qmake.cpp
 tools/qt/qmake/src/main/qmake.h
+tools/qt/qmake/src/threads/searchdependenciesthread.cpp
+tools/qt/qmake/src/threads/searchdependenciesthread.h
 tools/qt/test_verifier/.gitignore
 tools/qt/test_verifier/README.md
 tools/qt/test_verifier/Screenshot.png

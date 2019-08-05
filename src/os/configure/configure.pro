@@ -4,7 +4,7 @@ CONFIG += c++14 console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-TARGET = ls
+TARGET = configure.elf
 TEMPLATE = app
 
 

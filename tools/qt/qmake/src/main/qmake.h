@@ -22,13 +22,16 @@ private:
     qint64 generateSubdirsMakefile(const QString &workingDirectory); // TEST: NO
     qint64 generateApplicationMakefile(const QString &workingDirectory); // TEST: NO
     qint64 generateLibraryMakefile(const QString &workingDirectory); // TEST: NO
-    qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = "");
+    qint64 addApplicationObjectsDefinitions(const QString &workingDirectory, QStringList &lines); // TEST: NO
+    qint64 addApplicationBuildTargets(const QString &workingDirectory, QStringList &lines); // TEST: NO
+    qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = ""); // TEST: NO
 
     QString                    mPathToProFile;
     QRegularExpression         mCommentRegexp;
     QRegularExpression         mEntryRegexp;
     QRegularExpression         mEntryValueRegexp;
     QMap<QString, QStringList> mEntries;
+    QMap<QString, QString>     mSourceToObjectMap;
     QStringList                mMakefileDependencies;
 };
 

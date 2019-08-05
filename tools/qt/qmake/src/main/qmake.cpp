@@ -1,10 +1,13 @@
 #include "qmake.h"
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 #include <QIODevice>
 #include <console/console.h>
+
+#include "src/threads/searchdependenciesthread.h"
 
 
 
@@ -14,6 +17,7 @@ QMake::QMake(const QString &pathToProFile)
     , mEntryRegexp("^ *(\\w+) *([+-]?=) *(.*)$")
     , mEntryValueRegexp("(\\\"[^\\\"]*\\\"|[^ ]+)")
     , mEntries()
+    , mSourceToObjectMap()
     , mMakefileDependencies()
 {
     // Nothing
@@ -28,7 +32,7 @@ qint64 QMake::process()
 
     qint64 res = processInWorkingDirectory(workingDirectory, fileInfo.fileName());
 
-    if (res)
+    if (res) // res != 0
     {
         return res;
     }
@@ -285,14 +289,241 @@ qint64 QMake::generateSubdirsMakefile(const QString &workingDirectory)
 
 qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 {
-    Console::err(workingDirectory);
+    if (!mEntries.contains("SOURCES"))
+    {
+        Console::err("SOURCES not specified in pro file");
 
-    return 0;
+        return 1;
+    }
+
+    if (!mEntries.contains("TARGET"))
+    {
+        Console::err("TARGET not specified in pro file");
+
+        return 1;
+    }
+
+
+
+    QStringList lines;
+
+    lines.append("####################################");
+    lines.append("# Makefile definitions:");
+    lines.append("####################################");
+    lines.append("");
+    lines.append("");
+    lines.append("");
+    lines.append("QMAKE = " + qApp->applicationFilePath());
+    lines.append("CC    = x86_64-elf-gcc");
+    lines.append("CXX   = x86_64-elf-g++");
+    lines.append("LD    = x86_64-elf-ld");
+    lines.append("");
+    lines.append("MKDIR = mkdir -p");
+    lines.append("RMDIR = rm -rf");
+    lines.append("");
+    lines.append("CFLAGS   =");
+    lines.append("CXXFLAGS =");
+    lines.append("LDFLAGS  =");
+    lines.append("");
+    lines.append("");
+    lines.append("");
+    lines.append("####################################");
+    lines.append("# Project specific definitions:");
+    lines.append("####################################");
+    lines.append("");
+    lines.append("");
+    lines.append("");
+    lines.append("TARGET     = " + mEntries.value("TARGET").join(' '));
+    lines.append("OUTPUT_DIR = build");
+
+
+
+    qint64 res = addApplicationObjectsDefinitions(workingDirectory, lines);
+
+    if (res) // res != 0
+    {
+        return res;
+    }
+
+
+
+    res = addApplicationBuildTargets(workingDirectory, lines);
+
+    if (res) // res != 0
+    {
+        return res;
+    }
+
+
+    return save(workingDirectory, lines);
 }
 
 qint64 QMake::generateLibraryMakefile(const QString &workingDirectory)
 {
     Console::err(workingDirectory);
+
+    return 0;
+}
+
+qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirectory*/, QStringList &lines)
+{
+    const QStringList &sources = mEntries.value("SOURCES");
+    QStringList        objects;
+
+    for (qint64 i = 0; i < sources.length(); ++i)
+    {
+        QString originalSource = sources.at(i);
+        QString source         = originalSource;
+
+        if (source.endsWith(".cpp"))
+        {
+            source.remove(source.length() - 4, 4);
+        }
+        else
+        if (source.endsWith(".S"))
+        {
+            source.remove(source.length() - 2, 2);
+        }
+        else
+        {
+            Console::err(QString("Unexpected source: %1").arg(source));
+
+            return 1;
+        }
+
+        QString object = "$(OUTPUT_DIR)/" + source + ".o";
+
+        objects.append(object);
+        mSourceToObjectMap.insert(originalSource, object);
+    }
+
+    lines.append("OBJECTS    = " + objects.join(' '));
+
+
+
+    return 0;
+}
+
+qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStringList &lines)
+{
+    SearchDependenciesThread::putSources(mEntries.value("SOURCES"));
+
+
+
+    QList<SearchDependenciesThread *> threads;
+
+    for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)
+    {
+        SearchDependenciesThread *thread = new SearchDependenciesThread(workingDirectory);
+        thread->start();
+        threads.append(thread);
+    }
+
+
+
+    lines.append("");
+    lines.append("");
+    lines.append("");
+    lines.append("####################################");
+    lines.append("# Targets definitions:");
+    lines.append("####################################");
+    lines.append("");
+    lines.append("");
+    lines.append("");
+    lines.append("all: Makefile $(OUTPUT_DIR)/$(TARGET)");
+    lines.append("");
+    lines.append("clean: Makefile");
+    lines.append("\t$(RMDIR) $(OUTPUT_DIR)");
+    lines.append("");
+    lines.append("");
+    lines.append("");
+    lines.append("$(OUTPUT_DIR)/$(TARGET): $(OBJECTS)");
+    lines.append("\t$(LD) $(LDFLAGS) $(OBJECTS) -o $@");
+
+
+
+    bool hasErrors = false;
+
+    for (qint64 i = 0; i < threads.length(); ++i)
+    {
+        SearchDependenciesThread *thread = threads.at(i);
+        thread->wait();
+
+
+
+        QStringList errors = thread->getErrors();
+
+        if (errors.length() > 0)
+        {
+            hasErrors = true;
+
+            for (qint64 j = 0; j < errors.length(); ++j)
+            {
+                Console::err(errors.at(j));
+            }
+        }
+
+
+
+        delete thread;
+    }
+
+
+
+    if (hasErrors)
+    {
+        return 1;
+    }
+
+
+
+    QMap<QString, QStringList> dependenciesMap = SearchDependenciesThread::buildDependenciesMap();
+
+    for (QMap<QString, QString>::Iterator it = mSourceToObjectMap.begin(); it != mSourceToObjectMap.end(); ++it)
+    {
+        QString source = it.key();
+        QString object = it.value();
+
+
+
+        if (!dependenciesMap.contains(source))
+        {
+            Console::err(QString("Dependencies not found for source: %1").arg(source));
+
+            return 1;
+        }
+
+        QStringList dependencies = dependenciesMap.value(source);
+
+
+
+        lines.append("");
+        lines.append("");
+        lines.append("");
+        lines.append(QString("%1: %2 %3").arg(object).arg(source).arg(dependencies.join(' ')));
+
+        if (source.endsWith(".cpp"))
+        {
+            lines.append("\t$(MKDIR) $(@D)");
+            lines.append("\t$(CXX) -c $(CXXFLAGS) -E $< -o $@.cpp");
+            lines.append("\t$(CXX) -c $(CXXFLAGS) -S $< -o $@.S");
+            lines.append("\t$(CXX) -c $(CXXFLAGS) $< -o $@");
+        }
+        else
+        if (source.endsWith(".S"))
+        {
+            lines.append("\t$(MKDIR) $(@D)");
+            lines.append("\t$(CC) -c $(CFLAGS) $< -o $@");
+        }
+        else
+        {
+            Console::err(QString("Unexpected source: %1").arg(source));
+
+            return 1;
+        }
+    }
+
+
 
     return 0;
 }

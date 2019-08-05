@@ -13,10 +13,6 @@
 
 
 
-#define WORKERS_COUNT 8
-
-
-
 void usage()
 {
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -75,7 +71,7 @@ qint32 main(qint32 argc, char *argv[])
 
     QList<DocsWorkerThread *> workers;
 
-    for (qint64 i = 0; i < WORKERS_COUNT; ++i)
+    for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)
     {
         DocsWorkerThread *worker = new DocsWorkerThread();
         worker->start();
