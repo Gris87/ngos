@@ -321,10 +321,6 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     lines.append("MKDIR = mkdir -p");
     lines.append("RMDIR = rm -rf");
     lines.append("");
-    lines.append("CFLAGS   =");
-    lines.append("CXXFLAGS =");
-    lines.append("LDFLAGS  =");
-    lines.append("");
     lines.append("");
     lines.append("");
     lines.append("####################################");
@@ -334,7 +330,13 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("");
     lines.append("TARGET     = " + mEntries.value("TARGET").join(' '));
+    lines.append("");
+    lines.append("CFLAGS     = " + mEntries.value("QMAKE_CFLAGS").join(' '));
+    lines.append("CXXFLAGS   = " + mEntries.value("QMAKE_CXXFLAGS").join(' '));
+    lines.append("LFLAGS     = " + mEntries.value("QMAKE_LFLAGS").join(' '));
+    lines.append("");
     lines.append("OUTPUT_DIR = build");
+    lines.append("");
 
 
 
@@ -438,7 +440,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStrin
     lines.append("");
     lines.append("");
     lines.append("$(OUTPUT_DIR)/$(TARGET): $(OBJECTS)");
-    lines.append("\t$(LD) $(LDFLAGS) $(OBJECTS) -o $@");
+    lines.append("\t$(LD) $(LFLAGS) $(OBJECTS) -o $@");
 
 
 
