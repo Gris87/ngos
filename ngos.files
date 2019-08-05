@@ -359,6 +359,7 @@ src/os/os.pro
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memcpy.S
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memset.S
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memzero.S
+src/os/shared/common/common.pri
 src/os/shared/common/src/bits64/assets/assetentry.h
 src/os/shared/common/src/bits64/assets/assets.cpp
 src/os/shared/common/src/bits64/assets/assets.h
@@ -491,6 +492,7 @@ src/os/shared/common/src/bits64/zlib/zlibcompressionmethod.h
 src/os/shared/common/src/bits64/zlib/zlibheader.h
 src/os/shared/kernelbase/asm/arch/x86_64/bits64/a_early/main/setupidthandlers.S
 src/os/shared/kernelbase/asm/arch/x86_64/main.S
+src/os/shared/kernelbase/kernelbase.pri
 src/os/shared/kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h
 src/os/shared/kernelbase/src/bits64/a_early/main/disableirq.cpp
 src/os/shared/kernelbase/src/bits64/a_early/main/disableirq.h
@@ -846,6 +848,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/testcase.h
 src/os/shared/uefibase/test/bits64/testengine.h
 src/os/shared/uefibase/test/bits64/testresults.cpp
 src/os/shared/uefibase/test/bits64/testresults.h
+src/os/shared/uefibase/uefibase.pri
 test/.gitignore
 test/start.sh
 test/tests/01. Code verification.sh

@@ -16,6 +16,7 @@ QMake::QMake(const QString &pathToProFile)
     , mCommentRegexp("^((?:[^\\\"#]+(?:\\\"[^\\\"]*\\\")?)*)#.*$")
     , mEntryRegexp("^ *(\\w+) *([+-]?=) *(.*)$")
     , mEntryValueRegexp("(\\\"[^\\\"]*\\\"|[^ ]+)")
+    , mIncludeRegexp("^ *include\\((.*)\\).*$")
     , mEntries()
     , mSourceToObjectMap()
     , mMakefileDependencies()
@@ -132,6 +133,32 @@ qint64 QMake::processLines(const QString &workingDirectory, const QStringList &l
             if (!parseEntry(workingDirectory, entryName, entryOperator, entryValue))
             {
                 return 1;
+            }
+
+
+
+            continue;
+        }
+
+
+
+        match = mIncludeRegexp.match(line);
+
+        if (match.hasMatch())
+        {
+            QString includePath = match.captured(1);
+            includePath.remove("$$PWD/");
+
+            QFileInfo fileInfo            = QFileInfo(workingDirectory + '/' + includePath);
+            QString   workingSubDirectory = fileInfo.absolutePath();
+
+
+
+            qint64 res = processInWorkingDirectory(workingSubDirectory, fileInfo.fileName());
+
+            if (res) // res != 0
+            {
+                return res;
             }
 
 
@@ -314,6 +341,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("");
     lines.append("QMAKE = " + qApp->applicationFilePath());
+    lines.append("");
     lines.append("CC    = x86_64-elf-gcc");
     lines.append("CXX   = x86_64-elf-g++");
     lines.append("LD    = x86_64-elf-ld");
@@ -331,8 +359,31 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("TARGET     = " + mEntries.value("TARGET").join(' '));
     lines.append("");
-    lines.append("CFLAGS     = " + mEntries.value("QMAKE_CFLAGS").join(' '));
-    lines.append("CXXFLAGS   = " + mEntries.value("QMAKE_CXXFLAGS").join(' '));
+    lines.append("INCLUDES   = \\");
+
+
+
+    QStringList includes = mEntries.value("INCLUDEPATH");
+
+    if (includes.length() > 0)
+    {
+        lines.append("\t-I . \\");
+
+        for (qint64 i = 0; i < includes.length(); ++i)
+        {
+            lines.append("\t-I " + includes.at(i) + (i < includes.length() - 1 ? " \\" : ""));
+        }
+    }
+    else
+    {
+        lines.append("\t-I .");
+    }
+
+
+
+    lines.append("");
+    lines.append("CFLAGS     = " + mEntries.value("QMAKE_CFLAGS").join(' ')   + " $(INCLUDES)");
+    lines.append("CXXFLAGS   = " + mEntries.value("QMAKE_CXXFLAGS").join(' ') + " $(INCLUDES)");
     lines.append("LFLAGS     = " + mEntries.value("QMAKE_LFLAGS").join(' '));
     lines.append("");
     lines.append("OUTPUT_DIR = build");
@@ -357,6 +408,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     }
 
 
+
     return save(workingDirectory, lines);
 }
 
@@ -369,13 +421,18 @@ qint64 QMake::generateLibraryMakefile(const QString &workingDirectory)
 
 qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirectory*/, QStringList &lines)
 {
+    lines.append("OBJECTS    = \\");
+
+
+
     const QStringList &sources = mEntries.value("SOURCES");
-    QStringList        objects;
 
     for (qint64 i = 0; i < sources.length(); ++i)
     {
         QString originalSource = sources.at(i);
         QString source         = originalSource;
+
+
 
         if (source.endsWith(".cpp"))
         {
@@ -393,13 +450,18 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
             return 1;
         }
 
+        if (source.startsWith('/'))
+        {
+            source.remove(0, 1);
+        }
+
+
+
         QString object = "$(OUTPUT_DIR)/" + source + ".o";
 
-        objects.append(object);
         mSourceToObjectMap.insert(originalSource, object);
+        lines.append("\t" + object + (i < sources.length() - 1 ? " \\" : ""));
     }
-
-    lines.append("OBJECTS    = " + objects.join(' '));
 
 
 
@@ -408,7 +470,7 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
 
 qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStringList &lines)
 {
-    SearchDependenciesThread::putSources(mEntries.value("SOURCES"));
+    SearchDependenciesThread::initSources(mEntries.value("INCLUDEPATH"), mEntries.value("SOURCES"));
 
 
 

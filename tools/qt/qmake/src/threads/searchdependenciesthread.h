@@ -15,7 +15,7 @@ class SearchDependenciesThread: public QThread
 public:
     SearchDependenciesThread(const QString &workingDirectory); // TEST: NO
 
-    static void putSources(const QStringList &sources); // TEST: NO
+    static void initSources(const QStringList &includes, const QStringList &sources); // TEST: NO
     static void addSourcesForDependencies(const QStringList &sources); // TEST: NO
     static QString takeSource(); // TEST: NO
     static void addDependencies(const QString &source, const QStringList &dependencies); // TEST: NO
@@ -30,6 +30,7 @@ protected:
     void run() override; // TEST: NO
 
 private:
+    static QStringList                sIncludes;
     static QStringList                sSources;
     static qint64                     sTotalSources;
     static QMap<QString, QStringList> sDependencies;

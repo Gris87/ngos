@@ -30,6 +30,7 @@ private:
     QRegularExpression         mCommentRegexp;
     QRegularExpression         mEntryRegexp;
     QRegularExpression         mEntryValueRegexp;
+    QRegularExpression         mIncludeRegexp;
     QMap<QString, QStringList> mEntries;
     QMap<QString, QString>     mSourceToObjectMap;
     QStringList                mMakefileDependencies;

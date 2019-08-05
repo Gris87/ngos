@@ -1,14 +1,16 @@
 #include "searchdependenciesthread.h"
 
 #include <QFile>
+#include <QFileInfo>
 #include <QIODevice>
 
 
 
-#define WAIT_FOR_SOURCE_DELAY 200
+#define WAIT_FOR_SOURCE_DELAY 20
 
 
 
+QStringList                SearchDependenciesThread::sIncludes;
 QStringList                SearchDependenciesThread::sSources;
 qint64                     SearchDependenciesThread::sTotalSources;
 QMap<QString, QStringList> SearchDependenciesThread::sDependencies;
@@ -23,8 +25,9 @@ SearchDependenciesThread::SearchDependenciesThread(const QString &workingDirecto
     // Nothing
 }
 
-void SearchDependenciesThread::putSources(const QStringList &sources)
+void SearchDependenciesThread::initSources(const QStringList &includes, const QStringList &sources)
 {
+    sIncludes     = includes;
     sSources      = sources;
     sTotalSources = sSources.length();
 }
@@ -149,7 +152,46 @@ bool SearchDependenciesThread::handleSource(const QString &source)
             {
                 QString includedFile = line.mid(1, line.length() - 2);
 
-                dependencies.append(includedFile);
+
+
+                QString parentFolder = filename.left(filename.lastIndexOf('/') + 1);
+
+                if (QFile::exists(parentFolder + includedFile))
+                {
+                    dependencies.append(QFileInfo(parentFolder + includedFile).absoluteFilePath());
+                }
+                else
+                {
+                    if (QFile::exists(mWorkingDirectory + '/' + includedFile))
+                    {
+                        dependencies.append(QFileInfo(mWorkingDirectory + '/' + includedFile).absoluteFilePath());
+                    }
+                    else
+                    {
+                        bool found = false;
+
+                        for (qint64 j = 0; j < sIncludes.length(); ++j)
+                        {
+                            QString path = mWorkingDirectory + '/' + sIncludes.at(j) + '/' + includedFile;
+
+                            if (QFile::exists(path))
+                            {
+                                found = true;
+
+                                dependencies.append(QFileInfo(path).absoluteFilePath());
+
+                                break;
+                            }
+                        }
+
+                        if (!found)
+                        {
+                            addError(QString("Failed to find included file \"%1\"").arg(includedFile));
+
+                            return false;
+                        }
+                    }
+                }
             }
         }
     }
