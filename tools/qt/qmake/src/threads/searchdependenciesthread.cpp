@@ -6,15 +6,13 @@
 
 
 
-#define WAIT_FOR_SOURCE_DELAY 20
-
-
-
 QStringList                SearchDependenciesThread::sIncludes;
 QStringList                SearchDependenciesThread::sSources;
-qint64                     SearchDependenciesThread::sTotalSources;
+qint64                     SearchDependenciesThread::sNumberOfThreads;
+qint64                     SearchDependenciesThread::sNumberOfBlockedThreads;
 QMap<QString, QStringList> SearchDependenciesThread::sDependencies;
 QMutex                     SearchDependenciesThread::sSourcesMutex;
+QSemaphore                 SearchDependenciesThread::sSourcesSemaphore;
 
 
 
@@ -25,55 +23,56 @@ SearchDependenciesThread::SearchDependenciesThread(const QString &workingDirecto
     // Nothing
 }
 
-void SearchDependenciesThread::initSources(const QStringList &includes, const QStringList &sources)
+void SearchDependenciesThread::init(const QStringList &includes, const QStringList &sources, qint64 numberOfThreads)
 {
-    sIncludes     = includes;
-    sSources      = sources;
-    sTotalSources = sSources.length();
-}
+    sIncludes               = includes;
+    sSources                = sources;
+    sNumberOfThreads        = numberOfThreads;
+    sNumberOfBlockedThreads = 0;
 
-void SearchDependenciesThread::addSourcesForDependencies(const QStringList &sources)
-{
-    QMutexLocker lock(&sSourcesMutex);
-
-
-
-    for (qint64 i = 0; i < sources.length(); ++i)
-    {
-        const QString &source = sources.at(i);
-
-        if (
-            !sSources.contains(source)
-            &&
-            !sDependencies.contains(source)
-           )
-        {
-            sSources.append(source);
-            ++sTotalSources;
-        }
-    }
+    sSourcesSemaphore.release(sSources.length());
 }
 
 QString SearchDependenciesThread::takeSource()
 {
-    do
+    bool skipSemaphore = false;
+
     {
+        QMutexLocker lock(&sSourcesMutex);
+
+        ++sNumberOfBlockedThreads;
+
+        if (
+            sNumberOfBlockedThreads >= sNumberOfThreads
+            &&
+            sSources.length() == 0
+           )
         {
-            QMutexLocker lock(&sSourcesMutex);
+            skipSemaphore = true;
+        }
+    }
 
-            if (sSources.length() > 0)
-            {
-                return sSources.takeFirst();
-            }
+    if (!skipSemaphore)
+    {
+        sSourcesSemaphore.acquire();
+    }
 
-            if (sDependencies.size() >= sTotalSources)
-            {
-                return "";
-            }
+
+
+    {
+        QMutexLocker lock(&sSourcesMutex);
+
+        if (sSources.length() > 0)
+        {
+            --sNumberOfBlockedThreads;
+
+            return sSources.takeFirst();
         }
 
-        msleep(WAIT_FOR_SOURCE_DELAY);
-    } while(true);
+        sSourcesSemaphore.release();
+
+        return "";
+    }
 }
 
 void SearchDependenciesThread::addDependencies(const QString &source, const QStringList &dependencies)
@@ -81,11 +80,71 @@ void SearchDependenciesThread::addDependencies(const QString &source, const QStr
     QMutexLocker lock(&sSourcesMutex);
 
     sDependencies.insert(source, dependencies);
+
+    for (qint64 i = 0; i < dependencies.length(); ++i)
+    {
+        const QString &dependency = dependencies.at(i);
+
+        if (
+            !sSources.contains(dependency)
+            &&
+            !sDependencies.contains(dependency)
+           )
+        {
+            sSources.append(dependency);
+            sSourcesSemaphore.release();
+        }
+    }
 }
 
 QMap<QString, QStringList> SearchDependenciesThread::buildDependenciesMap()
 {
-    return sDependencies;
+    QMap<QString, QStringList> res;
+
+    for (QMap<QString, QStringList>::Iterator it = sDependencies.begin(); it != sDependencies.end(); ++it)
+    {
+        buildDependenciesForSource(it.key(), res);
+    }
+
+    return res;
+}
+
+QStringList SearchDependenciesThread::buildDependenciesForSource(const QString &source, QMap<QString, QStringList> &dependenciesMap)
+{
+    if (dependenciesMap.contains(source))
+    {
+        return dependenciesMap.value(source);
+    }
+
+
+
+    QStringList res = sDependencies.value(source);
+
+    for (qint64 i = 0; i < res.length(); ++i)
+    {
+        QStringList nextDependencies = buildDependenciesForSource(res.at(i), dependenciesMap);
+
+
+
+        for (qint64 j = 0; j < nextDependencies.length(); ++j)
+        {
+            QString nextDependency = nextDependencies.at(j);
+
+            if (!res.contains(nextDependency))
+            {
+                res.append(nextDependency);
+            }
+        }
+    }
+
+
+
+    res.sort();
+    dependenciesMap.insert(source, res);
+
+
+
+    return res;
 }
 
 void SearchDependenciesThread::addError(const QString &error)

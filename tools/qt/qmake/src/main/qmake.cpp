@@ -363,7 +363,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
 
-    QStringList includes = mEntries.value("INCLUDEPATH");
+    const QStringList &includes = mEntries.value("INCLUDEPATH");
 
     if (includes.length() > 0)
     {
@@ -470,13 +470,15 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
 
 qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStringList &lines)
 {
-    SearchDependenciesThread::initSources(mEntries.value("INCLUDEPATH"), mEntries.value("SOURCES"));
+    qint64 workersCount = QThread::idealThreadCount();
+
+    SearchDependenciesThread::init(mEntries.value("INCLUDEPATH"), mEntries.value("SOURCES"), workersCount);
 
 
 
     QList<SearchDependenciesThread *> threads;
 
-    for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)
+    for (qint64 i = 0; i < workersCount; ++i)
     {
         SearchDependenciesThread *thread = new SearchDependenciesThread(workingDirectory);
         thread->start();
