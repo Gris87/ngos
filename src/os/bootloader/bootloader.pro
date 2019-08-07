@@ -9,11 +9,22 @@ TEMPLATE = app
 
 
 
+VECTORIZATION_FLAGS = -mno-mmx -mno-sse
+FMA_FLAGS           = -mno-fma
+
+
+
+DEFINES += \
+    BUILD_TARGET_BOOTLOADER \
+    UEFI_APPLICATION
+
+
+
 INCLUDEPATH += \
-    ../shared/ \                # src/os/shared/
-    ../include/ \               # src/os/include/
-    ../../../include/ \         # include/
-    ../../../include/stdinc/    # include/stdinc/
+    ../shared \                # /src/os/shared
+    ../include \               # /src/os/include
+    ../../../include \         # /include
+    ../../../include/stdinc    # /include/stdinc
 
 
 
@@ -23,6 +34,8 @@ include(../shared/uefibase/uefibase.pri)
 
 
 QMAKE_LFLAGS += \
+    -pie \
+    --no-dynamic-linker \
     -T linker.ld
 
 

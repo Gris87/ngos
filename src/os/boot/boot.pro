@@ -9,6 +9,11 @@ TEMPLATE = app
 
 
 
+VECTORIZATION_FLAGS = -mno-mmx -mno-sse
+FMA_FLAGS           = -mno-fma
+
+
+
 QMAKE_LFLAGS += \
     -T linker.ld
 

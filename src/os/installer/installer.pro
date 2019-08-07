@@ -10,10 +10,10 @@ TEMPLATE = app
 
 
 INCLUDEPATH += \
-    ../shared/ \                # src/os/shared/
-    ../include/ \               # src/os/include/
-    ../../../include/ \         # include/
-    ../../../include/stdinc/    # include/stdinc/
+    ../shared \                # /src/os/shared
+    ../include \               # /src/os/include
+    ../../../include \         # /include
+    ../../../include/stdinc    # /include/stdinc
 
 
 

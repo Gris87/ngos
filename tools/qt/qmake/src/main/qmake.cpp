@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QIODevice>
 #include <console/console.h>
+#include <buildconfig.h>
 
 #include "src/threads/searchdependenciesthread.h"
 
@@ -348,6 +349,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("MKDIR = mkdir -p");
     lines.append("RMDIR = rm -rf");
+    lines.append("CAT   = cat");
     lines.append("");
     lines.append("");
     lines.append("");
@@ -357,9 +359,97 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("");
     lines.append("");
-    lines.append("TARGET     = " + mEntries.value("TARGET").join(' '));
+    lines.append("TARGET              = " + mEntries.value("TARGET").join(' '));
     lines.append("");
-    lines.append("INCLUDES   = \\");
+
+
+
+    QString tail;
+
+
+
+    QString vectorizationFlags = mEntries.value("VECTORIZATION_FLAGS").join(' ');
+
+    if (vectorizationFlags != "")
+    {
+        lines.append("VECTORIZATION_FLAGS = " + vectorizationFlags);
+    }
+    else
+    {
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_NONE
+        lines.append("VECTORIZATION_FLAGS = -mno-mmx -mno-sse");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE
+        lines.append("VECTORIZATION_FLAGS = -msse");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE2
+        lines.append("VECTORIZATION_FLAGS = -msse2");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE3
+        lines.append("VECTORIZATION_FLAGS = -msse3 -mssse3");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE4
+        lines.append("VECTORIZATION_FLAGS = -msse4 -msse4.1 -msse4.2");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX
+        lines.append("VECTORIZATION_FLAGS = -mavx");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX2
+        lines.append("VECTORIZATION_FLAGS = -mavx2");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1
+        lines.append("VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512er -mavx512pf");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V2
+        lines.append("VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl");
+#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3
+        lines.append("VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl -mavx512ifma -mavx512vbmi");
+#else
+#error Unexpected value for NGOS_BUILD_X86_64_VECTORIZATION_MODE parameter
+#endif
+    }
+
+    tail += " $(VECTORIZATION_FLAGS)";
+
+
+
+    QString fmaFlags = mEntries.value("FMA_FLAGS").join(' ');
+
+    if (fmaFlags != "")
+    {
+        lines.append("FMA_FLAGS           = " + fmaFlags);
+    }
+    else
+    {
+#if NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD == OPTION_X86_64_FUSED_MULTIPLY_ADD_NONE
+        lines.append("FMA_FLAGS           = -mno-fma");
+#elif NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD == OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA4
+        lines.append("FMA_FLAGS           = -mfma4");
+#elif NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD == OPTION_X86_64_FUSED_MULTIPLY_ADD_FMA3
+        lines.append("FMA_FLAGS           = -mfma");
+#else
+#error Unexpected value for NGOS_BUILD_X86_64_FUSED_MULTIPLY_ADD parameter
+#endif
+    }
+
+    tail += " $(FMA_FLAGS)";
+
+
+
+#if NGOS_BUILD_RELEASE == OPTION_NO
+    lines.append("DEBUG_FLAGS         = -g");
+
+    tail += " $(DEBUG_FLAGS)";
+#endif
+
+
+
+    const QStringList &defines = mEntries.value("DEFINES");
+
+    if (defines.length() > 0)
+    {
+        lines.append("");
+        lines.append("DEFINES             = \\");
+
+        for (qint64 i = 0; i < defines.length(); ++i)
+        {
+            lines.append("\t-D" + defines.at(i) + (i < defines.length() - 1 ? " \\" : ""));
+        }
+
+        tail += " $(DEFINES)";
+    }
 
 
 
@@ -367,26 +457,38 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
     if (includes.length() > 0)
     {
-        lines.append("\t-I . \\");
+        lines.append("");
+        lines.append("INCLUDES            = \\");
+        lines.append("\t-I . \\                             # " + workingDirectory);
 
         for (qint64 i = 0; i < includes.length(); ++i)
         {
-            lines.append("\t-I " + includes.at(i) + (i < includes.length() - 1 ? " \\" : ""));
+            QString include = includes.at(i);
+
+            if (i < includes.length() - 1)
+            {
+                include += " \\";
+            }
+
+            lines.append(QString("\t-I %1 %2 # %3").arg(include).arg("", 30 - include.length(), QChar(' ')).arg(QFileInfo(workingDirectory + '/' + includes.at(i)).absoluteFilePath()));
         }
     }
     else
     {
-        lines.append("\t-I .");
+        lines.append("");
+        lines.append("INCLUDES            = -I .    # " + workingDirectory);
     }
 
+    tail += " $(INCLUDES)";
+
 
 
     lines.append("");
-    lines.append("CFLAGS     = " + mEntries.value("QMAKE_CFLAGS").join(' ')   + " $(INCLUDES)");
-    lines.append("CXXFLAGS   = " + mEntries.value("QMAKE_CXXFLAGS").join(' ') + " $(INCLUDES)");
-    lines.append("LFLAGS     = " + mEntries.value("QMAKE_LFLAGS").join(' '));
+    lines.append("CFLAGS              = " + mEntries.value("QMAKE_CFLAGS").join(' ')   + tail);
+    lines.append("CXXFLAGS            = " + mEntries.value("QMAKE_CXXFLAGS").join(' ') + tail);
+    lines.append("LFLAGS              = " + mEntries.value("QMAKE_LFLAGS").join(' '));
     lines.append("");
-    lines.append("OUTPUT_DIR = build");
+    lines.append("OUTPUT_DIR          = build");
     lines.append("");
 
 
@@ -421,7 +523,7 @@ qint64 QMake::generateLibraryMakefile(const QString &workingDirectory)
 
 qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirectory*/, QStringList &lines)
 {
-    lines.append("OBJECTS    = \\");
+    lines.append("OBJECTS             = \\");
 
 
 
@@ -487,11 +589,31 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStrin
 
 
 
+    QString     additionalLdDependencies = "";
+    QStringList lFlags                   = mEntries.value("QMAKE_LFLAGS");
+
+    for (qint64 i = 0; i < lFlags.length(); ++i)
+    {
+        const QString &flag = lFlags.at(i);
+
+        if (flag == "-T")
+        {
+            if (i < lFlags.length() - 1)
+            {
+                ++i;
+
+                additionalLdDependencies += ' ' + lFlags.at(i);
+            }
+        }
+    }
+
+
+
     lines.append("");
     lines.append("");
     lines.append("");
     lines.append("####################################");
-    lines.append("# Targets definitions:");
+    lines.append("# Target definitions:");
     lines.append("####################################");
     lines.append("");
     lines.append("");
@@ -503,7 +625,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStrin
     lines.append("");
     lines.append("");
     lines.append("");
-    lines.append("$(OUTPUT_DIR)/$(TARGET): $(OBJECTS)");
+    lines.append("$(OUTPUT_DIR)/$(TARGET): $(OBJECTS)" + additionalLdDependencies);
     lines.append("\t$(LD) $(LFLAGS) $(OBJECTS) -o $@");
 
 

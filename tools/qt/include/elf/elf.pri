@@ -1,5 +1,5 @@
 INCLUDEPATH += \
-    $$PWD/../../../../include/     # include/
+    $$PWD/../../../../include   # /include
 
 
 

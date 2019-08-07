@@ -39,11 +39,11 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    ../../../3rd_party/libs/freetype/include/ \ # 3rd_party/libs/freetype/include
-    ../../../include/ \                         # include/
-    ../../../src/os/configure/ \                # src/os/configure/
-    ../../../src/os/include/ \                  # src/os/include/
-    ../include/                                 # tools/qt/include/
+    ../../../3rd_party/libs/freetype/include \  # /3rd_party/libs/freetype/include
+    ../../../include \                          # /include
+    ../../../src/os/configure \                 # /src/os/configure
+    ../../../src/os/include \                   # /src/os/include
+    ../include                                  # /tools/qt/include
 
 
 
