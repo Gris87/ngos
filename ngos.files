@@ -138,6 +138,7 @@ src/os/boot/Image structure.png
 src/os/boot/linker.ld
 src/os/boot/README.md
 src/os/bootloader/.gitignore
+src/os/bootloader/Resources.qrc
 src/os/bootloader/asm/arch/x86_64/main.S
 src/os/bootloader/assets/.gitignore
 src/os/bootloader/assets/generate_assets.sh

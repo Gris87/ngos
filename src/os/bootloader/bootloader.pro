@@ -5,6 +5,8 @@ CONFIG += c++17
 TARGET = bootloader.elf
 TEMPLATE = app
 
+RESOURCES += Resources.qrc
+
 
 
 VECTORIZATION_FLAGS = -mno-mmx -mno-sse
