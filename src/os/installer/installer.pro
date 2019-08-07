@@ -1,8 +1,6 @@
 QT -= gui
 
-CONFIG += c++14 console
-CONFIG -= app_bundle
-CONFIG -= qt
+CONFIG += c++17
 
 TARGET = installer.elf
 TEMPLATE = app

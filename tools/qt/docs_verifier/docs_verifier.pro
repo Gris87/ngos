@@ -1,7 +1,7 @@
 QT -= gui
 QT += network
 
-CONFIG += c++14 console
+CONFIG += c++17 console
 CONFIG -= app_bundle
 
 TARGET = docs_verifier

@@ -14,6 +14,15 @@
 
 #define OPTION_ARCH_X86_64 0    // x86_64
 
+#define OPTION_OPTIMIZATION_LEVEL_0 0    // Compile without optimization
+#define OPTION_OPTIMIZATION_LEVEL_1 1    // Compile with -O1 option
+#define OPTION_OPTIMIZATION_LEVEL_2 2    // Compile with -O2 option
+#define OPTION_OPTIMIZATION_LEVEL_3 3    // Compile with -O3 option
+
+#define OPTION_KERNEL_COMPRESSION_NONE 0    // Do not compress kernel
+#define OPTION_KERNEL_COMPRESSION_XZ   1    // Compress kernel with xz
+#define OPTION_KERNEL_COMPRESSION_GZIP 2    // Compress kernel with gzip
+
 #define OPTION_LOG_LEVEL_INHERIT           -1   // Log level is inherited from General log level
 #define OPTION_LOG_LEVEL_NONE              0    // Logging is disabled
 #define OPTION_LOG_LEVEL_FATAL             1    // Log fatal messages only
@@ -26,10 +35,6 @@
 #define OPTION_LOG_LEVEL_VERY_VERBOSE      8    // Log very verbose and more critical messages
 #define OPTION_LOG_LEVEL_VERY_VERY_VERBOSE 9    // Log as much as possible
 #define OPTION_LOG_LEVEL_TRACE             10   // Log as much as possible + log each function call
-
-#define OPTION_KERNEL_COMPRESSION_NONE 0    // Do not compress kernel
-#define OPTION_KERNEL_COMPRESSION_XZ   1    // Compress kernel with xz
-#define OPTION_KERNEL_COMPRESSION_GZIP 2    // Compress kernel with gzip
 
 #define OPTION_REALTIME_RAM_USAGE_LOWEST  0     // Use the lowest amount of memory to enable realtime with enough accuracy / performance
 #define OPTION_REALTIME_RAM_USAGE_LOWER   1     // Use a little bit more memory to increase accuracy / performance in realtime
@@ -109,6 +114,25 @@
  *** Default: OPTION_NO
  ***/
 #define NGOS_BUILD_TEST_MODE OPTION_YES
+
+
+
+/***
+ *** Category: General
+ *** Name: Optimization level
+ ***
+ *** Description: Selected optimization level during compilation.
+ ***
+ *** Type: Combobox
+ ***
+ *** Values: OPTION_OPTIMIZATION_LEVEL_0, \
+ ***         OPTION_OPTIMIZATION_LEVEL_1, \
+ ***         OPTION_OPTIMIZATION_LEVEL_2, \
+ ***         OPTION_OPTIMIZATION_LEVEL_3
+ ***
+ *** Default: OPTION_OPTIMIZATION_LEVEL_3
+ ***/
+#define NGOS_BUILD_OPTIMIZATION_LEVEL OPTION_OPTIMIZATION_LEVEL_3
 
 
 
@@ -394,6 +418,10 @@
 
 #if NGOS_BUILD_TEST_MODE != OPTION_NO && NGOS_BUILD_TEST_MODE != OPTION_YES
 #error Invalid value for NGOS_BUILD_TEST_MODE parameter
+#endif
+
+#if NGOS_BUILD_OPTIMIZATION_LEVEL < OPTION_OPTIMIZATION_LEVEL_0 || NGOS_BUILD_OPTIMIZATION_LEVEL > OPTION_OPTIMIZATION_LEVEL_3
+#error Invalid value for NGOS_BUILD_OPTIMIZATION_LEVEL parameter
 #endif
 
 #if NGOS_BUILD_KERNEL_COMPRESSION < OPTION_KERNEL_COMPRESSION_NONE || NGOS_BUILD_KERNEL_COMPRESSION > OPTION_KERNEL_COMPRESSION_GZIP

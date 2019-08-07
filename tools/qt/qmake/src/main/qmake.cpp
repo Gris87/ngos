@@ -368,6 +368,55 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
 
+    const QStringList &config = mEntries.value("CONFIG");
+
+    if (config.contains("c++17"))
+    {
+        lines.append("CPP_STANDARD        = -std=c++17");
+    }
+    else
+    if (config.contains("c++14"))
+    {
+        lines.append("CPP_STANDARD        = -std=c++14");
+    }
+    else
+    if (config.contains("c++11"))
+    {
+        lines.append("CPP_STANDARD        = -std=c++11");
+    }
+    else
+    {
+        lines.append("CPP_STANDARD        = -std=c++17");
+    }
+
+    tail += " $(CPP_STANDARD)";
+
+
+
+#if NGOS_BUILD_RELEASE == OPTION_NO
+    lines.append("DEBUG_FLAGS         = -g");
+
+    tail += " $(DEBUG_FLAGS)";
+#endif
+
+
+
+#if NGOS_BUILD_OPTIMIZATION_LEVEL == OPTION_OPTIMIZATION_LEVEL_0
+    lines.append("OPTIMIZATION_FLAGS  = -O0");
+#elif NGOS_BUILD_OPTIMIZATION_LEVEL == OPTION_OPTIMIZATION_LEVEL_1
+    lines.append("OPTIMIZATION_FLAGS  = -O1");
+#elif NGOS_BUILD_OPTIMIZATION_LEVEL == OPTION_OPTIMIZATION_LEVEL_2
+    lines.append("OPTIMIZATION_FLAGS  = -O2");
+#elif NGOS_BUILD_OPTIMIZATION_LEVEL == OPTION_OPTIMIZATION_LEVEL_3
+    lines.append("OPTIMIZATION_FLAGS  = -O3");
+#else
+#error Unexpected value for NGOS_BUILD_OPTIMIZATION_LEVEL parameter
+#endif
+
+    tail += " $(OPTIMIZATION_FLAGS)";
+
+
+
     QString vectorizationFlags = mEntries.value("VECTORIZATION_FLAGS").join(' ');
 
     if (vectorizationFlags != "")
@@ -428,14 +477,6 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
-    lines.append("DEBUG_FLAGS         = -g");
-
-    tail += " $(DEBUG_FLAGS)";
-#endif
-
-
-
     const QStringList &defines = mEntries.value("DEFINES");
 
     if (defines.length() > 0)
@@ -484,8 +525,8 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
     lines.append("");
-    lines.append("CFLAGS              = " + mEntries.value("QMAKE_CFLAGS").join(' ')   + tail);
-    lines.append("CXXFLAGS            = " + mEntries.value("QMAKE_CXXFLAGS").join(' ') + tail);
+    lines.append("CFLAGS              = " + mEntries.value("QMAKE_CFLAGS").join(' ') + tail);
+    lines.append("CXXFLAGS            = -m64 -W -Wall -Werror -nostdinc -mno-red-zone -fPIE -ffreestanding -fno-strict-aliasing -fno-stack-protector -fomit-frame-pointer -fno-exceptions -fno-asynchronous-unwind-tables -fno-unwind-tables " + mEntries.value("QMAKE_CXXFLAGS").join(' ') + tail);
     lines.append("LFLAGS              = " + mEntries.value("QMAKE_LFLAGS").join(' '));
     lines.append("");
     lines.append("OUTPUT_DIR          = build");
