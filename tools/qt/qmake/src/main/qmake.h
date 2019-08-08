@@ -23,6 +23,7 @@ private:
     qint64 generateApplicationMakefile(const QString &workingDirectory, const QString &templateValue); // TEST: NO
     qint64 addApplicationObjectsDefinitions(const QString &workingDirectory, QStringList &lines); // TEST: NO
     qint64 addApplicationBuildTargets(const QString &workingDirectory, const QString &templateValue, QStringList &lines); // TEST: NO
+    qint64 addResourcesBuildTargets(const QString &workingDirectory, QStringList &lines); // TEST: NO
     qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = ""); // TEST: NO
 
     QString                    mPathToProFile;
