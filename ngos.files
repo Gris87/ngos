@@ -127,9 +127,9 @@ src/libs/libs.pro
 src/libs/qt/.gitignore
 src/libs/qt/qt.pro
 src/libs/qt/README.md
-src/Makefile
 src/libs/qt/src/qt.cpp
 src/libs/qt/src/qt.h
+src/Makefile
 src/os/.gitignore
 src/os/boot/.gitignore
 src/os/boot/asm/arch/x86_64/main.S
@@ -138,10 +138,7 @@ src/os/boot/Image structure.png
 src/os/boot/linker.ld
 src/os/boot/README.md
 src/os/bootloader/.gitignore
-src/os/bootloader/Resources.qrc
 src/os/bootloader/asm/arch/x86_64/main.S
-src/os/bootloader/assets/.gitignore
-src/os/bootloader/assets/generate_assets.sh
 src/os/bootloader/assets/glyphs/console.bin
 src/os/bootloader/assets/images/arrow_left.png
 src/os/bootloader/assets/images/arrow_right.png
@@ -161,6 +158,7 @@ src/os/bootloader/bootloader.pro
 src/os/bootloader/Image structure.png
 src/os/bootloader/linker.ld
 src/os/bootloader/README.md
+src/os/bootloader/Resources.qrc
 src/os/bootloader/src/bits64/main/bootloader.cpp
 src/os/bootloader/src/bits64/main/bootloader.h
 src/os/bootloader/src/bits64/other/volumeinfo.h
@@ -169,16 +167,14 @@ src/os/bootloader/src/main.cpp
 src/os/bootloader/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader/test/bits64/sections/section1/testcase.h
 src/os/configure/.gitignore
-src/os/configure/Resources.qrc
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S
 src/os/configure/asm/arch/x86_64/main.S
-src/os/configure/assets/.gitignore
-src/os/configure/assets/generate_assets.sh
 src/os/configure/assets/glyphs/console.bin
 src/os/configure/configure.pro
 src/os/configure/Image structure.png
 src/os/configure/linker.ld
 src/os/configure/README.md
+src/os/configure/Resources.qrc
 src/os/configure/src/bits64/a_uefi/main/exitbootservices.cpp
 src/os/configure/src/bits64/a_uefi/main/exitbootservices.h
 src/os/configure/src/bits64/a_uefi/main/setupbootparams.cpp
@@ -342,23 +338,19 @@ src/os/include/uefi/uefitpl.h
 src/os/include/uuid/utils.h
 src/os/include/uuid/uuid.h
 src/os/installer/.gitignore
-src/os/installer/Resources.qrc
-src/os/installer/assets/.gitignore
-src/os/installer/assets/generate_assets.sh
 src/os/installer/assets/glyphs/console.bin
 src/os/installer/Image structure.png
 src/os/installer/installer.pro
 src/os/installer/linker.ld
 src/os/installer/README.md
+src/os/installer/Resources.qrc
 src/os/kernel/.gitignore
-src/os/kernel/Resources.qrc
-src/os/kernel/assets/.gitignore
-src/os/kernel/assets/generate_assets.sh
 src/os/kernel/assets/glyphs/console.bin
 src/os/kernel/Image structure.png
 src/os/kernel/kernel.pro
 src/os/kernel/linker.ld
 src/os/kernel/README.md
+src/os/kernel/Resources.qrc
 src/os/os.pro
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memcpy.S
 src/os/shared/common/asm/arch/x86_64/bits64/memory/memset.S
