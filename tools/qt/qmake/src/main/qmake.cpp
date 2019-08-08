@@ -928,6 +928,11 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
                         QString assetPath  =  workingDirectory + '/' + asset;
                         assetsDependencies += ' ' + assetPath;
 
+                        if (asset.startsWith("assets/"))
+                        {
+                            asset.remove(0, 7);
+                        }
+
 
 
                         ++fileId;
