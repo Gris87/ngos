@@ -132,9 +132,11 @@ qint64 QMake::processLines(const QString &workingDirectory, const QStringList &l
 
 
 
-            if (!parseEntry(workingDirectory, entryName, entryOperator, entryValue))
+            qint64 res = parseEntry(workingDirectory, entryName, entryOperator, entryValue);
+
+            if (res) // res != 0
             {
-                return 1;
+                return res;
             }
 
 
@@ -178,7 +180,7 @@ qint64 QMake::processLines(const QString &workingDirectory, const QStringList &l
     return 0;
 }
 
-bool QMake::parseEntry(const QString &workingDirectory, const QString &entryName, const QString &entryOperator, const QString &entryValue)
+qint64 QMake::parseEntry(const QString &workingDirectory, const QString &entryName, const QString &entryOperator, const QString &entryValue)
 {
     QStringList                     values;
     QRegularExpressionMatchIterator matches = mEntryValueRegexp.globalMatch(entryValue);
@@ -225,7 +227,7 @@ bool QMake::parseEntry(const QString &workingDirectory, const QString &entryName
 
 
 
-    return true;
+    return 0;
 }
 
 qint64 QMake::generateMakefile(const QString &workingDirectory)
