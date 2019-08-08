@@ -3,7 +3,7 @@
 
 
 
-void temp();
+void temp(); // TEST: NO
 
 
 
