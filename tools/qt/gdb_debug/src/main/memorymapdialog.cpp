@@ -74,7 +74,7 @@ void MemoryMapDialog::workerFinished()
 {
     ++mWorkersCompleted;
 
-    if (mWorkersCompleted == mWorkers.length())
+    if (mWorkersCompleted >= mWorkers.length())
     {
         QList<MemoryMapInfo> memoryMapBlocks;
 
