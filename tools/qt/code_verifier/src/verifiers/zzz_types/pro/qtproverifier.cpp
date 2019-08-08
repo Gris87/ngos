@@ -10,7 +10,7 @@
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
-#define WARNINS_AS_ERRORS \
+#define WARNINGS_AS_ERRORS \
     "# Warnings as errors - BEGIN\n" \
     "win32-msvc* {\n" \
     "    QMAKE_CXXFLAGS += /WX\n" \
@@ -54,13 +54,17 @@ QtProVerifier::QtProVerifier()
 
 void QtProVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
 {
-    verifyDefinitions(worker, path, content);
+    if (path.contains("/tools/qt/"))
+    {
+        verifyDefinitions(worker, path, content);
+    }
+
     verifyFileBlocks(worker, path, lines);
 }
 
 void QtProVerifier::verifyDefinitions(CodeWorkerThread *worker, const QString &path, const QString &content)
 {
-    if (!content.contains(WARNINS_AS_ERRORS))
+    if (!content.contains(WARNINGS_AS_ERRORS))
     {
         worker->addError(path, -1, "Warnings as errors definition absent");
     }
@@ -171,16 +175,6 @@ void QtProVerifier::verifyFileBlocks(CodeWorkerThread *worker, const QString &pa
             }
         }
     }
-
-    if (sourcesIndex < 0)
-    {
-        worker->addError(path, -1, "SOURCES definition absent");
-    }
-
-    if (headersIndex < 0)
-    {
-        worker->addError(path, -1, "HEADERS definition absent");
-    }
 }
 
 qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 startPos, const QString &extension)
@@ -243,11 +237,21 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
 
 
+        bool cppExtension = (extension == "cpp");
+
         if (extension != "")
         {
             for (qint64 i = 0; i < block.length(); ++i)
             {
-                if (!block.at(i).endsWith('.' + extension))
+                if (
+                    !block.at(i).endsWith('.' + extension)
+                    &&
+                    (
+                     !cppExtension
+                     ||
+                     !block.at(i).endsWith(".S")
+                    )
+                   )
                 {
                     worker->addError(path, startPos + i, "Invalid file extension");
                 }
@@ -291,7 +295,13 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
             if (file.isDir())
             {
-                if (filename != ".git")
+                if (
+                    filename != ".git"
+                    &&
+                    filename != "assets"
+                    &&
+                    filename != "build"
+                   )
                 {
                     QFileInfoList filesInfo = QDir(filepath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
@@ -303,49 +313,56 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
             }
             else
             {
-                if (!filepath.contains("build/gen/"))
+                QString relativePath;
+
+                if (extension != "")
                 {
-                    QString relativePath;
-
-                    if (extension != "")
+                    if (
+                        filename.endsWith('.' + extension)
+                        ||
+                        (
+                         cppExtension
+                         &&
+                         filename.endsWith(".S")
+                        )
+                       )
                     {
-                        if (filename.endsWith('.' + extension))
-                        {
-                            relativePath = filepath.mid(parentFolder.length());
-                        }
+                        relativePath = filepath.mid(parentFolder.length());
                     }
-                    else
+                }
+                else
+                {
+                    if (
+                        !filename.endsWith(".cpp")
+                        &&
+                        !filename.endsWith(".h")
+                        &&
+                        !filename.endsWith(".S")
+                        &&
+                        !filename.endsWith(".o")
+                        &&
+                        !filename.endsWith(".pri")
+                        &&
+                        !filename.endsWith(".pro")
+                        &&
+                        filename != ".gitignore"
+                        &&
+                        filename != ".qmake.stash"
+                        &&
+                        filename != "Makefile"
+                       )
                     {
-                        if (
-                            !filename.endsWith(".cpp")
-                            &&
-                            !filename.endsWith(".h")
-                            &&
-                            !filename.endsWith(".o")
-                            &&
-                            !filename.endsWith(".pri")
-                            &&
-                            !filename.endsWith(".pro")
-                            &&
-                            filename != ".gitignore"
-                            &&
-                            filename != ".qmake.stash"
-                            &&
-                            filename != "Makefile"
-                           )
-                        {
-                            relativePath = filepath.mid(parentFolder.length());
-                        }
+                        relativePath = filepath.mid(parentFolder.length());
                     }
+                }
 
 
 
-                    if (relativePath != "")
+                if (relativePath != "")
+                {
+                    if (!block.contains(relativePath))
                     {
-                        if (!block.contains(relativePath))
-                        {
-                            worker->addError(path, startPos, QString("File absent: %1").arg(relativePath));
-                        }
+                        worker->addError(path, startPos, QString("File absent: %1").arg(relativePath));
                     }
                 }
             }

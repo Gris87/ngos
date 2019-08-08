@@ -6,13 +6,13 @@
 
 
 
-QStringList                SearchDependenciesThread::sIncludes;
-QStringList                SearchDependenciesThread::sSources;
-qint64                     SearchDependenciesThread::sNumberOfThreads;
-qint64                     SearchDependenciesThread::sNumberOfBlockedThreads;
-QMap<QString, QStringList> SearchDependenciesThread::sDependencies;
-QMutex                     SearchDependenciesThread::sSourcesMutex;
-QSemaphore                 SearchDependenciesThread::sSourcesSemaphore;
+QStringList                 SearchDependenciesThread::sIncludes;
+QStringList                 SearchDependenciesThread::sSources;
+qint64                      SearchDependenciesThread::sNumberOfThreads;
+qint64                      SearchDependenciesThread::sNumberOfBlockedThreads;
+QHash<QString, QStringList> SearchDependenciesThread::sDependencies;
+QMutex                      SearchDependenciesThread::sSourcesMutex;
+QSemaphore                  SearchDependenciesThread::sSourcesSemaphore;
 
 
 
@@ -45,7 +45,7 @@ QString SearchDependenciesThread::takeSource()
         if (
             sNumberOfBlockedThreads >= sNumberOfThreads
             &&
-            sSources.length() == 0
+            !sSources.length() // sSources.length() == 0
            )
         {
             skipSemaphore = true;
@@ -62,7 +62,7 @@ QString SearchDependenciesThread::takeSource()
     {
         QMutexLocker lock(&sSourcesMutex);
 
-        if (sSources.length() > 0)
+        if (sSources.length()) // sSources.length() > 0
         {
             --sNumberOfBlockedThreads;
 
@@ -97,19 +97,19 @@ void SearchDependenciesThread::addDependencies(const QString &source, const QStr
     }
 }
 
-QMap<QString, QStringList> SearchDependenciesThread::buildDependenciesMap()
+QHash<QString, QStringList> SearchDependenciesThread::buildDependenciesMap()
 {
-    QMap<QString, QStringList> res;
+    QHash<QString, QStringList> res;
 
-    for (QMap<QString, QStringList>::Iterator it = sDependencies.begin(); it != sDependencies.end(); ++it)
+    for (QHash<QString, QStringList>::Iterator i = sDependencies.begin(); i != sDependencies.end(); ++i)
     {
-        buildDependenciesForSource(it.key(), res);
+        buildDependenciesForSource(i.key(), res);
     }
 
     return res;
 }
 
-QStringList SearchDependenciesThread::buildDependenciesForSource(const QString &source, QMap<QString, QStringList> &dependenciesMap)
+QStringList SearchDependenciesThread::buildDependenciesForSource(const QString &source, QHash<QString, QStringList> &dependenciesMap)
 {
     if (dependenciesMap.contains(source))
     {

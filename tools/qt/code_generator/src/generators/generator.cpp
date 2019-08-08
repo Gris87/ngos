@@ -61,7 +61,7 @@ bool Generator::save(const QString &path, const QStringList &lines)
                 if (
                     QFile::exists(parentFolder + "/Makefile")
                     ||
-                    QDir(parentFolder).entryList(QStringList() << "*.pro" << "*.pri", QDir::Files).length() // QDir(parentFolder).entryList(QStringList() << "*.pro" << "*.pri", QDir::Files).length() > 0
+                    QDir(parentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() // QDir(parentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() > 0
                    )
                 {
                     break;

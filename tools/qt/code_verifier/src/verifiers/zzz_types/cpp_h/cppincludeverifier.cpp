@@ -142,7 +142,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                     if (
                         QFile::exists(tempParentFolder + "/Makefile")
                         ||
-                        QDir(tempParentFolder).entryList(QStringList() << "*.pro" << "*.pri", QDir::Files).length() // QDir(tempParentFolder).entryList(QStringList() << "*.pro" << "*.pri", QDir::Files).length() > 0
+                        QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() // QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() > 0
                        )
                     {
                         break;

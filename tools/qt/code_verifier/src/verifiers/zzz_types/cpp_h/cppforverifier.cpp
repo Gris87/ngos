@@ -9,7 +9,7 @@ CppForVerifier::CppForVerifier()
     , mInitRegexp("^(?:(?:i64|qint64) (\\w)|(?:(?:char \\*)?(\\w+))) = .+$")
     , mConditionRegexp("^(?:(\\w) [<>]=? .+|\\*(\\w+))$")
     , mStepRegexp("^[+-]{0,2}(\\w+)(?: [+-]= .+)?$")
-    , mInitQHashRegexp("^QHash<.+>::iterator (\\w) = .+\\.begin\\(\\)$")
+    , mInitQHashRegexp("^QHash<.+>::Iterator (\\w) = .+\\.begin\\(\\)$")
     , mConditionQHashRegexp("^(\\w) != .+\\.end\\(\\)$")
     , mStepQHashRegexp("^\\+\\+(\\w)$")
 {

@@ -5,7 +5,7 @@
 
 #include <QThread>
 
-#include <QMap>
+#include <QHash>
 #include <QMutex>
 #include <QSemaphore>
 
@@ -19,8 +19,8 @@ public:
     static void init(const QStringList &includes, const QStringList &sources, qint64 numberOfThreads); // TEST: NO
     static QString takeSource(); // TEST: NO
     static void addDependencies(const QString &source, const QStringList &dependencies); // TEST: NO
-    static QMap<QString, QStringList> buildDependenciesMap(); // TEST: NO
-    static QStringList buildDependenciesForSource(const QString &source, QMap<QString, QStringList> &dependenciesMap); // TEST: NO
+    static QHash<QString, QStringList> buildDependenciesMap(); // TEST: NO
+    static QStringList buildDependenciesForSource(const QString &source, QHash<QString, QStringList> &dependenciesMap); // TEST: NO
 
     void addError(const QString &error); // TEST: NO
     const QStringList& getErrors() const; // TEST: NO
@@ -31,13 +31,13 @@ protected:
     void run() override; // TEST: NO
 
 private:
-    static QStringList                sIncludes;
-    static QStringList                sSources;
-    static qint64                     sNumberOfThreads;
-    static qint64                     sNumberOfBlockedThreads;
-    static QMap<QString, QStringList> sDependencies;
-    static QMutex                     sSourcesMutex;
-    static QSemaphore                 sSourcesSemaphore;
+    static QStringList                 sIncludes;
+    static QStringList                 sSources;
+    static qint64                      sNumberOfThreads;
+    static qint64                      sNumberOfBlockedThreads;
+    static QHash<QString, QStringList> sDependencies;
+    static QMutex                      sSourcesMutex;
+    static QSemaphore                  sSourcesSemaphore;
 
     QString     mWorkingDirectory;
     QStringList mErrors;

@@ -26,14 +26,14 @@ private:
     qint64 addResourcesBuildTargets(const QString &workingDirectory, QStringList &lines); // TEST: NO
     qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = ""); // TEST: NO
 
-    QString                    mPathToProFile;
-    QRegularExpression         mCommentRegexp;
-    QRegularExpression         mEntryRegexp;
-    QRegularExpression         mEntryValueRegexp;
-    QRegularExpression         mIncludeRegexp;
-    QMap<QString, QStringList> mEntries;
-    QMap<QString, QString>     mSourceToObjectMap;
-    QStringList                mMakefileDependencies;
+    QString                     mPathToProFile;
+    QRegularExpression          mCommentRegexp;
+    QRegularExpression          mEntryRegexp;
+    QRegularExpression          mEntryValueRegexp;
+    QRegularExpression          mIncludeRegexp;
+    QHash<QString, QStringList> mEntries;
+    QMap<QString, QString>      mSourceToObjectMap;
+    QStringList                 mMakefileDependencies;
 };
 
 

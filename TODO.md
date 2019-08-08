@@ -10,7 +10,6 @@ NGOS:
 - Per CPU?
 - Initialization via multiple CPU cores
 
-- Add option for optimization level `-O2 | -O3`
 - Add option to disable inline
 - Add stack protector to build
 

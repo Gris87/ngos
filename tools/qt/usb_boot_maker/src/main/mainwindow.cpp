@@ -862,7 +862,7 @@ void MainWindow::handleGetFileListState()
 
     QHash<quint64, QList<const VersionInfo *>> versionGroups;
 
-    for (QHash<QString, VersionInfo>::iterator i = mLatestVersions.begin(); i != mLatestVersions.end(); ++i)
+    for (QHash<QString, VersionInfo>::Iterator i = mLatestVersions.begin(); i != mLatestVersions.end(); ++i)
     {
         const VersionInfo *versionInfo = &i.value();
 
@@ -874,7 +874,7 @@ void MainWindow::handleGetFileListState()
     qint64                      max          = 0;
     QList<const VersionInfo *> *generalGroup = 0;
 
-    for (QHash<quint64, QList<const VersionInfo *>>::iterator i = versionGroups.begin(); i != versionGroups.end(); ++i)
+    for (QHash<quint64, QList<const VersionInfo *>>::Iterator i = versionGroups.begin(); i != versionGroups.end(); ++i)
     {
         QList<const VersionInfo *> *versions = &i.value();
 
@@ -1040,7 +1040,7 @@ void MainWindow::resetToInitialState()
 
 void MainWindow::abortReplies()
 {
-    for (QHash<QString, QNetworkReply *>::iterator i = mReplies.begin(); i != mReplies.end(); ++i)
+    for (QHash<QString, QNetworkReply *>::Iterator i = mReplies.begin(); i != mReplies.end(); ++i)
     {
         QNetworkReply *reply = i.value();
 

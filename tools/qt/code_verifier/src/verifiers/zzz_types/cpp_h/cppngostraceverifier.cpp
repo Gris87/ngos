@@ -1,6 +1,6 @@
 #include "cppngostraceverifier.h"
 
-#include <QMap>
+#include <QHash>
 
 #include "src/other/codeverificationfiletype.h"
 
@@ -200,8 +200,8 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
 
-                                        QStringList            parsedArguments = parsedTrace.split(',');
-                                        QMap<QString, QString> parsedArgumentTypes;
+                                        QStringList             parsedArguments = parsedTrace.split(',');
+                                        QHash<QString, QString> parsedArgumentTypes;
 
                                         for (qint64 j = 0; j < parsedArguments.length(); ++j)
                                         {

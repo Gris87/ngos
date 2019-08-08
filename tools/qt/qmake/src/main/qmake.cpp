@@ -6,8 +6,8 @@
 #include <QFileInfo>
 #include <QIODevice>
 #include <QXmlStreamReader>
-#include <console/console.h>
 #include <buildconfig.h>
+#include <console/console.h>
 
 #include "src/threads/searchdependenciesthread.h"
 
@@ -343,6 +343,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
 
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     QStringList lines;
 
     lines.append("####################################");
@@ -373,6 +374,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
     lines.append("");
     lines.append("TARGET              = " + mEntries.value("TARGET").join(' '));
     lines.append("");
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -405,7 +407,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     lines.append("DEBUG_FLAGS         = -g");
 
     tail += " $(DEBUG_FLAGS)";
@@ -487,7 +489,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
     const QStringList &defines = mEntries.value("DEFINES");
 
-    if (defines.length() > 0)
+    if (defines.length()) // defines.length() > 0
     {
         if (defines.length() > 1)
         {
@@ -511,7 +513,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
     const QStringList &includes = mEntries.value("INCLUDEPATH");
 
-    if (includes.length() > 0)
+    if (includes.length()) // includes.length() > 0
     {
         lines.append("");
         lines.append("# Includes:");
@@ -627,7 +629,7 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
         QString object = "$(OUTPUT_DIR)/" + source + ".o";
 
         mSourceToObjectMap.insert(originalSource, object);
-        lines.append("\t" + object + (i < sources.length() - 1 ? " \\" : ""));
+        lines.append('\t' + object + (i < sources.length() - 1 ? " \\" : ""));
     }
 
 
@@ -717,9 +719,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
 
 
-
-
-
+    // Ignore CppAlignmentVerifier [BEGIN]
     lines.append("");
     lines.append("");
     lines.append("");
@@ -738,6 +738,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
     lines.append("");
     lines.append("$(OUTPUT_DIR)/$(TARGET)" + extension + compression + ": $(OBJECTS)" + additionalLdDependencies);
     lines.append("\t$(LD) $(LFLAGS) $(OBJECTS) -o $(OUTPUT_DIR)/$(TARGET)" + extension);
+    // Ignore CppAlignmentVerifier [END]
 
     if (templateValue == "kernel")
     {
@@ -776,7 +777,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
         QStringList errors = thread->getErrors();
 
-        if (errors.length() > 0)
+        if (errors.length()) // errors.length() > 0
         {
             hasErrors = true;
 
@@ -800,10 +801,14 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
 
 
-    QMap<QString, QStringList> dependenciesMap = SearchDependenciesThread::buildDependenciesMap();
+    QHash<QString, QStringList> dependenciesMap = SearchDependenciesThread::buildDependenciesMap();
 
-    for (QMap<QString, QString>::Iterator it = mSourceToObjectMap.begin(); it != mSourceToObjectMap.end(); ++it)
+    QMapIterator<QString, QString> it(mSourceToObjectMap);
+
+    while (it.hasNext())
     {
+        it.next();
+
         QString source = it.key();
         QString object = it.value();
 
@@ -855,7 +860,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 {
     const QStringList &resources = mEntries.value("RESOURCES");
 
-    if (resources.length() > 0)
+    if (resources.length()) // resources.length() > 0
     {
         if (!QDir().mkpath(workingDirectory + "/build/assets"))
         {
@@ -879,9 +884,11 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 
         qint64 fileId = 0;
 
+        // Ignore CppAlignmentVerifier [BEGIN]
         assetsFile.write(".section \".assets\", \"a\"                                                                                    # assets section (a - allocatable)\n");
         assetsFile.write("                                                                                                           #\n");
         assetsFile.write("# ======================================================================================================== # =============================================================================\n");
+        // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -941,16 +948,18 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 
                         ++fileId;
 
+                        // Ignore CppAlignmentVerifier [BEGIN]
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.length(), QChar(' ')).toUtf8());
                         assetsFile.write("    .byte   0                                                                                              # Terminate file name with zero\n");
-                        assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - QString::number(fileId).length() * 2, QChar(' ')).toUtf8());
+                        assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - (QString::number(fileId).length() << 1), QChar(' ')).toUtf8()); // "<< 1" == "* 2"
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).length(), QChar(' ')).toUtf8());
                         assetsFile.write(QString("    .incbin  \"%1\" %2 # Including bytes of the file\n").arg(assetPath).arg("", 90 - assetPath.length(), QChar(' ')).toUtf8());
                         assetsFile.write(QString("label_%1_end: %2 # End of the file\n").arg(fileId).arg("", 94 - QString::number(fileId).length(), QChar(' ')).toUtf8());
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write("# -------------------------------------------------------------------------------------------------------- # -----------------------------------------------------------------------------\n");
+                        // Ignore CppAlignmentVerifier [END]
                     }
                 }
             }
@@ -991,7 +1000,7 @@ qint64 QMake::save(const QString &workingDirectory, const QStringList &lines, co
     file.write("####################################\n");
     file.write("\n\n\n");
     file.write(lines.join('\n').toUtf8());
-    file.write("\n");
+    file.write("\n"); // Ignore CppSingleCharVerifier
 
     if (phony != "")
     {

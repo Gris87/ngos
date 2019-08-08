@@ -1,6 +1,6 @@
 SOURCES += \
-    $$PWD/asm/arch/x86_64/main.S \
     $$PWD/asm/arch/x86_64/bits64/a_early/main/setupidthandlers.S \
+    $$PWD/asm/arch/x86_64/main.S \
     $$PWD/src/bits64/a_early/main/disableirq.cpp \
     $$PWD/src/bits64/a_early/main/reservepciromimages.cpp \
     $$PWD/src/bits64/a_early/main/setupbootparams.cpp \

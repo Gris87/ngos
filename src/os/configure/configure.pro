@@ -36,6 +36,7 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
+    asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S \
     asm/arch/x86_64/main.S \
     src/bits64/a_uefi/main/exitbootservices.cpp \
     src/bits64/a_uefi/main/setupbootparams.cpp \
@@ -55,7 +56,6 @@ SOURCES += \
     src/main.cpp
 
 HEADERS += \
-    src/bits64/other/configuredefines.h \
     src/bits64/a_uefi/main/exitbootservices.h \
     src/bits64/a_uefi/main/setupbootparams.h \
     src/bits64/a_uefi/main/setupkernellocation.h \
@@ -97,6 +97,7 @@ HEADERS += \
     src/bits64/b_early/other/pagetable/pagetable.h \
     src/bits64/b_early/other/unavailablememoryarea.h \
     src/bits64/other/asm/generated/asmoffsets.h \
+    src/bits64/other/configuredefines.h \
     src/bits64/other/kerneldescriptor.h \
     test/bits64/a_uefi/sections/section1/bits64/types.h \
     test/bits64/a_uefi/sections/section1/testcase.h

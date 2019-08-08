@@ -148,7 +148,7 @@ We also check the CPU flags and inform user when CPU is not supported.
 
 ### Assets initialization
 
-Assets are the set of files directly included to kernel image from [src/os/configure/assets](../../../src/os/configure/assets) folder via [src/os/configure/assets/generate_assets.sh](../../../src/os/configure/assets/generate_assets.sh) script.
+Assets are the set of files directly included to kernel image from [src/os/configure/assets](../../../src/os/configure/assets) folder.
 
 ```
     UEFI_ASSERT_EXECUTION(Assets::init(), 0);
