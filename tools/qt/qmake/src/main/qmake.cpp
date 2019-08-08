@@ -246,14 +246,17 @@ qint64 QMake::generateMakefile(const QString &workingDirectory)
         return generateSubdirsMakefile(workingDirectory);
     }
 
-    if (templateValue == "app")
+    if (
+        templateValue == "app"
+        ||
+        templateValue == "lib"
+        ||
+        templateValue == "uefi"
+        ||
+        templateValue == "kernel"
+       )
     {
-        return generateApplicationMakefile(workingDirectory);
-    }
-
-    if (templateValue == "lib")
-    {
-        return generateLibraryMakefile(workingDirectory);
+        return generateApplicationMakefile(workingDirectory, templateValue);
     }
 
 
@@ -316,7 +319,7 @@ qint64 QMake::generateSubdirsMakefile(const QString &workingDirectory)
     return save(workingDirectory, lines, "$(SUBDIRS)");
 }
 
-qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
+qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const QString &templateValue)
 {
     if (!mEntries.contains("SOURCES"))
     {
@@ -418,11 +421,9 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
 
-    QString vectorizationFlags = mEntries.value("VECTORIZATION_FLAGS").join(' ');
-
-    if (vectorizationFlags != "")
+    if (templateValue == "uefi")
     {
-        lines.append("VECTORIZATION_FLAGS = " + vectorizationFlags);
+        lines.append("VECTORIZATION_FLAGS = -mno-mmx -mno-sse");
     }
     else
     {
@@ -455,11 +456,9 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
 
-    QString fmaFlags = mEntries.value("FMA_FLAGS").join(' ');
-
-    if (fmaFlags != "")
+    if (templateValue == "uefi")
     {
-        lines.append("FMA_FLAGS           = " + fmaFlags);
+        lines.append("FMA_FLAGS           = -mno-fma");
     }
     else
     {
@@ -482,12 +481,19 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
     if (defines.length() > 0)
     {
-        lines.append("");
-        lines.append("DEFINES             = \\");
-
-        for (qint64 i = 0; i < defines.length(); ++i)
+        if (defines.length() > 1)
         {
-            lines.append("\t-D" + defines.at(i) + (i < defines.length() - 1 ? " \\" : ""));
+            lines.append("");
+            lines.append("DEFINES             = \\");
+
+            for (qint64 i = 0; i < defines.length(); ++i)
+            {
+                lines.append("\t-D" + defines.at(i) + (i < defines.length() - 1 ? " \\" : ""));
+            }
+        }
+        else
+        {
+            lines.append("DEFINES             = -D" + defines.at(0));
         }
 
         tail += " $(DEFINES)";
@@ -522,7 +528,11 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
     }
     else
     {
-        lines.append("");
+        if (defines.length() > 1)
+        {
+            lines.append("");
+        }
+
         lines.append("INCLUDES            = -I .    # " + workingDirectory);
     }
 
@@ -549,7 +559,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
 
-    res = addApplicationBuildTargets(workingDirectory, lines);
+    res = addApplicationBuildTargets(workingDirectory, templateValue, lines);
 
     if (res) // res != 0
     {
@@ -559,13 +569,6 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory)
 
 
     return save(workingDirectory, lines);
-}
-
-qint64 QMake::generateLibraryMakefile(const QString &workingDirectory)
-{
-    Console::err(workingDirectory);
-
-    return 0;
 }
 
 qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirectory*/, QStringList &lines)
@@ -624,8 +627,9 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
     return 0;
 }
 
-qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStringList &lines)
+qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const QString &templateValue, QStringList &lines)
 {
+    bool   hasErrors    = false;
     qint64 workersCount = QThread::idealThreadCount();
 
     SearchDependenciesThread::init(mEntries.value("INCLUDEPATH"), mEntries.value("SOURCES"), workersCount);
@@ -663,6 +667,31 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStrin
 
 
 
+    QString extension;
+
+    if (templateValue == "uefi" || templateValue == "kernel")
+    {
+        extension = ".elf";
+    }
+    else
+    if (templateValue == "app")
+    {
+        extension = ".ngexe";
+    }
+    else
+    if (templateValue == "lib")
+    {
+        extension = ".ngso";
+    }
+    else
+    {
+        Console::err(QString("Unexpected template value: %1").arg(templateValue));
+
+        hasErrors = true;
+    }
+
+
+
     lines.append("");
     lines.append("");
     lines.append("");
@@ -672,19 +701,15 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStrin
     lines.append("");
     lines.append("");
     lines.append("");
-    lines.append("all: Makefile $(OUTPUT_DIR)/$(TARGET)");
+    lines.append("all: Makefile $(OUTPUT_DIR)/$(TARGET)" + extension);
     lines.append("");
     lines.append("clean: Makefile");
     lines.append("\t$(RMDIR) $(OUTPUT_DIR)");
     lines.append("");
     lines.append("");
     lines.append("");
-    lines.append("$(OUTPUT_DIR)/$(TARGET): $(OBJECTS)" + additionalLdDependencies);
+    lines.append("$(OUTPUT_DIR)/$(TARGET)" + extension + ": $(OBJECTS)" + additionalLdDependencies);
     lines.append("\t$(LD) $(LFLAGS) $(OBJECTS) -o $@");
-
-
-
-    bool hasErrors = false;
 
 
 
@@ -692,97 +717,109 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, QStrin
 
     if (resources.length() > 0)
     {
-        QDir().mkpath(workingDirectory + "/build/assets");
-        QFile assetsFile(workingDirectory + "/build/assets/assets.S");
-
-        if (assetsFile.open(QIODevice::WriteOnly))
+        if (QDir().mkpath(workingDirectory + "/build/assets"))
         {
-            qint64 fileId = 0;
+            QFile assetsFile(workingDirectory + "/build/assets/assets.S");
 
-            assetsFile.write(".section \".assets\", \"a\"                                                                                    # assets section (a - allocatable)\n");
-            assetsFile.write("                                                                                                           #\n");
-            assetsFile.write("# ======================================================================================================== # =============================================================================\n");
-
-
-
-            QString assetsDependencies = resources.join(' ');
-
-            for (qint64 i = 0; i < resources.length(); ++i)
+            if (assetsFile.open(QIODevice::WriteOnly))
             {
-                QString resource = resources.at(i);
-                mMakefileDependencies.append(resource);
+                qint64 fileId = 0;
+
+                assetsFile.write(".section \".assets\", \"a\"                                                                                    # assets section (a - allocatable)\n");
+                assetsFile.write("                                                                                                           #\n");
+                assetsFile.write("# ======================================================================================================== # =============================================================================\n");
 
 
 
-                QFile resourceFile(workingDirectory + '/' + resource);
+                QString assetsDependencies = resources.join(' ');
 
-                if (!resourceFile.open(QIODevice::ReadOnly))
+                for (qint64 i = 0; i < resources.length(); ++i)
                 {
-                    Console::err(QString("Failed to open %1 file").arg(resource));
-
-                    hasErrors = true;
-
-                    break;
-                }
+                    QString resource = resources.at(i);
+                    mMakefileDependencies.append(resource);
 
 
 
-                QXmlStreamReader xml(&resourceFile);
+                    QFile resourceFile(workingDirectory + '/' + resource);
 
-                while (!xml.atEnd() && !xml.hasError())
-                {
-                    QXmlStreamReader::TokenType token = xml.readNext();
-
-                    if (token == QXmlStreamReader::StartElement)
+                    if (!resourceFile.open(QIODevice::ReadOnly))
                     {
-                        if (xml.name() == "file")
+                        Console::err(QString("Failed to open %1 file").arg(resource));
+
+                        hasErrors = true;
+
+                        break;
+                    }
+
+
+
+                    QXmlStreamReader xml(&resourceFile);
+
+                    while (!xml.atEnd() && !xml.hasError())
+                    {
+                        QXmlStreamReader::TokenType token = xml.readNext();
+
+                        if (token == QXmlStreamReader::StartElement)
                         {
-                            QString asset;
-
-                            while (token != QXmlStreamReader::EndElement)
+                            if (xml.name() == "file")
                             {
-                                token = xml.readNext();
+                                QString asset;
 
-                                if (token == QXmlStreamReader::Characters)
+                                while (token != QXmlStreamReader::EndElement)
                                 {
-                                    asset += xml.text();
+                                    token = xml.readNext();
+
+                                    if (token == QXmlStreamReader::Characters)
+                                    {
+                                        asset += xml.text();
+                                    }
                                 }
+
+                                QString assetPath  =  workingDirectory + '/' + asset;
+                                assetsDependencies += ' ' + assetPath;
+
+
+
+                                ++fileId;
+
+                                assetsFile.write("                                                                                                           #\n");
+                                assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.length(), QChar(' ')).toUtf8());
+                                assetsFile.write("    .byte   0                                                                                              # Terminate file name with zero\n");
+                                assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - QString::number(fileId).length() * 2, QChar(' ')).toUtf8());
+                                assetsFile.write("                                                                                                           #\n");
+                                assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).length(), QChar(' ')).toUtf8());
+                                assetsFile.write(QString("    .incbin  \"%1\" %2 # Including bytes of the file\n").arg(assetPath).arg("", 90 - assetPath.length(), QChar(' ')).toUtf8());
+                                assetsFile.write(QString("label_%1_end: %2 # End of the file\n").arg(fileId).arg("", 94 - QString::number(fileId).length(), QChar(' ')).toUtf8());
+                                assetsFile.write("                                                                                                           #\n");
+                                assetsFile.write("# -------------------------------------------------------------------------------------------------------- # -----------------------------------------------------------------------------\n");
                             }
-
-                            QString assetPath = workingDirectory + '/' + asset;
-                            assetsDependencies += ' ' + assetPath;
-
-
-
-                            ++fileId;
-
-                            assetsFile.write("                                                                                                           #\n");
-                            assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.length(), QChar(' ')).toUtf8());
-                            assetsFile.write("    .byte   0                                                                                              # Terminate file name with zero\n");
-                            assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - QString::number(fileId).length() * 2, QChar(' ')).toUtf8());
-                            assetsFile.write("                                                                                                           #\n");
-                            assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).length(), QChar(' ')).toUtf8());
-                            assetsFile.write(QString("    .incbin  \"%1\" %2 # Including bytes of the file\n").arg(assetPath).arg("", 90 - assetPath.length(), QChar(' ')).toUtf8());
-                            assetsFile.write(QString("label_%1_end: %2 # End of the file\n").arg(fileId).arg("", 94 - QString::number(fileId).length(), QChar(' ')).toUtf8());
-                            assetsFile.write("                                                                                                           #\n");
-                            assetsFile.write("# ======================================================================================================== # =============================================================================\n");
                         }
                     }
                 }
+
+
+
+                lines.append("");
+                lines.append("");
+                lines.append("");
+                lines.append("$(OUTPUT_DIR)/assets/assets.o: " + assetsDependencies);
+                lines.append("\t$(MKDIR) $(@D)");
+                lines.append("\t$(CC) -c $(CFLAGS) $(OUTPUT_DIR)/assets/assets.S -o $@");
+
+
+
+                assetsFile.close();
             }
+            else
+            {
+                Console::err("Failed to create build/assets/assets.S file");
 
-
-
-            lines.append("");
-            lines.append("");
-            lines.append("");
-            lines.append("$(OUTPUT_DIR)/assets/assets.o: " + assetsDependencies);
-            lines.append("\t$(MKDIR) $(@D)");
-            lines.append("\t$(CC) -c $(CFLAGS) $(OUTPUT_DIR)/assets/assets.S -o $@");
+                hasErrors = true;
+            }
         }
         else
         {
-            Console::err("Failed to create build/assets/assets.S file");
+            Console::err("Failed to create build/assets directory");
 
             hasErrors = true;
         }

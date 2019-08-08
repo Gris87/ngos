@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/glyphs/console.bin</file>
+    </qresource>
+</RCC>

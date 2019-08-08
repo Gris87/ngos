@@ -169,6 +169,7 @@ src/os/bootloader/src/main.cpp
 src/os/bootloader/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader/test/bits64/sections/section1/testcase.h
 src/os/configure/.gitignore
+src/os/configure/Resources.qrc
 src/os/configure/asm/arch/x86_64/bits64/b_early/other/pagetable/switchtofivelevelpaging.S
 src/os/configure/asm/arch/x86_64/main.S
 src/os/configure/assets/.gitignore
@@ -341,6 +342,7 @@ src/os/include/uefi/uefitpl.h
 src/os/include/uuid/utils.h
 src/os/include/uuid/uuid.h
 src/os/installer/.gitignore
+src/os/installer/Resources.qrc
 src/os/installer/assets/.gitignore
 src/os/installer/assets/generate_assets.sh
 src/os/installer/assets/glyphs/console.bin
@@ -349,6 +351,7 @@ src/os/installer/installer.pro
 src/os/installer/linker.ld
 src/os/installer/README.md
 src/os/kernel/.gitignore
+src/os/kernel/Resources.qrc
 src/os/kernel/assets/.gitignore
 src/os/kernel/assets/generate_assets.sh
 src/os/kernel/assets/glyphs/console.bin

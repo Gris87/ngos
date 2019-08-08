@@ -2,13 +2,8 @@ QT -= gui
 
 CONFIG += c++17
 
-TARGET = boot.elf
-TEMPLATE = app
-
-
-
-VECTORIZATION_FLAGS = -mno-mmx -mno-sse
-FMA_FLAGS           = -mno-fma
+TARGET = boot
+TEMPLATE = uefi
 
 
 

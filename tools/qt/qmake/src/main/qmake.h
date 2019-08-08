@@ -20,10 +20,9 @@ private:
     bool parseEntry(const QString &workingDirectory, const QString &entryName, const QString &entryOperator, const QString &entryValue); // TEST: NO
     qint64 generateMakefile(const QString &workingDirectory); // TEST: NO
     qint64 generateSubdirsMakefile(const QString &workingDirectory); // TEST: NO
-    qint64 generateApplicationMakefile(const QString &workingDirectory); // TEST: NO
-    qint64 generateLibraryMakefile(const QString &workingDirectory); // TEST: NO
+    qint64 generateApplicationMakefile(const QString &workingDirectory, const QString &templateValue); // TEST: NO
     qint64 addApplicationObjectsDefinitions(const QString &workingDirectory, QStringList &lines); // TEST: NO
-    qint64 addApplicationBuildTargets(const QString &workingDirectory, QStringList &lines); // TEST: NO
+    qint64 addApplicationBuildTargets(const QString &workingDirectory, const QString &templateValue, QStringList &lines); // TEST: NO
     qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = ""); // TEST: NO
 
     QString                    mPathToProFile;

@@ -2,8 +2,15 @@ QT -= gui
 
 CONFIG += c++17
 
-TARGET = installer.elf
-TEMPLATE = app
+TARGET = installer
+TEMPLATE = kernel
+
+RESOURCES += Resources.qrc
+
+
+
+DEFINES += \
+    BUILD_TARGET_INSTALLER
 
 
 
@@ -21,4 +28,6 @@ include(../shared/kernelbase/kernelbase.pri)
 
 
 QMAKE_LFLAGS += \
+    -pie \
+    --no-dynamic-linker \
     -T linker.ld

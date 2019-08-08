@@ -2,8 +2,16 @@ QT -= gui
 
 CONFIG += c++17
 
-TARGET = configure.elf
-TEMPLATE = app
+TARGET = configure
+TEMPLATE = uefi
+
+RESOURCES += Resources.qrc
+
+
+
+DEFINES += \
+    BUILD_TARGET_CONFIGURE \
+    UEFI_APPLICATION
 
 
 
@@ -21,6 +29,8 @@ include(../shared/uefibase/uefibase.pri)
 
 
 QMAKE_LFLAGS += \
+    -pie \
+    --no-dynamic-linker \
     -T linker.ld
 
 
