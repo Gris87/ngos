@@ -30,4 +30,5 @@ include(../shared/kernelbase/kernelbase.pri)
 QMAKE_LFLAGS += \
     -pie \
     --no-dynamic-linker \
+    --emit-relocs \
     -T linker.ld

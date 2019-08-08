@@ -354,6 +354,8 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
     lines.append("MKDIR = mkdir -p");
     lines.append("RMDIR = rm -rf");
     lines.append("CAT   = cat");
+    lines.append("GZIP  = gzip");
+    lines.append("XZ    = xz");
     lines.append("");
     lines.append("");
     lines.append("");
@@ -692,6 +694,26 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
 
 
+    QString compression;
+
+    if (templateValue == "kernel")
+    {
+#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_NONE
+        // Nothing
+#elif NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
+        compression = ".gz";
+#elif NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
+        compression = ".xz";
+#else
+#error Unexpected value for NGOS_BUILD_KERNEL_COMPRESSION parameter
+#endif
+    }
+
+
+
+
+
+
     lines.append("");
     lines.append("");
     lines.append("");
@@ -701,15 +723,32 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
     lines.append("");
     lines.append("");
     lines.append("");
-    lines.append("all: Makefile $(OUTPUT_DIR)/$(TARGET)" + extension);
+    lines.append("all: Makefile $(OUTPUT_DIR)/$(TARGET)" + extension + compression);
     lines.append("");
     lines.append("clean: Makefile");
     lines.append("\t$(RMDIR) $(OUTPUT_DIR)");
     lines.append("");
     lines.append("");
     lines.append("");
-    lines.append("$(OUTPUT_DIR)/$(TARGET)" + extension + ": $(OBJECTS)" + additionalLdDependencies);
-    lines.append("\t$(LD) $(LFLAGS) $(OBJECTS) -o $@");
+    lines.append("$(OUTPUT_DIR)/$(TARGET)" + extension + compression + ": $(OBJECTS)" + additionalLdDependencies);
+    lines.append("\t$(LD) $(LFLAGS) $(OBJECTS) -o $(OUTPUT_DIR)/$(TARGET)" + extension);
+
+    if (templateValue == "kernel")
+    {
+#if NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_NONE
+        // Nothing
+#elif NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_GZIP
+        lines.append("\t$(CAT) $(OUTPUT_DIR)/$(TARGET)" + extension + " | $(GZIP) -n -f -9 > $@");
+#elif NGOS_BUILD_KERNEL_COMPRESSION == OPTION_KERNEL_COMPRESSION_XZ
+#if NGOS_BUILD_ARCH == OPTION_ARCH_X86_64
+        lines.append("\t$(CAT) $(OUTPUT_DIR)/$(TARGET)" + extension + " | $(XZ) --x86 --lzma2=dict=128MiB > $@");
+#else
+        lines.append("\t$(CAT) $(OUTPUT_DIR)/$(TARGET)" + extension + " | $(XZ) --lzma2=dict=128MiB > $@");
+#endif
+#else
+#error Unexpected value for NGOS_BUILD_KERNEL_COMPRESSION parameter
+#endif
+    }
 
 
 
