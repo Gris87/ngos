@@ -301,6 +301,10 @@ qint64 QMake::generateSubdirsMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("");
     lines.append("");
+    lines.append(".NOTPARALLEL:");
+    lines.append("");
+    lines.append("");
+    lines.append("");
     lines.append("####################################");
     lines.append("# Targets:");
     lines.append("####################################");
