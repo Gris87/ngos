@@ -1,6 +1,6 @@
 QT += core gui widgets
 
-CONFIG += c++14
+CONFIG += c++17
 
 TARGET = gdb_debug
 TEMPLATE = app
