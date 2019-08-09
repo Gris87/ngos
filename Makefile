@@ -76,7 +76,7 @@ tools:
 				fi \
 			done ; \
 			\
-			sed -i "s/\$(MAKE) -f Makefile/\$(MAKE) -f Makefile -j\`nproc\`/g" Makefile || \
+			sed -i "s/\$$(MAKE) -f Makefile/\$$(MAKE) -f Makefile -j\`nproc\`/g" Makefile || \
 			exit 1 ; \
 			\
 			cd .. ; \
