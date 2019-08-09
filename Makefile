@@ -52,28 +52,36 @@ tools:
 	cd $@ && \
 	lupdate -noobsolete $@.pro && \
 	lrelease $@.pro && \
-	qmake $@.pro && \
+	qmake $@.pro || \
+	exit 1 ; \
 	\
 	for line in `find -type d -maxdepth 1 2> /dev/null | cut -c 3-` ; \
 	do \
 		if [ -f "$${line}/$${line}.pro" ]; then \
 			cd $${line} && \
-			qmake $${line}.pro && \
+			lupdate -noobsolete $${line}.pro && \
+			lrelease $${line}.pro && \
+			qmake $${line}.pro || \
+			exit 1 ; \
 			\
 			for line2 in `find -type d -maxdepth 1 2> /dev/null | cut -c 3-` ; \
 			do \
 				if [ -f "$${line2}/$${line2}.pro" ]; then \
 					cd $${line2} && \
-					qmake $${line2}.pro && \
-					cd .. || \
+					lupdate -noobsolete $${line2}.pro && \
+					lrelease $${line2}.pro && \
+					qmake $${line2}.pro || \
 					exit 1 ; \
+					cd .. ; \
 				fi \
-			done && \
+			done ; \
 			\
-			cd .. || \
-			exit 1 ; \
+			cd .. ; \
 		fi \
-	done
+	done ; \
+	\
+	make $(MAKECMDGOALS) || \
+	exit 1
 
 src:
 	sh -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && ../tools/qt/qmake/build/qmake $@.pro && make $(MAKECMDGOALS)"
