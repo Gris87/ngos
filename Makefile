@@ -76,6 +76,9 @@ tools:
 				fi \
 			done ; \
 			\
+			sed -i "s/\$(MAKE) -f Makefile/\$(MAKE) -f Makefile -j\`nproc\`/g" Makefile || \
+			exit 1 ; \
+			\
 			cd .. ; \
 		fi \
 	done ; \
@@ -84,7 +87,7 @@ tools:
 	exit 1
 
 src:
-	sh -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && ../tools/qt/qmake/build/qmake $@.pro && make $(MAKECMDGOALS)"
+	sh -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && ../tools/qt/qmake/build/qmake $@.pro && make -j`nproc` $(MAKECMDGOALS)"
 
 
 
