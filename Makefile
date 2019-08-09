@@ -51,9 +51,9 @@ clean: $(SUBDIRS)
 tools:
 	sh -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && qmake $@.pro"
 	
-	for line in `find $@ -type d -maxdepth 1 2> /dev/null | cut -c 3-`
-	do
-		echo "$line"
+	for line in `find $@ -type d -maxdepth 1 2> /dev/null | cut -c 3-` \
+	do \
+		echo "$line" \
 	done
 
 src:
