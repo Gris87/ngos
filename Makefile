@@ -45,8 +45,14 @@ clean: $(SUBDIRS)
 
 
 
-$(SUBDIRS):
+3rd_party:
 	$(MAKE) -C $@ $(MAKECMDGOALS)
+
+tools:
+	sh -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && qmake $@.pro && make $(MAKECMDGOALS)"
+
+src:
+	sh -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && ../tools/qt/qmake/build/qmake $@.pro && make $(MAKECMDGOALS)"
 
 
 

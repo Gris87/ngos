@@ -116,6 +116,7 @@ scripts/pull.sh
 scripts/push.sh
 scripts/simplify_spelling.sh
 scripts/update_ngos_files.sh
+src/.gitignore
 src/apps/.gitignore
 src/apps/apps.pro
 src/apps/ls/.gitignore
@@ -129,7 +130,6 @@ src/libs/qt/qt.pro
 src/libs/qt/README.md
 src/libs/qt/src/qt.cpp
 src/libs/qt/src/qt.h
-src/Makefile
 src/os/.gitignore
 src/os/boot/.gitignore
 src/os/boot/asm/arch/x86_64/main.S
@@ -845,6 +845,7 @@ src/os/shared/uefibase/test/bits64/testengine.h
 src/os/shared/uefibase/test/bits64/testresults.cpp
 src/os/shared/uefibase/test/bits64/testresults.h
 src/os/shared/uefibase/uefibase.pri
+src/src.pro
 test/.gitignore
 test/start.sh
 test/tests/01. Code verification.sh
@@ -864,7 +865,6 @@ test/tests/assets/PIE_memory.dmp.hex
 TODO.md
 tools/gdb/.gdbinit
 tools/gdb/install.sh
-tools/Makefile
 tools/qt/.gitignore
 tools/qt/build_config_gui/.gitignore
 tools/qt/build_config_gui/assets/images/about.png
@@ -1184,7 +1184,6 @@ tools/qt/include/console/console.pri
 tools/qt/include/elf/elf.pri
 tools/qt/include/elf/elfobject.cpp
 tools/qt/include/elf/elfobject.h
-tools/qt/Makefile
 tools/qt/qmake/.gitignore
 tools/qt/qmake/qmake.pro
 tools/qt/qmake/README.md
@@ -1194,6 +1193,7 @@ tools/qt/qmake/src/main/qmake.cpp
 tools/qt/qmake/src/main/qmake.h
 tools/qt/qmake/src/threads/searchdependenciesthread.cpp
 tools/qt/qmake/src/threads/searchdependenciesthread.h
+tools/qt/qt.pro
 tools/qt/test_verifier/.gitignore
 tools/qt/test_verifier/README.md
 tools/qt/test_verifier/Screenshot.png
@@ -1251,6 +1251,7 @@ tools/qt/usb_boot_maker/src/threads/burnthread_win.cpp
 tools/qt/usb_boot_maker/src/threads/usbmonitorthread.h
 tools/qt/usb_boot_maker/src/threads/usbmonitorthread_linux.cpp
 tools/qt/usb_boot_maker/usb_boot_maker.pro
+tools/tools.pro
 tools/tracers/assets/linux/.config
 tools/tracers/assets/linux/ngos_tracer.patch
 tools/tracers/assets/win10/EFI/Boot/bootx64.efi
