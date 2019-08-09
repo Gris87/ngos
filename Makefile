@@ -69,9 +69,9 @@ tools:
 					lupdate -noobsolete $${line2}.pro && \
 					lrelease $${line2}.pro && \
 					qmake $${line2}.pro && \
-					cd ..
+					cd .. \
 				fi \
-			done \
+			done && \
 			\
 			cd .. \
 		fi \
