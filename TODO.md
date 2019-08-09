@@ -85,9 +85,7 @@ C++ headers optimizer:
 
 QMake:
 
-- Implement tool
-- Move all projects to Qt pro files
-- Compile projects with own qmake
+- Verify code
 
 
 
@@ -115,4 +113,4 @@ Generic:
 
 - Write documentation
 - Jenkins
-- Bug tracker
+- Bug tracker (Redmine)
