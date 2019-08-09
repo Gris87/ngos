@@ -36,14 +36,12 @@ private:
     static NgosStatus initVolumeGptData(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeTypeAndName(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeName(VolumeInfo *volume, UefiDevicePath *devicePath); // TEST: NO
-    static NgosStatus initImages(); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
     static char8                   *sApplicationDirPath;
     static u64                      sNumberOfVolumes;
     static VolumeInfo              *sVolumes;
-    static Image                   *sBackgroundImage;
 };
 
 

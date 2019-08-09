@@ -454,7 +454,7 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
 
     if (!good)
     {
-        addMessage(entry.getPath(), QString("Test not found for structure size %1").arg(entry.getName()));
+        addMessage(entry.getPath(), QString("Test not found for size of structure: %1").arg(entry.getName()));
     }
 }
 

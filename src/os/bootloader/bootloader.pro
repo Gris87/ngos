@@ -38,10 +38,12 @@ QMAKE_LFLAGS += \
 SOURCES += \
     asm/arch/x86_64/main.S \
     src/bits64/main/bootloader.cpp \
+    src/bits64/main/bootloadergui.cpp \
     src/main.cpp
 
 HEADERS += \
     src/bits64/main/bootloader.h \
+    src/bits64/main/bootloadergui.h \
     src/bits64/other/volumeinfo.h \
     src/bits64/other/volumetype.h \
     test/bits64/sections/section1/bits64/types.h \

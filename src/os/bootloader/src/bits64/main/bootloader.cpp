@@ -17,7 +17,6 @@ UefiDevicePath          *Bootloader::sDevicePath;
 char8                   *Bootloader::sApplicationDirPath;
 u64                      Bootloader::sNumberOfVolumes;
 VolumeInfo              *Bootloader::sVolumes;
-Image                   *Bootloader::sBackgroundImage;
 
 
 
@@ -34,7 +33,6 @@ NgosStatus Bootloader::init()
     UEFI_ASSERT_EXECUTION(initDevicePath(applicationPath),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initApplicationDirPath(applicationPath), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumes(),                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initImages(),                            NgosStatus::ASSERTION);
 
 
 
@@ -767,19 +765,6 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume, UefiDevicePath *device
             }
         }
     }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus Bootloader::initImages()
-{
-    UEFI_LT((""));
-
-
-
-    UEFI_ASSERT_EXECUTION(loadImageFromDiskOrAssets("images/background.jpg", &sBackgroundImage), NgosStatus::ASSERTION);
 
 
 

@@ -54,7 +54,7 @@ QtProVerifier::QtProVerifier()
 
 void QtProVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
 {
-    if (path.contains("/tools/qt/"))
+    if (path.contains("/tools/qt/") && !path.endsWith("/tools/qt/qt.pro"))
     {
         verifyDefinitions(worker, path, content);
     }

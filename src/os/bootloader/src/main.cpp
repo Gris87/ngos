@@ -14,6 +14,7 @@
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
 #include "src/bits64/main/bootloader.h"
+#include "src/bits64/main/bootloadergui.h"
 #include "test/bits64/sections/section1/testcase.h"
 
 
@@ -147,6 +148,11 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
     UEFI_ASSERT_EXECUTION(Bootloader::init(), UefiStatus::ABORTED);
     UEFI_LI(("Bootloader initialized"));
+
+
+
+    UEFI_ASSERT_EXECUTION(BootloaderGUI::init(), UefiStatus::ABORTED);
+    UEFI_LI(("Bootloader GUI initialized"));
 
 
 
