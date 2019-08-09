@@ -49,21 +49,21 @@ clean: $(SUBDIRS)
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
 tools:
-	cd $@ ; \
-	lupdate -noobsolete $@.pro ; \
-	lrelease $@.pro ; \
-	qmake $@.pro" ; \
+	cd $@ && \
+	lupdate -noobsolete $@.pro && \
+	lrelease $@.pro && \
+	qmake $@.pro && \
 	\
-	for line in `find $@ -type d -maxdepth 1 2> /dev/null | cut -c 3-` \
+	for line in `find -type d -maxdepth 1 2> /dev/null | cut -c 3-` ; \
 	do \
-		echo "$${line}" \
+		echo "$${line}" ; \
 	done
 
 src:
-	cd $@
-	lupdate -noobsolete $@.pro
-	lrelease $@.pro
-	../tools/qt/qmake/build/qmake $@.pro
+	cd $@ && \
+	lupdate -noobsolete $@.pro && \
+	lrelease $@.pro && \
+	../tools/qt/qmake/build/qmake $@.pro && \
 	make $(MAKECMDGOALS)
 
 
