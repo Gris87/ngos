@@ -863,6 +863,7 @@ test/tests/12. Build all parameters.sh
 test/tests/assets/BIOS_screen.png
 test/tests/assets/PIE_memory.dmp.hex
 TODO.md
+tools/.gitignore
 tools/gdb/.gdbinit
 tools/gdb/install.sh
 tools/qt/.gitignore
