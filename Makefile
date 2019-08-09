@@ -58,22 +58,20 @@ tools:
 	do \
 		if [ -f "$${line}/$${line}.pro" ]; then \
 			cd $${line} && \
-			lupdate -noobsolete $${line}.pro && \
-			lrelease $${line}.pro && \
 			qmake $${line}.pro && \
 			\
 			for line2 in `find -type d -maxdepth 1 2> /dev/null | cut -c 3-` ; \
 			do \
 				if [ -f "$${line2}/$${line2}.pro" ]; then \
 					cd $${line2} && \
-					lupdate -noobsolete $${line2}.pro && \
-					lrelease $${line2}.pro && \
 					qmake $${line2}.pro && \
-					cd .. \
+					cd .. || \
+					exit 1 ; \
 				fi \
 			done && \
 			\
-			cd .. \
+			cd .. || \
+			exit 1 ; \
 		fi \
 	done
 
