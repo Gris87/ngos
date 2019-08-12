@@ -9,7 +9,7 @@
 
 
 
-class ParameterWidget : public QWidget
+class ParameterWidget: public QWidget
 {
     Q_OBJECT
 

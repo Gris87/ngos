@@ -368,6 +368,8 @@ src/os/shared/common/src/bits64/checksum/crc.h
 src/os/shared/common/src/bits64/console/console.cpp
 src/os/shared/common/src/bits64/console/console.h
 src/os/shared/common/src/bits64/console/lib/glyphdata.h
+src/os/shared/common/src/bits64/containers/list.cpp
+src/os/shared/common/src/bits64/containers/list.h
 src/os/shared/common/src/bits64/cpu/cpu.cpp
 src/os/shared/common/src/bits64/cpu/cpu.h
 src/os/shared/common/src/bits64/cpu/cpufamily.h
@@ -458,6 +460,12 @@ src/os/shared/common/src/bits64/graphics/rgbapixel.h
 src/os/shared/common/src/bits64/graphics/rgbpixel.h
 src/os/shared/common/src/bits64/gui/gui.cpp
 src/os/shared/common/src/bits64/gui/gui.h
+src/os/shared/common/src/bits64/gui/widgets/controls/button.cpp
+src/os/shared/common/src/bits64/gui/widgets/controls/button.h
+src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.h
+src/os/shared/common/src/bits64/gui/widgets/widget.cpp
+src/os/shared/common/src/bits64/gui/widgets/widget.h
 src/os/shared/common/src/bits64/inflate/inflate.cpp
 src/os/shared/common/src/bits64/inflate/inflate.h
 src/os/shared/common/src/bits64/inflate/inflateblocktype.h
@@ -470,6 +478,8 @@ src/os/shared/common/src/bits64/log/log.h
 src/os/shared/common/src/bits64/memory/asm_memcpy.h
 src/os/shared/common/src/bits64/memory/asm_memset.h
 src/os/shared/common/src/bits64/memory/asm_memzero.h
+src/os/shared/common/src/bits64/memory/fixforvtable.cpp
+src/os/shared/common/src/bits64/memory/fixforvtable.h
 src/os/shared/common/src/bits64/memory/malloc.cpp
 src/os/shared/common/src/bits64/memory/malloc.h
 src/os/shared/common/src/bits64/memory/memory.cpp

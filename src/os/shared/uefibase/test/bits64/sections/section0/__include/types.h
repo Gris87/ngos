@@ -77,6 +77,7 @@
 #include <uefi/uefiloadedimageprotocol.h>
 #include <uefi/uefilocatesearchtype.h>
 #include <uefi/uefimemorydescriptor.h>
+#include <uefi/uefimemorytype.h>
 #include <uefi/uefiopenprotocolinformationentry.h>
 #include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipciioprotocolaccess.h>
@@ -189,6 +190,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryDescriptor),                         40);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryMapInfo),                            32);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryStatusCodeRecordConfigurationTable), 1);
+        TEST_ASSERT_EQUALS(sizeof(UefiMemoryType),                               4);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryTypeInformationConfigurationTable),  1);
         TEST_ASSERT_EQUALS(sizeof(UefiMpsConfigurationTable),                    1);
         TEST_ASSERT_EQUALS(sizeof(UefiOpenProtocolInformationEntry),             24);

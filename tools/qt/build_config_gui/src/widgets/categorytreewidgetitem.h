@@ -10,7 +10,7 @@
 
 
 
-class CategoryTreeWidgetItem : public QTreeWidgetItem
+class CategoryTreeWidgetItem: public QTreeWidgetItem
 {
 public:
     CategoryTreeWidgetItem(const QString &title, QWidget *parent = 0); // TEST: NO

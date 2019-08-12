@@ -7,7 +7,7 @@
 
 
 
-class TrackingCheckBox : public QCheckBox
+class TrackingCheckBox: public QCheckBox
 {
     Q_OBJECT
 

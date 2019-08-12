@@ -9,7 +9,7 @@
 
 
 
-class BooleanParameterWidget : public ParameterWidget
+class BooleanParameterWidget: public ParameterWidget
 {
     Q_OBJECT
 

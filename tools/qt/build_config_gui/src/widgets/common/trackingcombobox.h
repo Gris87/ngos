@@ -7,7 +7,7 @@
 
 
 
-class TrackingComboBox : public QComboBox
+class TrackingComboBox: public QComboBox
 {
     Q_OBJECT
 

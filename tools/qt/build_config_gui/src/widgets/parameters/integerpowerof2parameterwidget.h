@@ -9,7 +9,7 @@
 
 
 
-class IntegerPowerOf2ParameterWidget : public ParameterWidget
+class IntegerPowerOf2ParameterWidget: public ParameterWidget
 {
     Q_OBJECT
 

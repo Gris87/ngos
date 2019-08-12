@@ -8,7 +8,7 @@
 
 CppNgosTraceVerifier::CppNgosTraceVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^(struct|class|union|enum( +class)?) +(\\w+)(: +\\w+)?(?: *\\/\\/.*)?$")
+    , mDefinitionRegExp("^(struct +\\w+(: \\w+)?|class +\\w+(: (public|protected|private) \\w+)?|union +\\w+|enum( +class)? +\\w+(: \\w+)?|namespace +\\w+)(?: *\\/\\/.*)?$")
 {
     // Nothing
 }

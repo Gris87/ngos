@@ -9,7 +9,7 @@
 
 
 
-class ComboboxParameterWidget : public ParameterWidget
+class ComboboxParameterWidget: public ParameterWidget
 {
     Q_OBJECT
 

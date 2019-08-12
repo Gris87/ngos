@@ -6,6 +6,7 @@
 #include <QThread>
 
 #include <QMutex>
+#include <QRegularExpression>
 #include <QSemaphore>
 
 #include "src/other/testentry.h"
@@ -45,6 +46,7 @@ private:
     static QList<TestStructureEntry> sTestStructureEntries;
     static QMutex                    sTestStructureEntriesMutex;
     static QSemaphore                sTestStructureEntriesSemaphore;
+    static QRegularExpression        sStructureSizeTestRegExp;
 
     QList<TestMessageInfo> mMessages;
 };

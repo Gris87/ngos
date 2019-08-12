@@ -7,7 +7,7 @@
 
 
 
-class TrackingTableWidget : public QTableWidget
+class TrackingTableWidget: public QTableWidget
 {
     Q_OBJECT
 

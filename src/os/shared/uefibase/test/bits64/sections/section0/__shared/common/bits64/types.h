@@ -10,6 +10,7 @@
 #include <common/src/bits64/checksum/crc.h>
 #include <common/src/bits64/console/console.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
+#include <common/src/bits64/containers/list.h>
 #include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/cpu/cpufamily.h>
 #include <common/src/bits64/cpu/cpuvendor.h>
@@ -79,10 +80,14 @@
 #include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/gui/gui.h>
+#include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/imagewidget.h>
+#include <common/src/bits64/gui/widgets/widget.h>
 #include <common/src/bits64/inflate/inflateblocktype.h>
 #include <common/src/bits64/inflate/inflatecode.h>
 #include <common/src/bits64/inflate/inflatecodetype.h>
 #include <common/src/bits64/inflate/inflatedecoder.h>
+#include <common/src/bits64/memory/fixforvtable.h>
 #include <common/src/bits64/serial/serial.h>
 #include <common/src/bits64/zlib/zlib.h>
 #include <common/src/bits64/zlib/zlibcompressioninfo.h>
@@ -110,6 +115,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(BmpCompressionMethod),                          4);
         TEST_ASSERT_EQUALS(sizeof(BmpHeader),                                     14);
         TEST_ASSERT_EQUALS(sizeof(BmpInformationHeader),                          40);
+        TEST_ASSERT_EQUALS(sizeof(Button),                                        8);
         TEST_ASSERT_EQUALS(sizeof(CPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(Console),                                       1);
         TEST_ASSERT_EQUALS(sizeof(CpuFamily),                                     2);
@@ -123,6 +129,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
         TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
         TEST_ASSERT_EQUALS(sizeof(Image),                                         6);
+        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   8);
         TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                              1);
         TEST_ASSERT_EQUALS(sizeof(InflateCode),                                   4);
         TEST_ASSERT_EQUALS(sizeof(InflateCodeType),                               1);
@@ -144,6 +151,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(JpegStartOfScanComponent),                      2);
         TEST_ASSERT_EQUALS(sizeof(JpegStartOfScanMarker),                         5);
         TEST_ASSERT_EQUALS(sizeof(JpegVlcCode),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(List),                                          1);
         TEST_ASSERT_EQUALS(sizeof(MSR),                                           1);
         TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);
         TEST_ASSERT_EQUALS(sizeof(Png),                                           1);
@@ -169,8 +177,10 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
         TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                     4);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
+        TEST_ASSERT_EQUALS(sizeof(Widget),                                        8);
         TEST_ASSERT_EQUALS(sizeof(X86Bug),                                        2);
         TEST_ASSERT_EQUALS(sizeof(X86Feature),                                    2);
+        TEST_ASSERT_EQUALS(sizeof(XFeature),                                      1);
         TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512OpmaskState),                     64);
         TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom0To15State),               512);
         TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom16To31State),              1024);
@@ -187,6 +197,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionLevel),                          1);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                         1);
         TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                    2);
+        TEST_ASSERT_EQUALS(sizeof(__cxxabiv1::__class_type_info),                 8);
+        TEST_ASSERT_EQUALS(sizeof(__cxxabiv1::__si_class_type_info),              8);
         TEST_ASSERT_EQUALS(sizeof(x86BugWord),                                    1);
         TEST_ASSERT_EQUALS(sizeof(x86FeatureWord),                                1);
     }

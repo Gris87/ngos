@@ -21,6 +21,7 @@
 #include <kernelbase/src/bits64/other/dmi/entry/dmichassisentry.h>
 #include <kernelbase/src/bits64/other/dmi/entry/dmimemorydeviceentry.h>
 #include <kernelbase/src/bits64/other/dmi/entry/dmisystementry.h>
+#include <kernelbase/src/bits64/other/e820/e820.h>
 #include <kernelbase/src/bits64/other/e820/e820table.h>
 #include <kernelbase/src/bits64/other/hypervisor/hypervisor.h>
 #include <kernelbase/src/bits64/other/hypervisor/hypervisortype.h>
@@ -68,6 +69,7 @@ TEST_CASES(section2, bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),  40);
         TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),         1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemEntry),        27);
+        TEST_ASSERT_EQUALS(sizeof(E820),                  1);
         TEST_ASSERT_EQUALS(sizeof(E820Table),             3080);
         TEST_ASSERT_EQUALS(sizeof(FixMap),                1);
         TEST_ASSERT_EQUALS(sizeof(Hypervisor),            1);

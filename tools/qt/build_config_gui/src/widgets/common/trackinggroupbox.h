@@ -7,7 +7,7 @@
 
 
 
-class TrackingGroupBox : public QGroupBox
+class TrackingGroupBox: public QGroupBox
 {
     Q_OBJECT
 

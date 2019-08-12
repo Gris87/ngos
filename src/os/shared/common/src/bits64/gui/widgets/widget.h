@@ -1,0 +1,15 @@
+#ifndef OS_SHARED_COMMON_SRC_BITS64_GUI_WIDGETS_WIDGET_H
+#define OS_SHARED_COMMON_SRC_BITS64_GUI_WIDGETS_WIDGET_H
+
+
+
+class Widget
+{
+public:
+    Widget(); // TEST: NO
+    virtual ~Widget(); // TEST: NO
+};
+
+
+
+#endif // OS_SHARED_COMMON_SRC_BITS64_GUI_WIDGETS_WIDGET_H

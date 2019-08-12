@@ -11,6 +11,7 @@ QSemaphore                TestVerifyThread::sTestEntriesSemaphore;
 QList<TestStructureEntry> TestVerifyThread::sTestStructureEntries;
 QMutex                    TestVerifyThread::sTestStructureEntriesMutex;
 QSemaphore                TestVerifyThread::sTestStructureEntriesSemaphore;
+QRegularExpression        TestVerifyThread::sStructureSizeTestRegExp("^TEST_ASSERT_EQUALS\\(sizeof\\((?:.*::)?(\\w+)(?:<.*)?\\), +\\d+\\);$");
 
 
 
@@ -478,9 +479,16 @@ bool TestVerifyThread::processTestStructureEntryWithTestModule(const TestStructu
     {
         QString line = lines.at(i).trimmed();
 
-        if (line.startsWith("TEST_ASSERT_EQUALS(sizeof(" + entry.getName()))
+        QRegularExpressionMatch match = sStructureSizeTestRegExp.match(line);
+
+        if (match.hasMatch())
         {
-            return true;
+            QString structureName = match.captured(1);
+
+            if (structureName == entry.getName())
+            {
+                return true;
+            }
         }
     }
 

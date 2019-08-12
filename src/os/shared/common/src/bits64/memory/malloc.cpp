@@ -63,3 +63,39 @@ NgosStatus free(void *address)
 
     return NgosStatus::OK;
 }
+
+void* operator new(size_t size)
+{
+    COMMON_LT((" | size = %u", size));
+
+
+
+    return malloc(size);
+}
+
+void operator delete(void *address)
+{
+    COMMON_LT((" | address = 0x%p", address));
+
+    COMMON_ASSERT(address, "address is null");
+
+
+
+    free(address);
+}
+
+void operator delete(void *address, size_t size)
+{
+    COMMON_LT((" | address = 0x%p, size = %u", address, size));
+
+    COMMON_ASSERT(address,  "address is null");
+    COMMON_ASSERT(size > 0, "size is zero");
+
+
+
+    AVOID_UNUSED(size);
+
+
+
+    free(address);
+}

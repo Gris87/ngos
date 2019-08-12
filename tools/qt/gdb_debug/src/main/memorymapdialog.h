@@ -17,7 +17,7 @@ namespace Ui
 
 
 
-class MemoryMapDialog : public QDialog
+class MemoryMapDialog: public QDialog
 {
     Q_OBJECT
 

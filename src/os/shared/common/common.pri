@@ -6,6 +6,7 @@ SOURCES += \
     $$PWD/src/bits64/checksum/adler.cpp \
     $$PWD/src/bits64/checksum/crc.cpp \
     $$PWD/src/bits64/console/console.cpp \
+    $$PWD/src/bits64/containers/list.cpp \
     $$PWD/src/bits64/cpu/cpu.cpp \
     $$PWD/src/bits64/cpu/generated/x86bugsnames.cpp \
     $$PWD/src/bits64/cpu/generated/x86featuresnames.cpp \
@@ -17,7 +18,11 @@ SOURCES += \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegzigzagorder.cpp \
     $$PWD/src/bits64/graphics/png/png.cpp \
     $$PWD/src/bits64/gui/gui.cpp \
+    $$PWD/src/bits64/gui/widgets/controls/button.cpp \
+    $$PWD/src/bits64/gui/widgets/misc/imagewidget.cpp \
+    $$PWD/src/bits64/gui/widgets/widget.cpp \
     $$PWD/src/bits64/inflate/inflate.cpp \
+    $$PWD/src/bits64/memory/fixforvtable.cpp \
     $$PWD/src/bits64/memory/malloc.cpp \
     $$PWD/src/bits64/memory/memory.cpp \
     $$PWD/src/bits64/printf/printf.cpp \
@@ -33,6 +38,7 @@ HEADERS += \
     $$PWD/src/bits64/checksum/crc.h \
     $$PWD/src/bits64/console/console.h \
     $$PWD/src/bits64/console/lib/glyphdata.h \
+    $$PWD/src/bits64/containers/list.h \
     $$PWD/src/bits64/cpu/cpu.h \
     $$PWD/src/bits64/cpu/cpufamily.h \
     $$PWD/src/bits64/cpu/cpuvendor.h \
@@ -112,6 +118,9 @@ HEADERS += \
     $$PWD/src/bits64/graphics/rgbapixel.h \
     $$PWD/src/bits64/graphics/rgbpixel.h \
     $$PWD/src/bits64/gui/gui.h \
+    $$PWD/src/bits64/gui/widgets/controls/button.h \
+    $$PWD/src/bits64/gui/widgets/misc/imagewidget.h \
+    $$PWD/src/bits64/gui/widgets/widget.h \
     $$PWD/src/bits64/inflate/inflate.h \
     $$PWD/src/bits64/inflate/inflateblocktype.h \
     $$PWD/src/bits64/inflate/inflatecode.h \
@@ -123,6 +132,7 @@ HEADERS += \
     $$PWD/src/bits64/memory/asm_memcpy.h \
     $$PWD/src/bits64/memory/asm_memset.h \
     $$PWD/src/bits64/memory/asm_memzero.h \
+    $$PWD/src/bits64/memory/fixforvtable.h \
     $$PWD/src/bits64/memory/malloc.h \
     $$PWD/src/bits64/memory/memory.h \
     $$PWD/src/bits64/printf/printf.h \

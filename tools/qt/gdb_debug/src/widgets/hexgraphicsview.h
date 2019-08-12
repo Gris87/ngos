@@ -12,7 +12,7 @@
 
 
 
-class HexGraphicsView : public QGraphicsView
+class HexGraphicsView: public QGraphicsView
 {
     Q_OBJECT
 

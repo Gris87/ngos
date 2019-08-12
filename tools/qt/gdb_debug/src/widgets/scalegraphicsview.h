@@ -9,7 +9,7 @@
 
 
 
-class ScaleGraphicsView : public QGraphicsView
+class ScaleGraphicsView: public QGraphicsView
 {
     Q_OBJECT
 
