@@ -6,7 +6,6 @@ SOURCES += \
     $$PWD/src/bits64/checksum/adler.cpp \
     $$PWD/src/bits64/checksum/crc.cpp \
     $$PWD/src/bits64/console/console.cpp \
-    $$PWD/src/bits64/containers/list.cpp \
     $$PWD/src/bits64/cpu/cpu.cpp \
     $$PWD/src/bits64/cpu/generated/x86bugsnames.cpp \
     $$PWD/src/bits64/cpu/generated/x86featuresnames.cpp \
@@ -38,6 +37,7 @@ HEADERS += \
     $$PWD/src/bits64/checksum/crc.h \
     $$PWD/src/bits64/console/console.h \
     $$PWD/src/bits64/console/lib/glyphdata.h \
+    $$PWD/src/bits64/containers/lib/listelement.h \
     $$PWD/src/bits64/containers/list.h \
     $$PWD/src/bits64/cpu/cpu.h \
     $$PWD/src/bits64/cpu/cpufamily.h \

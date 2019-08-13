@@ -368,7 +368,7 @@ src/os/shared/common/src/bits64/checksum/crc.h
 src/os/shared/common/src/bits64/console/console.cpp
 src/os/shared/common/src/bits64/console/console.h
 src/os/shared/common/src/bits64/console/lib/glyphdata.h
-src/os/shared/common/src/bits64/containers/list.cpp
+src/os/shared/common/src/bits64/containers/lib/listelement.h
 src/os/shared/common/src/bits64/containers/list.h
 src/os/shared/common/src/bits64/cpu/cpu.cpp
 src/os/shared/common/src/bits64/cpu/cpu.h
@@ -735,6 +735,8 @@ src/os/shared/uefibase/test/bits64/sections/section0/__include/types.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/uuid/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/adler.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/crc.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/lib/listelement.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/list.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvaddps.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvdivps.h

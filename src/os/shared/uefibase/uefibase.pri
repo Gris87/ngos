@@ -120,6 +120,8 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__include/uuid/utils.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/checksum/adler.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/checksum/crc.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/containers/lib/listelement.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/containers/list.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvaddps.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvdivps.h \
