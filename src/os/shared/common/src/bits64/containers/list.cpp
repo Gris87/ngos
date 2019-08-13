@@ -5,7 +5,14 @@
 
 
 
-List::List()
+template<typename T>
+List<T>::List()
+{
+    COMMON_LT((""));
+}
+
+template<typename T>
+List<T>::~List()
 {
     COMMON_LT((""));
 }

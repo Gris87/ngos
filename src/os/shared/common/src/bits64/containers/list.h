@@ -3,10 +3,12 @@
 
 
 
+template<typename T>
 class List
 {
 public:
     List(); // TEST: NO
+    ~List(); // TEST: NO
 };
 
 
