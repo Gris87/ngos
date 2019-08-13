@@ -10,7 +10,7 @@
 class Button: public Widget
 {
 public:
-    Button(); // TEST: NO
+    Button(Widget *parent = 0); // TEST: NO
     ~Button(); // TEST: NO
 };
 

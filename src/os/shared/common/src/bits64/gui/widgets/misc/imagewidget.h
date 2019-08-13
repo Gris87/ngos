@@ -10,7 +10,7 @@
 class ImageWidget: public Widget
 {
 public:
-    ImageWidget(); // TEST: NO
+    ImageWidget(Widget *parent = 0); // TEST: NO
     ~ImageWidget(); // TEST: NO
 };
 

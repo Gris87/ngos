@@ -5,9 +5,18 @@
 
 
 
-Widget::Widget()
+Widget::Widget(Widget *parent)
+    : mParent(parent)
+    , mChildren()
 {
     COMMON_LT((""));
+
+
+
+    if (mParent)
+    {
+        mParent->mChildren.append(this);
+    }
 }
 
 Widget::~Widget()

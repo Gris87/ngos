@@ -5,8 +5,8 @@
 
 
 
-Button::Button()
-    : Widget()
+Button::Button(Widget *parent)
+    : Widget(parent)
 {
     COMMON_LT((""));
 }

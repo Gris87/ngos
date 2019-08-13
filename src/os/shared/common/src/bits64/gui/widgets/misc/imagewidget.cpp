@@ -5,8 +5,8 @@
 
 
 
-ImageWidget::ImageWidget()
-    : Widget()
+ImageWidget::ImageWidget(Widget *parent)
+    : Widget(parent)
 {
     COMMON_LT((""));
 }

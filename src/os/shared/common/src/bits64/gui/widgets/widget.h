@@ -3,11 +3,19 @@
 
 
 
+#include <common/src/bits64/containers/list.h>
+
+
+
 class Widget
 {
 public:
-    Widget(); // TEST: NO
+    Widget(Widget *parent = 0); // TEST: NO
     virtual ~Widget(); // TEST: NO
+
+private:
+    Widget         *mParent;
+    List<Widget *>  mChildren;
 };
 
 

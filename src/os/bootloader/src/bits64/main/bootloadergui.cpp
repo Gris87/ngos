@@ -1,6 +1,8 @@
 #include "bootloadergui.h"
 
 #include <common/src/bits64/gui/gui.h>
+#include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -47,6 +49,16 @@ NgosStatus BootloaderGUI::init()
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/os_ngos.png",          &osNgosImage),        NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/os_ubuntu.png",        &osUbuntuImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/os_windows.png",       &osWindowsImage),     NgosStatus::ASSERTION);
+
+
+
+    ImageWidget *rootWidget = new ImageWidget();
+
+    /*Button *restartButton =*/ new Button(rootWidget);
+
+
+
+    delete rootWidget;
 
 
 
