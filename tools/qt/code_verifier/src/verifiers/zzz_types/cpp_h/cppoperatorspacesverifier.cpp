@@ -240,9 +240,18 @@ inline bool validateSignMultiplyCase7(const QChar &chPrev1, const QChar &/*chPre
             &&
             isSpaceOrEmpty(chPrev1)
             &&
-            (
-                isSpaceOrEmpty(chNext2)
-            );
+            isSpaceOrEmpty(chNext2);
+}
+
+inline bool validateSignMultiplyCase8(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
+{
+    // Cases:
+    //      ">* "
+    //        ^
+
+    return chPrev1 == '>'
+            &&
+            isSpaceOrEmpty(chNext1);
 }
 
 inline bool validateSignMultiply(const QChar &chPrev1, const QChar &chPrev2, const QChar &chPrev3, const QChar &chNext1, const QChar &chNext2, const QChar &chNext3, const QString &line, const qint64 index)
@@ -259,7 +268,9 @@ inline bool validateSignMultiply(const QChar &chPrev1, const QChar &chPrev2, con
             ||
             validateSignMultiplyCase6(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index)
             ||
-            validateSignMultiplyCase7(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index);
+            validateSignMultiplyCase7(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index)
+            ||
+            validateSignMultiplyCase8(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index);
 }
 
 inline bool validateSignDivideCase1(const QChar &chPrev1, const QChar &/*chPrev2*/, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)

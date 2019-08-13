@@ -43,7 +43,7 @@ ListElement<T>::ListElement(const T &data)
     , mNext(0)
     , mPrevious(0)
 {
-    COMMON_LT((""));
+    COMMON_LT((" | data = ..."));
 }
 
 template <typename T>

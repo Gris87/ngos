@@ -196,7 +196,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                     if (index >= 0)
                                     {
-                                        parsedTrace = parsedTrace.left(index);
+                                        parsedTrace.remove(index, parsedTrace.length() - index);
 
 
 
