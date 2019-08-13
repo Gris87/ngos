@@ -29,6 +29,56 @@ TEST_CASES(section0, __shared_common_bits64_containers_lib_listelement);
         TEST_ASSERT_EQUALS(temp2.mPrevious, 0);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("getData()/setData()");
+    {
+        ListElement<u8> temp(3);
+
+        TEST_ASSERT_EQUALS(temp.mData,     3);
+        TEST_ASSERT_EQUALS(temp.getData(), 3);
+
+        TEST_ASSERT_EQUALS(temp.setData(100), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.mData,     100);
+        TEST_ASSERT_EQUALS(temp.getData(), 100);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getNext()/setNext()");
+    {
+        ListElement<u8> temp(7);
+        ListElement<u8> temp2(6);
+
+        TEST_ASSERT_EQUALS(temp.mNext,     0);
+        TEST_ASSERT_EQUALS(temp.getNext(), 0);
+
+        TEST_ASSERT_EQUALS(temp.setNext(&temp2), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.mNext,     &temp2);
+        TEST_ASSERT_EQUALS(temp.getNext(), &temp2);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getPrevious()/setPrevious()");
+    {
+        ListElement<u8> temp(7);
+        ListElement<u8> temp2(6);
+
+        TEST_ASSERT_EQUALS(temp.mPrevious,     0);
+        TEST_ASSERT_EQUALS(temp.getPrevious(), 0);
+
+        TEST_ASSERT_EQUALS(temp.setPrevious(&temp2), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.mPrevious,     &temp2);
+        TEST_ASSERT_EQUALS(temp.getPrevious(), &temp2);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 

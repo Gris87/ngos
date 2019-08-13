@@ -81,7 +81,7 @@ void operator delete(void *address)
 
 
 
-    free(address);
+    COMMON_ASSERT_EXECUTION(free(address));
 }
 
 void operator delete(void *address, size_t size)
@@ -97,5 +97,5 @@ void operator delete(void *address, size_t size)
 
 
 
-    free(address);
+    COMMON_ASSERT_EXECUTION(free(address));
 }

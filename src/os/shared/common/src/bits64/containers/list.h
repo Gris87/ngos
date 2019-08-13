@@ -20,6 +20,9 @@ public:
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
 
+    ListElement<T>* getHead() const;
+    ListElement<T>* getTail() const;
+
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
@@ -43,6 +46,19 @@ template<typename T>
 List<T>::~List()
 {
     COMMON_LT((""));
+
+
+
+    ListElement<T> *element = mHead;
+
+    while (element)
+    {
+        ListElement<T> *temp = element;
+
+        element = element->getNext();
+
+        delete temp;
+    }
 }
 
 template<typename T>
@@ -95,6 +111,26 @@ NgosStatus List<T>::prepend(const T &value)
 
 
     return NgosStatus::OK;
+}
+
+template<typename T>
+ListElement<T>* List<T>::getHead() const
+{
+    COMMON_LT((""));
+
+
+
+    return mHead;
+}
+
+template<typename T>
+ListElement<T>* List<T>::getTail() const
+{
+    COMMON_LT((""));
+
+
+
+    return mTail;
 }
 
 
