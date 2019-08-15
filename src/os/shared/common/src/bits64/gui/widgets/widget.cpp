@@ -22,4 +22,15 @@ Widget::Widget(Widget *parent)
 Widget::~Widget()
 {
     COMMON_LT((""));
+
+
+
+    ListElement<Widget *> *element = mChildren.getHead();
+
+    while (element)
+    {
+        delete element->getData();
+
+        element = element->getNext();
+    }
 }

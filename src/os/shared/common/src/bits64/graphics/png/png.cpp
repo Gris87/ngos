@@ -835,7 +835,7 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
 
 NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilterType filterType, u8 byteWidth, u32 bytesPerLine)
 {
-    COMMON_LT((" | inLine = 0x%p, outLine = 0x%p, previousLine = 0x%p, filterType = %u, byteWidth = %u, bytesPerLine = %u", inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine));
+    // COMMON_LT((" | inLine = 0x%p, outLine = 0x%p, previousLine = 0x%p, filterType = %u, byteWidth = %u, bytesPerLine = %u", inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(inLine,                                     "inLine is null",          NgosStatus::ASSERTION);
     COMMON_ASSERT(outLine,                                    "outLine is null",         NgosStatus::ASSERTION);
@@ -1230,7 +1230,7 @@ NgosStatus Png::getRawImageSize(PngDecoder *decoder, u64 *size)
 
 u8 Png::paethPredictor(u8 a, u8 b, u8 c)
 {
-    COMMON_LT((" | a = %u, b = %u, c = %u", a, b, c));
+    // COMMON_LT((" | a = %u, b = %u, c = %u", a, b, c)); // Commented to avoid too frequent logs
 
 
 

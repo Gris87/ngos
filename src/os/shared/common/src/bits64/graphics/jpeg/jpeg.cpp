@@ -1179,7 +1179,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u64 mcuBlockX, u64 mcuBlockY)
 {
-    COMMON_LT((" | decoder = 0x%p, component = 0x%p, mcuBlockX = %u, mcuBlockY = %u", decoder, component, mcuBlockX, mcuBlockY));
+    // COMMON_LT((" | decoder = 0x%p, component = 0x%p, mcuBlockX = %u, mcuBlockY = %u", decoder, component, mcuBlockX, mcuBlockY)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,                             "decoder is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(component,                           "component is null",    NgosStatus::ASSERTION);
@@ -1208,7 +1208,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, 
 
 NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *component, u8 *sampleDataBuffer)
 {
-    COMMON_LT((" | decoder = 0x%p, component = 0x%p, sampleDataBuffer = 0x%p", decoder, component, sampleDataBuffer));
+    // COMMON_LT((" | decoder = 0x%p, component = 0x%p, sampleDataBuffer = 0x%p", decoder, component, sampleDataBuffer)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(decoder,          "decoder is null",          NgosStatus::ASSERTION);
     COMMON_ASSERT(component,        "component is null",        NgosStatus::ASSERTION);
