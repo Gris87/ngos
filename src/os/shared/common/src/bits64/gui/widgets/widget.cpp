@@ -8,8 +8,14 @@
 Widget::Widget(Widget *parent)
     : mParent(parent)
     , mChildren()
+    , mOwnImage(0)
+    , mResultImage(0)
+    , mPositionX(0)
+    , mPositionY(0)
+    , mWidth(0)
+    , mHeight(0)
 {
-    COMMON_LT((""));
+    COMMON_LT((" | parent = 0x%p", parent));
 
 
 

@@ -157,7 +157,7 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_ASSERT_EXECUTION(BootloaderGUI::init(), UefiStatus::ABORTED);
+    UEFI_ASSERT_EXECUTION(BootloaderGUI::init(&params), UefiStatus::ABORTED);
     UEFI_LI(("Bootloader GUI initialized"));
 
 

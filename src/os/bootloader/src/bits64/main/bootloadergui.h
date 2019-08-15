@@ -3,6 +3,7 @@
 
 
 
+#include <bootparams/bootparams.h>
 #include <ngos/status.h>
 
 
@@ -10,7 +11,7 @@
 class BootloaderGUI
 {
 public:
-    static NgosStatus init(); // TEST: NO
+    static NgosStatus init(BootParams *params); // TEST: NO
 };
 
 

@@ -5,9 +5,22 @@
 
 
 
-NgosStatus GUI::init()
+Widget       *GUI::sRootWidget;
+CursorWidget *GUI::sCursorWidget;
+
+
+
+NgosStatus GUI::init(Widget *rootWidget, CursorWidget *cursorWidget)
 {
-    COMMON_LT((""));
+    COMMON_LT((" | rootWidget = 0x%p, cursorWidget = 0x%p", rootWidget, cursorWidget));
+
+    COMMON_ASSERT(rootWidget,   "rootWidget is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(cursorWidget, "cursorWidget is null", NgosStatus::ASSERTION);
+
+
+
+    sRootWidget   = rootWidget;
+    sCursorWidget = cursorWidget;
 
 
 

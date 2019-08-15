@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/containers/list.h>
+#include <common/src/bits64/graphics/image.h>
 
 
 
@@ -13,9 +14,18 @@ public:
     Widget(Widget *parent = 0); // TEST: NO
     virtual ~Widget(); // TEST: NO
 
+    void setPosition(i64 positionX, i64 positionY);
+    void setSize(u64 width, u64 height);
+
 private:
     Widget         *mParent;
     List<Widget *>  mChildren;
+    Image          *mOwnImage;
+    Image          *mResultImage;
+    i64             mPositionX;
+    i64             mPositionY;
+    u64             mWidth;
+    u64             mHeight;
 };
 
 

@@ -3,6 +3,8 @@
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
+#include <ngos/linkage.h>
+#include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -10,13 +12,18 @@
 
 
 
-NgosStatus BootloaderGUI::init()
+#define OS_BUTTON_SIZE_PERCENT     20
+#define TOOL_BUTTON_SIZE_PERCENT   10
+#define SYSTEM_BUTTON_SIZE_PERCENT 5
+#define CURSOR_SIZE_PERCENT        2
+
+
+
+NgosStatus BootloaderGUI::init(BootParams *params)
 {
-    UEFI_LT((""));
+    UEFI_LT((" | params = 0x%p", params));
 
-
-
-    UEFI_ASSERT_EXECUTION(GUI::init(), NgosStatus::ASSERTION);
+    UEFI_ASSERT(params, "params is null", NgosStatus::ASSERTION);
 
 
 
@@ -52,13 +59,41 @@ NgosStatus BootloaderGUI::init()
 
 
 
-    ImageWidget *rootWidget = new ImageWidget();
+    u64 screenWidth  = params->screenInfo.width;
+    u64 screenHeight = params->screenInfo.height;
 
-    /*Button *restartButton =*/ new Button(rootWidget);
+    u64 osButtonSize     = MIN(screenWidth * 100 / OS_BUTTON_SIZE_PERCENT,     screenHeight * 100 / OS_BUTTON_SIZE_PERCENT);
+    u64 toolButtonSize   = MIN(screenWidth * 100 / TOOL_BUTTON_SIZE_PERCENT,   screenHeight * 100 / TOOL_BUTTON_SIZE_PERCENT);
+    u64 systemButtonSize = MIN(screenWidth * 100 / SYSTEM_BUTTON_SIZE_PERCENT, screenHeight * 100 / SYSTEM_BUTTON_SIZE_PERCENT);
+    u64 cursorSize       = MIN(screenWidth * 100 / CURSOR_SIZE_PERCENT,        screenHeight * 100 / CURSOR_SIZE_PERCENT);
+
+    AVOID_UNUSED(osButtonSize);
+    AVOID_UNUSED(systemButtonSize);
 
 
 
-    delete rootWidget;
+    CursorWidget *cursorWidget = new CursorWidget(cursorImage, pointerImage);
+
+    cursorWidget->setPosition(screenWidth >> 1, screenHeight >> 1); // ">> 1" == "/ 2"
+    cursorWidget->setSize(cursorSize, cursorSize);
+
+
+
+    ImageWidget *rootWidget = new ImageWidget(backgroundImage);
+
+    rootWidget->setPosition(0, 0);
+    rootWidget->setSize(screenWidth, screenHeight);
+
+
+
+    Button *rebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, rebootImage, rootWidget);
+
+    rebootButton->setPosition(0, 0);
+    rebootButton->setSize(toolButtonSize, toolButtonSize);
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, cursorWidget), NgosStatus::ASSERTION);
 
 
 

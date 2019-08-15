@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 
 
@@ -10,8 +11,11 @@
 class ImageWidget: public Widget
 {
 public:
-    ImageWidget(Widget *parent = 0); // TEST: NO
+    ImageWidget(Image *image, Widget *parent = 0); // TEST: NO
     ~ImageWidget(); // TEST: NO
+
+private:
+    Image *mImage;
 };
 
 

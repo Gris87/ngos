@@ -81,6 +81,7 @@
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 #include <common/src/bits64/inflate/inflateblocktype.h>
@@ -115,12 +116,13 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(BmpCompressionMethod),                          4);
         TEST_ASSERT_EQUALS(sizeof(BmpHeader),                                     14);
         TEST_ASSERT_EQUALS(sizeof(BmpInformationHeader),                          40);
-        TEST_ASSERT_EQUALS(sizeof(Button),                                        32);
+        TEST_ASSERT_EQUALS(sizeof(Button),                                        120);
         TEST_ASSERT_EQUALS(sizeof(CPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(Console),                                       1);
         TEST_ASSERT_EQUALS(sizeof(CpuFamily),                                     2);
         TEST_ASSERT_EQUALS(sizeof(CpuVendor),                                     1);
         TEST_ASSERT_EQUALS(sizeof(Crc),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                  96);
         TEST_ASSERT_EQUALS(sizeof(FPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(FSaveState),                                    112);
         TEST_ASSERT_EQUALS(sizeof(FXSaveState),                                   512);
@@ -129,7 +131,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
         TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
         TEST_ASSERT_EQUALS(sizeof(Image),                                         6);
-        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   32);
+        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   88);
         TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                              1);
         TEST_ASSERT_EQUALS(sizeof(InflateCode),                                   4);
         TEST_ASSERT_EQUALS(sizeof(InflateCodeType),                               1);
@@ -178,7 +180,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
         TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                     4);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
-        TEST_ASSERT_EQUALS(sizeof(Widget),                                        32);
+        TEST_ASSERT_EQUALS(sizeof(Widget),                                        80);
         TEST_ASSERT_EQUALS(sizeof(X86Bug),                                        2);
         TEST_ASSERT_EQUALS(sizeof(X86Feature),                                    2);
         TEST_ASSERT_EQUALS(sizeof(XFeature),                                      1);

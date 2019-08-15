@@ -5,10 +5,13 @@
 
 
 
-ImageWidget::ImageWidget(Widget *parent)
+ImageWidget::ImageWidget(Image *image, Widget *parent)
     : Widget(parent)
+    , mImage(image)
 {
-    COMMON_LT((""));
+    COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
+
+    COMMON_ASSERT(image, "image is null");
 }
 
 ImageWidget::~ImageWidget()

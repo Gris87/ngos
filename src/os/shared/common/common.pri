@@ -18,6 +18,7 @@ SOURCES += \
     $$PWD/src/bits64/graphics/png/png.cpp \
     $$PWD/src/bits64/gui/gui.cpp \
     $$PWD/src/bits64/gui/widgets/controls/button.cpp \
+    $$PWD/src/bits64/gui/widgets/misc/cursorwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.cpp \
     $$PWD/src/bits64/gui/widgets/widget.cpp \
     $$PWD/src/bits64/inflate/inflate.cpp \
@@ -119,6 +120,7 @@ HEADERS += \
     $$PWD/src/bits64/graphics/rgbpixel.h \
     $$PWD/src/bits64/gui/gui.h \
     $$PWD/src/bits64/gui/widgets/controls/button.h \
+    $$PWD/src/bits64/gui/widgets/misc/cursorwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.h \
     $$PWD/src/bits64/gui/widgets/widget.h \
     $$PWD/src/bits64/inflate/inflate.h \

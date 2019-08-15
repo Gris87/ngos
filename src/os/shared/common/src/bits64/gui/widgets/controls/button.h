@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 
 
@@ -10,8 +11,15 @@
 class Button: public Widget
 {
 public:
-    Button(Widget *parent = 0); // TEST: NO
+    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *contentImage, Widget *parent = 0); // TEST: NO
     ~Button(); // TEST: NO
+
+private:
+    Image *mNormalImage;
+    Image *mHoverImage;
+    Image *mPressedImage;
+    Image *mFocusedImage;
+    Image *mContentImage;
 };
 
 

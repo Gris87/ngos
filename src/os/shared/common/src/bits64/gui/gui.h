@@ -3,6 +3,8 @@
 
 
 
+#include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
 #include <ngos/status.h>
 
 
@@ -10,7 +12,11 @@
 class GUI
 {
 public:
-    static NgosStatus init(); // TEST: NO
+    static NgosStatus init(Widget *rootWidget, CursorWidget *cursorWidget); // TEST: NO
+
+private:
+    static Widget       *sRootWidget;
+    static CursorWidget *sCursorWidget;
 };
 
 
