@@ -17,11 +17,7 @@ SECTIONS
 
 
     _rela_begin = .;
-
-    .rela.dyn        : {
-        *(.rela.dyn)
-    }
-
+    .rela.dyn        : { *(.rela.dyn) }
     _rela_end = .;
 
 

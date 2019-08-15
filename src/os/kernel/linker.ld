@@ -21,17 +21,7 @@ SECTIONS
     .pagetable   :       { *(.pagetable) }
     . = ALIGN((1 << 12));
 
-
-
-    _rela_begin = .;
-
-    .rela.dyn    :       {
-        *(.rela.dyn)
-    }
-
-    _rela_end = .;
-
-
+    .rela.dyn    :       { *(.rela.dyn) }
 
     .assets      :       {
         _assets_begin = .;
