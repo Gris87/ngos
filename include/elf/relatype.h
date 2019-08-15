@@ -7,7 +7,7 @@
 
 
 
-enum class ElfRelaType: u8
+enum class ElfRelaType: u32
 {
     NONE      = 0,  // No reloc
     D64       = 1,  // Direct 64 bit

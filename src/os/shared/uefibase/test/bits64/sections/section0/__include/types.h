@@ -124,7 +124,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(ElfProgramHeaderTableEntry),                   56);
         TEST_ASSERT_EQUALS(sizeof(ElfProgramType),                               4);
         TEST_ASSERT_EQUALS(sizeof(ElfRela),                                      24);
-        TEST_ASSERT_EQUALS(sizeof(ElfRelaType),                                  1);
+        TEST_ASSERT_EQUALS(sizeof(ElfRelaType),                                  4);
         TEST_ASSERT_EQUALS(sizeof(ElfSectionFlag),                               8);
         TEST_ASSERT_EQUALS(sizeof(ElfSectionHeaderTableEntry),                   64);
         TEST_ASSERT_EQUALS(sizeof(ElfSectionType),                               4);

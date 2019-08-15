@@ -163,17 +163,16 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
             for (i64 j = 0; j < count; ++j)
             {
-                ElfRela     &rela     = relas[j];
-                ElfRelaType  relaType = (ElfRelaType)ELF_RELA_TYPE(rela.info);
+                ElfRela &rela = relas[j];
 
-                // EARLY_LVVV(("relas[%d].offset   = 0x%016lX", j, rela.offset));                               // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].info     = 0x%016lX", j, rela.info));                                 // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].addend   = 0x%016lX", j, rela.addend));                               // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].relaType = %u (%s)",  j, relaType, elfRelaTypeToString(relaType)));   // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].offset = 0x%016lX", j, rela.offset));                               // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].info   = 0x%016lX", j, rela.info));                                 // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].addend = 0x%016lX", j, rela.addend));                               // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].type   = %u (%s)",  j, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
 
                 if (rela.offset >= 0xFFFFFFFF80000000)
                 {
-                    switch (relaType)
+                    switch (rela.type)
                     {
                         case ElfRelaType::D32:
                         {
@@ -207,7 +206,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
                         default:
                         {
-                            // EARLY_LVV(("Ignoring RELA entry with the type %u (%s)", relaType, elfRelaTypeToString(relaType))); // Commented to avoid too frequent logs
+                            // EARLY_LVV(("Ignoring RELA entry with the type %u (%s)", rela.type, elfRelaTypeToString(rela.t    ype))); // Commented to avoid too frequent logs
                         }
                         break;
                     }
