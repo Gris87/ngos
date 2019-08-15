@@ -22,7 +22,6 @@ public:
 
     const QByteArray& getProgramBytes() const; // TEST: NO
     quint64 getFileSize() const; // TEST: NO
-    quint64 getMemorySize() const; // TEST: NO
     const QList<ElfSectionHeaderTableEntry *>& getSections() const; // TEST: NO
     const QHash<QString, ElfSectionHeaderTableEntry *>& getSectionsMap() const; // TEST: NO
     ElfSectionHeaderTableEntry* getSection(QString name); // TEST: NO
@@ -37,7 +36,6 @@ private:
     QList<ElfProgramHeaderTableEntry *>           mProgramHeaderTableEntries;
     QList<ElfSectionHeaderTableEntry *>           mSectionHeaderTableEntries;
     QByteArray                                    mProgramBytes;
-    quint64                                       mMemorySize;
     QHash<QString, ElfSectionHeaderTableEntry *>  mNameToSectionMap;
     QHash<QString, ElfSymbol *>                   mNameToSymbolMap;
 };

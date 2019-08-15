@@ -163,9 +163,8 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
             for (i64 j = 0; j < count; ++j)
             {
-                ElfRela &rela = relas[j];
-
-                ElfRelaType relaType = (ElfRelaType)ELF_RELA_TYPE(rela.info);
+                ElfRela     &rela     = relas[j];
+                ElfRelaType  relaType = (ElfRelaType)ELF_RELA_TYPE(rela.info);
 
                 // EARLY_LVVV(("relas[%d].offset   = 0x%016lX", j, rela.offset));                               // Commented to avoid too frequent logs
                 // EARLY_LVVV(("relas[%d].info     = 0x%016lX", j, rela.info));                                 // Commented to avoid too frequent logs

@@ -6,11 +6,25 @@ SECTIONS
 {
     . = 0;
 
+
+
     .bootloader_code : { *(.bootloader_code) }
     .asm_code        : { *(.asm_code) }
     .text            : { *(.text*) }
     .rodata          : { *(.rodata*) }
     .data            : { *(.data*) }
+
+
+
+    _rela_begin = .;
+
+    .rela.dyn        : {
+        *(.rela.dyn)
+    }
+
+    _rela_end = .;
+
+
 
     .assets          : {
         _assets_begin = .;
@@ -22,6 +36,8 @@ SECTIONS
         *(.noinit)
         *(.bss*)
     }
+
+
 
     _end = .;
 

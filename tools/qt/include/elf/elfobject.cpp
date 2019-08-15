@@ -11,7 +11,6 @@ ElfObject::ElfObject()
     , mProgramHeaderTableEntries()
     , mSectionHeaderTableEntries()
     , mProgramBytes()
-    , mMemorySize(0)
     , mNameToSectionMap()
     , mNameToSymbolMap()
 {
@@ -103,7 +102,6 @@ bool ElfObject::read(const QString &path, bool *isRunning)
         ElfProgramHeaderTableEntry *entry = mProgramHeaderTableEntries.at(i);
 
         mProgramBytes.append((char *)((quint64)mBytes.data() + entry->offset), entry->fileSize);
-        mMemorySize += entry->memorySize;
     }
 
 
@@ -168,11 +166,6 @@ const QByteArray& ElfObject::getProgramBytes() const
 quint64 ElfObject::getFileSize() const
 {
     return mBytes.length();
-}
-
-quint64 ElfObject::getMemorySize() const
-{
-    return mMemorySize;
 }
 
 const QList<ElfSectionHeaderTableEntry *>& ElfObject::getSections() const
