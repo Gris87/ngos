@@ -9,6 +9,7 @@
 #include <uefibase/src/bits64/main/setupbootparams.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/main/setupgraphics.h>
+#include <uefibase/src/bits64/main/setupvirtualfunctiontables.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
@@ -90,6 +91,11 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
     UEFI_ASSERT_EXECUTION(printCpuFlags(), UefiStatus::ABORTED);
 #endif
+
+
+
+    UEFI_ASSERT_EXECUTION(setupVirtualFunctionTables(kernelLocation), UefiStatus::ABORTED);
+    UEFI_LI(("Setup virtual function tables completed"));
 
 
 

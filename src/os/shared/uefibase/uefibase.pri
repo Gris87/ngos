@@ -95,6 +95,7 @@ SOURCES += \
     $$PWD/src/bits64/main/setupbootparams.cpp \
     $$PWD/src/bits64/main/setupcr4.cpp \
     $$PWD/src/bits64/main/setupgraphics.cpp \
+    $$PWD/src/bits64/main/setupvirtualfunctiontables.cpp \
     $$PWD/src/bits64/uefi/uefi.cpp \
     $$PWD/test/bits64/testresults.cpp
 
@@ -102,6 +103,7 @@ HEADERS += \
     $$PWD/src/bits64/main/setupbootparams.h \
     $$PWD/src/bits64/main/setupcr4.h \
     $$PWD/src/bits64/main/setupgraphics.h \
+    $$PWD/src/bits64/main/setupvirtualfunctiontables.h \
     $$PWD/src/bits64/other/uefibootmemorymap.h \
     $$PWD/src/bits64/uefi/uefi.h \
     $$PWD/src/bits64/uefi/uefiassert.h \

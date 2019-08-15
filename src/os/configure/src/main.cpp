@@ -8,6 +8,7 @@
 #include <uefi/uefisystemtable.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/main/setupgraphics.h>
+#include <uefibase/src/bits64/main/setupvirtualfunctiontables.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
@@ -202,6 +203,11 @@ BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 
 
         return 0;
     }
+
+
+
+    UEFI_ASSERT_EXECUTION(setupVirtualFunctionTables(kernelLocation), 0);
+    UEFI_LI(("Setup virtual function tables completed"));
 
 
 

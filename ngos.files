@@ -716,6 +716,8 @@ src/os/shared/uefibase/src/bits64/main/setupcr4.cpp
 src/os/shared/uefibase/src/bits64/main/setupcr4.h
 src/os/shared/uefibase/src/bits64/main/setupgraphics.cpp
 src/os/shared/uefibase/src/bits64/main/setupgraphics.h
+src/os/shared/uefibase/src/bits64/main/setupvirtualfunctiontables.cpp
+src/os/shared/uefibase/src/bits64/main/setupvirtualfunctiontables.h
 src/os/shared/uefibase/src/bits64/other/uefibootmemorymap.h
 src/os/shared/uefibase/src/bits64/uefi/uefi.cpp
 src/os/shared/uefibase/src/bits64/uefi/uefi.h
