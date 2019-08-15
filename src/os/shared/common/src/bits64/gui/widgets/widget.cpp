@@ -40,3 +40,23 @@ Widget::~Widget()
         element = element->getNext();
     }
 }
+
+void Widget::setPosition(i64 positionX, i64 positionY)
+{
+    COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));
+
+
+
+    mPositionX = positionX;
+    mPositionY = positionY;
+}
+
+void Widget::setSize(u64 width, u64 height)
+{
+    COMMON_LT((" | width = %u, height = %u", width, height));
+
+
+
+    mWidth  = width;
+    mHeight = height;
+}
