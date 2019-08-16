@@ -466,6 +466,8 @@ src/os/shared/common/src/bits64/gui/widgets/misc/cursorwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/cursorwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.h
+src/os/shared/common/src/bits64/gui/widgets/misc/screenwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/screenwidget.h
 src/os/shared/common/src/bits64/gui/widgets/widget.cpp
 src/os/shared/common/src/bits64/gui/widgets/widget.h
 src/os/shared/common/src/bits64/inflate/inflate.cpp
@@ -849,6 +851,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse42/asm_testsse42pcmpgtq.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse42/sse42.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/png/png.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/gui/widgets/widget.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h

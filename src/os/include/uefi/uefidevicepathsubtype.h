@@ -8,7 +8,7 @@
 
 
 
-enum class UefiDevicePathSubType : u8 // Ignore CppEnumVerifier
+enum class UefiDevicePathSubType: u8 // Ignore CppEnumVerifier
 {
     NONE = 0,
 

@@ -10,7 +10,7 @@ CursorWidget::CursorWidget(Image *cursorImage, Image *pointerImage, Widget *pare
     , mCursorImage(cursorImage)
     , mPointerImage(pointerImage)
 {
-    COMMON_LT((" | cursorImage = 0x%p, pointerImage = 0x%p, parent = 0x%p", image, parent));
+    COMMON_LT((" | cursorImage = 0x%p, pointerImage = 0x%p, parent = 0x%p", cursorImage, pointerImage, parent));
 
     COMMON_ASSERT(cursorImage,  "cursorImage is null");
     COMMON_ASSERT(pointerImage, "pointerImage is null");

@@ -14,10 +14,14 @@ public:
     Widget(Widget *parent = 0); // TEST: NO
     virtual ~Widget(); // TEST: NO
 
-    void setPosition(i64 positionX, i64 positionY);
-    void setSize(u64 width, u64 height);
+    NgosStatus setPosition(i64 positionX, i64 positionY);
+    NgosStatus setSize(u64 width, u64 height);
 
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
 private:
+#endif
     Widget         *mParent;
     List<Widget *>  mChildren;
     Image          *mOwnImage;

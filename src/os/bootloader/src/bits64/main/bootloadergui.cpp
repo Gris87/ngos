@@ -2,7 +2,7 @@
 
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
-#include <common/src/bits64/gui/widgets/misc/imagewidget.h>
+#include <common/src/bits64/gui/widgets/misc/screenwidget.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -11,6 +11,15 @@
 #include "src/bits64/main/bootloader.h"
 
 
+
+#define REBOOT_BUTTON_POSITION_X_PERCENT 40
+#define REBOOT_BUTTON_POSITION_Y_PERCENT 90
+
+#define SHUTDOWN_BUTTON_POSITION_X_PERCENT 55
+#define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 90
+
+#define CURSOR_POSITION_X_PERCENT 50
+#define CURSOR_POSITION_Y_PERCENT 50
 
 #define OS_BUTTON_SIZE_PERCENT     20
 #define TOOL_BUTTON_SIZE_PERCENT   10
@@ -68,32 +77,46 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 cursorSize       = MIN(screenWidth * 100 / CURSOR_SIZE_PERCENT,        screenHeight * 100 / CURSOR_SIZE_PERCENT);
 
     AVOID_UNUSED(osButtonSize);
-    AVOID_UNUSED(systemButtonSize);
+    AVOID_UNUSED(toolButtonSize);
 
 
 
-    CursorWidget *cursorWidget = new CursorWidget(cursorImage, pointerImage);
+    Widget *rootWidget = new Widget();
 
-    cursorWidget->setPosition(screenWidth >> 1, screenHeight >> 1); // ">> 1" == "/ 2"
-    cursorWidget->setSize(cursorSize, cursorSize);
+    UEFI_ASSERT_EXECUTION(rootWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rootWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);
 
 
 
-    ImageWidget *rootWidget = new ImageWidget(backgroundImage);
+    ScreenWidget *screenWidget = new ScreenWidget(backgroundImage, (u8 *)params->screenInfo.frameBufferBase, rootWidget);
 
-    rootWidget->setPosition(0, 0);
-    rootWidget->setSize(screenWidth, screenHeight);
+    UEFI_ASSERT_EXECUTION(screenWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(screenWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);
 
 
 
     Button *rebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, rebootImage, rootWidget);
 
-    rebootButton->setPosition(0, 0);
-    rebootButton->setSize(toolButtonSize, toolButtonSize);
+    UEFI_ASSERT_EXECUTION(rebootButton->setPosition(screenWidth * 100 / REBOOT_BUTTON_POSITION_X_PERCENT, screenHeight * 100 / REBOOT_BUTTON_POSITION_Y_PERCENT), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
 
 
 
-    UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, cursorWidget), NgosStatus::ASSERTION);
+    Button *shutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, shutdownImage, rootWidget);
+
+    UEFI_ASSERT_EXECUTION(shutdownButton->setPosition(screenWidth * 100 / SHUTDOWN_BUTTON_POSITION_X_PERCENT, screenHeight * 100 / SHUTDOWN_BUTTON_POSITION_Y_PERCENT), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(shutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
+
+
+
+    CursorWidget *cursorWidget = new CursorWidget(cursorImage, pointerImage, rootWidget);
+
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth * 100 / CURSOR_POSITION_X_PERCENT, screenHeight * 100 / CURSOR_POSITION_Y_PERCENT), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                            NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, screenWidget, cursorWidget), NgosStatus::ASSERTION);
 
 
 

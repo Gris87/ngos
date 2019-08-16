@@ -3,7 +3,6 @@
 
 
 
-#include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 
 

@@ -7,7 +7,7 @@
 
 
 
-enum class UefiDevicePathType : u8
+enum class UefiDevicePathType: u8
 {
     NONE                  = 0,
     HARDWARE_DEVICE_PATH  = 0x01,
