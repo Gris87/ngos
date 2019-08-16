@@ -13,12 +13,19 @@ public:
     Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *contentImage, Widget *parent = 0); // TEST: NO
     ~Button(); // TEST: NO
 
+    NgosStatus invalidate() override; // TEST: NO
+
 private:
     Image *mNormalImage;
     Image *mHoverImage;
     Image *mPressedImage;
     Image *mFocusedImage;
     Image *mContentImage;
+    Image *mNormalResizedImage;
+    Image *mHoverResizedImage;
+    Image *mPressedResizedImage;
+    Image *mFocusedResizedImage;
+    Image *mContentResizedImage;
 };
 
 

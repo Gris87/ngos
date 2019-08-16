@@ -27,5 +27,9 @@ NgosStatus GUI::init(Widget *rootWidget, ScreenWidget *mainScreenWidget, CursorW
 
 
 
+    COMMON_ASSERT_EXECUTION(sRootWidget->invalidate(), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }

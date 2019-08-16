@@ -1,5 +1,6 @@
 #include "button.h"
 
+#include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 
@@ -12,6 +13,11 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mPressedImage(pressedImage)
     , mFocusedImage(focusedImage)
     , mContentImage(contentImage)
+    , mNormalResizedImage(0)
+    , mHoverResizedImage(0)
+    , mPressedResizedImage(0)
+    , mFocusedResizedImage(0)
+    , mContentResizedImage(0)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, contentImage = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, contentImage, parent));
 
@@ -25,4 +31,58 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
 Button::~Button()
 {
     COMMON_LT((""));
+
+
+
+    if (mNormalResizedImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(mNormalResizedImage));
+    }
+
+    if (mHoverResizedImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(mHoverResizedImage));
+    }
+
+    if (mPressedResizedImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(mPressedResizedImage));
+    }
+
+    if (mFocusedResizedImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(mFocusedResizedImage));
+    }
+
+    if (mContentResizedImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(mContentResizedImage));
+    }
+}
+
+NgosStatus Button::invalidate()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(Widget::invalidate(), NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mNormalResizedImage  == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mHoverResizedImage   == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mPressedResizedImage == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mFocusedResizedImage == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mContentResizedImage == 0, NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mNormalImage,  mWidth, mHeight, &mNormalResizedImage),  NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mHoverImage,   mWidth, mHeight, &mHoverResizedImage),   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPressedImage, mWidth, mHeight, &mPressedResizedImage), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedImage, mWidth, mHeight, &mFocusedResizedImage), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mContentImage, mWidth, mHeight, &mContentResizedImage), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }

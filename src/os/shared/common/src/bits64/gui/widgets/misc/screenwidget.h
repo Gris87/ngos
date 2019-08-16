@@ -13,9 +13,12 @@ public:
     ScreenWidget(Image *backgroundImage, u8 *frameBuffer, Widget *parent = 0); // TEST: NO
     ~ScreenWidget(); // TEST: NO
 
+    NgosStatus invalidate() override; // TEST: NO
+
 private:
     Image *mBackgroundImage;
     u8    *mFrameBuffer;
+    Image *mBackgroundResizedImage;
 };
 
 

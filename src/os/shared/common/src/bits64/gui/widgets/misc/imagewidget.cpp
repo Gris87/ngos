@@ -1,5 +1,6 @@
 #include "imagewidget.h"
 
+#include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 
@@ -8,6 +9,7 @@
 ImageWidget::ImageWidget(Image *image, Widget *parent)
     : Widget(parent)
     , mImage(image)
+    , mResizedImage(0)
 {
     COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
 
@@ -17,4 +19,30 @@ ImageWidget::ImageWidget(Image *image, Widget *parent)
 ImageWidget::~ImageWidget()
 {
     COMMON_LT((""));
+
+
+
+    if (mResizedImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(mResizedImage));
+    }
+}
+
+NgosStatus ImageWidget::invalidate()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(Widget::invalidate(), NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mResizedImage == 0, NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }

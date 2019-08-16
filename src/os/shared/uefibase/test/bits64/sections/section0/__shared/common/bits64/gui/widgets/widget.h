@@ -38,7 +38,7 @@ TEST_CASES(section0, __shared_common_bits64_gui_widgets_widget);
         TEST_ASSERT_EQUALS(temp.mWidth,  0);
         TEST_ASSERT_EQUALS(temp.mHeight, 0);
 
-        TEST_ASSERT_EQUALS(temp.setPosition(30, 40), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.setSize(30, 40), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(temp.mWidth,  30);
         TEST_ASSERT_EQUALS(temp.mHeight, 40);

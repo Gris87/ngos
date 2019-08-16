@@ -8,8 +8,6 @@
 Widget::Widget(Widget *parent)
     : mParent(parent)
     , mChildren()
-    , mOwnImage(0)
-    , mResultImage(0)
     , mPositionX(0)
     , mPositionY(0)
     , mWidth(0)
@@ -63,6 +61,26 @@ NgosStatus Widget::setSize(u64 width, u64 height)
 
     mWidth  = width;
     mHeight = height;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Widget::invalidate()
+{
+    COMMON_LT((""));
+
+
+
+    ListElement<Widget *> *element = mChildren.getHead();
+
+    while (element)
+    {
+        COMMON_ASSERT_EXECUTION(element->getData()->invalidate(), NgosStatus::ASSERTION);
+
+        element = element->getNext();
+    }
 
 
 

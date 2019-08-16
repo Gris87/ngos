@@ -13,8 +13,11 @@ public:
     ImageWidget(Image *image, Widget *parent = 0); // TEST: NO
     ~ImageWidget(); // TEST: NO
 
+    NgosStatus invalidate() override; // TEST: NO
+
 private:
     Image *mImage;
+    Image *mResizedImage;
 };
 
 

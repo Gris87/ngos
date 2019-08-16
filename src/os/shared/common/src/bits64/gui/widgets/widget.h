@@ -17,15 +17,15 @@ public:
     NgosStatus setPosition(i64 positionX, i64 positionY);
     NgosStatus setSize(u64 width, u64 height);
 
+    virtual NgosStatus invalidate(); // TEST: NO
+
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
-private:
+protected:
 #endif
     Widget         *mParent;
     List<Widget *>  mChildren;
-    Image          *mOwnImage;
-    Image          *mResultImage;
     i64             mPositionX;
     i64             mPositionY;
     u64             mWidth;

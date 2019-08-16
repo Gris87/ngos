@@ -13,9 +13,13 @@ public:
     CursorWidget(Image *cursorImage, Image *pointerImage, Widget *parent = 0); // TEST: NO
     ~CursorWidget(); // TEST: NO
 
+    NgosStatus invalidate() override; // TEST: NO
+
 private:
     Image *mCursorImage;
     Image *mPointerImage;
+    Image *mCursorResizedImage;
+    Image *mPointerResizedImage;
 };
 
 
