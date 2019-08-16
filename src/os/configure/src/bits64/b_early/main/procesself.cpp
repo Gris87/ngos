@@ -206,7 +206,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
                         default:
                         {
-                            // EARLY_LVV(("Ignoring RELA entry with the type %u (%s)", rela.type, elfRelaTypeToString(rela.t    ype))); // Commented to avoid too frequent logs
+                            // EARLY_LVV(("Ignoring RELA entry with the type %u (%s)", rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
                         }
                         break;
                     }
