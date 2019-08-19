@@ -816,6 +816,10 @@ NgosStatus Png::processImageWithAdam7Interlace(PngDecoder *decoder)
 
 
 
+    AVOID_UNUSED(decoder);
+
+
+
     return NgosStatus::OK;
 }
 

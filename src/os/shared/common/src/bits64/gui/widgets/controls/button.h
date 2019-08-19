@@ -14,6 +14,7 @@ public:
     ~Button(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
+    NgosStatus repaint() override; // TEST: NO
 
 private:
     Image *mNormalImage;
@@ -25,7 +26,6 @@ private:
     Image *mHoverResizedImage;
     Image *mPressedResizedImage;
     Image *mFocusedResizedImage;
-    Image *mContentResizedImage;
 };
 
 

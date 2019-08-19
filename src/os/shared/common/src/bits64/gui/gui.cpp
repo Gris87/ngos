@@ -1,5 +1,6 @@
 #include "gui.h"
 
+#include <common/src/bits64/console/console.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 
@@ -26,6 +27,8 @@ NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, Cur
     sCursorWidget     = cursorWidget;
 
 
+
+    COMMON_ASSERT_EXECUTION(Console::noMorePrint(), NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(sRootWidget->invalidate(), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(sRootWidget->repaint(),    NgosStatus::ASSERTION);

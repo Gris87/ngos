@@ -44,6 +44,8 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     u8                    presetDictionary  = zlibHeader->presetDictionary;
     ZLibCompressionLevel  compressionLevel  = (ZLibCompressionLevel)zlibHeader->compressionLevel;
 
+    AVOID_UNUSED(compressionLevel);
+
     COMMON_LVVV(("compressionMethod            = %u (%s)", compressionMethod, zLibCompressionMethodToString(compressionMethod)));
     COMMON_LVVV(("compressionInfo              = %u (%s)", compressionInfo, zLibCompressionInfoToString(compressionInfo)));
     COMMON_LVVV(("zlibHeader->checkBits        = 0x%02X",  zlibHeader->checkBits));

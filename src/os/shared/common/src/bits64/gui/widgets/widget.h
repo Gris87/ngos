@@ -14,11 +14,11 @@ public:
     Widget(Widget *parent = 0); // TEST: NO
     virtual ~Widget(); // TEST: NO
 
-    NgosStatus setPosition(i64 positionX, i64 positionY);
-    NgosStatus setSize(u64 width, u64 height);
-
     virtual NgosStatus invalidate(); // TEST: NO
     virtual NgosStatus repaint(); // TEST: NO
+
+    NgosStatus setPosition(i64 positionX, i64 positionY);
+    NgosStatus setSize(u64 width, u64 height);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -31,6 +31,7 @@ protected:
     i64             mPositionY;
     u64             mWidth;
     u64             mHeight;
+    Image          *mResultImage;
 };
 
 

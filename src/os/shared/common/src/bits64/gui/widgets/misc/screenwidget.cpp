@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
+#include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/gui/widgets/misc/rootwidget.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
@@ -84,6 +85,23 @@ NgosStatus ScreenWidget::repaint()
     COMMON_TEST_ASSERT(mBackgroundResizedImage != 0, NgosStatus::ASSERTION);
 
     memcpy(mFrameBuffer, mBackgroundResizedImage->data, mWidth * mHeight * sizeof(RgbaPixel));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
+{
+    COMMON_LT((" | widget = 0x%p, positionX = %d, positionX = %d", widget, positionX, positionX));
+
+    COMMON_ASSERT(widget, "widget is null", NgosStatus::ASSERTION);
+
+
+
+    Image *image = widget->mResultImage;
+
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->data, mFrameBuffer, image->width, image->height, mWidth, mHeight, image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), sizeof(RgbaPixel), image->isOpaque, positionX, positionY), NgosStatus::ASSERTION);
 
 
 

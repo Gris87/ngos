@@ -17,7 +17,6 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mHoverResizedImage(0)
     , mPressedResizedImage(0)
     , mFocusedResizedImage(0)
-    , mContentResizedImage(0)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, contentImage = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, contentImage, parent));
 
@@ -54,9 +53,9 @@ Button::~Button()
         COMMON_ASSERT_EXECUTION(free(mFocusedResizedImage));
     }
 
-    if (mContentResizedImage)
+    if (mResultImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mContentResizedImage));
+        COMMON_ASSERT_EXECUTION(free(mResultImage));
     }
 }
 
@@ -74,13 +73,44 @@ NgosStatus Button::invalidate()
     COMMON_TEST_ASSERT(mHoverResizedImage   == 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mPressedResizedImage == 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mFocusedResizedImage == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mContentResizedImage == 0, NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mNormalImage,  mWidth, mHeight, &mNormalResizedImage),  NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mHoverImage,   mWidth, mHeight, &mHoverResizedImage),   NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPressedImage, mWidth, mHeight, &mPressedResizedImage), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedImage, mWidth, mHeight, &mFocusedResizedImage), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mContentImage, mWidth, mHeight, &mContentResizedImage), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Button::repaint()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mNormalResizedImage  != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mHoverResizedImage   != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mPressedResizedImage != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mFocusedResizedImage != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead()  == 0, NgosStatus::ASSERTION);
+
+
+
+    if (mResultImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(mResultImage), NgosStatus::ASSERTION);
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(Graphics::cloneImage(mNormalResizedImage, &mResultImage),                              NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImage(mContentImage, mResultImage, 10, 10, mWidth - 10, mHeight - 10), NgosStatus::ASSERTION);
 
 
 

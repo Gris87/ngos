@@ -88,7 +88,35 @@ NgosStatus RootWidget::repaint()
 
     while (element)
     {
-        COMMON_ASSERT_EXECUTION(element->getData()->repaint(), NgosStatus::ASSERTION);
+        Widget *widget = element->getData();
+
+        COMMON_ASSERT_EXECUTION(widget->repaint(), NgosStatus::ASSERTION);
+
+
+
+        ListElement<ScreenWidget *> *screen = mScreens.getHead();
+
+        while (screen)
+        {
+            ScreenWidget *screenWidget = screen->getData();
+
+            if (
+                (i64)(widget->mPositionX)                   <  (i64)(screenWidget->mPositionX + screenWidget->mWidth)
+                &&
+                (i64)(widget->mPositionX + widget->mWidth)  >= (i64)(screenWidget->mPositionX)
+                &&
+                (i64)(widget->mPositionY)                   <  (i64)(screenWidget->mPositionY + screenWidget->mHeight)
+                &&
+                (i64)(widget->mPositionY + widget->mHeight) >= (i64)(screenWidget->mPositionY)
+               )
+            {
+                screenWidget->drawWidget(widget, widget->mPositionX - screenWidget->mPositionX, widget->mPositionY - screenWidget->mPositionY);
+            }
+
+            screen = screen->getNext();
+        }
+
+
 
         element = element->getNext();
     }

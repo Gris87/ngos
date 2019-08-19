@@ -46,3 +46,25 @@ NgosStatus ImageWidget::invalidate()
 
     return NgosStatus::OK;
 }
+
+NgosStatus ImageWidget::repaint()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mResizedImage       != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead() == 0, NgosStatus::ASSERTION);
+
+
+
+    mResultImage = mResizedImage;
+
+
+
+    return NgosStatus::OK;
+}

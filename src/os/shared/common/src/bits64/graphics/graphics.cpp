@@ -11,6 +11,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>
+#include <common/src/bits64/memory/memory.h>
 #include <ngos/utils.h>
 
 
@@ -60,6 +61,39 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, Image **image)
 
 
     return NgosStatus::NOT_SUPPORTED;
+}
+
+NgosStatus Graphics::cloneImage(Image *image, Image **res)
+{
+    COMMON_LT((" | image = 0x%p, res = 0x%p", image, res));
+
+    COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,   "res is null",   NgosStatus::ASSERTION);
+
+
+
+    u64 size = sizeof(Image) + image->width * image->height * (image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel));
+
+
+
+    Image *newImage = (Image *)malloc(size);
+
+    if (!newImage)
+    {
+        COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+    memcpy(newImage, image, size);
+
+
+
+    *res = newImage;
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
@@ -127,6 +161,185 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
     return NgosStatus::OK;
 }
 
+NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, i64 positionX, i64 positionY, i64 width, i64 height)
+{
+    COMMON_LT((" | sourceImage = 0x%p, destinationImage = 0x%p, positionX = %d, positionY = %d, width = %d, height = %d", sourceImage, destinationImage, positionX, positionY, width, height));
+
+    COMMON_ASSERT(sourceImage,      "sourceImage is null",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationImage, "destinationImage is null", NgosStatus::ASSERTION);
+
+
+
+    Image *image;
+
+    if (
+        width > 0
+        &&
+        height > 0
+        &&
+        (
+         width != sourceImage->width
+         ||
+         height != sourceImage->height
+        )
+       )
+    {
+        COMMON_ASSERT_EXECUTION(resizeImage(sourceImage, width, height, &image), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        image = sourceImage;
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(insertImageRaw(image->data, destinationImage->data, image->width, image->height, destinationImage->width, destinationImage->height, image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), destinationImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), image->isOpaque && destinationImage->isOpaque, positionX, positionY), NgosStatus::ASSERTION);
+
+
+
+    if (image != sourceImage)
+    {
+        COMMON_ASSERT_EXECUTION(free(image), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY)
+{
+    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight));
+
+    COMMON_ASSERT(sourceData,                   "sourceData is null",               NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationData,              "destinationData is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceWidth > 0,              "sourceWidth is zero",              NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceHeight > 0,             "sourceHeight is zero",             NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationWidth > 0,         "destinationWidth is zero",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationHeight > 0,        "destinationHeight is zero",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceBytesPerPixel > 0,      "sourceBytesPerPixel is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationBytesPerPixel > 0, "destinationBytesPerPixel is zero", NgosStatus::ASSERTION);
+
+
+
+    i64 left   = 0;
+    i64 right  = sourceWidth;
+    i64 top    = 0;
+    i64 bottom = sourceHeight;
+
+    if (positionX < 0)
+    {
+        left = -positionX;
+    }
+
+    if (positionX + sourceWidth > destinationWidth)
+    {
+        right = destinationWidth - positionX;
+    }
+
+    if (positionY < 0)
+    {
+        top = -positionY;
+    }
+
+    if (positionY + sourceHeight > destinationHeight)
+    {
+        bottom = destinationHeight - positionY;
+    }
+
+
+
+    u64 sourceStride      = sourceWidth      * sourceBytesPerPixel;
+    u64 destinationStride = destinationWidth * destinationBytesPerPixel;
+
+    // COMMON_LVVV(("left                     = %d", left));                      // Commented to avoid too frequent logs
+    // COMMON_LVVV(("right                    = %d", right));                     // Commented to avoid too frequent logs
+    // COMMON_LVVV(("top                      = %d", top));                       // Commented to avoid too frequent logs
+    // COMMON_LVVV(("bottom                   = %d", bottom));                    // Commented to avoid too frequent logs
+    // COMMON_LVVV(("sourceWidth              = %u", sourceWidth));               // Commented to avoid too frequent logs
+    // COMMON_LVVV(("sourceHeight             = %u", sourceHeight));              // Commented to avoid too frequent logs
+    // COMMON_LVVV(("destinationWidth         = %u", destinationWidth));          // Commented to avoid too frequent logs
+    // COMMON_LVVV(("destinationHeight        = %u", destinationHeight));         // Commented to avoid too frequent logs
+    // COMMON_LVVV(("sourceBytesPerPixel      = %u", sourceBytesPerPixel));       // Commented to avoid too frequent logs
+    // COMMON_LVVV(("destinationBytesPerPixel = %u", destinationBytesPerPixel));  // Commented to avoid too frequent logs
+    // COMMON_LVVV(("sourceStride             = %u", sourceStride));              // Commented to avoid too frequent logs
+    // COMMON_LVVV(("destinationStride        = %u", destinationStride));         // Commented to avoid too frequent logs
+    // COMMON_LVVV(("positionX                = %d", positionX));                 // Commented to avoid too frequent logs
+    // COMMON_LVVV(("positionY                = %d", positionY));                 // Commented to avoid too frequent logs
+    // COMMON_LVVV(("opaque                   = %s", opaque ? "true" : "false")); // Commented to avoid too frequent logs
+
+
+
+    if (opaque)
+    {
+        if (sourceBytesPerPixel == destinationBytesPerPixel)
+        {
+            for (i64 i = top; i < bottom; ++i)
+            {
+                RgbPixel *sourcePixel      = (RgbPixel *)(sourceData      + i               * sourceStride      + left               * sourceBytesPerPixel);
+                RgbPixel *destinationPixel = (RgbPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + left) * destinationBytesPerPixel);
+
+                memcpy(destinationPixel, sourcePixel, (right - left) * sourceBytesPerPixel);
+            }
+        }
+        else
+        {
+            for (i64 i = top; i < bottom; ++i)
+            {
+                for (i64 j = left; j < right; ++j)
+                {
+                    RgbPixel *sourcePixel      = (RgbPixel *)(sourceData      + i               * sourceStride      + j               * sourceBytesPerPixel);
+                    RgbPixel *destinationPixel = (RgbPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
+
+                    destinationPixel->red   = sourcePixel->red;
+                    destinationPixel->green = sourcePixel->green;
+                    destinationPixel->blue  = sourcePixel->blue;
+                }
+            }
+        }
+    }
+    else
+    {
+        if (sourceBytesPerPixel == sizeof(RgbaPixel))
+        {
+            for (i64 i = top; i < bottom; ++i)
+            {
+                for (i64 j = left; j < right; ++j)
+                {
+                    RgbaPixel *sourcePixel      = (RgbaPixel *)(sourceData     + i               * sourceStride      + j               * sourceBytesPerPixel);
+                    RgbPixel  *destinationPixel = (RgbPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
+
+                    u8 alpha    = sourcePixel->alpha;
+                    u8 notAlpha = ~alpha;
+
+                    destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red   * alpha) / 0xFF;
+                    destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green * alpha) / 0xFF;
+                    destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue  * alpha) / 0xFF;
+                }
+            }
+        }
+        else
+        {
+            for (i64 i = top; i < bottom; ++i)
+            {
+                for (i64 j = left; j < right; ++j)
+                {
+                    RgbPixel *sourcePixel      = (RgbPixel *)(sourceData      + i               * sourceStride      + j               * sourceBytesPerPixel);
+                    RgbPixel *destinationPixel = (RgbPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
+
+                    destinationPixel->red   = sourcePixel->red;
+                    destinationPixel->green = sourcePixel->green;
+                    destinationPixel->blue  = sourcePixel->blue;
+                }
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **res)
 {
     COMMON_LT((" | image = 0x%p, width = %u, height = %u, res = 0x%p", image, width, height, res));
@@ -164,7 +377,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
 
 
 
-        COMMON_ASSERT_EXECUTION(resizeImagePart(image->data, 0, 0, image->width, image->height, originalStride, newImage->data, 0, 0, width, height, stride, bytesPerPixel), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(resizeImageRaw(image->data, 0, 0, image->width, image->height, originalStride, newImage->data, 0, 0, width, height, stride, bytesPerPixel), NgosStatus::ASSERTION);
 
 
 
@@ -212,7 +425,7 @@ NgosStatus Graphics::resizeImageProportional(Image *image, u16 width, u16 height
     return resizeImage(image, newWidth, newHeight, res);
 }
 
-NgosStatus Graphics::resizeImagePart(u8 *originalData, u16 originalPositionX, u16 originalPositionY, u16 originalWidth, u16 originalHeight, u64 originalStride, u8 *data, u16 positionX, u16 positionY, u16 width, u16 height, u64 stride, u8 bytesPerPixel)
+NgosStatus Graphics::resizeImageRaw(u8 *originalData, u16 originalPositionX, u16 originalPositionY, u16 originalWidth, u16 originalHeight, u64 originalStride, u8 *data, u16 positionX, u16 positionY, u16 width, u16 height, u64 stride, u8 bytesPerPixel)
 {
     COMMON_LT((" | originalData = 0x%p, originalPositionX = %u, originalPositionY = %u, originalWidth = %u, originalHeight = %u, originalStride = %u, data = 0x%p, positionX = %u, positionY = %u, width = %u, height = %u, stride = %u, bytesPerPixel = %u", originalData, originalPositionX, originalPositionY, originalWidth, originalHeight, originalStride, data, positionX, positionY, width, height, stride, bytesPerPixel));
 

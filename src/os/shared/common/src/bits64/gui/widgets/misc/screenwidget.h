@@ -20,6 +20,8 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY); // TEST: NO
+
 private:
     Image *mBackgroundImage;
     u8    *mFrameBuffer;

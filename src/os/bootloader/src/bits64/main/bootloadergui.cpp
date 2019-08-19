@@ -98,21 +98,21 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     Button *rebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, rebootImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(rebootButton->setPosition(screenWidth * 100 / REBOOT_BUTTON_POSITION_X_PERCENT, screenHeight * 100 / REBOOT_BUTTON_POSITION_Y_PERCENT), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(rebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
 
 
 
     Button *shutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, shutdownImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(shutdownButton->setPosition(screenWidth * 100 / SHUTDOWN_BUTTON_POSITION_X_PERCENT, screenHeight * 100 / SHUTDOWN_BUTTON_POSITION_Y_PERCENT), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(shutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(shutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
 
 
 
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, pointerImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth * 100 / CURSOR_POSITION_X_PERCENT, screenHeight * 100 / CURSOR_POSITION_Y_PERCENT), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth * CURSOR_POSITION_X_PERCENT / 100, screenHeight * CURSOR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                            NgosStatus::ASSERTION);
 
 

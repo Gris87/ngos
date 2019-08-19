@@ -56,3 +56,26 @@ NgosStatus CursorWidget::invalidate()
 
     return NgosStatus::OK;
 }
+
+NgosStatus CursorWidget::repaint()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mCursorResizedImage  != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mPointerResizedImage != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead()  == 0, NgosStatus::ASSERTION);
+
+
+
+    mResultImage = mCursorResizedImage;
+
+
+
+    return NgosStatus::OK;
+}
