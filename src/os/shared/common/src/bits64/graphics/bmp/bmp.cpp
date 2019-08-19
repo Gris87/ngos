@@ -196,9 +196,9 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-                    pixel->blue  = colorMap[index].blue;
-                    pixel->green = colorMap[index].green;
                     pixel->red   = colorMap[index].red;
+                    pixel->green = colorMap[index].green;
+                    pixel->blue  = colorMap[index].blue;
 
                     ++pixel;
                 }
@@ -217,17 +217,17 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-                    pixel->blue  = colorMap[index].blue;
-                    pixel->green = colorMap[index].green;
                     pixel->red   = colorMap[index].red;
+                    pixel->green = colorMap[index].green;
+                    pixel->blue  = colorMap[index].blue;
 
                     ++pixel;
 
 
 
-                    pixel->blue  = colorMap[index2].blue;
-                    pixel->green = colorMap[index2].green;
                     pixel->red   = colorMap[index2].red;
+                    pixel->green = colorMap[index2].green;
+                    pixel->blue  = colorMap[index2].blue;
 
                     ++pixel;
                 }
@@ -241,9 +241,9 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-                    pixel->blue  = colorMap[index].blue;
-                    pixel->green = colorMap[index].green;
                     pixel->red   = colorMap[index].red;
+                    pixel->green = colorMap[index].green;
+                    pixel->blue  = colorMap[index].blue;
 
                     ++pixel;
                 }
@@ -259,9 +259,9 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-                    pixel->blue  = colorMap[index].blue;
-                    pixel->green = colorMap[index].green;
                     pixel->red   = colorMap[index].red;
+                    pixel->green = colorMap[index].green;
+                    pixel->blue  = colorMap[index].blue;
 
                     ++pixel;
                 }

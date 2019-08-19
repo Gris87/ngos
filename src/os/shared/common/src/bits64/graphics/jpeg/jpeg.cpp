@@ -1659,9 +1659,9 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
 
                 // Ignore CppAlignmentVerifier [BEGIN]
-                pixel->blue  = CLAMP_TO_BYTE((y            + 359 * cr + 128) >> 8);
+                pixel->red   = CLAMP_TO_BYTE((y            + 359 * cr + 128) >> 8);
                 pixel->green = CLAMP_TO_BYTE((y -  88 * cb - 183 * cr + 128) >> 8);
-                pixel->red   = CLAMP_TO_BYTE((y + 454 * cb            + 128) >> 8);
+                pixel->blue  = CLAMP_TO_BYTE((y + 454 * cb            + 128) >> 8);
                 // Ignore CppAlignmentVerifier [END]
 
                 ++pixel;

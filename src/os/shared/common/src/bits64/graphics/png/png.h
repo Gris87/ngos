@@ -36,6 +36,7 @@ private:
     static NgosStatus processImageInterlace(PngDecoder *decoder); // TEST: NO
     static NgosStatus processImageWithoutInterlace(PngDecoder *decoder); // TEST: NO
     static NgosStatus processImageWithAdam7Interlace(PngDecoder *decoder); // TEST: NO
+    static NgosStatus imagePostprocess(PngDecoder *decoder); // TEST: NO
     static NgosStatus unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 height); // TEST: NO
     static NgosStatus unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilterType filterType, u8 byteWidth, u32 bytesPerLine);
     static NgosStatus removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBits, u16 height);

@@ -91,13 +91,6 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    if (status == NgosStatus::OK)
-    {
-        status = decodeImage(&decoder);
-    }
-
-
-
     if (
         status == NgosStatus::OK
         &&
@@ -117,29 +110,14 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
 
     if (status == NgosStatus::OK)
     {
-        if (
-            (*decoder.image)
-            &&
-            (*decoder.image)->hasAlpha
-           )
-        {
-            i64        resolution = (*decoder.image)->width * (*decoder.image)->height;
-            RgbaPixel *pixel      = (RgbaPixel *)((*decoder.image)->data);
+        status = decodeImage(&decoder);
+    }
 
 
 
-            for (i64 i = 0; i < resolution; ++i)
-            {
-                if (pixel->alpha != 0xFF)
-                {
-                    (*decoder.image)->isOpaque = false;
-
-                    break;
-                }
-
-                ++pixel;
-            }
-        }
+    if (status == NgosStatus::OK)
+    {
+        status = imagePostprocess(&decoder);
     }
 
 
@@ -817,6 +795,67 @@ NgosStatus Png::processImageWithAdam7Interlace(PngDecoder *decoder)
 
 
     AVOID_UNUSED(decoder);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::imagePostprocess(PngDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    Image *image      = *decoder->image;
+    i64    resolution = image->width * image->height;
+
+
+
+    if (image->hasAlpha)
+    {
+        RgbaPixel *pixel = (RgbaPixel *)(image->data);
+
+        for (i64 i = 0; i < resolution; ++i)
+        {
+            if (pixel->alpha != 0xFF)
+            {
+                image->isOpaque = false;
+
+                break;
+            }
+
+            ++pixel;
+        }
+
+
+
+        pixel = (RgbaPixel *)(image->data);
+
+        for (i64 i = 0; i < resolution; ++i)
+        {
+            u8 temp     = pixel->red;
+            pixel->red  = pixel->blue;
+            pixel->blue = temp;
+
+            ++pixel;
+        }
+    }
+    else
+    {
+        RgbPixel *pixel = (RgbPixel *)(image->data);
+
+        for (i64 i = 0; i < resolution; ++i)
+        {
+            u8 temp     = pixel->red;
+            pixel->red  = pixel->blue;
+            pixel->blue = temp;
+
+            ++pixel;
+        }
+    }
 
 
 
