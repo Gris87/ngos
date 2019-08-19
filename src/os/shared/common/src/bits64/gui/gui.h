@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
+#include <common/src/bits64/gui/widgets/misc/rootwidget.h>
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 #include <ngos/status.h>
@@ -13,10 +14,10 @@
 class GUI
 {
 public:
-    static NgosStatus init(Widget *rootWidget, ScreenWidget *mainScreenWidget, CursorWidget *cursorWidget); // TEST: NO
+    static NgosStatus init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, CursorWidget *cursorWidget); // TEST: NO
 
 private:
-    static Widget       *sRootWidget;
+    static RootWidget   *sRootWidget;
     static ScreenWidget *sMainScreenWidget;
     static CursorWidget *sCursorWidget;
 };

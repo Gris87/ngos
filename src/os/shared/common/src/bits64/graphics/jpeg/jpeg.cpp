@@ -549,6 +549,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
     image->width    = width;
     image->height   = height;
     image->hasAlpha = false;
+    image->isOpaque = true;
 
 
 

@@ -62,6 +62,71 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, Image **image)
     return NgosStatus::NOT_SUPPORTED;
 }
 
+NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
+{
+    COMMON_LT((" | image = 0x%p, res = 0x%p", image, res));
+
+    COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,   "res is null",   NgosStatus::ASSERTION);
+
+
+
+    if (
+        !image->hasAlpha
+        ||
+        !image->isOpaque
+       )
+    {
+        i64    resolution    = image->width * image->height;
+        u8     bytesPerPixel = image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel);
+        Image *newImage      = (Image *)malloc(sizeof(Image) + resolution * sizeof(RgbaPixel));
+
+        if (!newImage)
+        {
+            COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+        newImage->width    = image->width;
+        newImage->height   = image->height;
+        newImage->hasAlpha = true;
+        newImage->isOpaque = true;
+
+
+
+        u64        data  = (u64)image->data;
+        RgbaPixel *pixel = (RgbaPixel *)newImage->data;
+
+        for (i64 i = 0; i < resolution; ++i)
+        {
+            RgbPixel *originalPixel = (RgbPixel *)data;
+
+            pixel->red   = originalPixel->red;
+            pixel->green = originalPixel->green;
+            pixel->blue  = originalPixel->blue;
+            pixel->alpha = 0xFF;
+
+            data += bytesPerPixel;
+            ++pixel;
+        }
+
+
+
+        *res = newImage;
+    }
+    else
+    {
+        *res = image;
+
+        return NgosStatus::NO_EFFECT;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **res)
 {
     COMMON_LT((" | image = 0x%p, width = %u, height = %u, res = 0x%p", image, width, height, res));
@@ -95,6 +160,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
         newImage->width    = width;
         newImage->height   = height;
         newImage->hasAlpha = image->hasAlpha;
+        newImage->isOpaque = image->isOpaque;
 
 
 
@@ -107,6 +173,8 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
     else
     {
         *res = 0;
+
+        return NgosStatus::INVALID_DATA;
     }
 
 

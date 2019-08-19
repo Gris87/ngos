@@ -18,6 +18,7 @@ public:
     NgosStatus setSize(u64 width, u64 height);
 
     virtual NgosStatus invalidate(); // TEST: NO
+    virtual NgosStatus repaint(); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

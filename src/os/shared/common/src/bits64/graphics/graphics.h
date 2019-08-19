@@ -12,6 +12,7 @@ class Graphics
 {
 public:
     static NgosStatus loadImage(u8 *data, u64 size, Image **image); // TEST: NO
+    static NgosStatus makeOpaqueImage(Image *image, Image **res); // TEST: NO
     static NgosStatus resizeImage(Image *image, u16 width, u16 height, Image **res); // TEST: NO
     static NgosStatus resizeImageProportional(Image *image, u16 width, u16 height, Image **res); // TEST: NO
 

@@ -86,3 +86,23 @@ NgosStatus Widget::invalidate()
 
     return NgosStatus::OK;
 }
+
+NgosStatus Widget::repaint()
+{
+    COMMON_LT((""));
+
+
+
+    ListElement<Widget *> *element = mChildren.getHead();
+
+    while (element)
+    {
+        COMMON_ASSERT_EXECUTION(element->getData()->repaint(), NgosStatus::ASSERTION);
+
+        element = element->getNext();
+    }
+
+
+
+    return NgosStatus::OK;
+}

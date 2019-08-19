@@ -7,13 +7,18 @@
 
 
 
+class RootWidget;
+
+
+
 class ScreenWidget: public Widget
 {
 public:
-    ScreenWidget(Image *backgroundImage, u8 *frameBuffer, Widget *parent = 0); // TEST: NO
+    ScreenWidget(Image *backgroundImage, u8 *frameBuffer, RootWidget *rootWidget); // TEST: NO
     ~ScreenWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
+    NgosStatus repaint() override; // TEST: NO
 
 private:
     Image *mBackgroundImage;

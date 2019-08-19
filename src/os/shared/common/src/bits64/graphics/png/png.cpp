@@ -115,6 +115,35 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
 
 
 
+    if (status == NgosStatus::OK)
+    {
+        if (
+            (*decoder.image)
+            &&
+            (*decoder.image)->hasAlpha
+           )
+        {
+            i64        resolution = (*decoder.image)->width * (*decoder.image)->height;
+            RgbaPixel *pixel      = (RgbaPixel *)((*decoder.image)->data);
+
+
+
+            for (i64 i = 0; i < resolution; ++i)
+            {
+                if (pixel->alpha != 255)
+                {
+                    (*decoder.image)->isOpaque = false;
+
+                    break;
+                }
+
+                ++pixel;
+            }
+        }
+    }
+
+
+
     COMMON_ASSERT_EXECUTION(releaseDecoder(&decoder), NgosStatus::ASSERTION);
 
 
@@ -387,6 +416,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
     image->width    = width;
     image->height   = height;
     image->hasAlpha = hasAlpha;
+    image->isOpaque = true;
 
 
 

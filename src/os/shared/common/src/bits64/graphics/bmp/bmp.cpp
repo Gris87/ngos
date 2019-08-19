@@ -158,6 +158,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
     newImage->width    = width;
     newImage->height   = height;
     newImage->hasAlpha = false;
+    newImage->isOpaque = true;
 
 
 

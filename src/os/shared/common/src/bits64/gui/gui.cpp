@@ -5,13 +5,13 @@
 
 
 
-Widget       *GUI::sRootWidget;
+RootWidget   *GUI::sRootWidget;
 ScreenWidget *GUI::sMainScreenWidget;
 CursorWidget *GUI::sCursorWidget;
 
 
 
-NgosStatus GUI::init(Widget *rootWidget, ScreenWidget *mainScreenWidget, CursorWidget *cursorWidget)
+NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, CursorWidget *cursorWidget)
 {
     COMMON_LT((" | rootWidget = 0x%p, mainScreenWidget = 0x%p, cursorWidget = 0x%p", rootWidget, mainScreenWidget, cursorWidget));
 
@@ -28,6 +28,7 @@ NgosStatus GUI::init(Widget *rootWidget, ScreenWidget *mainScreenWidget, CursorW
 
 
     COMMON_ASSERT_EXECUTION(sRootWidget->invalidate(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(sRootWidget->repaint(),    NgosStatus::ASSERTION);
 
 
 

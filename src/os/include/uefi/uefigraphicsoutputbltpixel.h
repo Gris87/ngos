@@ -12,7 +12,7 @@ struct UefiGraphicsOutputBltPixel
     u8 blue;
     u8 green;
     u8 red;
-    u8 reserved;
+    u8 __reserved;
 };
 
 

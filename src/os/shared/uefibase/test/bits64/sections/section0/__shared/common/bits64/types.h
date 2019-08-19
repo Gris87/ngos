@@ -83,6 +83,7 @@
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
+#include <common/src/bits64/gui/widgets/misc/rootwidget.h>
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 #include <common/src/bits64/inflate/inflateblocktype.h>
@@ -180,6 +181,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(Register512Bit),                                64);
         TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
         TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                     4);
+        TEST_ASSERT_EQUALS(sizeof(RootWidget),                                    80);
         TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  88);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        64);

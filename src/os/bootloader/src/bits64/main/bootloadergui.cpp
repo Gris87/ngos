@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/rootwidget.h>
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
@@ -81,7 +82,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    Widget *rootWidget = new Widget();
+    RootWidget *rootWidget = new RootWidget();
 
     UEFI_ASSERT_EXECUTION(rootWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(rootWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);

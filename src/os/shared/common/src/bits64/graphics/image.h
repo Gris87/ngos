@@ -12,6 +12,7 @@ struct Image
     u16  width;
     u16  height;
     bool hasAlpha;
+    bool isOpaque;
     u8   data[0];
 };
 
