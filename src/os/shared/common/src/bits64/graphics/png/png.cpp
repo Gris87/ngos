@@ -130,7 +130,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
 
             for (i64 i = 0; i < resolution; ++i)
             {
-                if (pixel->alpha != 255)
+                if (pixel->alpha != 0xFF)
                 {
                     (*decoder.image)->isOpaque = false;
 

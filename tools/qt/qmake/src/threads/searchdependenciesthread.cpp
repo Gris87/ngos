@@ -119,7 +119,8 @@ QStringList SearchDependenciesThread::buildDependenciesForSource(const QString &
 
 
     QStringList res = sDependencies.value(source);
-    dependenciesMap.insert(source, res);
+
+    dependenciesMap.insert(source, res); // Insert here to avoid infinite loops
 
     for (qint64 i = 0; i < res.length(); ++i)
     {
