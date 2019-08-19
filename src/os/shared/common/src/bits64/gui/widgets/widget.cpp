@@ -32,14 +32,11 @@ Widget::~Widget()
 
     ListElement<Widget *> *element = mChildren.getHead();
 
-    if (element)
+    while (element)
     {
-        while (element)
-        {
-            delete element->getData();
+        delete element->getData();
 
-            element = element->getNext();
-        }
+        element = element->getNext();
     }
 }
 

@@ -93,7 +93,7 @@ NgosStatus ScreenWidget::repaint()
 
 NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
 {
-    COMMON_LT((" | widget = 0x%p, positionX = %d, positionX = %d", widget, positionX, positionX));
+    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY));
 
     COMMON_ASSERT(widget, "widget is null", NgosStatus::ASSERTION);
 
