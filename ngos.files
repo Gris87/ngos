@@ -147,6 +147,7 @@ src/os/bootloader/assets/images/button_focused.9.png
 src/os/bootloader/assets/images/button_hover.9.png
 src/os/bootloader/assets/images/button_normal.9.png
 src/os/bootloader/assets/images/button_pressed.9.png
+src/os/bootloader/assets/images/console.9.png
 src/os/bootloader/assets/images/cursor.png
 src/os/bootloader/assets/images/os_ngos.png
 src/os/bootloader/assets/images/os_ubuntu.png
