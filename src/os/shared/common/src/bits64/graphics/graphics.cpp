@@ -209,7 +209,7 @@ NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, i6
 
 NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY)
 {
-    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight));
+    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY));
 
     COMMON_ASSERT(sourceData,                   "sourceData is null",               NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationData,              "destinationData is null",          NgosStatus::ASSERTION);
@@ -308,16 +308,18 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
                 {
                     for (i64 j = left; j < right; ++j)
                     {
-                        RgbaPixel *sourcePixel      = (RgbaPixel *)(sourceData     + i               * sourceStride      + j               * sourceBytesPerPixel);
+                        RgbaPixel *sourcePixel      = (RgbaPixel *)(sourceData      + i               * sourceStride      + j               * sourceBytesPerPixel);
                         RgbaPixel *destinationPixel = (RgbaPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
 
                         u8 alpha    = sourcePixel->alpha;
                         u8 notAlpha = ~alpha;
 
+                        // Ignore CppAlignmentVerifier [BEGIN]
                         destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red      * alpha) / 0xFF;
                         destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green    * alpha) / 0xFF;
                         destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue     * alpha) / 0xFF;
                         destinationPixel->alpha = destinationPixel->alpha  + (0xFF - destinationPixel->alpha) * alpha  / 0xFF;
+                        // Ignore CppAlignmentVerifier [END]
                     }
                 }
             }
@@ -346,7 +348,7 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
             {
                 for (i64 j = left; j < right; ++j)
                 {
-                    RgbPixel  *sourcePixel      = (RgbPixel *)(sourceData      + i               * sourceStride      + j               * sourceBytesPerPixel);
+                    RgbPixel  *sourcePixel      = (RgbPixel *)(sourceData       + i               * sourceStride      + j               * sourceBytesPerPixel);
                     RgbaPixel *destinationPixel = (RgbaPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
 
                     destinationPixel->red   = sourcePixel->red;

@@ -4,7 +4,6 @@
 
 
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
-#include <common/src/bits64/gui/widgets/widget.h>
 
 
 
