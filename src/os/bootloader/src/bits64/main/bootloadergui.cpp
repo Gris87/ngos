@@ -13,16 +13,23 @@
 
 
 
-#define REBOOT_BUTTON_POSITION_X_PERCENT 40
-#define REBOOT_BUTTON_POSITION_Y_PERCENT 90
+#define REBOOT_BUTTON_POSITION_X_PERCENT 90
+#define REBOOT_BUTTON_POSITION_Y_PERCENT 0
 
-#define SHUTDOWN_BUTTON_POSITION_X_PERCENT 55
-#define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 90
+#define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
+#define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
+
+#define LEFT_BUTTON_POSITION_X_PERCENT 5
+#define LEFT_BUTTON_POSITION_Y_PERCENT 40
+
+#define RIGHT_BUTTON_POSITION_X_PERCENT 90
+#define RIGHT_BUTTON_POSITION_Y_PERCENT 40
 
 #define CURSOR_POSITION_X_PERCENT 50
 #define CURSOR_POSITION_Y_PERCENT 50
 
 #define OS_BUTTON_SIZE_PERCENT     20
+#define ARROW_BUTTON_SIZE_PERCENT  5
 #define TOOL_BUTTON_SIZE_PERCENT   10
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
@@ -73,6 +80,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 screenHeight = params->screenInfo.height;
 
     u64 osButtonSize     = MIN(screenWidth * OS_BUTTON_SIZE_PERCENT     / 100, screenHeight * OS_BUTTON_SIZE_PERCENT     / 100);
+    u64 arrowButtonSize  = MIN(screenWidth * ARROW_BUTTON_SIZE_PERCENT  / 100, screenHeight * ARROW_BUTTON_SIZE_PERCENT  / 100);
     u64 toolButtonSize   = MIN(screenWidth * TOOL_BUTTON_SIZE_PERCENT   / 100, screenHeight * TOOL_BUTTON_SIZE_PERCENT   / 100);
     u64 systemButtonSize = MIN(screenWidth * SYSTEM_BUTTON_SIZE_PERCENT / 100, screenHeight * SYSTEM_BUTTON_SIZE_PERCENT / 100);
     u64 cursorSize       = MIN(screenWidth * CURSOR_SIZE_PERCENT        / 100, screenHeight * CURSOR_SIZE_PERCENT        / 100);
@@ -107,6 +115,20 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(shutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(shutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
+
+
+
+    Button *leftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowLeftImage, rootWidget);
+
+    UEFI_ASSERT_EXECUTION(leftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * LEFT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(leftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                            NgosStatus::ASSERTION);
+
+
+
+    Button *rightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowRightImage, rootWidget);
+
+    UEFI_ASSERT_EXECUTION(rightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * RIGHT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                              NgosStatus::ASSERTION);
 
 
 

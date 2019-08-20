@@ -302,19 +302,41 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
     {
         if (sourceBytesPerPixel == sizeof(RgbaPixel))
         {
-            for (i64 i = top; i < bottom; ++i)
+            if (destinationBytesPerPixel == sizeof(RgbaPixel))
             {
-                for (i64 j = left; j < right; ++j)
+                for (i64 i = top; i < bottom; ++i)
                 {
-                    RgbaPixel *sourcePixel      = (RgbaPixel *)(sourceData     + i               * sourceStride      + j               * sourceBytesPerPixel);
-                    RgbPixel  *destinationPixel = (RgbPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
+                    for (i64 j = left; j < right; ++j)
+                    {
+                        RgbaPixel *sourcePixel      = (RgbaPixel *)(sourceData     + i               * sourceStride      + j               * sourceBytesPerPixel);
+                        RgbaPixel *destinationPixel = (RgbaPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
 
-                    u8 alpha    = sourcePixel->alpha;
-                    u8 notAlpha = ~alpha;
+                        u8 alpha    = sourcePixel->alpha;
+                        u8 notAlpha = ~alpha;
 
-                    destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red   * alpha) / 0xFF;
-                    destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green * alpha) / 0xFF;
-                    destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue  * alpha) / 0xFF;
+                        destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red      * alpha) / 0xFF;
+                        destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green    * alpha) / 0xFF;
+                        destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue     * alpha) / 0xFF;
+                        destinationPixel->alpha = destinationPixel->alpha  + (0xFF - destinationPixel->alpha) * alpha  / 0xFF;
+                    }
+                }
+            }
+            else
+            {
+                for (i64 i = top; i < bottom; ++i)
+                {
+                    for (i64 j = left; j < right; ++j)
+                    {
+                        RgbaPixel *sourcePixel      = (RgbaPixel *)(sourceData     + i               * sourceStride      + j               * sourceBytesPerPixel);
+                        RgbPixel  *destinationPixel = (RgbPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
+
+                        u8 alpha    = sourcePixel->alpha;
+                        u8 notAlpha = ~alpha;
+
+                        destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red   * alpha) / 0xFF;
+                        destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green * alpha) / 0xFF;
+                        destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue  * alpha) / 0xFF;
+                    }
                 }
             }
         }
@@ -324,12 +346,13 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
             {
                 for (i64 j = left; j < right; ++j)
                 {
-                    RgbPixel *sourcePixel      = (RgbPixel *)(sourceData      + i               * sourceStride      + j               * sourceBytesPerPixel);
-                    RgbPixel *destinationPixel = (RgbPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
+                    RgbPixel  *sourcePixel      = (RgbPixel *)(sourceData      + i               * sourceStride      + j               * sourceBytesPerPixel);
+                    RgbaPixel *destinationPixel = (RgbaPixel *)(destinationData + (positionY + i) * destinationStride + (positionX + j) * destinationBytesPerPixel);
 
                     destinationPixel->red   = sourcePixel->red;
                     destinationPixel->green = sourcePixel->green;
                     destinationPixel->blue  = sourcePixel->blue;
+                    destinationPixel->alpha = 0xFF;
                 }
             }
         }
@@ -399,26 +422,20 @@ NgosStatus Graphics::resizeImageProportional(Image *image, u16 width, u16 height
 {
     COMMON_LT((" | image = 0x%p, width = %u, height = %u, res = 0x%p", image, width, height, res));
 
-    COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(res,   "res is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(image,      "image is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,        "res is null",    NgosStatus::ASSERTION);
 
 
 
-    u16 size = MIN(width, height);
+    float scaleX = (float)width  / image->width;
+    float scaleY = (float)height / image->height;
 
-    u16 newWidth;
-    u16 newHeight;
+    float scale = MIN(scaleX, scaleY);
 
-    if (image->width > image->height)
-    {
-        newWidth  = size * image->height / image->width;
-        newHeight = size * image->height / image->width;
-    }
-    else
-    {
-        newWidth  = size * image->width / image->height;
-        newHeight = size * image->width / image->height;
-    }
+    u16 newWidth  = image->width  * scale;
+    u16 newHeight = image->height * scale;
 
 
 

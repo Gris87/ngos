@@ -110,7 +110,7 @@ NgosStatus Button::repaint()
 
 
     COMMON_ASSERT_EXECUTION(Graphics::cloneImage(mNormalResizedImage, &mResultImage),                              NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(Graphics::insertImage(mContentImage, mResultImage, 10, 10, mWidth - 10, mHeight - 10), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImage(mContentImage, mResultImage, 30, 30, mWidth - 60, mHeight - 60), NgosStatus::ASSERTION);
 
 
 
