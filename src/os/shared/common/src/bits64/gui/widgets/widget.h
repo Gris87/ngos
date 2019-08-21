@@ -14,6 +14,9 @@ public:
     Widget(Widget *parent = 0); // TEST: NO
     virtual ~Widget(); // TEST: NO
 
+    NgosStatus update(); // TEST: NO
+
+    virtual NgosStatus update(i64 positionX, i64 positionY, u64 width, u64 height); // TEST: NO
     virtual NgosStatus invalidate(); // TEST: NO
     virtual NgosStatus repaint(); // TEST: NO
 

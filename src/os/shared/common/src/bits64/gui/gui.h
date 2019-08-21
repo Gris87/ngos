@@ -16,8 +16,6 @@ class GUI
 public:
     static NgosStatus init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, CursorWidget *cursorWidget); // TEST: NO
 
-    static NgosStatus updateRegion(i64 positionX, i64 positionY, u64 width, u64 height); // TEST: NO
-
     static ScreenWidget* getMainScreenWidget(); // TEST: NO
 
 private:

@@ -39,18 +39,6 @@ NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, Cur
     return NgosStatus::OK;
 }
 
-NgosStatus GUI::updateRegion(i64 positionX, i64 positionY, u64 width, u64 height)
-{
-    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
-
-    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
-
-
-
-    return sRootWidget->updateRegion(positionX, positionY, width, height);
-}
-
 ScreenWidget* GUI::getMainScreenWidget()
 {
     COMMON_LT((""));

@@ -68,8 +68,7 @@ NgosStatus GraphicalConsole::init()
 
         COMMON_ASSERT_EXECUTION(sConsoleWidget->invalidate(), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(sConsoleWidget->repaint(),    NgosStatus::ASSERTION);
-
-        COMMON_ASSERT_EXECUTION(GUI::updateRegion(consolePositionX, consolePositionY, consoleWidth, consoleHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(sConsoleWidget->update(),     NgosStatus::ASSERTION);
 
 
 

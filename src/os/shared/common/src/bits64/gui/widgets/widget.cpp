@@ -40,6 +40,34 @@ Widget::~Widget()
     }
 }
 
+NgosStatus Widget::update()
+{
+    COMMON_LT((""));
+
+
+
+    return update(0, 0, mWidth, mHeight);
+}
+
+NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
+{
+    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
+
+    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+
+
+
+    if (mParent)
+    {
+        return mParent->update(mPositionX + positionX, mPositionY + positionY, width, height);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Widget::invalidate()
 {
     COMMON_LT((""));

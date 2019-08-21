@@ -14,6 +14,7 @@ ScreenWidget::ScreenWidget(Image *backgroundImage, u8 *frameBuffer, RootWidget *
     : Widget()
     , mBackgroundImage(backgroundImage)
     , mFrameBuffer(frameBuffer)
+    , mRootWidget(rootWidget)
     , mBackgroundResizedImage(0)
 {
     COMMON_LT((" | backgroundImage = 0x%p, frameBuffer = 0x%p, rootWidget = 0x%p", backgroundImage, frameBuffer, rootWidget));
@@ -24,7 +25,7 @@ ScreenWidget::ScreenWidget(Image *backgroundImage, u8 *frameBuffer, RootWidget *
 
 
 
-    rootWidget->addScreen(this);
+    mRootWidget->addScreen(this);
 }
 
 ScreenWidget::~ScreenWidget()
@@ -50,6 +51,24 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
     repaint();
 
     drawWidget(mChildren.getHead()->getData(), positionX, positionY);
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus ScreenWidget::update(i64 positionX, i64 positionY, u64 width, u64 height)
+{
+    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
+
+    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+
+
+
+    if (mRootWidget)
+    {
+        return mRootWidget->update(mPositionX + positionX, mPositionY + positionY, width, height);
+    }
 
 
 

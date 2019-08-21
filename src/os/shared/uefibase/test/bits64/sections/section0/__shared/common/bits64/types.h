@@ -9,6 +9,7 @@
 #include <common/src/bits64/checksum/adler.h>
 #include <common/src/bits64/checksum/crc.h>
 #include <common/src/bits64/console/console.h>
+#include <common/src/bits64/console/graphicalconsole.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
 #include <common/src/bits64/containers/list.h>
 #include <common/src/bits64/cpu/cpu.h>
@@ -81,6 +82,7 @@
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/consolewidget.h>
 #include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/rootwidget.h>
@@ -121,6 +123,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(Button),                                        144);
         TEST_ASSERT_EQUALS(sizeof(CPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(Console),                                       1);
+        TEST_ASSERT_EQUALS(sizeof(ConsoleWidget),                                 88);
         TEST_ASSERT_EQUALS(sizeof(CpuFamily),                                     2);
         TEST_ASSERT_EQUALS(sizeof(CpuVendor),                                     1);
         TEST_ASSERT_EQUALS(sizeof(Crc),                                           1);
@@ -131,6 +134,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
         TEST_ASSERT_EQUALS(sizeof(GUI),                                           1);
         TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
+        TEST_ASSERT_EQUALS(sizeof(GraphicalConsole),                              1);
         TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
         TEST_ASSERT_EQUALS(sizeof(Image),                                         6);
         TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   88);
@@ -182,7 +186,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
         TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                     4);
         TEST_ASSERT_EQUALS(sizeof(RootWidget),                                    88);
-        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  96);
+        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  104);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        72);
         TEST_ASSERT_EQUALS(sizeof(X86Bug),                                        2);

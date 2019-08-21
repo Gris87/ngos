@@ -43,7 +43,7 @@ NgosStatus RootWidget::addScreen(ScreenWidget *screen)
     return NgosStatus::OK;
 }
 
-NgosStatus RootWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u64 height)
+NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 height)
 {
     COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
 
@@ -68,7 +68,32 @@ NgosStatus RootWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u64
             (i64)(positionY + height) >= (i64)(screenWidget->mPositionY)
            )
         {
-            screenWidget->updateRegion(positionX, positionY, width, height);
+            i64 left   = positionX - screenWidget->mPositionX;
+            i64 right  = left + (i64)width;
+            i64 top    = positionY - screenWidget->mPositionY;
+            i64 bottom = top + (i64)height;
+
+            if (left < 0)
+            {
+                left = 0;
+            }
+
+            if (top < 0)
+            {
+                top = 0;
+            }
+
+            if (right > (i64)screenWidget->mWidth)
+            {
+                right = screenWidget->mWidth;
+            }
+
+            if (bottom > (i64)screenWidget->mHeight)
+            {
+                bottom = screenWidget->mHeight;
+            }
+
+            screenWidget->updateRegion(left, top, right - left, bottom - top);
         }
 
         screen = screen->getNext();
