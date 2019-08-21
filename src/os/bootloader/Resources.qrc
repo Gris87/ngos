@@ -10,9 +10,12 @@
         <file>assets/images/button_pressed.9.png</file>
         <file>assets/images/console.9.png</file>
         <file>assets/images/cursor.png</file>
+        <file>assets/images/hdd_test.png</file>
+        <file>assets/images/memory_test.png</file>
         <file>assets/images/os_ngos.png</file>
         <file>assets/images/os_ubuntu.png</file>
         <file>assets/images/os_windows.png</file>
+        <file>assets/images/partition_wizard.png</file>
         <file>assets/images/pointer.png</file>
         <file>assets/images/reboot.png</file>
         <file>assets/images/shutdown.png</file>

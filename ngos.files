@@ -149,9 +149,12 @@ src/os/bootloader/assets/images/button_normal.9.png
 src/os/bootloader/assets/images/button_pressed.9.png
 src/os/bootloader/assets/images/console.9.png
 src/os/bootloader/assets/images/cursor.png
+src/os/bootloader/assets/images/hdd_test.png
+src/os/bootloader/assets/images/memory_test.png
 src/os/bootloader/assets/images/os_ngos.png
 src/os/bootloader/assets/images/os_ubuntu.png
 src/os/bootloader/assets/images/os_windows.png
+src/os/bootloader/assets/images/partition_wizard.png
 src/os/bootloader/assets/images/pointer.png
 src/os/bootloader/assets/images/reboot.png
 src/os/bootloader/assets/images/shutdown.png
