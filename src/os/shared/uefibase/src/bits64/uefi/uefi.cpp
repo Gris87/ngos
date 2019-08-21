@@ -142,30 +142,17 @@ i64 UEFI::printf(const char8 *format, ...)
 
 
 
-    // HACK: Temporary fix for PIE. Try to find another solution
-    char8 *tempBuffer;
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "leaq    printfBuffer(%%rip), %0" // leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == tempBuffer
-            :                             // Output parameters
-                "=r" (tempBuffer)         // 'r' - any general register, '=' - write only
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
     va_list args;
 
     va_start(args, format);
-    i64 res = vsprintf(tempBuffer, format, args);
+    i64 res = vsprintf(printfBuffer, format, args);
     va_end(args);
 
     UEFI_TEST_ASSERT(res < (i64)sizeof(printfBuffer), 0);
 
 
 
-    println(tempBuffer);
+    println(printfBuffer);
 
 
 

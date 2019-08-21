@@ -5,6 +5,7 @@
 
 #include <buildconfig.h>
 #include <common/src/bits64/console/console.h>
+#include <common/src/bits64/console/graphicalconsole.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/serial/serial.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
@@ -14,24 +15,24 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
 #define __UEFI_PRINT_LOG(level, message) \
+    if (GraphicalConsole::canPrint()) \
+    { \
+        GraphicalConsole::init(); \
+        \
+        Serial::print(level); \
+        GraphicalConsole::print(level); \
+        \
+        Serial::printf message; \
+        GraphicalConsole::println(printfBuffer); \
+    } \
+    else \
     if (Console::canPrint()) \
     { \
         Serial::print(level); \
         Console::print(level); \
         \
         Serial::printf message; \
-        \
-        /* HACK: Temporary fix for PIE. Try to find another solution */ \
-        /* Console::println(printfBuffer); */ \
-        char8 *__temp; \
-        \
-        asm volatile( \
-            "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
-                :                             /* Output parameters*/ \
-                    "=D" (__temp)             /* 'D' - RDI, '=' - write only */ \
-        ); \
-        \
-        Console::println(__temp); \
+        Console::println(printfBuffer); \
     } \
     else \
     if (UEFI::canPrint()) \
@@ -48,6 +49,20 @@
 
 
 #define __UEFI_PRINT_LT(message) \
+    if (GraphicalConsole::canPrint()) \
+    { \
+        GraphicalConsole::init(); \
+        \
+        Serial::print("TRACE:     "); \
+        GraphicalConsole::print("TRACE:     "); \
+        \
+        Serial::print(__PRETTY_FUNCTION__); \
+        GraphicalConsole::print(__PRETTY_FUNCTION__); \
+        \
+        Serial::printf message; \
+        ConsGraphicalConsoleole::println(printfBuffer); \
+    } \
+    else \
     if (Console::canPrint()) \
     { \
         Serial::print("TRACE:     "); \
@@ -57,18 +72,7 @@
         Console::print(__PRETTY_FUNCTION__); \
         \
         Serial::printf message; \
-        \
-        /* HACK: Temporary fix for PIE. Try to find another solution */ \
-        /* Console::println(printfBuffer); */ \
-        char8 *__temp; \
-        \
-        asm volatile( \
-            "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
-                :                             /* Output parameters*/ \
-                    "=D" (__temp)             /* 'D' - RDI, '=' - write only */ \
-        ); \
-        \
-        Console::println(__temp); \
+        Console::println(printfBuffer); \
     } \
     else \
     if (UEFI::canPrint()) \

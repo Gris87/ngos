@@ -41,7 +41,6 @@ NgosStatus exitBootServices(UefiBootMemoryMap *bootMemoryMap)
 
 
     UEFI_LI(("Exiting boot services..."));
-    UEFI_ASSERT_EXECUTION(UEFI::noMorePrint(), NgosStatus::ASSERTION);
 
 
 

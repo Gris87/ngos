@@ -36,38 +36,36 @@ void TestResults::testFailed(const char8 *filename, u64 line, const char8 *descr
 
 
 
-    // HACK: Temporary fix for PIE. Try to find another solution
-    char8 *tempBuffer;
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "leaq    printfBuffer(%%rip), %0" // leaq    printfBuffer(%rip), %rbx   # Get address of printfBuffer variable to RBX. %RBX == tempBuffer
-            :                             // Output parameters
-                "=r" (tempBuffer)         // 'r' - any general register, '=' - write only
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
     ++mFailed;
 
 
+    char8 buffer[1024];
 
-    sprintf(tempBuffer, "%s:%u | %s", filename, line, description);
+    sprintf(buffer, "%s:%u | %s", filename, line, description);
 
+
+
+    if (GraphicalConsole::canPrint())
+    {
+        GraphicalConsole::init();
+
+        Serial::println(buffer);
+        GraphicalConsole::println(buffer);
+    }
+    else
     if (Console::canPrint())
     {
-        Serial::println(tempBuffer);
-        Console::println(tempBuffer);
+        Serial::println(buffer);
+        Console::println(buffer);
     }
     else
     if (UEFI::canPrint())
     {
-        UEFI::println(tempBuffer);
+        UEFI::println(buffer);
     }
     else
     {
-        Serial::println(tempBuffer);
+        Serial::println(buffer);
     }
 }
 
@@ -77,34 +75,33 @@ NgosStatus TestResults::summary()
 
 
 
-    // HACK: Temporary fix for PIE. Try to find another solution
-    char8 *tempBuffer;
+    char8 buffer[1024];
 
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "leaq    printfBuffer(%%rip), %0" // leaq    printfBuffer(%rip), %rbp   # Get address of printfBuffer variable to RBP. %RBP == tempBuffer
-            :                             // Output parameters
-                "=r" (tempBuffer)         // 'r' - any general register, '=' - write only
-    );
-    // Ignore CppAlignmentVerifier [END]
+    sprintf(buffer, "\n --- Testing completed: %u passed, %u failed ---\n", mPassed, mFailed);
 
 
 
-    sprintf(tempBuffer, "\n --- Testing completed: %u passed, %u failed ---\n", mPassed, mFailed);
+    if (GraphicalConsole::canPrint())
+    {
+        GraphicalConsole::init();
 
+        Serial::println(buffer);
+        GraphicalConsole::println(buffer);
+    }
+    else
     if (Console::canPrint())
     {
-        Serial::println(tempBuffer);
-        Console::println(tempBuffer);
+        Serial::println(buffer);
+        Console::println(buffer);
     }
     else
     if (UEFI::canPrint())
     {
-        UEFI::println(tempBuffer);
+        UEFI::println(buffer);
     }
     else
     {
-        Serial::println(tempBuffer);
+        Serial::println(buffer);
     }
 
 

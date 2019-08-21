@@ -1,0 +1,152 @@
+#include "graphicalconsole.h"
+
+#include <common/src/bits64/assets/assets.h>
+#include <common/src/bits64/console/lib/glyphdata.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/printf/printf.h>
+
+
+
+#define CHAR_HEIGHT   20
+#define BOTTOM_MARGIN 5
+
+
+
+u16  GraphicalConsole::sPositionX;
+u16 *GraphicalConsole::sGlyphOffsets;
+
+
+
+NgosStatus GraphicalConsole::init()
+{
+    COMMON_LT((""));
+
+
+
+    AssetEntry *asset = Assets::getAssetEntry("glyphs/console.bin");
+    COMMON_TEST_ASSERT(asset, NgosStatus::ASSERTION);
+
+
+
+    sPositionX    = 0;
+    sGlyphOffsets = (u16 *)asset->content;
+
+
+
+    return NgosStatus::OK;
+}
+
+void GraphicalConsole::print(char8 ch)
+{
+    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
+
+
+
+    if (ch == '\n')
+    {
+        newLineWithoutCaretReturn();
+    }
+    else
+    if (ch == '\r')
+    {
+        sPositionX = 0;
+    }
+    else
+    {
+
+    }
+}
+
+void GraphicalConsole::print(const char8 *str)
+{
+    // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
+
+    COMMON_ASSERT(str, "str is null");
+
+
+
+    while (*str)
+    {
+        if (*str == '\n')
+        {
+            print('\r');
+        }
+
+        print(*str);
+
+        ++str;
+    }
+}
+
+void GraphicalConsole::println()
+{
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
+
+
+
+    newLine();
+}
+
+void GraphicalConsole::println(char8 ch)
+{
+    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
+
+
+
+    print(ch);
+    newLine();
+}
+
+void GraphicalConsole::println(const char8 *str)
+{
+    // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
+
+    COMMON_ASSERT(str, "str is null");
+
+
+
+    print(str);
+    newLine();
+}
+
+NgosStatus GraphicalConsole::noMorePrint()
+{
+    COMMON_LT((""));
+
+    COMMON_ASSERT(sGlyphOffsets, "sScreenInfo is null", NgosStatus::ASSERTION);
+
+
+
+    sGlyphOffsets = 0;
+
+
+
+    return NgosStatus::OK;
+}
+
+bool GraphicalConsole::canPrint()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sGlyphOffsets;
+}
+
+void GraphicalConsole::newLineWithoutCaretReturn()
+{
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
+}
+
+void GraphicalConsole::newLine()
+{
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
+
+
+
+    newLineWithoutCaretReturn();
+
+    sPositionX = 0;
+}

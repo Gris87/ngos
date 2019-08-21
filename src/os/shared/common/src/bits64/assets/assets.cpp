@@ -22,21 +22,8 @@ NgosStatus Assets::init()
 
 
 
-    // HACK: Temporary fix for PIE. Try to find another solution
-    // u8 *start = (u8 *)(params->header.kernelLocation + (u64)&_assets_begin);
-    // u8 *end   = (u8 *)(params->header.kernelLocation + (u64)&_assets_end);
-    u8 *start;
-    u8 *end;
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "leaq    _assets_begin(%%rip), %0"  "\n\t" // leaq    _assets_begin(%rip), %rbx     # Get address of _assets_begin variable to RBX. %RBX == start
-        "leaq    _assets_end(%%rip),   %1"         // leaq    _assets_end(%rip),   %r12     # Get address of _assets_end variable to R12. %R12 == end
-            :                                      // Output parameters
-                "=r" (start),                      // 'r' - any general register, '=' - write only
-                "=r" (end)                         // 'r' - any general register, '=' - write only
-    );
-    // Ignore CppAlignmentVerifier [END]
+    u8 *start = (u8 *)&_assets_begin;
+    u8 *end   = (u8 *)&_assets_end;
 
 
 

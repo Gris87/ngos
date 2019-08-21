@@ -5,6 +5,7 @@
 
 #include <buildconfig.h>
 #include <common/src/bits64/console/console.h>
+#include <common/src/bits64/console/graphicalconsole.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/serial/serial.h>
 #include <ngos/status.h>
@@ -15,21 +16,22 @@
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_RELEASE == OPTION_NO
 #define __EARLY_PRINT_ASSERT(message) \
-    Serial::printf message; \
-    \
+    if (GraphicalConsole::canPrint()) \
+    { \
+        GraphicalConsole::init(); \
+        \
+        Serial::printf message; \
+        GraphicalConsole::println(printfBuffer); \
+    } \
+    else \
     if (Console::canPrint()) \
     { \
-        /* HACK: Temporary fix for PIE. Try to find another solution */ \
-        /* Console::println(printfBuffer); */ \
-        char8 *__temp; \
-        \
-        asm volatile( \
-            "leaq    printfBuffer(%%rip), %0" /* leaq    printfBuffer(%rip), %rdi   # Get address of printfBuffer variable to RDI. %RDI == __temp*/ \
-                :                             /* Output parameters*/ \
-                    "=D" (__temp)             /* 'D' - RDI, '=' - write only */ \
-        ); \
-        \
-        Console::println(__temp); \
+        Serial::printf message; \
+        Console::println(printfBuffer); \
+    } \
+    else \
+    { \
+        Serial::printf message; \
     }
 
 

@@ -290,6 +290,8 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
     UEFI_ASSERT_EXECUTION(Console::init(params), NgosStatus::ASSERTION);
     UEFI_LVV(("Console initialized"));
 
+    UEFI_ASSERT_EXECUTION(UEFI::noMorePrint(), NgosStatus::ASSERTION);
+
 
 
     return NgosStatus::OK;

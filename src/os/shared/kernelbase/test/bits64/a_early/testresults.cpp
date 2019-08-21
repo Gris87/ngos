@@ -40,13 +40,28 @@ void TestResults::testFailed(const char8 *filename, u64 line, const char8 *descr
 
 
 
-    sprintf(printfBuffer, "%s:%u | %s", filename, line, description);
+    char8 buffer[1024];
 
-    Serial::println(printfBuffer);
+    sprintf(buffer, "%s:%u | %s", filename, line, description);
 
+
+
+    if (GraphicalConsole::canPrint())
+    {
+        GraphicalConsole::init();
+
+        Serial::println(buffer);
+        GraphicalConsole::println(buffer);
+    }
+    else
     if (Console::canPrint())
     {
-        Console::println(printfBuffer);
+        Serial::println(buffer);
+        Console::println(buffer);
+    }
+    else
+    {
+        Serial::println(buffer);
     }
 }
 
@@ -56,13 +71,28 @@ NgosStatus TestResults::summary()
 
 
 
-    sprintf(printfBuffer, "\n --- Testing completed: %u passed, %u failed ---\n", mPassed, mFailed);
+    char8 buffer[1024];
 
-    Serial::println(printfBuffer);
+    sprintf(buffer, "\n --- Testing completed: %u passed, %u failed ---\n", mPassed, mFailed);
 
+
+
+    if (GraphicalConsole::canPrint())
+    {
+        GraphicalConsole::init();
+
+        Serial::println(buffer);
+        GraphicalConsole::println(buffer);
+    }
+    else
     if (Console::canPrint())
     {
-        Console::println(printfBuffer);
+        Serial::println(buffer);
+        Console::println(buffer);
+    }
+    else
+    {
+        Serial::println(buffer);
     }
 
 

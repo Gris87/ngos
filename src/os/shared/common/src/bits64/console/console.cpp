@@ -199,6 +199,8 @@ void Console::newLineWithoutCaretReturn()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
+    COMMON_ASSERT(sScreenInfo, "sScreenInfo is null");
+
 
 
     u32 lineByteSize = sScreenInfo->lineLength * CHAR_HEIGHT;

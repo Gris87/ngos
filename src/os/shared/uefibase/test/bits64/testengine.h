@@ -29,14 +29,29 @@
 #define TEST_CASE(name) \
         do \
         { \
+            if (GraphicalConsole::canPrint()) \
+            { \
+                GraphicalConsole::init(); \
+                \
+                Serial::print("TRACE:     TEST_CASE(\""); \
+                GraphicalConsole::print("TRACE:     TEST_CASE(\""); \
+                \
+                Serial::print(name); \
+                GraphicalConsole::print(name); \
+                \
+                Serial::println("\")"); \
+                GraphicalConsole::println("\")"); \
+            } \
+            else \
             if (Console::canPrint()) \
             { \
                 Serial::print("TRACE:     TEST_CASE(\""); \
-                Serial::print(name); \
-                Serial::println("\")"); \
-                \
                 Console::print("TRACE:     TEST_CASE(\""); \
+                \
+                Serial::print(name); \
                 Console::print(name); \
+                \
+                Serial::println("\")"); \
                 Console::println("\")"); \
             } \
             else \
