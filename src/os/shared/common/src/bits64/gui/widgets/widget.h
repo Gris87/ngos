@@ -20,6 +20,11 @@ public:
     NgosStatus setPosition(i64 positionX, i64 positionY);
     NgosStatus setSize(u64 width, u64 height);
 
+    i64 getPositionX() const;
+    i64 getPositionY() const;
+    u64 getWidth() const;
+    u64 getHeight() const;
+
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else

@@ -22,13 +22,13 @@
         GraphicalConsole::init(); \
         \
         Serial::printf message; \
-        GraphicalConsole::println(printfBuffer);  \
+        GraphicalConsole::println(printfBuffer); \
     } \
     else \
     if (Console::canPrint()) \
     { \
         Serial::printf message; \
-        Console::println(printfBuffer);  \
+        Console::println(printfBuffer); \
     } \
     else \
     if (UEFI::canPrint()) \

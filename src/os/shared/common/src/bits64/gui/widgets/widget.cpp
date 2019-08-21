@@ -107,3 +107,39 @@ NgosStatus Widget::setSize(u64 width, u64 height)
 
     return NgosStatus::OK;
 }
+
+i64 Widget::getPositionX() const
+{
+    COMMON_LT((""));
+
+
+
+    return mPositionX;
+}
+
+i64 Widget::getPositionY() const
+{
+    COMMON_LT((""));
+
+
+
+    return mPositionY;
+}
+
+u64 Widget::getWidth() const
+{
+    COMMON_LT((""));
+
+
+
+    return mWidth;
+}
+
+u64 Widget::getHeight() const
+{
+    COMMON_LT((""));
+
+
+
+    return mHeight;
+}

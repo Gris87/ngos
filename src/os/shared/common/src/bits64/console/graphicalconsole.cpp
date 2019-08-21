@@ -2,6 +2,9 @@
 
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
+#include <common/src/bits64/graphics/graphics.h>
+#include <common/src/bits64/gui/gui.h>
+#include <common/src/bits64/gui/widgets/misc/consolewidget.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
@@ -12,14 +15,73 @@
 #define CHAR_HEIGHT   20
 #define BOTTOM_MARGIN 5
 
+#define CONSOLE_POSITION_X_PERCENT 10
+#define CONSOLE_POSITION_Y_PERCENT 70
+
+#define CONSOLE_WIDTH_PERCENT  80
+#define CONSOLE_HEIGHT_PERCENT 30
 
 
-u16  GraphicalConsole::sPositionX;
-u16 *GraphicalConsole::sGlyphOffsets;
+
+ConsoleWidget *GraphicalConsole::sConsoleWidget;
+u16            GraphicalConsole::sPositionX;
+u16           *GraphicalConsole::sGlyphOffsets;
 
 
 
 NgosStatus GraphicalConsole::init()
+{
+    COMMON_LT((""));
+
+
+
+    if (!sConsoleWidget)
+    {
+        u16 *temp     = sGlyphOffsets; // To avoid infinite loop
+        sGlyphOffsets = 0;             // To avoid infinite loop
+
+
+
+        ScreenWidget *screenWidget = GUI::getMainScreenWidget();
+        u64           screenWidth  = screenWidget->getWidth();
+        u64           screenHeight = screenWidget->getHeight();
+
+        i64 consolePositionX = screenWidth  * CONSOLE_POSITION_X_PERCENT / 100;
+        i64 consolePositionY = screenHeight * CONSOLE_POSITION_Y_PERCENT / 100;
+        u64 consoleWidth     = screenWidth  * CONSOLE_WIDTH_PERCENT      / 100;
+        u64 consoleHeight    = screenHeight * CONSOLE_HEIGHT_PERCENT     / 100;
+
+
+
+        AssetEntry *asset = Assets::getAssetEntry("images/console.9.png");
+        COMMON_TEST_ASSERT(asset != 0, NgosStatus::ASSERTION);
+
+        Image *consoleImage;
+        COMMON_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, &consoleImage), NgosStatus::ASSERTION);
+
+
+
+        sConsoleWidget = new ConsoleWidget(consoleImage, screenWidget);
+
+        COMMON_ASSERT_EXECUTION(sConsoleWidget->setPosition(consolePositionX, consolePositionY), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(sConsoleWidget->setSize(consoleWidth, consoleHeight),            NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(sConsoleWidget->invalidate(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(sConsoleWidget->repaint(),    NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(GUI::updateRegion(consolePositionX, consolePositionY, consoleWidth, consoleHeight), NgosStatus::ASSERTION);
+
+
+
+        sGlyphOffsets = temp; // To avoid infinite loop
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus GraphicalConsole::readyToPrint()
 {
     COMMON_LT((""));
 
@@ -115,7 +177,7 @@ NgosStatus GraphicalConsole::noMorePrint()
 {
     COMMON_LT((""));
 
-    COMMON_ASSERT(sGlyphOffsets, "sScreenInfo is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(sGlyphOffsets, "sGlyphOffsets is null", NgosStatus::ASSERTION);
 
 
 

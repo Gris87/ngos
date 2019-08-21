@@ -17,6 +17,8 @@ public:
     ScreenWidget(Image *backgroundImage, u8 *frameBuffer, RootWidget *rootWidget); // TEST: NO
     ~ScreenWidget(); // TEST: NO
 
+    NgosStatus updateRegion(i64 positionX, i64 positionY, u64 width, u64 height); // TEST: NO
+
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 

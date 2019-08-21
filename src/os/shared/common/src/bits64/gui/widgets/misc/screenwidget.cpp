@@ -39,6 +39,23 @@ ScreenWidget::~ScreenWidget()
     }
 }
 
+NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u64 height)
+{
+    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
+
+    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+
+
+    repaint();
+
+    drawWidget(mChildren.getHead()->getData(), positionX, positionY);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus ScreenWidget::invalidate()
 {
     COMMON_LT((""));
