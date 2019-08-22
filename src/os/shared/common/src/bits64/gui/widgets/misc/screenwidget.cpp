@@ -48,9 +48,14 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
     COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
 
 
-    repaint();
+    COMMON_TEST_ASSERT(mBackgroundResizedImage != 0, NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(mBackgroundResizedImage->data, mFrameBuffer, mBackgroundResizedImage->width, mBackgroundResizedImage->height, mWidth, mHeight, sizeof(RgbaPixel), sizeof(RgbaPixel), true, 0, 0, positionX, positionY, positionX + width, positionY + height), NgosStatus::ASSERTION);
+
+
 
     drawWidget(mChildren.getHead()->getData(), positionX, positionY);
+
 
 
     return NgosStatus::OK;

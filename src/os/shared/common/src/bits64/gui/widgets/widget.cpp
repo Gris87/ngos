@@ -108,6 +108,35 @@ NgosStatus Widget::repaint()
     return NgosStatus::OK;
 }
 
+bool Widget::hasIntersection(Widget *anotherWidget)
+{
+    COMMON_LT((" | anotherWidget = 0x%p", anotherWidget));
+
+    COMMON_ASSERT(anotherWidget, "anotherWidget is null", false);
+
+
+
+    return hasIntersection(anotherWidget->mPositionX, anotherWidget->mPositionY, anotherWidget->mWidth, anotherWidget->mHeight);
+}
+
+bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height)
+{
+    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
+
+    COMMON_ASSERT(width > 0,  "width is zero",  false);
+    COMMON_ASSERT(height > 0, "height is zero", false);
+
+
+
+    return (i64)(positionX)           <  (i64)(mPositionX + mWidth)
+            &&
+            (i64)(positionX + width)  >= (i64)(mPositionX)
+            &&
+            (i64)(positionY)          <  (i64)(mPositionY + mHeight)
+            &&
+            (i64)(positionY + height) >= (i64)(mPositionY);
+}
+
 NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
 {
     COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));

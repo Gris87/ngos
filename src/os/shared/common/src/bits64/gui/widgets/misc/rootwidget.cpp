@@ -58,15 +58,7 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
     {
         ScreenWidget *screenWidget = screen->getData();
 
-        if (
-            (i64)(positionX)          <  (i64)(screenWidget->mPositionX + screenWidget->mWidth)
-            &&
-            (i64)(positionX + width)  >= (i64)(screenWidget->mPositionX)
-            &&
-            (i64)(positionY)          <  (i64)(screenWidget->mPositionY + screenWidget->mHeight)
-            &&
-            (i64)(positionY + height) >= (i64)(screenWidget->mPositionY)
-           )
+        if (screenWidget->hasIntersection(positionX, positionY, width, height))
         {
             i64 left   = positionX - screenWidget->mPositionX;
             i64 right  = left + (i64)width;
@@ -107,31 +99,49 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
     {
         Widget *widget = element->getData();
 
-
-
-        ListElement<ScreenWidget *> *screen = mScreens.getHead();
-
-        while (screen)
+        if (widget->hasIntersection(positionX, positionY, width, height))
         {
-            ScreenWidget *screenWidget = screen->getData();
+            i64 left   = positionX - widget->mPositionX;
+            i64 right  = left + (i64)width;
+            i64 top    = positionY - widget->mPositionY;
+            i64 bottom = top + (i64)height;
 
-            if (
-                (i64)(widget->mPositionX)                   <  (i64)(screenWidget->mPositionX + screenWidget->mWidth)
-                &&
-                (i64)(widget->mPositionX + widget->mWidth)  >= (i64)(screenWidget->mPositionX)
-                &&
-                (i64)(widget->mPositionY)                   <  (i64)(screenWidget->mPositionY + screenWidget->mHeight)
-                &&
-                (i64)(widget->mPositionY + widget->mHeight) >= (i64)(screenWidget->mPositionY)
-               )
+            if (left < 0)
             {
-                screenWidget->drawWidget(widget, widget->mPositionX - screenWidget->mPositionX, widget->mPositionY - screenWidget->mPositionY);
+                left = 0;
             }
 
-            screen = screen->getNext();
+            if (top < 0)
+            {
+                top = 0;
+            }
+
+            if (right > (i64)widget->mWidth)
+            {
+                right = widget->mWidth;
+            }
+
+            if (bottom > (i64)widget->mHeight)
+            {
+                bottom = widget->mHeight;
+            }
+
+
+
+            ListElement<ScreenWidget *> *screen = mScreens.getHead();
+
+            while (screen)
+            {
+                ScreenWidget *screenWidget = screen->getData();
+
+                if (screenWidget->hasIntersection(widget))
+                {
+                    screenWidget->drawWidget(widget, widget->mPositionX - screenWidget->mPositionX, widget->mPositionY - screenWidget->mPositionY);
+                }
+
+                screen = screen->getNext();
+            }
         }
-
-
 
         element = element->getNext();
     }
@@ -198,15 +208,7 @@ NgosStatus RootWidget::repaint()
         {
             ScreenWidget *screenWidget = screen->getData();
 
-            if (
-                (i64)(widget->mPositionX)                   <  (i64)(screenWidget->mPositionX + screenWidget->mWidth)
-                &&
-                (i64)(widget->mPositionX + widget->mWidth)  >= (i64)(screenWidget->mPositionX)
-                &&
-                (i64)(widget->mPositionY)                   <  (i64)(screenWidget->mPositionY + screenWidget->mHeight)
-                &&
-                (i64)(widget->mPositionY + widget->mHeight) >= (i64)(screenWidget->mPositionY)
-               )
+            if (screenWidget->hasIntersection(widget))
             {
                 screenWidget->drawWidget(widget, widget->mPositionX - screenWidget->mPositionX, widget->mPositionY - screenWidget->mPositionY);
             }

@@ -222,27 +222,42 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
 
 
-    i64 left   = 0;
-    i64 right  = sourceWidth;
-    i64 top    = 0;
-    i64 bottom = sourceHeight;
+    return insertImageRaw(sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY, 0, 0, sourceWidth, sourceHeight);
+}
 
-    if (positionX < 0)
+NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
+{
+    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY, left, top, right, bottom));
+
+    COMMON_ASSERT(sourceData,                   "sourceData is null",               NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationData,              "destinationData is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceWidth > 0,              "sourceWidth is zero",              NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceHeight > 0,             "sourceHeight is zero",             NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationWidth > 0,         "destinationWidth is zero",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationHeight > 0,        "destinationHeight is zero",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceBytesPerPixel > 0,      "sourceBytesPerPixel is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationBytesPerPixel > 0, "destinationBytesPerPixel is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(right > left,                 "right is invalid",                 NgosStatus::ASSERTION);
+    COMMON_ASSERT(bottom > top,                 "bottom is invalid",                NgosStatus::ASSERTION);
+
+
+
+    if (positionX + left < 0)
     {
         left = -positionX;
     }
 
-    if (positionX + sourceWidth > destinationWidth)
+    if (positionX + right > destinationWidth)
     {
         right = destinationWidth - positionX;
     }
 
-    if (positionY < 0)
+    if (positionY + top < 0)
     {
         top = -positionY;
     }
 
-    if (positionY + sourceHeight > destinationHeight)
+    if (positionY + bottom > destinationHeight)
     {
         bottom = destinationHeight - positionY;
     }

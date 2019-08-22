@@ -20,6 +20,9 @@ public:
     virtual NgosStatus invalidate(); // TEST: NO
     virtual NgosStatus repaint(); // TEST: NO
 
+    bool hasIntersection(Widget *anotherWidget);
+    bool hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height);
+
     NgosStatus setPosition(i64 positionX, i64 positionY);
     NgosStatus setSize(u64 width, u64 height);
 
