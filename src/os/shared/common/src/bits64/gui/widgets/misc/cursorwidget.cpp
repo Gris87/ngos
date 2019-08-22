@@ -27,12 +27,12 @@ CursorWidget::~CursorWidget()
 
     if (mCursorResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mCursorResizedImage));
+        delete mCursorResizedImage;
     }
 
     if (mPointerResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mPointerResizedImage));
+        delete mPointerResizedImage;
     }
 }
 

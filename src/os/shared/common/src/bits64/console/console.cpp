@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
+#include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
@@ -75,10 +76,9 @@ void Console::print(char8 ch)
 
 
 
-            i16 charPosX      = sScreenPosX + glyphData->bitmapLeft;
-            i16 charPosY      = sScreenInfo->height - BOTTOM_MARGIN - glyphData->bitmapTop;
-            u8  bytesPerPixel = sScreenInfo->depth >> 3; // ">> 3" == "/ 8"
-            u8 *bitmapByte    = glyphData->bitmap;
+            i16 charPosX   = sScreenPosX + glyphData->bitmapLeft;
+            i16 charPosY   = sScreenInfo->height - BOTTOM_MARGIN - glyphData->bitmapTop;
+            u8 *bitmapByte = glyphData->bitmap;
 
             COMMON_TEST_ASSERT(charPosX >= 0);
             COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sScreenInfo->height);
@@ -90,21 +90,22 @@ void Console::print(char8 ch)
             {
                 for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                 {
-                    u8 *frameBufferPixel = (u8 *)((u64)sScreenInfo->frameBufferBase + (charPosY + i) * sScreenInfo->lineLength + (charPosX + j) * bytesPerPixel);
+                    RgbaPixel *pixel = &((RgbaPixel *)sScreenInfo->frameBufferBase)[(charPosY + i) * sScreenInfo->width + charPosX + j];
 
                     COMMON_TEST_ASSERT(
-                        (u64)frameBufferPixel >= (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - sScreenInfo->lineLength * CHAR_HEIGHT
+                        (u64)pixel >= (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - CHAR_HEIGHT * sScreenInfo->stride
                         &&
-                        (u64)frameBufferPixel <  (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - 2
+                        (u64)pixel <= (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - sizeof(RgbaPixel)
                     );
 
 
 
                     u8 greyColor = *bitmapByte;
 
-                    frameBufferPixel[0] = greyColor;
-                    frameBufferPixel[1] = greyColor;
-                    frameBufferPixel[2] = greyColor;
+                    pixel->red   = greyColor;
+                    pixel->green = greyColor;
+                    pixel->blue  = greyColor;
+                    pixel->alpha = 0xFF;
 
                     ++bitmapByte;
                 }
@@ -203,7 +204,7 @@ void Console::newLineWithoutCaretReturn()
 
 
 
-    u32 lineByteSize = sScreenInfo->lineLength * CHAR_HEIGHT;
+    u32 lineByteSize = sScreenInfo->stride * CHAR_HEIGHT;
 
     memcpy((void *)sScreenInfo->frameBufferBase, (void *)(sScreenInfo->frameBufferBase + lineByteSize), sScreenInfo->frameBufferSize - lineByteSize);
     memzero((void *)(sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - lineByteSize), lineByteSize);

@@ -24,7 +24,7 @@ ImageWidget::~ImageWidget()
 
     if (mResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mResizedImage));
+        delete mResizedImage;
     }
 }
 

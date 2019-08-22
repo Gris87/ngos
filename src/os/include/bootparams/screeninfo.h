@@ -11,7 +11,7 @@ struct ScreenInfo
 {
     u64 frameBufferBase;
     u64 frameBufferSize;
-    u16 lineLength;
+    u16 stride;
 
     u16 width;
     u16 height;

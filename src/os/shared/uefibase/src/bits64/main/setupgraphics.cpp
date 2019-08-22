@@ -58,7 +58,7 @@ NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop,
         case UefiGraphicsPixelFormat::RGB_8_BIT_PER_COLOR:
         {
             params->screenInfo.depth          = 32;
-            params->screenInfo.lineLength     = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
+            params->screenInfo.stride         = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
             params->screenInfo.redOffset      = 0;
             params->screenInfo.greenOffset    = 8;
             params->screenInfo.blueOffset     = 16;
@@ -73,7 +73,7 @@ NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop,
         case UefiGraphicsPixelFormat::BGR_8_BIT_PER_COLOR:
         {
             params->screenInfo.depth          = 32;
-            params->screenInfo.lineLength     = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
+            params->screenInfo.stride         = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
             params->screenInfo.redOffset      = 16;
             params->screenInfo.greenOffset    = 8;
             params->screenInfo.blueOffset     = 0;
@@ -98,7 +98,7 @@ NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop,
                     params->screenInfo.blueSize +
                     params->screenInfo.reservedSize;
 
-            params->screenInfo.lineLength = (info->pixelsPerScanLine * params->screenInfo.depth) >> 3; // ">> 3" == "/ 8"
+            params->screenInfo.stride = (info->pixelsPerScanLine * params->screenInfo.depth) >> 3; // ">> 3" == "/ 8"
         }
         break;
 
@@ -125,7 +125,7 @@ NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop,
     params->screenInfo.width           = info->horizontalResolution;
     params->screenInfo.height          = info->verticalResolution;
     params->screenInfo.frameBufferBase = gop->mode->frameBufferBase;
-    params->screenInfo.frameBufferSize = params->screenInfo.lineLength * params->screenInfo.height;
+    params->screenInfo.frameBufferSize = params->screenInfo.height * params->screenInfo.stride;
 
 
 
@@ -252,7 +252,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
     {
         UEFI_LVVV(("params->screenInfo.frameBufferBase = 0x%p", params->screenInfo.frameBufferBase));
         UEFI_LVVV(("params->screenInfo.frameBufferSize = %u",   params->screenInfo.frameBufferSize));
-        UEFI_LVVV(("params->screenInfo.lineLength      = %u",   params->screenInfo.lineLength));
+        UEFI_LVVV(("params->screenInfo.stride          = %u",   params->screenInfo.stride));
         UEFI_LVVV(("params->screenInfo.width           = %u",   params->screenInfo.width));
         UEFI_LVVV(("params->screenInfo.height          = %u",   params->screenInfo.height));
         UEFI_LVVV(("params->screenInfo.depth           = %u",   params->screenInfo.depth));

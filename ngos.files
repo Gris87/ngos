@@ -424,6 +424,7 @@ src/os/shared/common/src/bits64/graphics/bmp/lib/bmpheader.h
 src/os/shared/common/src/bits64/graphics/bmp/lib/bmpinformationheader.h
 src/os/shared/common/src/bits64/graphics/graphics.cpp
 src/os/shared/common/src/bits64/graphics/graphics.h
+src/os/shared/common/src/bits64/graphics/image.cpp
 src/os/shared/common/src/bits64/graphics/image.h
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/jpeg.h

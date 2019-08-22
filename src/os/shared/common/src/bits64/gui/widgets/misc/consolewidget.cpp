@@ -24,12 +24,12 @@ ConsoleWidget::~ConsoleWidget()
 
     if (mResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mResizedImage));
+        delete mResizedImage;
     }
 
     if (mResultImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mResultImage));
+        delete mResultImage;
     }
 }
 
@@ -69,12 +69,10 @@ NgosStatus ConsoleWidget::repaint()
 
     if (mResultImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mResultImage), NgosStatus::ASSERTION);
+        delete mResultImage;
     }
 
-
-
-    COMMON_ASSERT_EXECUTION(Graphics::cloneImage(mResizedImage, &mResultImage), NgosStatus::ASSERTION);
+    mResultImage = new Image(*mResizedImage);
 
 
 

@@ -130,7 +130,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
     {
         if (*decoder.image)
         {
-            COMMON_ASSERT_EXECUTION(free(*decoder.image), NgosStatus::ASSERTION);
+            delete *decoder.image;
 
             *decoder.image = 0;
         }
@@ -188,7 +188,7 @@ NgosStatus Png::releaseDecoder(PngDecoder *decoder)
         (
          !(*decoder->image)
          ||
-         decoder->rawImageBuffer != (u8 *)&(*decoder->image)->data
+         decoder->rawImageBuffer != (*decoder->image)->getBuffer()
         )
        )
     {
@@ -382,25 +382,9 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
 
 
-    Image *image = (Image *)malloc(sizeof(Image) + width * height * (hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel)));
-
-    if (!image)
-    {
-        COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
-
-        return NgosStatus::OUT_OF_MEMORY;
-    }
-
-    image->width    = width;
-    image->height   = height;
-    image->hasAlpha = hasAlpha;
-    image->isOpaque = true;
-
-
-
     COMMON_TEST_ASSERT(*decoder->image == 0, NgosStatus::ASSERTION);
 
-    *decoder->image = image;
+    *decoder->image = new Image(width, height, hasAlpha, true);
 
 
 
@@ -685,7 +669,7 @@ NgosStatus Png::convertImageDataToImage(PngDecoder *decoder)
         decoder->imageHeader->bitDepth == 8
        )
     {
-        decoder->rawImageBuffer = (u8 *)&(*decoder->image)->data;
+        decoder->rawImageBuffer = (*decoder->image)->getBuffer();
     }
     else
     {
@@ -753,8 +737,8 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
 
 
 
-    u16 width        = (*decoder->image)->width;
-    u16 height       = (*decoder->image)->height;
+    u16 width        = (*decoder->image)->getWidth();
+    u16 height       = (*decoder->image)->getHeight();
     u8  bitsPerPixel = decoder->bitsPerPixel;
 
 
@@ -810,19 +794,19 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder)
 
 
     Image *image      = *decoder->image;
-    i64    resolution = image->width * image->height;
+    i64    resolution = image->getWidth() * image->getHeight();
 
 
 
-    if (image->hasAlpha)
+    if (image->isRgba())
     {
-        RgbaPixel *pixel = (RgbaPixel *)(image->data);
+        RgbaPixel *pixel = image->getRgbaBuffer();
 
         for (i64 i = 0; i < resolution; ++i)
         {
             if (pixel->alpha != 0xFF)
             {
-                image->isOpaque = false;
+                image->setOpaque(false);
 
                 break;
             }
@@ -832,7 +816,7 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder)
 
 
 
-        pixel = (RgbaPixel *)(image->data);
+        pixel = image->getRgbaBuffer();
 
         for (i64 i = 0; i < resolution; ++i)
         {
@@ -845,7 +829,7 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder)
     }
     else
     {
-        RgbPixel *pixel = (RgbPixel *)(image->data);
+        RgbPixel *pixel = image->getRgbBuffer();
 
         for (i64 i = 0; i < resolution; ++i)
         {
@@ -1207,8 +1191,8 @@ NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, u64 *size)
 
     *size = 0;
 
-    u16 width  = (*decoder->image)->width;
-    u16 height = (*decoder->image)->height;
+    u16 width  = (*decoder->image)->getWidth();
+    u16 height = (*decoder->image)->getHeight();
 
 
 
@@ -1287,8 +1271,8 @@ NgosStatus Png::getRawImageSize(PngDecoder *decoder, u64 *size)
 
 
 
-    u16 width          = (*decoder->image)->width;
-    u16 height         = (*decoder->image)->height;
+    u16 width          = (*decoder->image)->getWidth();
+    u16 height         = (*decoder->image)->getHeight();
     u32 numberOfPixels = width * height;
     u8  bitsPerPixel   = decoder->bitsPerPixel;
 

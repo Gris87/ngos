@@ -14,6 +14,7 @@ SOURCES += \
     $$PWD/src/bits64/fpu/fpu.cpp \
     $$PWD/src/bits64/graphics/bmp/bmp.cpp \
     $$PWD/src/bits64/graphics/graphics.cpp \
+    $$PWD/src/bits64/graphics/image.cpp \
     $$PWD/src/bits64/graphics/jpeg/jpeg.cpp \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegzigzagorder.cpp \
     $$PWD/src/bits64/graphics/png/png.cpp \

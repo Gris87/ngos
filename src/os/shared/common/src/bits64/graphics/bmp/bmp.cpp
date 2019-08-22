@@ -146,29 +146,13 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    Image *newImage = (Image *)malloc(sizeof(Image) + width * height * sizeof(RgbPixel));
-
-    if (!newImage)
-    {
-        COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
-
-        return NgosStatus::OUT_OF_MEMORY;
-    }
-
-    newImage->width    = width;
-    newImage->height   = height;
-    newImage->hasAlpha = false;
-    newImage->isOpaque = true;
-
-
-
-    *image = newImage;
+    *image = new Image(width, height, false, true);
 
 
 
     BmpColorMap *colorMap  = (BmpColorMap *)((u64)bmpInfoHeader + sizeof(BmpInformationHeader));
     u8          *imageData = (u8 *)((u64)bmpHeader + imageOffset);
-    RgbPixel    *pixelData = (RgbPixel *)newImage->data;
+    RgbPixel    *pixelData = (*image)->getRgbBuffer();
     u8           byteValue = 0;
 
     for (i64 y = height - 1; y >= 0; --y)

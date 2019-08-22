@@ -75,21 +75,8 @@ NgosStatus GraphicalConsole::init()
 
 
 
-        sTextImage = (Image *)malloc(sizeof(Image) + consoleWidth * consoleHeight * sizeof(RgbaPixel));
-
-        if (!sTextImage)
-        {
-            COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
-
-            return NgosStatus::OUT_OF_MEMORY;
-        }
-
-        sTextImage->width    = consoleWidth;
-        sTextImage->height   = consoleHeight;
-        sTextImage->hasAlpha = true;
-        sTextImage->isOpaque = false;
-
-        memzero(sTextImage->data, consoleWidth * consoleHeight * sizeof(RgbaPixel));
+        sTextImage = new Image(consoleWidth, consoleHeight, true, false);
+        COMMON_ASSERT_EXECUTION(sTextImage->clear(), NgosStatus::ASSERTION);
 
 
 
@@ -261,7 +248,7 @@ void GraphicalConsole::printChar(char8 ch)
 
 
 
-            if (sPositionX + glyphData->width > sTextImage->width)
+            if (sPositionX + glyphData->width > sTextImage->getWidth())
             {
                 newLine();
             }
@@ -269,11 +256,11 @@ void GraphicalConsole::printChar(char8 ch)
 
 
             i16 charPosX      = sPositionX + glyphData->bitmapLeft;
-            i16 charPosY      = sTextImage->height - BOTTOM_MARGIN - glyphData->bitmapTop;
+            i16 charPosY      = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
             u8 *bitmapByte    = glyphData->bitmap;
 
             COMMON_TEST_ASSERT(charPosX >= 0);
-            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->height);
+            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->getHeight());
             COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT);
 
 
@@ -282,12 +269,12 @@ void GraphicalConsole::printChar(char8 ch)
             {
                 for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                 {
-                    RgbaPixel *pixel = (RgbaPixel *)((u64)sTextImage->data + ((charPosY + i) * sTextImage->width + charPosX + j) * sizeof(RgbaPixel));
+                    RgbaPixel *pixel = &sTextImage->getRgbaBuffer()[(charPosY + i) * sTextImage->getWidth() + charPosX + j];
 
                     COMMON_TEST_ASSERT(
-                        (u64)pixel >= (u64)sTextImage->data + sTextImage->width * (sTextImage->height - CHAR_HEIGHT) * sizeof(RgbaPixel)
+                        (u64)pixel >= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - CHAR_HEIGHT * sTextImage->getStride()
                         &&
-                        (u64)pixel <  (u64)sTextImage->data + sTextImage->width * sTextImage->height * sizeof(RgbaPixel) - 3
+                        (u64)pixel <= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel)
                     );
 
 
@@ -320,11 +307,10 @@ void GraphicalConsole::newLineWithoutCaretReturn()
 
 
 
-    u32 lineByteSize = sTextImage->width * CHAR_HEIGHT        * sizeof(RgbaPixel);
-    u64 bufferSize   = sTextImage->width * sTextImage->height * sizeof(RgbaPixel);
+    u32 lineByteSize = sTextImage->getStride() * CHAR_HEIGHT;
 
-    memcpy((void *)sTextImage->data, (void *)(sTextImage->data + lineByteSize), bufferSize - lineByteSize);
-    memzero((void *)(sTextImage->data + bufferSize - lineByteSize), lineByteSize);
+    memcpy((void *)sTextImage->getBuffer(), (void *)(sTextImage->getBuffer() + lineByteSize), sTextImage->getBufferSize() - lineByteSize);
+    memzero((void *)(sTextImage->getBuffer() + sTextImage->getBufferSize() - lineByteSize), lineByteSize);
 }
 
 void GraphicalConsole::newLine()
@@ -349,8 +335,8 @@ void GraphicalConsole::repaint()
     Image *resizedImage = sConsoleWidget->getResizedImage();
     Image *resultImage  = sConsoleWidget->getResultImage();
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->data, resultImage->data, resizedImage->width, resizedImage->height, resultImage->width, resultImage->height, resizedImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), resultImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), true,  0, 0));
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->data,   resultImage->data, sTextImage->width,   sTextImage->height,   resultImage->width, resultImage->height, sTextImage->hasAlpha   ? sizeof(RgbaPixel) : sizeof(RgbPixel), resultImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), false, 0, 0));
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->getBuffer(), resultImage->getBuffer(), resizedImage->getWidth(), resizedImage->getHeight(), resultImage->getWidth(), resultImage->getHeight(), resizedImage->getBytesPerPixel(), resultImage->getBytesPerPixel(), true,  0, 0));
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, 0, 0));
 
     COMMON_ASSERT_EXECUTION(sConsoleWidget->update());
 }

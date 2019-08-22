@@ -105,7 +105,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
     {
         if (*decoder.image)
         {
-            COMMON_ASSERT_EXECUTION(free(*decoder.image), NgosStatus::ASSERTION);
+            delete *decoder.image;
 
             *decoder.image = 0;
         }
@@ -537,25 +537,9 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    Image *image = (Image *)malloc(sizeof(Image) + width * height * sizeof(RgbPixel));
-
-    if (!image)
-    {
-        COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
-
-        return NgosStatus::OUT_OF_MEMORY;
-    }
-
-    image->width    = width;
-    image->height   = height;
-    image->hasAlpha = false;
-    image->isOpaque = true;
-
-
-
     COMMON_TEST_ASSERT(*decoder->image == 0, NgosStatus::ASSERTION);
 
-    *decoder->image = image;
+    *decoder->image = new Image(width, height, false, true);
 
 
 
@@ -1595,9 +1579,9 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
 
     u8        numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
-    u16       width              = (*decoder->image)->width;
-    u16       height             = (*decoder->image)->height;
-    RgbPixel *pixel              = (RgbPixel *)(*decoder->image)->data;
+    u16       width              = (*decoder->image)->getWidth();
+    u16       height             = (*decoder->image)->getHeight();
+    RgbPixel *pixel              = (*decoder->image)->getRgbBuffer();
 
 
 

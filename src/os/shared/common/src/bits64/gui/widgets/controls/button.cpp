@@ -35,27 +35,27 @@ Button::~Button()
 
     if (mNormalResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mNormalResizedImage));
+        delete mNormalResizedImage;
     }
 
     if (mHoverResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mHoverResizedImage));
+        delete mHoverResizedImage;
     }
 
     if (mPressedResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mPressedResizedImage));
+        delete mPressedResizedImage;
     }
 
     if (mFocusedResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mFocusedResizedImage));
+        delete mFocusedResizedImage;
     }
 
     if (mResultImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mResultImage));
+        delete mResultImage;
     }
 }
 
@@ -104,12 +104,13 @@ NgosStatus Button::repaint()
 
     if (mResultImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mResultImage), NgosStatus::ASSERTION);
+        delete mResultImage;
     }
 
+    mResultImage = new Image(*mNormalResizedImage);
 
 
-    COMMON_ASSERT_EXECUTION(Graphics::cloneImage(mNormalResizedImage, &mResultImage),                              NgosStatus::ASSERTION);
+
     COMMON_ASSERT_EXECUTION(Graphics::insertImage(mContentImage, mResultImage, 30, 30, mWidth - 60, mHeight - 60), NgosStatus::ASSERTION);
 
 

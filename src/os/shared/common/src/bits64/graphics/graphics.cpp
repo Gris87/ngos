@@ -63,39 +63,6 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, Image **image)
     return NgosStatus::NOT_SUPPORTED;
 }
 
-NgosStatus Graphics::cloneImage(Image *image, Image **res)
-{
-    COMMON_LT((" | image = 0x%p, res = 0x%p", image, res));
-
-    COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(res,   "res is null",   NgosStatus::ASSERTION);
-
-
-
-    u64 size = sizeof(Image) + image->width * image->height * (image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel));
-
-
-
-    Image *newImage = (Image *)malloc(size);
-
-    if (!newImage)
-    {
-        COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
-
-        return NgosStatus::OUT_OF_MEMORY;
-    }
-
-    memcpy(newImage, image, size);
-
-
-
-    *res = newImage;
-
-
-
-    return NgosStatus::OK;
-}
-
 NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
 {
     COMMON_LT((" | image = 0x%p, res = 0x%p", image, res));
@@ -106,31 +73,19 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
 
 
     if (
-        !image->hasAlpha
+        !image->isRgba()
         ||
-        !image->isOpaque
+        !image->isOpaque()
        )
     {
-        i64    resolution    = image->width * image->height;
-        u8     bytesPerPixel = image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel);
-        Image *newImage      = (Image *)malloc(sizeof(Image) + resolution * sizeof(RgbaPixel));
-
-        if (!newImage)
-        {
-            COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
-
-            return NgosStatus::OUT_OF_MEMORY;
-        }
-
-        newImage->width    = image->width;
-        newImage->height   = image->height;
-        newImage->hasAlpha = true;
-        newImage->isOpaque = true;
+        i64    resolution    = image->getWidth() * image->getHeight();
+        u8     bytesPerPixel = image->getBytesPerPixel();
+        Image *newImage      = new Image(image->getWidth(), image->getHeight(), true, true);
 
 
 
-        u64        data  = (u64)image->data;
-        RgbaPixel *pixel = (RgbaPixel *)newImage->data;
+        u64        data  = (u64)image->getBuffer();
+        RgbaPixel *pixel = (RgbaPixel *)newImage->getBuffer();
 
         for (i64 i = 0; i < resolution; ++i)
         {
@@ -178,9 +133,9 @@ NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, i6
         height > 0
         &&
         (
-         width != sourceImage->width
+         width != sourceImage->getWidth()
          ||
-         height != sourceImage->height
+         height != sourceImage->getHeight()
         )
        )
     {
@@ -193,13 +148,13 @@ NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, i6
 
 
 
-    COMMON_ASSERT_EXECUTION(insertImageRaw(image->data, destinationImage->data, image->width, image->height, destinationImage->width, destinationImage->height, image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), destinationImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), image->isOpaque && destinationImage->isOpaque, positionX, positionY), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(insertImageRaw(image->getBuffer(), destinationImage->getBuffer(), image->getWidth(), image->getHeight(), destinationImage->getWidth(), destinationImage->getHeight(), image->getBytesPerPixel(), destinationImage->getBytesPerPixel(), image->isOpaque() && destinationImage->isOpaque(), positionX, positionY), NgosStatus::ASSERTION);
 
 
 
     if (image != sourceImage)
     {
-        COMMON_ASSERT_EXECUTION(free(image), NgosStatus::ASSERTION);
+        delete image;
     }
 
 
@@ -395,29 +350,11 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
         height // height > 0
        )
     {
-        u8  bytesPerPixel  = image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel);
-        u64 originalStride = image->width * bytesPerPixel;
-        u64 stride         = width * bytesPerPixel;
+        Image *newImage = new Image(width, height, image->isRgba(), image->isOpaque());
 
 
 
-        Image *newImage = (Image *)malloc(sizeof(Image) + height * stride);
-
-        if (!newImage)
-        {
-            COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
-
-            return NgosStatus::OUT_OF_MEMORY;
-        }
-
-        newImage->width    = width;
-        newImage->height   = height;
-        newImage->hasAlpha = image->hasAlpha;
-        newImage->isOpaque = image->isOpaque;
-
-
-
-        COMMON_ASSERT_EXECUTION(resizeImageRaw(image->data, 0, 0, image->width, image->height, originalStride, newImage->data, 0, 0, width, height, stride, bytesPerPixel), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(resizeImageRaw(image->getBuffer(), 0, 0, image->getWidth(), image->getHeight(), image->getStride(), newImage->getBuffer(), 0, 0, newImage->getWidth(), newImage->getHeight(), newImage->getStride(), newImage->getBytesPerPixel()), NgosStatus::ASSERTION);
 
 
 
@@ -446,13 +383,13 @@ NgosStatus Graphics::resizeImageProportional(Image *image, u16 width, u16 height
 
 
 
-    float scaleX = (float)width  / image->width;
-    float scaleY = (float)height / image->height;
+    float scaleX = (float)width  / image->getWidth();
+    float scaleY = (float)height / image->getHeight();
 
     float scale = MIN(scaleX, scaleY);
 
-    u16 newWidth  = image->width  * scale;
-    u16 newHeight = image->height * scale;
+    u16 newWidth  = image->getWidth()  * scale;
+    u16 newHeight = image->getHeight() * scale;
 
 
 

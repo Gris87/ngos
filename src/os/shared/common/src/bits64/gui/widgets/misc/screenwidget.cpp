@@ -36,7 +36,7 @@ ScreenWidget::~ScreenWidget()
 
     if (mBackgroundResizedImage)
     {
-        COMMON_ASSERT_EXECUTION(free(mBackgroundResizedImage));
+        delete mBackgroundResizedImage;
     }
 }
 
@@ -51,7 +51,7 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
 
     COMMON_TEST_ASSERT(mBackgroundResizedImage != 0, NgosStatus::ASSERTION);
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(mBackgroundResizedImage->data, mFrameBuffer, mBackgroundResizedImage->width, mBackgroundResizedImage->height, mWidth, mHeight, sizeof(RgbaPixel), sizeof(RgbaPixel), true, 0, 0, positionX, positionY, positionX + width, positionY + height), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(mBackgroundResizedImage->getBuffer(), mFrameBuffer, mBackgroundResizedImage->getWidth(), mBackgroundResizedImage->getHeight(), mWidth, mHeight, mBackgroundResizedImage->getBytesPerPixel(), sizeof(RgbaPixel), true, 0, 0, positionX, positionY, positionX + width, positionY + height), NgosStatus::ASSERTION);
 
 
 
@@ -96,16 +96,16 @@ NgosStatus ScreenWidget::invalidate()
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mBackgroundImage, mWidth, mHeight, &mBackgroundResizedImage), NgosStatus::ASSERTION);
 
     if (
-        !mBackgroundResizedImage->hasAlpha
+        !mBackgroundResizedImage->isRgba()
         ||
-        !mBackgroundResizedImage->isOpaque
+        !mBackgroundResizedImage->isOpaque()
        )
     {
         Image *newImage;
 
         COMMON_ASSERT_EXECUTION(Graphics::makeOpaqueImage(mBackgroundResizedImage, &newImage), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(free(mBackgroundResizedImage),                                 NgosStatus::ASSERTION);
 
+        delete mBackgroundResizedImage;
         mBackgroundResizedImage = newImage;
     }
 
@@ -126,7 +126,7 @@ NgosStatus ScreenWidget::repaint()
 
     COMMON_TEST_ASSERT(mBackgroundResizedImage != 0, NgosStatus::ASSERTION);
 
-    memcpy(mFrameBuffer, mBackgroundResizedImage->data, mWidth * mHeight * sizeof(RgbaPixel));
+    memcpy(mFrameBuffer, mBackgroundResizedImage->getBuffer(), mBackgroundResizedImage->getBufferSize());
 
 
 
@@ -143,7 +143,7 @@ NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY
 
     Image *image = widget->mResultImage;
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->data, mFrameBuffer, image->width, image->height, mWidth, mHeight, image->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), sizeof(RgbaPixel), image->isOpaque, positionX, positionY), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), mFrameBuffer, image->getWidth(), image->getHeight(), mWidth, mHeight, image->getBytesPerPixel(), sizeof(RgbaPixel), image->isOpaque(), positionX, positionY), NgosStatus::ASSERTION);
 
 
 

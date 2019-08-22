@@ -136,7 +136,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
         TEST_ASSERT_EQUALS(sizeof(GraphicalConsole),                              1);
         TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
-        TEST_ASSERT_EQUALS(sizeof(Image),                                         6);
+        TEST_ASSERT_EQUALS(sizeof(Image),                                         24);
         TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   88);
         TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                              1);
         TEST_ASSERT_EQUALS(sizeof(InflateCode),                                   4);
