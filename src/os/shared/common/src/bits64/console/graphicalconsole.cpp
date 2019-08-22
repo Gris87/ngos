@@ -3,6 +3,8 @@
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
 #include <common/src/bits64/graphics/graphics.h>
+#include <common/src/bits64/graphics/rgbpixel.h>
+#include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/consolewidget.h>
 #include <common/src/bits64/log/assert.h>
@@ -24,6 +26,7 @@
 
 
 ConsoleWidget *GraphicalConsole::sConsoleWidget;
+Image         *GraphicalConsole::sTextImage;
 u16            GraphicalConsole::sPositionX;
 u16           *GraphicalConsole::sGlyphOffsets;
 
@@ -72,6 +75,24 @@ NgosStatus GraphicalConsole::init()
 
 
 
+        sTextImage = (Image *)malloc(sizeof(Image) + consoleWidth * consoleHeight * sizeof(RgbaPixel));
+
+        if (!sTextImage)
+        {
+            COMMON_LE(("Failed to allocate space for raw image data. Out of space"));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+        sTextImage->width    = consoleWidth;
+        sTextImage->height   = consoleHeight;
+        sTextImage->hasAlpha = true;
+        sTextImage->isOpaque = false;
+
+        memzero(sTextImage->data, consoleWidth * consoleHeight * sizeof(RgbaPixel));
+
+
+
         sGlyphOffsets = temp; // To avoid infinite loop
     }
 
@@ -105,19 +126,11 @@ void GraphicalConsole::print(char8 ch)
 
 
 
-    if (ch == '\n')
-    {
-        newLineWithoutCaretReturn();
-    }
-    else
-    if (ch == '\r')
-    {
-        sPositionX = 0;
-    }
-    else
-    {
+    printChar(ch);
 
-    }
+
+
+    repaint();
 }
 
 void GraphicalConsole::print(const char8 *str)
@@ -132,13 +145,17 @@ void GraphicalConsole::print(const char8 *str)
     {
         if (*str == '\n')
         {
-            print('\r');
+            printChar('\r');
         }
 
-        print(*str);
+        printChar(*str);
 
         ++str;
     }
+
+
+
+    repaint();
 }
 
 void GraphicalConsole::println()
@@ -148,6 +165,10 @@ void GraphicalConsole::println()
 
 
     newLine();
+
+
+
+    repaint();
 }
 
 void GraphicalConsole::println(char8 ch)
@@ -156,8 +177,12 @@ void GraphicalConsole::println(char8 ch)
 
 
 
-    print(ch);
+    printChar(ch);
     newLine();
+
+
+
+    repaint();
 }
 
 void GraphicalConsole::println(const char8 *str)
@@ -168,8 +193,23 @@ void GraphicalConsole::println(const char8 *str)
 
 
 
-    print(str);
+    while (*str)
+    {
+        if (*str == '\n')
+        {
+            printChar('\r');
+        }
+
+        printChar(*str);
+
+        ++str;
+    }
+
     newLine();
+
+
+
+    repaint();
 }
 
 NgosStatus GraphicalConsole::noMorePrint()
@@ -196,9 +236,95 @@ bool GraphicalConsole::canPrint()
     return sGlyphOffsets;
 }
 
+void GraphicalConsole::printChar(char8 ch)
+{
+    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
+
+    COMMON_ASSERT(sTextImage, "sTextImage is null");
+
+
+
+    if (ch == '\n')
+    {
+        newLineWithoutCaretReturn();
+    }
+    else
+    if (ch == '\r')
+    {
+        sPositionX = 0;
+    }
+    else
+    {
+        if (ch >= 0x20 && ch < 0x7F)
+        {
+            GlyphData *glyphData = (GlyphData *)((u64)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
+
+
+
+            if (sPositionX + glyphData->width > sTextImage->width)
+            {
+                newLine();
+            }
+
+
+
+            i16 charPosX      = sPositionX + glyphData->bitmapLeft;
+            i16 charPosY      = sTextImage->height - BOTTOM_MARGIN - glyphData->bitmapTop;
+            u8 *bitmapByte    = glyphData->bitmap;
+
+            COMMON_TEST_ASSERT(charPosX >= 0);
+            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->height);
+            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT);
+
+
+
+            for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
+            {
+                for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
+                {
+                    RgbaPixel *pixel = (RgbaPixel *)((u64)sTextImage->data + ((charPosY + i) * sTextImage->width + charPosX + j) * sizeof(RgbaPixel));
+
+                    COMMON_TEST_ASSERT(
+                        (u64)pixel >= (u64)sTextImage->data + sTextImage->width * (sTextImage->height - CHAR_HEIGHT) * sizeof(RgbaPixel)
+                        &&
+                        (u64)pixel <  (u64)sTextImage->data + sTextImage->width * sTextImage->height * sizeof(RgbaPixel) - 3
+                    );
+
+
+
+                    u8 greyColor = *bitmapByte;
+
+                    pixel->red   = greyColor;
+                    pixel->green = greyColor;
+                    pixel->blue  = greyColor;
+                    pixel->alpha = 0xFF;
+
+                    ++bitmapByte;
+                }
+            }
+
+            sPositionX += glyphData->width;
+        }
+        else
+        {
+            COMMON_LW(("Non-printable character found: 0x%02X", (u8)ch));
+        }
+    }
+}
+
 void GraphicalConsole::newLineWithoutCaretReturn()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
+
+    COMMON_ASSERT(sTextImage, "sTextImage is null");
+
+
+
+    u32 lineByteSize = sTextImage->width * CHAR_HEIGHT        * sizeof(RgbaPixel);
+    u64 bufferSize   = sTextImage->width * sTextImage->height * sizeof(RgbaPixel);
+
+    memcpy((void *)sTextImage->data, (void *)(sTextImage->data + lineByteSize), bufferSize - lineByteSize);
+    memzero((void *)(sTextImage->data + bufferSize - lineByteSize), lineByteSize);
 }
 
 void GraphicalConsole::newLine()
@@ -210,4 +336,21 @@ void GraphicalConsole::newLine()
     newLineWithoutCaretReturn();
 
     sPositionX = 0;
+}
+
+void GraphicalConsole::repaint()
+{
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
+
+    COMMON_ASSERT(sTextImage, "sTextImage is null");
+
+
+
+    Image *resizedImage = sConsoleWidget->getResizedImage();
+    Image *resultImage  = sConsoleWidget->getResultImage();
+
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->data, resultImage->data, resizedImage->width, resizedImage->height, resultImage->width, resultImage->height, resizedImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), resultImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), true,  0, 0));
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->data,   resultImage->data, sTextImage->width,   sTextImage->height,   resultImage->width, resultImage->height, sTextImage->hasAlpha   ? sizeof(RgbaPixel) : sizeof(RgbPixel), resultImage->hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel), false, 0, 0));
+
+    COMMON_ASSERT_EXECUTION(sConsoleWidget->update());
 }

@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/graphics/image.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 
@@ -28,10 +29,13 @@ public:
     static bool canPrint(); // TEST: NO
 
 private:
+    static void printChar(char8 ch); // TEST: NO
     static void newLineWithoutCaretReturn(); // TEST: NO
     static void newLine(); // TEST: NO
+    static void repaint(); // TEST: NO
 
     static ConsoleWidget *sConsoleWidget;
+    static Image         *sTextImage;
     static u16            sPositionX;
     static u16           *sGlyphOffsets;
 };

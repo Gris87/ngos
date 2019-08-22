@@ -80,3 +80,12 @@ NgosStatus ConsoleWidget::repaint()
 
     return NgosStatus::OK;
 }
+
+Image* ConsoleWidget::getResizedImage() const
+{
+    COMMON_LT((""));
+
+
+
+    return mResizedImage;
+}

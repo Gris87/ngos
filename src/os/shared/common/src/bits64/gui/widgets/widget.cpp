@@ -200,3 +200,12 @@ u64 Widget::getHeight() const
 
     return mHeight;
 }
+
+Image* Widget::getResultImage() const
+{
+    COMMON_LT((""));
+
+
+
+    return mResultImage;
+}
