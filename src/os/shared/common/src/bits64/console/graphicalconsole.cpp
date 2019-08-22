@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
+#include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/graphics/rgbpixel.h>

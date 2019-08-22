@@ -3,13 +3,13 @@
 
 
 
-#include <common/src/bits64/graphics/image.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 
 
 
 class ConsoleWidget;
+class Image;
 
 
 
