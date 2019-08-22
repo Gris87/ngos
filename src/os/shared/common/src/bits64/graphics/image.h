@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/graphics/ninepatch.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
 #include <ngos/status.h>
@@ -17,10 +18,12 @@ public:
     Image(const Image &image);
     ~Image(); // TEST: NO
 
-    NgosStatus clear();
+    NgosStatus clearBuffer();
+    NgosStatus createNinePatch();
 
     NgosStatus setOpaque(bool opaque);
 
+    NinePatch* getNinePatch() const;
     u16 getWidth() const;
     u16 getHeight() const;
     u8 getBytesPerPixel() const;
@@ -37,13 +40,14 @@ public:
 #else
 private:
 #endif
-    u16   mWidth;
-    u16   mHeight;
-    u8    mBytesPerPixel;
-    bool  mIsOpaque;
-    u16   mStride;
-    u64   mBufferSize;
-    u8   *mBuffer;
+    NinePatch *mNinePatch;
+    u16        mWidth;
+    u16        mHeight;
+    u8         mBytesPerPixel;
+    bool       mIsOpaque;
+    u16        mStride;
+    u64        mBufferSize;
+    u8        *mBuffer;
 };
 
 

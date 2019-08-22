@@ -445,6 +445,8 @@ src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegstartofscancomponent.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.h
+src/os/shared/common/src/bits64/graphics/ninepatch.cpp
+src/os/shared/common/src/bits64/graphics/ninepatch.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimagegamma.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimageheader.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h
@@ -465,6 +467,8 @@ src/os/shared/common/src/bits64/graphics/png/png.h
 src/os/shared/common/src/bits64/graphics/png/pngdecoder.h
 src/os/shared/common/src/bits64/graphics/rgbapixel.h
 src/os/shared/common/src/bits64/graphics/rgbpixel.h
+src/os/shared/common/src/bits64/graphics/stretchrange.cpp
+src/os/shared/common/src/bits64/graphics/stretchrange.h
 src/os/shared/common/src/bits64/gui/gui.cpp
 src/os/shared/common/src/bits64/gui/gui.h
 src/os/shared/common/src/bits64/gui/widgets/controls/button.cpp

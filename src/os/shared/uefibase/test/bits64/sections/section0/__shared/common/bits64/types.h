@@ -61,6 +61,7 @@
 #include <common/src/bits64/graphics/jpeg/lib/jpegstartofframemarker.h>
 #include <common/src/bits64/graphics/jpeg/lib/jpegstartofscancomponent.h>
 #include <common/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h>
+#include <common/src/bits64/graphics/ninepatch.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngimagegamma.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngimageheader.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h>
@@ -80,6 +81,7 @@
 #include <common/src/bits64/graphics/png/pngdecoder.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
+#include <common/src/bits64/graphics/stretchrange.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/misc/consolewidget.h>
@@ -136,7 +138,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
         TEST_ASSERT_EQUALS(sizeof(GraphicalConsole),                              1);
         TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
-        TEST_ASSERT_EQUALS(sizeof(Image),                                         24);
+        TEST_ASSERT_EQUALS(sizeof(Image),                                         32);
         TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   88);
         TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                              1);
         TEST_ASSERT_EQUALS(sizeof(InflateCode),                                   4);
@@ -163,6 +165,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(ListElement<u8>),                               24);
         TEST_ASSERT_EQUALS(sizeof(MSR),                                           1);
         TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);
+        TEST_ASSERT_EQUALS(sizeof(NinePatch),                                     40);
         TEST_ASSERT_EQUALS(sizeof(Png),                                           1);
         TEST_ASSERT_EQUALS(sizeof(PngChunk),                                      8);
         TEST_ASSERT_EQUALS(sizeof(PngChunkType),                                  4);
@@ -188,6 +191,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(RootWidget),                                    88);
         TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  104);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
+        TEST_ASSERT_EQUALS(sizeof(StretchRange),                                  4);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        72);
         TEST_ASSERT_EQUALS(sizeof(X86Bug),                                        2);
         TEST_ASSERT_EQUALS(sizeof(X86Feature),                                    2);

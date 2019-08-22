@@ -76,7 +76,7 @@ NgosStatus GraphicalConsole::init()
 
 
         sTextImage = new Image(consoleWidth, consoleHeight, true, false);
-        COMMON_ASSERT_EXECUTION(sTextImage->clear(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(sTextImage->clearBuffer(), NgosStatus::ASSERTION);
 
 
 

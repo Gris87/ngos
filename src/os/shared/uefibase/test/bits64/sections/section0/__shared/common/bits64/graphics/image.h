@@ -43,14 +43,14 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
 
 
 
-    TEST_CASE("clear()");
+    TEST_CASE("clearBuffer()");
     {
         Image temp(10, 20, true, true);
 
         temp.mBuffer[0] = 50;
 
         TEST_ASSERT_EQUALS(memempty(temp.mBuffer, temp.mBufferSize), false);
-        TEST_ASSERT_EQUALS(temp.clear(),                             NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.clearBuffer(),                       NgosStatus::OK);
         TEST_ASSERT_EQUALS(memempty(temp.mBuffer, temp.mBufferSize), true);
     }
     TEST_CASE_END();

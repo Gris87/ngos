@@ -26,7 +26,8 @@ Image::Image(u16 width, u16 height, bool hasAlpha, bool opaque)
 }
 
 Image::Image(const Image &image)
-    : mWidth(image.mWidth)
+    : mNinePatch(0)
+    , mWidth(image.mWidth)
     , mHeight(image.mHeight)
     , mBytesPerPixel(image.mBytesPerPixel)
     , mIsOpaque(image.mIsOpaque)
@@ -47,16 +48,41 @@ Image::~Image()
 
 
 
+    if (mNinePatch)
+    {
+        delete mNinePatch;
+    }
+
     delete[] mBuffer;
 }
 
-NgosStatus Image::clear()
+NgosStatus Image::clearBuffer()
 {
     COMMON_LT((""));
 
 
 
     memzero(mBuffer, mBufferSize);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Image::createNinePatch()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_TEST_ASSERT(!mNinePatch, NgosStatus::ASSERTION);
+
+    if (mNinePatch)
+    {
+        delete mNinePatch;
+    }
+
+    mNinePatch = new NinePatch();
 
 
 
@@ -74,6 +100,15 @@ NgosStatus Image::setOpaque(bool opaque)
 
 
     return NgosStatus::OK;
+}
+
+NinePatch* Image::getNinePatch() const
+{
+    COMMON_LT((""));
+
+
+
+    return mNinePatch;
 }
 
 u16 Image::getWidth() const

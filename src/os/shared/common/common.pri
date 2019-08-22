@@ -17,7 +17,9 @@ SOURCES += \
     $$PWD/src/bits64/graphics/image.cpp \
     $$PWD/src/bits64/graphics/jpeg/jpeg.cpp \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegzigzagorder.cpp \
+    $$PWD/src/bits64/graphics/ninepatch.cpp \
     $$PWD/src/bits64/graphics/png/png.cpp \
+    $$PWD/src/bits64/graphics/stretchrange.cpp \
     $$PWD/src/bits64/gui/gui.cpp \
     $$PWD/src/bits64/gui/widgets/controls/button.cpp \
     $$PWD/src/bits64/gui/widgets/misc/consolewidget.cpp \
@@ -105,6 +107,7 @@ HEADERS += \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegstartofscancomponent.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegzigzagorder.h \
+    $$PWD/src/bits64/graphics/ninepatch.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngimagegamma.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngimageheader.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h \
@@ -124,6 +127,7 @@ HEADERS += \
     $$PWD/src/bits64/graphics/png/pngdecoder.h \
     $$PWD/src/bits64/graphics/rgbapixel.h \
     $$PWD/src/bits64/graphics/rgbpixel.h \
+    $$PWD/src/bits64/graphics/stretchrange.h \
     $$PWD/src/bits64/gui/gui.h \
     $$PWD/src/bits64/gui/widgets/controls/button.h \
     $$PWD/src/bits64/gui/widgets/misc/consolewidget.h \
