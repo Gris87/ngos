@@ -307,7 +307,7 @@ void GraphicalConsole::newLineWithoutCaretReturn()
 
 
 
-    u32 lineByteSize = sTextImage->getStride() * CHAR_HEIGHT;
+    u32 lineByteSize = CHAR_HEIGHT * sTextImage->getStride();
 
     memcpy((void *)sTextImage->getBuffer(), (void *)(sTextImage->getBuffer() + lineByteSize), sTextImage->getBufferSize() - lineByteSize);
     memzero((void *)(sTextImage->getBuffer() + sTextImage->getBufferSize() - lineByteSize), lineByteSize);

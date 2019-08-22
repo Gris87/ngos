@@ -204,7 +204,7 @@ void Console::newLineWithoutCaretReturn()
 
 
 
-    u32 lineByteSize = sScreenInfo->stride * CHAR_HEIGHT;
+    u32 lineByteSize = CHAR_HEIGHT * sScreenInfo->stride;
 
     memcpy((void *)sScreenInfo->frameBufferBase, (void *)(sScreenInfo->frameBufferBase + lineByteSize), sScreenInfo->frameBufferSize - lineByteSize);
     memzero((void *)(sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - lineByteSize), lineByteSize);
