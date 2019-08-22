@@ -84,8 +84,8 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
 
 
 
-        u64        data  = (u64)image->getBuffer();
-        RgbaPixel *pixel = (RgbaPixel *)newImage->getBuffer();
+        u8        *data  = image->getBuffer();
+        RgbaPixel *pixel = newImage->getRgbaBuffer();
 
         for (i64 i = 0; i < resolution; ++i)
         {

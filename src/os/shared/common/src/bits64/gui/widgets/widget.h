@@ -30,7 +30,7 @@ public:
     i64 getPositionY() const;
     u64 getWidth() const;
     u64 getHeight() const;
-    Image* getResultImage() const;
+    Image* getResultImage() const; // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

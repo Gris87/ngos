@@ -19,6 +19,10 @@ Image::Image(u16 width, u16 height, bool hasAlpha, bool opaque)
 
     COMMON_ASSERT(width > 0,  "width is zero");
     COMMON_ASSERT(height > 0, "height is zero");
+
+
+
+    COMMON_TEST_ASSERT(hasAlpha || opaque);
 }
 
 Image::Image(const Image &image)

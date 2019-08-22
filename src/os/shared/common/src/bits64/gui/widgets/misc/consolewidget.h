@@ -16,7 +16,7 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
-    Image* getResizedImage() const;
+    Image* getResizedImage() const; // TEST: NO
 
 private:
     Image *mImage;

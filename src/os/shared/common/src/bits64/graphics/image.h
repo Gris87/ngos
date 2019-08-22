@@ -15,7 +15,7 @@ class Image
 public:
     Image(u16 width, u16 height, bool hasAlpha, bool opaque);
     Image(const Image &image);
-    ~Image();
+    ~Image(); // TEST: NO
 
     NgosStatus clear();
 
@@ -29,10 +29,14 @@ public:
     u16 getStride() const;
     u64 getBufferSize() const;
     u8* getBuffer() const;
-    RgbPixel* getRgbBuffer() const;
-    RgbaPixel* getRgbaBuffer() const;
+    RgbPixel* getRgbBuffer() const; // TEST: NO
+    RgbaPixel* getRgbaBuffer() const; // TEST: NO
 
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
 private:
+#endif
     u16   mWidth;
     u16   mHeight;
     u8    mBytesPerPixel;

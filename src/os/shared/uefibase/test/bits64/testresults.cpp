@@ -39,6 +39,7 @@ void TestResults::testFailed(const char8 *filename, u64 line, const char8 *descr
     ++mFailed;
 
 
+
     char8 buffer[1024];
 
     sprintf(buffer, "%s:%u | %s", filename, line, description);

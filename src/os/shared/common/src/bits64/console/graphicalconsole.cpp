@@ -3,8 +3,8 @@
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
 #include <common/src/bits64/graphics/graphics.h>
-#include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
+#include <common/src/bits64/graphics/rgbpixel.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/consolewidget.h>
 #include <common/src/bits64/log/assert.h>
@@ -255,9 +255,9 @@ void GraphicalConsole::printChar(char8 ch)
 
 
 
-            i16 charPosX      = sPositionX + glyphData->bitmapLeft;
-            i16 charPosY      = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
-            u8 *bitmapByte    = glyphData->bitmap;
+            i16 charPosX   = sPositionX + glyphData->bitmapLeft;
+            i16 charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
+            u8 *bitmapByte = glyphData->bitmap;
 
             COMMON_TEST_ASSERT(charPosX >= 0);
             COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->getHeight());
