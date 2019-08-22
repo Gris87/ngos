@@ -29,8 +29,8 @@ public:
     u16 getStride() const;
     u64 getBufferSize() const;
     u8* getBuffer() const;
-    RgbPixel* getRgbBuffer() const; // TEST: NO
-    RgbaPixel* getRgbaBuffer() const; // TEST: NO
+    RgbPixel* getRgbBuffer() const;
+    RgbaPixel* getRgbaBuffer() const;
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

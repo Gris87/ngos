@@ -151,6 +151,28 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
         TEST_ASSERT_NOT_EQUALS(temp.getBuffer(),  temp2.getBuffer());
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("getRgbBuffer()");
+    {
+        Image temp(10, 20, false, true);
+
+        TEST_ASSERT_NOT_EQUALS(temp.getRgbBuffer(), 0);
+        TEST_ASSERT_EQUALS((u8 *)temp.getRgbBuffer(), temp.getBuffer());
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getRgbaBuffer()");
+    {
+        Image temp(10, 20, true, true);
+
+        TEST_ASSERT_NOT_EQUALS(temp.getRgbaBuffer(), 0);
+        TEST_ASSERT_EQUALS((u8 *)temp.getRgbaBuffer(), temp.getBuffer());
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 
