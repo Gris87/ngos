@@ -128,13 +128,13 @@ bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height
 
 
 
-    return (i64)(positionX)           <  (i64)(mPositionX + mWidth)
+    return (i64)(positionX)           < (i64)(mPositionX + mWidth)
             &&
-            (i64)(positionX + width)  >= (i64)(mPositionX)
+            (i64)(positionX + width)  > (i64)(mPositionX)
             &&
-            (i64)(positionY)          <  (i64)(mPositionY + mHeight)
+            (i64)(positionY)          < (i64)(mPositionY + mHeight)
             &&
-            (i64)(positionY + height) >= (i64)(mPositionY);
+            (i64)(positionY + height) > (i64)(mPositionY);
 }
 
 NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
