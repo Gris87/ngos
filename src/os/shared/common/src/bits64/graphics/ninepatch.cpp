@@ -51,24 +51,6 @@ NgosStatus NinePatch::addStretchRangeY(const StretchRange &range)
     return NgosStatus::OK;
 }
 
-const List<StretchRange>& NinePatch::getStretchRangesX() const
-{
-    COMMON_LT((""));
-
-
-
-    return mStretchRangesX;
-}
-
-const List<StretchRange>& NinePatch::getStretchRangesY() const
-{
-    COMMON_LT((""));
-
-
-
-    return mStretchRangesY;
-}
-
 NgosStatus NinePatch::setPaddingLeft(u16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
@@ -119,6 +101,24 @@ NgosStatus NinePatch::setPaddingBottom(u16 padding)
 
 
     return NgosStatus::OK;
+}
+
+const List<StretchRange>& NinePatch::getStretchRangesX() const
+{
+    COMMON_LT((""));
+
+
+
+    return mStretchRangesX;
+}
+
+const List<StretchRange>& NinePatch::getStretchRangesY() const
+{
+    COMMON_LT((""));
+
+
+
+    return mStretchRangesY;
 }
 
 u16 NinePatch::getPaddingLeft() const

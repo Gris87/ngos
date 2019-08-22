@@ -19,13 +19,13 @@ public:
     NgosStatus addStretchRangeX(const StretchRange &range);
     NgosStatus addStretchRangeY(const StretchRange &range);
 
-    const List<StretchRange>& getStretchRangesX() const;
-    const List<StretchRange>& getStretchRangesY() const;
-
     NgosStatus setPaddingLeft(u16 padding);
     NgosStatus setPaddingTop(u16 padding);
     NgosStatus setPaddingRight(u16 padding);
     NgosStatus setPaddingBottom(u16 padding);
+
+    const List<StretchRange>& getStretchRangesX() const;
+    const List<StretchRange>& getStretchRangesY() const;
 
     u16 getPaddingLeft() const;
     u16 getPaddingTop() const;
