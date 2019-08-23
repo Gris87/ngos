@@ -963,11 +963,10 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
         COMMON_ASSERT_EXECUTION(applyNinePatch(decoder), NgosStatus::ASSERTION);
     }
 
-    Image *image = *decoder->image;
 
 
-
-    i64 resolution = image->getWidth() * image->getHeight();
+    Image *image      = *decoder->image;
+    i64    resolution = image->getWidth() * image->getHeight();
 
 
 
