@@ -14,6 +14,7 @@ class NinePatch
 {
 public:
     NinePatch();
+    NinePatch(const NinePatch &patch);
     ~NinePatch();
 
     NgosStatus addStretchRangeX(const StretchRange &range);

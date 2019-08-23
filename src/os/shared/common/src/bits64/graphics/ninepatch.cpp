@@ -16,6 +16,39 @@ NinePatch::NinePatch()
     COMMON_LT((""));
 }
 
+NinePatch::NinePatch(const NinePatch &patch)
+    : mStretchRangesX()
+    , mStretchRangesY()
+    , mPaddingLeft(patch.mPaddingLeft)
+    , mPaddingTop(patch.mPaddingTop)
+    , mPaddingRight(patch.mPaddingRight)
+    , mPaddingBottom(patch.mPaddingBottom)
+{
+    COMMON_LT((" | patch = ..."));
+
+
+
+    ListElement<StretchRange> *element = patch.mStretchRangesX.getHead();
+
+    while (element)
+    {
+        mStretchRangesX.append(element->getData());
+
+        element = element->getNext();
+    }
+
+
+
+    element = patch.mStretchRangesY.getHead();
+
+    while (element)
+    {
+        mStretchRangesY.append(element->getData());
+
+        element = element->getNext();
+    }
+}
+
 NinePatch::~NinePatch()
 {
     COMMON_LT((""));

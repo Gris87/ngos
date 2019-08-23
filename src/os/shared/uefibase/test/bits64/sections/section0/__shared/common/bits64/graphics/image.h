@@ -21,6 +21,7 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
         Image temp(10, 20, true, true);
         Image temp2(temp);
 
+        TEST_ASSERT_EQUALS(temp.mNinePatch,     0);
         TEST_ASSERT_EQUALS(temp.mWidth,         10);
         TEST_ASSERT_EQUALS(temp.mHeight,        20);
         TEST_ASSERT_EQUALS(temp.mBytesPerPixel, 4);
@@ -29,6 +30,7 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
         TEST_ASSERT_EQUALS(temp.mBufferSize,    800);
         TEST_ASSERT_NOT_EQUALS(temp.mBuffer,    0);
 
+        TEST_ASSERT_EQUALS(temp2.mNinePatch,     0);
         TEST_ASSERT_EQUALS(temp2.mWidth,         10);
         TEST_ASSERT_EQUALS(temp2.mHeight,        20);
         TEST_ASSERT_EQUALS(temp2.mBytesPerPixel, 4);

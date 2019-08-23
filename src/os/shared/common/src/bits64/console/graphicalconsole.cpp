@@ -280,12 +280,10 @@ void GraphicalConsole::printChar(char8 ch)
 
 
 
-                    u8 greyColor = *bitmapByte;
-
-                    pixel->red   = greyColor;
-                    pixel->green = greyColor;
-                    pixel->blue  = greyColor;
-                    pixel->alpha = 0xFF;
+                    pixel->red   = 0xFF;
+                    pixel->green = 0xFF;
+                    pixel->blue  = 0xFF;
+                    pixel->alpha = *bitmapByte;
 
                     ++bitmapByte;
                 }

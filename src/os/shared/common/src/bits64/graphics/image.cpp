@@ -7,7 +7,8 @@
 
 
 Image::Image(u16 width, u16 height, bool hasAlpha, bool opaque)
-    : mWidth(width)
+    : mNinePatch(0)
+    , mWidth(width)
     , mHeight(height)
     , mBytesPerPixel(hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel))
     , mIsOpaque(opaque)
@@ -26,7 +27,7 @@ Image::Image(u16 width, u16 height, bool hasAlpha, bool opaque)
 }
 
 Image::Image(const Image &image)
-    : mNinePatch(0)
+    : mNinePatch(image.mNinePatch ? new NinePatch(*image.mNinePatch) : 0)
     , mWidth(image.mWidth)
     , mHeight(image.mHeight)
     , mBytesPerPixel(image.mBytesPerPixel)
