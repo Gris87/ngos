@@ -59,6 +59,37 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
 
 
 
+    TEST_CASE("createNinePatch()");
+    {
+        Image temp(10, 20, true, true);
+
+        TEST_ASSERT_EQUALS(temp.mNinePatch,        0);
+        TEST_ASSERT_EQUALS(temp.createNinePatch(), NgosStatus::OK);
+        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch,    0);
+
+        TEST_ASSERT_EQUALS(temp.mNinePatch->addStretchRangeX(StretchRange(5, 10)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.mNinePatch->setPaddingLeft(20),                    NgosStatus::OK);
+
+
+
+        Image temp2(temp);
+
+        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch->mStretchRangesX.mHead,          0);
+        TEST_ASSERT_EQUALS(temp.mNinePatch->mStretchRangesX.mHead->mData.mFrom, 5);
+        TEST_ASSERT_EQUALS(temp.mNinePatch->mStretchRangesX.mHead->mData.mTo,   10);
+        TEST_ASSERT_EQUALS(temp.mNinePatch->mPaddingLeft,                       20);
+
+        TEST_ASSERT_NOT_EQUALS(temp2.mNinePatch, 0);
+        TEST_ASSERT_NOT_EQUALS(temp2.mNinePatch, temp.mNinePatch);
+
+        TEST_ASSERT_EQUALS(temp2.mNinePatch->mStretchRangesX.mHead->mData.mFrom, 5);
+        TEST_ASSERT_EQUALS(temp2.mNinePatch->mStretchRangesX.mHead->mData.mTo,   10);
+        TEST_ASSERT_EQUALS(temp2.mNinePatch->mPaddingLeft,                       20);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("setOpaque()/isOpaque()");
     {
         Image temp(10, 20, true, true);
@@ -66,6 +97,22 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
         TEST_ASSERT_EQUALS(temp.isOpaque(),       true);
         TEST_ASSERT_EQUALS(temp.setOpaque(false), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.isOpaque(),       false);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getNinePatch()");
+    {
+        Image temp(10, 20, true, true);
+
+        TEST_ASSERT_EQUALS(temp.mNinePatch,     0);
+        TEST_ASSERT_EQUALS(temp.getNinePatch(), 0);
+
+        TEST_ASSERT_EQUALS(temp.createNinePatch(), NgosStatus::OK);
+
+        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch,     0);
+        TEST_ASSERT_NOT_EQUALS(temp.getNinePatch(), 0);
     }
     TEST_CASE_END();
 

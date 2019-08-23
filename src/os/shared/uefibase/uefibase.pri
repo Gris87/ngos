@@ -232,7 +232,9 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/fpu/sse42/asm_testsse42pcmpgtq.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/fpu/sse42/sse42.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/image.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/ninepatch.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/png/png.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/stretchrange.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/gui/widgets/widget.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h \

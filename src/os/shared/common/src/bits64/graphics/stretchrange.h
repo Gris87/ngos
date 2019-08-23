@@ -12,12 +12,16 @@ class StretchRange
 {
 public:
     StretchRange(u16 from, u16 to);
-    ~StretchRange();
+    ~StretchRange(); // TEST: NO
 
     u16 getFrom() const;
     u16 getTo() const;
 
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
 private:
+#endif
     u16 mFrom;
     u16 mTo;
 };

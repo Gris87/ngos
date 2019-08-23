@@ -15,7 +15,7 @@ class NinePatch
 public:
     NinePatch();
     NinePatch(const NinePatch &patch);
-    ~NinePatch();
+    ~NinePatch(); // TEST: NO
 
     NgosStatus addStretchRangeX(const StretchRange &range);
     NgosStatus addStretchRangeY(const StretchRange &range);
@@ -33,7 +33,11 @@ public:
     u16 getPaddingRight() const;
     u16 getPaddingBottom() const;
 
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
 private:
+#endif
     List<StretchRange> mStretchRangesX;
     List<StretchRange> mStretchRangesY;
     u16                mPaddingLeft;

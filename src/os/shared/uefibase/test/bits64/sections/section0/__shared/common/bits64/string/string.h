@@ -259,6 +259,36 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbccdddd"), 0);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("strend()");
+    {
+        TEST_ASSERT_EQUALS(strend("abcaa", "aa"),      true);
+        TEST_ASSERT_EQUALS(strend("abcaa", "ab"),      false);
+        TEST_ASSERT_EQUALS(strend("abcaa", ""),        true);
+        TEST_ASSERT_EQUALS(strend("abcaa", "dsfggaa"), false);
+        TEST_ASSERT_EQUALS(strend("abcaa", "a"),       true);
+        TEST_ASSERT_EQUALS(strend("abcaa", "caa"),     true);
+        TEST_ASSERT_EQUALS(strend("abcaa", "cab"),     false);
+        TEST_ASSERT_EQUALS(strend("abcaa", "abcaa"),   true);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strend()");
+    {
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u"aa"),      true);
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u"ab"),      false);
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u""),        true);
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u"dsfggaa"), false);
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u"a"),       true);
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u"caa"),     true);
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u"cab"),     false);
+        TEST_ASSERT_EQUALS(strend(u"abcaa", u"abcaa"),   true);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 

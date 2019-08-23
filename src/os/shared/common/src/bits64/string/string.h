@@ -19,6 +19,8 @@ char8* strcat(char8 *str1, const char8 *str2);
 char16* strcat(char16 *str1, const char16 *str2);
 char8* strapp(char8 *str1, const char8 *str2);
 char16* strapp(char16 *str1, const char16 *str2);
+bool strend(const char8 *str1, const char8 *str2);
+bool strend(const char16 *str1, const char16 *str2);
 
 
 
