@@ -1072,6 +1072,9 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                     if (from) // from != 0
                     {
                         patch->addStretchRangeX(StretchRange(from - 1, to));
+
+                        from = 0;
+                        to   = 0;
                     }
                 }
             }
@@ -1148,10 +1151,10 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                     if (from) // from != 0
                     {
                         patch->addStretchRangeY(StretchRange(from - 1, to));
-                    }
 
-                    from = 0;
-                    to   = 0;
+                        from = 0;
+                        to   = 0;
+                    }
                 }
             }
         }
@@ -1181,6 +1184,9 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                     if (from) // from != 0
                     {
                         patch->addStretchRangeY(StretchRange(from - 1, to));
+
+                        from = 0;
+                        to   = 0;
                     }
                 }
             }
