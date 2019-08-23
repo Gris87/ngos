@@ -15,9 +15,9 @@
 
 
 
-NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
+NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
 {
-    COMMON_LT((" | data = 0x%p, size = %u, image = 0x%p", data, size, image));
+    COMMON_LT((" | data = 0x%p, size = %u, withNinePatch = %u, image = 0x%p", data, size, withNinePatch, image));
 
     COMMON_ASSERT(data,     "data is null",  NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
@@ -118,7 +118,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, Image **image)
 
     if (status == NgosStatus::OK)
     {
-        status = imagePostprocess(&decoder);
+        status = imagePostprocess(&decoder, withNinePatch);
     }
 
 
@@ -950,16 +950,24 @@ NgosStatus Png::processImageWithAdam7Interlace(PngDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Png::imagePostprocess(PngDecoder *decoder)
+NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
 {
-    COMMON_LT((" | decoder = 0x%p", decoder));
+    COMMON_LT((" | decoder = 0x%p, withNinePatch = %u", decoder, withNinePatch));
 
     COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
 
 
 
-    Image *image      = *decoder->image;
-    i64    resolution = image->getWidth() * image->getHeight();
+    if (withNinePatch)
+    {
+        COMMON_ASSERT_EXECUTION(applyNinePatch(decoder), NgosStatus::ASSERTION);
+    }
+
+    Image *image = *decoder->image;
+
+
+
+    i64 resolution = image->getWidth() * image->getHeight();
 
 
 
@@ -1004,6 +1012,196 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder)
 
             ++pixel;
         }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::applyNinePatch(PngDecoder *decoder)
+{
+    COMMON_LT((" | decoder = 0x%p", decoder));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+
+
+
+    Image *image = *decoder->image;
+
+    if (
+        image->getWidth() > 2
+        &&
+        image->getHeight() > 2
+       )
+    {
+        Image *newImage = new Image(image->getWidth() - 2, image->getHeight() - 2, image->isRgba(), true);
+
+        COMMON_ASSERT_EXECUTION(newImage->createNinePatch(), NgosStatus::ASSERTION);
+        NinePatch *patch = newImage->getNinePatch();
+
+
+
+        u16 from = 0;
+        u16 to   = 0;
+
+        if (image->isRgba())
+        {
+            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            {
+                RgbaPixel *pixel = &image->getRgbaBuffer()[i];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                    &&
+                    pixel->alpha == 0xFF
+                   )
+                {
+                    if (!from) // from == 0
+                    {
+                        from = i;
+                    }
+
+                    to = i;
+                }
+                else
+                {
+                    if (from) // from != 0
+                    {
+                        patch->addStretchRangeX(StretchRange(from - 1, to));
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            {
+                RgbPixel *pixel = &image->getRgbBuffer()[i];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                   )
+                {
+                    if (!from) // from == 0
+                    {
+                        from = i;
+                    }
+
+                    to = i;
+                }
+                else
+                {
+                    if (from) // from != 0
+                    {
+                        patch->addStretchRangeX(StretchRange(from - 1, to));
+
+                        from = 0;
+                        to   = 0;
+                    }
+                }
+            }
+        }
+
+        if (from) // from != 0
+        {
+            patch->addStretchRangeX(StretchRange(from - 1, to));
+
+            from = 0;
+            to   = 0;
+        }
+
+
+
+        if (image->isRgba())
+        {
+            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            {
+                RgbaPixel *pixel = &image->getRgbaBuffer()[i * image->getStride()];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                    &&
+                    pixel->alpha == 0xFF
+                   )
+                {
+                    if (!from) // from == 0
+                    {
+                        from = i;
+                    }
+
+                    to = i;
+                }
+                else
+                {
+                    if (from) // from != 0
+                    {
+                        patch->addStretchRangeY(StretchRange(from - 1, to));
+                    }
+
+                    from = 0;
+                    to   = 0;
+                }
+            }
+        }
+        else
+        {
+            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            {
+                RgbPixel *pixel = &image->getRgbBuffer()[i * image->getStride()];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                   )
+                {
+                    if (!from) // from == 0
+                    {
+                        from = i;
+                    }
+
+                    to = i;
+                }
+                else
+                {
+                    if (from) // from != 0
+                    {
+                        patch->addStretchRangeY(StretchRange(from - 1, to));
+                    }
+                }
+            }
+        }
+
+        if (from) // from != 0
+        {
+            patch->addStretchRangeY(StretchRange(from - 1, to));
+        }
+
+
+
+        delete image;
+        *decoder->image = newImage;
+    }
+    else
+    {
+        COMMON_LW(("Image size is too small for nine patch"));
+
+        return NgosStatus::INVALID_DATA;
     }
 
 

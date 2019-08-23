@@ -16,9 +16,9 @@
 
 
 
-NgosStatus Graphics::loadImage(u8 *data, u64 size, Image **image)
+NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
 {
-    COMMON_LT((" | data = 0x%p, size = %u, image = 0x%p", data, size, image));
+    COMMON_LT((" | data = 0x%p, size = %u, withNinePatch = %u, image = 0x%p", data, size, withNinePatch, image));
 
     COMMON_ASSERT(data,     "data is null",  NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
@@ -30,7 +30,7 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, Image **image)
     {
         if (*((u64 *)&data[0]) == PNG_HEADER_SIGNATURE)
         {
-            return Png::loadImage(data, size, image);
+            return Png::loadImage(data, size, withNinePatch, image);
         }
 
 

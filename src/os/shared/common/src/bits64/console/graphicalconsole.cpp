@@ -61,7 +61,7 @@ NgosStatus GraphicalConsole::init()
         COMMON_TEST_ASSERT(asset != 0, NgosStatus::ASSERTION);
 
         Image *consoleImage;
-        COMMON_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, &consoleImage), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, true, &consoleImage), NgosStatus::ASSERTION);
 
 
 

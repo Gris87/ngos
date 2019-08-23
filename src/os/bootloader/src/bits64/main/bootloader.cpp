@@ -117,7 +117,7 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
 
 
-    UEFI_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, image), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, strend(path, ".9.png"), image), NgosStatus::ASSERTION);
 
 
 
