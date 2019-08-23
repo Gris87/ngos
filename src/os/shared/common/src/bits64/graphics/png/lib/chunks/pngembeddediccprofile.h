@@ -3,7 +3,6 @@
 
 
 
-#include <common/src/bits64/graphics/png/lib/pngcompressionmethod.h>
 #include <ngos/types.h>
 
 
