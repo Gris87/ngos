@@ -8,6 +8,7 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/string/string.h>
 #include <common/src/bits64/zlib/zlib.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
@@ -150,17 +151,20 @@ NgosStatus Png::initDecoder(PngDecoder *decoder, Image **image)
 
 
 
-    decoder->image                   = image;
-    decoder->imageHeader             = 0;
-    decoder->standardRgbColorSpace   = 0;
-    decoder->imageGamma              = 0;
-    decoder->significantBits         = 0;
-    decoder->physicalPixelDimensions = 0;
-    decoder->imageDataBuffer         = 0;
-    decoder->imageDataSize           = 0;
-    decoder->imageDataAllocatedSize  = 0;
-    decoder->rawImageBuffer          = 0;
-    decoder->bitsPerPixel            = 0;
+    decoder->image                     = image;
+    decoder->imageHeader               = 0;
+    decoder->primaryChromaticities     = 0;
+    decoder->imageGamma                = 0;
+    decoder->embeddedIccProfile        = 0;
+    decoder->significantBits           = 0;
+    decoder->standardRgbColorSpace     = 0;
+    decoder->physicalPixelDimensions   = 0;
+    decoder->imageLastModificationTime = 0;
+    decoder->imageDataBuffer           = 0;
+    decoder->imageDataSize             = 0;
+    decoder->imageDataAllocatedSize    = 0;
+    decoder->rawImageBuffer            = 0;
+    decoder->bitsPerPixel              = 0;
 
 
 
@@ -220,10 +224,13 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
 
     switch (chunk->type)
     {
-        case PngChunkType::SRGB: return decodeStandardRgbColorSpace(decoder, chunk, chunkLength);
+        case PngChunkType::CHRM: return decodePrimaryChromaticities(decoder, chunk, chunkLength);
         case PngChunkType::GAMA: return decodeImageGamma(decoder, chunk, chunkLength);
+        case PngChunkType::ICCP: return decodeEmbeddedIccProfile(decoder, chunk, chunkLength);
         case PngChunkType::SBIT: return decodeSignificantBits(decoder, chunk, chunkLength);
+        case PngChunkType::SRGB: return decodeStandardRgbColorSpace(decoder, chunk, chunkLength);
         case PngChunkType::PHYS: return decodePhysicalPixelDimensions(decoder, chunk, chunkLength);
+        case PngChunkType::TIME: return decodeImageLastModificationTime(decoder, chunk, chunkLength);
         case PngChunkType::IDAT: return decodeImageData(decoder, chunk, chunkLength);
 
         case PngChunkType::IEND:
@@ -232,13 +239,20 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
         }
         break;
 
+        case PngChunkType::ITXT:
         case PngChunkType::TEXT:
+        case PngChunkType::ZTXT:
         {
             COMMON_LVV(("Ignore PNG chunk 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
         }
         break;
 
         case PngChunkType::IHDR:
+        case PngChunkType::PLTE:
+        case PngChunkType::BKGD:
+        case PngChunkType::HIST:
+        case PngChunkType::TRNS:
+        case PngChunkType::SPLT:
         {
             COMMON_LE(("Unexpected PNG chunk found: 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
         }
@@ -397,7 +411,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodePrimaryChromaticities(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -406,29 +420,45 @@ NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk
 
 
 
-    if (chunkLength != sizeof(PngStandardRgbColorSpace))
+    if (chunkLength != sizeof(PngPrimaryChromaticities))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngStandardRgbColorSpace)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngPrimaryChromaticities)));
 
         return NgosStatus::INVALID_DATA;
     }
 
 
 
-    PngStandardRgbColorSpace *standardRgbColorSpace = (PngStandardRgbColorSpace *)&chunk->data;
+    PngPrimaryChromaticities *primaryChromaticities = (PngPrimaryChromaticities *)&chunk->data;
 
-    COMMON_LVVV(("standardRgbColorSpace->renderingIntent = %u (%s)", standardRgbColorSpace->renderingIntent, pngRenderingIntentToString(standardRgbColorSpace->renderingIntent)));
+    COMMON_LVVV(("primaryChromaticities->whitePointX = %u", ntohl(primaryChromaticities->whitePointX)));
+    COMMON_LVVV(("primaryChromaticities->whitePointY = %u", ntohl(primaryChromaticities->whitePointY)));
+    COMMON_LVVV(("primaryChromaticities->redX        = %u", ntohl(primaryChromaticities->redX)));
+    COMMON_LVVV(("primaryChromaticities->redY        = %u", ntohl(primaryChromaticities->redY)));
+    COMMON_LVVV(("primaryChromaticities->greenX      = %u", ntohl(primaryChromaticities->greenX)));
+    COMMON_LVVV(("primaryChromaticities->greenY      = %u", ntohl(primaryChromaticities->greenY)));
+    COMMON_LVVV(("primaryChromaticities->blueX       = %u", ntohl(primaryChromaticities->blueX)));
+    COMMON_LVVV(("primaryChromaticities->blueY       = %u", ntohl(primaryChromaticities->blueY)));
+
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->whitePointX == htonl(PNG_DEFAULT_WHITE_POINT_X), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->whitePointY == htonl(PNG_DEFAULT_WHITE_POINT_Y), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->redX        == htonl(PNG_DEFAULT_RED_X),         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->redY        == htonl(PNG_DEFAULT_RED_Y),         NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->greenX      == htonl(PNG_DEFAULT_GREEN_X),       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->greenY      == htonl(PNG_DEFAULT_GREEN_Y),       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->blueX       == htonl(PNG_DEFAULT_BLUE_X),        NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || primaryChromaticities->blueY       == htonl(PNG_DEFAULT_BLUE_Y),        NgosStatus::ASSERTION);
 
 
 
-    if (decoder->standardRgbColorSpace)
+    if (decoder->primaryChromaticities)
     {
         COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
 
-    decoder->standardRgbColorSpace = standardRgbColorSpace;
+    decoder->primaryChromaticities = primaryChromaticities;
 
 
 
@@ -457,7 +487,7 @@ NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunk
 
     COMMON_LVVV(("imageGamma->gamma = %u", ntohl(imageGamma->gamma)));
 
-    COMMON_TEST_ASSERT(decoder->standardRgbColorSpace == 0 || imageGamma->gamma == htonl(PNG_DEFAULT_IMAGE_GAMMA), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!decoder->standardRgbColorSpace || imageGamma->gamma == htonl(PNG_DEFAULT_IMAGE_GAMMA), NgosStatus::ASSERTION);
 
 
 
@@ -469,6 +499,60 @@ NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunk
     }
 
     decoder->imageGamma = imageGamma;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+{
+    COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
+
+
+
+    if (chunkLength < sizeof(PngEmbeddedIccProfile) + 1)
+    {
+        COMMON_LE(("Invalid %s chunk size (%u). Expected at least %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngEmbeddedIccProfile) + 1));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    PngEmbeddedIccProfile *embeddedIccProfile = (PngEmbeddedIccProfile *)&chunk->data;
+
+
+
+    i64 len = strnlen(embeddedIccProfile->profileName, sizeof(embeddedIccProfile->profileName));
+
+    if (len >= (i64)sizeof(embeddedIccProfile->profileName))
+    {
+        COMMON_LE(("Invalid %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    PngCompressionMethod compressionMethod = (PngCompressionMethod)chunk->data[len + 1];
+
+
+
+    COMMON_LVVV(("embeddedIccProfile->profileName       = %s",      embeddedIccProfile->profileName));
+    COMMON_LVVV(("embeddedIccProfile->compressionMethod = %u (%s)", compressionMethod, pngCompressionMethodToString(compressionMethod)));
+
+
+
+    if (decoder->embeddedIccProfile)
+    {
+        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    decoder->embeddedIccProfile = embeddedIccProfile;
 
 
 
@@ -526,6 +610,44 @@ NgosStatus Png::decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, u32 
     return NgosStatus::OK;
 }
 
+NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+{
+    COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
+
+
+
+    if (chunkLength != sizeof(PngStandardRgbColorSpace))
+    {
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngStandardRgbColorSpace)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    PngStandardRgbColorSpace *standardRgbColorSpace = (PngStandardRgbColorSpace *)&chunk->data;
+
+    COMMON_LVVV(("standardRgbColorSpace->renderingIntent = %u (%s)", standardRgbColorSpace->renderingIntent, pngRenderingIntentToString(standardRgbColorSpace->renderingIntent)));
+
+
+
+    if (decoder->standardRgbColorSpace)
+    {
+        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    decoder->standardRgbColorSpace = standardRgbColorSpace;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
@@ -560,6 +682,49 @@ NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chu
     }
 
     decoder->physicalPixelDimensions = physicalPixelDimensions;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Png::decodeImageLastModificationTime(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+{
+    COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
+
+    COMMON_ASSERT(decoder, "decoder is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(chunk,   "chunk is null",   NgosStatus::ASSERTION);
+
+
+
+    if (chunkLength != sizeof(PngImageLastModificationTime))
+    {
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngImageLastModificationTime)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+
+
+    PngImageLastModificationTime *imageLastModificationTime = (PngImageLastModificationTime *)&chunk->data;
+
+    COMMON_LVVV(("imageLastModificationTime->year   = %u", ntohs(imageLastModificationTime->year)));
+    COMMON_LVVV(("imageLastModificationTime->month  = %u", imageLastModificationTime->month));
+    COMMON_LVVV(("imageLastModificationTime->day    = %u", imageLastModificationTime->day));
+    COMMON_LVVV(("imageLastModificationTime->hour   = %u", imageLastModificationTime->hour));
+    COMMON_LVVV(("imageLastModificationTime->minute = %u", imageLastModificationTime->minute));
+    COMMON_LVVV(("imageLastModificationTime->second = %u", imageLastModificationTime->second));
+
+
+
+    if (decoder->imageLastModificationTime)
+    {
+        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+
+        return NgosStatus::INVALID_DATA;
+    }
+
+    decoder->imageLastModificationTime = imageLastModificationTime;
 
 
 

@@ -447,9 +447,12 @@ src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.cpp
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegzigzagorder.h
 src/os/shared/common/src/bits64/graphics/ninepatch.cpp
 src/os/shared/common/src/bits64/graphics/ninepatch.h
+src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngembeddediccprofile.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimagegamma.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimageheader.h
+src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngimagelastmodificationtime.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h
+src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngprimarychromaticities.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngsignificantbits.h
 src/os/shared/common/src/bits64/graphics/png/lib/chunks/pngstandardrgbcolorspace.h
 src/os/shared/common/src/bits64/graphics/png/lib/pngchunk.h

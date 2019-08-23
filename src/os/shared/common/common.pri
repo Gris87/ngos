@@ -108,9 +108,12 @@ HEADERS += \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegzigzagorder.h \
     $$PWD/src/bits64/graphics/ninepatch.h \
+    $$PWD/src/bits64/graphics/png/lib/chunks/pngembeddediccprofile.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngimagegamma.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngimageheader.h \
+    $$PWD/src/bits64/graphics/png/lib/chunks/pngimagelastmodificationtime.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h \
+    $$PWD/src/bits64/graphics/png/lib/chunks/pngprimarychromaticities.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngsignificantbits.h \
     $$PWD/src/bits64/graphics/png/lib/chunks/pngstandardrgbcolorspace.h \
     $$PWD/src/bits64/graphics/png/lib/pngchunk.h \

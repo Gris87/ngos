@@ -4,9 +4,12 @@
 
 
 #include <common/src/bits64/graphics/image.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngembeddediccprofile.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngimagegamma.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngimageheader.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngimagelastmodificationtime.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngprimarychromaticities.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngsignificantbits.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngstandardrgbcolorspace.h>
 #include <ngos/types.h>
@@ -15,17 +18,20 @@
 
 struct PngDecoder
 {
-    Image                      **image;
-    PngImageHeader              *imageHeader;
-    PngStandardRgbColorSpace    *standardRgbColorSpace;
-    PngImageGamma               *imageGamma;
-    PngSignificantBits          *significantBits;
-    PngPhysicalPixelDimensions  *physicalPixelDimensions;
-    u8                          *imageDataBuffer;
-    u64                          imageDataSize;
-    u64                          imageDataAllocatedSize;
-    u8                          *rawImageBuffer;
-    u8                           bitsPerPixel;
+    Image                        **image;
+    PngImageHeader                *imageHeader;
+    PngPrimaryChromaticities      *primaryChromaticities;
+    PngImageGamma                 *imageGamma;
+    PngEmbeddedIccProfile         *embeddedIccProfile;
+    PngSignificantBits            *significantBits;
+    PngStandardRgbColorSpace      *standardRgbColorSpace;
+    PngPhysicalPixelDimensions    *physicalPixelDimensions;
+    PngImageLastModificationTime  *imageLastModificationTime;
+    u8                            *imageDataBuffer;
+    u64                            imageDataSize;
+    u64                            imageDataAllocatedSize;
+    u8                            *rawImageBuffer;
+    u8                             bitsPerPixel;
 };
 
 

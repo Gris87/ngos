@@ -62,9 +62,12 @@
 #include <common/src/bits64/graphics/jpeg/lib/jpegstartofscancomponent.h>
 #include <common/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h>
 #include <common/src/bits64/graphics/ninepatch.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngembeddediccprofile.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngimagegamma.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngimageheader.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngimagelastmodificationtime.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngphysicalpixeldimensions.h>
+#include <common/src/bits64/graphics/png/lib/chunks/pngprimarychromaticities.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngsignificantbits.h>
 #include <common/src/bits64/graphics/png/lib/chunks/pngstandardrgbcolorspace.h>
 #include <common/src/bits64/graphics/png/lib/pngchunk.h>
@@ -171,14 +174,17 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(PngChunkType),                                  4);
         TEST_ASSERT_EQUALS(sizeof(PngColorType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(PngCompressionMethod),                          1);
-        TEST_ASSERT_EQUALS(sizeof(PngDecoder),                                    88);
+        TEST_ASSERT_EQUALS(sizeof(PngDecoder),                                    112);
+        TEST_ASSERT_EQUALS(sizeof(PngEmbeddedIccProfile),                         80);
         TEST_ASSERT_EQUALS(sizeof(PngFilterMethod),                               1);
         TEST_ASSERT_EQUALS(sizeof(PngFilterType),                                 1);
         TEST_ASSERT_EQUALS(sizeof(PngHeader),                                     16);
         TEST_ASSERT_EQUALS(sizeof(PngImageGamma),                                 4);
         TEST_ASSERT_EQUALS(sizeof(PngImageHeader),                                13);
+        TEST_ASSERT_EQUALS(sizeof(PngImageLastModificationTime),                  7);
         TEST_ASSERT_EQUALS(sizeof(PngInterlaceMethod),                            1);
         TEST_ASSERT_EQUALS(sizeof(PngPhysicalPixelDimensions),                    9);
+        TEST_ASSERT_EQUALS(sizeof(PngPrimaryChromaticities),                      32);
         TEST_ASSERT_EQUALS(sizeof(PngRenderingIntent),                            1);
         TEST_ASSERT_EQUALS(sizeof(PngSignificantBits),                            4);
         TEST_ASSERT_EQUALS(sizeof(PngStandardRgbColorSpace),                      1);

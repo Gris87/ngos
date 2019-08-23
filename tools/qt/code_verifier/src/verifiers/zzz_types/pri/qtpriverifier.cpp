@@ -318,7 +318,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
     }
     else
     {
-        worker->addError(path, startPos, "Atleast one file should be specified");
+        worker->addError(path, startPos, "At least one file should be specified");
     }
 
 
