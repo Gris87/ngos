@@ -29,6 +29,8 @@
 ConsoleWidget *GraphicalConsole::sConsoleWidget;
 Image         *GraphicalConsole::sTextImage;
 u16            GraphicalConsole::sPositionX;
+u16            GraphicalConsole::sPaddingLeft;
+u16            GraphicalConsole::sPaddingTop;
 u16           *GraphicalConsole::sGlyphOffsets;
 
 
@@ -76,7 +78,16 @@ NgosStatus GraphicalConsole::init()
 
 
 
-        sTextImage = new Image(consoleWidth, consoleHeight, true, false);
+        NinePatch *patch = consoleImage->getNinePatch();
+
+        sPaddingLeft      = patch->getPaddingLeft();
+        sPaddingTop       = patch->getPaddingTop();
+        u16 paddingRight  = patch->getPaddingRight();
+        u16 paddingBottom = patch->getPaddingBottom();
+
+
+
+        sTextImage = new Image(consoleWidth - sPaddingLeft - paddingRight, consoleHeight - sPaddingTop - paddingBottom, true, false);
         COMMON_ASSERT_EXECUTION(sTextImage->clearBuffer(), NgosStatus::ASSERTION);
 
 
@@ -335,7 +346,7 @@ void GraphicalConsole::repaint()
     Image *resultImage  = sConsoleWidget->getResultImage();
 
     COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->getBuffer(), resultImage->getBuffer(), resizedImage->getWidth(), resizedImage->getHeight(), resultImage->getWidth(), resultImage->getHeight(), resizedImage->getBytesPerPixel(), resultImage->getBytesPerPixel(), true,  0, 0));
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, 0, 0));
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, sPaddingLeft, sPaddingTop));
 
     COMMON_ASSERT_EXECUTION(sConsoleWidget->update());
 }

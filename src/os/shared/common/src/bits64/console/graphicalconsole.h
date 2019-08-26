@@ -37,6 +37,8 @@ private:
     static ConsoleWidget *sConsoleWidget;
     static Image         *sTextImage;
     static u16            sPositionX;
+    static u16            sPaddingLeft;
+    static u16            sPaddingTop;
     static u16           *sGlyphOffsets;
 };
 
