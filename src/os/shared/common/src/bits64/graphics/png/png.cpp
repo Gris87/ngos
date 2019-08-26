@@ -539,6 +539,8 @@ NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u
 
     PngCompressionMethod compressionMethod = (PngCompressionMethod)chunk->data[len + 1];
 
+    AVOID_UNUSED(compressionMethod);
+
 
 
     COMMON_LVVV(("embeddedIccProfile->profileName       = %s",      embeddedIccProfile->profileName));

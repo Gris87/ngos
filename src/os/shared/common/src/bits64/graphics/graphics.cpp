@@ -195,6 +195,8 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
     COMMON_ASSERT(right > left,                 "right is invalid",                 NgosStatus::ASSERTION);
     COMMON_ASSERT(bottom > top,                 "bottom is invalid",                NgosStatus::ASSERTION);
 
+    AVOID_UNUSED(sourceHeight);
+
 
 
     if (positionX + left < 0)
@@ -358,6 +360,163 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
 
         if (patch)
         {
+            List<StretchRange> sourceRangesX;
+            List<StretchRange> sourceRangesY;
+            List<StretchRange> destinationRangesX;
+            List<StretchRange> destinationRangesY;
+
+            bool startWithStretchX;
+            bool startWithStretchY;
+
+
+
+            ListElement<StretchRange> *element = patch->getStretchRangesX().getHead();
+
+            if (element)
+            {
+                u16 lastX = element->getData().getFrom();
+
+                if (lastX) // lastX != 0
+                {
+                    startWithStretchX = false;
+
+                    sourceRangesX.append(StretchRange(0, lastX));
+                }
+                else
+                {
+                    startWithStretchX = true;
+                }
+
+
+
+                while (element)
+                {
+                    sourceRangesX.append(StretchRange(lastX, element->getData().getTo()));
+                    lastX = element->getData().getTo();
+
+                    element = element->getNext();
+
+                    if (element)
+                    {
+                        sourceRangesX.append(StretchRange(lastX, element->getData().getFrom()));
+                        lastX = element->getData().getFrom();
+                    }
+                }
+
+
+
+                if (lastX != image->getWidth())
+                {
+                    sourceRangesX.append(StretchRange(lastX, image->getWidth()));
+                }
+            }
+            else
+            {
+                startWithStretchX = true;
+
+                sourceRangesX.append(StretchRange(0, image->getWidth()));
+            }
+
+
+
+            element = patch->getStretchRangesY().getHead();
+
+            if (element)
+            {
+                u16 lastY = element->getData().getFrom();
+
+                if (lastY) // lastY != 0
+                {
+                    startWithStretchY = false;
+
+                    sourceRangesY.append(StretchRange(0, lastY));
+                }
+                else
+                {
+                    startWithStretchY = true;
+                }
+
+
+
+                while (element)
+                {
+                    sourceRangesY.append(StretchRange(lastY, element->getData().getTo()));
+                    lastY = element->getData().getTo();
+
+                    element = element->getNext();
+
+                    if (element)
+                    {
+                        sourceRangesY.append(StretchRange(lastY, element->getData().getFrom()));
+                        lastY = element->getData().getFrom();
+                    }
+                }
+
+
+
+                if (lastY != image->getHeight())
+                {
+                    sourceRangesY.append(StretchRange(lastY, image->getHeight()));
+                }
+            }
+            else
+            {
+                startWithStretchY = true;
+
+                sourceRangesY.append(StretchRange(0, image->getHeight()));
+            }
+
+
+
+            u16 totalStretchCountX = 0;
+            u16 totalStretchCountY = 0;
+            u16 totalFixedCountX   = 0;
+            u16 totalFixedCountY   = 0;
+
+
+
+            bool isCurrentStretch = startWithStretchX;
+            element               = sourceRangesX.getHead();
+
+            while (element)
+            {
+                if (isCurrentStretch)
+                {
+                    totalStretchCountX += element->getData().getTo() - element->getData().getFrom();
+                }
+                else
+                {
+                    totalFixedCountX += element->getData().getTo() - element->getData().getFrom();
+                }
+
+                isCurrentStretch = !isCurrentStretch;
+
+                element = element->getNext();
+            }
+
+
+
+            isCurrentStretch = startWithStretchY;
+            element          = sourceRangesY.getHead();
+
+            while (element)
+            {
+                if (isCurrentStretch)
+                {
+                    totalStretchCountY += element->getData().getTo() - element->getData().getFrom();
+                }
+                else
+                {
+                    totalFixedCountY += element->getData().getTo() - element->getData().getFrom();
+                }
+
+                isCurrentStretch = !isCurrentStretch;
+
+                element = element->getNext();
+            }
+
+
+
             COMMON_ASSERT_EXECUTION(resizeImageRaw(image->getBuffer(), 0, 0, image->getWidth(), image->getHeight(), image->getStride(), newImage->getBuffer(), 0, 0, newImage->getWidth(), newImage->getHeight(), newImage->getStride(), newImage->getBytesPerPixel()), NgosStatus::ASSERTION);
         }
         else

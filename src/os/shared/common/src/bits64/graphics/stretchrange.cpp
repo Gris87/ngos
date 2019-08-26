@@ -11,7 +11,7 @@ StretchRange::StretchRange(u16 from, u16 to)
 {
     COMMON_LT((" | from = %u, to = %u", from, to));
 
-    COMMON_ASSERT(to > from, "to is invalid");
+    COMMON_ASSERT(to >= from, "to is invalid");
 }
 
 StretchRange::~StretchRange()
