@@ -14,6 +14,8 @@ public:
     StretchRange(u16 from, u16 to);
     ~StretchRange(); // TEST: NO
 
+    u16 getSize() const;
+
     u16 getFrom() const;
     u16 getTo() const;
 

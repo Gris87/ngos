@@ -31,6 +31,18 @@ TEST_CASES(section0, __shared_common_bits64_graphics_stretchrange);
 
 
 
+    TEST_CASE("getSize()");
+    {
+        StretchRange temp(10, 20);
+        StretchRange temp2(20, 50);
+
+        TEST_ASSERT_EQUALS(temp.getSize(),  10);
+        TEST_ASSERT_EQUALS(temp2.getSize(), 30);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("getFrom()");
     {
         StretchRange temp(10, 20);

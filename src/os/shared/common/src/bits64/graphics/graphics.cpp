@@ -370,100 +370,106 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
 
 
 
-            ListElement<StretchRange> *element = patch->getStretchRangesX().getHead();
-
-            if (element)
+            // Get sourceRangesX and startWithStretchX
             {
-                u16 lastX = element->getData().getFrom();
+                ListElement<StretchRange> *element = patch->getStretchRangesX().getHead();
 
-                if (lastX) // lastX != 0
+                if (element)
                 {
-                    startWithStretchX = false;
+                    u16 lastX = element->getData().getFrom();
 
-                    sourceRangesX.append(StretchRange(0, lastX));
+                    if (lastX) // lastX != 0
+                    {
+                        startWithStretchX = false;
+
+                        sourceRangesX.append(StretchRange(0, lastX));
+                    }
+                    else
+                    {
+                        startWithStretchX = true;
+                    }
+
+
+
+                    while (element)
+                    {
+                        sourceRangesX.append(StretchRange(lastX, element->getData().getTo()));
+                        lastX = element->getData().getTo();
+
+                        element = element->getNext();
+
+                        if (element)
+                        {
+                            sourceRangesX.append(StretchRange(lastX, element->getData().getFrom()));
+                            lastX = element->getData().getFrom();
+                        }
+                    }
+
+
+
+                    if (lastX != image->getWidth())
+                    {
+                        sourceRangesX.append(StretchRange(lastX, image->getWidth()));
+                    }
                 }
                 else
                 {
                     startWithStretchX = true;
+
+                    sourceRangesX.append(StretchRange(0, image->getWidth()));
                 }
+            }
 
 
 
-                while (element)
+            // Get sourceRangesY and startWithStretchY
+            {
+                ListElement<StretchRange> *element = patch->getStretchRangesY().getHead();
+
+                if (element)
                 {
-                    sourceRangesX.append(StretchRange(lastX, element->getData().getTo()));
-                    lastX = element->getData().getTo();
+                    u16 lastY = element->getData().getFrom();
 
-                    element = element->getNext();
-
-                    if (element)
+                    if (lastY) // lastY != 0
                     {
-                        sourceRangesX.append(StretchRange(lastX, element->getData().getFrom()));
-                        lastX = element->getData().getFrom();
+                        startWithStretchY = false;
+
+                        sourceRangesY.append(StretchRange(0, lastY));
                     }
-                }
+                    else
+                    {
+                        startWithStretchY = true;
+                    }
 
 
 
-                if (lastX != image->getWidth())
-                {
-                    sourceRangesX.append(StretchRange(lastX, image->getWidth()));
-                }
-            }
-            else
-            {
-                startWithStretchX = true;
+                    while (element)
+                    {
+                        sourceRangesY.append(StretchRange(lastY, element->getData().getTo()));
+                        lastY = element->getData().getTo();
 
-                sourceRangesX.append(StretchRange(0, image->getWidth()));
-            }
+                        element = element->getNext();
+
+                        if (element)
+                        {
+                            sourceRangesY.append(StretchRange(lastY, element->getData().getFrom()));
+                            lastY = element->getData().getFrom();
+                        }
+                    }
 
 
 
-            element = patch->getStretchRangesY().getHead();
-
-            if (element)
-            {
-                u16 lastY = element->getData().getFrom();
-
-                if (lastY) // lastY != 0
-                {
-                    startWithStretchY = false;
-
-                    sourceRangesY.append(StretchRange(0, lastY));
+                    if (lastY != image->getHeight())
+                    {
+                        sourceRangesY.append(StretchRange(lastY, image->getHeight()));
+                    }
                 }
                 else
                 {
                     startWithStretchY = true;
+
+                    sourceRangesY.append(StretchRange(0, image->getHeight()));
                 }
-
-
-
-                while (element)
-                {
-                    sourceRangesY.append(StretchRange(lastY, element->getData().getTo()));
-                    lastY = element->getData().getTo();
-
-                    element = element->getNext();
-
-                    if (element)
-                    {
-                        sourceRangesY.append(StretchRange(lastY, element->getData().getFrom()));
-                        lastY = element->getData().getFrom();
-                    }
-                }
-
-
-
-                if (lastY != image->getHeight())
-                {
-                    sourceRangesY.append(StretchRange(lastY, image->getHeight()));
-                }
-            }
-            else
-            {
-                startWithStretchY = true;
-
-                sourceRangesY.append(StretchRange(0, image->getHeight()));
             }
 
 
@@ -475,49 +481,448 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
 
 
 
-            bool isCurrentStretch = startWithStretchX;
-            element               = sourceRangesX.getHead();
-
-            while (element)
+            // Get totalStretchCountX and totalFixedCountX
             {
-                if (isCurrentStretch)
-                {
-                    totalStretchCountX += element->getData().getTo() - element->getData().getFrom();
-                }
-                else
-                {
-                    totalFixedCountX += element->getData().getTo() - element->getData().getFrom();
-                }
+                bool                       isCurrentStretch = startWithStretchX;
+                ListElement<StretchRange> *element          = sourceRangesX.getHead();
 
-                isCurrentStretch = !isCurrentStretch;
+                while (element)
+                {
+                    if (isCurrentStretch)
+                    {
+                        totalStretchCountX += element->getData().getSize();
+                    }
+                    else
+                    {
+                        totalFixedCountX += element->getData().getSize();
+                    }
 
-                element = element->getNext();
+
+
+                    isCurrentStretch = !isCurrentStretch;
+
+                    element = element->getNext();
+                }
             }
 
 
 
-            isCurrentStretch = startWithStretchY;
-            element          = sourceRangesY.getHead();
-
-            while (element)
+            // Get totalStretchCountY and totalFixedCountY
             {
-                if (isCurrentStretch)
-                {
-                    totalStretchCountY += element->getData().getTo() - element->getData().getFrom();
-                }
-                else
-                {
-                    totalFixedCountY += element->getData().getTo() - element->getData().getFrom();
-                }
+                bool                       isCurrentStretch = startWithStretchY;
+                ListElement<StretchRange> *element          = sourceRangesY.getHead();
 
-                isCurrentStretch = !isCurrentStretch;
+                while (element)
+                {
+                    if (isCurrentStretch)
+                    {
+                        totalStretchCountY += element->getData().getSize();
+                    }
+                    else
+                    {
+                        totalFixedCountY += element->getData().getSize();
+                    }
 
-                element = element->getNext();
+
+
+                    isCurrentStretch = !isCurrentStretch;
+
+                    element = element->getNext();
+                }
             }
 
 
 
-            COMMON_ASSERT_EXECUTION(resizeImageRaw(image->getBuffer(), 0, 0, image->getWidth(), image->getHeight(), image->getStride(), newImage->getBuffer(), 0, 0, newImage->getWidth(), newImage->getHeight(), newImage->getStride(), newImage->getBytesPerPixel()), NgosStatus::ASSERTION);
+            // Get destinationRangesX
+            {
+                u16       totalWidth = 0;
+                List<u16> sizes;
+
+                if (width >= totalFixedCountX)
+                {
+                    u16 stretchableCount = width - totalFixedCountX;
+
+
+
+                    bool                       isCurrentStretch = startWithStretchX;
+                    ListElement<StretchRange> *element          = sourceRangesX.getHead();
+
+                    while (element)
+                    {
+                        u16 size = element->getData().getSize();
+
+                        if (isCurrentStretch)
+                        {
+                            size = stretchableCount * size / totalStretchCountX;
+                        }
+
+                        sizes.append(size);
+                        totalWidth += size;
+
+
+
+                        isCurrentStretch = !isCurrentStretch;
+
+                        element = element->getNext();
+                    }
+
+
+
+                    COMMON_TEST_ASSERT(totalWidth <= width, NgosStatus::ASSERTION);
+
+                    if (totalWidth < width)
+                    {
+                        u16 remain = width - totalWidth;
+
+                        while (remain)
+                        {
+                            isCurrentStretch = startWithStretchX;
+
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
+
+                            while (sizeElement)
+                            {
+                                if (isCurrentStretch)
+                                {
+                                    if (!minSizeElement || sizeElement->getData() < minSizeElement->getData())
+                                    {
+                                        minSizeElement = sizeElement;
+                                    }
+                                }
+
+                                isCurrentStretch = !isCurrentStretch;
+
+                                sizeElement = sizeElement->getNext();
+                            }
+
+
+
+                            COMMON_TEST_ASSERT(minSizeElement, NgosStatus::ASSERTION);
+
+                            minSizeElement->setData(minSizeElement->getData() + 1);
+
+
+
+                            --remain;
+                        }
+                    }
+                }
+                else
+                {
+                    bool                       isCurrentStretch = startWithStretchX;
+                    ListElement<StretchRange> *element          = sourceRangesX.getHead();
+
+                    while (element)
+                    {
+                        u16 size;
+
+                        if (isCurrentStretch)
+                        {
+                            size = 0;
+                        }
+                        else
+                        {
+                            size = element->getData().getSize();
+                            size = width * size / totalFixedCountX;
+                        }
+
+                        sizes.append(size);
+                        totalWidth += size;
+
+
+
+                        isCurrentStretch = !isCurrentStretch;
+
+                        element = element->getNext();
+                    }
+
+
+
+                    COMMON_TEST_ASSERT(totalWidth <= width, NgosStatus::ASSERTION);
+
+                    if (totalWidth < width)
+                    {
+                        u16 remain = width - totalWidth;
+
+                        while (remain)
+                        {
+                            isCurrentStretch = startWithStretchX;
+
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
+
+                            while (sizeElement)
+                            {
+                                if (!isCurrentStretch)
+                                {
+                                    if (!minSizeElement || sizeElement->getData() < minSizeElement->getData())
+                                    {
+                                        minSizeElement = sizeElement;
+                                    }
+                                }
+
+                                isCurrentStretch = !isCurrentStretch;
+
+                                sizeElement = sizeElement->getNext();
+                            }
+
+
+
+                            COMMON_TEST_ASSERT(minSizeElement, NgosStatus::ASSERTION);
+
+                            minSizeElement->setData(minSizeElement->getData() + 1);
+
+
+
+                            --remain;
+                        }
+                    }
+                }
+
+
+
+                totalWidth = 0;
+
+                ListElement<u16> *sizeElement = sizes.getHead();
+
+                while (sizeElement)
+                {
+                    u16 to = totalWidth + sizeElement->getData();
+
+                    destinationRangesX.append(StretchRange(totalWidth, to));
+                    totalWidth = to;
+
+                    sizeElement = sizeElement->getNext();
+                }
+
+                COMMON_TEST_ASSERT(totalWidth == width, NgosStatus::ASSERTION);
+            }
+
+
+
+            // Get destinationRangesY
+            {
+                u16       totalHeight = 0;
+                List<u16> sizes;
+
+                if (height >= totalFixedCountY)
+                {
+                    u16 stretchableCount = height - totalFixedCountY;
+
+
+
+                    bool                       isCurrentStretch = startWithStretchY;
+                    ListElement<StretchRange> *element          = sourceRangesY.getHead();
+
+                    while (element)
+                    {
+                        u16 size = element->getData().getSize();
+
+                        if (isCurrentStretch)
+                        {
+                            size = stretchableCount * size / totalStretchCountY;
+                        }
+
+                        sizes.append(size);
+                        totalHeight += size;
+
+
+
+                        isCurrentStretch = !isCurrentStretch;
+
+                        element = element->getNext();
+                    }
+
+
+
+                    COMMON_TEST_ASSERT(totalHeight <= height, NgosStatus::ASSERTION);
+
+                    if (totalHeight < height)
+                    {
+                        u16 remain = height - totalHeight;
+
+                        while (remain)
+                        {
+                            isCurrentStretch = startWithStretchY;
+
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
+
+                            while (sizeElement)
+                            {
+                                if (isCurrentStretch)
+                                {
+                                    if (!minSizeElement || sizeElement->getData() < minSizeElement->getData())
+                                    {
+                                        minSizeElement = sizeElement;
+                                    }
+                                }
+
+                                isCurrentStretch = !isCurrentStretch;
+
+                                sizeElement = sizeElement->getNext();
+                            }
+
+
+
+                            COMMON_TEST_ASSERT(minSizeElement, NgosStatus::ASSERTION);
+
+                            minSizeElement->setData(minSizeElement->getData() + 1);
+
+
+
+                            --remain;
+                        }
+                    }
+                }
+                else
+                {
+                    bool                       isCurrentStretch = startWithStretchY;
+                    ListElement<StretchRange> *element          = sourceRangesY.getHead();
+
+                    while (element)
+                    {
+                        u16 size;
+
+                        if (isCurrentStretch)
+                        {
+                            size = 0;
+                        }
+                        else
+                        {
+                            size = element->getData().getSize();
+                            size = height * size / totalFixedCountY;
+                        }
+
+                        sizes.append(size);
+                        totalHeight += size;
+
+
+
+                        isCurrentStretch = !isCurrentStretch;
+
+                        element = element->getNext();
+                    }
+
+
+
+                    COMMON_TEST_ASSERT(totalHeight <= height, NgosStatus::ASSERTION);
+
+                    if (totalHeight < height)
+                    {
+                        u16 remain = height - totalHeight;
+
+                        while (remain)
+                        {
+                            isCurrentStretch = startWithStretchY;
+
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
+
+                            while (sizeElement)
+                            {
+                                if (!isCurrentStretch)
+                                {
+                                    if (!minSizeElement || sizeElement->getData() < minSizeElement->getData())
+                                    {
+                                        minSizeElement = sizeElement;
+                                    }
+                                }
+
+                                isCurrentStretch = !isCurrentStretch;
+
+                                sizeElement = sizeElement->getNext();
+                            }
+
+
+
+                            COMMON_TEST_ASSERT(minSizeElement, NgosStatus::ASSERTION);
+
+                            minSizeElement->setData(minSizeElement->getData() + 1);
+
+
+
+                            --remain;
+                        }
+                    }
+                }
+
+
+
+                totalHeight = 0;
+
+                ListElement<u16> *sizeElement = sizes.getHead();
+
+                while (sizeElement)
+                {
+                    u16 to = totalHeight + sizeElement->getData();
+
+                    destinationRangesY.append(StretchRange(totalHeight, to));
+                    totalHeight = to;
+
+                    sizeElement = sizeElement->getNext();
+                }
+
+                COMMON_TEST_ASSERT(totalHeight == height, NgosStatus::ASSERTION);
+            }
+
+
+
+            // Resize source ranges to destination ranges
+            {
+                ListElement<StretchRange> *sourceRangeY      = sourceRangesY.getHead();
+                ListElement<StretchRange> *destinationRangeY = destinationRangesY.getHead();
+
+                while (sourceRangeY)
+                {
+                    COMMON_TEST_ASSERT(destinationRangeY, NgosStatus::ASSERTION);
+
+
+
+                    ListElement<StretchRange> *sourceRangeX      = sourceRangesX.getHead();
+                    ListElement<StretchRange> *destinationRangeX = destinationRangesX.getHead();
+
+                    while (sourceRangeX)
+                    {
+                        COMMON_TEST_ASSERT(destinationRangeX, NgosStatus::ASSERTION);
+
+
+
+                        u16 sourceSizeX      = sourceRangeX->getData().getSize();
+                        u16 sourceSizeY      = sourceRangeY->getData().getSize();
+                        u16 destinationSizeX = destinationRangeX->getData().getSize();
+                        u16 destinationSizeY = destinationRangeY->getData().getSize();
+
+                        if (
+                            sourceSizeX == destinationSizeX
+                            &&
+                            sourceSizeY == destinationSizeY
+                           )
+                        {
+                            COMMON_ASSERT_EXECUTION(insertImageRaw(image->getBuffer(), newImage->getBuffer(), image->getWidth(), image->getHeight(), newImage->getWidth(), newImage->getHeight(), image->getBytesPerPixel(), newImage->getBytesPerPixel(), true, destinationRangeX->getData().getFrom() - sourceRangeX->getData().getFrom(), destinationRangeY->getData().getFrom() - sourceRangeY->getData().getFrom(), sourceRangeX->getData().getFrom(), sourceRangeY->getData().getFrom(), sourceRangeX->getData().getTo(), sourceRangeY->getData().getTo()), NgosStatus::ASSERTION);
+                        }
+                        else
+                        {
+                            COMMON_ASSERT_EXECUTION(resizeImageRaw(image->getBuffer(), sourceRangeX->getData().getFrom(), sourceRangeY->getData().getFrom(), sourceSizeX, sourceSizeY, image->getStride(), newImage->getBuffer(), destinationRangeX->getData().getFrom(), destinationRangeY->getData().getFrom(), destinationSizeX, destinationSizeY, newImage->getStride(), newImage->getBytesPerPixel()), NgosStatus::ASSERTION);
+                        }
+
+
+
+                        sourceRangeX      = sourceRangeX->getNext();
+                        destinationRangeX = destinationRangeX->getNext();
+                    }
+
+                    COMMON_TEST_ASSERT(!destinationRangeX, NgosStatus::ASSERTION);
+
+
+
+                    sourceRangeY      = sourceRangeY->getNext();
+                    destinationRangeY = destinationRangeY->getNext();
+                }
+
+                COMMON_TEST_ASSERT(!destinationRangeY, NgosStatus::ASSERTION);
+            }
         }
         else
         {

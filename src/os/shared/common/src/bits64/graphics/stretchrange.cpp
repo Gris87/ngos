@@ -19,6 +19,15 @@ StretchRange::~StretchRange()
     COMMON_LT((""));
 }
 
+u16 StretchRange::getSize() const
+{
+    COMMON_LT((""));
+
+
+
+    return mTo - mFrom;
+}
+
 u16 StretchRange::getFrom() const
 {
     COMMON_LT((""));
