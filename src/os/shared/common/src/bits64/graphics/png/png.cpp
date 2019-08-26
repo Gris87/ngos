@@ -1127,7 +1127,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         {
             for (i64 i = 1; i < image->getHeight() - 1; ++i)
             {
-                RgbaPixel *pixel = &image->getRgbaBuffer()[i * image->getStride()];
+                RgbaPixel *pixel = &image->getRgbaBuffer()[i * image->getWidth()];
 
                 if (
                     !pixel->red   // pixel->red   == 0
@@ -1162,7 +1162,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         {
             for (i64 i = 1; i < image->getHeight() - 1; ++i)
             {
-                RgbPixel *pixel = &image->getRgbBuffer()[i * image->getStride()];
+                RgbPixel *pixel = &image->getRgbBuffer()[i * image->getWidth()];
 
                 if (
                     !pixel->red   // pixel->red   == 0
@@ -1195,6 +1195,167 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         if (from) // from != 0
         {
             patch->addStretchRangeY(StretchRange(from - 1, to));
+        }
+
+
+
+        u64 lastPosY = (image->getHeight() - 1) * image->getWidth();
+
+        if (image->isRgba())
+        {
+            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            {
+                RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                    &&
+                    pixel->alpha == 0xFF
+                   )
+                {
+                    patch->setPaddingLeft(i - 1);
+
+                    break;
+                }
+            }
+
+            for (i64 i = image->getWidth() - 2; i >= 1; --i)
+            {
+                RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                    &&
+                    pixel->alpha == 0xFF
+                   )
+                {
+                    patch->setPaddingRight(image->getWidth() - i - 2);
+
+                    break;
+                }
+            }
+
+            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            {
+                RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                    &&
+                    pixel->alpha == 0xFF
+                   )
+                {
+                    patch->setPaddingTop(i - 1);
+
+                    break;
+                }
+            }
+
+            for (i64 i = image->getHeight() - 2; i >= 1 ; --i)
+            {
+                RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                    &&
+                    pixel->alpha == 0xFF
+                   )
+                {
+                    patch->setPaddingBottom(image->getHeight() - i - 2);
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            {
+                RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                   )
+                {
+                    patch->setPaddingLeft(i - 1);
+
+                    break;
+                }
+            }
+
+            for (i64 i = image->getWidth() - 2; i >= 1; --i)
+            {
+                RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                   )
+                {
+                    patch->setPaddingRight(image->getWidth() - i - 2);
+
+                    break;
+                }
+            }
+
+            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            {
+                RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                   )
+                {
+                    patch->setPaddingTop(i - 1);
+
+                    break;
+                }
+            }
+
+            for (i64 i = image->getHeight() - 2; i >= 1 ; --i)
+            {
+                RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
+
+                if (
+                    !pixel->red   // pixel->red   == 0
+                    &&
+                    !pixel->green // pixel->green == 0
+                    &&
+                    !pixel->blue  // pixel->blue  == 0
+                   )
+                {
+                    patch->setPaddingBottom(image->getHeight() - i - 2);
+
+                    break;
+                }
+            }
         }
 
 
