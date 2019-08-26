@@ -358,33 +358,6 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
 
         if (patch)
         {
-            COMMON_LF(("patch->mPaddingLeft   = %u", patch->mPaddingLeft));
-            COMMON_LF(("patch->mPaddingTop    = %u", patch->mPaddingTop));
-            COMMON_LF(("patch->mPaddingRight  = %u", patch->mPaddingRight));
-            COMMON_LF(("patch->mPaddingBottom = %u", patch->mPaddingBottom));
-
-            COMMON_LF(("patch->mStretchRangesX:"));
-
-            ListElement<StretchRange> *element = patch->mStretchRangesX.mHead;
-
-            while (element)
-            {
-                COMMON_LF(("from = %5u, to = %5u", element->mData.mFrom, element->mData.mTo));
-
-                element = element->getNext();
-            }
-
-            COMMON_LF(("patch->mStretchRangesY:"));
-
-            element = patch->mStretchRangesY.mHead;
-
-            while (element)
-            {
-                COMMON_LF(("from = %5u, to = %5u", element->mData.mFrom, element->mData.mTo));
-
-                element = element->getNext();
-            }
-
             COMMON_ASSERT_EXECUTION(resizeImageRaw(image->getBuffer(), 0, 0, image->getWidth(), image->getHeight(), image->getStride(), newImage->getBuffer(), 0, 0, newImage->getWidth(), newImage->getHeight(), newImage->getStride(), newImage->getBytesPerPixel()), NgosStatus::ASSERTION);
         }
         else

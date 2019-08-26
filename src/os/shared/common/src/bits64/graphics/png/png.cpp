@@ -1,6 +1,7 @@
 #include "png.h"
 
 #include <common/src/bits64/checksum/crc.h>
+#include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/graphics/png/lib/pngheader.h>
 #include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/graphics/rgbpixel.h>
@@ -1359,6 +1360,15 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         }
 
 
+
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), newImage->getBuffer(), image->getWidth(), image->getHeight(), newImage->getWidth(), newImage->getHeight(), image->getBytesPerPixel(), newImage->getBytesPerPixel(), true, -1, -1), NgosStatus::ASSERTION);
+
+
+
+        if (decoder->rawImageBuffer == image->getBuffer())
+        {
+            decoder->rawImageBuffer = 0;
+        }
 
         delete image;
         *decoder->image = newImage;
