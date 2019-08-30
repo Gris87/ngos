@@ -364,7 +364,7 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char8 *fileName)
 
 
     u64 fileNameSize = strlen(fileName) + 1;
-    u64 filePathSize = sizeof(UefiFilePath) + (fileNameSize << 1); // "<< 1" == "* 2"
+    u64 filePathSize = sizeof(UefiFilePath) + fileNameSize * sizeof(char16);
     u64 size         = parentDevicePathSize + filePathSize + sizeof(UefiDevicePath);
 
 
@@ -399,7 +399,7 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char8 *fileName)
 
 
 
-    UEFI_ASSERT_EXECUTION(setDevicePathEndNode(nextDevicePathNode(&filePath->header)), 0);
+    UEFI_ASSERT_EXECUTION(setDevicePathEndNode((UefiDevicePath *)((u64)res + size - sizeof(UefiDevicePath))), 0);
 
 
 
@@ -567,6 +567,19 @@ UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, Guid *protocol, v
 
 
     return sBootServices->locateHandle(searchType, protocol, searchKey, bufferSize, buffer);
+}
+
+UefiStatus UEFI::locateDevicePath(Guid *protocol, UefiDevicePath **devicePath, uefi_handle *device)
+{
+    UEFI_LT((" | protocol = 0x%p, devicePath = 0x%p, device = 0x%p", protocol, devicePath, device));
+
+    UEFI_ASSERT(protocol,   "protocol is null",   UefiStatus::ABORTED);
+    UEFI_ASSERT(devicePath, "devicePath is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(device,     "device is null",     UefiStatus::ABORTED);
+
+
+
+    return sBootServices->locateDevicePath(protocol, devicePath, device);
 }
 
 bool UEFI::memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descriptorSize)

@@ -23,6 +23,7 @@ public:
 
 private:
     static NgosStatus initImage(); // TEST: NO
+    static NgosStatus initPaths(); // TEST: NO
     static NgosStatus initApplicationPath(char8 **applicationPath); // TEST: NO
     static NgosStatus initDevicePath(char8 *applicationPath); // TEST: NO
     static NgosStatus initApplicationDirPath(char8 *applicationPath); // TEST: NO
@@ -33,9 +34,12 @@ private:
     static NgosStatus initVolumeDeviceHandle(VolumeInfo *volume, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeBlockIoProtocol(VolumeInfo *volume, Guid *protocol, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeDevicePath(VolumeInfo *volume, uefi_handle handle); // TEST: NO
+    static NgosStatus initVolumeWholeDisk(VolumeInfo *volume, Guid *protocol); // TEST: NO
+    static NgosStatus initVolumeWholeDiskBlockIoProtocol(VolumeInfo *volume, Guid *protocol, uefi_handle handle); // TEST: NO
+    static NgosStatus initVolumeWholeDiskDevicePath(VolumeInfo *volume, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeGptData(VolumeInfo *volume); // TEST: NO
-    static NgosStatus initVolumeTypeAndName(VolumeInfo *volume); // TEST: NO
-    static NgosStatus initVolumeName(VolumeInfo *volume, UefiDevicePath *devicePath); // TEST: NO
+    static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initVolumeName(VolumeInfo *volume); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;

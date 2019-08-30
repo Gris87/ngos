@@ -17,6 +17,8 @@ struct VolumeInfo
     uefi_handle          deviceHandle;
     UefiBlockIoProtocol *blockIoProtocol;
     UefiDevicePath      *devicePath;
+    UefiBlockIoProtocol *wholeDiskBlockIoProtocol;
+    UefiDevicePath      *wholeDiskDevicePath;
     GptData              gptData;
     VolumeType           type;
     const char8         *name;

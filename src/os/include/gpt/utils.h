@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/checksum/crc.h>
 #include <gpt/gptdata.h>
 
 
@@ -44,7 +45,7 @@ inline bool isGptValid(const GptData &data) // TEST: NO
         ||
         data.header->revision != GPT_HEADER_REVISION
         ||
-        data.header->entrySize != GPT_HEADER_ENTRY_SIZE
+        data.header->entrySize != sizeof(GptEntry)
        )
     {
         return false;
@@ -52,7 +53,24 @@ inline bool isGptValid(const GptData &data) // TEST: NO
 
 
 
-    return true;
+    u32 headerSize = sizeof(GptHeader);
+
+    if (data.header->headerSize < headerSize)
+    {
+        headerSize = data.header->headerSize;
+    }
+
+
+
+    u32 crc                  = data.header->headerCrc32;
+    data.header->headerCrc32 = 0;
+
+    u32 calculatedCrc        = Crc::crc32((u8 *)data.header, headerSize);
+    data.header->headerCrc32 = crc;
+
+
+
+    return calculatedCrc == crc;
 }
 
 

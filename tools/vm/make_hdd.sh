@@ -57,7 +57,7 @@ mkdir -p ../../build/disks/ 2> /dev/null
 
 truncate --size 1G "../../build/disks/${VM_NAME}.img"
 sgdisk --zap-all \
-    --new 1::+100M --typecode=1:EF00 --change-name=1:"EFI System" \
+    --new 1::+100M --typecode=1:EF00 --change-name=1:"UEFI System" \
     --new 2::-0 --typecode=2:8300 --change-name=2:"NGOS filesystem" \
     "../../build/disks/${VM_NAME}.img"
 

@@ -12,6 +12,10 @@
 
 
 
+#define OPTICAL_BLOCK_SIZE 2048
+
+
+
 UefiLoadedImageProtocol *Bootloader::sImage;
 UefiDevicePath          *Bootloader::sDevicePath;
 char8                   *Bootloader::sApplicationDirPath;
@@ -26,13 +30,9 @@ NgosStatus Bootloader::init()
 
 
 
-    char8 *applicationPath;
-
-    UEFI_ASSERT_EXECUTION(initImage(),                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initApplicationPath(&applicationPath),   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initDevicePath(applicationPath),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initApplicationDirPath(applicationPath), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initVolumes(),                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initImage(),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initPaths(),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumes(), NgosStatus::ASSERTION);
 
 
 
@@ -159,6 +159,36 @@ NgosStatus Bootloader::initImage()
     return NgosStatus::OK;
 }
 
+NgosStatus Bootloader::initPaths()
+{
+    UEFI_LT((""));
+
+
+
+    char8 *applicationPath;
+
+    UEFI_ASSERT_EXECUTION(initApplicationPath(&applicationPath),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initDevicePath(applicationPath),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initApplicationDirPath(applicationPath), NgosStatus::ASSERTION);
+
+
+
+    if (UEFI::freePool(applicationPath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for string", applicationPath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to free pool(0x%p) for string", applicationPath));
+
+        return NgosStatus::FAILED;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Bootloader::initApplicationPath(char8 **applicationPath)
 {
     UEFI_LT((" | applicationPath = 0x%p", applicationPath));
@@ -178,7 +208,7 @@ NgosStatus Bootloader::initApplicationPath(char8 **applicationPath)
 
 
 
-    UEFI_LVVV(("sApplicationPath = %s", *applicationPath));
+    UEFI_LVVV(("*applicationPath = %s", *applicationPath));
 
     UEFI_TEST_ASSERT(strcmp(*applicationPath, "\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
 
@@ -244,25 +274,12 @@ NgosStatus Bootloader::initApplicationDirPath(char8 *applicationPath)
 
 
 
-    char8 *sApplicationDirPath = UEFI::parentDirectory(applicationPath);
+    sApplicationDirPath = UEFI::parentDirectory(applicationPath);
     UEFI_ASSERT_EXECUTION(cleanUpPath(sApplicationDirPath), NgosStatus::ASSERTION);
 
     UEFI_LVVV(("sApplicationDirPath = %s", sApplicationDirPath));
 
     UEFI_TEST_ASSERT(strcmp(sApplicationDirPath, "EFI\\BOOT") == 0, NgosStatus::ASSERTION);
-
-
-
-    if (UEFI::freePool(applicationPath) == UefiStatus::SUCCESS)
-    {
-        UEFI_LVV(("Released pool(0x%p) for string", applicationPath));
-    }
-    else
-    {
-        UEFI_LE(("Failed to free pool(0x%p) for string", applicationPath));
-
-        return NgosStatus::FAILED;
-    }
 
 
 
@@ -342,11 +359,42 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-            UEFI_LVVV(("sVolumes[%d].gptData.protectiveMbr = 0x%p", i, sVolumes[i].gptData.protectiveMbr));
-            UEFI_LVVV(("sVolumes[%d].gptData.header        = 0x%p", i, sVolumes[i].gptData.header));
-            UEFI_LVVV(("sVolumes[%d].gptData.entries       = 0x%p", i, sVolumes[i].gptData.entries));
+            UEFI_LVVV(("sVolumes[%d].wholeDiskBlockIoProtocol = 0x%p", i, sVolumes[i].wholeDiskBlockIoProtocol));
+            UEFI_LVVV(("sVolumes[%d].wholeDiskDevicePath      = 0x%p", i, sVolumes[i].wholeDiskDevicePath));
+
+
+
+            if (sVolumes[i].wholeDiskDevicePath)
+            {
+                UEFI_LVVV(("sVolumes[%d].wholeDiskDevicePath:", i));
+                UEFI_LVVV(("....................................."));
+
+                UefiDevicePath *currentDevicePath = sVolumes[i].wholeDiskDevicePath;
+
+                do
+                {
+                    UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
+                    UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
+                    UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
+
+                    if (UEFI::isDevicePathEndType(currentDevicePath))
+                    {
+                        break;
+                    }
+
+                    currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+                } while(true);
+
+                UEFI_LVVV(("....................................."));
+            }
+
+
+
+            UEFI_LVVV(("sVolumes[%d].gptData.protectiveMbr = 0x%p",    i, sVolumes[i].gptData.protectiveMbr));
+            UEFI_LVVV(("sVolumes[%d].gptData.header        = 0x%p",    i, sVolumes[i].gptData.header));
+            UEFI_LVVV(("sVolumes[%d].gptData.entries       = 0x%p",    i, sVolumes[i].gptData.entries));
             UEFI_LVVV(("sVolumes[%d].type                  = %u (%s)", i, sVolumes[i].type, volumeTypeToString(sVolumes[i].type)));
-            UEFI_LVVV(("sVolumes[%d].name                  = %s", i, sVolumes[i].name));
+            UEFI_LVVV(("sVolumes[%d].name                  = %s",      i, sVolumes[i].name));
         }
 
         UEFI_LVVV(("-------------------------------------"));
@@ -375,7 +423,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size)
     {
         UEFI_LF(("Failed to allocate pool(%u) for handles for UEFI_BLOCK_IO_PROTOCOL", size));
 
-        return NgosStatus::FAILED;
+        return NgosStatus::OUT_OF_MEMORY;
     }
 
     UEFI_LVV(("Allocated pool(0x%p, %u) for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles, size));
@@ -432,7 +480,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle
     {
         UEFI_LF(("Failed to allocate pool(%u) for volumes", volumesSize));
 
-        return NgosStatus::FAILED;
+        return NgosStatus::OUT_OF_MEMORY;
     }
 
     UEFI_LVV(("Allocated pool(0x%p, %u) for volumes", sVolumes, volumesSize));
@@ -462,8 +510,10 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, Guid *protocol, uefi_handl
     UEFI_ASSERT_EXECUTION(initVolumeDeviceHandle(volume, handle),              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeBlockIoProtocol(volume, protocol, handle), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeDevicePath(volume, handle),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeWholeDisk(volume, protocol),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeGptData(volume),                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initVolumeTypeAndName(volume),                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeType(volume),                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeName(volume),                              NgosStatus::ASSERTION);
 
 
 
@@ -526,6 +576,131 @@ NgosStatus Bootloader::initVolumeDevicePath(VolumeInfo *volume, uefi_handle hand
     return NgosStatus::OK;
 }
 
+NgosStatus Bootloader::initVolumeWholeDisk(VolumeInfo *volume, Guid *protocol)
+{
+    UEFI_LT((" | volume = 0x%p, protocol = 0x%p", volume, protocol));
+
+    UEFI_ASSERT(volume,   "volume is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
+
+
+
+    volume->wholeDiskBlockIoProtocol = 0;
+    volume->wholeDiskDevicePath      = 0;
+
+
+
+    UefiDevicePath *currentDevicePath = volume->devicePath;
+
+    while (!UEFI::isDevicePathEndType(currentDevicePath))
+    {
+        UefiDevicePath *nextDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+
+
+
+        if (currentDevicePath->type == UefiDevicePathType::MESSAGING_DEVICE_PATH)
+        {
+            u64 size = (u64)nextDevicePath - (u64)volume->devicePath + sizeof(UefiDevicePath);
+
+
+
+            UefiDevicePath *diskDevicePath;
+
+            if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&diskDevicePath) != UefiStatus::SUCCESS)
+            {
+                UEFI_LE(("Failed to allocate pool(%u) for device path", size));
+
+                return NgosStatus::OUT_OF_MEMORY;
+            }
+
+            UEFI_LVV(("Allocated pool(0x%p, %u) for device path", diskDevicePath, size));
+
+
+
+            memcpy(diskDevicePath, volume->devicePath, size - sizeof(UefiDevicePath));
+            UEFI_ASSERT_EXECUTION(UEFI::setDevicePathEndNode((UefiDevicePath *)((u64)diskDevicePath + size - sizeof(UefiDevicePath))), NgosStatus::ASSERTION);
+
+
+
+            UefiDevicePath *devicePath = diskDevicePath;
+            uefi_handle     wholeDiskHandle;
+
+            if (UEFI::locateDevicePath(protocol, &devicePath, &wholeDiskHandle) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Found whole disk handle (0x%p) for UEFI_BLOCK_IO_PROTOCOL", wholeDiskHandle));
+
+                UEFI_ASSERT_EXECUTION(initVolumeWholeDiskBlockIoProtocol(volume, protocol, wholeDiskHandle), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(initVolumeWholeDiskDevicePath(volume, wholeDiskHandle),                NgosStatus::ASSERTION);
+            }
+            else
+            {
+                UEFI_LW(("Whole disk handle for UEFI_BLOCK_IO_PROTOCOL not found"));
+            }
+
+
+
+            if (UEFI::freePool(diskDevicePath) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for device path", diskDevicePath));
+            }
+            else
+            {
+                UEFI_LE(("Failed to free pool(0x%p) for device path", diskDevicePath));
+
+                return NgosStatus::FAILED;
+            }
+        }
+
+
+
+        currentDevicePath = nextDevicePath;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeWholeDiskBlockIoProtocol(VolumeInfo *volume, Guid *protocol, uefi_handle handle)
+{
+    UEFI_LT((" | volume = 0x%p, protocol = 0x%p, handle = 0x%p", volume, protocol, handle));
+
+    UEFI_ASSERT(volume,   "volume is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(handle,   "handle is null",   NgosStatus::ASSERTION);
+
+
+
+    if (UEFI::handleProtocol(handle, protocol, (void **)&volume->wholeDiskBlockIoProtocol) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to handle(0x%p) protocol for UEFI_BLOCK_IO_PROTOCOL", handle));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_BLOCK_IO_PROTOCOL", handle, volume->wholeDiskBlockIoProtocol));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeWholeDiskDevicePath(VolumeInfo *volume, uefi_handle handle)
+{
+    UEFI_LT((" | volume = 0x%p, handle = 0x%p", volume, handle));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(handle, "handle is null", NgosStatus::ASSERTION);
+
+
+
+    volume->wholeDiskDevicePath = UEFI::devicePathFromHandle(handle);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 {
     UEFI_LT((" | volume = 0x%p", volume));
@@ -542,8 +717,8 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
     if (
         volume->blockIoProtocol->media->mediaPresent
-        ||
-        volume->blockIoProtocol->media->logicalPartition
+        &&
+        !volume->blockIoProtocol->media->logicalPartition
        )
     {
         u64 size = sizeof(Mbr);
@@ -552,7 +727,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
         {
             UEFI_LF(("Failed to allocate pool(%u) for GPT protective MBR", size));
 
-            return NgosStatus::FAILED;
+            return NgosStatus::OUT_OF_MEMORY;
         }
 
         UEFI_LVV(("Allocated pool(0x%p, %u) for GPT protective MBR", volume->gptData.protectiveMbr, size));
@@ -576,7 +751,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
         {
             UEFI_LF(("Failed to allocate pool(%u) for GPT header", size));
 
-            return NgosStatus::FAILED;
+            return NgosStatus::OUT_OF_MEMORY;
         }
 
         UEFI_LVV(("Allocated pool(0x%p, %u) for GPT header", volume->gptData.header, size));
@@ -602,7 +777,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
             {
                 UEFI_LF(("Failed to allocate pool(%u) for GPT entries", size));
 
-                return NgosStatus::FAILED;
+                return NgosStatus::OUT_OF_MEMORY;
             }
 
             UEFI_LVV(("Allocated pool(0x%p, %u) for GPT entries", volume->gptData.entries, size));
@@ -620,9 +795,13 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
 
 
+            COMMON_TEST_ASSERT(Crc::crc32((u8 *)volume->gptData.entries, size) == volume->gptData.header->entryCrc32, NgosStatus::ASSERTION);
+
+
+
             for (i64 i = 0; i < volume->gptData.header->entryCount; ++i)
             {
-                volume->gptData.entries[i].name[35] = 0;
+                volume->gptData.entries[i].name[sizeof(volume->gptData.entries[i].name) - 1] = 0;
             }
         }
         else
@@ -663,7 +842,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initVolumeTypeAndName(VolumeInfo *volume)
+NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
 {
     UEFI_LT((" | volume = 0x%p", volume));
 
@@ -671,13 +850,74 @@ NgosStatus Bootloader::initVolumeTypeAndName(VolumeInfo *volume)
 
 
 
-    volume->type = VolumeType::INTERNAL;
-    volume->name = "UNKNOWN";
-
-    if (volume->blockIoProtocol->media->blockSize == 2048)
+    if (
+        volume->blockIoProtocol->media->blockSize == OPTICAL_BLOCK_SIZE
+        ||
+        (
+         volume->wholeDiskBlockIoProtocol
+         &&
+         volume->wholeDiskBlockIoProtocol->media->blockSize == OPTICAL_BLOCK_SIZE
+        )
+       )
     {
         volume->type = VolumeType::OPTICAL;
     }
+    else
+    {
+        volume->type = VolumeType::INTERNAL;
+
+
+
+        UefiDevicePath *currentDevicePath = volume->devicePath;
+
+        while (!UEFI::isDevicePathEndType(currentDevicePath))
+        {
+            if (currentDevicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH)
+            {
+                if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_CDROM_DP)
+                {
+                    volume->type = VolumeType::OPTICAL;
+
+                    break;
+                }
+            }
+            else
+            if (currentDevicePath->type == UefiDevicePathType::MESSAGING_DEVICE_PATH)
+            {
+                if (
+                    currentDevicePath->subType == UefiDevicePathSubType::MSG_USB_DP
+                    ||
+                    currentDevicePath->subType == UefiDevicePathSubType::MSG_USB_CLASS_DP
+                    ||
+                    currentDevicePath->subType == UefiDevicePathSubType::MSG_1394_DP
+                    ||
+                    currentDevicePath->subType == UefiDevicePathSubType::MSG_FIBRECHANNEL_DP
+                   )
+                {
+                    volume->type = VolumeType::EXTERNAL;
+                }
+            }
+
+
+
+            currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
+{
+    UEFI_LT((" | volume = 0x%p", volume));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+
+
+
+    volume->name = "UNKNOWN";
 
 
 
@@ -687,83 +927,43 @@ NgosStatus Bootloader::initVolumeTypeAndName(VolumeInfo *volume)
     {
         if (currentDevicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH)
         {
-            if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_CDROM_DP)
+            if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_HARDDRIVE_DP)
             {
-                volume->type = VolumeType::OPTICAL;
-            }
-            else
-            {
-                UEFI_ASSERT_EXECUTION(initVolumeName(volume, currentDevicePath), NgosStatus::ASSERTION);
-            }
-        }
-        else
-        if (currentDevicePath->type == UefiDevicePathType::MESSAGING_DEVICE_PATH)
-        {
-            if (
-                currentDevicePath->subType == UefiDevicePathSubType::MSG_USB_DP
-                ||
-                currentDevicePath->subType == UefiDevicePathSubType::MSG_USB_CLASS_DP
-                ||
-                currentDevicePath->subType == UefiDevicePathSubType::MSG_1394_DP
-                ||
-                currentDevicePath->subType == UefiDevicePathSubType::MSG_FIBRECHANNEL_DP
-               )
-            {
-                volume->type = VolumeType::EXTERNAL;
+                UefiHardDriveDevicePath *hardDrivePath = (UefiHardDriveDevicePath *)currentDevicePath;
+
+                if (hardDrivePath->signatureType == UefiHardDriveDevicePathSignatureType::GUID)
+                {
+                    for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
+                    {
+                        VolumeInfo *previousVolume = &sVolumes[i];
+
+                        if (volume == previousVolume)
+                        {
+                            break;
+                        }
+
+                        if (previousVolume->gptData.entries)
+                        {
+                            for (i64 j = 0; j < previousVolume->gptData.header->entryCount; ++j)
+                            {
+                                GptEntry *gptEntry = &previousVolume->gptData.entries[j];
+
+                                if (!memcmp((const char8 *)&gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature))) // memcmp((const char8 *)gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature)) == 0
+                                {
+                                    volume->name = UEFI::convertToAscii(gptEntry->name);
+
+                                    return NgosStatus::OK;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
 
 
         currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus Bootloader::initVolumeName(VolumeInfo *volume, UefiDevicePath *devicePath)
-{
-    UEFI_LT((" | volume = 0x%p, devicePath = 0x%p", volume, devicePath));
-
-    UEFI_ASSERT(volume,                                                    "volume is null",        NgosStatus::ASSERTION);
-    UEFI_ASSERT(devicePath,                                                "devicePath is null",    NgosStatus::ASSERTION);
-    UEFI_ASSERT(devicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH, "devicePath is invalid", NgosStatus::ASSERTION);
-
-
-
-    if (devicePath->subType == UefiDevicePathSubType::MEDIA_HARDDRIVE_DP)
-    {
-        UefiHardDriveDevicePath *hardDrivePath = (UefiHardDriveDevicePath *)devicePath;
-
-        if (hardDrivePath->signatureType == UefiHardDriveDevicePathSignatureType::GUID)
-        {
-            for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
-            {
-                VolumeInfo *previousVolume = &sVolumes[i];
-
-                if (volume == previousVolume)
-                {
-                    break;
-                }
-
-                if (previousVolume->gptData.entries)
-                {
-                    for (i64 j = 0; j < previousVolume->gptData.header->entryCount; ++j)
-                    {
-                        GptEntry *gptEntry = &previousVolume->gptData.entries[j];
-
-                        if (!memcmp((const char8 *)&gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature))) // memcmp((const char8 *)gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature)) == 0
-                        {
-                            volume->name = UEFI::convertToAscii(gptEntry->name);
-
-                            return NgosStatus::OK;
-                        }
-                    }
-                }
-            }
-        }
     }
 
 
