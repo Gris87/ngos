@@ -5,6 +5,178 @@
 
 
 
+char8* strcpy(char8 *str1, const char8 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    char8 *cur = str1;
+
+    while (*str2) // *str2 != 0
+    {
+        *cur = *str2;
+
+        ++cur;
+        ++str2;
+    }
+
+    *cur = 0;
+
+
+
+    return str1;
+}
+
+char16* strcpy(char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    char16 *cur = str1;
+
+    while (*str2) // *str2 != 0
+    {
+        *cur = *str2;
+
+        ++cur;
+        ++str2;
+    }
+
+    *cur = 0;
+
+
+
+    return str1;
+}
+
+char8* strcat(char8 *str1, const char8 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    char8 *cur = str1;
+
+    while (*cur) // *cur != 0
+    {
+        ++cur;
+    }
+
+
+
+    while (*str2) // *str2 != 0
+    {
+        *cur = *str2;
+
+        ++cur;
+        ++str2;
+    }
+
+    *cur = 0;
+
+
+
+    return str1;
+}
+
+char16* strcat(char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    char16 *cur = str1;
+
+    while (*cur) // *cur != 0
+    {
+        ++cur;
+    }
+
+
+
+    while (*str2) // *str2 != 0
+    {
+        *cur = *str2;
+
+        ++cur;
+        ++str2;
+    }
+
+    *cur = 0;
+
+
+
+    return str1;
+}
+
+char8* strapp(char8 *str1, const char8 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1,       "str1 is null",    0);
+    COMMON_ASSERT(str2,       "str2 is null",    0);
+    COMMON_ASSERT(*str1 == 0, "str1 is invalid", 0);
+
+
+
+    char8 *cur = str1;
+
+    while (*str2) // *str2 != 0
+    {
+        *cur = *str2;
+
+        ++cur;
+        ++str2;
+    }
+
+    *cur = 0;
+
+
+
+    return cur;
+}
+
+char16* strapp(char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1,       "str1 is null",    0);
+    COMMON_ASSERT(str2,       "str2 is null",    0);
+    COMMON_ASSERT(*str1 == 0, "str1 is invalid", 0);
+
+
+
+    char16 *cur = str1;
+
+    while (*str2) // *str2 != 0
+    {
+        *cur = *str2;
+
+        ++cur;
+        ++str2;
+    }
+
+    *cur = 0;
+
+
+
+    return cur;
+}
+
 i64 strlen(const char8 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
@@ -231,126 +403,6 @@ i8 strncmp(const char16 *str1, const char16 *str2, i64 length)
     }
 
     return 0;
-}
-
-char8* strcat(char8 *str1, const char8 *str2)
-{
-    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
-
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
-
-
-
-    char8 *cur = str1;
-
-    while (*cur) // *cur != 0
-    {
-        ++cur;
-    }
-
-
-
-    while (*str2) // *str2 != 0
-    {
-        *cur = *str2;
-
-        ++cur;
-        ++str2;
-    }
-
-    *cur = 0;
-
-
-
-    return str1;
-}
-
-char16* strcat(char16 *str1, const char16 *str2)
-{
-    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
-
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
-
-
-
-    char16 *cur = str1;
-
-    while (*cur) // *cur != 0
-    {
-        ++cur;
-    }
-
-
-
-    while (*str2) // *str2 != 0
-    {
-        *cur = *str2;
-
-        ++cur;
-        ++str2;
-    }
-
-    *cur = 0;
-
-
-
-    return str1;
-}
-
-char8* strapp(char8 *str1, const char8 *str2)
-{
-    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
-
-    COMMON_ASSERT(str1,       "str1 is null",    0);
-    COMMON_ASSERT(str2,       "str2 is null",    0);
-    COMMON_ASSERT(*str1 == 0, "str1 is invalid", 0);
-
-
-
-    char8 *cur = str1;
-
-    while (*str2) // *str2 != 0
-    {
-        *cur = *str2;
-
-        ++cur;
-        ++str2;
-    }
-
-    *cur = 0;
-
-
-
-    return cur;
-}
-
-char16* strapp(char16 *str1, const char16 *str2)
-{
-    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
-
-    COMMON_ASSERT(str1,       "str1 is null",    0);
-    COMMON_ASSERT(str2,       "str2 is null",    0);
-    COMMON_ASSERT(*str1 == 0, "str1 is invalid", 0);
-
-
-
-    char16 *cur = str1;
-
-    while (*str2) // *str2 != 0
-    {
-        *cur = *str2;
-
-        ++cur;
-        ++str2;
-    }
-
-    *cur = 0;
-
-
-
-    return cur;
 }
 
 bool strend(const char8 *str1, const char8 *str2)

@@ -17,7 +17,7 @@ class Bootloader
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus cleanUpPath(char8 *path); // TEST: NO
+    static NgosStatus cleanUpPath(char8 *path);
 
     static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 

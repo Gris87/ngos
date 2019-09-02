@@ -7,6 +7,12 @@
 
 
 
+char8* strcpy(char8 *str1, const char8 *str2);
+char16* strcpy(char16 *str1, const char16 *str2);
+char8* strcat(char8 *str1, const char8 *str2);
+char16* strcat(char16 *str1, const char16 *str2);
+char8* strapp(char8 *str1, const char8 *str2);
+char16* strapp(char16 *str1, const char16 *str2);
 i64 strlen(const char8 *str);
 i64 strlen(const char16 *str);
 i64 strnlen(const char8 *str, i64 maxlen);
@@ -15,10 +21,6 @@ i8 strcmp(const char8 *str1, const char8 *str2);
 i8 strcmp(const char16 *str1, const char16 *str2);
 i8 strncmp(const char8 *str1, const char8 *str2, i64 length);
 i8 strncmp(const char16 *str1, const char16 *str2, i64 length);
-char8* strcat(char8 *str1, const char8 *str2);
-char16* strcat(char16 *str1, const char16 *str2);
-char8* strapp(char8 *str1, const char8 *str2);
-char16* strapp(char16 *str1, const char16 *str2);
 bool strend(const char8 *str1, const char8 *str2);
 bool strend(const char16 *str1, const char16 *str2);
 
