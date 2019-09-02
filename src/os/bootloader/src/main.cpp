@@ -26,6 +26,64 @@ u8 __reserved_for_bss __attribute__ ((section (".noinit")));
 
 
 
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
+NgosStatus waitForGdbDebug()
+{ // Ignore CppNgosTraceVerifier
+    UEFI_LT((""));
+
+
+
+    UEFI_LD(("Waiting for gdb_debug..."));
+
+
+
+    uefi_event timerEvent = 0;
+
+    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, 0, 0, 0, &timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Created timer event(0x%p)", timerEvent));
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::setTimer(timerEvent, UefiTimerDelay::RELATIVE, 50000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 5 * 1000 * 1000 * 10 "* 100ns"
+    UEFI_LVV(("Setup timer(0x%p) completed", timerEvent));
+
+
+
+    uefi_event waitEvents[1] = { timerEvent };
+    u64        eventIndex    = 0;
+
+    UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(1, waitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Timer(0x%p) triggered", timerEvent));
+
+    UEFI_TEST_ASSERT(eventIndex == 0, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::closeEvent(timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Closed timer event(0x%p)", timerEvent));
+
+
+
+    return NgosStatus::OK;
+}
+
+CPP_EXTERN_C
+CPP_NO_OPTIMIZATION
+NgosStatus gdbDebugBreakpointFunction()
+{ // Ignore CppNgosTraceVerifier
+    UEFI_LT((""));
+
+
+
+    static u8 a;
+    ++a;
+
+
+
+    return NgosStatus::OK;
+}
+#endif
+
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
 NgosStatus printCpuFlags()
 { // Ignore CppNgosTraceVerifier
@@ -81,7 +139,19 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
     UEFI_LI(("NGOS Bootloader starting up"));
+
+
+
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
+    UEFI_LD(("Executing code for gdb_debug"));
+    UEFI_LD(("Bootloader started at address 0x%p", kernelLocation));
+    UEFI_LD(("gdb_debug is ready to go"));
+
+    UEFI_ASSERT_EXECUTION(waitForGdbDebug(),            UefiStatus::ABORTED);
+    UEFI_ASSERT_EXECUTION(gdbDebugBreakpointFunction(), UefiStatus::ABORTED);
+#else
     UEFI_LV(("Bootloader started at address 0x%p", kernelLocation));
+#endif
 
 
 

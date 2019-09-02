@@ -795,13 +795,13 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
 
 
-            COMMON_TEST_ASSERT(Crc::crc32((u8 *)volume->gptData.entries, size) == volume->gptData.header->entryCrc32, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(Crc::crc32((u8 *)volume->gptData.entries, size) == volume->gptData.header->entryCrc32, NgosStatus::ASSERTION);
 
 
 
             for (i64 i = 0; i < volume->gptData.header->entryCount; ++i)
             {
-                volume->gptData.entries[i].name[sizeof(volume->gptData.entries[i].name) - 1] = 0;
+                volume->gptData.entries[i].name[ARRAY_COUNT(volume->gptData.entries[i].name) - 1] = 0;
             }
         }
         else

@@ -48,6 +48,10 @@
 
 
 
+#define ARRAY_COUNT(a) (sizeof(a) / sizeof(a[0]))
+
+
+
 // Ignore CppAlignmentVerifier [BEGIN]
 #define FLAGS_TO_STRING(res, flags, typeToString, type) \
     { \

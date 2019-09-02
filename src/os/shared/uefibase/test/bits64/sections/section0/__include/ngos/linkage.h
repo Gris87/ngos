@@ -36,6 +36,26 @@ TEST_CASES(section0, __include_ngos_linkage);
         TEST_ASSERT_EQUALS(IS_CONSTANT(temp),    false);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("ARRAY_COUNT()");
+    {
+        u8     a[5];
+        u16    b[6];
+        u32    c[7];
+        u64    d[8];
+        char8  e[9];
+        char16 f[3];
+
+        TEST_ASSERT_EQUALS(ARRAY_COUNT(a), 5);
+        TEST_ASSERT_EQUALS(ARRAY_COUNT(b), 6);
+        TEST_ASSERT_EQUALS(ARRAY_COUNT(c), 7);
+        TEST_ASSERT_EQUALS(ARRAY_COUNT(d), 8);
+        TEST_ASSERT_EQUALS(ARRAY_COUNT(e), 9);
+        TEST_ASSERT_EQUALS(ARRAY_COUNT(f), 3);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 
