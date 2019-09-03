@@ -50,6 +50,7 @@ NgosStatus UEFI::init(uefi_handle imageHandle, UefiSystemTable *systemTable)
 
 
     UEFI_ASSERT_EXECUTION(disableWatchdogTimer(), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(disableCursor(),        UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
 
@@ -959,6 +960,17 @@ UefiStatus UEFI::disableWatchdogTimer()
 
 
     return sBootServices->setWatchdogTimer(0, 0, 0, 0);
+}
+
+UefiStatus UEFI::disableCursor()
+{
+    UEFI_LT((""));
+
+    UEFI_ASSERT(sTextOutput, "sTextOutput is null", UefiStatus::ABORTED);
+
+
+
+    return sTextOutput->enableCursor(sTextOutput, false);
 }
 
 uefi_handle UEFI::getImageHandle()
