@@ -1,4 +1,4 @@
-#include "setupvirtualfunctiontables.h"
+#include "setupdynamicrelocation.h"
 
 #include <elf/rela.h>
 #include <elf/relatype.h>
@@ -12,7 +12,7 @@ extern void *_rela_end;   // _rela_end declared in linker.ld file   // Ignore Cp
 
 
 
-NgosStatus setupVirtualFunctionTables(u64 kernelLocation)
+NgosStatus setupDynamicRelocation(u64 kernelLocation)
 {
     UEFI_LT((" | kernelLocation = 0x%p", kernelLocation));
 

@@ -248,8 +248,6 @@ bool SearchDependenciesThread::handleSource(const QString &source)
                         if (!found)
                         {
                             addError(QString("Failed to find included file \"%1\"").arg(includedFile));
-
-                            return false;
                         }
                     }
                 }

@@ -59,7 +59,7 @@ public:
     static UefiStatus exitBootServices(u64 mapKey); // TEST: NO
 
     static UefiStatus disableWatchdogTimer(); // TEST: NO
-    static UefiStatus disableCursor(); // TEST: NO
+    static NgosStatus disableCursor(); // TEST: NO
 
     static uefi_handle getImageHandle(); // TEST: NO
     static UefiSystemTable* getSystemTable(); // TEST: NO

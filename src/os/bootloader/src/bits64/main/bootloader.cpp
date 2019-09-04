@@ -19,8 +19,7 @@
 UefiLoadedImageProtocol *Bootloader::sImage;
 UefiDevicePath          *Bootloader::sDevicePath;
 char8                   *Bootloader::sApplicationDirPath;
-u64                      Bootloader::sNumberOfVolumes;
-VolumeInfo              *Bootloader::sVolumes;
+List<VolumeInfo>         Bootloader::sVolumes;
 
 
 
@@ -33,6 +32,7 @@ NgosStatus Bootloader::init()
     UEFI_ASSERT_EXECUTION(initImage(),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initPaths(),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumes(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initOSes(),    NgosStatus::ASSERTION);
 
 
 
@@ -318,28 +318,28 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-    UEFI_LVVV(("sNumberOfVolumes = %u", sNumberOfVolumes));
-
-    // UEFI_TEST_ASSERT(sNumberOfVolumes == 3, NgosStatus::ASSERTION); // Commented due to value variation
-
-
-
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
         UEFI_LVVV(("sVolumes:"));
         UEFI_LVVV(("-------------------------------------"));
 
-        for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
+        ListElement<VolumeInfo> *element = sVolumes.getHead();
+
+        while (element)
         {
-            UEFI_LVVV(("sVolumes[%d].deviceHandle    = 0x%p", i, sVolumes[i].deviceHandle));
-            UEFI_LVVV(("sVolumes[%d].blockIoProtocol = 0x%p", i, sVolumes[i].blockIoProtocol));
+            const VolumeInfo &volume = element->getData();
 
 
 
-            UEFI_LVVV(("sVolumes[%d].devicePath:", i));
+            UEFI_LVVV(("volume.deviceHandle    = 0x%p", volume.deviceHandle));
+            UEFI_LVVV(("volume.blockIoProtocol = 0x%p", volume.blockIoProtocol));
+
+
+
+            UEFI_LVVV(("volume.devicePath:"));
             UEFI_LVVV(("....................................."));
 
-            UefiDevicePath *currentDevicePath = sVolumes[i].devicePath;
+            UefiDevicePath *currentDevicePath = volume.devicePath;
 
             do
             {
@@ -359,17 +359,17 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-            UEFI_LVVV(("sVolumes[%d].wholeDiskBlockIoProtocol = 0x%p", i, sVolumes[i].wholeDiskBlockIoProtocol));
-            UEFI_LVVV(("sVolumes[%d].wholeDiskDevicePath      = 0x%p", i, sVolumes[i].wholeDiskDevicePath));
+            UEFI_LVVV(("volume.wholeDiskBlockIoProtocol = 0x%p", volume.wholeDiskBlockIoProtocol));
+            UEFI_LVVV(("volume.wholeDiskDevicePath      = 0x%p", volume.wholeDiskDevicePath));
 
 
 
-            if (sVolumes[i].wholeDiskDevicePath)
+            if (volume.wholeDiskDevicePath)
             {
-                UEFI_LVVV(("sVolumes[%d].wholeDiskDevicePath:", i));
+                UEFI_LVVV(("volume.wholeDiskDevicePath:"));
                 UEFI_LVVV(("....................................."));
 
-                UefiDevicePath *currentDevicePath = sVolumes[i].wholeDiskDevicePath;
+                UefiDevicePath *currentDevicePath = volume.wholeDiskDevicePath;
 
                 do
                 {
@@ -390,11 +390,20 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-            UEFI_LVVV(("sVolumes[%d].gptData.protectiveMbr = 0x%p",    i, sVolumes[i].gptData.protectiveMbr));
-            UEFI_LVVV(("sVolumes[%d].gptData.header        = 0x%p",    i, sVolumes[i].gptData.header));
-            UEFI_LVVV(("sVolumes[%d].gptData.entries       = 0x%p",    i, sVolumes[i].gptData.entries));
-            UEFI_LVVV(("sVolumes[%d].type                  = %u (%s)", i, sVolumes[i].type, volumeTypeToString(sVolumes[i].type)));
-            UEFI_LVVV(("sVolumes[%d].name                  = %s",      i, sVolumes[i].name));
+            UEFI_LVVV(("volume.gptData.protectiveMbr = 0x%p",    volume.gptData.protectiveMbr));
+            UEFI_LVVV(("volume.gptData.header        = 0x%p",    volume.gptData.header));
+            UEFI_LVVV(("volume.gptData.entries       = 0x%p",    volume.gptData.entries));
+            UEFI_LVVV(("volume.type                  = %u (%s)", volume.type, volumeTypeToString(volume.type)));
+            UEFI_LVVV(("volume.name                  = %s",      volume.name));
+
+
+
+            element = element->getNext();
+
+            if (element)
+            {
+                UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
+            }
         }
 
         UEFI_LVVV(("-------------------------------------"));
@@ -469,27 +478,16 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle
 
 
 
-    sNumberOfVolumes = size / sizeof(uefi_handle);
-    UEFI_LVVV(("sNumberOfVolumes = %u", sNumberOfVolumes));
+    u64 numberOfVolumes = size / sizeof(uefi_handle);
+    UEFI_LVVV(("numberOfVolumes = %u", numberOfVolumes));
 
-
-
-    u64 volumesSize = sNumberOfVolumes * sizeof(VolumeInfo);
-
-    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, volumesSize, (void **)&sVolumes) != UefiStatus::SUCCESS)
+    for (i64 i = 0; i < (i64)numberOfVolumes; ++i)
     {
-        UEFI_LF(("Failed to allocate pool(%u) for volumes", volumesSize));
+        VolumeInfo volume;
 
-        return NgosStatus::OUT_OF_MEMORY;
-    }
+        UEFI_ASSERT_EXECUTION(initVolume(&volume, protocol, blockIoHandles[i]), NgosStatus::ASSERTION);
 
-    UEFI_LVV(("Allocated pool(0x%p, %u) for volumes", sVolumes, volumesSize));
-
-
-
-    for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
-    {
-        UEFI_ASSERT_EXECUTION(initVolume(&sVolumes[i], protocol, blockIoHandles[i]), NgosStatus::ASSERTION);
+        sVolumes.append(volume);
     }
 
 
@@ -864,7 +862,7 @@ NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
     }
     else
     {
-        volume->type = VolumeType::INTERNAL;
+        volume->type = VolumeType::NONE;
 
 
 
@@ -874,6 +872,13 @@ NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
         {
             if (currentDevicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH)
             {
+                if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_HARDDRIVE_DP)
+                {
+                    volume->type = VolumeType::INTERNAL;
+
+                    break;
+                }
+                else
                 if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_CDROM_DP)
                 {
                     volume->type = VolumeType::OPTICAL;
@@ -933,20 +938,19 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
 
                 if (hardDrivePath->signatureType == UefiHardDriveDevicePathSignatureType::GUID)
                 {
-                    for (i64 i = 0; i < (i64)sNumberOfVolumes; ++i)
+                    ListElement<VolumeInfo> *element = sVolumes.getTail();
+
+                    while (element)
                     {
-                        VolumeInfo *previousVolume = &sVolumes[i];
+                        const VolumeInfo &previousVolume = element->getData();
 
-                        if (volume == previousVolume)
-                        {
-                            break;
-                        }
 
-                        if (previousVolume->gptData.entries)
+
+                        if (previousVolume.gptData.entries)
                         {
-                            for (i64 j = 0; j < previousVolume->gptData.header->entryCount; ++j)
+                            for (i64 i = 0; i < previousVolume.gptData.header->entryCount; ++i)
                             {
-                                GptEntry *gptEntry = &previousVolume->gptData.entries[j];
+                                GptEntry *gptEntry = &previousVolume.gptData.entries[i];
 
                                 if (!memcmp((const char8 *)&gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature))) // memcmp((const char8 *)gptEntry->partitionUniqueGuid, (const char8 *)hardDrivePath->signature, sizeof(hardDrivePath->signature)) == 0
                                 {
@@ -956,6 +960,10 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
                                 }
                             }
                         }
+
+
+
+                        element = element->getPrevious();
                     }
                 }
             }
@@ -965,6 +973,34 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
 
         currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initOSes()
+{
+    UEFI_LT((""));
+
+
+    ListElement<VolumeInfo> *element = sVolumes.getHead();
+
+    while (element)
+    {
+        UEFI_ASSERT_EXECUTION(initOSesFromVolume(element->getData()), NgosStatus::ASSERTION);
+
+        element = element->getNext();
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initOSesFromVolume(const VolumeInfo & /*volume*/)
+{
+    UEFI_LT((" | volume = ..."));
 
 
 

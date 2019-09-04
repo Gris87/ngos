@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/containers/list.h>
 #include <common/src/bits64/graphics/image.h>
 #include <ngos/status.h>
 #include <uefi/uefidevicepath.h>
@@ -40,12 +41,13 @@ private:
     static NgosStatus initVolumeGptData(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeName(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initOSes(); // TEST: NO
+    static NgosStatus initOSesFromVolume(const VolumeInfo &volume); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
     static char8                   *sApplicationDirPath;
-    static u64                      sNumberOfVolumes;
-    static VolumeInfo              *sVolumes;
+    static List<VolumeInfo>         sVolumes;
 };
 
 

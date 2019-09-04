@@ -5,6 +5,8 @@ SOURCES += \
     $$PWD/src/bits64/assets/assets.cpp \
     $$PWD/src/bits64/checksum/adler.cpp \
     $$PWD/src/bits64/checksum/crc.cpp \
+    $$PWD/src/bits64/compilation/fixforglobaldestructors.cpp \
+    $$PWD/src/bits64/compilation/fixforvtable.cpp \
     $$PWD/src/bits64/console/console.cpp \
     $$PWD/src/bits64/console/graphicalconsole.cpp \
     $$PWD/src/bits64/cpu/cpu.cpp \
@@ -29,7 +31,6 @@ SOURCES += \
     $$PWD/src/bits64/gui/widgets/misc/screenwidget.cpp \
     $$PWD/src/bits64/gui/widgets/widget.cpp \
     $$PWD/src/bits64/inflate/inflate.cpp \
-    $$PWD/src/bits64/memory/fixforvtable.cpp \
     $$PWD/src/bits64/memory/malloc.cpp \
     $$PWD/src/bits64/memory/memory.cpp \
     $$PWD/src/bits64/printf/printf.cpp \
@@ -150,7 +151,6 @@ HEADERS += \
     $$PWD/src/bits64/memory/asm_memcpy.h \
     $$PWD/src/bits64/memory/asm_memset.h \
     $$PWD/src/bits64/memory/asm_memzero.h \
-    $$PWD/src/bits64/memory/fixforvtable.h \
     $$PWD/src/bits64/memory/malloc.h \
     $$PWD/src/bits64/memory/memory.h \
     $$PWD/src/bits64/printf/printf.h \

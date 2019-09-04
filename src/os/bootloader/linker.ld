@@ -16,6 +16,14 @@ SECTIONS
 
 
 
+    .ctors          : {
+        _ctors_begin = .;
+        *(.ctors)
+        _ctors_end = .;
+    }
+
+
+
     _rela_begin = .;
     .rela.dyn        : { *(.rela.dyn) }
     _rela_end = .;

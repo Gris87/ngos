@@ -777,14 +777,9 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
         QStringList errors = thread->getErrors();
 
-        if (errors.length()) // errors.length() > 0
+        for (qint64 j = 0; j < errors.length(); ++j)
         {
-            hasErrors = true;
-
-            for (qint64 j = 0; j < errors.length(); ++j)
-            {
-                Console::err(errors.at(j));
-            }
+            Console::err(errors.at(j));
         }
 
 

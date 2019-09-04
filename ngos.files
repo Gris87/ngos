@@ -370,6 +370,8 @@ src/os/shared/common/src/bits64/checksum/adler.cpp
 src/os/shared/common/src/bits64/checksum/adler.h
 src/os/shared/common/src/bits64/checksum/crc.cpp
 src/os/shared/common/src/bits64/checksum/crc.h
+src/os/shared/common/src/bits64/compilation/fixforglobaldestructors.cpp
+src/os/shared/common/src/bits64/compilation/fixforvtable.cpp
 src/os/shared/common/src/bits64/console/console.cpp
 src/os/shared/common/src/bits64/console/console.h
 src/os/shared/common/src/bits64/console/graphicalconsole.cpp
@@ -501,8 +503,6 @@ src/os/shared/common/src/bits64/log/log.h
 src/os/shared/common/src/bits64/memory/asm_memcpy.h
 src/os/shared/common/src/bits64/memory/asm_memset.h
 src/os/shared/common/src/bits64/memory/asm_memzero.h
-src/os/shared/common/src/bits64/memory/fixforvtable.cpp
-src/os/shared/common/src/bits64/memory/fixforvtable.h
 src/os/shared/common/src/bits64/memory/malloc.cpp
 src/os/shared/common/src/bits64/memory/malloc.h
 src/os/shared/common/src/bits64/memory/memory.cpp
@@ -737,10 +737,10 @@ src/os/shared/uefibase/src/bits64/main/setupbootparams.cpp
 src/os/shared/uefibase/src/bits64/main/setupbootparams.h
 src/os/shared/uefibase/src/bits64/main/setupcr4.cpp
 src/os/shared/uefibase/src/bits64/main/setupcr4.h
+src/os/shared/uefibase/src/bits64/main/setupdynamicrelocation.cpp
+src/os/shared/uefibase/src/bits64/main/setupdynamicrelocation.h
 src/os/shared/uefibase/src/bits64/main/setupgraphics.cpp
 src/os/shared/uefibase/src/bits64/main/setupgraphics.h
-src/os/shared/uefibase/src/bits64/main/setupvirtualfunctiontables.cpp
-src/os/shared/uefibase/src/bits64/main/setupvirtualfunctiontables.h
 src/os/shared/uefibase/src/bits64/other/uefibootmemorymap.h
 src/os/shared/uefibase/src/bits64/uefi/uefi.cpp
 src/os/shared/uefibase/src/bits64/uefi/uefi.h

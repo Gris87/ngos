@@ -97,7 +97,6 @@
 #include <common/src/bits64/inflate/inflatecode.h>
 #include <common/src/bits64/inflate/inflatecodetype.h>
 #include <common/src/bits64/inflate/inflatedecoder.h>
-#include <common/src/bits64/memory/fixforvtable.h>
 #include <common/src/bits64/serial/serial.h>
 #include <common/src/bits64/zlib/zlib.h>
 #include <common/src/bits64/zlib/zlibcompressioninfo.h>
@@ -218,8 +217,6 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionLevel),                          1);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                         1);
         TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                    2);
-        TEST_ASSERT_EQUALS(sizeof(__cxxabiv1::__class_type_info),                 8);
-        TEST_ASSERT_EQUALS(sizeof(__cxxabiv1::__si_class_type_info),              8);
         TEST_ASSERT_EQUALS(sizeof(x86BugWord),                                    1);
         TEST_ASSERT_EQUALS(sizeof(x86FeatureWord),                                1);
     }
