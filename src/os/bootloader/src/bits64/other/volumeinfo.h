@@ -22,6 +22,13 @@ struct VolumeInfo
     GptData              gptData;
     VolumeType           type;
     const char8         *name;
+
+
+
+    bool operator<(const VolumeInfo &another) const // TEST: NO
+    {
+        return type < another.type;
+    }
 };
 
 

@@ -20,6 +20,8 @@ public:
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
 
+    NgosStatus sort();
+
     ListElement<T>* getHead() const;
     ListElement<T>* getTail() const;
 
@@ -107,6 +109,69 @@ NgosStatus List<T>::prepend(const T &value)
     }
 
     mHead = element;
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus List<T>::sort()
+{
+    COMMON_LT((""));
+
+
+
+    ListElement<T> *cur = mHead;
+
+    while (cur)
+    {
+        ListElement<T> *min  = cur;
+        ListElement<T> *cur2 = cur->getNext();
+
+        while (cur2)
+        {
+            if (cur2->getData() < min->getData())
+            {
+                min = cur2;
+            }
+
+            cur2 = cur2->getNext();
+        }
+
+
+
+        if (cur != min)
+        {
+            if (min->getPrevious())
+            {
+                min->getPrevious()->setNext(min->getNext());
+            }
+
+            if (min->getNext())
+            {
+                min->getNext()->setPrevious(min->getPrevious());
+            }
+
+            if (cur->getPrevious())
+            {
+                cur->getPrevious()->setNext(min);
+            }
+            else
+            {
+                mHead = min;
+            }
+
+            min->setPrevious(cur->getPrevious());
+            min->setNext(cur);
+            cur->setPrevious(min);
+        }
+        else
+        {
+            mTail = cur;
+            cur   = cur->getNext();
+        }
+    }
 
 
 

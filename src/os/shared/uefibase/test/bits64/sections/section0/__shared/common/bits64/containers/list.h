@@ -138,6 +138,90 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
 
 
 
+    TEST_CASE("sort()");
+    {
+        List<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+
+
+        ListElement<u8> *el1 = temp.mHead;
+        ListElement<u8> *el2 = el1->mNext;
+        ListElement<u8> *el3 = el2->mNext;
+        ListElement<u8> *el4 = el3->mNext;
+        ListElement<u8> *el5 = el4->mNext;
+
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);
+        TEST_ASSERT_EQUALS(el1->mPrevious, 0);
+        TEST_ASSERT_EQUALS(el1->mNext,     el2);
+        TEST_ASSERT_EQUALS(el1->mData,     5);
+
+        TEST_ASSERT_EQUALS(el2->mPrevious, el1);
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);
+        TEST_ASSERT_EQUALS(el2->mData,     9);
+
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);
+        TEST_ASSERT_EQUALS(el3->mData,     3);
+
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);
+        TEST_ASSERT_EQUALS(el4->mData,     1);
+
+        TEST_ASSERT_EQUALS(el5,            temp.mTail);
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
+        TEST_ASSERT_EQUALS(el5->mNext,     0);
+        TEST_ASSERT_EQUALS(el5->mData,     7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.sort(), NgosStatus::OK);
+
+
+
+        ListElement<u8> *newEl1 = temp.mHead;
+        ListElement<u8> *newEl2 = newEl1->mNext;
+        ListElement<u8> *newEl3 = newEl2->mNext;
+        ListElement<u8> *newEl4 = newEl3->mNext;
+        ListElement<u8> *newEl5 = newEl4->mNext;
+
+        TEST_ASSERT_EQUALS(newEl1,            temp.mHead);
+        TEST_ASSERT_EQUALS(newEl1->mPrevious, 0);
+        TEST_ASSERT_EQUALS(newEl1->mNext,     newEl2);
+        TEST_ASSERT_EQUALS(newEl1->mData,     1);
+        TEST_ASSERT_EQUALS(newEl1,            el4);
+
+        TEST_ASSERT_EQUALS(newEl2->mPrevious, newEl1);
+        TEST_ASSERT_EQUALS(newEl2->mNext,     newEl3);
+        TEST_ASSERT_EQUALS(newEl2->mData,     3);
+        TEST_ASSERT_EQUALS(newEl2,            el3);
+
+        TEST_ASSERT_EQUALS(newEl3->mPrevious, newEl2);
+        TEST_ASSERT_EQUALS(newEl3->mNext,     newEl4);
+        TEST_ASSERT_EQUALS(newEl3->mData,     5);
+        TEST_ASSERT_EQUALS(newEl3,            el1);
+
+        TEST_ASSERT_EQUALS(newEl4->mPrevious, newEl3);
+        TEST_ASSERT_EQUALS(newEl4->mNext,     newEl5);
+        TEST_ASSERT_EQUALS(newEl4->mData,     7);
+        TEST_ASSERT_EQUALS(newEl4,            el5);
+
+        TEST_ASSERT_EQUALS(newEl5,            temp.mTail);
+        TEST_ASSERT_EQUALS(newEl5->mPrevious, newEl4);
+        TEST_ASSERT_EQUALS(newEl5->mNext,     0);
+        TEST_ASSERT_EQUALS(newEl5->mData,     9);
+        TEST_ASSERT_EQUALS(newEl5,            el2);
+    }
+    TEST_CASE_END();
+
+
+
+
     TEST_CASE("getHead()/getTail()");
     {
         List<u8> temp;

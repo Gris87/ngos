@@ -318,6 +318,10 @@ NgosStatus Bootloader::initVolumes()
 
 
 
+    UEFI_ASSERT_EXECUTION(sVolumes.sort(), NgosStatus::ASSERTION);
+
+
+
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
         UEFI_LVVV(("sVolumes:"));
@@ -487,7 +491,14 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle
 
         UEFI_ASSERT_EXECUTION(initVolume(&volume, protocol, blockIoHandles[i]), NgosStatus::ASSERTION);
 
-        sVolumes.append(volume);
+        if (volume.type != VolumeType::NONE)
+        {
+            sVolumes.append(volume);
+        }
+        else
+        {
+            sVolumes.prepend(volume);
+        }
     }
 
 
@@ -938,7 +949,7 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
 
                 if (hardDrivePath->signatureType == UefiHardDriveDevicePathSignatureType::GUID)
                 {
-                    ListElement<VolumeInfo> *element = sVolumes.getTail();
+                    ListElement<VolumeInfo> *element = sVolumes.getHead();
 
                     while (element)
                     {
@@ -963,7 +974,7 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
 
 
 
-                        element = element->getPrevious();
+                        element = element->getNext();
                     }
                 }
             }
@@ -998,9 +1009,16 @@ NgosStatus Bootloader::initOSes()
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initOSesFromVolume(const VolumeInfo & /*volume*/)
+NgosStatus Bootloader::initOSesFromVolume(const VolumeInfo &volume)
 {
     UEFI_LT((" | volume = ..."));
+
+
+
+    if (volume.type != VolumeType::NONE)
+    {
+
+    }
 
 
 
