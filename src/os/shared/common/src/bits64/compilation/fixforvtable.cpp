@@ -6,15 +6,21 @@
 namespace __cxxabiv1
 {
 
+
+
 class __si_class_type_info
 {
     virtual void dummy(); // TEST: NO
 };
 
+
+
 class __class_type_info
 {
     virtual void dummy(); // TEST: NO
 };
+
+
 
 void __si_class_type_info::dummy()
 {
