@@ -733,6 +733,8 @@ src/os/shared/uefibase/asm/arch/x86_64/bits64/test/sections/section0/__shared/co
 src/os/shared/uefibase/asm/arch/x86_64/bits64/test/sections/section0/__shared/common/bits64/fpu/sse41/testsse41pmuldq.S
 src/os/shared/uefibase/asm/arch/x86_64/bits64/test/sections/section0/__shared/common/bits64/fpu/sse41/testsse41pmulld.S
 src/os/shared/uefibase/asm/arch/x86_64/bits64/test/sections/section0/__shared/common/bits64/fpu/sse42/testsse42pcmpgtq.S
+src/os/shared/uefibase/src/bits64/main/earlyinitialization.cpp
+src/os/shared/uefibase/src/bits64/main/earlyinitialization.h
 src/os/shared/uefibase/src/bits64/main/setupbootparams.cpp
 src/os/shared/uefibase/src/bits64/main/setupbootparams.h
 src/os/shared/uefibase/src/bits64/main/setupcr4.cpp
