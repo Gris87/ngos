@@ -1,4 +1,4 @@
-#include "cppreleaseusageverifier.h"
+﻿#include "cppreleaseusageverifier.h"
 
 #include "src/other/codeverificationfiletype.h"
 
@@ -50,7 +50,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
               (
                i < lines.length() - 2
                &&
-               lines.at(i + 1).contains("_LD((\"gdb_debug: ")
+               lines.at(i + 1).contains("_LD((\"")
                &&
                (
                 lines.at(i + 2) == "#else"

@@ -23,8 +23,6 @@ tools/qt/build_config_maker/
 tools/qt/code_generator/
 tools/qt/code_verifier/
 tools/qt/docs_verifier/
-tools/qt/gdb_debug/
-tools/qt/gdb_debug/build/gen/
 tools/qt/image_builder/
 tools/qt/include/
 tools/qt/qmake/

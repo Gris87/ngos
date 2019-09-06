@@ -206,7 +206,6 @@ findRandomVirtualAddress
 freetype
 gcc
 gdb
-gdb_debug
 gdt
 generate_assets.sh
 getAssetEntry

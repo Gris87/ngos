@@ -101,11 +101,7 @@ NgosStatus setupKernelLocation(BootParams *params)
         return NgosStatus::FAILED;
     }
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
-    UEFI_LD(("gdb_debug: Kernel allocated in space(0x%p, %u)", address, allocSize));
-#else
     UEFI_LVV(("Kernel allocated in space(0x%p, %u)", address, allocSize));
-#endif
 
 
 
@@ -118,11 +114,7 @@ NgosStatus setupKernelLocation(BootParams *params)
 
 
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
-    UEFI_LD(("gdb_debug: Kernel relocated to address 0x%p", address));
-#else
     UEFI_LV(("Kernel relocated to address 0x%p", address));
-#endif
 
 
 

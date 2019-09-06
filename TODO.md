@@ -57,13 +57,6 @@ Code generator:
 
 
 
-GDB Debug:
-
-- Rewrite tool
-- Load memory page by page
-
-
-
 Assembler optimizer:
 
 - Implement tool

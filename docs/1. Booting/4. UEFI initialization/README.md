@@ -82,14 +82,12 @@ We are calling it here because in case of issue we need to print the error messa
 
 ```
 #if NGOS_BUILD_RELEASE == OPTION_NO
-    UEFI_LD(("Executing code for gdb_debug"));
-    UEFI_LD(("Kernel started at address 0x%p", kernelLocation));
-    UEFI_LD(("gdb_debug is ready to go"));
+    UEFI_LD(("Application started at address 0x%p", kernelLocation));
+    UEFI_LD(("gdb debug is ready to go"));
 
-    UEFI_ASSERT_EXECUTION(waitForGdbDebug(),            0);
-    UEFI_ASSERT_EXECUTION(gdbDebugBreakpointFunction(), 0);
+    UEFI_ASSERT_EXECUTION(waitForGdbDebug(), 0);
 #else
-    UEFI_LV(("Kernel started at address 0x%p", kernelLocation));
+    UEFI_LV(("Application started at address 0x%p", kernelLocation));
 #endif
 ```
 

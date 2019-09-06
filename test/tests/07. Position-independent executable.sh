@@ -115,7 +115,7 @@ echo "set architecture i386:x86-64:intel" > ${GDB_FIFO}
 
 while true
 do
-    GDB_READY=`grep "gdb_debug is ready to go" ${TEMP_LOG} | head -n 1`
+    GDB_READY=`grep "gdb debug is ready to go" ${TEMP_LOG} | head -n 1`
 
     if [ "${GDB_READY}" != "" ]; then
         break
@@ -142,7 +142,7 @@ echo ""
 
 
 
-KERNEL_LOCATION=`grep "Kernel started at address" ${TEMP_LOG} | head -n 1`
+KERNEL_LOCATION=`grep "Application started at address" ${TEMP_LOG} | head -n 1`
 echo "${KERNEL_LOCATION}"
 KERNEL_LOCATION=`echo "${KERNEL_LOCATION}" | cut -c 38-`
 

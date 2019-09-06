@@ -102,7 +102,6 @@ help:
 	@echo "    verify-tests     - Build and run test_verifier tool in order to verify test coverage"
 	@echo "    verify-docs      - Build and run docs_verifier tool in order to verify documents"
 	@echo "    test             - Perform kernel testing"
-	@echo "    run-gdb-debug    - Build the source code in debug mode and run gdb_debug tool"
 	@echo "    debug            - Build the source code in debug mode"
 	@echo "    release          - Build the source code in release mode"
 	@echo "    test-debug       - Build the source code in debug mode with the tests included"
@@ -158,11 +157,6 @@ verify-docs:
 
 test:
 	sh -c "cd test/ && ./start.sh"
-
-
-
-run-gdb-debug: test-debug
-	tools/qt/gdb_debug/build/gdb_debug --auto
 
 
 

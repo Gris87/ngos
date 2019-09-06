@@ -36,7 +36,6 @@ Available targets:
     verify-tests     - Build and run test_verifier tool in order to verify test coverage
     verify-docs      - Build and run docs_verifier tool in order to verify documents
     test             - Perform kernel testing
-    run-gdb-debug    - Build the source code in debug mode and run gdb_debug tool
     debug            - Build the source code in debug mode
     release          - Build the source code in release mode
     test-debug       - Build the source code in debug mode with the tests included

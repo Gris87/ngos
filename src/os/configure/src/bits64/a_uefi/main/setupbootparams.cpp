@@ -23,11 +23,7 @@ NgosStatus setupBootParams(BootParams **params, u64 kernelLocation)
         return NgosStatus::FAILED;
     }
 
-#if NGOS_BUILD_RELEASE == OPTION_NO
-    UEFI_LD(("gdb_debug: Boot parameters allocated in space(0x%p, %u)", *params, sizeof(BootParams)));
-#else
     UEFI_LVV(("Boot parameters allocated in space(0x%p, %u)", *params, sizeof(BootParams)));
-#endif
 
 
 
