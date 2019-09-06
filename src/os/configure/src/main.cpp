@@ -217,6 +217,7 @@ BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 
 
 
     UEFI_ASSERT_EXECUTION(FPU::init(), 0);
+    UEFI_LI(("FPU initialized"));
 
 
 

@@ -8,6 +8,7 @@
 #include <uefi/uefisystemtable.h>
 #include <uefibase/src/bits64/main/setupbootparams.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
+#include <uefibase/src/bits64/main/setupglobalobjects.h>
 #include <uefibase/src/bits64/main/setupgraphics.h>
 #include <uefibase/src/bits64/main/setupdynamicrelocation.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -169,12 +170,18 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
+    UEFI_ASSERT_EXECUTION(setupGlobalObjects(), UefiStatus::ABORTED);
+    UEFI_LI(("Setup global objects completed"));
+
+
+
     UEFI_ASSERT_EXECUTION(setupCr4(), UefiStatus::ABORTED);
     UEFI_LI(("Setup CR4 completed"));
 
 
 
     UEFI_ASSERT_EXECUTION(FPU::init(), UefiStatus::ABORTED);
+    UEFI_LI(("FPU initialized"));
 
 
 

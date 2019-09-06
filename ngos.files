@@ -739,6 +739,8 @@ src/os/shared/uefibase/src/bits64/main/setupcr4.cpp
 src/os/shared/uefibase/src/bits64/main/setupcr4.h
 src/os/shared/uefibase/src/bits64/main/setupdynamicrelocation.cpp
 src/os/shared/uefibase/src/bits64/main/setupdynamicrelocation.h
+src/os/shared/uefibase/src/bits64/main/setupglobalobjects.cpp
+src/os/shared/uefibase/src/bits64/main/setupglobalobjects.h
 src/os/shared/uefibase/src/bits64/main/setupgraphics.cpp
 src/os/shared/uefibase/src/bits64/main/setupgraphics.h
 src/os/shared/uefibase/src/bits64/other/uefibootmemorymap.h

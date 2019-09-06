@@ -14,9 +14,11 @@ SECTIONS
     .rodata          : { *(.rodata*) }
     .data            : { *(.data*) }
 
+    .gdt             : { *(.gdt) }
 
 
-    .ctors          : {
+
+    .ctors           : {
         _ctors_begin = .;
         *(.ctors)
         _ctors_end = .;
