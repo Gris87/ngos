@@ -87,7 +87,9 @@ NgosStatus printCpuFlags()
 
 NgosStatus earlyInitialization(u64 kernelLocation)
 {
-    UEFI_LT((""));
+    UEFI_LT((" | kernelLocation = 0x%p", kernelLocation));
+
+    UEFI_ASSERT(kernelLocation, "kernelLocation is null", NgosStatus::ASSERTION);
 
 
 
