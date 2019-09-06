@@ -305,7 +305,11 @@ src/os/include/uefi/uefidevicepathsubtype.h
 src/os/include/uefi/uefidevicepathtotextprotocol.h
 src/os/include/uefi/uefidevicepathtype.h
 src/os/include/uefi/uefieventtype.h
+src/os/include/uefi/uefifileattributeflags.h
+src/os/include/uefi/uefifileiotoken.h
+src/os/include/uefi/uefifilemodeflags.h
 src/os/include/uefi/uefifilepath.h
+src/os/include/uefi/uefifileprotocol.h
 src/os/include/uefi/uefigraphicsoutputbltoperation.h
 src/os/include/uefi/uefigraphicsoutputbltpixel.h
 src/os/include/uefi/uefigraphicsoutputmodeinformation.h
@@ -331,6 +335,7 @@ src/os/include/uefi/uefipciioprotocolwidth.h
 src/os/include/uefi/uefipixelbitmask.h
 src/os/include/uefi/uefiresettype.h
 src/os/include/uefi/uefiruntimeservices.h
+src/os/include/uefi/uefisimplefilesystemprotocol.h
 src/os/include/uefi/uefisimpleinputinterface.h
 src/os/include/uefi/uefisimpletextoutputinterface.h
 src/os/include/uefi/uefisimpletextoutputmode.h
