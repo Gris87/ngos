@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.7.10. USB boot maker
+0.7.09. USB boot maker
 ----------------------
 
 <p align="center">

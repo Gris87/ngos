@@ -64,8 +64,6 @@ SOURCES += \
     src/generators/common/zzz_generators/x86featuresnamesgenerator.cpp \
     src/generators/configure/configuregenerator.cpp \
     src/generators/configure/zzz_generators/asmoffsetsgenerator.cpp \
-    src/generators/gdb_debug/gdbdebuggenerator.cpp \
-    src/generators/gdb_debug/zzz_generators/hexarraysgenerator.cpp \
     src/generators/generator.cpp \
     src/generators/usb_boot_maker/usbbootmakergenerator.cpp \
     src/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.cpp \
@@ -79,8 +77,6 @@ HEADERS += \
     src/generators/common/zzz_generators/x86featuresnamesgenerator.h \
     src/generators/configure/configuregenerator.h \
     src/generators/configure/zzz_generators/asmoffsetsgenerator.h \
-    src/generators/gdb_debug/gdbdebuggenerator.h \
-    src/generators/gdb_debug/zzz_generators/hexarraysgenerator.h \
     src/generators/generator.h \
     src/generators/usb_boot_maker/usbbootmakergenerator.h \
     src/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h

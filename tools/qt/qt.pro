@@ -6,7 +6,6 @@ SUBDIRS += \
     code_generator \
     code_verifier \
     docs_verifier \
-    gdb_debug \
     image_builder \
     qmake \
     test_verifier \

@@ -44,8 +44,7 @@ docs/0. Intro/7. Tools/05. Test verifier/README.md
 docs/0. Intro/7. Tools/06. Docs verifier/README.md
 docs/0. Intro/7. Tools/07. Build config maker/README.md
 docs/0. Intro/7. Tools/08. Build config GUI/README.md
-docs/0. Intro/7. Tools/09. GDB debug/README.md
-docs/0. Intro/7. Tools/10. USB boot maker/README.md
+docs/0. Intro/7. Tools/09. USB boot maker/README.md
 docs/0. Intro/7. Tools/README.md
 docs/0. Intro/8. Scripts/README.md
 docs/0. Intro/README.md
@@ -979,10 +978,6 @@ tools/qt/code_generator/src/generators/configure/configuregenerator.cpp
 tools/qt/code_generator/src/generators/configure/configuregenerator.h
 tools/qt/code_generator/src/generators/configure/zzz_generators/asmoffsetsgenerator.cpp
 tools/qt/code_generator/src/generators/configure/zzz_generators/asmoffsetsgenerator.h
-tools/qt/code_generator/src/generators/gdb_debug/gdbdebuggenerator.cpp
-tools/qt/code_generator/src/generators/gdb_debug/gdbdebuggenerator.h
-tools/qt/code_generator/src/generators/gdb_debug/zzz_generators/hexarraysgenerator.cpp
-tools/qt/code_generator/src/generators/gdb_debug/zzz_generators/hexarraysgenerator.h
 tools/qt/code_generator/src/generators/generator.cpp
 tools/qt/code_generator/src/generators/generator.h
 tools/qt/code_generator/src/generators/usb_boot_maker/usbbootmakergenerator.cpp
@@ -1140,74 +1135,6 @@ tools/qt/docs_verifier/src/verifiers/zzz_types/md/mdspellverifier.cpp
 tools/qt/docs_verifier/src/verifiers/zzz_types/md/mdspellverifier.h
 tools/qt/docs_verifier/src/verifiers/zzz_types/md/mdstructureverifier.cpp
 tools/qt/docs_verifier/src/verifiers/zzz_types/md/mdstructureverifier.h
-tools/qt/gdb_debug/.gitignore
-tools/qt/gdb_debug/assets/images/about.png
-tools/qt/gdb_debug/assets/images/back.png
-tools/qt/gdb_debug/assets/images/breakpoint.png
-tools/qt/gdb_debug/assets/images/breakpoint_current.png
-tools/qt/gdb_debug/assets/images/exit.png
-tools/qt/gdb_debug/assets/images/icon.ico
-tools/qt/gdb_debug/assets/images/logo.png
-tools/qt/gdb_debug/assets/images/memory_map.png
-tools/qt/gdb_debug/assets/images/next.png
-tools/qt/gdb_debug/assets/images/restart.png
-tools/qt/gdb_debug/assets/images/spinner.gif
-tools/qt/gdb_debug/assets/images/start.png
-tools/qt/gdb_debug/assets/images/stop.png
-tools/qt/gdb_debug/gdb_debug.pro
-tools/qt/gdb_debug/README.md
-tools/qt/gdb_debug/Resources.qrc
-tools/qt/gdb_debug/Resources.rc
-tools/qt/gdb_debug/Screenshot.png
-tools/qt/gdb_debug/src/generated/hexarrays.h
-tools/qt/gdb_debug/src/main.cpp
-tools/qt/gdb_debug/src/main/aboutdialog.cpp
-tools/qt/gdb_debug/src/main/aboutdialog.h
-tools/qt/gdb_debug/src/main/aboutdialog.ui
-tools/qt/gdb_debug/src/main/mainwindow.cpp
-tools/qt/gdb_debug/src/main/mainwindow.h
-tools/qt/gdb_debug/src/main/mainwindow.ui
-tools/qt/gdb_debug/src/main/memorymapdialog.cpp
-tools/qt/gdb_debug/src/main/memorymapdialog.h
-tools/qt/gdb_debug/src/main/memorymapdialog.ui
-tools/qt/gdb_debug/src/other/defines.h
-tools/qt/gdb_debug/src/other/global.cpp
-tools/qt/gdb_debug/src/other/global.h
-tools/qt/gdb_debug/src/other/memorymapinfo.h
-tools/qt/gdb_debug/src/processes/gdbprocess.cpp
-tools/qt/gdb_debug/src/processes/gdbprocess.h
-tools/qt/gdb_debug/src/processes/qemuprocess.cpp
-tools/qt/gdb_debug/src/processes/qemuprocess.h
-tools/qt/gdb_debug/src/threads/addbreakpointthread.cpp
-tools/qt/gdb_debug/src/threads/addbreakpointthread.h
-tools/qt/gdb_debug/src/threads/deletebreakpointthread.cpp
-tools/qt/gdb_debug/src/threads/deletebreakpointthread.h
-tools/qt/gdb_debug/src/threads/dumpmemorythread.cpp
-tools/qt/gdb_debug/src/threads/dumpmemorythread.h
-tools/qt/gdb_debug/src/threads/interpretthread.cpp
-tools/qt/gdb_debug/src/threads/interpretthread.h
-tools/qt/gdb_debug/src/threads/memorymapthread.cpp
-tools/qt/gdb_debug/src/threads/memorymapthread.h
-tools/qt/gdb_debug/src/threads/qemureaderthread.cpp
-tools/qt/gdb_debug/src/threads/qemureaderthread.h
-tools/qt/gdb_debug/src/threads/registersthread.cpp
-tools/qt/gdb_debug/src/threads/registersthread.h
-tools/qt/gdb_debug/src/threads/restartthread.cpp
-tools/qt/gdb_debug/src/threads/restartthread.h
-tools/qt/gdb_debug/src/threads/startthread.cpp
-tools/qt/gdb_debug/src/threads/startthread.h
-tools/qt/gdb_debug/src/threads/stepthread.cpp
-tools/qt/gdb_debug/src/threads/stepthread.h
-tools/qt/gdb_debug/src/threads/stopthread.cpp
-tools/qt/gdb_debug/src/threads/stopthread.h
-tools/qt/gdb_debug/src/threads/waitforbreakthread.cpp
-tools/qt/gdb_debug/src/threads/waitforbreakthread.h
-tools/qt/gdb_debug/src/widgets/hexgraphicsview.cpp
-tools/qt/gdb_debug/src/widgets/hexgraphicsview.h
-tools/qt/gdb_debug/src/widgets/scalegraphicsview.cpp
-tools/qt/gdb_debug/src/widgets/scalegraphicsview.h
-tools/qt/gdb_debug/src/widgets/trackingtablewidget.cpp
-tools/qt/gdb_debug/src/widgets/trackingtablewidget.h
 tools/qt/image_builder/.gitignore
 tools/qt/image_builder/image_builder.pro
 tools/qt/image_builder/README.md

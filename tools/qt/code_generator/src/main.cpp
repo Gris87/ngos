@@ -6,7 +6,6 @@
 #include "src/generators/assets/assetsgenerator.h"
 #include "src/generators/common/commongenerator.h"
 #include "src/generators/configure/configuregenerator.h"
-#include "src/generators/gdb_debug/gdbdebuggenerator.h"
 #include "src/generators/usb_boot_maker/usbbootmakergenerator.h"
 
 
@@ -76,13 +75,6 @@ qint32 main(qint32 argc, char *argv[])
 
 
     if (!ConfigureGenerator::generateAll(targetPath))
-    {
-        return 3;
-    }
-
-
-
-    if (!GdbDebugGenerator::generateAll(targetPath))
     {
         return 3;
     }

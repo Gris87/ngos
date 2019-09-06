@@ -15,5 +15,4 @@ Please check them all.
 * [Docs verifier](06.%20Docs%20verifier/README.md)
 * [Build config maker](07.%20Build%20config%20maker/README.md)
 * [Build config GUI](08.%20Build%20config%20GUI/README.md)
-* [GDB debug](09.%20GDB%20debug/README.md)
-* [USB boot maker](10.%20USB%20boot%20maker/README.md)
+* [USB boot maker](09.%20USB%20boot%20maker/README.md)
