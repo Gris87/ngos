@@ -8,8 +8,8 @@
 #include <uefi/uefisystemtable.h>
 #include <uefibase/src/bits64/main/earlyinitialization.h>
 #include <uefibase/src/bits64/main/setupbootparams.h>
-#include <uefibase/src/bits64/main/setupgraphics.h>
 #include <uefibase/src/bits64/main/setupdynamicrelocation.h>
+#include <uefibase/src/bits64/main/setupgraphics.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>

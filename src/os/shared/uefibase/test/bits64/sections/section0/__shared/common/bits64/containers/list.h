@@ -221,7 +221,6 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
 
 
 
-
     TEST_CASE("getHead()/getTail()");
     {
         List<u8> temp;

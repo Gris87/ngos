@@ -995,6 +995,7 @@ NgosStatus Bootloader::initOSes()
     UEFI_LT((""));
 
 
+
     ListElement<VolumeInfo> *element = sVolumes.getHead();
 
     while (element)
@@ -1017,7 +1018,7 @@ NgosStatus Bootloader::initOSesFromVolume(const VolumeInfo &volume)
 
     if (volume.type != VolumeType::NONE)
     {
-
+        // TODO: Implement
     }
 
 

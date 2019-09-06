@@ -5,12 +5,12 @@
 
 
 
-QList<TestEntry>          TestVerifyThread::sTestEntries;
-QMutex                    TestVerifyThread::sTestEntriesMutex;
-QSemaphore                TestVerifyThread::sTestEntriesSemaphore;
 QList<TestStructureEntry> TestVerifyThread::sTestStructureEntries;
 QMutex                    TestVerifyThread::sTestStructureEntriesMutex;
 QSemaphore                TestVerifyThread::sTestStructureEntriesSemaphore;
+QList<TestEntry>          TestVerifyThread::sTestEntries;
+QMutex                    TestVerifyThread::sTestEntriesMutex;
+QSemaphore                TestVerifyThread::sTestEntriesSemaphore;
 QRegularExpression        TestVerifyThread::sStructureSizeTestRegExp("^TEST_ASSERT_EQUALS\\(sizeof\\((?:.*::)?(\\w+)(?:<.*)?\\), +\\d+\\);$");
 
 
@@ -22,14 +22,6 @@ TestVerifyThread::TestVerifyThread()
     // Nothing
 }
 
-void TestVerifyThread::pushTestEntries(const QList<TestEntry> &entries)
-{
-    QMutexLocker lock(&sTestEntriesMutex);
-
-    sTestEntries.append(entries);
-    sTestEntriesSemaphore.release(entries.length());
-}
-
 void TestVerifyThread::pushTestStructureEntries(const QList<TestStructureEntry> &entries)
 {
     QMutexLocker lock(&sTestStructureEntriesMutex);
@@ -38,28 +30,12 @@ void TestVerifyThread::pushTestStructureEntries(const QList<TestStructureEntry> 
     sTestStructureEntriesSemaphore.release(entries.length());
 }
 
-TestEntry TestVerifyThread::popTestEntry()
+void TestVerifyThread::pushTestEntries(const QList<TestEntry> &entries)
 {
-    sTestEntriesSemaphore.acquire();
+    QMutexLocker lock(&sTestEntriesMutex);
 
-    {
-        QMutexLocker lock(&sTestEntriesMutex);
-
-
-
-        TestEntry res = sTestEntries.constFirst();
-
-        if (res.getPath() == "")
-        {
-            sTestEntriesSemaphore.release();
-        }
-        else
-        {
-            sTestEntries.removeFirst();
-        }
-
-        return res;
-    }
+    sTestEntries.append(entries);
+    sTestEntriesSemaphore.release(entries.length());
 }
 
 TestStructureEntry TestVerifyThread::popTestStructureEntry()
@@ -86,12 +62,28 @@ TestStructureEntry TestVerifyThread::popTestStructureEntry()
     }
 }
 
-void TestVerifyThread::noMoreTestEntries()
+TestEntry TestVerifyThread::popTestEntry()
 {
-    QList<TestEntry> temp;
-    temp.append(TestEntry(TestEntryType::DEFINE, "", -1, "", ""));
+    sTestEntriesSemaphore.acquire();
 
-    pushTestEntries(temp);
+    {
+        QMutexLocker lock(&sTestEntriesMutex);
+
+
+
+        TestEntry res = sTestEntries.constFirst();
+
+        if (res.getPath() == "")
+        {
+            sTestEntriesSemaphore.release();
+        }
+        else
+        {
+            sTestEntries.removeFirst();
+        }
+
+        return res;
+    }
 }
 
 void TestVerifyThread::noMoreTestStructureEntries()
@@ -100,6 +92,14 @@ void TestVerifyThread::noMoreTestStructureEntries()
     temp.append(TestStructureEntry("", -1, ""));
 
     pushTestStructureEntries(temp);
+}
+
+void TestVerifyThread::noMoreTestEntries()
+{
+    QList<TestEntry> temp;
+    temp.append(TestEntry(TestEntryType::DEFINE, "", -1, "", ""));
+
+    pushTestEntries(temp);
 }
 
 const QList<TestMessageInfo>& TestVerifyThread::getMessages() const
@@ -111,20 +111,6 @@ void TestVerifyThread::run()
 {
     do
     {
-        TestEntry entry = popTestEntry();
-
-        if (entry.getPath() == "")
-        {
-            break;
-        }
-
-        processTestEntry(entry);
-    } while(true);
-
-
-
-    do
-    {
         TestStructureEntry entry = popTestStructureEntry();
 
         if (entry.getPath() == "")
@@ -134,6 +120,181 @@ void TestVerifyThread::run()
 
         processTestStructureEntry(entry);
     } while(true);
+
+
+
+    do
+    {
+        TestEntry entry = popTestEntry();
+
+        if (entry.getPath() == "")
+        {
+            break;
+        }
+
+        processTestEntry(entry);
+    } while(true);
+}
+
+void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry)
+{
+    QString testFolder;
+
+
+
+    qint64 index = entry.getPath().lastIndexOf("/src/os/include/");
+
+    if (index < 0)
+    {
+        index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
+
+        if (index < 0)
+        {
+            index = entry.getPath().lastIndexOf("/include/");
+        }
+    }
+
+
+
+    if (index >= 0)
+    {
+        QString parentFolder = entry.getPath().left(index);
+
+        do
+        {
+            if (QFile::exists(parentFolder + "/ngos.files"))
+            {
+                break;
+            }
+
+
+
+            index = parentFolder.lastIndexOf('/');
+
+            if (index < 0)
+            {
+                addMessage(entry.getPath(), "Failed to get relative path");
+
+                return;
+            }
+
+            parentFolder = parentFolder.left(index);
+        } while(true);
+
+
+
+        testFolder = parentFolder + "/src/os/shared/uefibase/test";
+    }
+    else
+    {
+        index = entry.getPath().lastIndexOf("/src/");
+
+        if (index < 0)
+        {
+            addMessage(entry.getPath(), QString("Failed to get src folder for structure %1").arg(entry.getName()));
+
+            return;
+        }
+
+
+
+        testFolder = entry.getPath().left(index) + "/test";
+    }
+
+
+
+    if (!QDir(testFolder).exists())
+    {
+        addMessage(entry.getPath(), QString("Failed to get test folder for structure %1").arg(entry.getName()));
+
+        return;
+    }
+
+
+
+    bool good = false;
+
+
+
+    QQueue<QFileInfo> files;
+    files.enqueue(QFileInfo(testFolder));
+
+    while (!files.isEmpty())
+    {
+        QFileInfo file = files.dequeue();
+
+        QString path     = file.absoluteFilePath();
+        QString filename = file.fileName();
+
+
+
+        if (file.isDir())
+        {
+            QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+
+            for (qint64 i = 0; i < filesInfo.length(); ++i)
+            {
+                files.enqueue(filesInfo.at(i));
+            }
+        }
+        else
+        {
+            if (filename == "types.h")
+            {
+                if (processTestStructureEntryWithTestModule(entry, path))
+                {
+                    good = true;
+
+                    break;
+                }
+            }
+        }
+    }
+
+
+
+    if (!good)
+    {
+        addMessage(entry.getPath(), QString("Test not found for size of structure: %1").arg(entry.getName()));
+    }
+}
+
+bool TestVerifyThread::processTestStructureEntryWithTestModule(const TestStructureEntry &entry, const QString &path)
+{
+    QFile file(path);
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        return false;
+    }
+
+    QString content = QString::fromUtf8(file.readAll());
+    file.close();
+
+
+
+    QStringList lines = content.split('\n');
+
+    for (qint64 i = 0; i < lines.length(); ++i)
+    {
+        QString line = lines.at(i).trimmed();
+
+        QRegularExpressionMatch match = sStructureSizeTestRegExp.match(line);
+
+        if (match.hasMatch())
+        {
+            QString structureName = match.captured(1);
+
+            if (structureName == entry.getName())
+            {
+                return true;
+            }
+        }
+    }
+
+
+
+    return false;
 }
 
 void TestVerifyThread::processTestEntry(const TestEntry &entry)
@@ -328,167 +489,6 @@ bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, co
             }
 
             return true;
-        }
-    }
-
-
-
-    return false;
-}
-
-void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry)
-{
-    QString testFolder;
-
-
-
-    qint64 index = entry.getPath().lastIndexOf("/src/os/include/");
-
-    if (index < 0)
-    {
-        index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
-
-        if (index < 0)
-        {
-            index = entry.getPath().lastIndexOf("/include/");
-        }
-    }
-
-
-
-    if (index >= 0)
-    {
-        QString parentFolder = entry.getPath().left(index);
-
-        do
-        {
-            if (QFile::exists(parentFolder + "/ngos.files"))
-            {
-                break;
-            }
-
-
-
-            index = parentFolder.lastIndexOf('/');
-
-            if (index < 0)
-            {
-                addMessage(entry.getPath(), "Failed to get relative path");
-
-                return;
-            }
-
-            parentFolder = parentFolder.left(index);
-        } while(true);
-
-
-
-        testFolder = parentFolder + "/src/os/shared/uefibase/test";
-    }
-    else
-    {
-        index = entry.getPath().lastIndexOf("/src/");
-
-        if (index < 0)
-        {
-            addMessage(entry.getPath(), QString("Failed to get src folder for structure %1").arg(entry.getName()));
-
-            return;
-        }
-
-
-
-        testFolder = entry.getPath().left(index) + "/test";
-    }
-
-
-
-    if (!QDir(testFolder).exists())
-    {
-        addMessage(entry.getPath(), QString("Failed to get test folder for structure %1").arg(entry.getName()));
-
-        return;
-    }
-
-
-
-    bool good = false;
-
-
-
-    QQueue<QFileInfo> files;
-    files.enqueue(QFileInfo(testFolder));
-
-    while (!files.isEmpty())
-    {
-        QFileInfo file = files.dequeue();
-
-        QString path     = file.absoluteFilePath();
-        QString filename = file.fileName();
-
-
-
-        if (file.isDir())
-        {
-            QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-            for (qint64 i = 0; i < filesInfo.length(); ++i)
-            {
-                files.enqueue(filesInfo.at(i));
-            }
-        }
-        else
-        {
-            if (filename == "types.h")
-            {
-                if (processTestStructureEntryWithTestModule(entry, path))
-                {
-                    good = true;
-
-                    break;
-                }
-            }
-        }
-    }
-
-
-
-    if (!good)
-    {
-        addMessage(entry.getPath(), QString("Test not found for size of structure: %1").arg(entry.getName()));
-    }
-}
-
-bool TestVerifyThread::processTestStructureEntryWithTestModule(const TestStructureEntry &entry, const QString &path)
-{
-    QFile file(path);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return false;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.length(); ++i)
-    {
-        QString line = lines.at(i).trimmed();
-
-        QRegularExpressionMatch match = sStructureSizeTestRegExp.match(line);
-
-        if (match.hasMatch())
-        {
-            QString structureName = match.captured(1);
-
-            if (structureName == entry.getName())
-            {
-                return true;
-            }
         }
     }
 

@@ -134,8 +134,8 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    QList<TestEntry>          testEntries;
     QList<TestStructureEntry> testStructureEntries;
+    QList<TestEntry>          testEntries;
 
     for (qint64 i = 0; i < workers.length(); ++i)
     {
@@ -143,38 +143,23 @@ qint32 main(qint32 argc, char *argv[])
 
         worker->wait();
 
-        TestVerifyThread::pushTestEntries(worker->getTestEntries());
-        testEntries.append(worker->getTestEntries());
-
         TestVerifyThread::pushTestStructureEntries(worker->getTestStructureEntries());
         testStructureEntries.append(worker->getTestStructureEntries());
+
+        TestVerifyThread::pushTestEntries(worker->getTestEntries());
+        testEntries.append(worker->getTestEntries());
 
         delete worker;
     }
 
 
 
-    TestVerifyThread::noMoreTestEntries();
     TestVerifyThread::noMoreTestStructureEntries();
+    TestVerifyThread::noMoreTestEntries();
 
 
 
     Console::out(QString("%1 files verifed in %2 ms").arg(TestWorkerThread::getAmountOfFiles()).arg(QDateTime::currentMSecsSinceEpoch() - startTime));
-
-
-
-    qSort(testEntries.begin(), testEntries.end());
-
-    Console::out("");
-    Console::out("Found entries for testing:");
-
-    for (qint64 i = 0; i < testEntries.length(); ++i)
-    {
-        Console::out(testEntries.at(i).toString());
-    }
-
-    Console::out("");
-    Console::out(QString("Entries for testing: %1").arg(testEntries.length()));
 
 
 
@@ -190,6 +175,21 @@ qint32 main(qint32 argc, char *argv[])
 
     Console::out("");
     Console::out(QString("Structure entries for testing: %1").arg(testStructureEntries.length()));
+
+
+
+    qSort(testEntries.begin(), testEntries.end());
+
+    Console::out("");
+    Console::out("Found entries for testing:");
+
+    for (qint64 i = 0; i < testEntries.length(); ++i)
+    {
+        Console::out(testEntries.at(i).toString());
+    }
+
+    Console::out("");
+    Console::out(QString("Entries for testing: %1").arg(testEntries.length()));
 
 
 
@@ -223,7 +223,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
         Console::err("");
-        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / (testEntries.length() + testStructureEntries.length())));
+        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / (testStructureEntries.length() + testEntries.length())));
         Console::err("");
 
         return 1;

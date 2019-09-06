@@ -7,4 +7,4 @@ usb_boot_maker
 
 USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/10.%20USB%20boot%20maker/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/09.%20USB%20boot%20maker/README.md).

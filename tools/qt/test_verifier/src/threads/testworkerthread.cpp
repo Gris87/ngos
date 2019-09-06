@@ -13,8 +13,8 @@ QSemaphore  TestWorkerThread::sFilesSemaphore;
 
 TestWorkerThread::TestWorkerThread()
     : QThread()
-    , mTestEntries()
     , mTestStructureEntries()
+    , mTestEntries()
     , mDefineRegexp("^#define +(\\w+)\\(([^)]*)\\) +(.+)$")
     , mFunctionRegexp("^(?:(?:static|const|inline) +)*(?:\\w[\\w<,>*& ]* )?(~?\\w+|operator(<|<=|>|>=|==|!=|\\||\\|\\||&|&&|^|~|!|-|\\+|\\*|\\/))\\([^)]*\\);?.*$")
     , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$")
@@ -65,14 +65,14 @@ void TestWorkerThread::noMoreFiles()
     pushFile("");
 }
 
-const QList<TestEntry>& TestWorkerThread::getTestEntries() const
-{
-    return mTestEntries;
-}
-
 const QList<TestStructureEntry>& TestWorkerThread::getTestStructureEntries() const
 {
     return mTestStructureEntries;
+}
+
+const QList<TestEntry>& TestWorkerThread::getTestEntries() const
+{
+    return mTestEntries;
 }
 
 void TestWorkerThread::run()
@@ -300,6 +300,11 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
     }
 }
 
+void TestWorkerThread::addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name)
+{
+    mTestStructureEntries.append(TestStructureEntry(path, lineNum, name));
+}
+
 void TestWorkerThread::addTestEntry(TestEntryType type, const QString &path, qint64 lineNum, const QString &name, QString testModule, const QString &line, const QString &prevLine)
 {
     if (
@@ -326,9 +331,4 @@ void TestWorkerThread::addTestEntry(TestEntryType type, const QString &path, qin
 
         mTestEntries.append(TestEntry(type, path, lineNum, name + "()", testModule));
     }
-}
-
-void TestWorkerThread::addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name)
-{
-    mTestStructureEntries.append(TestStructureEntry(path, lineNum, name));
 }

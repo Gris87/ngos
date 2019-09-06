@@ -9,9 +9,9 @@
 #include <ngos/linkage.h>
 #include <uefi/uefisystemtable.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
+#include <uefibase/src/bits64/main/setupdynamicrelocation.h>
 #include <uefibase/src/bits64/main/setupglobalobjects.h>
 #include <uefibase/src/bits64/main/setupgraphics.h>
-#include <uefibase/src/bits64/main/setupdynamicrelocation.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
