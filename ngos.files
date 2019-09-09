@@ -306,6 +306,7 @@ src/os/include/uefi/uefidevicepathtotextprotocol.h
 src/os/include/uefi/uefidevicepathtype.h
 src/os/include/uefi/uefieventtype.h
 src/os/include/uefi/uefifileattributeflags.h
+src/os/include/uefi/uefifileinfo.h
 src/os/include/uefi/uefifileiotoken.h
 src/os/include/uefi/uefifilemodeflags.h
 src/os/include/uefi/uefifilepath.h

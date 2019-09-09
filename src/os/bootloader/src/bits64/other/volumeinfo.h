@@ -7,6 +7,7 @@
 #include <uefi/types.h>
 #include <uefi/uefiblockioprotocol.h>
 #include <uefi/uefidevicepath.h>
+#include <uefi/uefifileprotocol.h>
 
 #include "src/bits64/other/volumetype.h"
 
@@ -21,7 +22,8 @@ struct VolumeInfo
     UefiDevicePath      *wholeDiskDevicePath;
     GptData              gptData;
     VolumeType           type;
-    const char8         *name;
+    const char16        *name;
+    UefiFileProtocol    *rootDirectory;
 
 
 

@@ -62,7 +62,11 @@
 #include <uefi/uefidevicepath.h>
 #include <uefi/uefidevicepathtotextprotocol.h>
 #include <uefi/uefieventtype.h>
+#include <uefi/uefifileattributeflags.h>
+#include <uefi/uefifileiotoken.h>
+#include <uefi/uefifilemodeflags.h>
 #include <uefi/uefifilepath.h>
+#include <uefi/uefifileprotocol.h>
 #include <uefi/uefigraphicsoutputbltoperation.h>
 #include <uefi/uefigraphicsoutputbltpixel.h>
 #include <uefi/uefigraphicsoutputmodeinformation.h>
@@ -88,6 +92,7 @@
 #include <uefi/uefipixelbitmask.h>
 #include <uefi/uefiresettype.h>
 #include <uefi/uefiruntimeservices.h>
+#include <uefi/uefisimplefilesystemprotocol.h>
 #include <uefi/uefisimpleinputinterface.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisimpletextoutputmode.h>
@@ -170,7 +175,11 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiDevicePathType),                           1);
         TEST_ASSERT_EQUALS(sizeof(UefiDxeServicesConfigurationTable),            1);
         TEST_ASSERT_EQUALS(sizeof(UefiEventType),                                4);
+        TEST_ASSERT_EQUALS(sizeof(UefiFileAttributeFlag),                        8);
+        TEST_ASSERT_EQUALS(sizeof(UefiFileIoToken),                              32);
+        TEST_ASSERT_EQUALS(sizeof(UefiFileModeFlag),                             8);
         TEST_ASSERT_EQUALS(sizeof(UefiFilePath),                                 4);
+        TEST_ASSERT_EQUALS(sizeof(UefiFileProtocol),                             120);
         TEST_ASSERT_EQUALS(sizeof(UefiGraphicsOutputBltOperation),               4);
         TEST_ASSERT_EQUALS(sizeof(UefiGraphicsOutputBltPixel),                   4);
         TEST_ASSERT_EQUALS(sizeof(UefiGraphicsOutputModeInformation),            36);
@@ -207,6 +216,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiResetType),                                4);
         TEST_ASSERT_EQUALS(sizeof(UefiRuntimeServices),                          136);
         TEST_ASSERT_EQUALS(sizeof(UefiSalSystemConfigurationTable),              1);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimpleFileSystemProtocol),                 16);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleInputInterface),                     24);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleTextOutputInterface),                80);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleTextOutputMode),                     24);

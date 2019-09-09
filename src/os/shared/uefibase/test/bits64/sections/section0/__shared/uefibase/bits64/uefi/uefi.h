@@ -17,28 +17,13 @@
 
 TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
 {
-    TEST_CASE("convertToAscii()");
-    {
-        char8 *res1 = UEFI::convertToAscii(u"Hello World");
-        char8 *res2 = UEFI::convertToAscii(u"Test");
-
-        TEST_ASSERT_EQUALS(strcmp(res1, "Hello World"), 0);
-        TEST_ASSERT_EQUALS(strcmp(res2, "Test"),        0);
-
-        TEST_ASSERT_EQUALS(UEFI::freePool(res1), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(res2), UefiStatus::SUCCESS);
-    }
-    TEST_CASE_END();
-
-
-
     TEST_CASE("parentDirectory()");
     {
-        char8 *res1 = UEFI::parentDirectory("\\EFI\\BOOT\\bootx64.efi");
-        char8 *res2 = UEFI::parentDirectory("\\EFI\\BOOT\\images\\background.jpg");
+        char16 *res1 = UEFI::parentDirectory(u"\\EFI\\BOOT\\bootx64.efi");
+        char16 *res2 = UEFI::parentDirectory(u"\\EFI\\BOOT\\images\\background.jpg");
 
-        TEST_ASSERT_EQUALS(strcmp(res1, "\\EFI\\BOOT"),         0);
-        TEST_ASSERT_EQUALS(strcmp(res2, "\\EFI\\BOOT\\images"), 0);
+        TEST_ASSERT_EQUALS(strcmp(res1, u"\\EFI\\BOOT"),         0);
+        TEST_ASSERT_EQUALS(strcmp(res2, u"\\EFI\\BOOT\\images"), 0);
 
         TEST_ASSERT_EQUALS(UEFI::freePool(res1), UefiStatus::SUCCESS);
         TEST_ASSERT_EQUALS(UEFI::freePool(res2), UefiStatus::SUCCESS);

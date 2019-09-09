@@ -23,7 +23,7 @@ TEST_CASES(section1, bits64_types);
     {
         TEST_ASSERT_EQUALS(sizeof(Bootloader),    1);
         TEST_ASSERT_EQUALS(sizeof(BootloaderGUI), 1);
-        TEST_ASSERT_EQUALS(sizeof(VolumeInfo),    80);
+        TEST_ASSERT_EQUALS(sizeof(VolumeInfo),    88);
         TEST_ASSERT_EQUALS(sizeof(VolumeType),    1);
     }
     TEST_CASE_END();

@@ -482,6 +482,41 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
             }
             break;
 
+            case 'S':
+            {
+                const char16 *str2   = va_arg(args, char16 *);
+                i64          length = strnlen(str2, precision);
+
+                if (!(flags & FLAG_LEFT))
+                {
+                    while (fieldWidth > length)
+                    {
+                        *str = ' ';
+                        ++str;
+
+                        --fieldWidth;
+                    }
+                }
+
+                for (i64 i = 0; i < length; ++i)
+                {
+                    *str = *str2;
+                    ++str;
+                    ++str2;
+                }
+
+                while (fieldWidth > length)
+                {
+                    *str = ' ';
+                    ++str;
+
+                    --fieldWidth;
+                }
+
+                continue;
+            }
+            break;
+
             case 'p':
             {
                 if (fieldWidth == -1)

@@ -7,6 +7,7 @@
 #include <common/src/bits64/graphics/image.h>
 #include <ngos/status.h>
 #include <uefi/uefidevicepath.h>
+#include <uefi/uefifileinfo.h>
 #include <uefi/uefiloadedimageprotocol.h>
 
 #include "src/bits64/other/volumeinfo.h"
@@ -18,16 +19,16 @@ class Bootloader
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus cleanUpPath(char8 *path);
+    static NgosStatus cleanUpPath(char16 *path);
 
     static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
 private:
     static NgosStatus initImage(); // TEST: NO
     static NgosStatus initPaths(); // TEST: NO
-    static NgosStatus initApplicationPath(char8 **applicationPath); // TEST: NO
-    static NgosStatus initDevicePath(char8 *applicationPath); // TEST: NO
-    static NgosStatus initApplicationDirPath(char8 *applicationPath); // TEST: NO
+    static NgosStatus initApplicationPath(char16 **applicationPath); // TEST: NO
+    static NgosStatus initDevicePath(char16 *applicationPath); // TEST: NO
+    static NgosStatus initApplicationDirPath(char16 *applicationPath); // TEST: NO
     static NgosStatus initVolumes(); // TEST: NO
     static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size); // TEST: NO
     static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
@@ -41,12 +42,17 @@ private:
     static NgosStatus initVolumeGptData(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeName(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initVolumeRootDirectory(VolumeInfo *volume); // TEST: NO
     static NgosStatus initOSes(); // TEST: NO
     static NgosStatus initOSesFromVolume(const VolumeInfo &volume); // TEST: NO
+    static NgosStatus initOSesFromPath(UefiFileProtocol *parentDirectory, const char16 *path); // TEST: NO
+    static NgosStatus initOSesFromDirectory(UefiFileProtocol *directory); // TEST: NO
+    static NgosStatus initOSesFromDirectory(UefiFileProtocol *directory, u64 size); // TEST: NO
+    static NgosStatus initOSesFromDirectory(UefiFileProtocol *directory, u64 size, UefiFileInfo *fileInfos); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
-    static char8                   *sApplicationDirPath;
+    static char16                  *sApplicationDirPath;
     static List<VolumeInfo>         sVolumes;
 };
 

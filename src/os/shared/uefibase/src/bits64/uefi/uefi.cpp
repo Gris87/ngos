@@ -7,6 +7,7 @@
 #include <page/macros.h>
 #include <uefi/uefidevicepathtotextprotocol.h>
 #include <uefi/uefifilepath.h>
+#include <uefi/uefisimplefilesystemprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -184,42 +185,7 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-char8* UEFI::convertToAscii(const char16 *str)
-{
-    UEFI_LT((" | str = 0x%p", str));
-
-    UEFI_ASSERT(str, "str is null", 0);
-
-
-
-    u64 size = strlen(str) + 1;
-
-
-
-    char8 *res;
-
-    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
-    {
-        UEFI_LE(("Failed to allocate pool(%u) for string", size));
-
-        return 0;
-    }
-
-    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
-
-
-
-    for (i64 i = 0; i < (i64)size; ++i)
-    {
-        res[i] = str[i];
-    }
-
-
-
-    return res;
-}
-
-char8* UEFI::parentDirectory(const char8 *path)
+char16* UEFI::parentDirectory(const char16 *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
@@ -227,8 +193,8 @@ char8* UEFI::parentDirectory(const char8 *path)
 
 
 
-    u64          size = 0;
-    const char8 *str  = path;
+    u64           size = 0;
+    const char16 *str  = path;
 
     while (*str)
     {
@@ -242,13 +208,13 @@ char8* UEFI::parentDirectory(const char8 *path)
 
     UEFI_TEST_ASSERT(size > 0, 0);
 
-    size = size - (u64)path + 1;
+    size = ((size - (u64)path) >> 1) + 1;
 
 
 
-    char8 *res;
+    char16 *res;
 
-    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size * sizeof(char16), (void **)&res) != UefiStatus::SUCCESS)
     {
         UEFI_LE(("Failed to allocate pool(%u) for string", size));
 
@@ -259,7 +225,7 @@ char8* UEFI::parentDirectory(const char8 *path)
 
 
 
-    memcpy(res, path, size - 1);
+    memcpy(res, path, (size - 1) * sizeof(char16));
     res[size - 1] = 0;
 
 
@@ -267,7 +233,41 @@ char8* UEFI::parentDirectory(const char8 *path)
     return res;
 }
 
-char8* UEFI::devicePathToString(UefiDevicePath *path)
+UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
+{
+    UEFI_LT((" | handle = 0x%p", handle));
+
+    UEFI_ASSERT(handle, "handle is null", 0);
+
+
+
+    Guid                          protocol = UEFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID;
+    UefiSimpleFileSystemProtocol *fs;
+
+    if (handleProtocol(handle, &protocol, (void **)&fs) != UefiStatus::SUCCESS)
+    {
+        return 0;
+    }
+
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_SIMPLE_FILE_SYSTEM_PROTOCOL", handle, fs));
+
+
+
+    UefiFileProtocol *res;
+
+    if (fs->openVolume(fs, &res) != UefiStatus::SUCCESS)
+    {
+        return 0;
+    }
+
+    UEFI_LVV(("Openned volume(0x%p) for handle(0x%p)", res, handle));
+
+
+
+    return res;
+}
+
+char16* UEFI::devicePathToString(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
@@ -289,33 +289,16 @@ char8* UEFI::devicePathToString(UefiDevicePath *path)
 
 
 
-    char16 *pathStr = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
+    char16 *res = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
 
-    if (!pathStr) // pathStr == 0
+    if (!res) // pathStr == 0
     {
-        UEFI_LE(("Failed to allocate pool(0x%p) for string", pathStr));
+        UEFI_LE(("Failed to allocate pool(0x%p) for string", res));
 
         return 0;
     }
 
-    UEFI_LVV(("Allocated pool(0x%p) for string", pathStr));
-
-
-
-    char8 *res = convertToAscii(pathStr);
-
-
-
-    if (freePool(pathStr) == UefiStatus::SUCCESS)
-    {
-        UEFI_LVV(("Released pool(0x%p) for string", pathStr));
-    }
-    else
-    {
-        UEFI_LE(("Failed to free pool(0x%p) for string", pathStr));
-
-        return 0;
-    }
+    UEFI_LVV(("Allocated pool(0x%p) for string", res));
 
 
 
@@ -347,7 +330,7 @@ UefiDevicePath* UEFI::devicePathFromHandle(uefi_handle handle)
     return res;
 }
 
-UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char8 *fileName)
+UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
 {
     UEFI_LT((" | device = 0x%p, fileName = 0x%p", device, fileName));
 

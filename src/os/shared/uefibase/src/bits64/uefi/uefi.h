@@ -5,6 +5,7 @@
 
 #include <ngos/status.h>
 #include <uefi/types.h>
+#include <uefi/uefifileprotocol.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisystemtable.h>
 #include <uefibase/src/bits64/other/uefibootmemorymap.h>
@@ -27,12 +28,13 @@ public:
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
-    static char8* convertToAscii(const char16 *str);
-    static char8* parentDirectory(const char8 *path);
+    static char16* parentDirectory(const char16 *path);
 
-    static char8* devicePathToString(UefiDevicePath *path); // TEST: NO
+    static UefiFileProtocol* openVolume(uefi_handle handle); // TEST: NO
+
+    static char16* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* devicePathFromHandle(uefi_handle handle); // TEST: NO
-    static UefiDevicePath* fileDevicePath(uefi_handle device, const char8 *fileName); // TEST: NO
+    static UefiDevicePath* fileDevicePath(uefi_handle device, const char16 *fileName); // TEST: NO
     static UefiDevicePath* nextDevicePathNode(UefiDevicePath *path);
     static NgosStatus setDevicePathEndNode(UefiDevicePath *path);
     static bool isDevicePathEndType(UefiDevicePath *path);

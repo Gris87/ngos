@@ -52,6 +52,10 @@
 
 
 
+#define FLAG(name) (u64)(name) // TEST: NO
+
+
+
 // Ignore CppAlignmentVerifier [BEGIN]
 #define FLAGS_TO_STRING(res, flags, typeToString, type) \
     { \

@@ -19,25 +19,25 @@ TEST_CASES(section1, bits64_main_bootloader);
 {
     TEST_CASE("cleanUpPath()");
     {
-        char8 path1[32];
-        char8 path2[32];
-        char8 path3[32];
-        char8 path4[32];
-        char8 path5[32];
-        char8 path6[32];
-        char8 path7[32];
-        char8 path8[32];
-        char8 path9[32];
+        char16 path1[32];
+        char16 path2[32];
+        char16 path3[32];
+        char16 path4[32];
+        char16 path5[32];
+        char16 path6[32];
+        char16 path7[32];
+        char16 path8[32];
+        char16 path9[32];
 
-        TEST_ASSERT_EQUALS(strcpy(path1, "/EFI/BOOT/BOOTX64.EFI"),    path1);
-        TEST_ASSERT_EQUALS(strcpy(path2, "\\EFI\\BOOT\\BOOTX64.EFI"), path2);
-        TEST_ASSERT_EQUALS(strcpy(path3, "/EFI//BOOT///BOOTX64.EFI"), path3);
-        TEST_ASSERT_EQUALS(strcpy(path4, "/EFI/BOOT\\/BOOTX64.EFI"),  path4);
-        TEST_ASSERT_EQUALS(strcpy(path5, "/EFI\\\\BOOT/"),            path5);
-        TEST_ASSERT_EQUALS(strcpy(path6, "EFI////BOOT\\"),            path6);
-        TEST_ASSERT_EQUALS(strcpy(path7, "/"),                        path7); // Ignore CppSingleCharVerifier
-        TEST_ASSERT_EQUALS(strcpy(path8, "\\"),                       path8); // Ignore CppSingleCharVerifier
-        TEST_ASSERT_EQUALS(strcpy(path9, ""),                         path9);
+        TEST_ASSERT_EQUALS(strcpy(path1, u"/EFI/BOOT/BOOTX64.EFI"),    path1);
+        TEST_ASSERT_EQUALS(strcpy(path2, u"\\EFI\\BOOT\\BOOTX64.EFI"), path2);
+        TEST_ASSERT_EQUALS(strcpy(path3, u"/EFI//BOOT///BOOTX64.EFI"), path3);
+        TEST_ASSERT_EQUALS(strcpy(path4, u"/EFI/BOOT\\/BOOTX64.EFI"),  path4);
+        TEST_ASSERT_EQUALS(strcpy(path5, u"/EFI\\\\BOOT/"),            path5);
+        TEST_ASSERT_EQUALS(strcpy(path6, u"EFI////BOOT\\"),            path6);
+        TEST_ASSERT_EQUALS(strcpy(path7, u"/"),                        path7); // Ignore CppSingleCharVerifier
+        TEST_ASSERT_EQUALS(strcpy(path8, u"\\"),                       path8); // Ignore CppSingleCharVerifier
+        TEST_ASSERT_EQUALS(strcpy(path9, u""),                         path9);
 
         TEST_ASSERT_EQUALS(Bootloader::cleanUpPath(path1), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::cleanUpPath(path2), NgosStatus::OK);
@@ -49,15 +49,15 @@ TEST_CASES(section1, bits64_main_bootloader);
         TEST_ASSERT_EQUALS(Bootloader::cleanUpPath(path8), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::cleanUpPath(path9), NgosStatus::OK);
 
-        TEST_ASSERT_EQUALS(strcmp(path1, "EFI\\BOOT\\BOOTX64.EFI"), 0);
-        TEST_ASSERT_EQUALS(strcmp(path2, "EFI\\BOOT\\BOOTX64.EFI"), 0);
-        TEST_ASSERT_EQUALS(strcmp(path3, "EFI\\BOOT\\BOOTX64.EFI"), 0);
-        TEST_ASSERT_EQUALS(strcmp(path4, "EFI\\BOOT\\BOOTX64.EFI"), 0);
-        TEST_ASSERT_EQUALS(strcmp(path5, "EFI\\BOOT"),              0);
-        TEST_ASSERT_EQUALS(strcmp(path6, "EFI\\BOOT"),              0);
-        TEST_ASSERT_EQUALS(strcmp(path7, "\\"),                     0); // Ignore CppSingleCharVerifier
-        TEST_ASSERT_EQUALS(strcmp(path8, "\\"),                     0); // Ignore CppSingleCharVerifier
-        TEST_ASSERT_EQUALS(strcmp(path9, "\\"),                     0); // Ignore CppSingleCharVerifier
+        TEST_ASSERT_EQUALS(strcmp(path1, u"EFI\\BOOT\\BOOTX64.EFI"), 0);
+        TEST_ASSERT_EQUALS(strcmp(path2, u"EFI\\BOOT\\BOOTX64.EFI"), 0);
+        TEST_ASSERT_EQUALS(strcmp(path3, u"EFI\\BOOT\\BOOTX64.EFI"), 0);
+        TEST_ASSERT_EQUALS(strcmp(path4, u"EFI\\BOOT\\BOOTX64.EFI"), 0);
+        TEST_ASSERT_EQUALS(strcmp(path5, u"EFI\\BOOT"),              0);
+        TEST_ASSERT_EQUALS(strcmp(path6, u"EFI\\BOOT"),              0);
+        TEST_ASSERT_EQUALS(strcmp(path7, u"\\"),                     0); // Ignore CppSingleCharVerifier
+        TEST_ASSERT_EQUALS(strcmp(path8, u"\\"),                     0); // Ignore CppSingleCharVerifier
+        TEST_ASSERT_EQUALS(strcmp(path9, u"\\"),                     0); // Ignore CppSingleCharVerifier
     }
     TEST_CASE_END();
 }
