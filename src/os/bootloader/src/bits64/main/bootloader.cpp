@@ -1163,7 +1163,7 @@ NgosStatus Bootloader::initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *pa
     {
         UefiFileProtocol *directory;
 
-        if (parentDirectory->open(parentDirectory, &directory, path, FLAG(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
+        if (parentDirectory->open(parentDirectory, &directory, path, FLAGS(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
         {
             UEFI_LV(("%S directory openned for OS search", absolutePath));
 
