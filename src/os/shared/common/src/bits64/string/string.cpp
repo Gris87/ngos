@@ -7,21 +7,37 @@
 
 char8 toLower(char8 ch)
 {
+    COMMON_LT((" | ch = %c", ch));
+
+
+
     return ch >= 'A' && ch <= 'Z' ? (ch | 0x20) : ch;
 }
 
 char16 toLower(char16 ch)
 {
+    COMMON_LT((" | ch = %c", ch));
+
+
+
     return ch >= u'A' && ch <= u'Z' ? (ch | 0x0020) : ch;
 }
 
 char8 toUpper(char8 ch)
 {
+    COMMON_LT((" | ch = %c", ch));
+
+
+
     return ch >= 'a' && ch <= 'z' ? (ch & ~0x20) : ch;
 }
 
 char16 toUpper(char16 ch)
 {
+    COMMON_LT((" | ch = %c", ch));
+
+
+
     return ch >= u'a' && ch <= u'z' ? (ch & ~0x0020) : ch;
 }
 

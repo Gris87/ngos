@@ -11,6 +11,7 @@
 #include <uefi/uefiloadedimageprotocol.h>
 
 #include "src/bits64/other/volumeinfo.h"
+#include "src/bits64/other/osinfo.h"
 
 
 
@@ -45,16 +46,18 @@ private:
     static NgosStatus initVolumeName(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeRootDirectory(VolumeInfo *volume); // TEST: NO
     static NgosStatus initOSes(); // TEST: NO
-    static NgosStatus initOSesFromVolume(const VolumeInfo &volume); // TEST: NO
-    static NgosStatus initOSesFromPath(UefiFileProtocol *parentDirectory, const char16 *parentPath, const char16 *path); // TEST: NO
-    static NgosStatus initOSesFromDirectory(char16 *absolutePath, UefiFileProtocol *directory); // TEST: NO
-    static NgosStatus initOSesFromDirectory(char16 *absolutePath, UefiFileProtocol *directory, u64 size); // TEST: NO
-    static NgosStatus initOSesFromDirectory(char16 *absolutePath, UefiFileProtocol *directory, u64 size, UefiFileInfo *fileInfos); // TEST: NO
+    static NgosStatus initOSesFromVolume(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *parentDirectory, const char16 *parentPath, const char16 *path); // TEST: NO
+    static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory); // TEST: NO
+    static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, u64 size); // TEST: NO
+    static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, u64 size, UefiFileInfo *fileInfo); // TEST: NO
+    static NgosStatus addNgosOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
     static char16                  *sApplicationDirPath;
     static List<VolumeInfo>         sVolumes;
+    static List<OsInfo>             sOSes;
 };
 
 

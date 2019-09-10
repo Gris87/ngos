@@ -63,6 +63,7 @@
 #include <uefi/uefidevicepathtotextprotocol.h>
 #include <uefi/uefieventtype.h>
 #include <uefi/uefifileattributeflags.h>
+#include <uefi/uefifileinfo.h>
 #include <uefi/uefifileiotoken.h>
 #include <uefi/uefifilemodeflags.h>
 #include <uefi/uefifilepath.h>
@@ -176,6 +177,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiDxeServicesConfigurationTable),            1);
         TEST_ASSERT_EQUALS(sizeof(UefiEventType),                                4);
         TEST_ASSERT_EQUALS(sizeof(UefiFileAttributeFlag),                        8);
+        TEST_ASSERT_EQUALS(sizeof(UefiFileInfo),                                 80);
         TEST_ASSERT_EQUALS(sizeof(UefiFileIoToken),                              32);
         TEST_ASSERT_EQUALS(sizeof(UefiFileModeFlag),                             8);
         TEST_ASSERT_EQUALS(sizeof(UefiFilePath),                                 4);
