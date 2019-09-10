@@ -10,7 +10,7 @@
 struct FileInfo
 {
     QString downloadName;
-    QString filename;
+    QString fileName;
     QString hash;
 };
 

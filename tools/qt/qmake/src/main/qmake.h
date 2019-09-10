@@ -15,7 +15,7 @@ public:
     qint64 process(); // TEST: NO
 
 private:
-    qint64 processInWorkingDirectory(const QString &workingDirectory, const QString &proFilename); // TEST: NO
+    qint64 processInWorkingDirectory(const QString &workingDirectory, const QString &proFileName); // TEST: NO
     qint64 processLines(const QString &workingDirectory, const QStringList &lines); // TEST: NO
     qint64 parseEntry(const QString &workingDirectory, const QString &entryName, const QString &entryOperator, const QString &entryValue); // TEST: NO
     qint64 generateMakefile(const QString &workingDirectory); // TEST: NO

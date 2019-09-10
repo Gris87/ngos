@@ -17,7 +17,7 @@ class Assets
 {
 public:
     static NgosStatus init(); // TEST: NO
-    static AssetEntry* getAssetEntry(const char8 *filename); // TEST: NO
+    static AssetEntry* getAssetEntry(const char8 *fileName); // TEST: NO
 
 private:
     static u8         sEntriesCount;

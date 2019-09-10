@@ -10,8 +10,8 @@
 #include <uefi/uefifileinfo.h>
 #include <uefi/uefiloadedimageprotocol.h>
 
-#include "src/bits64/other/volumeinfo.h"
 #include "src/bits64/other/osinfo.h"
+#include "src/bits64/other/volumeinfo.h"
 
 
 
@@ -50,7 +50,7 @@ private:
     static NgosStatus initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *parentDirectory, const char16 *parentPath, const char16 *path); // TEST: NO
     static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory); // TEST: NO
     static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, u64 size); // TEST: NO
-    static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, u64 size, UefiFileInfo *fileInfo); // TEST: NO
+    static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, UefiFileInfo *fileInfo); // TEST: NO
     static NgosStatus addNgosOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;

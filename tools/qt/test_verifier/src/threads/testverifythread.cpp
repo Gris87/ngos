@@ -224,7 +224,7 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
         QFileInfo file = files.dequeue();
 
         QString path     = file.absoluteFilePath();
-        QString filename = file.fileName();
+        QString fileName = file.fileName();
 
 
 
@@ -239,7 +239,7 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
         }
         else
         {
-            if (filename == "types.h")
+            if (fileName == "types.h")
             {
                 if (processTestStructureEntryWithTestModule(entry, path))
                 {
@@ -385,7 +385,7 @@ void TestVerifyThread::processTestEntry(const TestEntry &entry)
         QFileInfo file = files.dequeue();
 
         QString path     = file.absoluteFilePath();
-        QString filename = file.fileName();
+        QString fileName = file.fileName();
 
 
 
@@ -400,7 +400,7 @@ void TestVerifyThread::processTestEntry(const TestEntry &entry)
         }
         else
         {
-            if (filename == entry.getTestModule())
+            if (fileName == entry.getTestModule())
             {
                 if (processTestEntryWithTestModule(entry, path))
                 {

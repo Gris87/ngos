@@ -3,6 +3,10 @@
 
 
 
+#include <macro/utils.h>
+
+
+
 // Ignore CppAlignmentVerifier [BEGIN]
 #define __ASM_NEWLINE ;
 
@@ -52,7 +56,73 @@
 
 
 
-#define FLAG(name) (u64)(name) // TEST: NO
+#define FLAG(name) (u64)(name)
+
+#define FLAGS(...) (PP_JOIN(__FLAGS_, PP_NARG(__VA_ARGS__))((__VA_ARGS__)))
+
+#define __FLAGS_1(a)   FLAG(PP_0 a)
+#define __FLAGS_2(a)   FLAG(PP_0 a) | __FLAGS_1(PP_X a)
+#define __FLAGS_3(a)   FLAG(PP_0 a) | __FLAGS_2(PP_X a)
+#define __FLAGS_4(a)   FLAG(PP_0 a) | __FLAGS_3(PP_X a)
+#define __FLAGS_5(a)   FLAG(PP_0 a) | __FLAGS_4(PP_X a)
+#define __FLAGS_6(a)   FLAG(PP_0 a) | __FLAGS_5(PP_X a)
+#define __FLAGS_7(a)   FLAG(PP_0 a) | __FLAGS_6(PP_X a)
+#define __FLAGS_8(a)   FLAG(PP_0 a) | __FLAGS_7(PP_X a)
+#define __FLAGS_9(a)   FLAG(PP_0 a) | __FLAGS_8(PP_X a)
+#define __FLAGS_10(a)  FLAG(PP_0 a) | __FLAGS_9(PP_X a)
+#define __FLAGS_11(a)  FLAG(PP_0 a) | __FLAGS_10(PP_X a)
+#define __FLAGS_12(a)  FLAG(PP_0 a) | __FLAGS_11(PP_X a)
+#define __FLAGS_13(a)  FLAG(PP_0 a) | __FLAGS_12(PP_X a)
+#define __FLAGS_14(a)  FLAG(PP_0 a) | __FLAGS_13(PP_X a)
+#define __FLAGS_15(a)  FLAG(PP_0 a) | __FLAGS_14(PP_X a)
+#define __FLAGS_16(a)  FLAG(PP_0 a) | __FLAGS_15(PP_X a)
+#define __FLAGS_17(a)  FLAG(PP_0 a) | __FLAGS_16(PP_X a)
+#define __FLAGS_18(a)  FLAG(PP_0 a) | __FLAGS_17(PP_X a)
+#define __FLAGS_19(a)  FLAG(PP_0 a) | __FLAGS_18(PP_X a)
+#define __FLAGS_20(a)  FLAG(PP_0 a) | __FLAGS_19(PP_X a)
+#define __FLAGS_21(a)  FLAG(PP_0 a) | __FLAGS_20(PP_X a)
+#define __FLAGS_22(a)  FLAG(PP_0 a) | __FLAGS_21(PP_X a)
+#define __FLAGS_23(a)  FLAG(PP_0 a) | __FLAGS_22(PP_X a)
+#define __FLAGS_24(a)  FLAG(PP_0 a) | __FLAGS_23(PP_X a)
+#define __FLAGS_25(a)  FLAG(PP_0 a) | __FLAGS_24(PP_X a)
+#define __FLAGS_26(a)  FLAG(PP_0 a) | __FLAGS_25(PP_X a)
+#define __FLAGS_27(a)  FLAG(PP_0 a) | __FLAGS_26(PP_X a)
+#define __FLAGS_28(a)  FLAG(PP_0 a) | __FLAGS_27(PP_X a)
+#define __FLAGS_29(a)  FLAG(PP_0 a) | __FLAGS_28(PP_X a)
+#define __FLAGS_30(a)  FLAG(PP_0 a) | __FLAGS_29(PP_X a)
+#define __FLAGS_31(a)  FLAG(PP_0 a) | __FLAGS_30(PP_X a)
+#define __FLAGS_32(a)  FLAG(PP_0 a) | __FLAGS_31(PP_X a)
+#define __FLAGS_33(a)  FLAG(PP_0 a) | __FLAGS_32(PP_X a)
+#define __FLAGS_34(a)  FLAG(PP_0 a) | __FLAGS_33(PP_X a)
+#define __FLAGS_35(a)  FLAG(PP_0 a) | __FLAGS_34(PP_X a)
+#define __FLAGS_36(a)  FLAG(PP_0 a) | __FLAGS_35(PP_X a)
+#define __FLAGS_37(a)  FLAG(PP_0 a) | __FLAGS_36(PP_X a)
+#define __FLAGS_38(a)  FLAG(PP_0 a) | __FLAGS_37(PP_X a)
+#define __FLAGS_39(a)  FLAG(PP_0 a) | __FLAGS_38(PP_X a)
+#define __FLAGS_40(a)  FLAG(PP_0 a) | __FLAGS_39(PP_X a)
+#define __FLAGS_41(a)  FLAG(PP_0 a) | __FLAGS_40(PP_X a)
+#define __FLAGS_42(a)  FLAG(PP_0 a) | __FLAGS_41(PP_X a)
+#define __FLAGS_43(a)  FLAG(PP_0 a) | __FLAGS_42(PP_X a)
+#define __FLAGS_44(a)  FLAG(PP_0 a) | __FLAGS_43(PP_X a)
+#define __FLAGS_45(a)  FLAG(PP_0 a) | __FLAGS_44(PP_X a)
+#define __FLAGS_46(a)  FLAG(PP_0 a) | __FLAGS_45(PP_X a)
+#define __FLAGS_47(a)  FLAG(PP_0 a) | __FLAGS_46(PP_X a)
+#define __FLAGS_48(a)  FLAG(PP_0 a) | __FLAGS_47(PP_X a)
+#define __FLAGS_49(a)  FLAG(PP_0 a) | __FLAGS_48(PP_X a)
+#define __FLAGS_50(a)  FLAG(PP_0 a) | __FLAGS_49(PP_X a)
+#define __FLAGS_51(a)  FLAG(PP_0 a) | __FLAGS_50(PP_X a)
+#define __FLAGS_52(a)  FLAG(PP_0 a) | __FLAGS_51(PP_X a)
+#define __FLAGS_53(a)  FLAG(PP_0 a) | __FLAGS_52(PP_X a)
+#define __FLAGS_54(a)  FLAG(PP_0 a) | __FLAGS_53(PP_X a)
+#define __FLAGS_55(a)  FLAG(PP_0 a) | __FLAGS_54(PP_X a)
+#define __FLAGS_56(a)  FLAG(PP_0 a) | __FLAGS_55(PP_X a)
+#define __FLAGS_57(a)  FLAG(PP_0 a) | __FLAGS_56(PP_X a)
+#define __FLAGS_58(a)  FLAG(PP_0 a) | __FLAGS_57(PP_X a)
+#define __FLAGS_59(a)  FLAG(PP_0 a) | __FLAGS_58(PP_X a)
+#define __FLAGS_60(a)  FLAG(PP_0 a) | __FLAGS_49(PP_X a)
+#define __FLAGS_61(a)  FLAG(PP_0 a) | __FLAGS_60(PP_X a)
+#define __FLAGS_62(a)  FLAG(PP_0 a) | __FLAGS_61(PP_X a)
+#define __FLAGS_63(a)  FLAG(PP_0 a) | __FLAGS_62(PP_X a)
 
 
 

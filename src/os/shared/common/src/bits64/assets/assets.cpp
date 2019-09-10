@@ -36,8 +36,8 @@ NgosStatus Assets::init()
 
 
 
-        sEntries[sEntriesCount].filename =  (const char8 *)currentAddress;
-        currentAddress                   += strlen(sEntries[sEntriesCount].filename) + 1;
+        sEntries[sEntriesCount].fileName =  (const char8 *)currentAddress;
+        currentAddress                   += strlen(sEntries[sEntriesCount].fileName) + 1;
 
         COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);
 
@@ -55,7 +55,7 @@ NgosStatus Assets::init()
 
 
 
-        COMMON_LVVV(("Assets::sEntries[%u].filename    = %s",   sEntriesCount, sEntries[sEntriesCount].filename));
+        COMMON_LVVV(("Assets::sEntries[%u].fileName    = %s",   sEntriesCount, sEntries[sEntriesCount].fileName));
         COMMON_LVVV(("Assets::sEntries[%u].contentSize = %u",   sEntriesCount, sEntries[sEntriesCount].contentSize));
         COMMON_LVVV(("Assets::sEntries[%u].content     = 0x%p", sEntriesCount, sEntries[sEntriesCount].content));
 
@@ -71,19 +71,19 @@ NgosStatus Assets::init()
     return NgosStatus::OK;
 }
 
-AssetEntry* Assets::getAssetEntry(const char8 *filename)
+AssetEntry* Assets::getAssetEntry(const char8 *fileName)
 {
-    COMMON_LT((" | filename = 0x%p", filename));
+    COMMON_LT((" | fileName = 0x%p", fileName));
 
-    COMMON_ASSERT(filename, "filename is null", 0);
+    COMMON_ASSERT(fileName, "fileName is null", 0);
 
 
 
     for (i64 i = 0; i < sEntriesCount; ++i)
     {
-        if (!strcmp(sEntries[i].filename, filename)) // sEntries[i].filename == filename
+        if (!strcmp(sEntries[i].fileName, fileName)) // sEntries[i].fileName == fileName
         {
-            COMMON_LVV(("Asset \"%s\" found at address 0x%p with size %u", filename, sEntries[i].content, sEntries[i].contentSize));
+            COMMON_LVV(("Asset \"%s\" found at address 0x%p with size %u", fileName, sEntries[i].content, sEntries[i].contentSize));
 
             return &sEntries[i];
         }
@@ -91,7 +91,7 @@ AssetEntry* Assets::getAssetEntry(const char8 *filename)
 
 
 
-    COMMON_LF(("Asset \"%s\" not found", filename));
+    COMMON_LF(("Asset \"%s\" not found", fileName));
 
     return 0;
 }

@@ -89,7 +89,7 @@ qint32 main(qint32 argc, char *argv[])
         QFileInfo file = files.dequeue();
 
         QString path     = file.absoluteFilePath();
-        QString filename = file.fileName();
+        QString fileName = file.fileName();
 
 
 
@@ -97,7 +97,7 @@ qint32 main(qint32 argc, char *argv[])
         {
             if (file.isDir())
             {
-                if (filename != ".git" && !path.contains("tools/tracers/assets"))
+                if (fileName != ".git" && !path.contains("tools/tracers/assets"))
                 {
                     QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
@@ -109,124 +109,124 @@ qint32 main(qint32 argc, char *argv[])
             }
             else
             {
-                if (filename.endsWith(".cpp"))
+                if (fileName.endsWith(".cpp"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::CPP);
                 }
                 else
-                if (filename.endsWith(".h"))
+                if (fileName.endsWith(".h"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::H);
                 }
                 else
-                if (filename.endsWith(".S"))
+                if (fileName.endsWith(".S"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::S);
                 }
                 else
-                if (filename.endsWith(".php"))
+                if (fileName.endsWith(".php"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::PHP);
                 }
                 else
-                if (filename == "Makefile")
+                if (fileName == "Makefile")
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::MAKEFILE);
                 }
                 else
-                if (filename.endsWith(".pro"))
+                if (fileName.endsWith(".pro"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::PRO);
                 }
                 else
-                if (filename.endsWith(".pri"))
+                if (fileName.endsWith(".pri"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::PRI);
                 }
                 else
-                if (filename.endsWith(".ld"))
+                if (fileName.endsWith(".ld"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::LD);
                 }
                 else
-                if (filename.endsWith(".sh"))
+                if (fileName.endsWith(".sh"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::SH);
                 }
                 else
-                if (filename.endsWith(".includes"))
+                if (fileName.endsWith(".includes"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::INCLUDES);
                 }
                 else
                 if (
-                    filename.endsWith(".xml")
+                    fileName.endsWith(".xml")
                     ||
-                    filename.endsWith(".ts")
+                    fileName.endsWith(".ts")
                     ||
-                    filename.endsWith(".vbox")
+                    fileName.endsWith(".vbox")
                     ||
-                    filename.endsWith(".creator.shared")
+                    fileName.endsWith(".creator.shared")
                    )
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::XML);
                 }
                 else
-                if (filename.endsWith(".ui"))
+                if (fileName.endsWith(".ui"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::UI);
                 }
                 else
-                if (filename.endsWith(".qrc"))
+                if (fileName.endsWith(".qrc"))
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::QRC);
                 }
                 else
                 if (
-                    filename.endsWith(".txt")
+                    fileName.endsWith(".txt")
                     ||
-                    filename.endsWith(".md")
+                    fileName.endsWith(".md")
                     ||
-                    filename.endsWith(".sql")
+                    fileName.endsWith(".sql")
                     ||
-                    filename.endsWith(".rc")
+                    fileName.endsWith(".rc")
                     ||
-                    filename.endsWith(".config")
+                    fileName.endsWith(".config")
                     ||
-                    filename.endsWith(".files")
+                    fileName.endsWith(".files")
                    )
                 {
                     CodeWorkerThread::pushFile(path, CodeVerificationFileType::TEXT);
                 }
                 else
                 if (
-                    !filename.endsWith(".creator")
+                    !fileName.endsWith(".creator")
                     &&
-                    !filename.endsWith(".creator.user")
+                    !fileName.endsWith(".creator.user")
                     &&
-                    !filename.endsWith(".patch")
+                    !fileName.endsWith(".patch")
                     &&
-                    !filename.endsWith(".qm")
+                    !fileName.endsWith(".qm")
                     &&
-                    !filename.endsWith(".bin")
+                    !fileName.endsWith(".bin")
                     &&
-                    !filename.endsWith(".dll")
+                    !fileName.endsWith(".dll")
                     &&
-                    !filename.endsWith(".exe")
+                    !fileName.endsWith(".exe")
                     &&
-                    !filename.endsWith(".hex")
+                    !fileName.endsWith(".hex")
                     &&
-                    !filename.endsWith(".ttf")
+                    !fileName.endsWith(".ttf")
                     &&
-                    !filename.endsWith(".ico")
+                    !fileName.endsWith(".ico")
                     &&
-                    !filename.endsWith(".png")
+                    !fileName.endsWith(".png")
                     &&
-                    !filename.endsWith(".jpg")
+                    !fileName.endsWith(".jpg")
                     &&
-                    !filename.endsWith(".gif")
+                    !fileName.endsWith(".gif")
                     &&
-                    !filename.endsWith(".svg")
+                    !fileName.endsWith(".svg")
                     &&
                     !file.isExecutable()
                    )

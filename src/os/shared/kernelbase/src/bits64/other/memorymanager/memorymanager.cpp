@@ -57,7 +57,7 @@ NgosStatus MemoryManager::add(u64 start, u64 size)
 
 
 
-    return addRange(&sMemoryBlock.memory, start, size, (memory_block_region_flags)MemoryBlockRegionFlag::NONE, MAX_NUMNODES);
+    return addRange(&sMemoryBlock.memory, start, size, FLAG(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
 }
 
 NgosStatus MemoryManager::reserve(u64 start, u64 size)
@@ -68,7 +68,7 @@ NgosStatus MemoryManager::reserve(u64 start, u64 size)
 
 
 
-    return addRange(&sMemoryBlock.reserved, start, size, (memory_block_region_flags)MemoryBlockRegionFlag::NONE, MAX_NUMNODES);
+    return addRange(&sMemoryBlock.reserved, start, size, FLAG(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
 }
 
 NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 start, u64 size, memory_block_region_flags flags, memory_block_region_node_id nodeId)

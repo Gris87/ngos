@@ -88,7 +88,7 @@ qint32 main(qint32 argc, char *argv[])
         QFileInfo file = files.dequeue();
 
         QString path     = file.absoluteFilePath();
-        QString filename = file.fileName();
+        QString fileName = file.fileName();
 
 
 
@@ -96,7 +96,7 @@ qint32 main(qint32 argc, char *argv[])
         {
             if (file.isDir())
             {
-                if (filename != ".git" && filename != "test")
+                if (fileName != ".git" && fileName != "test")
                 {
                     QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
@@ -108,7 +108,7 @@ qint32 main(qint32 argc, char *argv[])
             }
             else
             {
-                if (filename.endsWith(".h"))
+                if (fileName.endsWith(".h"))
                 {
                     TestWorkerThread::pushFile(path);
                 }

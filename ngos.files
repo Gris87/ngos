@@ -93,6 +93,7 @@ include/elf/symboltype.h
 include/elf/symbolvisibility.h
 include/elf/type.h
 include/elf/version.h
+include/macro/utils.h
 include/ngos/linkage.h
 include/ngos/status.h
 include/ngos/types.h
@@ -762,6 +763,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__include/asm/instructions.
 src/os/shared/uefibase/test/bits64/sections/section0/__include/bootparams/memorymapentry.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/elf/symbol.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/guid/utils.h
+src/os/shared/uefibase/test/bits64/sections/section0/__include/macro/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/ngos/linkage.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/ngos/types.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/ngos/utils.h

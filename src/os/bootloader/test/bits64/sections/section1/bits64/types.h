@@ -8,6 +8,8 @@
 
 #include "src/bits64/main/bootloader.h"
 #include "src/bits64/main/bootloadergui.h"
+#include "src/bits64/other/osinfo.h"
+#include "src/bits64/other/ostype.h"
 #include "src/bits64/other/volumeinfo.h"
 #include "src/bits64/other/volumetype.h"
 
@@ -23,6 +25,8 @@ TEST_CASES(section1, bits64_types);
     {
         TEST_ASSERT_EQUALS(sizeof(Bootloader),    1);
         TEST_ASSERT_EQUALS(sizeof(BootloaderGUI), 1);
+        TEST_ASSERT_EQUALS(sizeof(OsInfo),        24);
+        TEST_ASSERT_EQUALS(sizeof(OsType),        1);
         TEST_ASSERT_EQUALS(sizeof(VolumeInfo),    88);
         TEST_ASSERT_EQUALS(sizeof(VolumeType),    1);
     }

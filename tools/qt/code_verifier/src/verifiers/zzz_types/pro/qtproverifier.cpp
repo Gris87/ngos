@@ -290,20 +290,20 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
         {
             QFileInfo file = files.dequeue();
 
-            QString filepath = file.absoluteFilePath();
-            QString filename = file.fileName();
+            QString filePath = file.absoluteFilePath();
+            QString fileName = file.fileName();
 
             if (file.isDir())
             {
                 if (
-                    filename != ".git"
+                    fileName != ".git"
                     &&
-                    filename != "assets"
+                    fileName != "assets"
                     &&
-                    filename != "build"
+                    fileName != "build"
                    )
                 {
-                    QFileInfoList filesInfo = QDir(filepath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+                    QFileInfoList filesInfo = QDir(filePath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
                     for (qint64 i = 0; i < filesInfo.length(); ++i)
                     {
@@ -318,41 +318,41 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                 if (extension != "")
                 {
                     if (
-                        filename.endsWith('.' + extension)
+                        fileName.endsWith('.' + extension)
                         ||
                         (
                          cppExtension
                          &&
-                         filename.endsWith(".S")
+                         fileName.endsWith(".S")
                         )
                        )
                     {
-                        relativePath = filepath.mid(parentFolder.length());
+                        relativePath = filePath.mid(parentFolder.length());
                     }
                 }
                 else
                 {
                     if (
-                        !filename.endsWith(".cpp")
+                        !fileName.endsWith(".cpp")
                         &&
-                        !filename.endsWith(".h")
+                        !fileName.endsWith(".h")
                         &&
-                        !filename.endsWith(".S")
+                        !fileName.endsWith(".S")
                         &&
-                        !filename.endsWith(".o")
+                        !fileName.endsWith(".o")
                         &&
-                        !filename.endsWith(".pri")
+                        !fileName.endsWith(".pri")
                         &&
-                        !filename.endsWith(".pro")
+                        !fileName.endsWith(".pro")
                         &&
-                        filename != ".gitignore"
+                        fileName != ".gitignore"
                         &&
-                        filename != ".qmake.stash"
+                        fileName != ".qmake.stash"
                         &&
-                        filename != "Makefile"
+                        fileName != "Makefile"
                        )
                     {
-                        relativePath = filepath.mid(parentFolder.length());
+                        relativePath = filePath.mid(parentFolder.length());
                     }
                 }
 

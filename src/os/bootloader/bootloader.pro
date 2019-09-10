@@ -44,6 +44,8 @@ SOURCES += \
 HEADERS += \
     src/bits64/main/bootloader.h \
     src/bits64/main/bootloadergui.h \
+    src/bits64/other/osinfo.h \
+    src/bits64/other/ostype.h \
     src/bits64/other/volumeinfo.h \
     src/bits64/other/volumetype.h \
     test/bits64/sections/section1/bits64/main/bootloader.h \

@@ -544,7 +544,7 @@ bool FPU::isXFeatureSupervisor(XFeature xFeature)
 
 
 
-    bool res = !!(ecx & (x_feature_flags)XFeatureFlag::SUPERVISOR);
+    bool res = !!(ecx & FLAG(XFeatureFlag::SUPERVISOR));
 
     COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
 
@@ -565,7 +565,7 @@ bool FPU::isXFeatureUser(XFeature xFeature)
 
 
 
-    bool res = !(ecx & (x_feature_flags)XFeatureFlag::SUPERVISOR);
+    bool res = !(ecx & FLAG(XFeatureFlag::SUPERVISOR));
 
     COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
 
@@ -587,7 +587,7 @@ bool FPU::isXFeatureAligned(XFeature xFeature)
 
 
 
-    return ecx & (x_feature_flags)XFeatureFlag::ALIGNED;
+    return ecx & FLAG(XFeatureFlag::ALIGNED);
 }
 
 NgosStatus FPU::setFeature(XFeature xFeature)
@@ -631,7 +631,7 @@ NgosStatus FPU::setFlag(XFeatureTypeFlag flag)
 
 
 
-    sXFeatures |= (x_feature_type_flags)flag;
+    sXFeatures |= FLAG(flag);
 
 
 
@@ -644,7 +644,7 @@ NgosStatus FPU::clearFlag(XFeatureTypeFlag flag)
 
 
 
-    sXFeatures &= ~(x_feature_type_flags)flag;
+    sXFeatures &= ~FLAG(flag);
 
 
 
@@ -657,7 +657,7 @@ bool FPU::hasFlag(XFeatureTypeFlag flag)
 
 
 
-    return sXFeatures & (x_feature_type_flags)flag;
+    return sXFeatures & FLAG(flag);
 }
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier

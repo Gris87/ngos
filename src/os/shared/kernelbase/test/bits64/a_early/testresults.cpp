@@ -26,11 +26,11 @@ void TestResults::testPassed()
     ++mPassed;
 }
 
-void TestResults::testFailed(const char8 *filename, u64 line, const char8 *description)
+void TestResults::testFailed(const char8 *fileName, u64 line, const char8 *description)
 {
-    EARLY_LT((" | filename = 0x%p, line = %u, description = 0x%p", filename, line, description));
+    EARLY_LT((" | fileName = 0x%p, line = %u, description = 0x%p", fileName, line, description));
 
-    EARLY_ASSERT(filename,    "filename is null");
+    EARLY_ASSERT(fileName,    "fileName is null");
     EARLY_ASSERT(line > 0,    "line is zero");
     EARLY_ASSERT(description, "description is null");
 
@@ -42,7 +42,7 @@ void TestResults::testFailed(const char8 *filename, u64 line, const char8 *descr
 
     char8 buffer[1024];
 
-    sprintf(buffer, "%s:%u | %s", filename, line, description);
+    sprintf(buffer, "%s:%u | %s", fileName, line, description);
 
 
 

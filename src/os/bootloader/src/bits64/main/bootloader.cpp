@@ -1123,7 +1123,7 @@ NgosStatus Bootloader::initOSes()
 
 NgosStatus Bootloader::initOSesFromVolume(VolumeInfo *volume)
 {
-    UEFI_LT((" | volume = 0x%p"));
+    UEFI_LT((" | volume = 0x%p", volume));
 
     UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
 
@@ -1163,7 +1163,7 @@ NgosStatus Bootloader::initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *pa
     {
         UefiFileProtocol *directory;
 
-        if (parentDirectory->open(parentDirectory, &directory, path, (uefi_file_mode_flags)UefiFileModeFlag::READ, (uefi_file_attribute_flags)UefiFileAttributeFlag::NONE) == UefiStatus::SUCCESS)
+        if (parentDirectory->open(parentDirectory, &directory, path, FLAG(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
         {
             UEFI_LV(("%S directory openned for OS search", absolutePath));
 
@@ -1289,11 +1289,14 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (directory->read(directory, &size, fileInfo) == UefiStatus::SUCCESS)
+    u64 bytesRead = size;
+
+    if (directory->read(directory, &bytesRead, fileInfo) == UefiStatus::SUCCESS)
     {
+        UEFI_TEST_ASSERT(size == bytesRead,      NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(size == fileInfo->size, NgosStatus::ASSERTION);
 
-        status = initOSesFromDirectory(volume, absolutePath, directory, size, fileInfo);
+        status = initOSesFromDirectory(volume, absolutePath, directory, fileInfo);
     }
     else
     {
@@ -1316,14 +1319,13 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
     return status;
 }
 
-NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, u64 size, UefiFileInfo *fileInfo)
+NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, UefiFileInfo *fileInfo)
 {
-    UEFI_LT((" | volume = 0x%p, absolutePath = %S, directory = 0x%p, size = %u, fileInfo = 0x%p", volume, absolutePath, directory, size, fileInfo));
+    UEFI_LT((" | volume = 0x%p, absolutePath = %S, directory = 0x%p, fileInfo = 0x%p", volume, absolutePath, directory, fileInfo));
 
     UEFI_ASSERT(volume,       "volume is null",       NgosStatus::ASSERTION);
     UEFI_ASSERT(absolutePath, "absolutePath is null", NgosStatus::ASSERTION);
     UEFI_ASSERT(directory,    "directory is null",    NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0,     "size is zero",         NgosStatus::ASSERTION);
     UEFI_ASSERT(fileInfo,     "fileInfo is null",     NgosStatus::ASSERTION);
 
 

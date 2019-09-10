@@ -89,7 +89,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
         EARLY_TEST_ASSERT((*((u64 *)streamHeader->signature) & 0x0000FFFFFFFFFFFF) == XZ_STREAM_HEADER_SIGNATURE,                                                      NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(streamHeader->streamFlags                                == (xz_stream_flags)XzStreamFlag::TYPE_OF_CHECK_CRC64,                              NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(streamHeader->streamFlags                                == FLAG(XzStreamFlag::TYPE_OF_CHECK_CRC64),                                         NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(streamHeader->crc32                                      == Crc::crc32((u8 *)&streamHeader->streamFlags, sizeof(streamHeader->streamFlags)), NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(typeOfCheckFlag                                          == XzStreamFlag::TYPE_OF_CHECK_CRC64,                                               NgosStatus::ASSERTION);
     }
@@ -128,7 +128,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             u64 blockCompressedSize = 0;
 
-            if (blockHeader->blockFlags & (xz_block_flags)XzBlockFlag::COMPRESSED_SIZE_PRESENT)
+            if (blockHeader->blockFlags & FLAG(XzBlockFlag::COMPRESSED_SIZE_PRESENT))
             {
                 currentBlockPointer += decodeMultibyteInteger(currentBlockPointer, -1, &blockCompressedSize);
             }
@@ -139,7 +139,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             u64 blockUncompressedSize = 0;
 
-            if (blockHeader->blockFlags & (xz_block_flags)XzBlockFlag::UNCOMPRESSED_SIZE_PRESENT)
+            if (blockHeader->blockFlags & FLAG(XzBlockFlag::UNCOMPRESSED_SIZE_PRESENT))
             {
                 currentBlockPointer += decodeMultibyteInteger(currentBlockPointer, -1, &blockUncompressedSize);
             }

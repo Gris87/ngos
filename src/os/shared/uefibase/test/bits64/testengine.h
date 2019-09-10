@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <macro/utils.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/testresults.h>
@@ -118,11 +119,6 @@
 
 
 
-#define __TEST_OVERRIDE_MACRO2(_1, _2, NAME, ...)     NAME
-#define __TEST_OVERRIDE_MACRO3(_1, _2, _3, NAME, ...) NAME
-
-
-
 #define TEST_FAILED(description) \
         __results->testFailed(__FILE__, __LINE__, description); \
         break;
@@ -141,35 +137,35 @@
             TEST_FAILED(description); \
         }
 
-#define TEST_ASSERT(...) __TEST_OVERRIDE_MACRO2(__VA_ARGS__, __TEST_ASSERT2, __TEST_ASSERT1)(__VA_ARGS__)
+#define TEST_ASSERT(...) __OVERRIDE_MACRO2(__VA_ARGS__, __TEST_ASSERT2, __TEST_ASSERT1)(__VA_ARGS__)
 
 
 
 #define __TEST_ASSERT_EQUALS2(value1, value2)              TEST_ASSERT((value1) == (value2));
 #define __TEST_ASSERT_EQUALS3(value1, value2, description) TEST_ASSERT((value1) == (value2), description);
 
-#define TEST_ASSERT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_EQUALS3, __TEST_ASSERT_EQUALS2)(__VA_ARGS__)
+#define TEST_ASSERT_EQUALS(...) __OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_EQUALS3, __TEST_ASSERT_EQUALS2)(__VA_ARGS__)
 
 
 
 #define __TEST_ASSERT_NOT_EQUALS2(value1, value2)              TEST_ASSERT((value1) != (value2));
 #define __TEST_ASSERT_NOT_EQUALS3(value1, value2, description) TEST_ASSERT((value1) != (value2), description);
 
-#define TEST_ASSERT_NOT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_NOT_EQUALS3, __TEST_ASSERT_NOT_EQUALS2)(__VA_ARGS__)
+#define TEST_ASSERT_NOT_EQUALS(...) __OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_NOT_EQUALS3, __TEST_ASSERT_NOT_EQUALS2)(__VA_ARGS__)
 
 
 
 #define __TEST_ASSERT_FLOAT_EQUALS2(value1, value2)              TEST_ASSERT(ABS((value1) - (value2)) < 0.001);
 #define __TEST_ASSERT_FLOAT_EQUALS3(value1, value2, description) TEST_ASSERT(ABS((value1) - (value2)) < 0.001, description);
 
-#define TEST_ASSERT_FLOAT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_FLOAT_EQUALS3, __TEST_ASSERT_FLOAT_EQUALS2)(__VA_ARGS__)
+#define TEST_ASSERT_FLOAT_EQUALS(...) __OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_FLOAT_EQUALS3, __TEST_ASSERT_FLOAT_EQUALS2)(__VA_ARGS__)
 
 
 
 #define __TEST_ASSERT_FLOAT_NOT_EQUALS2(value1, value2)              TEST_ASSERT(ABS((value1) - (value2)) >= 0.001);
 #define __TEST_ASSERT_FLOAT_NOT_EQUALS3(value1, value2, description) TEST_ASSERT(ABS((value1) - (value2)) >= 0.001, description);
 
-#define TEST_ASSERT_FLOAT_NOT_EQUALS(...) __TEST_OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_FLOAT_NOT_EQUALS3, __TEST_ASSERT_FLOAT_NOT_EQUALS2)(__VA_ARGS__)
+#define TEST_ASSERT_FLOAT_NOT_EQUALS(...) __OVERRIDE_MACRO3(__VA_ARGS__, __TEST_ASSERT_FLOAT_NOT_EQUALS3, __TEST_ASSERT_FLOAT_NOT_EQUALS2)(__VA_ARGS__)
 
 
 

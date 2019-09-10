@@ -45,9 +45,9 @@ qint64 QMake::process()
     return generateMakefile(workingDirectory);
 }
 
-qint64 QMake::processInWorkingDirectory(const QString &workingDirectory, const QString &proFilename)
+qint64 QMake::processInWorkingDirectory(const QString &workingDirectory, const QString &proFileName)
 {
-    QString pathToProFile = workingDirectory + '/' + proFilename;
+    QString pathToProFile = workingDirectory + '/' + proFileName;
 
     mMakefileDependencies.append(pathToProFile);
 

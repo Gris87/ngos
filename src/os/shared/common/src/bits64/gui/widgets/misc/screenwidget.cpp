@@ -141,7 +141,7 @@ NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY
 
 
 
-    Image *image = widget->mResultImage;
+    Image *image = widget->getResultImage();
 
     COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), mFrameBuffer, image->getWidth(), image->getHeight(), mWidth, mHeight, image->getBytesPerPixel(), sizeof(RgbaPixel), image->isOpaque(), positionX, positionY), NgosStatus::ASSERTION);
 

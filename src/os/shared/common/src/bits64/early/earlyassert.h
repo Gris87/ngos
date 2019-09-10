@@ -8,6 +8,7 @@
 #include <common/src/bits64/console/graphicalconsole.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/serial/serial.h>
+#include <macro/utils.h>
 #include <ngos/status.h>
 
 
@@ -129,12 +130,6 @@
 #endif
 // Ignore CppIndentVerifier [END]
 // Ignore CppAlignmentVerifier [END]
-
-
-
-#define __OVERRIDE_MACRO2(_1, _2,         NAME, ...) NAME
-#define __OVERRIDE_MACRO3(_1, _2, _3,     NAME, ...) NAME
-#define __OVERRIDE_MACRO4(_1, _2, _3, _4, NAME, ...) NAME
 
 
 

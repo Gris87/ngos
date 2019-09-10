@@ -59,13 +59,13 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
         {
             QFileInfo file = files.dequeue();
 
-            QString filepath = file.absoluteFilePath();
+            QString filePath = file.absoluteFilePath();
 
 
 
             if (file.isDir())
             {
-                QFileInfoList filesInfo = QDir(filepath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+                QFileInfoList filesInfo = QDir(filePath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
                 for (qint64 i = 0; i < filesInfo.length(); ++i)
                 {
@@ -74,9 +74,9 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
             }
             else
             {
-                if (filepath.endsWith(".h") && filepath != path && !filepath.contains("/asm_"))
+                if (filePath.endsWith(".h") && filePath != path && !filePath.contains("/asm_"))
                 {
-                    QString expectedPath = filepath.mid(filepath.lastIndexOf("/test/") + 6);
+                    QString expectedPath = filePath.mid(filePath.lastIndexOf("/test/") + 6);
 
                     qint64 index = expectedPath.indexOf("sections/");
 

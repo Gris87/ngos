@@ -13,8 +13,8 @@
 
 
 
-#define XFEATURE_MASK_FPU_SSE    ((x_feature_type_flags)XFeatureTypeFlag::FPU | (x_feature_type_flags)XFeatureTypeFlag::SSE)
-#define XFEATURE_MASK_SUPERVISOR ((x_feature_type_flags)XFeatureTypeFlag::PT)
+#define XFEATURE_MASK_FPU_SSE    FLAGS(XFeatureTypeFlag::FPU, XFeatureTypeFlag::SSE)
+#define XFEATURE_MASK_SUPERVISOR FLAG(XFeatureTypeFlag::PT)
 
 
 

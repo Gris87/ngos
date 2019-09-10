@@ -60,7 +60,7 @@
         GraphicalConsole::print(__PRETTY_FUNCTION__); \
         \
         Serial::printf message; \
-        ConsGraphicalConsoleole::println(printfBuffer); \
+        GraphicalConsole::println(printfBuffer); \
     } \
     else \
     if (Console::canPrint()) \

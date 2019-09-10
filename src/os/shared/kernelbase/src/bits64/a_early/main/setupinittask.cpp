@@ -13,7 +13,7 @@ NgosStatus setupInitTask()
 
 
 
-    initTask.threadInfo.flags = (thread_info_flags)ThreadInfoFlag::NONE;
+    initTask.threadInfo.flags = FLAG(ThreadInfoFlag::NONE);
     initTask.state            = TaskState::RUNNABLE;
     initTask.stack            = initStack;
     initTask.stackCanary      = 0;
@@ -33,12 +33,12 @@ NgosStatus setupInitTask()
 
 
 
-        EARLY_TEST_ASSERT(sizeof(initTask)          == 24,                                      NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(initTask.threadInfo.flags == (thread_info_flags)ThreadInfoFlag::NONE, NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(initTask.state            == TaskState::RUNNABLE,                     NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(initTask.stack            == initStack,                               NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(initTask.stackCanary      == 0,                                       NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(*((u64 *)initTask.stack)  == 0x444E454B43415453,                      NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(sizeof(initTask)          == 24,                         NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(initTask.threadInfo.flags == FLAG(ThreadInfoFlag::NONE), NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(initTask.state            == TaskState::RUNNABLE,        NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(initTask.stack            == initStack,                  NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(initTask.stackCanary      == 0,                          NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(*((u64 *)initTask.stack)  == 0x444E454B43415453,         NgosStatus::ASSERTION);
     }
 
 

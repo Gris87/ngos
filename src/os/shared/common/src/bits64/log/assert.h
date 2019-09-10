@@ -12,6 +12,7 @@
 #else
 #include <buildconfig.h>
 #include <common/src/bits64/serial/serial.h>
+#include <macro/utils.h>
 #include <ngos/status.h>
 #endif
 
@@ -124,12 +125,6 @@
 #define __COMMON_ASSERT_EXECUTION_4(command, resultType, expectedValue, returnValue) command;
 #endif
 // Ignore CppAlignmentVerifier [END]
-
-
-
-#define __OVERRIDE_MACRO2(_1, _2,         NAME, ...) NAME
-#define __OVERRIDE_MACRO3(_1, _2, _3,     NAME, ...) NAME
-#define __OVERRIDE_MACRO4(_1, _2, _3, _4, NAME, ...) NAME
 
 
 

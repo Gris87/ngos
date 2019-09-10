@@ -460,7 +460,7 @@ void MainWindow::fileListReplyFinished()
                         QJsonValue file = filesArray.at(i);
 
                         QJsonValue fileDownloadName = file["download_name"];
-                        QJsonValue fileFilename     = file["filename"];
+                        QJsonValue fileFileName     = file["filename"];
                         QJsonValue fileHash         = file["hash"];
 
 
@@ -468,7 +468,7 @@ void MainWindow::fileListReplyFinished()
                         if (
                             fileDownloadName.isUndefined()
                             ||
-                            fileFilename.isUndefined()
+                            fileFileName.isUndefined()
                             ||
                             fileHash.isUndefined()
                            )
@@ -486,7 +486,7 @@ void MainWindow::fileListReplyFinished()
                         FileInfo fileInfo;
 
                         fileInfo.downloadName = fileDownloadName.toString("");
-                        fileInfo.filename     = fileFilename.toString("");
+                        fileInfo.fileName     = fileFileName.toString("");
                         fileInfo.hash         = fileHash.toString("");
 
                         mVersionFiles.append(fileInfo);
@@ -542,7 +542,7 @@ void MainWindow::downloadReplyFinished()
 
     reply->deleteLater();
 
-    if (mReplies.remove(fileInfo->filename) != 1)
+    if (mReplies.remove(fileInfo->fileName) != 1)
     {
         qFatal("Unknown reply");
     }
@@ -551,20 +551,20 @@ void MainWindow::downloadReplyFinished()
 
     if (!reply->error())
     {
-        addLog(tr("Downloaded file %1 from server %2").arg(fileInfo->filename).arg(server));
+        addLog(tr("Downloaded file %1 from server %2").arg(fileInfo->fileName).arg(server));
 
 
 
-        qint64 index = fileInfo->filename.lastIndexOf('/');
+        qint64 index = fileInfo->fileName.lastIndexOf('/');
 
         if (index < 0)
         {
             index = 0;
         }
 
-        if (!QDir().mkpath(mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->filename.left(index)))
+        if (!QDir().mkpath(mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->fileName.left(index)))
         {
-            addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+            addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
 
             abortReplies();
             switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -578,7 +578,7 @@ void MainWindow::downloadReplyFinished()
 
 
 
-        QString filePath = mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->filename;
+        QString filePath = mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->fileName;
         QFile file(filePath);
 
         if (file.open(QIODevice::WriteOnly))
@@ -587,7 +587,7 @@ void MainWindow::downloadReplyFinished()
             {
                 file.close();
 
-                addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+                addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
 
                 abortReplies();
                 switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -599,7 +599,7 @@ void MainWindow::downloadReplyFinished()
         }
         else
         {
-            addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+            addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
 
             abortReplies();
             switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -632,7 +632,7 @@ void MainWindow::downloadReplyFinished()
                     {
                         file.close();
 
-                        addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+                        addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
 
                         abortReplies();
                         switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -644,7 +644,7 @@ void MainWindow::downloadReplyFinished()
                 }
                 else
                 {
-                    addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+                    addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
 
                     abortReplies();
                     switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -654,7 +654,7 @@ void MainWindow::downloadReplyFinished()
             }
             else
             {
-                addLog(tr("Failed to decompress file %1").arg(fileInfo->filename));
+                addLog(tr("Failed to decompress file %1").arg(fileInfo->fileName));
 
                 abortReplies();
                 switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -675,7 +675,7 @@ void MainWindow::downloadReplyFinished()
 
         if (fileInfo->hash != QString::fromLatin1(hash.result().toHex()))
         {
-            addLog(tr("Failed to store file %1").arg(fileInfo->filename));
+            addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
 
             abortReplies();
             switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -685,7 +685,7 @@ void MainWindow::downloadReplyFinished()
     }
     else
     {
-        addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->filename).arg(server).arg(reply->errorString()));
+        addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->fileName).arg(server).arg(reply->errorString()));
 
         abortReplies();
         switchToState(UsbBootMakerState::GET_FILE_LIST);
@@ -974,7 +974,7 @@ void MainWindow::handleDownloadState()
 
 
 
-        mReplies.insert(fileInfo->filename, reply);
+        mReplies.insert(fileInfo->fileName, reply);
     }
 }
 

@@ -161,15 +161,15 @@ const QStringList& SearchDependenciesThread::getErrors() const
 
 bool SearchDependenciesThread::handleSource(const QString &source)
 {
-    QString filename = source.startsWith('/') ? source : (mWorkingDirectory + '/' + source);
+    QString fileName = source.startsWith('/') ? source : (mWorkingDirectory + '/' + source);
 
 
 
-    QFile file(filename);
+    QFile file(fileName);
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        addError(QString("Failed to read file \"%1\"").arg(filename));
+        addError(QString("Failed to read file \"%1\"").arg(fileName));
 
         return false;
     }
@@ -215,7 +215,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
 
 
 
-                QString parentFolder = filename.left(filename.lastIndexOf('/') + 1);
+                QString parentFolder = fileName.left(fileName.lastIndexOf('/') + 1);
 
                 if (QFile::exists(parentFolder + includedFile))
                 {

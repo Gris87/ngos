@@ -60,9 +60,9 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 
         if (screenWidget->hasIntersection(positionX, positionY, width, height))
         {
-            i64 left   = positionX - screenWidget->mPositionX;
+            i64 left   = positionX - screenWidget->getPositionX();
             i64 right  = left + (i64)width;
-            i64 top    = positionY - screenWidget->mPositionY;
+            i64 top    = positionY - screenWidget->getPositionY();
             i64 bottom = top + (i64)height;
 
             if (left < 0)
@@ -75,14 +75,14 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
                 top = 0;
             }
 
-            if (right > (i64)screenWidget->mWidth)
+            if (right > (i64)screenWidget->getWidth())
             {
-                right = screenWidget->mWidth;
+                right = screenWidget->getWidth();
             }
 
-            if (bottom > (i64)screenWidget->mHeight)
+            if (bottom > (i64)screenWidget->getHeight())
             {
-                bottom = screenWidget->mHeight;
+                bottom = screenWidget->getHeight();
             }
 
             screenWidget->updateRegion(left, top, right - left, bottom - top);
@@ -101,9 +101,9 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 
         if (widget->hasIntersection(positionX, positionY, width, height))
         {
-            i64 left   = positionX - widget->mPositionX;
+            i64 left   = positionX - widget->getPositionX();
             i64 right  = left + (i64)width;
-            i64 top    = positionY - widget->mPositionY;
+            i64 top    = positionY - widget->getPositionY();
             i64 bottom = top + (i64)height;
 
             if (left < 0)
@@ -116,14 +116,14 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
                 top = 0;
             }
 
-            if (right > (i64)widget->mWidth)
+            if (right > (i64)widget->getWidth())
             {
-                right = widget->mWidth;
+                right = widget->getWidth();
             }
 
-            if (bottom > (i64)widget->mHeight)
+            if (bottom > (i64)widget->getHeight())
             {
-                bottom = widget->mHeight;
+                bottom = widget->getHeight();
             }
 
 
@@ -136,7 +136,7 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 
                 if (screenWidget->hasIntersection(widget))
                 {
-                    screenWidget->drawWidget(widget, widget->mPositionX - screenWidget->mPositionX, widget->mPositionY - screenWidget->mPositionY);
+                    screenWidget->drawWidget(widget, widget->getPositionX() - screenWidget->getPositionX(), widget->getPositionY() - screenWidget->getPositionY());
                 }
 
                 screen = screen->getNext();
@@ -210,7 +210,7 @@ NgosStatus RootWidget::repaint()
 
             if (screenWidget->hasIntersection(widget))
             {
-                screenWidget->drawWidget(widget, widget->mPositionX - screenWidget->mPositionX, widget->mPositionY - screenWidget->mPositionY);
+                screenWidget->drawWidget(widget, widget->getPositionX() - screenWidget->getPositionX(), widget->getPositionY() - screenWidget->getPositionY());
             }
 
             screen = screen->getNext();

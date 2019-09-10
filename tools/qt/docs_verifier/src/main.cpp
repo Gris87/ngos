@@ -89,7 +89,7 @@ qint32 main(qint32 argc, char *argv[])
         QFileInfo file = files.dequeue();
 
         QString path     = file.absoluteFilePath();
-        QString filename = file.fileName();
+        QString fileName = file.fileName();
 
 
 
@@ -97,7 +97,7 @@ qint32 main(qint32 argc, char *argv[])
         {
             if (file.isDir())
             {
-                if (filename != ".git" && !path.contains("tools/tracers/assets") && !path.contains("scripts/prerequisites"))
+                if (fileName != ".git" && !path.contains("tools/tracers/assets") && !path.contains("scripts/prerequisites"))
                 {
                     QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
@@ -109,86 +109,86 @@ qint32 main(qint32 argc, char *argv[])
             }
             else
             {
-                if (filename.endsWith(".md"))
+                if (fileName.endsWith(".md"))
                 {
                     DocsWorkerThread::pushFile(path, DocsVerificationFileType::MD);
                 }
                 else
                 if (
-                    filename.endsWith(".cpp")
+                    fileName.endsWith(".cpp")
                     ||
-                    filename.endsWith(".h")
+                    fileName.endsWith(".h")
                     ||
-                    filename.endsWith(".S")
+                    fileName.endsWith(".S")
                     ||
-                    filename.endsWith(".php")
+                    fileName.endsWith(".php")
                     ||
-                    filename == "Makefile"
+                    fileName == "Makefile"
                     ||
-                    filename.endsWith(".pro")
+                    fileName.endsWith(".pro")
                     ||
-                    filename.endsWith(".pri")
+                    fileName.endsWith(".pri")
                     ||
-                    filename.endsWith(".ld")
+                    fileName.endsWith(".ld")
                     ||
-                    filename.endsWith(".sh")
+                    fileName.endsWith(".sh")
                     ||
-                    filename.endsWith(".includes")
+                    fileName.endsWith(".includes")
                     ||
-                    filename.endsWith(".xml")
+                    fileName.endsWith(".xml")
                     ||
-                    filename.endsWith(".ts")
+                    fileName.endsWith(".ts")
                     ||
-                    filename.endsWith(".vbox")
+                    fileName.endsWith(".vbox")
                     ||
-                    filename.endsWith(".creator.shared")
+                    fileName.endsWith(".creator.shared")
                     ||
-                    filename.endsWith(".ui")
+                    fileName.endsWith(".ui")
                     ||
-                    filename.endsWith(".qrc")
+                    fileName.endsWith(".qrc")
                     ||
-                    filename.endsWith(".txt")
+                    fileName.endsWith(".txt")
                     ||
-                    filename.endsWith(".sql")
+                    fileName.endsWith(".sql")
                     ||
-                    filename.endsWith(".rc")
+                    fileName.endsWith(".rc")
                     ||
-                    filename.endsWith(".config")
+                    fileName.endsWith(".config")
                     ||
-                    filename.endsWith(".files")
+                    fileName.endsWith(".files")
                    )
                 {
                     DocsWorkerThread::pushFile(path, DocsVerificationFileType::TEXT);
                 }
                 else
                 if (
-                    !filename.endsWith(".creator")
+                    !fileName.endsWith(".creator")
                     &&
-                    !filename.endsWith(".creator.user")
+                    !fileName.endsWith(".creator.user")
                     &&
-                    !filename.endsWith(".patch")
+                    !fileName.endsWith(".patch")
                     &&
-                    !filename.endsWith(".qm")
+                    !fileName.endsWith(".qm")
                     &&
-                    !filename.endsWith(".bin")
+                    !fileName.endsWith(".bin")
                     &&
-                    !filename.endsWith(".dll")
+                    !fileName.endsWith(".dll")
                     &&
-                    !filename.endsWith(".exe")
+                    !fileName.endsWith(".exe")
                     &&
-                    !filename.endsWith(".hex")
+                    !fileName.endsWith(".hex")
                     &&
-                    !filename.endsWith(".ttf")
+                    !fileName.endsWith(".ttf")
                     &&
-                    !filename.endsWith(".ico")
+                    !fileName.endsWith(".ico")
                     &&
-                    !filename.endsWith(".png")
+                    !fileName.endsWith(".png")
                     &&
-                    !filename.endsWith(".jpg")
+                    !fileName.endsWith(".jpg")
                     &&
-                    !filename.endsWith(".gif")
+                    !fileName.endsWith(".gif")
                     &&
-                    !filename.endsWith(".svg")
+                    !fileName.endsWith(".svg")
                     &&
                     !file.isExecutable()
                    )

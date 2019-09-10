@@ -18,7 +18,7 @@ public:
     TestResults();
 
     void testPassed();
-    void testFailed(const char8 *filename, u64 line, const char8 *description);
+    void testFailed(const char8 *fileName, u64 line, const char8 *description);
 
     NgosStatus summary();
 
