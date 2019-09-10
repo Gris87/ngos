@@ -20,6 +20,7 @@ public:
     static NgosStatus init(); // TEST: NO
 
     static NgosStatus cleanUpPath(char16 *path);
+    static NgosStatus buildPath(const char16 *parentPath, const char16 *path, char16 **res);
 
     static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
@@ -45,10 +46,10 @@ private:
     static NgosStatus initVolumeRootDirectory(VolumeInfo *volume); // TEST: NO
     static NgosStatus initOSes(); // TEST: NO
     static NgosStatus initOSesFromVolume(const VolumeInfo &volume); // TEST: NO
-    static NgosStatus initOSesFromPath(UefiFileProtocol *parentDirectory, const char16 *path); // TEST: NO
-    static NgosStatus initOSesFromDirectory(UefiFileProtocol *directory); // TEST: NO
-    static NgosStatus initOSesFromDirectory(UefiFileProtocol *directory, u64 size); // TEST: NO
-    static NgosStatus initOSesFromDirectory(UefiFileProtocol *directory, u64 size, UefiFileInfo *fileInfos); // TEST: NO
+    static NgosStatus initOSesFromPath(UefiFileProtocol *parentDirectory, const char16 *parentPath, const char16 *path); // TEST: NO
+    static NgosStatus initOSesFromDirectory(char16 *absolutePath, UefiFileProtocol *directory); // TEST: NO
+    static NgosStatus initOSesFromDirectory(char16 *absolutePath, UefiFileProtocol *directory, u64 size); // TEST: NO
+    static NgosStatus initOSesFromDirectory(char16 *absolutePath, UefiFileProtocol *directory, u64 size, UefiFileInfo *fileInfos); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;

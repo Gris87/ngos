@@ -484,8 +484,8 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
             case 'S':
             {
-                const char16 *str2  = va_arg(args, char16 *);
-                i64          length = strnlen(str2, precision);
+                const char16 *str2   = va_arg(args, char16 *);
+                i64           length = strnlen(str2, precision);
 
                 if (!(flags & FLAG_LEFT))
                 {

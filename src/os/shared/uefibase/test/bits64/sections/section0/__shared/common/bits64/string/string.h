@@ -16,6 +16,58 @@
 
 TEST_CASES(section0, __shared_common_bits64_string_string);
 {
+    TEST_CASE("toLower()");
+    {
+        TEST_ASSERT_EQUALS(toLower('A'), 'a');
+        TEST_ASSERT_EQUALS(toLower('a'), 'a');
+        TEST_ASSERT_EQUALS(toLower('Z'), 'z');
+        TEST_ASSERT_EQUALS(toLower('z'), 'z');
+        TEST_ASSERT_EQUALS(toLower('G'), 'g');
+        TEST_ASSERT_EQUALS(toLower('g'), 'g');
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("toLower()");
+    {
+        TEST_ASSERT_EQUALS(toLower(u'A'), u'a');
+        TEST_ASSERT_EQUALS(toLower(u'a'), u'a');
+        TEST_ASSERT_EQUALS(toLower(u'Z'), u'z');
+        TEST_ASSERT_EQUALS(toLower(u'z'), u'z');
+        TEST_ASSERT_EQUALS(toLower(u'G'), u'g');
+        TEST_ASSERT_EQUALS(toLower(u'g'), u'g');
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("toUpper()");
+    {
+        TEST_ASSERT_EQUALS(toUpper('A'), 'A');
+        TEST_ASSERT_EQUALS(toUpper('a'), 'A');
+        TEST_ASSERT_EQUALS(toUpper('Z'), 'Z');
+        TEST_ASSERT_EQUALS(toUpper('z'), 'Z');
+        TEST_ASSERT_EQUALS(toUpper('G'), 'G');
+        TEST_ASSERT_EQUALS(toUpper('g'), 'G');
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("toUpper()");
+    {
+        TEST_ASSERT_EQUALS(toUpper(u'A'), u'A');
+        TEST_ASSERT_EQUALS(toUpper(u'a'), u'A');
+        TEST_ASSERT_EQUALS(toUpper(u'Z'), u'Z');
+        TEST_ASSERT_EQUALS(toUpper(u'z'), u'Z');
+        TEST_ASSERT_EQUALS(toUpper(u'G'), u'G');
+        TEST_ASSERT_EQUALS(toUpper(u'g'), u'G');
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("strcpy()");
     {
         char8 temp[15];
@@ -240,7 +292,7 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strcmp("abcdef", "abcdeh"), -1);
         TEST_ASSERT_EQUALS(strcmp("abcdeh", "abcdef"), 1);
         TEST_ASSERT_EQUALS(strcmp("abc",    "abcdef"), -1);
-        TEST_ASSERT_EQUALS(strcmp("abcdeg", "abc"),    1);
+        TEST_ASSERT_EQUALS(strcmp("abcdef", "abc"),    1);
     }
     TEST_CASE_END();
 
@@ -256,7 +308,39 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strcmp(u"abcdef", u"abcdeh"), -1);
         TEST_ASSERT_EQUALS(strcmp(u"abcdeh", u"abcdef"), 1);
         TEST_ASSERT_EQUALS(strcmp(u"abc",    u"abcdef"), -1);
-        TEST_ASSERT_EQUALS(strcmp(u"abcdeg", u"abc"),    1);
+        TEST_ASSERT_EQUALS(strcmp(u"abcdef", u"abc"),    1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strcmpi()");
+    {
+        TEST_ASSERT_EQUALS(strcmpi("Aa", "aA"), 0);
+        TEST_ASSERT_EQUALS(strcmpi("aA", "ab"), -1);
+        TEST_ASSERT_EQUALS(strcmpi("ab", "aA"), 1);
+
+        TEST_ASSERT_EQUALS(strcmpi("AbCdEf", "abcdef"), 0);
+        TEST_ASSERT_EQUALS(strcmpi("AbCdEf", "abcdeh"), -1);
+        TEST_ASSERT_EQUALS(strcmpi("abcdeh", "AbCdEf"), 1);
+        TEST_ASSERT_EQUALS(strcmpi("abc",    "AbCdEf"), -1);
+        TEST_ASSERT_EQUALS(strcmpi("AbCdEf", "abc"),    1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strcmpi()");
+    {
+        TEST_ASSERT_EQUALS(strcmpi(u"Aa", u"aA"), 0);
+        TEST_ASSERT_EQUALS(strcmpi(u"aA", u"ab"), -1);
+        TEST_ASSERT_EQUALS(strcmpi(u"ab", u"aA"), 1);
+
+        TEST_ASSERT_EQUALS(strcmpi(u"AbCdEf", u"abcdef"), 0);
+        TEST_ASSERT_EQUALS(strcmpi(u"AbCdEf", u"abcdeh"), -1);
+        TEST_ASSERT_EQUALS(strcmpi(u"abcdeh", u"AbCdEf"), 1);
+        TEST_ASSERT_EQUALS(strcmpi(u"abc",    u"AbCdEf"), -1);
+        TEST_ASSERT_EQUALS(strcmpi(u"AbCdEf", u"abc"),    1);
     }
     TEST_CASE_END();
 
@@ -272,12 +356,12 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strncmp("abcdef", "abcdeh", -1), -1);
         TEST_ASSERT_EQUALS(strncmp("abcdeh", "abcdef", -1), 1);
         TEST_ASSERT_EQUALS(strncmp("abc",    "abcdef", -1), -1);
-        TEST_ASSERT_EQUALS(strncmp("abcdeg", "abc",    -1), 1);
+        TEST_ASSERT_EQUALS(strncmp("abcdef", "abc",    -1), 1);
 
-        TEST_ASSERT_EQUALS(strncmp("abcdeg", "abc",  3), 0);
-        TEST_ASSERT_EQUALS(strncmp("abcdeg", "abcf", 3), 0);
-        TEST_ASSERT_EQUALS(strncmp("abcdeg", "abd",  3), -1);
-        TEST_ASSERT_EQUALS(strncmp("abcdeg", "abb",  3), 1);
+        TEST_ASSERT_EQUALS(strncmp("abcdef", "abc",  3), 0);
+        TEST_ASSERT_EQUALS(strncmp("abcdef", "abcf", 3), 0);
+        TEST_ASSERT_EQUALS(strncmp("abcdef", "abd",  3), -1);
+        TEST_ASSERT_EQUALS(strncmp("abcdef", "abb",  3), 1);
     }
     TEST_CASE_END();
 
@@ -293,12 +377,54 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abcdeh", -1), -1);
         TEST_ASSERT_EQUALS(strncmp(u"abcdeh", u"abcdef", -1), 1);
         TEST_ASSERT_EQUALS(strncmp(u"abc",    u"abcdef", -1), -1);
-        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abc",    -1), 1);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abc",    -1), 1);
 
-        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abc",  3), 0);
-        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abcf", 3), 0);
-        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abd",  3), -1);
-        TEST_ASSERT_EQUALS(strncmp(u"abcdeg", u"abb",  3), 1);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abc",  3), 0);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abcf", 3), 0);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abd",  3), -1);
+        TEST_ASSERT_EQUALS(strncmp(u"abcdef", u"abb",  3), 1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strncmpi()");
+    {
+        TEST_ASSERT_EQUALS(strncmpi("Aa", "aA", -1), 0);
+        TEST_ASSERT_EQUALS(strncmpi("aA", "ab", -1), -1);
+        TEST_ASSERT_EQUALS(strncmpi("ab", "aA", -1), 1);
+
+        TEST_ASSERT_EQUALS(strncmpi("AbCdEf", "abcdef", -1), 0);
+        TEST_ASSERT_EQUALS(strncmpi("AbCdEf", "abcdeh", -1), -1);
+        TEST_ASSERT_EQUALS(strncmpi("abcdeh", "AbCdEf", -1), 1);
+        TEST_ASSERT_EQUALS(strncmpi("abc",    "AbCdEf", -1), -1);
+        TEST_ASSERT_EQUALS(strncmpi("AbCdEf", "abc",    -1), 1);
+
+        TEST_ASSERT_EQUALS(strncmpi("AbCdEf", "abc",  3), 0);
+        TEST_ASSERT_EQUALS(strncmpi("AbCdEf", "abcf", 3), 0);
+        TEST_ASSERT_EQUALS(strncmpi("AbCdEf", "abd",  3), -1);
+        TEST_ASSERT_EQUALS(strncmpi("AbCdEf", "abb",  3), 1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strncmpi()");
+    {
+        TEST_ASSERT_EQUALS(strncmpi(u"Aa", u"aA", -1), 0);
+        TEST_ASSERT_EQUALS(strncmpi(u"aA", u"ab", -1), -1);
+        TEST_ASSERT_EQUALS(strncmpi(u"ab", u"aA", -1), 1);
+
+        TEST_ASSERT_EQUALS(strncmpi(u"AbCdEf", u"abcdef", -1), 0);
+        TEST_ASSERT_EQUALS(strncmpi(u"AbCdEf", u"abcdeh", -1), -1);
+        TEST_ASSERT_EQUALS(strncmpi(u"abcdeh", u"AbCdEf", -1), 1);
+        TEST_ASSERT_EQUALS(strncmpi(u"abc",    u"AbCdEf", -1), -1);
+        TEST_ASSERT_EQUALS(strncmpi(u"AbCdEf", u"abc",    -1), 1);
+
+        TEST_ASSERT_EQUALS(strncmpi(u"AbCdEf", u"abc",  3), 0);
+        TEST_ASSERT_EQUALS(strncmpi(u"AbCdEf", u"abcf", 3), 0);
+        TEST_ASSERT_EQUALS(strncmpi(u"AbCdEf", u"abd",  3), -1);
+        TEST_ASSERT_EQUALS(strncmpi(u"abcdeg", u"abb",  3), 1);
     }
     TEST_CASE_END();
 
@@ -329,6 +455,38 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strend(u"abcaa", u"caa"),     true);
         TEST_ASSERT_EQUALS(strend(u"abcaa", u"cab"),     false);
         TEST_ASSERT_EQUALS(strend(u"abcaa", u"abcaa"),   true);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strendi()");
+    {
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "aa"),      true);
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "ab"),      false);
+        TEST_ASSERT_EQUALS(strendi("AbCaA", ""),        true);
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "dsfggaa"), false);
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "a"),       true); // Ignore CppSingleCharVerifier
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "caa"),     true);
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "cab"),     false);
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "abcaa"),   true);
+        TEST_ASSERT_EQUALS(strendi("AbCaA", "AbCaA"),   true);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strendi()");
+    {
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"aa"),      true);
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"ab"),      false);
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u""),        true);
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"dsfggaa"), false);
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"a"),       true); // Ignore CppSingleCharVerifier
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"caa"),     true);
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"cab"),     false);
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"abcaa"),   true);
+        TEST_ASSERT_EQUALS(strendi(u"AbCaA", u"AbCaA"),   true);
     }
     TEST_CASE_END();
 }

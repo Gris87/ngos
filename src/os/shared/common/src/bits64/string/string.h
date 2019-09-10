@@ -7,6 +7,10 @@
 
 
 
+char8 toLower(char8 ch);
+char16 toLower(char16 ch);
+char8 toUpper(char8 ch);
+char16 toUpper(char16 ch);
 char8* strcpy(char8 *str1, const char8 *str2);
 char16* strcpy(char16 *str1, const char16 *str2);
 char8* strcat(char8 *str1, const char8 *str2);
@@ -19,10 +23,16 @@ i64 strnlen(const char8 *str, i64 maxlen);
 i64 strnlen(const char16 *str, i64 maxlen);
 i8 strcmp(const char8 *str1, const char8 *str2);
 i8 strcmp(const char16 *str1, const char16 *str2);
+i8 strcmpi(const char8 *str1, const char8 *str2);
+i8 strcmpi(const char16 *str1, const char16 *str2);
 i8 strncmp(const char8 *str1, const char8 *str2, i64 length);
 i8 strncmp(const char16 *str1, const char16 *str2, i64 length);
+i8 strncmpi(const char8 *str1, const char8 *str2, i64 length);
+i8 strncmpi(const char16 *str1, const char16 *str2, i64 length);
 bool strend(const char8 *str1, const char8 *str2);
 bool strend(const char16 *str1, const char16 *str2);
+bool strendi(const char8 *str1, const char8 *str2);
+bool strendi(const char16 *str1, const char16 *str2);
 
 
 

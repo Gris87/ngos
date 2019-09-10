@@ -81,7 +81,7 @@ AssetEntry* Assets::getAssetEntry(const char8 *filename)
 
     for (i64 i = 0; i < sEntriesCount; ++i)
     {
-        if (!strcmp(sEntries[i].filename, filename)) // strcmp(sEntries[i].filename, filename) == 0
+        if (!strcmp(sEntries[i].filename, filename)) // sEntries[i].filename == filename
         {
             COMMON_LVV(("Asset \"%s\" found at address 0x%p with size %u", filename, sEntries[i].content, sEntries[i].contentSize));
 
