@@ -7,7 +7,7 @@
 
 
 
-bool isGuidEquals(const Guid &guid1, const Guid &guid2)
+inline bool isGuidEquals(const Guid &guid1, const Guid &guid2)
 {
     return ((u64 *)&guid1)[0] == ((u64 *)&guid2)[0]
             &&

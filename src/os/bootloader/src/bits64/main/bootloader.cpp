@@ -5,6 +5,7 @@
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 #include <gpt/utils.h>
+#include <guid/utils.h>
 #include <uefi/uefiblockioprotocol.h>
 #include <uefi/uefiharddrivedevicepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -19,6 +20,7 @@
 UefiLoadedImageProtocol *Bootloader::sImage;
 UefiDevicePath          *Bootloader::sDevicePath;
 char16                  *Bootloader::sApplicationDirPath;
+VolumeInfo              *Bootloader::sMainVolume;
 List<VolumeInfo>         Bootloader::sVolumes;
 List<OsInfo>             Bootloader::sOSes;
 
@@ -163,6 +165,72 @@ NgosStatus Bootloader::buildPath(const char16 *parentPath, const char16 *path, c
     return NgosStatus::OK;
 }
 
+NgosStatus Bootloader::buildPath(const char16 *parentPath, const char8 *path, char16 **res)
+{
+    UEFI_LT((" | parentPath = %S, path = %s, res = 0x%p", parentPath, path, res));
+
+    UEFI_ASSERT(parentPath, "parentPath is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(path,       "path is null",       NgosStatus::ASSERTION);
+    UEFI_ASSERT(res,        "res is null",        NgosStatus::ASSERTION);
+
+
+
+    i64 size1 = strlen(parentPath);
+    i64 size2 = strlen(path);
+
+    i64 totalSize;
+
+    if (size1)
+    {
+        totalSize = (size1 + size2 + 2) * sizeof(char16);
+    }
+    else
+    {
+        totalSize = (size2 + 1) * sizeof(char16);
+    }
+
+
+
+    char16 *str;
+
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, totalSize, (void **)&str) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to allocate pool(%u) for string", totalSize));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", str, totalSize));
+
+
+
+    if (size1)
+    {
+        memcpy(str, parentPath, size1 * sizeof(char16));
+        str[size1] = '\\';
+
+        for (i64 i = 0; i <= size2; ++i)
+        {
+            str[size1 + 1 + i] = path[i];
+        }
+    }
+    else
+    {
+        for (i64 i = 0; i <= size2; ++i)
+        {
+            str[i] = path[i];
+        }
+    }
+
+
+
+    *res = str;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **image)
 {
     UEFI_LT((" | path = %s, image = 0x%p", path, image));
@@ -172,12 +240,116 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
 
 
-    AssetEntry *asset = Assets::getAssetEntry(path);
-    UEFI_TEST_ASSERT(asset != 0, NgosStatus::ASSERTION);
+    UefiFileProtocol *imageFile   = 0;
+    u8               *content     = 0;
+    u64               contentSize = 0;
+    NgosStatus        status      = NgosStatus::NO_EFFECT;
 
 
 
-    UEFI_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, strend(path, ".9.png"), image), NgosStatus::ASSERTION);
+    char16 *absolutePath;
+
+    UEFI_ASSERT_EXECUTION(buildPath(sApplicationDirPath, path, &absolutePath), NgosStatus::ASSERTION);
+
+
+
+    if (sMainVolume->rootDirectory->open(sMainVolume->rootDirectory, &imageFile, absolutePath, FLAGS(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
+    {
+        UEFI_LV(("%S image file openned", absolutePath));
+
+
+
+        u8 temp;
+
+        if (imageFile->read(imageFile, &contentSize, &temp) != UefiStatus::BUFFER_TOO_SMALL)
+        {
+            if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, contentSize, (void **)&content) != UefiStatus::SUCCESS)
+            {
+                UEFI_LF(("Failed to allocate pool(%u) for image file content", contentSize));
+
+                return NgosStatus::OUT_OF_MEMORY;
+            }
+
+            UEFI_LVV(("Allocated pool(0x%p, %u) for image file content", content, contentSize));
+
+
+
+            if (imageFile->read(imageFile, &contentSize, content) == UefiStatus::SUCCESS)
+            {
+                status = NgosStatus::OK;
+            }
+            else
+            {
+                UEFI_LW(("Failed to read image file content"));
+            }
+        }
+        else
+        {
+            UEFI_LW(("Failed to get size of image file"));
+        }
+
+        if (imageFile->close(imageFile) != UefiStatus::SUCCESS)
+        {
+            UEFI_LV(("%S image file closed", absolutePath));
+        }
+        else
+        {
+            UEFI_LW(("Failed to close %S image file", absolutePath));
+
+            status = NgosStatus::FAILED;
+        }
+    }
+
+
+
+    bool withNinePatch = strend(path, ".9.png");
+
+
+
+    if (status == NgosStatus::OK)
+    {
+        status = Graphics::loadImage(content, contentSize, withNinePatch, image);
+
+        if (status != NgosStatus::OK)
+        {
+            UEFI_LE(("Failed to load image in file %S", absolutePath));
+        }
+    }
+
+
+
+    if (status != NgosStatus::OK)
+    {
+        AssetEntry *asset = Assets::getAssetEntry(path);
+        UEFI_TEST_ASSERT(asset, NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, withNinePatch, image), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (UEFI::freePool(absolutePath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for string", absolutePath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to release pool(0x%p) for string", absolutePath));
+    }
+
+
+
+    if (content)
+    {
+        if (UEFI::freePool(content) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Released pool(0x%p) for image file content", content));
+        }
+        else
+        {
+            UEFI_LE(("Failed to release pool(0x%p) for image file content", content));
+        }
+    }
 
 
 
@@ -378,9 +550,14 @@ NgosStatus Bootloader::initVolumes()
 
 
 
+    UEFI_LVVV(("sMainVolume = 0x%p", sMainVolume));
+
+    UEFI_TEST_ASSERT(sMainVolume,                NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(sMainVolume->rootDirectory, NgosStatus::ASSERTION);
+
+
+
     UEFI_ASSERT_EXECUTION(sVolumes.sort(), NgosStatus::ASSERTION);
-
-
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
@@ -555,9 +732,18 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle
         if (volume.type != VolumeType::NONE)
         {
             sVolumes.append(volume);
+
+            if (volume.deviceHandle == sImage->deviceHandle)
+            {
+                UEFI_TEST_ASSERT(!sMainVolume, NgosStatus::ASSERTION);
+
+                sMainVolume = (VolumeInfo *)&sVolumes.getTail()->getData();
+            }
         }
         else
         {
+            UEFI_TEST_ASSERT(volume.deviceHandle != sImage->deviceHandle, NgosStatus::ASSERTION);
+
             sVolumes.prepend(volume);
         }
     }
@@ -1025,7 +1211,7 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
                             {
                                 GptEntry *gptEntry = &previousVolume.gptData.entries[i];
 
-                                if (!memcmp(&gptEntry->partitionUniqueGuid, hardDrivePath->signature, sizeof(hardDrivePath->signature))) // memcmp(&gptEntry->partitionUniqueGuid, hardDrivePath->signature, sizeof(hardDrivePath->signature)) == 0
+                                if (isGuidEquals(gptEntry->partitionUniqueGuid, hardDrivePath->signatureGuid))
                                 {
                                     volume->name = gptEntry->name;
 
@@ -1086,8 +1272,6 @@ NgosStatus Bootloader::initOSes()
 
     UEFI_ASSERT_EXECUTION(sOSes.sort(), NgosStatus::ASSERTION);
 
-
-
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
     {
         UEFI_LVVV(("sOSes:"));
@@ -1103,9 +1287,9 @@ NgosStatus Bootloader::initOSes()
             UEFI_LVVV(("os.volume = 0x%p",    os.volume));
             UEFI_LVVV(("os.path   = %S",      os.path));
 
-            UEFI_TEST_ASSERT(os.type != OsType::NONE, NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(os.volume,               NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(os.path,                 NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(os.volume,                 NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(os.path,                   NgosStatus::ASSERTION);
 
 
 

@@ -11,10 +11,11 @@
 
 enum class OsType: u8
 {
-    NONE       = 0,
-    NGOS       = 1,
-    WINDOWS_10 = 2,
-    UBUNTU_19  = 3
+    NGOS,
+    WINDOWS_10,
+    UBUNTU_19,
+    UNKNOWN,
+    MAXIMUM
 };
 
 
@@ -27,10 +28,11 @@ inline const char8* osTypeToString(OsType type) // TEST: NO
 
     switch (type)
     {
-        case OsType::NONE:       return "NONE";
         case OsType::NGOS:       return "NGOS";
         case OsType::WINDOWS_10: return "WINDOWS_10";
         case OsType::UBUNTU_19:  return "UBUNTU_19";
+        case OsType::UNKNOWN:    return "UNKNOWN";
+        case OsType::MAXIMUM:    return "MAXIMUM";
 
         default: return "UNKNOWN";
     }

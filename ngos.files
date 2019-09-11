@@ -761,7 +761,6 @@ src/os/shared/uefibase/src/bits64/uefi/uefilog.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/asm/bitutils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/asm/instructions.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/bootparams/memorymapentry.h
-src/os/shared/uefibase/test/bits64/sections/section0/__include/elf/symbol.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/guid/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/macro/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/ngos/linkage.h

@@ -7,7 +7,6 @@
 #include <uefibase/test/bits64/sections/section0/__include/asm/bitutils.h>
 #include <uefibase/test/bits64/sections/section0/__include/asm/instructions.h>
 #include <uefibase/test/bits64/sections/section0/__include/bootparams/memorymapentry.h>
-#include <uefibase/test/bits64/sections/section0/__include/elf/symbol.h>
 #include <uefibase/test/bits64/sections/section0/__include/guid/utils.h>
 #include <uefibase/test/bits64/sections/section0/__include/macro/utils.h>
 #include <uefibase/test/bits64/sections/section0/__include/ngos/linkage.h>
@@ -67,7 +66,6 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __include_asm_bitutils);
     CALL_TEST_CASES(section0, __include_asm_instructions);
     CALL_TEST_CASES(section0, __include_bootparams_memorymapentry);
-    CALL_TEST_CASES(section0, __include_elf_symbol);
     CALL_TEST_CASES(section0, __include_guid_utils);
     CALL_TEST_CASES(section0, __include_macro_utils);
     CALL_TEST_CASES(section0, __include_ngos_linkage);

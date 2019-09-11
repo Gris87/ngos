@@ -22,6 +22,7 @@ public:
 
     static NgosStatus cleanUpPath(char16 *path);
     static NgosStatus buildPath(const char16 *parentPath, const char16 *path, char16 **res);
+    static NgosStatus buildPath(const char16 *parentPath, const char8 *path, char16 **res);
 
     static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
@@ -56,6 +57,7 @@ private:
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
     static char16                  *sApplicationDirPath;
+    static VolumeInfo              *sMainVolume;
     static List<VolumeInfo>         sVolumes;
     static List<OsInfo>             sOSes;
 };

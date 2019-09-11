@@ -10,9 +10,6 @@
 
 
 
-#define ELF_SYMBOL_BIND(info)        ((info) >> 4)
-#define ELF_SYMBOL_TYPE(info)        ((info) & 0x0F)
-#define ELF_SYMBOL_INFO(bind, type)  (((bind) << 4) + ((type) & 0x0F))
 
 #define ELF_SYMBOL_VISIBILITY(other) ((other) & 0x03)
 
@@ -21,8 +18,23 @@
 struct ElfSymbol
 {
     u32 nameOffset;
-    u8  info;
-    u8  other;
+
+    union
+    {
+        u8  bind: 4,
+            type: 4;
+
+        u8  info;
+    };
+
+    union
+    {
+        u8  __reserved: 5,
+            visibility: 3;
+
+        u8  other;
+    };
+
     u16 sectionIndex;
     u64 value;
     u64 size;

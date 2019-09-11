@@ -3,6 +3,7 @@
 
 
 
+#include <guid/guid.h>
 #include <ngos/types.h>
 #include <uefi/types.h>
 #include <uefi/uefidevicepath.h>
@@ -17,7 +18,17 @@ struct UefiHardDriveDevicePath
     u32                                  partitionNumber;
     u64                                  partitionStart;
     u64                                  partitionSize;
-    u8                                   signature[16];
+
+    union
+    {
+        struct
+        {
+            u32                          signature;
+        };
+
+        Guid                             signatureGuid;
+    };
+
     UefiHardDriveDevicePathMbrType       mbrType;
     UefiHardDriveDevicePathSignatureType signatureType;
 };
