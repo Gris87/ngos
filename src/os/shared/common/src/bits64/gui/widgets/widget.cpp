@@ -13,6 +13,7 @@ Widget::Widget(Widget *parent)
     , mWidth(0)
     , mHeight(0)
     , mResultImage(0)
+    , mVisible(true)
 {
     COMMON_LT((" | parent = 0x%p", parent));
 
@@ -165,6 +166,19 @@ NgosStatus Widget::setSize(u64 width, u64 height)
     return NgosStatus::OK;
 }
 
+NgosStatus Widget::setVisible(bool visible)
+{
+    COMMON_LT((" | visible = %u", visible));
+
+
+
+    mVisible = visible;
+
+
+
+    return NgosStatus::OK;
+}
+
 i64 Widget::getPositionX() const
 {
     COMMON_LT((""));
@@ -208,4 +222,13 @@ Image* Widget::getResultImage() const
 
 
     return mResultImage;
+}
+
+bool Widget::isVisible() const
+{
+    COMMON_LT((""));
+
+
+
+    return mVisible;
 }

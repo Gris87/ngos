@@ -255,7 +255,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
         while (element)
         {
-            // TODO: Hide button
+            element->getData()->setVisible(false);
 
             element = element->getNext();
         }

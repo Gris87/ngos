@@ -25,12 +25,14 @@ public:
 
     NgosStatus setPosition(i64 positionX, i64 positionY);
     NgosStatus setSize(u64 width, u64 height);
+    NgosStatus setVisible(bool visible);
 
     i64 getPositionX() const;
     i64 getPositionY() const;
     u64 getWidth() const;
     u64 getHeight() const;
     Image* getResultImage() const; // TEST: NO
+    bool isVisible() const;
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -44,6 +46,7 @@ protected:
     u64             mWidth;
     u64             mHeight;
     Image          *mResultImage;
+    bool            mVisible;
 };
 
 
