@@ -10,11 +10,6 @@
 
 
 
-
-#define ELF_SYMBOL_VISIBILITY(other) ((other) & 0x03)
-
-
-
 struct ElfSymbol
 {
     u32 nameOffset;
