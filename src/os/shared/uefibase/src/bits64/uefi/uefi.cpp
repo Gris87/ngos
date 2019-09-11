@@ -226,7 +226,7 @@ char16* UEFI::parentDirectory(const char16 *path)
 
 
     memcpy(res, path, size - sizeof(char16));
-    res[size - 1] = 0;
+    res[size / sizeof(char16) - 1] = 0;
 
 
 
