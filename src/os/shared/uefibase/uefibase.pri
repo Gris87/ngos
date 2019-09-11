@@ -115,8 +115,8 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__include/asm/bitutils.h \
     $$PWD/test/bits64/sections/section0/__include/asm/instructions.h \
     $$PWD/test/bits64/sections/section0/__include/bootparams/memorymapentry.h \
-    $$PWD/test/bits64/sections/section0/__include/elf/symbol.h \
     $$PWD/test/bits64/sections/section0/__include/guid/utils.h \
+    $$PWD/test/bits64/sections/section0/__include/macro/utils.h \
     $$PWD/test/bits64/sections/section0/__include/ngos/linkage.h \
     $$PWD/test/bits64/sections/section0/__include/ngos/types.h \
     $$PWD/test/bits64/sections/section0/__include/ngos/utils.h \

@@ -60,7 +60,6 @@ private:
     static NgosStatus addCentOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
     static NgosStatus addUnknownOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
 
-
     static UefiLoadedImageProtocol *sImage;
     static UefiDevicePath          *sDevicePath;
     static char16                  *sApplicationDirPath;
