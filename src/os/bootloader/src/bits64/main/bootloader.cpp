@@ -44,7 +44,7 @@ NgosStatus Bootloader::init()
 
 NgosStatus Bootloader::cleanUpPath(char16 *path)
 {
-    UEFI_LT((" | path = %S", path));
+    UEFI_LT((" | path = %ls", path));
 
     UEFI_ASSERT(path, "path is null", NgosStatus::ASSERTION);
 
@@ -108,7 +108,7 @@ NgosStatus Bootloader::cleanUpPath(char16 *path)
 
 NgosStatus Bootloader::buildPath(const char16 *parentPath, const char16 *path, char16 **res)
 {
-    UEFI_LT((" | parentPath = %S, path = %S, res = 0x%p", parentPath, path, res));
+    UEFI_LT((" | parentPath = %ls, path = %ls, res = 0x%p", parentPath, path, res));
 
     UEFI_ASSERT(parentPath, "parentPath is null", NgosStatus::ASSERTION);
     UEFI_ASSERT(path,       "path is null",       NgosStatus::ASSERTION);
@@ -167,7 +167,7 @@ NgosStatus Bootloader::buildPath(const char16 *parentPath, const char16 *path, c
 
 NgosStatus Bootloader::buildPath(const char16 *parentPath, const char8 *path, char16 **res)
 {
-    UEFI_LT((" | parentPath = %S, path = %s, res = 0x%p", parentPath, path, res));
+    UEFI_LT((" | parentPath = %ls, path = %s, res = 0x%p", parentPath, path, res));
 
     UEFI_ASSERT(parentPath, "parentPath is null", NgosStatus::ASSERTION);
     UEFI_ASSERT(path,       "path is null",       NgosStatus::ASSERTION);
@@ -250,54 +250,100 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
     char16 *absolutePath;
 
     UEFI_ASSERT_EXECUTION(buildPath(sApplicationDirPath, path, &absolutePath), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cleanUpPath(absolutePath),                           NgosStatus::ASSERTION);
 
 
 
     if (sMainVolume->rootDirectory->open(sMainVolume->rootDirectory, &imageFile, absolutePath, FLAGS(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
     {
-        UEFI_LV(("%S image file openned", absolutePath));
+        UEFI_LV(("%ls image file openned", absolutePath));
 
 
 
-        u8 temp;
+        Guid          fileInfoGuid = UEFI_FILE_INFO_GUID;
+        u64           fileInfoSize = 0;
+        UefiFileInfo *fileInfo;
 
-        if (imageFile->read(imageFile, &contentSize, &temp) != UefiStatus::BUFFER_TOO_SMALL)
+
+
+        if (imageFile->getInfo(imageFile, &fileInfoGuid, &fileInfoSize, &fileInfo) == UefiStatus::BUFFER_TOO_SMALL)
         {
-            if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, contentSize, (void **)&content) != UefiStatus::SUCCESS)
+            if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, fileInfoSize, (void **)&fileInfo) != UefiStatus::SUCCESS)
             {
-                UEFI_LF(("Failed to allocate pool(%u) for image file content", contentSize));
+                UEFI_LF(("Failed to allocate pool(%u) for image file info", fileInfoSize));
 
                 return NgosStatus::OUT_OF_MEMORY;
             }
 
-            UEFI_LVV(("Allocated pool(0x%p, %u) for image file content", content, contentSize));
+            UEFI_LVV(("Allocated pool(0x%p, %u) for image file info", fileInfo, fileInfoSize));
 
 
 
-            if (imageFile->read(imageFile, &contentSize, content) == UefiStatus::SUCCESS)
+            if (imageFile->getInfo(imageFile, &fileInfoGuid, &fileInfoSize, fileInfo) == UefiStatus::SUCCESS)
             {
-                status = NgosStatus::OK;
+                contentSize = fileInfo->fileSize;
+
+                UEFI_LVV(("%ls image file size is %u", absolutePath, contentSize));
+
+
+
+                if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, contentSize, (void **)&content) != UefiStatus::SUCCESS)
+                {
+                    UEFI_LF(("Failed to allocate pool(%u) for image file content", contentSize));
+
+                    return NgosStatus::OUT_OF_MEMORY;
+                }
+
+                UEFI_LVV(("Allocated pool(0x%p, %u) for image file content", content, contentSize));
+
+
+
+                if (imageFile->read(imageFile, &contentSize, content) == UefiStatus::SUCCESS)
+                {
+                    UEFI_LVV(("%ls image file loaded", absolutePath));
+
+                    status = NgosStatus::OK;
+                }
+                else
+                {
+                    UEFI_LW(("Failed to read %ls image file content", absolutePath));
+                }
             }
             else
             {
-                UEFI_LW(("Failed to read image file content"));
+                UEFI_LW(("Failed to get size of %ls image file", absolutePath));
+            }
+
+
+
+            if (UEFI::freePool(fileInfo) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for image file info", fileInfo));
+            }
+            else
+            {
+                UEFI_LE(("Failed to release pool(0x%p) for image file info", fileInfo));
             }
         }
         else
         {
-            UEFI_LW(("Failed to get size of image file"));
+            UEFI_LW(("Failed to get size of %ls image file", absolutePath));
         }
 
-        if (imageFile->close(imageFile) != UefiStatus::SUCCESS)
+        if (imageFile->close(imageFile) == UefiStatus::SUCCESS)
         {
-            UEFI_LV(("%S image file closed", absolutePath));
+            UEFI_LV(("%ls image file closed", absolutePath));
         }
         else
         {
-            UEFI_LW(("Failed to close %S image file", absolutePath));
+            UEFI_LW(("Failed to close %ls image file", absolutePath));
 
             status = NgosStatus::FAILED;
         }
+    }
+    else
+    {
+        UEFI_LVV(("%ls image file not found", absolutePath));
     }
 
 
@@ -312,7 +358,7 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
         if (status != NgosStatus::OK)
         {
-            UEFI_LE(("Failed to load image in file %S", absolutePath));
+            UEFI_LE(("Failed to load image in file %ls", absolutePath));
         }
     }
 
@@ -440,7 +486,7 @@ NgosStatus Bootloader::initApplicationPath(char16 **applicationPath)
 
 
 
-    UEFI_LVVV(("*applicationPath = %S", *applicationPath));
+    UEFI_LVVV(("*applicationPath = %ls", *applicationPath));
 
     UEFI_TEST_ASSERT(strcmp(*applicationPath, u"\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
 
@@ -451,7 +497,7 @@ NgosStatus Bootloader::initApplicationPath(char16 **applicationPath)
 
 NgosStatus Bootloader::initDevicePath(char16 *applicationPath)
 {
-    UEFI_LT((" | applicationPath = %S", applicationPath));
+    UEFI_LT((" | applicationPath = %ls", applicationPath));
 
     UEFI_ASSERT(applicationPath, "applicationPath is null", NgosStatus::ASSERTION);
 
@@ -500,7 +546,7 @@ NgosStatus Bootloader::initDevicePath(char16 *applicationPath)
 
 NgosStatus Bootloader::initApplicationDirPath(char16 *applicationPath)
 {
-    UEFI_LT((" | applicationPath = %S", applicationPath));
+    UEFI_LT((" | applicationPath = %ls", applicationPath));
 
     UEFI_ASSERT(applicationPath, "applicationPath is null", NgosStatus::ASSERTION);
 
@@ -509,7 +555,7 @@ NgosStatus Bootloader::initApplicationDirPath(char16 *applicationPath)
     sApplicationDirPath = UEFI::parentDirectory(applicationPath);
     UEFI_ASSERT_EXECUTION(cleanUpPath(sApplicationDirPath), NgosStatus::ASSERTION);
 
-    UEFI_LVVV(("sApplicationDirPath = %S", sApplicationDirPath));
+    UEFI_LVVV(("sApplicationDirPath = %ls", sApplicationDirPath));
 
     UEFI_TEST_ASSERT(strcmp(sApplicationDirPath, u"EFI\\BOOT") == 0, NgosStatus::ASSERTION);
 
@@ -635,7 +681,7 @@ NgosStatus Bootloader::initVolumes()
             UEFI_LVVV(("volume.gptData.header        = 0x%p",    volume.gptData.header));
             UEFI_LVVV(("volume.gptData.entries       = 0x%p",    volume.gptData.entries));
             UEFI_LVVV(("volume.type                  = %u (%s)", volume.type, volumeTypeToString(volume.type)));
-            UEFI_LVVV(("volume.name                  = %S",      volume.name));
+            UEFI_LVVV(("volume.name                  = %ls",     volume.name));
             UEFI_LVVV(("volume.rootDirectory         = 0x%p",    volume.rootDirectory));
 
 
@@ -1285,7 +1331,7 @@ NgosStatus Bootloader::initOSes()
 
             UEFI_LVVV(("os.type   = %u (%s)", os.type, osTypeToString(os.type)));
             UEFI_LVVV(("os.volume = 0x%p",    os.volume));
-            UEFI_LVVV(("os.path   = %S",      os.path));
+            UEFI_LVVV(("os.path   = %ls",     os.path));
 
             UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
             UEFI_TEST_ASSERT(os.volume,                 NgosStatus::ASSERTION);
@@ -1325,7 +1371,7 @@ NgosStatus Bootloader::initOSesFromVolume(VolumeInfo *volume)
 
 NgosStatus Bootloader::initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *parentDirectory, const char16 *parentPath, const char16 *path)
 {
-    UEFI_LT((" | volume = 0x%p, parentDirectory = 0x%p, parentPath = %S, path = %S", volume, parentDirectory, parentPath, path));
+    UEFI_LT((" | volume = 0x%p, parentDirectory = 0x%p, parentPath = %ls, path = %ls", volume, parentDirectory, parentPath, path));
 
     UEFI_ASSERT(volume,          "volume is null",          NgosStatus::ASSERTION);
     UEFI_ASSERT(parentDirectory, "parentDirectory is null", NgosStatus::ASSERTION);
@@ -1349,7 +1395,7 @@ NgosStatus Bootloader::initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *pa
 
         if (parentDirectory->open(parentDirectory, &directory, path, FLAGS(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
         {
-            UEFI_LV(("%S directory openned for OS search", absolutePath));
+            UEFI_LV(("%ls directory openned for OS search", absolutePath));
 
 
 
@@ -1357,18 +1403,18 @@ NgosStatus Bootloader::initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *pa
 
             if (status != NgosStatus::OK)
             {
-                UEFI_LW(("Failed to get OS in %S directory", absolutePath));
+                UEFI_LW(("Failed to get OS in %ls directory", absolutePath));
             }
 
 
 
             if (directory->close(directory) == UefiStatus::SUCCESS)
             {
-                UEFI_LV(("%S directory closed", absolutePath));
+                UEFI_LV(("%ls directory closed", absolutePath));
             }
             else
             {
-                UEFI_LW(("Failed to close %S directory", absolutePath));
+                UEFI_LW(("Failed to close %ls directory", absolutePath));
 
                 status = NgosStatus::FAILED;
             }
@@ -1376,7 +1422,7 @@ NgosStatus Bootloader::initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *pa
     }
     else
     {
-        UEFI_LV(("Ignoring %S directory", absolutePath));
+        UEFI_LV(("Ignoring %ls directory", absolutePath));
     }
 
 
@@ -1397,7 +1443,7 @@ NgosStatus Bootloader::initOSesFromPath(VolumeInfo *volume, UefiFileProtocol *pa
 
 NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory)
 {
-    UEFI_LT((" | volume = 0x%p, absolutePath = %S, directory = 0x%p", volume, absolutePath, directory));
+    UEFI_LT((" | volume = 0x%p, absolutePath = %ls, directory = 0x%p", volume, absolutePath, directory));
 
     UEFI_ASSERT(volume,       "volume is null",       NgosStatus::ASSERTION);
     UEFI_ASSERT(absolutePath, "absolutePath is null", NgosStatus::ASSERTION);
@@ -1447,7 +1493,7 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
 
 NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, u64 size)
 {
-    UEFI_LT((" | volume = 0x%p, absolutePath = %S, directory = 0x%p, size = %u", volume, absolutePath, directory, size));
+    UEFI_LT((" | volume = 0x%p, absolutePath = %ls, directory = 0x%p, size = %u", volume, absolutePath, directory, size));
 
     UEFI_ASSERT(volume,       "volume is null",       NgosStatus::ASSERTION);
     UEFI_ASSERT(absolutePath, "absolutePath is null", NgosStatus::ASSERTION);
@@ -1505,7 +1551,7 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
 
 NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, UefiFileInfo *fileInfo)
 {
-    UEFI_LT((" | volume = 0x%p, absolutePath = %S, directory = 0x%p, fileInfo = 0x%p", volume, absolutePath, directory, fileInfo));
+    UEFI_LT((" | volume = 0x%p, absolutePath = %ls, directory = 0x%p, fileInfo = 0x%p", volume, absolutePath, directory, fileInfo));
 
     UEFI_ASSERT(volume,       "volume is null",       NgosStatus::ASSERTION);
     UEFI_ASSERT(absolutePath, "absolutePath is null", NgosStatus::ASSERTION);
@@ -1521,7 +1567,7 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
     UEFI_LVVV(("fileInfo->lastAccessTime   = %04u-%02u-%02u %02u:%02u:%02u.%09u %+d (%u)", fileInfo->lastAccessTime.year, fileInfo->lastAccessTime.month, fileInfo->lastAccessTime.day, fileInfo->lastAccessTime.hour, fileInfo->lastAccessTime.minute, fileInfo->lastAccessTime.second, fileInfo->lastAccessTime.nanosecond, fileInfo->lastAccessTime.timeZone, fileInfo->lastAccessTime.daylight));
     UEFI_LVVV(("fileInfo->modificationTime = %04u-%02u-%02u %02u:%02u:%02u.%09u %+d (%u)", fileInfo->modificationTime.year, fileInfo->modificationTime.month, fileInfo->modificationTime.day, fileInfo->modificationTime.hour, fileInfo->modificationTime.minute, fileInfo->modificationTime.second, fileInfo->modificationTime.nanosecond, fileInfo->modificationTime.timeZone, fileInfo->modificationTime.daylight));
     UEFI_LVVV(("fileInfo->attributes       = 0x%016lX (%s)",                               fileInfo->attributes, uefiFileAttributeFlagsToString(fileInfo->attributes)));
-    UEFI_LVVV(("fileInfo->fileName         = %S",                                          fileInfo->fileName));
+    UEFI_LVVV(("fileInfo->fileName         = %ls",                                         fileInfo->fileName));
 
 
 
@@ -1560,7 +1606,7 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
 
 NgosStatus Bootloader::addNgosOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
 {
-    UEFI_LT((" | volume = 0x%p, directoryPath = %S, fileName = %S", volume, directoryPath, fileName));
+    UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
 
     UEFI_ASSERT(volume,        "volume is null",        NgosStatus::ASSERTION);
     UEFI_ASSERT(directoryPath, "directoryPath is null", NgosStatus::ASSERTION);

@@ -432,7 +432,15 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                     }
                 }
 
-                *str = (char8)va_arg(args, i32);
+                if (qualifier == 'l')
+                {
+                    *str = (char16)va_arg(args, i32);
+                }
+                else
+                {
+                    *str = (char8)va_arg(args, i32);
+                }
+
                 ++str;
 
                 while (fieldWidth > 0)
@@ -449,11 +457,29 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
             case 's':
             {
-                const char8 *str2   = va_arg(args, char8 *);
-                i64          length = strnlen(str2, precision);
-
-                if (!(flags & FLAG_LEFT))
+                if (qualifier == 'l')
                 {
+                    const char16 *str2   = va_arg(args, char16 *);
+                    i64           length = strnlen(str2, precision);
+
+                    if (!(flags & FLAG_LEFT))
+                    {
+                        while (fieldWidth > length)
+                        {
+                            *str = ' ';
+                            ++str;
+
+                            --fieldWidth;
+                        }
+                    }
+
+                    for (i64 i = 0; i < length; ++i)
+                    {
+                        *str = *str2;
+                        ++str;
+                        ++str2;
+                    }
+
                     while (fieldWidth > length)
                     {
                         *str = ' ';
@@ -461,34 +487,32 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
                         --fieldWidth;
                     }
+
+                    continue;
                 }
-
-                for (i64 i = 0; i < length; ++i)
+                else
                 {
-                    *str = *str2;
-                    ++str;
-                    ++str2;
-                }
+                    const char8 *str2   = va_arg(args, char8 *);
+                    i64          length = strnlen(str2, precision);
 
-                while (fieldWidth > length)
-                {
-                    *str = ' ';
-                    ++str;
+                    if (!(flags & FLAG_LEFT))
+                    {
+                        while (fieldWidth > length)
+                        {
+                            *str = ' ';
+                            ++str;
 
-                    --fieldWidth;
-                }
+                            --fieldWidth;
+                        }
+                    }
 
-                continue;
-            }
-            break;
+                    for (i64 i = 0; i < length; ++i)
+                    {
+                        *str = *str2;
+                        ++str;
+                        ++str2;
+                    }
 
-            case 'S':
-            {
-                const char16 *str2   = va_arg(args, char16 *);
-                i64           length = strnlen(str2, precision);
-
-                if (!(flags & FLAG_LEFT))
-                {
                     while (fieldWidth > length)
                     {
                         *str = ' ';
@@ -496,24 +520,9 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
                         --fieldWidth;
                     }
+
+                    continue;
                 }
-
-                for (i64 i = 0; i < length; ++i)
-                {
-                    *str = *str2;
-                    ++str;
-                    ++str2;
-                }
-
-                while (fieldWidth > length)
-                {
-                    *str = ' ';
-                    ++str;
-
-                    --fieldWidth;
-                }
-
-                continue;
             }
             break;
 
