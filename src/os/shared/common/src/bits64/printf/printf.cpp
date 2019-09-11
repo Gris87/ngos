@@ -487,8 +487,6 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
                         --fieldWidth;
                     }
-
-                    continue;
                 }
                 else
                 {
@@ -520,9 +518,9 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
                         --fieldWidth;
                     }
-
-                    continue;
                 }
+
+                continue;
             }
             break;
 

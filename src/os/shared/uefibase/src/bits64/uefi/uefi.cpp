@@ -187,7 +187,7 @@ bool UEFI::canPrint()
 
 char16* UEFI::parentDirectory(const char16 *path)
 {
-    UEFI_LT((" | path = 0x%p", path));
+    UEFI_LT((" | path = %ls", path));
 
     UEFI_ASSERT(path, "path is null", 0);
 
@@ -208,13 +208,13 @@ char16* UEFI::parentDirectory(const char16 *path)
 
     UEFI_TEST_ASSERT(size > 0, 0);
 
-    size = ((size - (u64)path) >> 1) + 1;
+    size = size - (u64)path + sizeof(char16);
 
 
 
     char16 *res;
 
-    if (allocatePool(UefiMemoryType::LOADER_DATA, size * sizeof(char16), (void **)&res) != UefiStatus::SUCCESS)
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
         UEFI_LE(("Failed to allocate pool(%u) for string", size));
 
@@ -225,7 +225,7 @@ char16* UEFI::parentDirectory(const char16 *path)
 
 
 
-    memcpy(res, path, (size - 1) * sizeof(char16));
+    memcpy(res, path, size - sizeof(char16));
     res[size - 1] = 0;
 
 
