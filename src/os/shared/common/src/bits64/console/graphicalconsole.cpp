@@ -16,6 +16,7 @@
 
 
 #define CHAR_HEIGHT   20
+#define SIDE_MARGIN   1
 #define BOTTOM_MARGIN 5
 
 #define CONSOLE_POSITION_X_PERCENT 10
@@ -111,7 +112,7 @@ NgosStatus GraphicalConsole::readyToPrint()
 
 
 
-    sPositionX    = 0;
+    sPositionX    = SIDE_MARGIN;
     sGlyphOffsets = (u16 *)asset->content;
 
 
@@ -250,7 +251,7 @@ void GraphicalConsole::printChar(char8 ch)
     else
     if (ch == '\r')
     {
-        sPositionX = 0;
+        sPositionX = SIDE_MARGIN;
     }
     else
     {
@@ -260,7 +261,7 @@ void GraphicalConsole::printChar(char8 ch)
 
 
 
-            if (sPositionX + glyphData->width > sTextImage->getWidth())
+            if (sPositionX + glyphData->width > sTextImage->getWidth() - SIDE_MARGIN)
             {
                 newLine();
             }
@@ -331,7 +332,7 @@ void GraphicalConsole::newLine()
 
     newLineWithoutCaretReturn();
 
-    sPositionX = 0;
+    sPositionX = SIDE_MARGIN;
 }
 
 void GraphicalConsole::repaint()

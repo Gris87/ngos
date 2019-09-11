@@ -4,6 +4,7 @@
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/misc/rootwidget.h>
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
+#include <common/src/bits64/memory/memory.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -19,26 +20,31 @@
 #define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
 #define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
 
-#define LEFT_BUTTON_POSITION_X_PERCENT 5
-#define LEFT_BUTTON_POSITION_Y_PERCENT 20
+#define LEFT_BUTTON_POSITION_X_PERCENT 2
+#define LEFT_BUTTON_POSITION_Y_PERCENT 22
 
-#define RIGHT_BUTTON_POSITION_X_PERCENT 90
-#define RIGHT_BUTTON_POSITION_Y_PERCENT 20
+#define RIGHT_BUTTON_POSITION_X_PERCENT 92
+#define RIGHT_BUTTON_POSITION_Y_PERCENT 22
 
-#define MEMORY_TEST_BUTTON_POSITION_X_PERCENT 40
+#define OS_REGION_LEFT_PERCENT  10
+#define OS_REGION_RIGHT_PERCENT 90
+#define OS_REGION_TOP_PERCENT   15
+#define OS_VISIBLE_COUNT        4
+
+#define MEMORY_TEST_BUTTON_POSITION_X_PERCENT 45
 #define MEMORY_TEST_BUTTON_POSITION_Y_PERCENT 40
 
-#define HDD_TEST_BUTTON_POSITION_X_PERCENT 40
+#define HDD_TEST_BUTTON_POSITION_X_PERCENT 45
 #define HDD_TEST_BUTTON_POSITION_Y_PERCENT 50
 
-#define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 40
+#define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 45
 #define PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT 60
 
 #define CURSOR_POSITION_X_PERCENT 50
 #define CURSOR_POSITION_Y_PERCENT 50
 
 #define OS_BUTTON_SIZE_PERCENT     20
-#define ARROW_BUTTON_SIZE_PERCENT  5
+#define ARROW_BUTTON_SIZE_PERCENT  6
 #define TOOL_BUTTON_SIZE_PERCENT   10
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
@@ -53,27 +59,25 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    Image *backgroundImage;
-    Image *arrowLeftImage;
-    Image *arrowRightImage;
-    Image *buttonFocusedImage;
-    Image *buttonHoverImage;
-    Image *buttonNormalImage;
-    Image *buttonPressedImage;
-    Image *cursorImage;
-    Image *hddTestImage;
-    Image *memoryTestImage;
-    Image *partitionWizardImage;
-    Image *pointerImage;
-    Image *rebootImage;
-    Image *shutdownImage;
-    Image *osNgosImage;
-    Image *osUbuntuImage;
-    Image *osWindowsImage;
+    Image  *backgroundImage;
+    Image  *buttonFocusedImage;
+    Image  *buttonHoverImage;
+    Image  *buttonNormalImage;
+    Image  *buttonPressedImage;
+    Image  *cursorImage;
+    Image  *hddTestImage;
+    Image  *memoryTestImage;
+    Image  *partitionWizardImage;
+    Image  *pointerImage;
+    Image  *rebootImage;
+    Image  *shutdownImage;
+    Image*  osImages[(u64)OsType::MAXIMUM];
+
+    memzero(osImages, sizeof(osImages));
+
+
 
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/background.jpg",       &backgroundImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/arrow_left.png",       &arrowLeftImage),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/arrow_right.png",      &arrowRightImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused.9.png", &buttonFocusedImage),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_hover.9.png",   &buttonHoverImage),     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_normal.9.png",  &buttonNormalImage),    NgosStatus::ASSERTION);
@@ -85,9 +89,6 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/pointer.png",          &pointerImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/reboot.png",           &rebootImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shutdown.png",         &shutdownImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/os_ngos.png",          &osNgosImage),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/os_ubuntu.png",        &osUbuntuImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/os_windows.png",       &osWindowsImage),       NgosStatus::ASSERTION);
 
 
 
@@ -95,12 +96,9 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 screenHeight = params->screenInfo.height;
 
     u64 osButtonSize     = MIN(screenWidth * OS_BUTTON_SIZE_PERCENT     / 100, screenHeight * OS_BUTTON_SIZE_PERCENT     / 100);
-    u64 arrowButtonSize  = MIN(screenWidth * ARROW_BUTTON_SIZE_PERCENT  / 100, screenHeight * ARROW_BUTTON_SIZE_PERCENT  / 100);
     u64 toolButtonSize   = MIN(screenWidth * TOOL_BUTTON_SIZE_PERCENT   / 100, screenHeight * TOOL_BUTTON_SIZE_PERCENT   / 100);
     u64 systemButtonSize = MIN(screenWidth * SYSTEM_BUTTON_SIZE_PERCENT / 100, screenHeight * SYSTEM_BUTTON_SIZE_PERCENT / 100);
     u64 cursorSize       = MIN(screenWidth * CURSOR_SIZE_PERCENT        / 100, screenHeight * CURSOR_SIZE_PERCENT        / 100);
-
-    AVOID_UNUSED(osButtonSize);
 
 
 
@@ -132,17 +130,134 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    Button *leftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowLeftImage, rootWidget);
+    List<Button *>       osButtons;
+    u64                  osCount = 0;
+    ListElement<OsInfo> *element = Bootloader::getOSes().getHead();
 
-    UEFI_ASSERT_EXECUTION(leftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * LEFT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(leftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                            NgosStatus::ASSERTION);
+    while (element)
+    {
+        const OsInfo &os = element->getData();
 
 
 
-    Button *rightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowRightImage, rootWidget);
+        UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
+        Image *osImage = osImages[(u64)os.type];
 
-    UEFI_ASSERT_EXECUTION(rightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * RIGHT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(rightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                              NgosStatus::ASSERTION);
+        if (!osImage)
+        {
+            const char8 *pathToImage;
+
+            switch (os.type)
+            {
+                case OsType::NGOS:       pathToImage = "images/os_ngos.png";    break;
+                case OsType::WINDOWS_10: pathToImage = "images/os_windows.png"; break;
+                case OsType::UBUNTU_19:  pathToImage = "images/os_ubuntu.png";  break;
+                case OsType::CENTOS_7:   pathToImage = "images/os_centos.png";  break;
+                case OsType::UNKNOWN:    pathToImage = "images/os_unknown.png"; break;
+                case OsType::MAXIMUM:
+                {
+                    UEFI_LF(("Unexpected OS type: %u (%s)", os.type, osTypeToString(os.type)));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+
+                default:
+                {
+                    UEFI_LF(("Unexpected OS type: %u (%s)", os.type, osTypeToString(os.type)));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+            }
+
+            UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets(pathToImage, &osImage), NgosStatus::ASSERTION);
+            osImages[(u64)os.type] = osImage;
+        }
+
+
+
+        Button *osButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, osImage, rootWidget);
+
+        UEFI_ASSERT_EXECUTION(osButton->setSize(osButtonSize, osButtonSize), NgosStatus::ASSERTION);
+
+        osButtons.append(osButton);
+
+
+
+        ++osCount;
+        element = element->getNext();
+    }
+
+
+
+    if (osCount)
+    {
+        if (osCount > OS_VISIBLE_COUNT)
+        {
+            osCount = OS_VISIBLE_COUNT;
+
+            Image *arrowLeftImage;
+            Image *arrowRightImage;
+
+            UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/arrow_left.png",  &arrowLeftImage),  NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/arrow_right.png", &arrowRightImage), NgosStatus::ASSERTION);
+
+
+
+            u64 arrowButtonSize = MIN(screenWidth * ARROW_BUTTON_SIZE_PERCENT / 100, screenHeight * ARROW_BUTTON_SIZE_PERCENT / 100);
+
+
+
+            Button *leftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowLeftImage, rootWidget);
+
+            UEFI_ASSERT_EXECUTION(leftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * LEFT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(leftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                            NgosStatus::ASSERTION);
+
+
+
+            Button *rightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowRightImage, rootWidget);
+
+            UEFI_ASSERT_EXECUTION(rightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * RIGHT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(rightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                              NgosStatus::ASSERTION);
+        }
+
+
+
+        i64 osButtonPositionX;
+        i64 osButtonStep;
+
+        if (osCount == 1)
+        {
+            osButtonPositionX = screenWidth * (OS_REGION_LEFT_PERCENT + OS_REGION_RIGHT_PERCENT - OS_BUTTON_SIZE_PERCENT) / 200;
+            osButtonStep      = 0;
+        }
+        else
+        {
+            osButtonPositionX = screenWidth * OS_REGION_LEFT_PERCENT / 100;
+            osButtonStep      = screenWidth * (OS_REGION_RIGHT_PERCENT - OS_REGION_LEFT_PERCENT - OS_BUTTON_SIZE_PERCENT) / 100 / (osCount - 1);
+        }
+
+        i64 osButtonPositionY = screenHeight * OS_REGION_TOP_PERCENT / 100;
+
+
+
+        ListElement<Button *> *element = osButtons.getHead();
+
+        while (element && osCount)
+        {
+            element->getData()->setPosition(osButtonPositionX, osButtonPositionY);
+            osButtonPositionX += osButtonStep;
+
+            --osCount;
+            element = element->getNext();
+        }
+
+        while (element)
+        {
+            element = element->getNext();
+        }
+    }
 
 
 

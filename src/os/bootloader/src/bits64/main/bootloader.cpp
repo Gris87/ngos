@@ -402,6 +402,15 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
     return NgosStatus::OK;
 }
 
+const List<OsInfo>& Bootloader::getOSes()
+{
+    UEFI_LT((""));
+
+
+
+    return sOSes;
+}
+
 NgosStatus Bootloader::initImage()
 {
     UEFI_LT((""));
@@ -1340,6 +1349,11 @@ NgosStatus Bootloader::initOSes()
 
 
             element = element->getNext();
+
+            if (element)
+            {
+                UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
+            }
         }
 
         UEFI_LVVV(("-------------------------------------"));
@@ -1617,6 +1631,110 @@ NgosStatus Bootloader::addNgosOS(VolumeInfo *volume, char16 *directoryPath, char
     OsInfo os;
 
     os.type   = OsType::NGOS;
+    os.volume = volume;
+
+    UEFI_ASSERT_EXECUTION(buildPath(directoryPath, fileName, &os.path), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::addWindowsOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+{
+    UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
+
+    UEFI_ASSERT(volume,        "volume is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(directoryPath, "directoryPath is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(fileName,      "fileName is null",      NgosStatus::ASSERTION);
+
+
+
+    OsInfo os;
+
+    os.type   = OsType::WINDOWS_10;
+    os.volume = volume;
+
+    UEFI_ASSERT_EXECUTION(buildPath(directoryPath, fileName, &os.path), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::addUbuntuOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+{
+    UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
+
+    UEFI_ASSERT(volume,        "volume is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(directoryPath, "directoryPath is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(fileName,      "fileName is null",      NgosStatus::ASSERTION);
+
+
+
+    OsInfo os;
+
+    os.type   = OsType::UBUNTU_19;
+    os.volume = volume;
+
+    UEFI_ASSERT_EXECUTION(buildPath(directoryPath, fileName, &os.path), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::addCentOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+{
+    UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
+
+    UEFI_ASSERT(volume,        "volume is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(directoryPath, "directoryPath is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(fileName,      "fileName is null",      NgosStatus::ASSERTION);
+
+
+
+    OsInfo os;
+
+    os.type   = OsType::CENTOS_7;
+    os.volume = volume;
+
+    UEFI_ASSERT_EXECUTION(buildPath(directoryPath, fileName, &os.path), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::addUnknownOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+{
+    UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
+
+    UEFI_ASSERT(volume,        "volume is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(directoryPath, "directoryPath is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(fileName,      "fileName is null",      NgosStatus::ASSERTION);
+
+
+
+    OsInfo os;
+
+    os.type   = OsType::UNKNOWN;
     os.volume = volume;
 
     UEFI_ASSERT_EXECUTION(buildPath(directoryPath, fileName, &os.path), NgosStatus::ASSERTION);

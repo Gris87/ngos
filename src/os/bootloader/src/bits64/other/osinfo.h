@@ -18,22 +18,22 @@ struct OsInfo
 
     bool operator<(const OsInfo &another) const // TEST: NO
     {
-        if (type < another.type)
-        {
-            return true;
-        }
-
-        if (type > another.type)
-        {
-            return false;
-        }
-
         if (volume->type < another.volume->type)
         {
             return true;
         }
 
         if (volume->type > another.volume->type)
+        {
+            return false;
+        }
+
+        if (type < another.type)
+        {
+            return true;
+        }
+
+        if (type > another.type)
         {
             return false;
         }
