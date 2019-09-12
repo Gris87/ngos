@@ -166,7 +166,6 @@ echo ""
 
 
 apt-get build-dep -y libvirt
-apt-get install -y libtool pkg-config libxml2-dev libxml2-utils xsltproc libgnutls28-dev libnl-3-dev libnl-route-3-dev libdevmapper-dev libpciaccess-dev
 
 
 
