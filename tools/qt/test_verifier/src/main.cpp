@@ -163,7 +163,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    qSort(testStructureEntries.begin(), testStructureEntries.end());
+    std::sort(testStructureEntries.begin(), testStructureEntries.end());
 
     Console::out("");
     Console::out("Found structure entries for testing:");
@@ -178,7 +178,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    qSort(testEntries.begin(), testEntries.end());
+    std::sort(testEntries.begin(), testEntries.end());
 
     Console::out("");
     Console::out("Found entries for testing:");
@@ -208,7 +208,7 @@ qint32 main(qint32 argc, char *argv[])
 
     if (messages.length()) // messages.length() > 0
     {
-        qSort(messages.begin(), messages.end());
+        std::sort(messages.begin(), messages.end());
 
 
 
