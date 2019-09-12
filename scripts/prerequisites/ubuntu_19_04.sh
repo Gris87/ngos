@@ -103,7 +103,7 @@ echo ""
 
 
 
-add-apt-repository -y ppa:jonathonf/gcc
+add-apt-repository -y ppa:jonathonf/gcc-9.1
 apt-get update
 apt-get install -y gcc-9 g++-9
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
