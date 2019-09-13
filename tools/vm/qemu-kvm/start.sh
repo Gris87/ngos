@@ -58,6 +58,12 @@ sudo virsh undefine "${VM_NAME}" --nvram 2> /dev/null
 
 
 
+vboxmanage controlvm "${VM_NAME}" poweroff 2> /dev/null
+vboxmanage storageattach "${VM_NAME}" --storagectl "SATA Controller" --device 0 --port 0 --type hdd --medium none 2> /dev/null
+vboxmanage unregistervm "${VM_NAME}" 2> /dev/null
+
+
+
 cd ../
 ./make_hdd.sh ${OS_TYPE} || exit 1
 cd ${CURRENT_PATH}/

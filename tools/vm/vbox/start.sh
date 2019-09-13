@@ -53,9 +53,8 @@ fi
 
 
 
-cp "template/${VM_NAME}/vm.vbox" "template/${VM_NAME}/${VM_NAME}.vbox"
-sed -i "s/__PATH_TO_DISKS__/${CURRENT_PATH//\//\\/}\/..\/..\/..\/build\/disks\//g" "template/${VM_NAME}/${VM_NAME}.vbox"
-sed -i "s/__RAM_SIZE__/${RAM_SIZE}/g"                                              "template/${VM_NAME}/${VM_NAME}.vbox"
+sudo virsh destroy  "${VM_NAME}"         2> /dev/null
+sudo virsh undefine "${VM_NAME}" --nvram 2> /dev/null
 
 
 
@@ -75,6 +74,12 @@ mkdir -p ../../../build/disks/ 2> /dev/null
 rm "../../../build/disks/${VM_NAME}.vdi" 2> /dev/null
 cat "../../../build/disks/${VM_NAME}.img" | vboxmanage convertfromraw stdin "../../../build/disks/${VM_NAME}.vdi" 1073741824 --uuid e7870c8a-2566-4906-8220-45d9de2f275c 2> /dev/null
 rm "../../../build/disks/${VM_NAME}.img"
+
+
+
+cp "template/${VM_NAME}/vm.vbox" "template/${VM_NAME}/${VM_NAME}.vbox"
+sed -i "s/__PATH_TO_DISKS__/${CURRENT_PATH//\//\\/}\/..\/..\/..\/build\/disks\//g" "template/${VM_NAME}/${VM_NAME}.vbox"
+sed -i "s/__RAM_SIZE__/${RAM_SIZE}/g"                                              "template/${VM_NAME}/${VM_NAME}.vbox"
 
 
 
