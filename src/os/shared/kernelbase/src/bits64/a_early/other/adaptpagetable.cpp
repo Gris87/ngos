@@ -476,6 +476,8 @@ NgosStatus adaptVideoRamPageTable(BootParams *params, PGD *pgd)
 
 
 
+    EARLY_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
+
     return addVideoRamIdentityMap(pgd, params->screens[0]->mode->frameBufferBase, params->screens[0]->mode->frameBufferBase + params->screens[0]->mode->frameBufferSize, videoRamPagetablePages);
 }
 

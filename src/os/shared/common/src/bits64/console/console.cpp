@@ -35,6 +35,8 @@ NgosStatus Console::init(BootParams *params)
 
 
 
+    COMMON_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
+
     sScreenGop    = params->screens[0];
     sScreenPosX   = SIDE_MARGIN;
     sGlyphOffsets = (u16 *)asset->content;

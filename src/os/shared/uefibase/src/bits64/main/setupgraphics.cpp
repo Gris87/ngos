@@ -120,7 +120,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
                 return NgosStatus::FAILED;
             }
 
-            UEFI_LVV(("Updated screen mode"));
+            UEFI_LVV(("Updated screen mode to %u", foundMode));
         }
 
 
@@ -133,6 +133,8 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
     // Validation
     {
+        UEFI_LVVV(("screensCount = %u", screensCount));
+
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
             UEFI_LVVV(("screens:"));
@@ -159,6 +161,24 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
             UEFI_LVVV(("-------------------------------------"));
         }
 #endif
+
+
+
+        // UEFI_TEST_ASSERT(screensCount                                          == 1,                                            NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->frameBufferBase                     == 0x0000000080000000,                           NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->frameBufferSize                     == 8294400,                                      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->maxMode                             == 13,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->mode                                == 12,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(screens[0]->mode->sizeOfInfo                             == 36,                                           NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(screens[0]->mode->info->version                          == 0,                                            NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(screens[0]->mode->info->horizontalResolution          == 1920,                                         NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->info->verticalResolution            == 1080,                                         NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->info->pixelsPerScanLine             == 1920,                                         NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(screens[0]->mode->info->pixelFormat                      == UefiGraphicsPixelFormat::BGR_8_BIT_PER_COLOR, NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(screens[0]->mode->info->pixelInformation.redMask      == 0x00000000,                                   NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->info->pixelInformation.greenMask    == 0x00000000,                                   NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->info->pixelInformation.blueMask     == 0x00000000,                                   NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(screens[0]->mode->info->pixelInformation.reservedMask == 0x00000000,                                   NgosStatus::ASSERTION); // Commented due to value variation
     }
 
 
