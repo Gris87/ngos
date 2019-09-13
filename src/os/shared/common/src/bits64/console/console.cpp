@@ -17,16 +17,21 @@
 
 
 UefiGraphicsOutputProtocol *Console::sScreenGop;
+RgbaPixel                  *Console::sDoubleBuffer;
+RgbaPixel                  *Console::sLastLineBuffer;
+u64                         Console::sLastLineBufferSize;
 u16                         Console::sScreenPosX;
 u16                        *Console::sGlyphOffsets;
 
 
 
-NgosStatus Console::init(BootParams *params)
+NgosStatus Console::init(BootParams *params, RgbaPixel *doubleBuffer, u64 doubleBufferSize)
 {
-    COMMON_LT((" | params = 0x%p", params));
+    COMMON_LT((" | params = 0x%p, doubleBuffer = 0x%p, doubleBufferSize = %u", params, doubleBuffer, doubleBufferSize));
 
-    COMMON_ASSERT(params, "params is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(params,               "params is null",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(doubleBuffer,         "doubleBuffer is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(doubleBufferSize > 0, "doubleBufferSize is zero", NgosStatus::ASSERTION);
 
 
 
@@ -37,26 +42,70 @@ NgosStatus Console::init(BootParams *params)
 
     COMMON_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
 
-    sScreenGop    = params->screens[0];
-    sScreenPosX   = SIDE_MARGIN;
-    sGlyphOffsets = (u16 *)asset->content;
+    sScreenGop          = params->screens[0];
+    sDoubleBuffer       = doubleBuffer;
+    sLastLineBufferSize = sScreenGop->mode->info->horizontalResolution * (CHAR_HEIGHT + BOTTOM_MARGIN) * sizeof(RgbaPixel);
+    sLastLineBuffer     = (RgbaPixel *)((u64)sDoubleBuffer + doubleBufferSize - sLastLineBufferSize);
+    sScreenPosX         = SIDE_MARGIN;
+    sGlyphOffsets       = (u16 *)asset->content;
+
+
+
+    memzero(sLastLineBuffer, sLastLineBufferSize);
+
+    COMMON_ASSERT_EXECUTION(sScreenGop->blt(sScreenGop,
+                                            (UefiGraphicsOutputBltPixel *)sLastLineBuffer,
+                                            UefiGraphicsOutputBltOperation::VIDEO_FILL,
+                                            0, 0,
+                                            0, 0,
+                                            sScreenGop->mode->info->horizontalResolution,
+                                            sScreenGop->mode->info->verticalResolution,
+                                            0),
+                            UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-void Console::print(char8 ch)
+NgosStatus Console::init(BootParams *params)
+{
+    COMMON_LT((" | params = 0x%p", params));
+
+    COMMON_ASSERT(params, "params is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(sScreenGop,                 NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sDoubleBuffer,              NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sLastLineBuffer,            NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sLastLineBufferSize > 0,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sScreenPosX == SIDE_MARGIN, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sGlyphOffsets,              NgosStatus::ASSERTION);
+
+
+
+    AssetEntry *asset = Assets::getAssetEntry("glyphs/console.bin");
+    COMMON_TEST_ASSERT(asset, NgosStatus::ASSERTION);
+
+    sGlyphOffsets  = (u16 *)asset->content;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Console::print(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(sScreenGop, "sScreenInfo is null");
+    COMMON_ASSERT(sScreenGop, "sScreenGop is null", NgosStatus::ASSERTION);
 
 
 
     if (ch == '\n')
     {
-        newLineWithoutCaretReturn();
+        COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);
     }
     else
     if (ch == '\r')
@@ -73,18 +122,20 @@ void Console::print(char8 ch)
 
             if (sScreenPosX + glyphData->width > sScreenGop->mode->info->horizontalResolution - SIDE_MARGIN)
             {
-                newLine();
+                COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
             }
 
 
 
             i16 charPosX   = sScreenPosX + glyphData->bitmapLeft;
-            i16 charPosY   = sScreenGop->mode->info->verticalResolution - BOTTOM_MARGIN - glyphData->bitmapTop;
+            i16 charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
             u8 *bitmapByte = glyphData->bitmap;
 
-            COMMON_TEST_ASSERT(charPosX >= 0);
-            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= (i64)sScreenGop->mode->info->verticalResolution);
-            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT);
+            COMMON_TEST_ASSERT(charPosX >= 0,                                                                           NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= (i64)sScreenGop->mode->info->horizontalResolution, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosY >= 0,                                                                           NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= CHAR_HEIGHT + BOTTOM_MARGIN,                       NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT,                                                  NgosStatus::ASSERTION);
 
 
 
@@ -92,13 +143,11 @@ void Console::print(char8 ch)
             {
                 for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                 {
-                    RgbaPixel *pixel = &((RgbaPixel *)sScreenGop->mode->frameBufferBase)[(charPosY + i) * sScreenGop->mode->info->horizontalResolution + charPosX + j];
+                    RgbaPixel *pixel = &sLastLineBuffer[(charPosY + i) * sScreenGop->mode->info->horizontalResolution + charPosX + j];
 
-                    COMMON_TEST_ASSERT(
-                        (u64)pixel >= (u64)sScreenGop->mode->frameBufferBase + sScreenGop->mode->frameBufferSize - CHAR_HEIGHT * (sScreenGop->mode->info->pixelsPerScanLine << 2)
-                        &&
-                        (u64)pixel <= (u64)sScreenGop->mode->frameBufferBase + sScreenGop->mode->frameBufferSize - sizeof(RgbaPixel)
-                    );
+                    COMMON_TEST_ASSERT((u64)pixel >= (u64)sLastLineBuffer
+                                        &&
+                                        (u64)pixel <= (u64)sLastLineBuffer + sLastLineBufferSize - sizeof(RgbaPixel), NgosStatus::ASSERTION);
 
 
 
@@ -118,15 +167,21 @@ void Console::print(char8 ch)
         else
         {
             COMMON_LW(("Non-printable character found: 0x%02X", (u8)ch));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
     }
+
+
+
+    return NgosStatus::OK;
 }
 
-void Console::print(const char8 *str)
+NgosStatus Console::print(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(str, "str is null");
+    COMMON_ASSERT(str, "str is null", NgosStatus::ASSERTION);
 
 
 
@@ -134,44 +189,60 @@ void Console::print(const char8 *str)
     {
         if (*str == '\n')
         {
-            print('\r');
+            COMMON_ASSERT_EXECUTION(print('\r'), NgosStatus::ASSERTION);
         }
 
-        print(*str);
+        COMMON_ASSERT_EXECUTION(print(*str), NgosStatus::ASSERTION);
 
         ++str;
     }
+
+
+
+    return NgosStatus::OK;
 }
 
-void Console::println()
+NgosStatus Console::println()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 
-    newLine();
+    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
-void Console::println(char8 ch)
+NgosStatus Console::println(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
 
 
-    print(ch);
-    newLine();
+    COMMON_ASSERT_EXECUTION(print(ch), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
-void Console::println(const char8 *str)
+NgosStatus Console::println(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(str, "str is null");
+    COMMON_ASSERT(str, "str is null", NgosStatus::ASSERTION);
 
 
 
-    print(str);
-    newLine();
+    COMMON_ASSERT_EXECUTION(print(str), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(newLine(),  NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus Console::noMorePrint()
@@ -198,27 +269,56 @@ bool Console::canPrint()
     return sScreenGop;
 }
 
-void Console::newLineWithoutCaretReturn()
+NgosStatus Console::newLineWithoutCaretReturn()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(sScreenGop, "sScreenGop is null");
+    COMMON_ASSERT(sScreenGop, "sScreenGop is null", NgosStatus::ASSERTION);
 
 
 
-    u32 lineByteSize = CHAR_HEIGHT * sScreenGop->mode->info->pixelsPerScanLine << 2;
+    COMMON_ASSERT_EXECUTION(sScreenGop->blt(sScreenGop,
+                                            0,
+                                            UefiGraphicsOutputBltOperation::VIDEO_TO_VIDEO,
+                                            0, CHAR_HEIGHT + BOTTOM_MARGIN,
+                                            0, 0,
+                                            sScreenGop->mode->info->horizontalResolution,
+                                            sScreenGop->mode->info->verticalResolution - CHAR_HEIGHT - BOTTOM_MARGIN,
+                                            0),
+                            UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
-    memcpy((void *)sScreenGop->mode->frameBufferBase, (void *)(sScreenGop->mode->frameBufferBase + lineByteSize), sScreenGop->mode->frameBufferSize - lineByteSize);
-    memzero((void *)(sScreenGop->mode->frameBufferBase + sScreenGop->mode->frameBufferSize - lineByteSize), lineByteSize);
+
+
+    COMMON_ASSERT_EXECUTION(sScreenGop->blt(sScreenGop,
+                                            (UefiGraphicsOutputBltPixel *)sLastLineBuffer,
+                                            UefiGraphicsOutputBltOperation::BLT_BUFFER_TO_VIDEO,
+                                            0, 0,
+                                            0, sScreenGop->mode->info->verticalResolution - CHAR_HEIGHT - BOTTOM_MARGIN,
+                                            sScreenGop->mode->info->horizontalResolution,
+                                            CHAR_HEIGHT + BOTTOM_MARGIN,
+                                            0),
+                            UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    memzero(sLastLineBuffer, sLastLineBufferSize);
+
+
+
+    return NgosStatus::OK;
 }
 
-void Console::newLine()
+NgosStatus Console::newLine()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 
-    newLineWithoutCaretReturn();
+    COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);
 
     sScreenPosX = SIDE_MARGIN;
+
+
+
+    return NgosStatus::OK;
 }

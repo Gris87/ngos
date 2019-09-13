@@ -186,10 +186,25 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
     params->screens      = screens;
     params->screensCount = screensCount;
 
+    if (screensCount > 0)
+    {
+        u64        doubleBufferSize = screens[0]->mode->frameBufferSize;
+        RgbaPixel *doubleBuffer;
+
+        if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, doubleBufferSize, (void **)&doubleBuffer) != UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Failed to allocate pool(%u) for screen double buffering", doubleBufferSize));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+        UEFI_LVV(("Allocated pool(0x%p, %u) for screen double buffering", doubleBuffer, doubleBufferSize));
 
 
-    UEFI_ASSERT_EXECUTION(Console::init(params), NgosStatus::ASSERTION);
-    UEFI_LVV(("Console initialized"));
+
+        UEFI_ASSERT_EXECUTION(Console::init(params, doubleBuffer, doubleBufferSize), NgosStatus::ASSERTION);
+        UEFI_LVV(("Console initialized"));
+    }
 
     UEFI_ASSERT_EXECUTION(UEFI::noMorePrint(), NgosStatus::ASSERTION);
 

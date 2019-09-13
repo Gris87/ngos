@@ -87,19 +87,28 @@ void UEFI::print(const char8 *str)
 
 
 
+    char16 buffer[1024];
+    char16 *cur = &buffer[0];
+
     while (*str)
     {
         if (*str == '\n')
         {
-            char16 nl[2] = { '\r', 0 };
-            print(nl);
+            *cur = u'\r';
+            ++cur;
         }
 
-        char16 ch[2] = { (char16)(*str), 0 };
-        print(ch);
-
+        *cur = *str;
+        ++cur;
         ++str;
     }
+
+    UEFI_TEST_ASSERT((u64)(cur - buffer) < sizeof(buffer));
+    *cur = 0;
+
+
+
+    print(buffer);
 }
 
 void UEFI::println()
@@ -108,7 +117,7 @@ void UEFI::println()
 
 
 
-    char16 nl[3] = { '\r', '\n', 0 };
+    char16 nl[3] = { u'\r', u'\n', 0 };
     print(nl);
 }
 
@@ -118,7 +127,7 @@ void UEFI::println(char8 ch)
 
 
 
-    char16 buffer[4] = { (char16)ch, '\r', '\n', 0 };
+    char16 buffer[4] = { (char16)ch, u'\r', u'\n', 0 };
     print(buffer);
 }
 
@@ -132,7 +141,7 @@ void UEFI::println(const char8 *str)
 
     print(str);
 
-    char16 nl[3] = { '\r', '\n', 0 };
+    char16 nl[3] = { u'\r', u'\n', 0 };
     print(nl);
 }
 
@@ -198,7 +207,7 @@ char16* UEFI::parentDirectory(const char16 *path)
 
     while (*str)
     {
-        if (*str == '\\')
+        if (*str == u'\\')
         {
             size = (u64)str;
         }
