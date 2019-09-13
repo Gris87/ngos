@@ -200,7 +200,7 @@ void Console::newLineWithoutCaretReturn()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(sScreenGop, "sScreenInfo is null");
+    COMMON_ASSERT(sScreenGop, "sScreenGop is null");
 
 
 
