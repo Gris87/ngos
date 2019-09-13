@@ -254,7 +254,6 @@ src/os/include/bootparams/bootparamsheader.h
 src/os/include/bootparams/memorymapentry.h
 src/os/include/bootparams/memorymapentrytype.h
 src/os/include/bootparams/pciromimagewithinfo.h
-src/os/include/bootparams/screeninfo.h
 src/os/include/bootparams/uefiinfo.h
 src/os/include/bootparams/uefimemorymapinfo.h
 src/os/include/gdt/flags.h

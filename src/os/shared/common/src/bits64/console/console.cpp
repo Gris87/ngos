@@ -16,9 +16,9 @@
 
 
 
-ScreenInfo *Console::sScreenInfo;
-u16         Console::sScreenPosX;
-u16        *Console::sGlyphOffsets;
+UefiGraphicsOutputProtocol *Console::sScreenGop;
+u16                         Console::sScreenPosX;
+u16                        *Console::sGlyphOffsets;
 
 
 
@@ -35,7 +35,7 @@ NgosStatus Console::init(BootParams *params)
 
 
 
-    sScreenInfo   = &params->screenInfo;
+    sScreenGop    = params->screens[0];
     sScreenPosX   = SIDE_MARGIN;
     sGlyphOffsets = (u16 *)asset->content;
 
@@ -48,7 +48,7 @@ void Console::print(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(sScreenInfo, "sScreenInfo is null");
+    COMMON_ASSERT(sScreenGop, "sScreenInfo is null");
 
 
 
@@ -69,7 +69,7 @@ void Console::print(char8 ch)
 
 
 
-            if (sScreenPosX + glyphData->width > sScreenInfo->width - SIDE_MARGIN)
+            if (sScreenPosX + glyphData->width > sScreenGop->mode->info->horizontalResolution - SIDE_MARGIN)
             {
                 newLine();
             }
@@ -77,11 +77,11 @@ void Console::print(char8 ch)
 
 
             i16 charPosX   = sScreenPosX + glyphData->bitmapLeft;
-            i16 charPosY   = sScreenInfo->height - BOTTOM_MARGIN - glyphData->bitmapTop;
+            i16 charPosY   = sScreenGop->mode->info->verticalResolution - BOTTOM_MARGIN - glyphData->bitmapTop;
             u8 *bitmapByte = glyphData->bitmap;
 
             COMMON_TEST_ASSERT(charPosX >= 0);
-            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sScreenInfo->height);
+            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= (i64)sScreenGop->mode->info->verticalResolution);
             COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT);
 
 
@@ -90,12 +90,12 @@ void Console::print(char8 ch)
             {
                 for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                 {
-                    RgbaPixel *pixel = &((RgbaPixel *)sScreenInfo->frameBufferBase)[(charPosY + i) * sScreenInfo->width + charPosX + j];
+                    RgbaPixel *pixel = &((RgbaPixel *)sScreenGop->mode->frameBufferBase)[(charPosY + i) * sScreenGop->mode->info->horizontalResolution + charPosX + j];
 
                     COMMON_TEST_ASSERT(
-                        (u64)pixel >= (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - CHAR_HEIGHT * sScreenInfo->stride
+                        (u64)pixel >= (u64)sScreenGop->mode->frameBufferBase + sScreenGop->mode->frameBufferSize - CHAR_HEIGHT * (sScreenGop->mode->info->pixelsPerScanLine << 2)
                         &&
-                        (u64)pixel <= (u64)sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - sizeof(RgbaPixel)
+                        (u64)pixel <= (u64)sScreenGop->mode->frameBufferBase + sScreenGop->mode->frameBufferSize - sizeof(RgbaPixel)
                     );
 
 
@@ -176,11 +176,11 @@ NgosStatus Console::noMorePrint()
 {
     COMMON_LT((""));
 
-    COMMON_ASSERT(sScreenInfo, "sScreenInfo is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(sScreenGop, "sScreenGop is null", NgosStatus::ASSERTION);
 
 
 
-    sScreenInfo = 0;
+    sScreenGop = 0;
 
 
 
@@ -193,21 +193,21 @@ bool Console::canPrint()
 
 
 
-    return sScreenInfo;
+    return sScreenGop;
 }
 
 void Console::newLineWithoutCaretReturn()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(sScreenInfo, "sScreenInfo is null");
+    COMMON_ASSERT(sScreenGop, "sScreenInfo is null");
 
 
 
-    u32 lineByteSize = CHAR_HEIGHT * sScreenInfo->stride;
+    u32 lineByteSize = CHAR_HEIGHT * sScreenGop->mode->info->pixelsPerScanLine << 2;
 
-    memcpy((void *)sScreenInfo->frameBufferBase, (void *)(sScreenInfo->frameBufferBase + lineByteSize), sScreenInfo->frameBufferSize - lineByteSize);
-    memzero((void *)(sScreenInfo->frameBufferBase + sScreenInfo->frameBufferSize - lineByteSize), lineByteSize);
+    memcpy((void *)sScreenGop->mode->frameBufferBase, (void *)(sScreenGop->mode->frameBufferBase + lineByteSize), sScreenGop->mode->frameBufferSize - lineByteSize);
+    memzero((void *)(sScreenGop->mode->frameBufferBase + sScreenGop->mode->frameBufferSize - lineByteSize), lineByteSize);
 }
 
 void Console::newLine()

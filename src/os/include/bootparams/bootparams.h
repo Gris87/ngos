@@ -6,19 +6,20 @@
 #include <bootparams/bootparamsheader.h>
 #include <bootparams/memorymapentry.h>
 #include <bootparams/pciromimagewithinfo.h>
-#include <bootparams/screeninfo.h>
 #include <bootparams/uefiinfo.h>
+#include <uefi/uefigraphicsoutputprotocol.h>
 
 
 
 struct BootParams
 {
-    BootParamsHeader     header;
-    ScreenInfo           screenInfo;
-    PciRomImageWithInfo *pciRomImages;
-    UefiInfo             uefi;
-    u64                  memoryMapEntriesCount;
-    MemoryMapEntry      *memoryMapEntries;
+    BootParamsHeader             header;
+    UefiInfo                     uefi;
+    u64                          screensCount;
+    UefiGraphicsOutputProtocol **screens;
+    PciRomImageWithInfo         *pciRomImages;
+    u64                          memoryMapEntriesCount;
+    MemoryMapEntry              *memoryMapEntries;
 };
 
 

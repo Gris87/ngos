@@ -8,130 +8,6 @@
 
 
 
-NgosStatus pixelBitMaskToOffsetAndSize(u32 mask, u8 *offset, u8 *size)
-{
-    UEFI_LT((" | mask = %u, offset = 0x%p, size = 0x%p", mask, offset, size));
-
-    UEFI_ASSERT(offset, "offset is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size,   "size is null",   NgosStatus::ASSERTION);
-
-
-
-    u8 position = 0;
-    u8 length   = 0;
-
-    if (mask)
-    {
-        while (!(mask & 0x01))
-        {
-            mask >>= 1;
-            ++position;
-        }
-
-        while (mask & 0x01)
-        {
-            mask >>= 1;
-            ++length;
-        }
-    }
-
-    *offset = position;
-    *size   = length;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus updateScreenInfo(BootParams *params, UefiGraphicsOutputProtocol *gop, UefiGraphicsOutputModeInformation *info)
-{
-    UEFI_LT((" | params = 0x%p, gop = 0x%p, info = 0x%p", params, gop, info));
-
-    UEFI_ASSERT(params, "params is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(gop,    "gop is null",    NgosStatus::ASSERTION);
-    UEFI_ASSERT(info,   "info is null",   NgosStatus::ASSERTION);
-
-
-
-    switch (info->pixelFormat)
-    {
-        case UefiGraphicsPixelFormat::RGB_8_BIT_PER_COLOR:
-        {
-            params->screenInfo.depth          = 32;
-            params->screenInfo.stride         = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
-            params->screenInfo.redOffset      = 0;
-            params->screenInfo.greenOffset    = 8;
-            params->screenInfo.blueOffset     = 16;
-            params->screenInfo.reservedOffset = 24;
-            params->screenInfo.redSize        = 8;
-            params->screenInfo.greenSize      = 8;
-            params->screenInfo.blueSize       = 8;
-            params->screenInfo.reservedSize   = 8;
-        }
-        break;
-
-        case UefiGraphicsPixelFormat::BGR_8_BIT_PER_COLOR:
-        {
-            params->screenInfo.depth          = 32;
-            params->screenInfo.stride         = info->pixelsPerScanLine << 2; // "<< 2" == "* 4"
-            params->screenInfo.redOffset      = 16;
-            params->screenInfo.greenOffset    = 8;
-            params->screenInfo.blueOffset     = 0;
-            params->screenInfo.reservedOffset = 24;
-            params->screenInfo.redSize        = 8;
-            params->screenInfo.greenSize      = 8;
-            params->screenInfo.blueSize       = 8;
-            params->screenInfo.reservedSize   = 8;
-        }
-        break;
-
-        case UefiGraphicsPixelFormat::BIT_MASK:
-        {
-            UEFI_ASSERT_EXECUTION(pixelBitMaskToOffsetAndSize(info->pixelInformation.redMask,      &params->screenInfo.redOffset,      &params->screenInfo.redSize),      NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(pixelBitMaskToOffsetAndSize(info->pixelInformation.greenMask,    &params->screenInfo.greenOffset,    &params->screenInfo.greenSize),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(pixelBitMaskToOffsetAndSize(info->pixelInformation.blueMask,     &params->screenInfo.blueOffset,     &params->screenInfo.blueSize),     NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(pixelBitMaskToOffsetAndSize(info->pixelInformation.reservedMask, &params->screenInfo.reservedOffset, &params->screenInfo.reservedSize), NgosStatus::ASSERTION);
-
-            params->screenInfo.depth =
-                    params->screenInfo.redSize +
-                    params->screenInfo.greenSize +
-                    params->screenInfo.blueSize +
-                    params->screenInfo.reservedSize;
-
-            params->screenInfo.stride = (info->pixelsPerScanLine * params->screenInfo.depth) >> 3; // ">> 3" == "/ 8"
-        }
-        break;
-
-        case UefiGraphicsPixelFormat::BLT_ONLY:
-        case UefiGraphicsPixelFormat::MAXIMUM:
-        {
-            UEFI_LF(("Unexpected pixel format %u (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
-
-            return NgosStatus::UNEXPECTED_BEHAVIOUR;
-        }
-        break;
-
-        default:
-        {
-            UEFI_LF(("Unknown pixel format %u (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
-
-            return NgosStatus::UNEXPECTED_BEHAVIOUR;
-        }
-        break;
-    }
-
-
-
-    params->screenInfo.width           = info->horizontalResolution;
-    params->screenInfo.height          = info->verticalResolution;
-    params->screenInfo.frameBufferBase = gop->mode->frameBufferBase;
-    params->screenInfo.frameBufferSize = params->screenInfo.height * params->screenInfo.stride;
-
-
-
-    return NgosStatus::OK;
-}
-
 NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 size, uefi_handle *graphicsHandles)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u, graphicsHandles = 0x%p", params, protocol, size, graphicsHandles));
@@ -143,20 +19,30 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
 
 
-    u64                                maximumBuffer = 0;
-    UefiGraphicsOutputProtocol        *foundGop      = 0;
-    u32                                foundMode     = 0;
-    UefiGraphicsOutputModeInformation *foundInfo     = 0;
-
-
-
     i64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
+
+
+
+    UefiGraphicsOutputProtocol **screens;
+    u64                          screensSize  = count * sizeof(UefiGraphicsOutputProtocol *);
+    u64                          screensCount = 0;
+
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, screensSize, (void **)&screens) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to allocate pool(%u) for screen infos", screensSize));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for screen infos", screens, screensSize));
+
+
 
     for (i64 i = 0; i < count; ++i)
     {
         uefi_handle                 handle = graphicsHandles[i];
-        UefiGraphicsOutputProtocol *gop    = 0;
+        UefiGraphicsOutputProtocol *gop;
 
 
 
@@ -170,6 +56,20 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
         UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", handle, gop));
 
 
+
+        UEFI_LVVV(("gop->mode->maxMode = %u",           gop->mode->maxMode));
+        UEFI_LVVV(("gop->mode->mode = %u",              gop->mode->mode));
+        UEFI_LVVV(("gop->mode->info = 0x%p",            gop->mode->info));
+        UEFI_LVVV(("gop->mode->sizeOfInfo = %u",        gop->mode->sizeOfInfo));
+        UEFI_LVVV(("gop->mode->frameBufferBase = 0x%p", gop->mode->frameBufferBase));
+        UEFI_LVVV(("gop->mode->frameBufferSize = %u",   gop->mode->frameBufferSize));
+
+        UEFI_TEST_ASSERT(gop->mode->sizeOfInfo == sizeof(UefiGraphicsOutputModeInformation), NgosStatus::ASSERTION);
+
+
+
+        u64 maximumBuffer = 0;
+        u32 foundMode     = 0;
 
         for (i64 j = 0; j < gop->mode->maxMode; ++j)
         {
@@ -187,14 +87,16 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
             UEFI_LVV(("Queried mode(%d) with info(0x%p, %u) for protocol(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", j, info, sizeOfInfo, gop));
 
+            UEFI_TEST_ASSERT(sizeOfInfo == sizeof(UefiGraphicsOutputModeInformation), NgosStatus::ASSERTION);
+
 
 
             u64 screenResolution = info->horizontalResolution * info->verticalResolution;
 
             UEFI_LVVV(("info->pixelFormat          = %u (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
-            UEFI_LVVV(("info->horizontalResolution = %u", info->horizontalResolution));
-            UEFI_LVVV(("info->verticalResolution   = %u", info->verticalResolution));
-            UEFI_LVVV(("screenResolution           = %u", screenResolution));
+            UEFI_LVVV(("info->horizontalResolution = %u",      info->horizontalResolution));
+            UEFI_LVVV(("info->verticalResolution   = %u",      info->verticalResolution));
+            UEFI_LVVV(("screenResolution           = %u",      screenResolution));
 
             if (
                 info->pixelFormat != UefiGraphicsPixelFormat::BLT_ONLY
@@ -203,87 +105,66 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
                )
             {
                 maximumBuffer = screenResolution;
-                foundGop      = gop;
                 foundMode     = j;
-                foundInfo     = info;
             }
         }
-    }
 
 
 
-    if (!foundGop)
-    {
-        UEFI_LF(("Failed to find valid protocol for UEFI_GRAPHICS_OUTPUT_PROTOCOL"));
-
-        return NgosStatus::NOT_FOUND;
-    }
-
-    UEFI_LVV(("Found valid protocol(0x%p) with info(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", foundGop, foundInfo));
-
-
-
-    if (foundGop->mode->mode != foundMode)
-    {
-        if (foundGop->setMode(foundGop, foundMode) != UefiStatus::SUCCESS)
+        if (gop->mode->mode != foundMode)
         {
-            UEFI_LF(("Failed to update screen mode"));
+            if (gop->setMode(gop, foundMode) != UefiStatus::SUCCESS)
+            {
+                UEFI_LF(("Failed to update screen mode"));
 
-            return NgosStatus::FAILED;
+                return NgosStatus::FAILED;
+            }
+
+            UEFI_LVV(("Updated screen mode"));
         }
 
-        UEFI_LVV(("Updated screen mode"));
+
+
+        screens[screensCount] = gop;
+        ++screensCount;
     }
-
-
-
-    if (updateScreenInfo(params, foundGop, foundInfo) != NgosStatus::OK)
-    {
-        UEFI_LF(("Failed to update screen info"));
-
-        return NgosStatus::FAILED;
-    }
-
-    UEFI_LVV(("Updated screen info"));
 
 
 
     // Validation
     {
-        UEFI_LVVV(("params->screenInfo.frameBufferBase = 0x%p", params->screenInfo.frameBufferBase));
-        UEFI_LVVV(("params->screenInfo.frameBufferSize = %u",   params->screenInfo.frameBufferSize));
-        UEFI_LVVV(("params->screenInfo.stride          = %u",   params->screenInfo.stride));
-        UEFI_LVVV(("params->screenInfo.width           = %u",   params->screenInfo.width));
-        UEFI_LVVV(("params->screenInfo.height          = %u",   params->screenInfo.height));
-        UEFI_LVVV(("params->screenInfo.depth           = %u",   params->screenInfo.depth));
-        UEFI_LVVV(("params->screenInfo.redOffset       = %u",   params->screenInfo.redOffset));
-        UEFI_LVVV(("params->screenInfo.greenOffset     = %u",   params->screenInfo.greenOffset));
-        UEFI_LVVV(("params->screenInfo.blueOffset      = %u",   params->screenInfo.blueOffset));
-        UEFI_LVVV(("params->screenInfo.reservedOffset  = %u",   params->screenInfo.reservedOffset));
-        UEFI_LVVV(("params->screenInfo.redSize         = %u",   params->screenInfo.redSize));
-        UEFI_LVVV(("params->screenInfo.greenSize       = %u",   params->screenInfo.greenSize));
-        UEFI_LVVV(("params->screenInfo.blueSize        = %u",   params->screenInfo.blueSize));
-        UEFI_LVVV(("params->screenInfo.reservedSize    = %u",   params->screenInfo.reservedSize));
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+        {
+            UEFI_LVVV(("screens:"));
+            UEFI_LVVV(("-------------------------------------"));
 
+            for (i64 i = 0; i < (i64)screensCount; ++i)
+            {
+                UEFI_LVVV(("screens[%d]->mode->frameBufferBase                     = 0x%p",    i, screens[i]->mode->frameBufferBase));
+                UEFI_LVVV(("screens[%d]->mode->frameBufferSize                     = %u",      i, screens[i]->mode->frameBufferSize));
+                UEFI_LVVV(("screens[%d]->mode->maxMode                             = %u",      i, screens[i]->mode->maxMode));
+                UEFI_LVVV(("screens[%d]->mode->mode                                = %u",      i, screens[i]->mode->mode));
+                UEFI_LVVV(("screens[%d]->mode->sizeOfInfo                          = %u",      i, screens[i]->mode->sizeOfInfo));
+                UEFI_LVVV(("screens[%d]->mode->info->version                       = %u",      i, screens[i]->mode->info->version));
+                UEFI_LVVV(("screens[%d]->mode->info->horizontalResolution          = %u",      i, screens[i]->mode->info->horizontalResolution));
+                UEFI_LVVV(("screens[%d]->mode->info->verticalResolution            = %u",      i, screens[i]->mode->info->verticalResolution));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelsPerScanLine             = %u",      i, screens[i]->mode->info->pixelsPerScanLine));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelFormat                   = %u (%s)", i, screens[i]->mode->info->pixelFormat, uefiGraphicsPixelFormatToString(screens[i]->mode->info->pixelFormat)));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.redMask      = 0x%08X",  i, screens[i]->mode->info->pixelInformation.redMask));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.greenMask    = 0x%08X",  i, screens[i]->mode->info->pixelInformation.greenMask));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.blueMask     = 0x%08X",  i, screens[i]->mode->info->pixelInformation.blueMask));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.reservedMask = 0x%08X",  i, screens[i]->mode->info->pixelInformation.reservedMask));
+            }
 
-
-        // UEFI_TEST_ASSERT(params->screenInfo.frameBufferBase == 0x0000000080000000, NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->screenInfo.frameBufferSize == 1920000,            NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->screenInfo.lineLength      == 3200,               NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->screenInfo.width           == 800,                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->screenInfo.height          == 600,                NgosStatus::ASSERTION); // Commented due to value variation
-        UEFI_TEST_ASSERT((params->screenInfo.depth             == 32)
-                        ||
-                        (params->screenInfo.depth              == 24),                NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(params->screenInfo.redOffset          == 16,                 NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(params->screenInfo.greenOffset        == 8,                  NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(params->screenInfo.blueOffset         == 0,                  NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(params->screenInfo.reservedOffset  == 24,                 NgosStatus::ASSERTION); // Commented due to value variation
-        UEFI_TEST_ASSERT(params->screenInfo.redSize            == 8,                  NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(params->screenInfo.greenSize          == 8,                  NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(params->screenInfo.blueSize           == 8,                  NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(params->screenInfo.reservedSize    == 8,                  NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_LVVV(("-------------------------------------"));
+        }
+#endif
     }
+
+
+
+    params->screens      = screens;
+    params->screensCount = screensCount;
 
 
 

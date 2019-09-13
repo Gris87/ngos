@@ -9,7 +9,6 @@
 #include <bootparams/memorymapentry.h>
 #include <bootparams/memorymapentrytype.h>
 #include <bootparams/pciromimagewithinfo.h>
-#include <bootparams/screeninfo.h>
 #include <bootparams/uefiinfo.h>
 #include <bootparams/uefimemorymapinfo.h>
 #include <buildconfig.h>
@@ -117,7 +116,7 @@ TEST_CASES(section0, __include_types);
     TEST_CASE("Size of structures");
     {
         TEST_ASSERT_EQUALS(sizeof(BitUtils),                                     1);
-        TEST_ASSERT_EQUALS(sizeof(BootParams),                                   128);
+        TEST_ASSERT_EQUALS(sizeof(BootParams),                                   112);
         TEST_ASSERT_EQUALS(sizeof(BootParamsHeader),                             32);
         TEST_ASSERT_EQUALS(sizeof(ElfClass),                                     1);
         TEST_ASSERT_EQUALS(sizeof(ElfData),                                      1);
@@ -160,7 +159,6 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(PTE),                                          8);
         TEST_ASSERT_EQUALS(sizeof(PUD),                                          8);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                          56);
-        TEST_ASSERT_EQUALS(sizeof(ScreenInfo),                                   32);
         TEST_ASSERT_EQUALS(sizeof(UefiAcpi20ConfigurationTable),                 1);
         TEST_ASSERT_EQUALS(sizeof(UefiAcpiConfigurationTable),                   1);
         TEST_ASSERT_EQUALS(sizeof(UefiAllocateType),                             4);

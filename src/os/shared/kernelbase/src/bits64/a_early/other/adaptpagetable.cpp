@@ -476,7 +476,7 @@ NgosStatus adaptVideoRamPageTable(BootParams *params, PGD *pgd)
 
 
 
-    return addVideoRamIdentityMap(pgd, params->screenInfo.frameBufferBase, params->screenInfo.frameBufferBase + params->screenInfo.frameBufferSize, videoRamPagetablePages);
+    return addVideoRamIdentityMap(pgd, params->screens[0]->mode->frameBufferBase, params->screens[0]->mode->frameBufferBase + params->screens[0]->mode->frameBufferSize, videoRamPagetablePages);
 }
 
 NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)

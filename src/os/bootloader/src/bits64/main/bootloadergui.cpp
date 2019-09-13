@@ -92,8 +92,10 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    u64 screenWidth  = params->screenInfo.width;
-    u64 screenHeight = params->screenInfo.height;
+    UEFI_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
+
+    u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
+    u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
     u64 osButtonSize     = MIN(screenWidth * OS_BUTTON_SIZE_PERCENT     / 100, screenHeight * OS_BUTTON_SIZE_PERCENT     / 100);
     u64 toolButtonSize   = MIN(screenWidth * TOOL_BUTTON_SIZE_PERCENT   / 100, screenHeight * TOOL_BUTTON_SIZE_PERCENT   / 100);
@@ -109,7 +111,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    ScreenWidget *screenWidget = new ScreenWidget(backgroundImage, (u8 *)params->screenInfo.frameBufferBase, rootWidget);
+    ScreenWidget *screenWidget = new ScreenWidget(backgroundImage, (u8 *)params->screens[0]->mode->frameBufferBase, rootWidget);
 
     UEFI_ASSERT_EXECUTION(screenWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(screenWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);

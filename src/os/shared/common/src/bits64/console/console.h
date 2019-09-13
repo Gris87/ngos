@@ -6,6 +6,7 @@
 #include <bootparams/bootparams.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
+#include <uefi/uefigraphicsoutputprotocol.h>
 
 
 
@@ -27,9 +28,9 @@ private:
     static void newLineWithoutCaretReturn(); // TEST: NO
     static void newLine(); // TEST: NO
 
-    static ScreenInfo *sScreenInfo;
-    static u16         sScreenPosX;
-    static u16        *sGlyphOffsets;
+    static UefiGraphicsOutputProtocol *sScreenGop;
+    static u16                         sScreenPosX;
+    static u16                        *sGlyphOffsets;
 };
 
 
