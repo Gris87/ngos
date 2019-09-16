@@ -19,20 +19,18 @@ public:
     static NgosStatus init(); // TEST: NO
     static NgosStatus readyToPrint(); // TEST: NO
 
-    static void print(char8 ch); // TEST: NO
-    static void print(const char8 *str); // TEST: NO
-    static void println(); // TEST: NO
-    static void println(char8 ch); // TEST: NO
-    static void println(const char8 *str); // TEST: NO
+    static NgosStatus print(char8 ch); // TEST: NO
+    static NgosStatus print(const char8 *str); // TEST: NO
+    static NgosStatus println(); // TEST: NO
+    static NgosStatus println(char8 ch); // TEST: NO
+    static NgosStatus println(const char8 *str); // TEST: NO
 
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
 private:
-    static void printChar(char8 ch); // TEST: NO
-    static void newLineWithoutCaretReturn(); // TEST: NO
-    static void newLine(); // TEST: NO
-    static void repaint(); // TEST: NO
+    static NgosStatus newLineWithoutCaretReturn(); // TEST: NO
+    static NgosStatus newLine(); // TEST: NO
 
     static ConsoleWidget *sConsoleWidget;
     static Image         *sTextImage;

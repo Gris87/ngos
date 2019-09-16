@@ -111,7 +111,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    ScreenWidget *screenWidget = new ScreenWidget(backgroundImage, (u8 *)params->screens[0]->mode->frameBufferBase, rootWidget);
+    ScreenWidget *screenWidget = new ScreenWidget(backgroundImage, params->screens[0], rootWidget);
 
     UEFI_ASSERT_EXECUTION(screenWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(screenWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);

@@ -120,24 +120,91 @@ NgosStatus GraphicalConsole::readyToPrint()
     return NgosStatus::OK;
 }
 
-void GraphicalConsole::print(char8 ch)
+NgosStatus GraphicalConsole::print(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
-
-
-    printChar(ch);
+    COMMON_ASSERT(sTextImage, "sTextImage is null", NgosStatus::ASSERTION);
 
 
 
-    repaint();
+    if (ch == '\n')
+    {
+        COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);
+    }
+    else
+    if (ch == '\r')
+    {
+        sPositionX = SIDE_MARGIN;
+    }
+    else
+    {
+        if (ch >= 0x20 && ch < 0x7F)
+        {
+            GlyphData *glyphData = (GlyphData *)((u64)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
+
+
+
+            if (sPositionX + glyphData->width > sTextImage->getWidth() - SIDE_MARGIN)
+            {
+                COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
+            }
+
+
+
+            i16 charPosX   = sPositionX + glyphData->bitmapLeft;
+            i16 charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
+            u8 *bitmapByte = glyphData->bitmap;
+
+            COMMON_TEST_ASSERT(charPosX >= 0,                                                 NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth <= sTextImage->getWidth(),   NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosY >= 0,                                                 NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->getHeight(), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT,                        NgosStatus::ASSERTION);
+
+
+
+            for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
+            {
+                for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
+                {
+                    RgbaPixel *pixel = &sTextImage->getRgbaBuffer()[(charPosY + i) * sTextImage->getWidth() + charPosX + j];
+
+                    COMMON_TEST_ASSERT((u64)pixel >= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - CHAR_HEIGHT * sTextImage->getStride()
+                        &&
+                        (u64)pixel <= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
+
+
+
+                    pixel->red   = 0xFF;
+                    pixel->green = 0xFF;
+                    pixel->blue  = 0xFF;
+                    pixel->alpha = *bitmapByte;
+
+                    ++bitmapByte;
+                }
+            }
+
+            sPositionX += glyphData->width;
+        }
+        else
+        {
+            COMMON_LW(("Non-printable character found: 0x%02X", (u8)ch));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+    }
+
+
+
+    return NgosStatus::OK;
 }
 
-void GraphicalConsole::print(const char8 *str)
+NgosStatus GraphicalConsole::print(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(str, "str is null");
+    COMMON_ASSERT(str, "str is null", NgosStatus::ASSERTION);
 
 
 
@@ -145,71 +212,60 @@ void GraphicalConsole::print(const char8 *str)
     {
         if (*str == '\n')
         {
-            printChar('\r');
+            COMMON_ASSERT_EXECUTION(print('\r'), NgosStatus::ASSERTION);
         }
 
-        printChar(*str);
+        COMMON_ASSERT_EXECUTION(print(*str), NgosStatus::ASSERTION);
 
         ++str;
     }
 
 
 
-    repaint();
+    return NgosStatus::OK;
 }
 
-void GraphicalConsole::println()
+NgosStatus GraphicalConsole::println()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 
-    newLine();
+    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
 
 
 
-    repaint();
+    return NgosStatus::OK;
 }
 
-void GraphicalConsole::println(char8 ch)
+NgosStatus GraphicalConsole::println(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
 
 
-    printChar(ch);
-    newLine();
+    COMMON_ASSERT_EXECUTION(print(ch), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
 
 
 
-    repaint();
+    return NgosStatus::OK;
 }
 
-void GraphicalConsole::println(const char8 *str)
+NgosStatus GraphicalConsole::println(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(str, "str is null");
+    COMMON_ASSERT(str, "str is null", NgosStatus::ASSERTION);
 
 
 
-    while (*str)
-    {
-        if (*str == '\n')
-        {
-            printChar('\r');
-        }
-
-        printChar(*str);
-
-        ++str;
-    }
-
-    newLine();
+    COMMON_ASSERT_EXECUTION(print(str), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(newLine(),  NgosStatus::ASSERTION);
 
 
 
-    repaint();
+    return NgosStatus::OK;
 }
 
 NgosStatus GraphicalConsole::noMorePrint()
@@ -236,85 +292,21 @@ bool GraphicalConsole::canPrint()
     return sGlyphOffsets;
 }
 
-void GraphicalConsole::printChar(char8 ch)
-{
-    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sTextImage, "sTextImage is null");
-
-
-
-    if (ch == '\n')
-    {
-        newLineWithoutCaretReturn();
-    }
-    else
-    if (ch == '\r')
-    {
-        sPositionX = SIDE_MARGIN;
-    }
-    else
-    {
-        if (ch >= 0x20 && ch < 0x7F)
-        {
-            GlyphData *glyphData = (GlyphData *)((u64)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
-
-
-
-            if (sPositionX + glyphData->width > sTextImage->getWidth() - SIDE_MARGIN)
-            {
-                newLine();
-            }
-
-
-
-            i16 charPosX   = sPositionX + glyphData->bitmapLeft;
-            i16 charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
-            u8 *bitmapByte = glyphData->bitmap;
-
-            COMMON_TEST_ASSERT(charPosX >= 0);
-            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->getHeight());
-            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT);
-
-
-
-            for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
-            {
-                for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
-                {
-                    RgbaPixel *pixel = &sTextImage->getRgbaBuffer()[(charPosY + i) * sTextImage->getWidth() + charPosX + j];
-
-                    COMMON_TEST_ASSERT(
-                        (u64)pixel >= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - CHAR_HEIGHT * sTextImage->getStride()
-                        &&
-                        (u64)pixel <= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel)
-                    );
-
-
-
-                    pixel->red   = 0xFF;
-                    pixel->green = 0xFF;
-                    pixel->blue  = 0xFF;
-                    pixel->alpha = *bitmapByte;
-
-                    ++bitmapByte;
-                }
-            }
-
-            sPositionX += glyphData->width;
-        }
-        else
-        {
-            COMMON_LW(("Non-printable character found: 0x%02X", (u8)ch));
-        }
-    }
-}
-
-void GraphicalConsole::newLineWithoutCaretReturn()
+NgosStatus GraphicalConsole::newLineWithoutCaretReturn()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(sTextImage, "sTextImage is null");
+    COMMON_ASSERT(sTextImage, "sTextImage is null", NgosStatus::ASSERTION);
+
+
+
+    Image *resizedImage = sConsoleWidget->getResizedImage();
+    Image *resultImage  = sConsoleWidget->getResultImage();
+
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->getBuffer(), resultImage->getBuffer(), resizedImage->getWidth(), resizedImage->getHeight(), resultImage->getWidth(), resultImage->getHeight(), resizedImage->getBytesPerPixel(), resultImage->getBytesPerPixel(), true,  0, 0),                      NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, sPaddingLeft, sPaddingTop), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(sConsoleWidget->update(), NgosStatus::ASSERTION);
 
 
 
@@ -322,32 +314,23 @@ void GraphicalConsole::newLineWithoutCaretReturn()
 
     memcpy((void *)sTextImage->getBuffer(), (void *)(sTextImage->getBuffer() + lineByteSize), sTextImage->getBufferSize() - lineByteSize);
     memzero((void *)(sTextImage->getBuffer() + sTextImage->getBufferSize() - lineByteSize), lineByteSize);
+
+
+
+    return NgosStatus::OK;
 }
 
-void GraphicalConsole::newLine()
+NgosStatus GraphicalConsole::newLine()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 
-    newLineWithoutCaretReturn();
+    COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);
 
     sPositionX = SIDE_MARGIN;
-}
-
-void GraphicalConsole::repaint()
-{
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sTextImage, "sTextImage is null");
 
 
 
-    Image *resizedImage = sConsoleWidget->getResizedImage();
-    Image *resultImage  = sConsoleWidget->getResultImage();
-
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->getBuffer(), resultImage->getBuffer(), resizedImage->getWidth(), resizedImage->getHeight(), resultImage->getWidth(), resultImage->getHeight(), resizedImage->getBytesPerPixel(), resultImage->getBytesPerPixel(), true,  0, 0));
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, sPaddingLeft, sPaddingTop));
-
-    COMMON_ASSERT_EXECUTION(sConsoleWidget->update());
+    return NgosStatus::OK;
 }

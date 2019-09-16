@@ -10,17 +10,22 @@
 
 
 
-ScreenWidget::ScreenWidget(Image *backgroundImage, u8 *frameBuffer, RootWidget *rootWidget)
+ScreenWidget::ScreenWidget(Image *backgroundImage, UefiGraphicsOutputProtocol *screenGop, RootWidget *rootWidget)
     : Widget()
     , mBackgroundImage(backgroundImage)
-    , mFrameBuffer(frameBuffer)
+    , mScreenGop(screenGop)
     , mRootWidget(rootWidget)
     , mBackgroundResizedImage(0)
+    , mDoubleBuffer((RgbaPixel *)malloc(screenGop->mode->frameBufferSize))
+    , mUpdateLeft(-1)
+    , mUpdateTop(-1)
+    , mUpdateRight(-1)
+    , mUpdateBottom(-1)
 {
-    COMMON_LT((" | backgroundImage = 0x%p, frameBuffer = 0x%p, rootWidget = 0x%p", backgroundImage, frameBuffer, rootWidget));
+    COMMON_LT((" | backgroundImage = 0x%p, screenGop = 0x%p, rootWidget = 0x%p", backgroundImage, screenGop, rootWidget));
 
     COMMON_ASSERT(backgroundImage, "backgroundImage is null");
-    COMMON_ASSERT(frameBuffer,     "frameBuffer is null");
+    COMMON_ASSERT(screenGop,       "screenGop is null");
     COMMON_ASSERT(rootWidget,      "rootWidget is null");
 
 
@@ -38,6 +43,8 @@ ScreenWidget::~ScreenWidget()
     {
         delete mBackgroundResizedImage;
     }
+
+    free(mDoubleBuffer);
 }
 
 NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u64 height)
@@ -51,11 +58,74 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
 
     COMMON_TEST_ASSERT(mBackgroundResizedImage != 0, NgosStatus::ASSERTION);
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(mBackgroundResizedImage->getBuffer(), mFrameBuffer, mBackgroundResizedImage->getWidth(), mBackgroundResizedImage->getHeight(), mWidth, mHeight, mBackgroundResizedImage->getBytesPerPixel(), sizeof(RgbaPixel), true, 0, 0, positionX, positionY, positionX + width, positionY + height), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(mBackgroundResizedImage->getBuffer(), (u8 *)mDoubleBuffer, mBackgroundResizedImage->getWidth(), mBackgroundResizedImage->getHeight(), mWidth, mHeight, mBackgroundResizedImage->getBytesPerPixel(), sizeof(RgbaPixel), true, 0, 0, positionX, positionY, positionX + width, positionY + height), NgosStatus::ASSERTION);
 
 
 
-    drawWidget(mChildren.getHead()->getData(), positionX, positionY);
+    if (mUpdateLeft < 0)
+    {
+        mUpdateLeft   = positionX;
+        mUpdateTop    = positionY;
+        mUpdateRight  = positionX + width;
+        mUpdateBottom = positionY + height;
+    }
+    else
+    {
+        if (positionX < mUpdateLeft)
+        {
+            mUpdateLeft = positionX;
+        }
+
+        if (positionY < mUpdateTop)
+        {
+            mUpdateTop = positionY;
+        }
+
+
+
+        if ((i64)(positionX + width) > mUpdateRight)
+        {
+            mUpdateRight = positionX + width;
+        }
+
+        if ((i64)(positionY + height) > mUpdateBottom)
+        {
+            mUpdateBottom = positionY + height;
+        }
+    }
+
+
+
+    drawWidget(mChildren.getHead()->getData(), positionX, positionY); // TODO: Think about
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus ScreenWidget::applyUpdates()
+{
+    COMMON_LT((""));
+
+
+
+    if (mUpdateLeft >= 0)
+    {
+        COMMON_ASSERT_EXECUTION(mScreenGop->blt(mScreenGop,
+                                                (UefiGraphicsOutputBltPixel *)mDoubleBuffer,
+                                                UefiGraphicsOutputBltOperation::BLT_BUFFER_TO_VIDEO,
+                                                mUpdateLeft, mUpdateTop,
+                                                mUpdateLeft, mUpdateTop,
+                                                mUpdateRight - mUpdateLeft,
+                                                mUpdateBottom - mUpdateTop,
+                                                mWidth * sizeof(RgbaPixel)),
+                                UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+        mUpdateLeft   = -1;
+        mUpdateTop    = -1;
+        mUpdateRight  = -1;
+        mUpdateBottom = -1;
+    }
 
 
 
@@ -71,14 +141,7 @@ NgosStatus ScreenWidget::update(i64 positionX, i64 positionY, u64 width, u64 hei
 
 
 
-    if (mRootWidget)
-    {
-        return mRootWidget->update(mPositionX + positionX, mPositionY + positionY, width, height);
-    }
-
-
-
-    return NgosStatus::OK;
+    return mRootWidget->update(mPositionX + positionX, mPositionY + positionY, width, height);
 }
 
 NgosStatus ScreenWidget::invalidate()
@@ -126,7 +189,14 @@ NgosStatus ScreenWidget::repaint()
 
     COMMON_TEST_ASSERT(mBackgroundResizedImage != 0, NgosStatus::ASSERTION);
 
-    memcpy(mFrameBuffer, mBackgroundResizedImage->getBuffer(), mBackgroundResizedImage->getBufferSize());
+    memcpy(mDoubleBuffer, mBackgroundResizedImage->getBuffer(), mBackgroundResizedImage->getBufferSize());
+
+
+
+    mUpdateLeft   = 0;
+    mUpdateTop    = 0;
+    mUpdateRight  = mWidth;
+    mUpdateBottom = mHeight;
 
 
 
@@ -145,7 +215,7 @@ NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY
     {
         Image *image = widget->getResultImage();
 
-        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), mFrameBuffer, image->getWidth(), image->getHeight(), mWidth, mHeight, image->getBytesPerPixel(), sizeof(RgbaPixel), image->isOpaque(), positionX, positionY), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), (u8 *)mDoubleBuffer, image->getWidth(), image->getHeight(), mWidth, mHeight, image->getBytesPerPixel(), sizeof(RgbaPixel), image->isOpaque(), positionX, positionY), NgosStatus::ASSERTION);
     }
 
 

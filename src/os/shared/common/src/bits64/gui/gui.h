@@ -16,12 +16,17 @@ class GUI
 public:
     static NgosStatus init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, CursorWidget *cursorWidget); // TEST: NO
 
+    static NgosStatus disableUpdates(); // TEST: NO
+    static NgosStatus enableUpdates(); // TEST: NO
+
     static ScreenWidget* getMainScreenWidget(); // TEST: NO
+    static bool isUpdatesEnabled(); // TEST: NO
 
 private:
     static RootWidget   *sRootWidget;
     static ScreenWidget *sMainScreenWidget;
     static CursorWidget *sCursorWidget;
+    static bool          sUpdatesEnabled;
 };
 
 

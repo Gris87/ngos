@@ -194,7 +194,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
         TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                     4);
         TEST_ASSERT_EQUALS(sizeof(RootWidget),                                    96);
-        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  112);
+        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  152);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
         TEST_ASSERT_EQUALS(sizeof(StretchRange),                                  4);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        80);

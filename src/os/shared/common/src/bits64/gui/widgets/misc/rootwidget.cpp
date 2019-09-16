@@ -1,6 +1,7 @@
 #include "rootwidget.h"
 
 #include <common/src/bits64/graphics/graphics.h>
+#include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 
@@ -37,6 +38,26 @@ NgosStatus RootWidget::addScreen(ScreenWidget *screen)
 
 
     mScreens.append(screen);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus RootWidget::applyUpdates()
+{
+    COMMON_LT((""));
+
+
+
+    ListElement<ScreenWidget *> *screen = mScreens.getHead();
+
+    while (screen)
+    {
+        COMMON_ASSERT_EXECUTION(screen->getData()->applyUpdates(), NgosStatus::ASSERTION);
+
+        screen = screen->getNext();
+    }
 
 
 
@@ -144,6 +165,13 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
         }
 
         element = element->getNext();
+    }
+
+
+
+    if (GUI::isUpdatesEnabled())
+    {
+        COMMON_ASSERT_EXECUTION(applyUpdates(), NgosStatus::ASSERTION);
     }
 
 

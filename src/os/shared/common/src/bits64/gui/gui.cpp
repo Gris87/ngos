@@ -10,6 +10,7 @@
 RootWidget   *GUI::sRootWidget;
 ScreenWidget *GUI::sMainScreenWidget;
 CursorWidget *GUI::sCursorWidget;
+bool          GUI::sUpdatesEnabled;
 
 
 
@@ -29,10 +30,45 @@ NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, Cur
 
 
 
+    COMMON_ASSERT_EXECUTION(disableUpdates(),                 NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(sRootWidget->invalidate(),        NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(Console::noMorePrint(),           NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(sRootWidget->repaint(),           NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Console::noMorePrint(),           NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(enableUpdates(),                  NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(GraphicalConsole::readyToPrint(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus GUI::disableUpdates()
+{
+    COMMON_LT((""));
+
+
+
+    sUpdatesEnabled = false;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus GUI::enableUpdates()
+{
+    COMMON_LT((""));
+
+
+
+    if (!sUpdatesEnabled)
+    {
+        sUpdatesEnabled = true;
+
+        COMMON_ASSERT(sRootWidget, "sRootWidget is null", NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(sRootWidget->applyUpdates(), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -46,4 +82,13 @@ ScreenWidget* GUI::getMainScreenWidget()
 
 
     return sMainScreenWidget;
+}
+
+bool GUI::isUpdatesEnabled()
+{
+    COMMON_LT((""));
+
+
+
+    return sUpdatesEnabled;
 }
