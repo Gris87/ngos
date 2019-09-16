@@ -148,6 +148,7 @@ src/os/bootloader/assets/images/button_hover.9.png
 src/os/bootloader/assets/images/button_normal.9.png
 src/os/bootloader/assets/images/button_pressed.9.png
 src/os/bootloader/assets/images/console.9.png
+src/os/bootloader/assets/images/cpu_test.png
 src/os/bootloader/assets/images/cursor.png
 src/os/bootloader/assets/images/hdd_test.png
 src/os/bootloader/assets/images/memory_test.png
