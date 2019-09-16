@@ -20,6 +20,7 @@ LIBVIRT_GLIB_VERSION=2.0.0
 QEMU_VERSION=4.1.0
 VIRT_MANAGER_VERSION=2.2.1
 VIRT_VIEWER_VERSION=8.0
+OVMF_VERSION=edk2-stable201905
 VIRTUALBOX_VERSION=6.0
 QT_VERSION=5.13.1
 
@@ -317,17 +318,30 @@ echo ""
 
 
 
-apt-get install -y alien
+apt-get install -y nasm iasl
 
 
 
-mkdir /tmp/src
-cd /tmp/src
-mkdir edk2_git
-cd edk2_git
-wget https://www.kraxel.org/repos/jenkins/edk2/`curl https://www.kraxel.org/repos/jenkins/edk2/ 2> /dev/nill | grep -o -e "edk2.git-ovmf-x64-.*.rpm\"" | rev | cut -c 2- | rev`
-alien *.rpm
-dpkg -i *.deb
+cd /usr/local/
+
+if [ ! -d edk2 ]; then
+    git clone https://github.com/tianocore/edk2.git
+    cd edk2
+    git submodule update --init
+    cd ..
+fi
+
+cd edk2
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git reset --hard ${OVMF_VERSION}
+git submodule update
+
+source edksetup.sh BaseTools || exit 1
+make -C BaseTools/ || exit 1
+build -a X64 -t GCC5 -b DEBUG -n `nproc` -p OvmfPkg/OvmfPkgX64.dsc || exit 1
 
 
 
