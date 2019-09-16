@@ -157,7 +157,7 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 
                 if (screenWidget->hasIntersection(widget))
                 {
-                    screenWidget->drawWidget(widget, widget->getPositionX() - screenWidget->getPositionX(), widget->getPositionY() - screenWidget->getPositionY());
+                    COMMON_ASSERT_EXECUTION(screenWidget->drawWidget(widget, widget->getPositionX() - screenWidget->getPositionX(), widget->getPositionY() - screenWidget->getPositionY(), left, top, right, bottom), NgosStatus::ASSERTION);
                 }
 
                 screen = screen->getNext();
@@ -238,7 +238,7 @@ NgosStatus RootWidget::repaint()
 
             if (screenWidget->hasIntersection(widget))
             {
-                screenWidget->drawWidget(widget, widget->getPositionX() - screenWidget->getPositionX(), widget->getPositionY() - screenWidget->getPositionY());
+                COMMON_ASSERT_EXECUTION(screenWidget->drawWidget(widget, widget->getPositionX() - screenWidget->getPositionX(), widget->getPositionY() - screenWidget->getPositionY()), NgosStatus::ASSERTION);
             }
 
             screen = screen->getNext();

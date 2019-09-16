@@ -170,9 +170,9 @@ NgosStatus GraphicalConsole::print(char8 ch)
                 {
                     RgbaPixel *pixel = &sTextImage->getRgbaBuffer()[(charPosY + i) * sTextImage->getWidth() + charPosX + j];
 
-                    COMMON_TEST_ASSERT((u64)pixel >= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - CHAR_HEIGHT * sTextImage->getStride()
-                        &&
-                        (u64)pixel <= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT((u64)pixel >= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride()
+                                        &&
+                                        (u64)pixel <= (u64)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
 
 
 
@@ -303,14 +303,14 @@ NgosStatus GraphicalConsole::newLineWithoutCaretReturn()
     Image *resizedImage = sConsoleWidget->getResizedImage();
     Image *resultImage  = sConsoleWidget->getResultImage();
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->getBuffer(), resultImage->getBuffer(), resizedImage->getWidth(), resizedImage->getHeight(), resultImage->getWidth(), resultImage->getHeight(), resizedImage->getBytesPerPixel(), resultImage->getBytesPerPixel(), true,  0, 0),                      NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, sPaddingLeft, sPaddingTop), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->getBuffer(), resultImage->getBuffer(), resizedImage->getWidth(), resizedImage->getHeight(), resultImage->getWidth(), resultImage->getHeight(), resizedImage->getBytesPerPixel(), resultImage->getBytesPerPixel(), true,  0, 0, sPaddingLeft, sPaddingTop, sPaddingLeft + sTextImage->getWidth(), sPaddingTop + sTextImage->getHeight()), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, sPaddingLeft, sPaddingTop),                                                                                     NgosStatus::ASSERTION);
 
-    COMMON_ASSERT_EXECUTION(sConsoleWidget->update(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(sConsoleWidget->update(sPaddingLeft, sPaddingTop, sTextImage->getWidth(), sTextImage->getHeight()), NgosStatus::ASSERTION);
 
 
 
-    u32 lineByteSize = CHAR_HEIGHT * sTextImage->getStride();
+    u32 lineByteSize = (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride();
 
     memcpy((void *)sTextImage->getBuffer(), (void *)(sTextImage->getBuffer() + lineByteSize), sTextImage->getBufferSize() - lineByteSize);
     memzero((void *)(sTextImage->getBuffer() + sTextImage->getBufferSize() - lineByteSize), lineByteSize);

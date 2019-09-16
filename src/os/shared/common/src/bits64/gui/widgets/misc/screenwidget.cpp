@@ -96,7 +96,46 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
 
 
 
-    drawWidget(mChildren.getHead()->getData(), positionX, positionY); // TODO: Think about
+    ListElement<Widget *> *element = mChildren.getHead();
+
+    while (element)
+    {
+        Widget *widget = element->getData();
+
+        if (widget->hasIntersection(positionX, positionY, width, height))
+        {
+            i64 left   = positionX - widget->getPositionX();
+            i64 right  = left + (i64)width;
+            i64 top    = positionY - widget->getPositionY();
+            i64 bottom = top + (i64)height;
+
+            if (left < 0)
+            {
+                left = 0;
+            }
+
+            if (top < 0)
+            {
+                top = 0;
+            }
+
+            if (right > (i64)widget->getWidth())
+            {
+                right = widget->getWidth();
+            }
+
+            if (bottom > (i64)widget->getHeight())
+            {
+                bottom = widget->getHeight();
+            }
+
+
+
+            COMMON_ASSERT_EXECUTION(drawWidget(widget, widget->getPositionX(), widget->getPositionY(), left, top, right, bottom), NgosStatus::ASSERTION);
+        }
+
+        element = element->getNext();
+    }
 
 
 
@@ -211,11 +250,26 @@ NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY
 
 
 
+    return drawWidget(widget, positionX, positionY, 0, 0, widget->getWidth(), widget->getHeight());
+}
+
+NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
+{
+    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", widget, positionX, positionY, left, top, right, bottom));
+
+    COMMON_ASSERT(widget,                             "widget is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(left >= 0,                          "left is invalid",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(top >= 0,                           "top is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(right <= (i64)widget->getWidth(),   "right is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(bottom <= (i64)widget->getHeight(), "bottom is invalid", NgosStatus::ASSERTION);
+
+
+
     if (widget->isVisible())
     {
         Image *image = widget->getResultImage();
 
-        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), (u8 *)mDoubleBuffer, image->getWidth(), image->getHeight(), mWidth, mHeight, image->getBytesPerPixel(), sizeof(RgbaPixel), image->isOpaque(), positionX, positionY), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), (u8 *)mDoubleBuffer, image->getWidth(), image->getHeight(), mWidth, mHeight, image->getBytesPerPixel(), sizeof(RgbaPixel), image->isOpaque(), positionX, positionY, left, top, right, bottom), NgosStatus::ASSERTION);
     }
 
 
