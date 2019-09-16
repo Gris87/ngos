@@ -137,14 +137,14 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
                 top = 0;
             }
 
-            if (right > (i64)widget->getWidth())
+            if (right > (i64)widget->getResultImage()->getWidth())
             {
-                right = widget->getWidth();
+                right = widget->getResultImage()->getWidth();
             }
 
-            if (bottom > (i64)widget->getHeight())
+            if (bottom > (i64)widget->getResultImage()->getHeight())
             {
-                bottom = widget->getHeight();
+                bottom = widget->getResultImage()->getHeight();
             }
 
 

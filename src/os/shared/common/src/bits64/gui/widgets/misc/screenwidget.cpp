@@ -119,14 +119,14 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
                 top = 0;
             }
 
-            if (right > (i64)widget->getWidth())
+            if (right > (i64)widget->getResultImage()->getWidth())
             {
-                right = widget->getWidth();
+                right = widget->getResultImage()->getWidth();
             }
 
-            if (bottom > (i64)widget->getHeight())
+            if (bottom > (i64)widget->getResultImage()->getHeight())
             {
-                bottom = widget->getHeight();
+                bottom = widget->getResultImage()->getHeight();
             }
 
 
@@ -250,18 +250,18 @@ NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY
 
 
 
-    return drawWidget(widget, positionX, positionY, 0, 0, widget->getWidth(), widget->getHeight());
+    return drawWidget(widget, positionX, positionY, 0, 0, widget->getResultImage()->getWidth(), widget->getResultImage()->getHeight());
 }
 
 NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
 {
     COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", widget, positionX, positionY, left, top, right, bottom));
 
-    COMMON_ASSERT(widget,                             "widget is null",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(left >= 0,                          "left is invalid",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(top >= 0,                           "top is invalid",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(right <= (i64)widget->getWidth(),   "right is invalid",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(bottom <= (i64)widget->getHeight(), "bottom is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(widget,                                               "widget is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(left >= 0,                                            "left is invalid",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(top >= 0,                                             "top is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(right <= (i64)widget->getResultImage()->getWidth(),   "right is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(bottom <= (i64)widget->getResultImage()->getHeight(), "bottom is invalid", NgosStatus::ASSERTION);
 
 
 
