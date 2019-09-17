@@ -25,6 +25,7 @@ Bootloader:
 - Implement control with mouse
 - Start external application
 - Auto-start timer
+- Custom arguments
 
 
 
