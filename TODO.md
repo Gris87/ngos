@@ -19,10 +19,12 @@ NGOS:
 
 Bootloader:
 
-- Implement GUI
-- Find all OS and create buttons
-- Find all tools and create buttons
+- Fix issue with nine-patch
+- Add mouse support
+- Implement control with keyboard
+- Implement control with mouse
 - Start external application
+- Auto-start timer
 
 
 
@@ -32,6 +34,7 @@ Code verifier:
 - Verify for headers in assembler
 - Verify for function asserts
 - Verify for log alignment
+- Verify for asserts alignment
 
 
 
@@ -84,6 +87,7 @@ QMake:
 
 USB Boot Maker:
 
+- Download bootloader together with the installer
 - Verify code
 
 
