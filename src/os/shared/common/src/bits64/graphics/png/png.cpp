@@ -1363,7 +1363,18 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
 
 
-        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), newImage->getBuffer(), image->getWidth(), image->getHeight(), newImage->getWidth(), newImage->getHeight(), image->getBytesPerPixel(), newImage->getBytesPerPixel(), true, -1, -1), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                    image->getBuffer(),
+                                    newImage->getBuffer(),
+                                    image->getWidth(),
+                                    image->getHeight(),
+                                    newImage->getWidth(),
+                                    newImage->getHeight(),
+                                    image->getBytesPerPixel(),
+                                    newImage->getBytesPerPixel(),
+                                    true,
+                                    -1, -1),
+                                NgosStatus::ASSERTION);
 
 
 

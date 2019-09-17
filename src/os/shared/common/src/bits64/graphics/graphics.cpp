@@ -148,7 +148,19 @@ NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, i6
 
 
 
-    COMMON_ASSERT_EXECUTION(insertImageRaw(image->getBuffer(), destinationImage->getBuffer(), image->getWidth(), image->getHeight(), destinationImage->getWidth(), destinationImage->getHeight(), image->getBytesPerPixel(), destinationImage->getBytesPerPixel(), image->isOpaque() && destinationImage->isOpaque(), positionX, positionY), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(insertImageRaw(
+                                image->getBuffer(),
+                                destinationImage->getBuffer(),
+                                image->getWidth(),
+                                image->getHeight(),
+                                destinationImage->getWidth(),
+                                destinationImage->getHeight(),
+                                image->getBytesPerPixel(),
+                                destinationImage->getBytesPerPixel(),
+                                image->isOpaque() && destinationImage->isOpaque(),
+                                positionX,
+                                positionY),
+                            NgosStatus::ASSERTION);
 
 
 
@@ -177,7 +189,20 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
 
 
-    return insertImageRaw(sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY, 0, 0, sourceWidth, sourceHeight);
+    return insertImageRaw(sourceData,
+                          destinationData,
+                          sourceWidth,
+                          sourceHeight,
+                          destinationWidth,
+                          destinationHeight,
+                          sourceBytesPerPixel,
+                          destinationBytesPerPixel,
+                          opaque,
+                          positionX,
+                          positionY,
+                          0, 0,
+                          sourceWidth,
+                          sourceHeight);
 }
 
 NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
@@ -894,17 +919,59 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                         u16 destinationSizeX = destinationRangeX->getData().getSize();
                         u16 destinationSizeY = destinationRangeY->getData().getSize();
 
+                        COMMON_TEST_ASSERT(sourceSizeX > 0, NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(sourceSizeY > 0, NgosStatus::ASSERTION);
+
+
+
                         if (
-                            sourceSizeX == destinationSizeX
+                            destinationSizeX // destinationSizeX > 0
                             &&
-                            sourceSizeY == destinationSizeY
+                            destinationSizeY // destinationSizeY > 0
                            )
                         {
-                            COMMON_ASSERT_EXECUTION(insertImageRaw(image->getBuffer(), newImage->getBuffer(), image->getWidth(), image->getHeight(), newImage->getWidth(), newImage->getHeight(), image->getBytesPerPixel(), newImage->getBytesPerPixel(), true, destinationRangeX->getData().getFrom() - sourceRangeX->getData().getFrom(), destinationRangeY->getData().getFrom() - sourceRangeY->getData().getFrom(), sourceRangeX->getData().getFrom(), sourceRangeY->getData().getFrom(), sourceRangeX->getData().getTo(), sourceRangeY->getData().getTo()), NgosStatus::ASSERTION);
-                        }
-                        else
-                        {
-                            COMMON_ASSERT_EXECUTION(resizeImageRaw(image->getBuffer(), sourceRangeX->getData().getFrom(), sourceRangeY->getData().getFrom(), sourceSizeX, sourceSizeY, image->getStride(), newImage->getBuffer(), destinationRangeX->getData().getFrom(), destinationRangeY->getData().getFrom(), destinationSizeX, destinationSizeY, newImage->getStride(), newImage->getBytesPerPixel()), NgosStatus::ASSERTION);
+                            if (
+                                sourceSizeX == destinationSizeX
+                                &&
+                                sourceSizeY == destinationSizeY
+                               )
+                            {
+                                COMMON_ASSERT_EXECUTION(insertImageRaw(
+                                                            image->getBuffer(),
+                                                            newImage->getBuffer(),
+                                                            image->getWidth(),
+                                                            image->getHeight(),
+                                                            newImage->getWidth(),
+                                                            newImage->getHeight(),
+                                                            image->getBytesPerPixel(),
+                                                            newImage->getBytesPerPixel(),
+                                                            true,
+                                                            destinationRangeX->getData().getFrom() - sourceRangeX->getData().getFrom(),
+                                                            destinationRangeY->getData().getFrom() - sourceRangeY->getData().getFrom(),
+                                                            sourceRangeX->getData().getFrom(),
+                                                            sourceRangeY->getData().getFrom(),
+                                                            sourceRangeX->getData().getTo(),
+                                                            sourceRangeY->getData().getTo()),
+                                                        NgosStatus::ASSERTION);
+                            }
+                            else
+                            {
+                                COMMON_ASSERT_EXECUTION(resizeImageRaw(
+                                                            image->getBuffer(),
+                                                            newImage->getBuffer(),
+                                                            sourceRangeX->getData().getFrom(),
+                                                            sourceRangeY->getData().getFrom(),
+                                                            destinationRangeX->getData().getFrom(),
+                                                            destinationRangeY->getData().getFrom(),
+                                                            sourceSizeX,
+                                                            sourceSizeY,
+                                                            destinationSizeX,
+                                                            destinationSizeY,
+                                                            image->getStride(),
+                                                            newImage->getStride(),
+                                                            newImage->getBytesPerPixel()),
+                                                        NgosStatus::ASSERTION);
+                            }
                         }
 
 
@@ -926,7 +993,19 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
         }
         else
         {
-            COMMON_ASSERT_EXECUTION(resizeImageRaw(image->getBuffer(), 0, 0, image->getWidth(), image->getHeight(), image->getStride(), newImage->getBuffer(), 0, 0, newImage->getWidth(), newImage->getHeight(), newImage->getStride(), newImage->getBytesPerPixel()), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(resizeImageRaw(
+                                        image->getBuffer(),
+                                        newImage->getBuffer(),
+                                        0, 0,
+                                        0, 0,
+                                        image->getWidth(),
+                                        image->getHeight(),
+                                        newImage->getWidth(),
+                                        newImage->getHeight(),
+                                        image->getStride(),
+                                        newImage->getStride(),
+                                        newImage->getBytesPerPixel()),
+                                    NgosStatus::ASSERTION);
         }
 
 
@@ -969,45 +1048,45 @@ NgosStatus Graphics::resizeImageProportional(Image *image, u16 width, u16 height
     return resizeImage(image, newWidth, newHeight, res);
 }
 
-NgosStatus Graphics::resizeImageRaw(u8 *originalData, u16 originalPositionX, u16 originalPositionY, u16 originalWidth, u16 originalHeight, u64 originalStride, u8 *data, u16 positionX, u16 positionY, u16 width, u16 height, u64 stride, u8 bytesPerPixel)
+NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sourcePositionX, u16 sourcePositionY, u16 destinationPositionX, u16 destinationPositionY, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u64 sourceStride, u64 destinationStride, u8 bytesPerPixel)
 {
-    COMMON_LT((" | originalData = 0x%p, originalPositionX = %u, originalPositionY = %u, originalWidth = %u, originalHeight = %u, originalStride = %u, data = 0x%p, positionX = %u, positionY = %u, width = %u, height = %u, stride = %u, bytesPerPixel = %u", originalData, originalPositionX, originalPositionY, originalWidth, originalHeight, originalStride, data, positionX, positionY, width, height, stride, bytesPerPixel));
+    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourcePositionX = %u, sourcePositionY = %u, destinationPositionX = %u, destinationPositionY = %u, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceStride = %u, destinationStride = %u, bytesPerPixel = %u", sourceData, destinationData, sourcePositionX, sourcePositionY, destinationPositionX, destinationPositionY, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceStride, destinationStride, bytesPerPixel));
 
-    COMMON_ASSERT(originalData,       "originalData is null",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(originalWidth > 0,  "originalWidth is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(originalHeight > 0, "originalHeight is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(originalStride > 0, "originalStride is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(data,               "data is null",           NgosStatus::ASSERTION);
-    COMMON_ASSERT(width > 0,          "width is zero",          NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0,         "height is zero",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(stride > 0,         "stride is zero",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(bytesPerPixel > 0,  "bytesPerPixel is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceData,            "sourceData is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationData,       "destinationData is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceWidth > 0,       "sourceWidth is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceHeight > 0,      "sourceHeight is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationWidth > 0,  "destinationWidth is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationHeight > 0, "destinationHeight is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceStride > 0,      "sourceStride is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationStride > 0, "destinationStride is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(bytesPerPixel > 0,     "bytesPerPixel is zero",     NgosStatus::ASSERTION);
 
 
 
-    for (i64 i = 0; i < height; ++i)
+    for (i64 i = 0; i < destinationHeight; ++i)
     {
-        for (i64 j = 0; j < width; ++j)
+        for (i64 j = 0; j < destinationWidth; ++j)
         {
-            i64 originalLeft   = j > 0 ? originalPositionX + (j - 1) * originalWidth  / width : originalPositionX;  // Ignore CppEqualAlignmentVerifier
-            i64 originalRight  =         originalPositionX + (j + 1) * originalWidth  / width;                      // Ignore CppEqualAlignmentVerifier
-            i64 originalTop    = i > 0 ? originalPositionY + (i - 1) * originalHeight / height : originalPositionY; // Ignore CppEqualAlignmentVerifier
-            i64 originalBottom =         originalPositionY + (i + 1) * originalHeight / height;                     // Ignore CppEqualAlignmentVerifier
+            i64 left   = j > 0 ? sourcePositionX + (j - 1) * sourceWidth  / destinationWidth : sourcePositionX;  // Ignore CppEqualAlignmentVerifier
+            i64 right  =         sourcePositionX + (j + 1) * sourceWidth  / destinationWidth;                    // Ignore CppEqualAlignmentVerifier
+            i64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
+            i64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
 
 
 
-            u8 *targetData = &data[(positionY + i) * stride + (positionX + j) * bytesPerPixel];
+            u8 *targetData = &destinationData[(destinationPositionY + i) * destinationStride + (destinationPositionX + j) * bytesPerPixel];
 
             for (i64 k = 0; k < bytesPerPixel; ++k)
             {
                 u64 sum   = 0;
                 u64 total = 0;
 
-                for (i64 g = originalTop; g < originalBottom; ++g)
+                for (i64 g = top; g < bottom; ++g)
                 {
-                    for (i64 h = originalLeft; h < originalRight; ++h)
+                    for (i64 h = left; h < right; ++h)
                     {
-                        sum += originalData[g * originalStride + h * bytesPerPixel + k];
+                        sum += sourceData[g * sourceStride + h * bytesPerPixel + k];
 
                         ++total;
                     }
@@ -1019,7 +1098,7 @@ NgosStatus Graphics::resizeImageRaw(u8 *originalData, u16 originalPositionX, u16
                 }
                 else
                 {
-                    targetData[k] = originalData[originalTop * originalStride + originalLeft * bytesPerPixel + k];
+                    targetData[k] = sourceData[top * sourceStride + left * bytesPerPixel + k];
                 }
             }
         }

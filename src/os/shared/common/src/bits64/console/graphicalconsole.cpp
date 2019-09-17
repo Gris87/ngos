@@ -303,8 +303,36 @@ NgosStatus GraphicalConsole::newLineWithoutCaretReturn()
     Image *resizedImage = sConsoleWidget->getResizedImage();
     Image *resultImage  = sConsoleWidget->getResultImage();
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(resizedImage->getBuffer(), resultImage->getBuffer(), resizedImage->getWidth(), resizedImage->getHeight(), resultImage->getWidth(), resultImage->getHeight(), resizedImage->getBytesPerPixel(), resultImage->getBytesPerPixel(), true,  0, 0, sPaddingLeft, sPaddingTop, sPaddingLeft + sTextImage->getWidth(), sPaddingTop + sTextImage->getHeight()), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(sTextImage->getBuffer(),   resultImage->getBuffer(), sTextImage->getWidth(),   sTextImage->getHeight(),   resultImage->getWidth(), resultImage->getHeight(), sTextImage->getBytesPerPixel(),   resultImage->getBytesPerPixel(), false, sPaddingLeft, sPaddingTop),                                                                                     NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                resizedImage->getBuffer(),
+                                resultImage->getBuffer(),
+                                resizedImage->getWidth(),
+                                resizedImage->getHeight(),
+                                resultImage->getWidth(),
+                                resultImage->getHeight(),
+                                resizedImage->getBytesPerPixel(),
+                                resultImage->getBytesPerPixel(),
+                                true,
+                                0, 0,
+                                sPaddingLeft,
+                                sPaddingTop,
+                                sPaddingLeft + sTextImage->getWidth(),
+                                sPaddingTop + sTextImage->getHeight()),
+                            NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                sTextImage->getBuffer(),
+                                resultImage->getBuffer(),
+                                sTextImage->getWidth(),
+                                sTextImage->getHeight(),
+                                resultImage->getWidth(),
+                                resultImage->getHeight(),
+                                sTextImage->getBytesPerPixel(),
+                                resultImage->getBytesPerPixel(),
+                                false,
+                                sPaddingLeft,
+                                sPaddingTop),
+                            NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(sConsoleWidget->update(sPaddingLeft, sPaddingTop, sTextImage->getWidth(), sTextImage->getHeight()), NgosStatus::ASSERTION);
 

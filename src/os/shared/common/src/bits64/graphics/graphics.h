@@ -20,7 +20,7 @@ public:
     static NgosStatus resizeImageProportional(Image *image, u16 width, u16 height, Image **res); // TEST: NO
 
 private:
-    static NgosStatus resizeImageRaw(u8 *originalData, u16 originalPositionX, u16 originalPositionY, u16 originalWidth, u16 originalHeight, u64 originalStride, u8 *data, u16 positionX, u16 positionY, u16 width, u16 height, u64 stride, u8 bytesPerPixel); // TEST: NO
+    static NgosStatus resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sourcePositionX, u16 sourcePositionY, u16 destinationPositionX, u16 destinationPositionY, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u64 sourceStride, u64 destinationStride, u8 bytesPerPixel); // TEST: NO
 };
 
 

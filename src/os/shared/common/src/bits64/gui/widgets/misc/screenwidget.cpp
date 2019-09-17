@@ -58,7 +58,22 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
 
     COMMON_TEST_ASSERT(mBackgroundResizedImage != 0, NgosStatus::ASSERTION);
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(mBackgroundResizedImage->getBuffer(), (u8 *)mDoubleBuffer, mBackgroundResizedImage->getWidth(), mBackgroundResizedImage->getHeight(), mWidth, mHeight, mBackgroundResizedImage->getBytesPerPixel(), sizeof(RgbaPixel), true, 0, 0, positionX, positionY, positionX + width, positionY + height), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                mBackgroundResizedImage->getBuffer(),
+                                (u8 *)mDoubleBuffer,
+                                mBackgroundResizedImage->getWidth(),
+                                mBackgroundResizedImage->getHeight(),
+                                mWidth,
+                                mHeight,
+                                mBackgroundResizedImage->getBytesPerPixel(),
+                                sizeof(RgbaPixel),
+                                true,
+                                0, 0,
+                                positionX,
+                                positionY,
+                                positionX + width,
+                                positionY + height),
+                            NgosStatus::ASSERTION);
 
 
 
@@ -269,7 +284,23 @@ NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY
     {
         Image *image = widget->getResultImage();
 
-        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(image->getBuffer(), (u8 *)mDoubleBuffer, image->getWidth(), image->getHeight(), mWidth, mHeight, image->getBytesPerPixel(), sizeof(RgbaPixel), image->isOpaque(), positionX, positionY, left, top, right, bottom), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                    image->getBuffer(),
+                                    (u8 *)mDoubleBuffer,
+                                    image->getWidth(),
+                                    image->getHeight(),
+                                    mWidth,
+                                    mHeight,
+                                    image->getBytesPerPixel(),
+                                    sizeof(RgbaPixel),
+                                    image->isOpaque(),
+                                    positionX,
+                                    positionY,
+                                    left,
+                                    top,
+                                    right,
+                                    bottom),
+                                NgosStatus::ASSERTION);
     }
 
 

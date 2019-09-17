@@ -132,8 +132,26 @@ NgosStatus Button::repaint()
 
     Image *contentResizedImage;
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImageProportional(mContentImage, mWidth - paddingLeft - paddingRight, mHeight - paddingTop - paddingBottom, &contentResizedImage),                                                                                                                                                                                                                                                                                                                                             NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(contentResizedImage->getBuffer(), mResultImage->getBuffer(), contentResizedImage->getWidth(), contentResizedImage->getHeight(), mResultImage->getWidth(), mResultImage->getHeight(), contentResizedImage->getBytesPerPixel(), mResultImage->getBytesPerPixel(), contentResizedImage->isOpaque() && mResultImage->isOpaque(), (mResultImage->getWidth() - contentResizedImage->getWidth()) >> 1, (mResultImage->getHeight() - contentResizedImage->getHeight()) >> 1), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImageProportional(
+                                mContentImage,
+                                mWidth - paddingLeft - paddingRight,
+                                mHeight - paddingTop - paddingBottom,
+                                &contentResizedImage),
+                            NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                contentResizedImage->getBuffer(),
+                                mResultImage->getBuffer(),
+                                contentResizedImage->getWidth(),
+                                contentResizedImage->getHeight(),
+                                mResultImage->getWidth(),
+                                mResultImage->getHeight(),
+                                contentResizedImage->getBytesPerPixel(),
+                                mResultImage->getBytesPerPixel(),
+                                contentResizedImage->isOpaque() && mResultImage->isOpaque(),
+                                (mResultImage->getWidth() - contentResizedImage->getWidth()) >> 1,
+                                (mResultImage->getHeight() - contentResizedImage->getHeight()) >> 1),
+                            NgosStatus::ASSERTION);
 
     delete contentResizedImage;
 
