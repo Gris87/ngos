@@ -1064,6 +1064,11 @@ NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
 
 
+    i64 sourceRight  = sourcePositionX + sourceWidth;
+    i64 sourceBottom = sourcePositionY + sourceHeight;
+
+
+
     for (i64 i = 0; i < destinationHeight; ++i)
     {
         for (i64 j = 0; j < destinationWidth; ++j)
@@ -1075,6 +1080,28 @@ NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
 
 
+            if (right == sourceRight)
+            {
+                if (left == right)
+                {
+                    --left;
+                }
+
+                --right;
+            }
+
+            if (bottom == sourceBottom)
+            {
+                if (top == bottom)
+                {
+                    --top;
+                }
+
+                --bottom;
+            }
+
+
+
             u8 *targetData = &destinationData[(destinationPositionY + i) * destinationStride + (destinationPositionX + j) * bytesPerPixel];
 
             for (i64 k = 0; k < bytesPerPixel; ++k)
@@ -1082,9 +1109,9 @@ NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
                 u64 sum   = 0;
                 u64 total = 0;
 
-                for (i64 g = top; g < bottom; ++g)
+                for (i64 g = top; g <= bottom; ++g)
                 {
-                    for (i64 h = left; h < right; ++h)
+                    for (i64 h = left; h <= right; ++h)
                     {
                         sum += sourceData[g * sourceStride + h * bytesPerPixel + k];
 
@@ -1092,14 +1119,9 @@ NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
                     }
                 }
 
-                if (total) // total > 0
-                {
-                    targetData[k] = sum / total;
-                }
-                else
-                {
-                    targetData[k] = sourceData[top * sourceStride + left * bytesPerPixel + k];
-                }
+                COMMON_TEST_ASSERT(total > 0, NgosStatus::ASSERTION);
+
+                targetData[k] = sum / total;
             }
         }
     }
