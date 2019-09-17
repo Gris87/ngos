@@ -19,7 +19,6 @@ NGOS:
 
 Bootloader:
 
-- Fix issue with nine-patch
 - Add mouse support
 - Implement control with keyboard
 - Implement control with mouse
