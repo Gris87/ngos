@@ -282,18 +282,18 @@ NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY
 
     if (widget->isVisible())
     {
-        Image *image = widget->getResultImage();
+        Image *resultImage = widget->getResultImage();
 
         COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                    image->getBuffer(),
+                                    resultImage->getBuffer(),
                                     (u8 *)mDoubleBuffer,
-                                    image->getWidth(),
-                                    image->getHeight(),
+                                    resultImage->getWidth(),
+                                    resultImage->getHeight(),
                                     mWidth,
                                     mHeight,
-                                    image->getBytesPerPixel(),
+                                    resultImage->getBytesPerPixel(),
                                     sizeof(RgbaPixel),
-                                    image->isOpaque(),
+                                    resultImage->isOpaque(),
                                     positionX,
                                     positionY,
                                     left,
