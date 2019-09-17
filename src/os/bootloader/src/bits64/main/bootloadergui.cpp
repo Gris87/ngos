@@ -31,21 +31,25 @@
 #define OS_REGION_TOP_PERCENT   15
 #define OS_VISIBLE_COUNT        4
 
-#define MEMORY_TEST_BUTTON_POSITION_X_PERCENT 45
-#define MEMORY_TEST_BUTTON_POSITION_Y_PERCENT 40
+#define CPU_TEST_BUTTON_POSITION_X_PERCENT 10
+#define CPU_TEST_BUTTON_POSITION_Y_PERCENT 43
 
-#define HDD_TEST_BUTTON_POSITION_X_PERCENT 45
-#define HDD_TEST_BUTTON_POSITION_Y_PERCENT 50
+#define MEMORY_TEST_BUTTON_POSITION_X_PERCENT 51
+#define MEMORY_TEST_BUTTON_POSITION_Y_PERCENT 43
 
-#define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 45
-#define PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT 60
+#define HDD_TEST_BUTTON_POSITION_X_PERCENT 10
+#define HDD_TEST_BUTTON_POSITION_Y_PERCENT 55
+
+#define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 51
+#define PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT 55
 
 #define CURSOR_POSITION_X_PERCENT 50
 #define CURSOR_POSITION_Y_PERCENT 50
 
 #define OS_BUTTON_SIZE_PERCENT     20
 #define ARROW_BUTTON_SIZE_PERCENT  6
-#define TOOL_BUTTON_SIZE_PERCENT   10
+#define TOOL_BUTTON_WIDTH_PERCENT  39
+#define TOOL_BUTTON_HEIGHT_PERCENT 10
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
 
@@ -64,6 +68,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     Image  *buttonHoverImage;
     Image  *buttonNormalImage;
     Image  *buttonPressedImage;
+    Image  *cpuTestImage;
     Image  *cursorImage;
     Image  *hddTestImage;
     Image  *memoryTestImage;
@@ -82,6 +87,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_hover.9.png",   &buttonHoverImage),     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_normal.9.png",  &buttonNormalImage),    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_pressed.9.png", &buttonPressedImage),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cpu_test.png",         &cpuTestImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cursor.png",           &cursorImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/hdd_test.png",         &hddTestImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/memory_test.png",      &memoryTestImage),      NgosStatus::ASSERTION);
@@ -98,10 +104,11 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
     u64 osButtonSize     = MIN(screenWidth * OS_BUTTON_SIZE_PERCENT     / 100, screenHeight * OS_BUTTON_SIZE_PERCENT     / 100);
-    u64 toolButtonSize   = MIN(screenWidth * TOOL_BUTTON_SIZE_PERCENT   / 100, screenHeight * TOOL_BUTTON_SIZE_PERCENT   / 100);
     u64 systemButtonSize = MIN(screenWidth * SYSTEM_BUTTON_SIZE_PERCENT / 100, screenHeight * SYSTEM_BUTTON_SIZE_PERCENT / 100);
     u64 cursorSize       = MIN(screenWidth * CURSOR_SIZE_PERCENT        / 100, screenHeight * CURSOR_SIZE_PERCENT        / 100);
 
+    u64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
+    u64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
 
 
     RootWidget *rootWidget = new RootWidget();
@@ -265,24 +272,31 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
+    Button *cpuTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, cpuTestImage, rootWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuTestButton->setPosition(screenWidth * CPU_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * CPU_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
+
+
+
     Button *memoryTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, memoryTestImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(memoryTestButton->setPosition(screenWidth * MEMORY_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MEMORY_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(memoryTestButton->setSize(toolButtonSize, toolButtonSize),                                                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(memoryTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                         NgosStatus::ASSERTION);
 
 
 
     Button *hddTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, hddTestImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(hddTestButton->setPosition(screenWidth * HDD_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * HDD_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(hddTestButton->setSize(toolButtonSize, toolButtonSize),                                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(hddTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
 
 
 
     Button *partitionWizardButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, partitionWizardImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(partitionWizardButton->setPosition(screenWidth * PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT / 100, screenHeight * PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(partitionWizardButton->setSize(toolButtonSize, toolButtonSize),                                                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(partitionWizardButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                                   NgosStatus::ASSERTION);
 
 
 
