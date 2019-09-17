@@ -68,11 +68,9 @@ NgosStatus Console::init(BootParams *params, RgbaPixel *doubleBuffer, u64 double
     return NgosStatus::OK;
 }
 
-NgosStatus Console::init(BootParams *params)
+NgosStatus Console::init()
 {
-    COMMON_LT((" | params = 0x%p", params));
-
-    COMMON_ASSERT(params, "params is null", NgosStatus::ASSERTION);
+    COMMON_LT((""));
 
 
 

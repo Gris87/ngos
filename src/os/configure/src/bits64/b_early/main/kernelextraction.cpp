@@ -30,7 +30,7 @@ u64 extractKernel(KernelDescriptor *kernelDescriptor, BootParams *params, u8 *de
 
 
 
-    EARLY_ASSERT_EXECUTION(Console::init(params), 0);
+    EARLY_ASSERT_EXECUTION(Console::init(), 0);
     EARLY_LVV(("Console initialized"));
 
 

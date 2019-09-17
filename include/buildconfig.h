@@ -117,6 +117,7 @@
 
 
 
+#if NGOS_BUILD_RELEASE == OPTION_NO
 /***
  *** Category: General
  *** Name: Optimization level
@@ -132,7 +133,10 @@
  ***
  *** Default: OPTION_OPTIMIZATION_LEVEL_3
  ***/
+#define NGOS_BUILD_OPTIMIZATION_LEVEL OPTION_OPTIMIZATION_LEVEL_0
+#else
 #define NGOS_BUILD_OPTIMIZATION_LEVEL OPTION_OPTIMIZATION_LEVEL_3
+#endif
 
 
 

@@ -15,7 +15,7 @@ class Console
 {
 public:
     static NgosStatus init(BootParams *params, RgbaPixel *doubleBuffer, u64 doubleBufferSize); // TEST: NO
-    static NgosStatus init(BootParams *params); // TEST: NO
+    static NgosStatus init(); // TEST: NO
 
     static NgosStatus print(char8 ch); // TEST: NO
     static NgosStatus print(const char8 *str); // TEST: NO

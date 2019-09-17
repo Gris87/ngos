@@ -615,7 +615,7 @@ NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 
 
 
-    EARLY_ASSERT_EXECUTION(Console::init(params), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(Console::init(), NgosStatus::ASSERTION);
     EARLY_LVV(("Console initialized"));
 
 

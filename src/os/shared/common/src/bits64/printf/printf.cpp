@@ -57,20 +57,15 @@ char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 
 
 
-    static const char8 *digitsLower = "0123456789abcdef";
-    static const char8 *digitsUpper = "0123456789ABCDEF";
-
-
-
     const char8 *digits;
 
     if (flags & FLAG_SMALL)
     {
-        digits = digitsLower;
+        digits = "0123456789abcdef";
     }
     else
     {
-        digits = digitsUpper;
+        digits = "0123456789ABCDEF";
     }
 
 

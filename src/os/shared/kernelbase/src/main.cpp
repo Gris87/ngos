@@ -51,7 +51,7 @@ void kernelMain(BootParams *params)
 
 
 
-    EARLY_ASSERT_EXECUTION(Console::init(&bootParams));
+    EARLY_ASSERT_EXECUTION(Console::init());
     EARLY_LI(("Console initialized"));
 
 
