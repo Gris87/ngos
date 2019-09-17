@@ -36,6 +36,7 @@ Code verifier:
 - Verify for function asserts
 - Verify for log alignment
 - Verify for asserts alignment
+- Upgrade verifier for trace arguments (Check format with the types)
 
 
 

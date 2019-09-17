@@ -620,15 +620,16 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                         if (isCurrentStretch)
                         {
                             size = 0;
+
+                            sizes.append(size);
                         }
                         else
                         {
-                            size = element->getData().getSize();
-                            size = width * size / totalFixedCountX;
-                        }
+                            size = width * element->getData().getSize() / totalFixedCountX;
 
-                        sizes.append(size);
-                        totalWidth += size;
+                            sizes.append(size);
+                            totalWidth += size;
+                        }
 
 
 
@@ -788,15 +789,16 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                         if (isCurrentStretch)
                         {
                             size = 0;
+
+                            sizes.append(size);
                         }
                         else
                         {
-                            size = element->getData().getSize();
-                            size = height * size / totalFixedCountY;
-                        }
+                            size = height * element->getData().getSize() / totalFixedCountY;
 
-                        sizes.append(size);
-                        totalHeight += size;
+                            sizes.append(size);
+                            totalHeight += size;
+                        }
 
 
 
