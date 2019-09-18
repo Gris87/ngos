@@ -35,7 +35,6 @@
 #include <mbr/mbrpartitiontype.h>
 #include <ngos/status.h>
 #include <pagetable/types.h>
-#include <uefibase/test/bits64/testengine.h>
 #include <uefi/config/uefiacpi20configurationtable.h>
 #include <uefi/config/uefiacpiconfigurationtable.h>
 #include <uefi/config/uefidebuginfoconfigurationtable.h>
@@ -53,11 +52,11 @@
 #include <uefi/config/uefismbiosconfigurationtable.h>
 #include <uefi/config/uefisystemresourceconfigurationtable.h>
 #include <uefi/config/uefiugaioconfigurationtable.h>
-#include <uefi/uefiabsolutepointermodeattributeflags.h>
 #include <uefi/uefiabsolutepointermode.h>
+#include <uefi/uefiabsolutepointermodeattributeflags.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
-#include <uefi/uefiabsolutepointerstateactivebuttonflags.h>
 #include <uefi/uefiabsolutepointerstate.h>
+#include <uefi/uefiabsolutepointerstateactivebuttonflags.h>
 #include <uefi/uefiallocatetype.h>
 #include <uefi/uefiblockiomedia.h>
 #include <uefi/uefiblockioprotocol.h>
@@ -89,10 +88,10 @@
 #include <uefi/uefimemorydescriptor.h>
 #include <uefi/uefimemorytype.h>
 #include <uefi/uefiopenprotocolinformationentry.h>
+#include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipciioprotocolaccess.h>
 #include <uefi/uefipciioprotocolattributeoperation.h>
 #include <uefi/uefipciioprotocolconfigaccess.h>
-#include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipciioprotocoloperation.h>
 #include <uefi/uefipciioprotocolwidth.h>
 #include <uefi/uefipixelbitmask.h>
@@ -108,9 +107,10 @@
 #include <uefi/uefistatus.h>
 #include <uefi/uefisystemtable.h>
 #include <uefi/uefitableheader.h>
-#include <uefi/uefitimecapabilicies.h>
 #include <uefi/uefitime.h>
+#include <uefi/uefitimecapabilicies.h>
 #include <uefi/uefitimerdelay.h>
+#include <uefibase/test/bits64/testengine.h>
 #include <uuid/uuid.h>
 
 
