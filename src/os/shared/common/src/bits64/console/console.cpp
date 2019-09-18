@@ -86,7 +86,7 @@ NgosStatus Console::init()
     AssetEntry *asset = Assets::getAssetEntry("glyphs/console.bin");
     COMMON_TEST_ASSERT(asset, NgosStatus::ASSERTION);
 
-    sGlyphOffsets  = (u16 *)asset->content;
+    sGlyphOffsets = (u16 *)asset->content;
 
 
 
@@ -125,15 +125,15 @@ NgosStatus Console::print(char8 ch)
 
 
 
-            i16 charPosX   = sScreenPosX + glyphData->bitmapLeft;
-            i16 charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
-            u8 *bitmapByte = glyphData->bitmap;
+            i16  charPosX   = sScreenPosX + glyphData->bitmapLeft;
+            i16  charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
+            u8  *bitmapByte = glyphData->bitmap;
 
-            COMMON_TEST_ASSERT(charPosX >= 0,                                                                           NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosX                           >= 0,                                                 NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= (i64)sScreenGop->mode->info->horizontalResolution, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(charPosY >= 0,                                                                           NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosY                           >= 0,                                                 NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= CHAR_HEIGHT + BOTTOM_MARGIN,                       NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT,                                                  NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(glyphData->bitmapHeight            <= CHAR_HEIGHT,                                       NgosStatus::ASSERTION);
 
 
 

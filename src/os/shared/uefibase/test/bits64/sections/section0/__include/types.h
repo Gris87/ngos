@@ -35,6 +35,7 @@
 #include <mbr/mbrpartitiontype.h>
 #include <ngos/status.h>
 #include <pagetable/types.h>
+#include <uefibase/test/bits64/testengine.h>
 #include <uefi/config/uefiacpi20configurationtable.h>
 #include <uefi/config/uefiacpiconfigurationtable.h>
 #include <uefi/config/uefidebuginfoconfigurationtable.h>
@@ -52,6 +53,11 @@
 #include <uefi/config/uefismbiosconfigurationtable.h>
 #include <uefi/config/uefisystemresourceconfigurationtable.h>
 #include <uefi/config/uefiugaioconfigurationtable.h>
+#include <uefi/uefiabsolutepointermodeattributeflags.h>
+#include <uefi/uefiabsolutepointermode.h>
+#include <uefi/uefiabsolutepointerprotocol.h>
+#include <uefi/uefiabsolutepointerstateactivebuttonflags.h>
+#include <uefi/uefiabsolutepointerstate.h>
 #include <uefi/uefiallocatetype.h>
 #include <uefi/uefiblockiomedia.h>
 #include <uefi/uefiblockioprotocol.h>
@@ -83,10 +89,10 @@
 #include <uefi/uefimemorydescriptor.h>
 #include <uefi/uefimemorytype.h>
 #include <uefi/uefiopenprotocolinformationentry.h>
-#include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipciioprotocolaccess.h>
 #include <uefi/uefipciioprotocolattributeoperation.h>
 #include <uefi/uefipciioprotocolconfigaccess.h>
+#include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipciioprotocoloperation.h>
 #include <uefi/uefipciioprotocolwidth.h>
 #include <uefi/uefipixelbitmask.h>
@@ -94,15 +100,17 @@
 #include <uefi/uefiruntimeservices.h>
 #include <uefi/uefisimplefilesystemprotocol.h>
 #include <uefi/uefisimpleinputinterface.h>
+#include <uefi/uefisimplepointermode.h>
+#include <uefi/uefisimplepointerprotocol.h>
+#include <uefi/uefisimplepointerstate.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisimpletextoutputmode.h>
 #include <uefi/uefistatus.h>
 #include <uefi/uefisystemtable.h>
 #include <uefi/uefitableheader.h>
-#include <uefi/uefitime.h>
 #include <uefi/uefitimecapabilicies.h>
+#include <uefi/uefitime.h>
 #include <uefi/uefitimerdelay.h>
-#include <uefibase/test/bits64/testengine.h>
 #include <uuid/uuid.h>
 
 
@@ -154,11 +162,16 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(MemoryMapEntry),                               24);
         TEST_ASSERT_EQUALS(sizeof(MemoryMapEntryType),                           1);
         TEST_ASSERT_EQUALS(sizeof(NgosStatus),                                   8);
+        TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                          56);
         TEST_ASSERT_EQUALS(sizeof(PGD),                                          8);
         TEST_ASSERT_EQUALS(sizeof(PMD),                                          8);
         TEST_ASSERT_EQUALS(sizeof(PTE),                                          8);
         TEST_ASSERT_EQUALS(sizeof(PUD),                                          8);
-        TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                          56);
+        TEST_ASSERT_EQUALS(sizeof(UefiAbsolutePointerMode),                      56);
+        TEST_ASSERT_EQUALS(sizeof(UefiAbsolutePointerModeAttributeFlag),         4);
+        TEST_ASSERT_EQUALS(sizeof(UefiAbsolutePointerProtocol),                  32);
+        TEST_ASSERT_EQUALS(sizeof(UefiAbsolutePointerState),                     32);
+        TEST_ASSERT_EQUALS(sizeof(UefiAbsolutePointerStateActiveButtonFlag),     4);
         TEST_ASSERT_EQUALS(sizeof(UefiAcpi20ConfigurationTable),                 1);
         TEST_ASSERT_EQUALS(sizeof(UefiAcpiConfigurationTable),                   1);
         TEST_ASSERT_EQUALS(sizeof(UefiAllocateType),                             4);
@@ -218,6 +231,9 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiSalSystemConfigurationTable),              1);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleFileSystemProtocol),                 16);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleInputInterface),                     24);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimplePointerMode),                        32);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimplePointerProtocol),                    32);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimplePointerState),                       16);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleTextOutputInterface),                80);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleTextOutputMode),                     24);
         TEST_ASSERT_EQUALS(sizeof(UefiSmbios3ConfigurationTable),                24);

@@ -3,8 +3,9 @@
 
 
 
-#include <common/src/bits64/graphics/rgbapixel.h>
 #include <common/src/bits64/gui/widgets/widget.h>
+
+#include <common/src/bits64/graphics/rgbapixel.h>
 #include <uefi/uefigraphicsoutputprotocol.h>
 
 

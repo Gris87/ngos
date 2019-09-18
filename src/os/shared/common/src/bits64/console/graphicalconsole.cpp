@@ -152,15 +152,15 @@ NgosStatus GraphicalConsole::print(char8 ch)
 
 
 
-            i16 charPosX   = sPositionX + glyphData->bitmapLeft;
-            i16 charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
-            u8 *bitmapByte = glyphData->bitmap;
+            i16  charPosX   = sPositionX + glyphData->bitmapLeft;
+            i16  charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
+            u8  *bitmapByte = glyphData->bitmap;
 
-            COMMON_TEST_ASSERT(charPosX >= 0,                                                 NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth <= sTextImage->getWidth(),   NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(charPosY >= 0,                                                 NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosX                           >= 0,                       NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= sTextImage->getWidth(),  NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(charPosY                           >= 0,                       NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->getHeight(), NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(glyphData->bitmapHeight <= CHAR_HEIGHT,                        NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(glyphData->bitmapHeight            <= CHAR_HEIGHT,             NgosStatus::ASSERTION);
 
 
 

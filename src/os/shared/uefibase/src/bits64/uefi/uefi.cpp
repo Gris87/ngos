@@ -87,7 +87,7 @@ void UEFI::print(const char8 *str)
 
 
 
-    char16 buffer[1024];
+    char16  buffer[1024];
     char16 *cur = &buffer[0];
 
     while (*str)

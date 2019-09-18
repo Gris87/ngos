@@ -299,6 +299,11 @@ src/os/include/uefi/config/uefisystemresourceconfigurationtable.h
 src/os/include/uefi/config/uefiugaioconfigurationtable.h
 src/os/include/uefi/macros.h
 src/os/include/uefi/types.h
+src/os/include/uefi/uefiabsolutepointermode.h
+src/os/include/uefi/uefiabsolutepointermodeattributeflags.h
+src/os/include/uefi/uefiabsolutepointerprotocol.h
+src/os/include/uefi/uefiabsolutepointerstate.h
+src/os/include/uefi/uefiabsolutepointerstateactivebuttonflags.h
 src/os/include/uefi/uefiallocatetype.h
 src/os/include/uefi/uefiblockiomedia.h
 src/os/include/uefi/uefiblockioprotocol.h
@@ -343,6 +348,9 @@ src/os/include/uefi/uefiresettype.h
 src/os/include/uefi/uefiruntimeservices.h
 src/os/include/uefi/uefisimplefilesystemprotocol.h
 src/os/include/uefi/uefisimpleinputinterface.h
+src/os/include/uefi/uefisimplepointermode.h
+src/os/include/uefi/uefisimplepointerprotocol.h
+src/os/include/uefi/uefisimplepointerstate.h
 src/os/include/uefi/uefisimpletextoutputinterface.h
 src/os/include/uefi/uefisimpletextoutputmode.h
 src/os/include/uefi/uefistatus.h
@@ -755,6 +763,8 @@ src/os/shared/uefibase/src/bits64/main/setupglobalobjects.cpp
 src/os/shared/uefibase/src/bits64/main/setupglobalobjects.h
 src/os/shared/uefibase/src/bits64/main/setupgraphics.cpp
 src/os/shared/uefibase/src/bits64/main/setupgraphics.h
+src/os/shared/uefibase/src/bits64/main/setuppointerdevices.cpp
+src/os/shared/uefibase/src/bits64/main/setuppointerdevices.h
 src/os/shared/uefibase/src/bits64/other/uefibootmemorymap.h
 src/os/shared/uefibase/src/bits64/uefi/uefi.cpp
 src/os/shared/uefibase/src/bits64/uefi/uefi.h

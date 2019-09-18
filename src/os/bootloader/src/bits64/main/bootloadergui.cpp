@@ -107,6 +107,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 cursorSize       = screenWidth  * CURSOR_SIZE_PERCENT        / 100;
 
 
+
     RootWidget *rootWidget = new RootWidget();
 
     UEFI_ASSERT_EXECUTION(rootWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);

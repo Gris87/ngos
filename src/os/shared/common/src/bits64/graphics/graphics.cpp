@@ -190,19 +190,19 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
 
     return insertImageRaw(sourceData,
-                          destinationData,
-                          sourceWidth,
-                          sourceHeight,
-                          destinationWidth,
-                          destinationHeight,
-                          sourceBytesPerPixel,
-                          destinationBytesPerPixel,
-                          opaque,
-                          positionX,
-                          positionY,
-                          0, 0,
-                          sourceWidth,
-                          sourceHeight);
+                            destinationData,
+                            sourceWidth,
+                            sourceHeight,
+                            destinationWidth,
+                            destinationHeight,
+                            sourceBytesPerPixel,
+                            destinationBytesPerPixel,
+                            opaque,
+                            positionX,
+                            positionY,
+                            0, 0,
+                            sourceWidth,
+                            sourceHeight);
 }
 
 NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
@@ -1100,7 +1100,7 @@ NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
     {
         if (sourceHeight == destinationHeight)
         {
-            i64 sourceRight  = sourcePositionX + sourceWidth;
+            i64 sourceRight = sourcePositionX + sourceWidth;
 
             for (i64 i = 0; i < destinationHeight; ++i)
             {
