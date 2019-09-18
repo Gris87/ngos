@@ -73,7 +73,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinX = %u",      i, sAbsolutePointers[i]->mode->absoluteMinX));
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinY = %u",      i, sAbsolutePointers[i]->mode->absoluteMinY));
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinZ = %u",      i, sAbsolutePointers[i]->mode->absoluteMinZ));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxX = %u",      i, sAbsolutePointers[i]->mode->absoluteMinX));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxX = %u",      i, sAbsolutePointers[i]->mode->absoluteMaxX));
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxY = %u",      i, sAbsolutePointers[i]->mode->absoluteMaxY));
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxZ = %u",      i, sAbsolutePointers[i]->mode->absoluteMaxZ));
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->attributes   = %u (%s)", i, sAbsolutePointers[i]->mode->attributes, uefiAbsolutePointerModeAttributeFlagsToString(sAbsolutePointers[i]->mode->attributes)));
@@ -90,7 +90,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinX == 0,                                                NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinY == 0,                                                NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinZ == 0,                                                NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxX == 0,                                                NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxX == 65536,                                            NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxY == 65536,                                            NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxZ == 65536,                                            NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->attributes   == FLAG(UefiAbsolutePointerModeAttributeFlag::NONE), NgosStatus::ASSERTION);
