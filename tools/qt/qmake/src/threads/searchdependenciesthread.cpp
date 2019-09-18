@@ -278,8 +278,6 @@ void SearchDependenciesThread::run()
         if (!handleSource(source))
         {
             addDependencies(source, QStringList());
-
-            break;
         }
     } while(true);
 }

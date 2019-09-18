@@ -10,9 +10,9 @@
 #include <uefibase/src/bits64/main/setupbootparams.h>
 #include <uefibase/src/bits64/main/setupdynamicrelocation.h>
 #include <uefibase/src/bits64/main/setupgraphics.h>
-#include <uefibase/src/bits64/main/setuppointerdevices.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
 #include "src/bits64/main/bootloader.h"
@@ -109,14 +109,8 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    if (setupPointerDevices() != NgosStatus::OK)
-    {
-        UEFI_LF(("Failed to setup pointer devices"));
-
-        return UefiStatus::ABORTED;
-    }
-
-    UEFI_LI(("Setup pointer devices completed"));
+    UEFI_ASSERT_EXECUTION(UefiPointerDevices::init(), UefiStatus::ABORTED);
+    UEFI_LI(("Pointer devices initialized"));
 
 
 

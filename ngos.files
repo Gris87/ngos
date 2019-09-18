@@ -763,13 +763,13 @@ src/os/shared/uefibase/src/bits64/main/setupglobalobjects.cpp
 src/os/shared/uefibase/src/bits64/main/setupglobalobjects.h
 src/os/shared/uefibase/src/bits64/main/setupgraphics.cpp
 src/os/shared/uefibase/src/bits64/main/setupgraphics.h
-src/os/shared/uefibase/src/bits64/main/setuppointerdevices.cpp
-src/os/shared/uefibase/src/bits64/main/setuppointerdevices.h
 src/os/shared/uefibase/src/bits64/other/uefibootmemorymap.h
 src/os/shared/uefibase/src/bits64/uefi/uefi.cpp
 src/os/shared/uefibase/src/bits64/uefi/uefi.h
 src/os/shared/uefibase/src/bits64/uefi/uefiassert.h
 src/os/shared/uefibase/src/bits64/uefi/uefilog.h
+src/os/shared/uefibase/src/bits64/uefi/uefipointerdevices.cpp
+src/os/shared/uefibase/src/bits64/uefi/uefipointerdevices.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/asm/bitutils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/asm/instructions.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/bootparams/memorymapentry.h

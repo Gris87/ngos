@@ -98,8 +98,8 @@ SOURCES += \
     $$PWD/src/bits64/main/setupdynamicrelocation.cpp \
     $$PWD/src/bits64/main/setupglobalobjects.cpp \
     $$PWD/src/bits64/main/setupgraphics.cpp \
-    $$PWD/src/bits64/main/setuppointerdevices.cpp \
     $$PWD/src/bits64/uefi/uefi.cpp \
+    $$PWD/src/bits64/uefi/uefipointerdevices.cpp \
     $$PWD/test/bits64/testresults.cpp
 
 HEADERS += \
@@ -109,11 +109,11 @@ HEADERS += \
     $$PWD/src/bits64/main/setupdynamicrelocation.h \
     $$PWD/src/bits64/main/setupglobalobjects.h \
     $$PWD/src/bits64/main/setupgraphics.h \
-    $$PWD/src/bits64/main/setuppointerdevices.h \
     $$PWD/src/bits64/other/uefibootmemorymap.h \
     $$PWD/src/bits64/uefi/uefi.h \
     $$PWD/src/bits64/uefi/uefiassert.h \
     $$PWD/src/bits64/uefi/uefilog.h \
+    $$PWD/src/bits64/uefi/uefipointerdevices.h \
     $$PWD/test/bits64/sections/section0/__include/asm/bitutils.h \
     $$PWD/test/bits64/sections/section0/__include/asm/instructions.h \
     $$PWD/test/bits64/sections/section0/__include/bootparams/memorymapentry.h \
