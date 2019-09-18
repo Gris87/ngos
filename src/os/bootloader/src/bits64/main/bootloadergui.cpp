@@ -20,28 +20,25 @@
 #define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
 #define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
 
-#define LEFT_BUTTON_POSITION_X_PERCENT 2
-#define LEFT_BUTTON_POSITION_Y_PERCENT 22
+#define OS_REGION_LEFT_PERCENT            10
+#define OS_REGION_RIGHT_PERCENT           90
+#define OS_REGION_VERTICAL_CENTER_PERCENT 25
+#define OS_VISIBLE_COUNT                  4
 
+#define LEFT_BUTTON_POSITION_X_PERCENT  2
 #define RIGHT_BUTTON_POSITION_X_PERCENT 92
-#define RIGHT_BUTTON_POSITION_Y_PERCENT 22
-
-#define OS_REGION_LEFT_PERCENT  10
-#define OS_REGION_RIGHT_PERCENT 90
-#define OS_REGION_TOP_PERCENT   15
-#define OS_VISIBLE_COUNT        4
 
 #define CPU_TEST_BUTTON_POSITION_X_PERCENT 10
-#define CPU_TEST_BUTTON_POSITION_Y_PERCENT 43
+#define CPU_TEST_BUTTON_POSITION_Y_PERCENT 48
 
 #define MEMORY_TEST_BUTTON_POSITION_X_PERCENT 51
-#define MEMORY_TEST_BUTTON_POSITION_Y_PERCENT 43
+#define MEMORY_TEST_BUTTON_POSITION_Y_PERCENT 48
 
 #define HDD_TEST_BUTTON_POSITION_X_PERCENT 10
-#define HDD_TEST_BUTTON_POSITION_Y_PERCENT 55
+#define HDD_TEST_BUTTON_POSITION_Y_PERCENT 59
 
 #define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 51
-#define PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT 55
+#define PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT 59
 
 #define CURSOR_POSITION_X_PERCENT 50
 #define CURSOR_POSITION_Y_PERCENT 50
@@ -103,12 +100,11 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
     u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
-    u64 osButtonSize     = MIN(screenWidth * OS_BUTTON_SIZE_PERCENT     / 100, screenHeight * OS_BUTTON_SIZE_PERCENT     / 100);
-    u64 systemButtonSize = MIN(screenWidth * SYSTEM_BUTTON_SIZE_PERCENT / 100, screenHeight * SYSTEM_BUTTON_SIZE_PERCENT / 100);
-    u64 cursorSize       = MIN(screenWidth * CURSOR_SIZE_PERCENT        / 100, screenHeight * CURSOR_SIZE_PERCENT        / 100);
-
+    u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
+    u64 osButtonSize     = screenWidth  * OS_BUTTON_SIZE_PERCENT     / 100;
     u64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
     u64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
+    u64 cursorSize       = screenWidth  * CURSOR_SIZE_PERCENT        / 100;
 
 
     RootWidget *rootWidget = new RootWidget();
@@ -214,21 +210,21 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-            u64 arrowButtonSize = MIN(screenWidth * ARROW_BUTTON_SIZE_PERCENT / 100, screenHeight * ARROW_BUTTON_SIZE_PERCENT / 100);
+            u64 arrowButtonSize = screenWidth * ARROW_BUTTON_SIZE_PERCENT / 100;
 
 
 
             Button *leftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowLeftImage, rootWidget);
 
-            UEFI_ASSERT_EXECUTION(leftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * LEFT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(leftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                            NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(leftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(leftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                        NgosStatus::ASSERTION);
 
 
 
             Button *rightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowRightImage, rootWidget);
 
-            UEFI_ASSERT_EXECUTION(rightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * RIGHT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(rightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                              NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(rightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(rightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                         NgosStatus::ASSERTION);
         }
 
 
@@ -242,12 +238,18 @@ NgosStatus BootloaderGUI::init(BootParams *params)
             osButtonStep      = 0;
         }
         else
+        if (osCount == 2)
+        {
+            osButtonPositionX = screenWidth * (OS_REGION_LEFT_PERCENT + OS_REGION_RIGHT_PERCENT - OS_BUTTON_SIZE_PERCENT) / 200 - osButtonSize;
+            osButtonStep      = osButtonSize << 1; // "<< 1" == "* 2"
+        }
+        else
         {
             osButtonPositionX = screenWidth * OS_REGION_LEFT_PERCENT / 100;
             osButtonStep      = screenWidth * (OS_REGION_RIGHT_PERCENT - OS_REGION_LEFT_PERCENT - OS_BUTTON_SIZE_PERCENT) / 100 / (osCount - 1);
         }
 
-        i64 osButtonPositionY = screenHeight * OS_REGION_TOP_PERCENT / 100;
+        i64 osButtonPositionY = screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (osButtonSize >> 1);
 
 
 

@@ -1609,6 +1609,10 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
                )
             {
                 UEFI_ASSERT_EXECUTION(addNgosOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
             }
         }
     }
