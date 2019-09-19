@@ -99,7 +99,7 @@ export PATH="${PREFIX}/bin:${PATH}"
 
 
 echo ""
-echo -e "\e[33m-------------------- gcc-9 --------------------\e[0m"
+echo -e "\e[33m-------------------- gcc-9.1 --------------------\e[0m"
 echo ""
 
 
@@ -313,7 +313,7 @@ systemctl restart libvirtd
 
 
 echo ""
-echo -e "\e[33m-------------------- OVMF --------------------\e[0m"
+echo -e "\e[33m-------------------- OVMF-${OVMF_VERSION} --------------------\e[0m"
 echo ""
 
 
