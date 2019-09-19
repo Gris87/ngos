@@ -262,8 +262,9 @@ function deploy_all
 
 
 
-    deploy_app "com.ngos.kernel"    "NGOS kernel"    "${VERSION}" || return 1
-    deploy_app "com.ngos.installer" "NGOS installer" "${VERSION}" || return 1
+    deploy_app "com.ngos.bootloader" "NGOS bootloader" "${VERSION}" || return 1
+    deploy_app "com.ngos.kernel"     "NGOS kernel"     "${VERSION}" || return 1
+    deploy_app "com.ngos.installer"  "NGOS installer"  "${VERSION}" || return 1
 
 
 
