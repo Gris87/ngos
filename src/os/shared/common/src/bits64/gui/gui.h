@@ -22,11 +22,19 @@ public:
     static ScreenWidget* getMainScreenWidget(); // TEST: NO
     static bool isUpdatesEnabled(); // TEST: NO
 
+    static NgosStatus setHoveredWidget(Widget *widget); // TEST: NO
+    static Widget* getHoveredWidget(); // TEST: NO
+
+    static NgosStatus setFocusedWidget(Widget *widget); // TEST: NO
+    static Widget* getFocusedWidget(); // TEST: NO
+
 private:
     static RootWidget   *sRootWidget;
     static ScreenWidget *sMainScreenWidget;
     static CursorWidget *sCursorWidget;
     static bool          sUpdatesEnabled;
+    static Widget       *sHoveredWidget;
+    static Widget       *sFocusedWidget;
 };
 
 

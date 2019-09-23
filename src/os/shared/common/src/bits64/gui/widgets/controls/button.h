@@ -16,16 +16,20 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    NgosStatus setState(WidgetState state) override; // TEST: NO
+    WidgetState getState() const override; // TEST: NO
+
 private:
-    Image *mNormalImage;
-    Image *mHoverImage;
-    Image *mPressedImage;
-    Image *mFocusedImage;
-    Image *mContentImage;
-    Image *mNormalResizedImage;
-    Image *mHoverResizedImage;
-    Image *mPressedResizedImage;
-    Image *mFocusedResizedImage;
+    Image       *mNormalImage;
+    Image       *mHoverImage;
+    Image       *mPressedImage;
+    Image       *mFocusedImage;
+    Image       *mContentImage;
+    Image       *mNormalResizedImage;
+    Image       *mHoverResizedImage;
+    Image       *mPressedResizedImage;
+    Image       *mFocusedResizedImage;
+    WidgetState  mState;
 };
 
 

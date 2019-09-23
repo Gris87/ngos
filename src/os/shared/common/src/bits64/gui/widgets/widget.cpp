@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <ngos/linkage.h>
 
 
 
@@ -12,8 +13,8 @@ Widget::Widget(Widget *parent)
     , mPositionY(0)
     , mWidth(0)
     , mHeight(0)
-    , mResultImage(0)
     , mVisible(true)
+    , mResultImage(0)
 {
     COMMON_LT((" | parent = 0x%p", parent));
 
@@ -138,6 +139,28 @@ bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height
             (i64)(positionY + height) > (i64)(mPositionY);
 }
 
+NgosStatus Widget::setState(WidgetState state)
+{
+    COMMON_LT((" | state = %u", state));
+
+
+
+    AVOID_UNUSED(state);
+
+
+
+    return NgosStatus::OK;
+}
+
+WidgetState Widget::getState() const
+{
+    COMMON_LT((""));
+
+
+
+    return WidgetState::NONE;
+}
+
 NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
 {
     COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));
@@ -146,33 +169,6 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
 
     mPositionX = positionX;
     mPositionY = positionY;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus Widget::setSize(u64 width, u64 height)
-{
-    COMMON_LT((" | width = %u, height = %u", width, height));
-
-
-
-    mWidth  = width;
-    mHeight = height;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus Widget::setVisible(bool visible)
-{
-    COMMON_LT((" | visible = %u", visible));
-
-
-
-    mVisible = visible;
 
 
 
@@ -197,6 +193,20 @@ i64 Widget::getPositionY() const
     return mPositionY;
 }
 
+NgosStatus Widget::setSize(u64 width, u64 height)
+{
+    COMMON_LT((" | width = %u, height = %u", width, height));
+
+
+
+    mWidth  = width;
+    mHeight = height;
+
+
+
+    return NgosStatus::OK;
+}
+
 u64 Widget::getWidth() const
 {
     COMMON_LT((""));
@@ -215,13 +225,17 @@ u64 Widget::getHeight() const
     return mHeight;
 }
 
-Image* Widget::getResultImage() const
+NgosStatus Widget::setVisible(bool visible)
 {
-    COMMON_LT((""));
+    COMMON_LT((" | visible = %u", visible));
 
 
 
-    return mResultImage;
+    mVisible = visible;
+
+
+
+    return NgosStatus::OK;
 }
 
 bool Widget::isVisible() const
@@ -231,4 +245,13 @@ bool Widget::isVisible() const
 
 
     return mVisible;
+}
+
+Image* Widget::getResultImage() const
+{
+    COMMON_LT((""));
+
+
+
+    return mResultImage;
 }

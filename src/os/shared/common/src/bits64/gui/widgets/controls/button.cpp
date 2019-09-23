@@ -17,6 +17,7 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mHoverResizedImage(0)
     , mPressedResizedImage(0)
     , mFocusedResizedImage(0)
+    , mState(WidgetState::NORMAL)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, contentImage = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, contentImage, parent));
 
@@ -107,7 +108,29 @@ NgosStatus Button::repaint()
         delete mResultImage;
     }
 
-    mResultImage = new Image(*mNormalResizedImage);
+    switch (mState)
+    {
+        case WidgetState::NORMAL:  mResultImage = new Image(*mNormalResizedImage);  break;
+        case WidgetState::HOVERED: mResultImage = new Image(*mHoverResizedImage);   break;
+        case WidgetState::PRESSED: mResultImage = new Image(*mPressedResizedImage); break;
+        case WidgetState::FOCUSED: mResultImage = new Image(*mFocusedResizedImage); break;
+
+        case WidgetState::NONE:
+        {
+            COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+
+        default:
+        {
+            COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
 
 
 
@@ -158,4 +181,29 @@ NgosStatus Button::repaint()
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus Button::setState(WidgetState state)
+{
+    COMMON_LT((" | state = %u", state));
+
+
+
+    if (mState != state)
+    {
+        mState = state;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+WidgetState Button::getState() const
+{
+    COMMON_LT((""));
+
+
+
+    return mState;
 }

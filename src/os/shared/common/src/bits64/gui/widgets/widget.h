@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/containers/list.h>
 #include <common/src/bits64/graphics/image.h>
+#include <common/src/bits64/gui/other/widgetstate.h>
 
 
 
@@ -23,16 +24,21 @@ public:
     bool hasIntersection(Widget *anotherWidget);
     bool hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height);
 
-    NgosStatus setPosition(i64 positionX, i64 positionY);
-    NgosStatus setSize(u64 width, u64 height);
-    NgosStatus setVisible(bool visible);
+    virtual NgosStatus setState(WidgetState state); // TEST: NO
+    virtual WidgetState getState() const; // TEST: NO
 
+    NgosStatus setPosition(i64 positionX, i64 positionY);
     i64 getPositionX() const;
     i64 getPositionY() const;
+
+    NgosStatus setSize(u64 width, u64 height);
     u64 getWidth() const;
     u64 getHeight() const;
-    Image* getResultImage() const; // TEST: NO
+
+    NgosStatus setVisible(bool visible);
     bool isVisible() const;
+
+    Image* getResultImage() const; // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -45,8 +51,8 @@ protected:
     i64             mPositionY;
     u64             mWidth;
     u64             mHeight;
-    Image          *mResultImage;
     bool            mVisible;
+    Image          *mResultImage;
 };
 
 

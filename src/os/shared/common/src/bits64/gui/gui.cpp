@@ -11,6 +11,8 @@ RootWidget   *GUI::sRootWidget;
 ScreenWidget *GUI::sMainScreenWidget;
 CursorWidget *GUI::sCursorWidget;
 bool          GUI::sUpdatesEnabled;
+Widget       *GUI::sHoveredWidget;
+Widget       *GUI::sFocusedWidget;
 
 
 
@@ -91,4 +93,74 @@ bool GUI::isUpdatesEnabled()
 
 
     return sUpdatesEnabled;
+}
+
+NgosStatus GUI::setHoveredWidget(Widget *widget)
+{
+    COMMON_LT((" | widget = 0x%p", widget));
+
+
+
+    if (sHoveredWidget != widget)
+    {
+        if (sHoveredWidget)
+        {
+            sHoveredWidget->setState(WidgetState::NORMAL);
+        }
+
+        sHoveredWidget = widget;
+
+        if (sHoveredWidget)
+        {
+            sHoveredWidget->setState(WidgetState::HOVERED);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+Widget* GUI::getHoveredWidget()
+{
+    COMMON_LT((""));
+
+
+
+    return sHoveredWidget;
+}
+
+NgosStatus GUI::setFocusedWidget(Widget *widget)
+{
+    COMMON_LT((" | widget = 0x%p", widget));
+
+
+
+    if (sFocusedWidget != widget)
+    {
+        if (sFocusedWidget)
+        {
+            sFocusedWidget->setState(WidgetState::NORMAL);
+        }
+
+        sFocusedWidget = widget;
+
+        if (sFocusedWidget)
+        {
+            sFocusedWidget->setState(WidgetState::FOCUSED);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+Widget* GUI::getFocusedWidget()
+{
+    COMMON_LT((""));
+
+
+
+    return sFocusedWidget;
 }
