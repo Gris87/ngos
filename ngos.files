@@ -331,6 +331,7 @@ src/os/include/uefi/uefiharddrivedevicepath.h
 src/os/include/uefi/uefiharddrivedevicepathmbrtype.h
 src/os/include/uefi/uefiharddrivedevicepathsignaturetype.h
 src/os/include/uefi/uefiinputkey.h
+src/os/include/uefi/uefiinputkeyscancode.h
 src/os/include/uefi/uefiinterfacetype.h
 src/os/include/uefi/uefiloadedimageprotocol.h
 src/os/include/uefi/uefilocatesearchtype.h

@@ -5,10 +5,10 @@
 
 
 
-UefiAbsolutePointerProtocol **UefiPointerDevices::sAbsolutePointers;
 u8                            UefiPointerDevices::sAbsolutePointersCount;
-UefiSimplePointerProtocol   **UefiPointerDevices::sSimplePointers;
+UefiAbsolutePointerProtocol **UefiPointerDevices::sAbsolutePointers;
 u8                            UefiPointerDevices::sSimplePointersCount;
+UefiSimplePointerProtocol   **UefiPointerDevices::sSimplePointers;
 
 
 
@@ -24,6 +24,46 @@ NgosStatus UefiPointerDevices::init()
 
 
     return NgosStatus::OK;
+}
+
+u8 UefiPointerDevices::getAbsolutePointersCount()
+{
+    UEFI_LT((""));
+
+
+
+    return sAbsolutePointersCount;
+}
+
+UefiAbsolutePointerProtocol* UefiPointerDevices::getAbsolutePointer(u8 index)
+{
+    UEFI_LT((" | index = %u", index));
+
+    UEFI_ASSERT(index < sAbsolutePointersCount, "index is invalid", 0);
+
+
+
+    return sAbsolutePointers[index];
+}
+
+u8 UefiPointerDevices::getSimplePointersCount()
+{
+    UEFI_LT((""));
+
+
+
+    return sSimplePointersCount;
+}
+
+UefiSimplePointerProtocol* UefiPointerDevices::getSimplePointer(u8 index)
+{
+    UEFI_LT((" | index = %u", index));
+
+    UEFI_ASSERT(index < sSimplePointersCount, "index is invalid", 0);
+
+
+
+    return sSimplePointers[index];
 }
 
 NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
@@ -86,7 +126,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
 
 
         UEFI_TEST_ASSERT(sAbsolutePointersCount                   == 1,                                                NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sAbsolutePointers[0]->waitForInput,                                                           NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sAbsolutePointers[0]->waitForInput       != 0,                                                NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinX == 0,                                                NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinY == 0,                                                NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinZ == 0,                                                NgosStatus::ASSERTION);
@@ -186,7 +226,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
 
     for (i64 i = 0; i < count; ++i)
     {
-        uefi_handle                handle = pointersHandles[i];
+        uefi_handle                  handle = pointersHandles[i];
         UefiAbsolutePointerProtocol *pointer;
 
 
@@ -291,7 +331,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
 
 
         UEFI_TEST_ASSERT(sSimplePointersCount                  == 1,     NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sSimplePointers[0]->waitForInput,               NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sSimplePointers[0]->waitForInput      != 0,     NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sSimplePointers[0]->mode->resolutionX == 65536, NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sSimplePointers[0]->mode->resolutionY == 65536, NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sSimplePointers[0]->mode->resolutionZ == 65536, NgosStatus::ASSERTION);

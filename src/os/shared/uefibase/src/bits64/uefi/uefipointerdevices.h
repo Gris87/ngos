@@ -15,6 +15,11 @@ class UefiPointerDevices
 public:
     static NgosStatus init(); // TEST: NO
 
+    static u8 getAbsolutePointersCount(); // TEST: NO
+    static UefiAbsolutePointerProtocol* getAbsolutePointer(u8 index); // TEST: NO
+    static u8 getSimplePointersCount(); // TEST: NO
+    static UefiSimplePointerProtocol* getSimplePointer(u8 index); // TEST: NO
+
 private:
     static NgosStatus initAbsolutePointerDevices(); // TEST: NO
     static NgosStatus initAbsolutePointerDevices(Guid *protocol, u64 size); // TEST: NO
@@ -24,10 +29,10 @@ private:
     static NgosStatus initSimplePointerDevices(Guid *protocol, u64 size, uefi_handle *pointersHandles); // TEST: NO
 
 private:
-    static UefiAbsolutePointerProtocol **sAbsolutePointers;
     static u8                            sAbsolutePointersCount;
-    static UefiSimplePointerProtocol   **sSimplePointers;
+    static UefiAbsolutePointerProtocol **sAbsolutePointers;
     static u8                            sSimplePointersCount;
+    static UefiSimplePointerProtocol   **sSimplePointers;
 };
 
 

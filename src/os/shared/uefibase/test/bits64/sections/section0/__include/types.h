@@ -82,6 +82,7 @@
 #include <uefi/uefiharddrivedevicepathmbrtype.h>
 #include <uefi/uefiharddrivedevicepathsignaturetype.h>
 #include <uefi/uefiinputkey.h>
+#include <uefi/uefiinputkeyscancode.h>
 #include <uefi/uefiinterfacetype.h>
 #include <uefi/uefiloadedimageprotocol.h>
 #include <uefi/uefilocatesearchtype.h>
@@ -206,6 +207,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiHobListConfigurationTable),                1);
         TEST_ASSERT_EQUALS(sizeof(UefiInfo),                                     40);
         TEST_ASSERT_EQUALS(sizeof(UefiInputKey),                                 4);
+        TEST_ASSERT_EQUALS(sizeof(UefiInputKeyScanCode),                         2);
         TEST_ASSERT_EQUALS(sizeof(UefiInterfaceType),                            4);
         TEST_ASSERT_EQUALS(sizeof(UefiLoadedImageProtocol),                      96);
         TEST_ASSERT_EQUALS(sizeof(UefiLocateSearchType),                         4);

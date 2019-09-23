@@ -7,8 +7,10 @@
 #include <common/src/bits64/memory/memory.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
+#include <uefibase/src/bits64/uefi/uefi.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
 #include "src/bits64/main/bootloader.h"
 
@@ -49,6 +51,12 @@
 #define TOOL_BUTTON_HEIGHT_PERCENT 10
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
+
+
+
+u16         BootloaderGUI::sWaitEventsCount;
+uefi_event *BootloaderGUI::sWaitEvents;
+uefi_event  BootloaderGUI::sTimerEvent;
 
 
 
@@ -320,6 +328,188 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 NgosStatus BootloaderGUI::exec()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(generateWaitEventList(), NgosStatus::ASSERTION);
+
+    do
+    {
+        UEFI_ASSERT_EXECUTION(waitForEvent(), NgosStatus::ASSERTION);
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::generateWaitEventList()
+{
+    UEFI_LT((""));
+
+
+
+    sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 2; // "+ 1" = keyboard event, "+ 1" = timer event
+    u64 size         = sWaitEventsCount * sizeof(uefi_event);
+
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&sWaitEvents) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to allocate pool(%u) for wait events", size));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for wait events", sWaitEvents, size));
+
+
+
+    sWaitEvents[0] = UEFI::getSystemTable()->stdin->waitForKey;
+    u16 eventId    = 1;
+
+
+
+    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    {
+        sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
+
+        ++eventId;
+    }
+
+
+
+    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    {
+        sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
+
+        ++eventId;
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, 0, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Created timer event(0x%p)", sTimerEvent));
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::setTimer(sTimerEvent, UefiTimerDelay::PERIODIC, 10000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 1 * 1000 * 1000 * 10 "* 100ns"
+    UEFI_LVV(("Setup timer(0x%p) completed", sTimerEvent));
+
+
+
+    sWaitEvents[eventId] = sTimerEvent;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::waitForEvent()
+{
+    UEFI_LT((""));
+
+
+
+    u64 eventIndex;
+
+    UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+    UEFI_LVVV(("eventIndex = %u", eventIndex));
+
+
+
+    if (!eventIndex) // eventIndex == 0
+    {
+        return processKeyboardEvent();
+    }
+
+    if (sWaitEvents[eventIndex] == sTimerEvent)
+    {
+        return processTimerEvent();
+    }
+
+
+
+    if (eventIndex <= UefiPointerDevices::getSimplePointersCount())
+    {
+        return processSimplePointerEvent(UefiPointerDevices::getSimplePointer(eventIndex - 1));
+    }
+
+
+
+    return processAbsolutePointerEvent(UefiPointerDevices::getAbsolutePointer(eventIndex - UefiPointerDevices::getSimplePointersCount() - 1));
+}
+
+NgosStatus BootloaderGUI::processKeyboardEvent()
+{
+    UEFI_LT((""));
+
+
+
+    UefiInputKey key;
+
+    UEFI_ASSERT_EXECUTION(UEFI::getSystemTable()->stdin->readKeyStroke(UEFI::getSystemTable()->stdin, &key), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+    UEFI_LVVV(("key.scanCode    = 0x%04X (%s)", key.scanCode, uefiInputKeyScanCodeToString(key.scanCode)));
+    UEFI_LVVV(("key.unicodeChar = 0x%04X",      key.unicodeChar));
+
+
+
+    if (sTimerEvent)
+    {
+        UEFI_ASSERT_EXECUTION(disableTimerEvent(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
+{
+    UEFI_LT((" | pointer = 0x%p", pointer));
+
+    UEFI_ASSERT(pointer, "pointer is null", NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
+{
+    UEFI_LT((" | pointer = 0x%p", pointer));
+
+    UEFI_ASSERT(pointer, "pointer is null", NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::processTimerEvent()
+{
+    UEFI_LT((""));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::disableTimerEvent()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_TEST_ASSERT(sTimerEvent, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::closeEvent(sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Closed timer event(0x%p)", sTimerEvent));
+
+    sTimerEvent = 0;
+    --sWaitEventsCount;
 
 
 

@@ -5,13 +5,14 @@
 
 #include <ngos/types.h>
 #include <uefi/types.h>
+#include <uefi/uefiinputkeyscancode.h>
 
 
 
 struct UefiInputKey
 {
-    u16    scanCode;
-    char16 unicodeChar;
+    UefiInputKeyScanCode scanCode;
+    char16               unicodeChar;
 };
 
 
