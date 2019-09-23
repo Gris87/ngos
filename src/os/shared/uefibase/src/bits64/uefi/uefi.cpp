@@ -504,6 +504,17 @@ UefiStatus UEFI::closeEvent(uefi_event event)
     return sBootServices->closeEvent(event);
 }
 
+UefiStatus UEFI::stall(u64 microseconds)
+{
+    UEFI_LT((" | microseconds = %u", microseconds));
+
+    UEFI_ASSERT(microseconds > 0, "microseconds is zero", UefiStatus::ABORTED);
+
+
+
+    return sBootServices->stall(microseconds);
+}
+
 UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
 {
     UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer));

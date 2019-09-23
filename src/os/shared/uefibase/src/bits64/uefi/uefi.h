@@ -44,6 +44,7 @@ public:
     static UefiStatus setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime); // TEST: NO
     static UefiStatus waitForEvent(u64 numberOfEvents, uefi_event *event, u64 *index); // TEST: NO
     static UefiStatus closeEvent(uefi_event event); // TEST: NO
+    static UefiStatus stall(u64 microseconds); // TEST: NO
 
     static UefiStatus allocatePool(UefiMemoryType poolType, u64 size, void **buffer); // TEST: NO
     static UefiStatus freePool(void *buffer); // TEST: NO

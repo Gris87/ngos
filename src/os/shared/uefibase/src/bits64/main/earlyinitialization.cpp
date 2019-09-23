@@ -31,33 +31,7 @@ NgosStatus waitForGdbDebug()
 
 
     UEFI_LD(("Waiting for gdb debug..."));
-
-
-
-    uefi_event timerEvent = 0;
-
-    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, 0, 0, 0, &timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-    UEFI_LVV(("Created timer event(0x%p)", timerEvent));
-
-
-
-    UEFI_ASSERT_EXECUTION(UEFI::setTimer(timerEvent, UefiTimerDelay::RELATIVE, 50000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 5 * 1000 * 1000 * 10 "* 100ns"
-    UEFI_LVV(("Setup timer(0x%p) completed", timerEvent));
-
-
-
-    uefi_event waitEvents[1] = { timerEvent };
-    u64        eventIndex    = 0;
-
-    UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(1, waitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-    UEFI_LVV(("Timer(0x%p) triggered", timerEvent));
-
-    UEFI_TEST_ASSERT(eventIndex == 0, NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(UEFI::closeEvent(timerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-    UEFI_LVV(("Closed timer event(0x%p)", timerEvent));
+    UEFI_ASSERT_EXECUTION(UEFI::stall(5000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
 
@@ -74,7 +48,7 @@ NgosStatus printCpuFlags()
 
     char8 buffer[1024];
 
-    UEFI_ASSERT_EXECUTION(CPU::flagsToString(buffer, 1024), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(CPU::flagsToString(buffer, sizeof(buffer)), NgosStatus::ASSERTION);
 
     UEFI_LV(("CPU flags:"));
     UEFI_LV(("%s", buffer));
