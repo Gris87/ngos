@@ -316,3 +316,12 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     return NgosStatus::OK;
 }
+
+NgosStatus BootloaderGUI::exec()
+{
+    UEFI_LT((""));
+
+
+
+    return NgosStatus::OK;
+}

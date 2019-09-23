@@ -124,5 +124,9 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
+    UEFI_ASSERT_EXECUTION(BootloaderGUI::exec(), UefiStatus::ABORTED); // Loop forever
+
+
+
     return UefiStatus::SUCCESS;
 }

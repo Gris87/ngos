@@ -12,6 +12,7 @@ class BootloaderGUI
 {
 public:
     static NgosStatus init(BootParams *params); // TEST: NO
+    static NgosStatus exec(); // TEST: NO
 };
 
 

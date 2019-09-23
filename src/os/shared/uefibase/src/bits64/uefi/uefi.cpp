@@ -50,8 +50,8 @@ NgosStatus UEFI::init(uefi_handle imageHandle, UefiSystemTable *systemTable)
 
 
 
-    UEFI_ASSERT_EXECUTION(disableWatchdogTimer(), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(disableCursor(),                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(disableWatchdogTimer(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(disableCursor(),        NgosStatus::ASSERTION);
 
 
 
@@ -956,30 +956,6 @@ UefiStatus UEFI::exitBootServices(u64 mapKey)
     return res;
 }
 
-UefiStatus UEFI::disableWatchdogTimer()
-{
-    UEFI_LT((""));
-
-
-
-    return sBootServices->setWatchdogTimer(0, 0, 0, 0);
-}
-
-NgosStatus UEFI::disableCursor()
-{
-    UEFI_LT((""));
-
-    UEFI_ASSERT(sTextOutput, "sTextOutput is null", NgosStatus::ASSERTION);
-
-
-
-    sTextOutput->enableCursor(sTextOutput, false);
-
-
-
-    return NgosStatus::OK;
-}
-
 uefi_handle UEFI::getImageHandle()
 {
     UEFI_LT((""));
@@ -996,6 +972,34 @@ UefiSystemTable* UEFI::getSystemTable()
 
 
     return sSystemTable;
+}
+
+NgosStatus UEFI::disableWatchdogTimer()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(sBootServices->setWatchdogTimer(0, 0, 0, 0), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus UEFI::disableCursor()
+{
+    UEFI_LT((""));
+
+    UEFI_ASSERT(sTextOutput, "sTextOutput is null", NgosStatus::ASSERTION);
+
+
+
+    sTextOutput->enableCursor(sTextOutput, false);
+
+
+
+    return NgosStatus::OK;
 }
 
 void UEFI::print(char16 *ch)
