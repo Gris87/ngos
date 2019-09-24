@@ -161,6 +161,50 @@ WidgetState Widget::getState() const
     return WidgetState::NONE;
 }
 
+NgosStatus Widget::setKeyboardEventHandler(keyboard_event_handler handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    AVOID_UNUSED(handler);
+
+
+
+    return NgosStatus::OK;
+}
+
+keyboard_event_handler Widget::getKeyboardEventHandler() const
+{
+    COMMON_LT((""));
+
+
+
+    return nullptr;
+}
+
+NgosStatus Widget::setPressEventHandler(press_event_handler handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    AVOID_UNUSED(handler);
+
+
+
+    return NgosStatus::OK;
+}
+
+press_event_handler Widget::getPressEventHandler() const
+{
+    COMMON_LT((""));
+
+
+
+    return nullptr;
+}
+
 NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
 {
     COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));

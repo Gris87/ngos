@@ -19,17 +19,25 @@ public:
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 
+    NgosStatus setKeyboardEventHandler(keyboard_event_handler handler) override; // TEST: NO
+    keyboard_event_handler getKeyboardEventHandler() const override; // TEST: NO
+
+    NgosStatus setPressEventHandler(press_event_handler handler) override; // TEST: NO
+    press_event_handler getPressEventHandler() const override; // TEST: NO
+
 private:
-    Image       *mNormalImage;
-    Image       *mHoverImage;
-    Image       *mPressedImage;
-    Image       *mFocusedImage;
-    Image       *mContentImage;
-    Image       *mNormalResizedImage;
-    Image       *mHoverResizedImage;
-    Image       *mPressedResizedImage;
-    Image       *mFocusedResizedImage;
-    WidgetState  mState;
+    Image                  *mNormalImage;
+    Image                  *mHoverImage;
+    Image                  *mPressedImage;
+    Image                  *mFocusedImage;
+    Image                  *mContentImage;
+    Image                  *mNormalResizedImage;
+    Image                  *mHoverResizedImage;
+    Image                  *mPressedResizedImage;
+    Image                  *mFocusedResizedImage;
+    WidgetState             mState;
+    keyboard_event_handler  mKeyboardEventHandler;
+    press_event_handler     mPressEventHandler;
 };
 
 

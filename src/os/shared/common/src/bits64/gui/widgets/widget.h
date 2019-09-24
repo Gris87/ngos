@@ -6,6 +6,12 @@
 #include <common/src/bits64/containers/list.h>
 #include <common/src/bits64/graphics/image.h>
 #include <common/src/bits64/gui/other/widgetstate.h>
+#include <uefi/uefiinputkey.h>
+
+
+
+typedef NgosStatus (*keyboard_event_handler) (const UefiInputKey &key);
+typedef NgosStatus (*press_event_handler) ();
 
 
 
@@ -26,6 +32,12 @@ public:
 
     virtual NgosStatus setState(WidgetState state); // TEST: NO
     virtual WidgetState getState() const; // TEST: NO
+
+    virtual NgosStatus setKeyboardEventHandler(keyboard_event_handler handler); // TEST: NO
+    virtual keyboard_event_handler getKeyboardEventHandler() const; // TEST: NO
+
+    virtual NgosStatus setPressEventHandler(press_event_handler handler); // TEST: NO
+    virtual press_event_handler getPressEventHandler() const; // TEST: NO
 
     NgosStatus setPosition(i64 positionX, i64 positionY);
     i64 getPositionX() const;

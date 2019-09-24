@@ -9,6 +9,11 @@
 
 
 
+#define KEY_TAB   u'\t'
+#define KEY_ENTER u'\n'
+
+
+
 struct UefiInputKey
 {
     UefiInputKeyScanCode scanCode;

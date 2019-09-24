@@ -18,6 +18,8 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mPressedResizedImage(0)
     , mFocusedResizedImage(0)
     , mState(WidgetState::NORMAL)
+    , mKeyboardEventHandler(0)
+    , mPressEventHandler(0)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, contentImage = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, contentImage, parent));
 
@@ -194,6 +196,9 @@ NgosStatus Button::setState(WidgetState state)
     if (mState != state)
     {
         mState = state;
+
+        repaint();
+        update();
     }
 
 
@@ -208,4 +213,48 @@ WidgetState Button::getState() const
 
 
     return mState;
+}
+
+NgosStatus Button::setKeyboardEventHandler(keyboard_event_handler handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    mKeyboardEventHandler = handler;
+
+
+
+    return NgosStatus::OK;
+}
+
+keyboard_event_handler Button::getKeyboardEventHandler() const
+{
+    COMMON_LT((""));
+
+
+
+    return mKeyboardEventHandler;
+}
+
+NgosStatus Button::setPressEventHandler(press_event_handler handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    mPressEventHandler = handler;
+
+
+
+    return NgosStatus::OK;
+}
+
+press_event_handler Button::getPressEventHandler() const
+{
+    COMMON_LT((""));
+
+
+
+    return mPressEventHandler;
 }

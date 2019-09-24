@@ -10,7 +10,7 @@
 RootWidget   *GUI::sRootWidget;
 ScreenWidget *GUI::sMainScreenWidget;
 CursorWidget *GUI::sCursorWidget;
-bool          GUI::sUpdatesEnabled;
+u8            GUI::sUpdatesLocks;
 Widget       *GUI::sHoveredWidget;
 Widget       *GUI::sFocusedWidget;
 
@@ -32,11 +32,11 @@ NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, Cur
 
 
 
-    COMMON_ASSERT_EXECUTION(disableUpdates(),                 NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(lockUpdates(),                    NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(sRootWidget->invalidate(),        NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(sRootWidget->repaint(),           NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(Console::noMorePrint(),           NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(enableUpdates(),                  NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(unlockUpdates(),                  NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(GraphicalConsole::readyToPrint(), NgosStatus::ASSERTION);
 
 
@@ -44,29 +44,33 @@ NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, Cur
     return NgosStatus::OK;
 }
 
-NgosStatus GUI::disableUpdates()
+NgosStatus GUI::lockUpdates()
 {
     COMMON_LT((""));
 
 
 
-    sUpdatesEnabled = false;
+    ++sUpdatesLocks;
+
+    COMMON_TEST_ASSERT(!isUpdatesEnabled(), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus GUI::enableUpdates()
+NgosStatus GUI::unlockUpdates()
 {
     COMMON_LT((""));
 
 
 
-    if (!sUpdatesEnabled)
-    {
-        sUpdatesEnabled = true;
+    COMMON_TEST_ASSERT(!isUpdatesEnabled(), NgosStatus::ASSERTION);
 
+    --sUpdatesLocks;
+
+    if (isUpdatesEnabled())
+    {
         COMMON_ASSERT(sRootWidget, "sRootWidget is null", NgosStatus::ASSERTION);
 
         COMMON_ASSERT_EXECUTION(sRootWidget->applyUpdates(), NgosStatus::ASSERTION);
@@ -92,7 +96,7 @@ bool GUI::isUpdatesEnabled()
 
 
 
-    return sUpdatesEnabled;
+    return !sUpdatesLocks;
 }
 
 NgosStatus GUI::setHoveredWidget(Widget *widget)
@@ -103,6 +107,8 @@ NgosStatus GUI::setHoveredWidget(Widget *widget)
 
     if (sHoveredWidget != widget)
     {
+        COMMON_ASSERT_EXECUTION(lockUpdates(), NgosStatus::ASSERTION);
+
         if (sHoveredWidget)
         {
             sHoveredWidget->setState(WidgetState::NORMAL);
@@ -114,6 +120,8 @@ NgosStatus GUI::setHoveredWidget(Widget *widget)
         {
             sHoveredWidget->setState(WidgetState::HOVERED);
         }
+
+        COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
     }
 
 
@@ -138,6 +146,8 @@ NgosStatus GUI::setFocusedWidget(Widget *widget)
 
     if (sFocusedWidget != widget)
     {
+        COMMON_ASSERT_EXECUTION(lockUpdates(), NgosStatus::ASSERTION);
+
         if (sFocusedWidget)
         {
             sFocusedWidget->setState(WidgetState::NORMAL);
@@ -149,6 +159,8 @@ NgosStatus GUI::setFocusedWidget(Widget *widget)
         {
             sFocusedWidget->setState(WidgetState::FOCUSED);
         }
+
+        COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
     }
 
 
