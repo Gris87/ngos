@@ -27,6 +27,7 @@ SOURCES += \
     $$PWD/src/bits64/gui/widgets/misc/consolewidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/cursorwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.cpp \
+    $$PWD/src/bits64/gui/widgets/misc/labelwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/rootwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/screenwidget.cpp \
     $$PWD/src/bits64/gui/widgets/widget.cpp \
@@ -137,6 +138,7 @@ HEADERS += \
     $$PWD/src/bits64/gui/widgets/misc/consolewidget.h \
     $$PWD/src/bits64/gui/widgets/misc/cursorwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.h \
+    $$PWD/src/bits64/gui/widgets/misc/labelwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/rootwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/screenwidget.h \
     $$PWD/src/bits64/gui/widgets/widget.h \

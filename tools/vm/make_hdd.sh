@@ -27,9 +27,9 @@ fi
 
 
 if [ "${OS_TYPE}" == "ngos" ]; then
-    KERNEL_IMAGE=../../build/deployment/com.ngos.kernel/ngos.efi
+    KERNEL_IMAGE=../../build/deployment/com.ngos.kernel/kernel.efi
 elif [ "${OS_TYPE}" == "ngos_installer" ]; then
-    KERNEL_IMAGE=../../build/deployment/com.ngos.installer/ngos.efi
+    KERNEL_IMAGE=../../build/deployment/com.ngos.installer/installer.efi
 elif [ "${OS_TYPE}" == "linux" ]; then
     KERNEL_IMAGE=../../../linux/arch/x86/boot/bzImage
 elif [ "${OS_TYPE}" == "win7" ]; then
@@ -80,7 +80,7 @@ if [ ${SINGLE_IMAGE} -eq 1 ]; then
     sudo mkdir -p ${MOUNTDIR}/EFI/NGOS/
 
     sudo cp -r ${BOOTLOADER_IMAGE} ${MOUNTDIR}/EFI/BOOT/
-    sudo cp ${KERNEL_IMAGE}        ${MOUNTDIR}/EFI/NGOS/ngos.efi
+    sudo cp ${KERNEL_IMAGE}        ${MOUNTDIR}/EFI/NGOS/
 else
     sudo cp -r ${KERNEL_IMAGE} ${MOUNTDIR}/
 fi

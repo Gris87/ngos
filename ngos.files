@@ -505,6 +505,8 @@ src/os/shared/common/src/bits64/gui/widgets/misc/cursorwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/cursorwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.h
+src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/rootwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/rootwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/screenwidget.cpp

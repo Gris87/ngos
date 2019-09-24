@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/labelwidget.h>
 #include <common/src/bits64/gui/widgets/misc/rootwidget.h>
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
@@ -15,6 +16,11 @@
 #include "src/bits64/main/bootloader.h"
 
 
+
+#define INFO_LABEL_POSITION_X_PERCENT      0
+#define INFO_LABEL_POSITION_Y_PERCENT      0
+#define INFO_LABEL_POSITION_WIDTH_PERCENT  90
+#define INFO_LABEL_POSITION_HEIGHT_PERCENT 2
 
 #define REBOOT_BUTTON_POSITION_X_PERCENT 90
 #define REBOOT_BUTTON_POSITION_Y_PERCENT 0
@@ -127,6 +133,13 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(screenWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(screenWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *infoLabel = new LabelWidget("Use arrow keys to select, Enter to boot, F8 for options", rootWidget);
+
+    UEFI_ASSERT_EXECUTION(infoLabel->setPosition(screenWidth * INFO_LABEL_POSITION_X_PERCENT     / 100, screenHeight * INFO_LABEL_POSITION_Y_PERCENT      / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(infoLabel->setSize(screenWidth     * INFO_LABEL_POSITION_WIDTH_PERCENT / 100, screenHeight * INFO_LABEL_POSITION_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
 
 

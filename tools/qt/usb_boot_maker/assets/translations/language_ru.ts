@@ -85,17 +85,18 @@
     </message>
     <message>
         <location filename="../../src/threads/burnthread.cpp" line="34"/>
+        <location filename="../../src/threads/burnthread.cpp" line="45"/>
         <source>Failed to create folder %1</source>
         <translation>Не удалось создать папку %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread.cpp" line="45"/>
-        <location filename="../../src/threads/burnthread.cpp" line="61"/>
+        <location filename="../../src/threads/burnthread.cpp" line="56"/>
+        <location filename="../../src/threads/burnthread.cpp" line="72"/>
         <source>Failed to copy file %1</source>
         <translation>Не удалось скопировать файл %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread.cpp" line="55"/>
+        <location filename="../../src/threads/burnthread.cpp" line="66"/>
         <source>Create autorun.inf file</source>
         <translation>Создание файла autorun.inf</translation>
     </message>

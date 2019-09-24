@@ -1605,7 +1605,7 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
             if (
                 !strcmpi(absolutePath, u"EFI\\NGOS") // absolutePath == "EFI\\NGOS"
                 &&
-                !strcmpi(fileInfo->fileName, u"ngos.efi") // fileInfo->fileName == "ngos.efi"
+                !strcmpi(fileInfo->fileName, u"kernel.efi") // fileInfo->fileName == "kernel.efi"
                )
             {
                 UEFI_ASSERT_EXECUTION(addNgosOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);

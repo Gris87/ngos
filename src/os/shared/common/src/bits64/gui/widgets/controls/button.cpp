@@ -103,6 +103,8 @@ NgosStatus Button::repaint()
 
 
 
+    Image *image = 0;
+
     if (mResultImage)
     {
         delete mResultImage;
@@ -110,10 +112,10 @@ NgosStatus Button::repaint()
 
     switch (mState)
     {
-        case WidgetState::NORMAL:  mResultImage = new Image(*mNormalResizedImage);  break;
-        case WidgetState::HOVERED: mResultImage = new Image(*mHoverResizedImage);   break;
-        case WidgetState::PRESSED: mResultImage = new Image(*mPressedResizedImage); break;
-        case WidgetState::FOCUSED: mResultImage = new Image(*mFocusedResizedImage); break;
+        case WidgetState::NORMAL:  mResultImage = new Image(*mNormalResizedImage);  image = mNormalImage;  break;
+        case WidgetState::HOVERED: mResultImage = new Image(*mHoverResizedImage);   image = mHoverImage;   break;
+        case WidgetState::PRESSED: mResultImage = new Image(*mPressedResizedImage); image = mPressedImage; break;
+        case WidgetState::FOCUSED: mResultImage = new Image(*mFocusedResizedImage); image = mFocusedImage; break;
 
         case WidgetState::NONE:
         {
@@ -141,7 +143,7 @@ NgosStatus Button::repaint()
 
 
 
-    NinePatch *patch = mNormalImage->getNinePatch();
+    NinePatch *patch = image->getNinePatch();
 
     if (patch)
     {

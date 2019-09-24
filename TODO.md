@@ -4,6 +4,7 @@ TODO List
 NGOS:
 
 - Refactor
+- Replace zeros with nullptr
 
 - Complete with interruptions
 - Implement boot screen for kernel

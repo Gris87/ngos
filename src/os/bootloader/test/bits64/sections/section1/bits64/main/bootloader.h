@@ -77,7 +77,7 @@ TEST_CASES(section1, bits64_main_bootloader);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI",               u"BOOT",           &path2), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI",               u"NGOS",           &path3), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\BOOT",         u"bootx64.efi",    &path4), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\NGOS",         u"ngos.efi",       &path5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\NGOS",         u"kernel.efi",     &path5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\BOOT",         u"images",         &path6), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\BOOT\\images", u"background.jpg", &path7), NgosStatus::OK);
 
@@ -85,7 +85,7 @@ TEST_CASES(section1, bits64_main_bootloader);
         TEST_ASSERT_EQUALS(strcmp(path2, u"EFI\\BOOT"),                         0);
         TEST_ASSERT_EQUALS(strcmp(path3, u"EFI\\NGOS"),                         0);
         TEST_ASSERT_EQUALS(strcmp(path4, u"EFI\\BOOT\\bootx64.efi"),            0);
-        TEST_ASSERT_EQUALS(strcmp(path5, u"EFI\\NGOS\\ngos.efi"),               0);
+        TEST_ASSERT_EQUALS(strcmp(path5, u"EFI\\NGOS\\kernel.efi"),             0);
         TEST_ASSERT_EQUALS(strcmp(path6, u"EFI\\BOOT\\images"),                 0);
         TEST_ASSERT_EQUALS(strcmp(path7, u"EFI\\BOOT\\images\\background.jpg"), 0);
 
@@ -115,7 +115,7 @@ TEST_CASES(section1, bits64_main_bootloader);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI",               "BOOT",           &path2), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI",               "NGOS",           &path3), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\BOOT",         "bootx64.efi",    &path4), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\NGOS",         "ngos.efi",       &path5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\NGOS",         "kernel.efi",     &path5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\BOOT",         "images",         &path6), NgosStatus::OK);
         TEST_ASSERT_EQUALS(Bootloader::buildPath(u"EFI\\BOOT\\images", "background.jpg", &path7), NgosStatus::OK);
 
@@ -123,7 +123,7 @@ TEST_CASES(section1, bits64_main_bootloader);
         TEST_ASSERT_EQUALS(strcmp(path2, u"EFI\\BOOT"),                         0);
         TEST_ASSERT_EQUALS(strcmp(path3, u"EFI\\NGOS"),                         0);
         TEST_ASSERT_EQUALS(strcmp(path4, u"EFI\\BOOT\\bootx64.efi"),            0);
-        TEST_ASSERT_EQUALS(strcmp(path5, u"EFI\\NGOS\\ngos.efi"),               0);
+        TEST_ASSERT_EQUALS(strcmp(path5, u"EFI\\NGOS\\kernel.efi"),             0);
         TEST_ASSERT_EQUALS(strcmp(path6, u"EFI\\BOOT\\images"),                 0);
         TEST_ASSERT_EQUALS(strcmp(path7, u"EFI\\BOOT\\images\\background.jpg"), 0);
 

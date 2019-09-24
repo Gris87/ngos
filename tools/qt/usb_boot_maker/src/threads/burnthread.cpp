@@ -40,9 +40,20 @@ void BurnThread::copyFiles(const QString &diskPath)
 
 
 
-    if (!QFile(getBinariesPath() + "/ngos.efi").copy(diskPath + "/EFI/BOOT/bootx64.efi"))
+    if (!QDir().mkpath(diskPath + "/EFI/NGOS"))
     {
-        addLog(tr("Failed to copy file %1").arg("ngos.efi"));
+        addLog(tr("Failed to create folder %1").arg(diskPath + "/EFI/NGOS"));
+
+        stop();
+
+        return;
+    }
+
+
+
+    if (!QFile(getBinariesPath() + "/kernel.efi").copy(diskPath + "/EFI/NGOS/kernel.efi"))
+    {
+        addLog(tr("Failed to copy file %1").arg("kernel.efi"));
 
         stop();
 
