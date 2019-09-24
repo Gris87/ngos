@@ -9,7 +9,7 @@
 
 
 
-#define ASSET_ENTRIES_COUNT 22
+#define ASSET_ENTRIES_COUNT 24
 
 
 
