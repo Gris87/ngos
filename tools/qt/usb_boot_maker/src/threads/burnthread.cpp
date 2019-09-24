@@ -51,9 +51,9 @@ void BurnThread::copyFiles(const QString &diskPath)
 
 
 
-    if (!QFile(getBinariesPath() + "/kernel.efi").copy(diskPath + "/EFI/NGOS/kernel.efi"))
+    if (!QFile(getBinariesPath() + "/installer.efi").copy(diskPath + "/EFI/NGOS/installer.efi"))
     {
-        addLog(tr("Failed to copy file %1").arg("kernel.efi"));
+        addLog(tr("Failed to copy file %1").arg("installer.efi"));
 
         stop();
 

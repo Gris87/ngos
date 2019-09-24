@@ -152,6 +152,7 @@ src/os/bootloader/assets/images/cpu_test.png
 src/os/bootloader/assets/images/cursor.png
 src/os/bootloader/assets/images/hdd_test.png
 src/os/bootloader/assets/images/memory_test.png
+src/os/bootloader/assets/images/network_test.png
 src/os/bootloader/assets/images/os_centos.png
 src/os/bootloader/assets/images/os_ngos.png
 src/os/bootloader/assets/images/os_ubuntu.png
@@ -160,6 +161,7 @@ src/os/bootloader/assets/images/os_windows.png
 src/os/bootloader/assets/images/partition_wizard.png
 src/os/bootloader/assets/images/pointer.png
 src/os/bootloader/assets/images/reboot.png
+src/os/bootloader/assets/images/shell.png
 src/os/bootloader/assets/images/shutdown.png
 src/os/bootloader/bootloader.pro
 src/os/bootloader/Image structure.png

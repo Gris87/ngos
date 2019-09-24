@@ -13,6 +13,7 @@
         <file>assets/images/cursor.png</file>
         <file>assets/images/hdd_test.png</file>
         <file>assets/images/memory_test.png</file>
+        <file>assets/images/network_test.png</file>
         <file>assets/images/os_centos.png</file>
         <file>assets/images/os_ngos.png</file>
         <file>assets/images/os_ubuntu.png</file>
@@ -21,6 +22,7 @@
         <file>assets/images/partition_wizard.png</file>
         <file>assets/images/pointer.png</file>
         <file>assets/images/reboot.png</file>
+        <file>assets/images/shell.png</file>
         <file>assets/images/shutdown.png</file>
     </qresource>
 </RCC>
