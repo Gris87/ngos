@@ -54,10 +54,11 @@ private:
     static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory); // TEST: NO
     static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, u64 size); // TEST: NO
     static NgosStatus initOSesFromDirectory(VolumeInfo *volume, char16 *absolutePath, UefiFileProtocol *directory, UefiFileInfo *fileInfo); // TEST: NO
-    static NgosStatus addNgosOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
-    static NgosStatus addWindowsOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
-    static NgosStatus addUbuntuOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
-    static NgosStatus addCentOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
+    static NgosStatus addNgosKernel(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
+    static NgosStatus addNgosInstaller(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
+    static NgosStatus addWindows10(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
+    static NgosStatus addUbuntu19(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
+    static NgosStatus addCentOS7(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
     static NgosStatus addUnknownOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;

@@ -1602,13 +1602,17 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
         }
         else
         {
-            if (
-                !strcmpi(absolutePath, u"EFI\\NGOS") // absolutePath == "EFI\\NGOS"
-                &&
-                !strcmpi(fileInfo->fileName, u"kernel.efi") // fileInfo->fileName == "kernel.efi"
-               )
+            if (!strcmpi(absolutePath, u"EFI\\NGOS")) // absolutePath == "EFI\\NGOS"
             {
-                UEFI_ASSERT_EXECUTION(addNgosOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
+                if (!strcmpi(fileInfo->fileName, u"kernel.efi")) // fileInfo->fileName == "kernel.efi"
+                {
+                    UEFI_ASSERT_EXECUTION(addNgosKernel(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
+                }
+                else
+                if (!strcmpi(fileInfo->fileName, u"installer.efi")) // fileInfo->fileName == "installer.efi"
+                {
+                    UEFI_ASSERT_EXECUTION(addNgosInstaller(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
+                }
             }
         }
     }
@@ -1618,7 +1622,7 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::addNgosOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+NgosStatus Bootloader::addNgosKernel(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
 {
     UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
 
@@ -1644,7 +1648,33 @@ NgosStatus Bootloader::addNgosOS(VolumeInfo *volume, char16 *directoryPath, char
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::addWindowsOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+NgosStatus Bootloader::addNgosInstaller(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+{
+    UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
+
+    UEFI_ASSERT(volume,        "volume is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(directoryPath, "directoryPath is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(fileName,      "fileName is null",      NgosStatus::ASSERTION);
+
+
+
+    OsInfo os;
+
+    os.type   = OsType::NGOS;
+    os.volume = volume;
+
+    UEFI_ASSERT_EXECUTION(buildPath(directoryPath, fileName, &os.path), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::addWindows10(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
 {
     UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
 
@@ -1670,7 +1700,7 @@ NgosStatus Bootloader::addWindowsOS(VolumeInfo *volume, char16 *directoryPath, c
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::addUbuntuOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+NgosStatus Bootloader::addUbuntu19(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
 {
     UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
 
@@ -1696,7 +1726,7 @@ NgosStatus Bootloader::addUbuntuOS(VolumeInfo *volume, char16 *directoryPath, ch
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::addCentOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
+NgosStatus Bootloader::addCentOS7(VolumeInfo *volume, char16 *directoryPath, char16 *fileName)
 {
     UEFI_LT((" | volume = 0x%p, directoryPath = %ls, fileName = %ls", volume, directoryPath, fileName));
 
