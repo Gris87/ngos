@@ -22,7 +22,7 @@ UefiDevicePath          *Bootloader::sDevicePath;
 char16                  *Bootloader::sApplicationDirPath;
 VolumeInfo              *Bootloader::sMainVolume;
 List<VolumeInfo>         Bootloader::sVolumes;
-List<OsInfo>             Bootloader::sOSes;
+ArrayList<OsInfo>        Bootloader::sOSes;
 
 
 
@@ -402,7 +402,7 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
     return NgosStatus::OK;
 }
 
-const List<OsInfo>& Bootloader::getOSes()
+const ArrayList<OsInfo>& Bootloader::getOSes()
 {
     UEFI_LT((""));
 
@@ -1332,11 +1332,9 @@ NgosStatus Bootloader::initOSes()
         UEFI_LVVV(("sOSes:"));
         UEFI_LVVV(("-------------------------------------"));
 
-        ListElement<OsInfo> *element = sOSes.getHead();
-
-        while (element)
+        for (i64 i = 0; i < (i64)sOSes.getSize(); ++i)
         {
-            const OsInfo &os = element->getData();
+            const OsInfo &os = sOSes.at(i);
 
             UEFI_LVVV(("os.type   = %u (%s)", os.type, osTypeToString(os.type)));
             UEFI_LVVV(("os.volume = 0x%p",    os.volume));
@@ -1348,9 +1346,7 @@ NgosStatus Bootloader::initOSes()
 
 
 
-            element = element->getNext();
-
-            if (element)
+            if (i < (i64)(sOSes.getSize() - 1))
             {
                 UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
             }

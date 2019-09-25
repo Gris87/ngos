@@ -185,70 +185,65 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    u64                  osCount = 0;
-    ListElement<OsInfo> *element = Bootloader::getOSes().getHead();
+    const ArrayList<OsInfo>& oses    = Bootloader::getOSes();
+    u64                      osCount = oses.getSize();
 
-    while (element)
+    if (osCount)
     {
-        const OsInfo &os = element->getData();
-
-
-
-        UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
-        Image *osImage = osImages[(u64)os.type];
-
-        if (!osImage)
+        for (i64 i = 0; i < (i64)osCount; ++i)
         {
-            const char8 *pathToImage;
+            const OsInfo &os = oses.at(i);
 
-            switch (os.type)
+
+
+            UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
+            Image *osImage = osImages[(u64)os.type];
+
+            if (!osImage)
             {
-                case OsType::NGOS:       pathToImage = "images/os_ngos.png";    break;
-                case OsType::WINDOWS_10: pathToImage = "images/os_windows.png"; break;
-                case OsType::UBUNTU_19:  pathToImage = "images/os_ubuntu.png";  break;
-                case OsType::CENTOS_7:   pathToImage = "images/os_centos.png";  break;
-                case OsType::UNKNOWN:    pathToImage = "images/os_unknown.png"; break;
-                case OsType::MAXIMUM:
+                const char8 *pathToImage;
+
+                switch (os.type)
                 {
-                    UEFI_LF(("Unexpected OS type: %u (%s)", os.type, osTypeToString(os.type)));
+                    case OsType::NGOS:       pathToImage = "images/os_ngos.png";    break;
+                    case OsType::WINDOWS_10: pathToImage = "images/os_windows.png"; break;
+                    case OsType::UBUNTU_19:  pathToImage = "images/os_ubuntu.png";  break;
+                    case OsType::CENTOS_7:   pathToImage = "images/os_centos.png";  break;
+                    case OsType::UNKNOWN:    pathToImage = "images/os_unknown.png"; break;
+                    case OsType::MAXIMUM:
+                    {
+                        UEFI_LF(("Unexpected OS type: %u (%s)", os.type, osTypeToString(os.type)));
 
-                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
+
+                    default:
+                    {
+                        UEFI_LF(("Unexpected OS type: %u (%s)", os.type, osTypeToString(os.type)));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
                 }
-                break;
 
-                default:
-                {
-                    UEFI_LF(("Unexpected OS type: %u (%s)", os.type, osTypeToString(os.type)));
-
-                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
-                }
-                break;
+                UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets(pathToImage, &osImage), NgosStatus::ASSERTION);
+                osImages[(u64)os.type] = osImage;
             }
 
-            UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets(pathToImage, &osImage), NgosStatus::ASSERTION);
-            osImages[(u64)os.type] = osImage;
+
+
+            Button *osButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, osImage, rootWidget);
+
+            UEFI_ASSERT_EXECUTION(osButton->setSize(osButtonSize, osButtonSize),              NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(osButton->setKeyboardEventHandler(onOsButtonKeyboardEvent), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(osButton->setPressEventHandler(onOsButtonPressed),          NgosStatus::ASSERTION);
+
+            sOsButtons.append(osButton);
         }
 
 
 
-        Button *osButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, osImage, rootWidget);
-
-        UEFI_ASSERT_EXECUTION(osButton->setSize(osButtonSize, osButtonSize),              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(osButton->setKeyboardEventHandler(onOsButtonKeyboardEvent), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(osButton->setPressEventHandler(onOsButtonPressed),          NgosStatus::ASSERTION);
-
-        sOsButtons.append(osButton);
-
-
-
-        ++osCount;
-        element = element->getNext();
-    }
-
-
-
-    if (osCount)
-    {
         if (osCount > OS_VISIBLE_COUNT)
         {
             osCount = OS_VISIBLE_COUNT;
@@ -391,7 +386,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
     //UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(osButtons.getHead()->getData()), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sRebootButton), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sCpuTestButton), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, screenWidget, cursorWidget),     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                                  NgosStatus::ASSERTION);
 

@@ -398,6 +398,7 @@ src/os/shared/common/src/bits64/console/console.h
 src/os/shared/common/src/bits64/console/graphicalconsole.cpp
 src/os/shared/common/src/bits64/console/graphicalconsole.h
 src/os/shared/common/src/bits64/console/lib/glyphdata.h
+src/os/shared/common/src/bits64/containers/arraylist.h
 src/os/shared/common/src/bits64/containers/lib/listelement.h
 src/os/shared/common/src/bits64/containers/list.h
 src/os/shared/common/src/bits64/cpu/cpu.cpp

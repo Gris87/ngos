@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/containers/list.h>
 #include <common/src/bits64/graphics/image.h>
 #include <ngos/status.h>
@@ -26,7 +27,7 @@ public:
 
     static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
-    static const List<OsInfo>& getOSes(); // TEST: NO
+    static const ArrayList<OsInfo>& getOSes(); // TEST: NO
 
 private:
     static NgosStatus initImage(); // TEST: NO
@@ -66,7 +67,7 @@ private:
     static char16                  *sApplicationDirPath;
     static VolumeInfo              *sMainVolume;
     static List<VolumeInfo>         sVolumes;
-    static List<OsInfo>             sOSes;
+    static ArrayList<OsInfo>        sOSes;
 };
 
 
