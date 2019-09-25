@@ -4,6 +4,7 @@
 
 
 #include <bootparams/bootparams.h>
+#include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
@@ -55,20 +56,23 @@ private:
     static NgosStatus onPartitionWizardButtonPressed(); // TEST: NO
     static NgosStatus onShellButtonPressed(); // TEST: NO
 
-    static Button         *sRebootButton;
-    static Button         *sShutdownButton;
-    static List<Button *>  sOsButtons;
-    static Button         *sLeftButton;
-    static Button         *sRightButton;
-    static Button         *sCpuTestButton;
-    static Button         *sMemoryTestButton;
-    static Button         *sNetworkTestButton;
-    static Button         *sHddTestButton;
-    static Button         *sPartitionWizardButton;
-    static Button         *sShellButton;
-    static u16             sWaitEventsCount;
-    static uefi_event     *sWaitEvents;
-    static uefi_event      sTimerEvent;
+    static Button              *sRebootButton;
+    static Button              *sShutdownButton;
+    static ArrayList<Button *>  sOsButtons;
+    static u64                  sOsButtonLeft;
+    static u64                  sOsButtonRight;
+    static u64                  sOsButtonSelected;
+    static Button              *sLeftButton;
+    static Button              *sRightButton;
+    static Button              *sCpuTestButton;
+    static Button              *sMemoryTestButton;
+    static Button              *sNetworkTestButton;
+    static Button              *sHddTestButton;
+    static Button              *sPartitionWizardButton;
+    static Button              *sShellButton;
+    static u16                  sWaitEventsCount;
+    static uefi_event          *sWaitEvents;
+    static uefi_event           sTimerEvent;
 };
 
 

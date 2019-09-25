@@ -65,20 +65,23 @@
 
 
 
-Button         *BootloaderGUI::sRebootButton;
-Button         *BootloaderGUI::sShutdownButton;
-List<Button *>  BootloaderGUI::sOsButtons;
-Button         *BootloaderGUI::sLeftButton;
-Button         *BootloaderGUI::sRightButton;
-Button         *BootloaderGUI::sCpuTestButton;
-Button         *BootloaderGUI::sMemoryTestButton;
-Button         *BootloaderGUI::sNetworkTestButton;
-Button         *BootloaderGUI::sHddTestButton;
-Button         *BootloaderGUI::sPartitionWizardButton;
-Button         *BootloaderGUI::sShellButton;
-u16             BootloaderGUI::sWaitEventsCount;
-uefi_event     *BootloaderGUI::sWaitEvents;
-uefi_event      BootloaderGUI::sTimerEvent;
+Button              *BootloaderGUI::sRebootButton;
+Button              *BootloaderGUI::sShutdownButton;
+ArrayList<Button *>  BootloaderGUI::sOsButtons;
+u64                  BootloaderGUI::sOsButtonLeft;
+u64                  BootloaderGUI::sOsButtonRight;
+u64                  BootloaderGUI::sOsButtonSelected;
+Button              *BootloaderGUI::sLeftButton;
+Button              *BootloaderGUI::sRightButton;
+Button              *BootloaderGUI::sCpuTestButton;
+Button              *BootloaderGUI::sMemoryTestButton;
+Button              *BootloaderGUI::sNetworkTestButton;
+Button              *BootloaderGUI::sHddTestButton;
+Button              *BootloaderGUI::sPartitionWizardButton;
+Button              *BootloaderGUI::sShellButton;
+u16                  BootloaderGUI::sWaitEventsCount;
+uefi_event          *BootloaderGUI::sWaitEvents;
+uefi_event           BootloaderGUI::sTimerEvent;
 
 
 
@@ -303,23 +306,21 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        ListElement<Button *> *element = sOsButtons.getHead();
-
-        while (element && osCount)
+        for (i64 i = 0; i < (i64)sOsButtons.getSize() && i < (i64)osCount; ++i)
         {
-            element->getData()->setPosition(osButtonPositionX, osButtonPositionY);
+            sOsButtons.at(i)->setPosition(osButtonPositionX, osButtonPositionY);
             osButtonPositionX += osButtonStep;
-
-            --osCount;
-            element = element->getNext();
         }
 
-        while (element)
+        for (i64 i = osCount; i < (i64)sOsButtons.getSize(); ++i)
         {
-            element->getData()->setVisible(false);
-
-            element = element->getNext();
+            sOsButtons.at(i)->setVisible(false);
+            osButtonPositionX += osButtonStep;
         }
+
+        sOsButtonLeft     = 0;
+        sOsButtonRight    = osCount;
+        sOsButtonSelected = 0;
     }
 
 
@@ -378,17 +379,19 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
+    UEFI_ASSERT_EXECUTION(focusFirstOsButton(), NgosStatus::ASSERTION);
+
+
+
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, pointerImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth * CURSOR_POSITION_X_PERCENT / 100, screenHeight * CURSOR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getPositionX() + (osButtonSize >> 1), GUI::getFocusedWidget()->getPositionY() + (osButtonSize >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                           NgosStatus::ASSERTION);
 
 
 
-    //UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(osButtons.getHead()->getData()), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sCpuTestButton), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, screenWidget, cursorWidget),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, screenWidget, cursorWidget), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                              NgosStatus::ASSERTION);
 
 
 
@@ -419,7 +422,7 @@ NgosStatus BootloaderGUI::focusOsButton()
 
 
 
-    return NgosStatus::OK;
+    return GUI::setFocusedWidget(sOsButtons.at(sOsButtonSelected));
 }
 
 NgosStatus BootloaderGUI::focusFirstOsButton()
@@ -428,7 +431,35 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
 
 
 
-    return NgosStatus::OK;
+    if (sOsButtonLeft) // sOsButtonLeft > 0
+    {
+        UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        for (i64 i = 0; i < OS_VISIBLE_COUNT; ++i)
+        {
+            Button *button        = sOsButtons.at(i);
+            Button *visibleButton = sOsButtons.at(sOsButtonLeft + i);
+
+            button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
+            button->setVisible(true);
+        }
+
+        for (i64 i = OS_VISIBLE_COUNT; i < (i64)sOsButtons.getSize(); ++i)
+        {
+            sOsButtons.at(i)->setVisible(false);
+        }
+
+        sOsButtonLeft  = 0;
+        sOsButtonRight = OS_VISIBLE_COUNT;
+
+        UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    }
+
+    sOsButtonSelected = 0;
+
+
+
+    return focusOsButton();
 }
 
 NgosStatus BootloaderGUI::focusNextOsButton()
@@ -437,7 +468,39 @@ NgosStatus BootloaderGUI::focusNextOsButton()
 
 
 
-    return NgosStatus::OK;
+    if (sOsButtonSelected + 1 >= sOsButtonRight)
+    {
+        if (sOsButtonRight < sOsButtons.getSize())
+        {
+            UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            for (i64 i = sOsButtonRight; i > sOsButtonLeft; --i)
+            {
+                Button *button        = sOsButtons.at(i);
+                Button *visibleButton = sOsButtons.at(i - i);
+
+                button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
+            }
+
+            sOsButtons.at(sOsButtonLeft)->setVisible(false);
+            sOsButtons.at(sOsButtonRight)->setVisible(true);
+
+            ++sOsButtonLeft;
+            ++sOsButtonRight;
+
+            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            return NgosStatus::NO_EFFECT;
+        }
+    }
+
+    ++sOsButtonSelected;
+
+
+
+    return focusOsButton();
 }
 
 NgosStatus BootloaderGUI::focusPreviousOsButton()
@@ -446,7 +509,39 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
 
 
 
-    return NgosStatus::OK;
+    if (sOsButtonSelected <= sOsButtonLeft)
+    {
+        if (sOsButtonLeft) // sOsButtonLeft > 0
+        {
+            UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            for (i64 i = sOsButtonLeft; i < sOsButtonRight; ++i)
+            {
+                Button *button        = sOsButtons.at(i - 1);
+                Button *visibleButton = sOsButtons.at(i);
+
+                button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
+            }
+
+            --sOsButtonLeft;
+            --sOsButtonRight;
+
+            sOsButtons.at(sOsButtonLeft)->setVisible(true);
+            sOsButtons.at(sOsButtonRight)->setVisible(false);
+
+            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            return NgosStatus::NO_EFFECT;
+        }
+    }
+
+    --sOsButtonSelected;
+
+
+
+    return focusOsButton();
 }
 
 NgosStatus BootloaderGUI::focusNextOsButtonOrGoDown()
@@ -455,7 +550,16 @@ NgosStatus BootloaderGUI::focusNextOsButtonOrGoDown()
 
 
 
-    return NgosStatus::OK;
+    NgosStatus status = focusNextOsButton();
+
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        return GUI::setFocusedWidget(sCpuTestButton);
+    }
+
+
+
+    return status;
 }
 
 NgosStatus BootloaderGUI::generateWaitEventList()
@@ -581,7 +685,16 @@ NgosStatus BootloaderGUI::processKeyboardEvent()
 
 
 
-    return GUI::getFocusedWidget()->getKeyboardEventHandler()(key);
+    NgosStatus status = GUI::getFocusedWidget()->getKeyboardEventHandler()(key);
+    AVOID_UNUSED(status);
+
+    UEFI_TEST_ASSERT(status == NgosStatus::OK
+                     ||
+                     status == NgosStatus::NO_EFFECT, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
@@ -693,7 +806,7 @@ NgosStatus BootloaderGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
@@ -730,7 +843,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
@@ -769,7 +882,7 @@ NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
@@ -807,7 +920,7 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
@@ -845,7 +958,7 @@ NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -883,7 +996,7 @@ NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -922,7 +1035,7 @@ NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &ke
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -960,7 +1073,7 @@ NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &k
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -997,7 +1110,7 @@ NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKey &key)
@@ -1035,7 +1148,7 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKe
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
@@ -1072,7 +1185,7 @@ NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onRebootButtonPressed()
