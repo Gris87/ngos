@@ -393,6 +393,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                           NgosStatus::ASSERTION);
 
 
+    GUI::setFocusedWidget(sRightButton);
 
     UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, screenWidget, cursorWidget), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                              NgosStatus::ASSERTION);
@@ -480,6 +481,32 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::focusOsButtonLeft()
+{
+    UEFI_LT((""));
+
+
+
+    sOsButtonSelected = sOsButtonLeft;
+
+
+
+    return focusOsButton();
+}
+
+NgosStatus BootloaderGUI::focusOsButtonRight()
+{
+    UEFI_LT((""));
+
+
+
+    sOsButtonSelected = sOsButtonRight - 1;
+
+
+
+    return focusOsButton();
 }
 
 NgosStatus BootloaderGUI::focusPreviousOsButton()
@@ -945,7 +972,7 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return focusOsButton();
+        case UefiInputKeyScanCode::RIGHT: return focusOsButtonLeft();
         case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sCpuTestButton);
 
@@ -961,7 +988,7 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.unicodeChar)
     {
         case KEY_ENTER: return onLeftButtonPressed();
-        case KEY_TAB:   return focusFirstOsButton();
+        case KEY_TAB:   return focusOsButtonLeft();
 
         default:
         {
@@ -983,7 +1010,7 @@ NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return focusOsButton();
+        case UefiInputKeyScanCode::LEFT: return focusOsButtonRight();
         case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sNetworkTestButton);
 
@@ -1273,12 +1300,88 @@ NgosStatus BootloaderGUI::onLeftButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    UEFI_TEST_ASSERT(sOsButtonLeft > 0, NgosStatus::ASSERTION);
+
+    for (i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
+    {
+        Button *button        = sOsButtons.at(i - 1);
+        Button *visibleButton = sOsButtons.at(i);
+
+        button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
+    }
+
+    --sOsButtonLeft;
+    --sOsButtonRight;
+
+    UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonLeft)->setVisible(true),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonRight)->setVisible(false), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(sOsButtonLeft > 0), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRightButton->setVisible(true),             NgosStatus::ASSERTION);
+
+
+
+    if (!sOsButtonLeft) // sOsButtonLeft == 0
+    {
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sRightButton), NgosStatus::ASSERTION);
+    }
+
+    sOsButtonSelected = sOsButtonLeft;
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::onRightButtonPressed()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    UEFI_TEST_ASSERT(sOsButtonRight < sOsButtons.getSize(), NgosStatus::ASSERTION);
+
+    for (i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
+    {
+        Button *button        = sOsButtons.at(i);
+        Button *visibleButton = sOsButtons.at(i - 1);
+
+        button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
+    }
+
+    UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonLeft)->setVisible(false), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonRight)->setVisible(true), NgosStatus::ASSERTION);
+
+    ++sOsButtonLeft;
+    ++sOsButtonRight;
+
+    UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(true),                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRightButton->setVisible(sOsButtonRight < sOsButtons.getSize()), NgosStatus::ASSERTION);
+
+
+
+    if (sOsButtonRight >= sOsButtons.getSize())
+    {
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sLeftButton), NgosStatus::ASSERTION);
+    }
+
+    sOsButtonSelected = sOsButtonRight - 1;
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 

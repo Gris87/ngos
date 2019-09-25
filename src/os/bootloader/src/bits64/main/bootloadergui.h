@@ -21,6 +21,8 @@ public:
 private:
     static NgosStatus focusOsButton(); // TEST: NO
     static NgosStatus focusFirstOsButton(); // TEST: NO
+    static NgosStatus focusOsButtonLeft(); // TEST: NO
+    static NgosStatus focusOsButtonRight(); // TEST: NO
     static NgosStatus focusPreviousOsButton(); // TEST: NO
     static NgosStatus focusNextOsButton(); // TEST: NO
     static NgosStatus focusNextOsButtonOrGoDown(); // TEST: NO

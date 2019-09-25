@@ -1603,42 +1603,6 @@ NgosStatus Bootloader::initOSesFromDirectory(VolumeInfo *volume, char16 *absolut
                 if (!strcmpi(fileInfo->fileName, u"kernel.efi")) // fileInfo->fileName == "kernel.efi"
                 {
                     UEFI_ASSERT_EXECUTION(addNgosKernel(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addWindows10(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUbuntu19(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addCentOS7(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(addUnknownOS(volume, absolutePath, fileInfo->fileName), NgosStatus::ASSERTION);
                 }
                 else
                 if (!strcmpi(fileInfo->fileName, u"installer.efi")) // fileInfo->fileName == "installer.efi"
