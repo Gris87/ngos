@@ -111,7 +111,6 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     Image  *rebootImage;
     Image  *shutdownImage;
     Image  *cursorImage;
-    Image  *pointerImage;
     Image*  osImages[(u64)OsType::MAXIMUM];
 
     memzero(osImages, sizeof(osImages));
@@ -132,7 +131,6 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/reboot.png",           &rebootImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shutdown.png",         &shutdownImage),        NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cursor.png",           &cursorImage),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/pointer.png",          &pointerImage),         NgosStatus::ASSERTION);
 
 
 
@@ -389,7 +387,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    CursorWidget *cursorWidget = new CursorWidget(cursorImage, pointerImage, rootWidget);
+    CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getPositionX() + (osButtonSize >> 1), GUI::getFocusedWidget()->getPositionY() + (osButtonSize >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
     UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                           NgosStatus::ASSERTION);
