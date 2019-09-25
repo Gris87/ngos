@@ -264,6 +264,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
             sLeftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowLeftImage, rootWidget);
 
+            UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(false),                                                                                                                                NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sLeftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sLeftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                        NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sLeftButton->setKeyboardEventHandler(onLeftButtonKeyboardEvent),                                                                                               NgosStatus::ASSERTION);
@@ -436,8 +437,12 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
 
 
 
+    bool locked = false;
+
     if (sOsButtonLeft) // sOsButtonLeft > 0
     {
+        locked = true;
+
         UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
         for (i64 i = 0; i < OS_VISIBLE_COUNT; ++i)
@@ -457,14 +462,26 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
         sOsButtonLeft  = 0;
         sOsButtonRight = OS_VISIBLE_COUNT;
 
-        UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(false), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sRightButton->setVisible(true), NgosStatus::ASSERTION);
     }
 
     sOsButtonSelected = 0;
 
 
 
-    return focusOsButton();
+    UEFI_ASSERT_EXECUTION(focusOsButton(), NgosStatus::ASSERTION);
+
+
+
+    if (locked)
+    {
+        UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::focusPreviousOsButton()
@@ -473,10 +490,14 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
 
 
 
+    bool locked = false;
+
     if (sOsButtonSelected <= sOsButtonLeft)
     {
         if (sOsButtonLeft) // sOsButtonLeft > 0
         {
+            locked = true;
+
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
             for (i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
@@ -490,10 +511,11 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
             --sOsButtonLeft;
             --sOsButtonRight;
 
-            sOsButtons.at(sOsButtonLeft)->setVisible(true);
-            sOsButtons.at(sOsButtonRight)->setVisible(false);
+            UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonLeft)->setVisible(true),   NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonRight)->setVisible(false), NgosStatus::ASSERTION);
 
-            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(sOsButtonLeft > 0), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sRightButton->setVisible(true),             NgosStatus::ASSERTION);
         }
         else
         {
@@ -505,7 +527,18 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
 
 
 
-    return focusOsButton();
+    UEFI_ASSERT_EXECUTION(focusOsButton(), NgosStatus::ASSERTION);
+
+
+
+    if (locked)
+    {
+        UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::focusNextOsButton()
@@ -514,10 +547,14 @@ NgosStatus BootloaderGUI::focusNextOsButton()
 
 
 
+    bool locked = false;
+
     if (sOsButtonSelected + 1 >= sOsButtonRight)
     {
         if (sOsButtonRight < sOsButtons.getSize())
         {
+            locked = true;
+
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
             for (i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
@@ -528,13 +565,14 @@ NgosStatus BootloaderGUI::focusNextOsButton()
                 button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
             }
 
-            sOsButtons.at(sOsButtonLeft)->setVisible(false);
-            sOsButtons.at(sOsButtonRight)->setVisible(true);
+            UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonLeft)->setVisible(false), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sOsButtons.at(sOsButtonRight)->setVisible(true), NgosStatus::ASSERTION);
 
             ++sOsButtonLeft;
             ++sOsButtonRight;
 
-            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(true),                                   NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sRightButton->setVisible(sOsButtonRight < sOsButtons.getSize()), NgosStatus::ASSERTION);
         }
         else
         {
@@ -546,7 +584,18 @@ NgosStatus BootloaderGUI::focusNextOsButton()
 
 
 
-    return focusOsButton();
+    UEFI_ASSERT_EXECUTION(focusOsButton(), NgosStatus::ASSERTION);
+
+
+
+    if (locked)
+    {
+        UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::focusNextOsButtonOrGoDown()

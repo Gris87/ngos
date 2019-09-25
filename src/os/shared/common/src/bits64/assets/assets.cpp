@@ -64,7 +64,13 @@ NgosStatus Assets::init()
         ++sEntriesCount;
     }
 
+
+
     COMMON_TEST_ASSERT(currentAddress == end, NgosStatus::ASSERTION);
+
+#ifdef BUILD_TARGET_BOOTLOADER
+    COMMON_TEST_ASSERT(sEntriesCount == ASSET_ENTRIES_COUNT, NgosStatus::ASSERTION);
+#endif
 
 
 
