@@ -197,8 +197,8 @@ NgosStatus Button::setState(WidgetState state)
     {
         mState = state;
 
-        repaint();
-        update();
+        COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(update(),  NgosStatus::ASSERTION);
     }
 
 

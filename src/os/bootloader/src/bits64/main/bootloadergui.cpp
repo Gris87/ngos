@@ -238,7 +238,6 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
             Button *osButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, osImage, rootWidget);
 
-            UEFI_ASSERT_EXECUTION(osButton->setSize(osButtonSize, osButtonSize),              NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(osButton->setKeyboardEventHandler(onOsButtonKeyboardEvent), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(osButton->setPressEventHandler(onOsButtonPressed),          NgosStatus::ASSERTION);
 
@@ -308,14 +307,20 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
         for (i64 i = 0; i < (i64)sOsButtons.getSize() && i < (i64)osCount; ++i)
         {
-            sOsButtons.at(i)->setPosition(osButtonPositionX, osButtonPositionY);
+            Button *button = sOsButtons.at(i);
+
+            UEFI_ASSERT_EXECUTION(button->setPosition(osButtonPositionX, osButtonPositionY), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(button->setSize(osButtonSize, osButtonSize),               NgosStatus::ASSERTION);
+
             osButtonPositionX += osButtonStep;
         }
 
         for (i64 i = osCount; i < (i64)sOsButtons.getSize(); ++i)
         {
-            sOsButtons.at(i)->setVisible(false);
-            osButtonPositionX += osButtonStep;
+            Button *button = sOsButtons.at(i);
+
+            UEFI_ASSERT_EXECUTION(button->setVisible(false),                   NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(button->setSize(osButtonSize, osButtonSize), NgosStatus::ASSERTION);
         }
 
         sOsButtonLeft     = 0;
@@ -462,47 +467,6 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
     return focusOsButton();
 }
 
-NgosStatus BootloaderGUI::focusNextOsButton()
-{
-    UEFI_LT((""));
-
-
-
-    if (sOsButtonSelected + 1 >= sOsButtonRight)
-    {
-        if (sOsButtonRight < sOsButtons.getSize())
-        {
-            UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-            for (i64 i = sOsButtonRight; i > sOsButtonLeft; --i)
-            {
-                Button *button        = sOsButtons.at(i);
-                Button *visibleButton = sOsButtons.at(i - i);
-
-                button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
-            }
-
-            sOsButtons.at(sOsButtonLeft)->setVisible(false);
-            sOsButtons.at(sOsButtonRight)->setVisible(true);
-
-            ++sOsButtonLeft;
-            ++sOsButtonRight;
-
-            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
-        }
-        else
-        {
-            return NgosStatus::NO_EFFECT;
-        }
-    }
-
-    ++sOsButtonSelected;
-
-
-
-    return focusOsButton();
-}
-
 NgosStatus BootloaderGUI::focusPreviousOsButton()
 {
     UEFI_LT((""));
@@ -515,7 +479,7 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
         {
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-            for (i64 i = sOsButtonLeft; i < sOsButtonRight; ++i)
+            for (i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
             {
                 Button *button        = sOsButtons.at(i - 1);
                 Button *visibleButton = sOsButtons.at(i);
@@ -538,6 +502,47 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
     }
 
     --sOsButtonSelected;
+
+
+
+    return focusOsButton();
+}
+
+NgosStatus BootloaderGUI::focusNextOsButton()
+{
+    UEFI_LT((""));
+
+
+
+    if (sOsButtonSelected + 1 >= sOsButtonRight)
+    {
+        if (sOsButtonRight < sOsButtons.getSize())
+        {
+            UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            for (i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
+            {
+                Button *button        = sOsButtons.at(i);
+                Button *visibleButton = sOsButtons.at(i - 1);
+
+                button->setPosition(visibleButton->getPositionX(), visibleButton->getPositionY());
+            }
+
+            sOsButtons.at(sOsButtonLeft)->setVisible(false);
+            sOsButtons.at(sOsButtonRight)->setVisible(true);
+
+            ++sOsButtonLeft;
+            ++sOsButtonRight;
+
+            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            return NgosStatus::NO_EFFECT;
+        }
+    }
+
+    ++sOsButtonSelected;
 
 
 

@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/gui/gui.h>
 #include <ngos/linkage.h>
 
 
@@ -211,8 +212,39 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
 
 
 
-    mPositionX = positionX;
-    mPositionY = positionY;
+    if (
+        mPositionX != positionX
+        ||
+        mPositionY != positionY
+       )
+    {
+        if (
+            mParent
+            &&
+            isVisible()
+            &&
+            mWidth // mWidth > 0
+            &&
+            mHeight // mHeight > 0
+           )
+        {
+            i64 oldPositionX = mPositionX;
+            i64 oldPositionY = mPositionY;
+
+            mPositionX = positionX;
+            mPositionY = positionY;
+
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                           NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(mParent->update(oldPositionX, oldPositionY, mWidth, mHeight), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(mParent->update(mPositionX,   mPositionY,   mWidth, mHeight), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                         NgosStatus::ASSERTION);
+        }
+        else
+        {
+            mPositionX = positionX;
+            mPositionY = positionY;
+        }
+    }
 
 
 
@@ -275,7 +307,19 @@ NgosStatus Widget::setVisible(bool visible)
 
 
 
-    mVisible = visible;
+    if (mVisible != visible)
+    {
+        mVisible = visible;
+
+        if (
+            mWidth // mWidth > 0
+            &&
+            mHeight // mHeight > 0
+           )
+        {
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        }
+    }
 
 
 
