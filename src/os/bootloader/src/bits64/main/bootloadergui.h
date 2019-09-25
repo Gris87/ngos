@@ -18,6 +18,11 @@ public:
     static NgosStatus exec(); // TEST: NO
 
 private:
+    static NgosStatus focusOsButton(); // TEST: NO
+    static NgosStatus focusFirstOsButton(); // TEST: NO
+    static NgosStatus focusNextOsButton(); // TEST: NO
+    static NgosStatus focusPreviousOsButton(); // TEST: NO
+    static NgosStatus focusNextOsButtonOrGoDown(); // TEST: NO
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
     static NgosStatus processKeyboardEvent(); // TEST: NO
