@@ -18,7 +18,6 @@
 
 
 UefiLoadedImageProtocol *Bootloader::sImage;
-UefiDevicePath          *Bootloader::sDevicePath;
 char16                  *Bootloader::sApplicationDirPath;
 VolumeInfo              *Bootloader::sMainVolume;
 List<VolumeInfo>         Bootloader::sVolumes;
@@ -402,6 +401,36 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
     return NgosStatus::OK;
 }
 
+NgosStatus Bootloader::startTool(const char8 *path)
+{
+    UEFI_LT((" | path = 0x%p", path));
+
+    UEFI_ASSERT(path, "path is null", NgosStatus::ASSERTION);
+
+
+
+    char16 *absolutePath;
+
+    UEFI_ASSERT_EXECUTION(buildPath(sApplicationDirPath, path, &absolutePath), NgosStatus::ASSERTION);
+
+
+
+    return startApplication(sMainVolume, absolutePath);
+}
+
+NgosStatus Bootloader::startOs(u64 index)
+{
+    UEFI_LT((" | index = %u", index));
+
+    UEFI_ASSERT(index < sOSes.getSize(), "index is invalid", NgosStatus::ASSERTION);
+
+
+
+    const OsInfo &os = sOSes.at(index);
+
+    return startApplication(os.volume, os.path);
+}
+
 const ArrayList<OsInfo>& Bootloader::getOSes()
 {
     UEFI_LT((""));
@@ -455,7 +484,6 @@ NgosStatus Bootloader::initPaths()
     char16 *applicationPath;
 
     UEFI_ASSERT_EXECUTION(initApplicationPath(&applicationPath),   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initDevicePath(applicationPath),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initApplicationDirPath(applicationPath), NgosStatus::ASSERTION);
 
 
@@ -498,55 +526,6 @@ NgosStatus Bootloader::initApplicationPath(char16 **applicationPath)
     UEFI_LVVV(("*applicationPath = %ls", *applicationPath));
 
     UEFI_TEST_ASSERT(strcmp(*applicationPath, u"\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus Bootloader::initDevicePath(char16 *applicationPath)
-{
-    UEFI_LT((" | applicationPath = %ls", applicationPath));
-
-    UEFI_ASSERT(applicationPath, "applicationPath is null", NgosStatus::ASSERTION);
-
-
-
-    sDevicePath = UEFI::fileDevicePath(sImage->deviceHandle, applicationPath);
-
-    if (!sDevicePath)
-    {
-        UEFI_LF(("Failed to get device path"));
-
-        return NgosStatus::FAILED;
-    }
-
-
-
-#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-    {
-        UEFI_LVVV(("sDevicePath:"));
-        UEFI_LVVV(("-------------------------------------"));
-
-        UefiDevicePath *currentDevicePath = sDevicePath;
-
-        do
-        {
-            UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
-            UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
-            UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
-
-            if (UEFI::isDevicePathEndType(currentDevicePath))
-            {
-                break;
-            }
-
-            currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
-        } while(true);
-
-        UEFI_LVVV(("-------------------------------------"));
-    }
-#endif
 
 
 
@@ -1768,6 +1747,79 @@ NgosStatus Bootloader::addUnknownOS(VolumeInfo *volume, char16 *directoryPath, c
 
 
     UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
+{
+    UEFI_LT((" | volume = 0x%p, path = 0x%p", volume, path));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(path,   "path is null",   NgosStatus::ASSERTION);
+
+
+
+    UefiDevicePath *devicePath = UEFI::fileDevicePath(volume->deviceHandle, path);
+
+    if (!devicePath)
+    {
+        UEFI_LE(("Failed to get device path for %ls", path));
+
+        return NgosStatus::FAILED;
+    }
+
+
+
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+    {
+        UEFI_LVVV(("devicePath:"));
+        UEFI_LVVV(("-------------------------------------"));
+
+        UefiDevicePath *currentDevicePath = devicePath;
+
+        do
+        {
+            UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
+            UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
+            UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
+
+            if (UEFI::isDevicePathEndType(currentDevicePath))
+            {
+                break;
+            }
+
+            currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
+        } while(true);
+
+        UEFI_LVVV(("-------------------------------------"));
+    }
+#endif
+
+
+
+    uefi_handle childImageHandle;
+
+    if (UEFI::loadImage(false, UEFI::getImageHandle(), devicePath, nullptr, 0, &childImageHandle) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to get device path for %ls", path));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LV(("Loaded %ls with image handle 0x%p", path, childImageHandle));
+
+
+
+    UEFI_LI(("Starting %ls", path));
+    UEFI_ASSERT_EXECUTION(UEFI::startImage(childImageHandle, nullptr, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    // Reboot if we exits from application
+    UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::COLD, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
 

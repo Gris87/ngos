@@ -928,6 +928,30 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
     return UefiStatus::SUCCESS;
 }
 
+UefiStatus UEFI::loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, u64 sourceSize, uefi_handle *imageHandle)
+{
+    UEFI_LT((" | bootPolicy = %u, parentImageHandle = 0x%p, filePath = 0x%p, sourceBuffer = 0x%p, sourceSize = %u, imageHandle = 0x%p", bootPolicy, parentImageHandle, filePath, sourceBuffer, sourceSize, imageHandle));
+
+    UEFI_ASSERT(parentImageHandle, "parentImageHandle is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(filePath,          "filePath is null",          UefiStatus::ABORTED);
+    UEFI_ASSERT(imageHandle,       "imageHandle is null",       UefiStatus::ABORTED);
+
+
+
+    return sBootServices->loadImage(bootPolicy, parentImageHandle, filePath, sourceBuffer, sourceSize, imageHandle);
+}
+
+UefiStatus UEFI::startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData)
+{
+    UEFI_LT((" | imageHandle = 0x%p, exitDataSize = 0x%p, exitData = 0x%p", imageHandle, exitDataSize, exitData));
+
+    UEFI_ASSERT(imageHandle, "imageHandle is null", UefiStatus::ABORTED);
+
+
+
+    return sBootServices->startImage(imageHandle, exitDataSize, exitData);
+}
+
 UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData)
 {
     UEFI_LT((" | resetType = %u, resetStatus = 0x%016lX, dataSize = %u, resetData = 0x%p", resetType, resetStatus, dataSize, resetData));

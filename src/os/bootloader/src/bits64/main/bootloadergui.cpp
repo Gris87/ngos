@@ -1298,6 +1298,10 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(Bootloader::startOs(sOsButtonSelected), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
@@ -1401,12 +1405,20 @@ NgosStatus BootloaderGUI::onCpuTestButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\cputest.efi"), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::onMemoryTestButtonPressed()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\memorytest.efi"), NgosStatus::ASSERTION);
 
 
 
@@ -1419,12 +1431,20 @@ NgosStatus BootloaderGUI::onNetworkTestButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\networktest.efi"), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::onHddTestButtonPressed()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\hddtest.efi"), NgosStatus::ASSERTION);
 
 
 
@@ -1437,12 +1457,20 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\partitionwizard.efi"), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::onShellButtonPressed()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\shell.efi"), NgosStatus::ASSERTION);
 
 
 

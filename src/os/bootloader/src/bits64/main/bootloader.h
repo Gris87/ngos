@@ -27,13 +27,15 @@ public:
 
     static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
+    static NgosStatus startTool(const char8 *path); // TEST: NO
+    static NgosStatus startOs(u64 index); // TEST: NO
+
     static const ArrayList<OsInfo>& getOSes(); // TEST: NO
 
 private:
     static NgosStatus initImage(); // TEST: NO
     static NgosStatus initPaths(); // TEST: NO
     static NgosStatus initApplicationPath(char16 **applicationPath); // TEST: NO
-    static NgosStatus initDevicePath(char16 *applicationPath); // TEST: NO
     static NgosStatus initApplicationDirPath(char16 *applicationPath); // TEST: NO
     static NgosStatus initVolumes(); // TEST: NO
     static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size); // TEST: NO
@@ -61,9 +63,9 @@ private:
     static NgosStatus addUbuntu19(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
     static NgosStatus addCentOS7(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
     static NgosStatus addUnknownOS(VolumeInfo *volume, char16 *directoryPath, char16 *fileName); // TEST: NO
+    static NgosStatus startApplication(VolumeInfo *volume, const char16 *path); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
-    static UefiDevicePath          *sDevicePath;
     static char16                  *sApplicationDirPath;
     static VolumeInfo              *sMainVolume;
     static List<VolumeInfo>         sVolumes;

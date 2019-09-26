@@ -59,6 +59,9 @@ public:
     static UefiStatus getMemoryMap(UefiBootMemoryMap *map); // TEST: NO
     static UefiStatus lowAlloc(u64 size, u64 align, void **address); // TEST: NO
 
+    static UefiStatus loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, u64 sourceSize, uefi_handle *imageHandle); // TEST: NO
+    static UefiStatus startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData); // TEST: NO
+
     static UefiStatus resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData); // TEST: NO
     static UefiStatus exitBootServices(u64 mapKey); // TEST: NO
 
