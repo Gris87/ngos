@@ -48,6 +48,7 @@ HEADERS += \
     $$PWD/src/bits64/console/console.h \
     $$PWD/src/bits64/console/graphicalconsole.h \
     $$PWD/src/bits64/console/lib/glyphdata.h \
+    $$PWD/src/bits64/containers/arraylist.h \
     $$PWD/src/bits64/containers/lib/listelement.h \
     $$PWD/src/bits64/containers/list.h \
     $$PWD/src/bits64/cpu/cpu.h \
@@ -134,6 +135,7 @@ HEADERS += \
     $$PWD/src/bits64/graphics/rgbpixel.h \
     $$PWD/src/bits64/graphics/stretchrange.h \
     $$PWD/src/bits64/gui/gui.h \
+    $$PWD/src/bits64/gui/other/widgetstate.h \
     $$PWD/src/bits64/gui/widgets/controls/button.h \
     $$PWD/src/bits64/gui/widgets/misc/consolewidget.h \
     $$PWD/src/bits64/gui/widgets/misc/cursorwidget.h \

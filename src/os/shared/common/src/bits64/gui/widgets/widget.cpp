@@ -1,8 +1,8 @@
 #include "widget.h"
 
+#include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
-#include <common/src/bits64/gui/gui.h>
 #include <ngos/linkage.h>
 
 
@@ -234,10 +234,12 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
             mPositionX = positionX;
             mPositionY = positionY;
 
+            // Ignore CppAlignmentVerifier [BEGIN]
             COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                           NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(mParent->update(oldPositionX, oldPositionY, mWidth, mHeight), NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(mParent->update(mPositionX,   mPositionY,   mWidth, mHeight), NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                         NgosStatus::ASSERTION);
+            // Ignore CppAlignmentVerifier [END]
         }
         else
         {

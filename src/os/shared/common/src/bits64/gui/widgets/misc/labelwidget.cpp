@@ -172,8 +172,8 @@ NgosStatus LabelWidget::repaint()
 
 
 
-                u8 bitmapLeft   = charPosX < 0 ? (u8)(-charPosX) : 0;
-                u8 bitmapTop    = charPosY < 0 ? (u8)(-charPosY) : 0;
+                u8 bitmapLeft = charPosX < 0 ? (u8)(-charPosX) : 0;
+                u8 bitmapTop  = charPosY < 0 ? (u8)(-charPosY) : 0;
 
 
 

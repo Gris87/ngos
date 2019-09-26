@@ -38,6 +38,7 @@ public:
 private:
 #endif
     NgosStatus extendCapacity();
+    NgosStatus quickSort(i64 left, i64 right);
 
     u64  mCapacity;
     u64  mSize;
@@ -116,7 +117,14 @@ NgosStatus ArrayList<T>::sort()
 
 
 
-    return NgosStatus::OK;
+    if (mSize < 2)
+    {
+        return NgosStatus::OK;
+    }
+
+
+
+    return quickSort(0, mSize - 1);
 }
 
 template<typename T>
@@ -152,7 +160,7 @@ NgosStatus ArrayList<T>::setCapacity(u64 capacity)
     {
         if (mCapacity) // mCapacity > 0
         {
-            mValues = (T *)realloc(mValues, capacity * sizeof(T), mCapacity * sizeof(T));
+            mValues = (T *)realloc(mValues, mCapacity * sizeof(T), capacity * sizeof(T));
         }
         else
         {
@@ -222,6 +230,67 @@ NgosStatus ArrayList<T>::extendCapacity()
 
             mValues = (T *)malloc(mCapacity * sizeof(T));
         }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus ArrayList<T>::quickSort(i64 left, i64 right)
+{
+    COMMON_LT((" | left = %d, right = %d", left, right));
+
+    COMMON_ASSERT(left  < (i64)mSize, "left is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(right < (i64)mSize, "right is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(left  < right,      "left is invalid",  NgosStatus::ASSERTION);
+
+
+
+    i64 i = left;
+    i64 j = right;
+
+    T pivot = mValues[(left + right) >> 1]; // ">> 1" == "/ 2"
+
+
+
+    while (i <= j)
+    {
+        while (mValues[i] < pivot)
+        {
+            ++i;
+        }
+
+        while (pivot < mValues[j])
+        {
+            --j;
+        }
+
+        if (i <= j)
+        {
+            if (i != j)
+            {
+                T temp     = mValues[i];
+                mValues[i] = mValues[j];
+                mValues[j] = temp;
+            }
+
+            ++i;
+            --j;
+        }
+    }
+
+
+
+    if (left < j)
+    {
+        COMMON_ASSERT_EXECUTION(quickSort(left, j), NgosStatus::ASSERTION);
+    }
+
+    if (i < right)
+    {
+        COMMON_ASSERT_EXECUTION(quickSort(i, right), NgosStatus::ASSERTION);
     }
 
 

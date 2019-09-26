@@ -1,5 +1,5 @@
-#ifndef WIDGETSTATE_H
-#define WIDGETSTATE_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_GUI_OTHER_WIDGETSTATE_H
+#define OS_SHARED_COMMON_SRC_BITS64_GUI_OTHER_WIDGETSTATE_H
 
 
 
@@ -18,9 +18,13 @@ enum class WidgetState: u8
 
 
 
-inline const char8* widgetStateToString(WidgetState type) // TEST: NO
+inline const char8* widgetStateToString(WidgetState state) // TEST: NO
 {
-    switch (type)
+    // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    switch (state)
     {
         case WidgetState::NONE:    return "NONE";
         case WidgetState::NORMAL:  return "NORMAL";
@@ -34,4 +38,4 @@ inline const char8* widgetStateToString(WidgetState type) // TEST: NO
 
 
 
-#endif // WIDGETSTATE_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_GUI_OTHER_WIDGETSTATE_H

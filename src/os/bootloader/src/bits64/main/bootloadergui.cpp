@@ -767,8 +767,8 @@ NgosStatus BootloaderGUI::processKeyboardEvent()
     AVOID_UNUSED(status);
 
     UEFI_TEST_ASSERT(status == NgosStatus::OK
-                     ||
-                     status == NgosStatus::NO_EFFECT, NgosStatus::ASSERTION);
+                    ||
+                    status == NgosStatus::NO_EFFECT, NgosStatus::ASSERTION);
 
 
 
@@ -1448,4 +1448,3 @@ NgosStatus BootloaderGUI::onShellButtonPressed()
 
     return NgosStatus::OK;
 }
-

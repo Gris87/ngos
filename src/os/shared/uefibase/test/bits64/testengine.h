@@ -108,7 +108,7 @@
     NgosStatus __res = __results->summary(); \
     \
     asm volatile( \
-        "addq    $0x28, %rsp"   "\n\t"  /* subq    $0x28, %rsp  # Release space on stack. The value selected to keep RSP aligned */ \
+        "addq    $0x28, %rsp"   "\n\t"  /* addq    $0x28, %rsp  # Release space on stack. The value selected to keep RSP aligned */ \
         "popq    %rbp"          "\n\t"  /* popq    %rbp         # Restore RBP from stack                                         */ \
         "movq    %rbp, %rsp"    "\n\t"  /* movq    %rbp, %rsp   # Restore RSP from RBP                                           */ \
         "popq    %rbp"          "\n\t"  /* popq    %rbp         # Restore RBP from stack                                         */ \
