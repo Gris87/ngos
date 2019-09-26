@@ -1804,7 +1804,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
     if (UEFI::loadImage(false, UEFI::getImageHandle(), devicePath, nullptr, 0, &childImageHandle) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to get device path for %ls", path));
+        UEFI_LE(("Failed to load %ls", path));
 
         return NgosStatus::FAILED;
     }
