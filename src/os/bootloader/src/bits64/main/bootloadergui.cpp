@@ -1272,12 +1272,20 @@ NgosStatus BootloaderGUI::onRebootButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::COLD, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
 NgosStatus BootloaderGUI::onShutdownButtonPressed()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::SHUTDOWN, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
 

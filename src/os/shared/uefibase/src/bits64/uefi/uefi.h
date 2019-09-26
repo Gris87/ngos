@@ -46,12 +46,12 @@ public:
     static UefiStatus closeEvent(uefi_event event); // TEST: NO
     static UefiStatus stall(u64 microseconds); // TEST: NO
 
-    static UefiStatus allocatePool(UefiMemoryType poolType, u64 size, void **buffer); // TEST: NO
-    static UefiStatus freePool(void *buffer); // TEST: NO
-
     static UefiStatus handleProtocol(uefi_handle handle, Guid *protocol, void **interface); // TEST: NO
     static UefiStatus locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer); // TEST: NO
     static UefiStatus locateDevicePath(Guid *protocol, UefiDevicePath **devicePath, uefi_handle *device); // TEST: NO
+
+    static UefiStatus allocatePool(UefiMemoryType poolType, u64 size, void **buffer); // TEST: NO
+    static UefiStatus freePool(void *buffer); // TEST: NO
 
     static bool memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descriptorSize);
     static UefiStatus allocatePages(UefiAllocateType type, UefiMemoryType memoryType, u64 noPages, u64 *memory); // TEST: NO
@@ -59,6 +59,7 @@ public:
     static UefiStatus getMemoryMap(UefiBootMemoryMap *map); // TEST: NO
     static UefiStatus lowAlloc(u64 size, u64 align, void **address); // TEST: NO
 
+    static UefiStatus resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData); // TEST: NO
     static UefiStatus exitBootServices(u64 mapKey); // TEST: NO
 
     static uefi_handle getImageHandle(); // TEST: NO

@@ -515,29 +515,6 @@ UefiStatus UEFI::stall(u64 microseconds)
     return sBootServices->stall(microseconds);
 }
 
-UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
-{
-    UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer));
-
-    UEFI_ASSERT(size > 0, "size is zero",   UefiStatus::ABORTED);
-    UEFI_ASSERT(buffer,   "buffer is null", UefiStatus::ABORTED);
-
-
-
-    return sBootServices->allocatePool(poolType, size, buffer);
-}
-
-UefiStatus UEFI::freePool(void *buffer)
-{
-    UEFI_LT((" | buffer = 0x%p", buffer));
-
-    UEFI_ASSERT(buffer, "buffer is null", UefiStatus::ABORTED);
-
-
-
-    return sBootServices->freePool(buffer);
-}
-
 UefiStatus UEFI::handleProtocol(uefi_handle handle, Guid *protocol, void **interface)
 {
     UEFI_LT((" | handle = 0x%p, protocol = 0x%p, interface = 0x%p", handle, protocol, interface));
@@ -584,6 +561,29 @@ UefiStatus UEFI::locateDevicePath(Guid *protocol, UefiDevicePath **devicePath, u
 
 
     return sBootServices->locateDevicePath(protocol, devicePath, device);
+}
+
+UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
+{
+    UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer));
+
+    UEFI_ASSERT(size > 0, "size is zero",   UefiStatus::ABORTED);
+    UEFI_ASSERT(buffer,   "buffer is null", UefiStatus::ABORTED);
+
+
+
+    return sBootServices->allocatePool(poolType, size, buffer);
+}
+
+UefiStatus UEFI::freePool(void *buffer)
+{
+    UEFI_LT((" | buffer = 0x%p", buffer));
+
+    UEFI_ASSERT(buffer, "buffer is null", UefiStatus::ABORTED);
+
+
+
+    return sBootServices->freePool(buffer);
 }
 
 bool UEFI::memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descriptorSize)
@@ -926,6 +926,18 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
     return UefiStatus::SUCCESS;
+}
+
+UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData)
+{
+    UEFI_LT((" | resetType = %u, resetStatus = 0x%016lX, dataSize = %u, resetData = 0x%p", resetType, resetStatus, dataSize, resetData));
+
+    UEFI_ASSERT(dataSize > 0, "dataSize is zero",  UefiStatus::ABORTED);
+    UEFI_ASSERT(resetData,    "resetData is null", UefiStatus::ABORTED);
+
+
+
+    return sSystemTable->runtimeServices->resetSystem(resetType, resetStatus, dataSize, resetData);
 }
 
 UefiStatus UEFI::exitBootServices(u64 mapKey)
