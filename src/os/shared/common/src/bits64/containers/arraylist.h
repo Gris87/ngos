@@ -248,49 +248,61 @@ NgosStatus ArrayList<T>::quickSort(i64 left, i64 right)
 
 
 
-    i64 i = left;
-    i64 j = right;
-
-    T pivot = mValues[(left + right) >> 1]; // ">> 1" == "/ 2"
-
-
-
-    while (i <= j)
+    if (left + 1 == right)
     {
-        while (mValues[i] < pivot)
+        if (mValues[right] < mValues[left])
         {
-            ++i;
+            T temp         = mValues[left];
+            mValues[left]  = mValues[right];
+            mValues[right] = temp;
         }
+    }
+    else
+    {
+        i64 i = left;
+        i64 j = right;
 
-        while (pivot < mValues[j])
-        {
-            --j;
-        }
+        T pivot = mValues[(left + right) >> 1]; // ">> 1" == "/ 2"
 
-        if (i <= j)
+
+
+        while (i <= j)
         {
-            if (i != j)
+            while (mValues[i] < pivot)
             {
-                T temp     = mValues[i];
-                mValues[i] = mValues[j];
-                mValues[j] = temp;
+                ++i;
             }
 
-            ++i;
-            --j;
+            while (pivot < mValues[j])
+            {
+                --j;
+            }
+
+            if (i <= j)
+            {
+                if (i != j)
+                {
+                    T temp     = mValues[i];
+                    mValues[i] = mValues[j];
+                    mValues[j] = temp;
+                }
+
+                ++i;
+                --j;
+            }
         }
-    }
 
 
 
-    if (left < j)
-    {
-        COMMON_ASSERT_EXECUTION(quickSort(left, j), NgosStatus::ASSERTION);
-    }
+        if (left < j)
+        {
+            COMMON_ASSERT_EXECUTION(quickSort(left, j), NgosStatus::ASSERTION);
+        }
 
-    if (i < right)
-    {
-        COMMON_ASSERT_EXECUTION(quickSort(i, right), NgosStatus::ASSERTION);
+        if (i < right)
+        {
+            COMMON_ASSERT_EXECUTION(quickSort(i, right), NgosStatus::ASSERTION);
+        }
     }
 
 
