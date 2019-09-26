@@ -3,6 +3,7 @@ BUILD_CONFIG = include/buildconfig.h
 
 MKDIR = mkdir -p
 RMDIR = rm -rf
+COPY  = cp
 
 
 
@@ -15,6 +16,7 @@ SUBDIRS = \
 
 TARGET_APPS = \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi
 
@@ -29,6 +31,10 @@ all: $(SUBDIRS) $(TARGET_APPS)
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi: src/os/boot/build/boot.elf src/os/bootloader/build/bootloader.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader/build/bootloader.elf -o $@
+
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi: 3rd_party/libs/edk2/Build/shell.efi
+	$(MKDIR) $(@D)
+	$(COPY) 3rd_party/libs/edk2/Build/shell.efi $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
@@ -87,7 +93,7 @@ tools:
 	exit 1
 
 src:
-	sh -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && ../tools/qt/qmake/build/qmake $@.pro && make -j`nproc` $(MAKECMDGOALS)"
+	bash -c "cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && ../tools/qt/qmake/build/qmake $@.pro && make -j`nproc` $(MAKECMDGOALS)"
 
 
 
@@ -118,71 +124,71 @@ help:
 
 
 deployment: generate
-	sh -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) --reset
 	$(MAKE) all
 
 
 
 config:
-	sh -c "cd tools/qt/build_config_gui/ && lupdate -noobsolete build_config_gui.pro && lrelease build_config_gui.pro && qmake build_config_gui.pro && make -j`nproc`"
+	bash -c "cd tools/qt/build_config_gui/ && lupdate -noobsolete build_config_gui.pro && lrelease build_config_gui.pro && qmake build_config_gui.pro && make -j`nproc`"
 	tools/qt/build_config_gui/build/build_config_gui
 
 
 
 generate:
-	sh -c "cd 3rd_party/ && make"
-	sh -c "cd tools/qt/code_generator/ && lupdate -noobsolete code_generator.pro && lrelease code_generator.pro && qmake code_generator.pro && make -j`nproc`"
+	bash -c "cd 3rd_party/ && make"
+	bash -c "cd tools/qt/code_generator/ && lupdate -noobsolete code_generator.pro && lrelease code_generator.pro && qmake code_generator.pro && make -j`nproc`"
 	tools/qt/code_generator/build/code_generator .
 
 
 
 verify:
-	sh -c "cd tools/qt/code_verifier/ && lupdate -noobsolete code_verifier.pro && lrelease code_verifier.pro && qmake code_verifier.pro && make -j`nproc`"
+	bash -c "cd tools/qt/code_verifier/ && lupdate -noobsolete code_verifier.pro && lrelease code_verifier.pro && qmake code_verifier.pro && make -j`nproc`"
 	tools/qt/code_verifier/build/code_verifier .
 
 
 
 verify-tests:
-	sh -c "cd tools/qt/test_verifier/ && lupdate -noobsolete test_verifier.pro && lrelease test_verifier.pro && qmake test_verifier.pro && make -j`nproc`"
+	bash -c "cd tools/qt/test_verifier/ && lupdate -noobsolete test_verifier.pro && lrelease test_verifier.pro && qmake test_verifier.pro && make -j`nproc`"
 	tools/qt/test_verifier/build/test_verifier .
 
 
 
 verify-docs:
-	sh -c "cd tools/qt/docs_verifier/ && lupdate -noobsolete docs_verifier.pro && lrelease docs_verifier.pro && qmake docs_verifier.pro && make -j`nproc`"
+	bash -c "cd tools/qt/docs_verifier/ && lupdate -noobsolete docs_verifier.pro && lrelease docs_verifier.pro && qmake docs_verifier.pro && make -j`nproc`"
 	tools/qt/docs_verifier/build/docs_verifier .
 
 
 
 test:
-	sh -c "cd test/ && ./start.sh"
+	bash -c "cd test/ && ./start.sh"
 
 
 
 debug:
-	sh -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_NO NGOS_BUILD_TEST_MODE=OPTION_NO
 	$(MAKE) all
 
 
 
 release:
-	sh -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_YES NGOS_BUILD_TEST_MODE=OPTION_NO
 	$(MAKE) all
 
 
 
 test-debug:
-	sh -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_NO NGOS_BUILD_TEST_MODE=OPTION_YES
 	$(MAKE) all
 
 
 
 test-release:
-	sh -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_YES NGOS_BUILD_TEST_MODE=OPTION_YES
 	$(MAKE) all
 
@@ -201,13 +207,13 @@ run-test-release: test-release run-vm
 run-vm: run-qemu-kvm
 
 run-qemu-kvm:
-	sh -c "cd tools/vm/ && ./start_vm.sh qemu-kvm"
+	bash -c "cd tools/vm/ && ./start_vm.sh qemu-kvm"
 
 run-qemu:
-	sh -c "cd tools/vm/ && ./start_vm.sh qemu"
+	bash -c "cd tools/vm/ && ./start_vm.sh qemu"
 
 run-vbox:
-	sh -c "cd tools/vm/ && ./start_vm.sh vbox"
+	bash -c "cd tools/vm/ && ./start_vm.sh vbox"
 
 
 

@@ -33,7 +33,7 @@ fi
 echo "Start spelling simplifier"
 echo ""
 
-sh -c "cd tools/qt/docs_verifier/ && lupdate -noobsolete docs_verifier.pro && lrelease docs_verifier.pro && qmake docs_verifier.pro && make -j`nproc`"
+bash -c "cd tools/qt/docs_verifier/ && lupdate -noobsolete docs_verifier.pro && lrelease docs_verifier.pro && qmake docs_verifier.pro && make -j`nproc`"
 VERIFIER_OUTPUT=`tools/qt/docs_verifier/build/docs_verifier .`
 
 echo ""

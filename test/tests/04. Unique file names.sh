@@ -35,7 +35,7 @@ cd ../../
 for line in `cat ${PROJECT_INCLUDES} | grep -ve "^~/Qt/" -ve "^3rd_party/"`
 do
     echo "${line}:"                                     >> ${ALL_INCLUDES}
-    sh -c "cd \"${line}\" && find -type f -name \*.h"   >> ${ALL_INCLUDES}
+    bash -c "cd \"${line}\" && find -type f -name \*.h" >> ${ALL_INCLUDES}
 done
 
 cd ${WORKING_DIR}/

@@ -2,6 +2,7 @@ ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../include/buildconfig.h | sed -r "
 
 MKDIR = mkdir -p
 RMDIR = rm -rf
+COPY  = cp
 
 
 
@@ -40,12 +41,12 @@ clean:
 
 
 $(TARGET_FREETYPE): $(FREETYPE_DIR)
-	sh -c "cd $(FREETYPE_DIR) && ./configure && make -j`nproc`"
+	bash -c "cd $(FREETYPE_DIR) && ./configure && make -j`nproc`"
 
 
 
 $(TARGET_EDK2): $(EDK2_DIR)
-	sh -c "cd $(EDK2_DIR) && source edksetup.sh BaseTools && make -C BaseTools/ && build -a $(EDK2_ARCH) -t GCC5 -b RELEASE -n `nproc` -p ShellPkg/ShellPkg.dsc && cp Build/Shell/RELEASE_GCC5/$(EDK2_ARCH)/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi Build/shell.efi"
+	bash -c "cd $(EDK2_DIR) && source edksetup.sh BaseTools && make -C BaseTools/ && build -a $(EDK2_ARCH) -t GCC5 -b RELEASE -n `nproc` -p ShellPkg/ShellPkg.dsc && $(COPY) Build/Shell/RELEASE_GCC5/$(EDK2_ARCH)/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi Build/shell.efi"
 
 
 

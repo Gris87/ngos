@@ -318,7 +318,7 @@ qint64 QMake::generateSubdirsMakefile(const QString &workingDirectory)
     lines.append("");
     lines.append("");
     lines.append("$(SUBDIRS):");
-    lines.append("\tsh -c \"cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && $(QMAKE) $@.pro && make -j`nproc` $(MAKECMDGOALS)\"");
+    lines.append("\tbash -c \"cd $@ && lupdate -noobsolete $@.pro && lrelease $@.pro && $(QMAKE) $@.pro && make -j`nproc` $(MAKECMDGOALS)\"");
 
 
 
