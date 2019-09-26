@@ -21,7 +21,6 @@ NGOS:
 Bootloader:
 
 - Add mouse support
-- Implement control with keyboard
 - Implement control with mouse
 - Start external application
 - Auto-start timer
