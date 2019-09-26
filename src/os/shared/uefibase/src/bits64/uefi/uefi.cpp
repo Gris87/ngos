@@ -932,9 +932,6 @@ UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, u6
 {
     UEFI_LT((" | resetType = %u, resetStatus = 0x%016lX, dataSize = %u, resetData = 0x%p", resetType, resetStatus, dataSize, resetData));
 
-    UEFI_ASSERT(dataSize > 0, "dataSize is zero",  UefiStatus::ABORTED);
-    UEFI_ASSERT(resetData,    "resetData is null", UefiStatus::ABORTED);
-
 
 
     return sSystemTable->runtimeServices->resetSystem(resetType, resetStatus, dataSize, resetData);
