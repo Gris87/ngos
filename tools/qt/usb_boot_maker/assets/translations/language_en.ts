@@ -276,25 +276,17 @@ All data on the device will be destroyed!</translation>
         <translation>Failed to download file %1 from server %2: %3</translation>
     </message>
     <message>
-        <source>Disk formatting failed</source>
-        <translation type="vanished">Disk formatting failed</translation>
-    </message>
-    <message>
-        <source>Getting information about latest version from servers</source>
-        <translation type="vanished">Getting information about latest version from servers</translation>
-    </message>
-    <message>
-        <location filename="../../src/main/mainwindow.cpp" line="885"/>
+        <location filename="../../src/main/mainwindow.cpp" line="887"/>
         <source>Latest version is unavailable</source>
         <translation>Latest version is unavailable</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="930"/>
+        <location filename="../../src/main/mainwindow.cpp" line="932"/>
         <source>Database is broken</source>
         <translation>Database is broke</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="1018"/>
+        <location filename="../../src/main/mainwindow.cpp" line="1024"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Making bootable USB flash drive on disk &quot;%1&quot;</translation>
     </message>
@@ -304,12 +296,12 @@ All data on the device will be destroyed!</translation>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="848"/>
+        <location filename="../../src/main/mainwindow.cpp" line="850"/>
         <source>Getting information about latest version of %1 from servers</source>
         <translation>Getting information about latest version of %1 from servers</translation>
     </message>
     <message>
-        <location filename="../../src/main/mainwindow.cpp" line="1032"/>
+        <location filename="../../src/main/mainwindow.cpp" line="1038"/>
         <source>Operation terminated by user</source>
         <translation>Operation terminated by user</translation>
     </message>

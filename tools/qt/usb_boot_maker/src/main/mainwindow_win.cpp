@@ -1041,7 +1041,7 @@ bool checkDeviceType(UsbProperties *props)
 
 
 
-        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ")" : "") << " device";
+        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << usbSpeedToString(props->speed) << (props->isUASP ? ")" : "") << " device"; // Ignore CppSingleCharVerifier
 
         if (props->isLowerSpeed)
         {
