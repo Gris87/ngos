@@ -845,6 +845,8 @@ void MainWindow::handleGetLatestVersionState()
 
 
     QString application = applications.at(mCurrentApplication);
+
+    addLog("");
     addLog(tr("Getting information about latest version of %1 from servers").arg(application));
 
     mRequestTime = QDateTime::currentMSecsSinceEpoch();
@@ -1015,6 +1017,10 @@ void MainWindow::handleDownloadState()
 void MainWindow::handleBurningState()
 {
     ui->statusProgressBar->setValue(40);
+
+
+
+    addLog("");
     addLog(tr("Making bootable USB flash drive on disk \"%1\"").arg(ui->deviceComboBox->currentText()));
 
 
