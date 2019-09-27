@@ -16,6 +16,7 @@ SUBDIRS = \
 
 TARGET_APPS = \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi
@@ -31,6 +32,10 @@ all: $(SUBDIRS) $(TARGET_APPS)
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi: src/os/boot/build/boot.elf src/os/bootloader/build/bootloader.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader/build/bootloader.elf -o $@
+
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/cputest/build/cputest.elf tools/qt/image_builder/build/image_builder
+	$(MKDIR) $(@D)
+	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/cputest/build/cputest.elf -o $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi: 3rd_party/libs/edk2/Build/shell.efi
 	$(MKDIR) $(@D)

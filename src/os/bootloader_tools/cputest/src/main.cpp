@@ -15,8 +15,8 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/bits64/main/bootloader.h"
-#include "src/bits64/main/bootloadergui.h"
+#include "src/bits64/main/cputest.h"
+#include "src/bits64/main/cputestgui.h"
 #include "test/bits64/sections/section1/testcase.h"
 
 
@@ -55,7 +55,7 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_LI(("NGOS Bootloader starting up"));
+    UEFI_LI(("NGOS Bootloader Tool - CPU Test starting up"));
 
 
 
@@ -114,17 +114,17 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_ASSERT_EXECUTION(Bootloader::init(), UefiStatus::ABORTED);
-    UEFI_LI(("Bootloader initialized"));
+    UEFI_ASSERT_EXECUTION(CpuTest::init(), UefiStatus::ABORTED);
+    UEFI_LI(("CPU Test initialized"));
 
 
 
-    UEFI_ASSERT_EXECUTION(BootloaderGUI::init(&params), UefiStatus::ABORTED);
-    UEFI_LI(("Bootloader GUI initialized"));
+    UEFI_ASSERT_EXECUTION(CpuTestGUI::init(&params), UefiStatus::ABORTED);
+    UEFI_LI(("CPU Test GUI initialized"));
 
 
 
-    UEFI_ASSERT_EXECUTION(BootloaderGUI::exec(), UefiStatus::ABORTED); // Loop forever
+    UEFI_ASSERT_EXECUTION(CpuTestGUI::exec(), UefiStatus::ABORTED); // Loop forever
 
 
 

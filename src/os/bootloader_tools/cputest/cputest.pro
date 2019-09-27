@@ -2,7 +2,7 @@ QT -= gui
 
 CONFIG += c++17
 
-TARGET = bootloader
+TARGET = cputest
 TEMPLATE = uefi
 
 RESOURCES += Resources.qrc
@@ -10,21 +10,21 @@ RESOURCES += Resources.qrc
 
 
 DEFINES += \
-    BUILD_TARGET_BOOTLOADER \
+    BUILD_TARGET_CPUTEST \
     UEFI_APPLICATION
 
 
 
 INCLUDEPATH += \
-    ../shared \                # /src/os/shared
-    ../include \               # /src/os/include
-    ../../../include \         # /include
-    ../../../include/stdinc    # /include/stdinc
+    ../../shared \              # /src/os/shared
+    ../../include \             # /src/os/include
+    ../../../../include \       # /include
+    ../../../../include/stdinc  # /include/stdinc
 
 
 
-include(../shared/common/common.pri)
-include(../shared/uefibase/uefibase.pri)
+include(../../shared/common/common.pri)
+include(../../shared/uefibase/uefibase.pri)
 
 
 
@@ -37,17 +37,12 @@ QMAKE_LFLAGS += \
 
 SOURCES += \
     asm/arch/x86_64/main.S \
-    src/bits64/main/bootloader.cpp \
-    src/bits64/main/bootloadergui.cpp \
+    src/bits64/main/cputest.cpp \
+    src/bits64/main/cputestgui.cpp \
     src/main.cpp
 
 HEADERS += \
-    src/bits64/main/bootloader.h \
-    src/bits64/main/bootloadergui.h \
-    src/bits64/other/osinfo.h \
-    src/bits64/other/ostype.h \
-    src/bits64/other/volumeinfo.h \
-    src/bits64/other/volumetype.h \
-    test/bits64/sections/section1/bits64/main/bootloader.h \
+    src/bits64/main/cputest.h \
+    src/bits64/main/cputestgui.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h

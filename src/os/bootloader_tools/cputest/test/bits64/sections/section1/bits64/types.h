@@ -1,17 +1,13 @@
-#ifndef BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
-#define BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#ifndef CPUTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#define CPUTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/bootloader.h"
-#include "src/bits64/main/bootloadergui.h"
-#include "src/bits64/other/osinfo.h"
-#include "src/bits64/other/ostype.h"
-#include "src/bits64/other/volumeinfo.h"
-#include "src/bits64/other/volumetype.h"
+#include "src/bits64/main/cputest.h"
+#include "src/bits64/main/cputestgui.h"
 
 
 
@@ -23,12 +19,8 @@ TEST_CASES(section1, bits64_types);
 {
     TEST_CASE("Size of structures");
     {
-        TEST_ASSERT_EQUALS(sizeof(Bootloader),    1);
-        TEST_ASSERT_EQUALS(sizeof(BootloaderGUI), 1);
-        TEST_ASSERT_EQUALS(sizeof(OsInfo),        24);
-        TEST_ASSERT_EQUALS(sizeof(OsType),        1);
-        TEST_ASSERT_EQUALS(sizeof(VolumeInfo),    88);
-        TEST_ASSERT_EQUALS(sizeof(VolumeType),    1);
+        TEST_ASSERT_EQUALS(sizeof(CpuTest),    1);
+        TEST_ASSERT_EQUALS(sizeof(CpuTestGUI), 1);
     }
     TEST_CASE_END();
 }
@@ -40,4 +32,4 @@ TEST_CASES_END();
 
 
 
-#endif // BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#endif // CPUTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
