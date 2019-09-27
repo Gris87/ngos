@@ -8,7 +8,7 @@ SECTIONS
 
 
 
-    .cputest_code : { *(.cputest_code) }
+    .partitionwizard_code : { *(.partitionwizard_code) }
     .asm_code     : { *(.asm_code) }
     .text         : { *(.text*) }
     .rodata       : { *(.rodata*) }

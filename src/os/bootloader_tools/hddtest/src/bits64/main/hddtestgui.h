@@ -1,5 +1,5 @@
-#ifndef CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
-#define CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
+#ifndef HDDTEST_SRC_BITS64_MAIN_HDDTESTGUI_H
+#define HDDTEST_SRC_BITS64_MAIN_HDDTESTGUI_H
 
 
 
@@ -12,7 +12,7 @@
 
 
 
-class CpuTestGUI
+class HddTestGUI
 {
 public:
     static NgosStatus init(BootParams *params); // TEST: NO
@@ -39,4 +39,4 @@ private:
 
 
 
-#endif // CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
+#endif // HDDTEST_SRC_BITS64_MAIN_HDDTESTGUI_H

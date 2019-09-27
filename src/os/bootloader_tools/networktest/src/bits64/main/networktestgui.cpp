@@ -1,4 +1,4 @@
-#include "cputestgui.h"
+#include "networktestgui.h"
 
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
@@ -12,7 +12,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/bits64/main/cputest.h"
+#include "src/bits64/main/networktest.h"
 
 
 
@@ -27,14 +27,14 @@
 
 
 
-Button     *CpuTestGUI::sRebootButton;
-Button     *CpuTestGUI::sShutdownButton;
-u16         CpuTestGUI::sWaitEventsCount;
-uefi_event *CpuTestGUI::sWaitEvents;
+Button     *NetworkTestGUI::sRebootButton;
+Button     *NetworkTestGUI::sShutdownButton;
+u16         NetworkTestGUI::sWaitEventsCount;
+uefi_event *NetworkTestGUI::sWaitEvents;
 
 
 
-NgosStatus CpuTestGUI::init(BootParams *params)
+NgosStatus NetworkTestGUI::init(BootParams *params)
 {
     UEFI_LT((" | params = 0x%p", params));
 
@@ -57,14 +57,14 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/background.jpg",       &backgroundImage),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/button_normal.9.png",  &buttonNormalImage),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/button_hover.9.png",   &buttonHoverImage),   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/button_pressed.9.png", &buttonPressedImage), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/button_focused.9.png", &buttonFocusedImage), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/reboot.png",           &rebootImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/shutdown.png",         &shutdownImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(CpuTest::loadImageFromAssets("images/cursor.png",           &cursorImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/background.jpg",       &backgroundImage),    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/button_normal.9.png",  &buttonNormalImage),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/button_hover.9.png",   &buttonHoverImage),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/button_pressed.9.png", &buttonPressedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/button_focused.9.png", &buttonFocusedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/reboot.png",           &rebootImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/shutdown.png",         &shutdownImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(NetworkTest::loadImageFromAssets("images/cursor.png",           &cursorImage),        NgosStatus::ASSERTION);
 
 
 
@@ -129,7 +129,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::exec()
+NgosStatus NetworkTestGUI::exec()
 {
     UEFI_LT((""));
 
@@ -147,7 +147,7 @@ NgosStatus CpuTestGUI::exec()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::generateWaitEventList()
+NgosStatus NetworkTestGUI::generateWaitEventList()
 {
     UEFI_LT((""));
 
@@ -193,7 +193,7 @@ NgosStatus CpuTestGUI::generateWaitEventList()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::waitForEvent()
+NgosStatus NetworkTestGUI::waitForEvent()
 {
     UEFI_LT((""));
 
@@ -224,7 +224,7 @@ NgosStatus CpuTestGUI::waitForEvent()
     return processAbsolutePointerEvent(UefiPointerDevices::getAbsolutePointer(eventIndex - UefiPointerDevices::getSimplePointersCount() - 1));
 }
 
-NgosStatus CpuTestGUI::processKeyboardEvent()
+NgosStatus NetworkTestGUI::processKeyboardEvent()
 {
     UEFI_LT((""));
 
@@ -256,7 +256,7 @@ NgosStatus CpuTestGUI::processKeyboardEvent()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
+NgosStatus NetworkTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
 {
     UEFI_LT((" | pointer = 0x%p", pointer));
 
@@ -278,7 +278,7 @@ NgosStatus CpuTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
+NgosStatus NetworkTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
 {
     UEFI_LT((" | pointer = 0x%p", pointer));
 
@@ -301,7 +301,7 @@ NgosStatus CpuTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *poin
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus NetworkTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -337,7 +337,7 @@ NgosStatus CpuTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus CpuTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus NetworkTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -373,7 +373,7 @@ NgosStatus CpuTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus CpuTestGUI::onRebootButtonPressed()
+NgosStatus NetworkTestGUI::onRebootButtonPressed()
 {
     UEFI_LT((""));
 
@@ -386,7 +386,7 @@ NgosStatus CpuTestGUI::onRebootButtonPressed()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::onShutdownButtonPressed()
+NgosStatus NetworkTestGUI::onShutdownButtonPressed()
 {
     UEFI_LT((""));
 

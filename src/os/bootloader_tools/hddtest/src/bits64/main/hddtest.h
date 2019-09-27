@@ -1,5 +1,5 @@
-#ifndef CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
-#define CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#ifndef HDDTEST_SRC_BITS64_MAIN_HDDTEST_H
+#define HDDTEST_SRC_BITS64_MAIN_HDDTEST_H
 
 
 
@@ -13,7 +13,7 @@
 
 
 
-class CpuTest
+class HddTest
 {
 public:
     static NgosStatus init(); // TEST: NO
@@ -23,4 +23,4 @@ public:
 
 
 
-#endif // CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#endif // HDDTEST_SRC_BITS64_MAIN_HDDTEST_H

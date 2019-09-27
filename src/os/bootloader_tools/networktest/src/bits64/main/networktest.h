@@ -1,5 +1,5 @@
-#ifndef CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
-#define CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#ifndef NETWORKTEST_SRC_BITS64_MAIN_NETWORKTEST_H
+#define NETWORKTEST_SRC_BITS64_MAIN_NETWORKTEST_H
 
 
 
@@ -13,7 +13,7 @@
 
 
 
-class CpuTest
+class NetworkTest
 {
 public:
     static NgosStatus init(); // TEST: NO
@@ -23,4 +23,4 @@ public:
 
 
 
-#endif // CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#endif // NETWORKTEST_SRC_BITS64_MAIN_NETWORKTEST_H

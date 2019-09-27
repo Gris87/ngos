@@ -1,4 +1,4 @@
-#include "cputest.h"
+#include "partitionwizard.h"
 
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/graphics/graphics.h>
@@ -13,7 +13,7 @@
 
 
 
-NgosStatus CpuTest::init()
+NgosStatus PartitionWizard::init()
 {
     UEFI_LT((""));
 
@@ -22,7 +22,7 @@ NgosStatus CpuTest::init()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTest::loadImageFromAssets(const char8 *path, Image **image)
+NgosStatus PartitionWizard::loadImageFromAssets(const char8 *path, Image **image)
 {
     UEFI_LT((" | path = %s, image = 0x%p", path, image));
 

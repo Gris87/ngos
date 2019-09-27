@@ -8,17 +8,17 @@ SECTIONS
 
 
 
-    .cputest_code : { *(.cputest_code) }
-    .asm_code     : { *(.asm_code) }
-    .text         : { *(.text*) }
-    .rodata       : { *(.rodata*) }
-    .data         : { *(.data*) }
+    .memorytest_code : { *(.memorytest_code) }
+    .asm_code        : { *(.asm_code) }
+    .text            : { *(.text*) }
+    .rodata          : { *(.rodata*) }
+    .data            : { *(.data*) }
 
-    .gdt          : { *(.gdt) }
+    .gdt             : { *(.gdt) }
 
 
 
-    .ctors        : {
+    .ctors           : {
         _ctors_begin = .;
         *(.ctors)
         _ctors_end = .;
@@ -32,13 +32,13 @@ SECTIONS
 
 
 
-    .assets       : {
+    .assets          : {
         _assets_begin = .;
         *(.assets)
         _assets_end = .;
     }
 
-    .noinit       : {
+    .noinit          : {
         *(.noinit)
         *(.bss*)
     }
@@ -49,10 +49,10 @@ SECTIONS
 
 
 
-    /DISCARD/     : { *(.dynamic) }
-    /DISCARD/     : { *(.dynsym) }
-    /DISCARD/     : { *(.dynstr) }
-    /DISCARD/     : { *(.hash) }
+    /DISCARD/        : { *(.dynamic) }
+    /DISCARD/        : { *(.dynsym) }
+    /DISCARD/        : { *(.dynstr) }
+    /DISCARD/        : { *(.hash) }
 
 
 

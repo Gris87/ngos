@@ -1,10 +1,10 @@
-NGOS Bootloader Tool - CPU Test
-===============================
+NGOS Bootloader Tool - Partition Wizard
+=======================================
 
 <p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/src/os/bootloader_tools/cputest/Image%20structure.png?raw=true" alt="Image structure"/>
+    <img src="https://github.com/Gris87/ngos/blob/master/src/os/bootloader_tools/partitionwizard/Image%20structure.png?raw=true" alt="Image structure"/>
 </p>
 
-Source code for the NGOS Bootloader Tool - CPU Test.
+Source code for the NGOS Bootloader Tool - Partition Wizard.
 
-Please read [for more details](../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/1.%20CPU%20Test/README.md).
+Please read [for more details](../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/5.%20Partition%20Wizard/README.md).

@@ -1,7 +1,6 @@
 #include <bootparams/bootparams.h>
 #include <buildconfig.h>
 #include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <common/src/bits64/serial/serial.h>
 #include <ngos/linkage.h>
@@ -15,8 +14,8 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/bits64/main/cputest.h"
-#include "src/bits64/main/cputestgui.h"
+#include "src/bits64/main/memorytest.h"
+#include "src/bits64/main/memorytestgui.h"
 #include "test/bits64/sections/section1/testcase.h"
 
 
@@ -55,7 +54,7 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_LI(("NGOS Bootloader Tool - CPU Test starting up"));
+    UEFI_LI(("NGOS Bootloader Tool - Memory Test starting up"));
 
 
 
@@ -114,17 +113,17 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_ASSERT_EXECUTION(CpuTest::init(), UefiStatus::ABORTED);
-    UEFI_LI(("CPU Test initialized"));
+    UEFI_ASSERT_EXECUTION(MemoryTest::init(), UefiStatus::ABORTED);
+    UEFI_LI(("Memory Test initialized"));
 
 
 
-    UEFI_ASSERT_EXECUTION(CpuTestGUI::init(&params), UefiStatus::ABORTED);
-    UEFI_LI(("CPU Test GUI initialized"));
+    UEFI_ASSERT_EXECUTION(MemoryTestGUI::init(&params), UefiStatus::ABORTED);
+    UEFI_LI(("Memory Test GUI initialized"));
 
 
 
-    UEFI_ASSERT_EXECUTION(CpuTestGUI::exec(), UefiStatus::ABORTED); // Loop forever
+    UEFI_ASSERT_EXECUTION(MemoryTestGUI::exec(), UefiStatus::ABORTED); // Loop forever
 
 
 

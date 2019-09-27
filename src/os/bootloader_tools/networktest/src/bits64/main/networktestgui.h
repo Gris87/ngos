@@ -1,5 +1,5 @@
-#ifndef CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
-#define CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
+#ifndef NETWORKTEST_SRC_BITS64_MAIN_NETWORKTESTGUI_H
+#define NETWORKTEST_SRC_BITS64_MAIN_NETWORKTESTGUI_H
 
 
 
@@ -12,7 +12,7 @@
 
 
 
-class CpuTestGUI
+class NetworkTestGUI
 {
 public:
     static NgosStatus init(BootParams *params); // TEST: NO
@@ -39,4 +39,4 @@ private:
 
 
 
-#endif // CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
+#endif // NETWORKTEST_SRC_BITS64_MAIN_NETWORKTESTGUI_H

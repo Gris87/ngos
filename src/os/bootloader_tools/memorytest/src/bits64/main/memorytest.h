@@ -1,5 +1,5 @@
-#ifndef CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
-#define CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#ifndef MEMORYTEST_SRC_BITS64_MAIN_MEMORYTEST_H
+#define MEMORYTEST_SRC_BITS64_MAIN_MEMORYTEST_H
 
 
 
@@ -13,7 +13,7 @@
 
 
 
-class CpuTest
+class MemoryTest
 {
 public:
     static NgosStatus init(); // TEST: NO
@@ -23,4 +23,4 @@ public:
 
 
 
-#endif // CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#endif // MEMORYTEST_SRC_BITS64_MAIN_MEMORYTEST_H

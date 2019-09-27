@@ -2,7 +2,7 @@ QT -= gui
 
 CONFIG += c++17
 
-TARGET = cputest
+TARGET = hddtest
 TEMPLATE = uefi
 
 RESOURCES += Resources.qrc
@@ -10,7 +10,7 @@ RESOURCES += Resources.qrc
 
 
 DEFINES += \
-    BUILD_TARGET_CPUTEST \
+    BUILD_TARGET_HDDTEST \
     UEFI_APPLICATION
 
 
@@ -37,12 +37,12 @@ QMAKE_LFLAGS += \
 
 SOURCES += \
     asm/arch/x86_64/main.S \
-    src/bits64/main/cputest.cpp \
-    src/bits64/main/cputestgui.cpp \
+    src/bits64/main/hddtest.cpp \
+    src/bits64/main/hddtestgui.cpp \
     src/main.cpp
 
 HEADERS += \
-    src/bits64/main/cputest.h \
-    src/bits64/main/cputestgui.h \
+    src/bits64/main/hddtest.h \
+    src/bits64/main/hddtestgui.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h
