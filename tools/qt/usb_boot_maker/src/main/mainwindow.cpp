@@ -21,7 +21,16 @@
 
 
 
-const QStringList servers = { MASTER_SERVER };
+const QStringList servers =
+{
+    MASTER_SERVER
+};
+
+const QStringList applications =
+{
+    "com.ngos.bootloader",
+    "com.ngos.installer"
+};
 
 
 
@@ -41,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mReplies()
     , mLatestVersions()
     , mSelectedVersionInfo()
+    , mCurrentApplication(0)
     , mVersionFiles()
     , mLanguage()
     , mLanguageActions()
@@ -78,6 +88,15 @@ MainWindow::~MainWindow()
     if (mTemporaryDir)
     {
         delete mTemporaryDir;
+    }
+
+    if (mBurnThread)
+    {
+        mBurnThread->blockSignals(true);
+        mBurnThread->stop();
+        mBurnThread->wait();
+
+        delete mBurnThread;
     }
 
 
@@ -128,10 +147,14 @@ void MainWindow::on_startButton_clicked()
                 }
             }
 
+            qDebug() << "Downloading to temporary folder:" << mTemporaryDir->path();
+
 
 
             ui->deviceComboBox->setEnabled(false);
             ui->startButton->setIcon(QIcon(":/assets/images/stop.png")); // Ignore CppPunctuationVerifier
+
+            mCurrentApplication = 0;
 
             switchToState(UsbBootMakerState::GET_LATEST_VERSION);
         }
@@ -555,6 +578,10 @@ void MainWindow::downloadReplyFinished()
 
 
 
+        QString applicationDir = mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + applications.at(mCurrentApplication);
+
+
+
         qint64 index = fileInfo->fileName.lastIndexOf('/');
 
         if (index < 0)
@@ -562,7 +589,7 @@ void MainWindow::downloadReplyFinished()
             index = 0;
         }
 
-        if (!QDir().mkpath(mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->fileName.left(index)))
+        if (!QDir().mkpath(applicationDir + '/' + fileInfo->fileName.left(index)))
         {
             addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
 
@@ -578,7 +605,7 @@ void MainWindow::downloadReplyFinished()
 
 
 
-        QString filePath = mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + fileInfo->fileName;
+        QString filePath = applicationDir + '/' + fileInfo->fileName;
         QFile file(filePath);
 
         if (file.open(QIODevice::WriteOnly))
@@ -697,30 +724,28 @@ void MainWindow::downloadReplyFinished()
 
     if (!mReplies.size()) // mReplies.size() == 0
     {
-        switchToState(UsbBootMakerState::BURNING);
+        ++mCurrentApplication;
+
+        if (mCurrentApplication >= applications.length())
+        {
+            switchToState(UsbBootMakerState::BURNING);
+        }
+        else
+        {
+            switchToState(UsbBootMakerState::GET_LATEST_VERSION);
+        }
     }
 }
 
 void MainWindow::burnFinished()
 {
-    bool success = mBurnThread->isWorking();
-
-    if (!success)
-    {
-        addLog(tr("Disk formatting failed"));
-    }
-
     delete mBurnThread;
     mBurnThread = 0;
 
 
 
     switchToInitialState();
-
-    if (success)
-    {
-        addLog(tr("Done"));
-    }
+    addLog(tr("Done"));
 }
 
 void MainWindow::addLog(const QString &text)
@@ -730,7 +755,7 @@ void MainWindow::addLog(const QString &text)
 
 void MainWindow::burnProgress(quint8 current, quint8 maximum)
 {
-    ui->statusProgressBar->setValue(40 + current * 60 / maximum);
+    ui->statusProgressBar->setValue(40 + 60 * current / maximum);
 }
 
 void MainWindow::prepareLanguages()
@@ -815,8 +840,12 @@ void MainWindow::switchToState(UsbBootMakerState state)
 
 void MainWindow::handleGetLatestVersionState()
 {
-    ui->statusProgressBar->setValue(10);
-    addLog(tr("Getting information about latest version from servers"));
+    ui->statusProgressBar->setValue(5 + 35 * (0 + mCurrentApplication * 3) / applications.length() / 3);
+
+
+
+    QString application = applications.at(mCurrentApplication);
+    addLog(tr("Getting information about latest version of %1 from servers").arg(application));
 
     mRequestTime = QDateTime::currentMSecsSinceEpoch();
 
@@ -829,7 +858,9 @@ void MainWindow::handleGetLatestVersionState()
 
 
         QNetworkRequest request;
-        request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=latest&include_files=false").arg(server)));
+        request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=%2&version=latest&include_files=false")
+                            .arg(server)
+                            .arg(application)));
 
         QNetworkReply *reply = mManager->get(request);
 
@@ -843,7 +874,7 @@ void MainWindow::handleGetLatestVersionState()
 
 void MainWindow::handleGetFileListState()
 {
-    ui->statusProgressBar->setValue(20);
+    ui->statusProgressBar->setValue(5 + 35 * (1 + mCurrentApplication * 3) / applications.length() / 3);
 
 
 
@@ -935,7 +966,10 @@ void MainWindow::handleGetFileListState()
 
 
     QNetworkRequest request;
-    request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=com.ngos.installer&version=%2&include_files=true").arg(mSelectedVersionInfo.server).arg(mSelectedVersionInfo.version)));
+    request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=%2&version=%3&include_files=true")
+                        .arg(mSelectedVersionInfo.server)
+                        .arg(applications.at(mCurrentApplication))
+                        .arg(mSelectedVersionInfo.version)));
 
     QNetworkReply *reply = mManager->get(request);
 
@@ -948,7 +982,7 @@ void MainWindow::handleGetFileListState()
 
 void MainWindow::handleDownloadState()
 {
-    ui->statusProgressBar->setValue(30);
+    ui->statusProgressBar->setValue(5 + 35 * (2 + mCurrentApplication * 3) / applications.length() / 3);
 
 
 

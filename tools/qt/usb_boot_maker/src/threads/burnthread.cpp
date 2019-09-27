@@ -29,9 +29,9 @@ void BurnThread::copyFiles(const QString &diskPath)
 
 
 
-    if (!QDir().mkpath(diskPath + "/EFI/BOOT"))
+    if (!QDir().mkpath(diskPath + "/EFI/BOOT/tools"))
     {
-        addLog(tr("Failed to create folder %1").arg(diskPath + "/EFI/BOOT"));
+        addLog(tr("Failed to create folder %1").arg(diskPath + "/EFI/BOOT/tools"));
 
         stop();
 
@@ -51,7 +51,7 @@ void BurnThread::copyFiles(const QString &diskPath)
 
 
 
-    if (!QFile(getBinariesPath() + "/installer.efi").copy(diskPath + "/EFI/NGOS/installer.efi"))
+    if (!QFile(mBinariesPath + "/com.ngos.installer/installer.efi").copy(diskPath + "/EFI/NGOS/installer.efi"))
     {
         addLog(tr("Failed to copy file %1").arg("installer.efi"));
 
@@ -99,11 +99,6 @@ void BurnThread::notifyProgress(quint8 current, quint8 maximum)
 const UsbDeviceInfo& BurnThread::getSelectedUsb() const
 {
     return mSelectedUsb;
-}
-
-const QString& BurnThread::getBinariesPath() const
-{
-    return mBinariesPath;
 }
 
 bool BurnThread::isWorking() const

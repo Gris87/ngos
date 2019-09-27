@@ -25,7 +25,6 @@ public:
     void notifyProgress(quint8 current, quint8 maximum); // TEST: NO
 
     const UsbDeviceInfo& getSelectedUsb() const; // TEST: NO
-    const QString& getBinariesPath() const; // TEST: NO
     bool isWorking() const; // TEST: NO
 
 protected:
