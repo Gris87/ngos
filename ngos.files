@@ -29,6 +29,14 @@ docs/0. Intro/6. Source code/1. NGOS/1. Boot part/README.md
 docs/0. Intro/6. Source code/1. NGOS/2. Configure part/README.md
 docs/0. Intro/6. Source code/1. NGOS/3. Kernel part/README.md
 docs/0. Intro/6. Source code/1. NGOS/4. Installer part/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/1. CPU Test/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/2. Memory Test/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/3. Network Test/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/4. HDD Test/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/5. Partition Wizard/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/6. Shell/README.md
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/6. Shell/Screenshot.png
+docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/1. Tools/README.md
 docs/0. Intro/6. Source code/1. NGOS/5. Bootloader/README.md
 docs/0. Intro/6. Source code/1. NGOS/README.md
 docs/0. Intro/6. Source code/2. Libraries/1. Qt/README.md

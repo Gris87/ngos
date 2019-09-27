@@ -17,6 +17,10 @@ SUBDIRS = \
 TARGET_APPS = \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/memorytest.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/networktest.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/hddtest.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/partitionwizard.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi
@@ -36,6 +40,22 @@ $(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi: src/os/boot/build/boot
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/cputest/build/cputest.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/cputest/build/cputest.elf -o $@
+
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/memorytest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/memorytest/build/memorytest.elf tools/qt/image_builder/build/image_builder
+	$(MKDIR) $(@D)
+	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/memorytest/build/memorytest.elf -o $@
+
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/networktest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/networktest/build/networktest.elf tools/qt/image_builder/build/image_builder
+	$(MKDIR) $(@D)
+	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/networktest/build/networktest.elf -o $@
+
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/hddtest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/hddtest/build/hddtest.elf tools/qt/image_builder/build/image_builder
+	$(MKDIR) $(@D)
+	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/hddtest/build/hddtest.elf -o $@
+
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/partitionwizard.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/partitionwizard/build/partitionwizard.elf tools/qt/image_builder/build/image_builder
+	$(MKDIR) $(@D)
+	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/partitionwizard/build/partitionwizard.elf -o $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi: 3rd_party/libs/edk2/Build/shell.efi
 	$(MKDIR) $(@D)

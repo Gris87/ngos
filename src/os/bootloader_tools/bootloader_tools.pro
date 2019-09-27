@@ -1,4 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    cputest
+    cputest \
+    hddtest \
+    memorytest \
+    networktest \
+    partitionwizard
