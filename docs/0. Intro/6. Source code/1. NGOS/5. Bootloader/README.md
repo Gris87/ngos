@@ -11,3 +11,5 @@ NGOS
 Bootloader is the first thing that starts at PC start up. It can load NGOS or some another OS or application (like memory test, HDD test, partition tool, etc.).
 
 Bootloader also use Boot part in order to make binary file runnable via UEFI.
+
+* [Tools](1.%20Tools/README.md)
