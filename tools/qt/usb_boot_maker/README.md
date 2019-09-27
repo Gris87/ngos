@@ -9,11 +9,11 @@ USB boot maker helps user to make bootable USB flash drive ready for NGOS instal
 
 
 
-In case of issue "qt.network.ssl: QSslSocket::connectToHostEncrypted: TLS initialization failed" under WIndows please do the following:
+In case of issue "qt.network.ssl: QSslSocket::connectToHostEncrypted: TLS initialization failed" under Windows please do the following:
 
 1. Go to https://slproweb.com/products/Win32OpenSSL.html
 2. Download and install Win64 OpenSSL v1.1.1d Light
-3. Copy all library files from installed dir (C:\OpenSSL-Win64 by default) to C:\Qt\5.13.1\msvc2017_64\bin
+3. Copy all *.dll files from installed dir (C:\OpenSSL-Win64 by default) to C:\Qt\5.13.1\msvc2017_64\bin
 
 
 

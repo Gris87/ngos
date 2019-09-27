@@ -31,6 +31,8 @@ protected:
     void run() override; // TEST: NO
 
 private:
+    bool copyFolder(const QString &sourceFolder, const QString &destinationFolder); // TEST: NO
+
     bool          mIsRunning;
     UsbDeviceInfo mSelectedUsb;
     QString       mBinariesPath;

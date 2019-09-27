@@ -29,31 +29,18 @@ void BurnThread::copyFiles(const QString &diskPath)
 
 
 
-    if (!QDir().mkpath(diskPath + "/EFI/BOOT/tools"))
+    if (!copyFolder(mBinariesPath + "/com.ngos.bootloader", diskPath + "/EFI/BOOT"))
     {
-        addLog(tr("Failed to create folder %1").arg(diskPath + "/EFI/BOOT/tools"));
+        addLog(tr("Failed to copy folder %1").arg("com.ngos.bootloader"));
 
         stop();
 
         return;
     }
 
-
-
-    if (!QDir().mkpath(diskPath + "/EFI/NGOS"))
+    if (!copyFolder(mBinariesPath + "/com.ngos.installer", diskPath + "/EFI/NGOS"))
     {
-        addLog(tr("Failed to create folder %1").arg(diskPath + "/EFI/NGOS"));
-
-        stop();
-
-        return;
-    }
-
-
-
-    if (!QFile(mBinariesPath + "/com.ngos.installer/installer.efi").copy(diskPath + "/EFI/NGOS/installer.efi"))
-    {
-        addLog(tr("Failed to copy file %1").arg("installer.efi"));
+        addLog(tr("Failed to copy folder %1").arg("com.ngos.installer"));
 
         stop();
 
@@ -104,4 +91,45 @@ const UsbDeviceInfo& BurnThread::getSelectedUsb() const
 bool BurnThread::isWorking() const
 {
     return mIsRunning;
+}
+
+bool BurnThread::copyFolder(const QString &sourceFolder, const QString &destinationFolder)
+{
+    if (!QDir().mkpath(destinationFolder))
+    {
+        addLog(tr("Failed to create folder %1").arg(destinationFolder));
+
+        return false;
+    }
+
+
+
+    QFileInfoList filesInfo = QDir(sourceFolder).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+
+    for (qint64 i = 0; i < filesInfo.length(); ++i)
+    {
+        const QFileInfo &fileInfo = filesInfo.at(i);
+
+        QString fileName    = fileInfo.fileName();
+        QString source      = sourceFolder + '/' + fileName;
+        QString destination = destinationFolder + '/' + fileName;
+
+        if (fileInfo.isDir())
+        {
+            return copyFolder(source, destination);
+        }
+        else
+        {
+            if (!QFile(source).copy(destination))
+            {
+                addLog(tr("Failed to copy file %1").arg(destination));
+
+                return false;
+            }
+        }
+    }
+
+
+
+    return true;
 }
