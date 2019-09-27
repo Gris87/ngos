@@ -132,19 +132,23 @@ void MainWindow::on_startButton_clicked()
     {
         if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok)
         {
-            if (!mTemporaryDir)
+            if (mTemporaryDir)
             {
-                mTemporaryDir = new QTemporaryDir();
+                delete mTemporaryDir;
+            }
 
-                if (!mTemporaryDir->isValid())
-                {
-                    addLog(tr("Failed to create temporary directory"));
 
-                    delete mTemporaryDir;
-                    mTemporaryDir = 0;
 
-                    return;
-                }
+            mTemporaryDir = new QTemporaryDir();
+
+            if (!mTemporaryDir->isValid())
+            {
+                addLog(tr("Failed to create temporary directory"));
+
+                delete mTemporaryDir;
+                mTemporaryDir = 0;
+
+                return;
             }
 
             qDebug() << "Downloading to temporary folder:" << mTemporaryDir->path();
@@ -578,7 +582,7 @@ void MainWindow::downloadReplyFinished()
 
 
 
-        QString applicationDir = mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version) + '/' + applications.at(mCurrentApplication);
+        QString applicationDir = mTemporaryDir->path() + '/' + applications.at(mCurrentApplication);
 
 
 
@@ -1025,7 +1029,7 @@ void MainWindow::handleBurningState()
 
 
 
-    mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>(), mTemporaryDir->path() + '/' + QString::number(mSelectedVersionInfo.version));
+    mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>(), mTemporaryDir->path());
     mBurnThread->start();
 
     connect(mBurnThread, SIGNAL(logAdded(const QString &)), this, SLOT(addLog(const QString &)));
