@@ -96,6 +96,10 @@ NgosStatus Button::repaint()
     COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
 
 
+    if (!mNormalResizedImage)
+    {
+        COMMON_LF(("GSDFSFDS"));
+    }
 
     COMMON_TEST_ASSERT(mNormalResizedImage  != 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mHoverResizedImage   != 0, NgosStatus::ASSERTION);
