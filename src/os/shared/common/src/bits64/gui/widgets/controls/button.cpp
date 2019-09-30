@@ -209,8 +209,8 @@ NgosStatus Button::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) >> 1), paddingTop + ((allowedWidth - imageWidth) >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
-    COMMON_ASSERT_EXECUTION(mImageWidget->setSize(imageWidth, imageHeight),                                                                               NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) >> 1), paddingTop + ((allowedHeight - imageHeight) >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
+    COMMON_ASSERT_EXECUTION(mImageWidget->setSize(imageWidth, imageHeight),                                                                                 NgosStatus::ASSERTION);
 
     if (mLabelWidget)
     {

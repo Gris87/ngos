@@ -295,7 +295,7 @@ NgosStatus GraphicalConsole::newLineWithoutCaretReturn()
 
 
     Image *ownResultImage = sConsoleWidget->getOwnResultImage();
-    Image *resultImage     = sConsoleWidget->getResultImage();
+    Image *resultImage    = sConsoleWidget->getResultImage();
 
     COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
                                 ownResultImage->getBuffer(),
