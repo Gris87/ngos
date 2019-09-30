@@ -9,6 +9,7 @@
 
 
 #define CHAR_HEIGHT   20
+#define SIDE_MARGIN   1
 #define BOTTOM_MARGIN 5
 
 
@@ -56,7 +57,7 @@ NgosStatus LabelWidget::repaint()
 
     u16 targetWidth  = 0;
     u16 targetHeight = CHAR_HEIGHT + BOTTOM_MARGIN;
-    u16 curX         = 0;
+    u16 curX         = SIDE_MARGIN << 1; // "<< 1" == "* 2"
 
 
 
@@ -68,7 +69,7 @@ NgosStatus LabelWidget::repaint()
 
         if (ch == '\n')
         {
-            curX         =  0;
+            curX         =  SIDE_MARGIN << 1; // "<< 1" == "* 2"
             targetHeight += CHAR_HEIGHT;
         }
         else
@@ -112,7 +113,7 @@ NgosStatus LabelWidget::repaint()
 
 
 
-        u16 curX = 0;
+        u16 curX = SIDE_MARGIN;
         u16 curY = 0;
 
         const char8 *str = mText;
@@ -123,7 +124,7 @@ NgosStatus LabelWidget::repaint()
 
             if (ch == '\n')
             {
-                if (curX)
+                if (curX > SIDE_MARGIN)
                 {
                     COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
                                                 oneLineImage->getBuffer(),
@@ -141,7 +142,7 @@ NgosStatus LabelWidget::repaint()
 
                     oneLineImage->clearBuffer();
 
-                    curX = 0;
+                    curX = SIDE_MARGIN;
                 }
 
                 curY += CHAR_HEIGHT;
@@ -199,7 +200,7 @@ NgosStatus LabelWidget::repaint()
 
 
 
-        if (curX)
+        if (curX > SIDE_MARGIN)
         {
             COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
                                         oneLineImage->getBuffer(),

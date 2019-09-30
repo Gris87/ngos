@@ -209,42 +209,51 @@ NgosStatus Button::repaint()
 
 
 
-    mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) >> 1), paddingTop + ((allowedWidth - imageWidth) >> 1)); // ">> 1" == "/ 2"
-    mImageWidget->setSize(imageWidth, imageHeight);
+    COMMON_ASSERT_EXECUTION(mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) >> 1), paddingTop + ((allowedWidth - imageWidth) >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
+    COMMON_ASSERT_EXECUTION(mImageWidget->setSize(imageWidth, imageHeight),                                                                               NgosStatus::ASSERTION);
 
     if (mLabelWidget)
     {
-        mLabelWidget->setPosition(paddingLeft + allowedWidth, paddingTop);
-        mLabelWidget->setSize(allowedWidth << 2, allowedHeight); // "<< 2" == "* 4"
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setPosition(paddingLeft + allowedWidth, paddingTop), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setSize(allowedWidth << 2, allowedHeight),           NgosStatus::ASSERTION); // "<< 2" == "* 4"
     }
 
-/*
 
-    Image *contentResizedImage;
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImageProportional(
-                                mContentImage,
-                                mWidth - paddingLeft - paddingRight,
-                                mHeight - paddingTop - paddingBottom,
-                                &contentResizedImage),
-                            NgosStatus::ASSERTION);
+    Image *imageResult = mImageWidget->getResultImage();
 
     COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                contentResizedImage->getBuffer(),
+                                imageResult->getBuffer(),
                                 mResultImage->getBuffer(),
-                                contentResizedImage->getWidth(),
-                                contentResizedImage->getHeight(),
+                                imageResult->getWidth(),
+                                imageResult->getHeight(),
                                 mResultImage->getWidth(),
                                 mResultImage->getHeight(),
-                                contentResizedImage->getBytesPerPixel(),
+                                imageResult->getBytesPerPixel(),
                                 mResultImage->getBytesPerPixel(),
-                                contentResizedImage->isOpaque() && mResultImage->isOpaque(),
-                                (mResultImage->getWidth() - contentResizedImage->getWidth()) >> 1,
-                                (mResultImage->getHeight() - contentResizedImage->getHeight()) >> 1),
+                                imageResult->isOpaque() && mResultImage->isOpaque(),
+                                mImageWidget->getPositionX(),
+                                mImageWidget->getPositionY()),
                             NgosStatus::ASSERTION);
 
-    delete contentResizedImage;
-    */
+    if (mLabelWidget)
+    {
+        imageResult = mLabelWidget->getResultImage();
+
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                    imageResult->getBuffer(),
+                                    mResultImage->getBuffer(),
+                                    imageResult->getWidth(),
+                                    imageResult->getHeight(),
+                                    mResultImage->getWidth(),
+                                    mResultImage->getHeight(),
+                                    imageResult->getBytesPerPixel(),
+                                    mResultImage->getBytesPerPixel(),
+                                    imageResult->isOpaque() && mResultImage->isOpaque(),
+                                    mLabelWidget->getPositionX(),
+                                    mLabelWidget->getPositionY()),
+                                NgosStatus::ASSERTION);
+    }
 
 
 
