@@ -97,13 +97,8 @@ NgosStatus LabelWidget::repaint()
 
 
 
-    if (mResultImage)
-    {
-        delete mResultImage;
-    }
-
-    mResultImage = new Image(mWidth, mHeight, true, false);
-    mResultImage->clearBuffer();
+    mOwnResultImage = new Image(mWidth, mHeight, true, false);
+    mOwnResultImage->clearBuffer();
 
 
 
@@ -229,22 +224,31 @@ NgosStatus LabelWidget::repaint()
 
         COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
                                     resizedImage->getBuffer(),
-                                    mResultImage->getBuffer(),
+                                    mOwnResultImage->getBuffer(),
                                     resizedImage->getWidth(),
                                     resizedImage->getHeight(),
-                                    mResultImage->getWidth(),
-                                    mResultImage->getHeight(),
+                                    mOwnResultImage->getWidth(),
+                                    mOwnResultImage->getHeight(),
                                     resizedImage->getBytesPerPixel(),
-                                    mResultImage->getBytesPerPixel(),
+                                    mOwnResultImage->getBytesPerPixel(),
                                     true,
-                                    (mResultImage->getWidth() - resizedImage->getWidth()) >> 1,
-                                    (mResultImage->getHeight() - resizedImage->getHeight()) >> 1),
+                                    (mOwnResultImage->getWidth() - resizedImage->getWidth()) >> 1,
+                                    (mOwnResultImage->getHeight() - resizedImage->getHeight()) >> 1),
                                 NgosStatus::ASSERTION);
 
         delete fullImage;
         delete oneLineImage;
         delete resizedImage;
     }
+
+
+
+    if (mResultImage)
+    {
+        delete mResultImage;
+    }
+
+    mResultImage = mOwnResultImage;
 
 
 
