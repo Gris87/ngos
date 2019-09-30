@@ -101,7 +101,7 @@ NgosStatus Widget::onKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::OK;
+    return NgosStatus::NO_EFFECT;
 }
 
 bool Widget::hasIntersection(Widget *anotherWidget)

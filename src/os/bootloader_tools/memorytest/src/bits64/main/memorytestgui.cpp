@@ -245,7 +245,11 @@ NgosStatus MemoryTestGUI::processKeyboardEvent()
 
 
     NgosStatus status = GUI::getFocusedWidget()->getKeyboardEventHandler()(key);
-    AVOID_UNUSED(status);
+
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        status = GUI::getFocusedWidget()->onKeyboardEvent(key);
+    }
 
     UEFI_TEST_ASSERT(status == NgosStatus::OK
                     ||
@@ -333,7 +337,7 @@ NgosStatus MemoryTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus MemoryTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
@@ -368,7 +372,7 @@ NgosStatus MemoryTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus MemoryTestGUI::onRebootButtonPressed()

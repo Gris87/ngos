@@ -245,7 +245,11 @@ NgosStatus PartitionWizardGUI::processKeyboardEvent()
 
 
     NgosStatus status = GUI::getFocusedWidget()->getKeyboardEventHandler()(key);
-    AVOID_UNUSED(status);
+
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        status = GUI::getFocusedWidget()->onKeyboardEvent(key);
+    }
 
     UEFI_TEST_ASSERT(status == NgosStatus::OK
                     ||
@@ -333,7 +337,7 @@ NgosStatus PartitionWizardGUI::onRebootButtonKeyboardEvent(const UefiInputKey &k
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus PartitionWizardGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
@@ -368,7 +372,7 @@ NgosStatus PartitionWizardGUI::onShutdownButtonKeyboardEvent(const UefiInputKey 
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus PartitionWizardGUI::onRebootButtonPressed()

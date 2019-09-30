@@ -761,7 +761,11 @@ NgosStatus BootloaderGUI::processKeyboardEvent()
 
 
     NgosStatus status = GUI::getFocusedWidget()->getKeyboardEventHandler()(key);
-    AVOID_UNUSED(status);
+
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        status = GUI::getFocusedWidget()->onKeyboardEvent(key);
+    }
 
     UEFI_TEST_ASSERT(status == NgosStatus::OK
                     ||
@@ -880,7 +884,7 @@ NgosStatus BootloaderGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
@@ -916,7 +920,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
@@ -954,7 +958,7 @@ NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
@@ -991,7 +995,7 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
@@ -1028,7 +1032,7 @@ NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1065,7 +1069,7 @@ NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1103,7 +1107,7 @@ NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &ke
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1140,7 +1144,7 @@ NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &k
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1176,7 +1180,7 @@ NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKey &key)
@@ -1213,7 +1217,7 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKe
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
@@ -1249,7 +1253,7 @@ NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return GUI::getFocusedWidget()->onKeyboardEvent(key);
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus BootloaderGUI::onRebootButtonPressed()
