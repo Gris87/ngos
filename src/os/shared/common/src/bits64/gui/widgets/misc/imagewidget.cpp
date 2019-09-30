@@ -34,7 +34,10 @@ NgosStatus ImageWidget::invalidate()
 
 
 
-    COMMON_TEST_ASSERT(mResizedImage == 0, NgosStatus::ASSERTION);
+    if (mResizedImage)
+    {
+        delete mResizedImage;
+    }
 
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
 
@@ -54,7 +57,8 @@ NgosStatus ImageWidget::repaint()
 
 
 
-    mResultImage = mResizedImage;
+    mOwnResultImage = mResizedImage;
+    mResultImage    = mOwnResultImage;
 
 
 

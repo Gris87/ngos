@@ -322,8 +322,7 @@ NgosStatus PartitionWizardGUI::onRebootButtonKeyboardEvent(const UefiInputKey &k
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onRebootButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sShutdownButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sShutdownButton);
 
         default:
         {
@@ -334,7 +333,7 @@ NgosStatus PartitionWizardGUI::onRebootButtonKeyboardEvent(const UefiInputKey &k
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus PartitionWizardGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
@@ -358,8 +357,7 @@ NgosStatus PartitionWizardGUI::onShutdownButtonKeyboardEvent(const UefiInputKey 
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onShutdownButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sRebootButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -370,7 +368,7 @@ NgosStatus PartitionWizardGUI::onShutdownButtonKeyboardEvent(const UefiInputKey 
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus PartitionWizardGUI::onRebootButtonPressed()

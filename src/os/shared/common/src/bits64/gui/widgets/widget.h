@@ -26,6 +26,7 @@ public:
     virtual NgosStatus update(i64 positionX, i64 positionY, u64 width, u64 height); // TEST: NO
     virtual NgosStatus invalidate(); // TEST: NO
     virtual NgosStatus repaint(); // TEST: NO
+    virtual NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     bool hasIntersection(Widget *anotherWidget);
     bool hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height);
@@ -50,6 +51,7 @@ public:
     NgosStatus setVisible(bool visible);
     bool isVisible() const;
 
+    Image* getOwnResultImage() const; // TEST: NO
     Image* getResultImage() const; // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
@@ -64,6 +66,7 @@ protected:
     u64             mWidth;
     u64             mHeight;
     bool            mVisible;
+    Image          *mOwnResultImage;
     Image          *mResultImage;
 };
 

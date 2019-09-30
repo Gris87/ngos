@@ -869,8 +869,7 @@ NgosStatus BootloaderGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onRebootButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sShutdownButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sShutdownButton);
 
         default:
         {
@@ -881,7 +880,7 @@ NgosStatus BootloaderGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
@@ -906,8 +905,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onShutdownButtonPressed();
-        case KEY_TAB:   return focusFirstOsButton();
+        case KEY_TAB: return focusFirstOsButton();
 
         default:
         {
@@ -918,7 +916,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
@@ -945,8 +943,7 @@ NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onOsButtonPressed();
-        case KEY_TAB:   return focusNextOsButtonOrGoDown();
+        case KEY_TAB: return focusNextOsButtonOrGoDown();
 
         default:
         {
@@ -957,7 +954,7 @@ NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
@@ -983,8 +980,7 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onLeftButtonPressed();
-        case KEY_TAB:   return focusOsButtonLeft();
+        case KEY_TAB: return focusOsButtonLeft();
 
         default:
         {
@@ -995,7 +991,7 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
@@ -1021,8 +1017,7 @@ NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onRightButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sCpuTestButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1033,7 +1028,7 @@ NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1059,8 +1054,7 @@ NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onCpuTestButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sMemoryTestButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sMemoryTestButton);
 
         default:
         {
@@ -1071,7 +1065,7 @@ NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1098,8 +1092,7 @@ NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &ke
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onMemoryTestButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sNetworkTestButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sNetworkTestButton);
 
         default:
         {
@@ -1110,7 +1103,7 @@ NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &ke
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1136,8 +1129,7 @@ NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &k
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onNetworkTestButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sHddTestButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sHddTestButton);
 
         default:
         {
@@ -1148,7 +1140,7 @@ NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &k
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
@@ -1173,8 +1165,7 @@ NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onHddTestButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sPartitionWizardButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sPartitionWizardButton);
 
         default:
         {
@@ -1185,7 +1176,7 @@ NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKey &key)
@@ -1211,8 +1202,7 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKe
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onPartitionWizardButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sShellButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sShellButton);
 
         default:
         {
@@ -1223,7 +1213,7 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKe
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
@@ -1248,8 +1238,7 @@ NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_ENTER: return onShellButtonPressed();
-        case KEY_TAB:   return GUI::setFocusedWidget(sRebootButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -1260,7 +1249,7 @@ NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
 
 
 
-    return NgosStatus::NO_EFFECT;
+    return GUI::getFocusedWidget()->onKeyboardEvent(key);
 }
 
 NgosStatus BootloaderGUI::onRebootButtonPressed()

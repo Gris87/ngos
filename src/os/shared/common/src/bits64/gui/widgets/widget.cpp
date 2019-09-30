@@ -16,6 +16,7 @@ Widget::Widget(Widget *parent)
     , mWidth(0)
     , mHeight(0)
     , mVisible(true)
+    , mOwnResultImage(0)
     , mResultImage(0)
 {
     COMMON_LT((" | parent = 0x%p", parent));
@@ -78,17 +79,6 @@ NgosStatus Widget::invalidate()
 
 
 
-    ListElement<Widget *> *element = mChildren.getHead();
-
-    while (element)
-    {
-        COMMON_ASSERT_EXECUTION(element->getData()->invalidate(), NgosStatus::ASSERTION);
-
-        element = element->getNext();
-    }
-
-
-
     return NgosStatus::OK;
 }
 
@@ -98,14 +88,16 @@ NgosStatus Widget::repaint()
 
 
 
-    ListElement<Widget *> *element = mChildren.getHead();
+    return NgosStatus::OK;
+}
 
-    while (element)
-    {
-        COMMON_ASSERT_EXECUTION(element->getData()->repaint(), NgosStatus::ASSERTION);
+NgosStatus Widget::onKeyboardEvent(const UefiInputKey &key)
+{
+    COMMON_LT((" | key = ..."));
 
-        element = element->getNext();
-    }
+
+
+    AVOID_UNUSED(key);
 
 
 
@@ -356,6 +348,15 @@ bool Widget::isVisible() const
 
 
     return mVisible;
+}
+
+Image* Widget::getOwnResultImage() const
+{
+    COMMON_LT((""));
+
+
+
+    return mOwnResultImage;
 }
 
 Image* Widget::getResultImage() const

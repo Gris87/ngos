@@ -35,7 +35,6 @@ private:
     UefiGraphicsOutputProtocol *mScreenGop;
     RootWidget                 *mRootWidget;
     Image                      *mBackgroundResizedImage;
-    RgbaPixel                  *mDoubleBuffer;
     i64                         mUpdateLeft;
     i64                         mUpdateTop;
     i64                         mUpdateRight;

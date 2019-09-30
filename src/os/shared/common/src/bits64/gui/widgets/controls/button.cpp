@@ -78,10 +78,25 @@ NgosStatus Button::invalidate()
 
 
 
-    COMMON_TEST_ASSERT(mNormalResizedImage  == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mHoverResizedImage   == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mPressedResizedImage == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mFocusedResizedImage == 0, NgosStatus::ASSERTION);
+    if (mNormalResizedImage)
+    {
+        delete mNormalResizedImage;
+    }
+
+    if (mHoverResizedImage)
+    {
+        delete mHoverResizedImage;
+    }
+
+    if (mPressedResizedImage)
+    {
+        delete mPressedResizedImage;
+    }
+
+    if (mFocusedResizedImage)
+    {
+        delete mFocusedResizedImage;
+    }
 
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mNormalImage,  mWidth, mHeight, &mNormalResizedImage),  NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mHoverImage,   mWidth, mHeight, &mHoverResizedImage),   NgosStatus::ASSERTION);
@@ -103,26 +118,21 @@ NgosStatus Button::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mNormalResizedImage  != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mHoverResizedImage   != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mPressedResizedImage != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mFocusedResizedImage != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mNormalResizedImage  != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mHoverResizedImage   != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mPressedResizedImage != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mFocusedResizedImage != nullptr, NgosStatus::ASSERTION);
 
 
 
-    Image *image = 0;
-
-    if (mResultImage)
-    {
-        delete mResultImage;
-    }
+    Image *image = nullptr;
 
     switch (mState)
     {
-        case WidgetState::NORMAL:  mResultImage = new Image(*mNormalResizedImage);  image = mNormalImage;  break;
-        case WidgetState::HOVERED: mResultImage = new Image(*mHoverResizedImage);   image = mHoverImage;   break;
-        case WidgetState::PRESSED: mResultImage = new Image(*mPressedResizedImage); image = mPressedImage; break;
-        case WidgetState::FOCUSED: mResultImage = new Image(*mFocusedResizedImage); image = mFocusedImage; break;
+        case WidgetState::NORMAL:  mOwnResultImage = mNormalResizedImage;  image = mNormalImage;  break;
+        case WidgetState::HOVERED: mOwnResultImage = mHoverResizedImage;   image = mHoverImage;   break;
+        case WidgetState::PRESSED: mOwnResultImage = mPressedResizedImage; image = mPressedImage; break;
+        case WidgetState::FOCUSED: mOwnResultImage = mFocusedResizedImage; image = mFocusedImage; break;
 
         case WidgetState::NONE:
         {
@@ -140,6 +150,15 @@ NgosStatus Button::repaint()
         }
         break;
     }
+
+
+
+    if (mResultImage)
+    {
+        delete mResultImage;
+    }
+
+    mResultImage = new Image(*mOwnResultImage);
 
 
 
@@ -234,6 +253,25 @@ NgosStatus Button::repaint()
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus Button::onKeyboardEvent(const UefiInputKey &key)
+{
+    COMMON_LT((" | key = ..."));
+
+
+
+    if (key.unicodeChar == KEY_ENTER)
+    {
+        if (mPressEventHandler)
+        {
+            return mPressEventHandler();
+        }
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus Button::setState(WidgetState state)

@@ -39,7 +39,10 @@ NgosStatus ConsoleWidget::invalidate()
 
 
 
-    COMMON_TEST_ASSERT(mResizedImage == 0, NgosStatus::ASSERTION);
+    if (mResizedImage)
+    {
+        delete mResizedImage;
+    }
 
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
 
@@ -64,18 +67,10 @@ NgosStatus ConsoleWidget::repaint()
         delete mResultImage;
     }
 
-    mResultImage = new Image(*mResizedImage);
+    mOwnResultImage = mResizedImage;
+    mResultImage    = new Image(*mOwnResultImage);
 
 
 
     return NgosStatus::OK;
-}
-
-Image* ConsoleWidget::getResizedImage() const
-{
-    COMMON_LT((""));
-
-
-
-    return mResizedImage;
 }

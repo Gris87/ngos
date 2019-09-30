@@ -17,6 +17,7 @@ public:
 
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
+    NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
 
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO

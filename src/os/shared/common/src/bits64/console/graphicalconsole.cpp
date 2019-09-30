@@ -294,17 +294,17 @@ NgosStatus GraphicalConsole::newLineWithoutCaretReturn()
 
 
 
-    Image *resizedImage = sConsoleWidget->getResizedImage();
-    Image *resultImage  = sConsoleWidget->getResultImage();
+    Image *ownResultImage = sConsoleWidget->getOwnResultImage();
+    Image *resultImage     = sConsoleWidget->getResultImage();
 
     COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                resizedImage->getBuffer(),
+                                ownResultImage->getBuffer(),
                                 resultImage->getBuffer(),
-                                resizedImage->getWidth(),
-                                resizedImage->getHeight(),
+                                ownResultImage->getWidth(),
+                                ownResultImage->getHeight(),
                                 resultImage->getWidth(),
                                 resultImage->getHeight(),
-                                resizedImage->getBytesPerPixel(),
+                                ownResultImage->getBytesPerPixel(),
                                 resultImage->getBytesPerPixel(),
                                 true,
                                 0, 0,
