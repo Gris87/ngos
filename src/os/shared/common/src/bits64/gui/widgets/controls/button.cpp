@@ -1,33 +1,43 @@
 #include "button.h"
 
 #include <common/src/bits64/graphics/graphics.h>
+#include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <ngos/utils.h>
 
 
 
-Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *contentImage, Widget *parent)
+Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *contentImage, const char8 *text, Widget *parent)
     : Widget(parent)
     , mNormalImage(normalImage)
     , mHoverImage(hoverImage)
     , mPressedImage(pressedImage)
     , mFocusedImage(focusedImage)
-    , mContentImage(contentImage)
     , mNormalResizedImage(0)
     , mHoverResizedImage(0)
     , mPressedResizedImage(0)
     , mFocusedResizedImage(0)
+    , mImageWidget(new ImageWidget(contentImage, this))
+    , mLabelWidget(0)
     , mState(WidgetState::NORMAL)
     , mKeyboardEventHandler(0)
     , mPressEventHandler(0)
 {
-    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, contentImage = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, contentImage, parent));
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, contentImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, contentImage, text, parent));
 
     COMMON_ASSERT(normalImage,  "normalImage is null");
     COMMON_ASSERT(hoverImage,   "hoverImage is null");
     COMMON_ASSERT(pressedImage, "pressedImage is null");
     COMMON_ASSERT(focusedImage, "focusedImage is null");
     COMMON_ASSERT(contentImage, "contentImage is null");
+
+
+
+    if (text && *text)
+    {
+        mLabelWidget = new LabelWidget(text, this);
+    }
 }
 
 Button::~Button()
@@ -68,10 +78,6 @@ NgosStatus Button::invalidate()
 
 
 
-    COMMON_ASSERT_EXECUTION(Widget::invalidate(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mNormalResizedImage  == 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mHoverResizedImage   == 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mPressedResizedImage == 0, NgosStatus::ASSERTION);
@@ -93,19 +99,14 @@ NgosStatus Button::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
 
-    if (!mNormalResizedImage)
-    {
-        COMMON_LF(("GSDFSFDS"));
-    }
 
     COMMON_TEST_ASSERT(mNormalResizedImage  != 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mHoverResizedImage   != 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mPressedResizedImage != 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mFocusedResizedImage != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mChildren.getHead()  == 0, NgosStatus::ASSERTION);
 
 
 
@@ -142,14 +143,14 @@ NgosStatus Button::repaint()
 
 
 
-    u16 paddingLeft   = 0;
-    u16 paddingTop    = 0;
-    u16 paddingRight  = 0;
-    u16 paddingBottom = 0;
-
-
-
     NinePatch *patch = image->getNinePatch();
+
+    u16 paddingLeft;
+    u16 paddingTop;
+    u16 paddingRight;
+    u16 paddingBottom;
+    u64 allowedWidth;
+    u64 allowedHeight;
 
     if (patch)
     {
@@ -157,9 +158,48 @@ NgosStatus Button::repaint()
         paddingTop    = patch->getPaddingTop();
         paddingRight  = patch->getPaddingRight();
         paddingBottom = patch->getPaddingBottom();
+        allowedWidth  = mWidth  - paddingLeft - paddingRight;
+        allowedHeight = mHeight - paddingTop  - paddingBottom;
+    }
+    else
+    {
+        paddingLeft   = 0;
+        paddingTop    = 0;
+        paddingRight  = 0;
+        paddingBottom = 0;
+        allowedWidth  = mWidth;
+        allowedHeight = mHeight;
     }
 
 
+
+    if (mLabelWidget)
+    {
+        allowedWidth /= 5;
+    }
+
+
+
+    float scaleX = (float)allowedWidth  / mImageWidget->getImage()->getWidth();
+    float scaleY = (float)allowedHeight / mImageWidget->getImage()->getHeight();
+
+    float scale = MIN(scaleX, scaleY);
+
+    u16 imageWidth  = mImageWidget->getImage()->getWidth()  * scale;
+    u16 imageHeight = mImageWidget->getImage()->getHeight() * scale;
+
+
+
+    mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) >> 1), paddingTop + ((allowedWidth - imageWidth) >> 1)); // ">> 1" == "/ 2"
+    mImageWidget->setSize(imageWidth, imageHeight);
+
+    if (mLabelWidget)
+    {
+        mLabelWidget->setPosition(paddingLeft + allowedWidth, paddingTop);
+        mLabelWidget->setSize(allowedWidth << 2, allowedHeight); // "<< 2" == "* 4"
+    }
+
+/*
 
     Image *contentResizedImage;
 
@@ -185,6 +225,11 @@ NgosStatus Button::repaint()
                             NgosStatus::ASSERTION);
 
     delete contentResizedImage;
+    */
+
+
+
+    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 
@@ -202,7 +247,11 @@ NgosStatus Button::setState(WidgetState state)
         mState = state;
 
         COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(update(),  NgosStatus::ASSERTION);
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(),  NgosStatus::ASSERTION);
+        }
     }
 
 

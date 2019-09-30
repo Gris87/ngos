@@ -48,10 +48,6 @@ NgosStatus LabelWidget::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mText               != 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mGlyphOffsets       != 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mChildren.getHead() == 0, NgosStatus::ASSERTION);

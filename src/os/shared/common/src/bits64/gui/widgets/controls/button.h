@@ -4,13 +4,15 @@
 
 
 #include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/bits64/gui/widgets/misc/imagewidget.h>
+#include <common/src/bits64/gui/widgets/misc/labelwidget.h>
 
 
 
 class Button: public Widget
 {
 public:
-    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *contentImage, Widget *parent = 0); // TEST: NO
+    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *contentImage, const char8 *text, Widget *parent = 0); // TEST: NO
     ~Button(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
@@ -30,11 +32,12 @@ private:
     Image                  *mHoverImage;
     Image                  *mPressedImage;
     Image                  *mFocusedImage;
-    Image                  *mContentImage;
     Image                  *mNormalResizedImage;
     Image                  *mHoverResizedImage;
     Image                  *mPressedResizedImage;
     Image                  *mFocusedResizedImage;
+    ImageWidget            *mImageWidget;
+    LabelWidget            *mLabelWidget;
     WidgetState             mState;
     keyboard_event_handler  mKeyboardEventHandler;
     press_event_handler     mPressEventHandler;

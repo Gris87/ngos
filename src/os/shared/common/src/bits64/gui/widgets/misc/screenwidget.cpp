@@ -204,10 +204,6 @@ NgosStatus ScreenWidget::invalidate()
 
 
 
-    COMMON_ASSERT_EXECUTION(Widget::invalidate(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mBackgroundResizedImage == 0, NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mBackgroundImage, mWidth, mHeight, &mBackgroundResizedImage), NgosStatus::ASSERTION);
@@ -234,10 +230,6 @@ NgosStatus ScreenWidget::invalidate()
 NgosStatus ScreenWidget::repaint()
 {
     COMMON_LT((""));
-
-
-
-    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
 
 
 

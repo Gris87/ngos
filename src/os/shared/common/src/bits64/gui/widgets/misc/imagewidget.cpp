@@ -34,10 +34,6 @@ NgosStatus ImageWidget::invalidate()
 
 
 
-    COMMON_ASSERT_EXECUTION(Widget::invalidate(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mResizedImage == 0, NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
@@ -53,10 +49,6 @@ NgosStatus ImageWidget::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mResizedImage       != 0, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mChildren.getHead() == 0, NgosStatus::ASSERTION);
 
@@ -67,4 +59,13 @@ NgosStatus ImageWidget::repaint()
 
 
     return NgosStatus::OK;
+}
+
+Image* ImageWidget::getImage() const
+{
+    COMMON_LT((""));
+
+
+
+    return mImage;
 }

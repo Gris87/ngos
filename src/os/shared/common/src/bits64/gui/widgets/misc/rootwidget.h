@@ -17,8 +17,6 @@ public:
     NgosStatus applyUpdates(); // TEST: NO
 
     NgosStatus update(i64 positionX, i64 positionY, u64 width, u64 height) override; // TEST: NO
-    NgosStatus invalidate() override; // TEST: NO
-    NgosStatus repaint() override; // TEST: NO
 
 private:
     List<ScreenWidget *> mScreens;

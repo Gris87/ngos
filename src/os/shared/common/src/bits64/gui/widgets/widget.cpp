@@ -4,6 +4,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <ngos/linkage.h>
+#include <ngos/utils.h>
 
 
 
@@ -277,8 +278,28 @@ NgosStatus Widget::setSize(u64 width, u64 height)
 
 
 
-    mWidth  = width;
-    mHeight = height;
+    if (
+        mWidth != width
+        ||
+        mHeight != height
+       )
+    {
+        u64 oldWidth  = mWidth;
+        u64 oldHeight = mHeight;
+
+        mWidth  = width;
+        mHeight = height;
+
+        COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+
+
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(mPositionX, mPositionY, MAX(mWidth, oldWidth), MAX(mHeight, oldHeight)), NgosStatus::ASSERTION);
+        }
+    }
 
 
 

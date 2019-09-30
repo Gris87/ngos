@@ -34,10 +34,6 @@ NgosStatus CursorWidget::invalidate()
 
 
 
-    COMMON_ASSERT_EXECUTION(Widget::invalidate(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mCursorResizedImage  == 0, NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(Graphics::resizeImageProportional(mCursorImage, mWidth, mHeight, &mCursorResizedImage), NgosStatus::ASSERTION);
@@ -50,10 +46,6 @@ NgosStatus CursorWidget::invalidate()
 NgosStatus CursorWidget::repaint()
 {
     COMMON_LT((""));
-
-
-
-    COMMON_ASSERT_EXECUTION(Widget::repaint(), NgosStatus::ASSERTION);
 
 
 

@@ -165,7 +165,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, rebootImage, rootWidget);
+    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, rebootImage, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
@@ -174,7 +174,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, shutdownImage, rootWidget);
+    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, shutdownImage, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
@@ -231,7 +231,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-            Button *osButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, osImage, rootWidget);
+            Button *osButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, osImage, "", rootWidget);
 
             UEFI_ASSERT_EXECUTION(osButton->setKeyboardEventHandler(onOsButtonKeyboardEvent), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(osButton->setPressEventHandler(onOsButtonPressed),          NgosStatus::ASSERTION);
@@ -257,7 +257,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-            sLeftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowLeftImage, rootWidget);
+            sLeftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowLeftImage, "", rootWidget);
 
             UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(false),                                                                                                                                NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sLeftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
@@ -267,7 +267,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-            sRightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowRightImage, rootWidget);
+            sRightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, arrowRightImage, "", rootWidget);
 
             UEFI_ASSERT_EXECUTION(sRightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sRightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                         NgosStatus::ASSERTION);
@@ -326,7 +326,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sCpuTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, cpuTestImage, rootWidget);
+    sCpuTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, cpuTestImage, "CPU Test", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sCpuTestButton->setPosition(screenWidth * CPU_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * CPU_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sCpuTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
@@ -335,7 +335,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sMemoryTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, memoryTestImage, rootWidget);
+    sMemoryTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, memoryTestImage, "Memory Test", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sMemoryTestButton->setPosition(screenWidth * MEMORY_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MEMORY_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sMemoryTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                         NgosStatus::ASSERTION);
@@ -344,7 +344,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sNetworkTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, networkTestImage, rootWidget);
+    sNetworkTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, networkTestImage, "Network Test", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sNetworkTestButton->setPosition(screenWidth * NETWORK_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * NETWORK_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sNetworkTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                           NgosStatus::ASSERTION);
@@ -353,7 +353,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sHddTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, hddTestImage, rootWidget);
+    sHddTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, hddTestImage, "HDD Test", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sHddTestButton->setPosition(screenWidth * HDD_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * HDD_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sHddTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
@@ -362,7 +362,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sPartitionWizardButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, partitionWizardImage, rootWidget);
+    sPartitionWizardButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, partitionWizardImage, "Partition Wizard", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setPosition(screenWidth * PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT / 100, screenHeight * PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                                   NgosStatus::ASSERTION);
@@ -371,7 +371,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sShellButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, shellImage, rootWidget);
+    sShellButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, shellImage, "Shell", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sShellButton->setPosition(screenWidth * SHELL_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHELL_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sShellButton->setSize(toolButtonWidth, toolButtonHeight),                                                                             NgosStatus::ASSERTION);

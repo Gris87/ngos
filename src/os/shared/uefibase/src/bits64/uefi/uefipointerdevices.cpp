@@ -246,7 +246,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
         UEFI_LVVV(("pointer->mode->absoluteMinX = %u",      pointer->mode->absoluteMinX));
         UEFI_LVVV(("pointer->mode->absoluteMinY = %u",      pointer->mode->absoluteMinY));
         UEFI_LVVV(("pointer->mode->absoluteMinZ = %u",      pointer->mode->absoluteMinZ));
-        UEFI_LVVV(("pointer->mode->absoluteMaxX = %u",      pointer->mode->absoluteMinX));
+        UEFI_LVVV(("pointer->mode->absoluteMaxX = %u",      pointer->mode->absoluteMaxX));
         UEFI_LVVV(("pointer->mode->absoluteMaxY = %u",      pointer->mode->absoluteMaxY));
         UEFI_LVVV(("pointer->mode->absoluteMaxZ = %u",      pointer->mode->absoluteMaxZ));
         UEFI_LVVV(("pointer->mode->attributes   = %u (%s)", pointer->mode->attributes, uefiAbsolutePointerModeAttributeFlagsToString(pointer->mode->attributes)));

@@ -32,11 +32,7 @@ NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, Cur
 
 
 
-    COMMON_ASSERT_EXECUTION(lockUpdates(),                    NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(sRootWidget->invalidate(),        NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(sRootWidget->repaint(),           NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(Console::noMorePrint(),           NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(unlockUpdates(),                  NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(GraphicalConsole::readyToPrint(), NgosStatus::ASSERTION);
 
 
