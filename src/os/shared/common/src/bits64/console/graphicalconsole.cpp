@@ -73,10 +73,6 @@ NgosStatus GraphicalConsole::init()
         COMMON_ASSERT_EXECUTION(sConsoleWidget->setPosition(consolePositionX, consolePositionY), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(sConsoleWidget->setSize(consoleWidth, consoleHeight),            NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(sConsoleWidget->invalidate(), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(sConsoleWidget->repaint(),    NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(sConsoleWidget->update(),     NgosStatus::ASSERTION);
-
 
 
         NinePatch *patch = consoleImage->getNinePatch();
