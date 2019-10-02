@@ -301,7 +301,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        for (i64 i = 0; i < (i64)sOsButtons.getSize() && i < (i64)osCount; ++i)
+        for (i64 i = 0; i < (i64)osCount; ++i)
         {
             Button *button = sOsButtons.at(i);
 
