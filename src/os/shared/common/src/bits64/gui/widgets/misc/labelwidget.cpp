@@ -17,7 +17,7 @@
 LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     : Widget(parent)
     , mText(text)
-    , mGlyphOffsets(0)
+    , mGlyphOffsets(nullptr)
 {
     COMMON_LT((" | text = 0x%p, parent = 0x%p", text, parent));
 
@@ -49,9 +49,9 @@ NgosStatus LabelWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mText               != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mGlyphOffsets       != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mChildren.getHead() == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mText               != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mGlyphOffsets       != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
 
 
 
@@ -158,22 +158,19 @@ NgosStatus LabelWidget::repaint()
                 i16  charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
                 u8  *bitmapByte = glyphData->bitmap;
 
+                COMMON_TEST_ASSERT(charPosX                           >= 0,                                                 NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= targetWidth,                 NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(charPosY                           >= 0,                                                 NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= CHAR_HEIGHT + BOTTOM_MARGIN, NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(glyphData->bitmapHeight            <= CHAR_HEIGHT,                 NgosStatus::ASSERTION);
 
 
 
-                u8 bitmapLeft = charPosX < 0 ? (u8)(-charPosX) : 0;
-                u8 bitmapTop  = charPosY < 0 ? (u8)(-charPosY) : 0;
-
-
-
-                for (i64 i = bitmapTop; i < glyphData->bitmapHeight; ++i)
+                for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
                 {
-                    for (i64 j = bitmapLeft; j < glyphData->bitmapWidth; ++j)
+                    for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                     {
-                        RgbaPixel *pixel = &oneLineImage->getRgbaBuffer()[(charPosY + i) * oneLineImage->getWidth() + charPosX + j];
+                        RgbaPixel *pixel = &oneLineImage->getRgbaBuffer()[(charPosY + i) * targetWidth + charPosX + j];
 
                         COMMON_TEST_ASSERT((u64)pixel >= (u64)oneLineImage->getBuffer()
                                             &&
@@ -263,6 +260,13 @@ NgosStatus LabelWidget::setText(const char8 *text)
 
 
     mText = text;
+
+    COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+    if (isVisible())
+    {
+        COMMON_ASSERT_EXECUTION(update(),  NgosStatus::ASSERTION);
+    }
 
 
 

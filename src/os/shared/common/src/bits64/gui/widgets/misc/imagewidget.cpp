@@ -9,7 +9,7 @@
 ImageWidget::ImageWidget(Image *image, Widget *parent)
     : Widget(parent)
     , mImage(image)
-    , mResizedImage(0)
+    , mResizedImage(nullptr)
 {
     COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
 
@@ -52,8 +52,8 @@ NgosStatus ImageWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mResizedImage       != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mChildren.getHead() == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mResizedImage       != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
 
 
 

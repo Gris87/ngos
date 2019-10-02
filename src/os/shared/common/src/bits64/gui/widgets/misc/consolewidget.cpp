@@ -9,7 +9,7 @@
 ConsoleWidget::ConsoleWidget(Image *image, Widget *parent)
     : Widget(parent)
     , mImage(image)
-    , mResizedImage(0)
+    , mResizedImage(nullptr)
 {
     COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
 
@@ -31,6 +31,22 @@ ConsoleWidget::~ConsoleWidget()
     {
         delete mResultImage;
     }
+}
+
+NgosStatus ConsoleWidget::update(i64 positionX, i64 positionY, u64 width, u64 height)
+{
+    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
+
+    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mParent, NgosStatus::ASSERTION);
+
+
+
+    return mParent->update(mPositionX + positionX, mPositionY + positionY, width, height);
 }
 
 NgosStatus ConsoleWidget::invalidate()
@@ -57,8 +73,8 @@ NgosStatus ConsoleWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mResizedImage       != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mChildren.getHead() == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mResizedImage       != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
 
 
 

@@ -15,7 +15,7 @@ ScreenWidget::ScreenWidget(Image *backgroundImage, UefiGraphicsOutputProtocol *s
     , mBackgroundImage(backgroundImage)
     , mScreenGop(screenGop)
     , mRootWidget(rootWidget)
-    , mBackgroundResizedImage(0)
+    , mBackgroundResizedImage(nullptr)
     , mUpdateLeft(-1)
     , mUpdateTop(-1)
     , mUpdateRight(-1)
@@ -79,40 +79,6 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
 
 
 
-    if (mUpdateLeft < 0)
-    {
-        mUpdateLeft   = positionX;
-        mUpdateTop    = positionY;
-        mUpdateRight  = positionX + width;
-        mUpdateBottom = positionY + height;
-    }
-    else
-    {
-        if (positionX < mUpdateLeft)
-        {
-            mUpdateLeft = positionX;
-        }
-
-        if (positionY < mUpdateTop)
-        {
-            mUpdateTop = positionY;
-        }
-
-
-
-        if ((i64)(positionX + width) > mUpdateRight)
-        {
-            mUpdateRight = positionX + width;
-        }
-
-        if ((i64)(positionY + height) > mUpdateBottom)
-        {
-            mUpdateBottom = positionY + height;
-        }
-    }
-
-
-
     ListElement<Widget *> *element = mChildren.getHead();
 
     while (element)
@@ -152,6 +118,40 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
         }
 
         element = element->getNext();
+    }
+
+
+
+    if (mUpdateLeft < 0)
+    {
+        mUpdateLeft   = positionX;
+        mUpdateTop    = positionY;
+        mUpdateRight  = positionX + width;
+        mUpdateBottom = positionY + height;
+    }
+    else
+    {
+        if (positionX < mUpdateLeft)
+        {
+            mUpdateLeft = positionX;
+        }
+
+        if (positionY < mUpdateTop)
+        {
+            mUpdateTop = positionY;
+        }
+
+
+
+        if ((i64)(positionX + width) > mUpdateRight)
+        {
+            mUpdateRight = positionX + width;
+        }
+
+        if ((i64)(positionY + height) > mUpdateBottom)
+        {
+            mUpdateBottom = positionY + height;
+        }
     }
 
 
@@ -252,57 +252,6 @@ NgosStatus ScreenWidget::repaint()
     mUpdateTop    = 0;
     mUpdateRight  = mWidth;
     mUpdateBottom = mHeight;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
-{
-    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY));
-
-    COMMON_ASSERT(widget, "widget is null", NgosStatus::ASSERTION);
-
-
-
-    return drawWidget(widget, positionX, positionY, 0, 0, widget->getResultImage()->getWidth(), widget->getResultImage()->getHeight());
-}
-
-NgosStatus ScreenWidget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
-{
-    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", widget, positionX, positionY, left, top, right, bottom));
-
-    COMMON_ASSERT(widget,                                               "widget is null",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(left >= 0,                                            "left is invalid",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(top >= 0,                                             "top is invalid",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(right <= (i64)widget->getResultImage()->getWidth(),   "right is invalid",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(bottom <= (i64)widget->getResultImage()->getHeight(), "bottom is invalid", NgosStatus::ASSERTION);
-
-
-
-    if (widget->isVisible())
-    {
-        Image *resultImage = widget->getResultImage();
-
-        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                    resultImage->getBuffer(),
-                                    mResultImage->getBuffer(),
-                                    resultImage->getWidth(),
-                                    resultImage->getHeight(),
-                                    mWidth,
-                                    mHeight,
-                                    resultImage->getBytesPerPixel(),
-                                    sizeof(RgbaPixel),
-                                    resultImage->isOpaque(),
-                                    positionX,
-                                    positionY,
-                                    left,
-                                    top,
-                                    right,
-                                    bottom),
-                                NgosStatus::ASSERTION);
-    }
 
 
 

@@ -27,9 +27,6 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
-    NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY); // TEST: NO
-    NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom); // TEST: NO
-
 private:
     Image                      *mBackgroundImage;
     UefiGraphicsOutputProtocol *mScreenGop;

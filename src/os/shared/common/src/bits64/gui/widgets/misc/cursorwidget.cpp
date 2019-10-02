@@ -9,7 +9,7 @@
 CursorWidget::CursorWidget(Image *cursorImage, Widget *parent)
     : Widget(parent)
     , mCursorImage(cursorImage)
-    , mCursorResizedImage(0)
+    , mCursorResizedImage(nullptr)
 {
     COMMON_LT((" | cursorImage = 0x%p, parent = 0x%p", cursorImage, parent));
 
@@ -52,8 +52,8 @@ NgosStatus CursorWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mCursorResizedImage != 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mChildren.getHead() == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mCursorResizedImage != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
 
 
 

@@ -1,5 +1,6 @@
 #include "widget.h"
 
+#include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
@@ -16,8 +17,9 @@ Widget::Widget(Widget *parent)
     , mWidth(0)
     , mHeight(0)
     , mVisible(true)
-    , mOwnResultImage(0)
-    , mResultImage(0)
+    , mUpdatesLocks(0)
+    , mOwnResultImage(nullptr)
+    , mResultImage(nullptr)
 {
     COMMON_LT((" | parent = 0x%p", parent));
 
@@ -63,9 +65,80 @@ NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
 
 
 
-    if (mParent)
+    if (mParent && isUpdatesEnabled())
     {
-        return mParent->update(mPositionX + positionX, mPositionY + positionY, width, height);
+        positionX += mPositionX;
+        positionY += mPositionY;
+
+        if (mParent->mResultImage)
+        {
+            Image *parentOwnResultImage = mParent->mOwnResultImage;
+            Image *parentResultImage    = mParent->mResultImage;
+
+            COMMON_TEST_ASSERT(parentOwnResultImage, NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                        parentOwnResultImage->getBuffer(),
+                                        parentResultImage->getBuffer(),
+                                        parentOwnResultImage->getWidth(),
+                                        parentOwnResultImage->getHeight(),
+                                        parentResultImage->getWidth(),
+                                        parentResultImage->getHeight(),
+                                        parentOwnResultImage->getBytesPerPixel(),
+                                        parentResultImage->getBytesPerPixel(),
+                                        parentOwnResultImage->isOpaque() && parentResultImage->isOpaque(),
+                                        0, 0,
+                                        positionX,
+                                        positionY,
+                                        positionX + width,
+                                        positionY + height),
+                                    NgosStatus::ASSERTION);
+
+
+
+            ListElement<Widget *> *element = mParent->mChildren.getHead();
+
+            while (element)
+            {
+                Widget *widget = element->getData();
+
+                if (widget->hasIntersection(positionX, positionY, width, height))
+                {
+                    i64 left   = positionX - widget->getPositionX();
+                    i64 right  = left + (i64)width;
+                    i64 top    = positionY - widget->getPositionY();
+                    i64 bottom = top + (i64)height;
+
+                    if (left < 0)
+                    {
+                        left = 0;
+                    }
+
+                    if (top < 0)
+                    {
+                        top = 0;
+                    }
+
+                    if (right > (i64)widget->getResultImage()->getWidth())
+                    {
+                        right = widget->getResultImage()->getWidth();
+                    }
+
+                    if (bottom > (i64)widget->getResultImage()->getHeight())
+                    {
+                        bottom = widget->getResultImage()->getHeight();
+                    }
+
+
+
+                    COMMON_ASSERT_EXECUTION(mParent->drawWidget(widget, widget->getPositionX(), widget->getPositionY(), left, top, right, bottom), NgosStatus::ASSERTION);
+                }
+
+                element = element->getNext();
+            }
+        }
+
+        return mParent->update(positionX, positionY, width, height);
     }
 
 
@@ -104,6 +177,58 @@ NgosStatus Widget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
+{
+    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY));
+
+    COMMON_ASSERT(widget, "widget is null", NgosStatus::ASSERTION);
+
+
+
+    return drawWidget(widget, positionX, positionY, 0, 0, widget->getResultImage()->getWidth(), widget->getResultImage()->getHeight());
+}
+
+NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
+{
+    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", widget, positionX, positionY, left, top, right, bottom));
+
+    COMMON_ASSERT(widget,                                               "widget is null",                   NgosStatus::ASSERTION);
+    COMMON_ASSERT(widget->getResultImage(),                             "widget->getResultImage() is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(left >= 0,                                            "left is invalid",                  NgosStatus::ASSERTION);
+    COMMON_ASSERT(top >= 0,                                             "top is invalid",                   NgosStatus::ASSERTION);
+    COMMON_ASSERT(right <= (i64)widget->getResultImage()->getWidth(),   "right is invalid",                 NgosStatus::ASSERTION);
+    COMMON_ASSERT(bottom <= (i64)widget->getResultImage()->getHeight(), "bottom is invalid",                NgosStatus::ASSERTION);
+
+
+
+    if (widget->isVisible())
+    {
+        Image *resultImage = widget->getResultImage();
+
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
+                                    resultImage->getBuffer(),
+                                    mResultImage->getBuffer(),
+                                    resultImage->getWidth(),
+                                    resultImage->getHeight(),
+                                    mWidth,
+                                    mHeight,
+                                    resultImage->getBytesPerPixel(),
+                                    sizeof(RgbaPixel),
+                                    resultImage->isOpaque(),
+                                    positionX,
+                                    positionY,
+                                    left,
+                                    top,
+                                    right,
+                                    bottom),
+                                NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 bool Widget::hasIntersection(Widget *anotherWidget)
 {
     COMMON_LT((" | anotherWidget = 0x%p", anotherWidget));
@@ -131,6 +256,45 @@ bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height
             (i64)(positionY)          < (i64)(mPositionY + mHeight)
             &&
             (i64)(positionY + height) > (i64)(mPositionY);
+}
+
+NgosStatus Widget::lockUpdates()
+{
+    COMMON_LT((""));
+
+
+
+    ++mUpdatesLocks;
+
+    COMMON_TEST_ASSERT(!isUpdatesEnabled(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Widget::unlockUpdates()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_TEST_ASSERT(!isUpdatesEnabled(), NgosStatus::ASSERTION);
+
+    --mUpdatesLocks;
+
+
+
+    return NgosStatus::OK;
+}
+
+bool Widget::isUpdatesEnabled()
+{
+    COMMON_LT((""));
+
+
+
+    return !mUpdatesLocks; // sUpdatesLocks == 0
 }
 
 NgosStatus Widget::setState(WidgetState state)
@@ -216,6 +380,8 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
             &&
             isVisible()
             &&
+            isUpdatesEnabled()
+            &&
             mWidth // mWidth > 0
             &&
             mHeight // mHeight > 0
@@ -228,10 +394,10 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
             mPositionY = positionY;
 
             // Ignore CppAlignmentVerifier [BEGIN]
-            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                           NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(mParent->update(oldPositionX, oldPositionY, mWidth, mHeight), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(mParent->update(mPositionX,   mPositionY,   mWidth, mHeight), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                         NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                            NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(update(oldPositionX - mPositionX, oldPositionY - mPositionY, mWidth, mHeight), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(update(),                                                                      NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                          NgosStatus::ASSERTION);
             // Ignore CppAlignmentVerifier [END]
         }
         else

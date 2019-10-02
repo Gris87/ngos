@@ -14,15 +14,15 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mHoverImage(hoverImage)
     , mPressedImage(pressedImage)
     , mFocusedImage(focusedImage)
-    , mNormalResizedImage(0)
-    , mHoverResizedImage(0)
-    , mPressedResizedImage(0)
-    , mFocusedResizedImage(0)
+    , mNormalResizedImage(nullptr)
+    , mHoverResizedImage(nullptr)
+    , mPressedResizedImage(nullptr)
+    , mFocusedResizedImage(nullptr)
     , mImageWidget(new ImageWidget(contentImage, this))
-    , mLabelWidget(0)
+    , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
-    , mKeyboardEventHandler(0)
-    , mPressEventHandler(0)
+    , mKeyboardEventHandler(nullptr)
+    , mPressEventHandler(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, contentImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, contentImage, text, parent));
 
@@ -194,7 +194,7 @@ NgosStatus Button::repaint()
 
     if (mLabelWidget)
     {
-        allowedWidth /= 5;
+        allowedWidth >>= 2;
     }
 
 
@@ -209,50 +209,30 @@ NgosStatus Button::repaint()
 
 
 
+    COMMON_ASSERT_EXECUTION(mImageWidget->lockUpdates(),                                                                                                    NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) >> 1), paddingTop + ((allowedHeight - imageHeight) >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
     COMMON_ASSERT_EXECUTION(mImageWidget->setSize(imageWidth, imageHeight),                                                                                 NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mImageWidget->unlockUpdates(),                                                                                                  NgosStatus::ASSERTION);
 
     if (mLabelWidget)
     {
+        COMMON_ASSERT_EXECUTION(mLabelWidget->lockUpdates(),                                       NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(mLabelWidget->setPosition(paddingLeft + allowedWidth, paddingTop), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(mLabelWidget->setSize(allowedWidth << 2, allowedHeight),           NgosStatus::ASSERTION); // "<< 2" == "* 4"
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setSize(allowedWidth * 3, allowedHeight),            NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mLabelWidget->unlockUpdates(),                                     NgosStatus::ASSERTION);
     }
 
 
 
-    Image *imageResult = mImageWidget->getResultImage();
+    ListElement<Widget *> *element = mChildren.getHead();
 
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                imageResult->getBuffer(),
-                                mResultImage->getBuffer(),
-                                imageResult->getWidth(),
-                                imageResult->getHeight(),
-                                mResultImage->getWidth(),
-                                mResultImage->getHeight(),
-                                imageResult->getBytesPerPixel(),
-                                mResultImage->getBytesPerPixel(),
-                                imageResult->isOpaque() && mResultImage->isOpaque(),
-                                mImageWidget->getPositionX(),
-                                mImageWidget->getPositionY()),
-                            NgosStatus::ASSERTION);
-
-    if (mLabelWidget)
+    while (element)
     {
-        imageResult = mLabelWidget->getResultImage();
+        Widget *widget = element->getData();
 
-        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                    imageResult->getBuffer(),
-                                    mResultImage->getBuffer(),
-                                    imageResult->getWidth(),
-                                    imageResult->getHeight(),
-                                    mResultImage->getWidth(),
-                                    mResultImage->getHeight(),
-                                    imageResult->getBytesPerPixel(),
-                                    mResultImage->getBytesPerPixel(),
-                                    imageResult->isOpaque() && mResultImage->isOpaque(),
-                                    mLabelWidget->getPositionX(),
-                                    mLabelWidget->getPositionY()),
-                                NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(drawWidget(widget, widget->getPositionX(), widget->getPositionY()), NgosStatus::ASSERTION);
+
+        element = element->getNext();
     }
 
 

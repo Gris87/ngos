@@ -28,8 +28,16 @@ public:
     virtual NgosStatus repaint(); // TEST: NO
     virtual NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
+    NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY); // TEST: NO
+    NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom); // TEST: NO
+
     bool hasIntersection(Widget *anotherWidget);
     bool hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height);
+
+    NgosStatus lockUpdates(); // TEST: NO
+    NgosStatus unlockUpdates(); // TEST: NO
+
+    bool isUpdatesEnabled(); // TEST: NO
 
     virtual NgosStatus setState(WidgetState state); // TEST: NO
     virtual WidgetState getState() const; // TEST: NO
@@ -66,6 +74,7 @@ protected:
     u64             mWidth;
     u64             mHeight;
     bool            mVisible;
+    u8              mUpdatesLocks;
     Image          *mOwnResultImage;
     Image          *mResultImage;
 };
