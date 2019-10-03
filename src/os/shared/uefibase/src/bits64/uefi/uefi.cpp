@@ -1048,7 +1048,7 @@ NgosStatus UEFI::maximizeConsole()
 
         if (sTextOutput->queryMode(sTextOutput, i, &columns, &rows) != UefiStatus::SUCCESS)
         {
-            UEFI_LE(("Failed to query mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, sTextOutput));
+            UEFI_LV(("Failed to query mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, sTextOutput));
 
             continue;
         }
