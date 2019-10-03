@@ -17,6 +17,7 @@ class UEFI
 public:
     static NgosStatus init(uefi_handle imageHandle, UefiSystemTable *systemTable); // TEST: NO
 
+    static UefiStatus switchToTextMode(); // TEST: NO
     static UefiStatus clearScreen(); // TEST: NO
     static void print(char8 ch); // TEST: NO
     static void print(const char8 *str); // TEST: NO
@@ -70,6 +71,7 @@ public:
 
 private:
     static NgosStatus disableWatchdogTimer(); // TEST: NO
+    static NgosStatus maximizeConsole(); // TEST: NO
     static NgosStatus disableCursor(); // TEST: NO
 
     static void print(char16 *ch); // TEST: NO

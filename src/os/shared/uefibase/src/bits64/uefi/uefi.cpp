@@ -51,11 +51,23 @@ NgosStatus UEFI::init(uefi_handle imageHandle, UefiSystemTable *systemTable)
 
 
     UEFI_ASSERT_EXECUTION(disableWatchdogTimer(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(maximizeConsole(),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(disableCursor(),        NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
+}
+
+UefiStatus UEFI::switchToTextMode()
+{
+    // UEFI_LT(("")); // Commented to avoid bad looking logs
+
+    UEFI_ASSERT(!sTextOutput, "sTextOutput is not null", UefiStatus::ABORTED);
+
+
+
+    return sSystemTable->stdout->setMode(sSystemTable->stdout, sSystemTable->stdout->mode->mode);
 }
 
 UefiStatus UEFI::clearScreen()
@@ -1014,6 +1026,63 @@ NgosStatus UEFI::disableWatchdogTimer()
 
 
     UEFI_ASSERT_EXECUTION(sBootServices->setWatchdogTimer(0, 0, 0, 0), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus UEFI::maximizeConsole()
+{
+    UEFI_LT((""));
+
+
+
+    u64 maximumBuffer = 0;
+    i32 foundMode     = 0;
+
+    for (i64 i = 0; i < sTextOutput->mode->maxMode; ++i)
+    {
+        u64 columns;
+        u64 rows;
+
+        if (sTextOutput->queryMode(sTextOutput, i, &columns, &rows) != UefiStatus::SUCCESS)
+        {
+            UEFI_LE(("Failed to query mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, sTextOutput));
+
+            continue;
+        }
+
+        UEFI_LVV(("Queried mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, sTextOutput));
+
+
+
+        u64 screenSize = columns * rows;
+
+        UEFI_LVVV(("columns    = %u", columns));
+        UEFI_LVVV(("rows       = %u", rows));
+        UEFI_LVVV(("screenSize = %u", screenSize));
+
+        if (screenSize > maximumBuffer)
+        {
+            maximumBuffer = screenSize;
+            foundMode     = i;
+        }
+    }
+
+
+
+    if (sTextOutput->mode->mode != foundMode)
+    {
+        if (sTextOutput->setMode(sTextOutput, foundMode) != UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Failed to update screen text mode"));
+
+            return NgosStatus::FAILED;
+        }
+
+        UEFI_LVV(("Updated screen text mode to %u", foundMode));
+    }
 
 
 

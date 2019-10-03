@@ -1844,6 +1844,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
 
+    UEFI_ASSERT_EXECUTION(UEFI::switchToTextMode(),                             UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(UEFI::startImage(childImageHandle, nullptr, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
