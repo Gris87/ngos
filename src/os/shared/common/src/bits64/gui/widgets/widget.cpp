@@ -210,11 +210,11 @@ NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 
                                     mResultImage->getBuffer(),
                                     resultImage->getWidth(),
                                     resultImage->getHeight(),
-                                    mWidth,
-                                    mHeight,
+                                    mResultImage->getWidth(),
+                                    mResultImage->getHeight(),
                                     resultImage->getBytesPerPixel(),
-                                    sizeof(RgbaPixel),
-                                    resultImage->isOpaque(),
+                                    mResultImage->getBytesPerPixel(),
+                                    resultImage->isOpaque() && mResultImage->isOpaque(),
                                     positionX,
                                     positionY,
                                     left,
@@ -455,7 +455,7 @@ NgosStatus Widget::setSize(u64 width, u64 height)
 
         if (isVisible())
         {
-            COMMON_ASSERT_EXECUTION(update(mPositionX, mPositionY, MAX(mWidth, oldWidth), MAX(mHeight, oldHeight)), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(update(0, 0, MAX(mWidth, oldWidth), MAX(mHeight, oldHeight)), NgosStatus::ASSERTION);
         }
     }
 
