@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/fonts/console.ttf</file>
+        <file>assets/fonts/gui.ttf</file>
     </qresource>
 </RCC>

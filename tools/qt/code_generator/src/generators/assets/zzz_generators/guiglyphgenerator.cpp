@@ -1,4 +1,4 @@
-#include "consoleglyphgenerator.h"
+#include "guiglyphgenerator.h"
 
 #include <QDataStream>
 #include <QFile>
@@ -8,27 +8,27 @@
 
 
 
-#define FILE_PATH "assets/glyphs/console.bin"
+#define FILE_PATH "assets/glyphs/gui.bin"
 
-#define FONT_SIZE   18
+#define FONT_SIZE   50
 #define START_INDEX 0x20
 #define END_INDEX   0x7F
 
 
 
-ConsoleGlyphGenerator::ConsoleGlyphGenerator()
+GuiGlyphGenerator::GuiGlyphGenerator()
     : AssetsGenerator()
 {
     // Nothing
 }
 
-bool ConsoleGlyphGenerator::generate(const QString &path)
+bool GuiGlyphGenerator::generate(const QString &path)
 {
-    QFile fontFile(":/assets/fonts/console.ttf"); // Ignore CppPunctuationVerifier
+    QFile fontFile(":/assets/fonts/gui.ttf"); // Ignore CppPunctuationVerifier
 
     if (!fontFile.open(QIODevice::ReadOnly))
     {
-        Console::err("Failed to open file assets/fonts/console.ttf");
+        Console::err("Failed to open file assets/fonts/gui.ttf");
 
         return false;
     }
@@ -174,15 +174,9 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
             &&
             save(path + "/bootloader_tools/networktest/"  + FILE_PATH, data)
             &&
-            save(path + "/bootloader_tools/partitionwizard/"  + FILE_PATH, data)
-            &&
-            save(path + "/configure/"  + FILE_PATH, data)
-            &&
-            save(path + "/installer/"  + FILE_PATH, data)
-            &&
-            save(path + "/kernel/"     + FILE_PATH, data);
+            save(path + "/bootloader_tools/partitionwizard/"  + FILE_PATH, data);
 }
 
 
 
-ConsoleGlyphGenerator consoleGlyphGeneratorInstance;
+GuiGlyphGenerator guiGlyphGeneratorInstance;

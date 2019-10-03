@@ -394,6 +394,8 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(focusFirstOsButton(), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
+    UEFI_TEST_ASSERT(GUI::isUpdatesEnabled(), NgosStatus::ASSERTION);
+
 
 
     return NgosStatus::OK;

@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/glyphs/console.bin</file>
+        <file>assets/glyphs/gui.bin</file>
         <file>assets/images/background.jpg</file>
         <file>assets/images/button_focused.9.png</file>
         <file>assets/images/button_hover.9.png</file>

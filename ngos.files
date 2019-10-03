@@ -1127,6 +1127,8 @@ tools/qt/code_generator/src/generators/assets/assetsgenerator.cpp
 tools/qt/code_generator/src/generators/assets/assetsgenerator.h
 tools/qt/code_generator/src/generators/assets/zzz_generators/consoleglyphgenerator.cpp
 tools/qt/code_generator/src/generators/assets/zzz_generators/consoleglyphgenerator.h
+tools/qt/code_generator/src/generators/assets/zzz_generators/guiglyphgenerator.cpp
+tools/qt/code_generator/src/generators/assets/zzz_generators/guiglyphgenerator.h
 tools/qt/code_generator/src/generators/common/commongenerator.cpp
 tools/qt/code_generator/src/generators/common/commongenerator.h
 tools/qt/code_generator/src/generators/common/zzz_generators/x86bugsnamesgenerator.cpp

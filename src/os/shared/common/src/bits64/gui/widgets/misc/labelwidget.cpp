@@ -8,9 +8,9 @@
 
 
 
-#define CHAR_HEIGHT   20
+#define CHAR_HEIGHT   35
 #define SIDE_MARGIN   1
-#define BOTTOM_MARGIN 5
+#define BOTTOM_MARGIN 9
 
 
 
@@ -25,7 +25,7 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
 
 
 
-    AssetEntry *asset = Assets::getAssetEntry("glyphs/console.bin");
+    AssetEntry *asset = Assets::getAssetEntry("glyphs/gui.bin");
     COMMON_TEST_ASSERT(asset);
 
     mGlyphOffsets = (u16 *)asset->content;

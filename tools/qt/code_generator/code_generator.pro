@@ -59,6 +59,7 @@ include(../include/console/console.pri)
 SOURCES += \
     src/generators/assets/assetsgenerator.cpp \
     src/generators/assets/zzz_generators/consoleglyphgenerator.cpp \
+    src/generators/assets/zzz_generators/guiglyphgenerator.cpp \
     src/generators/common/commongenerator.cpp \
     src/generators/common/zzz_generators/x86bugsnamesgenerator.cpp \
     src/generators/common/zzz_generators/x86featuresnamesgenerator.cpp \
@@ -72,6 +73,7 @@ SOURCES += \
 HEADERS += \
     src/generators/assets/assetsgenerator.h \
     src/generators/assets/zzz_generators/consoleglyphgenerator.h \
+    src/generators/assets/zzz_generators/guiglyphgenerator.h \
     src/generators/common/commongenerator.h \
     src/generators/common/zzz_generators/x86bugsnamesgenerator.h \
     src/generators/common/zzz_generators/x86featuresnamesgenerator.h \
