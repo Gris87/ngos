@@ -65,7 +65,7 @@
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
 
-#define TIMEOUT_TIME 5
+#define TIMEOUT_TIME 9
 
 
 
