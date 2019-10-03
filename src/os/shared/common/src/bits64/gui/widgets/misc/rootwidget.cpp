@@ -178,3 +178,12 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 
     return NgosStatus::OK;
 }
+
+const List<ScreenWidget *>& RootWidget::getScreens() const
+{
+    COMMON_LT((""));
+
+
+
+    return mScreens;
+}

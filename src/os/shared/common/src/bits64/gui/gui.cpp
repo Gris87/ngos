@@ -77,6 +77,15 @@ NgosStatus GUI::unlockUpdates()
     return NgosStatus::OK;
 }
 
+RootWidget* GUI::getRootWidget()
+{
+    COMMON_LT((""));
+
+
+
+    return sRootWidget;
+}
+
 ScreenWidget* GUI::getMainScreenWidget()
 {
     COMMON_LT((""));

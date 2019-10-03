@@ -66,6 +66,8 @@ private:
     static u64                  sOsButtonSelected;
     static Button              *sLeftButton;
     static Button              *sRightButton;
+    static LabelWidget         *sTimeoutLabelWidget;
+    static u8                   sTimeoutTick;
     static Button              *sCpuTestButton;
     static Button              *sMemoryTestButton;
     static Button              *sNetworkTestButton;

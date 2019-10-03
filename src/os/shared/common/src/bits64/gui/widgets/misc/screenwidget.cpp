@@ -257,3 +257,12 @@ NgosStatus ScreenWidget::repaint()
 
     return NgosStatus::OK;
 }
+
+UefiGraphicsOutputProtocol* ScreenWidget::getScreenGop() const
+{
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
+
+
+
+    return mScreenGop;
+}

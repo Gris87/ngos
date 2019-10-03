@@ -110,6 +110,10 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sRebootButton), NgosStatus::ASSERTION);
+
+
+
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getPositionX() + (GUI::getFocusedWidget()->getWidth() >> 1), GUI::getFocusedWidget()->getPositionY() + (GUI::getFocusedWidget()->getHeight() >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
@@ -118,11 +122,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
     UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, screenWidget, cursorWidget), NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sRebootButton), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                              NgosStatus::ASSERTION);
 
     UEFI_TEST_ASSERT(GUI::isUpdatesEnabled(), NgosStatus::ASSERTION);
 

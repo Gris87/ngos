@@ -27,6 +27,8 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    UefiGraphicsOutputProtocol* getScreenGop() const; // TEST: NO
+
 private:
     Image                      *mBackgroundImage;
     UefiGraphicsOutputProtocol *mScreenGop;

@@ -2,6 +2,7 @@
 
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/graphics/graphics.h>
+#include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 #include <gpt/utils.h>
@@ -1814,6 +1815,35 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
     UEFI_LI(("Starting %ls", path));
+
+
+
+    RgbaPixel blackPixel;
+    memzero(&blackPixel, sizeof(blackPixel));
+
+
+
+    ListElement<ScreenWidget *> *screen = GUI::getRootWidget()->getScreens().getHead();
+
+    while (screen)
+    {
+        UefiGraphicsOutputProtocol *screenGop = screen->getData()->getScreenGop();
+
+        COMMON_ASSERT_EXECUTION(screenGop->blt(screenGop,
+                                                (UefiGraphicsOutputBltPixel *)&blackPixel,
+                                                UefiGraphicsOutputBltOperation::VIDEO_FILL,
+                                                0, 0,
+                                                0, 0,
+                                                screenGop->mode->info->horizontalResolution,
+                                                screenGop->mode->info->verticalResolution,
+                                                0),
+                                UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+        screen = screen->getNext();
+    }
+
+
+
     UEFI_ASSERT_EXECUTION(UEFI::startImage(childImageHandle, nullptr, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 

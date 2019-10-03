@@ -19,7 +19,9 @@ public:
     static NgosStatus lockUpdates(); // TEST: NO
     static NgosStatus unlockUpdates(); // TEST: NO
 
+    static RootWidget* getRootWidget(); // TEST: NO
     static ScreenWidget* getMainScreenWidget(); // TEST: NO
+
     static bool isUpdatesEnabled(); // TEST: NO
 
     static NgosStatus setHoveredWidget(Widget *widget); // TEST: NO

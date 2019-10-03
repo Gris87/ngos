@@ -16,9 +16,9 @@
 
 
 
-#define INFO_LABEL_POSITION_X_PERCENT      0
+#define INFO_LABEL_POSITION_X_PERCENT      10
 #define INFO_LABEL_POSITION_Y_PERCENT      0
-#define INFO_LABEL_POSITION_WIDTH_PERCENT  90
+#define INFO_LABEL_POSITION_WIDTH_PERCENT  80
 #define INFO_LABEL_POSITION_HEIGHT_PERCENT 2
 
 #define REBOOT_BUTTON_POSITION_X_PERCENT 90
@@ -34,6 +34,11 @@
 
 #define LEFT_BUTTON_POSITION_X_PERCENT  2
 #define RIGHT_BUTTON_POSITION_X_PERCENT 92
+
+#define TIMEOUT_LABEL_POSITION_X_PERCENT      10
+#define TIMEOUT_LABEL_POSITION_Y_PERCENT      46
+#define TIMEOUT_LABEL_POSITION_WIDTH_PERCENT  80
+#define TIMEOUT_LABEL_POSITION_HEIGHT_PERCENT 2
 
 #define CPU_TEST_BUTTON_POSITION_X_PERCENT 10
 #define CPU_TEST_BUTTON_POSITION_Y_PERCENT 48
@@ -60,6 +65,8 @@
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
 
+#define TIMEOUT_TIME 5
+
 
 
 Button              *BootloaderGUI::sRebootButton;
@@ -70,6 +77,8 @@ u64                  BootloaderGUI::sOsButtonRight;
 u64                  BootloaderGUI::sOsButtonSelected;
 Button              *BootloaderGUI::sLeftButton;
 Button              *BootloaderGUI::sRightButton;
+LabelWidget         *BootloaderGUI::sTimeoutLabelWidget;
+u8                   BootloaderGUI::sTimeoutTick;
 Button              *BootloaderGUI::sCpuTestButton;
 Button              *BootloaderGUI::sMemoryTestButton;
 Button              *BootloaderGUI::sNetworkTestButton;
@@ -326,6 +335,21 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
+    sTimeoutTick = TIMEOUT_TIME;
+
+    char8 *timeoutText = (char8 *)malloc(28);
+
+    UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, 27, NgosStatus::ASSERTION);
+
+
+
+    sTimeoutLabelWidget = new LabelWidget(timeoutText, rootWidget);
+
+    UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(screenWidth * TIMEOUT_LABEL_POSITION_X_PERCENT     / 100, screenHeight * TIMEOUT_LABEL_POSITION_Y_PERCENT      / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(screenWidth     * TIMEOUT_LABEL_POSITION_WIDTH_PERCENT / 100, screenHeight * TIMEOUT_LABEL_POSITION_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+
+
+
     sCpuTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, cpuTestImage, "CPU Test    ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sCpuTestButton->setPosition(screenWidth * CPU_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * CPU_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
@@ -380,6 +404,10 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
+    UEFI_ASSERT_EXECUTION(focusFirstOsButton(), NgosStatus::ASSERTION);
+
+
+
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getPositionX() + (osButtonSize >> 1), GUI::getFocusedWidget()->getPositionY() + (osButtonSize >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
@@ -388,11 +416,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
     UEFI_ASSERT_EXECUTION(GUI::init(rootWidget, screenWidget, cursorWidget), NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(focusFirstOsButton(), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                              NgosStatus::ASSERTION);
 
     UEFI_TEST_ASSERT(GUI::isUpdatesEnabled(), NgosStatus::ASSERTION);
 
@@ -829,6 +853,30 @@ NgosStatus BootloaderGUI::processTimerEvent()
 
 
 
+    --sTimeoutTick;
+
+    if (sTimeoutTick)
+    {
+        char8 *timeoutText = (char8 *)sTimeoutLabelWidget->getText();
+
+        if (sTimeoutTick > 1)
+        {
+            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, 27, NgosStatus::ASSERTION);
+        }
+        else
+        {
+            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in 1 second"), i64, 26, NgosStatus::ASSERTION);
+        }
+
+        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setText(timeoutText), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        return onOsButtonPressed();
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -847,6 +895,10 @@ NgosStatus BootloaderGUI::disableTimerEvent()
 
     sTimerEvent = 0;
     --sWaitEventsCount;
+
+
+
+    sTimeoutLabelWidget->setVisible(false);
 
 
 

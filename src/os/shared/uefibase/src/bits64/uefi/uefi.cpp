@@ -943,7 +943,7 @@ UefiStatus UEFI::loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiD
 
 UefiStatus UEFI::startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData)
 {
-    UEFI_LT((" | imageHandle = 0x%p, exitDataSize = 0x%p, exitData = 0x%p", imageHandle, exitDataSize, exitData));
+    // UEFI_LT((" | imageHandle = 0x%p, exitDataSize = 0x%p, exitData = 0x%p", imageHandle, exitDataSize, exitData)); // Commented to avoid bad looking logs
 
     UEFI_ASSERT(imageHandle, "imageHandle is null", UefiStatus::ABORTED);
 
