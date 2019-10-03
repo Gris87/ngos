@@ -149,6 +149,7 @@ src/os/boot/README.md
 src/os/bootloader/.gitignore
 src/os/bootloader/asm/arch/x86_64/main.S
 src/os/bootloader/assets/glyphs/console.bin
+src/os/bootloader/assets/glyphs/gui.bin
 src/os/bootloader/assets/images/arrow_left.png
 src/os/bootloader/assets/images/arrow_right.png
 src/os/bootloader/assets/images/background.jpg
@@ -193,6 +194,7 @@ src/os/bootloader_tools/bootloader_tools.pro
 src/os/bootloader_tools/cputest/.gitignore
 src/os/bootloader_tools/cputest/asm/arch/x86_64/main.S
 src/os/bootloader_tools/cputest/assets/glyphs/console.bin
+src/os/bootloader_tools/cputest/assets/glyphs/gui.bin
 src/os/bootloader_tools/cputest/assets/images/background.jpg
 src/os/bootloader_tools/cputest/assets/images/button_focused.9.png
 src/os/bootloader_tools/cputest/assets/images/button_hover.9.png
@@ -217,6 +219,7 @@ src/os/bootloader_tools/cputest/test/bits64/sections/section1/testcase.h
 src/os/bootloader_tools/hddtest/.gitignore
 src/os/bootloader_tools/hddtest/asm/arch/x86_64/main.S
 src/os/bootloader_tools/hddtest/assets/glyphs/console.bin
+src/os/bootloader_tools/hddtest/assets/glyphs/gui.bin
 src/os/bootloader_tools/hddtest/assets/images/background.jpg
 src/os/bootloader_tools/hddtest/assets/images/button_focused.9.png
 src/os/bootloader_tools/hddtest/assets/images/button_hover.9.png
@@ -241,6 +244,7 @@ src/os/bootloader_tools/hddtest/test/bits64/sections/section1/testcase.h
 src/os/bootloader_tools/memorytest/.gitignore
 src/os/bootloader_tools/memorytest/asm/arch/x86_64/main.S
 src/os/bootloader_tools/memorytest/assets/glyphs/console.bin
+src/os/bootloader_tools/memorytest/assets/glyphs/gui.bin
 src/os/bootloader_tools/memorytest/assets/images/background.jpg
 src/os/bootloader_tools/memorytest/assets/images/button_focused.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_hover.9.png
@@ -265,6 +269,7 @@ src/os/bootloader_tools/memorytest/test/bits64/sections/section1/testcase.h
 src/os/bootloader_tools/networktest/.gitignore
 src/os/bootloader_tools/networktest/asm/arch/x86_64/main.S
 src/os/bootloader_tools/networktest/assets/glyphs/console.bin
+src/os/bootloader_tools/networktest/assets/glyphs/gui.bin
 src/os/bootloader_tools/networktest/assets/images/background.jpg
 src/os/bootloader_tools/networktest/assets/images/button_focused.9.png
 src/os/bootloader_tools/networktest/assets/images/button_hover.9.png
@@ -289,6 +294,7 @@ src/os/bootloader_tools/networktest/test/bits64/sections/section1/testcase.h
 src/os/bootloader_tools/partitionwizard/.gitignore
 src/os/bootloader_tools/partitionwizard/asm/arch/x86_64/main.S
 src/os/bootloader_tools/partitionwizard/assets/glyphs/console.bin
+src/os/bootloader_tools/partitionwizard/assets/glyphs/gui.bin
 src/os/bootloader_tools/partitionwizard/assets/images/background.jpg
 src/os/bootloader_tools/partitionwizard/assets/images/button_focused.9.png
 src/os/bootloader_tools/partitionwizard/assets/images/button_hover.9.png
@@ -1119,6 +1125,7 @@ tools/qt/build_config_maker/src/main/buildconfigmaker.cpp
 tools/qt/build_config_maker/src/main/buildconfigmaker.h
 tools/qt/code_generator/.gitignore
 tools/qt/code_generator/assets/fonts/console.ttf
+tools/qt/code_generator/assets/fonts/gui.ttf
 tools/qt/code_generator/code_generator.pro
 tools/qt/code_generator/README.md
 tools/qt/code_generator/Resources.qrc
