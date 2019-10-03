@@ -8,7 +8,7 @@
 
 
 
-#define CHAR_HEIGHT   35
+#define CHAR_HEIGHT   40
 #define SIDE_MARGIN   1
 #define BOTTOM_MARGIN 9
 
