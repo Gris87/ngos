@@ -22,8 +22,11 @@ Bootloader:
 
 - Add mouse support
 - Implement control with mouse
-- Start external application
-- Auto-start timer
+- Add touch support
+- Implement control with touch
+- Search for Windows 10, Ubuntu, Cent OS
+- Save last started OS
+- Load last started OS
 - Custom arguments
 
 
