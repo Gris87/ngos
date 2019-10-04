@@ -245,13 +245,6 @@ Widget* Widget::detectHoveredWidget(i64 positionX, i64 positionY)
         positionY < (i64)mHeight
        )
     {
-        if (isAcceptMouseEvents())
-        {
-            return this;
-        }
-
-
-
         ListElement<Widget *> *element = mChildren.getTail();
 
         while (element)
@@ -266,6 +259,13 @@ Widget* Widget::detectHoveredWidget(i64 positionX, i64 positionY)
             }
 
             element = element->getPrevious();
+        }
+
+
+
+        if (isAcceptMouseEvents())
+        {
+            return this;
         }
     }
 
