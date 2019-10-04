@@ -8,6 +8,8 @@
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 #include <ngos/status.h>
+#include <uefi/uefiabsolutepointerstate.h>
+#include <uefi/uefisimplepointerstate.h>
 
 
 
@@ -18,6 +20,9 @@ public:
 
     static NgosStatus lockUpdates(); // TEST: NO
     static NgosStatus unlockUpdates(); // TEST: NO
+
+    static NgosStatus processSimplePointerState(UefiSimplePointerState *state); // TEST: NO
+    static NgosStatus processAbsolutePointerState(UefiAbsolutePointerState *state); // TEST: NO
 
     static RootWidget* getRootWidget(); // TEST: NO
     static ScreenWidget* getMainScreenWidget(); // TEST: NO

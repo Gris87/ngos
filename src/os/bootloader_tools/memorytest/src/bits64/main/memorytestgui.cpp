@@ -262,6 +262,33 @@ NgosStatus MemoryTestGUI::processKeyboardEvent()
     return NgosStatus::OK;
 }
 
+NgosStatus MemoryTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
+{
+    UEFI_LT((" | pointer = 0x%p", pointer));
+
+    UEFI_ASSERT(pointer, "pointer is null", NgosStatus::ASSERTION);
+
+
+
+    UefiSimplePointerState state;
+
+    UEFI_ASSERT_EXECUTION(pointer->getState(pointer, &state), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+    UEFI_LVVV(("state.relativeMovementX = %d", state.relativeMovementX));
+    UEFI_LVVV(("state.relativeMovementY = %d", state.relativeMovementY));
+    UEFI_LVVV(("state.relativeMovementZ = %d", state.relativeMovementZ));
+    UEFI_LVVV(("state.leftButton        = %s", state.leftButton ? "true" : "false"));
+    UEFI_LVVV(("state.rightButton       = %s", state.rightButton ? "true" : "false"));
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus MemoryTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
 {
     UEFI_LT((" | pointer = 0x%p", pointer));
@@ -281,26 +308,7 @@ NgosStatus MemoryTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtoco
 
 
 
-    return NgosStatus::OK;
-}
-
-NgosStatus MemoryTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
-{
-    UEFI_LT((" | pointer = 0x%p", pointer));
-
-    UEFI_ASSERT(pointer, "pointer is null", NgosStatus::ASSERTION);
-
-
-
-    UefiSimplePointerState state;
-
-    UEFI_ASSERT_EXECUTION(pointer->getState(pointer, &state), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-
-    UEFI_LVVV(("state.relativeMovementX = %d", state.relativeMovementX));
-    UEFI_LVVV(("state.relativeMovementY = %d", state.relativeMovementY));
-    UEFI_LVVV(("state.relativeMovementZ = %d", state.relativeMovementZ));
-    UEFI_LVVV(("state.leftButton        = %s", state.leftButton ? "true" : "false"));
-    UEFI_LVVV(("state.rightButton       = %s", state.rightButton ? "true" : "false"));
+    UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(&state), NgosStatus::ASSERTION);
 
 
 

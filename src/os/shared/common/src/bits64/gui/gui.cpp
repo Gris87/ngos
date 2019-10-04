@@ -77,6 +77,28 @@ NgosStatus GUI::unlockUpdates()
     return NgosStatus::OK;
 }
 
+NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
+{
+    COMMON_LT((" | state = 0x%p", state));
+
+    COMMON_ASSERT(state, "state is null", NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerState *state)
+{
+    COMMON_LT((" | state = 0x%p", state));
+
+    COMMON_ASSERT(state, "state is null", NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 RootWidget* GUI::getRootWidget()
 {
     COMMON_LT((""));

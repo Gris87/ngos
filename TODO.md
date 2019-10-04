@@ -5,6 +5,7 @@ NGOS:
 
 - Refactor
 - Replace zeros with nullptr
+- Bool to string
 
 - Complete with interruptions
 - Implement boot screen for kernel
