@@ -17,7 +17,7 @@ class UEFI
 public:
     static NgosStatus init(uefi_handle imageHandle, UefiSystemTable *systemTable); // TEST: NO
 
-    static UefiStatus switchToTextMode(); // TEST: NO
+    static NgosStatus switchToTextMode(); // TEST: NO
     static UefiStatus clearScreen(); // TEST: NO
     static void print(char8 ch); // TEST: NO
     static void print(const char8 *str); // TEST: NO
@@ -48,6 +48,7 @@ public:
     static UefiStatus stall(u64 microseconds); // TEST: NO
 
     static UefiStatus handleProtocol(uefi_handle handle, Guid *protocol, void **interface); // TEST: NO
+    static UefiStatus locateProtocol(Guid *protocol, void *registration, void **interface); // TEST: NO
     static UefiStatus locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer); // TEST: NO
     static UefiStatus locateDevicePath(Guid *protocol, UefiDevicePath **devicePath, uefi_handle *device); // TEST: NO
 
@@ -71,7 +72,7 @@ public:
 
 private:
     static NgosStatus disableWatchdogTimer(); // TEST: NO
-    static NgosStatus maximizeConsole(); // TEST: NO
+    static NgosStatus maximizeConsole(UefiSimpleTextOutputInterface *textOutput); // TEST: NO
     static NgosStatus disableCursor(); // TEST: NO
 
     static void print(char16 *ch); // TEST: NO

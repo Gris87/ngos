@@ -526,7 +526,7 @@ NgosStatus Bootloader::initApplicationPath(char16 **applicationPath)
 
     UEFI_LVVV(("*applicationPath = %ls", *applicationPath));
 
-    UEFI_TEST_ASSERT(strcmp(*applicationPath, u"\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(strcmpi(*applicationPath, u"\\EFI\\BOOT\\BOOTX64.EFI") == 0, NgosStatus::ASSERTION);
 
 
 
@@ -546,7 +546,7 @@ NgosStatus Bootloader::initApplicationDirPath(char16 *applicationPath)
 
     UEFI_LVVV(("sApplicationDirPath = %ls", sApplicationDirPath));
 
-    UEFI_TEST_ASSERT(strcmp(sApplicationDirPath, u"EFI\\BOOT") == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(strcmpi(sApplicationDirPath, u"EFI\\BOOT") == 0, NgosStatus::ASSERTION);
 
 
 
@@ -1816,6 +1816,8 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
     UEFI_LI(("Starting %ls", path));
 
+    UEFI_ASSERT_EXECUTION(GraphicalConsole::noMorePrint(), NgosStatus::ASSERTION);
+
 
 
     RgbaPixel blackPixel;
@@ -1844,7 +1846,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
 
-    UEFI_ASSERT_EXECUTION(UEFI::switchToTextMode(),                             UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::switchToTextMode(),                                                              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(UEFI::startImage(childImageHandle, nullptr, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 

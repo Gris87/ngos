@@ -260,7 +260,7 @@ NgosStatus ScreenWidget::repaint()
 
 UefiGraphicsOutputProtocol* ScreenWidget::getScreenGop() const
 {
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
+    COMMON_LT((""));
 
 
 

@@ -55,7 +55,7 @@ ListElement<T>::~ListElement()
 template <typename T>
 const T& ListElement<T>::getData() const
 {
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
+    COMMON_LT((""));
 
 
 
@@ -79,7 +79,7 @@ NgosStatus ListElement<T>::setData(const T &data)
 template <typename T>
 ListElement<T>* ListElement<T>::getNext() const
 {
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
+    COMMON_LT((""));
 
 
 

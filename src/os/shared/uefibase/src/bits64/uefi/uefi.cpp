@@ -50,24 +50,26 @@ NgosStatus UEFI::init(uefi_handle imageHandle, UefiSystemTable *systemTable)
 
 
 
-    UEFI_ASSERT_EXECUTION(disableWatchdogTimer(), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(maximizeConsole(),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(disableCursor(),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(disableWatchdogTimer(),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(maximizeConsole(sTextOutput), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(disableCursor(),              NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-UefiStatus UEFI::switchToTextMode()
+NgosStatus UEFI::switchToTextMode()
 {
-    // UEFI_LT(("")); // Commented to avoid bad looking logs
-
-    UEFI_ASSERT(!sTextOutput, "sTextOutput is not null", UefiStatus::ABORTED);
+    UEFI_LT((""));
 
 
 
-    return sSystemTable->stdout->setMode(sSystemTable->stdout, sSystemTable->stdout->mode->mode);
+    UEFI_ASSERT_EXECUTION(sSystemTable->stdout->setMode(sSystemTable->stdout, 0), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    return maximizeConsole(sSystemTable->stdout);
 }
 
 UefiStatus UEFI::clearScreen()
@@ -299,7 +301,7 @@ char16* UEFI::devicePathToString(UefiDevicePath *path)
     Guid                          protocol                 = UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
     UefiDevicePathToTextProtocol *devicePathToTextProtocol = 0;
 
-    if (sBootServices->locateProtocol(&protocol, 0, (void **)&devicePathToTextProtocol) != UefiStatus::SUCCESS)
+    if (locateProtocol(&protocol, 0, (void **)&devicePathToTextProtocol) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to locate protocol for UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL"));
 
@@ -538,6 +540,18 @@ UefiStatus UEFI::handleProtocol(uefi_handle handle, Guid *protocol, void **inter
 
 
     return sBootServices->handleProtocol(handle, protocol, interface);
+}
+
+UefiStatus UEFI::locateProtocol(Guid *protocol, void *registration, void **interface)
+{
+    UEFI_LT((" | protocol = 0x%p, registration = 0x%p, interface = 0x%p", protocol, registration, interface));
+
+    UEFI_ASSERT(protocol,     "protocol is null",     UefiStatus::ABORTED);
+    UEFI_ASSERT(interface,    "interface is null",    UefiStatus::ABORTED);
+
+
+
+    return sBootServices->locateProtocol(protocol, registration, interface);
 }
 
 UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer)
@@ -955,7 +969,7 @@ UefiStatus UEFI::loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiD
 
 UefiStatus UEFI::startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData)
 {
-    // UEFI_LT((" | imageHandle = 0x%p, exitDataSize = 0x%p, exitData = 0x%p", imageHandle, exitDataSize, exitData)); // Commented to avoid bad looking logs
+    UEFI_LT((" | imageHandle = 0x%p, exitDataSize = 0x%p, exitData = 0x%p", imageHandle, exitDataSize, exitData));
 
     UEFI_ASSERT(imageHandle, "imageHandle is null", UefiStatus::ABORTED);
 
@@ -1032,28 +1046,30 @@ NgosStatus UEFI::disableWatchdogTimer()
     return NgosStatus::OK;
 }
 
-NgosStatus UEFI::maximizeConsole()
+NgosStatus UEFI::maximizeConsole(UefiSimpleTextOutputInterface *textOutput)
 {
-    UEFI_LT((""));
+    UEFI_LT((" | textOutput = 0x%p", textOutput));
+
+    UEFI_ASSERT(textOutput, "textOutput is null", NgosStatus::ASSERTION);
 
 
 
     u64 maximumBuffer = 0;
     i32 foundMode     = 0;
 
-    for (i64 i = 0; i < sTextOutput->mode->maxMode; ++i)
+    for (i64 i = 0; i < textOutput->mode->maxMode; ++i)
     {
         u64 columns;
         u64 rows;
 
-        if (sTextOutput->queryMode(sTextOutput, i, &columns, &rows) != UefiStatus::SUCCESS)
+        if (textOutput->queryMode(textOutput, i, &columns, &rows) != UefiStatus::SUCCESS)
         {
-            UEFI_LV(("Failed to query mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, sTextOutput));
+            UEFI_LV(("Failed to query mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, textOutput));
 
             continue;
         }
 
-        UEFI_LVV(("Queried mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, sTextOutput));
+        UEFI_LVV(("Queried mode(%d) for protocol(0x%p) for UefiSimpleTextOutputInterface", i, textOutput));
 
 
 
@@ -1072,9 +1088,9 @@ NgosStatus UEFI::maximizeConsole()
 
 
 
-    if (sTextOutput->mode->mode != foundMode)
+    if (textOutput->mode->mode != foundMode)
     {
-        if (sTextOutput->setMode(sTextOutput, foundMode) != UefiStatus::SUCCESS)
+        if (textOutput->setMode(textOutput, foundMode) != UefiStatus::SUCCESS)
         {
             UEFI_LF(("Failed to update screen text mode"));
 
