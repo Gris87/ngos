@@ -31,6 +31,9 @@ public:
     NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY); // TEST: NO
     NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom); // TEST: NO
 
+    Widget* detectHoveredWidget(i64 positionX, i64 positionY); // TEST: NO
+    virtual bool isAcceptMouseEvents(); // TEST: NO
+
     bool hasIntersection(Widget *anotherWidget);
     bool hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height);
 

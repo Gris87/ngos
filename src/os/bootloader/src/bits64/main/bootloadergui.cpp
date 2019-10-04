@@ -885,6 +885,7 @@ NgosStatus BootloaderGUI::processTimerEvent()
 
     --sTimeoutTick;
 
+    /*
     if (sTimeoutTick)
     {
         char8 *timeoutText = (char8 *)sTimeoutLabelWidget->getText();
@@ -904,6 +905,19 @@ NgosStatus BootloaderGUI::processTimerEvent()
     {
         return onOsButtonPressed();
     }
+    */
+
+
+
+    UefiSimplePointerState state;
+
+    state.relativeMovementX = 0;
+    state.relativeMovementY = (sTimeoutTick & 1) ? -600 : 600;
+    state.relativeMovementZ = 0;
+    state.leftButton        = (sTimeoutTick % 5 == 0);
+    state.rightButton       = false;
+
+    UEFI_ASSERT_EXECUTION(GUI::processSimplePointerState(&state), NgosStatus::ASSERTION);
 
 
 

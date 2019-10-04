@@ -32,6 +32,10 @@ NgosStatus GUI::init(RootWidget *rootWidget, ScreenWidget *mainScreenWidget, Cur
 
 
 
+    COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+
+
+
     COMMON_ASSERT_EXECUTION(Console::noMorePrint(),           NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(GraphicalConsole::readyToPrint(), NgosStatus::ASSERTION);
 
@@ -85,6 +89,27 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
 
 
 
+    if (
+        state->relativeMovementX
+        ||
+        state->relativeMovementY
+        ||
+        (
+         !state->leftButton
+         &&
+         !state->rightButton
+        )
+       )
+    {
+        COMMON_TEST_ASSERT(sCursorWidget, NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(sCursorWidget->setPosition(sCursorWidget->getPositionX() + state->relativeMovementX, sCursorWidget->getPositionY() + state->relativeMovementY), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -93,6 +118,24 @@ NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerState *state)
     COMMON_LT((" | state = 0x%p", state));
 
     COMMON_ASSERT(state, "state is null", NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus GUI::detectHoveredWidget()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_TEST_ASSERT(sRootWidget,   NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sCursorWidget, NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(setHoveredWidget(sRootWidget->detectHoveredWidget(sCursorWidget->getPositionX(), sCursorWidget->getPositionY())), NgosStatus::ASSERTION);
 
 
 
@@ -138,7 +181,14 @@ NgosStatus GUI::setHoveredWidget(Widget *widget)
 
         if (sHoveredWidget)
         {
-            sHoveredWidget->setState(WidgetState::NORMAL);
+            if (sFocusedWidget == sHoveredWidget)
+            {
+                sHoveredWidget->setState(WidgetState::FOCUSED);
+            }
+            else
+            {
+                sHoveredWidget->setState(WidgetState::NORMAL);
+            }
         }
 
         sHoveredWidget = widget;
@@ -177,14 +227,28 @@ NgosStatus GUI::setFocusedWidget(Widget *widget)
 
         if (sFocusedWidget)
         {
-            sFocusedWidget->setState(WidgetState::NORMAL);
+            if (sFocusedWidget == sHoveredWidget)
+            {
+                sFocusedWidget->setState(WidgetState::HOVERED);
+            }
+            else
+            {
+                sFocusedWidget->setState(WidgetState::NORMAL);
+            }
         }
 
         sFocusedWidget = widget;
 
         if (sFocusedWidget)
         {
-            sFocusedWidget->setState(WidgetState::FOCUSED);
+            if (sFocusedWidget == sHoveredWidget)
+            {
+                sFocusedWidget->setState(WidgetState::HOVERED);
+            }
+            else
+            {
+                sFocusedWidget->setState(WidgetState::FOCUSED);
+            }
         }
 
         COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
