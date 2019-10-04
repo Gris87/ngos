@@ -24,6 +24,8 @@ public:
     static NgosStatus processSimplePointerState(UefiSimplePointerState *state); // TEST: NO
     static NgosStatus processAbsolutePointerState(UefiAbsolutePointerState *state); // TEST: NO
 
+    static NgosStatus detectHoveredWidget(); // TEST: NO
+
     static RootWidget* getRootWidget(); // TEST: NO
     static ScreenWidget* getMainScreenWidget(); // TEST: NO
 

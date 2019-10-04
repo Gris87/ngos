@@ -229,6 +229,60 @@ NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 
     return NgosStatus::OK;
 }
 
+Widget* Widget::detectHoveredWidget(i64 positionX, i64 positionY)
+{
+    COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));
+
+
+
+    if (
+        positionX >= 0
+        &&
+        positionY >= 0
+        &&
+        positionX < (i64)mWidth
+        &&
+        positionY < (i64)mHeight
+       )
+    {
+        if (isAcceptMouseEvents())
+        {
+            return this;
+        }
+
+
+
+        ListElement<Widget *> *element = mChildren.getTail();
+
+        while (element)
+        {
+            Widget *widget = element->getData();
+
+            Widget *res = widget->detectHoveredWidget(positionX - widget->getPositionX(), positionY - widget->getPositionY());
+
+            if (res)
+            {
+                return res;
+            }
+
+            element = element->getPrevious();
+        }
+    }
+
+
+
+    return nullptr;
+}
+
+bool Widget::isAcceptMouseEvents()
+{
+    COMMON_LT((""));
+
+
+
+    return false;
+}
+
 bool Widget::hasIntersection(Widget *anotherWidget)
 {
     COMMON_LT((" | anotherWidget = 0x%p", anotherWidget));

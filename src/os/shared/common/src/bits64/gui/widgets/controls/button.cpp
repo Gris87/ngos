@@ -263,6 +263,15 @@ NgosStatus Button::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
+bool Button::isAcceptMouseEvents()
+{
+    COMMON_LT((""));
+
+
+
+    return true;
+}
+
 NgosStatus Button::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));
