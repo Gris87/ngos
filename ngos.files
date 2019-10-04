@@ -154,6 +154,7 @@ src/os/bootloader/assets/images/arrow_left.png
 src/os/bootloader/assets/images/arrow_right.png
 src/os/bootloader/assets/images/background.jpg
 src/os/bootloader/assets/images/button_focused.9.png
+src/os/bootloader/assets/images/button_focused_hover.9.png
 src/os/bootloader/assets/images/button_hover.9.png
 src/os/bootloader/assets/images/button_normal.9.png
 src/os/bootloader/assets/images/button_pressed.9.png
@@ -197,6 +198,7 @@ src/os/bootloader_tools/cputest/assets/glyphs/console.bin
 src/os/bootloader_tools/cputest/assets/glyphs/gui.bin
 src/os/bootloader_tools/cputest/assets/images/background.jpg
 src/os/bootloader_tools/cputest/assets/images/button_focused.9.png
+src/os/bootloader_tools/cputest/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/cputest/assets/images/button_hover.9.png
 src/os/bootloader_tools/cputest/assets/images/button_normal.9.png
 src/os/bootloader_tools/cputest/assets/images/button_pressed.9.png
@@ -222,6 +224,7 @@ src/os/bootloader_tools/hddtest/assets/glyphs/console.bin
 src/os/bootloader_tools/hddtest/assets/glyphs/gui.bin
 src/os/bootloader_tools/hddtest/assets/images/background.jpg
 src/os/bootloader_tools/hddtest/assets/images/button_focused.9.png
+src/os/bootloader_tools/hddtest/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/hddtest/assets/images/button_hover.9.png
 src/os/bootloader_tools/hddtest/assets/images/button_normal.9.png
 src/os/bootloader_tools/hddtest/assets/images/button_pressed.9.png
@@ -247,6 +250,7 @@ src/os/bootloader_tools/memorytest/assets/glyphs/console.bin
 src/os/bootloader_tools/memorytest/assets/glyphs/gui.bin
 src/os/bootloader_tools/memorytest/assets/images/background.jpg
 src/os/bootloader_tools/memorytest/assets/images/button_focused.9.png
+src/os/bootloader_tools/memorytest/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_hover.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_normal.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_pressed.9.png
@@ -272,6 +276,7 @@ src/os/bootloader_tools/networktest/assets/glyphs/console.bin
 src/os/bootloader_tools/networktest/assets/glyphs/gui.bin
 src/os/bootloader_tools/networktest/assets/images/background.jpg
 src/os/bootloader_tools/networktest/assets/images/button_focused.9.png
+src/os/bootloader_tools/networktest/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/networktest/assets/images/button_hover.9.png
 src/os/bootloader_tools/networktest/assets/images/button_normal.9.png
 src/os/bootloader_tools/networktest/assets/images/button_pressed.9.png
@@ -297,6 +302,7 @@ src/os/bootloader_tools/partitionwizard/assets/glyphs/console.bin
 src/os/bootloader_tools/partitionwizard/assets/glyphs/gui.bin
 src/os/bootloader_tools/partitionwizard/assets/images/background.jpg
 src/os/bootloader_tools/partitionwizard/assets/images/button_focused.9.png
+src/os/bootloader_tools/partitionwizard/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/partitionwizard/assets/images/button_hover.9.png
 src/os/bootloader_tools/partitionwizard/assets/images/button_normal.9.png
 src/os/bootloader_tools/partitionwizard/assets/images/button_pressed.9.png
