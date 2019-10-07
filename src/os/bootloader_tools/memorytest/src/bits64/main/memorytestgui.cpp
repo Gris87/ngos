@@ -324,7 +324,7 @@ NgosStatus MemoryTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtoco
 
 
 
-    UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(&state), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(pointer, &state), NgosStatus::ASSERTION);
 
 
 

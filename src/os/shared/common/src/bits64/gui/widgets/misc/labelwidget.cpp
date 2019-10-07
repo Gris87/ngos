@@ -158,9 +158,9 @@ NgosStatus LabelWidget::repaint()
                 i16  charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
                 u8  *bitmapByte = glyphData->bitmap;
 
-                COMMON_TEST_ASSERT(charPosX                           >= 0,                                                 NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(charPosX                           >= 0,                           NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= targetWidth,                 NgosStatus::ASSERTION);
-                COMMON_TEST_ASSERT(charPosY                           >= 0,                                                 NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(charPosY                           >= 0,                           NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= CHAR_HEIGHT + BOTTOM_MARGIN, NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(glyphData->bitmapHeight            <= CHAR_HEIGHT,                 NgosStatus::ASSERTION);
 

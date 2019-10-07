@@ -25,6 +25,7 @@ AVX-512
 AVX2
 BW
 BaseRelocationTable
+Bool
 BootParams
 COMMON_LC
 COMMON_LD
@@ -43,6 +44,7 @@ DQ
 DS
 EAX
 ECX
+EDK2
 EDX
 EFLAGS
 FMA
@@ -287,7 +289,7 @@ uefibase
 updateScreenInfo
 update_ngos_files.sh
 usb_boot_maker
-v1.1.1d
+v1.0.2t
 virtual_address_space
 vm
 webapps

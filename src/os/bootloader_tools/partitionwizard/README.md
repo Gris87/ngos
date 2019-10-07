@@ -7,4 +7,4 @@ NGOS Bootloader Tool - Partition Wizard
 
 Source code for the NGOS Bootloader Tool - Partition Wizard.
 
-Please read [for more details](../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/5.%20Partition%20Wizard/README.md).
+Please read [for more details](../../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/5.%20Partition%20Wizard/README.md).

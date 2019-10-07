@@ -324,7 +324,7 @@ NgosStatus NetworkTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtoc
 
 
 
-    UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(&state), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(pointer, &state), NgosStatus::ASSERTION);
 
 
 

@@ -1831,7 +1831,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
     {
         UefiGraphicsOutputProtocol *screenGop = screen->getData()->getScreenGop();
 
-        COMMON_ASSERT_EXECUTION(screenGop->blt(screenGop,
+        UEFI_ASSERT_EXECUTION(screenGop->blt(screenGop,
                                                 (UefiGraphicsOutputBltPixel *)&blackPixel,
                                                 UefiGraphicsOutputBltOperation::VIDEO_FILL,
                                                 0, 0,

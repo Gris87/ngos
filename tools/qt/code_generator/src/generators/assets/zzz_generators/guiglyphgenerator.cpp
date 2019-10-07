@@ -164,17 +164,17 @@ bool GuiGlyphGenerator::generate(const QString &path)
 
     QByteArray data = offsets + glyphData;
 
-    return save(path  + "/bootloader/" + FILE_PATH, data)
+    return save(path  + "/bootloader/"                       + FILE_PATH, data)
             &&
-            save(path + "/bootloader_tools/cputest/"  + FILE_PATH, data)
+            save(path + "/bootloader_tools/cputest/"         + FILE_PATH, data)
             &&
-            save(path + "/bootloader_tools/hddtest/"  + FILE_PATH, data)
+            save(path + "/bootloader_tools/hddtest/"         + FILE_PATH, data)
             &&
-            save(path + "/bootloader_tools/memorytest/"  + FILE_PATH, data)
+            save(path + "/bootloader_tools/memorytest/"      + FILE_PATH, data)
             &&
-            save(path + "/bootloader_tools/networktest/"  + FILE_PATH, data)
+            save(path + "/bootloader_tools/networktest/"     + FILE_PATH, data)
             &&
-            save(path + "/bootloader_tools/partitionwizard/"  + FILE_PATH, data);
+            save(path + "/bootloader_tools/partitionwizard/" + FILE_PATH, data);
 }
 
 

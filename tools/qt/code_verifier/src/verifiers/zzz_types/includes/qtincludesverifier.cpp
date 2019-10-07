@@ -84,11 +84,13 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     blockTarget.append("include/");
     blockTarget.append("include/stdinc/");
 
-    addSubfoldersWithMakefile(blockTarget, parentFolder, "src/apps");
-    addSubfoldersWithMakefile(blockTarget, parentFolder, "src/libs");
-    addSubfoldersWithMakefile(blockTarget, parentFolder, "src/os");
-
+    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/apps");
+    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/libs");
+    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/os");
+    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/os/bootloader_tools");
     addSubfoldersWithQtPro(blockTarget, parentFolder, "tools/qt");
+
+    blockTarget.removeOne("src/os/bootloader_tools/");
 
     blockTarget.sort();
 
@@ -97,32 +99,6 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     if (block != blockTarget)
     {
         worker->addWarning(path, -1, QString("Expecting the following list of includes:\n%1").arg(blockTarget.join('\n')));
-    }
-}
-
-void QtIncludesVerifier::addSubfoldersWithMakefile(QStringList &block, const QString &parentFolder, const QString &path)
-{
-    QStringList subfolders = QDir(parentFolder + '/' + path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-
-    for (qint64 i = 0; i < subfolders.length(); ++i)
-    {
-        QString subfolder     = subfolders.at(i);
-        QString subfolderPath = path + '/' + subfolder;
-
-        QFile makeFile(parentFolder + '/' + subfolderPath + "/Makefile");
-
-
-
-        if (
-            subfolder == "include"
-            ||
-            subfolder == "shared"
-            ||
-            makeFile.exists()
-           )
-        {
-            block.append(subfolderPath + '/');
-        }
     }
 }
 
@@ -142,12 +118,14 @@ void QtIncludesVerifier::addSubfoldersWithQtPro(QStringList &block, const QStrin
         if (
             subfolder == "include"
             ||
+            subfolder == "shared"
+            ||
             proFile.exists()
            )
         {
             block.append(subfolderPath + '/');
 
-            if (subfolder != "include")
+            if (proFile.exists())
             {
                 if (proFile.open(QIODevice::ReadOnly))
                 {

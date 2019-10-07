@@ -13,7 +13,6 @@ public:
     QtIncludesVerifier(); // TEST: NO
 
     void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO
-    void addSubfoldersWithMakefile(QStringList &block, const QString &parentFolder, const QString &path); // TEST: NO
     void addSubfoldersWithQtPro(QStringList &block, const QString &parentFolder, const QString &path); // TEST: NO
 };
 

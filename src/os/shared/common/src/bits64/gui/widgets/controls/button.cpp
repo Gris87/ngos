@@ -243,6 +243,7 @@ NgosStatus Button::repaint()
         paddingTop    = patch->getPaddingTop();
         paddingRight  = patch->getPaddingRight();
         paddingBottom = patch->getPaddingBottom();
+
         allowedWidth  = mWidth  - paddingLeft - paddingRight;
         allowedHeight = mHeight - paddingTop  - paddingBottom;
     }
@@ -252,6 +253,7 @@ NgosStatus Button::repaint()
         paddingTop    = 0;
         paddingRight  = 0;
         paddingBottom = 0;
+
         allowedWidth  = mWidth;
         allowedHeight = mHeight;
     }

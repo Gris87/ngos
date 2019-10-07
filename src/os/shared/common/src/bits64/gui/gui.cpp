@@ -89,6 +89,10 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
 
 
 
+    COMMON_TEST_ASSERT(sCursorWidget, NgosStatus::ASSERTION);
+
+
+
     COMMON_ASSERT_EXECUTION(lockUpdates(), NgosStatus::ASSERTION);
 
     if (
@@ -103,11 +107,8 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
         )
        )
     {
-        COMMON_TEST_ASSERT(sCursorWidget, NgosStatus::ASSERTION);
-
         COMMON_ASSERT_EXECUTION(sCursorWidget->setPosition(sCursorWidget->getPositionX() + state->relativeMovementX, sCursorWidget->getPositionY() + state->relativeMovementY), NgosStatus::ASSERTION);
-
-        COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(detectHoveredWidget(),                                                                                                                          NgosStatus::ASSERTION);
     }
 
     COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
@@ -117,11 +118,26 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
     return NgosStatus::OK;
 }
 
-NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerState *state)
+NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerProtocol *pointer, UefiAbsolutePointerState *state)
 {
-    COMMON_LT((" | state = 0x%p", state));
+    COMMON_LT((" | pointer = 0x%p, state = 0x%p", pointer, state));
 
-    COMMON_ASSERT(state, "state is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(pointer, "pointer is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(state,   "state is null",   NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(sCursorWidget, NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(lockUpdates(), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(sCursorWidget->setPosition(state->currentX * sMainScreenWidget->getWidth() / pointer->mode->absoluteMaxX,
+                                                        state->currentY * sMainScreenWidget->getHeight() / pointer->mode->absoluteMaxY), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(detectHoveredWidget(),                                                                                       NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
 
 
 

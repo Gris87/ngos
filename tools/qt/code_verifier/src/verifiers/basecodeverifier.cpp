@@ -146,6 +146,11 @@ QString BaseCodeVerifier::logPrefixFromPath(const QString &path)
         return "UEFI";
     }
     else
+    if (path.contains("/src/os/bootloader_tools/"))
+    {
+        return "UEFI";
+    }
+    else
     if (path.contains("/src/os/configure/"))
     {
         if (path.contains("uefi/"))
