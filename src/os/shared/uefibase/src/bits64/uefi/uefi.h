@@ -12,10 +12,6 @@
 
 
 
-class Image;
-
-
-
 class UEFI
 {
 public:
@@ -36,7 +32,6 @@ public:
     static char16* parentDirectory(const char16 *path);
 
     static UefiFileProtocol* openVolume(uefi_handle handle); // TEST: NO
-    static NgosStatus loadImageFromAssets(const char8 *path, Image **image); // TEST: NO
 
     static char16* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* devicePathFromHandle(uefi_handle handle); // TEST: NO
