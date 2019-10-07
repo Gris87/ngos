@@ -28,7 +28,7 @@ inline const char8* widgetStateToString(WidgetState state) // TEST: NO
     switch (state)
     {
         case WidgetState::NONE:            return "NONE";
-        case WidgetState::NORMAL:            return "NORMAL";
+        case WidgetState::NORMAL:          return "NORMAL";
         case WidgetState::HOVERED:         return "HOVERED";
         case WidgetState::PRESSED:         return "PRESSED";
         case WidgetState::FOCUSED:         return "FOCUSED";

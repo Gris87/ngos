@@ -25,7 +25,7 @@ public:
     static NgosStatus buildPath(const char16 *parentPath, const char16 *path, char16 **res);
     static NgosStatus buildPath(const char16 *parentPath, const char8 *path, char16 **res);
 
-    static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NOs
+    static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
     static NgosStatus startTool(const char8 *path); // TEST: NO
     static NgosStatus startOs(u64 index); // TEST: NO
