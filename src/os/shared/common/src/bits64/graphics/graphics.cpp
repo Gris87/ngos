@@ -1,5 +1,6 @@
 #include "graphics.h"
 
+#include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/graphics/bmp/bmp.h>
 #include <common/src/bits64/graphics/bmp/lib/bmpheader.h>
 #include <common/src/bits64/graphics/jpeg/jpeg.h>
@@ -12,6 +13,7 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/string/string.h>
 #include <ngos/utils.h>
 
 
@@ -61,6 +63,25 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **i
 
 
     return NgosStatus::NOT_SUPPORTED;
+}
+
+NgosStatus Graphics::loadImageFromAssets(const char8 *path, Image **image)
+{
+    COMMON_LT((" | path = %s, image = 0x%p", path, image));
+
+    COMMON_ASSERT(path,  "path is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+
+
+
+    AssetEntry *asset = Assets::getAssetEntry(path);
+    COMMON_TEST_ASSERT(asset, NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, strend(path, ".9.png"), image), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
