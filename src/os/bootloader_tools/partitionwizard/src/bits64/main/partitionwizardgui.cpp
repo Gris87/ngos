@@ -1,5 +1,6 @@
 #include "partitionwizardgui.h"
 
+#include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
 #include <common/src/bits64/gui/widgets/misc/rootwidget.h>
@@ -52,6 +53,11 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
     Image *buttonPressedImage;
     Image *buttonFocusedImage;
     Image *buttonFocusedHoverImage;
+    Image *buttonNormalResizedImage;
+    Image *buttonHoverResizedImage;
+    Image *buttonPressedResizedImage;
+    Image *buttonFocusedResizedImage;
+    Image *buttonFocusedHoverResizedImage;
     Image *rebootImage;
     Image *shutdownImage;
     Image *cursorImage;
@@ -94,7 +100,15 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
 
 
 
-    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, rebootImage, "", rootWidget);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       systemButtonSize, systemButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        systemButtonSize, systemButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      systemButtonSize, systemButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      systemButtonSize, systemButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, systemButtonSize, systemButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+
+
+
+    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, rebootImage, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
@@ -103,7 +117,7 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
 
 
 
-    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, shutdownImage, "", rootWidget);
+    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shutdownImage, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);

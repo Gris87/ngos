@@ -13,6 +13,7 @@ class Button: public Widget
 {
 public:
     Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *contentImage, const char8 *text, Widget *parent = 0); // TEST: NO
+    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, const char8 *text, Widget *parent = 0); // TEST: NO
     ~Button(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
@@ -44,6 +45,7 @@ private:
     ImageWidget            *mImageWidget;
     LabelWidget            *mLabelWidget;
     WidgetState             mState;
+    bool                    mPredefined;
     keyboard_event_handler  mKeyboardEventHandler;
     press_event_handler     mPressEventHandler;
 };
