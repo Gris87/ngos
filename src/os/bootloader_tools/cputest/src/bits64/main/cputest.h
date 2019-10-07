@@ -17,8 +17,6 @@ class CpuTest
 {
 public:
     static NgosStatus init(); // TEST: NO
-
-    static NgosStatus loadImageFromAssets(const char8 *path, Image **image); // TEST: NO
 };
 
 

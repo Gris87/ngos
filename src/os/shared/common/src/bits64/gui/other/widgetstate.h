@@ -9,11 +9,12 @@
 
 enum class WidgetState: u8
 {
-    NONE    = 0,
-    NORMAL  = 1,
-    HOVERED = 2,
-    PRESSED = 3,
-    FOCUSED = 4
+    NONE            = 0,
+    NORMAL          = 1,
+    HOVERED         = 2,
+    PRESSED         = 3,
+    FOCUSED         = 4,
+    FOCUSED_HOVERED = 5
 };
 
 
@@ -26,11 +27,12 @@ inline const char8* widgetStateToString(WidgetState state) // TEST: NO
 
     switch (state)
     {
-        case WidgetState::NONE:    return "NONE";
-        case WidgetState::NORMAL:  return "NORMAL";
-        case WidgetState::HOVERED: return "HOVERED";
-        case WidgetState::PRESSED: return "PRESSED";
-        case WidgetState::FOCUSED: return "FOCUSED";
+        case WidgetState::NONE:            return "NONE";
+        case WidgetState::NORMAL:            return "NORMAL";
+        case WidgetState::HOVERED:         return "HOVERED";
+        case WidgetState::PRESSED:         return "PRESSED";
+        case WidgetState::FOCUSED:         return "FOCUSED";
+        case WidgetState::FOCUSED_HOVERED: return "FOCUSED_HOVERED";
 
         default: return "UNKNOWN";
     }

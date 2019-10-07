@@ -1,5 +1,7 @@
 #include "uefi.h"
 
+#include <common/src/bits64/assets/assets.h>
+#include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
@@ -288,6 +290,25 @@ UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
 
 
     return res;
+}
+
+NgosStatus UEFI::loadImageFromAssets(const char8 *path, Image **image)
+{
+    UEFI_LT((" | path = %s, image = 0x%p", path, image));
+
+    UEFI_ASSERT(path,  "path is null",  NgosStatus::ASSERTION);
+    UEFI_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+
+
+
+    AssetEntry *asset = Assets::getAssetEntry(path);
+    UEFI_TEST_ASSERT(asset, NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, strend(path, ".9.png"), image), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
 char16* UEFI::devicePathToString(UefiDevicePath *path)

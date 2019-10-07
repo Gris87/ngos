@@ -51,20 +51,22 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
     Image *buttonHoverImage;
     Image *buttonPressedImage;
     Image *buttonFocusedImage;
+    Image *buttonFocusedHoverImage;
     Image *rebootImage;
     Image *shutdownImage;
     Image *cursorImage;
 
 
 
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/background.jpg",       &backgroundImage),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/button_normal.9.png",  &buttonNormalImage),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/button_hover.9.png",   &buttonHoverImage),   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/button_pressed.9.png", &buttonPressedImage), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/button_focused.9.png", &buttonFocusedImage), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/reboot.png",           &rebootImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/shutdown.png",         &shutdownImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(PartitionWizard::loadImageFromAssets("images/cursor.png",           &cursorImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/background.jpg",             &backgroundImage),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/button_normal.9.png",        &buttonNormalImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/button_hover.9.png",         &buttonHoverImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/button_pressed.9.png",       &buttonPressedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/button_focused.9.png",       &buttonFocusedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/button_focused_hover.9.png", &buttonFocusedHoverImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/reboot.png",                 &rebootImage),             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/shutdown.png",               &shutdownImage),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::loadImageFromAssets("images/cursor.png",                 &cursorImage),             NgosStatus::ASSERTION);
 
 
 
@@ -92,7 +94,7 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
 
 
 
-    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, rebootImage, "", rootWidget);
+    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, rebootImage, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
@@ -101,7 +103,7 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
 
 
 
-    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, shutdownImage, "", rootWidget);
+    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, shutdownImage, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
