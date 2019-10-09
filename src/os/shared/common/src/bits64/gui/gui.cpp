@@ -184,9 +184,46 @@ NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerProtocol *pointer
 
     COMMON_ASSERT_EXECUTION(lockUpdates(), NgosStatus::ASSERTION);
 
+
+
     COMMON_ASSERT_EXECUTION(sCursorWidget->setPosition(state->currentX * sMainScreenWidget->getWidth() / pointer->mode->absoluteMaxX,
                                                         state->currentY * sMainScreenWidget->getHeight() / pointer->mode->absoluteMaxY), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(detectHoveredWidget(),                                                                                       NgosStatus::ASSERTION);
+
+
+
+    if (sPressedWidget)
+    {
+        if (!(state->activeButtons & FLAG(UefiAbsolutePointerStateActiveButtonFlag::TOUCH_ACTIVE)))
+        {
+            COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+
+            if (sHoveredWidget == sPressedWidget)
+            {
+                if (sPressedWidget->getPressEventHandler())
+                {
+                    COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandler()(), NgosStatus::ASSERTION);
+                }
+            }
+
+            COMMON_ASSERT_EXECUTION(setPressedWidget(nullptr), NgosStatus::ASSERTION);
+        }
+    }
+    else
+    {
+        COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+
+        if (
+            (state->activeButtons & FLAG(UefiAbsolutePointerStateActiveButtonFlag::TOUCH_ACTIVE))
+            &&
+            sHoveredWidget
+           )
+        {
+            COMMON_ASSERT_EXECUTION(setPressedWidget(sHoveredWidget), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(setFocusedWidget(sHoveredWidget), NgosStatus::ASSERTION);
+        }
+    }
+
+
 
     COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
 
