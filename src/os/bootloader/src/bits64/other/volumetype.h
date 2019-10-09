@@ -11,11 +11,12 @@
 
 enum class VolumeType: u8
 {
-    NONE     = 0,
-    INTERNAL = 1,
-    EXTERNAL = 2,
-    OPTICAL  = 3,
-    NETWORK  = 4
+    NONE,
+    INTERNAL,
+    EXTERNAL,
+    OPTICAL,
+    NETWORK,
+    MAXIMUM
 };
 
 
@@ -33,6 +34,7 @@ inline const char8* volumeTypeToString(VolumeType type) // TEST: NO
         case VolumeType::EXTERNAL: return "EXTERNAL";
         case VolumeType::OPTICAL:  return "OPTICAL";
         case VolumeType::NETWORK:  return "NETWORK";
+        case VolumeType::MAXIMUM:  return "MAXIMUM";
 
         default: return "UNKNOWN";
     }

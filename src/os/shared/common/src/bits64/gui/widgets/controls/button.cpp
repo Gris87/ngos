@@ -8,7 +8,7 @@
 
 
 
-Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *contentImage, const char8 *text, Widget *parent)
+Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent)
     : Widget(parent)
     , mNormalImage(normalImage)
     , mHoverImage(hoverImage)
@@ -21,13 +21,14 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mFocusedResizedImage(nullptr)
     , mFocusedHoverResizedImage(nullptr)
     , mImageWidget(new ImageWidget(contentImage, this))
+    , mBadgeWidget(nullptr)
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
     , mPredefined(false)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
 {
-    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, contentImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, contentImage, text, parent));
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, contentImage, badgeImage, text, parent));
 
     COMMON_ASSERT(normalImage,       "normalImage is null");
     COMMON_ASSERT(hoverImage,        "hoverImage is null");
@@ -38,13 +39,18 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
 
 
 
+    if (badgeImage)
+    {
+        mBadgeWidget = new ImageWidget(badgeImage, this);
+    }
+
     if (text && *text)
     {
         mLabelWidget = new LabelWidget(text, this);
     }
 }
 
-Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, const char8 *text, Widget *parent)
+Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent)
     : Widget(parent)
     , mNormalImage(normalImage)
     , mHoverImage(hoverImage)
@@ -57,13 +63,14 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mFocusedResizedImage(focusedResizedImage)
     , mFocusedHoverResizedImage(focusedHoverResizedImage)
     , mImageWidget(new ImageWidget(contentImage, this))
+    , mBadgeWidget(nullptr)
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
     , mPredefined(true)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
 {
-    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, contentImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, contentImage, text, parent));
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, contentImage, badgeImage, text, parent));
 
     COMMON_ASSERT(normalImage,              "normalImage is null");
     COMMON_ASSERT(hoverImage,               "hoverImage is null");
@@ -78,6 +85,11 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     COMMON_ASSERT(contentImage,             "contentImage is null");
 
 
+
+    if (badgeImage)
+    {
+        mBadgeWidget = new ImageWidget(badgeImage, this);
+    }
 
     if (text && *text)
     {
@@ -281,6 +293,14 @@ NgosStatus Button::repaint()
     COMMON_ASSERT_EXECUTION(mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) >> 1), paddingTop + ((allowedHeight - imageHeight) >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
     COMMON_ASSERT_EXECUTION(mImageWidget->setSize(imageWidth, imageHeight),                                                                                 NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(mImageWidget->unlockUpdates(),                                                                                                  NgosStatus::ASSERTION);
+
+    if (mBadgeWidget)
+    {
+        COMMON_ASSERT_EXECUTION(mBadgeWidget->lockUpdates(),                     NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mBadgeWidget->setPosition(0, 0),                 NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mBadgeWidget->setSize(mWidth >> 2, mWidth >> 2), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mBadgeWidget->unlockUpdates(),                   NgosStatus::ASSERTION);
+    }
 
     if (mLabelWidget)
     {

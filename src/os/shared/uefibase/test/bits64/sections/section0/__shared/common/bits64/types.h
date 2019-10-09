@@ -128,7 +128,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(BmpCompressionMethod),                          4);
         TEST_ASSERT_EQUALS(sizeof(BmpHeader),                                     14);
         TEST_ASSERT_EQUALS(sizeof(BmpInformationHeader),                          40);
-        TEST_ASSERT_EQUALS(sizeof(Button),                                        208);
+        TEST_ASSERT_EQUALS(sizeof(Button),                                        216);
         TEST_ASSERT_EQUALS(sizeof(CPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(Console),                                       1);
         TEST_ASSERT_EQUALS(sizeof(ConsoleWidget),                                 104);
