@@ -25,5 +25,9 @@
         <file>assets/images/reboot.png</file>
         <file>assets/images/shell.png</file>
         <file>assets/images/shutdown.png</file>
+        <file>assets/images/volume_external.png</file>
+        <file>assets/images/volume_internal.png</file>
+        <file>assets/images/volume_network.png</file>
+        <file>assets/images/volume_optical.png</file>
     </qresource>
 </RCC>
