@@ -147,8 +147,8 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
             sHoveredWidget
            )
         {
-            COMMON_ASSERT_EXECUTION(setFocusedWidget(sHoveredWidget), NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(setPressedWidget(sHoveredWidget), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(setFocusedWidget(sHoveredWidget), NgosStatus::ASSERTION);
         }
     }
 
