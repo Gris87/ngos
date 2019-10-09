@@ -34,6 +34,9 @@ public:
     static NgosStatus setHoveredWidget(Widget *widget); // TEST: NO
     static Widget* getHoveredWidget(); // TEST: NO
 
+    static NgosStatus setPressedWidget(Widget *widget); // TEST: NO
+    static Widget* getPressedWidget(); // TEST: NO
+
     static NgosStatus setFocusedWidget(Widget *widget); // TEST: NO
     static Widget* getFocusedWidget(); // TEST: NO
 
@@ -43,6 +46,7 @@ private:
     static CursorWidget *sCursorWidget;
     static u8            sUpdatesLocks;
     static Widget       *sHoveredWidget;
+    static Widget       *sPressedWidget;
     static Widget       *sFocusedWidget;
 };
 

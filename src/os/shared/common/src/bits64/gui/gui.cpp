@@ -12,6 +12,7 @@ ScreenWidget *GUI::sMainScreenWidget;
 CursorWidget *GUI::sCursorWidget;
 u8            GUI::sUpdatesLocks;
 Widget       *GUI::sHoveredWidget;
+Widget       *GUI::sPressedWidget;
 Widget       *GUI::sFocusedWidget;
 
 
@@ -95,21 +96,63 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
 
     COMMON_ASSERT_EXECUTION(lockUpdates(), NgosStatus::ASSERTION);
 
+
+
     if (
         state->relativeMovementX
         ||
         state->relativeMovementY
-        ||
-        (
-         !state->leftButton
-         &&
-         !state->rightButton
-        )
        )
     {
         COMMON_ASSERT_EXECUTION(sCursorWidget->setPosition(sCursorWidget->getPositionX() + state->relativeMovementX, sCursorWidget->getPositionY() + state->relativeMovementY), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(detectHoveredWidget(),                                                                                                                          NgosStatus::ASSERTION);
+
+        if (!sPressedWidget)
+        {
+            COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
     }
+
+
+
+    if (sPressedWidget)
+    {
+        if (
+            !state->leftButton
+            &&
+            !state->rightButton
+           )
+        {
+            COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+
+            if (sHoveredWidget == sPressedWidget)
+            {
+                if (sPressedWidget->getPressEventHandler())
+                {
+                    COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandler()(), NgosStatus::ASSERTION);
+                }
+            }
+
+            COMMON_ASSERT_EXECUTION(setPressedWidget(nullptr), NgosStatus::ASSERTION);
+        }
+    }
+    else
+    {
+        if (
+            (
+             state->leftButton
+             ||
+             state->rightButton
+            )
+            &&
+            sHoveredWidget
+           )
+        {
+            COMMON_ASSERT_EXECUTION(setFocusedWidget(sHoveredWidget), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(setPressedWidget(sHoveredWidget), NgosStatus::ASSERTION);
+        }
+    }
+
+
 
     COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
 
@@ -201,13 +244,16 @@ NgosStatus GUI::setHoveredWidget(Widget *widget)
 
         if (sHoveredWidget)
         {
-            if (sFocusedWidget == sHoveredWidget)
+            if (sHoveredWidget != sPressedWidget)
             {
-                sHoveredWidget->setState(WidgetState::FOCUSED);
-            }
-            else
-            {
-                sHoveredWidget->setState(WidgetState::NORMAL);
+                if (sFocusedWidget == sHoveredWidget)
+                {
+                    sHoveredWidget->setState(WidgetState::FOCUSED);
+                }
+                else
+                {
+                    sHoveredWidget->setState(WidgetState::NORMAL);
+                }
             }
         }
 
@@ -215,13 +261,16 @@ NgosStatus GUI::setHoveredWidget(Widget *widget)
 
         if (sHoveredWidget)
         {
-            if (sFocusedWidget == sHoveredWidget)
+            if (sHoveredWidget != sPressedWidget)
             {
-                sHoveredWidget->setState(WidgetState::FOCUSED_HOVERED);
-            }
-            else
-            {
-                sHoveredWidget->setState(WidgetState::HOVERED);
+                if (sFocusedWidget == sHoveredWidget)
+                {
+                    sHoveredWidget->setState(WidgetState::FOCUSED_HOVERED);
+                }
+                else
+                {
+                    sHoveredWidget->setState(WidgetState::HOVERED);
+                }
             }
         }
 
@@ -242,6 +291,64 @@ Widget* GUI::getHoveredWidget()
     return sHoveredWidget;
 }
 
+NgosStatus GUI::setPressedWidget(Widget *widget)
+{
+    COMMON_LT((" | widget = 0x%p", widget));
+
+
+
+    if (sPressedWidget != widget)
+    {
+        COMMON_ASSERT_EXECUTION(lockUpdates(), NgosStatus::ASSERTION);
+
+        if (sPressedWidget)
+        {
+            if (sHoveredWidget == sPressedWidget)
+            {
+                if (sFocusedWidget == sHoveredWidget)
+                {
+                    sPressedWidget->setState(WidgetState::FOCUSED_HOVERED);
+                }
+                else
+                {
+                    sPressedWidget->setState(WidgetState::HOVERED);
+                }
+            }
+            else
+            if (sFocusedWidget == sPressedWidget)
+            {
+                sPressedWidget->setState(WidgetState::FOCUSED);
+            }
+            else
+            {
+                sPressedWidget->setState(WidgetState::NORMAL);
+            }
+        }
+
+        sPressedWidget = widget;
+
+        if (sPressedWidget)
+        {
+            sPressedWidget->setState(WidgetState::PRESSED);
+        }
+
+        COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+Widget* GUI::getPressedWidget()
+{
+    COMMON_LT((""));
+
+
+
+    return sPressedWidget;
+}
+
 NgosStatus GUI::setFocusedWidget(Widget *widget)
 {
     COMMON_LT((" | widget = 0x%p", widget));
@@ -254,13 +361,16 @@ NgosStatus GUI::setFocusedWidget(Widget *widget)
 
         if (sFocusedWidget)
         {
-            if (sFocusedWidget == sHoveredWidget)
+            if (sFocusedWidget != sPressedWidget)
             {
-                sFocusedWidget->setState(WidgetState::HOVERED);
-            }
-            else
-            {
-                sFocusedWidget->setState(WidgetState::NORMAL);
+                if (sFocusedWidget == sHoveredWidget)
+                {
+                    sFocusedWidget->setState(WidgetState::HOVERED);
+                }
+                else
+                {
+                    sFocusedWidget->setState(WidgetState::NORMAL);
+                }
             }
         }
 
@@ -268,13 +378,16 @@ NgosStatus GUI::setFocusedWidget(Widget *widget)
 
         if (sFocusedWidget)
         {
-            if (sFocusedWidget == sHoveredWidget)
+            if (sFocusedWidget != sPressedWidget)
             {
-                sFocusedWidget->setState(WidgetState::FOCUSED_HOVERED);
-            }
-            else
-            {
-                sFocusedWidget->setState(WidgetState::FOCUSED);
+                if (sFocusedWidget == sHoveredWidget)
+                {
+                    sFocusedWidget->setState(WidgetState::FOCUSED_HOVERED);
+                }
+                else
+                {
+                    sFocusedWidget->setState(WidgetState::FOCUSED);
+                }
             }
         }
 
