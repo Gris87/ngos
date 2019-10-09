@@ -20,3 +20,7 @@ struct UefiConsoleControlProtocol
     UefiStatus (UEFI_API *setMode)(UefiConsoleControlProtocol *obj, UefiConsoleControlScreenMode mode); // TEST: NO
     UefiStatus (UEFI_API *lockStdIn)(UefiConsoleControlProtocol *obj, char16 *password); // TEST: NO
 };
+
+
+
+#endif // UEFI_UEFICONSOLECONTROLPROTOCOL_H
