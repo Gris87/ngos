@@ -10,10 +10,11 @@
 RootWidget   *GUI::sRootWidget;
 ScreenWidget *GUI::sMainScreenWidget;
 CursorWidget *GUI::sCursorWidget;
-u8            GUI::sUpdatesLocks;
 Widget       *GUI::sHoveredWidget;
 Widget       *GUI::sPressedWidget;
 Widget       *GUI::sFocusedWidget;
+u8            GUI::sUpdatesLocks;
+bool          GUI::sMouseLeftButton;
 
 
 
@@ -124,11 +125,16 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
         {
             COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
 
-            if (sHoveredWidget == sPressedWidget)
+            if (sMouseLeftButton)
             {
-                if (sPressedWidget->getPressEventHandler())
+                sMouseLeftButton = false;
+
+                if (sHoveredWidget == sPressedWidget)
                 {
-                    COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandler()(), NgosStatus::ASSERTION);
+                    if (sPressedWidget->getPressEventHandler())
+                    {
+                        COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandler()(), NgosStatus::ASSERTION);
+                    }
                 }
             }
 
@@ -147,6 +153,8 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
             sHoveredWidget
            )
         {
+            sMouseLeftButton = state->leftButton;
+
             COMMON_ASSERT_EXECUTION(setPressedWidget(sHoveredWidget), NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(setFocusedWidget(sHoveredWidget), NgosStatus::ASSERTION);
         }

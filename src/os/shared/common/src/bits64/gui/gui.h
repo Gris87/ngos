@@ -44,10 +44,11 @@ private:
     static RootWidget   *sRootWidget;
     static ScreenWidget *sMainScreenWidget;
     static CursorWidget *sCursorWidget;
-    static u8            sUpdatesLocks;
     static Widget       *sHoveredWidget;
     static Widget       *sPressedWidget;
     static Widget       *sFocusedWidget;
+    static u8            sUpdatesLocks;
+    static bool          sMouseLeftButton;
 };
 
 
