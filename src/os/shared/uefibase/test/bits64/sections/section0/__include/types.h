@@ -63,6 +63,8 @@
 #include <uefi/uefibootservices.h>
 #include <uefi/ueficapsuleheader.h>
 #include <uefi/ueficonfigurationtable.h>
+#include <uefi/ueficonsolecontrolprotocol.h>
+#include <uefi/ueficonsolecontrolscreenmode.h>
 #include <uefi/uefidevicepath.h>
 #include <uefi/uefidevicepathtotextprotocol.h>
 #include <uefi/uefieventtype.h>
@@ -181,6 +183,8 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiBootServices),                             376);
         TEST_ASSERT_EQUALS(sizeof(UefiCapsuleHeader),                            28);
         TEST_ASSERT_EQUALS(sizeof(UefiConfigurationTable),                       24);
+        TEST_ASSERT_EQUALS(sizeof(UefiConsoleControlProtocol),                   24);
+        TEST_ASSERT_EQUALS(sizeof(UefiConsoleControlScreenMode),                 1);
         TEST_ASSERT_EQUALS(sizeof(UefiDebugInfoConfigurationTable),              1);
         TEST_ASSERT_EQUALS(sizeof(UefiDevicePath),                               4);
         TEST_ASSERT_EQUALS(sizeof(UefiDevicePathSubType),                        1);

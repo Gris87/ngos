@@ -5,6 +5,7 @@
 
 #include <ngos/status.h>
 #include <uefi/types.h>
+#include <uefi/ueficonsolecontrolscreenmode.h>
 #include <uefi/uefifileprotocol.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisystemtable.h>
@@ -17,6 +18,7 @@ class UEFI
 public:
     static NgosStatus init(uefi_handle imageHandle, UefiSystemTable *systemTable); // TEST: NO
 
+    static NgosStatus switchToGraphicsMode(); // TEST: NO
     static NgosStatus switchToTextMode(); // TEST: NO
     static UefiStatus clearScreen(); // TEST: NO
     static void print(char8 ch); // TEST: NO
@@ -74,6 +76,7 @@ private:
     static NgosStatus disableWatchdogTimer(); // TEST: NO
     static NgosStatus maximizeConsole(UefiSimpleTextOutputInterface *textOutput); // TEST: NO
     static NgosStatus disableCursor(); // TEST: NO
+    static NgosStatus switchConsoleControlScreenMode(UefiConsoleControlScreenMode mode); // TEST: NO
 
     static void print(char16 *ch); // TEST: NO
 

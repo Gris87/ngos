@@ -454,6 +454,8 @@ src/os/include/uefi/uefiblockioprotocol.h
 src/os/include/uefi/uefibootservices.h
 src/os/include/uefi/ueficapsuleheader.h
 src/os/include/uefi/ueficonfigurationtable.h
+src/os/include/uefi/ueficonsolecontrolprotocol.h
+src/os/include/uefi/ueficonsolecontrolscreenmode.h
 src/os/include/uefi/uefidevicepath.h
 src/os/include/uefi/uefidevicepathsubtype.h
 src/os/include/uefi/uefidevicepathtotextprotocol.h

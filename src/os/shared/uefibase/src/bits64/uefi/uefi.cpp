@@ -5,6 +5,7 @@
 #include <common/src/bits64/string/string.h>
 #include <ngos/utils.h>
 #include <page/macros.h>
+#include <uefi/ueficonsolecontrolprotocol.h>
 #include <uefi/uefidevicepathtotextprotocol.h>
 #include <uefi/uefifilepath.h>
 #include <uefi/uefisimplefilesystemprotocol.h>
@@ -59,17 +60,32 @@ NgosStatus UEFI::init(uefi_handle imageHandle, UefiSystemTable *systemTable)
     return NgosStatus::OK;
 }
 
+NgosStatus UEFI::switchToGraphicsMode()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(switchConsoleControlScreenMode(UefiConsoleControlScreenMode::GRAPHICS), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus UEFI::switchToTextMode()
 {
     UEFI_LT((""));
 
 
 
+    UEFI_ASSERT_EXECUTION(switchConsoleControlScreenMode(UefiConsoleControlScreenMode::TEXT),                      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSystemTable->stdout->setMode(sSystemTable->stdout, 0), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(maximizeConsole(sSystemTable->stdout),                                                   NgosStatus::ASSERTION);
 
 
 
-    return maximizeConsole(sSystemTable->stdout);
+    return NgosStatus::OK;
 }
 
 UefiStatus UEFI::clearScreen()
@@ -1114,6 +1130,60 @@ NgosStatus UEFI::disableCursor()
 
 
     sTextOutput->enableCursor(sTextOutput, false);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus UEFI::switchConsoleControlScreenMode(UefiConsoleControlScreenMode mode)
+{
+    UEFI_LT((" | mode = %u", mode));
+
+    UEFI_ASSERT(mode < UefiConsoleControlScreenMode::MAXIMUM, "mode is invalid", NgosStatus::ASSERTION);
+
+
+
+    UefiConsoleControlProtocol *consoleControl;
+    Guid                        protocol = UEFI_CONSOLE_CONTROL_PROTOCOL_GUID;
+
+    if (locateProtocol(&protocol, nullptr, (void **)&consoleControl) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Located protocol(0x%p) UEFI_CONSOLE_CONTROL_PROTOCOL", consoleControl));
+
+
+
+        UefiConsoleControlScreenMode oldMode;
+
+        if (consoleControl->getMode(consoleControl, &oldMode, nullptr, nullptr) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Got current console control screen mode: %u (%s)", oldMode, uefiConsoleControlScreenModeToString(oldMode)));
+
+            if (oldMode != mode)
+            {
+                if (consoleControl->setMode(consoleControl, mode) == UefiStatus::SUCCESS)
+                {
+                    UEFI_LVV(("Switched console control screen mode to %u (%s) mode", mode, uefiConsoleControlScreenModeToString(mode)));
+                }
+                else
+                {
+                    UEFI_LV(("Failed to switch console control screen mode to %u (%s) mode", mode, uefiConsoleControlScreenModeToString(mode)));
+                }
+            }
+            else
+            {
+                UEFI_LVV(("Already in %u (%s) mode", mode, uefiConsoleControlScreenModeToString(mode)));
+            }
+        }
+        else
+        {
+            UEFI_LV(("Failed to get current console control screen mode"));
+        }
+    }
+    else
+    {
+        UEFI_LV(("Failed to locate protocol UEFI_CONSOLE_CONTROL_PROTOCOL"));
+    }
 
 
 
