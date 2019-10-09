@@ -1,33 +1,23 @@
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" ../include/buildconfig.h | sed -r "s/  */ /g" | cut -d " " -f 3 | sed -r "s/OPTION_ARCH_//g" | tr "[:upper:]" "[:lower:]")
-
 MKDIR = mkdir -p
 RMDIR = rm -rf
 COPY  = cp
 
 
 
-EDK2_ARCH = X64
-
-ifeq ($(ARCH), x86_64)
-	EDK2_ARCH = X64
-endif
+LIBRARIES_DIR   = libs
+FREETYPE_DIR    = $(LIBRARIES_DIR)/freetype
+SHELLBINPKG_DIR = $(LIBRARIES_DIR)/ShellBinPkg
 
 
 
-LIBRARIES_DIR = libs
-FREETYPE_DIR  = $(LIBRARIES_DIR)/freetype
-EDK2_DIR      = $(LIBRARIES_DIR)/edk2
-
-
-
-TARGET_FREETYPE = $(FREETYPE_DIR)/objs/.libs/libfreetype.a
-TARGET_EDK2     = $(EDK2_DIR)/Build/Shell/RELEASE_GCC5/$(EDK2_ARCH)/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi
+TARGET_FREETYPE    = $(FREETYPE_DIR)/objs/.libs/libfreetype.a
+TARGET_SHELLBINPKG = $(SHELLBINPKG_DIR)/UefiShell
 
 
 
 ALL_TARGETS = \
 	$(TARGET_FREETYPE) \
-	$(TARGET_EDK2)
+	$(TARGET_SHELLBINPKG)
 
 
 
@@ -45,8 +35,7 @@ $(TARGET_FREETYPE): $(FREETYPE_DIR)
 
 
 
-$(TARGET_EDK2): $(EDK2_DIR)
-	bash -c "cd $(EDK2_DIR) && source edksetup.sh BaseTools && make -C BaseTools/ && build -a $(EDK2_ARCH) -t GCC5 -b RELEASE -n `nproc` -p ShellPkg/ShellPkg.dsc && $(COPY) Build/Shell/RELEASE_GCC5/$(EDK2_ARCH)/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi Build/shell.efi"
+$(TARGET_SHELLBINPKG): $(SHELLBINPKG_DIR)
 
 
 
@@ -55,5 +44,5 @@ $(FREETYPE_DIR):
 
 
 
-$(EDK2_DIR):
-	./fetch_edk2.sh
+$(SHELLBINPKG_DIR):
+	./fetch_shellbinpkg.sh

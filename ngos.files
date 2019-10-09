@@ -1,8 +1,8 @@
 .gitignore
 3rd_party/.gitignore
-3rd_party/fetch_edk2.sh
 3rd_party/fetch_freetype.sh
 3rd_party/Makefile
+3rd_party/fetch_shellbinpkg.sh
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
 docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 19.04/README.md

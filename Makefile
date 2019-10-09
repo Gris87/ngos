@@ -1,9 +1,19 @@
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" include/buildconfig.h | sed -r "s/  */ /g" | cut -d " " -f 3 | sed -r "s/OPTION_ARCH_//g" | tr "[:upper:]" "[:lower:]")
+
 OUTPUT_DIR = build
 BUILD_CONFIG = include/buildconfig.h
 
 MKDIR = mkdir -p
 RMDIR = rm -rf
 COPY  = cp
+
+
+
+EDK2_ARCH = X64
+
+ifeq ($(ARCH), x86_64)
+	EDK2_ARCH = X64
+endif
 
 
 
@@ -57,9 +67,9 @@ $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/partitionwizard.efi: src/os/b
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/partitionwizard/build/partitionwizard.elf -o $@
 
-$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi: 3rd_party/libs/edk2/Build/shell.efi
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/shell.efi: 3rd_party/libs/ShellBinPkg/UefiShell/$(EDK2_ARCH)/Shell.efi
 	$(MKDIR) $(@D)
-	$(COPY) 3rd_party/libs/edk2/Build/shell.efi $@
+	$(COPY) $< $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
