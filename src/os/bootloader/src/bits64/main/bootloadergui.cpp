@@ -1451,6 +1451,13 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
 
 
+    const OsInfo &os = Bootloader::getOSes().at(sOsButtonSelected);
+
+
+
+
+
+
     UEFI_ASSERT_EXECUTION(Bootloader::startOs(sOsButtonSelected), NgosStatus::ASSERTION);
 
 

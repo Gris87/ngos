@@ -14,6 +14,7 @@
 
 
 
+#define UEFI_MAXIMUM_VARIABLE_SIZE            2048
 #define UEFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS 8
 
 
@@ -222,6 +223,75 @@ bool UEFI::canPrint()
 
 
     return sTextOutput;
+}
+
+UefiStatus UEFI::getVariable(char16 *variableName, Guid *vendorGuid, void **data)
+{
+    u64 size = UEFI_MAXIMUM_VARIABLE_SIZE;
+
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, data) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to allocate pool(%u) for variable", size));
+
+        return UefiStatus::OUT_OF_RESOURCES;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for variable", *data, size));
+
+
+    if
+
+
+
+    return getVariable(variableName, vendorGuid, FLAG(UefiVariableAttributeFlag::NONE), &size, data);
+}
+
+UefiStatus UEFI::getVariable(char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, void *data)
+{
+    UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, attributes, dataSize, data));
+
+    UEFI_ASSERT(variableName,                            "variableName is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(vendorGuid,                              "vendorGuid is null",   UefiStatus::ABORTED);
+    UEFI_ASSERT(dataSize,                                "dataSize is null",     UefiStatus::ABORTED);
+    UEFI_ASSERT(*dataSize <= UEFI_MAXIMUM_VARIABLE_SIZE, "dataSize is invalid",  UefiStatus::ABORTED);
+    UEFI_ASSERT(data,                                    "data is null",         UefiStatus::ABORTED);
+
+
+
+    return sSystemTable->runtimeServices->getVariable(variableName, vendorGuid, attributes, dataSize, data);
+}
+
+UefiStatus UEFI::setVariable(char16 *variableName, Guid *vendorGuid, u64 dataSize, void **data)
+{
+    UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, dataSize = %u, data = 0x%p", variableName, vendorGuid, dataSize, data));
+
+    UEFI_ASSERT(variableName, "variableName is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(vendorGuid,   "vendorGuid is null",   UefiStatus::ABORTED);
+    UEFI_ASSERT(dataSize > 0, "dataSize is zero",     UefiStatus::ABORTED);
+    UEFI_ASSERT(data,         "data is null",         UefiStatus::ABORTED);
+
+
+
+    return setVariable(variableName,
+                        vendorGuid,
+                        FLAGS(UefiVariableAttributeFlag::BOOTSERVICE_ACCESS, UefiVariableAttributeFlag::RUNTIME_ACCESS, UefiVariableAttributeFlag::NON_VOLATILE),
+                        dataSize,
+                        data);
+}
+
+UefiStatus UEFI::setVariable(char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, void *data)
+{
+    UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = %u, dataSize = %u, data = 0x%p", variableName, vendorGuid, attributes, dataSize, data));
+
+    UEFI_ASSERT(variableName,                           "variableName is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(vendorGuid,                             "vendorGuid is null",   UefiStatus::ABORTED);
+    UEFI_ASSERT(dataSize > 0,                           "dataSize is zero",     UefiStatus::ABORTED);
+    UEFI_ASSERT(dataSize <= UEFI_MAXIMUM_VARIABLE_SIZE, "dataSize is invalid",  UefiStatus::ABORTED);
+    UEFI_ASSERT(data,                                   "data is null",         UefiStatus::ABORTED);
+
+
+
+    return sSystemTable->runtimeServices->setVariable(variableName, vendorGuid, attributes, dataSize, data);
 }
 
 UefiFileProtocol* UEFI::openVolume(uefi_handle handle)

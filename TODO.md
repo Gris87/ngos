@@ -4,6 +4,7 @@ TODO List
 NGOS:
 
 - Refactor
+- Use global variable for GUID
 - Replace zeros with nullptr
 - Bool to string
 
