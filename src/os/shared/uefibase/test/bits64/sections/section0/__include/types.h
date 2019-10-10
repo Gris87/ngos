@@ -184,7 +184,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiCapsuleHeader),                            28);
         TEST_ASSERT_EQUALS(sizeof(UefiConfigurationTable),                       24);
         TEST_ASSERT_EQUALS(sizeof(UefiConsoleControlProtocol),                   24);
-        TEST_ASSERT_EQUALS(sizeof(UefiConsoleControlScreenMode),                 1);
+        TEST_ASSERT_EQUALS(sizeof(UefiConsoleControlScreenMode),                 4);
         TEST_ASSERT_EQUALS(sizeof(UefiDebugInfoConfigurationTable),              1);
         TEST_ASSERT_EQUALS(sizeof(UefiDevicePath),                               4);
         TEST_ASSERT_EQUALS(sizeof(UefiDevicePathSubType),                        1);

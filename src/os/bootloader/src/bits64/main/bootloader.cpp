@@ -1449,7 +1449,7 @@ NgosStatus Bootloader::addUbuntu19(VolumeInfo *volume)
 
 
 
-    const char16 *path = u"EFI\\ubuntu\\shimx64.efi";
+    const char16 *path = u"EFI\\ubuntu\\grubx64.efi";
 
     if (UEFI::fileExists(volume->rootDirectory, path))
     {
@@ -1475,7 +1475,7 @@ NgosStatus Bootloader::addCentOS8(VolumeInfo *volume)
 
 
 
-    const char16 *path = u"EFI\\centos\\shimx64.efi";
+    const char16 *path = u"EFI\\centos\\grubx64.efi";
 
     if (UEFI::fileExists(volume->rootDirectory, path))
     {

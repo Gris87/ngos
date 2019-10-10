@@ -7,7 +7,7 @@
 
 
 
-enum class UefiConsoleControlScreenMode: u8
+enum class UefiConsoleControlScreenMode: u32
 {
     TEXT,
     GRAPHICS,
