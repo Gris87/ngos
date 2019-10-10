@@ -34,6 +34,7 @@ public:
     static char16* parentDirectory(const char16 *path);
 
     static UefiFileProtocol* openVolume(uefi_handle handle); // TEST: NO
+    static bool fileExists(UefiFileProtocol *parentDirectory, const char16 *path); // TEST: NO
 
     static char16* devicePathToString(UefiDevicePath *path); // TEST: NO
     static UefiDevicePath* devicePathFromHandle(uefi_handle handle); // TEST: NO

@@ -306,6 +306,29 @@ UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
     return res;
 }
 
+bool UEFI::fileExists(UefiFileProtocol *parentDirectory, const char16 *path)
+{
+    UEFI_LT((" | parentDirectory = 0x%p, path = 0x%p", parentDirectory, path));
+
+    UEFI_ASSERT(parentDirectory, "parentDirectory is null", false);
+    UEFI_ASSERT(path,            "path is null",            false);
+
+
+
+    UefiFileProtocol *tempFile;
+
+    if (parentDirectory->open(parentDirectory, &tempFile, path, FLAGS(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
+    {
+        UEFI_ASSERT_EXECUTION(tempFile->close(tempFile), UefiStatus, UefiStatus::SUCCESS, false);
+
+        return true;
+    }
+
+
+
+    return false;
+}
+
 char16* UEFI::devicePathToString(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
