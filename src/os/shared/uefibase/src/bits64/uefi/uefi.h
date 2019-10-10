@@ -31,10 +31,10 @@ public:
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
-    static UefiStatus getVariable(char16 *variableName, Guid *vendorGuid, void **data); // TEST: NO
-    static UefiStatus getVariable(char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, void *data); // TEST: NO
-    static UefiStatus setVariable(char16 *variableName, Guid *vendorGuid, u64 dataSize, void **data); // TEST: NO
-    static UefiStatus setVariable(char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, void *data); // TEST: NO
+    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, void **data); // TEST: NO
+    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, void *data); // TEST: NO
+    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, u64 dataSize, void *data); // TEST: NO
+    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, void *data); // TEST: NO
 
     static UefiFileProtocol* openVolume(uefi_handle handle); // TEST: NO
     static bool fileExists(UefiFileProtocol *parentDirectory, const char16 *path); // TEST: NO

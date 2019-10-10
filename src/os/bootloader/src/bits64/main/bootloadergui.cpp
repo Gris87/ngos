@@ -90,6 +90,8 @@ u16                  BootloaderGUI::sWaitEventsCount;
 uefi_event          *BootloaderGUI::sWaitEvents;
 uefi_event           BootloaderGUI::sTimerEvent;
 
+Guid gBootloaderGUID = { 0xACC36FA9, 0x3834, 0x49C2, {0xA6, 0xC7, 0x29, 0x68, 0x2B, 0x2A, 0xD3, 0x3E} };
+
 
 
 NgosStatus BootloaderGUI::init(BootParams *params)
@@ -1453,8 +1455,23 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
     const OsInfo &os = Bootloader::getOSes().at(sOsButtonSelected);
 
+    if (UEFI::setVariable(u"LastOsVolume", &gBootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), os.path) == UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Stored LastOsVolume NVRAM variable: %ls", os.path));
+    }
+    else
+    {
+        UEFI_LE(("Failed to store LastOsVolume NVRAM variable"));
+    }
 
-
+    if (UEFI::setVariable(u"LastOsPath", &gBootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), os.path) == UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Stored LastOsPath NVRAM variable: %ls", os.path));
+    }
+    else
+    {
+        UEFI_LE(("Failed to store LastOsPath NVRAM variable"));
+    }
 
 
 
