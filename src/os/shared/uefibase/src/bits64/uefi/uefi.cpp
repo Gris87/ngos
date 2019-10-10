@@ -224,54 +224,6 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-char16* UEFI::parentDirectory(const char16 *path)
-{
-    UEFI_LT((" | path = %ls", path));
-
-    UEFI_ASSERT(path, "path is null", 0);
-
-
-
-    u64           size = 0;
-    const char16 *str  = path;
-
-    while (*str)
-    {
-        if (*str == u'\\')
-        {
-            size = (u64)str;
-        }
-
-        ++str;
-    }
-
-    UEFI_TEST_ASSERT(size > 0, 0);
-
-    size = size - (u64)path + sizeof(char16);
-
-
-
-    char16 *res;
-
-    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
-    {
-        UEFI_LE(("Failed to allocate pool(%u) for string", size));
-
-        return 0;
-    }
-
-    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
-
-
-
-    memcpy(res, path, size - sizeof(char16));
-    res[size / sizeof(char16) - 1] = 0;
-
-
-
-    return res;
-}
-
 UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
 {
     UEFI_LT((" | handle = 0x%p", handle));
@@ -327,6 +279,54 @@ bool UEFI::fileExists(UefiFileProtocol *parentDirectory, const char16 *path)
 
 
     return false;
+}
+
+char16* UEFI::parentDirectory(const char16 *path)
+{
+    UEFI_LT((" | path = %ls", path));
+
+    UEFI_ASSERT(path, "path is null", 0);
+
+
+
+    u64           size = 0;
+    const char16 *str  = path;
+
+    while (*str)
+    {
+        if (*str == u'\\')
+        {
+            size = (u64)str;
+        }
+
+        ++str;
+    }
+
+    UEFI_TEST_ASSERT(size > 0, 0);
+
+    size = size - (u64)path + sizeof(char16);
+
+
+
+    char16 *res;
+
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to allocate pool(%u) for string", size));
+
+        return 0;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
+
+
+
+    memcpy(res, path, size - sizeof(char16));
+    res[size / sizeof(char16) - 1] = 0;
+
+
+
+    return res;
 }
 
 char16* UEFI::devicePathToString(UefiDevicePath *path)
