@@ -671,6 +671,7 @@ NgosStatus Bootloader::initVolumes()
             UEFI_LVVV(("volume.gptData.entries       = 0x%p",    volume.gptData.entries));
             UEFI_LVVV(("volume.type                  = %u (%s)", volume.type, volumeTypeToString(volume.type)));
             UEFI_LVVV(("volume.name                  = %ls",     volume.name));
+            UEFI_LVVV(("volume.partitionUniqueGuid   = 0x%p",    volume.partitionUniqueGuid));
             UEFI_LVVV(("volume.rootDirectory         = 0x%p",    volume.rootDirectory));
 
 
@@ -804,7 +805,7 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, Guid *protocol, uefi_handl
     UEFI_ASSERT_EXECUTION(initVolumeWholeDisk(volume, protocol),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeGptData(volume),                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeType(volume),                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initVolumeName(volume),                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeNameAndGuid(volume),                       NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeRootDirectory(volume),                     NgosStatus::ASSERTION);
 
 
@@ -1208,7 +1209,7 @@ NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
+NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 {
     UEFI_LT((" | volume = 0x%p", volume));
 
@@ -1216,7 +1217,8 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
 
 
 
-    volume->name = u"UNKNOWN";
+    volume->name                = u"UNKNOWN";
+    volume->partitionUniqueGuid = nullptr;
 
 
 
@@ -1224,41 +1226,43 @@ NgosStatus Bootloader::initVolumeName(VolumeInfo *volume)
 
     while (!UEFI::isDevicePathEndType(currentDevicePath))
     {
-        if (currentDevicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH)
+        if (
+            currentDevicePath->type == UefiDevicePathType::MEDIA_DEVICE_PATH
+            &&
+            currentDevicePath->subType == UefiDevicePathSubType::MEDIA_HARDDRIVE_DP
+           )
         {
-            if (currentDevicePath->subType == UefiDevicePathSubType::MEDIA_HARDDRIVE_DP)
+            UefiHardDriveDevicePath *hardDrivePath = (UefiHardDriveDevicePath *)currentDevicePath;
+
+            if (hardDrivePath->signatureType == UefiHardDriveDevicePathSignatureType::GUID)
             {
-                UefiHardDriveDevicePath *hardDrivePath = (UefiHardDriveDevicePath *)currentDevicePath;
+                ListElement<VolumeInfo> *element = sVolumes.getHead();
 
-                if (hardDrivePath->signatureType == UefiHardDriveDevicePathSignatureType::GUID)
+                while (element)
                 {
-                    ListElement<VolumeInfo> *element = sVolumes.getHead();
+                    const VolumeInfo &previousVolume = element->getData();
 
-                    while (element)
+
+
+                    if (previousVolume.gptData.entries)
                     {
-                        const VolumeInfo &previousVolume = element->getData();
-
-
-
-                        if (previousVolume.gptData.entries)
+                        for (i64 i = 0; i < previousVolume.gptData.header->entryCount; ++i)
                         {
-                            for (i64 i = 0; i < previousVolume.gptData.header->entryCount; ++i)
+                            GptEntry *gptEntry = &previousVolume.gptData.entries[i];
+
+                            if (isGuidEquals(gptEntry->partitionUniqueGuid, hardDrivePath->signatureGuid))
                             {
-                                GptEntry *gptEntry = &previousVolume.gptData.entries[i];
+                                volume->name                = gptEntry->name;
+                                volume->partitionUniqueGuid = &gptEntry->partitionUniqueGuid;
 
-                                if (isGuidEquals(gptEntry->partitionUniqueGuid, hardDrivePath->signatureGuid))
-                                {
-                                    volume->name = gptEntry->name;
-
-                                    return NgosStatus::OK;
-                                }
+                                return NgosStatus::OK;
                             }
                         }
-
-
-
-                        element = element->getNext();
                     }
+
+
+
+                    element = element->getNext();
                 }
             }
         }

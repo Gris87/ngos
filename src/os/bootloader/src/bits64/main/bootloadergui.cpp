@@ -1455,9 +1455,9 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
     const OsInfo &os = Bootloader::getOSes().at(sOsButtonSelected);
 
-    if (UEFI::setVariable(u"LastOsVolume", &gBootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), os.path) == UefiStatus::SUCCESS)
+    if (UEFI::setVariable(u"LastOsVolume", &gBootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Stored LastOsVolume NVRAM variable: %ls", os.path));
+        UEFI_LV(("Stored LastOsVolume NVRAM variable: 0x%p", os.volume->partitionUniqueGuid));
     }
     else
     {
@@ -1466,7 +1466,7 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
     if (UEFI::setVariable(u"LastOsPath", &gBootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), os.path) == UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Stored LastOsPath NVRAM variable: %ls", os.path));
+        UEFI_LV(("Stored LastOsPath NVRAM variable: %ls", os.path));
     }
     else
     {

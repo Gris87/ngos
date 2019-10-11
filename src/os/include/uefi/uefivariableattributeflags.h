@@ -3,8 +3,11 @@
 
 
 
+#if defined(UEFI_APPLICATION)
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#endif
+
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -43,6 +46,7 @@ inline const char8* uefiVariableAttributeFlagToString(UefiVariableAttributeFlag 
 
 
 
+#if defined(UEFI_APPLICATION)
 inline const char8* uefiVariableAttributeFlagsToString(uefi_variable_attribute_flags flags) // TEST: NO
 {
     if (!flags)
@@ -58,6 +62,7 @@ inline const char8* uefiVariableAttributeFlagsToString(uefi_variable_attribute_f
 
     return res;
 }
+#endif
 
 
 
