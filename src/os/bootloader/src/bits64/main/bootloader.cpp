@@ -9,6 +9,8 @@
 #include <guid/utils.h>
 #include <ngos/utils.h>
 #include <uefi/uefiblockioprotocol.h>
+#include <uefi/uefifileinfo.h>
+#include <uefi/uefifilesysteminfo.h>
 #include <uefi/uefiharddrivedevicepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
@@ -610,6 +612,7 @@ NgosStatus Bootloader::initVolumes()
 
             UEFI_LVVV(("volume.deviceHandle    = 0x%p", volume.deviceHandle));
             UEFI_LVVV(("volume.blockIoProtocol = 0x%p", volume.blockIoProtocol));
+            UEFI_LVVV(("volume.devicePath      = 0x%p", volume.devicePath));
 
 
 
@@ -670,10 +673,10 @@ NgosStatus Bootloader::initVolumes()
             UEFI_LVVV(("volume.gptData.protectiveMbr = 0x%p",    volume.gptData.protectiveMbr));
             UEFI_LVVV(("volume.gptData.header        = 0x%p",    volume.gptData.header));
             UEFI_LVVV(("volume.gptData.entries       = 0x%p",    volume.gptData.entries));
+            UEFI_LVVV(("volume.rootDirectory         = 0x%p",    volume.rootDirectory));
             UEFI_LVVV(("volume.type                  = %u (%s)", volume.type, volumeTypeToString(volume.type)));
             UEFI_LVVV(("volume.name                  = %ls",     volume.name));
             UEFI_LVVV(("volume.partitionUniqueGuid   = 0x%p",    volume.partitionUniqueGuid));
-            UEFI_LVVV(("volume.rootDirectory         = 0x%p",    volume.rootDirectory));
 
 
 
@@ -805,9 +808,9 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, Guid *protocol, uefi_handl
     UEFI_ASSERT_EXECUTION(initVolumeDevicePath(volume, handle),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeWholeDisk(volume, protocol),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeGptData(volume),                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeRootDirectory(volume),                     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeType(volume),                              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeNameAndGuid(volume),                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initVolumeRootDirectory(volume),                     NgosStatus::ASSERTION);
 
 
 
@@ -1136,6 +1139,21 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
     return NgosStatus::OK;
 }
 
+NgosStatus Bootloader::initVolumeRootDirectory(VolumeInfo *volume)
+{
+    UEFI_LT((" | volume = 0x%p", volume));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+
+
+
+    volume->rootDirectory = UEFI::openVolume(volume->deviceHandle);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
 {
     UEFI_LT((" | volume = 0x%p", volume));
@@ -1275,18 +1293,65 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
 
 
-    return NgosStatus::OK;
-}
+    if (
+        !volume->partitionUniqueGuid
+        &&
+        volume->rootDirectory
+       )
+    {
+        Guid                fileSystemInfoGuid = UEFI_FILESYSTEM_INFO_GUID;
+        u64                 fileSystemInfoSize = 0;
+        UefiFileSystemInfo *fileSystemInfo;
 
-NgosStatus Bootloader::initVolumeRootDirectory(VolumeInfo *volume)
-{
-    UEFI_LT((" | volume = 0x%p", volume));
-
-    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
 
 
+        if (volume->rootDirectory->getInfo(volume->rootDirectory, &fileSystemInfoGuid, &fileSystemInfoSize, &fileSystemInfo) == UefiStatus::BUFFER_TOO_SMALL)
+        {
+            if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, fileSystemInfoSize, (void **)&fileSystemInfo) != UefiStatus::SUCCESS)
+            {
+                UEFI_LF(("Failed to allocate pool(%u) for file system info", fileSystemInfoSize));
 
-    volume->rootDirectory = UEFI::openVolume(volume->deviceHandle);
+                return NgosStatus::OUT_OF_MEMORY;
+            }
+
+            UEFI_LVV(("Allocated pool(0x%p, %u) for file system info", fileSystemInfo, fileSystemInfoSize));
+
+
+
+            if (volume->rootDirectory->getInfo(volume->rootDirectory, &fileSystemInfoGuid, &fileSystemInfoSize, fileSystemInfo) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVVV(("fileSystemInfo->size        = %u",  fileSystemInfo->size));
+                UEFI_LVVV(("fileSystemInfo->readOnly    = %s",  fileSystemInfo->readOnly ? "true" : "false"));
+                UEFI_LVVV(("fileSystemInfo->volumeSize  = %u",  fileSystemInfo->volumeSize));
+                UEFI_LVVV(("fileSystemInfo->freeSpace   = %u",  fileSystemInfo->freeSpace));
+                UEFI_LVVV(("fileSystemInfo->blockSize   = %u",  fileSystemInfo->blockSize));
+                UEFI_LVVV(("fileSystemInfo->volumeLabel = %ls", fileSystemInfo->volumeLabel));
+
+
+
+                UEFI_ASSERT_EXECUTION(UEFI::cloneString(fileSystemInfo->volumeLabel, (char16 **)&volume->name), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                UEFI_LW(("Failed to get size of file system info"));
+            }
+
+
+
+            if (UEFI::freePool(fileSystemInfo) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for file system info", fileSystemInfo));
+            }
+            else
+            {
+                UEFI_LE(("Failed to release pool(0x%p) for file system info", fileSystemInfo));
+            }
+        }
+        else
+        {
+            UEFI_LW(("Failed to get size of file system info"));
+        }
+    }
 
 
 

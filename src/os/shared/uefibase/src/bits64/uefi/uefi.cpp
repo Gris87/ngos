@@ -225,6 +225,35 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
+NgosStatus UEFI::cloneString(const char16 *str, char16 **res)
+{
+    UEFI_LT((" | str = 0x%p, res = 0x%p", str, res));
+
+    UEFI_ASSERT(str, "str is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(res, "res is null", NgosStatus::ASSERTION);
+
+
+
+    u64 size = (strlen(str) + 1) * sizeof(char16);
+
+    if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
+    {
+        UEFI_LE(("Failed to allocate pool(%u) for string", size));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
+
+
+
+    memcpy(res, str, size);
+
+
+
+    return NgosStatus::OK;
+}
+
 UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, void **data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, dataSize, data));
