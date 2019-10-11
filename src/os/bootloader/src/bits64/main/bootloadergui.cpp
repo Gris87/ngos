@@ -6,6 +6,7 @@
 #include <common/src/bits64/gui/widgets/misc/rootwidget.h>
 #include <common/src/bits64/gui/widgets/misc/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
+#include <guid/utils.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
@@ -179,7 +180,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    LabelWidget *infoLabel = new LabelWidget("Use arrow keys and Tab to select, Enter to boot, F8 for options", rootWidget);
+    LabelWidget *infoLabel = new LabelWidget("Use arrow keys and Tab to select, Enter to boot", rootWidget);
 
     UEFI_ASSERT_EXECUTION(infoLabel->setPosition(screenWidth * INFO_LABEL_POSITION_X_PERCENT     / 100, screenHeight * INFO_LABEL_POSITION_Y_PERCENT      / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(infoLabel->setSize(screenWidth     * INFO_LABEL_POSITION_WIDTH_PERCENT / 100, screenHeight * INFO_LABEL_POSITION_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
@@ -404,6 +405,76 @@ NgosStatus BootloaderGUI::init(BootParams *params)
         sOsButtonLeft     = 0;
         sOsButtonRight    = osCount;
         sOsButtonSelected = 0;
+
+
+
+        u64   variableSize;
+        Guid *lastOsVolumeGuid;
+
+        if (UEFI::getVariable(u"LastOsVolumeGuid", &gBootloaderGUID, &variableSize, (void **)&lastOsVolumeGuid) == UefiStatus::SUCCESS)
+        {
+            UEFI_LV(("Loaded LastOsVolumeGuid NVRAM variable: 0x%p", lastOsVolumeGuid));
+
+            UEFI_TEST_ASSERT(variableSize == sizeof(*lastOsVolumeGuid), NgosStatus::ASSERTION);
+
+
+
+            char16 *lastOsPath;
+
+            if (UEFI::getVariable(u"LastOsPath", &gBootloaderGUID, &variableSize, (void **)&lastOsPath) == UefiStatus::SUCCESS)
+            {
+                UEFI_LV(("Loaded LastOsPath NVRAM variable: %ls", lastOsPath));
+
+                UEFI_TEST_ASSERT(variableSize == (strlen(lastOsPath) + 1) * sizeof(char16), NgosStatus::ASSERTION);
+
+
+
+                osCount = oses.getSize();
+
+                for (i64 i = 0; i < (i64)osCount; ++i)
+                {
+                    const OsInfo &os = oses.at(i);
+
+                    if (
+                        isGuidEquals(*os.volume->partitionUniqueGuid, *lastOsVolumeGuid)
+                        &&
+                        strcmpi(os.path, lastOsPath)
+                       )
+                    {
+                        while ((i64)sOsButtonRight <= i)
+                        {
+                            UEFI_ASSERT_EXECUTION(onRightButtonPressed(), NgosStatus::ASSERTION);
+                        }
+
+                        sOsButtonSelected = i;
+
+                        break;
+                    }
+                }
+
+
+
+                if (UEFI::freePool(lastOsPath) == UefiStatus::SUCCESS)
+                {
+                    UEFI_LVV(("Released pool(0x%p) for NVRAM variable", lastOsPath));
+                }
+                else
+                {
+                    UEFI_LE(("Failed to release pool(0x%p) for NVRAM variable", lastOsPath));
+                }
+            }
+
+
+
+            if (UEFI::freePool(lastOsVolumeGuid) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for NVRAM variable", lastOsVolumeGuid));
+            }
+            else
+            {
+                UEFI_LE(("Failed to release pool(0x%p) for NVRAM variable", lastOsVolumeGuid));
+            }
+        }
     }
 
 
@@ -1455,13 +1526,13 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
     const OsInfo &os = Bootloader::getOSes().at(sOsButtonSelected);
 
-    if (UEFI::setVariable(u"LastOsVolume", &gBootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
+    if (UEFI::setVariable(u"LastOsVolumeGuid", &gBootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
     {
-        UEFI_LV(("Stored LastOsVolume NVRAM variable: 0x%p", os.volume->partitionUniqueGuid));
+        UEFI_LV(("Stored LastOsVolumeGuid NVRAM variable: 0x%p", os.volume->partitionUniqueGuid));
     }
     else
     {
-        UEFI_LE(("Failed to store LastOsVolume NVRAM variable"));
+        UEFI_LE(("Failed to store LastOsVolumeGuid NVRAM variable"));
     }
 
     if (UEFI::setVariable(u"LastOsPath", &gBootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), os.path) == UefiStatus::SUCCESS)

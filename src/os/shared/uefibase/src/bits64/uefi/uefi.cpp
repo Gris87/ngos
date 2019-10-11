@@ -225,33 +225,33 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, void **data)
+UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, void **data)
 {
     u64   size = UEFI_MAXIMUM_VARIABLE_SIZE;
     void *res;
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to allocate pool(%u) for variable", size));
+        UEFI_LE(("Failed to allocate pool(%u) for NVRAM variable", size));
 
         return UefiStatus::OUT_OF_RESOURCES;
     }
 
-    UEFI_LVV(("Allocated pool(0x%p, %u) for variable", res, size));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for NVRAM variable", res, size));
 
 
 
     if (getVariable(variableName, vendorGuid, nullptr, &size, res) != UefiStatus::SUCCESS)
     {
-        UEFI_LVV(("Failed to load variable %ls from NVRAM", variableName));
+        UEFI_LV(("Failed to load variable %ls from NVRAM", variableName));
 
         if (freePool(res) == UefiStatus::SUCCESS)
         {
-            UEFI_LVV(("Released pool(0x%p) for variable", res));
+            UEFI_LVV(("Released pool(0x%p) for NVRAM variable", res));
         }
         else
         {
-            UEFI_LE(("Failed to release pool(0x%p) for variable", res));
+            UEFI_LE(("Failed to release pool(0x%p) for NVRAM variable", res));
         }
 
         return UefiStatus::ABORTED;
@@ -261,7 +261,8 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, void 
 
 
 
-    *data = res;
+    *dataSize = size;
+    *data     = res;
 
 
 

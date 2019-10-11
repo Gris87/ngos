@@ -31,7 +31,7 @@ public:
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
-    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, void **data); // TEST: NO
+    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, void **data); // TEST: NO
     static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, void *data); // TEST: NO
     static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, u64 dataSize, void *data); // TEST: NO
     static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, void *data); // TEST: NO

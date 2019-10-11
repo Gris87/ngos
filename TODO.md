@@ -22,9 +22,6 @@ NGOS:
 
 Bootloader:
 
-- Search for Windows 10, Ubuntu, Cent OS
-- Save last started OS
-- Load last started OS
 - Custom arguments
 
 

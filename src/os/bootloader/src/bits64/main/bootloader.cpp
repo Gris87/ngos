@@ -1355,6 +1355,8 @@ NgosStatus Bootloader::initOSesFromVolume(VolumeInfo *volume)
 
     if (volume->rootDirectory)
     {
+        UEFI_TEST_ASSERT(volume->partitionUniqueGuid, NgosStatus::ASSERTION);
+
         UEFI_ASSERT_EXECUTION(addNgosKernel(volume),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(addNgosInstaller(volume), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(addWindows10(volume),     NgosStatus::ASSERTION);
