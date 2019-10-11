@@ -26,7 +26,7 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
 
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&rom) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to allocate pool(%u) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", size, pci));
+        UEFI_LF(("Failed to allocate pool(%u) for ROM image for protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", size, pci));
 
         return NgosStatus::FAILED;
     }

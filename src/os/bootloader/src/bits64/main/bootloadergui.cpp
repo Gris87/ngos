@@ -438,7 +438,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                     if (
                         isGuidEquals(*os.volume->partitionUniqueGuid, *lastOsVolumeGuid)
                         &&
-                        strcmpi(os.path, lastOsPath)
+                        !strcmpi(os.path, lastOsPath) // os.path == lastOsPath
                        )
                     {
                         while ((i64)sOsButtonRight <= i)

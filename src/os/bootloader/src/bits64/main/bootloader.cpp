@@ -901,7 +901,7 @@ NgosStatus Bootloader::initVolumeWholeDisk(VolumeInfo *volume, Guid *protocol)
 
             if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&diskDevicePath) != UefiStatus::SUCCESS)
             {
-                UEFI_LE(("Failed to allocate pool(%u) for device path", size));
+                UEFI_LF(("Failed to allocate pool(%u) for device path", size));
 
                 return NgosStatus::OUT_OF_MEMORY;
             }

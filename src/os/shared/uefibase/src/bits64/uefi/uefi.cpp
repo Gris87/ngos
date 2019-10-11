@@ -462,7 +462,7 @@ char16* UEFI::devicePathToString(UefiDevicePath *path)
         return 0;
     }
 
-    UEFI_LVV(("Allocated pool(0x%p) for string", res));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, (strlen(res) + 1) * sizeof(char16)));
 
 
 
