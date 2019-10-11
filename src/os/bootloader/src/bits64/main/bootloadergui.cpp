@@ -556,7 +556,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(focusFirstOsButton(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(focusOsButton(), NgosStatus::ASSERTION);
 
 
 
