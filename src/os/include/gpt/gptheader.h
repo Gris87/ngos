@@ -29,7 +29,6 @@ struct GptHeader
     u32  entryCount;
     u32  entrySize;
     u32  entryCrc32;
-    u8   __reserved2[420];
 };
 
 

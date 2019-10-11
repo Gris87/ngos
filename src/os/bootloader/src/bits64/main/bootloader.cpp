@@ -7,6 +7,7 @@
 #include <common/src/bits64/string/string.h>
 #include <gpt/utils.h>
 #include <guid/utils.h>
+#include <ngos/utils.h>
 #include <uefi/uefiblockioprotocol.h>
 #include <uefi/uefiharddrivedevicepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -1014,7 +1015,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
         !volume->blockIoProtocol->media->logicalPartition
        )
     {
-        u64 size = sizeof(Mbr);
+        u64 size = ROUND_UP(sizeof(Mbr), volume->blockIoProtocol->media->blockSize);
 
         if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&volume->gptData.protectiveMbr) != UefiStatus::SUCCESS)
         {
@@ -1038,7 +1039,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
 
 
-        size = sizeof(GptHeader);
+        size = ROUND_UP(sizeof(GptHeader), volume->blockIoProtocol->media->blockSize);
 
         if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&volume->gptData.header) != UefiStatus::SUCCESS)
         {

@@ -154,7 +154,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(GdtRegister),                                  10);
         TEST_ASSERT_EQUALS(sizeof(GptData),                                      24);
         TEST_ASSERT_EQUALS(sizeof(GptEntry),                                     128);
-        TEST_ASSERT_EQUALS(sizeof(GptHeader),                                    512);
+        TEST_ASSERT_EQUALS(sizeof(GptHeader),                                    96);
         TEST_ASSERT_EQUALS(sizeof(Guid),                                         16);
         TEST_ASSERT_EQUALS(sizeof(IdtDescriptor),                                16);
         TEST_ASSERT_EQUALS(sizeof(IdtRegister),                                  10);
