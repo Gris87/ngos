@@ -47,10 +47,9 @@ private:
     static NgosStatus initVolumeWholeDiskBlockIoProtocol(VolumeInfo *volume, Guid *protocol, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeWholeDiskDevicePath(VolumeInfo *volume, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeGptData(VolumeInfo *volume); // TEST: NO
-    static NgosStatus initVolumeRootDirectory(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeNameAndGuid(VolumeInfo *volume); // TEST: NO
-    static NgosStatus initVolumeNameFromLabel(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initVolumeRootDirectory(VolumeInfo *volume); // TEST: NO
     static NgosStatus initOSes(); // TEST: NO
     static NgosStatus initOSesFromVolume(VolumeInfo *volume); // TEST: NO
     static NgosStatus addNgosKernel(VolumeInfo *volume); // TEST: NO
