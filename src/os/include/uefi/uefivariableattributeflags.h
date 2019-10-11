@@ -22,6 +22,7 @@ enum class UefiVariableAttributeFlag: uefi_variable_attribute_flags
     BOOTSERVICE_ACCESS                    = (1ULL << 1),
     RUNTIME_ACCESS                        = (1ULL << 2),
     HARDWARE_ERROR_RECORD                 = (1ULL << 3),
+    RESERVED                              = (1ULL << 4),
     TIME_BASED_AUTHENTICATED_WRITE_ACCESS = (1ULL << 5),
     APPEND_WRITE                          = (1ULL << 6)
 };
@@ -37,6 +38,7 @@ inline const char8* uefiVariableAttributeFlagToString(UefiVariableAttributeFlag 
         case UefiVariableAttributeFlag::BOOTSERVICE_ACCESS:                    return "BOOTSERVICE_ACCESS";
         case UefiVariableAttributeFlag::RUNTIME_ACCESS:                        return "RUNTIME_ACCESS";
         case UefiVariableAttributeFlag::HARDWARE_ERROR_RECORD:                 return "HARDWARE_ERROR_RECORD";
+        case UefiVariableAttributeFlag::RESERVED:                              return "RESERVED";
         case UefiVariableAttributeFlag::TIME_BASED_AUTHENTICATED_WRITE_ACCESS: return "TIME_BASED_AUTHENTICATED_WRITE_ACCESS";
         case UefiVariableAttributeFlag::APPEND_WRITE:                          return "APPEND_WRITE";
 
