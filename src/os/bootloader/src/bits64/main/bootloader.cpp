@@ -1299,58 +1299,76 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
         volume->rootDirectory
        )
     {
-        Guid                fileSystemInfoGuid = UEFI_FILESYSTEM_INFO_GUID;
-        u64                 fileSystemInfoSize = 0;
-        UefiFileSystemInfo *fileSystemInfo;
+        UEFI_ASSERT_EXECUTION(initVolumeNameFromLabel(volume), NgosStatus::ASSERTION);
+    }
 
 
 
-        if (volume->rootDirectory->getInfo(volume->rootDirectory, &fileSystemInfoGuid, &fileSystemInfoSize, &fileSystemInfo) == UefiStatus::BUFFER_TOO_SMALL)
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::initVolumeNameFromLabel(VolumeInfo *volume)
+{
+    UEFI_LT((" | volume = 0x%p", volume));
+
+    UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
+
+    UEFI_TEST_ASSERT(volume->partitionUniqueGuid == nullptr, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(volume->rootDirectory       != nullptr, NgosStatus::ASSERTION);
+
+
+
+    Guid                fileSystemInfoGuid = UEFI_FILESYSTEM_INFO_GUID;
+    u64                 fileSystemInfoSize = 0;
+    UefiFileSystemInfo *fileSystemInfo;
+
+
+
+    if (volume->rootDirectory->getInfo(volume->rootDirectory, &fileSystemInfoGuid, &fileSystemInfoSize, &fileSystemInfo) == UefiStatus::BUFFER_TOO_SMALL)
+    {
+        if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, fileSystemInfoSize, (void **)&fileSystemInfo) != UefiStatus::SUCCESS)
         {
-            if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, fileSystemInfoSize, (void **)&fileSystemInfo) != UefiStatus::SUCCESS)
-            {
-                UEFI_LF(("Failed to allocate pool(%u) for file system info", fileSystemInfoSize));
+            UEFI_LF(("Failed to allocate pool(%u) for file system info", fileSystemInfoSize));
 
-                return NgosStatus::OUT_OF_MEMORY;
-            }
+            return NgosStatus::OUT_OF_MEMORY;
+        }
 
-            UEFI_LVV(("Allocated pool(0x%p, %u) for file system info", fileSystemInfo, fileSystemInfoSize));
+        UEFI_LVV(("Allocated pool(0x%p, %u) for file system info", fileSystemInfo, fileSystemInfoSize));
 
 
 
-            if (volume->rootDirectory->getInfo(volume->rootDirectory, &fileSystemInfoGuid, &fileSystemInfoSize, fileSystemInfo) == UefiStatus::SUCCESS)
-            {
-                UEFI_LVVV(("fileSystemInfo->size        = %u",  fileSystemInfo->size));
-                UEFI_LVVV(("fileSystemInfo->readOnly    = %s",  fileSystemInfo->readOnly ? "true" : "false"));
-                UEFI_LVVV(("fileSystemInfo->volumeSize  = %u",  fileSystemInfo->volumeSize));
-                UEFI_LVVV(("fileSystemInfo->freeSpace   = %u",  fileSystemInfo->freeSpace));
-                UEFI_LVVV(("fileSystemInfo->blockSize   = %u",  fileSystemInfo->blockSize));
-                UEFI_LVVV(("fileSystemInfo->volumeLabel = %ls", fileSystemInfo->volumeLabel));
+        if (volume->rootDirectory->getInfo(volume->rootDirectory, &fileSystemInfoGuid, &fileSystemInfoSize, fileSystemInfo) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVVV(("fileSystemInfo->size        = %u",  fileSystemInfo->size));
+            UEFI_LVVV(("fileSystemInfo->readOnly    = %s",  fileSystemInfo->readOnly ? "true" : "false"));
+            UEFI_LVVV(("fileSystemInfo->volumeSize  = %u",  fileSystemInfo->volumeSize));
+            UEFI_LVVV(("fileSystemInfo->freeSpace   = %u",  fileSystemInfo->freeSpace));
+            UEFI_LVVV(("fileSystemInfo->blockSize   = %u",  fileSystemInfo->blockSize));
+            UEFI_LVVV(("fileSystemInfo->volumeLabel = %ls", fileSystemInfo->volumeLabel));
 
 
 
-                UEFI_ASSERT_EXECUTION(UEFI::cloneString(fileSystemInfo->volumeLabel, (char16 **)&volume->name), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                UEFI_LW(("Failed to get size of file system info"));
-            }
-
-
-
-            if (UEFI::freePool(fileSystemInfo) == UefiStatus::SUCCESS)
-            {
-                UEFI_LVV(("Released pool(0x%p) for file system info", fileSystemInfo));
-            }
-            else
-            {
-                UEFI_LE(("Failed to release pool(0x%p) for file system info", fileSystemInfo));
-            }
+            UEFI_ASSERT_EXECUTION(UEFI::cloneString(fileSystemInfo->volumeLabel, (char16 **)&volume->name), NgosStatus::ASSERTION);
         }
         else
         {
             UEFI_LW(("Failed to get size of file system info"));
         }
+
+
+
+        if (UEFI::freePool(fileSystemInfo) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Released pool(0x%p) for file system info", fileSystemInfo));
+        }
+        else
+        {
+            UEFI_LE(("Failed to release pool(0x%p) for file system info", fileSystemInfo));
+        }
+    }
+    else
+    {
+        UEFI_LW(("Failed to get size of file system info"));
     }
 
 

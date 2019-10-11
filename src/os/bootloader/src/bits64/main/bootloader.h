@@ -50,6 +50,7 @@ private:
     static NgosStatus initVolumeRootDirectory(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeType(VolumeInfo *volume); // TEST: NO
     static NgosStatus initVolumeNameAndGuid(VolumeInfo *volume); // TEST: NO
+    static NgosStatus initVolumeNameFromLabel(VolumeInfo *volume); // TEST: NO
     static NgosStatus initOSes(); // TEST: NO
     static NgosStatus initOSesFromVolume(VolumeInfo *volume); // TEST: NO
     static NgosStatus addNgosKernel(VolumeInfo *volume); // TEST: NO

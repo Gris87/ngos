@@ -234,20 +234,31 @@ NgosStatus UEFI::cloneString(const char16 *str, char16 **res)
 
 
 
-    u64 size = (strlen(str) + 1) * sizeof(char16);
+    return cloneMemory((void *)str, (void **)res, (strlen(str) + 1) * sizeof(char16));
+}
+
+NgosStatus UEFI::cloneMemory(void *address, void **res, u64 size)
+{
+    UEFI_LT((" | address = 0x%p, res = 0x%p, size = %u", address, res, size));
+
+    UEFI_ASSERT(address,  "address is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(res,      "res is null",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is zero",    NgosStatus::ASSERTION);
+
+
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to allocate pool(%u) for string", size));
+        UEFI_LE(("Failed to allocate pool(%u) for cloning", size));
 
         return NgosStatus::OUT_OF_MEMORY;
     }
 
-    UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for cloning", res, size));
 
 
 
-    memcpy(res, str, size);
+    memcpy(res, address, size);
 
 
 
