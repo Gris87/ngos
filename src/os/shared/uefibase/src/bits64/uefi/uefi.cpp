@@ -227,6 +227,15 @@ bool UEFI::canPrint()
 
 UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, void **data)
 {
+    UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, dataSize, data));
+
+    UEFI_ASSERT(variableName, "variableName is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(vendorGuid,   "vendorGuid is null",   UefiStatus::ABORTED);
+    UEFI_ASSERT(dataSize,     "dataSize is null",     UefiStatus::ABORTED);
+    UEFI_ASSERT(data,         "data is null",         UefiStatus::ABORTED);
+
+
+
     u64   size = UEFI_MAXIMUM_VARIABLE_SIZE;
     void *res;
 
