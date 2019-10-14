@@ -346,7 +346,7 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
     }
     else
     {
-        UEFI_LVV(("%ls image file not found", absolutePath));
+        UEFI_LVV(("%ls image file not found. Loading from assets", absolutePath));
     }
 
 

@@ -883,6 +883,46 @@ NgosStatus CPU::initCpuFeatures()
             COMMON_ASSERT_EXECUTION(cpuid(0x80000002, 0, &sModelName[0], &sModelName[1], &sModelName[2],  &sModelName[3]),  NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(cpuid(0x80000003, 0, &sModelName[4], &sModelName[5], &sModelName[6],  &sModelName[7]),  NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(cpuid(0x80000004, 0, &sModelName[8], &sModelName[9], &sModelName[10], &sModelName[11]), NgosStatus::ASSERTION);
+
+
+
+            char8 *modelStr = (char8 *)sModelName;
+
+
+
+            i64 length = strnlen(modelStr, sizeof(sModelName));
+
+            while (length > 0 && modelStr[length - 1] == ' ')
+            {
+                modelStr[length - 1] = 0;
+                --length;
+            }
+
+
+
+            if (
+                length > 0
+                &&
+                modelStr[0] == ' '
+               )
+            {
+                i64 offset = 1;
+
+                while (offset < length && modelStr[offset] == ' ')
+                {
+                    ++offset;
+                }
+
+                for (i64 i = offset; i < length; ++i)
+                {
+                    modelStr[i - offset] = modelStr[i];
+                }
+
+                for (i64 i = length - offset; i < length; ++i)
+                {
+                    modelStr[i] = 0;
+                }
+            }
         }
         else
         {
