@@ -1610,6 +1610,60 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
 
+    Guid                     protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+    UefiLoadedImageProtocol *childImage;
+
+
+
+    if (UEFI::handleProtocol(childImageHandle, &protocol, (void **)&childImage) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_LOADED_IMAGE_PROTOCOL", childImageHandle));
+
+        return NgosStatus::FAILED;
+    }
+
+    UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_LOADED_IMAGE_PROTOCOL", childImageHandle, childImage));
+
+
+
+    UEFI_LVVV(("Loaded image:"));
+    UEFI_LVVV(("-------------------------------------"));
+
+    UEFI_LVVV(("childImage->imageBase = 0x%p", childImage->imageBase));
+    UEFI_LVVV(("childImage->imageSize = %u",   childImage->imageSize));
+
+    UEFI_LVVV(("-------------------------------------"));
+
+
+
+    u64     optionsSize = (1 + strlen(path) + 2) * sizeof(char16);
+    char16 *options;
+
+    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, optionsSize, (void **)&options) != UefiStatus::SUCCESS)
+    {
+        UEFI_LF(("Failed to allocate pool(%u) for string", optionsSize));
+
+        return NgosStatus::OUT_OF_MEMORY;
+    }
+
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", str, optionsSize));
+
+
+
+    options[0] = '\\';
+    strapp(strapp(&options[1], path), u" ");
+
+
+
+    childImage->loadOptionsSize = optionsSize;
+    childImage->loadOptions     = options;
+
+    UEFI_LVVV(("childImage->loadOptionsSize = %u",  childImage->loadOptionsSize));
+    UEFI_LVVV(("childImage->loadOptions     = %ls", childImage->loadOptions));
+
+
+
+
     UEFI_LI(("Starting %ls", path));
 
     UEFI_ASSERT_EXECUTION(GraphicalConsole::noMorePrint(), NgosStatus::ASSERTION);
