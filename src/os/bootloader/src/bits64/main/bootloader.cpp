@@ -1651,6 +1651,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
     options[0] = u'\\';
+    options[1] = 0;
     strapp(&options[1], path);
 
 
