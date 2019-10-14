@@ -1636,7 +1636,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
 
-    u64     optionsSize = (1 + strlen(path) + 2) * sizeof(char16);
+    u64     optionsSize = (1 + strlen(path) + 1) * sizeof(char16);
     char16 *options;
 
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, optionsSize, (void **)&options) != UefiStatus::SUCCESS)
@@ -1646,12 +1646,12 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
         return NgosStatus::OUT_OF_MEMORY;
     }
 
-    UEFI_LVV(("Allocated pool(0x%p, %u) for string", str, optionsSize));
+    UEFI_LVV(("Allocated pool(0x%p, %u) for string", options, optionsSize));
 
 
 
-    options[0] = '\\';
-    strapp(strapp(&options[1], path), u" ");
+    options[0] = u'\\';
+    strapp(&options[1], path);
 
 
 

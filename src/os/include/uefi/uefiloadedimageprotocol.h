@@ -28,7 +28,7 @@ struct UefiLoadedImageProtocol
     void            *reserved;
 
     u32              loadOptionsSize;
-    void            *loadOptions;
+    char16          *loadOptions;
 
     void            *imageBase;
     u64              imageSize;
