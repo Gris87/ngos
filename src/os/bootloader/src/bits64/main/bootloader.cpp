@@ -807,9 +807,9 @@ NgosStatus Bootloader::initVolume(VolumeInfo *volume, Guid *protocol, uefi_handl
     UEFI_ASSERT_EXECUTION(initVolumeDevicePath(volume, handle),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeWholeDisk(volume, protocol),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeGptData(volume),                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(initVolumeRootDirectory(volume),                     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeType(volume),                              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumeNameAndGuid(volume),                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initVolumeRootDirectory(volume),                     NgosStatus::ASSERTION);
 
 
 
