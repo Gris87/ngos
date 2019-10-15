@@ -335,7 +335,7 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
         if (imageFile->close(imageFile) == UefiStatus::SUCCESS)
         {
-            UEFI_LV(("%ls image file closed", absolutePath));
+            UEFI_LV(("Closed %ls image file", absolutePath));
         }
         else
         {
@@ -675,7 +675,7 @@ NgosStatus Bootloader::initVolumes()
             UEFI_LVVV(("volume.gptData.entries       = 0x%p",    volume.gptData.entries));
             UEFI_LVVV(("volume.type                  = %u (%s)", volume.type, volumeTypeToString(volume.type)));
             UEFI_LVVV(("volume.name                  = %ls",     volume.name));
-            UEFI_LVVV(("volume.partitionUniqueGuid   = 0x%p",    volume.partitionUniqueGuid));
+            UEFI_LVVV(("volume.partitionUniqueGuid   = %s",      guidToString(volume.partitionUniqueGuid)));
             UEFI_LVVV(("volume.rootDirectory         = 0x%p",    volume.rootDirectory));
 
 
@@ -1662,6 +1662,28 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
     UEFI_LVVV(("childImage->loadOptionsSize = %u",  childImage->loadOptionsSize));
     UEFI_LVVV(("childImage->loadOptions     = %ls", childImage->loadOptions));
 
+
+
+    ListElement<VolumeInfo> *element = sVolumes.getHead();
+
+    while (element)
+    {
+        const VolumeInfo &volume = element->getData();
+
+        if (volume.rootDirectory)
+        {
+            if (volume.rootDirectory->close(volume.rootDirectory) != UefiStatus::SUCCESS)
+            {
+                UEFI_LV(("Closed volume root directory"));
+            }
+            else
+            {
+                UEFI_LW(("Failed to close volume root directory"));
+            }
+        }
+
+        element = element->getNext();
+    }
 
 
 

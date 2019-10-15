@@ -7,6 +7,7 @@
 #include <kernelbase/src/bits64/other/dmi/entry/dmimemorydeviceentry.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/src/bits64/other/uefi/uefi.h>
+#include <uuid/utils.h>
 
 
 
@@ -147,14 +148,7 @@ NgosStatus DMI::init()
 
             for (i64 i = 0; i < (i64)DmiStoredUuid::MAXIMUM; ++i)
             {
-                if (sUuids[i])
-                {
-                    COMMON_LVVV(("%-11s: 0x%p | {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i], sUuids[i]->data1, sUuids[i]->data2, sUuids[i]->data3, sUuids[i]->data4, sUuids[i]->data5, sUuids[i]->data6[0], sUuids[i]->data6[1], sUuids[i]->data6[2], sUuids[i]->data6[3], sUuids[i]->data6[4], sUuids[i]->data6[5]));
-                }
-                else
-                {
-                    COMMON_LVVV(("%-11s: 0x%p", dmiStoredUuidToString((DmiStoredUuid)i), sUuids[i]));
-                }
+                COMMON_LVVV(("%-11s: %s", dmiStoredUuidToString((DmiStoredUuid)i), uuidToString(sUuids[i])));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -526,14 +520,14 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturer = %u",                                                 entry->manufacturer));
-        COMMON_LVVV(("entry->productName  = %u",                                                 entry->productName));
-        COMMON_LVVV(("entry->version      = %u",                                                 entry->version));
-        COMMON_LVVV(("entry->serialNumber = %u",                                                 entry->serialNumber));
-        COMMON_LVVV(("entry->uuid         = {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", entry->uuid.data1, entry->uuid.data2, entry->uuid.data3, entry->uuid.data4, entry->uuid.data5, entry->uuid.data6[0], entry->uuid.data6[1], entry->uuid.data6[2], entry->uuid.data6[3], entry->uuid.data6[4], entry->uuid.data6[5]));
-        COMMON_LVVV(("entry->wakeUpTime   = %u",                                                 entry->wakeUpTime));
-        COMMON_LVVV(("entry->skuNumber    = %u",                                                 entry->skuNumber));
-        COMMON_LVVV(("entry->family       = %u",                                                 entry->family));
+        COMMON_LVVV(("entry->manufacturer = %u", entry->manufacturer));
+        COMMON_LVVV(("entry->productName  = %u", entry->productName));
+        COMMON_LVVV(("entry->version      = %u", entry->version));
+        COMMON_LVVV(("entry->serialNumber = %u", entry->serialNumber));
+        COMMON_LVVV(("entry->uuid         = %s", uuidToString(entry->uuid)));
+        COMMON_LVVV(("entry->wakeUpTime   = %u", entry->wakeUpTime));
+        COMMON_LVVV(("entry->skuNumber    = %u", entry->skuNumber));
+        COMMON_LVVV(("entry->family       = %u", entry->family));
 
 
 
@@ -1074,7 +1068,7 @@ NgosStatus DMI::saveIdentity(DmiIdentity id, u8 *address, u64 size)
 
 NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
 { // Ignore CppNgosTraceVerifier
-    COMMON_LT((" | id = %u, uuid = {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", id, uuid.data1, uuid.data2, uuid.data3, uuid.data4, uuid.data5, uuid.data6[0], uuid.data6[1], uuid.data6[2], uuid.data6[3], uuid.data6[4], uuid.data6[5]));
+    COMMON_LT((" | id = %u, uuid = %s", id, uuidToString(uuid)));
 
 
 

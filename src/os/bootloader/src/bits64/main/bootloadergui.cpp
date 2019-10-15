@@ -413,7 +413,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
         if (UEFI::getVariable(u"LastOsVolumeGuid", &gBootloaderGUID, &variableSize, (void **)&lastOsVolumeGuid) == UefiStatus::SUCCESS)
         {
-            UEFI_LV(("Loaded LastOsVolumeGuid NVRAM variable: 0x%p", lastOsVolumeGuid));
+            UEFI_LV(("Loaded LastOsVolumeGuid NVRAM variable: %s", guidToString(lastOsVolumeGuid)));
 
             UEFI_TEST_ASSERT(variableSize == sizeof(*lastOsVolumeGuid), NgosStatus::ASSERTION);
 
@@ -1528,7 +1528,7 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
     if (UEFI::setVariable(u"LastOsVolumeGuid", &gBootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
     {
-        UEFI_LV(("Stored LastOsVolumeGuid NVRAM variable: 0x%p", os.volume->partitionUniqueGuid));
+        UEFI_LV(("Stored LastOsVolumeGuid NVRAM variable: %s", guidToString(os.volume->partitionUniqueGuid)));
     }
     else
     {
