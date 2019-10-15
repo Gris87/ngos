@@ -521,7 +521,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
         if (!generalComponent->dataBuffer)
         {
-            COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
+            COMMON_LF(("Failed to allocate space for component data buffer. Out of space"));
 
             return NgosStatus::OUT_OF_MEMORY;
         }
@@ -609,7 +609,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
         if (!vlc)
         {
-            COMMON_LE(("Failed to allocate space for VLC codes. Out of space"));
+            COMMON_LF(("Failed to allocate space for VLC codes. Out of space"));
 
             return NgosStatus::OUT_OF_MEMORY;
         }
@@ -1698,7 +1698,7 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
 
     if (!out)
     {
-        COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
+        COMMON_LF(("Failed to allocate space for component data buffer. Out of space"));
 
         return NgosStatus::OUT_OF_MEMORY;
     }
@@ -1769,7 +1769,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
 
     if (!out)
     {
-        COMMON_LE(("Failed to allocate space for component data buffer. Out of space"));
+        COMMON_LF(("Failed to allocate space for component data buffer. Out of space"));
 
         return NgosStatus::OUT_OF_MEMORY;
     }

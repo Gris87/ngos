@@ -794,7 +794,7 @@ NgosStatus Png::decompressImageData(PngDecoder *decoder)
 
     if (!buffer)
     {
-        COMMON_LE(("Failed to allocate space for decompressed image data buffer. Out of space"));
+        COMMON_LF(("Failed to allocate space for decompressed image data buffer. Out of space"));
 
         return NgosStatus::OUT_OF_MEMORY;
     }
@@ -852,7 +852,7 @@ NgosStatus Png::convertImageDataToImage(PngDecoder *decoder)
 
         if (!buffer)
         {
-            COMMON_LE(("Failed to allocate space for raw image buffer. Out of space"));
+            COMMON_LF(("Failed to allocate space for raw image buffer. Out of space"));
 
             return NgosStatus::OUT_OF_MEMORY;
         }
@@ -1701,7 +1701,7 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
 
         if (!buffer)
         {
-            COMMON_LE(("Failed to allocate space for image data buffer. Out of space"));
+            COMMON_LF(("Failed to allocate space for image data buffer. Out of space"));
 
             return NgosStatus::OUT_OF_MEMORY;
         }

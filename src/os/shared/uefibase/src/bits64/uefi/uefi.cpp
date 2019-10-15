@@ -241,7 +241,7 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to allocate pool(%u) for NVRAM variable", size));
+        UEFI_LF(("Failed to allocate pool(%u) for NVRAM variable", size));
 
         return UefiStatus::OUT_OF_RESOURCES;
     }
@@ -414,7 +414,7 @@ char16* UEFI::parentDirectory(const char16 *path)
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to allocate pool(%u) for string", size));
+        UEFI_LF(("Failed to allocate pool(%u) for string", size));
 
         return 0;
     }
@@ -457,7 +457,7 @@ char16* UEFI::devicePathToString(UefiDevicePath *path)
 
     if (!res) // pathStr == 0
     {
-        UEFI_LE(("Failed to allocate pool(0x%p) for string", res));
+        UEFI_LF(("Failed to allocate pool(0x%p) for string", res));
 
         return 0;
     }
@@ -521,7 +521,7 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
-        UEFI_LE(("Failed to allocate pool(%u) for device path", size));
+        UEFI_LF(("Failed to allocate pool(%u) for device path", size));
 
         return 0;
     }
@@ -1052,7 +1052,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
         if (allocatePages(UefiAllocateType::ALLOCATE_ADDRESS, UefiMemoryType::LOADER_DATA, numberOfPages, &start) != UefiStatus::SUCCESS)
         {
-            UEFI_LE(("Failed to allocate pages(%u)", numberOfPages));
+            UEFI_LF(("Failed to allocate pages(%u)", numberOfPages));
 
             continue;
         }
