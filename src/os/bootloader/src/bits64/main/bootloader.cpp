@@ -10,7 +10,6 @@
 #include <ngos/utils.h>
 #include <uefi/uefiblockioprotocol.h>
 #include <uefi/uefifileinfo.h>
-#include <uefi/uefifilesysteminfo.h>
 #include <uefi/uefiharddrivedevicepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
@@ -769,7 +768,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle
 
         UEFI_ASSERT_EXECUTION(initVolume(&volume, protocol, blockIoHandles[i]), NgosStatus::ASSERTION);
 
-        if (volume.type != VolumeType::NONE)
+        if (volume.type != VolumeType::MAXIMUM)
         {
             sVolumes.append(volume);
 
@@ -1161,7 +1160,7 @@ NgosStatus Bootloader::initVolumeType(VolumeInfo *volume)
     }
     else
     {
-        volume->type = VolumeType::NONE;
+        volume->type = VolumeType::MAXIMUM;
 
 
 
@@ -1300,8 +1299,9 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
 
 
-        u64 *guid         = (u64 *)partitionUniqueGuid;
-        u8   guidIndex    = 0;
+        u64 *guid      = (u64 *)partitionUniqueGuid;
+        u8   guidIndex = 0;
+
         currentDevicePath = volume->devicePath;
 
         do

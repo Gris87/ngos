@@ -113,6 +113,7 @@
 #include <uefi/uefitime.h>
 #include <uefi/uefitimecapabilicies.h>
 #include <uefi/uefitimerdelay.h>
+#include <uefi/uefivariableattributeflags.h>
 #include <uefibase/test/bits64/testengine.h>
 #include <uuid/uuid.h>
 
@@ -252,6 +253,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiTimeCapabilities),                         12);
         TEST_ASSERT_EQUALS(sizeof(UefiTimerDelay),                               4);
         TEST_ASSERT_EQUALS(sizeof(UefiUgaIoConfigurationTable),                  1);
+        TEST_ASSERT_EQUALS(sizeof(UefiVariableAttributeFlag),                    4);
         TEST_ASSERT_EQUALS(sizeof(Uuid),                                         16);
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES

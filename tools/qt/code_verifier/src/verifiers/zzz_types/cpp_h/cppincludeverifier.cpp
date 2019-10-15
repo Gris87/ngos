@@ -23,6 +23,8 @@ CppIncludeVerifier::CppIncludeVerifier()
 void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
 {
     if (
+        path.endsWith("src/os/include/uefi/uefivariableattributeflags.h")
+        ||
         path.endsWith("src/os/shared/common/src/bits64/log/assert.h")
         ||
         path.endsWith("src/os/shared/common/src/bits64/log/log.h")

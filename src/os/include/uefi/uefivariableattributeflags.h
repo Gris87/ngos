@@ -49,6 +49,9 @@ inline const char8* uefiVariableAttributeFlagToString(UefiVariableAttributeFlag 
 
 
 #if defined(UEFI_APPLICATION)
+
+
+
 inline const char8* uefiVariableAttributeFlagsToString(uefi_variable_attribute_flags flags) // TEST: NO
 {
     if (!flags)
@@ -58,12 +61,15 @@ inline const char8* uefiVariableAttributeFlagsToString(uefi_variable_attribute_f
 
 
 
-    static char8 res[76];
+    static char8 res[156];
 
     FLAGS_TO_STRING(res, flags, uefiVariableAttributeFlagToString, UefiVariableAttributeFlag);
 
     return res;
 }
+
+
+
 #endif
 
 

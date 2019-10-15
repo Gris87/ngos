@@ -282,7 +282,6 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                     case VolumeType::OPTICAL:  pathToImage = "images/volume_optical.png";  break;
                     case VolumeType::NETWORK:  pathToImage = "images/volume_network.png";  break;
 
-                    case VolumeType::NONE:
                     case VolumeType::MAXIMUM:
                     {
                         UEFI_LF(("Unexpected volume type: %u (%s)", os.volume->type, volumeTypeToString(os.volume->type)));
