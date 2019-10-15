@@ -1116,7 +1116,26 @@ UefiStatus UEFI::startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 *
 
 
 
-    return sBootServices->startImage(imageHandle, exitDataSize, exitData);
+    asm volatile(
+        "pushq   %rbp"          "\n\t"  // pushq   %rbp         # Store RBP to stack
+        "movq    %rsp, %rbp"    "\n\t"  // movq    %rsp, %rbp   # Store RSP value in RBP
+        "andq    $-0x10, %rsp"  "\n\t"  // andq    $-0x10, %rsp # Make RSP aligned
+    );
+
+
+
+    UefiStatus res = sBootServices->startImage(imageHandle, exitDataSize, exitData);
+
+
+
+    asm volatile(
+        "movq    %rbp, %rsp"    "\n\t"  // movq    %rbp, %rsp   # Restore RSP from RBP
+        "popq    %rbp"          "\n\t"  // popq    %rbp         # Restore RBP from stack
+    );
+
+
+
+    return res;
 }
 
 UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData)

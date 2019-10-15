@@ -15,8 +15,8 @@ struct UefiSimpleTextOutputInterface
 {
     UefiStatus (UEFI_API *reset)(UefiSimpleTextOutputInterface *obj, bool extendedVerification); // TEST: NO
 
-    UefiStatus (UEFI_API *outputString)(UefiSimpleTextOutputInterface *obj, char16 *string); // TEST: NO
-    UefiStatus (UEFI_API *testString)(UefiSimpleTextOutputInterface *obj, char16 *string); // TEST: NO
+    UefiStatus (UEFI_API *outputString)(UefiSimpleTextOutputInterface *obj, const char16 *string); // TEST: NO
+    UefiStatus (UEFI_API *testString)(UefiSimpleTextOutputInterface *obj, const char16 *string); // TEST: NO
 
     UefiStatus (UEFI_API *queryMode)(UefiSimpleTextOutputInterface *obj, u64 modeNumber, u64 *columns, u64 *rows); // TEST: NO
     UefiStatus (UEFI_API *setMode)(UefiSimpleTextOutputInterface *obj, u64 modeNumber); // TEST: NO
