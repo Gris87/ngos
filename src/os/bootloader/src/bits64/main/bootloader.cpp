@@ -1672,7 +1672,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
         if (volume.rootDirectory)
         {
-            if (volume.rootDirectory->close(volume.rootDirectory) != UefiStatus::SUCCESS)
+            if (volume.rootDirectory->close(volume.rootDirectory) == UefiStatus::SUCCESS)
             {
                 UEFI_LV(("Closed volume root directory"));
             }
