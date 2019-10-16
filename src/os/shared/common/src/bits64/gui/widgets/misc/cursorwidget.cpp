@@ -14,6 +14,7 @@ CursorWidget::CursorWidget(Image *cursorImage, Widget *parent)
     COMMON_LT((" | cursorImage = 0x%p, parent = 0x%p", cursorImage, parent));
 
     COMMON_ASSERT(cursorImage, "cursorImage is null");
+    COMMON_ASSERT(parent,      "parent is null");
 }
 
 CursorWidget::~CursorWidget()

@@ -6,6 +6,7 @@
 #include <bootparams/bootparams.h>
 #include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/controls/tabwidget.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
@@ -39,6 +40,7 @@ private:
 
     static Button     *sRebootButton;
     static Button     *sShutdownButton;
+    static TabWidget  *sTabWidget;
     static Button     *sSystemInformationTabButton;
     static Button     *sTestTabButton;
     static Button     *sSummaryTabButton;

@@ -6,14 +6,15 @@
 
 
 
-ConsoleWidget::ConsoleWidget(Image *image, Widget *parent)
+ConsoleWidget::ConsoleWidget(Image *panelImage, Widget *parent)
     : Widget(parent)
-    , mImage(image)
-    , mResizedImage(nullptr)
+    , mPanelImage(panelImage)
+    , mPanelResizedImage(nullptr)
 {
-    COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
+    COMMON_LT((" | panelImage = 0x%p, parent = 0x%p", panelImage, parent));
 
-    COMMON_ASSERT(image, "image is null");
+    COMMON_ASSERT(panelImage, "panelImage is null");
+    COMMON_ASSERT(parent,     "parent is null");
 }
 
 ConsoleWidget::~ConsoleWidget()
@@ -22,9 +23,9 @@ ConsoleWidget::~ConsoleWidget()
 
 
 
-    if (mResizedImage)
+    if (mPanelResizedImage)
     {
-        delete mResizedImage;
+        delete mPanelResizedImage;
     }
 
     if (mResultImage)
@@ -55,12 +56,12 @@ NgosStatus ConsoleWidget::invalidate()
 
 
 
-    if (mResizedImage)
+    if (mPanelResizedImage)
     {
-        delete mResizedImage;
+        delete mPanelResizedImage;
     }
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mPanelResizedImage), NgosStatus::ASSERTION);
 
 
 
@@ -73,7 +74,7 @@ NgosStatus ConsoleWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mResizedImage       != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mPanelResizedImage  != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
 
 
@@ -83,7 +84,7 @@ NgosStatus ConsoleWidget::repaint()
         delete mResultImage;
     }
 
-    mOwnResultImage = mResizedImage;
+    mOwnResultImage = mPanelResizedImage;
     mResultImage    = new Image(*mOwnResultImage);
 
 

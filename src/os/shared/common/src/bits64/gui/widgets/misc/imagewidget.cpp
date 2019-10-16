@@ -13,7 +13,8 @@ ImageWidget::ImageWidget(Image *image, Widget *parent)
 {
     COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
 
-    COMMON_ASSERT(image, "image is null");
+    COMMON_ASSERT(image,  "image is null");
+    COMMON_ASSERT(parent, "parent is null");
 }
 
 ImageWidget::~ImageWidget()

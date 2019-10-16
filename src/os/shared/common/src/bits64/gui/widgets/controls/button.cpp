@@ -36,6 +36,7 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     COMMON_ASSERT(focusedImage,      "focusedImage is null");
     COMMON_ASSERT(focusedHoverImage, "focusedHoverImage is null");
     COMMON_ASSERT(contentImage,      "contentImage is null");
+    COMMON_ASSERT(parent,            "parent is null");
 
 
 
@@ -83,6 +84,7 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     COMMON_ASSERT(focusedResizedImage,      "focusedResizedImage is null");
     COMMON_ASSERT(focusedHoverResizedImage, "focusedHoverResizedImage is null");
     COMMON_ASSERT(contentImage,             "contentImage is null");
+    COMMON_ASSERT(parent,                   "parent is null");
 
 
 

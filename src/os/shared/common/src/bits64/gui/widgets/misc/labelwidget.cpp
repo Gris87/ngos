@@ -21,7 +21,8 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
 {
     COMMON_LT((" | text = 0x%p, parent = 0x%p", text, parent));
 
-    COMMON_ASSERT(text, "text is null");
+    COMMON_ASSERT(text,   "text is null");
+    COMMON_ASSERT(parent, "parent is null");
 
 
 
