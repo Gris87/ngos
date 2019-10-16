@@ -115,9 +115,9 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
             cursorX = sRootWidget->getPositionX();
         }
 
-        if (cursorX > sRootWidget->getPositionX() + sRootWidget->getWidth())
+        if (cursorX > sRootWidget->getPositionX() + (i64)sRootWidget->getWidth())
         {
-            cursorX = sRootWidget->getPositionX() + sRootWidget->getWidth();
+            cursorX = sRootWidget->getPositionX() + (i64)sRootWidget->getWidth();
         }
 
         if (cursorY < sRootWidget->getPositionY())
@@ -125,9 +125,9 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
             cursorY = sRootWidget->getPositionY();
         }
 
-        if (cursorY > sRootWidget->getPositionY() + sRootWidget->getHeight())
+        if (cursorY > sRootWidget->getPositionY() + (i64)sRootWidget->getHeight())
         {
-            cursorY = sRootWidget->getPositionY() + sRootWidget->getHeight();
+            cursorY = sRootWidget->getPositionY() + (i64)sRootWidget->getHeight();
         }
 
 
