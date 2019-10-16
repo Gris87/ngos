@@ -669,10 +669,10 @@ src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.h
-src/os/shared/common/src/bits64/gui/widgets/misc/rootwidget.cpp
-src/os/shared/common/src/bits64/gui/widgets/misc/rootwidget.h
-src/os/shared/common/src/bits64/gui/widgets/misc/screenwidget.cpp
-src/os/shared/common/src/bits64/gui/widgets/misc/screenwidget.h
+src/os/shared/common/src/bits64/gui/widgets/special/rootwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/special/rootwidget.h
+src/os/shared/common/src/bits64/gui/widgets/special/screenwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/special/screenwidget.h
 src/os/shared/common/src/bits64/gui/widgets/widget.cpp
 src/os/shared/common/src/bits64/gui/widgets/widget.h
 src/os/shared/common/src/bits64/inflate/inflate.cpp
