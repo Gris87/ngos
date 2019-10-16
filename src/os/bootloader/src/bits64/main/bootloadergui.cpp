@@ -158,10 +158,10 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
     u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
-    u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
     u64 osButtonSize     = screenWidth  * OS_BUTTON_SIZE_PERCENT     / 100;
     u64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
     u64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
+    u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
     u64 cursorSize       = screenWidth  * CURSOR_SIZE_PERCENT        / 100;
 
 

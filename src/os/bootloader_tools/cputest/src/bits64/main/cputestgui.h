@@ -27,12 +27,21 @@ private:
 
     static NgosStatus onRebootButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onShutdownButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onTestTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onSummaryTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
+    static NgosStatus onSystemInformationTabButtonPressed(); // TEST: NO
+    static NgosStatus onTestTabButtonPressed(); // TEST: NO
+    static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
 
     static Button     *sRebootButton;
     static Button     *sShutdownButton;
+    static Button     *sSystemInformationTabButton;
+    static Button     *sTestTabButton;
+    static Button     *sSummaryTabButton;
     static u16         sWaitEventsCount;
     static uefi_event *sWaitEvents;
 };
