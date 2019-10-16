@@ -484,6 +484,38 @@ i64 Widget::getPositionY() const
     return mPositionY;
 }
 
+i64 Widget::getGlobalPositionX() const
+{
+    COMMON_LT((""));
+
+
+
+    if (mParent)
+    {
+        return mParent->getGlobalPositionX() + mPositionX;
+    }
+    else
+    {
+        return mPositionX;
+    }
+}
+
+i64 Widget::getGlobalPositionY() const
+{
+    COMMON_LT((""));
+
+
+
+    if (mParent)
+    {
+        return mParent->getGlobalPositionY() + mPositionY;
+    }
+    else
+    {
+        return mPositionY;
+    }
+}
+
 NgosStatus Widget::setSize(u64 width, u64 height)
 {
     COMMON_LT((" | width = %u, height = %u", width, height));

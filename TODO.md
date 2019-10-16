@@ -23,6 +23,7 @@ NGOS:
 Bootloader:
 
 - Custom arguments
+- Check without OS
 
 
 

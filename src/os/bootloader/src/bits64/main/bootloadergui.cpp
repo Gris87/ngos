@@ -216,7 +216,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     const ArrayList<OsInfo>& oses    = Bootloader::getOSes();
     u64                      osCount = oses.getSize();
 
-    if (osCount)
+    if (osCount) // osCount > 0
     {
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       osButtonSize, osButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        osButtonSize, osButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
@@ -555,14 +555,21 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(focusOsButton(), NgosStatus::ASSERTION);
+    if (osCount) // osCount > 0
+    {
+        UEFI_ASSERT_EXECUTION(focusOsButton(), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sCpuTestButton), NgosStatus::ASSERTION);
+    }
 
 
 
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getPositionX() + (osButtonSize >> 1), GUI::getFocusedWidget()->getPositionY() + (osButtonSize >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getGlobalPositionX() + (osButtonSize >> 1), GUI::getFocusedWidget()->getGlobalPositionY() + (osButtonSize >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                                       NgosStatus::ASSERTION);
 
 
 

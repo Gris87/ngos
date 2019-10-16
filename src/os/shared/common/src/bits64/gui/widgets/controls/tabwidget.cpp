@@ -35,6 +35,36 @@ TabWidget::~TabWidget()
     }
 }
 
+NgosStatus TabWidget::addTabButton(Button *button)
+{
+    COMMON_LT((" | button = 0x%p", button));
+
+    COMMON_ASSERT(button, "button is null", NgosStatus::ASSERTION);
+
+
+
+    mTabButtons.append(button);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus TabWidget::addTabPage(Widget *page)
+{
+    COMMON_LT((" | page = 0x%p", page));
+
+    COMMON_ASSERT(page, "page is null", NgosStatus::ASSERTION);
+
+
+
+    mTabPages.append(page);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus TabWidget::invalidate()
 {
     COMMON_LT((""));
@@ -46,7 +76,37 @@ NgosStatus TabWidget::invalidate()
         delete mPanelResizedImage;
     }
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mPanelResizedImage), NgosStatus::ASSERTION);
+
+
+    if (mTabButtons.getSize() > 0)
+    {
+        u64 maxTabButtonHeight = mTabButtons.at(0)->getHeight();
+
+        for (i64 i = 1; i < (i64)mTabButtons.getSize(); ++i)
+        {
+            u64 buttonHeight = mTabButtons.at(i)->getHeight();
+
+            if (buttonHeight > maxTabButtonHeight)
+            {
+                maxTabButtonHeight = buttonHeight;
+            }
+        }
+
+        COMMON_TEST_ASSERT(maxTabButtonHeight < mHeight, NgosStatus::ASSERTION);
+
+
+
+        mPanelResizedImage = new Image(mWidth, mHeight, true, false);
+        mPanelResizedImage->clearBuffer();
+
+
+
+        COMMON_ASSERT_EXECUTION(Graphics::insertImage(mPanelImage, mPanelResizedImage, 0, maxTabButtonHeight, mWidth, mHeight - maxTabButtonHeight), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mPanelResizedImage), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -77,6 +137,45 @@ NgosStatus TabWidget::repaint()
     }
 
     mResultImage = new Image(*mOwnResultImage);
+
+
+
+    NinePatch *patch = mPanelImage->getNinePatch();
+
+    u16 paddingLeft;
+    u16 paddingTop;
+    u16 paddingRight;
+
+    if (patch)
+    {
+        paddingLeft  = patch->getPaddingLeft();
+        paddingTop   = patch->getPaddingTop();
+        paddingRight = patch->getPaddingRight();
+    }
+    else
+    {
+        paddingLeft  = 0;
+        paddingTop   = 0;
+        paddingRight = 0;
+    }
+
+
+
+    u64 buttonPositionX = paddingLeft;
+
+    for (i64 i = 0; i < (i64)mTabButtons.getSize(); ++i)
+    {
+        Button *tabButton = mTabButtons.at(i);
+
+        COMMON_TEST_ASSERT(buttonPositionX                         <= mWidth - paddingRight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(buttonPositionX + tabButton->getWidth() <= mWidth - paddingRight, NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(tabButton->lockUpdates(),                            NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(tabButton->setPosition(buttonPositionX, paddingTop), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(tabButton->unlockUpdates(),                          NgosStatus::ASSERTION);
+
+        buttonPositionX += tabButton->getWidth() * 95 / 100;
+    }
 
 
 
