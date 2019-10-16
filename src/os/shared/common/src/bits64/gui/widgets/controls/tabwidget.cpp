@@ -146,6 +146,8 @@ NgosStatus TabWidget::repaint()
     u16 paddingTop;
     u16 paddingRight;
 
+    AVOID_UNUSED(paddingRight);
+
     if (patch)
     {
         paddingLeft  = patch->getPaddingLeft();
