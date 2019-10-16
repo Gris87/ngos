@@ -14,6 +14,12 @@
         <file>assets/images/shutdown.png</file>
         <file>assets/images/summary.png</file>
         <file>assets/images/system_information.png</file>
+        <file>assets/images/tab_focused.9.png</file>
+        <file>assets/images/tab_focused_hover.9.png</file>
+        <file>assets/images/tab_hover.9.png</file>
+        <file>assets/images/tab_normal.9.png</file>
+        <file>assets/images/tab_pressed.9.png</file>
+        <file>assets/images/tabwidget_panel.png</file>
         <file>assets/images/test.png</file>
     </qresource>
 </RCC>
