@@ -12,5 +12,8 @@
         <file>assets/images/cursor.png</file>
         <file>assets/images/reboot.png</file>
         <file>assets/images/shutdown.png</file>
+        <file>assets/images/summary.png</file>
+        <file>assets/images/system_information.png</file>
+        <file>assets/images/test.png</file>
     </qresource>
 </RCC>
