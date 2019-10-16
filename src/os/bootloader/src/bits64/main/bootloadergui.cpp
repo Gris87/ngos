@@ -474,22 +474,22 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                 UEFI_LE(("Failed to release pool(0x%p) for NVRAM variable", lastOsVolumeGuid));
             }
         }
+
+
+
+        sTimeoutTick = TIMEOUT_TIME;
+
+        char8 *timeoutText = (char8 *)malloc(28);
+
+        UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, 27, NgosStatus::ASSERTION);
+
+
+
+        sTimeoutLabelWidget = new LabelWidget(timeoutText, rootWidget);
+
+        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(screenWidth * TIMEOUT_LABEL_POSITION_X_PERCENT     / 100, screenHeight * TIMEOUT_LABEL_POSITION_Y_PERCENT      / 100), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(screenWidth     * TIMEOUT_LABEL_POSITION_WIDTH_PERCENT / 100, screenHeight * TIMEOUT_LABEL_POSITION_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
     }
-
-
-
-    sTimeoutTick = TIMEOUT_TIME;
-
-    char8 *timeoutText = (char8 *)malloc(28);
-
-    UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, 27, NgosStatus::ASSERTION);
-
-
-
-    sTimeoutLabelWidget = new LabelWidget(timeoutText, rootWidget);
-
-    UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(screenWidth * TIMEOUT_LABEL_POSITION_X_PERCENT     / 100, screenHeight * TIMEOUT_LABEL_POSITION_Y_PERCENT      / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(screenWidth     * TIMEOUT_LABEL_POSITION_WIDTH_PERCENT / 100, screenHeight * TIMEOUT_LABEL_POSITION_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
 
 
@@ -604,6 +604,10 @@ NgosStatus BootloaderGUI::exec()
 NgosStatus BootloaderGUI::focusOsButton()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_TEST_ASSERT(sOsButtonRight > 0, NgosStatus::ASSERTION);
 
 
 
@@ -827,8 +831,16 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-    sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 2; // "+ 1" = keyboard event, "+ 1" = timer event
-    u64 size         = sWaitEventsCount * sizeof(uefi_event);
+    sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
+
+    if (sTimeoutLabelWidget)
+    {
+        ++sWaitEventsCount;
+    }
+
+    u64 size = sWaitEventsCount * sizeof(uefi_event);
+
+
 
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&sWaitEvents) != UefiStatus::SUCCESS)
     {
@@ -864,17 +876,20 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, 0, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-    UEFI_LVV(("Created timer event(0x%p)", sTimerEvent));
+    if (sTimeoutLabelWidget)
+    {
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, 0, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_LVV(("Created timer event(0x%p)", sTimerEvent));
 
 
 
-    UEFI_ASSERT_EXECUTION(UEFI::setTimer(sTimerEvent, UefiTimerDelay::PERIODIC, 10000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 1 * 1000 * 1000 * 10 "* 100ns"
-    UEFI_LVV(("Setup timer(0x%p) completed", sTimerEvent));
+        UEFI_ASSERT_EXECUTION(UEFI::setTimer(sTimerEvent, UefiTimerDelay::PERIODIC, 10000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 1 * 1000 * 1000 * 10 "* 100ns"
+        UEFI_LVV(("Setup timer(0x%p) completed", sTimerEvent));
 
 
 
-    sWaitEvents[eventId] = sTimerEvent;
+        sWaitEvents[eventId] = sTimerEvent;
+    }
 
 
 
@@ -1102,7 +1117,7 @@ NgosStatus BootloaderGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
-        case UefiInputKeyScanCode::DOWN:  return focusOsButton();
+        case UefiInputKeyScanCode::DOWN:  return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sMemoryTestButton);
 
         default:
         {
@@ -1138,7 +1153,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: return focusOsButton();
+        case UefiInputKeyScanCode::DOWN: return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sMemoryTestButton);
 
         default:
         {
@@ -1151,7 +1166,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_TAB: return focusFirstOsButton();
+        case KEY_TAB: return sOsButtonRight > 0 ? focusFirstOsButton() : GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1286,7 +1301,7 @@ NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sMemoryTestButton);
-        case UefiInputKeyScanCode::UP:    return focusOsButton();
+        case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sHddTestButton);
 
         default:
@@ -1324,7 +1339,7 @@ NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &ke
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sCpuTestButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sNetworkTestButton);
-        case UefiInputKeyScanCode::UP:    return focusOsButton();
+        case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sPartitionWizardButton);
 
         default:
@@ -1361,7 +1376,7 @@ NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &k
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sMemoryTestButton);
-        case UefiInputKeyScanCode::UP:   return focusOsButton();
+        case UefiInputKeyScanCode::UP:   return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sShellButton);
 
         default:

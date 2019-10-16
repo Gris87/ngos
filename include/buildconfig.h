@@ -96,7 +96,7 @@
  ***
  *** Default: OPTION_YES
  ***/
-#define NGOS_BUILD_RELEASE OPTION_NO
+#define NGOS_BUILD_RELEASE OPTION_YES
 
 
 
@@ -113,7 +113,7 @@
  ***
  *** Default: OPTION_NO
  ***/
-#define NGOS_BUILD_TEST_MODE OPTION_YES
+#define NGOS_BUILD_TEST_MODE OPTION_NO
 
 
 

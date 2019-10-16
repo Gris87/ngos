@@ -254,6 +254,8 @@ NgosStatus CpuTestGUI::generateWaitEventList()
     sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
     u64 size         = sWaitEventsCount * sizeof(uefi_event);
 
+
+
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&sWaitEvents) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to allocate pool(%u) for wait events", size));
