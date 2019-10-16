@@ -105,7 +105,36 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
         state->relativeMovementY
        )
     {
-        COMMON_ASSERT_EXECUTION(sCursorWidget->setPosition(sCursorWidget->getPositionX() + state->relativeMovementX, sCursorWidget->getPositionY() + state->relativeMovementY), NgosStatus::ASSERTION);
+        i64 cursorX = sCursorWidget->getPositionX() + state->relativeMovementX;
+        i64 cursorY = sCursorWidget->getPositionY() + state->relativeMovementY;
+
+
+
+        if (cursorX < sRootWidget->getPositionX())
+        {
+            cursorX = sRootWidget->getPositionX();
+        }
+
+        if (cursorX > sRootWidget->getPositionX() + sRootWidget->getWidth())
+        {
+            cursorX = sRootWidget->getPositionX() + sRootWidget->getWidth();
+        }
+
+        if (cursorY < sRootWidget->getPositionY())
+        {
+            cursorY = sRootWidget->getPositionY();
+        }
+
+        if (cursorY > sRootWidget->getPositionY() + sRootWidget->getHeight())
+        {
+            cursorY = sRootWidget->getPositionY() + sRootWidget->getHeight();
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(sCursorWidget->setPosition(cursorX, cursorY), NgosStatus::ASSERTION);
+
+
 
         if (!sPressedWidget)
         {
