@@ -79,8 +79,10 @@ if [ ${SINGLE_IMAGE} -eq 1 ]; then
     sudo mkdir -p ${MOUNTDIR}/EFI/BOOT/
     sudo mkdir -p ${MOUNTDIR}/EFI/NGOS/
 
-    sudo cp -r ${BOOTLOADER_IMAGE} ${MOUNTDIR}/EFI/BOOT/
-    sudo cp ${KERNEL_IMAGE}        ${MOUNTDIR}/EFI/NGOS/
+    # TODO: Uncomment later
+    # sudo cp -r ${BOOTLOADER_IMAGE} ${MOUNTDIR}/EFI/BOOT/
+    # sudo cp ${KERNEL_IMAGE}        ${MOUNTDIR}/EFI/NGOS/
+    sudo cp ../../build/deployment/com.ngos.bootloader/tools/cputest.efi ${MOUNTDIR}/EFI/BOOT/bootx64.efi
 else
     sudo cp -r ${KERNEL_IMAGE} ${MOUNTDIR}/
 fi
