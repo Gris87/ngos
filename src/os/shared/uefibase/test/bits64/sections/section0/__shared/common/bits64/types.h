@@ -93,8 +93,8 @@
 #include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
-#include <common/src/bits64/gui/widgets/misc/rootwidget.h>
-#include <common/src/bits64/gui/widgets/misc/screenwidget.h>
+#include <common/src/bits64/gui/widgets/special/rootwidget.h>
+#include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 #include <common/src/bits64/inflate/inflateblocktype.h>
 #include <common/src/bits64/inflate/inflatecode.h>

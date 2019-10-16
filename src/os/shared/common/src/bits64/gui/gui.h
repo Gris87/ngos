@@ -4,8 +4,8 @@
 
 
 #include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
-#include <common/src/bits64/gui/widgets/misc/rootwidget.h>
-#include <common/src/bits64/gui/widgets/misc/screenwidget.h>
+#include <common/src/bits64/gui/widgets/special/rootwidget.h>
+#include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>

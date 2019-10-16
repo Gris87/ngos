@@ -3,8 +3,8 @@
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
-#include <common/src/bits64/gui/widgets/misc/rootwidget.h>
-#include <common/src/bits64/gui/widgets/misc/screenwidget.h>
+#include <common/src/bits64/gui/widgets/special/rootwidget.h>
+#include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
 #include <guid/utils.h>
 #include <ngos/linkage.h>
