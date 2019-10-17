@@ -8,35 +8,51 @@
 
 
 
-TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent)
+TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *selectedNormalImage, Image *selectedHoverImage, Image *selectedPressedImage, Image *selectedFocusedImage, Image *selectedFocusedHoverImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent)
     : Widget(parent)
     , mNormalImage(normalImage)
     , mHoverImage(hoverImage)
     , mPressedImage(pressedImage)
     , mFocusedImage(focusedImage)
     , mFocusedHoverImage(focusedHoverImage)
+    , mSelectedNormalImage(selectedNormalImage)
+    , mSelectedHoverImage(selectedHoverImage)
+    , mSelectedPressedImage(selectedPressedImage)
+    , mSelectedFocusedImage(selectedFocusedImage)
+    , mSelectedFocusedHoverImage(selectedFocusedHoverImage)
     , mNormalResizedImage(nullptr)
     , mHoverResizedImage(nullptr)
     , mPressedResizedImage(nullptr)
     , mFocusedResizedImage(nullptr)
     , mFocusedHoverResizedImage(nullptr)
+    , mSelectedNormalResizedImage(nullptr)
+    , mSelectedHoverResizedImage(nullptr)
+    , mSelectedPressedResizedImage(nullptr)
+    , mSelectedFocusedResizedImage(nullptr)
+    , mSelectedFocusedHoverResizedImage(nullptr)
     , mImageWidget(new ImageWidget(contentImage, this))
     , mBadgeWidget(nullptr)
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
+    , mSelected(false)
     , mPredefined(false)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
 {
-    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, contentImage, badgeImage, text, parent));
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, selectedNormalImage = 0x%p, selectedHoverImage = 0x%p, selectedPressedImage = 0x%p, selectedFocusedImage = 0x%p, selectedFocusedHoverImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, selectedNormalImage, selectedHoverImage, selectedPressedImage, selectedFocusedImage, selectedFocusedHoverImage, contentImage, badgeImage, text, parent));
 
-    COMMON_ASSERT(normalImage,       "normalImage is null");
-    COMMON_ASSERT(hoverImage,        "hoverImage is null");
-    COMMON_ASSERT(pressedImage,      "pressedImage is null");
-    COMMON_ASSERT(focusedImage,      "focusedImage is null");
-    COMMON_ASSERT(focusedHoverImage, "focusedHoverImage is null");
-    COMMON_ASSERT(contentImage,      "contentImage is null");
-    COMMON_ASSERT(parent,            "parent is null");
+    COMMON_ASSERT(normalImage,               "normalImage is null");
+    COMMON_ASSERT(hoverImage,                "hoverImage is null");
+    COMMON_ASSERT(pressedImage,              "pressedImage is null");
+    COMMON_ASSERT(focusedImage,              "focusedImage is null");
+    COMMON_ASSERT(focusedHoverImage,         "focusedHoverImage is null");
+    COMMON_ASSERT(selectedNormalImage,       "selectedNormalImage is null");
+    COMMON_ASSERT(selectedHoverImage,        "selectedHoverImage is null");
+    COMMON_ASSERT(selectedPressedImage,      "selectedPressedImage is null");
+    COMMON_ASSERT(selectedFocusedImage,      "selectedFocusedImage is null");
+    COMMON_ASSERT(selectedFocusedHoverImage, "selectedFocusedHoverImage is null");
+    COMMON_ASSERT(contentImage,              "contentImage is null");
+    COMMON_ASSERT(parent,                    "parent is null");
 
 
 
@@ -51,40 +67,61 @@ TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage,
     }
 }
 
-TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent)
+TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *selectedNormalImage, Image *selectedHoverImage, Image *selectedPressedImage, Image *selectedFocusedImage, Image *selectedFocusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *selectedNormalResizedImage, Image *selectedHoverResizedImage, Image *selectedPressedResizedImage, Image *selectedFocusedResizedImage, Image *selectedFocusedHoverResizedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent)
     : Widget(parent)
     , mNormalImage(normalImage)
     , mHoverImage(hoverImage)
     , mPressedImage(pressedImage)
     , mFocusedImage(focusedImage)
     , mFocusedHoverImage(focusedHoverImage)
+    , mSelectedNormalImage(selectedNormalImage)
+    , mSelectedHoverImage(selectedHoverImage)
+    , mSelectedPressedImage(selectedPressedImage)
+    , mSelectedFocusedImage(selectedFocusedImage)
+    , mSelectedFocusedHoverImage(selectedFocusedHoverImage)
     , mNormalResizedImage(normalResizedImage)
     , mHoverResizedImage(hoverResizedImage)
     , mPressedResizedImage(pressedResizedImage)
     , mFocusedResizedImage(focusedResizedImage)
     , mFocusedHoverResizedImage(focusedHoverResizedImage)
+    , mSelectedNormalResizedImage(selectedNormalResizedImage)
+    , mSelectedHoverResizedImage(selectedHoverResizedImage)
+    , mSelectedPressedResizedImage(selectedPressedResizedImage)
+    , mSelectedFocusedResizedImage(selectedFocusedResizedImage)
+    , mSelectedFocusedHoverResizedImage(selectedFocusedHoverResizedImage)
     , mImageWidget(new ImageWidget(contentImage, this))
     , mBadgeWidget(nullptr)
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
+    , mSelected(false)
     , mPredefined(true)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
 {
-    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, contentImage, badgeImage, text, parent));
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, selectedNormalImage = 0x%p, selectedHoverImage = 0x%p, selectedPressedImage = 0x%p, selectedFocusedImage = 0x%p, selectedFocusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, selectedNormalResizedImage = 0x%p, selectedHoverResizedImage = 0x%p, selectedPressedResizedImage = 0x%p, selectedFocusedResizedImage = 0x%p, selectedFocusedHoverResizedImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, selectedNormalImage, selectedHoverImage, selectedPressedImage, selectedFocusedImage, selectedFocusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, selectedNormalResizedImage, selectedHoverResizedImage, selectedPressedResizedImage, selectedFocusedResizedImage, selectedFocusedHoverResizedImage, contentImage, badgeImage, text, parent));
 
-    COMMON_ASSERT(normalImage,              "normalImage is null");
-    COMMON_ASSERT(hoverImage,               "hoverImage is null");
-    COMMON_ASSERT(pressedImage,             "pressedImage is null");
-    COMMON_ASSERT(focusedImage,             "focusedImage is null");
-    COMMON_ASSERT(focusedHoverImage,        "focusedHoverImage is null");
-    COMMON_ASSERT(normalResizedImage,       "normalResizedImage is null");
-    COMMON_ASSERT(hoverResizedImage,        "hoverResizedImage is null");
-    COMMON_ASSERT(pressedResizedImage,      "pressedResizedImage is null");
-    COMMON_ASSERT(focusedResizedImage,      "focusedResizedImage is null");
-    COMMON_ASSERT(focusedHoverResizedImage, "focusedHoverResizedImage is null");
-    COMMON_ASSERT(contentImage,             "contentImage is null");
-    COMMON_ASSERT(parent,                   "parent is null");
+    COMMON_ASSERT(normalImage,                      "normalImage is null");
+    COMMON_ASSERT(hoverImage,                       "hoverImage is null");
+    COMMON_ASSERT(pressedImage,                     "pressedImage is null");
+    COMMON_ASSERT(focusedImage,                     "focusedImage is null");
+    COMMON_ASSERT(focusedHoverImage,                "focusedHoverImage is null");
+    COMMON_ASSERT(selectedNormalImage,              "selectedNormalImage is null");
+    COMMON_ASSERT(selectedHoverImage,               "selectedHoverImage is null");
+    COMMON_ASSERT(selectedPressedImage,             "selectedPressedImage is null");
+    COMMON_ASSERT(selectedFocusedImage,             "selectedFocusedImage is null");
+    COMMON_ASSERT(selectedFocusedHoverImage,        "selectedFocusedHoverImage is null");
+    COMMON_ASSERT(normalResizedImage,               "normalResizedImage is null");
+    COMMON_ASSERT(hoverResizedImage,                "hoverResizedImage is null");
+    COMMON_ASSERT(pressedResizedImage,              "pressedResizedImage is null");
+    COMMON_ASSERT(focusedResizedImage,              "focusedResizedImage is null");
+    COMMON_ASSERT(focusedHoverResizedImage,         "focusedHoverResizedImage is null");
+    COMMON_ASSERT(selectedNormalResizedImage,       "selectedNormalResizedImage is null");
+    COMMON_ASSERT(selectedHoverResizedImage,        "selectedHoverResizedImage is null");
+    COMMON_ASSERT(selectedPressedResizedImage,      "selectedPressedResizedImage is null");
+    COMMON_ASSERT(selectedFocusedResizedImage,      "selectedFocusedResizedImage is null");
+    COMMON_ASSERT(selectedFocusedHoverResizedImage, "selectedFocusedHoverResizedImage is null");
+    COMMON_ASSERT(contentImage,                     "contentImage is null");
+    COMMON_ASSERT(parent,                           "parent is null");
 
 
 
@@ -131,6 +168,31 @@ TabButton::~TabButton()
         {
             delete mFocusedHoverResizedImage;
         }
+
+        if (mSelectedNormalResizedImage)
+        {
+            delete mSelectedNormalResizedImage;
+        }
+
+        if (mSelectedHoverResizedImage)
+        {
+            delete mSelectedHoverResizedImage;
+        }
+
+        if (mSelectedPressedResizedImage)
+        {
+            delete mSelectedPressedResizedImage;
+        }
+
+        if (mSelectedFocusedResizedImage)
+        {
+            delete mSelectedFocusedResizedImage;
+        }
+
+        if (mSelectedFocusedHoverResizedImage)
+        {
+            delete mSelectedFocusedHoverResizedImage;
+        }
     }
 
 
@@ -174,11 +236,41 @@ NgosStatus TabButton::invalidate()
             delete mFocusedHoverResizedImage;
         }
 
-        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mNormalImage,       mWidth, mHeight, &mNormalResizedImage),       NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mHoverImage,        mWidth, mHeight, &mHoverResizedImage),        NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPressedImage,      mWidth, mHeight, &mPressedResizedImage),      NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedImage,      mWidth, mHeight, &mFocusedResizedImage),      NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedHoverImage, mWidth, mHeight, &mFocusedHoverResizedImage), NgosStatus::ASSERTION);
+        if (mSelectedNormalResizedImage)
+        {
+            delete mSelectedNormalResizedImage;
+        }
+
+        if (mSelectedHoverResizedImage)
+        {
+            delete mSelectedHoverResizedImage;
+        }
+
+        if (mSelectedPressedResizedImage)
+        {
+            delete mSelectedPressedResizedImage;
+        }
+
+        if (mSelectedFocusedResizedImage)
+        {
+            delete mSelectedFocusedResizedImage;
+        }
+
+        if (mSelectedFocusedHoverResizedImage)
+        {
+            delete mSelectedFocusedHoverResizedImage;
+        }
+
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mNormalImage,               mWidth, mHeight, &mNormalResizedImage),               NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mHoverImage,                mWidth, mHeight, &mHoverResizedImage),                NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPressedImage,              mWidth, mHeight, &mPressedResizedImage),              NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedImage,              mWidth, mHeight, &mFocusedResizedImage),              NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedHoverImage,         mWidth, mHeight, &mFocusedHoverResizedImage),         NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mSelectedNormalImage,       mWidth, mHeight, &mSelectedNormalResizedImage),       NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mSelectedHoverImage,        mWidth, mHeight, &mSelectedHoverResizedImage),        NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mSelectedPressedImage,      mWidth, mHeight, &mSelectedPressedResizedImage),      NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mSelectedFocusedImage,      mWidth, mHeight, &mSelectedFocusedResizedImage),      NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mSelectedFocusedHoverImage, mWidth, mHeight, &mSelectedFocusedHoverResizedImage), NgosStatus::ASSERTION);
     }
 
 
@@ -196,39 +288,74 @@ NgosStatus TabButton::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mNormalResizedImage       != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mHoverResizedImage        != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mPressedResizedImage      != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mFocusedResizedImage      != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mFocusedHoverResizedImage != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mNormalResizedImage               != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mHoverResizedImage                != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mPressedResizedImage              != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mFocusedResizedImage              != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mFocusedHoverResizedImage         != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mSelectedNormalResizedImage       != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mSelectedHoverResizedImage        != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mSelectedPressedResizedImage      != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mSelectedFocusedResizedImage      != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mSelectedFocusedHoverResizedImage != nullptr, NgosStatus::ASSERTION);
 
 
 
     Image *image = nullptr;
 
-    switch (mState)
+    if (mSelected)
     {
-        case WidgetState::NORMAL:          mOwnResultImage = mNormalResizedImage;       image = mNormalImage;       break;
-        case WidgetState::HOVERED:         mOwnResultImage = mHoverResizedImage;        image = mHoverImage;        break;
-        case WidgetState::PRESSED:         mOwnResultImage = mPressedResizedImage;      image = mPressedImage;      break;
-        case WidgetState::FOCUSED:         mOwnResultImage = mFocusedResizedImage;      image = mFocusedImage;      break;
-        case WidgetState::FOCUSED_HOVERED: mOwnResultImage = mFocusedHoverResizedImage; image = mFocusedHoverImage; break;
-
-        case WidgetState::NONE:
+        switch (mState)
         {
-            COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+            case WidgetState::NORMAL:          mOwnResultImage = mSelectedNormalResizedImage;       image = mSelectedNormalImage;       break;
+            case WidgetState::HOVERED:         mOwnResultImage = mSelectedHoverResizedImage;        image = mSelectedHoverImage;        break;
+            case WidgetState::PRESSED:         mOwnResultImage = mSelectedPressedResizedImage;      image = mSelectedPressedImage;      break;
+            case WidgetState::FOCUSED:         mOwnResultImage = mSelectedFocusedResizedImage;      image = mSelectedFocusedImage;      break;
+            case WidgetState::FOCUSED_HOVERED: mOwnResultImage = mSelectedFocusedHoverResizedImage; image = mSelectedFocusedHoverImage; break;
 
-            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            case WidgetState::NONE:
+            {
+                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
         }
-        break;
-
-        default:
+    }
+    else
+    {
+        switch (mState)
         {
-            COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+            case WidgetState::NORMAL:          mOwnResultImage = mNormalResizedImage;       image = mNormalImage;       break;
+            case WidgetState::HOVERED:         mOwnResultImage = mHoverResizedImage;        image = mHoverImage;        break;
+            case WidgetState::PRESSED:         mOwnResultImage = mPressedResizedImage;      image = mPressedImage;      break;
+            case WidgetState::FOCUSED:         mOwnResultImage = mFocusedResizedImage;      image = mFocusedImage;      break;
+            case WidgetState::FOCUSED_HOVERED: mOwnResultImage = mFocusedHoverResizedImage; image = mFocusedHoverImage; break;
 
-            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            case WidgetState::NONE:
+            {
+                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
         }
-        break;
     }
 
 
@@ -392,6 +519,38 @@ WidgetState TabButton::getState() const
 
 
     return mState;
+}
+
+NgosStatus TabButton::setSelected(bool selected)
+{
+    COMMON_LT((" | selected = %u", selected));
+
+
+
+    if (mSelected != selected)
+    {
+        mSelected = selected;
+
+        COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+bool TabButton::isSelected() const
+{
+    COMMON_LT((""));
+
+
+
+    return mSelected;
 }
 
 NgosStatus TabButton::setKeyboardEventHandler(keyboard_event_handler handler)

@@ -283,11 +283,14 @@ NgosStatus TabWidget::setCurrentPage(i64 page)
             COMMON_ASSERT_EXECUTION(page->lockUpdates(),     NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(page->setVisible(false), NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(page->unlockUpdates(),   NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(mTabButtons.at(mCurrentPage)->setSelected(false), NgosStatus::ASSERTION);
         }
 
         mCurrentPage = page;
 
-        COMMON_ASSERT_EXECUTION(mTabPages.at(mCurrentPage)->setVisible(true), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mTabPages.at(mCurrentPage)->setVisible(true),    NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mTabButtons.at(mCurrentPage)->setSelected(true), NgosStatus::ASSERTION);
 
 
 
