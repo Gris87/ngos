@@ -7,6 +7,7 @@
 
 #include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/tabpagewidget.h>
 
 
 
@@ -17,16 +18,16 @@ public:
     ~TabWidget(); // TEST: NO
 
     NgosStatus addTabButton(Button *button); // TEST: NO
-    NgosStatus addTabPage(Widget *page); // TEST: NO
+    NgosStatus addTabPage(TabPageWidget *page); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
 private:
-    ArrayList<Button *>  mTabButtons;
-    ArrayList<Widget *>  mTabPages;
-    Image               *mPanelImage;
-    Image               *mPanelResizedImage;
+    ArrayList<Button *>         mTabButtons;
+    ArrayList<TabPageWidget *>  mTabPages;
+    Image                      *mPanelImage;
+    Image                      *mPanelResizedImage;
 };
 
 

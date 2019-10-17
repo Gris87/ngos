@@ -87,6 +87,9 @@ else
     sudo cp -r ${KERNEL_IMAGE} ${MOUNTDIR}/
 fi
 
+echo "Files on ESP:"
+sudo find ${MOUNTDIR}
+
 sudo umount ${MOUNTDIR}
 
 

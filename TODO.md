@@ -23,7 +23,7 @@ NGOS:
 Bootloader:
 
 - Custom arguments
-- Check without OS
+- Clean up before start application
 
 
 

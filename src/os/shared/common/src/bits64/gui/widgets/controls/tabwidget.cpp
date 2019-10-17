@@ -50,7 +50,7 @@ NgosStatus TabWidget::addTabButton(Button *button)
     return NgosStatus::OK;
 }
 
-NgosStatus TabWidget::addTabPage(Widget *page)
+NgosStatus TabWidget::addTabPage(TabPageWidget *page)
 {
     COMMON_LT((" | page = 0x%p", page));
 

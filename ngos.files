@@ -669,6 +669,8 @@ src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/imagewidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.h
+src/os/shared/common/src/bits64/gui/widgets/misc/tabpagewidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/tabpagewidget.h
 src/os/shared/common/src/bits64/gui/widgets/special/rootwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/special/rootwidget.h
 src/os/shared/common/src/bits64/gui/widgets/special/screenwidget.cpp
