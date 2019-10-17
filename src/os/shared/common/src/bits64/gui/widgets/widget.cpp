@@ -70,10 +70,11 @@ NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
         positionX += mPositionX;
         positionY += mPositionY;
 
-        if (mParent->mResultImage)
+        Image *parentResultImage = mParent->mResultImage;
+
+        if (parentResultImage)
         {
             Image *parentOwnResultImage = mParent->mOwnResultImage;
-            Image *parentResultImage    = mParent->mResultImage;
 
             COMMON_TEST_ASSERT(parentOwnResultImage, NgosStatus::ASSERTION);
 
@@ -86,7 +87,7 @@ NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
                                         parentResultImage->getHeight(),
                                         parentOwnResultImage->getBytesPerPixel(),
                                         parentResultImage->getBytesPerPixel(),
-                                        parentOwnResultImage->isOpaque() && parentResultImage->isOpaque(),
+                                        true,
                                         0, 0,
                                         positionX,
                                         positionY,
