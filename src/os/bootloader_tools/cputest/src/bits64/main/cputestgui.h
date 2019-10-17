@@ -41,9 +41,9 @@ private:
     static Button     *sRebootButton;
     static Button     *sShutdownButton;
     static TabWidget  *sTabWidget;
-    static Button     *sSystemInformationTabButton;
-    static Button     *sTestTabButton;
-    static Button     *sSummaryTabButton;
+    static TabButton  *sSystemInformationTabButton;
+    static TabButton  *sTestTabButton;
+    static TabButton  *sSummaryTabButton;
     static u16         sWaitEventsCount;
     static uefi_event *sWaitEvents;
 };

@@ -38,7 +38,7 @@ TabWidget::~TabWidget()
     }
 }
 
-NgosStatus TabWidget::addTabButton(Button *button)
+NgosStatus TabWidget::addTabButton(TabButton *button)
 {
     COMMON_LT((" | button = 0x%p", button));
 
@@ -160,7 +160,7 @@ NgosStatus TabWidget::repaint()
 
     for (i64 i = 0; i < (i64)mTabButtons.getSize(); ++i)
     {
-        Button *tabButton = mTabButtons.at(i);
+        TabButton *tabButton = mTabButtons.at(i);
 
         COMMON_TEST_ASSERT(i == 0 || tabButton->getHeight() == mTabButtons.at(i - 1)->getHeight(), NgosStatus::ASSERTION);
 
@@ -171,7 +171,7 @@ NgosStatus TabWidget::repaint()
         COMMON_ASSERT_EXECUTION(tabButton->setPosition(buttonPositionX, paddingTop), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(tabButton->unlockUpdates(),                          NgosStatus::ASSERTION);
 
-        buttonPositionX += tabButton->getWidth() * 95 / 100;
+        buttonPositionX += tabButton->getWidth();
     }
 
 
@@ -283,13 +283,11 @@ NgosStatus TabWidget::setCurrentPage(i64 page)
             COMMON_ASSERT_EXECUTION(page->lockUpdates(),     NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(page->setVisible(false), NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(page->unlockUpdates(),   NgosStatus::ASSERTION);
-
         }
 
         mCurrentPage = page;
 
         COMMON_ASSERT_EXECUTION(mTabPages.at(mCurrentPage)->setVisible(true), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(mTabButtons.at(mCurrentPage)->moveToFront(),  NgosStatus::ASSERTION);
 
 
 

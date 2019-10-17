@@ -46,9 +46,9 @@
 Button     *CpuTestGUI::sRebootButton;
 Button     *CpuTestGUI::sShutdownButton;
 TabWidget  *CpuTestGUI::sTabWidget;
-Button     *CpuTestGUI::sSystemInformationTabButton;
-Button     *CpuTestGUI::sTestTabButton;
-Button     *CpuTestGUI::sSummaryTabButton;
+TabButton  *CpuTestGUI::sSystemInformationTabButton;
+TabButton  *CpuTestGUI::sTestTabButton;
+TabButton  *CpuTestGUI::sSummaryTabButton;
 u16         CpuTestGUI::sWaitEventsCount;
 uefi_event *CpuTestGUI::sWaitEvents;
 
@@ -205,7 +205,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    sSystemInformationTabButton = new Button(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, systemInformationImage, nullptr, "System information", sTabWidget);
+    sSystemInformationTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, systemInformationImage, nullptr, "System information", sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setSize(tabButtonWidth, tabButtonHeight),                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setKeyboardEventHandler(onSystemInformationTabButtonKeyboardEvent), NgosStatus::ASSERTION);
@@ -214,7 +214,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    sTestTabButton = new Button(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, testImage, nullptr, "Test              ", sTabWidget);
+    sTestTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, testImage, nullptr, "Test              ", sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTestTabButton->setSize(tabButtonWidth, tabButtonHeight),              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTabButton->setKeyboardEventHandler(onTestTabButtonKeyboardEvent), NgosStatus::ASSERTION);
@@ -223,7 +223,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    sSummaryTabButton = new Button(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, summaryImage, nullptr, "Summary           ", sTabWidget);
+    sSummaryTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, summaryImage, nullptr, "Summary           ", sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sSummaryTabButton->setSize(tabButtonWidth, tabButtonHeight),                 NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTabButton->setKeyboardEventHandler(onSummaryTabButtonKeyboardEvent), NgosStatus::ASSERTION);
