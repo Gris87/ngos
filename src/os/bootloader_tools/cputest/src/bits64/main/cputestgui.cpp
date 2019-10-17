@@ -33,6 +33,10 @@
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
 
+#define TABWIDGET_PAGE_SYSTEM_INFORMATION 0
+#define TABWIDGET_PAGE_TEST               1
+#define TABWIDGET_PAGE_SUMMARY            2
+
 
 
 Button     *CpuTestGUI::sRebootButton;
@@ -201,8 +205,27 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    TabPageWidget *systemInformationTabPageWidget = new TabPageWidget(sTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(systemInformationTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    TabPageWidget *testTabPageWidget = new TabPageWidget(sTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(testTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    TabPageWidget *summaryTabPageWidget = new TabPageWidget(sTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(summaryTabPageWidget), NgosStatus::ASSERTION);
+
+
+
     UEFI_ASSERT_EXECUTION(sTabWidget->setPosition(screenWidth * TABWIDGET_POSITION_X_PERCENT     / 100, screenHeight * TABWIDGET_POSITION_Y_PERCENT      / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTabWidget->setSize(screenWidth     * TABWIDGET_POSITION_WIDTH_PERCENT / 100, screenHeight * TABWIDGET_POSITION_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SYSTEM_INFORMATION),                                                                         NgosStatus::ASSERTION);
 
 
 
@@ -623,6 +646,10 @@ NgosStatus CpuTestGUI::onSystemInformationTabButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SYSTEM_INFORMATION), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
@@ -632,12 +659,20 @@ NgosStatus CpuTestGUI::onTestTabButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_TEST), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
 NgosStatus CpuTestGUI::onSummaryTabButtonPressed()
 {
     UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SUMMARY), NgosStatus::ASSERTION);
 
 
 

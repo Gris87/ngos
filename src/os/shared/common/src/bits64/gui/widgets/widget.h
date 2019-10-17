@@ -57,7 +57,7 @@ public:
     i64 getGlobalPositionX() const;
     i64 getGlobalPositionY() const;
 
-    NgosStatus setSize(u64 width, u64 height);
+    virtual NgosStatus setSize(u64 width, u64 height);
     u64 getWidth() const;
     u64 getHeight() const;
 
