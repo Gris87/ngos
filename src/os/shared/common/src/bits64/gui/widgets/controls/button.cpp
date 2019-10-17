@@ -376,7 +376,7 @@ NgosStatus Button::setState(WidgetState state)
 
         if (isVisible())
         {
-            COMMON_ASSERT_EXECUTION(update(),  NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
         }
     }
 

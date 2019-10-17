@@ -28,6 +28,8 @@ public:
     virtual NgosStatus repaint(); // TEST: NO
     virtual NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
+    NgosStatus moveToFront(); // TEST: NO
+
     NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY); // TEST: NO
     NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom); // TEST: NO
 

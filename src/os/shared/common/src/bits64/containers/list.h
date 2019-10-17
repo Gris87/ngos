@@ -20,6 +20,8 @@ public:
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
 
+    NgosStatus moveToEnd(const T &value);
+
     NgosStatus sort();
 
     ListElement<T>* getHead() const;
@@ -38,8 +40,8 @@ private:
 
 template<typename T>
 List<T>::List()
-    : mHead(0)
-    , mTail(0)
+    : mHead(nullptr)
+    , mTail(nullptr)
 {
     COMMON_LT((""));
 }
@@ -109,6 +111,56 @@ NgosStatus List<T>::prepend(const T &value)
     }
 
     mHead = element;
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus List<T>::moveToEnd(const T &value)
+{
+    if (mHead != mTail)
+    {
+        if (mHead->getData() == value)
+        {
+            ListElement<T> *newHead = mHead->getNext();
+
+            COMMON_ASSERT_EXECUTION(newHead->setPrevious(nullptr), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(mTail->setNext(mHead),         NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(mHead->setPrevious(mTail),     NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(mHead->setNext(nullptr),       NgosStatus::ASSERTION);
+
+            mTail = mHead;
+            mHead = newHead;
+        }
+        else
+        {
+            ListElement<T> *element = mHead->getNext();
+
+            while (element != mTail)
+            {
+                if (element->getData() == value)
+                {
+                    COMMON_TEST_ASSERT(element->getPrevious() != nullptr, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(element->getNext()     != nullptr, NgosStatus::ASSERTION);
+
+                    COMMON_ASSERT_EXECUTION(element->getPrevious()->setNext(element->getNext()),     NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(element->getNext()->setPrevious(element->getPrevious()), NgosStatus::ASSERTION);
+
+                    COMMON_ASSERT_EXECUTION(mTail->setNext(element),     NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(element->setPrevious(mTail), NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(element->setNext(nullptr),   NgosStatus::ASSERTION);
+
+                    mTail = element;
+
+                    break;
+                }
+
+                element = element->getNext();
+            }
+        }
+    }
 
 
 

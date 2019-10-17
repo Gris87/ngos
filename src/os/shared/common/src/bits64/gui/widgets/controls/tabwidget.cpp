@@ -289,6 +289,7 @@ NgosStatus TabWidget::setCurrentPage(i64 page)
         mCurrentPage = page;
 
         COMMON_ASSERT_EXECUTION(mTabPages.at(mCurrentPage)->setVisible(true), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mTabButtons.at(mCurrentPage)->moveToFront(),  NgosStatus::ASSERTION);
 
 
 

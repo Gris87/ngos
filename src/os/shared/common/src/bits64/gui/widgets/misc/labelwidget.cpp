@@ -266,7 +266,7 @@ NgosStatus LabelWidget::setText(const char8 *text)
 
     if (isVisible())
     {
-        COMMON_ASSERT_EXECUTION(update(),  NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
     }
 
 
