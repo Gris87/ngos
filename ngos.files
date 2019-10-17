@@ -209,6 +209,11 @@ src/os/bootloader_tools/cputest/assets/images/console.9.png
 src/os/bootloader_tools/cputest/assets/images/cpu.png
 src/os/bootloader_tools/cputest/assets/images/cursor.png
 src/os/bootloader_tools/cputest/assets/images/reboot.png
+src/os/bootloader_tools/cputest/assets/images/selectedtab_focused.9.png
+src/os/bootloader_tools/cputest/assets/images/selectedtab_focused_hover.9.png
+src/os/bootloader_tools/cputest/assets/images/selectedtab_hover.9.png
+src/os/bootloader_tools/cputest/assets/images/selectedtab_normal.9.png
+src/os/bootloader_tools/cputest/assets/images/selectedtab_pressed.9.png
 src/os/bootloader_tools/cputest/assets/images/shutdown.png
 src/os/bootloader_tools/cputest/assets/images/summary.png
 src/os/bootloader_tools/cputest/assets/images/system_information.png

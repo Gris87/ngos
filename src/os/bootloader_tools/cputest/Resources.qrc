@@ -12,6 +12,11 @@
         <file>assets/images/cpu.png</file>
         <file>assets/images/cursor.png</file>
         <file>assets/images/reboot.png</file>
+        <file>assets/images/selectedtab_focused.9.png</file>
+        <file>assets/images/selectedtab_focused_hover.9.png</file>
+        <file>assets/images/selectedtab_hover.9.png</file>
+        <file>assets/images/selectedtab_normal.9.png</file>
+        <file>assets/images/selectedtab_pressed.9.png</file>
         <file>assets/images/shutdown.png</file>
         <file>assets/images/summary.png</file>
         <file>assets/images/system_information.png</file>
