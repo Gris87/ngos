@@ -23,10 +23,14 @@
 #define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
 #define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
 
-#define TABWIDGET_POSITION_X_PERCENT      5
-#define TABWIDGET_POSITION_Y_PERCENT      0
-#define TABWIDGET_POSITION_WIDTH_PERCENT  90
-#define TABWIDGET_POSITION_HEIGHT_PERCENT 70
+#define TABWIDGET_POSITION_X_PERCENT 5
+#define TABWIDGET_POSITION_Y_PERCENT 0
+#define TABWIDGET_WIDTH_PERCENT      90
+#define TABWIDGET_HEIGHT_PERCENT     70
+
+#define CPU_IMAGE_POSITION_X_PERCENT 0
+#define CPU_IMAGE_POSITION_Y_PERCENT 0
+#define CPU_IMAGE_SIZE_PERCENT       20
 
 #define TAB_BUTTON_WIDTH_PERCENT   20
 #define TAB_BUTTON_HEIGHT_PERCENT  5
@@ -87,6 +91,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     Image *systemInformationImage;
     Image *testImage;
     Image *summaryImage;
+    Image *cpuImage;
     Image *rebootImage;
     Image *shutdownImage;
     Image *cursorImage;
@@ -108,6 +113,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",     &systemInformationImage),  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/test.png",                   &testImage),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/summary.png",                &summaryImage),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cpu.png",                    &cpuImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                 &rebootImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",               &shutdownImage),           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                 &cursorImage),             NgosStatus::ASSERTION);
@@ -119,10 +125,31 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
     u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
+
+
     u64 tabButtonWidth   = screenWidth  * TAB_BUTTON_WIDTH_PERCENT   / 100;
     u64 tabButtonHeight  = screenHeight * TAB_BUTTON_HEIGHT_PERCENT  / 100;
+    u64 tabWidgetWidth   = screenWidth  * TABWIDGET_WIDTH_PERCENT    / 100;
+    u64 tabWidgetHeight  = screenHeight * TABWIDGET_HEIGHT_PERCENT   / 100;
     u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
     u64 cursorSize       = screenWidth  * CURSOR_SIZE_PERCENT        / 100;
+
+
+
+    u64 tabPageWidth  = tabWidgetWidth;
+    u64 tabPageHeight = tabWidgetHeight - tabButtonHeight;
+
+    NinePatch *patch = tabWidgetPanelImage->getNinePatch();
+
+    if (patch)
+    {
+        tabPageWidth  -= patch->getPaddingLeft() + patch->getPaddingRight();
+        tabPageHeight -= patch->getPaddingTop()  + patch->getPaddingBottom();
+    }
+
+
+
+    u64 cpuImageSize = tabPageWidth * CPU_IMAGE_SIZE_PERCENT / 100;
 
 
 
@@ -211,6 +238,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    ImageWidget *cpuImageWidget = new ImageWidget(cpuImage, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuImageWidget->setPosition(tabPageWidth * CPU_IMAGE_POSITION_X_PERCENT / 100, tabPageHeight * CPU_IMAGE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuImageWidget->setSize(cpuImageSize, cpuImageSize),                                                                                NgosStatus::ASSERTION);
+
+
+
     TabPageWidget *testTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(testTabPageWidget), NgosStatus::ASSERTION);
@@ -223,9 +257,9 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(sTabWidget->setPosition(screenWidth * TABWIDGET_POSITION_X_PERCENT     / 100, screenHeight * TABWIDGET_POSITION_Y_PERCENT      / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTabWidget->setSize(screenWidth     * TABWIDGET_POSITION_WIDTH_PERCENT / 100, screenHeight * TABWIDGET_POSITION_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SYSTEM_INFORMATION),                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->setPosition(screenWidth * TABWIDGET_POSITION_X_PERCENT / 100, screenHeight * TABWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->setSize(tabWidgetWidth, tabWidgetHeight),                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SYSTEM_INFORMATION),                                                                NgosStatus::ASSERTION);
 
 
 

@@ -12,6 +12,10 @@ TabPageWidget::TabPageWidget(Widget *parent)
     COMMON_LT((" | parent = 0x%p", parent));
 
     COMMON_ASSERT(parent, "parent is null");
+
+
+
+    COMMON_ASSERT_EXECUTION(setVisible(false));
 }
 
 TabPageWidget::~TabPageWidget()

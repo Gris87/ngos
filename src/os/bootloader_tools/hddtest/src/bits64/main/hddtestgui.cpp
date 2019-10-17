@@ -81,6 +81,8 @@ NgosStatus HddTestGUI::init(BootParams *params)
     u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
     u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
+
+
     u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
     u64 cursorSize       = screenWidth  * CURSOR_SIZE_PERCENT        / 100;
 

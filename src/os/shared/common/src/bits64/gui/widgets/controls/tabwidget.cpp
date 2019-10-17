@@ -272,7 +272,22 @@ NgosStatus TabWidget::setCurrentPage(i64 page)
 
     if (mCurrentPage != page)
     {
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        if (mCurrentPage >= 0)
+        {
+            mTabPages.at(mCurrentPage)->setVisible(false);
+        }
+
         mCurrentPage = page;
+
+        mTabPages.at(mCurrentPage)->setVisible(true);
+
+
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
 
 
