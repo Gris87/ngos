@@ -1,5 +1,6 @@
 #include "cputestgui.h"
 
+#include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
@@ -31,6 +32,8 @@
 #define CPU_IMAGE_POSITION_X_PERCENT 0
 #define CPU_IMAGE_POSITION_Y_PERCENT 0
 #define CPU_IMAGE_SIZE_PERCENT       20
+
+#define CPU_MODEL_HEIGHT_PERCENT 5
 
 #define TAB_BUTTON_WIDTH_PERCENT   20
 #define TAB_BUTTON_HEIGHT_PERCENT  5
@@ -262,6 +265,22 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(cpuImageWidget->setPosition(tabPageWidth * CPU_IMAGE_POSITION_X_PERCENT / 100, tabPageHeight * CPU_IMAGE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(cpuImageWidget->setSize(cpuImageSize, cpuImageSize),                                                                                NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuModelName = (char8 *)malloc(60);
+
+    i64 cpuModelNameLength = sprintf(cpuModelName, "CPU Model: %.48s", CPU::getModelName());
+
+    UEFI_TEST_ASSERT(sizeof(CPU::sModelName) == 48, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(cpuModelNameLength < 60,       NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuModelLabelWidget = new LabelWidget(cpuModelName, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setPosition(cpuImageWidget->getPositionX(), cpuImageWidget->getPositionY() + cpuImageSize), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setSize(cpuImageSize, tabPageHeight * CPU_MODEL_HEIGHT_PERCENT / 100),                      NgosStatus::ASSERTION);
 
 
 

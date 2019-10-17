@@ -533,6 +533,15 @@ NgosStatus CPU::check(const char8 **wantedFlag)
     return NgosStatus::OK;
 }
 
+char8* CPU::getModelName()
+{
+    COMMON_LT((""));
+
+
+
+    return (char8 *)sModelName;
+}
+
 NgosStatus CPU::setFlag(X86Feature flag)
 {
     COMMON_LT((" | flag = 0x%04X", flag));
