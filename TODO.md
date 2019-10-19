@@ -13,6 +13,7 @@ NGOS:
 - Per CPU?
 - Initialization via multiple CPU cores
 
+- Add option to log in serial only
 - Add option to disable inline
 - Add stack protector to build
 
