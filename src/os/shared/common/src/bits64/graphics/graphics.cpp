@@ -228,7 +228,7 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
 NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
 {
-    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY, left, top, right, bottom));
+    // COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY, left, top, right, bottom)); // Commented to avoid infinite loop
 
     COMMON_ASSERT(sourceData,                   "sourceData is null",               NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationData,              "destinationData is null",          NgosStatus::ASSERTION);
@@ -238,8 +238,6 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
     COMMON_ASSERT(destinationHeight > 0,        "destinationHeight is zero",        NgosStatus::ASSERTION);
     COMMON_ASSERT(sourceBytesPerPixel > 0,      "sourceBytesPerPixel is zero",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationBytesPerPixel > 0, "destinationBytesPerPixel is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(right > left,                 "right is invalid",                 NgosStatus::ASSERTION);
-    COMMON_ASSERT(bottom > top,                 "bottom is invalid",                NgosStatus::ASSERTION);
 
     AVOID_UNUSED(sourceHeight);
 

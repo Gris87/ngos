@@ -93,7 +93,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
     }
     else
     {
-        UEFI_LW(("Handle for UEFI_ABSOLUTE_POINTER_PROTOCOL not found"));
+        UEFI_LV(("Handle for UEFI_ABSOLUTE_POINTER_PROTOCOL not found"));
     }
 
 

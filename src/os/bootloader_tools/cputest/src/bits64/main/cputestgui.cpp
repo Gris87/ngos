@@ -33,7 +33,10 @@
 #define CPU_IMAGE_POSITION_Y_PERCENT 0
 #define CPU_IMAGE_SIZE_PERCENT       20
 
-#define CPU_MODEL_HEIGHT_PERCENT 5
+#define CPU_MODEL_POSITION_X_PERCENT 20
+#define CPU_MODEL_POSITION_Y_PERCENT 0
+#define CPU_MODEL_WIDTH_PERCENT      80
+#define CPU_MODEL_HEIGHT_PERCENT     5
 
 #define TAB_BUTTON_WIDTH_PERCENT   20
 #define TAB_BUTTON_HEIGHT_PERCENT  5
@@ -279,8 +282,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     LabelWidget *cpuModelLabelWidget = new LabelWidget(cpuModelName, systemInformationTabPageWidget);
 
-    UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setPosition(cpuImageWidget->getPositionX(), cpuImageWidget->getPositionY() + cpuImageSize), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setSize(cpuImageSize, tabPageHeight * CPU_MODEL_HEIGHT_PERCENT / 100),                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setPosition(tabPageWidth * CPU_MODEL_POSITION_X_PERCENT / 100, tabPageHeight * CPU_MODEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setSize(tabPageWidth     * CPU_MODEL_WIDTH_PERCENT      / 100, tabPageHeight * CPU_MODEL_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 

@@ -930,7 +930,7 @@ NgosStatus Bootloader::initVolumeWholeDisk(VolumeInfo *volume, Guid *protocol)
             }
             else
             {
-                UEFI_LW(("Whole disk handle for UEFI_BLOCK_IO_PROTOCOL not found"));
+                UEFI_LV(("Whole disk handle for UEFI_BLOCK_IO_PROTOCOL not found"));
             }
 
 
