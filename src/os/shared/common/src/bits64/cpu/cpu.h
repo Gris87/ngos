@@ -80,6 +80,7 @@ private:
     static u32       sMicrocodeRevision;
     static u32       sNumberOfCores;
     static u32       sNumberOfThreads;
+    static u8        sNumberOfApicIdsPerPackage;
     static i8        sX86CoreIdBits;
     static u16       sCacheLineFlushSize;
     static u16       sCacheAlignment;

@@ -1,6 +1,7 @@
 #include "setupcr4.h"
 
 #include <asm/instructions.h>
+#include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/cpu/flags.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
@@ -20,10 +21,22 @@ NgosStatus setupCr4()
 
 
     cr4 |= X86_CR4_PAE
-        |  X86_CR4_PGE
-        |  X86_CR4_OSFXSR        // Requires X86Feature::FXSR
-        |  X86_CR4_OSXMMEXCPT    // Requires X86Feature::XMM
-        |  X86_CR4_OSXSAVE;      // Requires X86Feature::XSAVE
+        |  X86_CR4_PGE;
+
+    if (CPU::hasFlag(X86Feature::FXSR))
+    {
+        cr4 |= X86_CR4_OSFXSR;
+    }
+
+    if (CPU::hasFlag(X86Feature::XMM))
+    {
+        cr4 |= X86_CR4_OSXMMEXCPT;
+    }
+
+    if (CPU::hasFlag(X86Feature::XSAVE))
+    {
+        cr4 |= X86_CR4_OSXSAVE;
+    }
 
     UEFI_LVVV(("cr4 = 0x%016lX", cr4));
 

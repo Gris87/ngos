@@ -7,6 +7,7 @@
 #include <ngos/linkage.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
+#include <ngos/utils.h>
 
 
 
@@ -464,37 +465,37 @@ public:
 
     static inline i8 getCountOrder16(u16 value)
     {
-        if (value & (value - 1))
+        if (IS_POWER_OF_2(value))
         {
-            return (i8)findLastBit16(value);
+            return (i8)(findLastBit16(value) - 1);
         }
         else
         {
-            return (i8)(findLastBit16(value) - 1);
+            return (i8)findLastBit16(value);
         }
     }
 
     static inline i8 getCountOrder32(u32 value)
     {
-        if (value & (value - 1))
+        if (IS_POWER_OF_2(value))
         {
-            return (i8)findLastBit32(value);
+            return (i8)(findLastBit32(value) - 1);
         }
         else
         {
-            return (i8)(findLastBit32(value) - 1);
+            return (i8)findLastBit32(value);
         }
     }
 
     static inline i8 getCountOrder64(u64 value)
     {
-        if (value & (value - 1))
+        if (IS_POWER_OF_2(value))
         {
-            return (i8)findLastBit64(value);
+            return (i8)(findLastBit64(value) - 1);
         }
         else
         {
-            return (i8)(findLastBit64(value) - 1);
+            return (i8)findLastBit64(value);
         }
     }
 };

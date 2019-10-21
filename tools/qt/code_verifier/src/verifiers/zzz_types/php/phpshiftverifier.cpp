@@ -61,7 +61,7 @@ bool PhpShiftVerifier::isPowerOf2(const QString &number)
 
 
 
-    return !((value - 1) & value); // ((value - 1) & value) == 0
+    return !(value & (value - 1)); // (value & (value - 1)) == 0
 }
 
 

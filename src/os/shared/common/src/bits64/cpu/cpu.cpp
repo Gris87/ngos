@@ -55,6 +55,7 @@ u8        CPU::sStepping;
 u32       CPU::sMicrocodeRevision;
 u32       CPU::sNumberOfCores;
 u32       CPU::sNumberOfThreads;
+u8        CPU::sNumberOfApicIdsPerPackage;
 i8        CPU::sX86CoreIdBits;
 u16       CPU::sCacheLineFlushSize;
 u16       CPU::sCacheAlignment;
@@ -117,38 +118,41 @@ NgosStatus CPU::init()
 
     // Validation
     {
-        COMMON_LVVV(("sVendor[0]          = 0x%08X",  sVendor[0]));
-        COMMON_LVVV(("sVendor[1]          = 0x%08X",  sVendor[1]));
-        COMMON_LVVV(("sVendor[2]          = 0x%08X",  sVendor[2]));
-        COMMON_LVVV(("sVendor             = %.12s",   sVendor));
-        COMMON_LVVV(("sCpuVendor          = %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
-        COMMON_LVVV(("sModelName[0]       = 0x%08X",  sModelName[0]));
-        COMMON_LVVV(("sModelName[1]       = 0x%08X",  sModelName[1]));
-        COMMON_LVVV(("sModelName[2]       = 0x%08X",  sModelName[2]));
-        COMMON_LVVV(("sModelName[3]       = 0x%08X",  sModelName[3]));
-        COMMON_LVVV(("sModelName[4]       = 0x%08X",  sModelName[4]));
-        COMMON_LVVV(("sModelName[5]       = 0x%08X",  sModelName[5]));
-        COMMON_LVVV(("sModelName[6]       = 0x%08X",  sModelName[6]));
-        COMMON_LVVV(("sModelName[7]       = 0x%08X",  sModelName[7]));
-        COMMON_LVVV(("sModelName[8]       = 0x%08X",  sModelName[8]));
-        COMMON_LVVV(("sModelName[9]       = 0x%08X",  sModelName[9]));
-        COMMON_LVVV(("sModelName[10]      = 0x%08X",  sModelName[10]));
-        COMMON_LVVV(("sModelName[11]      = 0x%08X",  sModelName[11]));
-        COMMON_LVVV(("sModelName          = %.48s",   sModelName));
-        COMMON_LVVV(("sCpuidLevel         = 0x%08X",  sCpuidLevel));
-        COMMON_LVVV(("sExtendedCpuidLevel = 0x%08X",  sExtendedCpuidLevel));
-        COMMON_LVVV(("sFamily             = %u (%s)", sFamily, cpuFamilyToString(sCpuVendor, sFamily)));
-        COMMON_LVVV(("sModel              = %u (%s)", sModel, cpuModelToString(sCpuVendor, sFamily, sModel)));
-        COMMON_LVVV(("sStepping           = %u",      sStepping));
-        COMMON_LVVV(("sMicrocodeRevision  = 0x%08X",  sMicrocodeRevision));
-        COMMON_LVVV(("sX86CoreIdBits      = %d",      sX86CoreIdBits));
-        COMMON_LVVV(("sCacheLineFlushSize = %u",      sCacheLineFlushSize));
-        COMMON_LVVV(("sCacheAlignment     = %u",      sCacheAlignment));
-        COMMON_LVVV(("sCacheMaxRmid       = %d",      sCacheMaxRmid));
-        COMMON_LVVV(("sCacheOccScale      = %d",      sCacheOccScale));
-        COMMON_LVVV(("sPower              = %u",      sPower));
-        COMMON_LVVV(("sPhysicalBits       = %u",      sPhysicalBits));
-        COMMON_LVVV(("sVirtualBits        = %u",      sVirtualBits));
+        COMMON_LVVV(("sVendor[0]                 = 0x%08X",  sVendor[0]));
+        COMMON_LVVV(("sVendor[1]                 = 0x%08X",  sVendor[1]));
+        COMMON_LVVV(("sVendor[2]                 = 0x%08X",  sVendor[2]));
+        COMMON_LVVV(("sVendor                    = %.12s",   sVendor));
+        COMMON_LVVV(("sCpuVendor                 = %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+        COMMON_LVVV(("sModelName[0]              = 0x%08X",  sModelName[0]));
+        COMMON_LVVV(("sModelName[1]              = 0x%08X",  sModelName[1]));
+        COMMON_LVVV(("sModelName[2]              = 0x%08X",  sModelName[2]));
+        COMMON_LVVV(("sModelName[3]              = 0x%08X",  sModelName[3]));
+        COMMON_LVVV(("sModelName[4]              = 0x%08X",  sModelName[4]));
+        COMMON_LVVV(("sModelName[5]              = 0x%08X",  sModelName[5]));
+        COMMON_LVVV(("sModelName[6]              = 0x%08X",  sModelName[6]));
+        COMMON_LVVV(("sModelName[7]              = 0x%08X",  sModelName[7]));
+        COMMON_LVVV(("sModelName[8]              = 0x%08X",  sModelName[8]));
+        COMMON_LVVV(("sModelName[9]              = 0x%08X",  sModelName[9]));
+        COMMON_LVVV(("sModelName[10]             = 0x%08X",  sModelName[10]));
+        COMMON_LVVV(("sModelName[11]             = 0x%08X",  sModelName[11]));
+        COMMON_LVVV(("sModelName                 = %.48s",   sModelName));
+        COMMON_LVVV(("sCpuidLevel                = 0x%08X",  sCpuidLevel));
+        COMMON_LVVV(("sExtendedCpuidLevel        = 0x%08X",  sExtendedCpuidLevel));
+        COMMON_LVVV(("sFamily                    = %u (%s)", sFamily, cpuFamilyToString(sCpuVendor, sFamily)));
+        COMMON_LVVV(("sModel                     = %u (%s)", sModel, cpuModelToString(sCpuVendor, sFamily, sModel)));
+        COMMON_LVVV(("sStepping                  = %u",      sStepping));
+        COMMON_LVVV(("sMicrocodeRevision         = 0x%08X",  sMicrocodeRevision));
+        COMMON_LVVV(("sNumberOfCores             = %u",      sNumberOfCores));
+        COMMON_LVVV(("sNumberOfThreads           = %u",      sNumberOfThreads));
+        COMMON_LVVV(("sNumberOfApicIdsPerPackage = %u",      sNumberOfApicIdsPerPackage));
+        COMMON_LVVV(("sX86CoreIdBits             = %d",      sX86CoreIdBits));
+        COMMON_LVVV(("sCacheLineFlushSize        = %u",      sCacheLineFlushSize));
+        COMMON_LVVV(("sCacheAlignment            = %u",      sCacheAlignment));
+        COMMON_LVVV(("sCacheMaxRmid              = %d",      sCacheMaxRmid));
+        COMMON_LVVV(("sCacheOccScale             = %d",      sCacheOccScale));
+        COMMON_LVVV(("sPower                     = %u",      sPower));
+        COMMON_LVVV(("sPhysicalBits              = %u",      sPhysicalBits));
+        COMMON_LVVV(("sVirtualBits               = %u",      sVirtualBits));
 
 
 
@@ -199,6 +203,9 @@ NgosStatus CPU::init()
         // COMMON_TEST_ASSERT(sModel                        == 94,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sStepping                     == 3,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMicrocodeRevision            == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfCores                == 2,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfThreads              == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfApicIdsPerPackage    == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sX86CoreIdBits                == 1,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sCacheLineFlushSize              == 64,                                                                                NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sCacheAlignment                  == 64,                                                                                NgosStatus::ASSERTION);
@@ -1148,6 +1155,29 @@ NgosStatus CPU::doCommonPreprocessing()
 
 
 
+    if (hasFlag(X86Feature::HT))
+    {
+        COMMON_LVV(("X86Feature::HT supported"));
+
+
+
+        u32 ebx;
+        u32 ignored;
+
+        COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ebx, &ignored, &ignored), NgosStatus::ASSERTION);
+
+        // If Hyper-Threading is set EBX[16:23] in cpuid 0x00000001 contain the number of
+        // apicids which are reserved per package. Store the resulting
+        // shift value for the package management code.
+        sNumberOfApicIdsPerPackage = ebx >> 16;
+
+        COMMON_LVVV(("sNumberOfApicIdsPerPackage = %u", sNumberOfApicIdsPerPackage));
+
+        sX86CoreIdBits = BitUtils::getCountOrder16(sNumberOfApicIdsPerPackage);
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -1421,34 +1451,41 @@ NgosStatus CPU::doIntelPostprocessing()
 
 
 
-    if (hasFlag(X86Feature::HT))
-    {
-        COMMON_LVV(("X86Feature::HT supported"));
-
-
-
-        u32 ebx;
-        u32 ignored;
-
-        COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ebx, &ignored, &ignored), NgosStatus::ASSERTION);
-
-        // If Hyper-Threading is set EBX[16:23] in cpuid 0x00000001 contain the number of
-        // apicids which are reserved per package. Store the resulting
-        // shift value for the package management code.
-        u8 threadsPerCore = ebx >> 16;
-
-        COMMON_LVVV(("threadsPerCore = %u", threadsPerCore));
-
-        sX86CoreIdBits = BitUtils::getCountOrder16(threadsPerCore);
-    }
-
-
-
     if (hasFlag(X86Feature::MPX) && !hasFlag(X86Feature::SMEP))
     {
         COMMON_LW(("X86Feature::MPX resetted because X86Feature::SMEP not supported"));
 
         COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::MPX), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (sCpuidLevel >= 0x0000000B)
+    {
+        u32 ignored;
+
+        COMMON_ASSERT_EXECUTION(cpuid(0x0000000B, 0, &ignored, &sNumberOfCores,   &ignored, &ignored), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(cpuid(0x0000000B, 1, &ignored, &sNumberOfThreads, &ignored, &ignored), NgosStatus::ASSERTION);
+
+        COMMON_TEST_ASSERT(sNumberOfThreads % sNumberOfCores == 0, NgosStatus::ASSERTION);
+
+        sNumberOfCores = sNumberOfThreads / sNumberOfCores;
+    }
+    else
+    if (sCpuidLevel >= 0x00000004)
+    {
+        u32 ignored;
+
+        COMMON_ASSERT_EXECUTION(cpuid(0x00000004, 0, &sNumberOfCores, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+
+        sNumberOfCores   = (sNumberOfCores >> 26) + 1;
+        sNumberOfThreads = sNumberOfApicIdsPerPackage;
+
+        COMMON_TEST_ASSERT(sNumberOfThreads % sNumberOfCores == 0, NgosStatus::ASSERTION);
+    }
+    else
+    {
+        sNumberOfThreads = sNumberOfApicIdsPerPackage;
     }
 
 
@@ -1459,6 +1496,30 @@ NgosStatus CPU::doIntelPostprocessing()
 NgosStatus CPU::doAmdPostprocessing()
 {
     COMMON_LT((""));
+
+
+
+    if (sExtendedCpuidLevel >= 0x80000008)
+    {
+        u32 ignored;
+        u32 ecx;
+
+        COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &ignored, &ignored, &ecx, &ignored), NgosStatus::ASSERTION);
+
+
+
+        sNumberOfCores   = (ecx >> 12) & 0x0F;
+        sNumberOfThreads = (ecx & 0xFF) + 1;
+
+        if (!sNumberOfCores) // sNumberOfCores == 0
+        {
+            sNumberOfCores = 1;
+        }
+    }
+    else
+    {
+        sNumberOfThreads = sNumberOfApicIdsPerPackage;
+    }
 
 
 

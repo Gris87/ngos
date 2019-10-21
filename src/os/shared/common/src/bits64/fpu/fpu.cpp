@@ -150,12 +150,12 @@ NgosStatus FPU::init()
         // COMMON_TEST_ASSERT(sStateUserSize                  == 2696,               NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sMxcsrMask                         == 0x0000FFFF,         NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sXFeatures                      == 0x000000000000021B, NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sXFeaturesOffsets[0]               == 0x00000000,         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[0]      == 0x00000000,         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sXFeaturesSizes[0]                 == 0x000000A0,         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sXFeaturesOffsets[1]               == 0x000000A0,         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[1]      == 0x000000A0,         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sXFeaturesSizes[1]                 == 0x00000100,         NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[0]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[0]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[0]              == 0x000000A0,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[1]            == 0x000000A0,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[1]   == 0x000000A0,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[1]              == 0x00000100,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesOffsets[2]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[2]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesSizes[2]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
@@ -174,9 +174,9 @@ NgosStatus FPU::init()
         // COMMON_TEST_ASSERT(sXFeaturesOffsets[7]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[7]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesSizes[7]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sXFeaturesOffsets[8]               == 0x00000000,         NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sXFeaturesOffsets[8]            == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[8]   == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sXFeaturesSizes[8]                 == 0x00000000,         NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sXFeaturesSizes[8]              == 0x00000000,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesOffsets[9]            == 0x00000A80,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesCompactedOffsets[9]   == 0x00000A80,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sXFeaturesSizes[9]              == 0x00000008,         NgosStatus::ASSERTION); // Commented due to value variation
@@ -232,122 +232,120 @@ NgosStatus FPU::initXState()
 
 
 
-    if (!CPU::isCpuIdLevelSupported(XSTATE_CPUID))
+    if (CPU::isCpuIdLevelSupported(XSTATE_CPUID))
+    {
+        u32 eax;
+        u32 edx;
+        u32 ignored;
+
+        COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, 0, &eax, &ignored, &ignored, &edx), NgosStatus::ASSERTION);
+        sXFeatures = eax | ((u64)edx << 32);
+
+        COMMON_TEST_ASSERT((sXFeatures & XFEATURE_MASK_FPU_SSE) == XFEATURE_MASK_FPU_SSE, NgosStatus::ASSERTION);
+
+
+
+        // Disabling X features if CPU doesn't support necessary flags
+        {
+            if (
+                !CPU::hasFlag(X86Feature::AVX)
+                &&
+                hasFlag(XFeatureTypeFlag::AVX)
+               )
+            {
+                COMMON_LVV(("Disabling XFeature::AVX since X86Feature::AVX not supported"));
+
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX), NgosStatus::ASSERTION);
+            }
+
+
+
+            if (
+                !CPU::hasFlag(X86Feature::MPX)
+                &&
+                (
+                 hasFlag(XFeatureTypeFlag::MPX_BOUND_REGISTERS)
+                 ||
+                 hasFlag(XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS)
+                )
+               )
+            {
+                COMMON_LVV(("Disabling XFeature::MPX_BOUND_REGISTERS and XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS since X86Feature::MPX not supported"));
+
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::MPX_BOUND_REGISTERS),                   NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS), NgosStatus::ASSERTION);
+            }
+
+
+
+            if (
+                !CPU::hasFlag(X86Feature::AVX512F)
+                &&
+                (
+                 hasFlag(XFeatureTypeFlag::AVX512_OPMASK)
+                 ||
+                 hasFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15)
+                 ||
+                 hasFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31)
+                )
+               )
+            {
+                COMMON_LVV(("Disabling XFeature::AVX512_OPMASK, XFeature::AVX512_ZMM_FROM_0_TO_15 and XFeature::AVX512_ZMM_FROM_16_TO_31 since X86Feature::AVX512F not supported"));
+
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_OPMASK),            NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15),  NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31), NgosStatus::ASSERTION);
+            }
+
+
+
+            if (
+                !CPU::hasFlag(X86Feature::INTEL_PT)
+                &&
+                hasFlag(XFeatureTypeFlag::PT)
+               )
+            {
+                COMMON_LVV(("Disabling XFeature::PT since X86Feature::INTEL_PT not supported"));
+
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::PT), NgosStatus::ASSERTION);
+            }
+
+
+
+            if (
+                !CPU::hasFlag(X86Feature::PKU)
+                &&
+                hasFlag(XFeatureTypeFlag::PKRU)
+               )
+            {
+                COMMON_LVV(("Disabling XFeature::PKRU since X86Feature::PKU not supported"));
+
+                COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::PKRU), NgosStatus::ASSERTION);
+            }
+        }
+
+
+
+        if (sXFeatures & XFEATURE_MASK_SUPERVISOR)
+        {
+            COMMON_LVV(("Disabling X features that required in supervisor"));
+
+            sXFeatures &= ~XFEATURE_MASK_SUPERVISOR;
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(initXFeaturesOffsetsAndSizes(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(initStateSizes(),               NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(copyStateFromFPU(),             NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(copyStateToFPU(),               NgosStatus::ASSERTION);
+    }
+    else
     {
         COMMON_LW(("XSTATE_CPUID not supported"));
-
-        return NgosStatus::NOT_SUPPORTED;
     }
-
-
-
-    u32 eax;
-    u32 edx;
-    u32 ignored;
-
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, 0, &eax, &ignored, &ignored, &edx), NgosStatus::ASSERTION);
-    sXFeatures = eax | ((u64)edx << 32);
-
-    COMMON_TEST_ASSERT((sXFeatures & XFEATURE_MASK_FPU_SSE) == XFEATURE_MASK_FPU_SSE, NgosStatus::ASSERTION);
-
-
-
-    // Disabling X features if CPU doesn't support necessary flags
-    {
-        if (
-            !CPU::hasFlag(X86Feature::AVX)
-            &&
-            hasFlag(XFeatureTypeFlag::AVX)
-           )
-        {
-            COMMON_LVV(("Disabling XFeature::AVX since X86Feature::AVX not supported"));
-
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX), NgosStatus::ASSERTION);
-        }
-
-
-
-        if (
-            !CPU::hasFlag(X86Feature::MPX)
-            &&
-            (
-             hasFlag(XFeatureTypeFlag::MPX_BOUND_REGISTERS)
-             ||
-             hasFlag(XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS)
-            )
-           )
-        {
-            COMMON_LVV(("Disabling XFeature::MPX_BOUND_REGISTERS and XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS since X86Feature::MPX not supported"));
-
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::MPX_BOUND_REGISTERS),                   NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS), NgosStatus::ASSERTION);
-        }
-
-
-
-        if (
-            !CPU::hasFlag(X86Feature::AVX512F)
-            &&
-            (
-             hasFlag(XFeatureTypeFlag::AVX512_OPMASK)
-             ||
-             hasFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15)
-             ||
-             hasFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31)
-            )
-           )
-        {
-            COMMON_LVV(("Disabling XFeature::AVX512_OPMASK, XFeature::AVX512_ZMM_FROM_0_TO_15 and XFeature::AVX512_ZMM_FROM_16_TO_31 since X86Feature::AVX512F not supported"));
-
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_OPMASK),            NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_0_TO_15),  NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::AVX512_ZMM_FROM_16_TO_31), NgosStatus::ASSERTION);
-        }
-
-
-
-        if (
-            !CPU::hasFlag(X86Feature::INTEL_PT)
-            &&
-            hasFlag(XFeatureTypeFlag::PT)
-           )
-        {
-            COMMON_LVV(("Disabling XFeature::PT since X86Feature::INTEL_PT not supported"));
-
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::PT), NgosStatus::ASSERTION);
-        }
-
-
-
-        if (
-            !CPU::hasFlag(X86Feature::PKU)
-            &&
-            hasFlag(XFeatureTypeFlag::PKRU)
-           )
-        {
-            COMMON_LVV(("Disabling XFeature::PKRU since X86Feature::PKU not supported"));
-
-            COMMON_ASSERT_EXECUTION(clearFlag(XFeatureTypeFlag::PKRU), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    if (sXFeatures & XFEATURE_MASK_SUPERVISOR)
-    {
-        COMMON_LVV(("Disabling X features that required in supervisor"));
-
-        sXFeatures &= ~XFEATURE_MASK_SUPERVISOR;
-    }
-
-
-
-    COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures), NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(initXFeaturesOffsetsAndSizes(), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(initStateSizes(),               NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(copyStateFromFPU(),             NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(copyStateToFPU(),               NgosStatus::ASSERTION);
 
 
 

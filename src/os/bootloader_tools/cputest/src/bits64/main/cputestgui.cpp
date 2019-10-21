@@ -43,7 +43,7 @@
 #define CPU_CORES_WIDTH_PERCENT      20
 #define CPU_CORES_HEIGHT_PERCENT     4
 
-#define CPU_THREADS_POSITION_X_PERCENT 58
+#define CPU_THREADS_POSITION_X_PERCENT 59
 #define CPU_THREADS_POSITION_Y_PERCENT 8
 #define CPU_THREADS_WIDTH_PERCENT      20
 #define CPU_THREADS_HEIGHT_PERCENT     4
@@ -326,27 +326,27 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *cpuFamily = (char8 *)malloc(19);
+    char8 *cpuFamily = (char8 *)malloc(21);
 
-    UEFI_ASSERT_EXECUTION(sprintf(cpuFamily, "Family: %02X        ", CPU::getFamily()), i64, 18, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuModel = (char8 *)malloc(19);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuModel, "Model: %02X         ", CPU::getModel()), i64, 18, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(cpuFamily, "Family:   0x%02X      ", CPU::getFamily()), i64, 20, NgosStatus::ASSERTION);
 
 
 
-    char8 *cpuStepping = (char8 *)malloc(19);
+    char8 *cpuModel = (char8 *)malloc(21);
 
-    UEFI_ASSERT_EXECUTION(sprintf(cpuStepping, "Stepping: %02X      ", CPU::getStepping()), i64, 18, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(cpuModel, "Model:    0x%02X      ", CPU::getModel()), i64, 20, NgosStatus::ASSERTION);
 
 
 
-    char8 *cpuRevision = (char8 *)malloc(19);
+    char8 *cpuStepping = (char8 *)malloc(21);
 
-    UEFI_ASSERT_EXECUTION(sprintf(cpuRevision, "Revision: %-8X", CPU::getMicrocodeRevision()), i64, 18, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(cpuStepping, "Stepping: 0x%02X      ", CPU::getStepping()), i64, 20, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuRevision = (char8 *)malloc(21);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuRevision, "Revision: 0x%08X", CPU::getMicrocodeRevision()), i64, 20, NgosStatus::ASSERTION);
 
 
 
