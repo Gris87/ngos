@@ -238,6 +238,10 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
     COMMON_ASSERT(destinationHeight > 0,        "destinationHeight is zero",        NgosStatus::ASSERTION);
     COMMON_ASSERT(sourceBytesPerPixel > 0,      "sourceBytesPerPixel is zero",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationBytesPerPixel > 0, "destinationBytesPerPixel is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(left >= 0,                    "left is invalid",                  NgosStatus::ASSERTION);
+    COMMON_ASSERT(top >= 0,                     "top is invalid",                   NgosStatus::ASSERTION);
+    COMMON_ASSERT(right <= sourceWidth,         "right is invalid",                 NgosStatus::ASSERTION);
+    COMMON_ASSERT(bottom <= sourceHeight,       "bottom is invalid",                NgosStatus::ASSERTION);
 
     AVOID_UNUSED(sourceHeight);
 
