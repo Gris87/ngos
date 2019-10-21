@@ -24,19 +24,49 @@
 #define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
 #define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
 
-#define TABWIDGET_POSITION_X_PERCENT 5
+#define TABWIDGET_POSITION_X_PERCENT 2
 #define TABWIDGET_POSITION_Y_PERCENT 0
-#define TABWIDGET_WIDTH_PERCENT      90
+#define TABWIDGET_WIDTH_PERCENT      96
 #define TABWIDGET_HEIGHT_PERCENT     70
 
 #define CPU_IMAGE_POSITION_X_PERCENT 0
 #define CPU_IMAGE_POSITION_Y_PERCENT 0
 #define CPU_IMAGE_SIZE_PERCENT       20
 
-#define CPU_MODEL_POSITION_X_PERCENT 20
-#define CPU_MODEL_POSITION_Y_PERCENT 0
-#define CPU_MODEL_WIDTH_PERCENT      80
-#define CPU_MODEL_HEIGHT_PERCENT     5
+#define CPU_MODEL_NAME_POSITION_X_PERCENT 20
+#define CPU_MODEL_NAME_POSITION_Y_PERCENT 0
+#define CPU_MODEL_NAME_WIDTH_PERCENT      80
+#define CPU_MODEL_NAME_HEIGHT_PERCENT     5
+
+#define CPU_CORES_POSITION_X_PERCENT 35
+#define CPU_CORES_POSITION_Y_PERCENT 8
+#define CPU_CORES_WIDTH_PERCENT      20
+#define CPU_CORES_HEIGHT_PERCENT     4
+
+#define CPU_THREADS_POSITION_X_PERCENT 55
+#define CPU_THREADS_POSITION_Y_PERCENT 8
+#define CPU_THREADS_WIDTH_PERCENT      20
+#define CPU_THREADS_HEIGHT_PERCENT     4
+
+#define CPU_FAMILY_POSITION_X_PERCENT 20
+#define CPU_FAMILY_POSITION_Y_PERCENT 15
+#define CPU_FAMILY_WIDTH_PERCENT      40
+#define CPU_FAMILY_HEIGHT_PERCENT     4
+
+#define CPU_MODEL_POSITION_X_PERCENT 60
+#define CPU_MODEL_POSITION_Y_PERCENT 15
+#define CPU_MODEL_WIDTH_PERCENT      40
+#define CPU_MODEL_HEIGHT_PERCENT     4
+
+#define CPU_STEPPING_POSITION_X_PERCENT 20
+#define CPU_STEPPING_POSITION_Y_PERCENT 20
+#define CPU_STEPPING_WIDTH_PERCENT      40
+#define CPU_STEPPING_HEIGHT_PERCENT     4
+
+#define CPU_REVISION_POSITION_X_PERCENT 60
+#define CPU_REVISION_POSITION_Y_PERCENT 20
+#define CPU_REVISION_WIDTH_PERCENT      40
+#define CPU_REVISION_HEIGHT_PERCENT     4
 
 #define TAB_BUTTON_WIDTH_PERCENT   20
 #define TAB_BUTTON_HEIGHT_PERCENT  5
@@ -280,10 +310,92 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    LabelWidget *cpuModelLabelWidget = new LabelWidget(cpuModelName, systemInformationTabPageWidget);
+    char8 *cpuCores = (char8 *)malloc(18);
+
+    i64 cpuCoresLength = sprintf(cpuCores, "Cores: %-3u", CPU::getNumberOfCores());
+
+    UEFI_TEST_ASSERT(cpuCoresLength < 18, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuThreads = (char8 *)malloc(20);
+
+    i64 cpuThreadsLength = sprintf(cpuThreads, "Threads: %-3u", CPU::getNumberOfThreads());
+
+    UEFI_TEST_ASSERT(cpuThreadsLength < 20, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuFamily = (char8 *)malloc(19);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuFamily, "Family: %02X        ", CPU::getFamily()), i64, 18, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuModel = (char8 *)malloc(19);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuModel, "Model: %02X         ", CPU::getModel()), i64, 18, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuStepping = (char8 *)malloc(19);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuStepping, "Stepping: %02X      ", CPU::getStepping()), i64, 18, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuRevision = (char8 *)malloc(19);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuRevision, "Revision: %-8X", CPU::getMicrocodeRevision()), i64, 18, NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuModelNameLabelWidget = new LabelWidget(cpuModelName, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuModelNameLabelWidget->setPosition(tabPageWidth * CPU_MODEL_NAME_POSITION_X_PERCENT / 100, tabPageHeight * CPU_MODEL_NAME_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuModelNameLabelWidget->setSize(tabPageWidth     * CPU_MODEL_NAME_WIDTH_PERCENT      / 100, tabPageHeight * CPU_MODEL_NAME_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuCoresLabelWidget = new LabelWidget(cpuCores, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuCoresLabelWidget->setPosition(tabPageWidth * CPU_CORES_POSITION_X_PERCENT / 100, tabPageHeight * CPU_CORES_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuCoresLabelWidget->setSize(tabPageWidth     * CPU_CORES_WIDTH_PERCENT      / 100, tabPageHeight * CPU_CORES_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuThreadsLabelWidget = new LabelWidget(cpuThreads, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuThreadsLabelWidget->setPosition(tabPageWidth * CPU_THREADS_POSITION_X_PERCENT / 100, tabPageHeight * CPU_THREADS_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuThreadsLabelWidget->setSize(tabPageWidth     * CPU_THREADS_WIDTH_PERCENT      / 100, tabPageHeight * CPU_THREADS_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuFamilyLabelWidget = new LabelWidget(cpuFamily, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuFamilyLabelWidget->setPosition(tabPageWidth * CPU_FAMILY_POSITION_X_PERCENT / 100, tabPageHeight * CPU_FAMILY_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuFamilyLabelWidget->setSize(tabPageWidth     * CPU_FAMILY_WIDTH_PERCENT      / 100, tabPageHeight * CPU_FAMILY_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuModelLabelWidget = new LabelWidget(cpuModel, systemInformationTabPageWidget);
 
     UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setPosition(tabPageWidth * CPU_MODEL_POSITION_X_PERCENT / 100, tabPageHeight * CPU_MODEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(cpuModelLabelWidget->setSize(tabPageWidth     * CPU_MODEL_WIDTH_PERCENT      / 100, tabPageHeight * CPU_MODEL_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuSteppingLabelWidget = new LabelWidget(cpuStepping, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuSteppingLabelWidget->setPosition(tabPageWidth * CPU_STEPPING_POSITION_X_PERCENT / 100, tabPageHeight * CPU_STEPPING_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuSteppingLabelWidget->setSize(tabPageWidth     * CPU_STEPPING_WIDTH_PERCENT      / 100, tabPageHeight * CPU_STEPPING_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuRevisionLabelWidget = new LabelWidget(cpuRevision, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuRevisionLabelWidget->setPosition(tabPageWidth * CPU_REVISION_POSITION_X_PERCENT / 100, tabPageHeight * CPU_REVISION_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuRevisionLabelWidget->setSize(tabPageWidth     * CPU_REVISION_WIDTH_PERCENT      / 100, tabPageHeight * CPU_REVISION_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 

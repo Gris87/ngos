@@ -11,6 +11,9 @@ class CpuTest
 {
 public:
     static NgosStatus init(); // TEST: NO
+
+private:
+    static NgosStatus initCpuCaches(); // TEST: NO
 };
 
 

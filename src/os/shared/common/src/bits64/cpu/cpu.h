@@ -23,6 +23,12 @@ public:
     static NgosStatus check(const char8 **wantedFlag); // TEST: NO
 
     static char8* getModelName(); // TEST: NO
+    static CpuFamily getFamily(); // TEST: NO
+    static u8 getModel(); // TEST: NO
+    static u8 getStepping(); // TEST: NO
+    static u32 getMicrocodeRevision(); // TEST: NO
+    static u32 getNumberOfCores(); // TEST: NO
+    static u32 getNumberOfThreads(); // TEST: NO
 
     static NgosStatus setFlag(X86Feature flag);
     static NgosStatus clearFlag(X86Feature flag);
@@ -46,12 +52,14 @@ private:
     static NgosStatus doPreprocessing(); // TEST: NO
     static NgosStatus doIntelPreprocessing(); // TEST: NO
     static NgosStatus doAmdPreprocessing(); // TEST: NO
+    static NgosStatus doCommonPreprocessing(); // TEST: NO
     static NgosStatus initScatteredFeatures(); // TEST: NO
     static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count); // TEST: NO
     static NgosStatus initSpeculationControl(); // TEST: NO
     static NgosStatus doPostprocessing(); // TEST: NO
     static NgosStatus doIntelPostprocessing(); // TEST: NO
     static NgosStatus doAmdPostprocessing(); // TEST: NO
+    static NgosStatus doCommonPostprocessing(); // TEST: NO
     static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO
     static NgosStatus initCpuBugs(); // TEST: NO
     static NgosStatus getIntelMicrocodeRevision(); // TEST: NO
@@ -70,6 +78,8 @@ private:
     static u8        sModel;
     static u8        sStepping;
     static u32       sMicrocodeRevision;
+    static u32       sNumberOfCores;
+    static u32       sNumberOfThreads;
     static i8        sX86CoreIdBits;
     static u16       sCacheLineFlushSize;
     static u16       sCacheAlignment;

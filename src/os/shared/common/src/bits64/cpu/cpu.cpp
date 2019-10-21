@@ -53,6 +53,8 @@ CpuFamily CPU::sFamily;
 u8        CPU::sModel;
 u8        CPU::sStepping;
 u32       CPU::sMicrocodeRevision;
+u32       CPU::sNumberOfCores;
+u32       CPU::sNumberOfThreads;
 i8        CPU::sX86CoreIdBits;
 u16       CPU::sCacheLineFlushSize;
 u16       CPU::sCacheAlignment;
@@ -77,6 +79,8 @@ NgosStatus CPU::init()
 
 
 
+    sNumberOfCores      = 1;
+    sNumberOfThreads    = 1;
     sCacheLineFlushSize = 64;
     sCacheAlignment     = 64;
     sCacheMaxRmid       = -1;
@@ -540,6 +544,60 @@ char8* CPU::getModelName()
 
 
     return (char8 *)sModelName;
+}
+
+CpuFamily CPU::getFamily()
+{
+    COMMON_LT((""));
+
+
+
+    return sFamily;
+}
+
+u8 CPU::getModel()
+{
+    COMMON_LT((""));
+
+
+
+    return sModel;
+}
+
+u8 CPU::getStepping()
+{
+    COMMON_LT((""));
+
+
+
+    return sStepping;
+}
+
+u32 CPU::getMicrocodeRevision()
+{
+    COMMON_LT((""));
+
+
+
+    return sMicrocodeRevision;
+}
+
+u32 CPU::getNumberOfCores()
+{
+    COMMON_LT((""));
+
+
+
+    return sNumberOfCores;
+}
+
+u32 CPU::getNumberOfThreads()
+{
+    COMMON_LT((""));
+
+
+
+    return sNumberOfThreads;
 }
 
 NgosStatus CPU::setFlag(X86Feature flag)
@@ -1014,6 +1072,10 @@ NgosStatus CPU::doPreprocessing()
 
 
 
+    COMMON_ASSERT_EXECUTION(doCommonPreprocessing(), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
@@ -1072,6 +1134,15 @@ NgosStatus CPU::doIntelPreprocessing()
 }
 
 NgosStatus CPU::doAmdPreprocessing()
+{
+    COMMON_LT((""));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::doCommonPreprocessing()
 {
     COMMON_LT((""));
 
@@ -1269,50 +1340,7 @@ NgosStatus CPU::doPostprocessing()
 
 
 
-    NgosStatus status = MSR::setBit(MSR_EFER, MSR_EFER_SCE_BIT);
-
-    if (status == NgosStatus::OK)
-    {
-        COMMON_LVV(("MSR_EFER_SCE_BIT successfully set"));
-    }
-    else
-    if (status == NgosStatus::NO_EFFECT)
-    {
-        COMMON_LVV(("MSR_EFER_SCE_BIT already set"));
-    }
-    else
-    {
-        COMMON_LF(("Failed to set MSR_EFER_SCE_BIT"));
-
-        return NgosStatus::FAILED;
-    }
-
-
-
-    if (hasFlag(X86Feature::NX))
-    {
-        COMMON_LVV(("X86Feature::NX supported"));
-
-
-
-        status = MSR::setBit(MSR_EFER, MSR_EFER_NX_BIT);
-
-        if (status == NgosStatus::OK)
-        {
-            COMMON_LVV(("MSR_EFER_NX_BIT successfully set"));
-        }
-        else
-        if (status == NgosStatus::NO_EFFECT)
-        {
-            COMMON_LVV(("MSR_EFER_NX_BIT already set"));
-        }
-        else
-        {
-            COMMON_LF(("Failed to set MSR_EFER_NX_BIT"));
-
-            return NgosStatus::FAILED;
-        }
-    }
+    COMMON_ASSERT_EXECUTION(doCommonPostprocessing(), NgosStatus::ASSERTION);
 
 
 
@@ -1431,6 +1459,62 @@ NgosStatus CPU::doIntelPostprocessing()
 NgosStatus CPU::doAmdPostprocessing()
 {
     COMMON_LT((""));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CPU::doCommonPostprocessing()
+{
+    COMMON_LT((""));
+
+
+
+    NgosStatus status = MSR::setBit(MSR_EFER, MSR_EFER_SCE_BIT);
+
+    if (status == NgosStatus::OK)
+    {
+        COMMON_LVV(("MSR_EFER_SCE_BIT successfully set"));
+    }
+    else
+    if (status == NgosStatus::NO_EFFECT)
+    {
+        COMMON_LVV(("MSR_EFER_SCE_BIT already set"));
+    }
+    else
+    {
+        COMMON_LF(("Failed to set MSR_EFER_SCE_BIT"));
+
+        return NgosStatus::FAILED;
+    }
+
+
+
+    if (hasFlag(X86Feature::NX))
+    {
+        COMMON_LVV(("X86Feature::NX supported"));
+
+
+
+        status = MSR::setBit(MSR_EFER, MSR_EFER_NX_BIT);
+
+        if (status == NgosStatus::OK)
+        {
+            COMMON_LVV(("MSR_EFER_NX_BIT successfully set"));
+        }
+        else
+        if (status == NgosStatus::NO_EFFECT)
+        {
+            COMMON_LVV(("MSR_EFER_NX_BIT already set"));
+        }
+        else
+        {
+            COMMON_LF(("Failed to set MSR_EFER_NX_BIT"));
+
+            return NgosStatus::FAILED;
+        }
+    }
 
 
 
