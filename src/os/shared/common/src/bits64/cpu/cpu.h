@@ -62,7 +62,7 @@ private:
     static NgosStatus doCommonPostprocessing(); // TEST: NO
     static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO
     static NgosStatus initCpuBugs(); // TEST: NO
-    static NgosStatus getIntelMicrocodeRevision(); // TEST: NO
+    static NgosStatus initIntelMicrocodeRevision(); // TEST: NO
     static bool isIntelBadSpectreMicrocode(); // TEST: NO
     static bool isCpuNoSpeculation(); // TEST: NO
     static bool isCpuNoMeltdown(); // TEST: NO

@@ -1363,7 +1363,7 @@ NgosStatus CPU::doIntelPostprocessing()
     {
         COMMON_LVV(("Getting microcode revision since X86Feature::IA64 not supported"));
 
-        COMMON_ASSERT_EXECUTION(getIntelMicrocodeRevision(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(initIntelMicrocodeRevision(), NgosStatus::ASSERTION);
     }
 
 
@@ -1653,7 +1653,7 @@ NgosStatus CPU::initCpuBugs()
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::getIntelMicrocodeRevision()
+NgosStatus CPU::initIntelMicrocodeRevision()
 {
     COMMON_LT((""));
 
