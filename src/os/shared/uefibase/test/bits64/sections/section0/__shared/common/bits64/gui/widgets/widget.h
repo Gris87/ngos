@@ -121,6 +121,8 @@ TEST_CASES(section0, __shared_common_bits64_gui_widgets_widget);
         Widget temp2(&temp1);
         Widget temp3(&temp2);
 
+
+
         TEST_ASSERT_EQUALS(temp1.mPositionX,           0);
         TEST_ASSERT_EQUALS(temp1.mPositionY,           0);
         TEST_ASSERT_EQUALS(temp1.getGlobalPositionX(), 0);
@@ -136,9 +138,13 @@ TEST_CASES(section0, __shared_common_bits64_gui_widgets_widget);
         TEST_ASSERT_EQUALS(temp3.getGlobalPositionX(), 0);
         TEST_ASSERT_EQUALS(temp3.getGlobalPositionY(), 0);
 
+
+
         TEST_ASSERT_EQUALS(temp1.setPosition(30, 40), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp2.setPosition(10, 20), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp3.setPosition(50, 30), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp1.mPositionX,           30);
         TEST_ASSERT_EQUALS(temp1.mPositionY,           40);
