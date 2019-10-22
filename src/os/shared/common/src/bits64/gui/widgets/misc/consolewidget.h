@@ -19,7 +19,6 @@ public:
 
 private:
     Image *mPanelImage;
-    Image *mPanelResizedImage;
 };
 
 

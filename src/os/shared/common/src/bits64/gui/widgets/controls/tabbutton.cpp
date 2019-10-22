@@ -284,10 +284,6 @@ NgosStatus TabButton::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mNormalResizedImage               != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mHoverResizedImage                != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mPressedResizedImage              != nullptr, NgosStatus::ASSERTION);
@@ -298,6 +294,10 @@ NgosStatus TabButton::repaint()
     COMMON_TEST_ASSERT(mSelectedPressedResizedImage      != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mSelectedFocusedResizedImage      != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mSelectedFocusedHoverResizedImage != nullptr, NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
 
 

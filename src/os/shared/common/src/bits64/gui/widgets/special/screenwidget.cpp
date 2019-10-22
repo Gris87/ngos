@@ -15,7 +15,6 @@ ScreenWidget::ScreenWidget(Image *backgroundImage, UefiGraphicsOutputProtocol *s
     , mBackgroundImage(backgroundImage)
     , mScreenGop(screenGop)
     , mRootWidget(rootWidget)
-    , mBackgroundResizedImage(nullptr)
     , mUpdateLeft(-1)
     , mUpdateTop(-1)
     , mUpdateRight(-1)
@@ -38,9 +37,9 @@ ScreenWidget::~ScreenWidget()
 
 
 
-    if (mBackgroundResizedImage)
+    if (mOwnResultImage)
     {
-        delete mBackgroundResizedImage;
+        delete mOwnResultImage;
     }
 
     if (mResultImage)
@@ -58,7 +57,7 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
 
 
 
-    COMMON_TEST_ASSERT(mOwnResultImage != 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mOwnResultImage != nullptr, NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
                                 mOwnResultImage->getBuffer(),
@@ -197,6 +196,10 @@ NgosStatus ScreenWidget::update(i64 positionX, i64 positionY, u64 width, u64 hei
 
 
 
+    COMMON_TEST_ASSERT(mRootWidget, NgosStatus::ASSERTION);
+
+
+
     return mRootWidget->update(mPositionX + positionX, mPositionY + positionY, width, height);
 }
 
@@ -206,25 +209,25 @@ NgosStatus ScreenWidget::invalidate()
 
 
 
-    if (mBackgroundResizedImage)
+    if (mOwnResultImage)
     {
-        delete mBackgroundResizedImage;
+        delete mOwnResultImage;
     }
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mBackgroundImage, mWidth, mHeight, &mBackgroundResizedImage), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mBackgroundImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
 
     if (
-        !mBackgroundResizedImage->isRgba()
+        !mOwnResultImage->isRgba()
         ||
-        !mBackgroundResizedImage->isOpaque()
+        !mOwnResultImage->isOpaque()
        )
     {
         Image *newImage;
 
-        COMMON_ASSERT_EXECUTION(Graphics::makeOpaqueImage(mBackgroundResizedImage, &newImage), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::makeOpaqueImage(mOwnResultImage, &newImage), NgosStatus::ASSERTION);
 
-        delete mBackgroundResizedImage;
-        mBackgroundResizedImage = newImage;
+        delete mOwnResultImage;
+        mOwnResultImage = newImage;
     }
 
 
@@ -238,13 +241,18 @@ NgosStatus ScreenWidget::repaint()
 
 
 
+    COMMON_TEST_ASSERT(mOwnResultImage     != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
+
+
+
+
     if (mResultImage)
     {
         delete mResultImage;
     }
 
-    mOwnResultImage = mBackgroundResizedImage;
-    mResultImage    = new Image(*mOwnResultImage);
+    mResultImage = new Image(*mOwnResultImage);
 
 
 

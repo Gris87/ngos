@@ -9,7 +9,6 @@
 CursorWidget::CursorWidget(Image *cursorImage, Widget *parent)
     : Widget(parent)
     , mCursorImage(cursorImage)
-    , mCursorResizedImage(nullptr)
 {
     COMMON_LT((" | cursorImage = 0x%p, parent = 0x%p", cursorImage, parent));
 
@@ -23,9 +22,9 @@ CursorWidget::~CursorWidget()
 
 
 
-    if (mCursorResizedImage)
+    if (mResultImage)
     {
-        delete mCursorResizedImage;
+        delete mResultImage;
     }
 }
 
@@ -35,12 +34,12 @@ NgosStatus CursorWidget::invalidate()
 
 
 
-    if (mCursorResizedImage)
+    if (mOwnResultImage)
     {
-        delete mCursorResizedImage;
+        delete mOwnResultImage;
     }
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImageProportional(mCursorImage, mWidth, mHeight, &mCursorResizedImage), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImageProportional(mCursorImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
 
 
 
@@ -53,13 +52,12 @@ NgosStatus CursorWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mCursorResizedImage != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mOwnResultImage     != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
 
 
 
-    mOwnResultImage = mCursorResizedImage;
-    mResultImage    = mOwnResultImage;
+    mResultImage = mOwnResultImage;
 
 
 

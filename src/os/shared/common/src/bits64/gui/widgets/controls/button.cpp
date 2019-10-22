@@ -192,15 +192,15 @@ NgosStatus Button::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-
-
     COMMON_TEST_ASSERT(mNormalResizedImage       != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mHoverResizedImage        != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mPressedResizedImage      != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mFocusedResizedImage      != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mFocusedHoverResizedImage != nullptr, NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
 
 

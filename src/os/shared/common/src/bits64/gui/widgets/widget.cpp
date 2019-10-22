@@ -65,7 +65,11 @@ NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
 
 
 
-    if (mParent && isUpdatesEnabled())
+    COMMON_TEST_ASSERT(mParent, NgosStatus::ASSERTION);
+
+
+
+    if (isUpdatesEnabled())
     {
         positionX += mPositionX;
         positionY += mPositionY;

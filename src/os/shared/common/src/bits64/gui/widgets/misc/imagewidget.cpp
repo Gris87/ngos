@@ -9,7 +9,6 @@
 ImageWidget::ImageWidget(Image *image, Widget *parent)
     : Widget(parent)
     , mImage(image)
-    , mResizedImage(nullptr)
 {
     COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
 
@@ -23,9 +22,9 @@ ImageWidget::~ImageWidget()
 
 
 
-    if (mResizedImage)
+    if (mResultImage)
     {
-        delete mResizedImage;
+        delete mResultImage;
     }
 }
 
@@ -35,12 +34,12 @@ NgosStatus ImageWidget::invalidate()
 
 
 
-    if (mResizedImage)
+    if (mOwnResultImage)
     {
-        delete mResizedImage;
+        delete mOwnResultImage;
     }
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
 
 
 
@@ -53,13 +52,12 @@ NgosStatus ImageWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mResizedImage       != nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mOwnResultImage     != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
 
 
 
-    mOwnResultImage = mResizedImage;
-    mResultImage    = mOwnResultImage;
+    mResultImage = mOwnResultImage;
 
 
 

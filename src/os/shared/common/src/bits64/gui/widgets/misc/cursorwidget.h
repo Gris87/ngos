@@ -18,7 +18,6 @@ public:
 
 private:
     Image *mCursorImage;
-    Image *mCursorResizedImage;
 };
 
 

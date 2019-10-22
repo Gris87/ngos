@@ -33,7 +33,6 @@ private:
     Image                      *mBackgroundImage;
     UefiGraphicsOutputProtocol *mScreenGop;
     RootWidget                 *mRootWidget;
-    Image                      *mBackgroundResizedImage;
     i64                         mUpdateLeft;
     i64                         mUpdateTop;
     i64                         mUpdateRight;

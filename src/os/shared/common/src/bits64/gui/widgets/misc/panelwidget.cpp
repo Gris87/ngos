@@ -1,4 +1,4 @@
-#include "consolewidget.h"
+#include "panelwidget.h"
 
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/log/assert.h>
@@ -6,7 +6,7 @@
 
 
 
-ConsoleWidget::ConsoleWidget(Image *panelImage, Widget *parent)
+PanelWidget::PanelWidget(Image *panelImage, Widget *parent)
     : Widget(parent)
     , mPanelImage(panelImage)
 {
@@ -16,7 +16,7 @@ ConsoleWidget::ConsoleWidget(Image *panelImage, Widget *parent)
     COMMON_ASSERT(parent,     "parent is null");
 }
 
-ConsoleWidget::~ConsoleWidget()
+PanelWidget::~PanelWidget()
 {
     COMMON_LT((""));
 
@@ -33,23 +33,7 @@ ConsoleWidget::~ConsoleWidget()
     }
 }
 
-NgosStatus ConsoleWidget::update(i64 positionX, i64 positionY, u64 width, u64 height)
-{
-    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
-
-    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
-
-
-
-    COMMON_TEST_ASSERT(mParent, NgosStatus::ASSERTION);
-
-
-
-    return mParent->update(mPositionX + positionX, mPositionY + positionY, width, height);
-}
-
-NgosStatus ConsoleWidget::invalidate()
+NgosStatus PanelWidget::invalidate()
 {
     COMMON_LT((""));
 
@@ -67,14 +51,13 @@ NgosStatus ConsoleWidget::invalidate()
     return NgosStatus::OK;
 }
 
-NgosStatus ConsoleWidget::repaint()
+NgosStatus PanelWidget::repaint()
 {
     COMMON_LT((""));
 
 
 
-    COMMON_TEST_ASSERT(mOwnResultImage     != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mOwnResultImage != nullptr, NgosStatus::ASSERTION);
 
 
 
@@ -84,6 +67,19 @@ NgosStatus ConsoleWidget::repaint()
     }
 
     mResultImage = new Image(*mOwnResultImage);
+
+
+
+    ListElement<Widget *> *element = mChildren.getHead();
+
+    while (element)
+    {
+        Widget *widget = element->getData();
+
+        COMMON_ASSERT_EXECUTION(drawWidget(widget, widget->getPositionX(), widget->getPositionY()), NgosStatus::ASSERTION);
+
+        element = element->getNext();
+    }
 
 
 

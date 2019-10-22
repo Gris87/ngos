@@ -30,7 +30,6 @@ public:
 
 private:
     Image                      *mPanelImage;
-    Image                      *mPanelResizedImage;
     ArrayList<TabButton *>      mTabButtons;
     ArrayList<TabPageWidget *>  mTabPages;
     i64                         mCurrentPage;

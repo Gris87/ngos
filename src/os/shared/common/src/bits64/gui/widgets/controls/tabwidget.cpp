@@ -10,7 +10,6 @@
 TabWidget::TabWidget(Image *panelImage, Widget *parent)
     : Widget(parent)
     , mPanelImage(panelImage)
-    , mPanelResizedImage(nullptr)
     , mTabButtons()
     , mTabPages()
     , mCurrentPage(-1)
@@ -27,9 +26,9 @@ TabWidget::~TabWidget()
 
 
 
-    if (mPanelResizedImage)
+    if (mOwnResultImage)
     {
-        delete mPanelResizedImage;
+        delete mOwnResultImage;
     }
 
     if (mResultImage)
@@ -74,9 +73,9 @@ NgosStatus TabWidget::invalidate()
 
 
 
-    if (mPanelResizedImage)
+    if (mOwnResultImage)
     {
-        delete mPanelResizedImage;
+        delete mOwnResultImage;
     }
 
 
@@ -89,16 +88,16 @@ NgosStatus TabWidget::invalidate()
 
 
 
-        mPanelResizedImage = new Image(mWidth, mHeight, true, false);
-        mPanelResizedImage->clearBuffer();
+        mOwnResultImage = new Image(mWidth, mHeight, true, false);
+        mOwnResultImage->clearBuffer();
 
 
 
-        COMMON_ASSERT_EXECUTION(Graphics::insertImage(mPanelImage, mPanelResizedImage, 0, tabButtonHeight, mWidth, mHeight - tabButtonHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::insertImage(mPanelImage, mOwnResultImage, 0, tabButtonHeight, mWidth, mHeight - tabButtonHeight), NgosStatus::ASSERTION);
     }
     else
     {
-        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mPanelResizedImage), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
     }
 
 
@@ -112,15 +111,11 @@ NgosStatus TabWidget::repaint()
 
 
 
+    COMMON_TEST_ASSERT(mOwnResultImage != nullptr, NgosStatus::ASSERTION);
+
+
+
     COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-
-
-    COMMON_TEST_ASSERT(mPanelResizedImage != nullptr, NgosStatus::ASSERTION);
-
-
-
-    mOwnResultImage = mPanelResizedImage;
 
 
 
