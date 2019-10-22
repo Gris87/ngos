@@ -18,9 +18,13 @@ public:
     NgosStatus setText(const char8 *text); // TEST: NO
     const char8* getText() const; // TEST: NO
 
+    NgosStatus setColor(const RgbaPixel &color); // TEST: NO
+    const RgbaPixel& getColor() const; // TEST: NO
+
 private:
     const char8 *mText;
     u16         *mGlyphOffsets;
+    RgbaPixel    mColor;
 };
 
 

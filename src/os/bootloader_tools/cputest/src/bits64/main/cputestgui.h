@@ -5,6 +5,7 @@
 
 #include <bootparams/bootparams.h>
 #include <common/src/bits64/containers/arraylist.h>
+#include <common/src/bits64/cpu/x86feature.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
 #include <ngos/status.h>
@@ -20,6 +21,8 @@ public:
     static NgosStatus exec(); // TEST: NO
 
 private:
+    static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget);
+
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
     static NgosStatus processKeyboardEvent(); // TEST: NO

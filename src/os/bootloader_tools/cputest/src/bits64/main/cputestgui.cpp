@@ -1,9 +1,11 @@
 #include "cputestgui.h"
 
 #include <common/src/bits64/cpu/cpu.h>
+#include <common/src/bits64/cpu/generated/x86featuresnames.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/panelwidget.h>
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
@@ -68,6 +70,16 @@
 #define CPU_REVISION_WIDTH_PERCENT      40
 #define CPU_REVISION_HEIGHT_PERCENT     4
 
+#define FEATURE_PANEL_POSITION_X_PERCENT 1
+#define FEATURE_PANEL_POSITION_Y_PERCENT 30
+#define FEATURE_PANEL_WIDTH_PERCENT      14
+#define FEATURE_PANEL_HEIGHT_PERCENT     6
+
+#define FEATURE_TEXT_POSITION_X_PERCENT 5
+#define FEATURE_TEXT_POSITION_Y_PERCENT 5
+#define FEATURE_TEXT_WIDTH_PERCENT      90
+#define FEATURE_TEXT_HEIGHT_PERCENT     90
+
 #define TAB_BUTTON_WIDTH_PERCENT   20
 #define TAB_BUTTON_HEIGHT_PERCENT  5
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
@@ -87,6 +99,37 @@ TabButton  *CpuTestGUI::sTestTabButton;
 TabButton  *CpuTestGUI::sSummaryTabButton;
 u16         CpuTestGUI::sWaitEventsCount;
 uefi_event *CpuTestGUI::sWaitEvents;
+
+X86Feature gTestedFeatures[] = {
+    X86Feature::PAE
+    , X86Feature::NX
+    , X86Feature::LA57
+    , X86Feature::XMM
+    , X86Feature::XMM2
+    , X86Feature::XMM3
+    , X86Feature::SSSE3
+    , X86Feature::XMM4_1
+    , X86Feature::XMM4_2
+    , X86Feature::AVX
+    , X86Feature::AVX2
+    , X86Feature::AVX512F
+    , X86Feature::AVX512CD
+    , X86Feature::AVX512ER
+    , X86Feature::AVX512PF
+    , X86Feature::AVX512F
+    , X86Feature::AVX512CD
+    , X86Feature::AVX512BW
+    , X86Feature::AVX512DQ
+    , X86Feature::AVX512VL
+    , X86Feature::AVX512F
+    , X86Feature::AVX512CD
+    , X86Feature::AVX512BW
+    , X86Feature::AVX512DQ
+    , X86Feature::AVX512VL
+    , X86Feature::AVX512IFMA
+    , X86Feature::AVX512VBMI
+    , X86Feature::FMA
+};
 
 
 
@@ -138,6 +181,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     Image *testImage;
     Image *summaryImage;
     Image *cpuImage;
+    Image *featurePanelImage;
+    Image *featurePanelResizedImage;
     Image *rebootImage;
     Image *shutdownImage;
     Image *cursorImage;
@@ -165,6 +210,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/test.png",                        &testImage),                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/summary.png",                     &summaryImage),                 NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cpu.png",                         &cpuImage),                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/feature_panel.9.png",             &featurePanelImage),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",                    &shutdownImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
@@ -399,6 +445,35 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    u64 featurePanelLeft      = tabPageHeight * FEATURE_PANEL_POSITION_X_PERCENT / 100;
+    u64 featurePanelPositionY = tabPageHeight * FEATURE_PANEL_POSITION_Y_PERCENT / 100;
+    u64 featurePanelWidth     = tabPageWidth  * FEATURE_PANEL_WIDTH_PERCENT      / 100;
+    u64 featurePanelHeight    = tabPageHeight * FEATURE_PANEL_HEIGHT_PERCENT     / 100;
+
+    u64 featurePanelPositionX = featurePanelLeft;
+
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(featurePanelImage, featurePanelWidth, featurePanelHeight, &featurePanelResizedImage), NgosStatus::ASSERTION);
+
+
+
+    i64 flagsCount = ARRAY_COUNT(gTestedFeatures);
+    COMMON_LVVV(("flagsCount = %d", flagsCount));
+
+    for (i64 i = 0; i < flagsCount; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(addFeaturePanel(gTestedFeatures[i], featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, systemInformationTabPageWidget), NgosStatus::ASSERTION);
+
+        featurePanelPositionX += featurePanelWidth;
+
+        if (featurePanelPositionX + featurePanelWidth > tabPageWidth)
+        {
+            featurePanelPositionX =  featurePanelLeft;
+            featurePanelPositionY += featurePanelHeight;
+        }
+    }
+
+
+
     TabPageWidget *testTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(testTabPageWidget), NgosStatus::ASSERTION);
@@ -450,6 +525,81 @@ NgosStatus CpuTestGUI::exec()
     {
         UEFI_ASSERT_EXECUTION(waitForEvent(), NgosStatus::ASSERTION);
     } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget)
+{
+    UEFI_LT((" | flag = %u, featurePanelPositionX = %u, featurePanelPositionY = %u, featurePanelWidth = %u, featurePanelHeight = %u, featurePanelImage = 0x%p, featurePanelResizedImage = 0x%p, tabPageWidget = 0x%p", flag, featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, tabPageWidget));
+
+    UEFI_ASSERT(featurePanelWidth > 0,    "featurePanelWidth is zero",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(featurePanelHeight > 0,   "featurePanelHeight is zero",       NgosStatus::ASSERTION);
+    UEFI_ASSERT(featurePanelImage,        "featurePanelImage is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(featurePanelResizedImage, "featurePanelResizedImage is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(tabPageWidget,            "tabPageWidget is null",            NgosStatus::ASSERTION);
+
+
+
+    const char8 *flagText     = x86FeaturesNames[(u64)flag];
+    char8       *flagTextFull = (char8 *)malloc(11);
+
+    UEFI_TEST_ASSERT(flagText && *flagText, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(flagTextFull, "%-10s", flagText), i64, 10, NgosStatus::ASSERTION);
+
+
+
+    PanelWidget *featurePanelWidget = new PanelWidget(featurePanelImage, featurePanelResizedImage, tabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(featurePanelWidget->setPosition(featurePanelPositionX, featurePanelPositionY), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featurePanelWidget->setSize(featurePanelWidth, featurePanelHeight),            NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *featureTextLabelWidget = new LabelWidget(flagTextFull, featurePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setPosition(featurePanelWidth * FEATURE_TEXT_POSITION_X_PERCENT / 100, featurePanelHeight * FEATURE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT      / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+    LabelWidget *featureTextLabelWidget2 = new LabelWidget(flagTextFull, featurePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setPosition(featurePanelWidth * (FEATURE_TEXT_POSITION_X_PERCENT - 1) / 100, featurePanelHeight * (FEATURE_TEXT_POSITION_Y_PERCENT - 2) / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT            / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT           / 100), NgosStatus::ASSERTION);
+
+
+
+    RgbaPixel color;
+    RgbaPixel color2;
+
+    if (CPU::hasFlag(flag))
+    {
+        color.red   = 0x46;
+        color.green = 0x60;
+        color.blue  = 0x46;
+        color.alpha = 0xDD;
+
+        color2.red   = 0x00;
+        color2.green = 0x9B;
+        color2.blue  = 0x00;
+        color2.alpha = 0xFF;
+    }
+    else
+    {
+        color.red   = 0x60;
+        color.green = 0x60;
+        color.blue  = 0x60;
+        color.alpha = 0xDD;
+
+        color2.red   = 0x33;
+        color2.green = 0x33;
+        color2.blue  = 0x33;
+        color2.alpha = 0xFF;
+    }
+
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setColor(color),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setColor(color2), NgosStatus::ASSERTION);
 
 
 

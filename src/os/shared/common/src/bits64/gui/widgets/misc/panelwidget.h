@@ -11,6 +11,7 @@ class PanelWidget: public Widget
 {
 public:
     PanelWidget(Image *panelImage, Widget *parent = 0); // TEST: NO
+    PanelWidget(Image *panelImage, Image *panelResizedImage, Widget *parent = 0); // TEST: NO
     ~PanelWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
@@ -18,6 +19,7 @@ public:
 
 private:
     Image *mPanelImage;
+    bool   mPredefined;
 };
 
 

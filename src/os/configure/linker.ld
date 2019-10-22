@@ -26,6 +26,7 @@ SECTIONS
 
 
 
+    . = ALIGN(8);
     _rela_begin = .;
     .rela.dyn       : { *(.rela.dyn) }
     _rela_end = .;

@@ -9,11 +9,28 @@
 PanelWidget::PanelWidget(Image *panelImage, Widget *parent)
     : Widget(parent)
     , mPanelImage(panelImage)
+    , mPredefined(false)
 {
     COMMON_LT((" | panelImage = 0x%p, parent = 0x%p", panelImage, parent));
 
     COMMON_ASSERT(panelImage, "panelImage is null");
     COMMON_ASSERT(parent,     "parent is null");
+}
+
+PanelWidget::PanelWidget(Image *panelImage, Image *panelResizedImage, Widget *parent)
+    : Widget(parent)
+    , mPanelImage(panelImage)
+    , mPredefined(true)
+{
+    COMMON_LT((" | panelImage = 0x%p, panelResizedImage = 0x%p, parent = 0x%p", panelImage, panelResizedImageparent));
+
+    COMMON_ASSERT(panelImage,        "panelImage is null");
+    COMMON_ASSERT(panelResizedImage, "panelResizedImage is null");
+    COMMON_ASSERT(parent,            "parent is null");
+
+
+
+    mOwnResultImage = panelResizedImage;
 }
 
 PanelWidget::~PanelWidget()
@@ -22,9 +39,12 @@ PanelWidget::~PanelWidget()
 
 
 
-    if (mOwnResultImage)
+    if (!mPredefined)
     {
-        delete mOwnResultImage;
+        if (mOwnResultImage)
+        {
+            delete mOwnResultImage;
+        }
     }
 
     if (mResultImage)
@@ -39,12 +59,15 @@ NgosStatus PanelWidget::invalidate()
 
 
 
-    if (mOwnResultImage)
+    if (!mPredefined)
     {
-        delete mOwnResultImage;
-    }
+        if (mOwnResultImage)
+        {
+            delete mOwnResultImage;
+        }
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
+    }
 
 
 

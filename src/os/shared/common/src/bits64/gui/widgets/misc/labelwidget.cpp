@@ -10,7 +10,7 @@
 
 #define CHAR_HEIGHT   41
 #define SIDE_MARGIN   2
-#define BOTTOM_MARGIN 9
+#define BOTTOM_MARGIN 15
 
 
 
@@ -18,6 +18,7 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     : Widget(parent)
     , mText(text)
     , mGlyphOffsets(nullptr)
+    , mColor()
 {
     COMMON_LT((" | text = 0x%p, parent = 0x%p", text, parent));
 
@@ -30,6 +31,13 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     COMMON_TEST_ASSERT(asset);
 
     mGlyphOffsets = (u16 *)asset->content;
+
+
+
+    mColor.red   = 0xFF;
+    mColor.green = 0xFF;
+    mColor.blue  = 0xFF;
+    mColor.alpha = 0xFF;
 }
 
 LabelWidget::~LabelWidget()
@@ -179,10 +187,10 @@ NgosStatus LabelWidget::repaint()
 
 
 
-                        pixel->red   = 0xFF;
-                        pixel->green = 0xFF;
-                        pixel->blue  = 0xFF;
-                        pixel->alpha = *bitmapByte;
+                        pixel->red   = mColor.red;
+                        pixel->green = mColor.green;
+                        pixel->blue  = mColor.blue;
+                        pixel->alpha = *bitmapByte * mColor.alpha / 0xFF;
 
                         ++bitmapByte;
                     }
@@ -281,4 +289,33 @@ const char8* LabelWidget::getText() const
 
 
     return mText;
+}
+
+NgosStatus LabelWidget::setColor(const RgbaPixel &color)
+{
+    COMMON_LT((""));
+
+
+
+    mColor = color;
+
+    COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+    if (isVisible())
+    {
+        COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+const RgbaPixel& LabelWidget::getColor() const
+{
+    COMMON_LT((""));
+
+
+
+    return mColor;
 }

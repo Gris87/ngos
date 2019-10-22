@@ -472,7 +472,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
 
 
 
-    i64 flagsCount = sizeof(flags) / sizeof(flags[0]);
+    i64 flagsCount = ARRAY_COUNT(flags);
     COMMON_LVVV(("flagsCount = %d", flagsCount));
 
     for (i64 i = 0; i < flagsCount; ++i)
