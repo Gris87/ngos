@@ -19,8 +19,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
     {
         List<u8> temp;
 
-        TEST_ASSERT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
     }
     TEST_CASE_END();
 
@@ -30,49 +30,49 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
     {
         List<u8> temp;
 
-        TEST_ASSERT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
 
 
 
         TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
         TEST_ASSERT_EQUALS(temp.mHead,     temp.mTail);
 
         TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     0);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), 0);
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     nullptr);
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
 
 
 
         TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
         TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
 
         TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);
         TEST_ASSERT_EQUALS(temp.mHead->getNext(),     temp.mTail);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), 0);
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getData(),     7);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     0);
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getPrevious(), temp.mHead);
 
 
 
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
         TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
 
         TEST_ASSERT_EQUALS(temp.mHead->getData(),                1);
         TEST_ASSERT_EQUALS(temp.mHead->getNext(),                temp.mTail->getPrevious());
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            0);
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getData(),                9);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                0);
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getPrevious(),            temp.mHead->getNext());
         TEST_ASSERT_EQUALS(temp.mHead->getNext()->getData(),     7);
         TEST_ASSERT_EQUALS(temp.mHead->getNext()->getNext(),     temp.mTail);
@@ -86,53 +86,212 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
     {
         List<u8> temp;
 
-        TEST_ASSERT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
 
 
 
         TEST_ASSERT_EQUALS(temp.prepend(1), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
         TEST_ASSERT_EQUALS(temp.mHead,     temp.mTail);
 
         TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     0);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), 0);
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     nullptr);
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
 
 
 
         TEST_ASSERT_EQUALS(temp.prepend(7), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
         TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
 
         TEST_ASSERT_EQUALS(temp.mHead->getData(),     7);
         TEST_ASSERT_EQUALS(temp.mHead->getNext(),     temp.mTail);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), 0);
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getData(),     1);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     0);
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getPrevious(), temp.mHead);
 
 
 
         TEST_ASSERT_EQUALS(temp.prepend(9), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, 0);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
         TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
 
         TEST_ASSERT_EQUALS(temp.mHead->getData(),                9);
         TEST_ASSERT_EQUALS(temp.mHead->getNext(),                temp.mTail->getPrevious());
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            0);
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getData(),                1);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                0);
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                nullptr);
         TEST_ASSERT_EQUALS(temp.mTail->getPrevious(),            temp.mHead->getNext());
         TEST_ASSERT_EQUALS(temp.mHead->getNext()->getData(),     7);
         TEST_ASSERT_EQUALS(temp.mHead->getNext()->getNext(),     temp.mTail);
         TEST_ASSERT_EQUALS(temp.mHead->getNext()->getPrevious(), temp.mHead);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("clear()");
+    {
+        List<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
+
+
+
+        TEST_ASSERT_EQUALS(temp.clear(), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("moveToEnd()");
+    {
+        List<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+
+
+        ListElement<u8> *el1 = temp.mHead;
+        ListElement<u8> *el2 = el1->mNext;
+        ListElement<u8> *el3 = el2->mNext;
+        ListElement<u8> *el4 = el3->mNext;
+        ListElement<u8> *el5 = el4->mNext;
+
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
+        TEST_ASSERT_EQUALS(el1->mNext,     el2);
+        TEST_ASSERT_EQUALS(el1->mData,     5);
+
+        TEST_ASSERT_EQUALS(el2->mPrevious, el1);
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);
+        TEST_ASSERT_EQUALS(el2->mData,     9);
+
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);
+        TEST_ASSERT_EQUALS(el3->mData,     3);
+
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);
+        TEST_ASSERT_EQUALS(el4->mData,     1);
+
+        TEST_ASSERT_EQUALS(el5,            temp.mTail);
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
+        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);
+        TEST_ASSERT_EQUALS(el5->mData,     7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.moveToEnd(5), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(el1,            temp.mTail);
+        TEST_ASSERT_EQUALS(el1->mPrevious, el5);
+        TEST_ASSERT_EQUALS(el1->mNext,     nullptr);
+        TEST_ASSERT_EQUALS(el1->mData,     5);
+
+        TEST_ASSERT_EQUALS(el2,            temp.mHead);
+        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);
+        TEST_ASSERT_EQUALS(el2->mData,     9);
+
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);
+        TEST_ASSERT_EQUALS(el3->mData,     3);
+
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);
+        TEST_ASSERT_EQUALS(el4->mData,     1);
+
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
+        TEST_ASSERT_EQUALS(el5->mNext,     el1);
+        TEST_ASSERT_EQUALS(el5->mData,     7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.moveToEnd(3), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(el1->mPrevious, el5);
+        TEST_ASSERT_EQUALS(el1->mNext,     el3);
+        TEST_ASSERT_EQUALS(el1->mData,     5);
+
+        TEST_ASSERT_EQUALS(el2,            temp.mHead);
+        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);
+        TEST_ASSERT_EQUALS(el2->mNext,     el4);
+        TEST_ASSERT_EQUALS(el2->mData,     9);
+
+        TEST_ASSERT_EQUALS(el3,            temp.mTail);
+        TEST_ASSERT_EQUALS(el3->mPrevious, el1);
+        TEST_ASSERT_EQUALS(el3->mNext,     nullptr);
+        TEST_ASSERT_EQUALS(el3->mData,     3);
+
+        TEST_ASSERT_EQUALS(el4->mPrevious, el2);
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);
+        TEST_ASSERT_EQUALS(el4->mData,     1);
+
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
+        TEST_ASSERT_EQUALS(el5->mNext,     el1);
+        TEST_ASSERT_EQUALS(el5->mData,     7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.moveToEnd(3), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(el1->mPrevious, el5);
+        TEST_ASSERT_EQUALS(el1->mNext,     el3);
+        TEST_ASSERT_EQUALS(el1->mData,     5);
+
+        TEST_ASSERT_EQUALS(el2,            temp.mHead);
+        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);
+        TEST_ASSERT_EQUALS(el2->mNext,     el4);
+        TEST_ASSERT_EQUALS(el2->mData,     9);
+
+        TEST_ASSERT_EQUALS(el3,            temp.mTail);
+        TEST_ASSERT_EQUALS(el3->mPrevious, el1);
+        TEST_ASSERT_EQUALS(el3->mNext,     nullptr);
+        TEST_ASSERT_EQUALS(el3->mData,     3);
+
+        TEST_ASSERT_EQUALS(el4->mPrevious, el2);
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);
+        TEST_ASSERT_EQUALS(el4->mData,     1);
+
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
+        TEST_ASSERT_EQUALS(el5->mNext,     el1);
+        TEST_ASSERT_EQUALS(el5->mData,     7);
     }
     TEST_CASE_END();
 
@@ -157,7 +316,7 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
         ListElement<u8> *el5 = el4->mNext;
 
         TEST_ASSERT_EQUALS(el1,            temp.mHead);
-        TEST_ASSERT_EQUALS(el1->mPrevious, 0);
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
         TEST_ASSERT_EQUALS(el1->mNext,     el2);
         TEST_ASSERT_EQUALS(el1->mData,     5);
 
@@ -175,7 +334,7 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
 
         TEST_ASSERT_EQUALS(el5,            temp.mTail);
         TEST_ASSERT_EQUALS(el5->mPrevious, el4);
-        TEST_ASSERT_EQUALS(el5->mNext,     0);
+        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);
         TEST_ASSERT_EQUALS(el5->mData,     7);
 
 
@@ -191,7 +350,7 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
         ListElement<u8> *newEl5 = newEl4->mNext;
 
         TEST_ASSERT_EQUALS(newEl1,            temp.mHead);
-        TEST_ASSERT_EQUALS(newEl1->mPrevious, 0);
+        TEST_ASSERT_EQUALS(newEl1->mPrevious, nullptr);
         TEST_ASSERT_EQUALS(newEl1->mNext,     newEl2);
         TEST_ASSERT_EQUALS(newEl1->mData,     1);
         TEST_ASSERT_EQUALS(newEl1,            el4);
@@ -213,7 +372,7 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
 
         TEST_ASSERT_EQUALS(newEl5,            temp.mTail);
         TEST_ASSERT_EQUALS(newEl5->mPrevious, newEl4);
-        TEST_ASSERT_EQUALS(newEl5->mNext,     0);
+        TEST_ASSERT_EQUALS(newEl5->mNext,     nullptr);
         TEST_ASSERT_EQUALS(newEl5->mData,     9);
         TEST_ASSERT_EQUALS(newEl5,            el2);
     }
@@ -225,15 +384,15 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
     {
         List<u8> temp;
 
-        TEST_ASSERT_EQUALS(temp.getHead(), 0);
-        TEST_ASSERT_EQUALS(temp.getTail(), 0);
+        TEST_ASSERT_EQUALS(temp.getHead(), nullptr);
+        TEST_ASSERT_EQUALS(temp.getTail(), nullptr);
 
 
 
         TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.getHead(), 0);
-        TEST_ASSERT_NOT_EQUALS(temp.getTail(), 0);
+        TEST_ASSERT_NOT_EQUALS(temp.getHead(), nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.getTail(), nullptr);
         TEST_ASSERT_EQUALS(temp.getHead(),     temp.getTail());
     }
     TEST_CASE_END();

@@ -89,10 +89,14 @@
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/other/widgetstate.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/controls/tabbutton.h>
+#include <common/src/bits64/gui/widgets/controls/tabwidget.h>
 #include <common/src/bits64/gui/widgets/misc/consolewidget.h>
 #include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/panelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/tabpagewidget.h>
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
@@ -129,23 +133,23 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(BmpHeader),                                     14);
         TEST_ASSERT_EQUALS(sizeof(BmpInformationHeader),                          40);
         TEST_ASSERT_EQUALS(sizeof(Button),                                        216);
-        TEST_ASSERT_EQUALS(sizeof(CPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(Console),                                       1);
-        TEST_ASSERT_EQUALS(sizeof(ConsoleWidget),                                 104);
+        TEST_ASSERT_EQUALS(sizeof(ConsoleWidget),                                 96);
+        TEST_ASSERT_EQUALS(sizeof(CPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(CpuFamily),                                     2);
         TEST_ASSERT_EQUALS(sizeof(CpuVendor),                                     1);
         TEST_ASSERT_EQUALS(sizeof(Crc),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                  104);
+        TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                  96);
         TEST_ASSERT_EQUALS(sizeof(FPU),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
         TEST_ASSERT_EQUALS(sizeof(FSaveState),                                    112);
         TEST_ASSERT_EQUALS(sizeof(FXSaveState),                                   512);
-        TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
-        TEST_ASSERT_EQUALS(sizeof(GUI),                                           1);
         TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
         TEST_ASSERT_EQUALS(sizeof(GraphicalConsole),                              1);
         TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
+        TEST_ASSERT_EQUALS(sizeof(GUI),                                           1);
         TEST_ASSERT_EQUALS(sizeof(Image),                                         32);
-        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   104);
+        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   96);
         TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                              1);
         TEST_ASSERT_EQUALS(sizeof(InflateCode),                                   4);
         TEST_ASSERT_EQUALS(sizeof(InflateCodeType),                               1);
@@ -168,11 +172,12 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(JpegStartOfScanMarker),                         5);
         TEST_ASSERT_EQUALS(sizeof(JpegVlcCode),                                   2);
         TEST_ASSERT_EQUALS(sizeof(LabelWidget),                                   104);
-        TEST_ASSERT_EQUALS(sizeof(List<u8>),                                      16);
         TEST_ASSERT_EQUALS(sizeof(ListElement<u8>),                               24);
-        TEST_ASSERT_EQUALS(sizeof(MSR),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(List<u8>),                                      16);
         TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);
+        TEST_ASSERT_EQUALS(sizeof(MSR),                                           1);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                     40);
+        TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                   96);
         TEST_ASSERT_EQUALS(sizeof(Png),                                           1);
         TEST_ASSERT_EQUALS(sizeof(PngChunk),                                      8);
         TEST_ASSERT_EQUALS(sizeof(PngChunkType),                                  4);
@@ -196,16 +201,21 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(Register128Bit),                                16);
         TEST_ASSERT_EQUALS(sizeof(Register256Bit),                                32);
         TEST_ASSERT_EQUALS(sizeof(Register512Bit),                                64);
-        TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
         TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                     4);
+        TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
         TEST_ASSERT_EQUALS(sizeof(RootWidget),                                    104);
-        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  152);
+        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  144);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
         TEST_ASSERT_EQUALS(sizeof(StretchRange),                                  4);
+        TEST_ASSERT_EQUALS(sizeof(TabButton),                                     296);
+        TEST_ASSERT_EQUALS(sizeof(TabPageWidget),                                 88);
+        TEST_ASSERT_EQUALS(sizeof(TabWidget),                                     152);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        88);
         TEST_ASSERT_EQUALS(sizeof(WidgetState),                                   1);
         TEST_ASSERT_EQUALS(sizeof(X86Bug),                                        2);
+        TEST_ASSERT_EQUALS(sizeof(x86BugWord),                                    1);
         TEST_ASSERT_EQUALS(sizeof(X86Feature),                                    2);
+        TEST_ASSERT_EQUALS(sizeof(x86FeatureWord),                                1);
         TEST_ASSERT_EQUALS(sizeof(XFeature),                                      1);
         TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512OpmaskState),                     64);
         TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom0To15State),               512);
@@ -223,8 +233,6 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionLevel),                          1);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                         1);
         TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                    2);
-        TEST_ASSERT_EQUALS(sizeof(x86BugWord),                                    1);
-        TEST_ASSERT_EQUALS(sizeof(x86FeatureWord),                                1);
     }
     TEST_CASE_END();
 }

@@ -246,7 +246,6 @@ NgosStatus ScreenWidget::repaint()
 
 
 
-
     if (mResultImage)
     {
         delete mResultImage;

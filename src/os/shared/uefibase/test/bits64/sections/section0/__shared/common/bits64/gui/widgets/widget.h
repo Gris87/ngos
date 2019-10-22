@@ -115,6 +115,55 @@ TEST_CASES(section0, __shared_common_bits64_gui_widgets_widget);
 
 
 
+    TEST_CASE("getGlobalPositionX()/getGlobalPositionY()");
+    {
+        Widget temp1;
+        Widget temp2(&temp1);
+        Widget temp3(&temp2);
+
+        TEST_ASSERT_EQUALS(temp1.mPositionX,           0);
+        TEST_ASSERT_EQUALS(temp1.mPositionY,           0);
+        TEST_ASSERT_EQUALS(temp1.getGlobalPositionX(), 0);
+        TEST_ASSERT_EQUALS(temp1.getGlobalPositionY(), 0);
+
+        TEST_ASSERT_EQUALS(temp2.mPositionX,           0);
+        TEST_ASSERT_EQUALS(temp2.mPositionY,           0);
+        TEST_ASSERT_EQUALS(temp2.getGlobalPositionX(), 0);
+        TEST_ASSERT_EQUALS(temp2.getGlobalPositionY(), 0);
+
+        TEST_ASSERT_EQUALS(temp3.mPositionX,           0);
+        TEST_ASSERT_EQUALS(temp3.mPositionY,           0);
+        TEST_ASSERT_EQUALS(temp3.getGlobalPositionX(), 0);
+        TEST_ASSERT_EQUALS(temp3.getGlobalPositionY(), 0);
+
+        TEST_ASSERT_EQUALS(temp1.setPosition(30, 40), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp2.setPosition(10, 20), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp3.setPosition(50, 30), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp1.mPositionX,           30);
+        TEST_ASSERT_EQUALS(temp1.mPositionY,           40);
+        TEST_ASSERT_EQUALS(temp1.getGlobalPositionX(), 30);
+        TEST_ASSERT_EQUALS(temp1.getGlobalPositionY(), 40);
+
+        TEST_ASSERT_EQUALS(temp2.mPositionX,           10);
+        TEST_ASSERT_EQUALS(temp2.mPositionY,           20);
+        TEST_ASSERT_EQUALS(temp2.getGlobalPositionX(), 40);
+        TEST_ASSERT_EQUALS(temp2.getGlobalPositionY(), 60);
+
+        TEST_ASSERT_EQUALS(temp3.mPositionX,           50);
+        TEST_ASSERT_EQUALS(temp3.mPositionY,           30);
+        TEST_ASSERT_EQUALS(temp3.getGlobalPositionX(), 90);
+        TEST_ASSERT_EQUALS(temp3.getGlobalPositionY(), 90);
+
+
+
+        TEST_ASSERT_EQUALS(temp1.mChildren.clear(), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp2.mChildren.clear(), NgosStatus::OK);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("setSize()/getWidth()/getHeight()");
     {
         Widget temp;

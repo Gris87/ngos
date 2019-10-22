@@ -258,7 +258,7 @@ NgosStatus TabWidget::setSize(u64 width, u64 height)
 
 NgosStatus TabWidget::setCurrentPage(i64 page)
 {
-    COMMON_LT((" | page = %u"));
+    COMMON_LT((" | page = %d", page));
 
     COMMON_ASSERT(page >= 0 && page < (i64)mTabPages.getSize(), "page is invalid",      NgosStatus::ASSERTION);
     COMMON_ASSERT(mTabPages.getSize() == mTabButtons.getSize(), "mTabPages is invalid", NgosStatus::ASSERTION);

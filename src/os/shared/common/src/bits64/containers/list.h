@@ -20,8 +20,9 @@ public:
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
 
-    NgosStatus moveToEnd(const T &value);
+    NgosStatus clear();
 
+    NgosStatus moveToEnd(const T &value);
     NgosStatus sort();
 
     ListElement<T>* getHead() const;
@@ -53,16 +54,7 @@ List<T>::~List()
 
 
 
-    ListElement<T> *element = mHead;
-
-    while (element)
-    {
-        ListElement<T> *temp = element;
-
-        element = element->getNext();
-
-        delete temp;
-    }
+    COMMON_ASSERT_EXECUTION(clear());
 }
 
 template<typename T>
@@ -118,8 +110,38 @@ NgosStatus List<T>::prepend(const T &value)
 }
 
 template<typename T>
+NgosStatus List<T>::clear()
+{
+    COMMON_LT((""));
+
+
+
+    ListElement<T> *element = mHead;
+
+    while (element)
+    {
+        ListElement<T> *temp = element;
+
+        element = element->getNext();
+
+        delete temp;
+    }
+
+    mHead = nullptr;
+    mTail = nullptr;
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
 NgosStatus List<T>::moveToEnd(const T &value)
 {
+    COMMON_LT((" | value = ..."));
+
+
+
     if (mHead != mTail)
     {
         if (mHead->getData() == value)
