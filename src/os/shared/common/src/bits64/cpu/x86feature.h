@@ -14,7 +14,7 @@ enum class X86Feature: u16 // Ignore CppEnumVerifier
     //
     // Intel-defined CPU features, CPUID level 0x00000001 (ECX), word 0
     //
-    XMM3                = WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 0),      // "pni" SSE-3
+    XMM3                = WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 0),      // "sse3" SSE-3
     PCLMULQDQ           = WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 1),      // PCLMULQDQ instruction
     DTES64              = WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 2),      // 64-bit Debug Store
     MWAIT               = WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 3),      // "monitor" MONITOR/MWAIT support

@@ -20,7 +20,7 @@ NgosStatus initX86FeaturesNames()
 
     // word 0
 
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 0)]  = "pni";
+    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 0)]  = "sse3";
     x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 1)]  = "pclmulqdq";
     x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 2)]  = "dtes64";
     x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 3)]  = "monitor";

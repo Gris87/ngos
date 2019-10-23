@@ -70,9 +70,9 @@
 #define CPU_REVISION_WIDTH_PERCENT      40
 #define CPU_REVISION_HEIGHT_PERCENT     4
 
-#define FEATURE_PANEL_POSITION_X_PERCENT 1
+#define FEATURE_PANEL_POSITION_X_PERCENT 2
 #define FEATURE_PANEL_POSITION_Y_PERCENT 30
-#define FEATURE_PANEL_WIDTH_PERCENT      14
+#define FEATURE_PANEL_WIDTH_PERCENT      12
 #define FEATURE_PANEL_HEIGHT_PERCENT     6
 
 #define FEATURE_TEXT_POSITION_X_PERCENT 5
@@ -104,6 +104,7 @@ X86Feature gTestedFeatures[] = {
     X86Feature::PAE
     , X86Feature::NX
     , X86Feature::LA57
+    , X86Feature::MMX
     , X86Feature::XMM
     , X86Feature::XMM2
     , X86Feature::XMM3
@@ -129,6 +130,9 @@ X86Feature gTestedFeatures[] = {
     , X86Feature::AVX512IFMA
     , X86Feature::AVX512VBMI
     , X86Feature::FMA
+    , X86Feature::AES
+    , X86Feature::RTM
+    , X86Feature::VMX
 };
 
 
