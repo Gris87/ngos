@@ -381,6 +381,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     char8 *cpuModelName = (char8 *)malloc(60);
 
     i64 cpuModelNameLength = sprintf(cpuModelName, "CPU Model: %.48s", CPU::getModelName());
+    AVOID_UNUSED(cpuModelNameLength);
 
     UEFI_TEST_ASSERT(sizeof(CPU::sModelName) == 48, NgosStatus::ASSERTION);
     UEFI_TEST_ASSERT(cpuModelNameLength < 60,       NgosStatus::ASSERTION);
@@ -390,6 +391,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     char8 *cpuCores = (char8 *)malloc(18);
 
     i64 cpuCoresLength = sprintf(cpuCores, "Cores: %-3u", CPU::getNumberOfCores());
+    AVOID_UNUSED(cpuCoresLength);
 
     UEFI_TEST_ASSERT(cpuCoresLength < 18, NgosStatus::ASSERTION);
 
@@ -398,6 +400,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     char8 *cpuThreads = (char8 *)malloc(20);
 
     i64 cpuThreadsLength = sprintf(cpuThreads, "Threads: %-3u", CPU::getNumberOfThreads());
+    AVOID_UNUSED(cpuThreadsLength);
 
     UEFI_TEST_ASSERT(cpuThreadsLength < 20, NgosStatus::ASSERTION);
 
