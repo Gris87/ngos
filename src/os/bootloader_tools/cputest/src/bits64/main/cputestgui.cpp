@@ -90,10 +90,20 @@
 #define CPU_CLOCKS_PANEL_WIDTH_PERCENT      47
 #define CPU_CLOCKS_PANEL_HEIGHT_PERCENT     44
 
+#define CPU_CLOCKS_TEXT_POSITION_X_PERCENT 2
+#define CPU_CLOCKS_TEXT_POSITION_Y_PERCENT 2
+#define CPU_CLOCKS_TEXT_WIDTH_PERCENT      20
+#define CPU_CLOCKS_TEXT_HEIGHT_PERCENT     10
+
 #define CPU_CACHE_PANEL_POSITION_X_PERCENT 51
 #define CPU_CACHE_PANEL_POSITION_Y_PERCENT 55
 #define CPU_CACHE_PANEL_WIDTH_PERCENT      47
 #define CPU_CACHE_PANEL_HEIGHT_PERCENT     44
+
+#define CPU_CACHE_TEXT_POSITION_X_PERCENT 2
+#define CPU_CACHE_TEXT_POSITION_Y_PERCENT 2
+#define CPU_CACHE_TEXT_WIDTH_PERCENT      20
+#define CPU_CACHE_TEXT_HEIGHT_PERCENT     10
 
 #define TAB_BUTTON_WIDTH_PERCENT   20
 #define TAB_BUTTON_HEIGHT_PERCENT  5
@@ -267,10 +277,6 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuImageSize = tabPageWidth * CPU_IMAGE_SIZE_PERCENT / 100;
-
-
-
     RootWidget *rootWidget = new RootWidget();
 
     UEFI_ASSERT_EXECUTION(rootWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
@@ -358,6 +364,10 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     TabPageWidget *systemInformationTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(systemInformationTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    u64 cpuImageSize = tabPageWidth * CPU_IMAGE_SIZE_PERCENT / 100;
 
 
 
@@ -515,6 +525,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    LabelWidget *cpuClocksLabelWidget = new LabelWidget("Clocks", cpuClocksPanelWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuClocksLabelWidget->setPosition(cpuClocksWidth * CPU_CLOCKS_TEXT_POSITION_X_PERCENT / 100, cpuClocksHeight * CPU_CLOCKS_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuClocksLabelWidget->setSize(cpuClocksWidth     * CPU_CLOCKS_TEXT_WIDTH_PERCENT      / 100, cpuClocksHeight * CPU_CLOCKS_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
     u64 cpuCacheWidth  = tabPageWidth  * CPU_CACHE_PANEL_WIDTH_PERCENT  / 100;
     u64 cpuCacheHeight = tabPageHeight * CPU_CACHE_PANEL_HEIGHT_PERCENT / 100;
 
@@ -522,6 +539,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(cpuCachePanelWidget->setPosition(tabPageWidth * CPU_CACHE_PANEL_POSITION_X_PERCENT / 100, tabPageHeight * CPU_CACHE_PANEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(cpuCachePanelWidget->setSize(cpuCacheWidth, cpuCacheHeight),                                                                                         NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuCacheLabelWidget = new LabelWidget("Cache ", cpuCachePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuCacheLabelWidget->setPosition(cpuCacheWidth * CPU_CACHE_TEXT_POSITION_X_PERCENT / 100, cpuCacheHeight * CPU_CACHE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuCacheLabelWidget->setSize(cpuCacheWidth     * CPU_CACHE_TEXT_WIDTH_PERCENT      / 100, cpuCacheHeight * CPU_CACHE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 
