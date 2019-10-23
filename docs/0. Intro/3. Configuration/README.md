@@ -231,8 +231,6 @@ This parameter is used to keep the kernel location aligned.
 Vectorization allows your machine significantly improve performance, but only the modern CPUs supports the best vectorization modes.
 
 **Values:**
-* OPTION_X86_64_VECTORIZATION_MODE_NONE       - Compile kernel without vectorization
-* OPTION_X86_64_VECTORIZATION_MODE_SSE        - Compile kernel with SSE vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_SSE2       - Compile kernel with SSE2 vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_SSE3       - Compile kernel with SSE3 vectorization
 * OPTION_X86_64_VECTORIZATION_MODE_SSE4       - Compile kernel with SSE4 vectorization

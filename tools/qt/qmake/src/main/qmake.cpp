@@ -431,36 +431,40 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
 
 
-    if (templateValue == "uefi")
+    QString vectorizationFlags = "-msse -msse2 -mfpmath=sse";
+
+    if (templateValue != "uefi")
     {
-        lines.append("VECTORIZATION_FLAGS = -mno-mmx -mno-sse");
-    }
-    else
-    {
-#if NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_NONE
-        lines.append("VECTORIZATION_FLAGS = -mno-mmx -mno-sse");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE
-        lines.append("VECTORIZATION_FLAGS = -msse");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE2
-        lines.append("VECTORIZATION_FLAGS = -msse2");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE3
-        lines.append("VECTORIZATION_FLAGS = -msse3 -mssse3");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_SSE4
-        lines.append("VECTORIZATION_FLAGS = -msse4 -msse4.1 -msse4.2");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX
-        lines.append("VECTORIZATION_FLAGS = -mavx");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX2
-        lines.append("VECTORIZATION_FLAGS = -mavx2");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1
-        lines.append("VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512er -mavx512pf");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V2
-        lines.append("VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl");
-#elif NGOS_BUILD_X86_64_VECTORIZATION_MODE == OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3
-        lines.append("VECTORIZATION_FLAGS = -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl -mavx512ifma -mavx512vbmi");
-#else
-#error Unexpected value for NGOS_BUILD_X86_64_VECTORIZATION_MODE parameter
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE >= OPTION_X86_64_VECTORIZATION_MODE_SSE3
+        vectorizationFlags += " -msse3 -mssse3";
+#endif
+
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE >= OPTION_X86_64_VECTORIZATION_MODE_SSE4
+        vectorizationFlags += " -msse4 -msse4.1 -msse4.2";
+#endif
+
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE >= OPTION_X86_64_VECTORIZATION_MODE_AVX
+        vectorizationFlags += " -mavx";
+#endif
+
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE >= OPTION_X86_64_VECTORIZATION_MODE_AVX2
+        vectorizationFlags += " -mavx2";
+#endif
+
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE >= OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V1
+        vectorizationFlags += " -mavx512f -mavx512cd -mavx512er -mavx512pf";
+#endif
+
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE >= OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V2
+        vectorizationFlags += " -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl";
+#endif
+
+#if NGOS_BUILD_X86_64_VECTORIZATION_MODE >= OPTION_X86_64_VECTORIZATION_MODE_AVX_512_V3
+        vectorizationFlags += " -mavx512f -mavx512cd -mavx512bw -mavx512dq -mavx512vl -mavx512ifma -mavx512vbmi";
 #endif
     }
+
+    lines.append("VECTORIZATION_FLAGS = " + vectorizationFlags);
 
     tail += " $(VECTORIZATION_FLAGS)";
 
