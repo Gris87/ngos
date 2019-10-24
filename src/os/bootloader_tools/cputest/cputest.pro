@@ -44,5 +44,6 @@ SOURCES += \
 HEADERS += \
     src/bits64/main/cputest.h \
     src/bits64/main/cputestgui.h \
+    src/bits64/other/cacheinfo.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h

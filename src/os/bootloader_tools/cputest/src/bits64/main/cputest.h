@@ -5,6 +5,8 @@
 
 #include <ngos/status.h>
 
+#include "src/bits64/other/cacheinfo.h"
+
 
 
 class CpuTest
