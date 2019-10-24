@@ -809,17 +809,18 @@ NgosStatus CpuTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *poin
 
     UefiSimplePointerState state;
 
-    UEFI_ASSERT_EXECUTION(pointer->getState(pointer, &state), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    if (pointer->getState(pointer, &state) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVVV(("state.relativeMovementX = %d", state.relativeMovementX));
+        UEFI_LVVV(("state.relativeMovementY = %d", state.relativeMovementY));
+        UEFI_LVVV(("state.relativeMovementZ = %d", state.relativeMovementZ));
+        UEFI_LVVV(("state.leftButton        = %s", state.leftButton ? "true" : "false"));
+        UEFI_LVVV(("state.rightButton       = %s", state.rightButton ? "true" : "false"));
 
-    UEFI_LVVV(("state.relativeMovementX = %d", state.relativeMovementX));
-    UEFI_LVVV(("state.relativeMovementY = %d", state.relativeMovementY));
-    UEFI_LVVV(("state.relativeMovementZ = %d", state.relativeMovementZ));
-    UEFI_LVVV(("state.leftButton        = %s", state.leftButton ? "true" : "false"));
-    UEFI_LVVV(("state.rightButton       = %s", state.rightButton ? "true" : "false"));
 
 
-
-    UEFI_ASSERT_EXECUTION(GUI::processSimplePointerState(&state), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(GUI::processSimplePointerState(&state), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -836,16 +837,17 @@ NgosStatus CpuTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *
 
     UefiAbsolutePointerState state;
 
-    UEFI_ASSERT_EXECUTION(pointer->getState(pointer, &state), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    if (pointer->getState(pointer, &state) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVVV(("state.currentX      = %u",          state.currentX));
+        UEFI_LVVV(("state.currentY      = %u",          state.currentY));
+        UEFI_LVVV(("state.currentZ      = %u",          state.currentZ));
+        UEFI_LVVV(("state.activeButtons = 0x%08X (%s)", state.activeButtons, uefiAbsolutePointerStateActiveButtonFlagsToString(state.activeButtons)));
 
-    UEFI_LVVV(("state.currentX      = %u",          state.currentX));
-    UEFI_LVVV(("state.currentY      = %u",          state.currentY));
-    UEFI_LVVV(("state.currentZ      = %u",          state.currentZ));
-    UEFI_LVVV(("state.activeButtons = 0x%08X (%s)", state.activeButtons, uefiAbsolutePointerStateActiveButtonFlagsToString(state.activeButtons)));
 
 
-
-    UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(pointer, &state), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(pointer, &state), NgosStatus::ASSERTION);
+    }
 
 
 

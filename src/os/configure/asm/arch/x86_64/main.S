@@ -20,6 +20,8 @@ _start:                                                                         
 # RCX - address of imageHandle                                                  #
 # ============================================================================= # =============================================================================
                                                                                 #
+    andq    $-0x10, %rsp                                                        # Make RSP aligned
+                                                                                #
     movq    %rcx, %rdi                                                          # Put address of imageHandle to RDI
     movq    %rdx, %rsi                                                          # Put address of systemTable to RSI
     leaq    _start(%rip), %rdx                                                  # Put address of entry point to RDX

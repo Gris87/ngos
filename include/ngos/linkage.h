@@ -40,11 +40,6 @@
 
 
 
-#define CPP_NO_OPTIMIZATION  __attribute__((optimize("O0")))
-#define CPP_MAX_OPTIMIZATION __attribute__((optimize("O3")))
-
-
-
 #define AVOID_UNUSED(x) (void)x;
 
 

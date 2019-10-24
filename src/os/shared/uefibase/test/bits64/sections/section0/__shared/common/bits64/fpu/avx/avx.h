@@ -28,9 +28,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
-            float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
-            float c[8];
+            float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
+            float c[8] __attribute__((aligned(32)));
 
             testAvxVaddps(a, b, c);
 
@@ -74,9 +74,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
-            float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
-            float c[8];
+            float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
+            float c[8] __attribute__((aligned(32)));
 
             testAvxVsubps(a, b, c);
 
@@ -120,9 +120,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
-            float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
-            float c[8];
+            float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
+            float c[8] __attribute__((aligned(32)));
 
             testAvxVmulps(a, b, c);
 
@@ -166,9 +166,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
-            float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
-            float c[8];
+            float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
+            float c[8] __attribute__((aligned(32)));
 
             testAvxVdivps(a, b, c);
 
@@ -212,8 +212,8 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
-            float b[8];
+            float a[8] __attribute__((aligned(32))) = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32)));
 
             testAvxVsqrtps(a, b);
 
@@ -248,8 +248,8 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
-            float b[8];
+            float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32)));
 
             testAvxVrcpps(a, b);
 
@@ -284,8 +284,8 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
-            float b[8];
+            float a[8] __attribute__((aligned(32))) = { 1.0, 4.0, 9.0, 2.25, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32)));
 
             testAvxVrsqrtps(a, b);
 
@@ -320,9 +320,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
-            float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
-            float c[8];
+            float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
+            float c[8] __attribute__((aligned(32)));
 
             testAvxVmaxps(a, b, c);
 
@@ -366,9 +366,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx_avx);
     {
         if (CPU::hasFlag(X86Feature::AVX))
         {
-            float a[8] = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
-            float b[8] = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
-            float c[8];
+            float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };
+            float c[8] __attribute__((aligned(32)));
 
             testAvxVminps(a, b, c);
 

@@ -23,7 +23,7 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
     {
         if (CPU::hasFlag(X86Feature::AVX512BW))
         {
-            u8 a[64];
+            u8 a[64] __attribute__((aligned(64)));
 
             testAvx512bwVpbroadcastb(a, 100);
 
@@ -105,7 +105,7 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
     {
         if (CPU::hasFlag(X86Feature::AVX512BW))
         {
-            u16 a[32];
+            u16 a[32] __attribute__((aligned(64)));
 
             testAvx512bwVpbroadcastw(a, 1000);
 
@@ -155,7 +155,7 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
     {
         if (CPU::hasFlag(X86Feature::AVX512BW))
         {
-            u16 a[32];
+            u16 a[32] __attribute__((aligned(64)));
 
             testAvx512bwVpbroadcastw(a, 1000);
 
@@ -205,9 +205,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
     {
         if (CPU::hasFlag(X86Feature::AVX512BW))
         {
-            u16 a[32] = { 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8, 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2 };
-            u16 b[32] = { 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2, 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8 };
-            u16 c[32];
+            u16 a[32] __attribute__((aligned(64))) = { 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8, 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2 };
+            u16 b[32] __attribute__((aligned(64))) = { 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2, 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8 };
+            u16 c[32] __attribute__((aligned(64)));
 
             testAvx512bwVpsllvw(a, b, c);
 
@@ -323,9 +323,9 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
     {
         if (CPU::hasFlag(X86Feature::AVX512BW))
         {
-            u16 a[32] = { 64, 8, 384, 8, 36, 1536, 128, 14, 24, 1024, 64, 192, 8, 8, 1024, 384, 8, 14, 12, 16, 18, 3584, 8, 4, 1152, 256, 24, 32, 24, 28, 12, 512 };
-            u16 b[32] = { 6,  2, 7,   3, 2,  9,    7,   1,  2,  9,    4,  6,   2, 3, 7,    6,   2, 1,  2,  3,  1,  9,    3, 1, 7,    6,   2,  4,  3,  2,  1,  8   };
-            u16 c[32];
+            u16 a[32] __attribute__((aligned(64))) = { 64, 8, 384, 8, 36, 1536, 128, 14, 24, 1024, 64, 192, 8, 8, 1024, 384, 8, 14, 12, 16, 18, 3584, 8, 4, 1152, 256, 24, 32, 24, 28, 12, 512 };
+            u16 b[32] __attribute__((aligned(64))) = { 6,  2, 7,   3, 2,  9,    7,   1,  2,  9,    4,  6,   2, 3, 7,    6,   2, 1,  2,  3,  1,  9,    3, 1, 7,    6,   2,  4,  3,  2,  1,  8   };
+            u16 c[32] __attribute__((aligned(64)));
 
             testAvx512bwVpsrlvw(a, b, c);
 

@@ -56,7 +56,6 @@
 
 
 
-CPP_MAX_OPTIMIZATION
 NgosStatus startTestSection0()
 {
     UEFI_LT((""));

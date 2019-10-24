@@ -1134,26 +1134,7 @@ UefiStatus UEFI::exitBootServices(u64 mapKey)
 
 
 
-    asm volatile(
-        "pushq   %rbp"          "\n\t"  // pushq   %rbp         # Store RBP to stack
-        "movq    %rsp, %rbp"    "\n\t"  // movq    %rsp, %rbp   # Store RSP value in RBP
-        "andq    $-0x10, %rsp"  "\n\t"  // andq    $-0x10, %rsp # Make RSP aligned
-    );
-
-
-
-    UefiStatus res = sBootServices->exitBootServices(sImageHandle, mapKey);
-
-
-
-    asm volatile(
-        "movq    %rbp, %rsp"    "\n\t"  // movq    %rbp, %rsp   # Restore RSP from RBP
-        "popq    %rbp"          "\n\t"  // popq    %rbp         # Restore RBP from stack
-    );
-
-
-
-    return res;
+    return sBootServices->exitBootServices(sImageHandle, mapKey);
 }
 
 uefi_handle UEFI::getImageHandle()

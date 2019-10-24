@@ -88,7 +88,7 @@ else
 fi
 
 echo "Files on ESP:"
-sudo find ${MOUNTDIR}
+sudo find ${MOUNTDIR} | cut -d / -f 4-
 
 sudo umount ${MOUNTDIR}
 

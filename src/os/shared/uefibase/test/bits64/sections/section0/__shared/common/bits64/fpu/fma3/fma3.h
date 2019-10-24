@@ -23,10 +23,10 @@ TEST_CASES(section0, __shared_common_bits64_fpu_fma3_fma3);
     {
         if (CPU::hasFlag(X86Feature::FMA))
         {
-            float a[8] = { 0.1, 0.9, 0.7, 0.5, 0.7, 0.3, 0.4, 0.9 };
-            float b[8] = { 0.8, 0.5, 0.3, 0.9, 0.9, 0.7, 0.5, 0.7 };
-            float c[8] = { 0.9, 0.7, 0.6, 0.8, 0.9, 0.6, 0.7, 0.8 };
-            float d[8];
+            float a[8] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5, 0.7, 0.3, 0.4, 0.9 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9, 0.9, 0.7, 0.5, 0.7 };
+            float c[8] __attribute__((aligned(32))) = { 0.9, 0.7, 0.6, 0.8, 0.9, 0.6, 0.7, 0.8 };
+            float d[8] __attribute__((aligned(32)));
 
             testFma3Vfmadd213ps(a, b, c, d);
 
@@ -79,10 +79,10 @@ TEST_CASES(section0, __shared_common_bits64_fpu_fma3_fma3);
     {
         if (CPU::hasFlag(X86Feature::FMA))
         {
-            double a[4] = { 0.1, 0.9, 0.7, 0.5 };
-            double b[4] = { 0.8, 0.5, 0.3, 0.9 };
-            double c[4] = { 0.9, 0.7, 0.6, 0.8 };
-            double d[4];
+            double a[4] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5 };
+            double b[4] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9 };
+            double c[4] __attribute__((aligned(32))) = { 0.9, 0.7, 0.6, 0.8 };
+            double d[4] __attribute__((aligned(32)));
 
             testFma3Vfmadd213pd(a, b, c, d);
 
@@ -119,10 +119,10 @@ TEST_CASES(section0, __shared_common_bits64_fpu_fma3_fma3);
     {
         if (CPU::hasFlag(X86Feature::FMA))
         {
-            float a[8] = { 0.1, 0.9, 0.7, 0.5, 0.7, 0.3, 0.4, 0.9 };
-            float b[8] = { 0.8, 0.5, 0.3, 0.9, 0.9, 0.7, 0.5, 0.7 };
-            float c[8] = { 0.9, 0.7, 0.6, 0.8, 0.9, 0.6, 0.7, 0.8 };
-            float d[8];
+            float a[8] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5, 0.7, 0.3, 0.4, 0.9 };
+            float b[8] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9, 0.9, 0.7, 0.5, 0.7 };
+            float c[8] __attribute__((aligned(32))) = { 0.9, 0.7, 0.6, 0.8, 0.9, 0.6, 0.7, 0.8 };
+            float d[8] __attribute__((aligned(32)));
 
             testFma3Vfmsub213ps(a, b, c, d);
 
@@ -175,10 +175,10 @@ TEST_CASES(section0, __shared_common_bits64_fpu_fma3_fma3);
     {
         if (CPU::hasFlag(X86Feature::FMA))
         {
-            double a[4] = { 0.1, 0.9, 0.7, 0.5 };
-            double b[4] = { 0.8, 0.5, 0.3, 0.9 };
-            double c[4] = { 0.9, 0.7, 0.6, 0.8 };
-            double d[4];
+            double a[4] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5 };
+            double b[4] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9 };
+            double c[4] __attribute__((aligned(32))) = { 0.9, 0.7, 0.6, 0.8 };
+            double d[4] __attribute__((aligned(32)));
 
             testFma3Vfmsub213pd(a, b, c, d);
 

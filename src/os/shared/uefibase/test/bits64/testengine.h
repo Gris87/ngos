@@ -16,9 +16,9 @@
 
 
 #define TEST_CASES(section, name) \
-        void __testcases__##section##__##name(TestResults *__results) \
+        void __testcases__##section##__##name(TestResults &__results) \
         { \
-            UEFI_LT((" | __results = 0x%p", __results));
+            UEFI_LT((" | __results = ..."));
 
 #define TEST_CASES_END() \
         }
@@ -75,52 +75,22 @@
 #endif
 
 #define TEST_CASE_END() \
-            __results->testPassed(); \
+            __results.testPassed(); \
             \
             break; \
         } while(true);
-
-
-
-#define INIT_TEST_SECTION() \
-    TestResults *__results; \
-    \
-    asm volatile( \
-        "pushq   %%rbp"                 "\n\t"  /* pushq   %rbp                     # Store RBP to stack                                               */ \
-        "movq    %%rsp, %%rbp"          "\n\t"  /* movq    %rsp, %rbp               # Store RSP value in RBP                                           */ \
-        "andq    $-0x40, %%rsp"         "\n\t"  /* andq    $-0x40, %rsp             # Make RSP aligned                                                 */ \
-        "pushq   %%rbp"                 "\n\t"  /* pushq   %rbp                     # Store RBP to stack                                               */ \
-        "subq    $0x28, %%rsp"          "\n\t"  /* subq    $0x28, %rsp              # Allocate space on stack. The value selected to keep RSP aligned  */ \
-        "movq    %%rsp, %0"             "\n\t"  /* movq    %rsp, %rbp               # Make __results variable to point on RSP. %RBP == __results       */ \
-        "movq    %0, %%rdi"             "\n\t"  /* movq    %rbp, %rdi               # Provide __results variable as RDI register                       */ \
-        "call    _ZN11TestResultsC1Ev"  "\n\t"  /* call    _ZN11TestResultsC1Ev     # Call TestResults::TestResults() to initialize __results variable */ \
-            :                                   /* Output parameters */ \
-                "=r" (__results)                /* 'r' - any general register, '=' - write only */ \
-    );
-
-
-
-#define CALL_TEST_CASES(section, name) __testcases__##section##__##name(__results);
-
-
-
-#define SUMMARY_TEST_SECTION() \
-    NgosStatus __res = __results->summary(); \
-    \
-    asm volatile( \
-        "addq    $0x28, %rsp"   "\n\t"  /* addq    $0x28, %rsp  # Release space on stack. The value selected to keep RSP aligned */ \
-        "popq    %rbp"          "\n\t"  /* popq    %rbp         # Restore RBP from stack                                         */ \
-        "movq    %rbp, %rsp"    "\n\t"  /* movq    %rbp, %rsp   # Restore RSP from RBP                                           */ \
-        "popq    %rbp"          "\n\t"  /* popq    %rbp         # Restore RBP from stack                                         */ \
-    ); \
-    \
-    return __res;
 // Ignore CppAlignmentVerifier [END]
 
 
 
+#define INIT_TEST_SECTION()            TestResults __results;
+#define CALL_TEST_CASES(section, name) __testcases__##section##__##name(__results);
+#define SUMMARY_TEST_SECTION()         return __results.summary();
+
+
+
 #define TEST_FAILED(description) \
-        __results->testFailed(__FILE__, __LINE__, description); \
+        __results.testFailed(__FILE__, __LINE__, description); \
         break;
 
 
