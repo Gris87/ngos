@@ -131,7 +131,6 @@ NgosStatus TabWidget::repaint()
     NinePatch *patch = mPanelImage->getNinePatch();
 
     u16 paddingLeft;
-    u16 paddingTop;
     u16 paddingRight;
 
     AVOID_UNUSED(paddingRight);
@@ -139,13 +138,11 @@ NgosStatus TabWidget::repaint()
     if (patch)
     {
         paddingLeft  = patch->getPaddingLeft();
-        paddingTop   = patch->getPaddingTop();
         paddingRight = patch->getPaddingRight();
     }
     else
     {
         paddingLeft  = 0;
-        paddingTop   = 0;
         paddingRight = 0;
     }
 
@@ -162,9 +159,9 @@ NgosStatus TabWidget::repaint()
         COMMON_TEST_ASSERT(buttonPositionX                         <= mWidth - paddingRight, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(buttonPositionX + tabButton->getWidth() <= mWidth - paddingRight, NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(tabButton->lockUpdates(),                            NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(tabButton->setPosition(buttonPositionX, paddingTop), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(tabButton->unlockUpdates(),                          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(tabButton->lockUpdates(),                   NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(tabButton->setPosition(buttonPositionX, 0), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(tabButton->unlockUpdates(),                 NgosStatus::ASSERTION);
 
         buttonPositionX += tabButton->getWidth();
     }

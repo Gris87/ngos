@@ -31,14 +31,12 @@
 #define TABWIDGET_WIDTH_PERCENT      96
 #define TABWIDGET_HEIGHT_PERCENT     70
 
+#define TAB_BUTTON_WIDTH_PERCENT   25
+#define TAB_BUTTON_HEIGHT_PERCENT  7
+
 #define CPU_IMAGE_POSITION_X_PERCENT 0
 #define CPU_IMAGE_POSITION_Y_PERCENT 0
 #define CPU_IMAGE_SIZE_PERCENT       20
-
-#define CPU_INFO_PANEL_POSITION_X_PERCENT 21
-#define CPU_INFO_PANEL_POSITION_Y_PERCENT 1
-#define CPU_INFO_PANEL_WIDTH_PERCENT      77
-#define CPU_INFO_PANEL_HEIGHT_PERCENT     28
 
 #define CPU_MODEL_NAME_POSITION_X_PERCENT 1
 #define CPU_MODEL_NAME_POSITION_Y_PERCENT 0
@@ -76,8 +74,7 @@
 #define CPU_REVISION_HEIGHT_PERCENT     20
 
 #define FEATURE_PANEL_POSITION_X_PERCENT 2
-#define FEATURE_PANEL_POSITION_Y_PERCENT 30
-#define FEATURE_PANEL_WIDTH_PERCENT      12
+#define FEATURE_PANEL_WIDTH_PERCENT      16
 #define FEATURE_PANEL_HEIGHT_PERCENT     6
 
 #define FEATURE_TEXT_POSITION_X_PERCENT 5
@@ -85,28 +82,22 @@
 #define FEATURE_TEXT_WIDTH_PERCENT      90
 #define FEATURE_TEXT_HEIGHT_PERCENT     90
 
-#define CPU_CLOCKS_PANEL_POSITION_X_PERCENT 2
-#define CPU_CLOCKS_PANEL_POSITION_Y_PERCENT 55
-#define CPU_CLOCKS_PANEL_WIDTH_PERCENT      47
-#define CPU_CLOCKS_PANEL_HEIGHT_PERCENT     44
+#define CPU_CLOCKS_PANEL_POSITION_X_PERCENT 0
+#define CPU_CLOCKS_PANEL_WIDTH_PERCENT      49
 
 #define CPU_CLOCKS_TEXT_POSITION_X_PERCENT 2
 #define CPU_CLOCKS_TEXT_POSITION_Y_PERCENT 2
-#define CPU_CLOCKS_TEXT_WIDTH_PERCENT      20
-#define CPU_CLOCKS_TEXT_HEIGHT_PERCENT     10
+#define CPU_CLOCKS_TEXT_WIDTH_PERCENT      30
+#define CPU_CLOCKS_TEXT_HEIGHT_PERCENT     15
 
 #define CPU_CACHE_PANEL_POSITION_X_PERCENT 51
-#define CPU_CACHE_PANEL_POSITION_Y_PERCENT 55
-#define CPU_CACHE_PANEL_WIDTH_PERCENT      47
-#define CPU_CACHE_PANEL_HEIGHT_PERCENT     44
+#define CPU_CACHE_PANEL_WIDTH_PERCENT      49
 
 #define CPU_CACHE_TEXT_POSITION_X_PERCENT 2
 #define CPU_CACHE_TEXT_POSITION_Y_PERCENT 2
-#define CPU_CACHE_TEXT_WIDTH_PERCENT      20
-#define CPU_CACHE_TEXT_HEIGHT_PERCENT     10
+#define CPU_CACHE_TEXT_WIDTH_PERCENT      30
+#define CPU_CACHE_TEXT_HEIGHT_PERCENT     15
 
-#define TAB_BUTTON_WIDTH_PERCENT   20
-#define TAB_BUTTON_HEIGHT_PERCENT  5
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
 
@@ -126,8 +117,7 @@ u16         CpuTestGUI::sWaitEventsCount;
 uefi_event *CpuTestGUI::sWaitEvents;
 
 X86Feature gTestedFeatures[] = {
-    X86Feature::PAE
-    , X86Feature::NX
+    X86Feature::NX
     , X86Feature::LA57
     , X86Feature::MMX
     , X86Feature::XMM
@@ -142,13 +132,6 @@ X86Feature gTestedFeatures[] = {
     , X86Feature::AVX512CD
     , X86Feature::AVX512ER
     , X86Feature::AVX512PF
-    , X86Feature::AVX512F
-    , X86Feature::AVX512CD
-    , X86Feature::AVX512BW
-    , X86Feature::AVX512DQ
-    , X86Feature::AVX512VL
-    , X86Feature::AVX512F
-    , X86Feature::AVX512CD
     , X86Feature::AVX512BW
     , X86Feature::AVX512DQ
     , X86Feature::AVX512VL
@@ -334,7 +317,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    sSystemInformationTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, systemInformationImage, nullptr, "System information", sTabWidget);
+    sSystemInformationTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, systemInformationImage, nullptr, "System Info", sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setSize(tabButtonWidth, tabButtonHeight),                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setKeyboardEventHandler(onSystemInformationTabButtonKeyboardEvent), NgosStatus::ASSERTION);
@@ -343,7 +326,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    sTestTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, testImage, nullptr, "Test              ", sTabWidget);
+    sTestTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, testImage, nullptr, "Test       ", sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTestTabButton->setSize(tabButtonWidth, tabButtonHeight),              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTabButton->setKeyboardEventHandler(onTestTabButtonKeyboardEvent), NgosStatus::ASSERTION);
@@ -352,7 +335,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    sSummaryTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, summaryImage, nullptr, "Summary           ", sTabWidget);
+    sSummaryTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, summaryImage, nullptr, "Summary    ", sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sSummaryTabButton->setSize(tabButtonWidth, tabButtonHeight),                 NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTabButton->setKeyboardEventHandler(onSummaryTabButtonKeyboardEvent), NgosStatus::ASSERTION);
@@ -430,13 +413,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuInfoWidth  = tabPageWidth  * CPU_INFO_PANEL_WIDTH_PERCENT  / 100;
-    u64 cpuInfoHeight = tabPageHeight * CPU_INFO_PANEL_HEIGHT_PERCENT / 100;
+    u64 cpuInfoWidth  = tabPageWidth - cpuImageSize;
+    u64 cpuInfoHeight = cpuImageSize;
 
     PanelWidget *cpuInfoPanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
 
-    UEFI_ASSERT_EXECUTION(cpuInfoPanelWidget->setPosition(tabPageWidth * CPU_INFO_PANEL_POSITION_X_PERCENT / 100, tabPageHeight * CPU_INFO_PANEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(cpuInfoPanelWidget->setSize(cpuInfoWidth, cpuInfoHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuInfoPanelWidget->setPosition(cpuImageSize, 0),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuInfoPanelWidget->setSize(cpuInfoWidth, cpuInfoHeight), NgosStatus::ASSERTION);
 
 
 
@@ -490,7 +473,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
     u64 featurePanelLeft      = tabPageWidth  * FEATURE_PANEL_POSITION_X_PERCENT / 100;
-    u64 featurePanelPositionY = tabPageHeight * FEATURE_PANEL_POSITION_Y_PERCENT / 100;
+    u64 featurePanelPositionY = cpuImageSize;
     u64 featurePanelWidth     = tabPageWidth  * FEATURE_PANEL_WIDTH_PERCENT      / 100;
     u64 featurePanelHeight    = tabPageHeight * FEATURE_PANEL_HEIGHT_PERCENT     / 100;
 
@@ -505,26 +488,31 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     for (i64 i = 0; i < flagsCount; ++i)
     {
-        UEFI_ASSERT_EXECUTION(addFeaturePanel(gTestedFeatures[i], featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, systemInformationTabPageWidget), NgosStatus::ASSERTION);
-
-        featurePanelPositionX += featurePanelWidth;
-
         if (featurePanelPositionX + featurePanelWidth > tabPageWidth)
         {
             featurePanelPositionX =  featurePanelLeft;
             featurePanelPositionY += featurePanelHeight;
         }
+
+        UEFI_ASSERT_EXECUTION(addFeaturePanel(gTestedFeatures[i], featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, systemInformationTabPageWidget), NgosStatus::ASSERTION);
+
+        featurePanelPositionX += featurePanelWidth;
     }
 
 
 
+    u64 cpuPanelPositionY = featurePanelPositionY + featurePanelHeight;
+    u64 cpuPanelHeight    = tabPageHeight - cpuPanelPositionY;
+
+
+
     u64 cpuClocksWidth  = tabPageWidth  * CPU_CLOCKS_PANEL_WIDTH_PERCENT  / 100;
-    u64 cpuClocksHeight = tabPageHeight * CPU_CLOCKS_PANEL_HEIGHT_PERCENT / 100;
+    u64 cpuClocksHeight = cpuPanelHeight;
 
     PanelWidget *cpuClocksPanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
 
-    UEFI_ASSERT_EXECUTION(cpuClocksPanelWidget->setPosition(tabPageWidth * CPU_CLOCKS_PANEL_POSITION_X_PERCENT / 100, tabPageHeight * CPU_CLOCKS_PANEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(cpuClocksPanelWidget->setSize(cpuClocksWidth, cpuClocksHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuClocksPanelWidget->setPosition(tabPageWidth * CPU_CLOCKS_PANEL_POSITION_X_PERCENT / 100, cpuPanelPositionY), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuClocksPanelWidget->setSize(cpuClocksWidth, cpuClocksHeight),                                                 NgosStatus::ASSERTION);
 
 
 
@@ -536,12 +524,12 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
     u64 cpuCacheWidth  = tabPageWidth  * CPU_CACHE_PANEL_WIDTH_PERCENT  / 100;
-    u64 cpuCacheHeight = tabPageHeight * CPU_CACHE_PANEL_HEIGHT_PERCENT / 100;
+    u64 cpuCacheHeight = cpuPanelHeight;
 
     PanelWidget *cpuCachePanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
 
-    UEFI_ASSERT_EXECUTION(cpuCachePanelWidget->setPosition(tabPageWidth * CPU_CACHE_PANEL_POSITION_X_PERCENT / 100, tabPageHeight * CPU_CACHE_PANEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(cpuCachePanelWidget->setSize(cpuCacheWidth, cpuCacheHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuCachePanelWidget->setPosition(tabPageWidth * CPU_CACHE_PANEL_POSITION_X_PERCENT / 100, cpuPanelPositionY), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuCachePanelWidget->setSize(cpuCacheWidth, cpuCacheHeight),                                                  NgosStatus::ASSERTION);
 
 
 
