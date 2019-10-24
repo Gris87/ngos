@@ -235,8 +235,8 @@ src/os/bootloader_tools/cputest/src/bits64/main/cputest.cpp
 src/os/bootloader_tools/cputest/src/bits64/main/cputest.h
 src/os/bootloader_tools/cputest/src/bits64/main/cputestgui.cpp
 src/os/bootloader_tools/cputest/src/bits64/main/cputestgui.h
+src/os/bootloader_tools/cputest/src/bits64/other/cacheinfo.h
 src/os/bootloader_tools/cputest/src/main.cpp
-src/os/bootloader_tools/cputest/src/other/cacheinfo.h
 src/os/bootloader_tools/cputest/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader_tools/cputest/test/bits64/sections/section1/testcase.h
 src/os/bootloader_tools/hddtest/.gitignore
