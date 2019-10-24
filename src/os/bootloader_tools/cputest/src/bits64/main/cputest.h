@@ -16,6 +16,12 @@ public:
 
 private:
     static NgosStatus initCpuCaches(); // TEST: NO
+    static NgosStatus initCpuCache(CacheInfo *cache, u32 size, u8 numberOfWays); // TEST: NO
+
+    static CacheInfo sLevel1DataCache;
+    static CacheInfo sLevel1InstructionCache;
+    static CacheInfo sLevel2Cache;
+    static CacheInfo sLevel3Cache;
 };
 
 

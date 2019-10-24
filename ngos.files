@@ -102,6 +102,7 @@ include/elf/symboltype.h
 include/elf/symbolvisibility.h
 include/elf/type.h
 include/elf/version.h
+include/macro/constants.h
 include/macro/utils.h
 include/ngos/linkage.h
 include/ngos/status.h
