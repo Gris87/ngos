@@ -151,56 +151,6 @@ TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
 
 
 
-    TEST_CASE("vpbroadcastw");
-    {
-        if (CPU::hasFlag(X86Feature::AVX512BW))
-        {
-            u16 a[32] __attribute__((aligned(64)));
-
-            testAvx512bwVpbroadcastw(a, 1000);
-
-            TEST_ASSERT_EQUALS(a[0],  1000);
-            TEST_ASSERT_EQUALS(a[1],  1000);
-            TEST_ASSERT_EQUALS(a[2],  1000);
-            TEST_ASSERT_EQUALS(a[3],  1000);
-            TEST_ASSERT_EQUALS(a[4],  1000);
-            TEST_ASSERT_EQUALS(a[5],  1000);
-            TEST_ASSERT_EQUALS(a[6],  1000);
-            TEST_ASSERT_EQUALS(a[7],  1000);
-            TEST_ASSERT_EQUALS(a[8],  1000);
-            TEST_ASSERT_EQUALS(a[9],  1000);
-            TEST_ASSERT_EQUALS(a[10], 1000);
-            TEST_ASSERT_EQUALS(a[11], 1000);
-            TEST_ASSERT_EQUALS(a[12], 1000);
-            TEST_ASSERT_EQUALS(a[13], 1000);
-            TEST_ASSERT_EQUALS(a[14], 1000);
-            TEST_ASSERT_EQUALS(a[15], 1000);
-            TEST_ASSERT_EQUALS(a[16], 1000);
-            TEST_ASSERT_EQUALS(a[17], 1000);
-            TEST_ASSERT_EQUALS(a[18], 1000);
-            TEST_ASSERT_EQUALS(a[19], 1000);
-            TEST_ASSERT_EQUALS(a[20], 1000);
-            TEST_ASSERT_EQUALS(a[21], 1000);
-            TEST_ASSERT_EQUALS(a[22], 1000);
-            TEST_ASSERT_EQUALS(a[23], 1000);
-            TEST_ASSERT_EQUALS(a[24], 1000);
-            TEST_ASSERT_EQUALS(a[25], 1000);
-            TEST_ASSERT_EQUALS(a[26], 1000);
-            TEST_ASSERT_EQUALS(a[27], 1000);
-            TEST_ASSERT_EQUALS(a[28], 1000);
-            TEST_ASSERT_EQUALS(a[29], 1000);
-            TEST_ASSERT_EQUALS(a[30], 1000);
-            TEST_ASSERT_EQUALS(a[31], 1000);
-        }
-        else
-        {
-            UEFI_LVV(("X86Feature::AVX512BW not supported"));
-        }
-    }
-    TEST_CASE_END();
-
-
-
     TEST_CASE("vpsllvw");
     {
         if (CPU::hasFlag(X86Feature::AVX512BW))
