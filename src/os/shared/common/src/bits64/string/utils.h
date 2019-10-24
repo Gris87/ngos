@@ -53,7 +53,7 @@ inline const char8* bytesToString(u64 bytes)
         default: return "UNKNOWN";
     }
 
-    COMMON_TEST_ASSERT(length < sizeof(res), nullptr);
+    COMMON_TEST_ASSERT(length < (i64)sizeof(res), nullptr);
 
 
 
