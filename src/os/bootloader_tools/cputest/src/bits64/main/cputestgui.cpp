@@ -574,7 +574,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     char8 *cpuLevel3Cache = (char8 *)malloc(30);
 
-    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel3Cache, "Level 3      x %-7s %2u-way", bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel3Cache, "Level 3    %-7s     %2u-way", bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
 
 
 
