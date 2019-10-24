@@ -9,6 +9,7 @@
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/string/utils.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
@@ -97,6 +98,26 @@
 #define CPU_CACHE_TEXT_POSITION_Y_PERCENT 2
 #define CPU_CACHE_TEXT_WIDTH_PERCENT      30
 #define CPU_CACHE_TEXT_HEIGHT_PERCENT     15
+
+#define CPU_CACHE_L1_DATA_TEXT_POSITION_X_PERCENT 2
+#define CPU_CACHE_L1_DATA_TEXT_POSITION_Y_PERCENT 20
+#define CPU_CACHE_L1_DATA_TEXT_WIDTH_PERCENT      96
+#define CPU_CACHE_L1_DATA_TEXT_HEIGHT_PERCENT     15
+
+#define CPU_CACHE_L1_INSTRUCTION_TEXT_POSITION_X_PERCENT 2
+#define CPU_CACHE_L1_INSTRUCTION_TEXT_POSITION_Y_PERCENT 40
+#define CPU_CACHE_L1_INSTRUCTION_TEXT_WIDTH_PERCENT      96
+#define CPU_CACHE_L1_INSTRUCTION_TEXT_HEIGHT_PERCENT     15
+
+#define CPU_CACHE_L2_TEXT_POSITION_X_PERCENT 2
+#define CPU_CACHE_L2_TEXT_POSITION_Y_PERCENT 60
+#define CPU_CACHE_L2_TEXT_WIDTH_PERCENT      96
+#define CPU_CACHE_L2_TEXT_HEIGHT_PERCENT     15
+
+#define CPU_CACHE_L3_TEXT_POSITION_X_PERCENT 2
+#define CPU_CACHE_L3_TEXT_POSITION_Y_PERCENT 80
+#define CPU_CACHE_L3_TEXT_WIDTH_PERCENT      96
+#define CPU_CACHE_L3_TEXT_HEIGHT_PERCENT     15
 
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
@@ -533,10 +554,62 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    char8 *cpuL1DataCache = (char8 *)malloc(30);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuL1DataCache, "L1 Data  %3u x %-7s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size), CpuTest::getLevel1DataCache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuL1InstructionCache = (char8 *)malloc(30);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuL1InstructionCache, "L1 Inst. %3u x %-7s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuLevel2Cache = (char8 *)malloc(30);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel2Cache, "Level 2  %3u x %-7s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size), CpuTest::getLevel2Cache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuLevel3Cache = (char8 *)malloc(30);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel3Cache, "Level 3  %3u x %-7s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+
+
+
     LabelWidget *cpuCacheLabelWidget = new LabelWidget("Cache ", cpuCachePanelWidget);
 
     UEFI_ASSERT_EXECUTION(cpuCacheLabelWidget->setPosition(cpuCacheWidth * CPU_CACHE_TEXT_POSITION_X_PERCENT / 100, cpuCacheHeight * CPU_CACHE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(cpuCacheLabelWidget->setSize(cpuCacheWidth     * CPU_CACHE_TEXT_WIDTH_PERCENT      / 100, cpuCacheHeight * CPU_CACHE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuL1DataCacheLabelWidget = new LabelWidget(cpuL1DataCache, cpuCachePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuL1DataCacheLabelWidget->setPosition(cpuCacheWidth * CPU_CACHE_L1_DATA_TEXT_POSITION_X_PERCENT / 100, cpuCacheHeight * CPU_CACHE_L1_DATA_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuL1DataCacheLabelWidget->setSize(cpuCacheWidth     * CPU_CACHE_L1_DATA_TEXT_WIDTH_PERCENT      / 100, cpuCacheHeight * CPU_CACHE_L1_DATA_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuL1InstructionCacheLabelWidget = new LabelWidget(cpuL1InstructionCache, cpuCachePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuL1InstructionCacheLabelWidget->setPosition(cpuCacheWidth * CPU_CACHE_L1_INSTRUCTION_TEXT_POSITION_X_PERCENT / 100, cpuCacheHeight * CPU_CACHE_L1_INSTRUCTION_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuL1InstructionCacheLabelWidget->setSize(cpuCacheWidth     * CPU_CACHE_L1_INSTRUCTION_TEXT_WIDTH_PERCENT      / 100, cpuCacheHeight * CPU_CACHE_L1_INSTRUCTION_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuLevel2CacheLabelWidget = new LabelWidget(cpuLevel2Cache, cpuCachePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuLevel2CacheLabelWidget->setPosition(cpuCacheWidth * CPU_CACHE_L2_TEXT_POSITION_X_PERCENT / 100, cpuCacheHeight * CPU_CACHE_L2_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuLevel2CacheLabelWidget->setSize(cpuCacheWidth     * CPU_CACHE_L2_TEXT_WIDTH_PERCENT      / 100, cpuCacheHeight * CPU_CACHE_L2_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuLevel3CacheLabelWidget = new LabelWidget(cpuLevel3Cache, cpuCachePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuLevel3CacheLabelWidget->setPosition(cpuCacheWidth * CPU_CACHE_L3_TEXT_POSITION_X_PERCENT / 100, cpuCacheHeight * CPU_CACHE_L3_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuLevel3CacheLabelWidget->setSize(cpuCacheWidth     * CPU_CACHE_L3_TEXT_WIDTH_PERCENT      / 100, cpuCacheHeight * CPU_CACHE_L3_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 

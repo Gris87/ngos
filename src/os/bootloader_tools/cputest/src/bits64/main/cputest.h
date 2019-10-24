@@ -14,6 +14,11 @@ class CpuTest
 public:
     static NgosStatus init(); // TEST: NO
 
+    static const CacheInfo& getLevel1DataCache(); // TEST: NO
+    static const CacheInfo& getLevel1InstructionCache(); // TEST: NO
+    static const CacheInfo& getLevel2Cache(); // TEST: NO
+    static const CacheInfo& getLevel3Cache(); // TEST: NO
+
 private:
     static NgosStatus initCpuCaches(); // TEST: NO
     static NgosStatus initCpuCache(CacheInfo *cache, u32 size, u8 numberOfWays); // TEST: NO

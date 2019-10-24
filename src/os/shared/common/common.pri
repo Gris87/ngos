@@ -169,6 +169,7 @@ HEADERS += \
     $$PWD/src/bits64/random/random.h \
     $$PWD/src/bits64/serial/serial.h \
     $$PWD/src/bits64/string/string.h \
+    $$PWD/src/bits64/string/utils.h \
     $$PWD/src/bits64/zlib/zlib.h \
     $$PWD/src/bits64/zlib/zlibcompressioninfo.h \
     $$PWD/src/bits64/zlib/zlibcompressionlevel.h \

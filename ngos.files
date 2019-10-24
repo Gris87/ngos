@@ -715,6 +715,7 @@ src/os/shared/common/src/bits64/serial/serial.cpp
 src/os/shared/common/src/bits64/serial/serial.h
 src/os/shared/common/src/bits64/string/string.cpp
 src/os/shared/common/src/bits64/string/string.h
+src/os/shared/common/src/bits64/string/utils.h
 src/os/shared/common/src/bits64/zlib/zlib.cpp
 src/os/shared/common/src/bits64/zlib/zlib.h
 src/os/shared/common/src/bits64/zlib/zlibcompressioninfo.h

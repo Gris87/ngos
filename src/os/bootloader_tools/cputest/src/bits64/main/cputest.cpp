@@ -31,6 +31,42 @@ NgosStatus CpuTest::init()
     return NgosStatus::OK;
 }
 
+const CacheInfo& CpuTest::getLevel1DataCache()
+{
+    UEFI_LT((""));
+
+
+
+    return sLevel1DataCache;
+}
+
+const CacheInfo& CpuTest::getLevel1InstructionCache()
+{
+    UEFI_LT((""));
+
+
+
+    return sLevel1InstructionCache;
+}
+
+const CacheInfo& CpuTest::getLevel2Cache()
+{
+    UEFI_LT((""));
+
+
+
+    return sLevel2Cache;
+}
+
+const CacheInfo& CpuTest::getLevel3Cache()
+{
+    UEFI_LT((""));
+
+
+
+    return sLevel3Cache;
+}
+
 NgosStatus CpuTest::initCpuCaches()
 {
     UEFI_LT((""));
