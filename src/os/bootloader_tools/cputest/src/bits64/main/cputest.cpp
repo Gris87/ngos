@@ -212,7 +212,7 @@ NgosStatus CpuTest::initCpuCaches()
 
                 default:
                 {
-                    UEFI_LE(("Unknown register byte for CACHE_INFO_CPUID: 0x%02X", registerByte[i]));
+                    UEFI_LF(("Unknown register byte for CACHE_INFO_CPUID: 0x%02X", registerByte[i]));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
