@@ -7,8 +7,13 @@
 
 
 
-#define CACHE_INFO_CPUID     0x00000002
+#define CACHE_INFO_CPUID     0x00000002 // TODO: Make more centralized
 #define CACHE_TOPOLOGY_CPUID 0x00000004
+
+#define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_NULL        0x00
+#define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_DATA        0x01
+#define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_INSTRUCTION 0x02
+#define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_UNIFIED     0x03
 
 
 
@@ -232,6 +237,100 @@ NgosStatus CpuTest::initCpuCaches()
             UEFI_TEST_ASSERT(sLevel2Cache.numberOfWays            == 0, NgosStatus::ASSERTION);
             UEFI_TEST_ASSERT(sLevel3Cache.size                    == 0, NgosStatus::ASSERTION);
             UEFI_TEST_ASSERT(sLevel3Cache.numberOfWays            == 0, NgosStatus::ASSERTION);
+
+
+
+            u32 level = 0;
+
+            do
+            {
+                UEFI_TEST_ASSERT(level <= 4, NgosStatus::ASSERTION);
+
+
+
+                u32 ignored;
+                u32 eax;
+                u32 ebx;
+                u32 numberOfSets;
+
+                UEFI_ASSERT_EXECUTION(CPU::cpuid(CACHE_TOPOLOGY_CPUID, level, &eax, &ebx, &numberOfSets, &ignored), NgosStatus::ASSERTION);
+
+                UEFI_LVVV(("eax          = 0x%08X", eax));
+                UEFI_LVVV(("ebx          = 0x%08X", ebx));
+                UEFI_LVVV(("numberOfSets = 0x%08X", numberOfSets));
+
+
+
+                u8 cacheType = eax & 0x1F;
+
+                UEFI_LVVV(("cacheType = %u", cacheType));
+
+                if (cacheType == CACHE_TOPOLOGY_CPUID_CACHE_TYPE_NULL)
+                {
+                    break;
+                }
+
+
+
+                u8  cacheLevel   = (eax >> 5) & 0x07;
+                u64 cacheSize    = (numberOfSets + 1) << 9; // "<< 9" == "* 512"
+                u8  numberOfWays = (ebx >> 22) + 1;
+
+                UEFI_LVVV(("cacheLevel   = %u", cacheLevel));
+                UEFI_LVVV(("cacheSize    = %u", cacheSize));
+                UEFI_LVVV(("numberOfWays = %u", numberOfWays));
+
+
+
+                CacheInfo *cache;
+
+                if (cacheType == CACHE_TOPOLOGY_CPUID_CACHE_TYPE_DATA)
+                {
+                    UEFI_TEST_ASSERT(cacheLevel == 1, NgosStatus::ASSERTION);
+
+                    cache = &sLevel1DataCache;
+                }
+                else
+                if (cacheType == CACHE_TOPOLOGY_CPUID_CACHE_TYPE_INSTRUCTION)
+                {
+                    UEFI_TEST_ASSERT(cacheLevel == 1, NgosStatus::ASSERTION);
+
+                    cache = &sLevel1InstructionCache;
+                }
+                else
+                if (cacheType == CACHE_TOPOLOGY_CPUID_CACHE_TYPE_UNIFIED)
+                {
+                    if (cacheLevel == 2)
+                    {
+                        cache = &sLevel2Cache;
+                    }
+                    else
+                    if (cacheLevel == 3)
+                    {
+                        cache = &sLevel3Cache;
+                    }
+                    else
+                    {
+                        UEFI_LF(("Unknown cache level: %u", cacheLevel));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                }
+                else
+                {
+                    UEFI_LF(("Unknown cache type: %u", cacheType));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+
+
+
+                UEFI_ASSERT_EXECUTION(initCpuCache(cache, cacheSize, numberOfWays), NgosStatus::ASSERTION);
+
+
+
+                ++level;
+            } while(true);
         }
 
 
