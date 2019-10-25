@@ -7,7 +7,8 @@
 
 
 
-#define CACHE_INFO_CPUID 0x00000002
+#define CACHE_INFO_CPUID     0x00000002
+#define CACHE_TOPOLOGY_CPUID 0x00000004
 
 
 
@@ -81,20 +82,18 @@ NgosStatus CpuTest::initCpuCaches()
 
 
 
+        bool needToCheckWithCpuidCacheTopology = false;
+
+
+
         u8 *registerByte = (u8 *)&registers[0];
 
-        for (i64 i = 1; i < (i64)sizeof(registers); ++i) // Skip first byte
+        for (i64 i = 0; i < (i64)sizeof(registers); ++i)
         {
             UEFI_LVVV(("registerByte[%d] = 0x%02X", i, registerByte[i]));
 
             switch (registerByte[i])
             {
-                case 0x00:
-                {
-                    // Nothing
-                }
-                break;
-
                 case 0x06: UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel1InstructionCache, 8   * KB, 4),  NgosStatus::ASSERTION); break;                                                                                        // { 0x06 , "Cache"    , "1st-level instruction cache: 8 KBytes, 4-way set associative, 32 byte line size" },
                 case 0x08: UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel1InstructionCache, 16  * KB, 4),  NgosStatus::ASSERTION); break;                                                                                        // { 0x08 , "Cache"    , "1st-level instruction cache: 16 KBytes, 4-way set associative, 32 byte line size" },
                 case 0x09: UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel1InstructionCache, 32  * KB, 4),  NgosStatus::ASSERTION); break;                                                                                        // { 0x09 , "Cache"    , "1st-level instruction cache: 32KBytes, 4-way set associative, 64 byte line size" },
@@ -159,12 +158,80 @@ NgosStatus CpuTest::initCpuCaches()
                 case 0xEB: UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel3Cache,            18  * MB, 24), NgosStatus::ASSERTION); break;                                                                                        // { 0xEB , "Cache"    , "3rd-level cache: 18MByte, 24-way set associative, 64 byte line size" },
                 case 0xEC: UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel3Cache,            24  * MB, 24), NgosStatus::ASSERTION); break;                                                                                        // { 0xEC , "Cache"    , "3rd-level cache: 24MByte, 24-way set associative, 64 byte line size" },
 
+                case 0xFF:
+                {
+                    needToCheckWithCpuidCacheTopology = true;
+                }
+                break;
+
+                case 0x00:
+                case 0x01:
+                case 0x02:
+                case 0x03:
+                case 0x04:
+                case 0x05:
+                case 0x0B:
+                case 0x4F:
+                case 0x50:
+                case 0x51:
+                case 0x52:
+                case 0x55:
+                case 0x56:
+                case 0x57:
+                case 0x59:
+                case 0x5A:
+                case 0x5B:
+                case 0x5C:
+                case 0x5D:
+                case 0x61:
+                case 0x63:
+                case 0x64:
+                case 0x76:
+                case 0xA0:
+                case 0xB0:
+                case 0xB1:
+                case 0xB2:
+                case 0xB3:
+                case 0xB4:
+                case 0xB5:
+                case 0xB6:
+                case 0xBA:
+                case 0xC0:
+                case 0xC1:
+                case 0xC2:
+                case 0xC3:
+                case 0xC4:
+                case 0xCA:
+                case 0xF0:
+                case 0xF1:
+                case 0xFE:
+                {
+                    // Nothing
+                }
+                break;
+
                 default:
                 {
-                    UEFI_LW(("Unknown register byte for CACHE_INFO_CPUID: 0x%02X", registerByte[i]));
+                    UEFI_LE(("Unknown register byte for CACHE_INFO_CPUID: 0x%02X", registerByte[i]));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
                 break;
             }
+        }
+
+
+
+        if (needToCheckWithCpuidCacheTopology)
+        {
+            UEFI_TEST_ASSERT(sLevel1DataCache.size                == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(sLevel1DataCache.numberOfWays        == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(sLevel1InstructionCache.size         == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(sLevel1InstructionCache.numberOfWays == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(sLevel2Cache.size                    == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(sLevel2Cache.numberOfWays            == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(sLevel3Cache.size                    == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(sLevel3Cache.numberOfWays            == 0, NgosStatus::ASSERTION);
         }
 
 

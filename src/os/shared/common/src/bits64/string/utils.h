@@ -6,6 +6,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/generated/bytesdecimals.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -35,20 +36,34 @@ inline const char8* bytesToString(u64 bytes)
 
 
 
-    static char8 res[8];
+    if (tail >= ARRAY_COUNT(bytesDecimals))
+    {
+        tail = 0;
+        ++bytes;
+
+        if (bytes >= 1024)
+        {
+            bytes >>= 10;
+            ++level;
+        }
+    }
+
+
+
+    static char8 res[11];
     i64          length;
 
     AVOID_UNUSED(length);
 
     switch (level)
     {
-        case 0: length = sprintf(res, "%u B",  bytes); break;
-        case 1: length = sprintf(res, "%u KB", bytes); break;
-        case 2: length = sprintf(res, "%u MB", bytes); break;
-        case 3: length = sprintf(res, "%u GB", bytes); break;
-        case 4: length = sprintf(res, "%u TB", bytes); break;
-        case 5: length = sprintf(res, "%u PB", bytes); break;
-        case 6: length = sprintf(res, "%u EB", bytes); break;
+        case 0: length = sprintf(res, "%u B",      bytes);                      break;
+        case 1: length = sprintf(res, "%u%.3s KB", bytes, bytesDecimals[tail]); break;
+        case 2: length = sprintf(res, "%u%.3s MB", bytes, bytesDecimals[tail]); break;
+        case 3: length = sprintf(res, "%u%.3s GB", bytes, bytesDecimals[tail]); break;
+        case 4: length = sprintf(res, "%u%.3s TB", bytes, bytesDecimals[tail]); break;
+        case 5: length = sprintf(res, "%u%.3s PB", bytes, bytesDecimals[tail]); break;
+        case 6: length = sprintf(res, "%u%.3s EB", bytes, bytesDecimals[tail]); break;
 
         default: return "UNKNOWN";
     }

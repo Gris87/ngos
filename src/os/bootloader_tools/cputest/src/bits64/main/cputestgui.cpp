@@ -137,7 +137,7 @@ TabButton  *CpuTestGUI::sSummaryTabButton;
 u16         CpuTestGUI::sWaitEventsCount;
 uefi_event *CpuTestGUI::sWaitEvents;
 
-X86Feature gTestedFeatures[] = {
+X86Feature testedFeatures[] = {
     X86Feature::NX
     , X86Feature::LA57
     , X86Feature::MMX
@@ -504,7 +504,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    i64 flagsCount = ARRAY_COUNT(gTestedFeatures);
+    i64 flagsCount = ARRAY_COUNT(testedFeatures);
     COMMON_LVVV(("flagsCount = %d", flagsCount));
 
     for (i64 i = 0; i < flagsCount; ++i)
@@ -515,7 +515,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
             featurePanelPositionY += featurePanelHeight;
         }
 
-        UEFI_ASSERT_EXECUTION(addFeaturePanel(gTestedFeatures[i], featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, systemInformationTabPageWidget), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addFeaturePanel(testedFeatures[i], featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, systemInformationTabPageWidget), NgosStatus::ASSERTION);
 
         featurePanelPositionX += featurePanelWidth;
     }
@@ -554,27 +554,27 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *cpuL1DataCache = (char8 *)malloc(30);
+    char8 *cpuL1DataCache = (char8 *)malloc(33);
 
-    UEFI_ASSERT_EXECUTION(sprintf(cpuL1DataCache, "L1 Data  %3u x %-7s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size), CpuTest::getLevel1DataCache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuL1InstructionCache = (char8 *)malloc(30);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuL1InstructionCache, "L1 Inst. %3u x %-7s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(cpuL1DataCache, "L1 Data  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size), CpuTest::getLevel1DataCache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
 
 
 
-    char8 *cpuLevel2Cache = (char8 *)malloc(30);
+    char8 *cpuL1InstructionCache = (char8 *)malloc(33);
 
-    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel2Cache, "Level 2  %3u x %-7s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size), CpuTest::getLevel2Cache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(cpuL1InstructionCache, "L1 Inst. %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
 
 
 
-    char8 *cpuLevel3Cache = (char8 *)malloc(30);
+    char8 *cpuLevel2Cache = (char8 *)malloc(33);
 
-    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel3Cache, "Level 3    %-7s     %2u-way", bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays), i64, 29, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel2Cache, "Level 2  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size), CpuTest::getLevel2Cache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
+
+
+
+    char8 *cpuLevel3Cache = (char8 *)malloc(33);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel3Cache, "Level 3    %-10s     %2u-way", bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
 
 
 
