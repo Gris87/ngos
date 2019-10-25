@@ -7,6 +7,7 @@ NGOS:
 - Use global variable for GUID
 - Replace zeros with nullptr
 - Bool to string
+- Centralize CPUID like in edk2
 
 - Complete with interruptions
 - Implement boot screen for kernel
