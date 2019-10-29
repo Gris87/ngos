@@ -18,17 +18,20 @@ public:
     static const CacheInfo& getLevel1InstructionCache(); // TEST: NO
     static const CacheInfo& getLevel2Cache(); // TEST: NO
     static const CacheInfo& getLevel3Cache(); // TEST: NO
+    static u64 getCpuSpeed(); // TEST: NO
 
 private:
     static NgosStatus initCpuCaches(); // TEST: NO
     static NgosStatus initCpuCachesIntel(); // TEST: NO
     static NgosStatus initCpuCachesAmd(); // TEST: NO
     static NgosStatus initCpuCache(CacheInfo *cache, u32 size, u8 numberOfWays); // TEST: NO
+    static NgosStatus initCpuSpeed(); // TEST: NO
 
     static CacheInfo sLevel1DataCache;
     static CacheInfo sLevel1InstructionCache;
     static CacheInfo sLevel2Cache;
     static CacheInfo sLevel3Cache;
+    static u64       sCpuSpeed;
 };
 
 

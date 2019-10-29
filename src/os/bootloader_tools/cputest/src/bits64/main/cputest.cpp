@@ -23,6 +23,7 @@ CacheInfo CpuTest::sLevel1DataCache;
 CacheInfo CpuTest::sLevel1InstructionCache;
 CacheInfo CpuTest::sLevel2Cache;
 CacheInfo CpuTest::sLevel3Cache;
+u64       CpuTest::sCpuSpeed;
 
 
 
@@ -33,6 +34,7 @@ NgosStatus CpuTest::init()
 
 
     UEFI_ASSERT_EXECUTION(initCpuCaches(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initCpuSpeed(),  NgosStatus::ASSERTION);
 
 
 
@@ -73,6 +75,15 @@ const CacheInfo& CpuTest::getLevel3Cache()
 
 
     return sLevel3Cache;
+}
+
+u64 CpuTest::getCpuSpeed()
+{
+    UEFI_LT((""));
+
+
+
+    return sCpuSpeed;
 }
 
 NgosStatus CpuTest::initCpuCaches()
@@ -495,6 +506,19 @@ NgosStatus CpuTest::initCpuCache(CacheInfo *cache, u32 size, u8 numberOfWays)
 
     cache->size         = size;
     cache->numberOfWays = numberOfWays;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTest::initCpuSpeed()
+{
+    UEFI_LT((""));
+
+
+
+    sCpuSpeed = 3500000000;
 
 
 

@@ -43,6 +43,7 @@ SOURCES += \
     $$PWD/src/bits64/serial/serial.cpp \
     $$PWD/src/bits64/string/string.cpp \
     $$PWD/src/bits64/string/generated/bytesdecimals.cpp \
+    $$PWD/src/bits64/string/generated/numberdecimals.cpp \
     $$PWD/src/bits64/zlib/zlib.cpp
 
 HEADERS += \
@@ -171,6 +172,7 @@ HEADERS += \
     $$PWD/src/bits64/serial/serial.h \
     $$PWD/src/bits64/string/string.h \
     $$PWD/src/bits64/string/generated/bytesdecimals.h \
+    $$PWD/src/bits64/string/generated/numberdecimals.h \
     $$PWD/src/bits64/string/utils.h \
     $$PWD/src/bits64/zlib/zlib.h \
     $$PWD/src/bits64/zlib/zlibcompressioninfo.h \

@@ -62,6 +62,7 @@ SOURCES += \
     src/generators/assets/zzz_generators/guiglyphgenerator.cpp \
     src/generators/common/commongenerator.cpp \
     src/generators/common/zzz_generators/bytesdecimalsgenerator.cpp \
+    src/generators/common/zzz_generators/numberdecimalsgenerator.cpp \
     src/generators/common/zzz_generators/x86bugsnamesgenerator.cpp \
     src/generators/common/zzz_generators/x86featuresnamesgenerator.cpp \
     src/generators/configure/configuregenerator.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
     src/generators/assets/zzz_generators/guiglyphgenerator.h \
     src/generators/common/commongenerator.h \
     src/generators/common/zzz_generators/bytesdecimalsgenerator.h \
+    src/generators/common/zzz_generators/numberdecimalsgenerator.h \
     src/generators/common/zzz_generators/x86bugsnamesgenerator.h \
     src/generators/common/zzz_generators/x86featuresnamesgenerator.h \
     src/generators/configure/configuregenerator.h \

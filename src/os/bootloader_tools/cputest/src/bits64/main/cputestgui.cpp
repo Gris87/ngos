@@ -90,6 +90,11 @@
 #define CPU_CLOCKS_TEXT_WIDTH_PERCENT      98
 #define CPU_CLOCKS_TEXT_HEIGHT_PERCENT     20
 
+#define CPU_SPEED_TEXT_POSITION_X_PERCENT 3
+#define CPU_SPEED_TEXT_POSITION_Y_PERCENT 23
+#define CPU_SPEED_TEXT_WIDTH_PERCENT      94
+#define CPU_SPEED_TEXT_HEIGHT_PERCENT     17
+
 #define CPU_CACHE_PANEL_POSITION_X_PERCENT 51
 #define CPU_CACHE_PANEL_WIDTH_PERCENT      49
 
@@ -551,10 +556,23 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    char8 *cpuSpeed = (char8 *)malloc(24);
+
+    UEFI_ASSERT_EXECUTION(sprintf(cpuSpeed, "CPU Speed    %-10s", hertzToString(CpuTest::getCpuSpeed())), i64, 23, NgosStatus::ASSERTION);
+
+
+
     LabelWidget *cpuClocksLabelWidget = new LabelWidget("Clocks", cpuClocksPanelWidget);
 
     UEFI_ASSERT_EXECUTION(cpuClocksLabelWidget->setPosition(cpuClocksWidth * CPU_CLOCKS_TEXT_POSITION_X_PERCENT / 100, cpuClocksHeight * CPU_CLOCKS_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(cpuClocksLabelWidget->setSize(cpuClocksWidth     * CPU_CLOCKS_TEXT_WIDTH_PERCENT      / 100, cpuClocksHeight * CPU_CLOCKS_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *cpuSpeedLabelWidget = new LabelWidget(cpuSpeed, cpuClocksPanelWidget);
+
+    UEFI_ASSERT_EXECUTION(cpuSpeedLabelWidget->setPosition(cpuClocksWidth * CPU_SPEED_TEXT_POSITION_X_PERCENT / 100, cpuClocksHeight * CPU_SPEED_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cpuSpeedLabelWidget->setSize(cpuClocksWidth     * CPU_SPEED_TEXT_WIDTH_PERCENT      / 100, cpuClocksHeight * CPU_SPEED_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 
