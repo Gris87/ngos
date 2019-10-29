@@ -21,6 +21,8 @@ public:
 
 private:
     static NgosStatus initCpuCaches(); // TEST: NO
+    static NgosStatus initCpuCachesIntel(); // TEST: NO
+    static NgosStatus initCpuCachesAmd(); // TEST: NO
     static NgosStatus initCpuCache(CacheInfo *cache, u32 size, u8 numberOfWays); // TEST: NO
 
     static CacheInfo sLevel1DataCache;

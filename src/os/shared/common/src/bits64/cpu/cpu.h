@@ -22,6 +22,7 @@ public:
     static NgosStatus bugsToString(char8 *buffer, u16 size); // TEST: NO
     static NgosStatus check(const char8 **wantedFlag); // TEST: NO
 
+    static CpuVendor getVendor(); // TEST: NO
     static char8* getModelName(); // TEST: NO
     static CpuFamily getFamily(); // TEST: NO
     static u8 getModel(); // TEST: NO

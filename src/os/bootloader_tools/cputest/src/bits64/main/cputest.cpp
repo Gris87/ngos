@@ -7,8 +7,10 @@
 
 
 
-#define CACHE_INFO_CPUID     0x00000002 // TODO: Make more centralized
-#define CACHE_TOPOLOGY_CPUID 0x00000004
+#define CACHE_INFO_CPUID              0x00000002 // TODO: Make more centralized
+#define CACHE_TOPOLOGY_CPUID          0x00000004
+#define L1_CACHE_IDENTIFIERS_CPUID    0x80000005
+#define EXTENDED_CACHE_FEATURES_CPUID 0x80000006
 
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_NULL        0x00
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_DATA        0x01
@@ -74,6 +76,63 @@ const CacheInfo& CpuTest::getLevel3Cache()
 }
 
 NgosStatus CpuTest::initCpuCaches()
+{
+    UEFI_LT((""));
+
+
+
+    switch (CPU::getVendor())
+    {
+        case CpuVendor::INTEL: UEFI_ASSERT_EXECUTION(initCpuCachesIntel(), NgosStatus::ASSERTION); break;
+        case CpuVendor::AMD:   UEFI_ASSERT_EXECUTION(initCpuCachesAmd(),   NgosStatus::ASSERTION); break;
+
+        case CpuVendor::NONE:
+        case CpuVendor::UNKNOWN:
+        {
+            UEFI_LF(("Unexpected CPU vendor %u (%s)", CPU::getVendor(), cpuVendorToString(CPU::getVendor())));
+
+            return NgosStatus::NOT_SUPPORTED;
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown CPU vendor %u (%s)", CPU::getVendor(), cpuVendorToString(CPU::getVendor())));
+
+            return NgosStatus::NOT_SUPPORTED;
+        }
+        break;
+    }
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("sLevel1DataCache.size                = %u", sLevel1DataCache.size));
+        UEFI_LVVV(("sLevel1DataCache.numberOfWays        = %u", sLevel1DataCache.numberOfWays));
+        UEFI_LVVV(("sLevel1InstructionCache.size         = %u", sLevel1InstructionCache.size));
+        UEFI_LVVV(("sLevel1InstructionCache.numberOfWays = %u", sLevel1InstructionCache.numberOfWays));
+        UEFI_LVVV(("sLevel2Cache.size                    = %u", sLevel2Cache.size));
+        UEFI_LVVV(("sLevel2Cache.numberOfWays            = %u", sLevel2Cache.numberOfWays));
+        UEFI_LVVV(("sLevel3Cache.size                    = %u", sLevel3Cache.size));
+        UEFI_LVVV(("sLevel3Cache.numberOfWays            = %u", sLevel3Cache.numberOfWays));
+
+        UEFI_TEST_ASSERT(sLevel1DataCache.size                > 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sLevel1DataCache.numberOfWays        > 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sLevel1InstructionCache.size         > 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sLevel1InstructionCache.numberOfWays > 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sLevel2Cache.size                    > 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sLevel2Cache.numberOfWays            > 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sLevel3Cache.size                    > 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sLevel3Cache.numberOfWays            > 0, NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTest::initCpuCachesIntel()
 {
     UEFI_LT((""));
 
@@ -327,25 +386,94 @@ NgosStatus CpuTest::initCpuCaches()
 
 
 
-    // Validation
-    {
-        UEFI_LVVV(("sLevel1DataCache.size                = %u", sLevel1DataCache.size));
-        UEFI_LVVV(("sLevel1DataCache.numberOfWays        = %u", sLevel1DataCache.numberOfWays));
-        UEFI_LVVV(("sLevel1InstructionCache.size         = %u", sLevel1InstructionCache.size));
-        UEFI_LVVV(("sLevel1InstructionCache.numberOfWays = %u", sLevel1InstructionCache.numberOfWays));
-        UEFI_LVVV(("sLevel2Cache.size                    = %u", sLevel2Cache.size));
-        UEFI_LVVV(("sLevel2Cache.numberOfWays            = %u", sLevel2Cache.numberOfWays));
-        UEFI_LVVV(("sLevel3Cache.size                    = %u", sLevel3Cache.size));
-        UEFI_LVVV(("sLevel3Cache.numberOfWays            = %u", sLevel3Cache.numberOfWays));
+    return NgosStatus::OK;
+}
 
-        UEFI_TEST_ASSERT(sLevel1DataCache.size                > 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sLevel1DataCache.numberOfWays        > 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sLevel1InstructionCache.size         > 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sLevel1InstructionCache.numberOfWays > 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sLevel2Cache.size                    > 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sLevel2Cache.numberOfWays            > 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sLevel3Cache.size                    > 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(sLevel3Cache.numberOfWays            > 0, NgosStatus::ASSERTION);
+NgosStatus CpuTest::initCpuCachesAmd()
+{
+    UEFI_LT((""));
+
+
+
+    if (CPU::isCpuIdLevelSupported(L1_CACHE_IDENTIFIERS_CPUID))
+    {
+        u32 ignored;
+        u32 ecx;
+        u32 edx;
+
+        UEFI_ASSERT_EXECUTION(CPU::cpuid(L1_CACHE_IDENTIFIERS_CPUID, 0, &ignored, &ignored, &ecx, &edx), NgosStatus::ASSERTION);
+
+        UEFI_LVVV(("ecx = 0x%08X", ecx));
+        UEFI_LVVV(("edx = 0x%08X", edx));
+
+
+
+        u8  numberOfWays = (ecx >> 16) & 0xFF;
+        u64 cacheSize    = ((ecx >> 24) & 0xFF) << 10; // "<< 10" == "* 1024"
+
+        UEFI_LVVV(("numberOfWays = %u", numberOfWays));
+        UEFI_LVVV(("cacheSize    = %u", cacheSize));
+
+        UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel1DataCache, cacheSize, numberOfWays), NgosStatus::ASSERTION);
+
+
+
+        numberOfWays = (edx >> 16) & 0xFF;
+        cacheSize    = ((edx >> 24) & 0xFF) << 10; // "<< 10" == "* 1024"
+
+        UEFI_LVVV(("numberOfWays = %u", numberOfWays));
+        UEFI_LVVV(("cacheSize    = %u", cacheSize));
+
+        UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel1InstructionCache, cacheSize, numberOfWays), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        UEFI_LW(("L1_CACHE_IDENTIFIERS_CPUID not supported"));
+    }
+
+
+
+    if (CPU::isCpuIdLevelSupported(EXTENDED_CACHE_FEATURES_CPUID))
+    {
+        const u8 numberOfWaysTable[16] =
+        {
+            0, 1, 2, 0, 4, 0, 8, 0, 16, 0, 32, 48, 64, 96, 128, 255
+        };
+
+
+
+        u32 ignored;
+        u32 ecx;
+        u32 edx;
+
+        UEFI_ASSERT_EXECUTION(CPU::cpuid(EXTENDED_CACHE_FEATURES_CPUID, 0, &ignored, &ignored, &ecx, &edx), NgosStatus::ASSERTION);
+
+        UEFI_LVVV(("ecx = 0x%08X", ecx));
+        UEFI_LVVV(("edx = 0x%08X", edx));
+
+
+
+        u8  numberOfWays = numberOfWaysTable[(ecx >> 12) & 0x0F];
+        u64 cacheSize    = (ecx >> 16) << 10; // "<< 10" == "* 1024"
+
+        UEFI_LVVV(("numberOfWays = %u", numberOfWays));
+        UEFI_LVVV(("cacheSize    = %u", cacheSize));
+
+        UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel2Cache, cacheSize, numberOfWays), NgosStatus::ASSERTION);
+
+
+
+        numberOfWays = numberOfWaysTable[(edx >> 12) & 0x0F];
+        cacheSize    = (edx >> 18) << 19; // "<< 19" == "* 512 * 1024"
+
+        UEFI_LVVV(("numberOfWays = %u", numberOfWays));
+        UEFI_LVVV(("cacheSize    = %u", cacheSize));
+
+        UEFI_ASSERT_EXECUTION(initCpuCache(&sLevel3Cache, cacheSize, numberOfWays), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        UEFI_LW(("EXTENDED_CACHE_FEATURES_CPUID not supported"));
     }
 
 

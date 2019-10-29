@@ -542,6 +542,15 @@ NgosStatus CPU::check(const char8 **wantedFlag)
     return NgosStatus::OK;
 }
 
+CpuVendor CPU::getVendor()
+{
+    COMMON_LT((""));
+
+
+
+    return sCpuVendor;
+}
+
 char8* CPU::getModelName()
 {
     COMMON_LT((""));
