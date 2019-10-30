@@ -530,9 +530,9 @@ NgosStatus CpuTest::initCpuSpeed()
 
 
 
-    UEFI_LF(("startTSC = %u", startTSC));
-    UEFI_LF(("endTSC   = %u", endTSC));
-    UEFI_LF(("ticks    = %u", ticks));
+    UEFI_LVVV(("startTSC = %u", startTSC));
+    UEFI_LVVV(("endTSC   = %u", endTSC));
+    UEFI_LVVV(("ticks    = %u", ticks));
 
 
 
