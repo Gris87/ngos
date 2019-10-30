@@ -1,5 +1,6 @@
 #include "cputest.h"
 
+#include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
 #include <macro/constants.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -16,6 +17,8 @@
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_DATA        0x01
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_INSTRUCTION 0x02
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_UNIFIED     0x03
+
+#define CPU_SPEED_TIMEOUT 200000
 
 
 
@@ -518,7 +521,22 @@ NgosStatus CpuTest::initCpuSpeed()
 
 
 
-    sCpuSpeed = 3500000000;
+    u64 startTSC = rdtsc();
+
+    UEFI_ASSERT_EXECUTION(UEFI::stall(CPU_SPEED_TIMEOUT), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+    u64 endTSC = rdtsc();
+    u64 ticks  = endTSC - startTSC;
+
+
+
+    UEFI_LF(("startTSC = %u", startTSC));
+    UEFI_LF(("endTSC   = %u", endTSC));
+    UEFI_LF(("ticks    = %u", ticks));
+
+
+
+    sCpuSpeed = ticks * 1000000 / CPU_SPEED_TIMEOUT;
 
 
 
