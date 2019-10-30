@@ -14,6 +14,7 @@ TableWidget::TableWidget(Image *headerImage, Image *cellNormalImage, Image *cell
     , mCellInactiveImage(cellInactiveImage)
     , mCellFocusedImage(cellFocusedImage)
     , mCellFocusedHoverImage(cellFocusedHoverImage)
+    , mRowHeight(0)
     , mColumnWidth()
 {
     COMMON_LT((" | headerImage = 0x%p, cellNormalImage = 0x%p, cellHoverImage = 0x%p, cellInactiveImage = 0x%p, cellFocusedImage = 0x%p, cellFocusedHoverImage = 0x%p, parent = 0x%p", headerImage, cellNormalImage, cellHoverImage, cellInactiveImage, cellFocusedImage, cellFocusedHoverImage, parent));
