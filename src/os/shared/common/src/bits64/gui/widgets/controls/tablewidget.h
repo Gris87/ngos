@@ -10,7 +10,7 @@
 class TableWidget: public Widget
 {
 public:
-    TableWidget(Image *headerImage, Widget *parent = 0); // TEST: NO
+    TableWidget(Image *headerImage, Image *cellNormalImage, Image *cellHoverImage, Image *cellInactiveImage, Image *cellFocusedImage, Image *cellFocusedHoverImage, Widget *parent = 0); // TEST: NO
     ~TableWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
@@ -18,6 +18,11 @@ public:
 
 private:
     Image *mHeaderImage;
+    Image *mCellNormalImage;
+    Image *mCellHoverImage;
+    Image *mCellInactiveImage;
+    Image *mCellFocusedImage;
+    Image *mCellFocusedHoverImage;
 };
 
 
