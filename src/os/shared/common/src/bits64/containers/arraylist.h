@@ -26,6 +26,7 @@ public:
     NgosStatus sort();
 
     const T& at(u64 index) const;
+    T& operator[](u64 index);
 
     u64 getSize() const;
 
@@ -129,6 +130,18 @@ NgosStatus ArrayList<T>::sort()
 
 template<typename T>
 const T& ArrayList<T>::at(u64 index) const
+{
+    COMMON_LT((" | index = %u", index));
+
+    COMMON_ASSERT(index < mSize, "index is invalid", mValues[index]);
+
+
+
+    return mValues[index];
+}
+
+template<typename T>
+T& ArrayList<T>::operator[](u64 index)
 {
     COMMON_LT((" | index = %u", index));
 

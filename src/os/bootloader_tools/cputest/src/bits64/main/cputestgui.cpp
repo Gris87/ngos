@@ -127,6 +127,10 @@
 #define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 1
 #define SUMMARY_TABLEWIDGET_WIDTH_PERCENT      98
 #define SUMMARY_TABLEWIDGET_HEIGHT_PERCENT     98
+#define SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT 10
+
+#define SUMMARY_COLUMN_NAME_WIDTH_PERCENT  80
+#define SUMMARY_COLUMN_SCORE_WIDTH_PERCENT 20
 
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
@@ -675,10 +679,19 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    u64 summaryTableWidth  = tabPageWidth  * SUMMARY_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    u64 summaryTableHeight = tabPageHeight * SUMMARY_TABLEWIDGET_HEIGHT_PERCENT / 100;
+
+
+
     sSummaryTableWidget = new TableWidget(tableHeaderImage, tableCellNormalImage, tableCellHoverImage, tableCellInactiveImage, tableCellFocusedImage, tableCellFocusedHoverImage, summaryTabPageWidget);
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setPosition(tabPageWidth * SUMMARY_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setSize(tabPageWidth     * SUMMARY_TABLEWIDGET_WIDTH_PERCENT      / 100, tabPageHeight * SUMMARY_TABLEWIDGET_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setSize(summaryTableWidth, summaryTableHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(summaryTableHeight * SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100),                                                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnCount(2),                                                                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(0, summaryTableWidth * SUMMARY_COLUMN_NAME_WIDTH_PERCENT / 100),                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(1, summaryTableWidth * SUMMARY_COLUMN_SCORE_WIDTH_PERCENT / 100),                                                        NgosStatus::ASSERTION);
 
 
 

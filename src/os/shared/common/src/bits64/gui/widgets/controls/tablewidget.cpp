@@ -14,6 +14,7 @@ TableWidget::TableWidget(Image *headerImage, Image *cellNormalImage, Image *cell
     , mCellInactiveImage(cellInactiveImage)
     , mCellFocusedImage(cellFocusedImage)
     , mCellFocusedHoverImage(cellFocusedHoverImage)
+    , mColumnWidth()
 {
     COMMON_LT((" | headerImage = 0x%p, cellNormalImage = 0x%p, cellHoverImage = 0x%p, cellInactiveImage = 0x%p, cellFocusedImage = 0x%p, cellFocusedHoverImage = 0x%p, parent = 0x%p", headerImage, cellNormalImage, cellHoverImage, cellInactiveImage, cellFocusedImage, cellFocusedHoverImage, parent));
 
@@ -95,4 +96,86 @@ NgosStatus TableWidget::repaint()
 
 
     return NgosStatus::OK;
+}
+
+
+NgosStatus TableWidget::setRowHeight(u64 height)
+{
+    COMMON_LT((" | height = %u", height));
+
+    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mRowHeight == 0, NgosStatus::ASSERTION);
+    mRowHeight = height;
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 TableWidget::getRowHeight() const
+{
+    COMMON_LT((""));
+
+
+
+    return mRowHeight;
+}
+
+NgosStatus TableWidget::setColumnCount(u64 columns)
+{
+    COMMON_LT((" | columns = %u", columns));
+
+    COMMON_ASSERT(columns > 0, "columns is zero", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mColumnWidth.getSize() == 0, NgosStatus::ASSERTION);
+
+
+
+    for (i64 i = 0; i < (i64)columns; ++i)
+    {
+        mColumnWidth.append(0);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 TableWidget::getColumnCount() const
+{
+    COMMON_LT((""));
+
+
+
+    return mColumnWidth.getSize();
+}
+
+NgosStatus TableWidget::setColumnWidth(u64 column, u64 width)
+{
+    COMMON_LT((" | column = %u, width = %u", column, width));
+
+    COMMON_ASSERT(width > 0, "width is zero", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mColumnWidth.at(column) == 0, NgosStatus::ASSERTION);
+    mColumnWidth[column] = width;
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 TableWidget::getColumnWidth(u64 column) const
+{
+    COMMON_LT((" | column = %u", column));
+
+
+
+    return mColumnWidth.at(column);
 }
