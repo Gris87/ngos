@@ -108,17 +108,17 @@ NgosStatus LabelWidget::repaint()
 
 
     mOwnResultImage = new Image(mWidth, mHeight, true, false);
-    mOwnResultImage->clearBuffer();
+    COMMON_ASSERT_EXECUTION(mOwnResultImage->clearBuffer(), NgosStatus::ASSERTION);
 
 
 
     if (targetWidth) // targetWidth > 0
     {
         Image *fullImage = new Image(targetWidth, targetHeight, true, false);
-        fullImage->clearBuffer();
+        COMMON_ASSERT_EXECUTION(fullImage->clearBuffer(), NgosStatus::ASSERTION);
 
         Image *oneLineImage = new Image(targetWidth, CHAR_HEIGHT + BOTTOM_MARGIN, true, false);
-        oneLineImage->clearBuffer();
+        COMMON_ASSERT_EXECUTION(oneLineImage->clearBuffer(), NgosStatus::ASSERTION);
 
 
 
@@ -149,7 +149,7 @@ NgosStatus LabelWidget::repaint()
                                                 curY),
                                             NgosStatus::ASSERTION);
 
-                    oneLineImage->clearBuffer();
+                    COMMON_ASSERT_EXECUTION(oneLineImage->clearBuffer(), NgosStatus::ASSERTION);
 
                     curX = SIDE_MARGIN;
                 }

@@ -47,7 +47,7 @@ NgosStatus TabPageWidget::invalidate()
     }
 
     mOwnResultImage = new Image(mWidth, mHeight, true, false);
-    mOwnResultImage->clearBuffer();
+    COMMON_ASSERT_EXECUTION(mOwnResultImage->clearBuffer(), NgosStatus::ASSERTION);
 
 
 
