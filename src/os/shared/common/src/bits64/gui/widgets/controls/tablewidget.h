@@ -6,13 +6,14 @@
 #include <common/src/bits64/gui/widgets/widget.h>
 
 #include <common/src/bits64/containers/arraylist.h>
+#include <common/src/bits64/gui/widgets/misc/tableheaderwidget.h>
 
 
 
 class TableWidget: public Widget
 {
 public:
-    TableWidget(Image *headerImage, Image *cellNormalImage, Image *cellHoverImage, Image *cellInactiveImage, Image *cellFocusedImage, Image *cellFocusedHoverImage, Widget *parent = 0); // TEST: NO
+    TableWidget(Image *backgroundImage, Image *headerImage, Widget *parent = 0); // TEST: NO
     ~TableWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
@@ -27,15 +28,14 @@ public:
     NgosStatus setColumnWidth(u64 column, u64 width); // TEST: NO
     u64 getColumnWidth(u64 column) const; // TEST: NO
 
+    NgosStatus setHeaderText(u64 column, const char8 *text); // TEST: NO
+
 private:
-    Image          *mHeaderImage;
-    Image          *mCellNormalImage;
-    Image          *mCellHoverImage;
-    Image          *mCellInactiveImage;
-    Image          *mCellFocusedImage;
-    Image          *mCellFocusedHoverImage;
-    u64             mRowHeight;
-    ArrayList<u64>  mColumnWidth;
+    Image                          *mBackgroundImage;
+    Image                          *mHeaderImage;
+    u64                             mRowHeight;
+    ArrayList<u64>                  mColumnWidth;
+    ArrayList<TableHeaderWidget *>  mHeaders;
 };
 
 

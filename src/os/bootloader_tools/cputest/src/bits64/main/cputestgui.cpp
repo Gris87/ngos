@@ -127,7 +127,7 @@
 #define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 1
 #define SUMMARY_TABLEWIDGET_WIDTH_PERCENT      98
 #define SUMMARY_TABLEWIDGET_HEIGHT_PERCENT     98
-#define SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT 10
+#define SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT 7
 
 #define SUMMARY_COLUMN_NAME_WIDTH_PERCENT  80
 #define SUMMARY_COLUMN_SCORE_WIDTH_PERCENT 20
@@ -231,12 +231,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     Image *infoPanelImage;
     Image *featurePanelImage;
     Image *featurePanelResizedImage;
+    Image *tableBackgroundImage;
     Image *tableHeaderImage;
-    Image *tableCellNormalImage;
-    Image *tableCellHoverImage;
-    Image *tableCellInactiveImage;
-    Image *tableCellFocusedImage;
-    Image *tableCellFocusedHoverImage;
     Image *rebootImage;
     Image *shutdownImage;
     Image *cursorImage;
@@ -266,12 +262,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cpu.png",                         &cpuImage),                     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/info_panel.9.png",                &infoPanelImage),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/feature_panel.9.png",             &featurePanelImage),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_header.9.png",              &tableHeaderImage),             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_cell_normal.9.png",         &tableCellNormalImage),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_cell_hover.9.png",          &tableCellHoverImage),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_cell_inactive.9.png",       &tableCellInactiveImage),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_cell_focused.9.png",        &tableCellFocusedImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_cell_focused_hover.9.png",  &tableCellFocusedHoverImage),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",                    &shutdownImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
@@ -684,16 +676,20 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    sSummaryTableWidget = new TableWidget(tableHeaderImage, tableCellNormalImage, tableCellHoverImage, tableCellInactiveImage, tableCellFocusedImage, tableCellFocusedHoverImage, summaryTabPageWidget);
+    sSummaryTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, summaryTabPageWidget);
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setPosition(tabPageWidth * SUMMARY_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setSize(summaryTableWidth, summaryTableHeight),                                                                                         NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(summaryTableHeight * SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnCount(2),                                                               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
+
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(0, summaryTableWidth * SUMMARY_COLUMN_NAME_WIDTH_PERCENT  / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(1, summaryTableWidth * SUMMARY_COLUMN_SCORE_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(0, "Name"),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(1, "Score"), NgosStatus::ASSERTION);
 
 
 

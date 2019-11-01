@@ -6,26 +6,19 @@
 
 
 
-TableWidget::TableWidget(Image *headerImage, Image *cellNormalImage, Image *cellHoverImage, Image *cellInactiveImage, Image *cellFocusedImage, Image *cellFocusedHoverImage, Widget *parent)
+TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *parent)
     : Widget(parent)
+    , mBackgroundImage(backgroundImage)
     , mHeaderImage(headerImage)
-    , mCellNormalImage(cellNormalImage)
-    , mCellHoverImage(cellHoverImage)
-    , mCellInactiveImage(cellInactiveImage)
-    , mCellFocusedImage(cellFocusedImage)
-    , mCellFocusedHoverImage(cellFocusedHoverImage)
     , mRowHeight(0)
     , mColumnWidth()
+    , mHeaders()
 {
-    COMMON_LT((" | headerImage = 0x%p, cellNormalImage = 0x%p, cellHoverImage = 0x%p, cellInactiveImage = 0x%p, cellFocusedImage = 0x%p, cellFocusedHoverImage = 0x%p, parent = 0x%p", headerImage, cellNormalImage, cellHoverImage, cellInactiveImage, cellFocusedImage, cellFocusedHoverImage, parent));
+    COMMON_LT((" | backgroundImage = 0x%p, headerImage = 0x%p, parent = 0x%p", backgroundImage, headerImage, parent));
 
-    COMMON_ASSERT(headerImage,           "headerImage is null");
-    COMMON_ASSERT(cellNormalImage,       "cellNormalImage is null");
-    COMMON_ASSERT(cellHoverImage,        "cellHoverImage is null");
-    COMMON_ASSERT(cellInactiveImage,     "cellInactiveImage is null");
-    COMMON_ASSERT(cellFocusedImage,      "cellFocusedImage is null");
-    COMMON_ASSERT(cellFocusedHoverImage, "cellFocusedHoverImage is null");
-    COMMON_ASSERT(parent,                "parent is null");
+    COMMON_ASSERT(backgroundImage, "backgroundImage is null");
+    COMMON_ASSERT(headerImage,     "headerImage is null");
+    COMMON_ASSERT(parent,          "parent is null");
 }
 
 TableWidget::~TableWidget()
@@ -56,8 +49,7 @@ NgosStatus TableWidget::invalidate()
         delete mOwnResultImage;
     }
 
-    mOwnResultImage = new Image(mWidth, mHeight, true, false);
-    COMMON_ASSERT_EXECUTION(mOwnResultImage->clearBuffer(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mBackgroundImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
 
 
 
@@ -140,6 +132,7 @@ NgosStatus TableWidget::setColumnCount(u64 columns)
     for (i64 i = 0; i < (i64)columns; ++i)
     {
         mColumnWidth.append(0);
+        mHeaders.append(nullptr);
     }
 
 
@@ -179,4 +172,38 @@ u64 TableWidget::getColumnWidth(u64 column) const
 
 
     return mColumnWidth.at(column);
+}
+
+NgosStatus TableWidget::setHeaderText(u64 column, const char8 *text)
+{
+    COMMON_LT((" | column = %u, text = 0x%p", column, text));
+
+    COMMON_ASSERT(text, "text is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mHeaders.at(column)     == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mColumnWidth.at(column) > 0,        NgosStatus::ASSERTION);
+
+
+
+    u64 positionX = 0;
+
+    for (i64 i = 0; i < (i64)column; ++i)
+    {
+        COMMON_TEST_ASSERT(mColumnWidth.at(i) > 0, NgosStatus::ASSERTION);
+
+        positionX += mColumnWidth.at(i);
+    }
+
+
+
+    TableHeaderWidget *header = new TableHeaderWidget(mHeaderImage, text, this);
+
+    COMMON_ASSERT_EXECUTION(header->setPosition(positionX, 0),                    NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(header->setSize(mColumnWidth.at(column), mRowHeight), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
