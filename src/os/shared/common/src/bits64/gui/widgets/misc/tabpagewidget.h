@@ -3,18 +3,15 @@
 
 
 
-#include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/bits64/gui/widgets/misc/wrapperwidget.h>
 
 
 
-class TabPageWidget: public Widget
+class TabPageWidget: public WrapperWidget
 {
 public:
     TabPageWidget(Widget *parent = 0); // TEST: NO
     ~TabPageWidget(); // TEST: NO
-
-    NgosStatus invalidate() override; // TEST: NO
-    NgosStatus repaint() override; // TEST: NO
 };
 
 

@@ -3,6 +3,7 @@
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/gui/widgets/misc/tablecellwidget.h>
 
 
 
@@ -12,7 +13,11 @@ TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *par
     , mHeaderImage(headerImage)
     , mRowHeight(0)
     , mColumnWidth()
+    , mTotalColumnWidth(0)
     , mHeaders()
+    , mWrapperWidget(nullptr)
+    , mRowsWrapperWidget(nullptr)
+    , mRows()
 {
     COMMON_LT((" | backgroundImage = 0x%p, headerImage = 0x%p, parent = 0x%p", backgroundImage, headerImage, parent));
 
@@ -91,7 +96,6 @@ NgosStatus TableWidget::repaint()
     return NgosStatus::OK;
 }
 
-
 NgosStatus TableWidget::setRowHeight(u64 height)
 {
     COMMON_LT((" | height = %u", height));
@@ -100,8 +104,19 @@ NgosStatus TableWidget::setRowHeight(u64 height)
 
 
 
-    COMMON_TEST_ASSERT(mRowHeight == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mRowHeight     == 0,       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mWrapperWidget == nullptr, NgosStatus::ASSERTION);
+
+
+
     mRowHeight = height;
+
+
+
+    mWrapperWidget = new WrapperWidget(this);
+
+    COMMON_ASSERT_EXECUTION(mWrapperWidget->setPosition(0, mRowHeight),            NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mWrapperWidget->setSize(mWidth, mHeight - mRowHeight), NgosStatus::ASSERTION);
 
 
 
@@ -160,6 +175,8 @@ NgosStatus TableWidget::setColumnWidth(u64 column, u64 width)
     COMMON_TEST_ASSERT(mColumnWidth.at(column) == 0, NgosStatus::ASSERTION);
     mColumnWidth[column] = width;
 
+    mTotalColumnWidth += width;
+
 
 
     return NgosStatus::OK;
@@ -206,4 +223,72 @@ NgosStatus TableWidget::setHeaderText(u64 column, const char8 *text)
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus TableWidget::setRowCount(u64 rows)
+{
+    COMMON_LT((" | rows = %u", rows));
+
+    COMMON_ASSERT(rows > 0, "rows is zero", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mRows.getSize()    == 0,       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mRowsWrapperWidget == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mWrapperWidget     == nullptr, NgosStatus::ASSERTION);
+
+
+
+    mRowsWrapperWidget = new WrapperWidget(mWrapperWidget);
+
+    COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, 0),                             NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setSize(mTotalColumnWidth, rows * mRowHeight), NgosStatus::ASSERTION);
+
+
+
+    for (i64 i = 0; i < (i64)rows; ++i)
+    {
+        TableRowWidget *rowWidget = new TableRowWidget(mRowsWrapperWidget);
+
+        COMMON_ASSERT_EXECUTION(rowWidget->setPosition(0, i * mRowHeight),         NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(rowWidget->setSize(mTotalColumnWidth, mRowHeight), NgosStatus::ASSERTION);
+
+
+
+        u64 positionX = 0;
+
+        for (i64 j = 0; j < (i64)mColumnWidth.getSize(); ++j)
+        {
+            u64 columnWidth = mColumnWidth.at(j);
+
+
+
+            TableCellWidget *cellWidget = new TableCellWidget(rowWidget);
+
+            COMMON_ASSERT_EXECUTION(cellWidget->setPosition(positionX, 0),        NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cellWidget->setSize(columnWidth, mRowHeight), NgosStatus::ASSERTION);
+
+
+
+            positionX += columnWidth;
+        }
+
+
+
+
+        mRows.append(rowWidget);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 TableWidget::getRowCount() const
+{
+    COMMON_LT((""));
+
+
+
+    return mRows.getSize();
 }

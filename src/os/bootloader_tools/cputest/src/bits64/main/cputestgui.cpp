@@ -683,6 +683,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(summaryTableHeight * SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
+
+
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(0, summaryTableWidth * SUMMARY_COLUMN_NAME_WIDTH_PERCENT  / 100), NgosStatus::ASSERTION);
@@ -690,6 +692,10 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(0, "Name"),  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(1, "Score"), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowCount(3), NgosStatus::ASSERTION);
 
 
 

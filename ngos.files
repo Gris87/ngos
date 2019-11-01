@@ -687,10 +687,16 @@ src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/panelwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/panelwidget.h
+src/os/shared/common/src/bits64/gui/widgets/misc/tablecellwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/tablecellwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/tableheaderwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/tableheaderwidget.h
+src/os/shared/common/src/bits64/gui/widgets/misc/tablerowwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/tablerowwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/tabpagewidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/tabpagewidget.h
+src/os/shared/common/src/bits64/gui/widgets/misc/wrapperwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/wrapperwidget.h
 src/os/shared/common/src/bits64/gui/widgets/special/rootwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/special/rootwidget.h
 src/os/shared/common/src/bits64/gui/widgets/special/screenwidget.cpp

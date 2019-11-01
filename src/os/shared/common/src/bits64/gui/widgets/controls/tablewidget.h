@@ -7,6 +7,8 @@
 
 #include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/gui/widgets/misc/tableheaderwidget.h>
+#include <common/src/bits64/gui/widgets/misc/tablerowwidget.h>
+#include <common/src/bits64/gui/widgets/misc/wrapperwidget.h>
 
 
 
@@ -30,12 +32,19 @@ public:
 
     NgosStatus setHeaderText(u64 column, const char8 *text); // TEST: NO
 
+    NgosStatus setRowCount(u64 rows); // TEST: NO
+    u64 getRowCount() const; // TEST: NO
+
 private:
     Image                          *mBackgroundImage;
     Image                          *mHeaderImage;
     u64                             mRowHeight;
     ArrayList<u64>                  mColumnWidth;
+    u64                             mTotalColumnWidth;
     ArrayList<TableHeaderWidget *>  mHeaders;
+    WrapperWidget                  *mWrapperWidget;
+    WrapperWidget                  *mRowsWrapperWidget;
+    ArrayList<TableRowWidget *>     mRows;
 };
 
 
