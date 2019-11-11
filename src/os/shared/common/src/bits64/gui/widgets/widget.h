@@ -53,6 +53,9 @@ public:
     virtual NgosStatus setPressEventHandler(press_event_handler handler); // TEST: NO
     virtual press_event_handler getPressEventHandler() const; // TEST: NO
 
+    NgosStatus setParent(Widget *parent); // TEST: NO
+    Widget* getParent() const; // TEST: NO
+
     NgosStatus setPosition(i64 positionX, i64 positionY);
     i64 getPositionX() const;
     i64 getPositionY() const;

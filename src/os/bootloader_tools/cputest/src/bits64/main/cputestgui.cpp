@@ -139,6 +139,16 @@
 #define TABWIDGET_PAGE_TEST               1
 #define TABWIDGET_PAGE_SUMMARY            2
 
+#define COLUMN_NAME  0
+#define COLUMN_SCORE 1
+
+#define SCORE_PER_THREAD                          500
+#define SCORE_PER_100_MHZ                         200
+#define SCORE_L1_DATA_CACHE_PER_1_KB_1_WAY        2
+#define SCORE_L1_INSTRUCTION_CACHE_PER_1_KB_1_WAY 2
+#define SCORE_L2_CACHE_PER_1_MB_1_WAY             10
+#define SCORE_L3_CACHE_PER_1_MB_1_WAY             12
+
 
 
 Button      *CpuTestGUI::sRebootButton;
@@ -148,6 +158,7 @@ TabButton   *CpuTestGUI::sSystemInformationTabButton;
 TabButton   *CpuTestGUI::sTestTabButton;
 TabButton   *CpuTestGUI::sSummaryTabButton;
 TableWidget *CpuTestGUI::sSummaryTableWidget;
+u64          CpuTestGUI::sSummaryTotal;
 u16          CpuTestGUI::sWaitEventsCount;
 uefi_event  *CpuTestGUI::sWaitEvents;
 
@@ -176,6 +187,33 @@ X86Feature testedFeatures[] = {
     , X86Feature::AES
     , X86Feature::RTM
     , X86Feature::VMX
+};
+
+u64 testedFeaturesScores[] = {
+    100     // X86Feature::NX
+    , 50    // X86Feature::LA57
+    , 16    // X86Feature::MMX
+    , 20    // X86Feature::XMM
+    , 25    // X86Feature::XMM2
+    , 50    // X86Feature::XMM3
+    , 50    // X86Feature::SSSE3
+    , 100   // X86Feature::XMM4_1
+    , 125   // X86Feature::XMM4_2
+    , 200   // X86Feature::AVX
+    , 250   // X86Feature::AVX2
+    , 500   // X86Feature::AVX512F
+    , 500   // X86Feature::AVX512CD
+    , 500   // X86Feature::AVX512ER
+    , 500   // X86Feature::AVX512PF
+    , 500   // X86Feature::AVX512BW
+    , 500   // X86Feature::AVX512DQ
+    , 500   // X86Feature::AVX512VL
+    , 500   // X86Feature::AVX512IFMA
+    , 500   // X86Feature::AVX512VBMI
+    , 250   // X86Feature::FMA
+    , 250   // X86Feature::AES
+    , 500   // X86Feature::RTM
+    , 100   // X86Feature::VMX
 };
 
 
@@ -590,7 +628,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuCacheWidth  = tabPageWidth  * CPU_CACHE_PANEL_WIDTH_PERCENT  / 100;
+    u64 cpuCacheWidth  = tabPageWidth  * CPU_CACHE_PANEL_WIDTH_PERCENT / 100;
     u64 cpuCacheHeight = cpuPanelHeight;
 
     PanelWidget *cpuCachePanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
@@ -695,7 +733,80 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowCount(3), NgosStatus::ASSERTION);
+    char8 *summaryCpuThreads = (char8 *)malloc(23);
+
+    i64 summaryCpuThreadsLength = sprintf(summaryCpuThreads, "Number of threads: %u", CPU::getNumberOfThreads());
+    AVOID_UNUSED(summaryCpuThreadsLength);
+
+    UEFI_TEST_ASSERT(summaryCpuThreadsLength < 23, NgosStatus::ASSERTION);
+
+
+
+    char8 *summaryCpuSpeed = (char8 *)malloc(22);
+
+    i64 summaryCpuSpeedLength = sprintf(summaryCpuSpeed, "CPU Speed: %s", hertzToString(CpuTest::getCpuSpeed()));
+    AVOID_UNUSED(summaryCpuSpeedLength);
+
+    UEFI_TEST_ASSERT(summaryCpuSpeedLength < 22, NgosStatus::ASSERTION);
+
+
+
+    char8 *summaryCpuL1DataCache = (char8 *)malloc(39);
+
+    i64 summaryCpuL1DataCacheLength = sprintf(summaryCpuL1DataCache, "L1 Data Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size), CpuTest::getLevel1DataCache().numberOfWays);
+    AVOID_UNUSED(summaryCpuL1DataCacheLength);
+
+    UEFI_TEST_ASSERT(summaryCpuL1DataCacheLength < 39, NgosStatus::ASSERTION);
+
+
+
+    char8 *summaryCpuL1InstructionCache = (char8 *)malloc(46);
+
+    i64 summaryCpuL1InstructionCacheLength = sprintf(summaryCpuL1InstructionCache, "L1 Instruction Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
+    AVOID_UNUSED(summaryCpuL1InstructionCacheLength);
+
+    UEFI_TEST_ASSERT(summaryCpuL1InstructionCacheLength < 46, NgosStatus::ASSERTION);
+
+
+
+    char8 *summaryCpuL2Cache = (char8 *)malloc(39);
+
+    i64 summaryCpuL2CacheLength = sprintf(summaryCpuL2Cache, "Level 2 Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size), CpuTest::getLevel2Cache().numberOfWays);
+    AVOID_UNUSED(summaryCpuL2CacheLength);
+
+    UEFI_TEST_ASSERT(summaryCpuL2CacheLength < 39, NgosStatus::ASSERTION);
+
+
+
+    char8 *summaryCpuL3Cache = (char8 *)malloc(33);
+
+    i64 summaryCpuL3CacheLength = sprintf(summaryCpuL3Cache, "Level 3 Cache: %s %u-way", bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays);
+    AVOID_UNUSED(summaryCpuL3CacheLength);
+
+    UEFI_TEST_ASSERT(summaryCpuL3CacheLength < 33, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(addSummaryEntry("Previous test results",      0),                                                                                                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuThreads,            CPU::getNumberOfThreads() * SCORE_PER_THREAD),                                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuSpeed,              (CpuTest::getCpuSpeed() / 100000000) * SCORE_PER_100_MHZ),                                                                                               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1DataCache,        ((u64)CpuTest::getLevel1DataCache().size * CpuTest::getLevel1DataCache().numberOfWays * SCORE_L1_DATA_CACHE_PER_1_KB_1_WAY) >> 10),                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1InstructionCache, ((u64)CpuTest::getLevel1InstructionCache().size * CpuTest::getLevel1InstructionCache().numberOfWays * SCORE_L1_INSTRUCTION_CACHE_PER_1_KB_1_WAY) >> 10), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL2Cache,            ((u64)CpuTest::getLevel2Cache().size * CpuTest::getLevel2Cache().numberOfWays * SCORE_L2_CACHE_PER_1_MB_1_WAY) >> 20),                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL3Cache,            ((u64)CpuTest::getLevel3Cache().size * CpuTest::getLevel3Cache().numberOfWays * SCORE_L3_CACHE_PER_1_MB_1_WAY) >> 20),                                   NgosStatus::ASSERTION);
+
+
+
+    UEFI_TEST_ASSERT(flagsCount == ARRAY_COUNT(testedFeaturesScores), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < flagsCount; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(addSummaryFeature(testedFeatures[i], testedFeaturesScores[i]), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(addSummaryTotal(), NgosStatus::ASSERTION);
 
 
 
@@ -813,6 +924,100 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPosition
 
     UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setColor(color),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setColor(color2), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
+{
+    UEFI_LT((" | name = 0x%p, score = %u", name, score));
+
+    UEFI_ASSERT(name, "name is null", NgosStatus::ASSERTION);
+
+
+
+    RgbaPixel blackColor;
+
+    blackColor.red   = 0;
+    blackColor.green = 0;
+    blackColor.blue  = 0;
+    blackColor.alpha = 0xFF;
+
+
+
+    char8 *scoreString = (char8 *)malloc(7);
+
+    i64 scoreLength = sprintf(scoreString, "%u", score);
+    AVOID_UNUSED(scoreLength);
+
+    UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
+
+
+
+    u64 row = sSummaryTableWidget->getRowCount();
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *nameLabelWidget = new LabelWidget(name, sSummaryTableWidget);
+    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(blackColor),                                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget), NgosStatus::ASSERTION);
+
+    LabelWidget *scoreLabelWidget = new LabelWidget(scoreString, sSummaryTableWidget);
+    UEFI_ASSERT_EXECUTION(scoreLabelWidget->setColor(blackColor),                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_SCORE, scoreLabelWidget), NgosStatus::ASSERTION);
+
+
+
+    sSummaryTotal += score;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, u64 score)
+{
+    UEFI_LT((" | flag = %u, score = %u", flag, score));
+
+
+
+    if (CPU::hasFlag(flag))
+    {
+        const char8 *flagText = x86FeaturesNames[(u64)flag];
+        UEFI_TEST_ASSERT(flagText && *flagText, NgosStatus::ASSERTION);
+
+
+
+        char8 *flagTextFull = (char8 *)malloc(28);
+
+        i64 flagTextLength = sprintf(flagTextFull, "Support feature: %s", flagText);
+        AVOID_UNUSED(flagTextLength);
+
+        UEFI_TEST_ASSERT(flagTextLength < 28, NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(addSummaryEntry(flagTextFull, score), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::addSummaryTotal()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(addSummaryEntry("Total", sSummaryTotal), NgosStatus::ASSERTION);
+
+    sSummaryTotal >>= 1;
 
 
 

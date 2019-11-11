@@ -22,7 +22,10 @@ public:
     static NgosStatus exec(); // TEST: NO
 
 private:
-    static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget);
+    static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
+    static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO
+    static NgosStatus addSummaryFeature(X86Feature flag, u64 score); // TEST: NO
+    static NgosStatus addSummaryTotal(); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
@@ -49,6 +52,7 @@ private:
     static TabButton   *sTestTabButton;
     static TabButton   *sSummaryTabButton;
     static TableWidget *sSummaryTableWidget;
+    static u64          sSummaryTotal;
     static u16          sWaitEventsCount;
     static uefi_event  *sWaitEvents;
 };

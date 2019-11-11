@@ -35,6 +35,8 @@ public:
     NgosStatus setRowCount(u64 rows); // TEST: NO
     u64 getRowCount() const; // TEST: NO
 
+    NgosStatus setCellWidget(u64 row, u64 column, Widget *widget);
+
 private:
     Image                          *mBackgroundImage;
     Image                          *mHeaderImage;

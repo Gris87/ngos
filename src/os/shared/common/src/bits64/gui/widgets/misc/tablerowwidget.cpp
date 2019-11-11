@@ -8,6 +8,7 @@
 
 TableRowWidget::TableRowWidget(Widget *parent)
     : Widget(parent)
+    , mCells()
 {
     COMMON_LT((" | parent = 0x%p", parent));
 
@@ -83,4 +84,24 @@ NgosStatus TableRowWidget::repaint()
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus TableRowWidget::addCell(TableCellWidget *cell)
+{
+    COMMON_LT((" | cell = 0x%p", cell));
+
+    COMMON_ASSERT(cell, "cell is null", NgosStatus::ASSERTION);
+
+
+
+    return mCells.append(cell);
+}
+
+TableCellWidget* TableRowWidget::getCell(u64 column) const
+{
+    COMMON_LT((" | column = %u", column));
+
+
+
+    return mCells.at(column);
 }

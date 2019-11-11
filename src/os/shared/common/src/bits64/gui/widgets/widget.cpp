@@ -27,7 +27,7 @@ Widget::Widget(Widget *parent)
 
     if (mParent)
     {
-        mParent->mChildren.append(this);
+        COMMON_ASSERT_EXECUTION(mParent->mChildren.append(this));
     }
 }
 
@@ -437,6 +437,41 @@ press_event_handler Widget::getPressEventHandler() const
 
 
     return nullptr;
+}
+
+NgosStatus Widget::setParent(Widget *parent)
+{
+    COMMON_LT((" | parent = 0x%p", parent));
+
+    COMMON_ASSERT(parent, "parent is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mParent, NgosStatus::ASSERTION);
+
+
+
+    if (mParent != parent)
+    {
+        COMMON_ASSERT_EXECUTION(mParent->mChildren.remove(this), NgosStatus::ASSERTION);
+
+        mParent = parent;
+
+        COMMON_ASSERT_EXECUTION(mParent->mChildren.append(this), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+Widget* Widget::getParent() const
+{
+    COMMON_LT((""));
+
+
+
+    return mParent;
 }
 
 NgosStatus Widget::setPosition(i64 positionX, i64 positionY)

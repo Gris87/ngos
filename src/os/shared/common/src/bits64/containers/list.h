@@ -20,6 +20,8 @@ public:
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
 
+    NgosStatus remove(const T &value);
+
     NgosStatus clear();
 
     NgosStatus moveToEnd(const T &value);
@@ -103,6 +105,70 @@ NgosStatus List<T>::prepend(const T &value)
     }
 
     mHead = element;
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus List<T>::remove(const T &value)
+{
+    COMMON_LT((" | value = ..."));
+
+
+
+    if (mHead)
+    {
+        if (mTail->getData() == value)
+        {
+            if (mHead == mTail)
+            {
+                delete mHead;
+
+                mHead = nullptr;
+                mTail = nullptr;
+            }
+            else
+            {
+                ListElement<T> *temp = mTail;
+
+                mTail = mTail->getPrevious();
+                COMMON_ASSERT_EXECUTION(mTail->setNext(nullptr), NgosStatus::ASSERTION);
+
+                delete temp;
+            }
+        }
+        else
+        if (mHead->getData() == value)
+        {
+            ListElement<T> *temp = mHead;
+
+            mHead = mHead->getNext();
+            COMMON_ASSERT_EXECUTION(mHead->setPrevious(nullptr), NgosStatus::ASSERTION);
+
+            delete temp;
+        }
+        else
+        {
+            ListElement<T> *element = mHead->getNext();
+
+            while (element != mTail)
+            {
+                if (element->getData() == value)
+                {
+                    COMMON_ASSERT_EXECUTION(element->getPrevious()->setNext(element->getNext()),     NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(element->getNext()->setPrevious(element->getPrevious()), NgosStatus::ASSERTION);
+
+                    delete element;
+
+                    break;
+                }
+
+                element = element->getNext();
+            }
+        }
+    }
 
 
 
