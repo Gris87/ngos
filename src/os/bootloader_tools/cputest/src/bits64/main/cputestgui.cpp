@@ -718,6 +718,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setPosition(tabPageWidth * SUMMARY_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setSize(summaryTableWidth, summaryTableHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setKeyboardEventHandler(onSummaryTableWidgetKeyboardEvent),                                                                             NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(summaryTableHeight * SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
@@ -1274,6 +1275,7 @@ NgosStatus CpuTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInput
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sTestTabButton);
+        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
 
         default:
         {
@@ -1310,6 +1312,7 @@ NgosStatus CpuTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sSummaryTabButton);
+        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
 
         default:
         {
@@ -1346,6 +1349,42 @@ NgosStatus CpuTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sTestTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus CpuTestGUI::onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sSummaryTabButton);
 
         default:
         {

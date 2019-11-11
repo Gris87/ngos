@@ -4,6 +4,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/gui/widgets/misc/tablecellwidget.h>
+#include <ngos/linkage.h>
 
 
 
@@ -18,6 +19,7 @@ TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *par
     , mWrapperWidget(nullptr)
     , mRowsWrapperWidget(nullptr)
     , mRows()
+    , mKeyboardEventHandler(nullptr)
 {
     COMMON_LT((" | backgroundImage = 0x%p, headerImage = 0x%p, parent = 0x%p", backgroundImage, headerImage, parent));
 
@@ -94,6 +96,19 @@ NgosStatus TableWidget::repaint()
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus TableWidget::onKeyboardEvent(const UefiInputKey &key)
+{
+    COMMON_LT((" | key = ..."));
+
+
+
+    AVOID_UNUSED(key);
+
+
+
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus TableWidget::setRowHeight(u64 height)
@@ -322,3 +337,26 @@ NgosStatus TableWidget::setCellWidget(u64 row, u64 column, Widget *widget)
 
     return NgosStatus::OK;
 }
+
+NgosStatus TableWidget::setKeyboardEventHandler(keyboard_event_handler handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    mKeyboardEventHandler = handler;
+
+
+
+    return NgosStatus::OK;
+}
+
+keyboard_event_handler TableWidget::getKeyboardEventHandler() const
+{
+    COMMON_LT((""));
+
+
+
+    return mKeyboardEventHandler;
+}
+

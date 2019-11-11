@@ -20,6 +20,7 @@ public:
 
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
+    NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
 
     NgosStatus setRowHeight(u64 height); // TEST: NO
     u64 getRowHeight() const; // TEST: NO
@@ -37,6 +38,9 @@ public:
 
     NgosStatus setCellWidget(u64 row, u64 column, Widget *widget);
 
+    NgosStatus setKeyboardEventHandler(keyboard_event_handler handler) override; // TEST: NO
+    keyboard_event_handler getKeyboardEventHandler() const override; // TEST: NO
+
 private:
     Image                          *mBackgroundImage;
     Image                          *mHeaderImage;
@@ -47,6 +51,7 @@ private:
     WrapperWidget                  *mWrapperWidget;
     WrapperWidget                  *mRowsWrapperWidget;
     ArrayList<TableRowWidget *>     mRows;
+    keyboard_event_handler          mKeyboardEventHandler;
 };
 
 
