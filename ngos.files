@@ -218,6 +218,8 @@ src/os/bootloader_tools/cputest/assets/images/selectedtab_hover.9.png
 src/os/bootloader_tools/cputest/assets/images/selectedtab_normal.9.png
 src/os/bootloader_tools/cputest/assets/images/selectedtab_pressed.9.png
 src/os/bootloader_tools/cputest/assets/images/shutdown.png
+src/os/bootloader_tools/cputest/assets/images/start.png
+src/os/bootloader_tools/cputest/assets/images/stop.jpg
 src/os/bootloader_tools/cputest/assets/images/summary.png
 src/os/bootloader_tools/cputest/assets/images/system_information.png
 src/os/bootloader_tools/cputest/assets/images/tab_focused.9.png
