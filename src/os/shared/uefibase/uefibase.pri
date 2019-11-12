@@ -247,6 +247,7 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/random/random.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/string/string.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/string/utils.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/types.h \
     $$PWD/test/bits64/sections/section0/__shared/uefibase/bits64/other/uefibootmemorymap.h \
     $$PWD/test/bits64/sections/section0/__shared/uefibase/bits64/types.h \

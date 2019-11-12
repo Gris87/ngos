@@ -59,6 +59,47 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
 
 
 
+    TEST_CASE("fill()");
+    {
+        Image temp(10, 20,  true,  true);
+        Image temp2(10, 20, false, true);
+
+        TEST_ASSERT_EQUALS(temp.clearBuffer(),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp2.clearBuffer(), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(memempty(temp.mBuffer,  temp.mBufferSize),  true);
+        TEST_ASSERT_EQUALS(memempty(temp2.mBuffer, temp2.mBufferSize), true);
+
+
+
+        RgbaPixel color;
+
+        color.blue  = 1;
+        color.green = 2;
+        color.red   = 3;
+        color.alpha = 4;
+
+
+
+        TEST_ASSERT_EQUALS(temp.fill(color),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp2.fill(color), NgosStatus::OK);
+
+
+
+        for (i64 i = 0; i < (i64)temp.mBufferSize; ++i)
+        {
+            TEST_ASSERT_EQUALS(temp.mBuffer[i], (i % 4) + 1);
+        }
+
+        for (i64 i = 0; i < (i64)temp2.mBufferSize; ++i)
+        {
+            TEST_ASSERT_EQUALS(temp2.mBuffer[i], (i % 3) + 1);
+        }
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("createNinePatch()");
     {
         Image temp(10, 20, true, true);

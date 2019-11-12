@@ -1102,6 +1102,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/memo
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/string/string.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/string/utils.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/types.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/other/uefibootmemorymap.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/types.h

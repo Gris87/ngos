@@ -162,7 +162,8 @@ u64          CpuTestGUI::sSummaryTotal;
 u16          CpuTestGUI::sWaitEventsCount;
 uefi_event  *CpuTestGUI::sWaitEvents;
 
-X86Feature testedFeatures[] = {
+X86Feature testedFeatures[] =
+{
     X86Feature::NX
     , X86Feature::LA57
     , X86Feature::MMX
@@ -189,7 +190,8 @@ X86Feature testedFeatures[] = {
     , X86Feature::VMX
 };
 
-u64 testedFeaturesScores[] = {
+u64 testedFeaturesScores[] =
+{
     100     // X86Feature::NX
     , 50    // X86Feature::LA57
     , 16    // X86Feature::MMX
@@ -571,12 +573,12 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     u64 featurePanelPositionX = featurePanelLeft;
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(featurePanelImage, featurePanelWidth, featurePanelHeight, &featurePanelResizedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(featurePanelImage, featurePanelWidth, featurePanelHeight, &featurePanelResizedImage), NgosStatus::ASSERTION);
 
 
 
     i64 flagsCount = ARRAY_COUNT(testedFeatures);
-    COMMON_LVVV(("flagsCount = %d", flagsCount));
+    UEFI_LVVV(("flagsCount = %d", flagsCount));
 
     for (i64 i = 0; i < flagsCount; ++i)
     {
@@ -598,7 +600,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuClocksWidth  = tabPageWidth  * CPU_CLOCKS_PANEL_WIDTH_PERCENT  / 100;
+    u64 cpuClocksWidth  = tabPageWidth * CPU_CLOCKS_PANEL_WIDTH_PERCENT / 100;
     u64 cpuClocksHeight = cpuPanelHeight;
 
     PanelWidget *cpuClocksPanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
@@ -628,7 +630,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuCacheWidth  = tabPageWidth  * CPU_CACHE_PANEL_WIDTH_PERCENT / 100;
+    u64 cpuCacheWidth  = tabPageWidth * CPU_CACHE_PANEL_WIDTH_PERCENT / 100;
     u64 cpuCacheHeight = cpuPanelHeight;
 
     PanelWidget *cpuCachePanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);

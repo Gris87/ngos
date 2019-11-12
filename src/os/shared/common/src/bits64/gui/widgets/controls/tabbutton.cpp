@@ -506,11 +506,18 @@ NgosStatus TabButton::setState(WidgetState state)
     {
         mState = state;
 
-        COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
-
-        if (isVisible())
+        if (
+            mWidth // mWidth > 0
+            &&
+            mHeight // mHeight > 0
+           )
         {
-            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+            if (isVisible())
+            {
+                COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            }
         }
     }
 
@@ -538,11 +545,18 @@ NgosStatus TabButton::setSelected(bool selected)
     {
         mSelected = selected;
 
-        COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
-
-        if (isVisible())
+        if (
+            mWidth // mWidth > 0
+            &&
+            mHeight // mHeight > 0
+           )
         {
-            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+            if (isVisible())
+            {
+                COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            }
         }
     }
 

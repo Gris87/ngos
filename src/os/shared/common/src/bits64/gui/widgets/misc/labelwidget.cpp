@@ -270,11 +270,18 @@ NgosStatus LabelWidget::setText(const char8 *text)
 
     mText = text;
 
-    COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
-
-    if (isVisible())
+    if (
+        mWidth // mWidth > 0
+        &&
+        mHeight // mHeight > 0
+       )
     {
-        COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -293,17 +300,24 @@ const char8* LabelWidget::getText() const
 
 NgosStatus LabelWidget::setColor(const RgbaPixel &color)
 {
-    COMMON_LT((""));
+    COMMON_LT((" | color = ..."));
 
 
 
     mColor = color;
 
-    COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
-
-    if (isVisible())
+    if (
+        mWidth // mWidth > 0
+        &&
+        mHeight // mHeight > 0
+       )
     {
-        COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        }
     }
 
 

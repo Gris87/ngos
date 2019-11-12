@@ -90,13 +90,18 @@
 #include <common/src/bits64/gui/other/widgetstate.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/controls/tabbutton.h>
+#include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
 #include <common/src/bits64/gui/widgets/misc/consolewidget.h>
 #include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
 #include <common/src/bits64/gui/widgets/misc/panelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/tablecellwidget.h>
+#include <common/src/bits64/gui/widgets/misc/tableheaderwidget.h>
+#include <common/src/bits64/gui/widgets/misc/tablerowwidget.h>
 #include <common/src/bits64/gui/widgets/misc/tabpagewidget.h>
+#include <common/src/bits64/gui/widgets/misc/wrapperwidget.h>
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
@@ -208,10 +213,15 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
         TEST_ASSERT_EQUALS(sizeof(StretchRange),                                  4);
         TEST_ASSERT_EQUALS(sizeof(TabButton),                                     296);
+        TEST_ASSERT_EQUALS(sizeof(TableCellWidget),                               88);
+        TEST_ASSERT_EQUALS(sizeof(TableHeaderWidget),                             104);
+        TEST_ASSERT_EQUALS(sizeof(TableRowWidget),                                120);
+        TEST_ASSERT_EQUALS(sizeof(TableWidget),                                   232);
         TEST_ASSERT_EQUALS(sizeof(TabPageWidget),                                 88);
         TEST_ASSERT_EQUALS(sizeof(TabWidget),                                     152);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        88);
         TEST_ASSERT_EQUALS(sizeof(WidgetState),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(WrapperWidget),                                 88);
         TEST_ASSERT_EQUALS(sizeof(X86Bug),                                        2);
         TEST_ASSERT_EQUALS(sizeof(x86BugWord),                                    1);
         TEST_ASSERT_EQUALS(sizeof(X86Feature),                                    2);

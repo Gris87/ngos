@@ -38,6 +38,7 @@ void CppForVerifier::verify(CodeWorkerThread *worker, const QString &path, const
 qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 row, QStringList &variablesStack)
 {
     QString line = lines.at(row);
+    removeComments(line);
 
     qint64 index = line.indexOf('(');
 

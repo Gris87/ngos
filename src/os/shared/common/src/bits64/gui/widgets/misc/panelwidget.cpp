@@ -22,7 +22,7 @@ PanelWidget::PanelWidget(Image *panelImage, Image *panelResizedImage, Widget *pa
     , mPanelImage(panelImage)
     , mPredefined(true)
 {
-    COMMON_LT((" | panelImage = 0x%p, panelResizedImage = 0x%p, parent = 0x%p", panelImage, panelResizedImageparent));
+    COMMON_LT((" | panelImage = 0x%p, panelResizedImage = 0x%p, parent = 0x%p", panelImage, panelResizedImage, parent));
 
     COMMON_ASSERT(panelImage,        "panelImage is null");
     COMMON_ASSERT(panelResizedImage, "panelResizedImage is null");

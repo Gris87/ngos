@@ -121,7 +121,7 @@ inline const char8* hertzToString(u64 hertz)
 
     switch (level)
     {
-        case 0: length = sprintf(res, "%u Hz",      hertz);                      break;
+        case 0: length = sprintf(res, "%u Hz",      hertz);                       break;
         case 1: length = sprintf(res, "%u%.3s KHz", hertz, numberDecimals[tail]); break;
         case 2: length = sprintf(res, "%u%.3s MHz", hertz, numberDecimals[tail]); break;
         case 3: length = sprintf(res, "%u%.3s GHz", hertz, numberDecimals[tail]); break;

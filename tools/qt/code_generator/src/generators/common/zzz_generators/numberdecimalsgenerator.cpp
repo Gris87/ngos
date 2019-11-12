@@ -42,7 +42,7 @@ bool NumberDecimalsGenerator::generate(const QString &path)
 
         if (number.length() == 1)
         {
-            number = "0" + number;
+            number = '0' + number;
         }
         else
         if (number.endsWith('0'))
@@ -66,14 +66,14 @@ bool NumberDecimalsGenerator::generate(const QString &path)
         decimalIndecies[i] = curIndex;
     }
 
-    lines.append(";");
+    lines.append(";"); // Ignore CppSingleCharVerifier
 
     addThreeBlankLines(lines);
 
 
 
     lines.append("const char8* numberDecimals[995] =");
-    lines.append("{");
+    lines.append("{"); // Ignore CppSingleCharVerifier
 
     for (qint64 i = 0; i < 995; ++i)
     {
@@ -83,7 +83,7 @@ bool NumberDecimalsGenerator::generate(const QString &path)
         }
         else
         {
-            lines.append(QString("    &numberDecimalsFull[%1]%2 // %3").arg(decimalIndecies[i]).arg(i < 995 ? "," : "").arg(i));
+            lines.append(QString("    &numberDecimalsFull[%1]%2 // %3").arg(decimalIndecies[i]).arg(i < 995 ? "," : "").arg(i)); // Ignore CppSingleCharVerifier
         }
     }
 

@@ -1,10 +1,10 @@
 #include "tablewidget.h"
 
 #include <common/src/bits64/graphics/graphics.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/tablecellwidget.h>
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
 #include <ngos/linkage.h>
 
 
@@ -556,13 +556,13 @@ NgosStatus TableWidget::setRowCount(u64 rows)
     {
         TableRowWidget *rowWidget = new TableRowWidget(mRowsWrapperWidget);
 
-        COMMON_ASSERT_EXECUTION(rowWidget->setPosition(0, i * mRowHeight),         NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(rowWidget->setSize(mTotalColumnWidth, mRowHeight), NgosStatus::ASSERTION);
-
         if (i == (i64)mSelectedRow)
         {
             COMMON_ASSERT_EXECUTION(rowWidget->setState(WidgetState::INACTIVE), NgosStatus::ASSERTION);
         }
+
+        COMMON_ASSERT_EXECUTION(rowWidget->setPosition(0, i * mRowHeight),         NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(rowWidget->setSize(mTotalColumnWidth, mRowHeight), NgosStatus::ASSERTION);
 
 
 

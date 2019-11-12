@@ -586,6 +586,9 @@ NgosStatus Widget::setSize(u64 width, u64 height)
 {
     COMMON_LT((" | width = %u, height = %u", width, height));
 
+    COMMON_ASSERT(width  > 0, "width is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+
 
 
     if (

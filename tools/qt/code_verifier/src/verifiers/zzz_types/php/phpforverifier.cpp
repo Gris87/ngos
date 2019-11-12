@@ -35,6 +35,7 @@ void PhpForVerifier::verify(CodeWorkerThread *worker, const QString &path, const
 qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 row, QStringList &variablesStack)
 {
     QString line = lines.at(row);
+    removeComments(line);
 
     qint64 index = line.indexOf('(');
 
