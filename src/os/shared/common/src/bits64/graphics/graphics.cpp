@@ -243,8 +243,6 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
 
 
-
-
     if (positionX + left < 0)
     {
         left = -positionX;
