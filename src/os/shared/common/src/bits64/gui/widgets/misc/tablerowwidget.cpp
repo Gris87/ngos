@@ -9,6 +9,7 @@
 TableRowWidget::TableRowWidget(Widget *parent)
     : Widget(parent)
     , mCells()
+    , mState(WidgetState::NORMAL)
 {
     COMMON_LT((" | parent = 0x%p", parent));
 
@@ -44,7 +45,46 @@ NgosStatus TableRowWidget::invalidate()
     }
 
     mOwnResultImage = new Image(mWidth, mHeight, true, false);
-    COMMON_ASSERT_EXECUTION(mOwnResultImage->clearBuffer(), NgosStatus::ASSERTION);
+
+
+
+    if (mState == WidgetState::NORMAL)
+    {
+        COMMON_ASSERT_EXECUTION(mOwnResultImage->clearBuffer(), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        RgbaPixel color;
+
+        switch (mState)
+        {
+            case WidgetState::HOVERED:          color.red = 0x90; color.green = 0x90; color.blue = 0x90; color.alpha = 0xDD; break;
+            case WidgetState::PRESSED:          color.red = 0x60; color.green = 0x60; color.blue = 0x60; color.alpha = 0xDD; break;
+            case WidgetState::FOCUSED:          color.red = 0x40; color.green = 0x60; color.blue = 0x90; color.alpha = 0xDD; break;
+            case WidgetState::FOCUSED_HOVERED:  color.red = 0x30; color.green = 0x40; color.blue = 0x60; color.alpha = 0xDD; break;
+            case WidgetState::INACTIVE:         color.red = 0xC0; color.green = 0xC0; color.blue = 0xC0; color.alpha = 0xDD; break;
+            case WidgetState::INACTIVE_HOVERED: color.red = 0xE0; color.green = 0xE0; color.blue = 0xE0; color.alpha = 0xDD; break;
+
+            case WidgetState::NONE:
+            case WidgetState::NORMAL:
+            {
+                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+        }
+
+        COMMON_ASSERT_EXECUTION(mOwnResultImage->fill(color), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -84,6 +124,48 @@ NgosStatus TableRowWidget::repaint()
 
 
     return NgosStatus::OK;
+}
+
+bool TableRowWidget::isAcceptMouseEvents()
+{
+    COMMON_LT((""));
+
+
+
+    return true;
+}
+
+NgosStatus TableRowWidget::setState(WidgetState state)
+{
+    COMMON_LT((" | state = %u", state));
+
+
+
+    if (mState != state)
+    {
+        mState = state;
+
+        COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+WidgetState TableRowWidget::getState() const
+{
+    COMMON_LT((""));
+
+
+
+    return mState;
 }
 
 NgosStatus TableRowWidget::addCell(TableCellWidget *cell)

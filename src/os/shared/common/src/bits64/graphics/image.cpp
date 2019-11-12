@@ -70,6 +70,43 @@ NgosStatus Image::clearBuffer()
     return NgosStatus::OK;
 }
 
+NgosStatus Image::fill(const RgbaPixel &color)
+{
+    COMMON_LT((" | color = ..."));
+
+
+
+    if (isRgba())
+    {
+        RgbaPixel *buffer     = getRgbaBuffer();
+        i64        resolution = mWidth * mHeight;
+
+        for (i64 i = 0; i < resolution; ++i)
+        {
+            buffer[i].red   = color.red;
+            buffer[i].green = color.green;
+            buffer[i].blue  = color.blue;
+            buffer[i].alpha = color.alpha;
+        }
+    }
+    else
+    {
+        RgbPixel *buffer     = getRgbBuffer();
+        i64       resolution = mWidth * mHeight;
+
+        for (i64 i = 0; i < resolution; ++i)
+        {
+            buffer[i].red   = color.red;
+            buffer[i].green = color.green;
+            buffer[i].blue  = color.blue;
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Image::createNinePatch()
 {
     COMMON_LT((""));

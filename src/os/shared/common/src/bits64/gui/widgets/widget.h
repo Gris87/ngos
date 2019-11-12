@@ -44,6 +44,8 @@ public:
 
     bool isUpdatesEnabled(); // TEST: NO
 
+    bool isFocused(); // TEST: NO
+
     virtual NgosStatus setState(WidgetState state); // TEST: NO
     virtual WidgetState getState() const; // TEST: NO
 

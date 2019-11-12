@@ -19,11 +19,17 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    bool isAcceptMouseEvents() override; // TEST: NO
+
+    NgosStatus setState(WidgetState state) override; // TEST: NO
+    WidgetState getState() const override; // TEST: NO
+
     NgosStatus addCell(TableCellWidget *cell); // TEST: NO
     TableCellWidget* getCell(u64 column) const; // TEST: NO
 
 private:
     ArrayList<TableCellWidget *> mCells;
+    WidgetState                  mState;
 };
 
 

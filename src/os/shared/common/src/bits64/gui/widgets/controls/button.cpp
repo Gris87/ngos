@@ -215,6 +215,8 @@ NgosStatus Button::repaint()
         case WidgetState::FOCUSED_HOVERED: mOwnResultImage = mFocusedHoverResizedImage; image = mFocusedHoverImage; break;
 
         case WidgetState::NONE:
+        case WidgetState::INACTIVE:
+        case WidgetState::INACTIVE_HOVERED:
         {
             COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
 

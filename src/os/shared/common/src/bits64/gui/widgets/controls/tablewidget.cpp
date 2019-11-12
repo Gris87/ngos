@@ -3,6 +3,7 @@
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/tablecellwidget.h>
 #include <ngos/linkage.h>
 
@@ -12,6 +13,7 @@ TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *par
     : Widget(parent)
     , mBackgroundImage(backgroundImage)
     , mHeaderImage(headerImage)
+    , mState(WidgetState::NORMAL)
     , mRowHeight(0)
     , mColumnWidth()
     , mTotalColumnWidth(0)
@@ -19,6 +21,7 @@ TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *par
     , mWrapperWidget(nullptr)
     , mRowsWrapperWidget(nullptr)
     , mRows()
+    , mSelectedRow(0)
     , mKeyboardEventHandler(nullptr)
 {
     COMMON_LT((" | backgroundImage = 0x%p, headerImage = 0x%p, parent = 0x%p", backgroundImage, headerImage, parent));
@@ -104,11 +107,296 @@ NgosStatus TableWidget::onKeyboardEvent(const UefiInputKey &key)
 
 
 
-    AVOID_UNUSED(key);
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:
+        {
+            if (!mSelectedRow) // mSelectedRow <= 0
+            {
+                return NgosStatus::NO_EFFECT;
+            }
+
+
+
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(setSelectedRow(mSelectedRow - 1), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(),            NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case UefiInputKeyScanCode::DOWN:
+        {
+            if (mSelectedRow >= mRows.getSize() - 1)
+            {
+                return NgosStatus::NO_EFFECT;
+            }
+
+
+
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(setSelectedRow(mSelectedRow + 1), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(),            NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case UefiInputKeyScanCode::PAGE_UP:
+        {
+            u64 visibleRow = mHeight / mRowHeight;
+
+            if (visibleRow <= 1)
+            {
+                visibleRow = 1;
+            }
+            else
+            {
+                --visibleRow;
+            }
+
+
+
+            u64 selectedRow;
+
+            if (mSelectedRow <= visibleRow)
+            {
+                selectedRow = 0;
+            }
+            else
+            {
+                selectedRow = mSelectedRow - visibleRow;
+            }
+
+
+
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(),       NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case UefiInputKeyScanCode::PAGE_DOWN:
+        {
+            u64 visibleRow = mHeight / mRowHeight;
+
+            if (visibleRow <= 1)
+            {
+                visibleRow = 1;
+            }
+            else
+            {
+                --visibleRow;
+            }
+
+
+
+            u64 selectedRow;
+
+            if (mSelectedRow >= mRows.getSize() - visibleRow)
+            {
+                selectedRow = mRows.getSize() - 1;
+            }
+            else
+            {
+                selectedRow = mSelectedRow + visibleRow;
+            }
+
+
+
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(),       NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case UefiInputKeyScanCode::HOME:
+        {
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(setSelectedRow(0),     NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case UefiInputKeyScanCode::END:
+        {
+            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(setSelectedRow(mRows.getSize() - 1), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(),               NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
 
 
 
     return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus TableWidget::scrollToSelectedRow()
+{
+    COMMON_LT((""));
+
+
+
+    i64 localPositionY  = mSelectedRow * mRowHeight;
+    i64 globalPositionY = localPositionY + mRowsWrapperWidget->getPositionY();
+
+    if (globalPositionY < 0)
+    {
+        mRowsWrapperWidget->setPosition(0, -localPositionY);
+    }
+    else
+    if (globalPositionY + (i64)mRowHeight > (i64)mWrapperWidget->getHeight())
+    {
+        mRowsWrapperWidget->setPosition(0, (i64)mWrapperWidget->getHeight() - localPositionY - mRowHeight);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus TableWidget::setState(WidgetState state)
+{
+    COMMON_LT((" | state = %u", state));
+
+
+
+    if (mState != state)
+    {
+        mState = state;
+
+
+
+        TableRowWidget *selectedRow = mRows.at(mSelectedRow);
+
+        if (mState == WidgetState::FOCUSED)
+        {
+            switch (selectedRow->getState())
+            {
+                case WidgetState::INACTIVE:         COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::FOCUSED),         NgosStatus::ASSERTION); break;
+                case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::FOCUSED_HOVERED), NgosStatus::ASSERTION); break;
+
+                case WidgetState::PRESSED:
+                {
+                    // Nothing
+                }
+                break;
+
+                case WidgetState::NONE:
+                case WidgetState::NORMAL:
+                case WidgetState::HOVERED:
+                case WidgetState::FOCUSED:
+                case WidgetState::FOCUSED_HOVERED:
+                {
+                    COMMON_LF(("Unexpected widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+
+                default:
+                {
+                    COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+            }
+        }
+        else
+        {
+            switch (selectedRow->getState())
+            {
+                case WidgetState::FOCUSED:         COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::INACTIVE),         NgosStatus::ASSERTION); break;
+                case WidgetState::FOCUSED_HOVERED: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
+
+                case WidgetState::PRESSED:
+                {
+                    // Nothing
+                }
+                break;
+
+                case WidgetState::NONE:
+                case WidgetState::NORMAL:
+                case WidgetState::HOVERED:
+                case WidgetState::INACTIVE:
+                case WidgetState::INACTIVE_HOVERED:
+                {
+                    COMMON_LF(("Unexpected widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+
+                default:
+                {
+                    COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+WidgetState TableWidget::getState() const
+{
+    COMMON_LT((""));
+
+
+
+    return mState;
 }
 
 NgosStatus TableWidget::setRowHeight(u64 height)
@@ -271,6 +559,11 @@ NgosStatus TableWidget::setRowCount(u64 rows)
         COMMON_ASSERT_EXECUTION(rowWidget->setPosition(0, i * mRowHeight),         NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(rowWidget->setSize(mTotalColumnWidth, mRowHeight), NgosStatus::ASSERTION);
 
+        if (i == (i64)mSelectedRow)
+        {
+            COMMON_ASSERT_EXECUTION(rowWidget->setState(WidgetState::INACTIVE), NgosStatus::ASSERTION);
+        }
+
 
 
         u64 positionX = 0;
@@ -338,6 +631,102 @@ NgosStatus TableWidget::setCellWidget(u64 row, u64 column, Widget *widget)
     return NgosStatus::OK;
 }
 
+NgosStatus TableWidget::setSelectedRow(u64 row)
+{
+    COMMON_LT((" | row = %u", row));
+
+
+
+    if (mSelectedRow != row)
+    {
+        TableRowWidget *previousRow = mRows.at(mSelectedRow);
+        TableRowWidget *newRow      = mRows.at(row);
+
+        mSelectedRow = row;
+
+
+
+        switch (previousRow->getState())
+        {
+            case WidgetState::FOCUSED:          COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
+            case WidgetState::FOCUSED_HOVERED:  COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::HOVERED), NgosStatus::ASSERTION); break;
+            case WidgetState::INACTIVE:         COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
+            case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::HOVERED), NgosStatus::ASSERTION); break;
+
+            case WidgetState::PRESSED:
+            {
+                // Nothing
+            }
+            break;
+
+            case WidgetState::NONE:
+            case WidgetState::NORMAL:
+            case WidgetState::HOVERED:
+            {
+                COMMON_LF(("Unexpected widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                COMMON_LF(("Unknown widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+        }
+
+
+
+        switch (newRow->getState())
+        {
+            case WidgetState::NORMAL:  COMMON_ASSERT_EXECUTION(newRow->setState(isFocused() ? WidgetState::FOCUSED         : WidgetState::INACTIVE),         NgosStatus::ASSERTION); break;
+            case WidgetState::HOVERED: COMMON_ASSERT_EXECUTION(newRow->setState(isFocused() ? WidgetState::FOCUSED_HOVERED : WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
+
+            case WidgetState::PRESSED:
+            {
+                // Nothing
+            }
+            break;
+
+            case WidgetState::NONE:
+            case WidgetState::FOCUSED:
+            case WidgetState::FOCUSED_HOVERED:
+            case WidgetState::INACTIVE:
+            case WidgetState::INACTIVE_HOVERED:
+            {
+                COMMON_LF(("Unexpected widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                COMMON_LF(("Unknown widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 TableWidget::getSelectedRow() const
+{
+    COMMON_LT((""));
+
+
+
+    return mSelectedRow;
+}
+
 NgosStatus TableWidget::setKeyboardEventHandler(keyboard_event_handler handler)
 {
     COMMON_LT((" | handler = 0x%p", handler));
@@ -359,4 +748,3 @@ keyboard_event_handler TableWidget::getKeyboardEventHandler() const
 
     return mKeyboardEventHandler;
 }
-

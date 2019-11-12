@@ -19,6 +19,8 @@ public:
     ~Image(); // TEST: NO
 
     NgosStatus clearBuffer();
+    NgosStatus fill(const RgbaPixel &color);
+
     NgosStatus createNinePatch();
 
     NgosStatus setOpaque(bool opaque);

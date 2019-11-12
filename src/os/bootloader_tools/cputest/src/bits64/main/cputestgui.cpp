@@ -1205,6 +1205,7 @@ NgosStatus CpuTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSummaryTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
+        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
 
         default:
         {
@@ -1240,6 +1241,7 @@ NgosStatus CpuTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
 
         default:
         {
@@ -1384,7 +1386,7 @@ NgosStatus CpuTestGUI::onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sSummaryTabButton);
+        case UefiInputKeyScanCode::UP: return (!sSummaryTableWidget->getSelectedRow()) ? GUI::setFocusedWidget(sSummaryTabButton) : NgosStatus::NO_EFFECT; // sSummaryTableWidget->getSelectedRow() == 0
 
         default:
         {

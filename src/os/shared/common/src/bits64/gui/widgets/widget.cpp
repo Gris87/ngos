@@ -373,6 +373,15 @@ bool Widget::isUpdatesEnabled()
     return !mUpdatesLocks; // sUpdatesLocks == 0
 }
 
+bool Widget::isFocused()
+{
+    COMMON_LT((""));
+
+
+
+    return GUI::getFocusedWidget() == this;
+}
+
 NgosStatus Widget::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));

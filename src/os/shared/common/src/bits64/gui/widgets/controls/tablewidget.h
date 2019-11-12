@@ -22,6 +22,11 @@ public:
     NgosStatus repaint() override; // TEST: NO
     NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
 
+    NgosStatus scrollToSelectedRow(); // TEST: NO
+
+    NgosStatus setState(WidgetState state) override; // TEST: NO
+    WidgetState getState() const override; // TEST: NO
+
     NgosStatus setRowHeight(u64 height); // TEST: NO
     u64 getRowHeight() const; // TEST: NO
 
@@ -38,12 +43,16 @@ public:
 
     NgosStatus setCellWidget(u64 row, u64 column, Widget *widget);
 
+    NgosStatus setSelectedRow(u64 row); // TEST: NO
+    u64 getSelectedRow() const; // TEST: NO
+
     NgosStatus setKeyboardEventHandler(keyboard_event_handler handler) override; // TEST: NO
     keyboard_event_handler getKeyboardEventHandler() const override; // TEST: NO
 
 private:
     Image                          *mBackgroundImage;
     Image                          *mHeaderImage;
+    WidgetState                     mState;
     u64                             mRowHeight;
     ArrayList<u64>                  mColumnWidth;
     u64                             mTotalColumnWidth;
@@ -51,6 +60,7 @@ private:
     WrapperWidget                  *mWrapperWidget;
     WrapperWidget                  *mRowsWrapperWidget;
     ArrayList<TableRowWidget *>     mRows;
+    u64                             mSelectedRow;
     keyboard_event_handler          mKeyboardEventHandler;
 };
 
