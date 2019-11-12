@@ -1241,7 +1241,7 @@ NgosStatus CpuTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
 
         default:
         {

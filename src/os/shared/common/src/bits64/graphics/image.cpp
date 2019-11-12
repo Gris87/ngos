@@ -76,10 +76,11 @@ NgosStatus Image::fill(const RgbaPixel &color)
 
 
 
+    i64 resolution = mWidth * mHeight;
+
     if (isRgba())
     {
-        RgbaPixel *buffer     = getRgbaBuffer();
-        i64        resolution = mWidth * mHeight;
+        RgbaPixel *buffer = getRgbaBuffer();
 
         for (i64 i = 0; i < resolution; ++i)
         {
@@ -91,8 +92,7 @@ NgosStatus Image::fill(const RgbaPixel &color)
     }
     else
     {
-        RgbPixel *buffer     = getRgbBuffer();
-        i64       resolution = mWidth * mHeight;
+        RgbPixel *buffer = getRgbBuffer();
 
         for (i64 i = 0; i < resolution; ++i)
         {
