@@ -48,6 +48,7 @@ HEADERS += \
     src/bits64/main/cputest.h \
     src/bits64/main/cputestgui.h \
     src/bits64/other/cacheinfo.h \
+    src/bits64/other/testtype.h \
     src/bits64/tests/testavx.h \
     src/bits64/tests/testbase.h \
     src/bits64/tests/testsse.h \
