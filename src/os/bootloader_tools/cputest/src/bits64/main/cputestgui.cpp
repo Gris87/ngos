@@ -128,6 +128,15 @@
 #define START_BUTTON_WIDTH_PERCENT      20
 #define START_BUTTON_HEIGHT_PERCENT     10
 
+#define TEST_TABLEWIDGET_POSITION_X_PERCENT 0
+#define TEST_TABLEWIDGET_POSITION_Y_PERCENT 10
+#define TEST_TABLEWIDGET_WIDTH_PERCENT      98
+#define TEST_TABLEWIDGET_HEIGHT_PERCENT     89
+#define TEST_TABLEWIDGET_ROW_HEIGHT_PERCENT 7
+
+#define TEST_COLUMN_NAME_WIDTH_PERCENT  80
+#define TEST_COLUMN_SCORE_WIDTH_PERCENT 20
+
 #define SUMMARY_TABLEWIDGET_POSITION_X_PERCENT 1
 #define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 1
 #define SUMMARY_TABLEWIDGET_WIDTH_PERCENT      98
@@ -162,10 +171,11 @@ TabWidget              *CpuTestGUI::sTabWidget;
 TabButton              *CpuTestGUI::sSystemInformationTabButton;
 TabButton              *CpuTestGUI::sTestTabButton;
 TabButton              *CpuTestGUI::sSummaryTabButton;
-TableWidget            *CpuTestGUI::sSummaryTableWidget;
 Button                 *CpuTestGUI::sStartButton;
 Image                  *CpuTestGUI::sStartImage;
 Image                  *CpuTestGUI::sStopImage;
+TableWidget            *CpuTestGUI::sTestTableWidget;
+TableWidget            *CpuTestGUI::sSummaryTableWidget;
 u64                     CpuTestGUI::sSummaryTotal;
 UefiMpServicesProtocol *CpuTestGUI::sMpServices;
 u16                     CpuTestGUI::sWaitEventsCount;
@@ -725,6 +735,35 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    u64 testTableWidth  = tabPageWidth  * TEST_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    u64 testTableHeight = tabPageHeight * TEST_TABLEWIDGET_HEIGHT_PERCENT / 100;
+
+
+
+    sTestTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, testTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setPosition(tabPageWidth * TEST_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * TEST_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setSize(testTableWidth, testTableHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setKeyboardEventHandler(onTestTableWidgetKeyboardEvent),                                                                             NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setRowHeight(tabPageHeight * TEST_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setColumnWidth(COLUMN_NAME,  testTableWidth * TEST_COLUMN_NAME_WIDTH_PERCENT  / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setColumnWidth(COLUMN_SCORE, testTableWidth * TEST_COLUMN_SCORE_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setHeaderText(COLUMN_NAME,  "Name"),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setHeaderText(COLUMN_SCORE, "Score"), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(addTestEntry("Start tests to get results"), NgosStatus::ASSERTION);
+
+
+
     TabPageWidget *summaryTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(summaryTabPageWidget), NgosStatus::ASSERTION);
@@ -742,17 +781,17 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setSize(summaryTableWidth, summaryTableHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setKeyboardEventHandler(onSummaryTableWidgetKeyboardEvent),                                                                             NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(summaryTableHeight * SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(tabPageHeight * SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
 
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(0, summaryTableWidth * SUMMARY_COLUMN_NAME_WIDTH_PERCENT  / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(1, summaryTableWidth * SUMMARY_COLUMN_SCORE_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(COLUMN_NAME,  summaryTableWidth * SUMMARY_COLUMN_NAME_WIDTH_PERCENT  / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(COLUMN_SCORE, summaryTableWidth * SUMMARY_COLUMN_SCORE_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(0, "Name"),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(1, "Score"), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(COLUMN_NAME,  "Name"),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(COLUMN_SCORE, "Score"), NgosStatus::ASSERTION);
 
 
 
@@ -960,6 +999,42 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPosition
 
     UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setColor(color),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setColor(color2), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::addTestEntry(const char8 *name)
+{
+    UEFI_LT((" | name = 0x%p", name));
+
+    UEFI_ASSERT(name, "name is null", NgosStatus::ASSERTION);
+
+
+
+    RgbaPixel blackColor;
+
+    blackColor.red   = 0;
+    blackColor.green = 0;
+    blackColor.blue  = 0;
+    blackColor.alpha = 0xFF;
+
+
+
+    u64 row = sTestTableWidget->getRowCount();
+
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *nameLabelWidget = new LabelWidget(name, sTestTableWidget);
+    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(blackColor),                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget), NgosStatus::ASSERTION);
+
+    LabelWidget *scoreLabelWidget = new LabelWidget("", sTestTableWidget);
+    UEFI_ASSERT_EXECUTION(scoreLabelWidget->setColor(blackColor),                               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setCellWidget(row, COLUMN_SCORE, scoreLabelWidget), NgosStatus::ASSERTION);
 
 
 
@@ -1447,7 +1522,43 @@ NgosStatus CpuTestGUI::onStartButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sTestTabButton);
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sTestTabButton);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sTestTableWidget);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sTestTableWidget);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus CpuTestGUI::onTestTableWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP: return (!sTestTableWidget->getSelectedRow()) ? GUI::setFocusedWidget(sStartButton) : NgosStatus::NO_EFFECT; // sTestTableWidget->getSelectedRow() == 0
 
         default:
         {
