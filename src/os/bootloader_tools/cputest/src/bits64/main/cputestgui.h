@@ -27,6 +27,8 @@ private:
     static NgosStatus addSummaryFeature(X86Feature flag, u64 score); // TEST: NO
     static NgosStatus addSummaryTotal(); // TEST: NO
 
+    static NgosStatus focusTabFirstWidget(); // TEST: NO
+
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
     static NgosStatus processKeyboardEvent(); // TEST: NO
@@ -38,6 +40,7 @@ private:
     static NgosStatus onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onStartButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
@@ -45,6 +48,7 @@ private:
     static NgosStatus onSystemInformationTabButtonPressed(); // TEST: NO
     static NgosStatus onTestTabButtonPressed(); // TEST: NO
     static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
+    static NgosStatus onStartButtonPressed(); // TEST: NO
 
     static Button      *sRebootButton;
     static Button      *sShutdownButton;
@@ -52,6 +56,9 @@ private:
     static TabButton   *sSystemInformationTabButton;
     static TabButton   *sTestTabButton;
     static TabButton   *sSummaryTabButton;
+    static Button      *sStartButton;
+    static Image       *sStartImage;
+    static Image       *sStopImage;
     static TableWidget *sSummaryTableWidget;
     static u64          sSummaryTotal;
     static u16          sWaitEventsCount;

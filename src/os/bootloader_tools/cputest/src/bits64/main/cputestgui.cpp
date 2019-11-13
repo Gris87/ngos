@@ -123,6 +123,11 @@
 #define CPU_CACHE_L3_TEXT_WIDTH_PERCENT      94
 #define CPU_CACHE_L3_TEXT_HEIGHT_PERCENT     17
 
+#define START_BUTTON_POSITION_X_PERCENT 0
+#define START_BUTTON_POSITION_Y_PERCENT 0
+#define START_BUTTON_WIDTH_PERCENT      20
+#define START_BUTTON_HEIGHT_PERCENT     10
+
 #define SUMMARY_TABLEWIDGET_POSITION_X_PERCENT 1
 #define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 1
 #define SUMMARY_TABLEWIDGET_WIDTH_PERCENT      98
@@ -158,6 +163,9 @@ TabButton   *CpuTestGUI::sSystemInformationTabButton;
 TabButton   *CpuTestGUI::sTestTabButton;
 TabButton   *CpuTestGUI::sSummaryTabButton;
 TableWidget *CpuTestGUI::sSummaryTableWidget;
+Button      *CpuTestGUI::sStartButton;
+Image       *CpuTestGUI::sStartImage;
+Image       *CpuTestGUI::sStopImage;
 u64          CpuTestGUI::sSummaryTotal;
 u16          CpuTestGUI::sWaitEventsCount;
 uefi_event  *CpuTestGUI::sWaitEvents;
@@ -307,6 +315,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",                    &shutdownImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/start.png",                       &sStartImage),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &sStopImage),                   NgosStatus::ASSERTION);
 
 
 
@@ -705,6 +715,15 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    sStartButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sStartImage, nullptr, "Start", testTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sStartButton->setPosition(tabPageWidth * START_BUTTON_POSITION_X_PERCENT / 100, tabPageHeight * START_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sStartButton->setSize(tabPageWidth     * START_BUTTON_WIDTH_PERCENT      / 100, tabPageHeight * START_BUTTON_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sStartButton->setKeyboardEventHandler(onStartButtonKeyboardEvent),                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sStartButton->setPressEventHandler(onStartButtonPressed),                                                                               NgosStatus::ASSERTION);
+
+
+
     TabPageWidget *summaryTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(summaryTabPageWidget), NgosStatus::ASSERTION);
@@ -1027,6 +1046,32 @@ NgosStatus CpuTestGUI::addSummaryTotal()
     return NgosStatus::OK;
 }
 
+NgosStatus CpuTestGUI::focusTabFirstWidget()
+{
+    UEFI_LT((""));
+
+
+
+    switch (sTabWidget->getCurrentPage())
+    {
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return NgosStatus::NO_EFFECT;
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sStartButton);
+        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d", sTabWidget->getCurrentPage()));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus CpuTestGUI::generateWaitEventList()
 {
     UEFI_LT((""));
@@ -1207,7 +1252,7 @@ NgosStatus CpuTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSummaryTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
-        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -1243,7 +1288,7 @@ NgosStatus CpuTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: focusTabFirstWidget();
 
         default:
         {
@@ -1279,7 +1324,7 @@ NgosStatus CpuTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInput
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -1316,7 +1361,7 @@ NgosStatus CpuTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sSummaryTabButton);
-        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -1353,7 +1398,7 @@ NgosStatus CpuTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sTestTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN:  return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -1366,7 +1411,42 @@ NgosStatus CpuTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_TAB: return sTabWidget->getCurrentPage() == TABWIDGET_PAGE_SUMMARY ? GUI::setFocusedWidget(sSummaryTableWidget) : GUI::setFocusedWidget(sRebootButton);
+        case KEY_TAB: return focusTabFirstWidget();
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus CpuTestGUI::onStartButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sTestTabButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -1474,6 +1554,15 @@ NgosStatus CpuTestGUI::onSummaryTabButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SUMMARY), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::onStartButtonPressed()
+{
+    UEFI_LT((""));
 
 
 
