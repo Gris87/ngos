@@ -241,6 +241,13 @@ src/os/bootloader_tools/cputest/src/bits64/main/cputest.h
 src/os/bootloader_tools/cputest/src/bits64/main/cputestgui.cpp
 src/os/bootloader_tools/cputest/src/bits64/main/cputestgui.h
 src/os/bootloader_tools/cputest/src/bits64/other/cacheinfo.h
+src/os/bootloader_tools/cputest/src/bits64/other/testtype.h
+src/os/bootloader_tools/cputest/src/bits64/tests/testavx.cpp
+src/os/bootloader_tools/cputest/src/bits64/tests/testavx.h
+src/os/bootloader_tools/cputest/src/bits64/tests/testbase.cpp
+src/os/bootloader_tools/cputest/src/bits64/tests/testbase.h
+src/os/bootloader_tools/cputest/src/bits64/tests/testsse.cpp
+src/os/bootloader_tools/cputest/src/bits64/tests/testsse.h
 src/os/bootloader_tools/cputest/src/main.cpp
 src/os/bootloader_tools/cputest/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader_tools/cputest/test/bits64/sections/section1/testcase.h

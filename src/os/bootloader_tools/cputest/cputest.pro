@@ -39,11 +39,17 @@ SOURCES += \
     asm/arch/x86_64/main.S \
     src/bits64/main/cputest.cpp \
     src/bits64/main/cputestgui.cpp \
+    src/bits64/tests/testavx.cpp \
+    src/bits64/tests/testbase.cpp \
+    src/bits64/tests/testsse.cpp \
     src/main.cpp
 
 HEADERS += \
     src/bits64/main/cputest.h \
     src/bits64/main/cputestgui.h \
     src/bits64/other/cacheinfo.h \
+    src/bits64/tests/testavx.h \
+    src/bits64/tests/testbase.h \
+    src/bits64/tests/testsse.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h
