@@ -482,6 +482,7 @@ src/os/include/uefi/ueficapsuleheader.h
 src/os/include/uefi/ueficonfigurationtable.h
 src/os/include/uefi/ueficonsolecontrolprotocol.h
 src/os/include/uefi/ueficonsolecontrolscreenmode.h
+src/os/include/uefi/ueficpuphysicallocation.h
 src/os/include/uefi/uefidevicepath.h
 src/os/include/uefi/uefidevicepathsubtype.h
 src/os/include/uefi/uefidevicepathtotextprotocol.h
@@ -509,6 +510,7 @@ src/os/include/uefi/uefiloadedimageprotocol.h
 src/os/include/uefi/uefilocatesearchtype.h
 src/os/include/uefi/uefimemorydescriptor.h
 src/os/include/uefi/uefimemorytype.h
+src/os/include/uefi/uefimpservicesprotocol.h
 src/os/include/uefi/uefiopenprotocolinformationentry.h
 src/os/include/uefi/uefipciioprotocol.h
 src/os/include/uefi/uefipciioprotocolaccess.h
@@ -517,6 +519,8 @@ src/os/include/uefi/uefipciioprotocolconfigaccess.h
 src/os/include/uefi/uefipciioprotocoloperation.h
 src/os/include/uefi/uefipciioprotocolwidth.h
 src/os/include/uefi/uefipixelbitmask.h
+src/os/include/uefi/uefiprocessorinformation.h
+src/os/include/uefi/uefiprocessorinformationstatusflags.h
 src/os/include/uefi/uefiresettype.h
 src/os/include/uefi/uefiruntimeservices.h
 src/os/include/uefi/uefisimplefilesystemprotocol.h

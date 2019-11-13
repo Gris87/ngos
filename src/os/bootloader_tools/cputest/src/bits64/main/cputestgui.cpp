@@ -156,19 +156,20 @@
 
 
 
-Button      *CpuTestGUI::sRebootButton;
-Button      *CpuTestGUI::sShutdownButton;
-TabWidget   *CpuTestGUI::sTabWidget;
-TabButton   *CpuTestGUI::sSystemInformationTabButton;
-TabButton   *CpuTestGUI::sTestTabButton;
-TabButton   *CpuTestGUI::sSummaryTabButton;
-TableWidget *CpuTestGUI::sSummaryTableWidget;
-Button      *CpuTestGUI::sStartButton;
-Image       *CpuTestGUI::sStartImage;
-Image       *CpuTestGUI::sStopImage;
-u64          CpuTestGUI::sSummaryTotal;
-u16          CpuTestGUI::sWaitEventsCount;
-uefi_event  *CpuTestGUI::sWaitEvents;
+Button                 *CpuTestGUI::sRebootButton;
+Button                 *CpuTestGUI::sShutdownButton;
+TabWidget              *CpuTestGUI::sTabWidget;
+TabButton              *CpuTestGUI::sSystemInformationTabButton;
+TabButton              *CpuTestGUI::sTestTabButton;
+TabButton              *CpuTestGUI::sSummaryTabButton;
+TableWidget            *CpuTestGUI::sSummaryTableWidget;
+Button                 *CpuTestGUI::sStartButton;
+Image                  *CpuTestGUI::sStartImage;
+Image                  *CpuTestGUI::sStopImage;
+u64                     CpuTestGUI::sSummaryTotal;
+UefiMpServicesProtocol *CpuTestGUI::sMpServices;
+u16                     CpuTestGUI::sWaitEventsCount;
+uefi_event             *CpuTestGUI::sWaitEvents;
 
 X86Feature testedFeatures[] =
 {
@@ -853,6 +854,19 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(),                              NgosStatus::ASSERTION);
 
     UEFI_TEST_ASSERT(GUI::isUpdatesEnabled(), NgosStatus::ASSERTION);
+
+
+
+    Guid mpServicesProtocol = UEFI_MP_SERVICES_PROTOCOL_GUID;
+
+    if (UEFI::locateProtocol(&mpServicesProtocol, nullptr, (void **)&sMpServices) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Found UEFI_MP_SERVICES_PROTOCOL at 0x%p", sMpServices));
+    }
+    else
+    {
+        UEFI_LW(("UEFI_MP_SERVICES_PROTOCOL not found"));
+    }
 
 
 
@@ -1563,6 +1577,71 @@ NgosStatus CpuTestGUI::onSummaryTabButtonPressed()
 NgosStatus CpuTestGUI::onStartButtonPressed()
 {
     UEFI_LT((""));
+
+
+
+    if (sMpServices)
+    {
+        u64 numberOfProcessors;
+        u64 numberOfEnabledProcessors;
+
+        UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+        // Validation
+        {
+            UEFI_LVVV(("numberOfProcessors        = %u", numberOfProcessors));
+            UEFI_LVVV(("numberOfEnabledProcessors = %u", numberOfEnabledProcessors));
+
+            // UEFI_TEST_ASSERT(numberOfProcessors        == 4, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(numberOfEnabledProcessors == 4, NgosStatus::ASSERTION); // Commented due to value variation
+        }
+
+
+
+        if (numberOfProcessors > 1)
+        {
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+            {
+                UEFI_LVVV(("Processors:"));
+                UEFI_LVVV(("-------------------------------------"));
+
+                for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
+                {
+                    UefiProcessorInformation info;
+
+                    UEFI_ASSERT_EXECUTION(sMpServices->getProcessorInfo(sMpServices, i, &info), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+                    UEFI_LVVV(("info[%d].processorId      = %u",      i, info.processorId));
+                    UEFI_LVVV(("info[%d].status           = %u (%s)", i, info.status, uefiProcessorInformationStatusFlagsToString(info.status)));
+                    UEFI_LVVV(("info[%d].location.package = %u",      i, info.location.package));
+                    UEFI_LVVV(("info[%d].location.core    = %u",      i, info.location.core));
+                    UEFI_LVVV(("info[%d].location.thread  = %u",      i, info.location.thread));
+
+
+
+                    if (i < (i64)numberOfProcessors - 1)
+                    {
+                        UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
+                    }
+                }
+
+                UEFI_LVVV(("-------------------------------------"));
+            }
+#endif
+        }
+        else
+        {
+            UEFI_LE(("Failed to start task on dedicated CPU core since there is only one core"));
+        }
+    }
+    else
+    {
+        UEFI_LE(("UEFI_MP_SERVICES_PROTOCOL not found"));
+    }
 
 
 

@@ -11,6 +11,7 @@
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
+#include <uefi/uefimpservicesprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
 
@@ -50,19 +51,20 @@ private:
     static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
     static NgosStatus onStartButtonPressed(); // TEST: NO
 
-    static Button      *sRebootButton;
-    static Button      *sShutdownButton;
-    static TabWidget   *sTabWidget;
-    static TabButton   *sSystemInformationTabButton;
-    static TabButton   *sTestTabButton;
-    static TabButton   *sSummaryTabButton;
-    static Button      *sStartButton;
-    static Image       *sStartImage;
-    static Image       *sStopImage;
-    static TableWidget *sSummaryTableWidget;
-    static u64          sSummaryTotal;
-    static u16          sWaitEventsCount;
-    static uefi_event  *sWaitEvents;
+    static Button                 *sRebootButton;
+    static Button                 *sShutdownButton;
+    static TabWidget              *sTabWidget;
+    static TabButton              *sSystemInformationTabButton;
+    static TabButton              *sTestTabButton;
+    static TabButton              *sSummaryTabButton;
+    static Button                 *sStartButton;
+    static Image                  *sStartImage;
+    static Image                  *sStopImage;
+    static TableWidget            *sSummaryTableWidget;
+    static u64                     sSummaryTotal;
+    static UefiMpServicesProtocol *sMpServices;
+    static u16                     sWaitEventsCount;
+    static uefi_event             *sWaitEvents;
 };
 
 
