@@ -36,6 +36,7 @@ private:
     static NgosStatus processKeyboardEvent(); // TEST: NO
     static NgosStatus processSimplePointerEvent(UefiSimplePointerProtocol *pointer); // TEST: NO
     static NgosStatus processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer); // TEST: NO
+    static NgosStatus processApplicationProcessorEvent(u64 processorId); // TEST: NO
 
     static NgosStatus onRebootButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onShutdownButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
@@ -68,6 +69,7 @@ private:
     static UefiMpServicesProtocol *sMpServices;
     static u16                     sWaitEventsCount;
     static uefi_event             *sWaitEvents;
+    static u16                     sFirstProcessorEventIndex;
 };
 
 

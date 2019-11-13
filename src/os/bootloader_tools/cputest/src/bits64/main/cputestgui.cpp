@@ -180,6 +180,7 @@ u64                     CpuTestGUI::sSummaryTotal;
 UefiMpServicesProtocol *CpuTestGUI::sMpServices;
 u16                     CpuTestGUI::sWaitEventsCount;
 uefi_event             *CpuTestGUI::sWaitEvents;
+u16                     CpuTestGUI::sFirstProcessorEventIndex;
 
 X86Feature testedFeatures[] =
 {
@@ -1167,8 +1168,37 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
 
 
-    sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
-    u64 size         = sWaitEventsCount * sizeof(uefi_event);
+    sWaitEventsCount          = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
+    sFirstProcessorEventIndex = sWaitEventsCount;
+
+
+
+    if (sMpServices)
+    {
+        u64 numberOfProcessors;
+        u64 numberOfEnabledProcessors;
+
+        UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+        // Validation
+        {
+            UEFI_LVVV(("numberOfProcessors        = %u", numberOfProcessors));
+            UEFI_LVVV(("numberOfEnabledProcessors = %u", numberOfEnabledProcessors));
+
+            // UEFI_TEST_ASSERT(numberOfProcessors        == 4, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(numberOfEnabledProcessors == 4, NgosStatus::ASSERTION); // Commented due to value variation
+        }
+
+
+
+        sWaitEventsCount += numberOfProcessors;
+    }
+
+
+
+    u64 size = sWaitEventsCount * sizeof(uefi_event);
 
 
 
@@ -1206,6 +1236,14 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
 
 
+    for (i64 i = eventId; i < sWaitEventsCount; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::APPLICATION_PROCESSOR, 0, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -1233,6 +1271,13 @@ NgosStatus CpuTestGUI::waitForEvent()
     if (eventIndex <= UefiPointerDevices::getSimplePointersCount())
     {
         return processSimplePointerEvent(UefiPointerDevices::getSimplePointer(eventIndex - 1));
+    }
+
+
+
+    if (eventIndex >= sFirstProcessorEventIndex)
+    {
+        return processApplicationProcessorEvent(eventIndex - sFirstProcessorEventIndex);
     }
 
 
@@ -1325,6 +1370,15 @@ NgosStatus CpuTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *
 
         UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(pointer, &state), NgosStatus::ASSERTION);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
+{
+    UEFI_LT((" | processorId = %u", processorId));
 
 
 

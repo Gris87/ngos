@@ -15,7 +15,7 @@ typedef u32 uefi_processor_information_status_flags;
 enum class UefiProcessorInformationStatusFlag: uefi_processor_information_status_flags
 {
     NONE          = 0,
-    BSP           = (1ULL << 0),
+    BOOTSTRAP     = (1ULL << 0),
     ENABLED       = (1ULL << 1),
     HEALTH_STATUS = (1ULL << 2)
 };
@@ -27,7 +27,7 @@ inline const char8* uefiProcessorInformationStatusFlagToString(UefiProcessorInfo
     switch (flag)
     {
         case UefiProcessorInformationStatusFlag::NONE:          return "NONE";
-        case UefiProcessorInformationStatusFlag::BSP:           return "BSP";
+        case UefiProcessorInformationStatusFlag::BOOTSTRAP:     return "BOOTSTRAP";
         case UefiProcessorInformationStatusFlag::ENABLED:       return "ENABLED";
         case UefiProcessorInformationStatusFlag::HEALTH_STATUS: return "HEALTH_STATUS";
 
