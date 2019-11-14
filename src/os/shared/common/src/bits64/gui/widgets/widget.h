@@ -58,6 +58,8 @@ public:
     NgosStatus setParent(Widget *parent); // TEST: NO
     Widget* getParent() const; // TEST: NO
 
+    List<Widget *>& getChildren(); // TEST: NO
+
     NgosStatus setPosition(i64 positionX, i64 positionY);
     i64 getPositionX() const;
     i64 getPositionY() const;

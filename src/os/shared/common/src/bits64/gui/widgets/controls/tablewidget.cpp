@@ -534,21 +534,14 @@ NgosStatus TableWidget::setRowCount(u64 rows)
 {
     COMMON_LT((" | rows = %u", rows));
 
-    COMMON_ASSERT(rows > 0, "rows is zero", NgosStatus::ASSERTION);
-
-
-
-    COMMON_TEST_ASSERT(mRows.getSize() <  rows,    NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mWrapperWidget  != nullptr, NgosStatus::ASSERTION);
-
 
 
     if (!mRowsWrapperWidget)
     {
+        COMMON_TEST_ASSERT(mWrapperWidget != nullptr, NgosStatus::ASSERTION);
+
         mRowsWrapperWidget = new WrapperWidget(mWrapperWidget);
     }
-
-    COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setSize(mTotalColumnWidth, rows * mRowHeight), NgosStatus::ASSERTION);
 
 
 
@@ -558,7 +551,7 @@ NgosStatus TableWidget::setRowCount(u64 rows)
 
         if (i == (i64)mSelectedRow)
         {
-            COMMON_ASSERT_EXECUTION(rowWidget->setState(WidgetState::INACTIVE), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(rowWidget->setState(isFocused() ? WidgetState::FOCUSED : WidgetState::INACTIVE), NgosStatus::ASSERTION);
         }
 
         COMMON_ASSERT_EXECUTION(rowWidget->setPosition(0, i * mRowHeight),         NgosStatus::ASSERTION);
@@ -589,6 +582,41 @@ NgosStatus TableWidget::setRowCount(u64 rows)
 
 
         mRows.append(rowWidget);
+    }
+
+
+
+    for (i64 i = mRows.getSize(); i > (i64)rows; --i)
+    {
+        TableRowWidget *rowWidget = mRows.at(i - 1);
+
+        mRowsWrapperWidget->getChildren().remove(rowWidget);
+
+
+
+        COMMON_ASSERT_EXECUTION(mRows.setCapacity(i - 1), NgosStatus::ASSERTION);
+
+        delete rowWidget;
+    }
+
+
+
+    if (rows > 0)
+    {
+        if (mSelectedRow >= rows)
+        {
+            mSelectedRow = rows - 1;
+
+            COMMON_ASSERT_EXECUTION(mRows.at(mSelectedRow)->setState(isFocused() ? WidgetState::FOCUSED : WidgetState::INACTIVE), NgosStatus::ASSERTION);
+        }
+
+        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setSize(mTotalColumnWidth, rows * mRowHeight), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        mSelectedRow = 0;
+
+        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setSize(mTotalColumnWidth, 1), NgosStatus::ASSERTION);
     }
 
 

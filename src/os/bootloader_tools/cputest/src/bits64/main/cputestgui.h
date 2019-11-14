@@ -26,7 +26,8 @@ public:
 
 private:
     static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
-    static NgosStatus addTestEntry(const char8 *name); // TEST: NO
+    static NgosStatus addTestEntry(const char8 *name, const char8 *score); // TEST: NO
+    static NgosStatus addTestEntry(); // TEST: NO
     static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO
     static NgosStatus addSummaryFeature(X86Feature flag, u64 score); // TEST: NO
     static NgosStatus addSummaryTotal(); // TEST: NO
@@ -73,6 +74,7 @@ private:
     static uefi_event             *sWaitEvents;
     static u16                     sFirstProcessorEventIndex;
     static TestType                sCurrentTest;
+    static TestType                sDisplayedTest;
 };
 
 

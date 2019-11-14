@@ -18,7 +18,7 @@ void UEFI_API testFloatProcedure(void *buffer)
 
 
 TestFloat::TestFloat()
-    : TestBase(TestType::FLOAT, "Testing FLOAT instructions", 100)
+    : TestBase(TestType::FLOAT, "Testing FLOAT arithmetics", 100)
 {
     UEFI_LT((""));
 

@@ -18,7 +18,7 @@ void UEFI_API testIntegerProcedure(void *buffer)
 
 
 TestInteger::TestInteger()
-    : TestBase(TestType::INTEGER, "Testing INTEGER instructions", 100)
+    : TestBase(TestType::INTEGER, "Testing INTEGER arithmetics", 100)
 {
     UEFI_LT((""));
 

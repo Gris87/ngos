@@ -183,6 +183,7 @@ u16                     CpuTestGUI::sWaitEventsCount;
 uefi_event             *CpuTestGUI::sWaitEvents;
 u16                     CpuTestGUI::sFirstProcessorEventIndex;
 TestType                CpuTestGUI::sCurrentTest;
+TestType                CpuTestGUI::sDisplayedTest;
 
 X86Feature testedFeatures[] =
 {
@@ -763,7 +764,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(addTestEntry("Start tests to get results"), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addTestEntry("Start tests to get results", ""), NgosStatus::ASSERTION);
 
 
 
@@ -910,7 +911,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
         UEFI_LW(("UEFI_MP_SERVICES_PROTOCOL not found"));
     }
 
-    sCurrentTest = TestType::MAXIMUM;
+    sDisplayedTest = TestType::MAXIMUM;
 
 
 
@@ -1010,11 +1011,12 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPosition
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::addTestEntry(const char8 *name)
+NgosStatus CpuTestGUI::addTestEntry(const char8 *name, const char8 *score)
 {
-    UEFI_LT((" | name = 0x%p", name));
+    UEFI_LT((" | name = 0x%p, score = 0x%p", name, score));
 
-    UEFI_ASSERT(name, "name is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(name,  "name is null",  NgosStatus::ASSERTION);
+    UEFI_ASSERT(score, "score is null", NgosStatus::ASSERTION);
 
 
 
@@ -1037,9 +1039,24 @@ NgosStatus CpuTestGUI::addTestEntry(const char8 *name)
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(blackColor),                              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget), NgosStatus::ASSERTION);
 
-    LabelWidget *scoreLabelWidget = new LabelWidget("", sTestTableWidget);
+    LabelWidget *scoreLabelWidget = new LabelWidget(score, sTestTableWidget);
     UEFI_ASSERT_EXECUTION(scoreLabelWidget->setColor(blackColor),                               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setCellWidget(row, COLUMN_SCORE, scoreLabelWidget), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::addTestEntry()
+{
+    UEFI_LT((""));
+
+
+
+    TestBase *test = cpuTests[(u64)sDisplayedTest];
+
+    UEFI_ASSERT_EXECUTION(addTestEntry(test->getName(), "..."), NgosStatus::ASSERTION);
 
 
 
@@ -1808,7 +1825,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-            if (sCurrentTest == TestType::MAXIMUM)
+            if (sDisplayedTest == TestType::MAXIMUM)
             {
                 sCurrentTest = (TestType)0;
 
@@ -1835,18 +1852,23 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
                 if ((u64)sCurrentTest > 0)
                 {
+                    sDisplayedTest = (TestType)0;
+
+
+
                     UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
                     UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStopImage), NgosStatus::ASSERTION);
                     UEFI_ASSERT_EXECUTION(sStartButton->setText("Stop "),            NgosStatus::ASSERTION);
+
+                    UEFI_ASSERT_EXECUTION(sTestTableWidget->setRowCount(0), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(addTestEntry(),                   NgosStatus::ASSERTION);
 
                     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
                 }
                 else
                 {
                     UEFI_LE(("Failed to start task on any processor"));
-
-                    sCurrentTest = TestType::MAXIMUM;
                 }
             }
             else

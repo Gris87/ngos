@@ -483,6 +483,15 @@ Widget* Widget::getParent() const
     return mParent;
 }
 
+List<Widget *>& Widget::getChildren()
+{
+    COMMON_LT((""));
+
+
+
+    return mChildren;
+}
+
 NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
 {
     COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));
