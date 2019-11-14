@@ -393,8 +393,6 @@ NgosStatus Button::setText(const char8 *text)
 
     COMMON_TEST_ASSERT(mLabelWidget != nullptr, NgosStatus::ASSERTION);
 
-
-
     COMMON_ASSERT_EXECUTION(mLabelWidget->setText(text), NgosStatus::ASSERTION);
 
 

@@ -11,7 +11,6 @@ enum class UefiEventType: u32
 {
     NONE                          = 0,
     NOTIFY_WAIT                   = 0x00000100,
-    APPLICATION_PROCESSOR         = 0x00000101,
     NOTIFY_SIGNAL                 = 0x00000200,
     SIGNAL_EXIT_BOOT_SERVICES     = 0x00000201,
     RUNTIME                       = 0x40000000,
@@ -27,7 +26,6 @@ inline const char8* uefiEventTypeToString(UefiEventType type) // TEST: NO
     {
         case UefiEventType::NONE:                          return "NONE";
         case UefiEventType::NOTIFY_WAIT:                   return "NOTIFY_WAIT";
-        case UefiEventType::APPLICATION_PROCESSOR:         return "APPLICATION_PROCESSOR";
         case UefiEventType::NOTIFY_SIGNAL:                 return "NOTIFY_SIGNAL";
         case UefiEventType::SIGNAL_EXIT_BOOT_SERVICES:     return "SIGNAL_EXIT_BOOT_SERVICES";
         case UefiEventType::RUNTIME:                       return "RUNTIME";
