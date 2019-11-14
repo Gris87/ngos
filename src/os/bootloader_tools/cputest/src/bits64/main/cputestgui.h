@@ -14,6 +14,8 @@
 #include <uefi/uefimpservicesprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
+#include "src/bits64/other/testtype.h"
+
 
 
 class CpuTestGUI
@@ -70,6 +72,7 @@ private:
     static u16                     sWaitEventsCount;
     static uefi_event             *sWaitEvents;
     static u16                     sFirstProcessorEventIndex;
+    static TestType                sCurrentTest;
 };
 
 

@@ -1,5 +1,5 @@
-#ifndef TESTSSE_H
-#define TESTSSE_H
+#ifndef CPUTEST_SRC_BITS64_TESTS_TESTSSE_H
+#define CPUTEST_SRC_BITS64_TESTS_TESTSSE_H
 
 
 
@@ -16,4 +16,4 @@ public:
 
 
 
-#endif // TESTSSE_H
+#endif // CPUTEST_SRC_BITS64_TESTS_TESTSSE_H

@@ -1,5 +1,5 @@
-#ifndef TESTBASE_H
-#define TESTBASE_H
+#ifndef CPUTEST_SRC_BITS64_TESTS_TESTBASE_H
+#define CPUTEST_SRC_BITS64_TESTS_TESTBASE_H
 
 
 
@@ -32,4 +32,4 @@ extern TestBase* cpuTests[(u64)TestType::MAXIMUM]; // cpuTests declared in testb
 
 
 
-#endif // TESTBASE_H
+#endif // CPUTEST_SRC_BITS64_TESTS_TESTBASE_H

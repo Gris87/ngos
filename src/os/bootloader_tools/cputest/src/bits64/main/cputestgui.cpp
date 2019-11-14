@@ -18,6 +18,7 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
 #include "src/bits64/main/cputest.h"
+#include "src/bits64/tests/testbase.h"
 
 
 
@@ -181,6 +182,7 @@ UefiMpServicesProtocol *CpuTestGUI::sMpServices;
 u16                     CpuTestGUI::sWaitEventsCount;
 uefi_event             *CpuTestGUI::sWaitEvents;
 u16                     CpuTestGUI::sFirstProcessorEventIndex;
+TestType                CpuTestGUI::sCurrentTest;
 
 X86Feature testedFeatures[] =
 {
@@ -907,6 +909,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     {
         UEFI_LW(("UEFI_MP_SERVICES_PROTOCOL not found"));
     }
+
+    sCurrentTest = TestType::MAXIMUM;
 
 
 
@@ -1804,16 +1808,60 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-            UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+            if (sCurrentTest == TestType::MAXIMUM)
+            {
+                sCurrentTest = (TestType)0;
 
-            UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStopImage), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sStartButton->setText("Stop "),            NgosStatus::ASSERTION);
+                for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
+                {
+                    TestBase *test = cpuTests[(u64)sCurrentTest];
 
-            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+                    if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
+                    {
+                        UEFI_LV(("Test %u (%s) started on processor %d", sCurrentTest, testTypeToString(sCurrentTest), i));
+
+
+
+                        sCurrentTest = (TestType)((u64)sCurrentTest + 1);
+
+                        if (sCurrentTest >= TestType::MAXIMUM)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+
+
+                if ((u64)sCurrentTest > 0)
+                {
+                    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+                    UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStopImage), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(sStartButton->setText("Stop "),            NgosStatus::ASSERTION);
+
+                    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+                }
+                else
+                {
+                    UEFI_LE(("Failed to start task on any processor"));
+
+                    sCurrentTest = TestType::MAXIMUM;
+                }
+            }
+            else
+            {
+                UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+                UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStartImage), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(sStartButton->setText("Start"),             NgosStatus::ASSERTION);
+
+                UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+            }
         }
         else
         {
-            UEFI_LE(("Failed to start task on dedicated CPU core since there is only one core"));
+            UEFI_LE(("Failed to start task on any application processor since there is only bootstrap processor"));
         }
     }
     else

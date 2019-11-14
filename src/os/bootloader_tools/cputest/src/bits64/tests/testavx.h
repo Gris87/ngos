@@ -1,5 +1,5 @@
-#ifndef TESTAVX_H
-#define TESTAVX_H
+#ifndef CPUTEST_SRC_BITS64_TESTS_TESTAVX_H
+#define CPUTEST_SRC_BITS64_TESTS_TESTAVX_H
 
 
 
@@ -16,4 +16,4 @@ public:
 
 
 
-#endif // TESTAVX_H
+#endif // CPUTEST_SRC_BITS64_TESTS_TESTAVX_H
