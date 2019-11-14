@@ -260,12 +260,16 @@ src/os/bootloader_tools/cputest/src/bits64/tests/testavx512vl.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testavx512vl.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testbase.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testbase.h
+src/os/bootloader_tools/cputest/src/bits64/tests/testbitwise.cpp
+src/os/bootloader_tools/cputest/src/bits64/tests/testbitwise.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testfloat.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testfloat.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testfma3.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testfma3.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testinteger.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testinteger.h
+src/os/bootloader_tools/cputest/src/bits64/tests/testlogical.cpp
+src/os/bootloader_tools/cputest/src/bits64/tests/testlogical.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testsse.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testsse.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testsse2.cpp

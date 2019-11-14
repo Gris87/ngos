@@ -48,9 +48,11 @@ SOURCES += \
     src/bits64/tests/testavx512f.cpp \
     src/bits64/tests/testavx512vl.cpp \
     src/bits64/tests/testbase.cpp \
+    src/bits64/tests/testbitwise.cpp \
     src/bits64/tests/testfloat.cpp \
     src/bits64/tests/testfma3.cpp \
     src/bits64/tests/testinteger.cpp \
+    src/bits64/tests/testlogical.cpp \
     src/bits64/tests/testsse.cpp \
     src/bits64/tests/testsse2.cpp \
     src/bits64/tests/testsse3.cpp \
@@ -72,9 +74,11 @@ HEADERS += \
     src/bits64/tests/testavx512f.h \
     src/bits64/tests/testavx512vl.h \
     src/bits64/tests/testbase.h \
+    src/bits64/tests/testbitwise.h \
     src/bits64/tests/testfloat.h \
     src/bits64/tests/testfma3.h \
     src/bits64/tests/testinteger.h \
+    src/bits64/tests/testlogical.h \
     src/bits64/tests/testsse.h \
     src/bits64/tests/testsse2.h \
     src/bits64/tests/testsse3.h \

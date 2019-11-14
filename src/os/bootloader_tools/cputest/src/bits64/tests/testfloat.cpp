@@ -25,11 +25,26 @@ void UEFI_API testFloatProcedure(void *buffer)
 
 
 
+    float temp1 = 0.0f;
+    float temp2 = 0.0f;
+    float temp3 = 1.0f;
+    float temp4 = 1.0f;
+    float temp5 = 0.0f;
+    float temp6 = 0.0f;
+
+
+
     u64 startTime = rdtsc();
 
     for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
     {
-        // Nothing
+        temp1 += 3.123f;
+        temp2 -= 5.987f;
+        temp3 *= 7.197f;
+        temp4 /= 9.678f;
+
+        ++temp5;
+        --temp6;
     }
 
     u64 endTime = rdtsc();
@@ -42,7 +57,7 @@ void UEFI_API testFloatProcedure(void *buffer)
 
 
 TestFloat::TestFloat()
-    : TestBase(TestType::FLOAT, "Testing float arithmetics", testFloatProcedure)
+    : TestBase(TestType::FLOAT, "Testing float arithmetic operators", testFloatProcedure)
 {
     UEFI_LT((""));
 }

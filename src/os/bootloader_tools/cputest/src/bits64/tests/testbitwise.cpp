@@ -1,4 +1,4 @@
-#include "testinteger.h"
+#include "testbitwise.h"
 
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
@@ -15,23 +15,22 @@
 
 
 
-void UEFI_API testIntegerProcedure(void *buffer)
+void UEFI_API testBitwiseProcedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));
 
 
 
-    TestInteger *test = (TestInteger *)buffer;
+    TestBitwise *test = (TestBitwise *)buffer;
 
 
 
     u64 temp1 = 0;
     u64 temp2 = 0;
-    u64 temp3 = 1;
-    u64 temp4 = 1;
+    u64 temp3 = 0;
+    u64 temp4 = 0;
     u64 temp5 = 0;
     u64 temp6 = 0;
-    u64 temp7 = 0;
 
 
 
@@ -39,14 +38,12 @@ void UEFI_API testIntegerProcedure(void *buffer)
 
     for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
     {
-        temp1 += 3;
-        temp2 -= 5;
-        temp3 *= 7;
-        temp4 /= 9;
-        temp5 %= 5;
-
-        ++temp6;
-        --temp7;
+        temp1 ^=  1;
+        temp2 &=  1;
+        temp3 |=  1;
+        temp4 <<= 1;
+        temp5 >>= 1;
+        temp6 =   ~temp6;
     }
 
     u64 endTime = rdtsc();
@@ -58,17 +55,17 @@ void UEFI_API testIntegerProcedure(void *buffer)
 
 
 
-TestInteger::TestInteger()
-    : TestBase(TestType::INTEGER, "Testing integer arithmetic operators", testIntegerProcedure)
+TestBitwise::TestBitwise()
+    : TestBase(TestType::BITWISE, "Testing bitwise operators", testBitwiseProcedure)
 {
     UEFI_LT((""));
 }
 
-TestInteger::~TestInteger()
+TestBitwise::~TestBitwise()
 {
     UEFI_LT((""));
 }
 
 
 
-TestInteger testIntegerInstance;
+TestBitwise testBitwiseInstance;

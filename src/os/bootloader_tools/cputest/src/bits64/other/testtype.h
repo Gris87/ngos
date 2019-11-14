@@ -10,6 +10,8 @@
 enum class TestType: u8
 {
     INTEGER,
+    BITWISE,
+    LOGICAL,
     FLOAT,
     SSE,
     SSE2,
