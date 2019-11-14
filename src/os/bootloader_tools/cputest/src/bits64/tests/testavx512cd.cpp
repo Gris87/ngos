@@ -15,7 +15,7 @@
 
 
 
-void UEFI_API testAvx512cdProcedure(void *buffer)
+void UEFI_API testAvx512CdProcedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));
 
@@ -47,7 +47,7 @@ void UEFI_API testAvx512cdProcedure(void *buffer)
 
 
 TestAvx512Cd::TestAvx512Cd()
-    : TestBase(TestType::AVX512CD, "Testing AVX512CD instructions", testAvx512cdProcedure)
+    : TestBase(TestType::AVX512CD, "Testing AVX512CD instructions", testAvx512CdProcedure)
 {
     UEFI_LT((""));
 }
@@ -59,4 +59,4 @@ TestAvx512Cd::~TestAvx512Cd()
 
 
 
-TestAvx512Cd testAvx512cdInstance;
+TestAvx512Cd testAvx512CdInstance;
