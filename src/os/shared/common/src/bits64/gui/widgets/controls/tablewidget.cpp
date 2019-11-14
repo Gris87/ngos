@@ -659,6 +659,21 @@ NgosStatus TableWidget::setCellWidget(u64 row, u64 column, Widget *widget)
     return NgosStatus::OK;
 }
 
+Widget* TableWidget::getCellWidget(u64 row, u64 column) const
+{
+    COMMON_LT((" | row = %u, column = %u", row, column));
+
+
+
+    TableCellWidget *cell = mRows.at(row)->getCell(column);
+
+    COMMON_TEST_ASSERT(cell->getChildren().getHead(), nullptr);
+
+
+
+    return cell->getChildren().getHead()->getData();
+}
+
 NgosStatus TableWidget::setSelectedRow(u64 row)
 {
     COMMON_LT((" | row = %u", row));

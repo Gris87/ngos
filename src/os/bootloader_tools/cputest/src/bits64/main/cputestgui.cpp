@@ -184,6 +184,8 @@ uefi_event             *CpuTestGUI::sWaitEvents;
 u16                     CpuTestGUI::sFirstProcessorEventIndex;
 TestType                CpuTestGUI::sCurrentTest;
 TestType                CpuTestGUI::sDisplayedTest;
+u64                     CpuTestGUI::sNumberOfRunningProcessors;
+bool                    CpuTestGUI::sTerminated;
 
 X86Feature testedFeatures[] =
 {
@@ -911,8 +913,6 @@ NgosStatus CpuTestGUI::init(BootParams *params)
         UEFI_LW(("UEFI_MP_SERVICES_PROTOCOL not found"));
     }
 
-    sDisplayedTest = TestType::MAXIMUM;
-
 
 
     return NgosStatus::OK;
@@ -1054,9 +1054,71 @@ NgosStatus CpuTestGUI::addTestEntry()
 
 
 
+    UEFI_TEST_ASSERT(sDisplayedTest < TestType::MAXIMUM, NgosStatus::ASSERTION);
+
     TestBase *test = cpuTests[(u64)sDisplayedTest];
 
-    UEFI_ASSERT_EXECUTION(addTestEntry(test->getName(), "..."), NgosStatus::ASSERTION);
+
+
+    if (test->isCompleted())
+    {
+        if (test->getScore()) // test->getScore() != 0
+        {
+            char8 *scoreString = (char8 *)malloc(7);
+
+            i64 scoreLength = sprintf(scoreString, "%u", test->getScore());
+            AVOID_UNUSED(scoreLength);
+
+            UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
+
+
+
+            UEFI_ASSERT_EXECUTION(addTestEntry(test->getName(), scoreString), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            UEFI_ASSERT_EXECUTION(addTestEntry(test->getName(), "N/A"), NgosStatus::ASSERTION);
+        }
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(addTestEntry(test->getName(), "..."), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::putTestScore()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_TEST_ASSERT(sDisplayedTest < TestType::MAXIMUM, NgosStatus::ASSERTION);
+
+    TestBase *test = cpuTests[(u64)sDisplayedTest];
+
+
+
+    if (test->getScore()) // test->getScore() != 0
+    {
+        char8 *scoreString = (char8 *)malloc(7);
+
+        i64 scoreLength = sprintf(scoreString, "%u", test->getScore());
+        AVOID_UNUSED(scoreLength);
+
+        UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
+
+
+
+        ((LabelWidget *)sTestTableWidget->getCellWidget(sTestTableWidget->getRowCount() - 1, COLUMN_SCORE))->setText(scoreString);
+    }
+    else
+    {
+        ((LabelWidget *)sTestTableWidget->getCellWidget(sTestTableWidget->getRowCount() - 1, COLUMN_SCORE))->setText("N/A");
+    }
 
 
 
@@ -1403,26 +1465,94 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-    UEFI_LF(("Application processor %u finished", processorId));
+    UEFI_LV(("Application processor %u finished", processorId));
 
 
 
-    if (sCurrentTest < TestType::MAXIMUM)
+    if (!sTerminated)
     {
-        TestBase *test = cpuTests[(u64)sCurrentTest];
-
-        if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
+        if (
+            sDisplayedTest < TestType::MAXIMUM
+            &&
+            cpuTests[(u64)sDisplayedTest]->isCompleted()
+           )
         {
-            UEFI_LF(("Test %u (%s) started on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+            UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
 
 
-            sCurrentTest = (TestType)((u64)sCurrentTest + 1);
+            UEFI_ASSERT_EXECUTION(putTestScore(), NgosStatus::ASSERTION);
+
+            sDisplayedTest = (TestType)((u64)sDisplayedTest + 1);
+
+
+
+            while (
+                   sDisplayedTest < sCurrentTest
+                   &&
+                   cpuTests[(u64)sDisplayedTest]->isCompleted()
+                  )
+            {
+                UEFI_ASSERT_EXECUTION(addTestEntry(), NgosStatus::ASSERTION);
+
+                sDisplayedTest = (TestType)((u64)sDisplayedTest + 1);
+            }
+
+
+
+            if (sDisplayedTest < TestType::MAXIMUM)
+            {
+                UEFI_ASSERT_EXECUTION(addTestEntry(), NgosStatus::ASSERTION);
+            }
+
+
+
+            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+        }
+
+
+
+        if (sCurrentTest < TestType::MAXIMUM)
+        {
+            TestBase *test = cpuTests[(u64)sCurrentTest];
+
+            if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
+            {
+                UEFI_LV(("Test %u (%s) started on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+
+
+
+                sCurrentTest = (TestType)((u64)sCurrentTest + 1);
+            }
+            else
+            {
+                UEFI_LF(("Failed to start test %u (%s) on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+
+                --sNumberOfRunningProcessors;
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
         }
         else
         {
-            UEFI_LF(("Failed to start test %u (%s) on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+            --sNumberOfRunningProcessors;
         }
+    }
+    else
+    {
+        --sNumberOfRunningProcessors;
+    }
+
+
+
+    if (!sNumberOfRunningProcessors) // sNumberOfRunningProcessors == 0
+    {
+        UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStartImage), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sStartButton->setText("Start"),             NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
 
 
@@ -1845,7 +1975,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-            if (sDisplayedTest == TestType::MAXIMUM)
+            if (!sNumberOfRunningProcessors) // sNumberOfRunningProcessors == 0
             {
                 for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
                 {
@@ -1864,6 +1994,8 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
                     {
                         UEFI_LV(("Test %u (%s) started on processor %d", sCurrentTest, testTypeToString(sCurrentTest), i));
 
+                        ++sNumberOfRunningProcessors;
+
 
 
                         sCurrentTest = (TestType)((u64)sCurrentTest + 1);
@@ -1877,9 +2009,10 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                if ((u64)sCurrentTest > 0)
+                if (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
                 {
                     sDisplayedTest = (TestType)0;
+                    sTerminated    = false;
 
 
 
@@ -1900,12 +2033,12 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
             }
             else
             {
-                UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+                if (!sTerminated)
+                {
+                    sTerminated = true;
 
-                UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStartImage), NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(sStartButton->setText("Start"),             NgosStatus::ASSERTION);
-
-                UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(addTestEntry("Terminated by user", ""), NgosStatus::ASSERTION);
+                }
             }
         }
         else

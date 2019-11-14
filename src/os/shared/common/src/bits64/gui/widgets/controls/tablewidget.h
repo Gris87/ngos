@@ -42,6 +42,7 @@ public:
     u64 getRowCount() const; // TEST: NO
 
     NgosStatus setCellWidget(u64 row, u64 column, Widget *widget); // TEST: NO
+    Widget* getCellWidget(u64 row, u64 column) const; // TEST: NO
 
     NgosStatus setSelectedRow(u64 row); // TEST: NO
     u64 getSelectedRow() const; // TEST: NO
