@@ -9,30 +9,44 @@ TestBase* cpuTests[(u64)TestType::MAXIMUM];
 
 
 
-TestBase::TestBase(TestType type, const char8 *name, u64 score)
-    : mType(type)
-    , mName(name)
-    , mScore(score)
-    , mProcedure(nullptr)
+TestBase::TestBase(TestType type, const char8 *name, uefi_ap_procedure procedure)
+    : mName(name)
+    , mScore(0)
+    , mProcedure(procedure)
+    , mCompleted(false)
 {
-    UEFI_LT((" | type = %u, name = 0x%p, score = %u", type, name, score));
+    UEFI_LT((" | type = %u, name = 0x%p, procedure = 0x%p", type, name, procedure));
 
     UEFI_ASSERT(type < TestType::MAXIMUM, "type is invalid");
     UEFI_ASSERT(name,                     "name is null");
-    UEFI_ASSERT(score > 0,                "score is zero");
+    UEFI_ASSERT(procedure,                "procedure is null");
 
 
 
-    UEFI_TEST_ASSERT(cpuTests[(u64)mType] == nullptr);
+    UEFI_TEST_ASSERT(cpuTests[(u64)type] == nullptr);
 
 
 
-    cpuTests[(u64)mType] = this;
+    cpuTests[(u64)type] = this;
 }
 
 TestBase::~TestBase()
 {
     UEFI_LT((""));
+}
+
+NgosStatus TestBase::reset()
+{
+    UEFI_LT((""));
+
+
+
+    mScore     = 0;
+    mCompleted = false;
+
+
+
+    return NgosStatus::OK;
 }
 
 const char8* TestBase::getName() const
@@ -42,6 +56,20 @@ const char8* TestBase::getName() const
 
 
     return mName;
+}
+
+NgosStatus TestBase::setScore(u64 score)
+{
+    UEFI_LT((" | score = %u", score));
+
+
+
+    mScore     = score;
+    mCompleted = true;
+
+
+
+    return NgosStatus::OK;
 }
 
 u64 TestBase::getScore() const
@@ -60,4 +88,13 @@ uefi_ap_procedure TestBase::getProcedure() const
 
 
     return mProcedure;
+}
+
+bool TestBase::isCompleted() const
+{
+    UEFI_LT((""));
+
+
+
+    return mCompleted;
 }

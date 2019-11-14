@@ -1,30 +1,55 @@
 #include "testavx512dq.h"
 
+#include <asm/instructions.h>
+#include <common/src/bits64/cpu/cpu.h>
 #include <ngos/linkage.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
+#include "src/bits64/main/cputest.h"
 
 
-void UEFI_API testAvx512DqProcedure(void *buffer)
+
+#define NUMBER_OF_ITERATIONS 1000
+#define SCORE_PER_SECOND     1000
+
+
+
+void UEFI_API testAvx512dqProcedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));
 
 
 
-    AVOID_UNUSED(buffer);
+    TestAvx512Dq *test = (TestAvx512Dq *)buffer;
+
+    if (CPU::hasFlag(X86Feature::AVX512DQ))
+    {
+        u64 startTime = rdtsc();
+
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+        {
+            // Nothing
+        }
+
+        u64 endTime = rdtsc();
+
+
+
+        UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_SECOND / ((double)(endTime - startTime) / CpuTest::getCpuSpeed())));
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(test->setScore(0));
+    }
 }
 
 
 
 TestAvx512Dq::TestAvx512Dq()
-    : TestBase(TestType::AVX512DQ, "Testing AVX512DQ instructions", 100)
+    : TestBase(TestType::AVX512DQ, "Testing AVX512DQ instructions", testAvx512dqProcedure)
 {
     UEFI_LT((""));
-
-
-
-    mProcedure = testAvx512DqProcedure;
 }
 
 TestAvx512Dq::~TestAvx512Dq()
@@ -34,4 +59,4 @@ TestAvx512Dq::~TestAvx512Dq()
 
 
 
-TestAvx512Dq testAvx512DqInstance;
+TestAvx512Dq testAvx512dqInstance;

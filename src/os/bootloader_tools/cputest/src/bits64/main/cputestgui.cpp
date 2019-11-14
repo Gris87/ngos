@@ -1407,6 +1407,26 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
+    if (sCurrentTest < TestType::MAXIMUM)
+    {
+        TestBase *test = cpuTests[(u64)sCurrentTest];
+
+        if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Test %u (%s) started on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+
+
+
+            sCurrentTest = (TestType)((u64)sCurrentTest + 1);
+        }
+        else
+        {
+            UEFI_LF(("Failed to start test %u (%s) on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+        }
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -1827,6 +1847,13 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
             if (sDisplayedTest == TestType::MAXIMUM)
             {
+                for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
+                {
+                    UEFI_ASSERT_EXECUTION(cpuTests[i]->reset(), NgosStatus::ASSERTION);
+                }
+
+
+
                 sCurrentTest = (TestType)0;
 
                 for (i64 i = 0; i < (i64)numberOfProcessors; ++i)

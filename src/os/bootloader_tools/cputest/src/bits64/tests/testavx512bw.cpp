@@ -1,30 +1,55 @@
 #include "testavx512bw.h"
 
+#include <asm/instructions.h>
+#include <common/src/bits64/cpu/cpu.h>
 #include <ngos/linkage.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
+#include "src/bits64/main/cputest.h"
 
 
-void UEFI_API testAvx512BwProcedure(void *buffer)
+
+#define NUMBER_OF_ITERATIONS 1000
+#define SCORE_PER_SECOND     1000
+
+
+
+void UEFI_API testAvx512bwProcedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));
 
 
 
-    AVOID_UNUSED(buffer);
+    TestAvx512Bw *test = (TestAvx512Bw *)buffer;
+
+    if (CPU::hasFlag(X86Feature::AVX512BW))
+    {
+        u64 startTime = rdtsc();
+
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+        {
+            // Nothing
+        }
+
+        u64 endTime = rdtsc();
+
+
+
+        UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_SECOND / ((double)(endTime - startTime) / CpuTest::getCpuSpeed())));
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(test->setScore(0));
+    }
 }
 
 
 
 TestAvx512Bw::TestAvx512Bw()
-    : TestBase(TestType::AVX512BW, "Testing AVX512BW instructions", 100)
+    : TestBase(TestType::AVX512BW, "Testing AVX512BW instructions", testAvx512bwProcedure)
 {
     UEFI_LT((""));
-
-
-
-    mProcedure = testAvx512BwProcedure;
 }
 
 TestAvx512Bw::~TestAvx512Bw()
@@ -34,4 +59,4 @@ TestAvx512Bw::~TestAvx512Bw()
 
 
 
-TestAvx512Bw testAvx512BwInstance;
+TestAvx512Bw testAvx512bwInstance;
