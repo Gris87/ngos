@@ -613,7 +613,7 @@ u64 UEFI::getDevicePathSize(UefiDevicePath *path)
     return (u64)currentDevicePath - (u64)path;
 }
 
-UefiStatus UEFI::createEvent(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)
+UefiStatus UEFI::createEvent(UefiEventType type, UefiTpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)
 {
     UEFI_LT((" | type = %u, notifyTpl = %u, notifyFunction = 0x%p, notifyContext = 0x%p, event = 0x%p", type, notifyTpl, notifyFunction, notifyContext, event));
 

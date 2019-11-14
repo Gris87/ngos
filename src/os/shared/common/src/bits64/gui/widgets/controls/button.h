@@ -23,6 +23,10 @@ public:
 
     bool isAcceptMouseEvents() override; // TEST: NO
 
+    NgosStatus setContentImage(Image *contentImage); // TEST: NO
+
+    NgosStatus setText(const char8 *text); // TEST: NO
+
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 

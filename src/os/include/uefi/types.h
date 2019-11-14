@@ -7,7 +7,6 @@
 
 
 
-typedef u64 uefi_tpl;
 typedef u64 uefi_lba;
 
 typedef void* uefi_handle;

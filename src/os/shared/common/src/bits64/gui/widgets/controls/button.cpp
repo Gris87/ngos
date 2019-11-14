@@ -367,6 +367,41 @@ bool Button::isAcceptMouseEvents()
     return true;
 }
 
+NgosStatus Button::setContentImage(Image *contentImage)
+{
+    COMMON_LT((" | contentImage = %u", contentImage));
+
+    COMMON_ASSERT(contentImage, "contentImage is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(mImageWidget->setImage(contentImage), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Button::setText(const char8 *text)
+{
+    COMMON_LT((" | text = 0x%p", text));
+
+    COMMON_ASSERT(text,  "text is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(*text, "text is empty", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mLabelWidget != nullptr, NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(mLabelWidget->setText(text), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Button::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));

@@ -1238,7 +1238,7 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
     for (i64 i = eventId; i < sWaitEventsCount; ++i)
     {
-        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::APPLICATION_PROCESSOR, 0, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
     }
 
@@ -1379,6 +1379,10 @@ NgosStatus CpuTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *
 NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 {
     UEFI_LT((" | processorId = %u", processorId));
+
+
+
+    UEFI_LF(("Application processor %u finished", processorId));
 
 
 
@@ -1797,6 +1801,15 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
                 UEFI_LVVV(("-------------------------------------"));
             }
 #endif
+
+
+
+            UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+            UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStopImage), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sStartButton->setText("Stop "),            NgosStatus::ASSERTION);
+
+            UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
         }
         else
         {

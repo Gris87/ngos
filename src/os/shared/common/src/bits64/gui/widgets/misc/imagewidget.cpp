@@ -64,6 +64,36 @@ NgosStatus ImageWidget::repaint()
     return NgosStatus::OK;
 }
 
+NgosStatus ImageWidget::setImage(Image *image)
+{
+    COMMON_LT((" | image = %u", image));
+
+    COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+
+
+
+    mImage = image;
+
+    if (
+        mWidth // mWidth > 0
+        &&
+        mHeight // mHeight > 0
+       )
+    {
+        COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 Image* ImageWidget::getImage() const
 {
     COMMON_LT((""));

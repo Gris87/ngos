@@ -880,7 +880,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
     if (sTimeoutLabelWidget)
     {
-        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, 0, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, UefiTpl::NONE, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created timer event(0x%p)", sTimerEvent));
 
 

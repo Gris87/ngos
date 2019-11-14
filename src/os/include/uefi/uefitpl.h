@@ -3,10 +3,34 @@
 
 
 
-#define UEFI_TPL_APPLICATION 4
-#define UEFI_TPL_CALLBACK    8
-#define UEFI_TPL_NOTIFY      16
-#define UEFI_TPL_HIGH_LEVEL  31
+#include <ngos/types.h>
+
+
+
+enum class UefiTpl: u64
+{
+    NONE        = 0,
+    APPLICATION = 4,
+    CALLBACK    = 8,
+    NOTIFY      = 16,
+    HIGH_LEVEL  = 31
+};
+
+
+
+inline const char8* uefiTplToString(UefiTpl type) // TEST: NO
+{
+    switch (type)
+    {
+        case UefiTpl::NONE:        return "NONE";
+        case UefiTpl::APPLICATION: return "APPLICATION";
+        case UefiTpl::CALLBACK:    return "CALLBACK";
+        case UefiTpl::NOTIFY:      return "NOTIFY";
+        case UefiTpl::HIGH_LEVEL:  return "HIGH_LEVEL";
+
+        default: return "UNKNOWN";
+    }
+}
 
 
 

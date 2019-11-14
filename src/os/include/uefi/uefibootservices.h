@@ -29,8 +29,8 @@ struct UefiBootServices
 {
     UefiTableHeader header;
 
-    uefi_tpl (UEFI_API *raiseTpl)(uefi_tpl newTpl); // TEST: NO
-    void (UEFI_API *restoreTpl)(uefi_tpl oldTpl); // TEST: NO
+    UefiTpl (UEFI_API *raiseTpl)(UefiTpl newTpl); // TEST: NO
+    void (UEFI_API *restoreTpl)(UefiTpl oldTpl); // TEST: NO
 
     UefiStatus (UEFI_API *allocatePages)(UefiAllocateType type, UefiMemoryType memoryType, u64 noPages, u64 *memory); // TEST: NO
     UefiStatus (UEFI_API *freePages)(u64 memory, u64 noPages); // TEST: NO
@@ -38,7 +38,7 @@ struct UefiBootServices
     UefiStatus (UEFI_API *allocatePool)(UefiMemoryType poolType, u64 size, void **buffer); // TEST: NO
     UefiStatus (UEFI_API *freePool)(void *buffer); // TEST: NO
 
-    UefiStatus (UEFI_API *createEvent)(UefiEventType type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
+    UefiStatus (UEFI_API *createEvent)(UefiEventType type, UefiTpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
     UefiStatus (UEFI_API *setTimer)(uefi_event event, UefiTimerDelay type, u64 triggerTime); // TEST: NO
     UefiStatus (UEFI_API *waitForEvent)(u64 numberOfEvents, uefi_event *event, u64 *index); // TEST: NO
     UefiStatus (UEFI_API *signalEvent)(uefi_event event); // TEST: NO
@@ -82,7 +82,7 @@ struct UefiBootServices
 
     void (UEFI_API *copyMem)(void *destination, void *source, u64 length); // TEST: NO
     void (UEFI_API *setMem)(void *buffer, u64 size, u8 value); // TEST: NO
-    UefiStatus (UEFI_API *createEventEx)(u32 type, uefi_tpl notifyTpl, uefi_event_notify notifyFunction, const void *notifyContext, const Guid eventGroup, uefi_event *event); // TEST: NO
+    UefiStatus (UEFI_API *createEventEx)(u32 type, UefiTpl notifyTpl, uefi_event_notify notifyFunction, const void *notifyContext, const Guid eventGroup, uefi_event *event); // TEST: NO
 };
 
 
