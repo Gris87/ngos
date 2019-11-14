@@ -15,6 +15,7 @@
 
 
 
+CPP_NO_OPTIMIZATION
 void UEFI_API testAvx512BwProcedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));

@@ -15,6 +15,7 @@
 
 
 
+CPP_NO_OPTIMIZATION
 void UEFI_API testFma3Procedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));

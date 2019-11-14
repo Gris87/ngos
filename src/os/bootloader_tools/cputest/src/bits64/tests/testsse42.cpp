@@ -15,6 +15,7 @@
 
 
 
+CPP_NO_OPTIMIZATION
 void UEFI_API testSse42Procedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));
