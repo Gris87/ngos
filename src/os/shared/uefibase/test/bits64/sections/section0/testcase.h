@@ -21,6 +21,7 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/lib/listelement.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/list.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/avx.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx2/avx2.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512bw/avx512bw.h>
@@ -82,6 +83,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_containers_lib_listelement);
     CALL_TEST_CASES(section0, __shared_common_bits64_containers_list);
     CALL_TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
+    CALL_TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_avx2_avx2);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_avx512bw_avx512bw);
     CALL_TEST_CASES(section0, __shared_common_bits64_fpu_avx512cd_avx512cd);

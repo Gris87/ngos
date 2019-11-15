@@ -13,6 +13,7 @@ SOURCES += \
     $$PWD/src/bits64/cpu/generated/x86bugsnames.cpp \
     $$PWD/src/bits64/cpu/generated/x86featuresnames.cpp \
     $$PWD/src/bits64/cpu/msr/msr.cpp \
+    $$PWD/src/bits64/cryptography/aes.cpp \
     $$PWD/src/bits64/fpu/fpu.cpp \
     $$PWD/src/bits64/graphics/bmp/bmp.cpp \
     $$PWD/src/bits64/graphics/graphics.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
     $$PWD/src/bits64/cpu/x86bugword.h \
     $$PWD/src/bits64/cpu/x86feature.h \
     $$PWD/src/bits64/cpu/x86featureword.h \
+    $$PWD/src/bits64/cryptography/aes.h \
     $$PWD/src/bits64/early/earlyassert.h \
     $$PWD/src/bits64/early/earlylog.h \
     $$PWD/src/bits64/fpu/fpu.h \

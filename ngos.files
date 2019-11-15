@@ -636,6 +636,8 @@ src/os/shared/common/src/bits64/cpu/x86bug.h
 src/os/shared/common/src/bits64/cpu/x86bugword.h
 src/os/shared/common/src/bits64/cpu/x86feature.h
 src/os/shared/common/src/bits64/cpu/x86featureword.h
+src/os/shared/common/src/bits64/cryptography/aes.cpp
+src/os/shared/common/src/bits64/cryptography/aes.h
 src/os/shared/common/src/bits64/early/earlyassert.h
 src/os/shared/common/src/bits64/early/earlylog.h
 src/os/shared/common/src/bits64/fpu/fpu.cpp
@@ -1033,6 +1035,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cont
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/lib/listelement.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/list.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvaddps.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvdivps.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx/asm_testavxvmaxps.h

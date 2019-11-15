@@ -32,7 +32,7 @@ u32                  FPU::sXFeaturesSizes[(u64)XFeature::MAXIMUM];
 
 
 
-NgosStatus FPU::init()
+NgosStatus FPU::init() // TODO: Create same function for Application Processor
 {
     COMMON_LT((""));
 
