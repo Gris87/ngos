@@ -2,7 +2,9 @@
 
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
+#include <common/src/bits64/fpu/fpu.h>
 #include <ngos/linkage.h>
+#include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -19,6 +21,11 @@ CPP_NO_OPTIMIZATION
 void UEFI_API testFloatProcedure(void *buffer)
 {
     UEFI_LT((" | buffer = 0x%p", buffer));
+
+
+
+    UEFI_ASSERT_EXECUTION(setupCr4());
+    UEFI_ASSERT_EXECUTION(FPU::init());
 
 
 

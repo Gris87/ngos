@@ -2,7 +2,9 @@
 
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
+#include <common/src/bits64/fpu/fpu.h>
 #include <ngos/linkage.h>
+#include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -22,6 +24,11 @@ void UEFI_API testSseProcedure(void *buffer)
 
 
 
+    UEFI_ASSERT_EXECUTION(setupCr4());
+    UEFI_ASSERT_EXECUTION(FPU::init());
+
+
+
     TestSse *test = (TestSse *)buffer;
 
     if (CPU::hasFlag(X86Feature::XMM))
@@ -37,13 +44,13 @@ void UEFI_API testSseProcedure(void *buffer)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "movaps  %1, %%xmm1"    "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
-                "addps   %%xmm1, %%xmm0"        // addps   %xmm1, %xmm0         # Add in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a),                // 'm' - use memory
-                        "m" (b)                 // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "movaps  %1, %%xmm1"        "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
+                "addps   %%xmm1, %%xmm0"            // addps   %xmm1, %xmm0         # Add in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a),                    // 'm' - use memory
+                        "m" (b)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -51,13 +58,13 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "movaps  %1, %%xmm1"    "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
-                "divps   %%xmm1, %%xmm0"        // divps   %xmm1, %xmm0         # Divide in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a),                // 'm' - use memory
-                        "m" (b)                 // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "movaps  %1, %%xmm1"        "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
+                "divps   %%xmm1, %%xmm0"            // divps   %xmm1, %xmm0         # Divide in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a),                    // 'm' - use memory
+                        "m" (b)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -65,13 +72,13 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "movaps  %1, %%xmm1"    "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
-                "maxps   %%xmm1, %%xmm0"        // maxps   %xmm1, %xmm0         # Get in parallel the maximum values in each pair of 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a),                // 'm' - use memory
-                        "m" (b)                 // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "movaps  %1, %%xmm1"        "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
+                "maxps   %%xmm1, %%xmm0"            // maxps   %xmm1, %xmm0         # Get in parallel the maximum values in each pair of 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a),                    // 'm' - use memory
+                        "m" (b)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -79,13 +86,13 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "movaps  %1, %%xmm1"    "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
-                "minps   %%xmm1, %%xmm0"        // minps   %xmm1, %xmm0         # Get in parallel the minimum values in each pair of 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a),                // 'm' - use memory
-                        "m" (b)                 // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "movaps  %1, %%xmm1"        "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
+                "minps   %%xmm1, %%xmm0"            // minps   %xmm1, %xmm0         # Get in parallel the minimum values in each pair of 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a),                    // 'm' - use memory
+                        "m" (b)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -93,13 +100,13 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "movaps  %1, %%xmm1"    "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
-                "mulps   %%xmm1, %%xmm0"        // mulps   %xmm1, %xmm0         # Multiply in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a),                // 'm' - use memory
-                        "m" (b)                 // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "movaps  %1, %%xmm1"        "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
+                "mulps   %%xmm1, %%xmm0"            // mulps   %xmm1, %xmm0         # Multiply in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a),                    // 'm' - use memory
+                        "m" (b)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -107,13 +114,13 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "movaps  %1, %%xmm1"    "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
-                "subps   %%xmm1, %%xmm0"        // subps   %xmm1, %xmm0         # Subtract in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a),                // 'm' - use memory
-                        "m" (b)                 // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "movaps  %1, %%xmm1"        "\n\t"  // movaps  0x10(%rsp), %xmm1    # Put 4 floats located at %1 to XMM1
+                "subps   %%xmm1, %%xmm0"            // subps   %xmm1, %xmm0         # Subtract in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a),                    // 'm' - use memory
+                        "m" (b)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -121,11 +128,11 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "rcpps   %%xmm0, %%xmm0"        // rcpps   %xmm0, %xmm0         # Compute Reciprocal (1/A) in parallel for 4 floats in XMM0 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a)                // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "rcpps   %%xmm0, %%xmm0"            // rcpps   %xmm0, %xmm0         # Compute Reciprocal (1/A) in parallel for 4 floats in XMM0 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -133,11 +140,11 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "rsqrtps %%xmm0, %%xmm0"        // rsqrtps %xmm0, %xmm0         # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 4 floats in XMM0 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a)                // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "rsqrtps %%xmm0, %%xmm0"            // rsqrtps %xmm0, %xmm0         # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 4 floats in XMM0 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -145,11 +152,11 @@ void UEFI_API testSseProcedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movaps  %0, %%xmm0"    "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
-                "sqrtps  %%xmm0, %%xmm0"        // sqrtps  %xmm0, %xmm0         # Compute Square Roots in parallel for 4 floats in XMM0 and store results in XMM0
-                    :                           // Output parameters
-                    :                           // Input parameters
-                        "m" (a)                // 'm' - use memory
+                "movaps  %0, %%xmm0"        "\n\t"  // movaps  0x20(%rsp), %xmm0    # Put 4 floats located at %0 to XMM0
+                "sqrtps  %%xmm0, %%xmm0"            // sqrtps  %xmm0, %xmm0         # Compute Square Roots in parallel for 4 floats in XMM0 and store results in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a)                     // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
         }

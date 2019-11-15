@@ -2,7 +2,9 @@
 
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
+#include <common/src/bits64/fpu/fpu.h>
 #include <ngos/linkage.h>
+#include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -22,6 +24,11 @@ void UEFI_API testSse42Procedure(void *buffer)
 
 
 
+    UEFI_ASSERT_EXECUTION(setupCr4());
+    UEFI_ASSERT_EXECUTION(FPU::init());
+
+
+
     TestSse42 *test = (TestSse42 *)buffer;
 
     if (CPU::hasFlag(X86Feature::XMM4_2))
@@ -37,13 +44,13 @@ void UEFI_API testSse42Procedure(void *buffer)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "movdqa      %0, %%xmm0"    "\n\t"  // movdqa      0x20(%rsp), %xmm0    # Put 2 quadwords located at %0 to XMM0
-                "movdqa      %1, %%xmm1"    "\n\t"  // movdqa      0x10(%rsp), %xmm1    # Put 2 quadwords located at %1 to XMM1
-                "pcmpgtq     %%xmm1, %%xmm0"        // pcmpgtq     %xmm1, %xmm0         # Compare signed quadwords in XMM0 with quadwords in XMM1. If quadword in XMM0 is greater then returns -1, otherwise 0. The results stored in XMM0
-                    :                               // Output parameters
-                    :                               // Input parameters
-                        "m" (a),                    // 'm' - use memory
-                        "m" (b)                     // 'm' - use memory
+                "movdqa      %0, %%xmm0"        "\n\t"  // movdqa      0x20(%rsp), %xmm0    # Put 2 quadwords located at %0 to XMM0
+                "movdqa      %1, %%xmm1"        "\n\t"  // movdqa      0x10(%rsp), %xmm1    # Put 2 quadwords located at %1 to XMM1
+                "pcmpgtq     %%xmm1, %%xmm0"            // pcmpgtq     %xmm1, %xmm0         # Compare signed quadwords in XMM0 with quadwords in XMM1. If quadword in XMM0 is greater then returns -1, otherwise 0. The results stored in XMM0
+                    :                                   // Output parameters
+                    :                                   // Input parameters
+                        "m" (a),                        // 'm' - use memory
+                        "m" (b)                         // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
         }
