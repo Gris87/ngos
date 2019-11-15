@@ -13,6 +13,7 @@ enum class TestType: u8
     BITWISE,
     LOGICAL,
     FLOAT,
+    DOUBLE,
     SSE,
     SSE2,
     SSE3,
@@ -40,6 +41,7 @@ inline const char8* testTypeToString(TestType type) // TEST: NO
         case TestType::BITWISE:  return "BITWISE";
         case TestType::LOGICAL:  return "LOGICAL";
         case TestType::FLOAT:    return "FLOAT";
+        case TestType::DOUBLE:   return "DOUBLE";
         case TestType::SSE:      return "SSE";
         case TestType::SSE2:     return "SSE2";
         case TestType::SSE3:     return "SSE3";

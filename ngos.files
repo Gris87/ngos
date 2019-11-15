@@ -262,6 +262,8 @@ src/os/bootloader_tools/cputest/src/bits64/tests/testbase.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testbase.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testbitwise.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testbitwise.h
+src/os/bootloader_tools/cputest/src/bits64/tests/testdouble.cpp
+src/os/bootloader_tools/cputest/src/bits64/tests/testdouble.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testfloat.cpp
 src/os/bootloader_tools/cputest/src/bits64/tests/testfloat.h
 src/os/bootloader_tools/cputest/src/bits64/tests/testfma3.cpp

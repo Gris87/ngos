@@ -11,7 +11,7 @@
 
 
 #define NUMBER_OF_ITERATIONS 100000000
-#define SCORE_PER_SECOND     1000
+#define SCORE_PER_SECOND     250
 
 
 
@@ -26,11 +26,26 @@ void UEFI_API testSse42Procedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::XMM4_2))
     {
+        i64 a[2] = { 1987965842, -1987077212 };
+        i64 b[2] = { 1981132191, 1271329132 };
+
+
+
         u64 startTime = rdtsc();
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
         {
-            // Nothing
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "movdqa      %0, %%xmm0"    "\n\t"  // movdqa      0x20(%rsp), %xmm0    # Put 2 quadwords located at %0 to XMM0
+                "movdqa      %1, %%xmm1"    "\n\t"  // movdqa      0x10(%rsp), %xmm1    # Put 2 quadwords located at %1 to XMM1
+                "pcmpgtq     %%xmm1, %%xmm0"        // pcmpgtq     %xmm1, %xmm0         # Compare signed quadwords in XMM0 with quadwords in XMM1. If quadword in XMM0 is greater then returns -1, otherwise 0. The results stored in XMM0
+                    :                               // Output parameters
+                    :                               // Input parameters
+                        "m" (a),                    // 'm' - use memory
+                        "m" (b)                     // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
         }
 
         u64 endTime = rdtsc();
