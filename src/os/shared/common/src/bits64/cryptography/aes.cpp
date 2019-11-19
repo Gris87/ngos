@@ -108,9 +108,6 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
-
-            memzero(mEncodeKeyAllocated, 12 * 16);
-            memzero(mDecodeKeyAllocated, 12 * 16);
         }
         break;
 
