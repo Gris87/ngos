@@ -21,12 +21,15 @@ public:
 #else
 private:
 #endif
-    NgosStatus expandKey128(u8 *key);
-    NgosStatus expandKey192(u8 *key);
-    NgosStatus encodeBlock128(u8 *sourceAddress, u8 *destinationAddress);
-    NgosStatus encodeBlock192(u8 *sourceAddress, u8 *destinationAddress);
-    NgosStatus decodeBlock128(u8 *sourceAddress, u8 *destinationAddress);
-    NgosStatus decodeBlock192(u8 *sourceAddress, u8 *destinationAddress);
+    NgosStatus expandKey128(u8 *key); // TEST: NO
+    NgosStatus expandKey192(u8 *key); // TEST: NO
+    NgosStatus expandKey256(u8 *key); // TEST: NO
+    NgosStatus encodeBlock128(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus encodeBlock192(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus encodeBlock256(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus decodeBlock128(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus decodeBlock192(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus decodeBlock256(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
 
 
 

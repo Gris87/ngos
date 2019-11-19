@@ -419,6 +419,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
         , X86Feature::TSC
         , X86Feature::FXSR
         , X86Feature::XSAVE
+        , X86Feature::AES
         , X86Feature::CX8
         , X86Feature::CMOV
 
