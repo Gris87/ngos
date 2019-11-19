@@ -16,6 +16,9 @@ public:
     NgosStatus setKey(u8 *key, u8 size);
     NgosStatus releaseKey();
 
+    NgosStatus encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize);
+    NgosStatus decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize);
+
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else

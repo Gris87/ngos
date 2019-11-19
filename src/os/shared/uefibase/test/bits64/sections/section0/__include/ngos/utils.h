@@ -123,6 +123,38 @@ TEST_CASES(section0, __include_ngos_utils);
 
 
 
+    TEST_CASE("IS_ALIGNED()");
+    {
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 1), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 1), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 1), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 1), true);
+
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 2), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 2), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 2), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 2), true);
+
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 4), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 4), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 4), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 4), true);
+
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(7,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(8,  8), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(9,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(10, 8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(16, 8), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(23, 8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(24, 8), true);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("IS_POWER_OF_2()");
     {
         TEST_ASSERT_EQUALS(IS_POWER_OF_2(1),  true);

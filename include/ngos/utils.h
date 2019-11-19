@@ -21,7 +21,8 @@
 
 
 
-#define IS_POWER_OF_2(a) (!((a) & ((a) - 1)))
+#define IS_ALIGNED(a, b) (!((u64)(a) & ((u64)(b) - 1)))
+#define IS_POWER_OF_2(a) IS_ALIGNED(a, a)
 
 
 

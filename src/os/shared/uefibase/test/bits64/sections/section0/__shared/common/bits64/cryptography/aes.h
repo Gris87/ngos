@@ -7,6 +7,8 @@
 #include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/checksum/crc.h>
 #include <common/src/bits64/cryptography/aes.h>
+#include <common/src/bits64/memory/malloc.h>
+#include <common/src/bits64/string/string.h>
 #include <uefibase/test/bits64/testengine.h>
 
 
@@ -144,6 +146,87 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xAA263E486D960ACD);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0xC4C8131C);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0xF4C91CB7B40C7925);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::AES not supported"));
+        }
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("encode()");
+    {
+        if (CPU::hasFlag(X86Feature::AES))
+        {
+            AES aes;
+
+            const char8 *key1 = "NGOS is the best";
+            const char8 *key2 = "NGOS is the best OS ever";
+            const char8 *key3 = "NGOS is the best OS ever !!!!!!!";
+
+            TEST_ASSERT_EQUALS(strlen(key1), 16);
+            TEST_ASSERT_EQUALS(strlen(key2), 24);
+            TEST_ASSERT_EQUALS(strlen(key3), 32);
+
+
+
+            u8  *in    = (u8 *)"Hello";
+            u64 inSize = strlen((char8 *)in);
+            u8  out[16];
+            u64 outSize;
+
+
+
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key1, strlen(key1)), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 11 * 16), 0xE5F76028);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 11 * 16), 0xC172975B03490927);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 11 * 16), 0x6F98A19E);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 11 * 16), 0xB1E3801C9D9249A0);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in, inSize, out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize,                  16);
+            TEST_ASSERT_EQUALS(Crc::crc32(out, outSize), 0x0495671B);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, outSize), 0x0495671B);
+
+
+
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key2, strlen(key2)), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0x0495671B);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0xAA263E486D960ACD);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0xC4C8131C);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0xF4C91CB7B40C7925);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in, inSize, out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize,                  16);
+            TEST_ASSERT_EQUALS(Crc::crc32(out, outSize), 0x0495671B);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, outSize), 0x0495671B);
+
+
+
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key3, strlen(key3)), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0x0495671B);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xAA263E486D960ACD);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0xC4C8131C);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0xF4C91CB7B40C7925);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in, inSize, out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize,                  16);
+            TEST_ASSERT_EQUALS(Crc::crc32(out, outSize), 0x0495671B);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, outSize), 0x0495671B);
         }
         else
         {

@@ -194,6 +194,130 @@ NgosStatus AES::releaseKey()
     return NgosStatus::OK;
 }
 
+NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
+{
+    COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize));
+
+    COMMON_ASSERT(in,          "in is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(inSize > 0,  "inSize is zero",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(out,         "out is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(outSize > 0, "outSize is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(resultSize,  "resultSize is null", NgosStatus::ASSERTION);
+
+
+
+    if (!mEncodeKey)
+    {
+        return NgosStatus::FAILED;
+    }
+
+
+
+    COMMON_TEST_ASSERT(IS_ALIGNED(out, 16), NgosStatus::ASSERTION);
+
+
+
+    u8  padding = inSize & 0x0F;
+    u64 size;
+
+    if (padding)
+    {
+        padding = 16 - padding;
+        size    = inSize + padding;
+    }
+    else
+    {
+        size = inSize;
+    }
+
+
+
+    if (outSize < size)
+    {
+        return NgosStatus::BUFFER_TOO_SMALL;
+    }
+
+    *resultSize = size;
+
+
+
+    i64 blocksCount = inSize >> 4; // ">> 4" == "/ 16"
+
+    for (i64 i = 0; i < blocksCount; ++i)
+    {
+        COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(in, out), NgosStatus::ASSERTION);
+
+        in  += 16;
+        out += 16;
+    }
+
+
+
+    if (padding)
+    {
+        u8 paddingBlock[16];
+
+        memcpy(paddingBlock, in, 16 - padding);
+        memzero(&paddingBlock[16 - padding], padding);
+
+        COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(paddingBlock, out), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
+{
+    COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize));
+
+    COMMON_ASSERT(in,                     "in is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(inSize > 0,             "inSize is zero",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(IS_ALIGNED(inSize, 16), "inSize is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(out,                    "out is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(outSize > 0,            "outSize is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(resultSize,             "resultSize is null", NgosStatus::ASSERTION);
+
+
+
+    if (!mDecodeKey)
+    {
+        return NgosStatus::FAILED;
+    }
+
+
+
+    COMMON_TEST_ASSERT(IS_ALIGNED(out, 16), NgosStatus::ASSERTION);
+
+
+
+    u64 size = inSize;
+
+    if (outSize < size)
+    {
+        return NgosStatus::BUFFER_TOO_SMALL;
+    }
+
+    *resultSize = size;
+
+
+
+    i64 blocksCount = inSize >> 4; // ">> 4" == "/ 16"
+
+    for (i64 i = 0; i < blocksCount; ++i)
+    {
+        COMMON_ASSERT_EXECUTION((this->*mDecodeBlockFunction)(in, out), NgosStatus::ASSERTION);
+
+        in  += 16;
+        out += 16;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus AES::expandKey128(u8 *key)
 {
     COMMON_LT((" | key = 0x%p", key));
