@@ -25,7 +25,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
         {
             AES aes;
 
-            TEST_ASSERT_EQUALS(aes.mExpandKeyFunction,   nullptr);
             TEST_ASSERT_EQUALS(aes.mEncodeBlockFunction, nullptr);
             TEST_ASSERT_EQUALS(aes.mDecodeBlockFunction, nullptr);
             TEST_ASSERT_EQUALS(aes.mEncodeKeyAllocated,  nullptr);
@@ -48,7 +47,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
         {
             AES aes;
 
-            TEST_ASSERT_EQUALS(aes.mExpandKeyFunction,   nullptr);
             TEST_ASSERT_EQUALS(aes.mEncodeBlockFunction, nullptr);
             TEST_ASSERT_EQUALS(aes.mDecodeBlockFunction, nullptr);
             TEST_ASSERT_EQUALS(aes.mEncodeKeyAllocated,  nullptr);
@@ -68,7 +66,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_NOT_EQUALS(aes.mExpandKeyFunction,   nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mDecodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeKeyAllocated,  nullptr);
@@ -87,7 +84,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_NOT_EQUALS(aes.mExpandKeyFunction,   nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mDecodeBlockFunction, nullptr);
             TEST_ASSERT_EQUALS(aes.mEncodeKeyAllocated,      nullptr);
@@ -101,7 +97,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_NOT_EQUALS(aes.mExpandKeyFunction,   nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mDecodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeKeyAllocated,  nullptr);
@@ -120,7 +115,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_NOT_EQUALS(aes.mExpandKeyFunction,   nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mDecodeBlockFunction, nullptr);
             TEST_ASSERT_EQUALS(aes.mEncodeKeyAllocated,      nullptr);
@@ -134,7 +128,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_NOT_EQUALS(aes.mExpandKeyFunction,   nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mDecodeBlockFunction, nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeKeyAllocated,  nullptr);

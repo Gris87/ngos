@@ -45,11 +45,62 @@
                                     "\n\t"                                                                                                                                              \
     "addq       $0x10, %%rax"       "\n\t"    /* addq       $0x10, %rax     # Go forward to next 16 bytes of mEncodeKey */                                                              \
     "subq       $0x10, %%rbx"       "\n\t"    /* subq       $0x10, %rbx     # Go backward to next 16 bytes of mDecodeKey */
+// TOOD: Try to remove add/sub
 
 
 
 #define AES_KEY_EXPANSION_128_LAST(roundConstant) \
     __AES_KEY_EXPANSION_128(roundConstant)
+
+
+
+#define __AES_ENCODE_KEY_EXPANSION_192(roundConstant) \
+    "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"    "\n\t"    /* aeskeygenassist    $0x01, %xmm1, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                  \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0xFF, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0xFF, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[3], XMM2[1] = XMM2[3], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+    "movaps             %%xmm4, %%xmm3"                         "\n\t"    /* movaps             %xmm4, %xmm3            # Put content of XMM4 to XMM3 */                                                                                                                                                        \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0x00, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0x00, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[0], XMM2[2] = XMM2[0], XMM2[3] = XMM2[0] */ \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x39, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x39, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[1], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0x14, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0x14, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[1], XMM2[3] = XMM2[0] */ \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x38, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x38, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0xA4, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0xA4, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x34, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x34, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[1], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "movups             %%xmm2, (%%rax)"                        "\n\t"    /* movaps             %xmm2, (%rax)           # Put content of XMM2 to 16 bytes of mEncodeKey */
+
+
+
+#define AES_ENCODE_KEY_EXPANSION_192(roundConstant) \
+    __AES_ENCODE_KEY_EXPANSION_192(roundConstant)           \
+                                        "\n\t"              \
+    "pshufd     $0xFF, %%xmm2, %%xmm2"  "\n\t"    /*  */    \
+    "pshufd     $0xFE, %%xmm1, %%xmm1"  "\n\t"    /*  */    \
+    "pxor       %%xmm1, %%xmm2"         "\n\t"    /*  */    \
+                                        "\n\t"              \
+    "pshufd     $0x00, %%xmm2, %%xmm2"  "\n\t"    /*  */    \
+    "pslldq     $0x04, %%xmm1"          "\n\t"    /*  */    \
+    "pshufd     $0x08, %%xmm1, %%xmm1"  "\n\t"    /*  */    \
+    "pxor       %%xmm1, %%xmm2"         "\n\t"    /*  */    \
+                                        "\n\t"              \
+    "movups     %%xmm2, 0x10(%%rax)"    "\n\t"    /*  */    \
+    "movups     0x08(%%rax), %%xmm1"    "\n\t"    /*  */    \
+    "movups     (%%rax), %%xmm4"        "\n\t"    /*  */    \
+    "addq       $0x18, %%rax"           "\n\t"    /* addq       $0x18, %rax     # Go forward to next 16 bytes of mEncodeKey */
+
+
+
+#define AES_ENCODE_KEY_EXPANSION_192_LAST(roundConstant) \
+    __AES_ENCODE_KEY_EXPANSION_192(roundConstant)
 
 
 
@@ -88,8 +139,7 @@
 
 
 AES::AES()
-    : mExpandKeyFunction(nullptr)
-    , mEncodeBlockFunction(nullptr)
+    : mEncodeBlockFunction(nullptr)
     , mDecodeBlockFunction(nullptr)
     , mEncodeKeyAllocated(nullptr)
     , mDecodeKeyAllocated(nullptr)
@@ -133,7 +183,6 @@ NgosStatus AES::setKey(u8 *key, u8 size)
     {
         case 128:
         {
-            mExpandKeyFunction   = &AES::expandKey128;
             mEncodeBlockFunction = &AES::encodeBlock128;
             mDecodeBlockFunction = &AES::decodeBlock128;
 
@@ -142,12 +191,13 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
+
+            COMMON_ASSERT_EXECUTION(expandKey128(key), NgosStatus::ASSERTION);
         }
         break;
 
         case 192:
         {
-            mExpandKeyFunction   = &AES::expandKey192;
             mEncodeBlockFunction = &AES::encodeBlock192;
             mDecodeBlockFunction = &AES::decodeBlock192;
 
@@ -156,12 +206,13 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
+
+            COMMON_ASSERT_EXECUTION(expandKey192(key), NgosStatus::ASSERTION);
         }
         break;
 
         case 256:
         {
-            mExpandKeyFunction   = &AES::expandKey256;
             mEncodeBlockFunction = &AES::encodeBlock256;
             mDecodeBlockFunction = &AES::decodeBlock256;
 
@@ -170,6 +221,8 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
+
+            COMMON_ASSERT_EXECUTION(expandKey256(key), NgosStatus::ASSERTION);
         }
         break;
 
@@ -184,17 +237,12 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
 
 
-    COMMON_TEST_ASSERT(mExpandKeyFunction   != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mEncodeBlockFunction != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mDecodeBlockFunction != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mEncodeKeyAllocated  != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mDecodeKeyAllocated  != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mEncodeKey           != nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(mDecodeKey           != nullptr, NgosStatus::ASSERTION);
-
-
-
-    COMMON_ASSERT_EXECUTION((this->*mExpandKeyFunction)(key), NgosStatus::ASSERTION);
 
 
 
@@ -392,7 +440,31 @@ NgosStatus AES::expandKey192(u8 *key)
 
 
 
-    AVOID_UNUSED(key);
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movups     %0, %%xmm2"                     "\n\t"    // movups     (%rsi), %xmm1   # Put 16 bytes from key to XMM1
+        "movups     %1, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1   # Put 16 bytes from key to XMM1
+                                                    "\n\t"    //
+        "movaps     %%xmm2, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey
+        "movups     %%xmm1, 0x08(%%rax)"            "\n\t"    // movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey
+        "movaps     %%xmm2, %%xmm4"                 "\n\t"    // movaps     %xmm1, %xmm4    # Put content of XMM1 to XMM4
+        "addq       $0x18, %%rax"                   "\n\t"    // addq       $0x10, %rax     # Go forward to next 16 bytes of mEncodeKey
+                                                    "\n\t"    //
+                AES_ENCODE_KEY_EXPANSION_192(0x01)            // Round 1
+                AES_ENCODE_KEY_EXPANSION_192(0x02)            // Round 2
+                AES_ENCODE_KEY_EXPANSION_192(0x04)            // Round 3
+                AES_ENCODE_KEY_EXPANSION_192(0x08)            // Round 4
+                AES_ENCODE_KEY_EXPANSION_192(0x10)            // Round 5
+                AES_ENCODE_KEY_EXPANSION_192(0x20)            // Round 6
+                AES_ENCODE_KEY_EXPANSION_192(0x40)            // Round 7
+                AES_ENCODE_KEY_EXPANSION_192_LAST(0x80)       // Round 8
+            :                                                 // Output parameters
+            :                                                 // Input parameters
+                "m" (key[0]),                                 // 'm' - use memory
+                "m" (key[8]),                                 // 'm' - use memory
+                "a" (mEncodeKey)                              // 'a' - RAX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 

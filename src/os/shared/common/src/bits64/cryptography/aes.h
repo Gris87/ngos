@@ -36,7 +36,6 @@ private:
 
 
 
-    NgosStatus (AES::*mExpandKeyFunction)(u8 *key);
     NgosStatus (AES::*mEncodeBlockFunction)(u8 *sourceAddress, u8 *destinationAddress);
     NgosStatus (AES::*mDecodeBlockFunction)(u8 *sourceAddress, u8 *destinationAddress);
 
