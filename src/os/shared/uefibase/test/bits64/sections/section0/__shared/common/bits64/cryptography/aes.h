@@ -232,21 +232,21 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
             TEST_ASSERT_EQUALS(aes.encode(in, inSize, out, sizeof(out), &outSize), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(outSize, 16);
-            TEST_ASSERT_EQUALS(out[0],  0x88);
-            TEST_ASSERT_EQUALS(out[1],  0x10);
-            TEST_ASSERT_EQUALS(out[2],  0x31);
-            TEST_ASSERT_EQUALS(out[3],  0x80);
-            TEST_ASSERT_EQUALS(out[4],  0xE2);
-            TEST_ASSERT_EQUALS(out[5],  0x9E);
-            TEST_ASSERT_EQUALS(out[6],  0xCD);
-            TEST_ASSERT_EQUALS(out[7],  0x89);
-            TEST_ASSERT_EQUALS(out[8],  0x28);
-            TEST_ASSERT_EQUALS(out[9],  0x33);
-            TEST_ASSERT_EQUALS(out[10], 0x85);
-            TEST_ASSERT_EQUALS(out[11], 0xC6);
-            TEST_ASSERT_EQUALS(out[12], 0xDC);
-            TEST_ASSERT_EQUALS(out[13], 0xC0);
-            TEST_ASSERT_EQUALS(out[14], 0xB8);
+            TEST_ASSERT_EQUALS(out[0],  0x2F);
+            TEST_ASSERT_EQUALS(out[1],  0xD0);
+            TEST_ASSERT_EQUALS(out[2],  0x6A);
+            TEST_ASSERT_EQUALS(out[3],  0x96);
+            TEST_ASSERT_EQUALS(out[4],  0xEA);
+            TEST_ASSERT_EQUALS(out[5],  0x2A);
+            TEST_ASSERT_EQUALS(out[6],  0xF4);
+            TEST_ASSERT_EQUALS(out[7],  0xAE);
+            TEST_ASSERT_EQUALS(out[8],  0x34);
+            TEST_ASSERT_EQUALS(out[9],  0xCC);
+            TEST_ASSERT_EQUALS(out[10], 0x59);
+            TEST_ASSERT_EQUALS(out[11], 0x69);
+            TEST_ASSERT_EQUALS(out[12], 0x4B);
+            TEST_ASSERT_EQUALS(out[13], 0x50);
+            TEST_ASSERT_EQUALS(out[14], 0xAC);
             TEST_ASSERT_EQUALS(out[15], 0xB0);
 
 
@@ -263,22 +263,22 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
             TEST_ASSERT_EQUALS(aes.encode(in, inSize, out, sizeof(out), &outSize), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(outSize, 16);
-            TEST_ASSERT_EQUALS(out[0],  0x88);
-            TEST_ASSERT_EQUALS(out[1],  0x10);
-            TEST_ASSERT_EQUALS(out[2],  0x31);
-            TEST_ASSERT_EQUALS(out[3],  0x80);
-            TEST_ASSERT_EQUALS(out[4],  0xE2);
-            TEST_ASSERT_EQUALS(out[5],  0x9E);
-            TEST_ASSERT_EQUALS(out[6],  0xCD);
-            TEST_ASSERT_EQUALS(out[7],  0x89);
-            TEST_ASSERT_EQUALS(out[8],  0x28);
-            TEST_ASSERT_EQUALS(out[9],  0x33);
-            TEST_ASSERT_EQUALS(out[10], 0x85);
-            TEST_ASSERT_EQUALS(out[11], 0xC6);
-            TEST_ASSERT_EQUALS(out[12], 0xDC);
-            TEST_ASSERT_EQUALS(out[13], 0xC0);
-            TEST_ASSERT_EQUALS(out[14], 0xB8);
-            TEST_ASSERT_EQUALS(out[15], 0xB0);
+            TEST_ASSERT_EQUALS(out[0],  0x93);
+            TEST_ASSERT_EQUALS(out[1],  0xAB);
+            TEST_ASSERT_EQUALS(out[2],  0x63);
+            TEST_ASSERT_EQUALS(out[3],  0x70);
+            TEST_ASSERT_EQUALS(out[4],  0xC5);
+            TEST_ASSERT_EQUALS(out[5],  0x68);
+            TEST_ASSERT_EQUALS(out[6],  0x33);
+            TEST_ASSERT_EQUALS(out[7],  0x81);
+            TEST_ASSERT_EQUALS(out[8],  0x71);
+            TEST_ASSERT_EQUALS(out[9],  0x7B);
+            TEST_ASSERT_EQUALS(out[10], 0x90);
+            TEST_ASSERT_EQUALS(out[11], 0x63);
+            TEST_ASSERT_EQUALS(out[12], 0x64);
+            TEST_ASSERT_EQUALS(out[13], 0xFF);
+            TEST_ASSERT_EQUALS(out[14], 0x11);
+            TEST_ASSERT_EQUALS(out[15], 0x27);
         }
         else
         {
@@ -306,8 +306,8 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
             u8 in1[16] __attribute__((aligned(16))) = { 0x88, 0x10, 0x31, 0x80, 0xE2, 0x9E, 0xCD, 0x89, 0x28, 0x33, 0x85, 0xC6, 0xDC, 0xC0, 0xB8, 0xB0 };
-            u8 in2[16] __attribute__((aligned(16))) = { 0x88, 0x10, 0x31, 0x80, 0xE2, 0x9E, 0xCD, 0x89, 0x28, 0x33, 0x85, 0xC6, 0xDC, 0xC0, 0xB8, 0xB0 };
-            u8 in3[16] __attribute__((aligned(16))) = { 0x88, 0x10, 0x31, 0x80, 0xE2, 0x9E, 0xCD, 0x89, 0x28, 0x33, 0x85, 0xC6, 0xDC, 0xC0, 0xB8, 0xB0 };
+            u8 in2[16] __attribute__((aligned(16))) = { 0x2F, 0xD0, 0x6A, 0x96, 0xEA, 0x2A, 0xF4, 0xAE, 0x34, 0xCC, 0x59, 0x69, 0x4B, 0x50, 0xAC, 0xB0 };
+            u8 in3[16] __attribute__((aligned(16))) = { 0x93, 0xAB, 0x63, 0x70, 0xC5, 0x68, 0x33, 0x81, 0x71, 0x7B, 0x90, 0x63, 0x64, 0xFF, 0x11, 0x27 };
 
             u8  out[16] __attribute__((aligned(16)));
             u64 outSize;

@@ -18,7 +18,7 @@ TEST_CASES(section0, __shared_common_bits64_memory_memory);
 {
     TEST_CASE("memcpy()");
     {
-        u8 buffer[34] = {5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7};
+        u8 buffer[34] = { 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7 };
         u8 temp[34];
 
 
@@ -100,8 +100,8 @@ TEST_CASES(section0, __shared_common_bits64_memory_memory);
 
     TEST_CASE("memcmp()");
     {
-        u8 buffer[5] = {5, 7, 3, 2, 8};
-        u8 temp[5]   = {5, 7, 3, 2, 8};
+        u8 buffer[5] = { 5, 7, 3, 2, 8 };
+        u8 temp[5]   = { 5, 7, 3, 2, 8 };
 
         TEST_ASSERT_EQUALS(memcmp(buffer, temp, 5), 0);
 
@@ -134,7 +134,7 @@ TEST_CASES(section0, __shared_common_bits64_memory_memory);
 
     TEST_CASE("memmove()");
     {
-        u8 buffer[34] = {5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7};
+        u8 buffer[34] = { 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7 };
         u8 temp[34];
 
 
