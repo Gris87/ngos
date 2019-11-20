@@ -1205,9 +1205,9 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    jpegNaturalOrder(%%rip), %0"   // leaq    jpegNaturalOrder(%rip), %rbx     # Get address of jpegNaturalOrder variable to RBX. %RBX == naturalOrder
-            :                                   // Output parameters
-                "=r" (naturalOrder)             // 'r' - any general register, '=' - write only
+        "leaq   jpegNaturalOrder(%%rip), %0"      // leaq   jpegNaturalOrder(%rip), %rbx    # Get address of jpegNaturalOrder variable to RBX. %RBX == naturalOrder
+            :                                     // Output parameters
+                "=r" (naturalOrder)               // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 

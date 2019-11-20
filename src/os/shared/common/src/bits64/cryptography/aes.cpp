@@ -10,43 +10,41 @@
 
 
 
-// TODO: Update asm comments
 #define __AES_KEY_EXPANSION_128(roundConstant) \
-    "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"    "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-                                                                "\n\t"                                                                              \
-    "pshufd             $0xFF, %%xmm2, %%xmm2"                  "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "movaps             %%xmm1, %%xmm3"                         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pshufd             $0x00, %%xmm2, %%xmm2"                  "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-                                                                "\n\t"                                                                              \
-    "pshufd             $0x39, %%xmm3, %%xmm3"                  "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pslldq             $0x04, %%xmm3"                          "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pshufd             $0x14, %%xmm2, %%xmm2"                  "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-                                                                "\n\t"                                                                              \
-    "pshufd             $0x38, %%xmm3, %%xmm3"                  "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pslldq             $0x04, %%xmm3"                          "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pshufd             $0xA4, %%xmm2, %%xmm2"                  "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-                                                                "\n\t"                                                                              \
-    "pshufd             $0x34, %%xmm3, %%xmm3"                  "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pslldq             $0x04, %%xmm3"                          "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-                                                                "\n\t"                                                                              \
-    "movaps             %%xmm2, %%xmm1"                         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "movaps             %%xmm2, (%%rax)"                        "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+    "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"    "\n\t"    /* aeskeygenassist    $0x01, %xmm1, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                  \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0xFF, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0xFF, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[3], XMM2[1] = XMM2[3], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+    "movaps             %%xmm1, %%xmm3"                         "\n\t"    /* movaps             %xmm1, %xmm3            # Put content of XMM1 to XMM3 */                                                                                                                                                        \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0x00, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0x00, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[0], XMM2[2] = XMM2[0], XMM2[3] = XMM2[0] */ \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x39, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x39, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[1], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0x14, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0x14, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[1], XMM2[3] = XMM2[0] */ \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x38, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x38, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0xA4, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0xA4, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x34, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x34, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[1], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+                                                                "\n\t"                                                                                                                                                                                                                                          \
+    "movaps             %%xmm2, %%xmm1"                         "\n\t"    /* movaps             %xmm2, %xmm1            # Put content of XMM2 to XMM1 */                                                                                                                                                        \
+    "movaps             %%xmm2, (%%rax)"                        "\n\t"    /* movaps             %xmm2, (%rax)           # Put content of XMM2 to 16 bytes of mEncodeKey */
 
 
 
-// TODO: Update asm comments
 #define AES_KEY_EXPANSION_128(roundConstant) \
-    __AES_KEY_EXPANSION_128(roundConstant) \
-                                                                "\n\t"                                                                              \
-    "aesimc             %%xmm1, %%xmm3"                         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "movaps             %%xmm3, (%%rbx)"                        "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-                                                                "\n\t"                                                                              \
-    "addq               $0x10, %%rax"                           "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "subq               $0x10, %%rbx"                           "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+    __AES_KEY_EXPANSION_128(roundConstant)                                                                                                                                              \
+                                    "\n\t"                                                                                                                                              \
+    "aesimc     %%xmm1, %%xmm3"     "\n\t"    /* aesimc     %xmm1, %xmm3    # Perform the InvMixColumn transformation on a 128-bit round key from XMM1 and store the result in XMM3 */  \
+    "movaps     %%xmm3, (%%rbx)"    "\n\t"    /* movaps     %xmm3, (%rbx)   # Put content of XMM3 to 16 bytes of mDecodeKey */                                                          \
+                                    "\n\t"                                                                                                                                              \
+    "addq       $0x10, %%rax"       "\n\t"    /* addq       $0x10, %rax     # Go forward to next 16 bytes of mEncodeKey */                                                              \
+    "subq       $0x10, %%rbx"       "\n\t"    /* subq       $0x10, %rbx     # Go backward to next 16 bytes of mDecodeKey */
 
 
 
@@ -55,45 +53,37 @@
 
 
 
-// TODO: Update asm comments
-#define __AES_ENCODE_ROUND_128 \
-    "addq       $0x10, %%rax"           "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "movaps     (%%rax), %%xmm2"        "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+#define __AES_ENCODE_DECODE_ROUND \
+    "addq       $0x10, %%rax"       "\n\t"    /* addq       $0x10, %rax     # Go to next 16 bytes of mEncodeKey/mDecodeKey */       \
+    "movaps     (%%rax), %%xmm2"    "\n\t"    /* movaps     (%rax), %xmm2   # Put 16 bytes from mEncodeKey/mDecodeKey to XMM2 */
 
 
 
-// TODO: Update asm comments
-#define AES_ENCODE_ROUND_128 \
-    __AES_ENCODE_ROUND_128 \
-    "aesenc     %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+#define AES_ENCODE_ROUND \
+    __AES_ENCODE_DECODE_ROUND                                                                                                                                                                                   \
+                                    "\n\t"                                                                                                                                                                      \
+    "aesenc     %%xmm2, %%xmm1"     "\n\t"    /* aesenc     %xmm2, %xmm1    # Perform one round of an AES encryption flow, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
 
 
 
-// TODO: Update asm comments
-#define AES_ENCODE_ROUND_128_LAST \
-    __AES_ENCODE_ROUND_128 \
-    "aesenclast %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+#define AES_ENCODE_ROUND_LAST \
+    __AES_ENCODE_DECODE_ROUND                                                                                                                                                                                               \
+                                        "\n\t"                                                                                                                                                                              \
+    "aesenclast     %%xmm2, %%xmm1"     "\n\t"    /* aesenclast     %xmm2, %xmm1    # Perform the last round of an AES encryption flow, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
 
 
 
-// TODO: Update asm comments
-#define __AES_DECODE_ROUND_128 \
-    "addq       $0x10, %%rax"           "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
-    "movaps     (%%rax), %%xmm2"        "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+#define AES_DECODE_ROUND \
+    __AES_ENCODE_DECODE_ROUND                                                                                                                                                                                                                       \
+                                    "\n\t"                                                                                                                                                                                                          \
+    "aesdec     %%xmm2, %%xmm1"     "\n\t"    /* aesdec     %xmm2, %xmm1    # Perform one round of an AES decryption flow, using the Equivalent Inverse Cipher, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
 
 
 
-// TODO: Update asm comments
-#define AES_DECODE_ROUND_128 \
-    __AES_DECODE_ROUND_128 \
-    "aesdec     %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
-
-
-
-// TODO: Update asm comments
-#define AES_DECODE_ROUND_128_LAST \
-    __AES_DECODE_ROUND_128 \
-    "aesdeclast %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+#define AES_DECODE_ROUND_LAST \
+    __AES_ENCODE_DECODE_ROUND                                                                                                                                                                                                                                       \
+                                        "\n\t"                                                                                                                                                                                                                      \
+    "aesdeclast     %%xmm2, %%xmm1"     "\n\t"    /* aesdeclast     %xmm2, %xmm1    # Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
 
 
 
@@ -360,33 +350,32 @@ NgosStatus AES::expandKey128(u8 *key)
 
 
 
-    // TODO: Update asm comments
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "movups     %0, %%xmm1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-                                            "\n\t"  //
-        "movaps     %%xmm1, (%%rax)"        "\n\t"  // movaps     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-        "movaps     %%xmm1, (%%rbx)"        "\n\t"  // movaps     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-        "addq       $0x10, %%rax"           "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-        "subq       $0x10, %%rbx"           "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-                                            "\n\t"  //
-                AES_KEY_EXPANSION_128(0x01)         // Round 1
-                AES_KEY_EXPANSION_128(0x02)         // Round 2
-                AES_KEY_EXPANSION_128(0x04)         // Round 3
-                AES_KEY_EXPANSION_128(0x08)         // Round 4
-                AES_KEY_EXPANSION_128(0x10)         // Round 5
-                AES_KEY_EXPANSION_128(0x20)         // Round 6
-                AES_KEY_EXPANSION_128(0x40)         // Round 7
-                AES_KEY_EXPANSION_128(0x80)         // Round 8
-                AES_KEY_EXPANSION_128(0x1b)         // Round 9
-                AES_KEY_EXPANSION_128_LAST(0x36)    // Round 10
-                                            "\n\t"  //
-        "movaps     %%xmm1, (%%rbx)"                // movaps     %xmm1, (%rbx)    # Put 8 floats located at %0 to YMM1
-            :                                       // Output parameters
-            :                                       // Input parameters
-                "m" (*key),                         // 'm' - use memory
-                "a" (mEncodeKey),                   // 'a' - RAX
-                "b" (&mDecodeKey[160])              // 'b' - RBX
+        "movups     %0, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1   # Put 16 bytes from key to XMM1
+                                                    "\n\t"    //
+        "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey
+        "movaps     %%xmm1, (%%rbx)"                "\n\t"    // movaps     %xmm1, (%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey
+        "addq       $0x10, %%rax"                   "\n\t"    // addq       $0x10, %rax     # Go forward to next 16 bytes of mEncodeKey
+        "subq       $0x10, %%rbx"                   "\n\t"    // subq       $0x10, %rbx     # Go backward to next 16 bytes of mDecodeKey
+                                                    "\n\t"    //
+                AES_KEY_EXPANSION_128(0x01)                   // Round 1
+                AES_KEY_EXPANSION_128(0x02)                   // Round 2
+                AES_KEY_EXPANSION_128(0x04)                   // Round 3
+                AES_KEY_EXPANSION_128(0x08)                   // Round 4
+                AES_KEY_EXPANSION_128(0x10)                   // Round 5
+                AES_KEY_EXPANSION_128(0x20)                   // Round 6
+                AES_KEY_EXPANSION_128(0x40)                   // Round 7
+                AES_KEY_EXPANSION_128(0x80)                   // Round 8
+                AES_KEY_EXPANSION_128(0x1b)                   // Round 9
+                AES_KEY_EXPANSION_128_LAST(0x36)              // Round 10
+                                                    "\n\t"    //
+        "movaps     %%xmm1, (%%rbx)"                          // movaps     %xmm1, (%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey
+            :                                                 // Output parameters
+            :                                                 // Input parameters
+                "m" (*key),                                   // 'm' - use memory
+                "a" (mEncodeKey),                             // 'a' - RAX
+                "b" (&mDecodeKey[160])                        // 'b' - RBX
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -434,31 +423,30 @@ NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    // TODO: Update asm comments
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "movaps     %0, %%xmm1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-        "movaps     (%%rax), %%xmm2"        "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-                                            "\n\t"  //
-        "pxor       %%xmm2, %%xmm1"         "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-                                            "\n\t"  //
-                AES_ENCODE_ROUND_128                // Round 1
-                AES_ENCODE_ROUND_128                // Round 2
-                AES_ENCODE_ROUND_128                // Round 3
-                AES_ENCODE_ROUND_128                // Round 4
-                AES_ENCODE_ROUND_128                // Round 5
-                AES_ENCODE_ROUND_128                // Round 6
-                AES_ENCODE_ROUND_128                // Round 7
-                AES_ENCODE_ROUND_128                // Round 8
-                AES_ENCODE_ROUND_128                // Round 9
-                AES_ENCODE_ROUND_128_LAST           // Round 10
-                                            "\n\t"  //
-        "movaps     %%xmm1, %1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-            :                                       // Output parameters
-            :                                       // Input parameters
-                "m" (*sourceAddress),               // 'm' - use memory
-                "m" (*destinationAddress),          // 'm' - use memory
-                "a" (mEncodeKey)                    // 'a' - RAX
+        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
+        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2
+                                        "\n\t"    //
+        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
+                                        "\n\t"    //
+                AES_ENCODE_ROUND                  // Round 1
+                AES_ENCODE_ROUND                  // Round 2
+                AES_ENCODE_ROUND                  // Round 3
+                AES_ENCODE_ROUND                  // Round 4
+                AES_ENCODE_ROUND                  // Round 5
+                AES_ENCODE_ROUND                  // Round 6
+                AES_ENCODE_ROUND                  // Round 7
+                AES_ENCODE_ROUND                  // Round 8
+                AES_ENCODE_ROUND                  // Round 9
+                AES_ENCODE_ROUND_LAST             // Round 10
+                                        "\n\t"    //
+        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
+            :                                     // Output parameters
+            :                                     // Input parameters
+                "m" (*sourceAddress),             // 'm' - use memory
+                "m" (*destinationAddress),        // 'm' - use memory
+                "a" (mEncodeKey)                  // 'a' - RAX
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -476,8 +464,34 @@ NgosStatus AES::encodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    AVOID_UNUSED(sourceAddress);
-    AVOID_UNUSED(destinationAddress);
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
+        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2
+                                        "\n\t"    //
+        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
+                                        "\n\t"    //
+                AES_ENCODE_ROUND                  // Round 1
+                AES_ENCODE_ROUND                  // Round 2
+                AES_ENCODE_ROUND                  // Round 3
+                AES_ENCODE_ROUND                  // Round 4
+                AES_ENCODE_ROUND                  // Round 5
+                AES_ENCODE_ROUND                  // Round 6
+                AES_ENCODE_ROUND                  // Round 7
+                AES_ENCODE_ROUND                  // Round 8
+                AES_ENCODE_ROUND                  // Round 9
+                AES_ENCODE_ROUND                  // Round 10
+                AES_ENCODE_ROUND                  // Round 11
+                AES_ENCODE_ROUND_LAST             // Round 12
+                                        "\n\t"    //
+        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
+            :                                     // Output parameters
+            :                                     // Input parameters
+                "m" (*sourceAddress),             // 'm' - use memory
+                "m" (*destinationAddress),        // 'm' - use memory
+                "a" (mEncodeKey)                  // 'a' - RAX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -493,8 +507,36 @@ NgosStatus AES::encodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    AVOID_UNUSED(sourceAddress);
-    AVOID_UNUSED(destinationAddress);
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
+        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2
+                                        "\n\t"    //
+        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
+                                        "\n\t"    //
+                AES_ENCODE_ROUND                  // Round 1
+                AES_ENCODE_ROUND                  // Round 2
+                AES_ENCODE_ROUND                  // Round 3
+                AES_ENCODE_ROUND                  // Round 4
+                AES_ENCODE_ROUND                  // Round 5
+                AES_ENCODE_ROUND                  // Round 6
+                AES_ENCODE_ROUND                  // Round 7
+                AES_ENCODE_ROUND                  // Round 8
+                AES_ENCODE_ROUND                  // Round 9
+                AES_ENCODE_ROUND                  // Round 10
+                AES_ENCODE_ROUND                  // Round 11
+                AES_ENCODE_ROUND                  // Round 12
+                AES_ENCODE_ROUND                  // Round 13
+                AES_ENCODE_ROUND_LAST             // Round 14
+                                        "\n\t"    //
+        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
+            :                                     // Output parameters
+            :                                     // Input parameters
+                "m" (*sourceAddress),             // 'm' - use memory
+                "m" (*destinationAddress),        // 'm' - use memory
+                "a" (mEncodeKey)                  // 'a' - RAX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -510,31 +552,30 @@ NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    // TODO: Update asm comments
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "movaps     %0, %%xmm1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-        "movaps     (%%rax), %%xmm2"        "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-                                            "\n\t"  //
-        "pxor       %%xmm2, %%xmm1"         "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-                                            "\n\t"  //
-                AES_DECODE_ROUND_128                // Round 1
-                AES_DECODE_ROUND_128                // Round 2
-                AES_DECODE_ROUND_128                // Round 3
-                AES_DECODE_ROUND_128                // Round 4
-                AES_DECODE_ROUND_128                // Round 5
-                AES_DECODE_ROUND_128                // Round 6
-                AES_DECODE_ROUND_128                // Round 7
-                AES_DECODE_ROUND_128                // Round 8
-                AES_DECODE_ROUND_128                // Round 9
-                AES_DECODE_ROUND_128_LAST           // Round 10
-                                            "\n\t"  //
-        "movaps     %%xmm1, %1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
-            :                                       // Output parameters
-            :                                       // Input parameters
-                "m" (*sourceAddress),               // 'm' - use memory
-                "m" (*destinationAddress),          // 'm' - use memory
-                "a" (mDecodeKey)                    // 'a' - RAX
+        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
+        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2
+                                        "\n\t"    //
+        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
+                                        "\n\t"    //
+                AES_DECODE_ROUND                  // Round 1
+                AES_DECODE_ROUND                  // Round 2
+                AES_DECODE_ROUND                  // Round 3
+                AES_DECODE_ROUND                  // Round 4
+                AES_DECODE_ROUND                  // Round 5
+                AES_DECODE_ROUND                  // Round 6
+                AES_DECODE_ROUND                  // Round 7
+                AES_DECODE_ROUND                  // Round 8
+                AES_DECODE_ROUND                  // Round 9
+                AES_DECODE_ROUND_LAST             // Round 10
+                                        "\n\t"    //
+        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
+            :                                     // Output parameters
+            :                                     // Input parameters
+                "m" (*sourceAddress),             // 'm' - use memory
+                "m" (*destinationAddress),        // 'm' - use memory
+                "a" (mDecodeKey)                  // 'a' - RAX
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -552,8 +593,34 @@ NgosStatus AES::decodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    AVOID_UNUSED(sourceAddress);
-    AVOID_UNUSED(destinationAddress);
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
+        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2
+                                        "\n\t"    //
+        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
+                                        "\n\t"    //
+                AES_DECODE_ROUND                  // Round 1
+                AES_DECODE_ROUND                  // Round 2
+                AES_DECODE_ROUND                  // Round 3
+                AES_DECODE_ROUND                  // Round 4
+                AES_DECODE_ROUND                  // Round 5
+                AES_DECODE_ROUND                  // Round 6
+                AES_DECODE_ROUND                  // Round 7
+                AES_DECODE_ROUND                  // Round 8
+                AES_DECODE_ROUND                  // Round 9
+                AES_DECODE_ROUND                  // Round 10
+                AES_DECODE_ROUND                  // Round 11
+                AES_DECODE_ROUND_LAST             // Round 12
+                                        "\n\t"    //
+        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
+            :                                     // Output parameters
+            :                                     // Input parameters
+                "m" (*sourceAddress),             // 'm' - use memory
+                "m" (*destinationAddress),        // 'm' - use memory
+                "a" (mDecodeKey)                  // 'a' - RAX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -569,8 +636,36 @@ NgosStatus AES::decodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    AVOID_UNUSED(sourceAddress);
-    AVOID_UNUSED(destinationAddress);
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
+        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2
+                                        "\n\t"    //
+        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
+                                        "\n\t"    //
+                AES_DECODE_ROUND                  // Round 1
+                AES_DECODE_ROUND                  // Round 2
+                AES_DECODE_ROUND                  // Round 3
+                AES_DECODE_ROUND                  // Round 4
+                AES_DECODE_ROUND                  // Round 5
+                AES_DECODE_ROUND                  // Round 6
+                AES_DECODE_ROUND                  // Round 7
+                AES_DECODE_ROUND                  // Round 8
+                AES_DECODE_ROUND                  // Round 9
+                AES_DECODE_ROUND                  // Round 10
+                AES_DECODE_ROUND                  // Round 11
+                AES_DECODE_ROUND                  // Round 12
+                AES_DECODE_ROUND                  // Round 13
+                AES_DECODE_ROUND_LAST             // Round 14
+                                        "\n\t"    //
+        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
+            :                                     // Output parameters
+            :                                     // Input parameters
+                "m" (*sourceAddress),             // 'm' - use memory
+                "m" (*destinationAddress),        // 'm' - use memory
+                "a" (mDecodeKey)                  // 'a' - RAX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 

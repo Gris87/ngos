@@ -98,10 +98,10 @@ inline NgosStatus setupIdtRegister()
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "lidt    %0"                    // lidt    (%rax)   # Loads the values in the source operand into the interrupt descriptor table register. (%rax) == (*earlyIdtRegister)
-            :                           // Output parameters
-            :                           // Input parameters
-                "m" (earlyIdtRegister)  // 'm' - use memory // Ignore CppSingleCharVerifier
+        "lidt   %0"                       // lidt   (%rax)  # Loads the values in the source operand into the interrupt descriptor table register. (%rax) == (*earlyIdtRegister)
+            :                             // Output parameters
+            :                             // Input parameters
+                "m" (earlyIdtRegister)    // 'm' - use memory // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 

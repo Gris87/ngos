@@ -320,23 +320,23 @@ NgosStatus adaptPredefinedPageTable(u64 imageLocation, PGD *pgd)
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    early_pagetable_level4(%%rip),  %0"    "\n\t" // leaq    early_pagetable_level4(%rip),  %r14   # Get address of early_pagetable_level4 variable to R14. %R14 == p4d
-        "leaq    early_pagetable_level3(%%rip),  %1"    "\n\t" // leaq    early_pagetable_level3(%rip),  %rbp   # Get address of early_pagetable_level3 variable to RBP. %RBP == pud
-        "leaq    fixmap_pagetable_level2(%%rip), %2"           // leaq    fixmap_pagetable_level2(%rip), %r13   # Get address of fixmap_pagetable_level2 variable to R13. %R13 == pmd
-            :                                                  // Output parameters
-                "=r" (p4d),                                    // 'r' - any general register, '=' - write only
-                "=r" (pud),                                    // 'r' - any general register, '=' - write only
-                "=r" (pmd)                                     // 'r' - any general register, '=' - write only
+        "leaq   early_pagetable_level4(%%rip),  %0"     "\n\t"    // leaq   early_pagetable_level4(%rip),  %r14     # Get address of early_pagetable_level4 variable to R14. %R14 == p4d
+        "leaq   early_pagetable_level3(%%rip),  %1"     "\n\t"    // leaq   early_pagetable_level3(%rip),  %rbp     # Get address of early_pagetable_level3 variable to RBP. %RBP == pud
+        "leaq   fixmap_pagetable_level2(%%rip), %2"               // leaq   fixmap_pagetable_level2(%rip), %r13     # Get address of fixmap_pagetable_level2 variable to R13. %R13 == pmd
+            :                                                     // Output parameters
+                "=r" (p4d),                                       // 'r' - any general register, '=' - write only
+                "=r" (pud),                                       // 'r' - any general register, '=' - write only
+                "=r" (pmd)                                        // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 #else
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    early_pagetable_level3(%%rip),  %0"    "\n\t" // leaq    early_pagetable_level3(%rip),  %rbp   # Get address of early_pagetable_level3 variable to RBP. %RBP == pud
-        "leaq    fixmap_pagetable_level2(%%rip), %1"           // leaq    fixmap_pagetable_level2(%rip), %r13   # Get address of fixmap_pagetable_level2 variable to R13. %R13 == pmd
-            :                                                  // Output parameters
-                "=r" (pud),                                    // 'r' - any general register, '=' - write only
-                "=r" (pmd)                                     // 'r' - any general register, '=' - write only
+        "leaq   early_pagetable_level3(%%rip),  %0"     "\n\t"    // leaq   early_pagetable_level3(%rip),  %rbp     # Get address of early_pagetable_level3 variable to RBP. %RBP == pud
+        "leaq   fixmap_pagetable_level2(%%rip), %1"               // leaq   fixmap_pagetable_level2(%rip), %r13     # Get address of fixmap_pagetable_level2 variable to R13. %R13 == pmd
+            :                                                     // Output parameters
+                "=r" (pud),                                       // 'r' - any general register, '=' - write only
+                "=r" (pmd)                                        // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 #endif
@@ -410,9 +410,9 @@ NgosStatus adaptVirtualAddressSpacePageTable(u64 imageLocation)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    early_pagetable_level2(%%rip), %0" // leaq    early_pagetable_level2(%rip), %rbx   # Get address of early_pagetable_level2 variable to RBX. %RBX == pmd
-            :                                       // Output parameters
-                "=r" (pmd)                          // 'r' - any general register, '=' - write only
+        "leaq   early_pagetable_level2(%%rip), %0"    // leaq   early_pagetable_level2(%rip), %rbx  # Get address of early_pagetable_level2 variable to RBX. %RBX == pmd
+            :                                         // Output parameters
+                "=r" (pmd)                            // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -468,9 +468,9 @@ NgosStatus adaptVideoRamPageTable(BootParams *params, PGD *pgd)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    video_ram_pagetable_pages(%%rip), %0"  // leaq    video_ram_pagetable_pages(%rip), %rbp     # Get address of video_ram_pagetable_pages variable to RBP. %RBP == videoRamPagetablePages
-            :                                           // Output parameters
-                "=r" (videoRamPagetablePages)           // 'r' - any general register, '=' - write only
+        "leaq   video_ram_pagetable_pages(%%rip), %0"     // leaq   video_ram_pagetable_pages(%rip), %rbp   # Get address of video_ram_pagetable_pages variable to RBP. %RBP == videoRamPagetablePages
+            :                                             // Output parameters
+                "=r" (videoRamPagetablePages)             // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -505,9 +505,9 @@ NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    dynamic_pagetable_pages(%%rip), %0" // leaq    dynamic_pagetable_pages(%rip), %rbp     # Get address of dynamic_pagetable_pages variable to RBP. %RBP == dynamicPagetablePages
-            :                                        // Output parameters
-                "=r" (dynamicPagetablePages)         // 'r' - any general register, '=' - write only
+        "leaq   dynamic_pagetable_pages(%%rip), %0"   // leaq   dynamic_pagetable_pages(%rip), %rbp     # Get address of dynamic_pagetable_pages variable to RBP. %RBP == dynamicPagetablePages
+            :                                         // Output parameters
+                "=r" (dynamicPagetablePages)          // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -634,9 +634,9 @@ NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "leaq    early_pagetable(%%rip), %0" // leaq    early_pagetable(%rip), %r12     # Get address of early_pagetable variable to R12. %R12 == pgd
-            :                                // Output parameters
-                "=r" (pgd)                   // 'r' - any general register, '=' - write only
+        "leaq   early_pagetable(%%rip), %0"   // leaq   early_pagetable(%rip), %r12     # Get address of early_pagetable variable to R12. %R12 == pgd
+            :                                 // Output parameters
+                "=r" (pgd)                    // 'r' - any general register, '=' - write only
     );
     // Ignore CppAlignmentVerifier [END]
 

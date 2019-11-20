@@ -48,15 +48,15 @@ void UEFI_API testFma3Procedure(void *buffer)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "vmovapd         %0, %%ymm0"                "\n\t"  // vmovapd         0x20(%rsp), %ymm0    # Put 4 doubles located at %0 to YMM0
-                "vmovapd         %1, %%ymm1"                "\n\t"  // vmovapd         0x40(%rsp), %ymm1    # Put 4 doubles located at %1 to YMM1
-                "vmovapd         %2, %%ymm2"                "\n\t"  // vmovapd         0x60(%rsp), %ymm2    # Put 4 doubles located at %2 to YMM2
-                "vfmadd213pd     %%ymm2, %%ymm1, %%ymm0"            // vfmadd213pd     %ymm2, %ymm1, %ymm0  # Multiply in parallel 4 doubles in YMM1 with 4 doubles in YMM0, add 4 doubles in YMM2 and store results in YMM0
-                    :                                               // Output parameters
-                    :                                               // Input parameters
-                        "m" (a),                                    // 'm' - use memory
-                        "m" (b),                                    // 'm' - use memory
-                        "m" (c)                                     // 'm' - use memory
+                "vmovapd        %0, %%ymm0"                 "\n\t"    // vmovapd        0x20(%rsp), %ymm0       # Put 4 doubles located at %0 to YMM0
+                "vmovapd        %1, %%ymm1"                 "\n\t"    // vmovapd        0x40(%rsp), %ymm1       # Put 4 doubles located at %1 to YMM1
+                "vmovapd        %2, %%ymm2"                 "\n\t"    // vmovapd        0x60(%rsp), %ymm2       # Put 4 doubles located at %2 to YMM2
+                "vfmadd213pd    %%ymm2, %%ymm1, %%ymm0"               // vfmadd213pd    %ymm2, %ymm1, %ymm0     # Multiply in parallel 4 doubles in YMM1 with 4 doubles in YMM0, add 4 doubles in YMM2 and store results in YMM0
+                    :                                                 // Output parameters
+                    :                                                 // Input parameters
+                        "m" (a),                                      // 'm' - use memory
+                        "m" (b),                                      // 'm' - use memory
+                        "m" (c)                                       // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -64,15 +64,15 @@ void UEFI_API testFma3Procedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "vmovaps         %0, %%ymm0"                "\n\t"  // vmovaps         0x20(%rsp), %ymm0    # Put 8 floats located at %0 to YMM0
-                "vmovaps         %1, %%ymm1"                "\n\t"  // vmovaps         0x40(%rsp), %ymm1    # Put 8 floats located at %1 to YMM1
-                "vmovaps         %2, %%ymm2"                "\n\t"  // vmovaps         0x60(%rsp), %ymm2    # Put 8 floats located at %2 to YMM2
-                "vfmadd213ps     %%ymm2, %%ymm1, %%ymm0"            // vfmadd213ps     %ymm2, %ymm1, %ymm0  # Multiply in parallel 8 floats in YMM1 with 8 floats in YMM0, add 8 floats in YMM2 and store results in YMM0
-                    :                                               // Output parameters
-                    :                                               // Input parameters
-                        "m" (d),                                    // 'm' - use memory
-                        "m" (e),                                    // 'm' - use memory
-                        "m" (f)                                     // 'm' - use memory
+                "vmovaps        %0, %%ymm0"                 "\n\t"    // vmovaps        0x20(%rsp), %ymm0       # Put 8 floats located at %0 to YMM0
+                "vmovaps        %1, %%ymm1"                 "\n\t"    // vmovaps        0x40(%rsp), %ymm1       # Put 8 floats located at %1 to YMM1
+                "vmovaps        %2, %%ymm2"                 "\n\t"    // vmovaps        0x60(%rsp), %ymm2       # Put 8 floats located at %2 to YMM2
+                "vfmadd213ps    %%ymm2, %%ymm1, %%ymm0"               // vfmadd213ps    %ymm2, %ymm1, %ymm0     # Multiply in parallel 8 floats in YMM1 with 8 floats in YMM0, add 8 floats in YMM2 and store results in YMM0
+                    :                                                 // Output parameters
+                    :                                                 // Input parameters
+                        "m" (d),                                      // 'm' - use memory
+                        "m" (e),                                      // 'm' - use memory
+                        "m" (f)                                       // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -80,15 +80,15 @@ void UEFI_API testFma3Procedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "vmovapd         %0, %%ymm0"                "\n\t"  // vmovapd         0x20(%rsp), %ymm0    # Put 4 doubles located at %0 to YMM0
-                "vmovapd         %1, %%ymm1"                "\n\t"  // vmovapd         0x40(%rsp), %ymm1    # Put 4 doubles located at %1 to YMM1
-                "vmovapd         %2, %%ymm2"                "\n\t"  // vmovapd         0x60(%rsp), %ymm2    # Put 4 doubles located at %2 to YMM2
-                "vfmsub213pd     %%ymm2, %%ymm1, %%ymm0"            // vfmsub213pd     %ymm2, %ymm1, %ymm0  # Multiply in parallel 4 doubles in YMM1 with 4 doubles in YMM0, subtract 4 doubles in YMM2 and store results in YMM0
-                    :                                               // Output parameters
-                    :                                               // Input parameters
-                        "m" (a),                                    // 'm' - use memory
-                        "m" (b),                                    // 'm' - use memory
-                        "m" (c)                                     // 'm' - use memory
+                "vmovapd        %0, %%ymm0"                 "\n\t"    // vmovapd        0x20(%rsp), %ymm0       # Put 4 doubles located at %0 to YMM0
+                "vmovapd        %1, %%ymm1"                 "\n\t"    // vmovapd        0x40(%rsp), %ymm1       # Put 4 doubles located at %1 to YMM1
+                "vmovapd        %2, %%ymm2"                 "\n\t"    // vmovapd        0x60(%rsp), %ymm2       # Put 4 doubles located at %2 to YMM2
+                "vfmsub213pd    %%ymm2, %%ymm1, %%ymm0"               // vfmsub213pd    %ymm2, %ymm1, %ymm0     # Multiply in parallel 4 doubles in YMM1 with 4 doubles in YMM0, subtract 4 doubles in YMM2 and store results in YMM0
+                    :                                                 // Output parameters
+                    :                                                 // Input parameters
+                        "m" (a),                                      // 'm' - use memory
+                        "m" (b),                                      // 'm' - use memory
+                        "m" (c)                                       // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -96,15 +96,15 @@ void UEFI_API testFma3Procedure(void *buffer)
 
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
-                "vmovaps         %0, %%ymm0"                "\n\t"  // vmovaps         0x20(%rsp), %ymm0    # Put 8 floats located at %0 to YMM0
-                "vmovaps         %1, %%ymm1"                "\n\t"  // vmovaps         0x40(%rsp), %ymm1    # Put 8 floats located at %1 to YMM1
-                "vmovaps         %2, %%ymm2"                "\n\t"  // vmovaps         0x60(%rsp), %ymm2    # Put 8 floats located at %2 to YMM2
-                "vfmsub213ps     %%ymm2, %%ymm1, %%ymm0"            // vfmsub213ps     %ymm2, %ymm1, %ymm0  # Multiply in parallel 8 floats in YMM1 with 8 floats in YMM0, subtract 8 floats in YMM2 and store results in YMM0
-                    :                                               // Output parameters
-                    :                                               // Input parameters
-                        "m" (d),                                    // 'm' - use memory
-                        "m" (e),                                    // 'm' - use memory
-                        "m" (f)                                     // 'm' - use memory
+                "vmovaps        %0, %%ymm0"                 "\n\t"    // vmovaps        0x20(%rsp), %ymm0       # Put 8 floats located at %0 to YMM0
+                "vmovaps        %1, %%ymm1"                 "\n\t"    // vmovaps        0x40(%rsp), %ymm1       # Put 8 floats located at %1 to YMM1
+                "vmovaps        %2, %%ymm2"                 "\n\t"    // vmovaps        0x60(%rsp), %ymm2       # Put 8 floats located at %2 to YMM2
+                "vfmsub213ps    %%ymm2, %%ymm1, %%ymm0"               // vfmsub213ps    %ymm2, %ymm1, %ymm0     # Multiply in parallel 8 floats in YMM1 with 8 floats in YMM0, subtract 8 floats in YMM2 and store results in YMM0
+                    :                                                 // Output parameters
+                    :                                                 // Input parameters
+                        "m" (d),                                      // 'm' - use memory
+                        "m" (e),                                      // 'm' - use memory
+                        "m" (f)                                       // 'm' - use memory
             );
             // Ignore CppAlignmentVerifier [END]
         }
