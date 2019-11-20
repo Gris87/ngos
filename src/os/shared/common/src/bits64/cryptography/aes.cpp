@@ -54,6 +54,7 @@
 
 
 
+// TODO: Update asm comments
 #define __AES_ENCODE_KEY_EXPANSION_192(roundConstant) \
     "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"    "\n\t"    /* aeskeygenassist    $0x01, %xmm1, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                  \
                                                                 "\n\t"                                                                                                                                                                                                                                          \
@@ -80,6 +81,7 @@
 
 
 
+// TODO: Update asm comments
 #define AES_ENCODE_KEY_EXPANSION_192(roundConstant) \
     __AES_ENCODE_KEY_EXPANSION_192(roundConstant)           \
                                         "\n\t"              \
@@ -440,6 +442,7 @@ NgosStatus AES::expandKey192(u8 *key)
 
 
 
+    // TODO: Update asm comments
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "movups     %0, %%xmm2"                     "\n\t"    // movups     (%rsi), %xmm1   # Put 16 bytes from key to XMM1
