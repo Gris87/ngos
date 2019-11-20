@@ -10,6 +10,7 @@
 
 
 
+// TODO: Update asm comments
 #define __AES_KEY_EXPANSION_128(roundConstant) \
     "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"    "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
                                                                 "\n\t"                                                                              \
@@ -37,6 +38,7 @@
 
 
 
+// TODO: Update asm comments
 #define AES_KEY_EXPANSION_128(roundConstant) \
     __AES_KEY_EXPANSION_128(roundConstant) \
                                                                 "\n\t"                                                                              \
@@ -49,7 +51,49 @@
 
 
 #define AES_KEY_EXPANSION_128_LAST(roundConstant) \
-    __AES_KEY_EXPANSION_128(roundConstant) \
+    __AES_KEY_EXPANSION_128(roundConstant)
+
+
+
+// TODO: Update asm comments
+#define __AES_ENCODE_ROUND_128 \
+    "addq       $0x10, %%rax"           "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
+    "movaps     (%%rax), %%xmm2"        "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+
+
+
+// TODO: Update asm comments
+#define AES_ENCODE_ROUND_128 \
+    __AES_ENCODE_ROUND_128 \
+    "aesenc     %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+
+
+
+// TODO: Update asm comments
+#define AES_ENCODE_ROUND_128_LAST \
+    __AES_ENCODE_ROUND_128 \
+    "aesenclast %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+
+
+
+// TODO: Update asm comments
+#define __AES_DECODE_ROUND_128 \
+    "addq       $0x10, %%rax"           "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */  \
+    "movaps     (%%rax), %%xmm2"        "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+
+
+
+// TODO: Update asm comments
+#define AES_DECODE_ROUND_128 \
+    __AES_DECODE_ROUND_128 \
+    "aesdec     %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
+
+
+
+// TODO: Update asm comments
+#define AES_DECODE_ROUND_128_LAST \
+    __AES_DECODE_ROUND_128 \
+    "aesdeclast %%xmm2, %%xmm1"         "\n\t"  /* movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1 */
 
 
 
@@ -198,22 +242,17 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 {
     COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize));
 
-    COMMON_ASSERT(in,          "in is null",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(inSize > 0,  "inSize is zero",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(out,         "out is null",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(outSize > 0, "outSize is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(resultSize,  "resultSize is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(in,                  "in is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(IS_ALIGNED(in, 16),  "in is invalid",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(inSize > 0,          "inSize is zero",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(out,                 "out is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(IS_ALIGNED(out, 16), "out is invalid",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(outSize > 0,         "outSize is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(resultSize,          "resultSize is null", NgosStatus::ASSERTION);
 
 
 
-    if (!mEncodeKey)
-    {
-        return NgosStatus::FAILED;
-    }
-
-
-
-    COMMON_TEST_ASSERT(IS_ALIGNED(out, 16), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mEncodeKey, NgosStatus::ASSERTION);
 
 
 
@@ -255,7 +294,7 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
     if (padding)
     {
-        u8 paddingBlock[16];
+        u8 paddingBlock[16] __attribute__((aligned(16)));
 
         memcpy(paddingBlock, in, 16 - padding);
         memzero(&paddingBlock[16 - padding], padding);
@@ -273,22 +312,17 @@ NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
     COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize));
 
     COMMON_ASSERT(in,                     "in is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(IS_ALIGNED(in, 16),     "in is invalid",      NgosStatus::ASSERTION);
     COMMON_ASSERT(inSize > 0,             "inSize is zero",     NgosStatus::ASSERTION);
     COMMON_ASSERT(IS_ALIGNED(inSize, 16), "inSize is invalid",  NgosStatus::ASSERTION);
     COMMON_ASSERT(out,                    "out is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(IS_ALIGNED(out, 16),    "out is invalid",     NgosStatus::ASSERTION);
     COMMON_ASSERT(outSize > 0,            "outSize is zero",    NgosStatus::ASSERTION);
     COMMON_ASSERT(resultSize,             "resultSize is null", NgosStatus::ASSERTION);
 
 
 
-    if (!mDecodeKey)
-    {
-        return NgosStatus::FAILED;
-    }
-
-
-
-    COMMON_TEST_ASSERT(IS_ALIGNED(out, 16), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mDecodeKey, NgosStatus::ASSERTION);
 
 
 
@@ -326,6 +360,7 @@ NgosStatus AES::expandKey128(u8 *key)
 
 
 
+    // TODO: Update asm comments
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "movups     %0, %%xmm1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
@@ -399,8 +434,33 @@ NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    AVOID_UNUSED(sourceAddress);
-    AVOID_UNUSED(destinationAddress);
+    // TODO: Update asm comments
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movaps     %0, %%xmm1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+        "movaps     (%%rax), %%xmm2"        "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+                                            "\n\t"  //
+        "pxor       %%xmm2, %%xmm1"         "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+                                            "\n\t"  //
+                AES_ENCODE_ROUND_128                // Round 1
+                AES_ENCODE_ROUND_128                // Round 2
+                AES_ENCODE_ROUND_128                // Round 3
+                AES_ENCODE_ROUND_128                // Round 4
+                AES_ENCODE_ROUND_128                // Round 5
+                AES_ENCODE_ROUND_128                // Round 6
+                AES_ENCODE_ROUND_128                // Round 7
+                AES_ENCODE_ROUND_128                // Round 8
+                AES_ENCODE_ROUND_128                // Round 9
+                AES_ENCODE_ROUND_128_LAST           // Round 10
+                                            "\n\t"  //
+        "movaps     %%xmm1, %1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+            :                                       // Output parameters
+            :                                       // Input parameters
+                "m" (*sourceAddress),               // 'm' - use memory
+                "m" (*destinationAddress),          // 'm' - use memory
+                "a" (mEncodeKey)                    // 'a' - RAX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -450,8 +510,33 @@ NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 
 
 
-    AVOID_UNUSED(sourceAddress);
-    AVOID_UNUSED(destinationAddress);
+    // TODO: Update asm comments
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movaps     %0, %%xmm1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+        "movaps     (%%rax), %%xmm2"        "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+                                            "\n\t"  //
+        "pxor       %%xmm2, %%xmm1"         "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+                                            "\n\t"  //
+                AES_DECODE_ROUND_128                // Round 1
+                AES_DECODE_ROUND_128                // Round 2
+                AES_DECODE_ROUND_128                // Round 3
+                AES_DECODE_ROUND_128                // Round 4
+                AES_DECODE_ROUND_128                // Round 5
+                AES_DECODE_ROUND_128                // Round 6
+                AES_DECODE_ROUND_128                // Round 7
+                AES_DECODE_ROUND_128                // Round 8
+                AES_DECODE_ROUND_128                // Round 9
+                AES_DECODE_ROUND_128_LAST           // Round 10
+                                            "\n\t"  //
+        "movaps     %%xmm1, %1"             "\n\t"  // movups     0x20(%rsp), %xmm1    # Put 8 floats located at %0 to YMM1
+            :                                       // Output parameters
+            :                                       // Input parameters
+                "m" (*sourceAddress),               // 'm' - use memory
+                "m" (*destinationAddress),          // 'm' - use memory
+                "a" (mDecodeKey)                    // 'a' - RAX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 
