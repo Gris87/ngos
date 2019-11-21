@@ -42,7 +42,7 @@
                                                                         "\n\t"                                                                                                                                              \
     "aesimc     %%xmm1, %%xmm3"                                         "\n\t"    /* aesimc     %xmm1, %xmm3    # Perform the InvMixColumn transformation on a 128-bit round key from XMM1 and store the result in XMM3 */  \
     "movaps     %%xmm2, " PP_STRINGIZE(round * 16)        "(%%rax)"     "\n\t"    /* movaps     %xmm2, (%rax)   # Put content of XMM2 to 16 bytes of mEncodeKey */                                                          \
-    "movaps     %%xmm3, " PP_STRINGIZE((10 - round) * 16) "(%%rbx)"     "\n\t"    /* movaps     %xmm3, (%rbx)   # Put content of XMM3 to 16 bytes of mDecodeKey */                                                          \
+    "movaps     %%xmm3, " PP_STRINGIZE((10 - round) * 16) "(%%rbx)"     "\n\t"    /* movaps     %xmm3, (%rbx)   # Put content of XMM3 to 16 bytes of mDecodeKey */
 
 
 
@@ -53,49 +53,47 @@
 
 
 
-// TODO: Update asm comments
 #define __AES_ENCODE_KEY_EXPANSION_192(roundConstant, round) \
-    "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"    "\n\t"    /* aeskeygenassist    $0x01, %xmm1, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                  \
-                                                                "\n\t"                                                                                                                                                                                                                                          \
-    "pshufd             $0xFF, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0xFF, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[3], XMM2[1] = XMM2[3], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
-    "movaps             %%xmm4, %%xmm3"                         "\n\t"    /* movaps             %xmm4, %xmm3            # Put content of XMM4 to XMM3 */                                                                                                                                                        \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
-    "pshufd             $0x00, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0x00, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[0], XMM2[2] = XMM2[0], XMM2[3] = XMM2[0] */ \
-                                                                "\n\t"                                                                                                                                                                                                                                          \
-    "pshufd             $0x39, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x39, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[1], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
-    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
-    "pshufd             $0x14, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0x14, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[1], XMM2[3] = XMM2[0] */ \
-                                                                "\n\t"                                                                                                                                                                                                                                          \
-    "pshufd             $0x38, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x38, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
-    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
-    "pshufd             $0xA4, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0xA4, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
-                                                                "\n\t"                                                                                                                                                                                                                                          \
-    "pshufd             $0x34, %%xmm3, %%xmm3"                  "\n\t"    /* pshufd             $0x34, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[1], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
-    "pslldq             $0x04, %%xmm3"                          "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
-    "pxor               %%xmm3, %%xmm2"                         "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
-                                                                "\n\t"                                                                                                                                                                                                                                          \
-    "movups             %%xmm2, " PP_STRINGIZE(round * 24) "(%%rax)"                        "\n\t"    /* movaps             %xmm2, (%rax)           # Put content of XMM2 to 16 bytes of mEncodeKey */
+    "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"            "\n\t"    /* aeskeygenassist    $0x01, %xmm1, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                  \
+                                                                        "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0xFF, %%xmm2, %%xmm2"                          "\n\t"    /* pshufd             $0xFF, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[3], XMM2[1] = XMM2[3], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+    "movaps             %%xmm4, %%xmm3"                                 "\n\t"    /* movaps             %xmm4, %xmm3            # Put content of XMM4 to XMM3 */                                                                                                                                                        \
+    "pxor               %%xmm3, %%xmm2"                                 "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0x00, %%xmm2, %%xmm2"                          "\n\t"    /* pshufd             $0x00, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[0], XMM2[2] = XMM2[0], XMM2[3] = XMM2[0] */ \
+                                                                        "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x39, %%xmm3, %%xmm3"                          "\n\t"    /* pshufd             $0x39, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[1], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                                  "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                                 "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0x14, %%xmm2, %%xmm2"                          "\n\t"    /* pshufd             $0x14, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[1], XMM2[3] = XMM2[0] */ \
+                                                                        "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x38, %%xmm3, %%xmm3"                          "\n\t"    /* pshufd             $0x38, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[2], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                                  "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                                 "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+    "pshufd             $0xA4, %%xmm2, %%xmm2"                          "\n\t"    /* pshufd             $0xA4, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[1], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+                                                                        "\n\t"                                                                                                                                                                                                                                          \
+    "pshufd             $0x34, %%xmm3, %%xmm3"                          "\n\t"    /* pshufd             $0x34, %xmm3, %xmm3     # Shuffle the doublewords in XMM3 based on the encoding in first argument and store the result in XMM3  # XMM3[0] = XMM3[0], XMM3[1] = XMM3[1], XMM3[2] = XMM3[3], XMM3[3] = XMM3[0] */ \
+    "pslldq             $0x04, %%xmm3"                                  "\n\t"    /* pslldq             $0x04, %xmm3            # Shift 4 bytes in XMM3 to left */                                                                                                                                                      \
+    "pxor               %%xmm3, %%xmm2"                                 "\n\t"    /* pxor               %xmm3, %xmm2            # Perform bitwise XOR of XMM3 and XMM2 and store the result in XMM2 */                                                                                                                  \
+                                                                        "\n\t"                                                                                                                                                                                                                                          \
+    "movups             %%xmm2, " PP_STRINGIZE(round * 24) "(%%rax)"    "\n\t"    /* movups             %xmm2, (%rax)           # Put content of XMM2 to 16 bytes of mEncodeKey */
 
 
 
-// TODO: Update asm comments
 #define AES_ENCODE_KEY_EXPANSION_192(roundConstant, round) \
-    __AES_ENCODE_KEY_EXPANSION_192(roundConstant, round)    \
-                                        "\n\t"              \
-    "pshufd     $0xFF, %%xmm2, %%xmm2"  "\n\t"    /*  */    \
-    "pshufd     $0xFE, %%xmm1, %%xmm1"  "\n\t"    /*  */    \
-    "pxor       %%xmm1, %%xmm2"         "\n\t"    /*  */    \
-                                        "\n\t"              \
-    "pshufd     $0x00, %%xmm2, %%xmm2"  "\n\t"    /*  */    \
-    "pslldq     $0x04, %%xmm1"          "\n\t"    /*  */    \
-    "pshufd     $0x08, %%xmm1, %%xmm1"  "\n\t"    /*  */    \
-    "pxor       %%xmm1, %%xmm2"         "\n\t"    /*  */    \
-                                        "\n\t"              \
-    "movups     %%xmm2, " PP_STRINGIZE(round * 24 + 16) "(%%rax)"    "\n\t"    /*  */    \
-    "movups     " PP_STRINGIZE(round * 24 + 8) "(%%rax), %%xmm1"    "\n\t"    /*  */    \
-    "movups     " PP_STRINGIZE(round * 24)     "(%%rax), %%xmm4"        "\n\t"    /*  */    \
+    __AES_ENCODE_KEY_EXPANSION_192(roundConstant, round)                                                                                                                                                                                                                                                    \
+                                                                    "\n\t"                                                                                                                                                                                                                                  \
+    "pshufd     $0xFF, %%xmm2, %%xmm2"                              "\n\t"    /* pshufd     $0xFF, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[3], XMM2[1] = XMM2[3], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+    "pshufd     $0xFE, %%xmm1, %%xmm1"                              "\n\t"    /* pshufd     $0xFE, %xmm1, %xmm1     # Shuffle the doublewords in XMM1 based on the encoding in first argument and store the result in XMM1  # XMM1[0] = XMM1[2], XMM1[1] = XMM1[3], XMM1[2] = XMM1[3], XMM1[3] = XMM1[3] */ \
+    "pxor       %%xmm1, %%xmm2"                                     "\n\t"    /* pxor       %xmm1, %xmm2            # Perform bitwise XOR of XMM1 and XMM2 and store the result in XMM2 */                                                                                                                  \
+                                                                    "\n\t"                                                                                                                                                                                                                                  \
+    "pshufd     $0x00, %%xmm2, %%xmm2"                              "\n\t"    /* pshufd     $0x00, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2  # XMM2[0] = XMM2[0], XMM2[1] = XMM2[0], XMM2[2] = XMM2[0], XMM2[3] = XMM2[0] */ \
+    "pslldq     $0x04, %%xmm1"                                      "\n\t"    /* pslldq     $0x04, %xmm1            # Shift 4 bytes in XMM1 to left */                                                                                                                                                      \
+    "pshufd     $0x08, %%xmm1, %%xmm1"                              "\n\t"    /* pshufd     $0x08, %xmm1, %xmm1     # Shuffle the doublewords in XMM1 based on the encoding in first argument and store the result in XMM1  # XMM1[0] = XMM1[0], XMM1[1] = XMM1[2], XMM1[2] = XMM1[0], XMM1[3] = XMM1[0] */ \
+    "pxor       %%xmm1, %%xmm2"                                     "\n\t"    /* pxor       %xmm1, %xmm2            # Perform bitwise XOR of XMM1 and XMM2 and store the result in XMM2 */                                                                                                                  \
+                                                                    "\n\t"                                                                                                                                                                                                                                  \
+    "movups     %%xmm2, " PP_STRINGIZE(round * 24 + 16) "(%%rax)"   "\n\t"    /* movups     %xmm2, 0x10(%rax)       # Put content of XMM2 to 16 bytes of mEncodeKey */                                                                                                                                      \
+    "movups     " PP_STRINGIZE(round * 24 + 8) "(%%rax), %%xmm1"    "\n\t"    /* movups     0x08(%rax), %xmm1       # Put 16 bytes from mEncodeKey to XMM1 */                                                                                                                                               \
+    "movups     " PP_STRINGIZE(round * 24)     "(%%rax), %%xmm4"    "\n\t"    /* movups     (%rax), %xmm4           # Put 16 bytes from mEncodeKey to XMM4 */
 
 
 
@@ -104,11 +102,10 @@
 
 
 
-// TODO: Update asm comments
 #define AES_DECODE_KEY_EXPANSION_192(round) \
-    "movaps     " PP_STRINGIZE(round * 16) "(%%rax), %%xmm1"            "\n\t"    /*  */    \
-    "aesimc     %%xmm1, %%xmm1"                                         "\n\t"    /*  */    \
-    "movaps     %%xmm1, " PP_STRINGIZE((12 - round) * 16) "(%%rbx)"     "\n\t"    /*  */
+    "movaps     " PP_STRINGIZE((12 - round) * 16) "(%%rax), %%xmm1"     "\n\t"    /* movaps     (%rax), %xmm1   # Put 16 bytes from mEncodeKey to XMM1 */                                                                   \
+    "aesimc     %%xmm1, %%xmm1"                                         "\n\t"    /* aesimc     %xmm1, %xmm1    # Perform the InvMixColumn transformation on a 128-bit round key from XMM1 and store the result in XMM1 */  \
+    "movaps     %%xmm1, " PP_STRINGIZE(round * 16) "(%%rbx)"            "\n\t"    /* movaps     %xmm1, (%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey */
 
 
 
@@ -445,15 +442,14 @@ NgosStatus AES::expandKey192(u8 *key)
 
 
 
-    // TODO: Update asm comments
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "movups     %0, %%xmm2"                     "\n\t"    // movups     (%rsi), %xmm1   # Put 16 bytes from key to XMM1
-        "movups     %1, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1   # Put 16 bytes from key to XMM1
+        "movups     %0, %%xmm2"                     "\n\t"    // movups     (%rsi),     %xmm2   # Put 16 bytes from key to XMM2
+        "movups     %1, %%xmm1"                     "\n\t"    // movups     0x08(%rsi), %xmm1   # Put 16 bytes from key to XMM1
                                                     "\n\t"    //
-        "movaps     %%xmm2, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey
-        "movups     %%xmm1, 0x08(%%rax)"            "\n\t"    // movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey
-        "movaps     %%xmm2, %%xmm4"                 "\n\t"    // movaps     %xmm1, %xmm4    # Put content of XMM1 to XMM4
+        "movaps     %%xmm2, (%%rax)"                "\n\t"    // movaps     %xmm2, (%rax)       # Put content of XMM2 to 16 bytes of mEncodeKey
+        "movups     %%xmm1, 0x08(%%rax)"            "\n\t"    // movups     %xmm1, 0x08(%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey
+        "movaps     %%xmm2, %%xmm4"                 "\n\t"    // movaps     %xmm2, %xmm4        # Put content of XMM2 to XMM4
                                                     "\n\t"    //
                 AES_ENCODE_KEY_EXPANSION_192(0x01, 1)         // Round 1
                 AES_ENCODE_KEY_EXPANSION_192(0x02, 2)         // Round 2
@@ -464,8 +460,7 @@ NgosStatus AES::expandKey192(u8 *key)
                 AES_ENCODE_KEY_EXPANSION_192(0x40, 7)         // Round 7
                 AES_ENCODE_KEY_EXPANSION_192_LAST(0x80)       // Round 8
                                                     "\n\t"    //
-        "movaps     (%%rax), %%xmm1"                "\n\t"    //
-        "movaps     %%xmm1, 0xC0(%%rbx)"            "\n\t"    //
+        "movaps     %%xmm2, (%%rbx)"                "\n\t"    // movaps     %xmm2, (%rbx)       # Put content of XMM2 to 16 bytes of mDecodeKey
                                                     "\n\t"    //
                 AES_DECODE_KEY_EXPANSION_192(1)               // Round 1
                 AES_DECODE_KEY_EXPANSION_192(2)               // Round 2
@@ -479,8 +474,8 @@ NgosStatus AES::expandKey192(u8 *key)
                 AES_DECODE_KEY_EXPANSION_192(10)              // Round 10
                 AES_DECODE_KEY_EXPANSION_192(11)              // Round 11
                                                     "\n\t"    //
-        "movaps     0xC0(%%rax), %%xmm1"            "\n\t"    //
-        "movaps     %%xmm1, (%%rbx)"                "\n\t"    //
+        "movaps     (%%rax), %%xmm1"                "\n\t"    // movaps     (%rax), %xmm1       # Put 16 bytes from mEncodeKey to XMM1
+        "movaps     %%xmm1, 0xC0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xC0(%rbx)   # Put content of XMM2 to 16 bytes of mDecodeKey
             :                                                 // Output parameters
             :                                                 // Input parameters
                 "m" (key[0]),                                 // 'm' - use memory

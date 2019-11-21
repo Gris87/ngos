@@ -8,6 +8,7 @@
 #include <common/src/bits64/checksum/crc.h>
 #include <common/src/bits64/cryptography/aes.h>
 #include <common/src/bits64/memory/malloc.h>
+#include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 #include <uefibase/test/bits64/testengine.h>
 
@@ -397,6 +398,186 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
             TEST_ASSERT_EQUALS(out[13], 0);
             TEST_ASSERT_EQUALS(out[14], 0);
             TEST_ASSERT_EQUALS(out[15], 0);
+        }
+        else
+        {
+            UEFI_LVV(("X86Feature::AES not supported"));
+        }
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("encode()/decode(). Huge data");
+    {
+        if (CPU::hasFlag(X86Feature::AES))
+        {
+            AES aes;
+
+            const char8 *key1 = "My dear password";
+            const char8 *key2 = "My dear password. Don't ";
+            const char8 *key3 = "My dear password. Don't touch it";
+
+            TEST_ASSERT_EQUALS(strlen(key1), 16);
+            TEST_ASSERT_EQUALS(strlen(key2), 24);
+            TEST_ASSERT_EQUALS(strlen(key3), 32);
+
+
+
+            u8 in1[1024] __attribute__((aligned(16)));
+            u8 in2[1021] __attribute__((aligned(16)));
+
+            u8  out[1024] __attribute__((aligned(16)));
+            u64 outSize;
+
+
+
+            memzero(in1, sizeof(in1));
+
+            for (i64 i = 0; i < (i64)sizeof(in2); ++i)
+            {
+                in2[i] = i;
+            }
+
+            TEST_ASSERT_EQUALS(Crc::crc32(in1, sizeof(in1)), 0xEFB5AF2E);
+            TEST_ASSERT_EQUALS(Crc::crc64(in1, sizeof(in1)), 0xC37863972069270C);
+            TEST_ASSERT_EQUALS(Crc::crc32(in2, sizeof(in2)), 0xB02C88C3);
+            TEST_ASSERT_EQUALS(Crc::crc64(in2, sizeof(in2)), 0xD48B50F4AEA8861E);
+
+
+
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key1, strlen(key1)), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 11 * 16), 0xAA4FEC5B);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 11 * 16), 0xFF7AD7EC97BE945E);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 11 * 16), 0x67C493F8);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 11 * 16), 0x117874F11820B404);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in1, sizeof(in1), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0x29C10B16);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0xDF44F11A5775710B);
+
+
+
+            TEST_ASSERT_EQUALS(aes.decode(out, sizeof(out), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(in1)), 0xEFB5AF2E);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(in1)), 0xC37863972069270C);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in2, sizeof(in2), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0x0D272E99);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0x5C47870B657D6457);
+
+
+
+            TEST_ASSERT_EQUALS(aes.decode(out, sizeof(out), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(in2)), 0xB02C88C3);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(in2)), 0xD48B50F4AEA8861E);
+
+
+
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key2, strlen(key2)), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0x59253515);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0x408DB89C7B6580BB);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0xADC7B273);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0x3173486106C406BE);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in1, sizeof(in1), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0x7C6BCE5E);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0xDCAC84C2AC7D4534);
+
+
+
+            TEST_ASSERT_EQUALS(aes.decode(out, sizeof(out), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(in1)), 0xEFB5AF2E);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(in1)), 0xC37863972069270C);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in2, sizeof(in2), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0xC201D676);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0x543E6CD575B19B5D);
+
+
+
+            TEST_ASSERT_EQUALS(aes.decode(out, sizeof(out), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(in2)), 0xB02C88C3);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(in2)), 0xD48B50F4AEA8861E);
+
+
+
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key3, strlen(key3)), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0xAA4FEC5B);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xFF7AD7EC97BE945E);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0x67C493F8);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0x117874F11820B404);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in1, sizeof(in1), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0xE5F76028);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0xC172975B03490927);
+
+
+
+            TEST_ASSERT_EQUALS(aes.decode(out, sizeof(out), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(in1)), 0xEFB5AF2E);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(in1)), 0xC37863972069270C);
+
+
+
+            TEST_ASSERT_EQUALS(aes.encode(in2, sizeof(in2), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0xB02C88C3);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0xD48B50F4AEA8861E);
+
+
+
+            TEST_ASSERT_EQUALS(aes.decode(out, sizeof(out), out, sizeof(out), &outSize), NgosStatus::OK);
+
+            TEST_ASSERT_EQUALS(outSize, 1024);
+
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(in2)), 0xB02C88C3);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(in2)), 0xD48B50F4AEA8861E);
         }
         else
         {
