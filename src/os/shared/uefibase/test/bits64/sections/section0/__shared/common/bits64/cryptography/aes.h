@@ -104,10 +104,10 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeKey,           nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mDecodeKey,           nullptr);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0x0495671B);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0xAA263E486D960ACD);
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0xC4C8131C);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0xF4C91CB7B40C7925);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0xDA69EE0E);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0xAA956958D3E85FAD);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0x0D554BB2);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0x98F4BE8CB01C793B);
 
 
 
@@ -215,10 +215,10 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
             TEST_ASSERT_EQUALS(aes.setKey((u8 *)key2, strlen(key2)), NgosStatus::OK);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0x0495671B);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0xAA263E486D960ACD);
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0xC4C8131C);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0xF4C91CB7B40C7925);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0xA6ABF5AF);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0x2D83EF2BAC5302FD);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0xA46830FD);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0x6B6E204D03AB08EC);
 
 
 
@@ -340,10 +340,10 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
             TEST_ASSERT_EQUALS(aes.setKey((u8 *)key2, strlen(key2)), NgosStatus::OK);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0x0495671B);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0xAA263E486D960ACD);
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0xC4C8131C);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0xF4C91CB7B40C7925);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0xA6ABF5AF);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0x2D83EF2BAC5302FD);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 13 * 16), 0xA46830FD);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 13 * 16), 0x6B6E204D03AB08EC);
 
 
 
