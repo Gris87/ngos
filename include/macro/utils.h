@@ -17,9 +17,6 @@
 
 
 
-#define PP_NARG(...)   __PP_NARG(__VA_ARGS__, __PP_RSEQ_N)
-#define __PP_NARG(...) __PP_ARG_N(__VA_ARGS__)
-
 // Ignore CppAlignmentVerifier [BEGIN]
 #define __PP_ARG_N(                                     \
     _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9,  _10,   \
@@ -39,6 +36,9 @@
     19, 18, 17, 16, 15, 14, 13, 12, 11, 10, \
     9,  8,  7,  6,  5,  4,  3,  2,  1,  0
 // Ignore CppAlignmentVerifier [END]
+
+#define __PP_NARG(...) __PP_ARG_N(__VA_ARGS__)
+#define PP_NARG(...)   __PP_NARG(__VA_ARGS__, __PP_RSEQ_N)
 
 
 
