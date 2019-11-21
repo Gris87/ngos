@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/string/string.h>
 #include <macro/utils.h>
 #include <uefibase/test/bits64/testengine.h>
 
@@ -24,6 +25,16 @@ TEST_CASES(section0, __include_macro_utils);
         TEST_ASSERT_EQUALS(PP_JOIN(PP_0(100, 500), 123),            100123);
         TEST_ASSERT_EQUALS(PP_JOIN(987,            PP_0(100, 500)), 987100);
         TEST_ASSERT_EQUALS(PP_JOIN(PP_0(100, 500), PP_0(987, 123)), 100987);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PP_STRINGIZE()");
+    {
+        TEST_ASSERT_EQUALS(strcmp(PP_STRINGIZE(100), "100"), 0);
+        TEST_ASSERT_EQUALS(strcmp(PP_STRINGIZE(20),  "20"),  0);
+        TEST_ASSERT_EQUALS(strcmp(PP_STRINGIZE(abc), "abc"), 0);
     }
     TEST_CASE_END();
 
