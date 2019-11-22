@@ -51,12 +51,12 @@ void UEFI_API testAesProcedure(void *buffer)
 
         u64 startTime = rdtsc();
 
-        UEFI_ASSERT_EXECUTION(aes.setKey((u8 *)key, strlen(key)));
+        aes.setKey((u8 *)key, strlen(key));
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
         {
-            UEFI_ASSERT_EXECUTION(aes.encode(in, sizeof(in), out, sizeof(out), &outSize));
-            UEFI_ASSERT_EXECUTION(aes.decode(out, sizeof(out), in, sizeof(in), &outSize));
+            aes.encode(in, sizeof(in), out, sizeof(out), &outSize);
+            aes.decode(out, sizeof(out), in, sizeof(in), &outSize);
         }
 
         u64 endTime = rdtsc();
