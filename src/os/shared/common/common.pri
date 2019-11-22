@@ -5,6 +5,7 @@ SOURCES += \
     $$PWD/src/bits64/assets/assets.cpp \
     $$PWD/src/bits64/checksum/adler.cpp \
     $$PWD/src/bits64/checksum/crc.cpp \
+    $$PWD/src/bits64/checksum/md5.cpp \
     $$PWD/src/bits64/compilation/fixforglobaldestructors.cpp \
     $$PWD/src/bits64/compilation/fixforvtable.cpp \
     $$PWD/src/bits64/console/console.cpp \
@@ -57,6 +58,8 @@ HEADERS += \
     $$PWD/src/bits64/assets/assets.h \
     $$PWD/src/bits64/checksum/adler.h \
     $$PWD/src/bits64/checksum/crc.h \
+    $$PWD/src/bits64/checksum/lib/md5hash.h \
+    $$PWD/src/bits64/checksum/md5.h \
     $$PWD/src/bits64/console/console.h \
     $$PWD/src/bits64/console/graphicalconsole.h \
     $$PWD/src/bits64/console/lib/glyphdata.h \

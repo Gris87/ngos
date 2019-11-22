@@ -37,7 +37,7 @@ void UEFI_API testAvx512VlProcedure(void *buffer)
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
         {
-            // Nothing
+            // TODO: Implement
         }
 
         u64 endTime = rdtsc();

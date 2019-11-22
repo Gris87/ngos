@@ -17,6 +17,8 @@
 #include <uefibase/test/bits64/sections/section0/__include/uuid/utils.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/adler.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/crc.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/lib/md5hash.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/checksum/md5.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/arraylist.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/lib/listelement.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/containers/list.h>
@@ -79,6 +81,8 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __include_uuid_utils);
     CALL_TEST_CASES(section0, __shared_common_bits64_checksum_adler);
     CALL_TEST_CASES(section0, __shared_common_bits64_checksum_crc);
+    CALL_TEST_CASES(section0, __shared_common_bits64_checksum_lib_md5hash);
+    CALL_TEST_CASES(section0, __shared_common_bits64_checksum_md5);
     CALL_TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
     CALL_TEST_CASES(section0, __shared_common_bits64_containers_lib_listelement);
     CALL_TEST_CASES(section0, __shared_common_bits64_containers_list);
