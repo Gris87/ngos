@@ -94,6 +94,48 @@
 
 
 
+#define __AES_KEY_EXPANSION_256(roundConstant) \
+    "aeskeygenassist    $" #roundConstant ", %%xmm4, %%xmm2"    "\n\t"    /* aeskeygenassist    $0x01, %xmm4, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                                                                              \
+                                                                "\n\t"                                                                                                                                                                                                                                                                                                      \
+    "pshufd             $0xFF, %%xmm2, %%xmm2"                  "\n\t"    /* pshufd             $0xFF, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2                                                              # XMM2[0] = XMM2[3], XMM2[1] = XMM2[3], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+    "shufps             $0x10, %%xmm1, %%xmm3"                  "\n\t"    /* shufps             $0x10, %xmm1, %xmm3     # Select from quadruplet of single-precision floating-point values in XMM3 and XMM1 using encoding in first argument, interleaved result pairs are stored in XMM3   # XMM3[0] = XMM3[0], XMM3[1] = XMM3[0], XMM3[2] = XMM1[1], XMM3[3] = XMM1[0] */ \
+    "pxor               %%xmm3, %%xmm1"                         "\n\t"    /* pxor               %xmm3, %xmm1            # Perform bitwise XOR of XMM3 and XMM1 and store the result in XMM1 */                                                                                                                                                                              \
+    "shufps             $0x8C, %%xmm1, %%xmm3"                  "\n\t"    /* shufps             $0x8C, %xmm1, %xmm3     # Select from quadruplet of single-precision floating-point values in XMM3 and XMM1 using encoding in first argument, interleaved result pairs are stored in XMM3   # XMM3[0] = XMM3[0], XMM3[1] = XMM3[3], XMM3[2] = XMM1[0], XMM3[3] = XMM1[2] */ \
+    "pxor               %%xmm3, %%xmm1"                         "\n\t"    /* pxor               %xmm3, %xmm1            # Perform bitwise XOR of XMM3 and XMM1 and store the result in XMM1 */                                                                                                                                                                              \
+    "pxor               %%xmm2, %%xmm1"                         "\n\t"    /* pxor               %xmm2, %xmm1            # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1 */
+
+
+
+#define AES_KEY_EXPANSION_256(roundConstant, round) \
+    __AES_KEY_EXPANSION_256(roundConstant)                                                                                                                                                                                                      \
+                                                                                    "\n\t"                                                                                                                                                      \
+    "aesimc             %%xmm1, %%xmm5"                                             "\n\t"    /* aesimc             %xmm1, %xmm5    # Perform the InvMixColumn transformation on a 128-bit round key from XMM1 and store the result in XMM5 */  \
+    "movaps             %%xmm1, " PP_STRINGIZE(round * 32)       "(%%rax)"          "\n\t"    /* movaps             %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey */                                                          \
+    "movaps             %%xmm5, " PP_STRINGIZE((7 - round) * 32) "(%%rbx)"          "\n\t"    /* movaps             %xmm5, (%rbx)   # Put content of XMM5 to 16 bytes of mDecodeKey */                                                          \
+                                                                                    "\n\t"                                                                                                                                                      \
+    "aeskeygenassist    $" #roundConstant ", %%xmm1, %%xmm2"                        "\n\t"    /* aeskeygenassist    $0x01, %xmm4, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                                                                              \
+                                                                                    "\n\t"                                                                                                                                                                                                                                                                                                      \
+    "pshufd             $0xAA, %%xmm2, %%xmm2"                                      "\n\t"    /* pshufd             $0xAA, %xmm2, %xmm2     # Shuffle the doublewords in XMM2 based on the encoding in first argument and store the result in XMM2                                                              # XMM2[0] = XMM2[3], XMM2[1] = XMM2[3], XMM2[2] = XMM2[3], XMM2[3] = XMM2[3] */ \
+    "shufps             $0x10, %%xmm4, %%xmm3"                                      "\n\t"    /* shufps             $0x10, %xmm1, %xmm3     # Select from quadruplet of single-precision floating-point values in XMM3 and XMM1 using encoding in first argument, interleaved result pairs are stored in XMM3   # XMM3[0] = XMM3[0], XMM3[1] = XMM3[0], XMM3[2] = XMM1[1], XMM3[3] = XMM1[0] */ \
+    "pxor               %%xmm3, %%xmm4"                                             "\n\t"    /* pxor               %xmm3, %xmm1            # Perform bitwise XOR of XMM3 and XMM1 and store the result in XMM1 */                                                                                                                                                                              \
+    "shufps             $0x8C, %%xmm4, %%xmm3"                                      "\n\t"    /* shufps             $0x8C, %xmm1, %xmm3     # Select from quadruplet of single-precision floating-point values in XMM3 and XMM1 using encoding in first argument, interleaved result pairs are stored in XMM3   # XMM3[0] = XMM3[0], XMM3[1] = XMM3[3], XMM3[2] = XMM1[0], XMM3[3] = XMM1[2] */ \
+    "pxor               %%xmm3, %%xmm4"                                             "\n\t"    /* pxor               %xmm3, %xmm1            # Perform bitwise XOR of XMM3 and XMM1 and store the result in XMM1 */                                                                                                                                                                              \
+    "pxor               %%xmm2, %%xmm4"                                             "\n\t"    /* pxor               %xmm2, %xmm1            # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1 */                                                      \
+                                                                                    "\n\t"                                                                                                                                              \
+    "aesimc             %%xmm4, %%xmm0"                                             "\n\t"    /* aesimc     %xmm4, %xmm0    # Perform the InvMixColumn transformation on a 128-bit round key from XMM4 and store the result in XMM0 */  \
+    "movaps             %%xmm4, " PP_STRINGIZE(round * 32 + 16)       "(%%rax)"     "\n\t"    /* movaps     %xmm4, (%rax)   # Put content of XMM4 to 16 bytes of mEncodeKey */                                                          \
+    "movaps             %%xmm0, " PP_STRINGIZE((7 - round) * 32 - 16) "(%%rbx)"     "\n\t"    /* movaps     %xmm0, (%rbx)   # Put content of XMM0 to 16 bytes of mDecodeKey */
+
+
+
+#define AES_KEY_EXPANSION_256_LAST(roundConstant) \
+    __AES_KEY_EXPANSION_256(roundConstant)                                                                                              \
+                                        "\n\t"                                                                                          \
+    "movaps     %%xmm1, 0xE0(%%rax)"    "\n\t"    /* movaps     %xmm1, 0xE0(%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey */  \
+    "movaps     %%xmm1, (%%rbx)"        "\n\t"    /* movaps     %xmm1, (%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey */
+
+
+
 #define __AES_ENCODE_DECODE_ROUND(round) \
     "movaps     " PP_STRINGIZE(round * 16) "(%%rax), %%xmm2"    "\n\t"    /* movaps     (%rax), %xmm2   # Put 16 bytes from mEncodeKey/mDecodeKey to XMM2 */
 
@@ -488,7 +530,36 @@ NgosStatus AES::expandKey256(u8 *key)
 
 
 
-    AVOID_UNUSED(key);
+    // Ignore CppAlignmentVerifier [BEGIN]
+    asm volatile(
+        "movups     %0, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1           # Put 16 bytes from key to XMM1
+                                                    "\n\t"    //
+        "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey
+        "movaps     %%xmm1, 0xE0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xE0(%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey
+
+        "movups     %1, %%xmm4"                     "\n\t"    // movups     0x10(%rsi), %xmm4       # Put 16 bytes from key to XMM4
+        "aesimc     %%xmm4, %%xmm0"                 "\n\t"    // aesimc     %xmm4, %xmm0            # Perform the InvMixColumn transformation on a 128-bit round key from XMM4 and store the result in XMM0
+                                                    "\n\t"    //
+        "movaps     %%xmm4, 0x10(%%rax)"            "\n\t"    // movaps     %xmm1, 0x10(%rax)       # Put content of XMM4 to 16 bytes of mEncodeKey
+        "movaps     %%xmm0, 0xD0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xD0(%rbx)       # Put content of XMM0 to 16 bytes of mDecodeKey
+                                                    "\n\t"    //
+        "pxor       %%xmm3, %%xmm3"                 "\n\t"    // pxor       %xmm3, %xmm3        # Fill XMM3 with zeros
+                                                    "\n\t"    //
+                AES_KEY_EXPANSION_256(0x01, 1)                // Round 1
+                AES_KEY_EXPANSION_256(0x02, 2)                // Round 2
+                AES_KEY_EXPANSION_256(0x04, 3)                // Round 3
+                AES_KEY_EXPANSION_256(0x08, 4)                // Round 4
+                AES_KEY_EXPANSION_256(0x10, 5)                // Round 5
+                AES_KEY_EXPANSION_256(0x20, 6)                // Round 6
+                AES_KEY_EXPANSION_256_LAST(0x40)              // Round 7
+            :                                                 // Output parameters
+            :                                                 // Input parameters
+                "m" (key[0]),                                 // 'm' - use memory
+                "m" (key[16]),                                // 'm' - use memory
+                "a" (mEncodeKey),                             // 'a' - RAX
+                "b" (mDecodeKey)                              // 'b' - RBX
+    );
+    // Ignore CppAlignmentVerifier [END]
 
 
 

@@ -57,13 +57,13 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            u8 key1[16] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1 };
-            u8 key2[24] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4 };
-            u8 key3[32] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4, 3, 4, 7, 8, 9, 2, 3, 4 };
+            u8 key16[16] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1 };
+            u8 key24[24] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4 };
+            u8 key32[32] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4, 3, 4, 7, 8, 9, 2, 3, 4 };
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey(key1, sizeof(key1)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey(key16, sizeof(key16)), NgosStatus::OK);
 
 
 
@@ -94,7 +94,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey(key2, sizeof(key2)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey(key24, sizeof(key24)), NgosStatus::OK);
 
 
 
@@ -125,7 +125,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey(key3, sizeof(key3)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey(key32, sizeof(key32)), NgosStatus::OK);
 
 
 
@@ -136,10 +136,10 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
             TEST_ASSERT_NOT_EQUALS(aes.mEncodeKey,           nullptr);
             TEST_ASSERT_NOT_EQUALS(aes.mDecodeKey,           nullptr);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0x0495671B);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xAA263E486D960ACD);
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0xC4C8131C);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0xF4C91CB7B40C7925);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0x4EBCB0FB);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xE076BD5EE0F7DF77);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0x3FDADD3E);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0x321FE632D2A16B24);
         }
         else
         {
@@ -156,13 +156,13 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
         {
             AES aes;
 
-            const char8 *key1 = "NGOS is the best";
-            const char8 *key2 = "NGOS is the best OS ever";
-            const char8 *key3 = "NGOS is the best OS ever !!!!!!!";
+            const char8 *key16 = "NGOS is the best";
+            const char8 *key24 = "NGOS is the best OS ever";
+            const char8 *key32 = "NGOS is the best OS ever !!!!!!!";
 
-            TEST_ASSERT_EQUALS(strlen(key1), 16);
-            TEST_ASSERT_EQUALS(strlen(key2), 24);
-            TEST_ASSERT_EQUALS(strlen(key3), 32);
+            TEST_ASSERT_EQUALS(strlen(key16), 16);
+            TEST_ASSERT_EQUALS(strlen(key24), 24);
+            TEST_ASSERT_EQUALS(strlen(key32), 32);
 
 
 
@@ -183,7 +183,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key1, strlen(key1)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key16, strlen(key16)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 11 * 16), 0xE5F76028);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 11 * 16), 0xC172975B03490927);
@@ -214,7 +214,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key2, strlen(key2)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key24, strlen(key24)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0xA6ABF5AF);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0x2D83EF2BAC5302FD);
@@ -245,12 +245,12 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key3, strlen(key3)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key32, strlen(key32)), NgosStatus::OK);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0x0495671B);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xAA263E486D960ACD);
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0xC4C8131C);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0xF4C91CB7B40C7925);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0xD9A5C95B);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0x642CBC3BEEBFBA69);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0x701A88A1);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0x1FE81C032BFC3548);
 
 
 
@@ -289,13 +289,13 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
         {
             AES aes;
 
-            const char8 *key1 = "NGOS is the best";
-            const char8 *key2 = "NGOS is the best OS ever";
-            const char8 *key3 = "NGOS is the best OS ever !!!!!!!";
+            const char8 *key16 = "NGOS is the best";
+            const char8 *key24 = "NGOS is the best OS ever";
+            const char8 *key32 = "NGOS is the best OS ever !!!!!!!";
 
-            TEST_ASSERT_EQUALS(strlen(key1), 16);
-            TEST_ASSERT_EQUALS(strlen(key2), 24);
-            TEST_ASSERT_EQUALS(strlen(key3), 32);
+            TEST_ASSERT_EQUALS(strlen(key16), 16);
+            TEST_ASSERT_EQUALS(strlen(key24), 24);
+            TEST_ASSERT_EQUALS(strlen(key32), 32);
 
 
 
@@ -308,7 +308,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key1, strlen(key1)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key16, strlen(key16)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 11 * 16), 0xE5F76028);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 11 * 16), 0xC172975B03490927);
@@ -339,7 +339,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key2, strlen(key2)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key24, strlen(key24)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0xA6ABF5AF);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0x2D83EF2BAC5302FD);
@@ -370,12 +370,12 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key3, strlen(key3)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key32, strlen(key32)), NgosStatus::OK);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0x0495671B);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xAA263E486D960ACD);
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0xC4C8131C);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0xF4C91CB7B40C7925);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0xD9A5C95B);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0x642CBC3BEEBFBA69);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0x701A88A1);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0x1FE81C032BFC3548);
 
 
 
@@ -414,13 +414,13 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
         {
             AES aes;
 
-            const char8 *key1 = "My dear password";
-            const char8 *key2 = "My dear password. Don't ";
-            const char8 *key3 = "My dear password. Don't touch it";
+            const char8 *key16 = "My dear password";
+            const char8 *key24 = "My dear password. Don't ";
+            const char8 *key32 = "My dear password. Don't touch it";
 
-            TEST_ASSERT_EQUALS(strlen(key1), 16);
-            TEST_ASSERT_EQUALS(strlen(key2), 24);
-            TEST_ASSERT_EQUALS(strlen(key3), 32);
+            TEST_ASSERT_EQUALS(strlen(key16), 16);
+            TEST_ASSERT_EQUALS(strlen(key24), 24);
+            TEST_ASSERT_EQUALS(strlen(key32), 32);
 
 
 
@@ -446,7 +446,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key1, strlen(key1)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key16, strlen(key16)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 11 * 16), 0xAA4FEC5B);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 11 * 16), 0xFF7AD7EC97BE945E);
@@ -491,7 +491,7 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key2, strlen(key2)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key24, strlen(key24)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 13 * 16), 0x59253515);
             TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 13 * 16), 0x408DB89C7B6580BB);
@@ -536,12 +536,12 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key3, strlen(key3)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key32, strlen(key32)), NgosStatus::OK);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0xAA4FEC5B);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xFF7AD7EC97BE945E);
-            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0x67C493F8);
-            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0x117874F11820B404);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey, 15 * 16), 0x9D3D1B5B);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mEncodeKey, 15 * 16), 0xD8C69E0E57F05BDD);
+            TEST_ASSERT_EQUALS(Crc::crc32(aes.mDecodeKey, 15 * 16), 0x7ECC1A9E);
+            TEST_ASSERT_EQUALS(Crc::crc64(aes.mDecodeKey, 15 * 16), 0x34E2C4D3702F8599);
 
 
 
@@ -549,8 +549,8 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
             TEST_ASSERT_EQUALS(outSize, 1024);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0xE5F76028);
-            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0xC172975B03490927);
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0x49B097FA);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0xCFD697AFB71E04A1);
 
 
 
@@ -567,8 +567,8 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
 
             TEST_ASSERT_EQUALS(outSize, 1024);
 
-            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0xB02C88C3);
-            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0xD48B50F4AEA8861E);
+            TEST_ASSERT_EQUALS(Crc::crc32(out, sizeof(out)), 0xD6247745);
+            TEST_ASSERT_EQUALS(Crc::crc64(out, sizeof(out)), 0x165E3E713FA071A9);
 
 
 
