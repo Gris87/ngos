@@ -9,9 +9,9 @@
 
 
 #define CACHE_INFO_CPUID              0x00000002 // TODO: Make more centralized
-#define CACHE_TOPOLOGY_CPUID          0x00000004
-#define L1_CACHE_IDENTIFIERS_CPUID    0x80000005
-#define EXTENDED_CACHE_FEATURES_CPUID 0x80000006
+#define CACHE_TOPOLOGY_CPUID          0x00000004 // TODO: Make more centralized
+#define L1_CACHE_IDENTIFIERS_CPUID    0x80000005 // TODO: Make more centralized
+#define EXTENDED_CACHE_FEATURES_CPUID 0x80000006 // TODO: Make more centralized
 
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_NULL        0x00
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_DATA        0x01

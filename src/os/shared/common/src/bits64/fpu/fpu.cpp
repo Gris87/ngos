@@ -17,7 +17,7 @@
 
 
 
-#define XSTATE_CPUID 0x0000000D
+#define XSTATE_CPUID 0x0000000D // TODO: Make more centralized
 
 
 
