@@ -486,8 +486,6 @@ TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
                 in2[i] = i;
             }
 
-
-
             TEST_ASSERT_EQUALS(Adler::adler32(in1, sizeof(in1)), 0x04000001);
             TEST_ASSERT_EQUALS(Crc::crc32(in1,     sizeof(in1)), 0xEFB5AF2E);
             TEST_ASSERT_EQUALS(Crc::crc64(in1,     sizeof(in1)), 0xC37863972069270C);
