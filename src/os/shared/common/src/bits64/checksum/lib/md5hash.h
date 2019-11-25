@@ -81,4 +81,26 @@ inline const char8* md5HashToString(const Md5Hash &hash) // TEST: NO
 
 
 
+inline const char8* md5HashToStringAsConstructor(const Md5Hash &hash) // TEST: NO
+{
+    // COMMON_LT((" | hash = ...")); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[48];
+
+    i64 length = sprintf(res, "Md5Hash(0x%016lX, 0x%016lX)", hash.quads[0], hash.quads[1]);
+
+    AVOID_UNUSED(length);
+
+    COMMON_TEST_ASSERT(length == 47,              nullptr);
+    COMMON_TEST_ASSERT(length == sizeof(res) - 1, nullptr);
+
+
+
+    return res;
+}
+
+
+
 #endif // OS_SHARED_COMMON_SRC_BITS64_CHECKSUM_LIB_MD5HASH_H

@@ -129,6 +129,11 @@ NgosStatus MD5::update(u8 *data, u64 length)
 
 
 
+    u8 index     = (mCount[0] >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
+    u8 firstPart = MD5_BLOCK_SIZE - index;
+
+
+
     u64 numberOfBits = length << 3;
 
 
@@ -141,11 +146,6 @@ NgosStatus MD5::update(u8 *data, u64 length)
     }
 
     mCount[1] += (length >> 29);
-
-
-
-    u8 index     = (mCount[0] >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
-    u8 firstPart = MD5_BLOCK_SIZE - index;
 
 
 

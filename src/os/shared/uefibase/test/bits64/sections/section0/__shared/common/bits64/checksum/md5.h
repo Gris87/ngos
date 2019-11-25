@@ -30,15 +30,10 @@ TEST_CASES(section0, __shared_common_bits64_checksum_md5);
             temp3[i] = i * 19;
         }
 
-        UEFI_LF(("%s", md5HashToString(MD5::md5((u8 *)str, strlen(str)))));
-        UEFI_LF(("%s", md5HashToString(MD5::md5(temp1, sizeof(temp1)))));
-        UEFI_LF(("%s", md5HashToString(MD5::md5(temp2, sizeof(temp2)))));
-        UEFI_LF(("%s", md5HashToString(MD5::md5(temp3, sizeof(temp3)))));
-
         TEST_ASSERT_EQUALS(MD5::md5((u8 *)str, strlen(str)),   Md5Hash(0x961261C453991A8B, 0xD70478C4F8AB27A8));
-        TEST_ASSERT_EQUALS(MD5::md5(temp1,     sizeof(temp1)), Md5Hash(0, 0));
-        TEST_ASSERT_EQUALS(MD5::md5(temp2,     sizeof(temp2)), Md5Hash(0, 0));
-        TEST_ASSERT_EQUALS(MD5::md5(temp3,     sizeof(temp3)), Md5Hash(0, 0));
+        TEST_ASSERT_EQUALS(MD5::md5(temp1,     sizeof(temp1)), Md5Hash(0x68CAF689914D9F8B, 0xE29345064F180870));
+        TEST_ASSERT_EQUALS(MD5::md5(temp2,     sizeof(temp2)), Md5Hash(0xEA3F9685AC01AD36, 0x4C6A66874E68FCCB));
+        TEST_ASSERT_EQUALS(MD5::md5(temp3,     sizeof(temp3)), Md5Hash(0xE021465438334751, 0xCE7E980E9EF122D5));
     }
     TEST_CASE_END();
 }
