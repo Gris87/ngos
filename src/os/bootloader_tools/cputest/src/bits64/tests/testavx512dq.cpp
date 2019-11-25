@@ -38,7 +38,6 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
 
 
 
-
         u64 startTime = rdtsc();
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
