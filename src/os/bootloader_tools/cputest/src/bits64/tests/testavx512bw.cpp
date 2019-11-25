@@ -33,11 +33,56 @@ void UEFI_API testAvx512BwProcedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::AVX512BW))
     {
+        u16 a[32] __attribute__((aligned(64))) = { 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8, 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2 };
+        u16 b[32] __attribute__((aligned(64))) = { 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2, 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8 };
+
+
+
         u64 startTime = rdtsc();
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
         {
-            // TODO: Implement
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vpbroadcastb   %esi, %zmm0"    // vpbroadcastb   %esi, %zmm0     # Broadcast value from ESI to 64 bytes in ZMM0
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vpbroadcastw   %esi, %zmm0"    // vpbroadcastw   %esi, %zmm0     # Broadcast value from ESI to 32 words in ZMM0
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovdqa64  %0, %%zmm1"                 "\n\t"    // vmovdqa64  0x40(%rsp), %zmm1       # Put 32 words located at %0 to ZMM1
+                "vmovdqa64  %1, %%zmm2"                 "\n\t"    // vmovdqa64  0x80(%rsp), %zmm2       # Put 32 words located at %1 to ZMM2
+                "vpsllvw    %%zmm2, %%zmm1, %%zmm0"               // vpsllvw    %zmm2, %zmm1, %zmm0     # Shift left 32 words in ZMM1 with shift counts in ZMM2 and store results in ZMM0
+                    :                                             // Output parameters
+                    :                                             // Input parameters
+                        "m" (a),                                  // 'm' - use memory
+                        "m" (b)                                   // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovdqa64  %0, %%zmm1"                 "\n\t"    // vmovdqa64  0x40(%rsp), %zmm1       # Put 32 words located at %0 to ZMM1
+                "vmovdqa64  %1, %%zmm2"                 "\n\t"    // vmovdqa64  0x80(%rsp), %zmm2       # Put 32 words located at %1 to ZMM2
+                "vpsrlvw    %%zmm2, %%zmm1, %%zmm0"               // vpsrlvw    %zmm2, %zmm1, %zmm0     # Shift right 32 words in ZMM1 with shift counts in ZMM2 and store results in ZMM0
+                    :                                             // Output parameters
+                    :                                             // Input parameters
+                        "m" (a),                                  // 'm' - use memory
+                        "m" (b)                                   // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
         }
 
         u64 endTime = rdtsc();

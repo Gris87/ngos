@@ -33,11 +33,52 @@ void UEFI_API testAvx512CdProcedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::AVX512CD))
     {
+        u32 a[16] __attribute__((aligned(64))) = { 910, 154, 434, 397, 231, 151, 533, 697, 1109, 3234, 1227, 138, 704, 8485, 13636, 312019 };
+        u64 b[8]  __attribute__((aligned(64))) = { 910, 154, 434, 397, 231, 151, 533, 697 };
+
+
+
         u64 startTime = rdtsc();
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
         {
-            // TODO: Implement
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vpbroadcastmb2q    %k1, %zmm0"    // vpbroadcastmb2q   %k1, %zmm0  # Broadcast value from K1 to 8 quadwords in ZMM0
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vpbroadcastmw2d    %k1, %zmm0"    // vpbroadcastmw2d   %k1, %zmm0  # Broadcast value from K1 to 16 doublewords in ZMM0
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovdqa32  %0, %%zmm1"         "\n\t"    // vmovdqa32  0x40(%rsp), %zmm1   # Put 16 doublewords located at %0 to ZMM1
+                "vplzcntd   %%zmm1, %%zmm0"               // vplzcntd   %zmm1, %zmm0        # Count amount of leading zeros for 16 doublewords in ZMM1 and store results to ZMM0
+                    :                                     // Output parameters
+                    :                                     // Input parameters
+                        "m" (a)                           // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovdqa64  %0, %%zmm1"         "\n\t"    // vmovdqa64  0x40(%rsp), %zmm1   # Put 8 quadwords located at %0 to ZMM1
+                "vplzcntq   %%zmm1, %%zmm0"               // vplzcntq   %zmm1, %zmm0        # Count amount of leading zeros for 8 quadwords in ZMM1 and store results to ZMM0
+                    :                                     // Output parameters
+                    :                                     // Input parameters
+                        "m" (b)                           // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
         }
 
         u64 endTime = rdtsc();

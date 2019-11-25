@@ -33,11 +33,75 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::AVX512DQ))
     {
+        double a[8]  __attribute__((aligned(64))) = { 0.1, 0.9, 12378.4, 12389.6, 1234879.15, 1232134513216.9, 832198789.0, 321983217.98 };
+        float  b[16] __attribute__((aligned(64))) = { 0.1, 0.9, 12378.4, 12389.6, 24879.15, 21216.9, 18789.0, 23217.98, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+
+
+
         u64 startTime = rdtsc();
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
         {
-            // TODO: Implement
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovapd    %0, %%zmm1"         "\n\t"    // vmovapd    0x40(%rsp), %zmm1   # Put 8 doubles located at %0 to ZMM1
+                "vcvtpd2qq  %%zmm1, %%zmm0"               // vcvtpd2qq  %zmm1, %zmm0        # Convert 8 doubles in ZMM1 to 8 quadwords in ZMM0
+                    :                                     // Output parameters
+                    :                                     // Input parameters
+                        "m" (a)                           // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovaps    %0, %%ymm1"         "\n\t"    // vmovaps    0x80(%rsp), %ymm1   # Put 8 floats located at %0 to YMM1
+                "vcvtps2qq  %%ymm1, %%zmm0"               // vcvtps2qq  %ymm1, %zmm0        # Convert 8 floats in YMM1 to 8 quadwords in ZMM0
+                    :                                     // Output parameters
+                    :                                     // Input parameters
+                        "m" (b)                           // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovdqa64  %0, %%zmm1"         "\n\t"    // vmovdqa64  0x40(%rsp), %zmm1   # Put 8 quadwords located at %0 to ZMM1
+                "vcvtqq2pd  %%zmm1, %%zmm0"               // vcvtqq2pd  %zmm1, %zmm0        # Convert 8 quadwords in ZMM1 to 8 doubles in ZMM0
+                    :                                     // Output parameters
+                    :                                     // Input parameters
+                        "m" (a)                           // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovdqa64  %0, %%zmm1"         "\n\t"    // vmovdqa64  0x40(%rsp), %zmm1   # Put 8 quadwords located at %0 to ZMM1
+                "vcvtqq2ps  %%zmm1, %%ymm0"               // vcvtqq2ps  %zmm1, %ymm0        # Convert 8 quadwords in ZMM1 to 8 floats in YMM0
+                    :                                     // Output parameters
+                    :                                     // Input parameters
+                        "m" (a)                           // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
+
+
+
+            // Ignore CppAlignmentVerifier [BEGIN]
+            asm volatile(
+                "vmovdqa64  %0, %%zmm1"         "\n\t"    // vmovdqa64  0x40(%rsp), %zmm1       # Put 8 quadwords located at %0 to ZMM1
+                "vmovdqa64  %1, %%zmm2"         "\n\t"    // vmovdqa64  0x80(%rsp), %zmm2       # Put 8 quadwords located at %0 to ZMM2
+                "vpmullq    %%zmm2, %%zmm1, %%zmm0"       // vpmullq    %zmm2, %zmm1, %zmm0     # Multiply 8 quadwords in ZMM1 with 8 quadwords in ZMM2 and store results in ZMM0
+                    :                                     // Output parameters
+                    :                                     // Input parameters
+                        "m" (a),                          // 'm' - use memory
+                        "m" (b)                           // 'm' - use memory
+            );
+            // Ignore CppAlignmentVerifier [END]
         }
 
         u64 endTime = rdtsc();
