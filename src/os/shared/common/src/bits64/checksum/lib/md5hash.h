@@ -3,7 +3,10 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -36,6 +39,45 @@ struct Md5Hash
         u64 quads[2];
     };
 };
+
+
+
+inline const char8* md5HashToString(const Md5Hash &hash) // TEST: NO
+{
+    // COMMON_LT((" | hash = ...")); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[33];
+
+    i64 length = sprintf(res, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
+                            , hash.bytes[0]
+                            , hash.bytes[1]
+                            , hash.bytes[2]
+                            , hash.bytes[3]
+                            , hash.bytes[4]
+                            , hash.bytes[5]
+                            , hash.bytes[6]
+                            , hash.bytes[7]
+                            , hash.bytes[8]
+                            , hash.bytes[9]
+                            , hash.bytes[10]
+                            , hash.bytes[11]
+                            , hash.bytes[12]
+                            , hash.bytes[13]
+                            , hash.bytes[14]
+                            , hash.bytes[15]
+            );
+
+    AVOID_UNUSED(length);
+
+    COMMON_TEST_ASSERT(length == 32,              nullptr);
+    COMMON_TEST_ASSERT(length == sizeof(res) - 1, nullptr);
+
+
+
+    return res;
+}
 
 
 

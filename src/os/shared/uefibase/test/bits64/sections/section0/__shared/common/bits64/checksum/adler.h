@@ -17,6 +17,8 @@ TEST_CASES(section0, __shared_common_bits64_checksum_adler);
 {
     TEST_CASE("adler32()");
     {
+        const char8 *str = "Hello";
+
         u8 temp1[256];
         u8 temp2[256];
         u8 temp3[256];
@@ -28,9 +30,10 @@ TEST_CASES(section0, __shared_common_bits64_checksum_adler);
             temp3[i] = i * 19;
         }
 
-        TEST_ASSERT_EQUALS(Adler::adler32(temp1, sizeof(temp1)), 0xB3227F81);
-        TEST_ASSERT_EQUALS(Adler::adler32(temp2, sizeof(temp2)), 0x73227F81);
-        TEST_ASSERT_EQUALS(Adler::adler32(temp3, sizeof(temp3)), 0x56227F81);
+        TEST_ASSERT_EQUALS(Adler::adler32((u8 *)str, strlen(str)),   0x058C01F5);
+        TEST_ASSERT_EQUALS(Adler::adler32(temp1,     sizeof(temp1)), 0xB3227F81);
+        TEST_ASSERT_EQUALS(Adler::adler32(temp2,     sizeof(temp2)), 0x73227F81);
+        TEST_ASSERT_EQUALS(Adler::adler32(temp3,     sizeof(temp3)), 0x56227F81);
     }
     TEST_CASE_END();
 }

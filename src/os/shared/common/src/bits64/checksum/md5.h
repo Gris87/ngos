@@ -8,6 +8,10 @@
 
 
 
+#define MD5_BLOCK_SIZE 64
+
+
+
 class MD5
 {
 public:
@@ -15,6 +19,26 @@ public:
     ~MD5();
 
     static Md5Hash md5(u8 *data, u64 length);
+
+    NgosStatus update(u8 *data, u64 length);
+    NgosStatus finish();
+
+    Md5Hash getResult() const;
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+public:
+#else
+private:
+#endif
+    NgosStatus transform(u8 block[MD5_BLOCK_SIZE]);
+    NgosStatus decode(u8 *input, u64 length, u32 *output);
+    NgosStatus encode(u32 *input, u64 length, u8 *output);
+
+    bool    mFinished;
+    u8      mBuffer[MD5_BLOCK_SIZE];
+    u32     mCount[2];
+    u32     mState[4];
+    Md5Hash mResult;
 };
 
 
