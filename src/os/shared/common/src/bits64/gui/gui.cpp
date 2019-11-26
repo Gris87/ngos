@@ -272,6 +272,7 @@ NgosStatus GUI::detectHoveredWidget()
 
 
 
+    // TODO: Fix for TableWidget
     COMMON_ASSERT_EXECUTION(setHoveredWidget(sRootWidget->detectHoveredWidget(sCursorWidget->getPositionX(), sCursorWidget->getPositionY())), NgosStatus::ASSERTION);
 
 

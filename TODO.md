@@ -91,7 +91,6 @@ QMake:
 
 USB Boot Maker:
 
-- Download bootloader together with the installer
 - Verify code
 
 
