@@ -112,5 +112,8 @@ webapps:
 Generic:
 
 - Write documentation
+- Coverity
+- Klocwork
+- Valgrind
 - Jenkins
 - Bug tracker (Redmine)
