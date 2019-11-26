@@ -27,6 +27,7 @@ Bootloader:
 
 - Custom arguments
 - Clean up before start application
+- Stop application processors on restart/shutdown
 
 
 
