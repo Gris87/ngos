@@ -145,7 +145,7 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
-    UEFI_ASSERT_EXECUTION(FPU::init(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(FPU::initForBootStrapProcessor(), NgosStatus::ASSERTION);
     UEFI_LI(("FPU initialized"));
 
 

@@ -75,7 +75,7 @@ void kernelMain(BootParams *params)
     EARLY_ASSERT_EXECUTION(CPU::init());
     EARLY_LI(("CPU information initialized"));
 
-    EARLY_ASSERT_EXECUTION(FPU::init());
+    EARLY_ASSERT_EXECUTION(FPU::initForBootStrapProcessor());
     EARLY_LI(("FPU initialized"));
 
 

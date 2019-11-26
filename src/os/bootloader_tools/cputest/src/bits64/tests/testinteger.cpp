@@ -25,7 +25,7 @@ void UEFI_API testIntegerProcedure(void *buffer)
 
 
     UEFI_ASSERT_EXECUTION(setupCr4());
-    UEFI_ASSERT_EXECUTION(FPU::init());
+    UEFI_ASSERT_EXECUTION(FPU::initForApplicationProcessor());
 
 
 

@@ -32,7 +32,7 @@ u32                  FPU::sXFeaturesSizes[(u64)XFeature::MAXIMUM];
 
 
 
-NgosStatus FPU::init() // TODO: Create same function for Application Processor
+NgosStatus FPU::initForBootStrapProcessor()
 {
     COMMON_LT((""));
 
@@ -187,14 +187,31 @@ NgosStatus FPU::init() // TODO: Create same function for Application Processor
     return NgosStatus::OK;
 }
 
+NgosStatus FPU::initForApplicationProcessor()
+{
+    COMMON_LT((""));
+
+
+
+    COMMON_ASSERT_EXECUTION(fninit(), NgosStatus::ASSERTION);
+
+    if (CPU::isCpuIdLevelSupported(XSTATE_CPUID))
+    {
+        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus FPU::initMxcsrMask()
 {
     COMMON_LT((""));
 
 
 
-    // Static because GCC does not get 16-byte stack alignment right
-    static FXSaveState fxsaveState;
+    FXSaveState fxsaveState;
 
     COMMON_ASSERT_EXECUTION(fxsave((u8 *)&fxsaveState), NgosStatus::ASSERTION);
 
@@ -477,7 +494,7 @@ NgosStatus FPU::initStateSizes()
     return NgosStatus::OK;
 }
 
-NgosStatus FPU::copyStateFromFPU()
+NgosStatus FPU::copyStateFromFPU() // TODO: check is it from FPU?
 {
     COMMON_LT((""));
 

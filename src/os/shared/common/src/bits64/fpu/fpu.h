@@ -11,7 +11,8 @@
 class FPU
 {
 public:
-    static NgosStatus init(); // TEST: NO
+    static NgosStatus initForBootStrapProcessor(); // TEST: NO
+    static NgosStatus initForApplicationProcessor(); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
