@@ -632,12 +632,12 @@ NgosStatus BootloaderGUI::cleanUp()
         UEFI_ASSERT_EXECUTION(sOsButtons.clear(),                     NgosStatus::ASSERTION);
     }
 
-    UEFI_ASSERT_EXECUTION(sCpuTestButton->setPredefined(false), NgosStatus::ASSERTION); // It will force to relese release for resized images
-
     if (sLeftButton)
     {
         UEFI_ASSERT_EXECUTION(sLeftButton->setPredefined(false), NgosStatus::ASSERTION); // It will force to relese release for resized images
     }
+
+    UEFI_ASSERT_EXECUTION(sCpuTestButton->setPredefined(false), NgosStatus::ASSERTION); // It will force to relese release for resized images
 
 
 

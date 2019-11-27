@@ -1771,6 +1771,8 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path, 
 
     UEFI_LI(("Starting %ls", path));
 
+
+
     if (freePath)
     {
         if (UEFI::freePool((char8 *)path) == UefiStatus::SUCCESS)
