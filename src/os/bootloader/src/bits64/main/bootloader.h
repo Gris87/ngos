@@ -19,6 +19,7 @@ class Bootloader
 {
 public:
     static NgosStatus init(); // TEST: NO
+    static NgosStatus cleanUp(); // TEST: NO
 
     static NgosStatus cleanUpPath(char16 *path);
     static NgosStatus buildPath(const char16 *parentPath, const char16 *path, char16 **res);
@@ -57,7 +58,7 @@ private:
     static NgosStatus addWindows10(VolumeInfo *volume); // TEST: NO
     static NgosStatus addUbuntu19(VolumeInfo *volume); // TEST: NO
     static NgosStatus addCentOS8(VolumeInfo *volume); // TEST: NO
-    static NgosStatus startApplication(VolumeInfo *volume, const char16 *path); // TEST: NO
+    static NgosStatus startApplication(VolumeInfo *volume, const char16 *path, bool freePath); // TEST: NO
 
     static UefiLoadedImageProtocol *sImage;
     static char16                  *sApplicationDirPath;

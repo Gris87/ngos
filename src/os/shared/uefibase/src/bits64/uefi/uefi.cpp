@@ -225,7 +225,7 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, void **data)
+UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, u8 **data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, dataSize, data));
 
@@ -236,8 +236,8 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *
 
 
 
-    u64   size = UEFI_MAXIMUM_VARIABLE_SIZE;
-    void *res;
+    u64  size = UEFI_MAXIMUM_VARIABLE_SIZE;
+    u8  *res;
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
@@ -278,7 +278,7 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *
     return UefiStatus::SUCCESS;
 }
 
-UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, void *data)
+UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, u8 *data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, attributes, dataSize, data));
 
@@ -293,7 +293,7 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, uefi_
     return sSystemTable->runtimeServices->getVariable(variableName, vendorGuid, attributes, dataSize, data);
 }
 
-UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, u64 dataSize, void *data)
+UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, u64 dataSize, u8 *data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, dataSize = %u, data = 0x%p", variableName, vendorGuid, dataSize, data));
 
@@ -311,7 +311,7 @@ UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, u64 d
                         data);
 }
 
-UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, void *data)
+UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, u8 *data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = %u, dataSize = %u, data = 0x%p", variableName, vendorGuid, attributes, dataSize, data));
 

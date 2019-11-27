@@ -89,3 +89,12 @@ NgosStatus ConsoleWidget::repaint()
 
     return NgosStatus::OK;
 }
+
+Image* ConsoleWidget::getPanelImage() const
+{
+    COMMON_LT((""));
+
+
+
+    return mPanelImage;
+}

@@ -26,7 +26,7 @@ NGOS:
 Bootloader:
 
 - Custom arguments
-- Clean up before start application
+- Check for last started OS
 - Stop application processors on restart/shutdown
 
 

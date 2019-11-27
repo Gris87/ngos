@@ -27,6 +27,8 @@ public:
 
     NgosStatus setText(const char8 *text); // TEST: NO
 
+    NgosStatus setPredefined(bool predefined); // TEST: NO
+
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 

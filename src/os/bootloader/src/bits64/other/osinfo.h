@@ -10,9 +10,9 @@
 
 struct OsInfo
 {
-    OsType      type;
-    VolumeInfo *volume;
-    char16     *path;
+    OsType        type;
+    VolumeInfo   *volume;
+    const char16 *path;
 
 
 

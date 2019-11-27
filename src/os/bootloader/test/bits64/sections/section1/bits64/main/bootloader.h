@@ -89,13 +89,13 @@ TEST_CASES(section1, bits64_main_bootloader);
         TEST_ASSERT_EQUALS(strcmp(path6, u"EFI\\BOOT\\images"),                 0);
         TEST_ASSERT_EQUALS(strcmp(path7, u"EFI\\BOOT\\images\\background.jpg"), 0);
 
-        TEST_ASSERT_EQUALS(UEFI::freePool(path1), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path2), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path3), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path4), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path5), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path6), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path7), UefiStatus::SUCCESS);
+        TEST_ASSERT_EQUALS(free(path1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path4), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path6), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path7), NgosStatus::OK);
     }
     TEST_CASE_END();
 
@@ -127,13 +127,13 @@ TEST_CASES(section1, bits64_main_bootloader);
         TEST_ASSERT_EQUALS(strcmp(path6, u"EFI\\BOOT\\images"),                 0);
         TEST_ASSERT_EQUALS(strcmp(path7, u"EFI\\BOOT\\images\\background.jpg"), 0);
 
-        TEST_ASSERT_EQUALS(UEFI::freePool(path1), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path2), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path3), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path4), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path5), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path6), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(path7), UefiStatus::SUCCESS);
+        TEST_ASSERT_EQUALS(free(path1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path4), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path6), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(path7), NgosStatus::OK);
     }
     TEST_CASE_END();
 }

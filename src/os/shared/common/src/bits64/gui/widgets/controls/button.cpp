@@ -400,6 +400,19 @@ NgosStatus Button::setText(const char8 *text)
     return NgosStatus::OK;
 }
 
+NgosStatus Button::setPredefined(bool predefined)
+{
+    COMMON_LT((" | predefined = %u", predefined));
+
+
+
+    mPredefined = predefined;
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Button::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));

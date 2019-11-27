@@ -1,6 +1,7 @@
 #include "bootloader.h"
 
 #include <common/src/bits64/assets/assets.h>
+#include <common/src/bits64/checksum/md5.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/memory/memory.h>
@@ -13,6 +14,8 @@
 #include <uefi/uefiharddrivedevicepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
+
+#include "src/bits64/main/bootloadergui.h"
 
 
 
@@ -38,6 +41,104 @@ NgosStatus Bootloader::init()
     UEFI_ASSERT_EXECUTION(initPaths(),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initVolumes(), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(initOSes(),    NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus Bootloader::cleanUp()
+{
+    UEFI_LT((""));
+
+
+
+    if (UEFI::freePool(sApplicationDirPath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for string", sApplicationDirPath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to free pool(0x%p) for string", sApplicationDirPath));
+    }
+
+
+
+    ListElement<VolumeInfo> *element = sVolumes.getHead();
+
+    while (element)
+    {
+        const VolumeInfo &volume = element->getData();
+
+        if (volume.rootDirectory)
+        {
+            if (volume.rootDirectory->close(volume.rootDirectory) == UefiStatus::SUCCESS)
+            {
+                UEFI_LV(("Closed volume root directory"));
+            }
+            else
+            {
+                UEFI_LW(("Failed to close volume root directory"));
+            }
+        }
+
+
+
+        if (volume.gptData.entries)
+        {
+            if (UEFI::freePool(volume.gptData.protectiveMbr) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for GPT protective MBR", volume.gptData.protectiveMbr));
+            }
+            else
+            {
+                UEFI_LE(("Failed to free pool(0x%p) for GPT protective MBR", volume.gptData.protectiveMbr));
+            }
+
+
+
+            if (UEFI::freePool(volume.gptData.header) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for GPT header", volume.gptData.header));
+            }
+            else
+            {
+                UEFI_LE(("Failed to free pool(0x%p) for GPT header", volume.gptData.header));
+            }
+
+
+
+            if (UEFI::freePool(volume.gptData.entries) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for GPT entries", volume.gptData.entries));
+            }
+            else
+            {
+                UEFI_LE(("Failed to free pool(0x%p) for GPT entries", volume.gptData.entries));
+            }
+        }
+
+
+
+        if (volume.partitionUniqueGuidAllocated)
+        {
+            if (UEFI::freePool(volume.partitionUniqueGuid) == UefiStatus::SUCCESS)
+            {
+                UEFI_LVV(("Released pool(0x%p) for GUID", volume.partitionUniqueGuid));
+            }
+            else
+            {
+                UEFI_LE(("Failed to free pool(0x%p) for GUID", volume.partitionUniqueGuid));
+            }
+        }
+
+
+
+        element = element->getNext();
+    }
+
+    UEFI_ASSERT_EXECUTION(sVolumes.clear(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sOSes.clear(),    NgosStatus::ASSERTION);
 
 
 
@@ -418,7 +519,7 @@ NgosStatus Bootloader::startTool(const char8 *path)
 
 
 
-    return startApplication(sMainVolume, absolutePath);
+    return startApplication(sMainVolume, absolutePath, true);
 }
 
 NgosStatus Bootloader::startOs(u64 index)
@@ -431,7 +532,7 @@ NgosStatus Bootloader::startOs(u64 index)
 
     const OsInfo &os = sOSes.at(index);
 
-    return startApplication(os.volume, os.path);
+    return startApplication(os.volume, os.path, false);
 }
 
 const ArrayList<OsInfo>& Bootloader::getOSes()
@@ -669,13 +770,14 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-            UEFI_LVVV(("volume.gptData.protectiveMbr = 0x%p",    volume.gptData.protectiveMbr));
-            UEFI_LVVV(("volume.gptData.header        = 0x%p",    volume.gptData.header));
-            UEFI_LVVV(("volume.gptData.entries       = 0x%p",    volume.gptData.entries));
-            UEFI_LVVV(("volume.type                  = %u (%s)", volume.type, volumeTypeToString(volume.type)));
-            UEFI_LVVV(("volume.name                  = %ls",     volume.name));
-            UEFI_LVVV(("volume.partitionUniqueGuid   = %s",      guidToString(volume.partitionUniqueGuid)));
-            UEFI_LVVV(("volume.rootDirectory         = 0x%p",    volume.rootDirectory));
+            UEFI_LVVV(("volume.gptData.protectiveMbr        = 0x%p",    volume.gptData.protectiveMbr));
+            UEFI_LVVV(("volume.gptData.header               = 0x%p",    volume.gptData.header));
+            UEFI_LVVV(("volume.gptData.entries              = 0x%p",    volume.gptData.entries));
+            UEFI_LVVV(("volume.type                         = %u (%s)", volume.type, volumeTypeToString(volume.type)));
+            UEFI_LVVV(("volume.name                         = %ls",     volume.name));
+            UEFI_LVVV(("volume.partitionUniqueGuidAllocated = %u",      volume.partitionUniqueGuidAllocated));
+            UEFI_LVVV(("volume.partitionUniqueGuid          = %s",      guidToString(volume.partitionUniqueGuid)));
+            UEFI_LVVV(("volume.rootDirectory                = 0x%p",    volume.rootDirectory));
 
 
 
@@ -1220,8 +1322,9 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
 
 
-    volume->name                = u"UNKNOWN";
-    volume->partitionUniqueGuid = nullptr;
+    volume->name                         = u"UNKNOWN";
+    volume->partitionUniqueGuidAllocated = false;
+    volume->partitionUniqueGuid          = nullptr;
 
 
 
@@ -1282,7 +1385,10 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
         Guid *partitionUniqueGuid;
         u64   size = sizeof(*partitionUniqueGuid);
 
-        UEFI_TEST_ASSERT(size == 16, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(size == 16,              NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(size == sizeof(Md5Hash), NgosStatus::ASSERTION);
+
+
 
         if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&partitionUniqueGuid) != UefiStatus::SUCCESS)
         {
@@ -1295,34 +1401,24 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
 
 
-        memzero(partitionUniqueGuid, size);
-
-
-
-        u64 *guid      = (u64 *)partitionUniqueGuid;
-        u8   guidIndex = 0;
-
         currentDevicePath = volume->devicePath;
 
-        do
+        while (!UEFI::isDevicePathEndType(currentDevicePath))
         {
-            guid[guidIndex] ^= Crc::crc64((u8 *)currentDevicePath, currentDevicePath->length);
-
-            if (UEFI::isDevicePathEndType(currentDevicePath))
-            {
-                break;
-            }
-
-            guidIndex ^= 0x01;
-
-
-
             currentDevicePath = UEFI::nextDevicePathNode(currentDevicePath);
-        } while(true);
+        }
 
 
 
-        volume->partitionUniqueGuid = partitionUniqueGuid;
+        Md5Hash hash = MD5::md5((u8*)volume->devicePath, (u64)currentDevicePath - (u64)volume->devicePath);
+
+        ((u64 *)partitionUniqueGuid)[0] = hash.quads[0];
+        ((u64 *)partitionUniqueGuid)[1] = hash.quads[1];
+
+
+
+        volume->partitionUniqueGuidAllocated = true;
+        volume->partitionUniqueGuid          = partitionUniqueGuid;
     }
 
 
@@ -1436,7 +1532,7 @@ NgosStatus Bootloader::addNgosKernel(VolumeInfo *volume)
 
         os.type   = OsType::NGOS;
         os.volume = volume;
-        os.path   = (char16 *)path;
+        os.path   = path;
 
         UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
     }
@@ -1462,7 +1558,7 @@ NgosStatus Bootloader::addNgosInstaller(VolumeInfo *volume)
 
         os.type   = OsType::NGOS;
         os.volume = volume;
-        os.path   = (char16 *)path;
+        os.path   = path;
 
         UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
     }
@@ -1488,7 +1584,7 @@ NgosStatus Bootloader::addWindows10(VolumeInfo *volume)
 
         os.type   = OsType::WINDOWS_10;
         os.volume = volume;
-        os.path   = (char16 *)path;
+        os.path   = path;
 
         UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
     }
@@ -1514,7 +1610,7 @@ NgosStatus Bootloader::addUbuntu19(VolumeInfo *volume)
 
         os.type   = OsType::UBUNTU_19;
         os.volume = volume;
-        os.path   = (char16 *)path;
+        os.path   = path;
 
         UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
     }
@@ -1540,7 +1636,7 @@ NgosStatus Bootloader::addCentOS8(VolumeInfo *volume)
 
         os.type   = OsType::CENTOS_8;
         os.volume = volume;
-        os.path   = (char16 *)path;
+        os.path   = path;
 
         UEFI_ASSERT_EXECUTION(sOSes.append(os), NgosStatus::ASSERTION);
     }
@@ -1550,9 +1646,9 @@ NgosStatus Bootloader::addCentOS8(VolumeInfo *volume)
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
+NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path, bool freePath)
 {
-    UEFI_LT((" | volume = 0x%p, path = 0x%p", volume, path));
+    UEFI_LT((" | volume = 0x%p, path = 0x%p, freePath = %u", volume, path, freePath));
 
     UEFI_ASSERT(volume, "volume is null", NgosStatus::ASSERTION);
     UEFI_ASSERT(path,   "path is null",   NgosStatus::ASSERTION);
@@ -1610,10 +1706,19 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
 
+    if (UEFI::freePool(devicePath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for device path", devicePath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to release pool(0x%p) for device path", devicePath));
+    }
+
+
+
     Guid                     protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
     UefiLoadedImageProtocol *childImage;
-
-
 
     if (UEFI::handleProtocol(childImageHandle, &protocol, (void **)&childImage) != UefiStatus::SUCCESS)
     {
@@ -1664,30 +1769,21 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
 
-    ListElement<VolumeInfo> *element = sVolumes.getHead();
+    UEFI_LI(("Starting %ls", path));
 
-    while (element)
+    if (freePath)
     {
-        const VolumeInfo &volume = element->getData();
-
-        if (volume.rootDirectory)
+        if (UEFI::freePool((char8 *)path) == UefiStatus::SUCCESS)
         {
-            if (volume.rootDirectory->close(volume.rootDirectory) == UefiStatus::SUCCESS)
-            {
-                UEFI_LV(("Closed volume root directory"));
-            }
-            else
-            {
-                UEFI_LW(("Failed to close volume root directory"));
-            }
+            UEFI_LVV(("Released pool(0x%p) for string", path));
         }
-
-        element = element->getNext();
+        else
+        {
+            UEFI_LE(("Failed to release pool(0x%p) for string", path));
+        }
     }
 
 
-
-    UEFI_LI(("Starting %ls", path));
 
     UEFI_ASSERT_EXECUTION(GraphicalConsole::noMorePrint(), NgosStatus::ASSERTION);
 
@@ -1720,6 +1816,8 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path)
 
 
     UEFI_ASSERT_EXECUTION(UEFI::switchToTextMode(),                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(BootloaderGUI::cleanUp(),                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cleanUp(),                                                                             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(UEFI::startImage(childImageHandle, nullptr, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 

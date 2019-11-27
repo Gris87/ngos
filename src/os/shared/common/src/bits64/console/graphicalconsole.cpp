@@ -266,11 +266,26 @@ NgosStatus GraphicalConsole::noMorePrint()
 {
     COMMON_LT((""));
 
-    COMMON_ASSERT(sGlyphOffsets, "sGlyphOffsets is null", NgosStatus::ASSERTION);
+
+
+    COMMON_TEST_ASSERT(sGlyphOffsets,  NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sConsoleWidget, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sTextImage, NgosStatus::ASSERTION);
 
 
 
-    sGlyphOffsets = 0;
+    sGlyphOffsets = nullptr;
+
+
+
+    COMMON_ASSERT_EXECUTION(GUI::getMainScreenWidget()->getChildren().remove(sConsoleWidget), NgosStatus::ASSERTION);
+
+    delete sConsoleWidget->getPanelImage();
+    delete sConsoleWidget;
+    delete sTextImage;
+
+    sConsoleWidget = nullptr;
+    sTextImage     = nullptr;
 
 
 

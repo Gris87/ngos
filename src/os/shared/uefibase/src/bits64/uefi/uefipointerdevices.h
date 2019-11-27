@@ -14,6 +14,7 @@ class UefiPointerDevices
 {
 public:
     static NgosStatus init(); // TEST: NO
+    static NgosStatus cleanUp(); // TEST: NO
 
     static u8 getAbsolutePointersCount(); // TEST: NO
     static UefiAbsolutePointerProtocol* getAbsolutePointer(u8 index); // TEST: NO

@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
@@ -25,8 +26,8 @@ TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
         TEST_ASSERT_EQUALS(strcmp(res1, u"\\EFI\\BOOT"),         0);
         TEST_ASSERT_EQUALS(strcmp(res2, u"\\EFI\\BOOT\\images"), 0);
 
-        TEST_ASSERT_EQUALS(UEFI::freePool(res1), UefiStatus::SUCCESS);
-        TEST_ASSERT_EQUALS(UEFI::freePool(res2), UefiStatus::SUCCESS);
+        TEST_ASSERT_EQUALS(free(res1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(res2), NgosStatus::OK);
     }
     TEST_CASE_END();
 

@@ -10,6 +10,9 @@
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
+#include "src/bits64/other/ostype.h"
+#include "src/bits64/other/volumetype.h"
+
 
 
 class BootloaderGUI
@@ -17,6 +20,7 @@ class BootloaderGUI
 public:
     static NgosStatus init(BootParams *params); // TEST: NO
     static NgosStatus exec(); // TEST: NO
+    static NgosStatus cleanUp(); // TEST: NO
 
 private:
     static NgosStatus focusOsButton(); // TEST: NO
@@ -59,6 +63,23 @@ private:
     static NgosStatus onPartitionWizardButtonPressed(); // TEST: NO
     static NgosStatus onShellButtonPressed(); // TEST: NO
 
+    static Image               *sBackgroundImage;
+    static Image               *sButtonNormalImage;
+    static Image               *sButtonHoverImage;
+    static Image               *sButtonPressedImage;
+    static Image               *sButtonFocusedImage;
+    static Image               *sButtonFocusedHoverImage;
+    static Image               *sCpuTestImage;
+    static Image               *sMemoryTestImage;
+    static Image               *sNetworkTestImage;
+    static Image               *sHddTestImage;
+    static Image               *sPartitionWizardImage;
+    static Image               *sShellImage;
+    static Image               *sRebootImage;
+    static Image               *sShutdownImage;
+    static Image               *sCursorImage;
+    static Image*               sOsImages[(u64)OsType::MAXIMUM];
+    static Image*               sVolumeImages[(u64)VolumeType::MAXIMUM];
     static Button              *sRebootButton;
     static Button              *sShutdownButton;
     static ArrayList<Button *>  sOsButtons;

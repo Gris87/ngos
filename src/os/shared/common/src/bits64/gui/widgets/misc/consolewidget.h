@@ -17,6 +17,8 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    Image* getPanelImage() const; // TEST: NO
+
 private:
     Image *mPanelImage;
 };

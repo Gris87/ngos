@@ -71,6 +71,23 @@
 
 
 
+Image               *BootloaderGUI::sBackgroundImage;
+Image               *BootloaderGUI::sButtonNormalImage;
+Image               *BootloaderGUI::sButtonHoverImage;
+Image               *BootloaderGUI::sButtonPressedImage;
+Image               *BootloaderGUI::sButtonFocusedImage;
+Image               *BootloaderGUI::sButtonFocusedHoverImage;
+Image               *BootloaderGUI::sCpuTestImage;
+Image               *BootloaderGUI::sMemoryTestImage;
+Image               *BootloaderGUI::sNetworkTestImage;
+Image               *BootloaderGUI::sHddTestImage;
+Image               *BootloaderGUI::sPartitionWizardImage;
+Image               *BootloaderGUI::sShellImage;
+Image               *BootloaderGUI::sRebootImage;
+Image               *BootloaderGUI::sShutdownImage;
+Image               *BootloaderGUI::sCursorImage;
+Image*               BootloaderGUI::sOsImages[(u64)OsType::MAXIMUM];
+Image*               BootloaderGUI::sVolumeImages[(u64)VolumeType::MAXIMUM];
 Button              *BootloaderGUI::sRebootButton;
 Button              *BootloaderGUI::sShutdownButton;
 ArrayList<Button *>  BootloaderGUI::sOsButtons;
@@ -107,49 +124,29 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    Image  *backgroundImage;
-    Image  *buttonNormalImage;
-    Image  *buttonHoverImage;
-    Image  *buttonPressedImage;
-    Image  *buttonFocusedImage;
-    Image  *buttonFocusedHoverImage;
-    Image  *buttonNormalResizedImage;
-    Image  *buttonHoverResizedImage;
-    Image  *buttonPressedResizedImage;
-    Image  *buttonFocusedResizedImage;
-    Image  *buttonFocusedHoverResizedImage;
-    Image  *cpuTestImage;
-    Image  *memoryTestImage;
-    Image  *networkTestImage;
-    Image  *hddTestImage;
-    Image  *partitionWizardImage;
-    Image  *shellImage;
-    Image  *rebootImage;
-    Image  *shutdownImage;
-    Image  *cursorImage;
-    Image*  osImages[(u64)OsType::MAXIMUM];
-    Image*  volumeImages[(u64)VolumeType::MAXIMUM];
-
-    memzero(osImages,     sizeof(osImages));
-    memzero(volumeImages, sizeof(volumeImages));
+    Image *buttonNormalResizedImage;
+    Image *buttonHoverResizedImage;
+    Image *buttonPressedResizedImage;
+    Image *buttonFocusedResizedImage;
+    Image *buttonFocusedHoverResizedImage;
 
 
 
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/background.jpg",             &backgroundImage),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_normal.9.png",        &buttonNormalImage),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_hover.9.png",         &buttonHoverImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_pressed.9.png",       &buttonPressedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused.9.png",       &buttonFocusedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused_hover.9.png", &buttonFocusedHoverImage), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cpu_test.png",               &cpuTestImage),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/memory_test.png",            &memoryTestImage),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/network_test.png",           &networkTestImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/hdd_test.png",               &hddTestImage),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/partition_wizard.png",       &partitionWizardImage),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shell.png",                  &shellImage),              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/reboot.png",                 &rebootImage),             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shutdown.png",               &shutdownImage),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cursor.png",                 &cursorImage),             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/background.jpg",             &sBackgroundImage),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_normal.9.png",        &sButtonNormalImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_hover.9.png",         &sButtonHoverImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_pressed.9.png",       &sButtonPressedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused.9.png",       &sButtonFocusedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused_hover.9.png", &sButtonFocusedHoverImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cpu_test.png",               &sCpuTestImage),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/memory_test.png",            &sMemoryTestImage),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/network_test.png",           &sNetworkTestImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/hdd_test.png",               &sHddTestImage),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/partition_wizard.png",       &sPartitionWizardImage),    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shell.png",                  &sShellImage),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/reboot.png",                 &sRebootImage),             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shutdown.png",               &sShutdownImage),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cursor.png",                 &sCursorImage),             NgosStatus::ASSERTION);
 
 
 
@@ -175,10 +172,21 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    ScreenWidget *screenWidget = new ScreenWidget(backgroundImage, params->screens[0], rootWidget);
+    ScreenWidget *screenWidget = new ScreenWidget(sBackgroundImage, params->screens[0], rootWidget);
 
     UEFI_ASSERT_EXECUTION(screenWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(screenWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);
+
+
+
+    if (UEFI::freePool(params->screens) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for screen infos", params->screens));
+    }
+    else
+    {
+        UEFI_LE(("Failed to release pool(0x%p) for screen infos", params->screens));
+    }
 
 
 
@@ -189,15 +197,15 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       systemButtonSize, systemButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        systemButtonSize, systemButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      systemButtonSize, systemButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      systemButtonSize, systemButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, systemButtonSize, systemButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       systemButtonSize, systemButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        systemButtonSize, systemButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonPressedImage,      systemButtonSize, systemButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedImage,      systemButtonSize, systemButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedHoverImage, systemButtonSize, systemButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
 
 
 
-    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, rebootImage, nullptr, "", rootWidget);
+    sRebootButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sRebootImage, nullptr, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
@@ -206,7 +214,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shutdownImage, nullptr, "", rootWidget);
+    sShutdownButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sShutdownImage, nullptr, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
@@ -220,11 +228,11 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     if (osCount) // osCount > 0
     {
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       osButtonSize, osButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        osButtonSize, osButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      osButtonSize, osButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      osButtonSize, osButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, osButtonSize, osButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       osButtonSize, osButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        osButtonSize, osButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonPressedImage,      osButtonSize, osButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedImage,      osButtonSize, osButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedHoverImage, osButtonSize, osButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
 
 
 
@@ -235,7 +243,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
             UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
-            Image *osImage = osImages[(u64)os.type];
+            Image *osImage = sOsImages[(u64)os.type];
 
             if (!osImage)
             {
@@ -265,13 +273,13 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                 }
 
                 UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets(pathToImage, &osImage), NgosStatus::ASSERTION);
-                osImages[(u64)os.type] = osImage;
+                sOsImages[(u64)os.type] = osImage;
             }
 
 
 
             UEFI_TEST_ASSERT(os.volume->type < VolumeType::MAXIMUM, NgosStatus::ASSERTION);
-            Image *volumeImage = volumeImages[(u64)os.volume->type];
+            Image *volumeImage = sVolumeImages[(u64)os.volume->type];
 
             if (!volumeImage)
             {
@@ -302,12 +310,12 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                 }
 
                 UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets(pathToImage, &volumeImage), NgosStatus::ASSERTION);
-                volumeImages[(u64)os.volume->type] = volumeImage;
+                sVolumeImages[(u64)os.volume->type] = volumeImage;
             }
 
 
 
-            Button *osButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, osImage, volumeImage, "", rootWidget);
+            Button *osButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, osImage, volumeImage, "", rootWidget);
 
             UEFI_ASSERT_EXECUTION(osButton->setKeyboardEventHandler(onOsButtonKeyboardEvent), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(osButton->setPressEventHandler(onOsButtonPressed),          NgosStatus::ASSERTION);
@@ -333,15 +341,15 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       arrowButtonSize, arrowButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        arrowButtonSize, arrowButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      arrowButtonSize, arrowButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      arrowButtonSize, arrowButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, arrowButtonSize, arrowButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       arrowButtonSize, arrowButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        arrowButtonSize, arrowButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonPressedImage,      arrowButtonSize, arrowButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedImage,      arrowButtonSize, arrowButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedHoverImage, arrowButtonSize, arrowButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
 
 
 
-            sLeftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowLeftImage, nullptr, "", rootWidget);
+            sLeftButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowLeftImage, nullptr, "", rootWidget);
 
             UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(false),                                                                                                                                NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sLeftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
@@ -351,7 +359,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-            sRightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowRightImage, nullptr, "", rootWidget);
+            sRightButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowRightImage, nullptr, "", rootWidget);
 
             UEFI_ASSERT_EXECUTION(sRightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sRightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                         NgosStatus::ASSERTION);
@@ -412,7 +420,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
         u64   variableSize;
         Guid *lastOsVolumeGuid;
 
-        if (UEFI::getVariable(u"LastOsVolumeGuid", &bootloaderGUID, &variableSize, (void **)&lastOsVolumeGuid) == UefiStatus::SUCCESS)
+        if (UEFI::getVariable(u"LastOsVolumeGuid", &bootloaderGUID, &variableSize, (u8 **)&lastOsVolumeGuid) == UefiStatus::SUCCESS)
         {
             UEFI_LV(("Loaded LastOsVolumeGuid NVRAM variable: %s", guidToString(lastOsVolumeGuid)));
 
@@ -422,7 +430,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
             char16 *lastOsPath;
 
-            if (UEFI::getVariable(u"LastOsPath", &bootloaderGUID, &variableSize, (void **)&lastOsPath) == UefiStatus::SUCCESS)
+            if (UEFI::getVariable(u"LastOsPath", &bootloaderGUID, &variableSize, (u8 **)&lastOsPath) == UefiStatus::SUCCESS)
             {
                 UEFI_LV(("Loaded LastOsPath NVRAM variable: %ls", lastOsPath));
 
@@ -495,15 +503,15 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       toolButtonWidth, toolButtonHeight, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        toolButtonWidth, toolButtonHeight, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      toolButtonWidth, toolButtonHeight, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      toolButtonWidth, toolButtonHeight, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, toolButtonWidth, toolButtonHeight, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       toolButtonWidth, toolButtonHeight, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        toolButtonWidth, toolButtonHeight, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonPressedImage,      toolButtonWidth, toolButtonHeight, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedImage,      toolButtonWidth, toolButtonHeight, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedHoverImage, toolButtonWidth, toolButtonHeight, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
 
 
 
-    sCpuTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, cpuTestImage, nullptr, "CPU Test    ", rootWidget);
+    sCpuTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sCpuTestImage, nullptr, "CPU Test    ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sCpuTestButton->setPosition(screenWidth * CPU_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * CPU_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sCpuTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
@@ -512,7 +520,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sMemoryTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, memoryTestImage, nullptr, "Memory Test ", rootWidget);
+    sMemoryTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sMemoryTestImage, nullptr, "Memory Test ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sMemoryTestButton->setPosition(screenWidth * MEMORY_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MEMORY_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sMemoryTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                         NgosStatus::ASSERTION);
@@ -521,7 +529,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sNetworkTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, networkTestImage, nullptr, "Network Test", rootWidget);
+    sNetworkTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sNetworkTestImage, nullptr, "Network Test", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sNetworkTestButton->setPosition(screenWidth * NETWORK_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * NETWORK_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sNetworkTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                           NgosStatus::ASSERTION);
@@ -530,7 +538,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sHddTestButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, hddTestImage, nullptr, "HDD Test    ", rootWidget);
+    sHddTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sHddTestImage, nullptr, "HDD Test    ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sHddTestButton->setPosition(screenWidth * HDD_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * HDD_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sHddTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
@@ -539,7 +547,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sPartitionWizardButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, partitionWizardImage, nullptr, "Partition   \nWizard      ", rootWidget);
+    sPartitionWizardButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sPartitionWizardImage, nullptr, "Partition   \nWizard      ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setPosition(screenWidth * PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT / 100, screenHeight * PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                                   NgosStatus::ASSERTION);
@@ -548,7 +556,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sShellButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shellImage, nullptr, "Shell       ", rootWidget);
+    sShellButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sShellImage, nullptr, "Shell       ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sShellButton->setPosition(screenWidth * SHELL_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHELL_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sShellButton->setSize(toolButtonWidth, toolButtonHeight),                                                                             NgosStatus::ASSERTION);
@@ -568,7 +576,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
+    CursorWidget *cursorWidget = new CursorWidget(sCursorImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getGlobalPositionX() + (GUI::getFocusedWidget()->getWidth() >> 1), GUI::getFocusedWidget()->getGlobalPositionY() + (GUI::getFocusedWidget()->getHeight() >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
     UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                                                                                      NgosStatus::ASSERTION);
@@ -597,6 +605,92 @@ NgosStatus BootloaderGUI::exec()
     {
         UEFI_ASSERT_EXECUTION(waitForEvent(), NgosStatus::ASSERTION);
     } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus BootloaderGUI::cleanUp()
+{
+    UEFI_LT((""));
+
+
+
+    if (sTimeoutLabelWidget)
+    {
+        UEFI_ASSERT_EXECUTION(free((char8 *)sTimeoutLabelWidget->getText()), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(sRebootButton->setPredefined(false),  NgosStatus::ASSERTION); // It will force to relese release for resized images
+
+    if (sOsButtons.getSize() > 0)
+    {
+        UEFI_ASSERT_EXECUTION(sOsButtons.at(0)->setPredefined(false), NgosStatus::ASSERTION); // It will force to release memory for resized images
+        UEFI_ASSERT_EXECUTION(sOsButtons.clear(),                     NgosStatus::ASSERTION);
+    }
+
+    UEFI_ASSERT_EXECUTION(sCpuTestButton->setPredefined(false), NgosStatus::ASSERTION); // It will force to relese release for resized images
+
+    if (sLeftButton)
+    {
+        UEFI_ASSERT_EXECUTION(sLeftButton->setPredefined(false), NgosStatus::ASSERTION); // It will force to relese release for resized images
+    }
+
+
+
+    delete GUI::getRootWidget();
+
+
+
+    delete sBackgroundImage;
+    delete sButtonNormalImage;
+    delete sButtonHoverImage;
+    delete sButtonPressedImage;
+    delete sButtonFocusedImage;
+    delete sButtonFocusedHoverImage;
+    delete sCpuTestImage;
+    delete sMemoryTestImage;
+    delete sNetworkTestImage;
+    delete sHddTestImage;
+    delete sPartitionWizardImage;
+    delete sShellImage;
+    delete sRebootImage;
+    delete sShutdownImage;
+    delete sCursorImage;
+
+
+
+    for (i64 i = 0; i < (i64)OsType::MAXIMUM; ++i)
+    {
+        if (sOsImages[i])
+        {
+            delete sOsImages[i];
+        }
+    }
+
+    for (i64 i = 0; i < (i64)VolumeType::MAXIMUM; ++i)
+    {
+        if (sVolumeImages[i])
+        {
+            delete sVolumeImages[i];
+        }
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(UefiPointerDevices::cleanUp(), NgosStatus::ASSERTION);
+
+    if (UEFI::freePool(sWaitEvents) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for wait events", sWaitEvents));
+    }
+    else
+    {
+        UEFI_LE(("Failed to release pool(0x%p) for wait events", sWaitEvents));
+    }
 
 
 
@@ -1551,7 +1645,7 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
     const OsInfo &os = Bootloader::getOSes().at(sOsButtonSelected);
 
-    if (UEFI::setVariable(u"LastOsVolumeGuid", &bootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
+    if (UEFI::setVariable(u"LastOsVolumeGuid", &bootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), (u8 *)os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
     {
         UEFI_LV(("Stored LastOsVolumeGuid NVRAM variable: %s", guidToString(os.volume->partitionUniqueGuid)));
     }
@@ -1560,7 +1654,7 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
         UEFI_LE(("Failed to store LastOsVolumeGuid NVRAM variable"));
     }
 
-    if (UEFI::setVariable(u"LastOsPath", &bootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), os.path) == UefiStatus::SUCCESS)
+    if (UEFI::setVariable(u"LastOsPath", &bootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), (u8 *)os.path) == UefiStatus::SUCCESS)
     {
         UEFI_LV(("Stored LastOsPath NVRAM variable: %ls", os.path));
     }

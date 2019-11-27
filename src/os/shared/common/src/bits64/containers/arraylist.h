@@ -23,6 +23,8 @@ public:
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
 
+    NgosStatus clear();
+
     NgosStatus sort();
 
     const T& at(u64 index) const;
@@ -105,6 +107,26 @@ NgosStatus ArrayList<T>::prepend(const T &value)
     mValues[0] = value;
 
     ++mSize;
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus ArrayList<T>::clear()
+{
+    COMMON_LT((""));
+
+
+
+    if (mValues)
+    {
+        COMMON_ASSERT_EXECUTION(free(mValues), NgosStatus::ASSERTION);
+
+        mCapacity = 0;
+        mSize     = 0;
+    }
 
 
 

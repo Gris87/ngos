@@ -23,6 +23,7 @@ struct VolumeInfo
     GptData              gptData;
     VolumeType           type;
     const char16        *name;
+    bool                 partitionUniqueGuidAllocated;
     Guid                *partitionUniqueGuid;
     UefiFileProtocol    *rootDirectory;
 

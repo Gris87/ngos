@@ -7,6 +7,7 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/printf/printf.h>
+#include <uefibase/src/bits64/uefi/uefi.h>
 
 
 
@@ -245,11 +246,25 @@ NgosStatus Console::noMorePrint()
 {
     COMMON_LT((""));
 
-    COMMON_ASSERT(sScreenGop, "sScreenGop is null", NgosStatus::ASSERTION);
 
 
+    COMMON_TEST_ASSERT(sScreenGop,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sDoubleBuffer, NgosStatus::ASSERTION);
 
     sScreenGop = 0;
+
+
+
+#if not defined(BUILD_TARGET_KERNEL) && not defined(BUILD_TARGET_INSTALLER)
+    if (UEFI::freePool(sDoubleBuffer) == UefiStatus::SUCCESS)
+    {
+        COMMON_LVV(("Released pool(0x%p) for screen double buffering", sDoubleBuffer));
+    }
+    else
+    {
+        COMMON_LE(("Failed to release pool(0x%p) for screen double buffering", sDoubleBuffer));
+    }
+#endif
 
 
 

@@ -26,6 +26,41 @@ NgosStatus UefiPointerDevices::init()
     return NgosStatus::OK;
 }
 
+NgosStatus UefiPointerDevices::cleanUp()
+{
+    UEFI_LT((""));
+
+
+
+    if (sAbsolutePointers)
+    {
+        if (UEFI::freePool(sAbsolutePointers) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Released pool(0x%p) for absolute pointer devices", sAbsolutePointers));
+        }
+        else
+        {
+            UEFI_LE(("Failed to release pool(0x%p) for absolute pointer devices", sAbsolutePointers));
+        }
+    }
+
+    if (sSimplePointers)
+    {
+        if (UEFI::freePool(sSimplePointers) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Released pool(0x%p) for simple pointer devices", sSimplePointers));
+        }
+        else
+        {
+            UEFI_LE(("Failed to release pool(0x%p) for simple pointer devices", sSimplePointers));
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 u8 UefiPointerDevices::getAbsolutePointersCount()
 {
     UEFI_LT((""));
