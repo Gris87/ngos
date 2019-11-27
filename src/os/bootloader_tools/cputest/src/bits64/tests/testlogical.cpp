@@ -14,7 +14,7 @@
 
 
 #define NUMBER_OF_ITERATIONS 100000000
-#define SCORE_PER_SECOND     500
+#define SCORE_PER_SECOND     1100
 
 
 

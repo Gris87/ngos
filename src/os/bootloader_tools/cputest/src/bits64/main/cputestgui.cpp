@@ -936,15 +936,6 @@ NgosStatus CpuTestGUI::exec()
     return NgosStatus::OK;
 }
 
-bool CpuTestGUI::isTerminated()
-{
-    UEFI_LT((""));
-
-
-
-    return sTerminated;
-}
-
 NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget)
 {
     UEFI_LT((" | flag = %u, featurePanelPositionX = %u, featurePanelPositionY = %u, featurePanelWidth = %u, featurePanelHeight = %u, featurePanelImage = 0x%p, featurePanelResizedImage = 0x%p, tabPageWidget = 0x%p", flag, featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, tabPageWidget));

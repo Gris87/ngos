@@ -24,7 +24,12 @@ public:
     static NgosStatus init(BootParams *params); // TEST: NO
     static NgosStatus exec(); // TEST: NO
 
-    static bool isTerminated(); // TEST: NO
+    static inline bool isTerminated() // TEST: NO
+    {
+        // UEFI_LT(("")); // Commented to avoid bad looking logs
+
+        return sTerminated;
+    }
 
 private:
     static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
