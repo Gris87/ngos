@@ -936,6 +936,15 @@ NgosStatus CpuTestGUI::exec()
     return NgosStatus::OK;
 }
 
+bool CpuTestGUI::isTerminated()
+{
+    UEFI_LT((""));
+
+
+
+    return sTerminated;
+}
+
 NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget)
 {
     UEFI_LT((" | flag = %u, featurePanelPositionX = %u, featurePanelPositionY = %u, featurePanelWidth = %u, featurePanelHeight = %u, featurePanelImage = 0x%p, featurePanelResizedImage = 0x%p, tabPageWidget = 0x%p", flag, featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, tabPageWidget));
@@ -1366,6 +1375,45 @@ NgosStatus CpuTestGUI::waitForEvent()
 
 
     return processAbsolutePointerEvent(UefiPointerDevices::getAbsolutePointer(eventIndex - UefiPointerDevices::getSimplePointersCount() - 1));
+}
+
+NgosStatus CpuTestGUI::terminateAndWaitForApplicationProcessors()
+{
+    UEFI_LT((""));
+
+
+
+    if (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
+    {
+        if (!sTerminated)
+        {
+            sTerminated = true;
+
+            UEFI_ASSERT_EXECUTION(addTestEntry("Terminated by user", ""), NgosStatus::ASSERTION);
+        }
+
+
+
+        while (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
+        {
+            u64 eventIndex;
+
+            UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+            UEFI_LVVV(("eventIndex = %u", eventIndex));
+
+
+
+            if (eventIndex >= sFirstProcessorEventIndex)
+            {
+                UEFI_ASSERT_EXECUTION(processApplicationProcessorEvent(eventIndex - sFirstProcessorEventIndex), NgosStatus::ASSERTION);
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus CpuTestGUI::processKeyboardEvent()
@@ -1855,6 +1903,7 @@ NgosStatus CpuTestGUI::onRebootButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(terminateAndWaitForApplicationProcessors(),                                                               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::COLD, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
@@ -1868,6 +1917,7 @@ NgosStatus CpuTestGUI::onShutdownButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(terminateAndWaitForApplicationProcessors(),                                                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::SHUTDOWN, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
@@ -1942,6 +1992,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
         if (numberOfProcessors > 1)
         {
+            // TODO: Test on real hardware
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
             {
                 UEFI_LVVV(("Processors:"));

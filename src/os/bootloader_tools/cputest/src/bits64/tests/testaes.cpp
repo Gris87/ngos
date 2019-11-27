@@ -10,6 +10,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
 #include "src/bits64/main/cputest.h"
+#include "src/bits64/main/cputestgui.h"
 
 
 
@@ -53,7 +54,7 @@ void UEFI_API testAesProcedure(void *buffer)
 
         UEFI_ASSERT_EXECUTION(aes.setKey((u8 *)key, strlen(key)));
 
-        for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             UEFI_ASSERT_EXECUTION(aes.encode(in, sizeof(in), out, sizeof(out), &outSize));
             UEFI_ASSERT_EXECUTION(aes.decode(out, sizeof(out), in, sizeof(in), &outSize));

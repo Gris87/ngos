@@ -27,7 +27,6 @@ Bootloader:
 
 - Custom arguments
 - Check for last started OS on real hardware
-- Stop application processors on restart/shutdown
 
 
 

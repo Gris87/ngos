@@ -9,6 +9,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
 #include "src/bits64/main/cputest.h"
+#include "src/bits64/main/cputestgui.h"
 
 
 
@@ -44,7 +45,7 @@ void UEFI_API testFloatProcedure(void *buffer)
 
     u64 startTime = rdtsc();
 
-    for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+    for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
     {
         temp1 += 3.123f;
         temp2 -= 5.987f;

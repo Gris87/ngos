@@ -9,6 +9,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
 #include "src/bits64/main/cputest.h"
+#include "src/bits64/main/cputestgui.h"
 
 
 
@@ -48,7 +49,7 @@ void UEFI_API testLogicalProcedure(void *buffer)
 
     u64 startTime = rdtsc();
 
-    for (i64 i = 0; i < NUMBER_OF_ITERATIONS; ++i)
+    for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
     {
         if (temp1 < 3)
         {

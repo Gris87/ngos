@@ -24,6 +24,8 @@ public:
     static NgosStatus init(BootParams *params); // TEST: NO
     static NgosStatus exec(); // TEST: NO
 
+    static bool isTerminated(); // TEST: NO
+
 private:
     static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
     static NgosStatus addTestEntry(const char8 *name, const char8 *score); // TEST: NO
@@ -37,6 +39,7 @@ private:
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
+    static NgosStatus terminateAndWaitForApplicationProcessors(); // TEST: NO
     static NgosStatus processKeyboardEvent(); // TEST: NO
     static NgosStatus processSimplePointerEvent(UefiSimplePointerProtocol *pointer); // TEST: NO
     static NgosStatus processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer); // TEST: NO
