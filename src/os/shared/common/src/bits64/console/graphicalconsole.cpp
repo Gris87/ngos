@@ -270,7 +270,7 @@ NgosStatus GraphicalConsole::noMorePrint()
 
     COMMON_TEST_ASSERT(sGlyphOffsets,  NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sConsoleWidget, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sTextImage, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sTextImage,     NgosStatus::ASSERTION);
 
 
 

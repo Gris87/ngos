@@ -126,6 +126,7 @@ NgosStatus ArrayList<T>::clear()
 
         mCapacity = 0;
         mSize     = 0;
+        mValues   = nullptr;
     }
 
 

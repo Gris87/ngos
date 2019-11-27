@@ -251,7 +251,7 @@ NgosStatus Console::noMorePrint()
     COMMON_TEST_ASSERT(sScreenGop,    NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sDoubleBuffer, NgosStatus::ASSERTION);
 
-    sScreenGop = 0;
+    sScreenGop = nullptr;
 
 
 
