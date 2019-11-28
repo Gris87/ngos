@@ -732,7 +732,7 @@ UefiStatus UEFI::locateDevicePath(Guid *protocol, UefiDevicePath **devicePath, u
 
 UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
 {
-    UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer));
+    // UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(size > 0, "size is zero",   UefiStatus::ABORTED);
     UEFI_ASSERT(buffer,   "buffer is null", UefiStatus::ABORTED);
@@ -744,7 +744,7 @@ UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
 
 UefiStatus UEFI::freePool(void *buffer)
 {
-    UEFI_LT((" | buffer = 0x%p", buffer));
+    // UEFI_LT((" | buffer = 0x%p", buffer)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(buffer, "buffer is null", UefiStatus::ABORTED);
 
@@ -1139,7 +1139,7 @@ UefiStatus UEFI::exitBootServices(u64 mapKey)
 
 uefi_handle UEFI::getImageHandle()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -1148,7 +1148,7 @@ uefi_handle UEFI::getImageHandle()
 
 UefiSystemTable* UEFI::getSystemTable()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 

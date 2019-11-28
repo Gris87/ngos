@@ -75,7 +75,7 @@ ArrayList<T>::~ArrayList()
 template<typename T>
 NgosStatus ArrayList<T>::append(const T &value)
 {
-    COMMON_LT((" | value = ..."));
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
 
 
 
@@ -93,7 +93,7 @@ NgosStatus ArrayList<T>::append(const T &value)
 template<typename T>
 NgosStatus ArrayList<T>::prepend(const T &value)
 {
-    COMMON_LT((" | value = ..."));
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
 
 
 
@@ -154,7 +154,7 @@ NgosStatus ArrayList<T>::sort()
 template<typename T>
 const T& ArrayList<T>::at(u64 index) const
 {
-    COMMON_LT((" | index = %u", index));
+    // COMMON_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(index < mSize, "index is invalid", mValues[index]);
 
@@ -166,7 +166,7 @@ const T& ArrayList<T>::at(u64 index) const
 template<typename T>
 T& ArrayList<T>::operator[](u64 index)
 {
-    COMMON_LT((" | index = %u", index));
+    // COMMON_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(index < mSize, "index is invalid", mValues[index]);
 
@@ -178,7 +178,7 @@ T& ArrayList<T>::operator[](u64 index)
 template<typename T>
 u64 ArrayList<T>::getSize() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -236,7 +236,7 @@ NgosStatus ArrayList<T>::setCapacity(u64 capacity)
 template<typename T>
 u64 ArrayList<T>::getCapacity() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

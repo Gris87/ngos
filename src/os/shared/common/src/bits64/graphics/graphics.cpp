@@ -197,7 +197,7 @@ NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, i6
 
 NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY)
 {
-    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY));
+    // COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(sourceData,                   "sourceData is null",               NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationData,              "destinationData is null",          NgosStatus::ASSERTION);
@@ -1042,7 +1042,7 @@ NgosStatus Graphics::resizeImageProportional(Image *image, u16 width, u16 height
 
 NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sourcePositionX, u16 sourcePositionY, u16 destinationPositionX, u16 destinationPositionY, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u64 sourceStride, u64 destinationStride, u8 bytesPerPixel)
 {
-    COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourcePositionX = %u, sourcePositionY = %u, destinationPositionX = %u, destinationPositionY = %u, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceStride = %u, destinationStride = %u, bytesPerPixel = %u", sourceData, destinationData, sourcePositionX, sourcePositionY, destinationPositionX, destinationPositionY, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceStride, destinationStride, bytesPerPixel));
+    // COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourcePositionX = %u, sourcePositionY = %u, destinationPositionX = %u, destinationPositionY = %u, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceStride = %u, destinationStride = %u, bytesPerPixel = %u", sourceData, destinationData, sourcePositionX, sourcePositionY, destinationPositionX, destinationPositionY, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceStride, destinationStride, bytesPerPixel)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(sourceData,            "sourceData is null",        NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationData,       "destinationData is null",   NgosStatus::ASSERTION);

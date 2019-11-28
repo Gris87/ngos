@@ -49,7 +49,7 @@ Widget::~Widget()
 
 NgosStatus Widget::update()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -58,7 +58,7 @@ NgosStatus Widget::update()
 
 NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
 {
-    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
+    // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
@@ -201,7 +201,7 @@ NgosStatus Widget::moveToFront()
 
 NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
 {
-    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY));
+    // COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(widget, "widget is null", NgosStatus::ASSERTION);
 
@@ -212,7 +212,7 @@ NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
 
 NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
 {
-    COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", widget, positionX, positionY, left, top, right, bottom));
+    // COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", widget, positionX, positionY, left, top, right, bottom)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(widget,                                               "widget is null",                   NgosStatus::ASSERTION);
     COMMON_ASSERT(widget->getResultImage(),                             "widget->getResultImage() is null", NgosStatus::ASSERTION);
@@ -298,7 +298,7 @@ Widget* Widget::detectHoveredWidget(i64 positionX, i64 positionY)
 
 bool Widget::isAcceptMouseEvents()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -307,7 +307,7 @@ bool Widget::isAcceptMouseEvents()
 
 bool Widget::hasIntersection(Widget *anotherWidget)
 {
-    COMMON_LT((" | anotherWidget = 0x%p", anotherWidget));
+    // COMMON_LT((" | anotherWidget = 0x%p", anotherWidget)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(anotherWidget, "anotherWidget is null", false);
 
@@ -318,7 +318,7 @@ bool Widget::hasIntersection(Widget *anotherWidget)
 
 bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height)
 {
-    COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height));
+    // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(width > 0,  "width is zero",  false);
     COMMON_ASSERT(height > 0, "height is zero", false);
@@ -366,7 +366,7 @@ NgosStatus Widget::unlockUpdates()
 
 bool Widget::isUpdatesEnabled()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -375,7 +375,7 @@ bool Widget::isUpdatesEnabled()
 
 bool Widget::isFocused()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -397,7 +397,7 @@ NgosStatus Widget::setState(WidgetState state)
 
 WidgetState Widget::getState() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -419,7 +419,7 @@ NgosStatus Widget::setKeyboardEventHandler(keyboard_event_handler handler)
 
 keyboard_event_handler Widget::getKeyboardEventHandler() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -441,7 +441,7 @@ NgosStatus Widget::setPressEventHandler(press_event_handler handler)
 
 press_event_handler Widget::getPressEventHandler() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -476,7 +476,7 @@ NgosStatus Widget::setParent(Widget *parent)
 
 Widget* Widget::getParent() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -485,7 +485,7 @@ Widget* Widget::getParent() const
 
 List<Widget *>& Widget::getChildren()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -543,7 +543,7 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
 
 i64 Widget::getPositionX() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -552,7 +552,7 @@ i64 Widget::getPositionX() const
 
 i64 Widget::getPositionY() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -561,7 +561,7 @@ i64 Widget::getPositionY() const
 
 i64 Widget::getGlobalPositionX() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -577,7 +577,7 @@ i64 Widget::getGlobalPositionX() const
 
 i64 Widget::getGlobalPositionY() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -630,7 +630,7 @@ NgosStatus Widget::setSize(u64 width, u64 height)
 
 u64 Widget::getWidth() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -639,7 +639,7 @@ u64 Widget::getWidth() const
 
 u64 Widget::getHeight() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -673,7 +673,7 @@ NgosStatus Widget::setVisible(bool visible)
 
 bool Widget::isVisible() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -682,7 +682,7 @@ bool Widget::isVisible() const
 
 Image* Widget::getOwnResultImage() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -691,7 +691,7 @@ Image* Widget::getOwnResultImage() const
 
 Image* Widget::getResultImage() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

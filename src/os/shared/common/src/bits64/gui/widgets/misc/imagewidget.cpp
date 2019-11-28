@@ -96,7 +96,7 @@ NgosStatus ImageWidget::setImage(Image *image)
 
 Image* ImageWidget::getImage() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

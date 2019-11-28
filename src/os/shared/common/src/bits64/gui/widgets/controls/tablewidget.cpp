@@ -392,7 +392,7 @@ NgosStatus TableWidget::setState(WidgetState state)
 
 WidgetState TableWidget::getState() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -428,7 +428,7 @@ NgosStatus TableWidget::setRowHeight(u64 height)
 
 u64 TableWidget::getRowHeight() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -460,7 +460,7 @@ NgosStatus TableWidget::setColumnCount(u64 columns)
 
 u64 TableWidget::getColumnCount() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -487,7 +487,7 @@ NgosStatus TableWidget::setColumnWidth(u64 column, u64 width)
 
 u64 TableWidget::getColumnWidth(u64 column) const
 {
-    COMMON_LT((" | column = %u", column));
+    // COMMON_LT((" | column = %u", column)); // Commented to avoid too frequent logs
 
 
 
@@ -626,7 +626,7 @@ NgosStatus TableWidget::setRowCount(u64 rows)
 
 u64 TableWidget::getRowCount() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -661,7 +661,7 @@ NgosStatus TableWidget::setCellWidget(u64 row, u64 column, Widget *widget)
 
 Widget* TableWidget::getCellWidget(u64 row, u64 column) const
 {
-    COMMON_LT((" | row = %u, column = %u", row, column));
+    // COMMON_LT((" | row = %u, column = %u", row, column)); // Commented to avoid too frequent logs
 
 
 
@@ -763,7 +763,7 @@ NgosStatus TableWidget::setSelectedRow(u64 row)
 
 u64 TableWidget::getSelectedRow() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -785,7 +785,7 @@ NgosStatus TableWidget::setKeyboardEventHandler(keyboard_event_handler handler)
 
 keyboard_event_handler TableWidget::getKeyboardEventHandler() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

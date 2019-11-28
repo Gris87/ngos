@@ -63,7 +63,7 @@ NgosStatus UefiPointerDevices::cleanUp()
 
 u8 UefiPointerDevices::getAbsolutePointersCount()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -72,7 +72,7 @@ u8 UefiPointerDevices::getAbsolutePointersCount()
 
 UefiAbsolutePointerProtocol* UefiPointerDevices::getAbsolutePointer(u8 index)
 {
-    UEFI_LT((" | index = %u", index));
+    // UEFI_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(index < sAbsolutePointersCount, "index is invalid", 0);
 
@@ -83,7 +83,7 @@ UefiAbsolutePointerProtocol* UefiPointerDevices::getAbsolutePointer(u8 index)
 
 u8 UefiPointerDevices::getSimplePointersCount()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -92,7 +92,7 @@ u8 UefiPointerDevices::getSimplePointersCount()
 
 UefiSimplePointerProtocol* UefiPointerDevices::getSimplePointer(u8 index)
 {
-    UEFI_LT((" | index = %u", index));
+    // UEFI_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(index < sSimplePointersCount, "index is invalid", 0);
 

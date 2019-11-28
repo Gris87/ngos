@@ -289,7 +289,7 @@ i64 strnlen(const char16 *str, i64 maxlen)
 
 i8 strcmp(const char8 *str1, const char8 *str2)
 {
-    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+    // COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(str1, "str1 is null", 0);
     COMMON_ASSERT(str2, "str2 is null", 0);
@@ -327,7 +327,7 @@ i8 strcmp(const char8 *str1, const char8 *str2)
 
 i8 strcmp(const char16 *str1, const char16 *str2)
 {
-    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+    // COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(str1, "str1 is null", 0);
     COMMON_ASSERT(str2, "str2 is null", 0);

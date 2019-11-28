@@ -62,7 +62,7 @@ List<T>::~List()
 template<typename T>
 NgosStatus List<T>::append(const T &value)
 {
-    COMMON_LT((" | value = ..."));
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
 
 
 
@@ -88,7 +88,7 @@ NgosStatus List<T>::append(const T &value)
 template<typename T>
 NgosStatus List<T>::prepend(const T &value)
 {
-    COMMON_LT((" | value = ..."));
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
 
 
 
@@ -321,7 +321,7 @@ NgosStatus List<T>::sort()
 template<typename T>
 ListElement<T>* List<T>::getHead() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -331,7 +331,7 @@ ListElement<T>* List<T>::getHead() const
 template<typename T>
 ListElement<T>* List<T>::getTail() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

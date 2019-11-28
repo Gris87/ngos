@@ -189,7 +189,7 @@ NgosStatus FPU::initForBootStrapProcessor()
 
 NgosStatus FPU::initForApplicationProcessor()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 

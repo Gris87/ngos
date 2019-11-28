@@ -671,7 +671,7 @@ NgosStatus UEFI::initSystemTable()
 
 UefiSmbios3ConfigurationTable* UEFI::getSmbios3Config()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -680,7 +680,7 @@ UefiSmbios3ConfigurationTable* UEFI::getSmbios3Config()
 
 UefiSmbiosConfigurationTable* UEFI::getSmbiosConfig()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

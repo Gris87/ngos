@@ -282,7 +282,7 @@ NgosStatus GUI::detectHoveredWidget()
 
 RootWidget* GUI::getRootWidget()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -291,7 +291,7 @@ RootWidget* GUI::getRootWidget()
 
 ScreenWidget* GUI::getMainScreenWidget()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -300,7 +300,7 @@ ScreenWidget* GUI::getMainScreenWidget()
 
 bool GUI::isUpdatesEnabled()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -359,7 +359,7 @@ NgosStatus GUI::setHoveredWidget(Widget *widget)
 
 Widget* GUI::getHoveredWidget()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -417,7 +417,7 @@ NgosStatus GUI::setPressedWidget(Widget *widget)
 
 Widget* GUI::getPressedWidget()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -476,7 +476,7 @@ NgosStatus GUI::setFocusedWidget(Widget *widget)
 
 Widget* GUI::getFocusedWidget()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

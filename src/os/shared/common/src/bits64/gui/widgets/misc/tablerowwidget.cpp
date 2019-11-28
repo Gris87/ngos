@@ -128,7 +128,7 @@ NgosStatus TableRowWidget::repaint()
 
 bool TableRowWidget::isAcceptMouseEvents()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -168,7 +168,7 @@ NgosStatus TableRowWidget::setState(WidgetState state)
 
 WidgetState TableRowWidget::getState() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -188,7 +188,7 @@ NgosStatus TableRowWidget::addCell(TableCellWidget *cell)
 
 TableCellWidget* TableRowWidget::getCell(u64 column) const
 {
-    COMMON_LT((" | column = %u", column));
+    // COMMON_LT((" | column = %u", column)); // Commented to avoid too frequent logs
 
 
 

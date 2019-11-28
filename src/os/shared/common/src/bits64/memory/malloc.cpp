@@ -13,7 +13,7 @@
 
 void* malloc(u64 size)
 {
-    COMMON_LT((" | size = %u", size));
+    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(size > 0, "size is zero", 0);
 
@@ -41,7 +41,7 @@ void* malloc(u64 size)
 
 NgosStatus free(void *address)
 {
-    COMMON_LT((" | address = 0x%p", address));
+    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(address, "address is null", NgosStatus::ASSERTION);
 
@@ -69,7 +69,7 @@ NgosStatus free(void *address)
 
 void* realloc(void* address, u64 oldSize, u64 newSize)
 {
-    COMMON_LT((" | address = 0x%p, oldSize = %u, newSize = %u", address, oldSize, newSize));
+    // COMMON_LT((" | address = 0x%p, oldSize = %u, newSize = %u", address, oldSize, newSize)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(address,           "address is null",    0);
     COMMON_ASSERT(oldSize > 0,       "oldSize is zero",    0);
@@ -94,7 +94,7 @@ void* realloc(void* address, u64 oldSize, u64 newSize)
 
 void* operator new(size_t size)
 {
-    COMMON_LT((" | size = %u", size));
+    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
 
 
 
@@ -103,7 +103,7 @@ void* operator new(size_t size)
 
 void operator delete(void *address)
 {
-    COMMON_LT((" | address = 0x%p", address));
+    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(address, "address is null");
 
@@ -114,7 +114,7 @@ void operator delete(void *address)
 
 void operator delete(void *address, size_t size)
 {
-    COMMON_LT((" | address = 0x%p, size = %u", address, size));
+    // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(address,  "address is null");
     COMMON_ASSERT(size > 0, "size is zero");
@@ -130,7 +130,7 @@ void operator delete(void *address, size_t size)
 
 void* operator new[](size_t size)
 {
-    COMMON_LT((" | size = %u", size));
+    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
 
 
 
@@ -139,7 +139,7 @@ void* operator new[](size_t size)
 
 void operator delete[](void *address)
 {
-    COMMON_LT((" | address = 0x%p", address));
+    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(address, "address is null");
 
@@ -150,7 +150,7 @@ void operator delete[](void *address)
 
 void operator delete[](void *address, size_t size)
 {
-    COMMON_LT((" | address = 0x%p, size = %u", address, size));
+    // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(address,  "address is null");
     COMMON_ASSERT(size > 0, "size is zero");

@@ -166,14 +166,14 @@ AES::AES()
     , mEncodeKey(nullptr)
     , mDecodeKey(nullptr)
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
 
     COMMON_TEST_ASSERT(CPU::hasFlag(X86Feature::AES));
 }
 
 AES::~AES()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 
@@ -190,7 +190,7 @@ AES::~AES()
 
 NgosStatus AES::setKey(u8 *key, u8 size)
 {
-    COMMON_LT((" | key = 0x%p, size = %u", key, size));
+    // COMMON_LT((" | key = 0x%p, size = %u", key, size)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(key,      "key is null",  NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
@@ -271,7 +271,7 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
 NgosStatus AES::releaseKey()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 
@@ -298,7 +298,7 @@ NgosStatus AES::releaseKey()
 
 NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
 {
-    COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize));
+    // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(in,                  "in is null",         NgosStatus::ASSERTION);
     COMMON_ASSERT(IS_ALIGNED(in, 16),  "in is invalid",      NgosStatus::ASSERTION);
@@ -367,7 +367,7 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
 {
-    COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize));
+    // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(in,                     "in is null",         NgosStatus::ASSERTION);
     COMMON_ASSERT(IS_ALIGNED(in, 16),     "in is invalid",      NgosStatus::ASSERTION);
@@ -412,7 +412,7 @@ NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 NgosStatus AES::expandKey128(u8 *key)
 {
-    COMMON_LT((" | key = 0x%p", key));
+    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(key, "key is null", NgosStatus::ASSERTION);
 
@@ -452,7 +452,7 @@ NgosStatus AES::expandKey128(u8 *key)
 
 NgosStatus AES::expandKey192(u8 *key)
 {
-    COMMON_LT((" | key = 0x%p", key));
+    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(key, "key is null", NgosStatus::ASSERTION);
 
@@ -510,7 +510,7 @@ NgosStatus AES::expandKey192(u8 *key)
 
 NgosStatus AES::expandKey256(u8 *key)
 {
-    COMMON_LT((" | key = 0x%p", key));
+    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(key, "key is null", NgosStatus::ASSERTION);
 
@@ -554,7 +554,7 @@ NgosStatus AES::expandKey256(u8 *key)
 
 NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 {
-    COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress));
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
@@ -595,7 +595,7 @@ NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 
 NgosStatus AES::encodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
 {
-    COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress));
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
@@ -638,7 +638,7 @@ NgosStatus AES::encodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
 
 NgosStatus AES::encodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
 {
-    COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress));
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
@@ -683,7 +683,7 @@ NgosStatus AES::encodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
 
 NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 {
-    COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress));
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
@@ -724,7 +724,7 @@ NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
 
 NgosStatus AES::decodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
 {
-    COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress));
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
@@ -767,7 +767,7 @@ NgosStatus AES::decodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
 
 NgosStatus AES::decodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
 {
-    COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress));
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);

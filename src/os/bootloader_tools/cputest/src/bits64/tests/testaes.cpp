@@ -22,7 +22,7 @@
 CPP_NO_OPTIMIZATION
 void UEFI_API testAesProcedure(void *buffer)
 {
-    UEFI_LT((" | buffer = 0x%p", buffer));
+    // UEFI_LT((" | buffer = 0x%p", buffer)); // Commented to avoid bad looking logs
 
 
 

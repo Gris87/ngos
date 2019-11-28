@@ -138,7 +138,7 @@ NgosStatus NinePatch::setPaddingBottom(u16 padding)
 
 const List<StretchRange>& NinePatch::getStretchRangesX() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -147,7 +147,7 @@ const List<StretchRange>& NinePatch::getStretchRangesX() const
 
 const List<StretchRange>& NinePatch::getStretchRangesY() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -156,7 +156,7 @@ const List<StretchRange>& NinePatch::getStretchRangesY() const
 
 u16 NinePatch::getPaddingLeft() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -165,7 +165,7 @@ u16 NinePatch::getPaddingLeft() const
 
 u16 NinePatch::getPaddingTop() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -174,7 +174,7 @@ u16 NinePatch::getPaddingTop() const
 
 u16 NinePatch::getPaddingRight() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -183,7 +183,7 @@ u16 NinePatch::getPaddingRight() const
 
 u16 NinePatch::getPaddingBottom() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

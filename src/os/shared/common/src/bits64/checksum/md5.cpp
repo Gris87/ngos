@@ -233,7 +233,7 @@ NgosStatus MD5::finish()
 
 Md5Hash MD5::getResult() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -246,7 +246,7 @@ Md5Hash MD5::getResult() const
 
 NgosStatus MD5::transform(u8 block[MD5_BLOCK_SIZE])
 {
-    COMMON_LT((" | block = 0x%p", block));
+    // COMMON_LT((" | block = 0x%p", block)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(block, "block is null", NgosStatus::ASSERTION);
 
@@ -348,7 +348,7 @@ NgosStatus MD5::transform(u8 block[MD5_BLOCK_SIZE])
 
 NgosStatus MD5::decode(u8 *input, u64 length, u32 *output)
 {
-    COMMON_LT((" | input = 0x%p, length = %u, output = 0x%p", input, length, output));
+    // COMMON_LT((" | input = 0x%p, length = %u, output = 0x%p", input, length, output)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(input,      "input is null",  NgosStatus::ASSERTION);
     COMMON_ASSERT(length > 0, "length is zero", NgosStatus::ASSERTION);
@@ -373,7 +373,7 @@ NgosStatus MD5::decode(u8 *input, u64 length, u32 *output)
 
 NgosStatus MD5::encode(u32 *input, u64 length, u8 *output)
 {
-    COMMON_LT((" | input = 0x%p, length = %u, output = 0x%p", input, length, output));
+    // COMMON_LT((" | input = 0x%p, length = %u, output = 0x%p", input, length, output)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(input,      "input is null",  NgosStatus::ASSERTION);
     COMMON_ASSERT(length > 0, "length is zero", NgosStatus::ASSERTION);

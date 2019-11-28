@@ -39,6 +39,7 @@ Code verifier:
 - Verify for asserts alignment
 - Upgrade verifier for trace arguments (Check format with the types)
 - Verify for `;;` or `\n;`
+- Verify for `// `
 
 
 

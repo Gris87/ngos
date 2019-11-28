@@ -637,7 +637,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
 i64 sprintf(char8 *buffer, const char8 *format, ...)
 {
-    COMMON_LT((" | buffer = 0x%p, format = 0x%p", buffer, format));
+    // COMMON_LT((" | buffer = 0x%p, format = 0x%p", buffer, format)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(buffer, "buffer is null", 0);
     COMMON_ASSERT(format, "format is null", 0);

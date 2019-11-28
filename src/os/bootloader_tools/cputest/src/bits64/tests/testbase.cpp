@@ -51,7 +51,7 @@ NgosStatus TestBase::reset()
 
 const char8* TestBase::getName() const
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -60,7 +60,7 @@ const char8* TestBase::getName() const
 
 NgosStatus TestBase::setScore(u64 score)
 {
-    UEFI_LT((" | score = %u", score));
+    // UEFI_LT((" | score = %u", score)); // Commented to avoid bad looking logs
 
 
 
@@ -74,7 +74,7 @@ NgosStatus TestBase::setScore(u64 score)
 
 u64 TestBase::getScore() const
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -83,7 +83,7 @@ u64 TestBase::getScore() const
 
 uefi_ap_procedure TestBase::getProcedure() const
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -92,7 +92,7 @@ uefi_ap_procedure TestBase::getProcedure() const
 
 bool TestBase::isCompleted() const
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 

@@ -55,7 +55,7 @@ ListElement<T>::~ListElement()
 template <typename T>
 const T& ListElement<T>::getData() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -65,7 +65,7 @@ const T& ListElement<T>::getData() const
 template <typename T>
 NgosStatus ListElement<T>::setData(const T &data)
 {
-    COMMON_LT((" | data = ..."));
+    // COMMON_LT((" | data = ...")); // Commented to avoid too frequent logs
 
 
 
@@ -79,7 +79,7 @@ NgosStatus ListElement<T>::setData(const T &data)
 template <typename T>
 ListElement<T>* ListElement<T>::getNext() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -89,7 +89,7 @@ ListElement<T>* ListElement<T>::getNext() const
 template <typename T>
 NgosStatus ListElement<T>::setNext(ListElement<T> *next)
 {
-    COMMON_LT((" | next = 0x%p", next));
+    // COMMON_LT((" | next = 0x%p", next)); // Commented to avoid too frequent logs
 
 
 
@@ -103,7 +103,7 @@ NgosStatus ListElement<T>::setNext(ListElement<T> *next)
 template <typename T>
 ListElement<T>* ListElement<T>::getPrevious() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -113,7 +113,7 @@ ListElement<T>* ListElement<T>::getPrevious() const
 template <typename T>
 NgosStatus ListElement<T>::setPrevious(ListElement<T> *previous)
 {
-    COMMON_LT((" | previous = 0x%p", previous));
+    // COMMON_LT((" | previous = 0x%p", previous)); // Commented to avoid too frequent logs
 
 
 

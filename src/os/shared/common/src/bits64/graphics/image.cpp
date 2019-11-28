@@ -59,7 +59,7 @@ Image::~Image()
 
 NgosStatus Image::clearBuffer()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -142,7 +142,7 @@ NgosStatus Image::setOpaque(bool opaque)
 
 NinePatch* Image::getNinePatch() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -151,7 +151,7 @@ NinePatch* Image::getNinePatch() const
 
 u16 Image::getWidth() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -160,7 +160,7 @@ u16 Image::getWidth() const
 
 u16 Image::getHeight() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -169,7 +169,7 @@ u16 Image::getHeight() const
 
 u8 Image::getBytesPerPixel() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -178,7 +178,7 @@ u8 Image::getBytesPerPixel() const
 
 bool Image::isRgba() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -187,7 +187,7 @@ bool Image::isRgba() const
 
 bool Image::isOpaque() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -196,7 +196,7 @@ bool Image::isOpaque() const
 
 u16 Image::getStride() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -205,7 +205,7 @@ u16 Image::getStride() const
 
 u64 Image::getBufferSize() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -214,7 +214,7 @@ u64 Image::getBufferSize() const
 
 u8* Image::getBuffer() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -223,7 +223,7 @@ u8* Image::getBuffer() const
 
 RgbPixel* Image::getRgbBuffer() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(!isRgba(), "Image is RGBA", 0);
 
@@ -234,7 +234,7 @@ RgbPixel* Image::getRgbBuffer() const
 
 RgbaPixel* Image::getRgbaBuffer() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(isRgba(), "Image is RGB", 0);
 

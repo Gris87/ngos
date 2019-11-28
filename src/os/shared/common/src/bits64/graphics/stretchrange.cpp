@@ -21,7 +21,7 @@ StretchRange::~StretchRange()
 
 u16 StretchRange::getSize() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -30,7 +30,7 @@ u16 StretchRange::getSize() const
 
 u16 StretchRange::getFrom() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -39,7 +39,7 @@ u16 StretchRange::getFrom() const
 
 u16 StretchRange::getTo() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

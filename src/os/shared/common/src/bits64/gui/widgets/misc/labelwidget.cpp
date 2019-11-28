@@ -291,7 +291,7 @@ NgosStatus LabelWidget::setText(const char8 *text)
 
 const char8* LabelWidget::getText() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -327,7 +327,7 @@ NgosStatus LabelWidget::setColor(const RgbaPixel &color)
 
 const RgbaPixel& LabelWidget::getColor() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

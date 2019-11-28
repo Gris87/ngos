@@ -545,7 +545,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
 
 CpuVendor CPU::getVendor()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -554,7 +554,7 @@ CpuVendor CPU::getVendor()
 
 char8* CPU::getModelName()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -563,7 +563,7 @@ char8* CPU::getModelName()
 
 CpuFamily CPU::getFamily()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -572,7 +572,7 @@ CpuFamily CPU::getFamily()
 
 u8 CPU::getModel()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -581,7 +581,7 @@ u8 CPU::getModel()
 
 u8 CPU::getStepping()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -590,7 +590,7 @@ u8 CPU::getStepping()
 
 u32 CPU::getMicrocodeRevision()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -599,7 +599,7 @@ u32 CPU::getMicrocodeRevision()
 
 u32 CPU::getNumberOfCores()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -608,7 +608,7 @@ u32 CPU::getNumberOfCores()
 
 u32 CPU::getNumberOfThreads()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -647,7 +647,7 @@ NgosStatus CPU::clearFlag(X86Feature flag)
 
 bool CPU::hasFlag(X86Feature flag)
 {
-    COMMON_LT((" | flag = 0x%04X", flag));
+    // COMMON_LT((" | flag = 0x%04X", flag)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(((u64)flag >> 5) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", false); // ">> 5" == "/ 32"
 
@@ -699,7 +699,7 @@ bool CPU::hasBug(X86Bug bug)
 
 bool CPU::isCpuIdLevelSupported(u32 cpuidLevel)
 {
-    COMMON_LT((" | cpuidLevel = 0x%08X", cpuidLevel));
+    // COMMON_LT((" | cpuidLevel = 0x%08X", cpuidLevel)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(cpuidLevel >= CPUID_LEVEL_LOWER_BOUND && cpuidLevel <= CPUID_LEVEL_UPPER_BOUND, "cpuidLevel is invalid", false);
 

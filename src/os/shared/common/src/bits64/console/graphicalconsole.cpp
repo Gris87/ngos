@@ -38,7 +38,7 @@ u16           *GraphicalConsole::sGlyphOffsets;
 
 NgosStatus GraphicalConsole::init()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

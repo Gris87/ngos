@@ -360,7 +360,7 @@ NgosStatus Button::onKeyboardEvent(const UefiInputKey &key)
 
 bool Button::isAcceptMouseEvents()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -445,7 +445,7 @@ NgosStatus Button::setState(WidgetState state)
 
 WidgetState Button::getState() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -467,7 +467,7 @@ NgosStatus Button::setKeyboardEventHandler(keyboard_event_handler handler)
 
 keyboard_event_handler Button::getKeyboardEventHandler() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -489,7 +489,7 @@ NgosStatus Button::setPressEventHandler(press_event_handler handler)
 
 press_event_handler Button::getPressEventHandler() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

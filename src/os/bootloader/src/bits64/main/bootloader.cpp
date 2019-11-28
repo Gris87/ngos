@@ -537,7 +537,7 @@ NgosStatus Bootloader::startOs(u64 index)
 
 const ArrayList<OsInfo>& Bootloader::getOSes()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 

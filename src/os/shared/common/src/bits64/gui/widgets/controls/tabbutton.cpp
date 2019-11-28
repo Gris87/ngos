@@ -489,7 +489,7 @@ NgosStatus TabButton::onKeyboardEvent(const UefiInputKey &key)
 
 bool TabButton::isAcceptMouseEvents()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -528,7 +528,7 @@ NgosStatus TabButton::setState(WidgetState state)
 
 WidgetState TabButton::getState() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -567,7 +567,7 @@ NgosStatus TabButton::setSelected(bool selected)
 
 bool TabButton::isSelected() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -589,7 +589,7 @@ NgosStatus TabButton::setKeyboardEventHandler(keyboard_event_handler handler)
 
 keyboard_event_handler TabButton::getKeyboardEventHandler() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -611,7 +611,7 @@ NgosStatus TabButton::setPressEventHandler(press_event_handler handler)
 
 press_event_handler TabButton::getPressEventHandler() const
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 

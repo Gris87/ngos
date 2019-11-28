@@ -46,7 +46,7 @@ NgosStatus CpuTest::init()
 
 const CacheInfo& CpuTest::getLevel1DataCache()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -55,7 +55,7 @@ const CacheInfo& CpuTest::getLevel1DataCache()
 
 const CacheInfo& CpuTest::getLevel1InstructionCache()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -64,7 +64,7 @@ const CacheInfo& CpuTest::getLevel1InstructionCache()
 
 const CacheInfo& CpuTest::getLevel2Cache()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -73,7 +73,7 @@ const CacheInfo& CpuTest::getLevel2Cache()
 
 const CacheInfo& CpuTest::getLevel3Cache()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 
@@ -82,7 +82,7 @@ const CacheInfo& CpuTest::getLevel3Cache()
 
 u64 CpuTest::getCpuSpeed()
 {
-    UEFI_LT((""));
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
 
 
 

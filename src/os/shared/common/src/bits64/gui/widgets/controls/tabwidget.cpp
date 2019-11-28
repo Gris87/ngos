@@ -296,7 +296,7 @@ NgosStatus TabWidget::setCurrentPage(i64 page)
 
 i64 TabWidget::getCurrentPage()
 {
-    COMMON_LT((""));
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
