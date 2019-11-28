@@ -271,6 +271,11 @@ NgosStatus MemoryTestGUI::processKeyboardEvent()
     if (status == NgosStatus::NO_EFFECT)
     {
         status = GUI::getFocusedWidget()->onKeyboardEvent(key);
+
+        if (status == NgosStatus::NO_EFFECT)
+        {
+            status = GUI::processKeyboardEvent(key);
+        }
     }
 
     UEFI_TEST_ASSERT(status == NgosStatus::OK

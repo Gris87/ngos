@@ -21,6 +21,7 @@ public:
     static NgosStatus lockUpdates(); // TEST: NO
     static NgosStatus unlockUpdates(); // TEST: NO
 
+    static NgosStatus processKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus processSimplePointerState(UefiSimplePointerState *state); // TEST: NO
     static NgosStatus processAbsolutePointerState(UefiAbsolutePointerProtocol *pointer, UefiAbsolutePointerState *state); // TEST: NO
 

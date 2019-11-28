@@ -7,6 +7,10 @@
 
 
 
+#define MOUSE_BY_KEYBOARD_SPEED 20
+
+
+
 RootWidget   *GUI::sRootWidget;
 ScreenWidget *GUI::sMainScreenWidget;
 CursorWidget *GUI::sCursorWidget;
@@ -81,6 +85,138 @@ NgosStatus GUI::unlockUpdates()
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus GUI::processKeyboardEvent(const UefiInputKey &key)
+{
+    COMMON_LT((" | key = ..."));
+
+
+
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
+    switch (key.unicodeChar)
+    {
+        case 'w':
+        case 'W':
+        {
+            UefiSimplePointerState state;
+
+            state.relativeMovementX = 0;
+            state.relativeMovementY = -MOUSE_BY_KEYBOARD_SPEED;
+            state.relativeMovementZ = 0;
+            state.leftButton        = false;
+            state.rightButton       = false;
+
+
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case 's':
+        case 'S':
+        {
+            UefiSimplePointerState state;
+
+            state.relativeMovementX = 0;
+            state.relativeMovementY = MOUSE_BY_KEYBOARD_SPEED;
+            state.relativeMovementZ = 0;
+            state.leftButton        = false;
+            state.rightButton       = false;
+
+
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case 'a':
+        case 'A':
+        {
+            UefiSimplePointerState state;
+
+            state.relativeMovementX = -MOUSE_BY_KEYBOARD_SPEED;
+            state.relativeMovementY = 0;
+            state.relativeMovementZ = 0;
+            state.leftButton        = false;
+            state.rightButton       = false;
+
+
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case 'd':
+        case 'D':
+        {
+            UefiSimplePointerState state;
+
+            state.relativeMovementX = MOUSE_BY_KEYBOARD_SPEED;
+            state.relativeMovementY = 0;
+            state.relativeMovementZ = 0;
+            state.leftButton        = false;
+            state.rightButton       = false;
+
+
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case KEY_SPACE:
+        {
+            UefiSimplePointerState state;
+
+            state.relativeMovementX = 0;
+            state.relativeMovementY = 0;
+            state.relativeMovementZ = 0;
+            state.leftButton        = true;
+            state.rightButton       = false;
+
+
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            state.leftButton = false;
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+#endif
+
+
+
+    return NgosStatus::NO_EFFECT;
 }
 
 NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)

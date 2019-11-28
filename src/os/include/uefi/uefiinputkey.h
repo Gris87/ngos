@@ -11,6 +11,7 @@
 
 #define KEY_TAB   0x0009
 #define KEY_ENTER 0x000D
+#define KEY_SPACE 0x0020
 
 
 
