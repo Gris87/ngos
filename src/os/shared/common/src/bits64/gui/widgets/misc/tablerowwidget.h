@@ -21,6 +21,8 @@ public:
 
     bool isAcceptMouseEvents() override; // TEST: NO
 
+    Widget* getOwnerWidget() override; // TEST: NO
+
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 

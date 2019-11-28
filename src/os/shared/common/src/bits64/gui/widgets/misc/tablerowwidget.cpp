@@ -135,6 +135,21 @@ bool TableRowWidget::isAcceptMouseEvents()
     return true;
 }
 
+Widget* TableRowWidget::getOwnerWidget()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    COMMON_TEST_ASSERT(mParent,                   nullptr);
+    COMMON_TEST_ASSERT(mParent->mParent,          nullptr);
+    COMMON_TEST_ASSERT(mParent->mParent->mParent, nullptr);
+
+
+
+    return mParent->mParent->mParent;
+}
+
 NgosStatus TableRowWidget::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));

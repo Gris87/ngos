@@ -382,6 +382,15 @@ bool Widget::isFocused()
     return GUI::getFocusedWidget() == this;
 }
 
+Widget* Widget::getOwnerWidget()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return this;
+}
+
 NgosStatus Widget::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));

@@ -408,8 +408,14 @@ NgosStatus GUI::detectHoveredWidget()
 
 
 
-    // TODO: Fix for TableWidget
-    COMMON_ASSERT_EXECUTION(setHoveredWidget(sRootWidget->detectHoveredWidget(sCursorWidget->getPositionX(), sCursorWidget->getPositionY())), NgosStatus::ASSERTION);
+    Widget *hoveredWidget = sRootWidget->detectHoveredWidget(sCursorWidget->getPositionX(), sCursorWidget->getPositionY());
+
+    if (hoveredWidget)
+    {
+        hoveredWidget = hoveredWidget->getOwnerWidget();
+    }
+
+    COMMON_ASSERT_EXECUTION(setHoveredWidget(hoveredWidget), NgosStatus::ASSERTION);
 
 
 
