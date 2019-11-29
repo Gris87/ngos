@@ -38,7 +38,6 @@ private:
     static NgosStatus putTestScore(); // TEST: NO
     static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO
     static NgosStatus addSummaryFeature(X86Feature flag, u64 score); // TEST: NO
-    static NgosStatus addSummaryTotal(); // TEST: NO
 
     static NgosStatus focusTabFirstWidget(); // TEST: NO
 
@@ -75,7 +74,9 @@ private:
     static Button                 *sStartButton;
     static Image                  *sStartImage;
     static Image                  *sStopImage;
+    static LabelWidget            *sTestTotalLabelWidget;
     static TableWidget            *sTestTableWidget;
+    static LabelWidget            *sSummaryTotalLabelWidget;
     static TableWidget            *sSummaryTableWidget;
     static u64                     sSummaryTotal;
     static UefiMpServicesProtocol *sMpServices;

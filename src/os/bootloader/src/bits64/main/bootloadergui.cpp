@@ -18,10 +18,10 @@
 
 
 
-#define INFO_LABEL_POSITION_X_PERCENT 10
-#define INFO_LABEL_POSITION_Y_PERCENT 0
-#define INFO_LABEL_WIDTH_PERCENT      80
-#define INFO_LABEL_HEIGHT_PERCENT     2
+#define INFO_TEXT_POSITION_X_PERCENT 10
+#define INFO_TEXT_POSITION_Y_PERCENT 0
+#define INFO_TEXT_WIDTH_PERCENT      80
+#define INFO_TEXT_HEIGHT_PERCENT     2
 
 #define REBOOT_BUTTON_POSITION_X_PERCENT 90
 #define REBOOT_BUTTON_POSITION_Y_PERCENT 0
@@ -37,10 +37,10 @@
 #define LEFT_BUTTON_POSITION_X_PERCENT  2
 #define RIGHT_BUTTON_POSITION_X_PERCENT 92
 
-#define TIMEOUT_LABEL_POSITION_X_PERCENT 10
-#define TIMEOUT_LABEL_POSITION_Y_PERCENT 46
-#define TIMEOUT_LABEL_WIDTH_PERCENT      80
-#define TIMEOUT_LABEL_HEIGHT_PERCENT     2
+#define TIMEOUT_TEXT_POSITION_X_PERCENT 10
+#define TIMEOUT_TEXT_POSITION_Y_PERCENT 46
+#define TIMEOUT_TEXT_WIDTH_PERCENT      80
+#define TIMEOUT_TEXT_HEIGHT_PERCENT     2
 
 #define CPU_TEST_BUTTON_POSITION_X_PERCENT 10
 #define CPU_TEST_BUTTON_POSITION_Y_PERCENT 48
@@ -192,8 +192,8 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     LabelWidget *infoLabel = new LabelWidget("Use arrow keys and Tab to select, Enter to boot", rootWidget);
 
-    UEFI_ASSERT_EXECUTION(infoLabel->setPosition(screenWidth * INFO_LABEL_POSITION_X_PERCENT / 100, screenHeight * INFO_LABEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(infoLabel->setSize(screenWidth     * INFO_LABEL_WIDTH_PERCENT      / 100, screenHeight * INFO_LABEL_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(infoLabel->setPosition(screenWidth * INFO_TEXT_POSITION_X_PERCENT / 100, screenHeight * INFO_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(infoLabel->setSize(screenWidth     * INFO_TEXT_WIDTH_PERCENT      / 100, screenHeight * INFO_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 
@@ -497,8 +497,8 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
         sTimeoutLabelWidget = new LabelWidget(timeoutText, rootWidget);
 
-        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(screenWidth * TIMEOUT_LABEL_POSITION_X_PERCENT / 100, screenHeight * TIMEOUT_LABEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(screenWidth     * TIMEOUT_LABEL_WIDTH_PERCENT      / 100, screenHeight * TIMEOUT_LABEL_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(screenWidth * TIMEOUT_TEXT_POSITION_X_PERCENT / 100, screenHeight * TIMEOUT_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(screenWidth     * TIMEOUT_TEXT_WIDTH_PERCENT      / 100, screenHeight * TIMEOUT_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     }
 
 

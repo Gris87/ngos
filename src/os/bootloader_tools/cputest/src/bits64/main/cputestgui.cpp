@@ -129,6 +129,11 @@
 #define START_BUTTON_WIDTH_PERCENT      20
 #define START_BUTTON_HEIGHT_PERCENT     10
 
+#define TEST_TOTAL_TEXT_POSITION_X_PERCENT 80
+#define TEST_TOTAL_TEXT_POSITION_Y_PERCENT 1
+#define TEST_TOTAL_TEXT_WIDTH_PERCENT      19
+#define TEST_TOTAL_TEXT_HEIGHT_PERCENT     8
+
 #define TEST_TABLEWIDGET_POSITION_X_PERCENT 1
 #define TEST_TABLEWIDGET_POSITION_Y_PERCENT 10
 #define TEST_TABLEWIDGET_WIDTH_PERCENT      98
@@ -138,10 +143,15 @@
 #define TEST_COLUMN_NAME_WIDTH_PERCENT  80
 #define TEST_COLUMN_SCORE_WIDTH_PERCENT 20
 
+#define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
+#define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
+#define SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      19
+#define SUMMARY_TOTAL_TEXT_HEIGHT_PERCENT     8
+
 #define SUMMARY_TABLEWIDGET_POSITION_X_PERCENT 1
-#define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 1
+#define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 10
 #define SUMMARY_TABLEWIDGET_WIDTH_PERCENT      98
-#define SUMMARY_TABLEWIDGET_HEIGHT_PERCENT     98
+#define SUMMARY_TABLEWIDGET_HEIGHT_PERCENT     89
 #define SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT 7
 
 #define SUMMARY_COLUMN_NAME_WIDTH_PERCENT  80
@@ -175,7 +185,9 @@ TabButton              *CpuTestGUI::sSummaryTabButton;
 Button                 *CpuTestGUI::sStartButton;
 Image                  *CpuTestGUI::sStartImage;
 Image                  *CpuTestGUI::sStopImage;
+LabelWidget            *CpuTestGUI::sTestTotalLabelWidget;
 TableWidget            *CpuTestGUI::sTestTableWidget;
+LabelWidget            *CpuTestGUI::sSummaryTotalLabelWidget;
 TableWidget            *CpuTestGUI::sSummaryTableWidget;
 u64                     CpuTestGUI::sSummaryTotal;
 UefiMpServicesProtocol *CpuTestGUI::sMpServices;
@@ -741,6 +753,23 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    char8 *testTotalText = (char8 *)malloc(14);
+
+    i64 testTotalTextLength = sprintf(testTotalText, "Total: 0");
+    AVOID_UNUSED(testTotalTextLength);
+
+    UEFI_TEST_ASSERT(testTotalTextLength < 14, NgosStatus::ASSERTION);
+
+
+
+    sTestTotalLabelWidget = new LabelWidget(testTotalText, testTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setVisible(false),                                                                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setPosition(tabPageWidth * TEST_TOTAL_TEXT_POSITION_X_PERCENT / 100, tabPageHeight * TEST_TOTAL_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setSize(tabPageWidth     * TEST_TOTAL_TEXT_WIDTH_PERCENT      / 100, tabPageHeight * TEST_TOTAL_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
     u64 testTableWidth  = tabPageWidth  * TEST_TABLEWIDGET_WIDTH_PERCENT  / 100;
     u64 testTableHeight = tabPageHeight * TEST_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
@@ -874,7 +903,19 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(addSummaryTotal(), NgosStatus::ASSERTION);
+    char8 *summaryTotalText = (char8 *)malloc(14);
+
+    i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal);
+    AVOID_UNUSED(summaryTotalTextLength);
+
+    UEFI_TEST_ASSERT(summaryTotalTextLength < 14, NgosStatus::ASSERTION);
+
+
+
+    sSummaryTotalLabelWidget = new LabelWidget(summaryTotalText, summaryTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sSummaryTotalLabelWidget->setPosition(tabPageWidth * SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTotalLabelWidget->setSize(tabPageWidth     * SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      / 100, tabPageHeight * SUMMARY_TOTAL_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 
@@ -1198,21 +1239,6 @@ NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, u64 score)
 
         UEFI_ASSERT_EXECUTION(addSummaryEntry(flagTextFull, score), NgosStatus::ASSERTION);
     }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus CpuTestGUI::addSummaryTotal()
-{
-    UEFI_LT((""));
-
-
-
-    UEFI_ASSERT_EXECUTION(addSummaryEntry("Total", sSummaryTotal), NgosStatus::ASSERTION);
-
-    sSummaryTotal >>= 1;
 
 
 
@@ -1597,6 +1623,60 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
         UEFI_ASSERT_EXECUTION(sStartButton->setText("Start"),             NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        if (!sTerminated)
+        {
+            u64 testTotal = 0;
+
+            for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
+            {
+                testTotal += cpuTests[i]->getScore();
+            }
+
+
+
+            char8 *testTotalText = (char8 *)sTestTotalLabelWidget->getText();
+
+            i64 testTotalTextLength = sprintf(testTotalText, "Total: %u", testTotal);
+            AVOID_UNUSED(testTotalTextLength);
+
+            UEFI_TEST_ASSERT(testTotalTextLength < 14, NgosStatus::ASSERTION);
+
+
+
+            UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setText(testTotalText), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setVisible(true),       NgosStatus::ASSERTION);
+
+
+
+            char8 *summaryTotalText = (char8 *)sSummaryTotalLabelWidget->getText();
+
+            i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal + testTotal);
+            AVOID_UNUSED(summaryTotalTextLength);
+
+            UEFI_TEST_ASSERT(summaryTotalTextLength < 14, NgosStatus::ASSERTION);
+
+
+
+            UEFI_ASSERT_EXECUTION(sSummaryTotalLabelWidget->setText(summaryTotalText), NgosStatus::ASSERTION);
+
+
+
+            LabelWidget *previousTestLabelWidget = (LabelWidget *)sSummaryTableWidget->getCellWidget(0, COLUMN_SCORE);
+
+            char8 *scoreString = (char8 *)previousTestLabelWidget->getText();
+
+            i64 scoreLength = sprintf(scoreString, "%u", testTotal);
+            AVOID_UNUSED(scoreLength);
+
+            UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
+
+
+
+            UEFI_ASSERT_EXECUTION(previousTestLabelWidget->setText(scoreString), NgosStatus::ASSERTION);
+        }
     }
 
 
