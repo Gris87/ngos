@@ -93,6 +93,10 @@ NgosStatus GUI::processKeyboardEvent(const UefiInputKey &key)
 
 
 
+    AVOID_UNUSED(key);
+
+
+
 #if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     switch (key.unicodeChar)
     {

@@ -142,11 +142,11 @@ Widget* TableRowWidget::getOwnerWidget()
 
 
 
-    COMMON_TEST_ASSERT(mParent,                   nullptr);
-    COMMON_TEST_ASSERT(mParent->mParent,          nullptr);
-    COMMON_TEST_ASSERT(mParent->mParent->mParent, nullptr);
+    COMMON_TEST_ASSERT(getParent(),                           nullptr);
+    COMMON_TEST_ASSERT(getParent()->getParent(),              nullptr);
+    COMMON_TEST_ASSERT(getParent()->getParent()->getParent(), nullptr);
 
-    TableWidget *tableWidget = (TableWidget *)mParent->mParent->mParent;
+    TableWidget *tableWidget = (TableWidget *)getParent()->getParent()->getParent();
 
 
 

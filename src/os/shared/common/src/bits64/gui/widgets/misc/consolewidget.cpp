@@ -42,11 +42,11 @@ NgosStatus ConsoleWidget::update(i64 positionX, i64 positionY, u64 width, u64 he
 
 
 
-    COMMON_TEST_ASSERT(mParent, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(getParent(), NgosStatus::ASSERTION);
 
 
 
-    return mParent->update(mPositionX + positionX, mPositionY + positionY, width, height);
+    return getParent()->update(mPositionX + positionX, mPositionY + positionY, width, height);
 }
 
 NgosStatus ConsoleWidget::invalidate()
