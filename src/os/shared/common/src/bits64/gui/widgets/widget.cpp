@@ -265,6 +265,8 @@ Widget* Widget::detectHoveredWidget(i64 positionX, i64 positionY)
         positionX < (i64)mWidth
         &&
         positionY < (i64)mHeight
+        &&
+        isVisible()
        )
     {
         ListElement<Widget *> *element = mChildren.getTail();
