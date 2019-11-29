@@ -1,6 +1,7 @@
 #include "tablerowwidget.h"
 
 #include <common/src/bits64/graphics/graphics.h>
+#include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 
@@ -145,9 +146,25 @@ Widget* TableRowWidget::getOwnerWidget()
     COMMON_TEST_ASSERT(mParent->mParent,          nullptr);
     COMMON_TEST_ASSERT(mParent->mParent->mParent, nullptr);
 
+    TableWidget *tableWidget = (TableWidget *)mParent->mParent->mParent;
 
 
-    return mParent->mParent->mParent;
+
+    const ArrayList<TableRowWidget *> &rows = tableWidget->getRows();
+
+    for (i64 i = 0; i < (i64)rows.getSize(); ++i)
+    {
+        if (rows.at(i) == this)
+        {
+            COMMON_ASSERT_EXECUTION(tableWidget->setHighlightedRow(i), nullptr);
+
+            break;
+        }
+    }
+
+
+
+    return tableWidget;
 }
 
 NgosStatus TableRowWidget::setState(WidgetState state)

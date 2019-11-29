@@ -9,6 +9,10 @@
 
 
 
+#define INVALID_ROW 0xFFFFFFFFFFFFFFFF
+
+
+
 TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *parent)
     : Widget(parent)
     , mBackgroundImage(backgroundImage)
@@ -22,6 +26,7 @@ TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *par
     , mRowsWrapperWidget(nullptr)
     , mRows()
     , mSelectedRow(0)
+    , mHighlightedRow(INVALID_ROW)
     , mKeyboardEventHandler(nullptr)
 {
     COMMON_LT((" | backgroundImage = 0x%p, headerImage = 0x%p, parent = 0x%p", backgroundImage, headerImage, parent));
@@ -315,73 +320,152 @@ NgosStatus TableWidget::setState(WidgetState state)
 
         TableRowWidget *selectedRow = mRows.at(mSelectedRow);
 
-        if (mState == WidgetState::FOCUSED)
+        switch (mState)
         {
-            switch (selectedRow->getState())
+            case WidgetState::NORMAL:
             {
-                case WidgetState::INACTIVE:         COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::FOCUSED),         NgosStatus::ASSERTION); break;
-                case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::FOCUSED_HOVERED), NgosStatus::ASSERTION); break;
+                COMMON_ASSERT_EXECUTION(setHighlightedRow(INVALID_ROW), NgosStatus::ASSERTION);
 
-                case WidgetState::PRESSED:
+                switch (selectedRow->getState())
                 {
-                    // Nothing
+                    case WidgetState::FOCUSED: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::INACTIVE), NgosStatus::ASSERTION); break;
+
+                    case WidgetState::INACTIVE:
+                    {
+                        // Nothing
+                    }
+                    break;
+
+                    case WidgetState::NONE:
+                    case WidgetState::NORMAL:
+                    case WidgetState::HOVERED:
+                    case WidgetState::PRESSED:
+                    case WidgetState::FOCUSED_HOVERED:
+                    case WidgetState::INACTIVE_HOVERED:
+                    {
+                        COMMON_LF(("Unexpected widget state: %u (%s) %d", selectedRow->getState(), widgetStateToString(selectedRow->getState()), __LINE__));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
+
+                    default:
+                    {
+                        COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
                 }
-                break;
-
-                case WidgetState::NONE:
-                case WidgetState::NORMAL:
-                case WidgetState::HOVERED:
-                case WidgetState::FOCUSED:
-                case WidgetState::FOCUSED_HOVERED:
-                {
-                    COMMON_LF(("Unexpected widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
-
-                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
-                }
-                break;
-
-                default:
-                {
-                    COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
-
-                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
-                }
-                break;
             }
-        }
-        else
-        {
-            switch (selectedRow->getState())
+            break;
+
+            case WidgetState::FOCUSED:
             {
-                case WidgetState::FOCUSED:         COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::INACTIVE),         NgosStatus::ASSERTION); break;
-                case WidgetState::FOCUSED_HOVERED: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
+                COMMON_ASSERT_EXECUTION(setHighlightedRow(INVALID_ROW), NgosStatus::ASSERTION);
 
-                case WidgetState::PRESSED:
+                switch (selectedRow->getState())
                 {
-                    // Nothing
+                    case WidgetState::INACTIVE: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::FOCUSED), NgosStatus::ASSERTION); break;
+
+                    case WidgetState::FOCUSED:
+                    {
+                        // Nothing
+                    }
+                    break;
+
+                    case WidgetState::NONE:
+                    case WidgetState::NORMAL:
+                    case WidgetState::HOVERED:
+                    case WidgetState::PRESSED:
+                    case WidgetState::FOCUSED_HOVERED:
+                    case WidgetState::INACTIVE_HOVERED:
+                    {
+                        COMMON_LF(("Unexpected widget state: %u (%s) %d", selectedRow->getState(), widgetStateToString(selectedRow->getState()), __LINE__));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
+
+                    default:
+                    {
+                        COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
                 }
-                break;
-
-                case WidgetState::NONE:
-                case WidgetState::NORMAL:
-                case WidgetState::HOVERED:
-                case WidgetState::INACTIVE:
-                case WidgetState::INACTIVE_HOVERED:
-                {
-                    COMMON_LF(("Unexpected widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
-
-                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
-                }
-                break;
-
-                default:
-                {
-                    COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
-
-                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
-                }
-                break;
             }
+            break;
+
+            case WidgetState::FOCUSED_HOVERED:
+            {
+                switch (selectedRow->getState())
+                {
+                    case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::FOCUSED_HOVERED), NgosStatus::ASSERTION); break;
+
+                    case WidgetState::FOCUSED:
+                    case WidgetState::FOCUSED_HOVERED:
+                    {
+                        // Nothing
+                    }
+                    break;
+
+                    case WidgetState::NONE:
+                    case WidgetState::NORMAL:
+                    case WidgetState::HOVERED:
+                    case WidgetState::PRESSED:
+                    case WidgetState::INACTIVE:
+                    {
+                        COMMON_LF(("Unexpected widget state: %u (%s) %d", selectedRow->getState(), widgetStateToString(selectedRow->getState()), __LINE__));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
+
+                    default:
+                    {
+                        COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
+                }
+            }
+            break;
+
+            case WidgetState::PRESSED:
+            {
+                if (mHighlightedRow != INVALID_ROW)
+                {
+                    COMMON_ASSERT_EXECUTION(setSelectedRow(mHighlightedRow), NgosStatus::ASSERTION);
+                }
+            }
+            break;
+
+            case WidgetState::HOVERED:
+            {
+                // Nothing
+            }
+            break;
+
+            case WidgetState::NONE:
+            case WidgetState::INACTIVE:
+            case WidgetState::INACTIVE_HOVERED:
+            {
+                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
         }
     }
 
@@ -633,6 +717,15 @@ u64 TableWidget::getRowCount() const
     return mRows.getSize();
 }
 
+const ArrayList<TableRowWidget *>& TableWidget::getRows() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mRows;
+}
+
 NgosStatus TableWidget::setCellWidget(u64 row, u64 column, Widget *widget)
 {
     COMMON_LT((" | row = %u, column = %u, widget = 0x%p", row, column, widget));
@@ -696,15 +789,10 @@ NgosStatus TableWidget::setSelectedRow(u64 row)
             case WidgetState::INACTIVE:         COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
             case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::HOVERED), NgosStatus::ASSERTION); break;
 
-            case WidgetState::PRESSED:
-            {
-                // Nothing
-            }
-            break;
-
             case WidgetState::NONE:
             case WidgetState::NORMAL:
             case WidgetState::HOVERED:
+            case WidgetState::PRESSED:
             {
                 COMMON_LF(("Unexpected widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
 
@@ -728,13 +816,8 @@ NgosStatus TableWidget::setSelectedRow(u64 row)
             case WidgetState::NORMAL:  COMMON_ASSERT_EXECUTION(newRow->setState(isFocused() ? WidgetState::FOCUSED         : WidgetState::INACTIVE),         NgosStatus::ASSERTION); break;
             case WidgetState::HOVERED: COMMON_ASSERT_EXECUTION(newRow->setState(isFocused() ? WidgetState::FOCUSED_HOVERED : WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
 
-            case WidgetState::PRESSED:
-            {
-                // Nothing
-            }
-            break;
-
             case WidgetState::NONE:
+            case WidgetState::PRESSED:
             case WidgetState::FOCUSED:
             case WidgetState::FOCUSED_HOVERED:
             case WidgetState::INACTIVE:
@@ -768,6 +851,98 @@ u64 TableWidget::getSelectedRow() const
 
 
     return mSelectedRow;
+}
+
+NgosStatus TableWidget::setHighlightedRow(u64 row)
+{
+    COMMON_LT((" | row = %u", row));
+
+
+
+    if (mHighlightedRow != row)
+    {
+        TableRowWidget *previousRow = mHighlightedRow < mRows.getSize() ? mRows.at(mHighlightedRow) : nullptr;
+        TableRowWidget *newRow      = row             < mRows.getSize() ? mRows.at(row)             : nullptr;
+
+        mHighlightedRow = row;
+
+
+
+        if (previousRow)
+        {
+            switch (previousRow->getState())
+            {
+                case WidgetState::HOVERED:          COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
+                case WidgetState::FOCUSED_HOVERED:  COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::FOCUSED), NgosStatus::ASSERTION); break;
+                case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::INACTIVE), NgosStatus::ASSERTION); break;
+
+                case WidgetState::NONE:
+                case WidgetState::NORMAL:
+                case WidgetState::PRESSED:
+                case WidgetState::FOCUSED:
+                case WidgetState::INACTIVE:
+                {
+                    COMMON_LF(("Unexpected widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+
+                default:
+                {
+                    COMMON_LF(("Unknown widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+            }
+        }
+
+
+
+        if (newRow)
+        {
+            switch (newRow->getState())
+            {
+                case WidgetState::NORMAL:   COMMON_ASSERT_EXECUTION(newRow->setState(WidgetState::HOVERED),          NgosStatus::ASSERTION); break;
+                case WidgetState::FOCUSED:  COMMON_ASSERT_EXECUTION(newRow->setState(WidgetState::FOCUSED_HOVERED),  NgosStatus::ASSERTION); break;
+                case WidgetState::INACTIVE: COMMON_ASSERT_EXECUTION(newRow->setState(WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
+
+                case WidgetState::NONE:
+                case WidgetState::HOVERED:
+                case WidgetState::PRESSED:
+                case WidgetState::FOCUSED_HOVERED:
+                case WidgetState::INACTIVE_HOVERED:
+                {
+                    COMMON_LF(("Unexpected widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+
+                default:
+                {
+                    COMMON_LF(("Unknown widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 TableWidget::getHighlightedRow() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mHighlightedRow;
 }
 
 NgosStatus TableWidget::setKeyboardEventHandler(keyboard_event_handler handler)

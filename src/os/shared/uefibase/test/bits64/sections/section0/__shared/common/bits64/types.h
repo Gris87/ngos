@@ -216,7 +216,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(TableCellWidget),                               88);
         TEST_ASSERT_EQUALS(sizeof(TableHeaderWidget),                             104);
         TEST_ASSERT_EQUALS(sizeof(TableRowWidget),                                120);
-        TEST_ASSERT_EQUALS(sizeof(TableWidget),                                   232);
+        TEST_ASSERT_EQUALS(sizeof(TableWidget),                                   240);
         TEST_ASSERT_EQUALS(sizeof(TabPageWidget),                                 88);
         TEST_ASSERT_EQUALS(sizeof(TabWidget),                                     152);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        88);

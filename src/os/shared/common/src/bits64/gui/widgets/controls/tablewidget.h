@@ -41,11 +41,16 @@ public:
     NgosStatus setRowCount(u64 rows); // TEST: NO
     u64 getRowCount() const; // TEST: NO
 
+    const ArrayList<TableRowWidget *>& getRows() const; // TEST: NO
+
     NgosStatus setCellWidget(u64 row, u64 column, Widget *widget); // TEST: NO
     Widget* getCellWidget(u64 row, u64 column) const; // TEST: NO
 
     NgosStatus setSelectedRow(u64 row); // TEST: NO
     u64 getSelectedRow() const; // TEST: NO
+
+    NgosStatus setHighlightedRow(u64 row); // TEST: NO
+    u64 getHighlightedRow() const; // TEST: NO
 
     NgosStatus setKeyboardEventHandler(keyboard_event_handler handler) override; // TEST: NO
     keyboard_event_handler getKeyboardEventHandler() const override; // TEST: NO
@@ -62,6 +67,7 @@ private:
     WrapperWidget                  *mRowsWrapperWidget;
     ArrayList<TableRowWidget *>     mRows;
     u64                             mSelectedRow;
+    u64                             mHighlightedRow;
     keyboard_event_handler          mKeyboardEventHandler;
 };
 
