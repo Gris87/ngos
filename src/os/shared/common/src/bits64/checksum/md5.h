@@ -31,8 +31,8 @@ public:
 private:
 #endif
     NgosStatus transform(u8 *block);
-    NgosStatus decode(u8 *input, u64 length, u32 *output);
-    NgosStatus encode(u32 *input, u64 length, u8 *output);
+    static NgosStatus decode(u8 *input, u64 length, u32 *output);
+    static NgosStatus encode(u32 *input, u64 length, u8 *output);
 
     bool    mFinished;
     u8      mBuffer[MD5_BLOCK_SIZE];

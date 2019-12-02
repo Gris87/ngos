@@ -13,6 +13,12 @@
 
 struct Md5Hash
 {
+    Md5Hash()
+    {
+        quads[0] = 0;
+        quads[1] = 0;
+    }
+
     Md5Hash(u64 quad1, u64 quad2)
     {
         quads[0] = quad1;

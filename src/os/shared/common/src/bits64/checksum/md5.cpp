@@ -114,7 +114,7 @@ MD5::MD5()
     , mBuffer()
     , mCount()
     , mState()
-    , mResult(0, 0)
+    , mResult()
 {
     COMMON_LT((""));
 
@@ -144,8 +144,8 @@ Md5Hash MD5::md5(u8 *data, u64 length)
 
     MD5 temp;
 
-    COMMON_ASSERT_EXECUTION(temp.update(data, length), Md5Hash(0, 0));
-    COMMON_ASSERT_EXECUTION(temp.finish(),             Md5Hash(0, 0));
+    COMMON_ASSERT_EXECUTION(temp.update(data, length), Md5Hash());
+    COMMON_ASSERT_EXECUTION(temp.finish(),             Md5Hash());
 
 
 
@@ -205,7 +205,7 @@ NgosStatus MD5::update(u8 *data, u64 length)
     }
     else
     {
-        memcpy(&mBuffer[index], &data, length);
+        memcpy(&mBuffer[index], data, length);
     }
 
 
@@ -275,7 +275,7 @@ Md5Hash MD5::getResult() const
 
 
 
-    COMMON_TEST_ASSERT(mFinished, Md5Hash(0, 0));
+    COMMON_TEST_ASSERT(mFinished, Md5Hash());
 
 
 
@@ -287,6 +287,10 @@ NgosStatus MD5::transform(u8 *block)
     // COMMON_LT((" | block = 0x%p", block)); // Commented to avoid too frequent logs
 
     COMMON_ASSERT(block, "block is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(!mFinished, NgosStatus::ASSERTION);
 
 
 
