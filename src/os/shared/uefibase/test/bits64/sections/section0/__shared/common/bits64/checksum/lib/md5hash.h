@@ -29,6 +29,11 @@ TEST_CASES(section0, __shared_common_bits64_checksum_lib_md5hash);
         TEST_ASSERT_EQUALS(temp1.quads[0], 0);
         TEST_ASSERT_EQUALS(temp1.quads[1], 0);
 
+        TEST_ASSERT_EQUALS(temp1.dwords[0], 0);
+        TEST_ASSERT_EQUALS(temp1.dwords[1], 0);
+        TEST_ASSERT_EQUALS(temp1.dwords[2], 0);
+        TEST_ASSERT_EQUALS(temp1.dwords[3], 0);
+
         TEST_ASSERT_EQUALS(temp1.bytes[0],  0);
         TEST_ASSERT_EQUALS(temp1.bytes[1],  0);
         TEST_ASSERT_EQUALS(temp1.bytes[2],  0);
@@ -50,6 +55,11 @@ TEST_CASES(section0, __shared_common_bits64_checksum_lib_md5hash);
 
         TEST_ASSERT_EQUALS(temp2.quads[0], 0x0102030405060708);
         TEST_ASSERT_EQUALS(temp2.quads[1], 0x090A0B0C0D0E0F00);
+
+        TEST_ASSERT_EQUALS(temp2.dwords[0], 0x05060708);
+        TEST_ASSERT_EQUALS(temp2.dwords[1], 0x01020304);
+        TEST_ASSERT_EQUALS(temp2.dwords[2], 0x0D0E0F00);
+        TEST_ASSERT_EQUALS(temp2.dwords[3], 0x090A0B0C);
 
         TEST_ASSERT_EQUALS(temp2.bytes[0],  0x08);
         TEST_ASSERT_EQUALS(temp2.bytes[1],  0x07);
@@ -73,6 +83,11 @@ TEST_CASES(section0, __shared_common_bits64_checksum_lib_md5hash);
         TEST_ASSERT_EQUALS(temp3.quads[0], 0xAABBCCDDEEFF1122);
         TEST_ASSERT_EQUALS(temp3.quads[1], 0x33445566778899AC);
 
+        TEST_ASSERT_EQUALS(temp3.dwords[0], 0xEEFF1122);
+        TEST_ASSERT_EQUALS(temp3.dwords[1], 0xAABBCCDD);
+        TEST_ASSERT_EQUALS(temp3.dwords[2], 0x778899AC);
+        TEST_ASSERT_EQUALS(temp3.dwords[3], 0x33445566);
+
         TEST_ASSERT_EQUALS(temp3.bytes[0],  0x22);
         TEST_ASSERT_EQUALS(temp3.bytes[1],  0x11);
         TEST_ASSERT_EQUALS(temp3.bytes[2],  0xFF);
@@ -94,6 +109,11 @@ TEST_CASES(section0, __shared_common_bits64_checksum_lib_md5hash);
 
         TEST_ASSERT_EQUALS(temp4.quads[0], 0x1211100F0E0D0C0B);
         TEST_ASSERT_EQUALS(temp4.quads[1], 0x74737271706F6E13);
+
+        TEST_ASSERT_EQUALS(temp4.dwords[0], 0x0E0D0C0B);
+        TEST_ASSERT_EQUALS(temp4.dwords[1], 0x1211100F);
+        TEST_ASSERT_EQUALS(temp4.dwords[2], 0x706F6E13);
+        TEST_ASSERT_EQUALS(temp4.dwords[3], 0x74737271);
 
         TEST_ASSERT_EQUALS(temp4.bytes[0],  0x0B);
         TEST_ASSERT_EQUALS(temp4.bytes[1],  0x0C);
