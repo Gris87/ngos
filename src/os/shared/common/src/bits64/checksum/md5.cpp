@@ -112,20 +112,10 @@ inline void II(u32 &a, u32 b, u32 c, u32 d, u32 x, u32 s, u32 ac)
 MD5::MD5()
     : mFinished(false)
     , mBuffer()
-    , mCount()
-    , mState()
-    , mResult()
+    , mCount(0)
+    , mResult(0xEFCDAB8967452301, 0x1032547698BADCFE)
 {
     COMMON_LT((""));
-
-
-
-    memzero(mCount, sizeof(mCount));
-
-    mState[0] = 0x67452301;
-    mState[1] = 0xEFCDAB89;
-    mState[2] = 0x98BADCFE;
-    mState[3] = 0x10325476;
 }
 
 MD5::~MD5()
@@ -165,23 +155,13 @@ NgosStatus MD5::update(u8 *data, u64 length)
 
 
 
-    u8 index     = (mCount[0] >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
+    u8 index     = (mCount >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
     u8 firstPart = MD5_BLOCK_SIZE - index;
 
 
 
-    u64 numberOfBits = length << 3;
-
-
-
-    mCount[0] += numberOfBits;
-
-    if (mCount[0] < numberOfBits)
-    {
-        ++mCount[1];
-    }
-
-    mCount[1] += (length >> 29);
+    u64 numberOfBits =  length << 3;
+    mCount           += numberOfBits;
 
 
 
@@ -225,9 +205,7 @@ NgosStatus MD5::finish()
     {
         u8 bits[8];
 
-        COMMON_TEST_ASSERT(sizeof(bits) == sizeof(mCount), NgosStatus::ASSERTION);
-
-        COMMON_ASSERT_EXECUTION(encode(mCount, sizeof(mCount), bits), NgosStatus::ASSERTION);
+        *((u64 *)bits) = mCount;
 
 
 
@@ -245,19 +223,13 @@ NgosStatus MD5::finish()
 
 
 
-        u8 index         = (mCount[0] >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
+        u8 index         = (mCount >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
         u8 paddingLength = (index < MD5_BLOCK_SIZE - 8) ? (MD5_BLOCK_SIZE - index - 8) : ((MD5_BLOCK_SIZE << 1) - index - 8); // "<< 1" == "* 2"
 
         COMMON_TEST_ASSERT(paddingLength < MD5_BLOCK_SIZE, NgosStatus::ASSERTION);
 
         COMMON_ASSERT_EXECUTION(update(padding, paddingLength), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(update(bits,    sizeof(bits)),  NgosStatus::ASSERTION);
-
-
-
-        COMMON_TEST_ASSERT(sizeof(mState) == sizeof(mResult), NgosStatus::ASSERTION);
-
-        COMMON_ASSERT_EXECUTION(encode(mState, sizeof(mState), mResult.bytes), NgosStatus::ASSERTION);
 
 
 
@@ -294,13 +266,12 @@ NgosStatus MD5::transform(u8 *block)
 
 
 
-    u32 a = mState[0];
-    u32 b = mState[1];
-    u32 c = mState[2];
-    u32 d = mState[3];
+    u32 a = mResult.dwords[0];
+    u32 b = mResult.dwords[1];
+    u32 c = mResult.dwords[2];
+    u32 d = mResult.dwords[3];
 
-    u32 x[MD5_BLOCK_SIZE >> 2]; // ">> 2" == "/ 4"
-    COMMON_ASSERT_EXECUTION(decode(block, MD5_BLOCK_SIZE, x), NgosStatus::ASSERTION);
+    u32 *x = (u32 *)block;
 
 
 
@@ -378,60 +349,10 @@ NgosStatus MD5::transform(u8 *block)
 
 
 
-    mState[0] += a;
-    mState[1] += b;
-    mState[2] += c;
-    mState[3] += d;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus MD5::decode(u8 *input, u64 length, u32 *output)
-{
-    // COMMON_LT((" | input = 0x%p, length = %u, output = 0x%p", input, length, output)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(input,      "input is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(length > 0, "length is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(output,     "output is null", NgosStatus::ASSERTION);
-
-
-
-    for (i64 i = 0; i < (i64)length; i += 4)
-    {
-        *output = ((u32)input[i])
-                | ((u32)input[i + 1] << 8)
-                | ((u32)input[i + 2] << 16)
-                | ((u32)input[i + 3] << 24);
-
-        ++output;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus MD5::encode(u32 *input, u64 length, u8 *output)
-{
-    // COMMON_LT((" | input = 0x%p, length = %u, output = 0x%p", input, length, output)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(input,      "input is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(length > 0, "length is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(output,     "output is null", NgosStatus::ASSERTION);
-
-
-
-    for (i64 i = 0; i < (i64)length; i += 4)
-    {
-        output[i]     = *input         & 0xFF;
-        output[i + 1] = (*input >> 8)  & 0xFF;
-        output[i + 2] = (*input >> 16) & 0xFF;
-        output[i + 3] = (*input >> 24) & 0xFF;
-
-        ++input;
-    }
+    mResult.dwords[0] += a;
+    mResult.dwords[1] += b;
+    mResult.dwords[2] += c;
+    mResult.dwords[3] += d;
 
 
 

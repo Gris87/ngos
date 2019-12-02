@@ -183,7 +183,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(LabelWidget),                                   112);
         TEST_ASSERT_EQUALS(sizeof(ListElement<u8>),                               24);
         TEST_ASSERT_EQUALS(sizeof(List<u8>),                                      16);
-        TEST_ASSERT_EQUALS(sizeof(MD5),                                           112);
+        TEST_ASSERT_EQUALS(sizeof(MD5),                                           96);
         TEST_ASSERT_EQUALS(sizeof(Md5Hash),                                       16);
         TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);
         TEST_ASSERT_EQUALS(sizeof(MSR),                                           1);

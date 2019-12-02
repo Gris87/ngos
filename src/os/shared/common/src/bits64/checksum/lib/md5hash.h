@@ -42,6 +42,7 @@ struct Md5Hash
     union
     {
         u8  bytes[16];
+        u32 dwords[4];
         u64 quads[2];
     };
 };

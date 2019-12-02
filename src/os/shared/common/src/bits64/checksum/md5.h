@@ -31,13 +31,10 @@ public:
 private:
 #endif
     NgosStatus transform(u8 *block);
-    static NgosStatus decode(u8 *input, u64 length, u32 *output);
-    static NgosStatus encode(u32 *input, u64 length, u8 *output);
 
     bool    mFinished;
     u8      mBuffer[MD5_BLOCK_SIZE];
-    u32     mCount[2];
-    u32     mState[4];
+    u64     mCount;
     Md5Hash mResult;
 };
 
