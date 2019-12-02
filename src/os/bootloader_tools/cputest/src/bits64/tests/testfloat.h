@@ -10,8 +10,8 @@
 class TestFloat: public TestBase
 {
 public:
-    TestFloat();
-    ~TestFloat();
+    TestFloat(); // TEST: NO
+    ~TestFloat(); // TEST: NO
 };
 
 

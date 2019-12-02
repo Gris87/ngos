@@ -50,8 +50,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "addpd      %%xmm1, %%xmm0"               // addpd      %xmm1, %xmm0        # Add in parallel 2 doubles in XMM0 with 2 doubles in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -64,8 +64,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "divpd      %%xmm1, %%xmm0"               // divpd      %xmm1, %xmm0        # Divide in parallel 2 doubles in XMM0 with 2 doubles in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -78,8 +78,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "maxpd      %%xmm1, %%xmm0"               // maxpd      %xmm1, %xmm0        # Get in parallel the maximum values in each pair of 2 doubles in XMM0 with 2 doubles in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -92,8 +92,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "minpd      %%xmm1, %%xmm0"               // minpd      %xmm1, %xmm0        # Get in parallel the minimum values in each pair of 2 doubles in XMM0 with 2 doubles in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -106,8 +106,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "mulpd      %%xmm1, %%xmm0"               // mulpd      %xmm1, %xmm0        # Multiply in parallel 2 doubles in XMM0 with 2 doubles in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -120,8 +120,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "paddb      %%xmm1, %%xmm0"               // paddb      %xmm1, %xmm0        # Add in parallel 16 bytes in XMM0 with 16 bytes in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -134,8 +134,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "paddd      %%xmm1, %%xmm0"               // paddd      %xmm1, %xmm0        # Add in parallel 4 doublewords in XMM0 with 4 doublewords in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -148,8 +148,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "paddq      %%xmm1, %%xmm0"               // paddq      %xmm1, %xmm0        # Add in parallel 2 quadwords in XMM0 with 2 quadwords in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -162,8 +162,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "paddw      %%xmm1, %%xmm0"               // paddw      %xmm1, %xmm0        # Add in parallel 8 words in XMM0 with 8 words in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -176,8 +176,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "psubb      %%xmm1, %%xmm0"               // psubb      %xmm1, %xmm0        # Subtract in parallel 16 bytes in XMM0 with 16 bytes in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -190,8 +190,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "psubd      %%xmm1, %%xmm0"               // psubd      %xmm1, %xmm0        # Subtract in parallel 4 doublewords in XMM0 with 4 doublewords in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -204,8 +204,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "psubq      %%xmm1, %%xmm0"               // psubq      %xmm1, %xmm0        # Subtract in parallel 2 quadwords in XMM0 with 2 quadwords in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -218,8 +218,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "psubw      %%xmm1, %%xmm0"               // psubw      %xmm1, %xmm0        # Subtract in parallel 8 words in XMM0 with 8 words in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -231,7 +231,7 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "sqrtpd     %%xmm0, %%xmm0"               // sqrtpd     %xmm0, %xmm0        # Compute Square Roots in parallel for 2 doubles in XMM0 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -244,8 +244,8 @@ void UEFI_API testSse2Procedure(void *buffer)
                 "subpd      %%xmm1, %%xmm0"               // subpd      %xmm1, %xmm0        # Subtract in parallel 2 doubles in XMM0 with 2 doubles in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

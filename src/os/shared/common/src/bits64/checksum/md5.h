@@ -16,7 +16,7 @@ class MD5
 {
 public:
     MD5();
-    ~MD5();
+    ~MD5(); // TEST: NO
 
     static Md5Hash md5(u8 *data, u64 length);
 
@@ -30,7 +30,7 @@ public:
 #else
 private:
 #endif
-    NgosStatus transform(u8 block[MD5_BLOCK_SIZE]);
+    NgosStatus transform(u8 *block);
     NgosStatus decode(u8 *input, u64 length, u32 *output);
     NgosStatus encode(u32 *input, u64 length, u8 *output);
 

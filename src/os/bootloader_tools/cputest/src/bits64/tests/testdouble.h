@@ -10,8 +10,8 @@
 class TestDouble: public TestBase
 {
 public:
-    TestDouble();
-    ~TestDouble();
+    TestDouble(); // TEST: NO
+    ~TestDouble(); // TEST: NO
 };
 
 

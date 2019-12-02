@@ -55,9 +55,9 @@ void UEFI_API testFma3Procedure(void *buffer)
                 "vfmadd213pd    %%ymm2, %%ymm1, %%ymm0"               // vfmadd213pd    %ymm2, %ymm1, %ymm0     # Multiply in parallel 4 doubles in YMM1 with 4 doubles in YMM0, add 4 doubles in YMM2 and store results in YMM0
                     :                                                 // Output parameters
                     :                                                 // Input parameters
-                        "m" (a),                                      // 'm' - use memory
-                        "m" (b),                                      // 'm' - use memory
-                        "m" (c)                                       // 'm' - use memory
+                        "m" (a),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (c)                                       // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -71,9 +71,9 @@ void UEFI_API testFma3Procedure(void *buffer)
                 "vfmadd213ps    %%ymm2, %%ymm1, %%ymm0"               // vfmadd213ps    %ymm2, %ymm1, %ymm0     # Multiply in parallel 8 floats in YMM1 with 8 floats in YMM0, add 8 floats in YMM2 and store results in YMM0
                     :                                                 // Output parameters
                     :                                                 // Input parameters
-                        "m" (d),                                      // 'm' - use memory
-                        "m" (e),                                      // 'm' - use memory
-                        "m" (f)                                       // 'm' - use memory
+                        "m" (d),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (e),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (f)                                       // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -87,9 +87,9 @@ void UEFI_API testFma3Procedure(void *buffer)
                 "vfmsub213pd    %%ymm2, %%ymm1, %%ymm0"               // vfmsub213pd    %ymm2, %ymm1, %ymm0     # Multiply in parallel 4 doubles in YMM1 with 4 doubles in YMM0, subtract 4 doubles in YMM2 and store results in YMM0
                     :                                                 // Output parameters
                     :                                                 // Input parameters
-                        "m" (a),                                      // 'm' - use memory
-                        "m" (b),                                      // 'm' - use memory
-                        "m" (c)                                       // 'm' - use memory
+                        "m" (a),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (c)                                       // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -103,9 +103,9 @@ void UEFI_API testFma3Procedure(void *buffer)
                 "vfmsub213ps    %%ymm2, %%ymm1, %%ymm0"               // vfmsub213ps    %ymm2, %ymm1, %ymm0     # Multiply in parallel 8 floats in YMM1 with 8 floats in YMM0, subtract 8 floats in YMM2 and store results in YMM0
                     :                                                 // Output parameters
                     :                                                 // Input parameters
-                        "m" (d),                                      // 'm' - use memory
-                        "m" (e),                                      // 'm' - use memory
-                        "m" (f)                                       // 'm' - use memory
+                        "m" (d),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (e),                                      // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (f)                                       // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

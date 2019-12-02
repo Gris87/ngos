@@ -10,8 +10,8 @@
 class TestAes: public TestBase
 {
 public:
-    TestAes();
-    ~TestAes();
+    TestAes(); // TEST: NO
+    ~TestAes(); // TEST: NO
 };
 
 

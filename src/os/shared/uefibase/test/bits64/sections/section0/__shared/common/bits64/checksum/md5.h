@@ -15,6 +15,24 @@
 
 TEST_CASES(section0, __shared_common_bits64_checksum_md5);
 {
+    TEST_CASE("MD5()");
+    {
+        MD5 temp;
+
+        TEST_ASSERT_EQUALS(temp.mFinished,        false);
+        TEST_ASSERT_EQUALS(temp.mCount[0],        0);
+        TEST_ASSERT_EQUALS(temp.mCount[1],        0);
+        TEST_ASSERT_EQUALS(temp.mState[0],        0x67452301);
+        TEST_ASSERT_EQUALS(temp.mState[1],        0xEFCDAB89);
+        TEST_ASSERT_EQUALS(temp.mState[2],        0x98BADCFE);
+        TEST_ASSERT_EQUALS(temp.mState[3],        0x10325476);
+        TEST_ASSERT_EQUALS(temp.mResult.quads[0], 0);
+        TEST_ASSERT_EQUALS(temp.mResult.quads[1], 0);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("md5()");
     {
         const char8 *str = "Hello";

@@ -50,8 +50,8 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vaddps     %%zmm2, %%zmm1, %%zmm0"               // vaddps     %zmm2, %zmm1, %zmm0     # Add in parallel 16 floats in ZMM2 with 16 floats in ZMM1 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -64,8 +64,8 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vdivps     %%zmm2, %%zmm1, %%zmm0"               // vdivps     %zmm2, %zmm1, %zmm0     # Divide in parallel 16 floats in ZMM2 with 16 floats in ZMM1 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -78,8 +78,8 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vmaxps     %%zmm2, %%zmm1, %%zmm0"               // vmaxps     %zmm2, %zmm1, %zmm0     # Get in parallel the maximum values in each pair of 16 floats in ZMM2 with 16 floats in ZMM1 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -92,8 +92,8 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vminps     %%zmm2, %%zmm1, %%zmm0"               // vminps     %zmm2, %zmm1, %zmm0     # Get in parallel the minimum values in each pair of 16 floats in ZMM2 with 16 floats in ZMM1 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -106,8 +106,8 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vmulps     %%zmm2, %%zmm1, %%zmm0"               // vmulps     %zmm2, %zmm1, %zmm0     # Multiply in parallel 16 floats in ZMM2 with 16 floats in ZMM1 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -119,7 +119,7 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vrcp14ps   %%zmm1, %%zmm0"               // vrcp14ps   %zmm1, %zmm0        # Compute Reciprocal (1/A) in parallel for 16 floats in ZMM1 and store results in ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -131,7 +131,7 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vrsqrt14ps     %%zmm1, %%zmm0"               // vrsqrt14ps     %zmm1, %zmm0        # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 16 floats in ZMM1 and store results in ZMM0
                     :                                         // Output parameters
                     :                                         // Input parameters
-                        "m" (a)                               // 'm' - use memory
+                        "m" (a)                               // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -143,7 +143,7 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vsqrtps    %%zmm1, %%zmm0"               // vsqrtps    %zmm1, %zmm0        # Compute Square Roots in parallel for 16 floats in ZMM1 and store results in ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -156,8 +156,8 @@ void UEFI_API testAvx512FProcedure(void *buffer)
                 "vsubps     %%zmm2, %%zmm1, %%zmm0"               // vsubps     %zmm2, %zmm1, %zmm0     # Subtract in parallel 16 floats in ZMM2 with 16 floats in ZMM1 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

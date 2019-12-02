@@ -10,8 +10,8 @@
 class TestFma3: public TestBase
 {
 public:
-    TestFma3();
-    ~TestFma3();
+    TestFma3(); // TEST: NO
+    ~TestFma3(); // TEST: NO
 };
 
 

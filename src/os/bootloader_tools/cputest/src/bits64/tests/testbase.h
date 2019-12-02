@@ -3,8 +3,8 @@
 
 
 
-#include <uefi/uefimpservicesprotocol.h>
 #include <ngos/status.h>
+#include <uefi/uefimpservicesprotocol.h>
 
 #include "src/bits64/other/testtype.h"
 
@@ -13,19 +13,19 @@
 class TestBase
 {
 public:
-    TestBase(TestType type, const char8 *name, uefi_ap_procedure procedure);
-    ~TestBase();
+    TestBase(TestType type, const char8 *name, uefi_ap_procedure procedure); // TEST: NO
+    ~TestBase(); // TEST: NO
 
-    NgosStatus reset();
+    NgosStatus reset(); // TEST: NO
 
-    const char8* getName() const;
+    const char8* getName() const; // TEST: NO
 
-    NgosStatus setScore(u64 score);
-    u64 getScore() const;
+    NgosStatus setScore(u64 score); // TEST: NO
+    u64 getScore() const; // TEST: NO
 
-    uefi_ap_procedure getProcedure() const;
+    uefi_ap_procedure getProcedure() const; // TEST: NO
 
-    bool isCompleted() const;
+    bool isCompleted() const; // TEST: NO
 
 private:
     const char8       *mName;

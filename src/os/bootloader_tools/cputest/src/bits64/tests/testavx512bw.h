@@ -10,8 +10,8 @@
 class TestAvx512Bw: public TestBase
 {
 public:
-    TestAvx512Bw();
-    ~TestAvx512Bw();
+    TestAvx512Bw(); // TEST: NO
+    ~TestAvx512Bw(); // TEST: NO
 };
 
 

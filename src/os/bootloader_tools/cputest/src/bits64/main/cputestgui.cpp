@@ -746,10 +746,12 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     sStartButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sStartImage, nullptr, "Start", testTabPageWidget);
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     UEFI_ASSERT_EXECUTION(sStartButton->setPosition(tabPageWidth * START_BUTTON_POSITION_X_PERCENT / 100, tabPageHeight * START_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sStartButton->setSize(tabPageWidth     * START_BUTTON_WIDTH_PERCENT      / 100, tabPageHeight * START_BUTTON_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sStartButton->setKeyboardEventHandler(onStartButtonKeyboardEvent),                                                                      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sStartButton->setPressEventHandler(onStartButtonPressed),                                                                               NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -764,9 +766,11 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     sTestTotalLabelWidget = new LabelWidget(testTotalText, testTabPageWidget);
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setVisible(false),                                                                                                              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setPosition(tabPageWidth * TEST_TOTAL_TEXT_POSITION_X_PERCENT / 100, tabPageHeight * TEST_TOTAL_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTotalLabelWidget->setSize(tabPageWidth     * TEST_TOTAL_TEXT_WIDTH_PERCENT      / 100, tabPageHeight * TEST_TOTAL_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -779,7 +783,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setPosition(tabPageWidth * TEST_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * TEST_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setSize(testTableWidth, testTableHeight),                                                                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestTableWidget->setKeyboardEventHandler(onTestTableWidgetKeyboardEvent),                                                                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setKeyboardEventHandler(onTestTableWidgetKeyboardEvent),                                                                          NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setRowHeight(tabPageHeight * TEST_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
@@ -1730,7 +1734,7 @@ NgosStatus CpuTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: focusTabFirstWidget();
+        case UefiInputKeyScanCode::DOWN: return focusTabFirstWidget();
 
         default:
         {

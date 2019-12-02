@@ -18,9 +18,9 @@ enum class UefiTpl: u64
 
 
 
-inline const char8* uefiTplToString(UefiTpl type) // TEST: NO
+inline const char8* uefiTplToString(UefiTpl tpl) // TEST: NO
 {
-    switch (type)
+    switch (tpl)
     {
         case UefiTpl::NONE:        return "NONE";
         case UefiTpl::APPLICATION: return "APPLICATION";

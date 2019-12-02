@@ -46,7 +46,7 @@ inline const char8* uefiProcessorInformationStatusFlagsToString(uefi_processor_i
 
 
 
-    static char8 res[76];
+    static char8 res[51];
 
     FLAGS_TO_STRING(res, flags, uefiProcessorInformationStatusFlagToString, UefiProcessorInformationStatusFlag);
 

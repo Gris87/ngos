@@ -10,8 +10,8 @@
 class TestBitwise: public TestBase
 {
 public:
-    TestBitwise();
-    ~TestBitwise();
+    TestBitwise(); // TEST: NO
+    ~TestBitwise(); // TEST: NO
 };
 
 

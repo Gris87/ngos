@@ -10,8 +10,8 @@
 class TestSse42: public TestBase
 {
 public:
-    TestSse42();
-    ~TestSse42();
+    TestSse42(); // TEST: NO
+    ~TestSse42(); // TEST: NO
 };
 
 

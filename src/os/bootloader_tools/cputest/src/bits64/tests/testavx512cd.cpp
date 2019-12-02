@@ -65,7 +65,7 @@ void UEFI_API testAvx512CdProcedure(void *buffer)
                 "vplzcntd   %%zmm1, %%zmm0"               // vplzcntd   %zmm1, %zmm0        # Count amount of leading zeros for 16 doublewords in ZMM1 and store results to ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -77,7 +77,7 @@ void UEFI_API testAvx512CdProcedure(void *buffer)
                 "vplzcntq   %%zmm1, %%zmm0"               // vplzcntq   %zmm1, %zmm0        # Count amount of leading zeros for 8 quadwords in ZMM1 and store results to ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (b)                           // 'm' - use memory
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

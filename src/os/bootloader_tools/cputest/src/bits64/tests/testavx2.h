@@ -10,8 +10,8 @@
 class TestAvx2: public TestBase
 {
 public:
-    TestAvx2();
-    ~TestAvx2();
+    TestAvx2(); // TEST: NO
+    ~TestAvx2(); // TEST: NO
 };
 
 

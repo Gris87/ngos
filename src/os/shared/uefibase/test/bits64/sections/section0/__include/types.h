@@ -65,6 +65,7 @@
 #include <uefi/ueficonfigurationtable.h>
 #include <uefi/ueficonsolecontrolprotocol.h>
 #include <uefi/ueficonsolecontrolscreenmode.h>
+#include <uefi/ueficpuphysicallocation.h>
 #include <uefi/uefidevicepath.h>
 #include <uefi/uefidevicepathtotextprotocol.h>
 #include <uefi/uefieventtype.h>
@@ -90,6 +91,7 @@
 #include <uefi/uefilocatesearchtype.h>
 #include <uefi/uefimemorydescriptor.h>
 #include <uefi/uefimemorytype.h>
+#include <uefi/uefimpservicesprotocol.h>
 #include <uefi/uefiopenprotocolinformationentry.h>
 #include <uefi/uefipciioprotocol.h>
 #include <uefi/uefipciioprotocolaccess.h>
@@ -98,6 +100,8 @@
 #include <uefi/uefipciioprotocoloperation.h>
 #include <uefi/uefipciioprotocolwidth.h>
 #include <uefi/uefipixelbitmask.h>
+#include <uefi/uefiprocessorinformation.h>
+#include <uefi/uefiprocessorinformationstatusflags.h>
 #include <uefi/uefiresettype.h>
 #include <uefi/uefiruntimeservices.h>
 #include <uefi/uefisimplefilesystemprotocol.h>
@@ -113,6 +117,7 @@
 #include <uefi/uefitime.h>
 #include <uefi/uefitimecapabilicies.h>
 #include <uefi/uefitimerdelay.h>
+#include <uefi/uefitpl.h>
 #include <uefi/uefivariableattributeflags.h>
 #include <uefibase/test/bits64/testengine.h>
 #include <uuid/uuid.h>
@@ -186,6 +191,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiConfigurationTable),                       24);
         TEST_ASSERT_EQUALS(sizeof(UefiConsoleControlProtocol),                   24);
         TEST_ASSERT_EQUALS(sizeof(UefiConsoleControlScreenMode),                 4);
+        TEST_ASSERT_EQUALS(sizeof(UefiCpuPhysicalLocation),                      12);
         TEST_ASSERT_EQUALS(sizeof(UefiDebugInfoConfigurationTable),              1);
         TEST_ASSERT_EQUALS(sizeof(UefiDevicePath),                               4);
         TEST_ASSERT_EQUALS(sizeof(UefiDevicePathSubType),                        1);
@@ -224,6 +230,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryType),                               4);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryTypeInformationConfigurationTable),  1);
         TEST_ASSERT_EQUALS(sizeof(UefiMpsConfigurationTable),                    1);
+        TEST_ASSERT_EQUALS(sizeof(UefiMpServicesProtocol),                       56);
         TEST_ASSERT_EQUALS(sizeof(UefiOpenProtocolInformationEntry),             24);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocol),                            160);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocolAccess),                      16);
@@ -232,6 +239,8 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocolOperation),                   4);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocolWidth),                       4);
         TEST_ASSERT_EQUALS(sizeof(UefiPixelBitmask),                             16);
+        TEST_ASSERT_EQUALS(sizeof(UefiProcessorInformation),                     24);
+        TEST_ASSERT_EQUALS(sizeof(UefiProcessorInformationStatusFlag),           4);
         TEST_ASSERT_EQUALS(sizeof(UefiPropertiesConfigurationTable),             1);
         TEST_ASSERT_EQUALS(sizeof(UefiResetType),                                4);
         TEST_ASSERT_EQUALS(sizeof(UefiRuntimeServices),                          136);
@@ -252,6 +261,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(UefiTime),                                     16);
         TEST_ASSERT_EQUALS(sizeof(UefiTimeCapabilities),                         12);
         TEST_ASSERT_EQUALS(sizeof(UefiTimerDelay),                               4);
+        TEST_ASSERT_EQUALS(sizeof(UefiTpl),                                      8);
         TEST_ASSERT_EQUALS(sizeof(UefiUgaIoConfigurationTable),                  1);
         TEST_ASSERT_EQUALS(sizeof(UefiVariableAttributeFlag),                    4);
         TEST_ASSERT_EQUALS(sizeof(Uuid),                                         16);

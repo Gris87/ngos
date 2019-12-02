@@ -1410,7 +1410,7 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
 
 
-        Md5Hash hash = MD5::md5((u8*)volume->devicePath, (u64)currentDevicePath - (u64)volume->devicePath);
+        Md5Hash hash = MD5::md5((u8 *)volume->devicePath, (u64)currentDevicePath - (u64)volume->devicePath);
 
         ((u64 *)partitionUniqueGuid)[0] = hash.quads[0];
         ((u64 *)partitionUniqueGuid)[1] = hash.quads[1];

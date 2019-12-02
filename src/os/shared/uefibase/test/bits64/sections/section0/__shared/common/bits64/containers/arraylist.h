@@ -171,6 +171,34 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
 
+    TEST_CASE("clear()");
+    {
+        ArrayList<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+        TEST_ASSERT_NOT_EQUALS(temp.mValues,   nullptr);
+        TEST_ASSERT_EQUALS(temp.mSize,         5);
+        TEST_ASSERT_EQUALS(temp.mCapacity,     8);
+
+
+
+        TEST_ASSERT_EQUALS(temp.clear(), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mValues,   nullptr);
+        TEST_ASSERT_EQUALS(temp.mSize,     0);
+        TEST_ASSERT_EQUALS(temp.mCapacity, 0);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("sort()");
     {
         ArrayList<u8> temp;
@@ -224,6 +252,46 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.at(2), 3);
         TEST_ASSERT_EQUALS(temp.at(3), 1);
         TEST_ASSERT_EQUALS(temp.at(4), 7);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("operator[]()");
+    {
+        ArrayList<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+
+        TEST_ASSERT_EQUALS(temp[0], 5);
+        TEST_ASSERT_EQUALS(temp[1], 9);
+        TEST_ASSERT_EQUALS(temp[2], 3);
+        TEST_ASSERT_EQUALS(temp[3], 1);
+        TEST_ASSERT_EQUALS(temp[4], 7);
+
+        temp[2] = 2;
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 2);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+
+        TEST_ASSERT_EQUALS(temp[0], 5);
+        TEST_ASSERT_EQUALS(temp[1], 9);
+        TEST_ASSERT_EQUALS(temp[2], 2);
+        TEST_ASSERT_EQUALS(temp[3], 1);
+        TEST_ASSERT_EQUALS(temp[4], 7);
     }
     TEST_CASE_END();
 

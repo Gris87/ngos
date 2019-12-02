@@ -8,6 +8,8 @@
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/checksum/adler.h>
 #include <common/src/bits64/checksum/crc.h>
+#include <common/src/bits64/checksum/lib/md5hash.h>
+#include <common/src/bits64/checksum/md5.h>
 #include <common/src/bits64/console/console.h>
 #include <common/src/bits64/console/graphicalconsole.h>
 #include <common/src/bits64/console/lib/glyphdata.h>
@@ -23,6 +25,7 @@
 #include <common/src/bits64/cpu/x86bugword.h>
 #include <common/src/bits64/cpu/x86feature.h>
 #include <common/src/bits64/cpu/x86featureword.h>
+#include <common/src/bits64/cryptography/aes.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <common/src/bits64/fpu/fpustate.h>
 #include <common/src/bits64/fpu/fsavestate.h>
@@ -128,6 +131,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
     TEST_CASE("Size of structures");
     {
         TEST_ASSERT_EQUALS(sizeof(Adler),                                         1);
+        TEST_ASSERT_EQUALS(sizeof(AES),                                           64);
         TEST_ASSERT_EQUALS(sizeof(AmdCpuModel),                                   1);
         TEST_ASSERT_EQUALS(sizeof(ArrayList<u8>),                                 24);
         TEST_ASSERT_EQUALS(sizeof(AssetEntry),                                    24);
@@ -179,6 +183,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(LabelWidget),                                   112);
         TEST_ASSERT_EQUALS(sizeof(ListElement<u8>),                               24);
         TEST_ASSERT_EQUALS(sizeof(List<u8>),                                      16);
+        TEST_ASSERT_EQUALS(sizeof(MD5),                                           112);
+        TEST_ASSERT_EQUALS(sizeof(Md5Hash),                                       16);
         TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);
         TEST_ASSERT_EQUALS(sizeof(MSR),                                           1);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                     40);

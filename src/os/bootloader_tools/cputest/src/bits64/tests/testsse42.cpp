@@ -50,8 +50,8 @@ void UEFI_API testSse42Procedure(void *buffer)
                 "pcmpgtq    %%xmm1, %%xmm0"               // pcmpgtq    %xmm1, %xmm0        # Compare signed quadwords in XMM0 with quadwords in XMM1. If quadword in XMM0 is greater then returns -1, otherwise 0. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

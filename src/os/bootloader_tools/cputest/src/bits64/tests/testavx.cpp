@@ -50,8 +50,8 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vaddps     %%ymm2, %%ymm1, %%ymm0"               // vaddps     %ymm2, %ymm1, %ymm0     # Add in parallel 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -64,8 +64,8 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vdivps     %%ymm2, %%ymm1, %%ymm0"               // vdivps     %ymm2, %ymm1, %ymm0     # Divide in parallel 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -78,8 +78,8 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vmaxps     %%ymm2, %%ymm1, %%ymm0"               // vmaxps     %ymm2, %ymm1, %ymm0     # Get in parallel the maximum values in each pair of 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -92,8 +92,8 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vminps     %%ymm2, %%ymm1, %%ymm0"               // vminps     %ymm2, %ymm1, %ymm0     # Get in parallel the minimum values in each pair of 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -106,8 +106,8 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vmulps     %%ymm2, %%ymm1, %%ymm0"               // vmulps     %ymm2, %ymm1, %ymm0     # Multiply in parallel 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -119,7 +119,7 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vrcpps     %%ymm1, %%ymm0"               // vrcpps     %ymm1, %ymm0        # Compute Reciprocal (1/A) in parallel for 8 floats in YMM1 and store results in YMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -131,7 +131,7 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vrsqrtps   %%ymm1, %%ymm0"               // vrsqrtps   %ymm1, %ymm0        # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 8 floats in YMM1 and store results in YMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -143,7 +143,7 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vsqrtps    %%ymm1, %%ymm0"               // vsqrtps    %ymm1, %ymm0        # Compute Square Roots in parallel for 8 floats in YMM1 and store results in YMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -156,8 +156,8 @@ void UEFI_API testAvxProcedure(void *buffer)
                 "vsubps     %%ymm2, %%ymm1, %%ymm0"               // vsubps     %ymm2, %ymm1, %ymm0     # Subtract in parallel 8 floats in YMM2 with 8 floats in YMM1 and store results in YMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

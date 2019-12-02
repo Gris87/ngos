@@ -49,7 +49,7 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
                 "vcvtpd2qq  %%zmm1, %%zmm0"               // vcvtpd2qq  %zmm1, %zmm0        # Convert 8 doubles in ZMM1 to 8 quadwords in ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -61,7 +61,7 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
                 "vcvtps2qq  %%ymm1, %%zmm0"               // vcvtps2qq  %ymm1, %zmm0        # Convert 8 floats in YMM1 to 8 quadwords in ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (b)                           // 'm' - use memory
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -73,7 +73,7 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
                 "vcvtqq2pd  %%zmm1, %%zmm0"               // vcvtqq2pd  %zmm1, %zmm0        # Convert 8 quadwords in ZMM1 to 8 doubles in ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -85,7 +85,7 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
                 "vcvtqq2ps  %%zmm1, %%ymm0"               // vcvtqq2ps  %zmm1, %ymm0        # Convert 8 quadwords in ZMM1 to 8 floats in YMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -98,8 +98,8 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
                 "vpmullq    %%zmm2, %%zmm1, %%zmm0"       // vpmullq    %zmm2, %zmm1, %zmm0     # Multiply 8 quadwords in ZMM1 with 8 quadwords in ZMM2 and store results in ZMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

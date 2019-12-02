@@ -10,8 +10,8 @@
 class TestInteger: public TestBase
 {
 public:
-    TestInteger();
-    ~TestInteger();
+    TestInteger(); // TEST: NO
+    ~TestInteger(); // TEST: NO
 };
 
 

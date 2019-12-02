@@ -10,8 +10,8 @@
 class TestLogical: public TestBase
 {
 public:
-    TestLogical();
-    ~TestLogical();
+    TestLogical(); // TEST: NO
+    ~TestLogical(); // TEST: NO
 };
 
 

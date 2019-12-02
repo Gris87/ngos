@@ -66,8 +66,8 @@ void UEFI_API testAvx512BwProcedure(void *buffer)
                 "vpsllvw    %%zmm2, %%zmm1, %%zmm0"               // vpsllvw    %zmm2, %zmm1, %zmm0     # Shift left 32 words in ZMM1 with shift counts in ZMM2 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -80,8 +80,8 @@ void UEFI_API testAvx512BwProcedure(void *buffer)
                 "vpsrlvw    %%zmm2, %%zmm1, %%zmm0"               // vpsrlvw    %zmm2, %zmm1, %zmm0     # Shift right 32 words in ZMM1 with shift counts in ZMM2 and store results in ZMM0
                     :                                             // Output parameters
                     :                                             // Input parameters
-                        "m" (a),                                  // 'm' - use memory
-                        "m" (b)                                   // 'm' - use memory
+                        "m" (a),                                  // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                                   // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

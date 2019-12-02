@@ -35,6 +35,10 @@ enum class TestType: u8
 
 inline const char8* testTypeToString(TestType type) // TEST: NO
 {
+    // UEFI_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case TestType::INTEGER:  return "INTEGER";

@@ -872,8 +872,8 @@ NgosStatus TableWidget::setHighlightedRow(u64 row)
         {
             switch (previousRow->getState())
             {
-                case WidgetState::HOVERED:          COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
-                case WidgetState::FOCUSED_HOVERED:  COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::FOCUSED), NgosStatus::ASSERTION); break;
+                case WidgetState::HOVERED:          COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::NORMAL),   NgosStatus::ASSERTION); break;
+                case WidgetState::FOCUSED_HOVERED:  COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::FOCUSED),  NgosStatus::ASSERTION); break;
                 case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(previousRow->setState(WidgetState::INACTIVE), NgosStatus::ASSERTION); break;
 
                 case WidgetState::NONE:

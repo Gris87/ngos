@@ -50,8 +50,8 @@ void UEFI_API testSseProcedure(void *buffer)
                 "addps      %%xmm1, %%xmm0"               // addps      %xmm1, %xmm0        # Add in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -64,8 +64,8 @@ void UEFI_API testSseProcedure(void *buffer)
                 "divps      %%xmm1, %%xmm0"               // divps      %xmm1, %xmm0        # Divide in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -78,8 +78,8 @@ void UEFI_API testSseProcedure(void *buffer)
                 "maxps      %%xmm1, %%xmm0"               // maxps      %xmm1, %xmm0        # Get in parallel the maximum values in each pair of 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -92,8 +92,8 @@ void UEFI_API testSseProcedure(void *buffer)
                 "minps      %%xmm1, %%xmm0"               // minps      %xmm1, %xmm0        # Get in parallel the minimum values in each pair of 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -106,8 +106,8 @@ void UEFI_API testSseProcedure(void *buffer)
                 "mulps      %%xmm1, %%xmm0"               // mulps      %xmm1, %xmm0        # Multiply in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -119,7 +119,7 @@ void UEFI_API testSseProcedure(void *buffer)
                 "rcpps      %%xmm0, %%xmm0"               // rcpps      %xmm0, %xmm0        # Compute Reciprocal (1/A) in parallel for 4 floats in XMM0 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -131,7 +131,7 @@ void UEFI_API testSseProcedure(void *buffer)
                 "rsqrtps    %%xmm0, %%xmm0"               // rsqrtps    %xmm0, %xmm0        # Compute Reciprocal of Square Roots (1/sqrt(A)) in parallel for 4 floats in XMM0 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -143,7 +143,7 @@ void UEFI_API testSseProcedure(void *buffer)
                 "sqrtps     %%xmm0, %%xmm0"               // sqrtps     %xmm0, %xmm0        # Compute Square Roots in parallel for 4 floats in XMM0 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a)                           // 'm' - use memory
+                        "m" (a)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -156,8 +156,8 @@ void UEFI_API testSseProcedure(void *buffer)
                 "subps      %%xmm1, %%xmm0"               // subps      %xmm1, %xmm0        # Subtract in parallel 4 floats in XMM0 with 4 floats in XMM1 and store results in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

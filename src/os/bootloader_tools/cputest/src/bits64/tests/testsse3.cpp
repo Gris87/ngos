@@ -52,8 +52,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "addsubpd   %%xmm1, %%xmm0"               // addsubpd   %xmm1, %xmm0        # Add 2nd double of XMM0 with 2nd double of XMM1 and subtract 1st double of XMM0 with 1st double of XMM1. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -66,8 +66,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "addsubps   %%xmm1, %%xmm0"               // addsubps   %xmm1, %xmm0        # Add 2nd/4th float of XMM0 with 2nd/4th float of XMM1 and subtract 1st/3rd float of XMM0 with 1st/3rd float of XMM1. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (c),                          // 'm' - use memory
-                        "m" (d)                           // 'm' - use memory
+                        "m" (c),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (d)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -80,8 +80,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "haddpd     %%xmm1, %%xmm0"               // haddpd     %xmm1, %xmm0        # Add doubles from XMM0 with doubles from XMM1 horizontally in the following way: C[0] = A[0] + A[1]; C[1] = B[0] + B[1]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -94,8 +94,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "haddps     %%xmm1, %%xmm0"               // haddps     %xmm1, %xmm0        # Add floats from XMM0 with floats from XMM1 horizontally in the following way: C[0] = A[0] + A[1]; C[1] = A[2] + A[3]; C[2] = B[0] + B[1]; C[3] = B[2] + B[3]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (c),                          // 'm' - use memory
-                        "m" (d)                           // 'm' - use memory
+                        "m" (c),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (d)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -108,8 +108,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "hsubpd     %%xmm1, %%xmm0"               // hsubpd     %xmm1, %xmm0        # Subtract doubles from XMM0 with doubles from XMM1 horizontally in the following way: C[0] = A[0] - A[1]; C[1] = B[0] - B[1]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -122,8 +122,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "hsubps     %%xmm1, %%xmm0"               // hsubps     %xmm1, %xmm0        # Subtract floats from XMM0 with floats from XMM1 horizontally in the following way: C[0] = A[0] - A[1]; C[1] = A[2] - A[3]; C[2] = B[0] - B[1]; C[3] = B[2] - B[3]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (c),                          // 'm' - use memory
-                        "m" (d)                           // 'm' - use memory
+                        "m" (c),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (d)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -136,8 +136,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "phaddd     %%xmm1, %%xmm0"               // phaddd     %xmm1, %xmm0        # Add doublewords from XMM0 with doublewords from XMM1 horizontally in the following way: C[0] = A[0] + A[1]; C[1] = A[2] + A[3]; C[2] = B[0] + B[1]; C[3] = B[2] + B[3]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -150,8 +150,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "phaddw     %%xmm1, %%xmm0"               // phaddw     %xmm1, %xmm0        # Add words from XMM0 with words from XMM1 horizontally in the following way: C[0] = A[0] + A[1]; C[1] = A[2] + A[3]; ... ; C[7] = B[6] + B[7]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -164,8 +164,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "phsubd     %%xmm1, %%xmm0"               // phsubd     %xmm1, %xmm0        # Subtract doublewords from XMM0 with doublewords from XMM1 horizontally in the following way: C[0] = A[0] - A[1]; C[1] = A[2] - A[3]; C[2] = B[0] - B[1]; C[3] = B[2] - B[3]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
 
@@ -178,8 +178,8 @@ void UEFI_API testSse3Procedure(void *buffer)
                 "phsubw     %%xmm1, %%xmm0"               // phsubw     %xmm1, %xmm0        # Subtract words from XMM0 with words from XMM1 horizontally in the following way: C[0] = A[0] - A[1]; C[1] = A[2] - A[3]; ... ; C[7] = B[6] - B[7]. The results stored in XMM0
                     :                                     // Output parameters
                     :                                     // Input parameters
-                        "m" (a),                          // 'm' - use memory
-                        "m" (b)                           // 'm' - use memory
+                        "m" (a),                          // 'm' - use memory // Ignore CppSingleCharVerifier
+                        "m" (b)                           // 'm' - use memory // Ignore CppSingleCharVerifier
             );
             // Ignore CppAlignmentVerifier [END]
         }

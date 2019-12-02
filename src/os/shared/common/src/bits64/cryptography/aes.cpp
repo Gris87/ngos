@@ -5,12 +5,13 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
+#include <macro/utils.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
-#include <macro/utils.h>
 
 
 
+// Ignore CppAlignmentVerifier [BEGIN]
 #define __AES_KEY_EXPANSION(roundConstant, xmm1, xmm2, order) \
     "aeskeygenassist    $" #roundConstant ", %%" #xmm1 ", %%xmm2"   "\n\t"    /* aeskeygenassist    $0x01, %xmm1, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                                                                              \
                                                                     "\n\t"                                                                                                                                                                                                                                                                                                      \
@@ -32,8 +33,8 @@
     __AES_KEY_EXPANSION_128(roundConstant)                                                                                                                                                                                  \
                                                                         "\n\t"                                                                                                                                              \
     "aesimc     %%xmm1, %%xmm4"                                         "\n\t"    /* aesimc     %xmm1, %xmm4    # Perform the InvMixColumn transformation on a 128-bit round key from XMM1 and store the result in XMM4 */  \
-    "movaps     %%xmm1, " PP_STRINGIZE(round * 16)        "(%%rax)"     "\n\t"    /* movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey */                                                          \
-    "movaps     %%xmm4, " PP_STRINGIZE((10 - round) * 16) "(%%rbx)"     "\n\t"    /* movaps     %xmm4, (%rbx)   # Put content of XMM4 to 16 bytes of mDecodeKey */
+    "movaps     %%xmm1, " PP_STRINGIZE(round * 16)        "(%%rax)"     "\n\t"    /* movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey // Ignore CppShiftVerifier */                                                          \
+    "movaps     %%xmm4, " PP_STRINGIZE((10 - round) * 16) "(%%rbx)"     "\n\t"    /* movaps     %xmm4, (%rbx)   # Put content of XMM4 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */
 
 
 
@@ -86,9 +87,9 @@
 
 
 #define AES_DECODE_KEY_EXPANSION_192(round) \
-    "movaps     " PP_STRINGIZE((12 - round) * 16) "(%%rax), %%xmm0"     "\n\t"    /* movaps     (%rax), %xmm0   # Put 16 bytes from mEncodeKey to XMM0 */                                                                   \
+    "movaps     " PP_STRINGIZE((12 - round) * 16) "(%%rax), %%xmm0"     "\n\t"    /* movaps     (%rax), %xmm0   # Put 16 bytes from mEncodeKey to XMM0 // Ignore CppShiftVerifier */                                                                   \
     "aesimc     %%xmm0, %%xmm1"                                         "\n\t"    /* aesimc     %xmm0, %xmm1    # Perform the InvMixColumn transformation on a 128-bit round key from XMM0 and store the result in XMM1 */  \
-    "movaps     %%xmm1, " PP_STRINGIZE(round * 16) "(%%rbx)"            "\n\t"    /* movaps     %xmm1, (%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey */
+    "movaps     %%xmm1, " PP_STRINGIZE(round * 16) "(%%rbx)"            "\n\t"    /* movaps     %xmm1, (%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */
 
 
 
@@ -106,14 +107,14 @@
     __AES_KEY_EXPANSION_256_FOR_XMM1(roundConstant)                                                                                                                                                                                                                                                                                                                                             \
                                                                                     "\n\t"                                                                                                                                                                                                                                                                                                      \
     "aesimc             %%xmm1, %%xmm5"                                             "\n\t"    /* aesimc             %xmm1, %xmm5            # Perform the InvMixColumn transformation on a 128-bit round key from XMM1 and store the result in XMM5 */                                                                                                                                          \
-    "movaps             %%xmm1, " PP_STRINGIZE(round * 32)       "(%%rax)"          "\n\t"    /* movaps             %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey */                                                                                                                                                                                                  \
-    "movaps             %%xmm5, " PP_STRINGIZE((7 - round) * 32) "(%%rbx)"          "\n\t"    /* movaps             %xmm5, (%rbx)           # Put content of XMM5 to 16 bytes of mDecodeKey */                                                                                                                                                                                                  \
+    "movaps             %%xmm1, " PP_STRINGIZE(round * 32)       "(%%rax)"          "\n\t"    /* movaps             %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey // Ignore CppShiftVerifier */                                                                                                                                                                                                  \
+    "movaps             %%xmm5, " PP_STRINGIZE((7 - round) * 32) "(%%rbx)"          "\n\t"    /* movaps             %xmm5, (%rbx)           # Put content of XMM5 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */                                                                                                                                                                                                  \
                                                                                     "\n\t"                                                                                                                                                                                                                                                                                                      \
     __AES_KEY_EXPANSION_256_FOR_XMM4(roundConstant)                                                                                                                                                                                                                                                                                                                                             \
                                                                                     "\n\t"                                                                                                                                                                                                                                                                                                      \
     "aesimc             %%xmm4, %%xmm0"                                             "\n\t"    /* aesimc             %xmm4, %xmm0            # Perform the InvMixColumn transformation on a 128-bit round key from XMM4 and store the result in XMM0 */                                                                                                                                          \
-    "movaps             %%xmm4, " PP_STRINGIZE(round * 32 + 16)       "(%%rax)"     "\n\t"    /* movaps             %xmm4, 0x10(%rax)       # Put content of XMM4 to 16 bytes of mEncodeKey */                                                                                                                                                                                                  \
-    "movaps             %%xmm0, " PP_STRINGIZE((7 - round) * 32 - 16) "(%%rbx)"     "\n\t"    /* movaps             %xmm0, -0x10(%rbx)      # Put content of XMM0 to 16 bytes of mDecodeKey */
+    "movaps             %%xmm4, " PP_STRINGIZE(round * 32 + 16)       "(%%rax)"     "\n\t"    /* movaps             %xmm4, 0x10(%rax)       # Put content of XMM4 to 16 bytes of mEncodeKey // Ignore CppShiftVerifier */                                                                                                                                                                                                  \
+    "movaps             %%xmm0, " PP_STRINGIZE((7 - round) * 32 - 16) "(%%rbx)"     "\n\t"    /* movaps             %xmm0, -0x10(%rbx)      # Put content of XMM0 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */
 
 
 
@@ -126,7 +127,7 @@
 
 
 #define __AES_ENCODE_DECODE_ROUND(round) \
-    "movaps     " PP_STRINGIZE(round * 16) "(%%rax), %%xmm2"    "\n\t"    /* movaps     (%rax), %xmm2   # Put 16 bytes from mEncodeKey/mDecodeKey to XMM2 */
+    "movaps     " PP_STRINGIZE(round * 16) "(%%rax), %%xmm2"    "\n\t"    /* movaps     (%rax), %xmm2   # Put 16 bytes from mEncodeKey / mDecodeKey to XMM2 // Ignore CppShiftVerifier */
 
 
 
@@ -155,6 +156,7 @@
     __AES_ENCODE_DECODE_ROUND(round)                                                                                                                                                                                                                                \
                                         "\n\t"                                                                                                                                                                                                                      \
     "aesdeclast     %%xmm2, %%xmm1"     "\n\t"    /* aesdeclast     %xmm2, %xmm1    # Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
+// Ignore CppAlignmentVerifier [END]
 
 
 
@@ -199,15 +201,15 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
     COMMON_ASSERT_EXECUTION(releaseKey(), NgosStatus::ASSERTION);
 
-    switch (size * 8)
+    switch (size << 3) // "<< 3" == "* 8"
     {
         case 128:
         {
             mEncodeBlockFunction = &AES::encodeBlock128;
             mDecodeBlockFunction = &AES::decodeBlock128;
 
-            mEncodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned
-            mDecodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned
+            mEncodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
+            mDecodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
@@ -221,8 +223,8 @@ NgosStatus AES::setKey(u8 *key, u8 size)
             mEncodeBlockFunction = &AES::encodeBlock192;
             mDecodeBlockFunction = &AES::decodeBlock192;
 
-            mEncodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned
-            mDecodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned
+            mEncodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
+            mDecodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
@@ -236,8 +238,8 @@ NgosStatus AES::setKey(u8 *key, u8 size)
             mEncodeBlockFunction = &AES::encodeBlock256;
             mDecodeBlockFunction = &AES::decodeBlock256;
 
-            mEncodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned
-            mDecodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned
+            mEncodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
+            mDecodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
@@ -439,9 +441,9 @@ NgosStatus AES::expandKey128(u8 *key)
                 AES_KEY_EXPANSION_128_LAST(0x36)              // Round 10
             :                                                 // Output parameters
             :                                                 // Input parameters
-                "m" (*key),                                   // 'm' - use memory
-                "a" (mEncodeKey),                             // 'a' - RAX
-                "b" (mDecodeKey)                              // 'b' - RBX
+                "m" (*key),                                   // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier
+                "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -496,10 +498,10 @@ NgosStatus AES::expandKey192(u8 *key)
                 AES_DECODE_KEY_EXPANSION_192(11)              // Round 11
             :                                                 // Output parameters
             :                                                 // Input parameters
-                "m" (key[16]),                                // 'm' - use memory
-                "m" (key[0]),                                 // 'm' - use memory
-                "a" (mEncodeKey),                             // 'a' - RAX
-                "b" (mDecodeKey)                              // 'b' - RBX
+                "m" (key[16]),                                // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (key[0]),                                 // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier
+                "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -540,10 +542,10 @@ NgosStatus AES::expandKey256(u8 *key)
                 AES_KEY_EXPANSION_256_LAST(0x40)              // Round 7
             :                                                 // Output parameters
             :                                                 // Input parameters
-                "m" (key[0]),                                 // 'm' - use memory
-                "m" (key[16]),                                // 'm' - use memory
-                "a" (mEncodeKey),                             // 'a' - RAX
-                "b" (mDecodeKey)                              // 'b' - RBX
+                "m" (key[0]),                                 // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (key[16]),                                // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier
+                "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -582,9 +584,9 @@ NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
         "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
             :                                     // Output parameters
             :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory
-                "m" (*destinationAddress),        // 'm' - use memory
-                "a" (mEncodeKey)                  // 'a' - RAX
+                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -625,9 +627,9 @@ NgosStatus AES::encodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
         "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
             :                                     // Output parameters
             :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory
-                "m" (*destinationAddress),        // 'm' - use memory
-                "a" (mEncodeKey)                  // 'a' - RAX
+                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -670,9 +672,9 @@ NgosStatus AES::encodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
         "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
             :                                     // Output parameters
             :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory
-                "m" (*destinationAddress),        // 'm' - use memory
-                "a" (mEncodeKey)                  // 'a' - RAX
+                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -711,9 +713,9 @@ NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
         "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
             :                                     // Output parameters
             :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory
-                "m" (*destinationAddress),        // 'm' - use memory
-                "a" (mDecodeKey)                  // 'a' - RAX
+                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -754,9 +756,9 @@ NgosStatus AES::decodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
         "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
             :                                     // Output parameters
             :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory
-                "m" (*destinationAddress),        // 'm' - use memory
-                "a" (mDecodeKey)                  // 'a' - RAX
+                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -799,9 +801,9 @@ NgosStatus AES::decodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
         "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
             :                                     // Output parameters
             :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory
-                "m" (*destinationAddress),        // 'm' - use memory
-                "a" (mDecodeKey)                  // 'a' - RAX
+                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
+                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
+                "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
     );
     // Ignore CppAlignmentVerifier [END]
 
