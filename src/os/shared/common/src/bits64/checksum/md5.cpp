@@ -64,7 +64,7 @@ inline u32 rotateLeft(u32 x, u8 n)
 {
     // COMMON_LT((" | x = %u, n = %d", x, n)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(n <= 32, "n is invalid", 0);
+    COMMON_ASSERT(n > 0 && n < 32, "n is invalid", 0);
 
 
 
@@ -301,76 +301,76 @@ NgosStatus MD5::transform(u8 *block)
 
 
     // Round 1
-    FF(a, b, c, d, x[0],  S11, 0XD76AA478); // 1
-    FF(d, a, b, c, x[1],  S12, 0XE8C7B756); // 2
-    FF(c, d, a, b, x[2],  S13, 0X242070DB); // 3
-    FF(b, c, d, a, x[3],  S14, 0XC1BDCEEE); // 4
-    FF(a, b, c, d, x[4],  S11, 0XF57C0FAF); // 5
-    FF(d, a, b, c, x[5],  S12, 0X4787C62A); // 6
-    FF(c, d, a, b, x[6],  S13, 0XA8304613); // 7
-    FF(b, c, d, a, x[7],  S14, 0XFD469501); // 8
-    FF(a, b, c, d, x[8],  S11, 0X698098D8); // 9
-    FF(d, a, b, c, x[9],  S12, 0X8B44F7AF); // 10
-    FF(c, d, a, b, x[10], S13, 0XFFFF5BB1); // 11
-    FF(b, c, d, a, x[11], S14, 0X895CD7BE); // 12
-    FF(a, b, c, d, x[12], S11, 0X6B901122); // 13
-    FF(d, a, b, c, x[13], S12, 0XFD987193); // 14
-    FF(c, d, a, b, x[14], S13, 0XA679438E); // 15
-    FF(b, c, d, a, x[15], S14, 0X49B40821); // 16
+    FF(a, b, c, d, x[0],  S11, 0xD76AA478); // 1
+    FF(d, a, b, c, x[1],  S12, 0xE8C7B756); // 2
+    FF(c, d, a, b, x[2],  S13, 0x242070DB); // 3
+    FF(b, c, d, a, x[3],  S14, 0xC1BDCEEE); // 4
+    FF(a, b, c, d, x[4],  S11, 0xF57C0FAF); // 5
+    FF(d, a, b, c, x[5],  S12, 0x4787C62A); // 6
+    FF(c, d, a, b, x[6],  S13, 0xA8304613); // 7
+    FF(b, c, d, a, x[7],  S14, 0xFD469501); // 8
+    FF(a, b, c, d, x[8],  S11, 0x698098D8); // 9
+    FF(d, a, b, c, x[9],  S12, 0x8B44F7AF); // 10
+    FF(c, d, a, b, x[10], S13, 0xFFFF5BB1); // 11
+    FF(b, c, d, a, x[11], S14, 0x895CD7BE); // 12
+    FF(a, b, c, d, x[12], S11, 0x6B901122); // 13
+    FF(d, a, b, c, x[13], S12, 0xFD987193); // 14
+    FF(c, d, a, b, x[14], S13, 0xA679438E); // 15
+    FF(b, c, d, a, x[15], S14, 0x49B40821); // 16
 
     // Round 2
-    GG(a, b, c, d, x[1],  S21, 0XF61E2562); // 17
-    GG(d, a, b, c, x[6],  S22, 0XC040B340); // 18
-    GG(c, d, a, b, x[11], S23, 0X265E5A51); // 19
-    GG(b, c, d, a, x[0],  S24, 0XE9B6C7AA); // 20
-    GG(a, b, c, d, x[5],  S21, 0XD62F105D); // 21
-    GG(d, a, b, c, x[10], S22, 0X02441453); // 22
-    GG(c, d, a, b, x[15], S23, 0XD8A1E681); // 23
-    GG(b, c, d, a, x[4],  S24, 0XE7D3FBC8); // 24
-    GG(a, b, c, d, x[9],  S21, 0X21E1CDE6); // 25
-    GG(d, a, b, c, x[14], S22, 0XC33707D6); // 26
-    GG(c, d, a, b, x[3],  S23, 0XF4D50D87); // 27
-    GG(b, c, d, a, x[8],  S24, 0X455A14ED); // 28
-    GG(a, b, c, d, x[13], S21, 0XA9E3E905); // 29
-    GG(d, a, b, c, x[2],  S22, 0XFCEFA3F8); // 30
-    GG(c, d, a, b, x[7],  S23, 0X676F02D9); // 31
-    GG(b, c, d, a, x[12], S24, 0X8D2A4C8A); // 32
+    GG(a, b, c, d, x[1],  S21, 0xF61E2562); // 17
+    GG(d, a, b, c, x[6],  S22, 0xC040B340); // 18
+    GG(c, d, a, b, x[11], S23, 0x265E5A51); // 19
+    GG(b, c, d, a, x[0],  S24, 0xE9B6C7AA); // 20
+    GG(a, b, c, d, x[5],  S21, 0xD62F105D); // 21
+    GG(d, a, b, c, x[10], S22, 0x02441453); // 22
+    GG(c, d, a, b, x[15], S23, 0xD8A1E681); // 23
+    GG(b, c, d, a, x[4],  S24, 0xE7D3FBC8); // 24
+    GG(a, b, c, d, x[9],  S21, 0x21E1CDE6); // 25
+    GG(d, a, b, c, x[14], S22, 0xC33707D6); // 26
+    GG(c, d, a, b, x[3],  S23, 0xF4D50D87); // 27
+    GG(b, c, d, a, x[8],  S24, 0x455A14ED); // 28
+    GG(a, b, c, d, x[13], S21, 0xA9E3E905); // 29
+    GG(d, a, b, c, x[2],  S22, 0xFCEFA3F8); // 30
+    GG(c, d, a, b, x[7],  S23, 0x676F02D9); // 31
+    GG(b, c, d, a, x[12], S24, 0x8D2A4C8A); // 32
 
     // Round 3
-    HH(a, b, c, d, x[5],  S31, 0XFFFA3942); // 33
-    HH(d, a, b, c, x[8],  S32, 0X8771F681); // 34
-    HH(c, d, a, b, x[11], S33, 0X6D9D6122); // 35
-    HH(b, c, d, a, x[14], S34, 0XFDE5380C); // 36
-    HH(a, b, c, d, x[1],  S31, 0XA4BEEA44); // 37
-    HH(d, a, b, c, x[4],  S32, 0X4BDECFA9); // 38
-    HH(c, d, a, b, x[7],  S33, 0XF6BB4B60); // 39
-    HH(b, c, d, a, x[10], S34, 0XBEBFBC70); // 40
-    HH(a, b, c, d, x[13], S31, 0X289B7EC6); // 41
-    HH(d, a, b, c, x[0],  S32, 0XEAA127FA); // 42
-    HH(c, d, a, b, x[3],  S33, 0XD4EF3085); // 43
-    HH(b, c, d, a, x[6],  S34, 0X04881D05); // 44
-    HH(a, b, c, d, x[9],  S31, 0XD9D4D039); // 45
-    HH(d, a, b, c, x[12], S32, 0XE6DB99E5); // 46
-    HH(c, d, a, b, x[15], S33, 0X1FA27CF8); // 47
-    HH(b, c, d, a, x[2],  S34, 0XC4AC5665); // 48
+    HH(a, b, c, d, x[5],  S31, 0xFFFA3942); // 33
+    HH(d, a, b, c, x[8],  S32, 0x8771F681); // 34
+    HH(c, d, a, b, x[11], S33, 0x6D9D6122); // 35
+    HH(b, c, d, a, x[14], S34, 0xFDE5380C); // 36
+    HH(a, b, c, d, x[1],  S31, 0xA4BEEA44); // 37
+    HH(d, a, b, c, x[4],  S32, 0x4BDECFA9); // 38
+    HH(c, d, a, b, x[7],  S33, 0xF6BB4B60); // 39
+    HH(b, c, d, a, x[10], S34, 0xBEBFBC70); // 40
+    HH(a, b, c, d, x[13], S31, 0x289B7EC6); // 41
+    HH(d, a, b, c, x[0],  S32, 0xEAA127FA); // 42
+    HH(c, d, a, b, x[3],  S33, 0xD4EF3085); // 43
+    HH(b, c, d, a, x[6],  S34, 0x04881D05); // 44
+    HH(a, b, c, d, x[9],  S31, 0xD9D4D039); // 45
+    HH(d, a, b, c, x[12], S32, 0xE6DB99E5); // 46
+    HH(c, d, a, b, x[15], S33, 0x1FA27CF8); // 47
+    HH(b, c, d, a, x[2],  S34, 0xC4AC5665); // 48
 
     // Round 4
-    II(a, b, c, d, x[0],  S41, 0XF4292244); // 49
-    II(d, a, b, c, x[7],  S42, 0X432AFF97); // 50
-    II(c, d, a, b, x[14], S43, 0XAB9423A7); // 51
-    II(b, c, d, a, x[5],  S44, 0XFC93A039); // 52
-    II(a, b, c, d, x[12], S41, 0X655B59C3); // 53
-    II(d, a, b, c, x[3],  S42, 0X8F0CCC92); // 54
-    II(c, d, a, b, x[10], S43, 0XFFEFF47D); // 55
-    II(b, c, d, a, x[1],  S44, 0X85845DD1); // 56
-    II(a, b, c, d, x[8],  S41, 0X6FA87E4F); // 57
-    II(d, a, b, c, x[15], S42, 0XFE2CE6E0); // 58
-    II(c, d, a, b, x[6],  S43, 0XA3014314); // 59
-    II(b, c, d, a, x[13], S44, 0X4E0811A1); // 60
-    II(a, b, c, d, x[4],  S41, 0XF7537E82); // 61
-    II(d, a, b, c, x[11], S42, 0XBD3AF235); // 62
-    II(c, d, a, b, x[2],  S43, 0X2AD7D2BB); // 63
-    II(b, c, d, a, x[9],  S44, 0XEB86D391); // 64
+    II(a, b, c, d, x[0],  S41, 0xF4292244); // 49
+    II(d, a, b, c, x[7],  S42, 0x432AFF97); // 50
+    II(c, d, a, b, x[14], S43, 0xAB9423A7); // 51
+    II(b, c, d, a, x[5],  S44, 0xFC93A039); // 52
+    II(a, b, c, d, x[12], S41, 0x655B59C3); // 53
+    II(d, a, b, c, x[3],  S42, 0x8F0CCC92); // 54
+    II(c, d, a, b, x[10], S43, 0xFFEFF47D); // 55
+    II(b, c, d, a, x[1],  S44, 0x85845DD1); // 56
+    II(a, b, c, d, x[8],  S41, 0x6FA87E4F); // 57
+    II(d, a, b, c, x[15], S42, 0xFE2CE6E0); // 58
+    II(c, d, a, b, x[6],  S43, 0xA3014314); // 59
+    II(b, c, d, a, x[13], S44, 0x4E0811A1); // 60
+    II(a, b, c, d, x[4],  S41, 0xF7537E82); // 61
+    II(d, a, b, c, x[11], S42, 0xBD3AF235); // 62
+    II(c, d, a, b, x[2],  S43, 0x2AD7D2BB); // 63
+    II(b, c, d, a, x[9],  S44, 0xEB86D391); // 64
 
 
 
