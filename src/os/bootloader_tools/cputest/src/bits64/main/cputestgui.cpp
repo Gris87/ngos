@@ -2035,7 +2035,7 @@ NgosStatus CpuTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInput
 
     switch (key.unicodeChar)
     {
-        case KEY_TAB: return GUI::setFocusedWidget(sTestTabButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sIssuesTabButton);
 
         default:
         {

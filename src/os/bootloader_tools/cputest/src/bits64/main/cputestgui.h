@@ -28,6 +28,8 @@ public:
     {
         // UEFI_LT(("")); // Commented to avoid bad looking logs
 
+
+
         return sTerminated;
     }
 
