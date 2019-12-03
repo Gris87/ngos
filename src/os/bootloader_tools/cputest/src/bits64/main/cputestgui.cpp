@@ -1167,109 +1167,109 @@ NgosStatus CpuTestGUI::fillIssuesTable()
 
     if (!CPU::hasFlag(X86Feature::CPUID))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CPUID required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CPUID highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::FPU))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FPU required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FPU highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::LM))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LM required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LM highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::MSR))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support MSR required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support MSR highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::PAE))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support PAE required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support PAE highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::NX))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support NX required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support NX highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::TSC))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support TSC required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support TSC highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::FXSR))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FXSR required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FXSR highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::XSAVE))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support XSAVE required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support XSAVE highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::AES))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AES required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AES highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::CX8))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CX8 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CX8 highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::CMOV))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CMOV required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CMOV highly required"), NgosStatus::ASSERTION);
     }
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
     if (!CPU::hasFlag(X86Feature::LA57))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LA57 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LA57 highly required"), NgosStatus::ASSERTION);
     }
 #endif
 
     if (!CPU::hasFlag(X86Feature::XMM))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::XMM2))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE2 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE2 highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::XMM3))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE3 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE3 highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::SSSE3))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSSE3 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSSE3 highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::XMM4_1))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.1 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.1 highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::XMM4_2))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.2 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.2 highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::AVX))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::AVX2))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX2 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX2 highly required"), NgosStatus::ASSERTION);
     }
 
     if (!CPU::hasFlag(X86Feature::AVX512F))
@@ -1279,7 +1279,7 @@ NgosStatus CpuTestGUI::fillIssuesTable()
 
     if (!CPU::hasFlag(X86Feature::FMA))
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FMA3 required for NGOS"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FMA3 highly required"), NgosStatus::ASSERTION);
     }
 
 
