@@ -488,6 +488,22 @@ NgosStatus CPU::check(const char8 **wantedFlag)
 
 
 
+    if (isOutdated())
+    {
+        return NgosStatus::NOT_SUPPORTED;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+bool CPU::isOutdated()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
     switch (sCpuVendor)
     {
         case CpuVendor::INTEL:
@@ -498,7 +514,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
                 sModel < INTEL_MINIMAL_MODEL
                )
             {
-                return NgosStatus::NOT_SUPPORTED;
+                return true;
             }
         }
         break;
@@ -515,7 +531,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
                 )
                )
             {
-                return NgosStatus::NOT_SUPPORTED;
+                return true;
             }
         }
         break;
@@ -525,7 +541,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
         {
             COMMON_LF(("Unexpected CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
 
-            return NgosStatus::NOT_SUPPORTED;
+            return true;
         }
         break;
 
@@ -533,14 +549,14 @@ NgosStatus CPU::check(const char8 **wantedFlag)
         {
             COMMON_LF(("Unknown CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
 
-            return NgosStatus::NOT_SUPPORTED;
+            return true;
         }
         break;
     }
 
 
 
-    return NgosStatus::OK;
+    return false;
 }
 
 CpuVendor CPU::getVendor()

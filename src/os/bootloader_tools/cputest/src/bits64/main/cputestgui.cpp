@@ -30,7 +30,7 @@
 
 #define TABWIDGET_HEIGHT_PERCENT 70
 
-#define TAB_BUTTON_WIDTH_PERCENT  25
+#define TAB_BUTTON_WIDTH_PERCENT  20
 #define TAB_BUTTON_HEIGHT_PERCENT 6
 
 #define TAB_PAGE_PROPORTION 2
@@ -124,6 +124,15 @@
 #define CPU_CACHE_L3_TEXT_WIDTH_PERCENT      94
 #define CPU_CACHE_L3_TEXT_HEIGHT_PERCENT     17
 
+#define ISSUES_TABLEWIDGET_POSITION_X_PERCENT 1
+#define ISSUES_TABLEWIDGET_POSITION_Y_PERCENT 1
+#define ISSUES_TABLEWIDGET_WIDTH_PERCENT      98
+#define ISSUES_TABLEWIDGET_HEIGHT_PERCENT     98
+#define ISSUES_TABLEWIDGET_ROW_HEIGHT_PERCENT 7
+
+#define ISSUES_COLUMN_ICON_WIDTH_PERCENT        4
+#define ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT 96
+
 #define START_BUTTON_POSITION_X_PERCENT 1
 #define START_BUTTON_POSITION_Y_PERCENT 0
 #define START_BUTTON_WIDTH_PERCENT      20
@@ -161,11 +170,15 @@
 #define CURSOR_SIZE_PERCENT        2
 
 #define TABWIDGET_PAGE_SYSTEM_INFORMATION 0
-#define TABWIDGET_PAGE_TEST               1
-#define TABWIDGET_PAGE_SUMMARY            2
+#define TABWIDGET_PAGE_ISSUES             1
+#define TABWIDGET_PAGE_TEST               2
+#define TABWIDGET_PAGE_SUMMARY            3
 
 #define COLUMN_NAME  0
 #define COLUMN_SCORE 1
+
+#define COLUMN_ICON        0
+#define COLUMN_DESCRIPTION 1
 
 #define SCORE_PER_THREAD                          500
 #define SCORE_PER_100_MHZ                         200
@@ -180,8 +193,12 @@ Button                 *CpuTestGUI::sRebootButton;
 Button                 *CpuTestGUI::sShutdownButton;
 TabWidget              *CpuTestGUI::sTabWidget;
 TabButton              *CpuTestGUI::sSystemInformationTabButton;
+TabButton              *CpuTestGUI::sIssuesTabButton;
 TabButton              *CpuTestGUI::sTestTabButton;
 TabButton              *CpuTestGUI::sSummaryTabButton;
+Image                  *CpuTestGUI::sWarningImage;
+Image                  *CpuTestGUI::sCriticalImage;
+TableWidget            *CpuTestGUI::sIssuesTableWidget;
 Button                 *CpuTestGUI::sStartButton;
 Image                  *CpuTestGUI::sStartImage;
 Image                  *CpuTestGUI::sStopImage;
@@ -302,6 +319,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     Image *selectedTabFocusedHoverResizedImage;
     Image *tabWidgetPanelImage;
     Image *systemInformationImage;
+    Image *issuesImage;
     Image *testImage;
     Image *summaryImage;
     Image *cpuImage;
@@ -334,6 +352,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/selectedtab_focused_hover.9.png", &selectedTabFocusedHoverImage), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tabwidget_panel.9.png",           &tabWidgetPanelImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",          &systemInformationImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/issues.png",                      &issuesImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/test.png",                        &testImage),                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/summary.png",                     &summaryImage),                 NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cpu.png",                         &cpuImage),                     NgosStatus::ASSERTION);
@@ -344,6 +363,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",                    &shutdownImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/warning.png",                     &sWarningImage),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/critical.png",                    &sCriticalImage),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/start.png",                       &sStartImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &sStopImage),                   NgosStatus::ASSERTION);
 
@@ -456,6 +477,15 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setKeyboardEventHandler(onSystemInformationTabButtonKeyboardEvent), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setPressEventHandler(onSystemInformationTabButtonPressed),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabButton(sSystemInformationTabButton),                                           NgosStatus::ASSERTION);
+
+
+
+    sIssuesTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, issuesImage, nullptr, "Issues     ", sTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTabButton->setSize(tabButtonWidth, tabButtonHeight),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTabButton->setKeyboardEventHandler(onIssuesTabButtonKeyboardEvent), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTabButton->setPressEventHandler(onIssuesTabButtonPressed),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->addTabButton(sIssuesTabButton),                                NgosStatus::ASSERTION);
 
 
 
@@ -735,6 +765,41 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(cpuLevel3CacheLabelWidget->setPosition(cpuCacheWidth * CPU_CACHE_L3_TEXT_POSITION_X_PERCENT / 100, cpuCacheHeight * CPU_CACHE_L3_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(cpuLevel3CacheLabelWidget->setSize(cpuCacheWidth     * CPU_CACHE_L3_TEXT_WIDTH_PERCENT      / 100, cpuCacheHeight * CPU_CACHE_L3_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    TabPageWidget *issuesTabPageWidget = new TabPageWidget(sTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(issuesTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    u64 issuesTableWidth  = tabPageWidth  * ISSUES_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    u64 issuesTableHeight = tabPageHeight * ISSUES_TABLEWIDGET_HEIGHT_PERCENT / 100;
+
+
+
+    sIssuesTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, issuesTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setPosition(tabPageWidth * ISSUES_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * ISSUES_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setSize(issuesTableWidth, issuesTableHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setKeyboardEventHandler(onIssuesTableWidgetKeyboardEvent),                                                                             NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowHeight(tabPageHeight * ISSUES_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_ICON,        issuesTableWidth * ISSUES_COLUMN_ICON_WIDTH_PERCENT        / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_DESCRIPTION, issuesTableWidth * ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_ICON,        ""),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_DESCRIPTION, "Description"), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(fillIssuesTable(), NgosStatus::ASSERTION);
 
 
 
@@ -1056,6 +1121,192 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPosition
     return NgosStatus::OK;
 }
 
+NgosStatus CpuTestGUI::addIssueEntry(Image *icon, const char8 *description)
+{
+    UEFI_LT((" | icon = 0x%p, description = 0x%p", icon, description));
+
+    UEFI_ASSERT(description, "description is null", NgosStatus::ASSERTION);
+
+
+
+    RgbaPixel blackColor;
+
+    blackColor.red   = 0;
+    blackColor.green = 0;
+    blackColor.blue  = 0;
+    blackColor.alpha = 0xFF;
+
+
+
+    u64 row = sIssuesTableWidget->getRowCount();
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
+
+
+
+    if (icon)
+    {
+        ImageWidget *iconImageWidget = new ImageWidget(icon, sIssuesTableWidget);
+        UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_ICON, iconImageWidget), NgosStatus::ASSERTION);
+    }
+
+    LabelWidget *descriptionLabelWidget = new LabelWidget(description, sIssuesTableWidget);
+    UEFI_ASSERT_EXECUTION(descriptionLabelWidget->setColor(blackColor),                                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_DESCRIPTION, descriptionLabelWidget), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::fillIssuesTable()
+{
+    UEFI_LT((""));
+
+
+
+    if (!CPU::hasFlag(X86Feature::CPUID))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CPUID required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::FPU))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FPU required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::LM))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LM required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::MSR))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support MSR required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::PAE))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support PAE required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::NX))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support NX required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::TSC))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support TSC required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::FXSR))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FXSR required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::XSAVE))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support XSAVE required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::AES))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AES required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::CX8))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CX8 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::CMOV))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CMOV required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+#if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
+    if (!CPU::hasFlag(X86Feature::LA57))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LA57 required for NGOS"), NgosStatus::ASSERTION);
+    }
+#endif
+
+    if (!CPU::hasFlag(X86Feature::XMM))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::XMM2))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE2 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::XMM3))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE3 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::SSSE3))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSSE3 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::XMM4_1))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.1 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::XMM4_2))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.2 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::AVX))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::AVX2))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX2 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::AVX512F))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "CPU doesn't support AVX512F for best performance"), NgosStatus::ASSERTION);
+    }
+
+    if (!CPU::hasFlag(X86Feature::FMA))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FMA3 required for NGOS"), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (CPU::isOutdated())
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "Your CPU is already outdated. Please upgrade your hardware"), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (!sIssuesTableWidget->getRowCount()) // sIssuesTableWidget->getRowCount() == 0
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "Everything is OK"), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, ""),                                                   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "We recommend Intel Core i9-10980XE Extreme Edition"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "or AMD Ryzen Threadripper 3990X or newer"),           NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus CpuTestGUI::addTestEntry(const char8 *name, const char8 *score)
 {
     UEFI_LT((" | name = 0x%p, score = 0x%p", name, score));
@@ -1258,6 +1509,7 @@ NgosStatus CpuTestGUI::focusTabFirstWidget()
     switch (sTabWidget->getCurrentPage())
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return NgosStatus::NO_EFFECT;
+        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
         case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sStartButton);
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
@@ -1769,6 +2021,43 @@ NgosStatus CpuTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInput
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sIssuesTabButton);
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sTestTabButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus CpuTestGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sTestTabButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
@@ -1805,7 +2094,7 @@ NgosStatus CpuTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sSummaryTabButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
@@ -1858,6 +2147,41 @@ NgosStatus CpuTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.unicodeChar)
     {
         case KEY_TAB: return focusTabFirstWidget();
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus CpuTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP: return (!sIssuesTableWidget->getSelectedRow()) ? GUI::setFocusedWidget(sIssuesTabButton) : NgosStatus::NO_EFFECT; // sIssuesTableWidget->getSelectedRow() == 0
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -2012,6 +2336,19 @@ NgosStatus CpuTestGUI::onSystemInformationTabButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SYSTEM_INFORMATION), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::onIssuesTabButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_ISSUES), NgosStatus::ASSERTION);
 
 
 

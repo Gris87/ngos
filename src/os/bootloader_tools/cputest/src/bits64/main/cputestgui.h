@@ -33,6 +33,8 @@ public:
 
 private:
     static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
+    static NgosStatus addIssueEntry(Image *icon, const char8 *description); // TEST: NO
+    static NgosStatus fillIssuesTable(); // TEST: NO
     static NgosStatus addTestEntry(const char8 *name, const char8 *score); // TEST: NO
     static NgosStatus addTestEntry(); // TEST: NO
     static NgosStatus putTestScore(); // TEST: NO
@@ -52,8 +54,10 @@ private:
     static NgosStatus onRebootButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onShutdownButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onIssuesTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onStartButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
@@ -61,6 +65,7 @@ private:
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
     static NgosStatus onSystemInformationTabButtonPressed(); // TEST: NO
+    static NgosStatus onIssuesTabButtonPressed(); // TEST: NO
     static NgosStatus onTestTabButtonPressed(); // TEST: NO
     static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
     static NgosStatus onStartButtonPressed(); // TEST: NO
@@ -69,8 +74,12 @@ private:
     static Button                 *sShutdownButton;
     static TabWidget              *sTabWidget;
     static TabButton              *sSystemInformationTabButton;
+    static TabButton              *sIssuesTabButton;
     static TabButton              *sTestTabButton;
     static TabButton              *sSummaryTabButton;
+    static Image                  *sWarningImage;
+    static Image                  *sCriticalImage;
+    static TableWidget            *sIssuesTableWidget;
     static Button                 *sStartButton;
     static Image                  *sStartImage;
     static Image                  *sStopImage;
