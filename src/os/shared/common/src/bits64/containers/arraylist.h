@@ -122,6 +122,9 @@ NgosStatus ArrayList<T>::clear()
 
     if (mValues)
     {
+        COMMON_TEST_ASSERT(mCapacity > 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSize     > 0, NgosStatus::ASSERTION);
+
         COMMON_ASSERT_EXECUTION(free(mValues), NgosStatus::ASSERTION);
 
         mCapacity = 0;

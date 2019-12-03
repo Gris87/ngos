@@ -8,6 +8,7 @@ NGOS:
 - Replace zeros with nullptr
 - Bool to string
 - Centralize CPUID like in edk2
+- Check for asm volatile
 
 - Complete with interruptions
 - Implement boot screen for kernel
@@ -40,6 +41,7 @@ Code verifier:
 - Upgrade verifier for trace arguments (Check format with the types)
 - Verify for `;;` or `\n;`
 - Verify for `// `
+- Verify for spaces in `{ 5, 4 }`
 
 
 
@@ -55,7 +57,7 @@ Docs verifier:
 
 Tests verifier:
 
-- ...
+- Missing tests for `operator[]()`
 
 
 
