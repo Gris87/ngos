@@ -11,6 +11,10 @@
 
 
 
+#define HARDWARE_ID_LENGTH 512
+
+
+
 struct BootParams
 {
     BootParamsHeader             header;
@@ -20,6 +24,7 @@ struct BootParams
     PciRomImageWithInfo         *pciRomImages;
     u64                          memoryMapEntriesCount;
     MemoryMapEntry              *memoryMapEntries;
+    char8                        hardwareId[HARDWARE_ID_LENGTH];
 };
 
 

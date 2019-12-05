@@ -16,14 +16,18 @@ NgosStatus setupBootParams(BootParams **params, u64 kernelLocation)
 
 
 
-    if (UEFI::lowAlloc(sizeof(BootParams), 1, (void **)params) != UefiStatus::SUCCESS)
+    u64 size = sizeof(BootParams);
+
+
+
+    if (UEFI::lowAlloc(size, 1, (void **)params) != UefiStatus::SUCCESS)
     {
-        UEFI_LF(("Failed to allocate space(%u) for boot parameters", sizeof(BootParams)));
+        UEFI_LF(("Failed to allocate space(%u) for boot parameters", size));
 
         return NgosStatus::FAILED;
     }
 
-    UEFI_LVV(("Boot parameters allocated in space(0x%p, %u)", *params, sizeof(BootParams)));
+    UEFI_LVV(("Boot parameters allocated in space(0x%p, %u)", *params, size));
 
 
 

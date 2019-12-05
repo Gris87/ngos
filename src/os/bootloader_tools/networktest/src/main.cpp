@@ -8,6 +8,7 @@
 #include <uefibase/src/bits64/main/setupbootparams.h>
 #include <uefibase/src/bits64/main/setupdynamicrelocation.h>
 #include <uefibase/src/bits64/main/setupgraphics.h>
+#include <uefibase/src/bits64/main/setuphardwareid.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
@@ -104,6 +105,17 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
     }
 
     UEFI_LI(("Setup graphics completed"));
+
+
+
+    if (setupHardwareId(&params) != NgosStatus::OK)
+    {
+        UEFI_LF(("Failed to setup hardware ID"));
+
+        return UefiStatus::ABORTED;
+    }
+
+    UEFI_LI(("Setup hardware ID completed"));
 
 
 

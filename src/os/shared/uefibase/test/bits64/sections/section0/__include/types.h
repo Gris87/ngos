@@ -133,7 +133,7 @@ TEST_CASES(section0, __include_types);
     TEST_CASE("Size of structures");
     {
         TEST_ASSERT_EQUALS(sizeof(BitUtils),                                     1);
-        TEST_ASSERT_EQUALS(sizeof(BootParams),                                   112);
+        TEST_ASSERT_EQUALS(sizeof(BootParams),                                   624);
         TEST_ASSERT_EQUALS(sizeof(BootParamsHeader),                             32);
         TEST_ASSERT_EQUALS(sizeof(ElfClass),                                     1);
         TEST_ASSERT_EQUALS(sizeof(ElfData),                                      1);

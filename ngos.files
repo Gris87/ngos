@@ -1079,6 +1079,8 @@ src/os/shared/uefibase/src/bits64/main/setupglobalobjects.cpp
 src/os/shared/uefibase/src/bits64/main/setupglobalobjects.h
 src/os/shared/uefibase/src/bits64/main/setupgraphics.cpp
 src/os/shared/uefibase/src/bits64/main/setupgraphics.h
+src/os/shared/uefibase/src/bits64/main/setuphardwareid.cpp
+src/os/shared/uefibase/src/bits64/main/setuphardwareid.h
 src/os/shared/uefibase/src/bits64/other/uefibootmemorymap.h
 src/os/shared/uefibase/src/bits64/uefi/uefi.cpp
 src/os/shared/uefibase/src/bits64/uefi/uefi.h
