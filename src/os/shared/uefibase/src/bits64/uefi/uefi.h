@@ -4,7 +4,6 @@
 
 
 #include <ngos/status.h>
-#include <uefibase/src/bits64/other/uefibootmemorymap.h>
 #include <uefi/config/uefismbios3configurationtable.h>
 #include <uefi/config/uefismbiosconfigurationtable.h>
 #include <uefi/types.h>
@@ -12,6 +11,7 @@
 #include <uefi/uefifileprotocol.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisystemtable.h>
+#include <uefibase/src/bits64/other/uefibootmemorymap.h>
 
 
 
