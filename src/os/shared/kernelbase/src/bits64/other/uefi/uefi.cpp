@@ -701,7 +701,7 @@ NgosStatus UEFI::initConfigurationTables()
 
     for (i64 i = 0; i < (i64)sSystemTable.numberOfConfigurationTables; ++i)
     {
-        COMMON_LVV(("Processing configuration table #%d {%08X-%04X-%04X-%02X%02X%02X%02X%02X%02X%02X%02X} at address 0x%p", i, configurationTables[i].vendorGuid.data1, configurationTables[i].vendorGuid.data2, configurationTables[i].vendorGuid.data3, configurationTables[i].vendorGuid.data4[0], configurationTables[i].vendorGuid.data4[1], configurationTables[i].vendorGuid.data4[2], configurationTables[i].vendorGuid.data4[3], configurationTables[i].vendorGuid.data4[4], configurationTables[i].vendorGuid.data4[5], configurationTables[i].vendorGuid.data4[6], configurationTables[i].vendorGuid.data4[7], configurationTables[i].vendorTable));
+        COMMON_LVV(("Processing configuration table #%d %s at address 0x%p", i, guidToString(configurationTables[i].vendorGuid), configurationTables[i].vendorTable));
 
 
 
@@ -825,7 +825,7 @@ NgosStatus UEFI::initConfigurationTables()
         }
         else
         {
-            COMMON_LW(("Unknown configuration table {%08X-%04X-%04X-%02X%02X%02X%02X%02X%02X%02X%02X}", configurationTables[i].vendorGuid.data1, configurationTables[i].vendorGuid.data2, configurationTables[i].vendorGuid.data3, configurationTables[i].vendorGuid.data4[0], configurationTables[i].vendorGuid.data4[1], configurationTables[i].vendorGuid.data4[2], configurationTables[i].vendorGuid.data4[3], configurationTables[i].vendorGuid.data4[4], configurationTables[i].vendorGuid.data4[5], configurationTables[i].vendorGuid.data4[6], configurationTables[i].vendorGuid.data4[7]));
+            COMMON_LW(("Unknown configuration table %s", guidToString(configurationTables[i].vendorGuid)));
         }
     }
 
