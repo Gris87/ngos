@@ -1,13 +1,13 @@
 #include "malloc.h"
 
-#if defined(UEFI_APPLICATION)                       // Defined in Makefile
-#include <uefibase/src/bits64/uefi/uefi.h>
-#endif
-
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
 #include <ngos/linkage.h>
+
+#if defined(UEFI_APPLICATION)                       // Defined in Makefile
+#include <uefibase/src/bits64/uefi/uefi.h>
+#endif
 
 
 
@@ -21,7 +21,7 @@ void* malloc(u64 size)
 
     void *res = nullptr;
 
-#if defined(UEFI_APPLICATION)
+#if defined(UEFI_APPLICATION) // Defined in Makefile
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, &res) != UefiStatus::SUCCESS)
     {
         COMMON_LF(("Failed to allocate pool(%u)", size));
@@ -47,7 +47,7 @@ NgosStatus free(void *address)
 
 
 
-#if defined(UEFI_APPLICATION)
+#if defined(UEFI_APPLICATION) // Defined in Makefile
     if (UEFI::freePool(address) == UefiStatus::SUCCESS)
     {
         COMMON_LVV(("Released pool(0x%p)", address));

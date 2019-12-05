@@ -93,7 +93,6 @@ HEADERS += \
     $$PWD/src/bits64/other/uefi/uefi.h \
     $$PWD/test/bits64/a_early/sections/section2/bits64/other/brk/brk.h \
     $$PWD/test/bits64/a_early/sections/section2/bits64/other/cpu/cpumask.h \
-    $$PWD/test/bits64/a_early/sections/section2/bits64/other/dmi/dmi.h \
     $$PWD/test/bits64/a_early/sections/section2/bits64/other/e820/e820.h \
     $$PWD/test/bits64/a_early/sections/section2/bits64/other/hypervisor/kvm/kvm.h \
     $$PWD/test/bits64/a_early/sections/section2/bits64/other/ioremap/ioremap.h \

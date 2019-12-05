@@ -25,6 +25,8 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     if (
         path.endsWith("src/os/include/uefi/uefivariableattributeflags.h")
         ||
+        path.endsWith("src/os/shared/common/src/bits64/dmi/dmi.cpp")
+        ||
         path.endsWith("src/os/shared/common/src/bits64/log/assert.h")
         ||
         path.endsWith("src/os/shared/common/src/bits64/log/log.h")

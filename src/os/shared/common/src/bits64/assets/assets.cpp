@@ -68,7 +68,7 @@ NgosStatus Assets::init()
 
     COMMON_TEST_ASSERT(currentAddress == end, NgosStatus::ASSERTION);
 
-#ifdef BUILD_TARGET_CPUTEST
+#ifdef BUILD_TARGET_CPUTEST // Defined in Makefile
     COMMON_TEST_ASSERT(sEntriesCount == ASSET_ENTRIES_COUNT, NgosStatus::ASSERTION);
 #endif
 

@@ -67,6 +67,12 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
+    UEFI_LI(("UEFI v%u.%02u by %ls", UEFI::getSystemTable()->header.revision >> 16, UEFI::getSystemTable()->header.revision & 0xFFFF, UEFI::getSystemTable()->firmwareVendor));
+
+
+
+    UEFI_LV(("Application started at address 0x%p", kernelLocation));
+
 #if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     UEFI_LD(("Application started at address 0x%p", kernelLocation));
     UEFI_LD(("gdb debug is ready to go"));
@@ -87,7 +93,7 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
-#ifdef BUILD_TARGET_CONFIGURE
+#ifdef BUILD_TARGET_CONFIGURE // Defined in Makefile
     const char8 *wantedCpuFlag = 0;
 
     if (CPU::check(&wantedCpuFlag) != NgosStatus::OK)

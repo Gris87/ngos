@@ -1,13 +1,13 @@
-#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_DMI_DMI_H
-#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_DMI_DMI_H
+#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_DMI_DMI_H
+#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_DMI_DMI_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/dmi/dmi.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <kernelbase/test/bits64/a_early/testengine.h>
+#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/test/bits64/testengine.h>
 
 
 
@@ -19,9 +19,9 @@ u8 testAmount;
 
 NgosStatus testCountEntry(DmiEntryHeader *header)
 {
-    EARLY_LT((" | header = 0x%p", header));
+    UEFI_LT((" | header = 0x%p", header));
 
-    EARLY_ASSERT(header, "header is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(header, "header is null", NgosStatus::ASSERTION);
 
 
 
@@ -37,7 +37,7 @@ NgosStatus testCountEntry(DmiEntryHeader *header)
 
 
 
-TEST_CASES(section2, bits64_other_dmi_dmi);
+TEST_CASES(section0, __shared_common_bits64_dmi_dmi);
 {
     TEST_CASE("iterateDmiEntries()");
     {
@@ -102,4 +102,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_DMI_DMI_H
+#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_DMI_DMI_H

@@ -416,45 +416,6 @@ NgosStatus UEFI::initSystemTable()
 
 
 
-    // Print vendor name
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
-    {
-        char16 *uefiVendor;
-        char8   vendor[128];
-
-
-
-        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)sSystemTable.firmwareVendor, sizeof(vendor) << 1, (void **)&uefiVendor), NgosStatus::ASSERTION); // "<< 1" == "* 2"
-
-
-
-        u8      i  = 0;
-        char16 *ch = uefiVendor;
-
-        while (*ch)
-        {
-            COMMON_TEST_ASSERT(i < sizeof(vendor), NgosStatus::ASSERTION);
-            vendor[i] = *ch;
-
-            ++ch;
-            ++i;
-        }
-
-        COMMON_TEST_ASSERT(i < sizeof(vendor), NgosStatus::ASSERTION);
-        vendor[i] = 0;
-
-
-
-        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)uefiVendor, sizeof(vendor) << 1), NgosStatus::ASSERTION); // "<< 1" == "* 2"
-
-
-
-        COMMON_LV(("UEFI v%u.%02u by %s", sSystemTable.header.revision >> 16, sSystemTable.header.revision & 0xFFFF, vendor));
-    }
-#endif
-
-
-
     COMMON_ASSERT_EXECUTION(initConfigurationTables(), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(initMemoryAttributes(),    NgosStatus::ASSERTION);
 

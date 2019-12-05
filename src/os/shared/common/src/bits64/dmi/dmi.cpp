@@ -6,7 +6,7 @@
 #include <common/src/bits64/memory/memory.h>
 #include <uuid/utils.h>
 
-#ifdef UEFI_APPLICATION
+#ifdef UEFI_APPLICATION // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefi.h>
 #else
 #include <kernelbase/src/bits64/other/brk/brk.h>
@@ -38,7 +38,7 @@ NgosStatus DMI::init()
 
     if (smbios3)
     {
-#ifdef UEFI_APPLICATION
+#ifdef UEFI_APPLICATION // Defined in Makefile
         COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3), NgosStatus::ASSERTION);
 #else
         UefiSmbios3ConfigurationTable *smbios3Mapped;
@@ -54,7 +54,7 @@ NgosStatus DMI::init()
 
         if (smbios)
         {
-#ifdef UEFI_APPLICATION
+#ifdef UEFI_APPLICATION // Defined in Makefile
             COMMON_ASSERT_EXECUTION(initFromSmbios(smbios), NgosStatus::ASSERTION);
 #else
             UefiSmbiosConfigurationTable *smbiosMapped;
@@ -74,7 +74,7 @@ NgosStatus DMI::init()
 
 
 
-#ifdef UEFI_APPLICATION
+#ifdef UEFI_APPLICATION // Defined in Makefile
     COMMON_ASSERT_EXECUTION(iterateDmiEntries((u8 *)sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices((u8 *)sStructureTableAddress),             NgosStatus::ASSERTION);
 #else
@@ -888,7 +888,7 @@ NgosStatus DMI::storeDmiMemoryDevices(u8 *buf)
 
 
 
-#ifdef UEFI_APPLICATION
+#ifdef UEFI_APPLICATION // Defined in Makefile
         if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&sMemoryDevices) != UefiStatus::SUCCESS)
         {
             COMMON_LF(("Failed to allocate pool(%u) for memory devices", size));
@@ -1113,7 +1113,7 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
 
 
 
-#ifdef UEFI_APPLICATION
+#ifdef UEFI_APPLICATION // Defined in Makefile
     sUuids[(u64)id] = (Uuid *)&uuid;
 #else
     u8 *brkAddress;
@@ -1140,7 +1140,7 @@ NgosStatus DMI::getString(u8 *address, u64 size, u8 **destination)
 
 
 
-#ifdef UEFI_APPLICATION
+#ifdef UEFI_APPLICATION // Defined in Makefile
     *destination = address;
 #else
     COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, destination), NgosStatus::ASSERTION);

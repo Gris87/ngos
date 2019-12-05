@@ -3,13 +3,13 @@
 
 
 
-#if defined(UEFI_APPLICATION)
+#include <ngos/linkage.h>
+#include <ngos/types.h>
+
+#ifdef UEFI_APPLICATION // Defined in Makefile
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
 #endif
-
-#include <ngos/linkage.h>
-#include <ngos/types.h>
 
 
 
@@ -48,7 +48,7 @@ inline const char8* uefiVariableAttributeFlagToString(UefiVariableAttributeFlag 
 
 
 
-#if defined(UEFI_APPLICATION)
+#ifdef UEFI_APPLICATION // Defined in Makefile
 
 
 
