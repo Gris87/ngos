@@ -8,7 +8,7 @@
 
 
 
-bool isUuidEquals(const Uuid &uuid1, const Uuid &uuid2)
+inline bool isUuidEquals(const Uuid &uuid1, const Uuid &uuid2)
 {
     return ((u64 *)&uuid1)[0] == ((u64 *)&uuid2)[0]
             &&

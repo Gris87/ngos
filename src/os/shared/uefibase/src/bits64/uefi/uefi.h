@@ -4,12 +4,14 @@
 
 
 #include <ngos/status.h>
+#include <uefibase/src/bits64/other/uefibootmemorymap.h>
+#include <uefi/config/uefismbios3configurationtable.h>
+#include <uefi/config/uefismbiosconfigurationtable.h>
 #include <uefi/types.h>
 #include <uefi/ueficonsolecontrolscreenmode.h>
 #include <uefi/uefifileprotocol.h>
 #include <uefi/uefisimpletextoutputinterface.h>
 #include <uefi/uefisystemtable.h>
-#include <uefibase/src/bits64/other/uefibootmemorymap.h>
 
 
 
@@ -73,6 +75,9 @@ public:
 
     static UefiStatus resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData); // TEST: NO
     static UefiStatus exitBootServices(u64 mapKey); // TEST: NO
+
+    static UefiSmbios3ConfigurationTable* getSmbios3Config(); // TEST: NO
+    static UefiSmbiosConfigurationTable* getSmbiosConfig(); // TEST: NO
 
     static uefi_handle getImageHandle(); // TEST: NO
     static UefiSystemTable* getSystemTable(); // TEST: NO

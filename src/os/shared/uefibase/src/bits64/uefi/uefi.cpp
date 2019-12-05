@@ -3,6 +3,7 @@
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <guid/utils.h>
 #include <ngos/utils.h>
 #include <page/macros.h>
 #include <uefi/ueficonsolecontrolprotocol.h>
@@ -1135,6 +1136,60 @@ UefiStatus UEFI::exitBootServices(u64 mapKey)
 
 
     return sBootServices->exitBootServices(sImageHandle, mapKey);
+}
+
+UefiSmbios3ConfigurationTable* UEFI::getSmbios3Config()
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    for (i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
+    {
+        UefiConfigurationTable *configurationTable = &sSystemTable->configurationTables[i];
+
+        UEFI_LVV(("Processing configuration table #%d %s at address 0x%p", i, guidToString(configurationTable->vendorGuid), configurationTable->vendorTable));
+
+
+
+        if (isGuidEquals(configurationTable->vendorGuid, UEFI_SMBIOS_3_CONFIGURATION_TABLE_GUID))
+        {
+            UEFI_LV(("SMBIOS 3.0 configuration table found at address 0x%p", configurationTable->vendorTable));
+
+            return (UefiSmbios3ConfigurationTable *)configurationTable->vendorTable;
+        }
+    }
+
+
+
+    return nullptr;
+}
+
+UefiSmbiosConfigurationTable* UEFI::getSmbiosConfig()
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    for (i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
+    {
+        UefiConfigurationTable *configurationTable = &sSystemTable->configurationTables[i];
+
+        UEFI_LVV(("Processing configuration table #%d %s at address 0x%p", i, guidToString(configurationTable->vendorGuid), configurationTable->vendorTable));
+
+
+
+        if (isGuidEquals(configurationTable->vendorGuid, UEFI_SMBIOS_CONFIGURATION_TABLE_GUID))
+        {
+            UEFI_LV(("SMBIOS configuration table found at address 0x%p", configurationTable->vendorTable));
+
+            return (UefiSmbiosConfigurationTable *)configurationTable->vendorTable;
+        }
+    }
+
+
+
+    return nullptr;
 }
 
 uefi_handle UEFI::getImageHandle()

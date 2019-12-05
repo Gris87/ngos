@@ -1,13 +1,18 @@
 #include "dmi.h"
 
+#include <common/src/bits64/dmi/entry/dmimemorydeviceentry.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
+#include <uuid/utils.h>
+
+#ifdef UEFI_APPLICATION
+#include <uefibase/src/bits64/uefi/uefi.h>
+#else
 #include <kernelbase/src/bits64/other/brk/brk.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmimemorydeviceentry.h>
 #include <kernelbase/src/bits64/other/ioremap/ioremap.h>
 #include <kernelbase/src/bits64/other/uefi/uefi.h>
-#include <uuid/utils.h>
+#endif
 
 
 
@@ -30,42 +35,56 @@ NgosStatus DMI::init()
 
 
     UefiSmbios3ConfigurationTable *smbios3 = UEFI::getSmbios3Config();
-    UefiSmbiosConfigurationTable  *smbios  = UEFI::getSmbiosConfig();
-
-
 
     if (smbios3)
     {
+#ifdef UEFI_APPLICATION
+        COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3), NgosStatus::ASSERTION);
+#else
         UefiSmbios3ConfigurationTable *smbios3Mapped;
 
         COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)smbios3, sizeof(UefiSmbios3ConfigurationTable), (void **)&smbios3Mapped), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3Mapped),                                                                         NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)smbios3Mapped, sizeof(UefiSmbios3ConfigurationTable)),                 NgosStatus::ASSERTION);
-    }
-    else
-    if (smbios)
-    {
-        UefiSmbiosConfigurationTable *smbiosMapped;
-
-        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)smbios, sizeof(UefiSmbiosConfigurationTable), (void **)&smbiosMapped), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(initFromSmbios(smbiosMapped),                                                                        NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)smbiosMapped, sizeof(UefiSmbiosConfigurationTable)),                NgosStatus::ASSERTION);
+#endif
     }
     else
     {
-        COMMON_LF(("DMI not present"));
+        UefiSmbiosConfigurationTable *smbios = UEFI::getSmbiosConfig();
 
-        return NgosStatus::NOT_FOUND;
+        if (smbios)
+        {
+#ifdef UEFI_APPLICATION
+            COMMON_ASSERT_EXECUTION(initFromSmbios(smbios), NgosStatus::ASSERTION);
+#else
+            UefiSmbiosConfigurationTable *smbiosMapped;
+
+            COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)smbios, sizeof(UefiSmbiosConfigurationTable), (void **)&smbiosMapped), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(initFromSmbios(smbiosMapped),                                                                        NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)smbiosMapped, sizeof(UefiSmbiosConfigurationTable)),                NgosStatus::ASSERTION);
+#endif
+        }
+        else
+        {
+            COMMON_LF(("DMI not present"));
+
+            return NgosStatus::NOT_FOUND;
+        }
     }
 
 
 
+#ifdef UEFI_APPLICATION
+    COMMON_ASSERT_EXECUTION(iterateDmiEntries((u8 *)sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices((u8 *)sStructureTableAddress),             NgosStatus::ASSERTION);
+#else
     u8 *buf;
 
     COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(sStructureTableAddress, sStructureTableLength, (void **)&buf), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, decodeDmiEntry),                                                 NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(buf),                                                             NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)buf, sStructureTableLength),                           NgosStatus::ASSERTION);
+#endif
 
 
 
@@ -394,7 +413,8 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
         }
     }
 
-    COMMON_TEST_ASSERT(sStructureTableLength == cur - buf,                           NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(cur                             == end,                       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sStructureTableLength           == cur - buf,                 NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || i == sNumberOfSmbiosStructures, NgosStatus::ASSERTION);
 
 
@@ -864,8 +884,24 @@ NgosStatus DMI::storeDmiMemoryDevices(u8 *buf)
     {
         COMMON_LVV(("Found memory devices: %u", sNumberOfMemoryDevices));
 
-        COMMON_ASSERT_EXECUTION(BRK::allocate(sNumberOfMemoryDevices * sizeof(DmiMemoryDevice), 1, (u8 **)&sMemoryDevices), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, saveDmiMemoryDevice),                                                NgosStatus::ASSERTION);
+        u64 size = sNumberOfMemoryDevices * sizeof(DmiMemoryDevice);
+
+
+
+#ifdef UEFI_APPLICATION
+        if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&sMemoryDevices) != UefiStatus::SUCCESS)
+        {
+            COMMON_LF(("Failed to allocate pool(%u) for memory devices", size));
+
+            return NgosStatus::OUT_OF_MEMORY;
+        }
+
+        COMMON_LVV(("Allocated pool(0x%p, %u) for memory devices", sMemoryDevices, size));
+#else
+        COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, (u8 **)&sMemoryDevices), NgosStatus::ASSERTION);
+#endif
+
+        COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, saveDmiMemoryDevice), NgosStatus::ASSERTION);
     }
 
 
@@ -1077,6 +1113,9 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
 
 
 
+#ifdef UEFI_APPLICATION
+    sUuids[(u64)id] = (Uuid *)&uuid;
+#else
     u8 *brkAddress;
 
     COMMON_ASSERT_EXECUTION(BRK::allocate(sizeof(Uuid), 1, &brkAddress), NgosStatus::ASSERTION);
@@ -1084,6 +1123,7 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
     ((u64 *)brkAddress)[1] = ((u64 *)&uuid)[1];
 
     sUuids[(u64)id] = (Uuid *)brkAddress;
+#endif
 
 
 
@@ -1100,8 +1140,12 @@ NgosStatus DMI::getString(u8 *address, u64 size, u8 **destination)
 
 
 
+#ifdef UEFI_APPLICATION
+    *destination = address;
+#else
     COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, destination), NgosStatus::ASSERTION);
     memcpy(*destination, address, size);
+#endif
 
 
 

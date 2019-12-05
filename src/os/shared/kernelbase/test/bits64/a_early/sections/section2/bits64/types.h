@@ -10,17 +10,6 @@
 #include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstate.h>
 #include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstep.h>
 #include <kernelbase/src/bits64/other/cpu/percpu.h>
-#include <kernelbase/src/bits64/other/dmi/dmi.h>
-#include <kernelbase/src/bits64/other/dmi/dmientryheader.h>
-#include <kernelbase/src/bits64/other/dmi/dmientrytype.h>
-#include <kernelbase/src/bits64/other/dmi/dmiidentity.h>
-#include <kernelbase/src/bits64/other/dmi/dmimemorydevice.h>
-#include <kernelbase/src/bits64/other/dmi/dmistoreduuid.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmibiosentry.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmichassisentry.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmimemorydeviceentry.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmisystementry.h>
 #include <kernelbase/src/bits64/other/e820/e820.h>
 #include <kernelbase/src/bits64/other/e820/e820table.h>
 #include <kernelbase/src/bits64/other/hypervisor/hypervisor.h>
@@ -58,17 +47,6 @@ TEST_CASES(section2, bits64_types);
         TEST_ASSERT_EQUALS(sizeof(CpuHotplugState),       1);
         TEST_ASSERT_EQUALS(sizeof(CpuHotplugStep),        32);
         TEST_ASSERT_EQUALS(sizeof(CpuMask),               8192);
-        TEST_ASSERT_EQUALS(sizeof(DMI),                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardEntry),     15);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),          18);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntry),       21);
-        TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),        4);
-        TEST_ASSERT_EQUALS(sizeof(DmiEntryType),          1);
-        TEST_ASSERT_EQUALS(sizeof(DmiIdentity),           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),       32);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),  40);
-        TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),         1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntry),        27);
         TEST_ASSERT_EQUALS(sizeof(E820),                  1);
         TEST_ASSERT_EQUALS(sizeof(E820Table),             3080);
         TEST_ASSERT_EQUALS(sizeof(FixMap),                1);

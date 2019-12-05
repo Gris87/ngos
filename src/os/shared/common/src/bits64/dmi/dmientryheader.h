@@ -1,9 +1,9 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_DMI_DMIENTRYHEADER_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_DMI_DMIENTRYHEADER_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_DMI_DMIENTRYHEADER_H
+#define OS_SHARED_COMMON_SRC_BITS64_DMI_DMIENTRYHEADER_H
 
 
 
-#include <kernelbase/src/bits64/other/dmi/dmientrytype.h>
+#include <common/src/bits64/dmi/dmientrytype.h>
 #include <ngos/types.h>
 
 
@@ -17,4 +17,4 @@ struct DmiEntryHeader
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_DMI_DMIENTRYHEADER_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_DMI_DMIENTRYHEADER_H

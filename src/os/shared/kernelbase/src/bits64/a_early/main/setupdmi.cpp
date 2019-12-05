@@ -1,8 +1,8 @@
 #include "setupdmi.h"
 
+#include <common/src/bits64/dmi/dmi.h>
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
-#include <kernelbase/src/bits64/other/dmi/dmi.h>
 
 
 

@@ -15,6 +15,7 @@ SOURCES += \
     $$PWD/src/bits64/cpu/generated/x86featuresnames.cpp \
     $$PWD/src/bits64/cpu/msr/msr.cpp \
     $$PWD/src/bits64/cryptography/aes.cpp \
+    $$PWD/src/bits64/dmi/dmi.cpp \
     $$PWD/src/bits64/fpu/fpu.cpp \
     $$PWD/src/bits64/graphics/bmp/bmp.cpp \
     $$PWD/src/bits64/graphics/graphics.cpp \
@@ -82,6 +83,17 @@ HEADERS += \
     $$PWD/src/bits64/cpu/x86feature.h \
     $$PWD/src/bits64/cpu/x86featureword.h \
     $$PWD/src/bits64/cryptography/aes.h \
+    $$PWD/src/bits64/dmi/dmi.h \
+    $$PWD/src/bits64/dmi/dmientryheader.h \
+    $$PWD/src/bits64/dmi/dmientrytype.h \
+    $$PWD/src/bits64/dmi/dmiidentity.h \
+    $$PWD/src/bits64/dmi/dmimemorydevice.h \
+    $$PWD/src/bits64/dmi/dmistoreduuid.h \
+    $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
+    $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
+    $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
+    $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
+    $$PWD/src/bits64/dmi/entry/dmisystementry.h \
     $$PWD/src/bits64/early/earlyassert.h \
     $$PWD/src/bits64/early/earlylog.h \
     $$PWD/src/bits64/fpu/fpu.h \

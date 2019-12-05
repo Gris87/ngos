@@ -23,7 +23,6 @@ SOURCES += \
     $$PWD/src/bits64/other/cpu/cpumask.cpp \
     $$PWD/src/bits64/other/cpu/hotplug/cpuhotplug.cpp \
     $$PWD/src/bits64/other/cpu/percpu.cpp \
-    $$PWD/src/bits64/other/dmi/dmi.cpp \
     $$PWD/src/bits64/other/e820/e820.cpp \
     $$PWD/src/bits64/other/hypervisor/hypervisor.cpp \
     $$PWD/src/bits64/other/hypervisor/kvm/clock/kvmclock.cpp \
@@ -64,17 +63,6 @@ HEADERS += \
     $$PWD/src/bits64/other/cpu/hotplug/cpuhotplugstate.h \
     $$PWD/src/bits64/other/cpu/hotplug/cpuhotplugstep.h \
     $$PWD/src/bits64/other/cpu/percpu.h \
-    $$PWD/src/bits64/other/dmi/dmi.h \
-    $$PWD/src/bits64/other/dmi/dmientryheader.h \
-    $$PWD/src/bits64/other/dmi/dmientrytype.h \
-    $$PWD/src/bits64/other/dmi/dmiidentity.h \
-    $$PWD/src/bits64/other/dmi/dmimemorydevice.h \
-    $$PWD/src/bits64/other/dmi/dmistoreduuid.h \
-    $$PWD/src/bits64/other/dmi/entry/dmibaseboardentry.h \
-    $$PWD/src/bits64/other/dmi/entry/dmibiosentry.h \
-    $$PWD/src/bits64/other/dmi/entry/dmichassisentry.h \
-    $$PWD/src/bits64/other/dmi/entry/dmimemorydeviceentry.h \
-    $$PWD/src/bits64/other/dmi/entry/dmisystementry.h \
     $$PWD/src/bits64/other/e820/e820.h \
     $$PWD/src/bits64/other/e820/e820table.h \
     $$PWD/src/bits64/other/hypervisor/hypervisor.h \

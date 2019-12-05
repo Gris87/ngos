@@ -1,16 +1,16 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_DMI_DMI_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_DMI_DMI_H
+#ifndef OS_SHARED_COMMON_SRC_BITS64_DMI_DMI_H
+#define OS_SHARED_COMMON_SRC_BITS64_DMI_DMI_H
 
 
 
-#include <kernelbase/src/bits64/other/dmi/dmientryheader.h>
-#include <kernelbase/src/bits64/other/dmi/dmiidentity.h>
-#include <kernelbase/src/bits64/other/dmi/dmimemorydevice.h>
-#include <kernelbase/src/bits64/other/dmi/dmistoreduuid.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmibaseboardentry.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmibiosentry.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmichassisentry.h>
-#include <kernelbase/src/bits64/other/dmi/entry/dmisystementry.h>
+#include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmiidentity.h>
+#include <common/src/bits64/dmi/dmimemorydevice.h>
+#include <common/src/bits64/dmi/dmistoreduuid.h>
+#include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
+#include <common/src/bits64/dmi/entry/dmibiosentry.h>
+#include <common/src/bits64/dmi/entry/dmichassisentry.h>
+#include <common/src/bits64/dmi/entry/dmisystementry.h>
 #include <ngos/status.h>
 #include <uefi/config/uefismbios3configurationtable.h>
 #include <uefi/config/uefismbiosconfigurationtable.h>
@@ -60,4 +60,4 @@ private:
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_DMI_DMI_H
+#endif // OS_SHARED_COMMON_SRC_BITS64_DMI_DMI_H

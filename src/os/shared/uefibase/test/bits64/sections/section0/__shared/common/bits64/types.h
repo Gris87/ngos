@@ -26,6 +26,17 @@
 #include <common/src/bits64/cpu/x86feature.h>
 #include <common/src/bits64/cpu/x86featureword.h>
 #include <common/src/bits64/cryptography/aes.h>
+#include <common/src/bits64/dmi/dmi.h>
+#include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmientrytype.h>
+#include <common/src/bits64/dmi/dmiidentity.h>
+#include <common/src/bits64/dmi/dmimemorydevice.h>
+#include <common/src/bits64/dmi/dmistoreduuid.h>
+#include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
+#include <common/src/bits64/dmi/entry/dmibiosentry.h>
+#include <common/src/bits64/dmi/entry/dmichassisentry.h>
+#include <common/src/bits64/dmi/entry/dmimemorydeviceentry.h>
+#include <common/src/bits64/dmi/entry/dmisystementry.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <common/src/bits64/fpu/fpustate.h>
 #include <common/src/bits64/fpu/fsavestate.h>
@@ -149,6 +160,17 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(CpuVendor),                                     1);
         TEST_ASSERT_EQUALS(sizeof(Crc),                                           1);
         TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                  96);
+        TEST_ASSERT_EQUALS(sizeof(DMI),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardEntry),                             15);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  18);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntry),                               21);
+        TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),                                4);
+        TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiIdentity),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               32);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          40);
+        TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntry),                                27);
         TEST_ASSERT_EQUALS(sizeof(FPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
         TEST_ASSERT_EQUALS(sizeof(FSaveState),                                    112);
