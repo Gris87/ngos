@@ -71,8 +71,6 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
-    UEFI_LV(("Application started at address 0x%p", kernelLocation));
-
 #if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
     UEFI_LD(("Application started at address 0x%p", kernelLocation));
     UEFI_LD(("gdb debug is ready to go"));
