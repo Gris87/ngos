@@ -47,8 +47,8 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
 
-    COMMON_ASSERT(*((u16 *)&data[0])        == JPEG_START_OF_IMAGE_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(*((u16 *)&data[size - 2]) == JPEG_END_OF_IMAGE_SIGNATURE,   "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(u16 *)&data[0]        == JPEG_START_OF_IMAGE_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(u16 *)&data[size - 2] == JPEG_END_OF_IMAGE_SIGNATURE,   "data is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -56,7 +56,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    if (*((u16 *)&data[0]) != JPEG_START_OF_IMAGE_SIGNATURE)
+    if (*(u16 *)&data[0] != JPEG_START_OF_IMAGE_SIGNATURE)
     {
         COMMON_LE(("Data is not a JPEG image"));
 

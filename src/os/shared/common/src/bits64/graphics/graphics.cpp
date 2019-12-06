@@ -30,7 +30,7 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **i
 
     if (size >= 8)
     {
-        if (*((u64 *)&data[0]) == PNG_HEADER_SIGNATURE)
+        if (*(u64 *)&data[0] == PNG_HEADER_SIGNATURE)
         {
             return Png::loadImage(data, size, withNinePatch, image);
         }
@@ -38,9 +38,9 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **i
 
 
         if (
-            *((u16 *)&data[0])        == JPEG_START_OF_IMAGE_SIGNATURE
+            *(u16 *)&data[0]        == JPEG_START_OF_IMAGE_SIGNATURE
             &&
-            *((u16 *)&data[size - 2]) == JPEG_END_OF_IMAGE_SIGNATURE
+            *(u16 *)&data[size - 2] == JPEG_END_OF_IMAGE_SIGNATURE
            )
         {
             return Jpeg::loadImage(data, size, image);
@@ -48,7 +48,7 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **i
 
 
 
-        if (*((u16 *)&data[0]) == BMP_HEADER_SIGNATURE)
+        if (*(u16 *)&data[0] == BMP_HEADER_SIGNATURE)
         {
             return Bmp::loadImage(data, size, image);
         }

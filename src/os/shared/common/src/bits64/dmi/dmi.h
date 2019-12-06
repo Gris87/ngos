@@ -51,7 +51,7 @@ private:
     static u16              sNumberOfSmbiosStructures;
     static u32              sStructureTableLength;
     static u64              sStructureTableAddress;
-    static u8               sChassisType;
+    static DmiChassisType   sChassisType;
     static u64              sNumberOfMemoryDevices;
     static DmiMemoryDevice *sMemoryDevices;
     static const char8*     sIdentities[(u64)DmiIdentity::MAXIMUM];

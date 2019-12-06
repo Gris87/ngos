@@ -713,8 +713,8 @@ NgosStatus decodeNotCompressedBlock(InflateDecoder *decoder)
 
 
 
-    u16 length  = *((u16 *)(decoder->in + decoder->inPosition));
-    u16 nlength = *((u16 *)(decoder->in + decoder->inPosition + 2));
+    u16 length  = *(u16 *)(decoder->in + decoder->inPosition);
+    u16 nlength = *(u16 *)(decoder->in + decoder->inPosition + 2);
 
     // COMMON_LVVV(("length  = %u", length));  // Commented to avoid too frequent logs
     // COMMON_LVVV(("nlength = %u", nlength)); // Commented to avoid too frequent logs

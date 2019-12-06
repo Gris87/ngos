@@ -11,7 +11,7 @@
 
 
 
-#define UEFI_MEMORY_MAP_DESCRIPTOR(i) ((UefiMemoryDescriptor *)((u64)UEFI::sMemoryMap.map + ((i) * UEFI::sMemoryMap.descriptorSize)))
+#define UEFI_MEMORY_MAP_DESCRIPTOR(i) (UefiMemoryDescriptor *)((u64)UEFI::sMemoryMap.map + (i) * UEFI::sMemoryMap.descriptorSize)
 
 
 

@@ -719,6 +719,10 @@ src/os/shared/common/src/bits64/dmi/entry/dmibiosentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmichassisentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimemorydeviceentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystementry.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmichassisstate.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmichassistype.h
 src/os/shared/common/src/bits64/early/earlyassert.h
 src/os/shared/common/src/bits64/early/earlylog.h
 src/os/shared/common/src/bits64/fpu/fpu.cpp

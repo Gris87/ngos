@@ -207,7 +207,7 @@ NgosStatus MD5::finish()
 
         COMMON_TEST_ASSERT(sizeof(bits) == sizeof(mCount), NgosStatus::ASSERTION);
 
-        *((u64 *)bits) = mCount;
+        *(u64 *)bits = mCount;
 
 
 

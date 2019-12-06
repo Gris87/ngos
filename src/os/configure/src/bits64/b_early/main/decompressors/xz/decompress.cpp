@@ -88,10 +88,10 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-        EARLY_TEST_ASSERT((*((u64 *)streamHeader->signature) & 0x0000FFFFFFFFFFFF) == XZ_STREAM_HEADER_SIGNATURE,                                                      NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(streamHeader->streamFlags                                == FLAGS(XzStreamFlag::TYPE_OF_CHECK_CRC64),                                        NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(streamHeader->crc32                                      == Crc::crc32((u8 *)&streamHeader->streamFlags, sizeof(streamHeader->streamFlags)), NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(typeOfCheckFlag                                          == XzStreamFlag::TYPE_OF_CHECK_CRC64,                                               NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT((*(u64 *)streamHeader->signature & 0x0000FFFFFFFFFFFF) == XZ_STREAM_HEADER_SIGNATURE,                                                      NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(streamHeader->streamFlags                              == FLAGS(XzStreamFlag::TYPE_OF_CHECK_CRC64),                                        NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(streamHeader->crc32                                    == Crc::crc32((u8 *)&streamHeader->streamFlags, sizeof(streamHeader->streamFlags)), NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(typeOfCheckFlag                                        == XzStreamFlag::TYPE_OF_CHECK_CRC64,                                               NgosStatus::ASSERTION);
     }
 
 
@@ -364,7 +364,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            u32 indexCrc32 = *((u32 *)(currentIndexPointer));
+            u32 indexCrc32 = *(u32 *)currentIndexPointer;
 
             EARLY_LVVV(("indexCrc32 = 0x%08X", indexCrc32));
 

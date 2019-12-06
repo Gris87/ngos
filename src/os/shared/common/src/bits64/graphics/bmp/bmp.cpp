@@ -19,7 +19,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
 
-    COMMON_ASSERT(*((u16 *)&data[0]) == BMP_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(u16 *)&data[0] == BMP_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
 
 
 

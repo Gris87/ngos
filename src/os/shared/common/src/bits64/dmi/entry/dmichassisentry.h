@@ -4,27 +4,31 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassisstate.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassistype.h>
 
 
 
 struct DmiChassisEntry
 {
-    DmiEntryHeader header;
-    u8             manufacturer;
-    u8             type;
-    u8             version;
-    u8             serialNumber;
-    u8             assetTag;
-    u8             bootUpState;
-    u8             powerSupplyState;
-    u8             thermalState;
-    u8             securityStatus;
-    u32            oemDefined;
-    u8             height;
-    u8             numberOfPowerCords;
-    u8             containedElementCount;
-    u8             containedElementRecordLength;
-    u8             containedElements[0];
+    DmiEntryHeader             header;
+    u8                         manufacturerStringId;
+    DmiChassisType             type;
+    u8                         versionStringId;
+    u8                         serialNumberStringId;
+    u8                         assetTagStringId;
+    DmiChassisState            bootUpState;
+    DmiChassisState            powerSupplyState;
+    DmiChassisState            thermalState;
+    DmiChassisSecurityStatus   securityStatus;
+    u32                        oemDefined;
+    u8                         height;
+    u8                         numberOfPowerCords;
+    u8                         containedElementCount;
+    u8                         containedElementRecordLength;
+    DmiChassisContainedElement containedElements[0];
 } __attribute__((packed));
 
 

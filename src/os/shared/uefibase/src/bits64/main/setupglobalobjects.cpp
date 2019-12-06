@@ -25,10 +25,10 @@ NgosStatus setupGlobalObjects()
 
     while (cur < end)
     {
-        // UEFI_LVVV(("cur  = 0x%016lX", cur));           // Commented to avoid too frequent logs
-        // UEFI_LVVV(("*cur = 0x%016lX", *((u64 *)cur))); // Commented to avoid too frequent logs
+        // UEFI_LVVV(("cur  = 0x%016lX", cur));         // Commented to avoid too frequent logs
+        // UEFI_LVVV(("*cur = 0x%016lX", *(u64 *)cur)); // Commented to avoid too frequent logs
 
-        constuctor_function func = (constuctor_function)(*((u64 *)cur));
+        constuctor_function func = (constuctor_function)(*(u64 *)cur);
         func();
 
         cur += sizeof(constuctor_function);

@@ -174,7 +174,7 @@ NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
 
     u64 fixedAddress = FIX_ADDRESS_BOTTOM + startPteForSlot * PAGE_SIZE + (address & ~PAGE_MASK);
 
-    *(u64 *)(res) = fixedAddress;
+    *(u64 *)res = fixedAddress;
 
     COMMON_LVV(("Physical address (0x%p, %u) fixed to virtual address 0x%p", address, size, fixedAddress));
 

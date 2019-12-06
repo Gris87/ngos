@@ -381,7 +381,7 @@ bool ImageBuilder::updateConfigSection()
 
     if (mTextElfPath != "")
     {
-        *((quint64 *)&section.name) = TEXT_SECTION_NAME;
+        *(quint64 *)section.name = TEXT_SECTION_NAME;
     }
 
 
@@ -419,40 +419,40 @@ bool ImageBuilder::updateKernelSection()
 
 quint8 ImageBuilder::readUInt8(qint64 offset)
 {
-    return *((quint8 *)((quint64)mResultImage.data() + offset));
+    return *(quint8 *)((quint64)mResultImage.data() + offset);
 }
 
 quint16 ImageBuilder::readUInt16(qint64 offset)
 {
-    return *((quint16 *)((quint64)mResultImage.data() + offset));
+    return *(quint16 *)((quint64)mResultImage.data() + offset);
 }
 
 quint32 ImageBuilder::readUInt32(qint64 offset)
 {
-    return *((quint32 *)((quint64)mResultImage.data() + offset));
+    return *(quint32 *)((quint64)mResultImage.data() + offset);
 }
 
 quint64 ImageBuilder::readUInt64(qint64 offset)
 {
-    return *((quint64 *)((quint64)mResultImage.data() + offset));
+    return *(quint64 *)((quint64)mResultImage.data() + offset);
 }
 
 void ImageBuilder::writeUInt8(qint64 offset, quint8 value)
 {
-    *((quint8 *)((quint64)mResultImage.data() + offset)) = value;
+    *(quint8 *)((quint64)mResultImage.data() + offset) = value;
 }
 
 void ImageBuilder::writeUInt16(qint64 offset, quint16 value)
 {
-    *((quint16 *)((quint64)mResultImage.data() + offset)) = value;
+    *(quint16 *)((quint64)mResultImage.data() + offset) = value;
 }
 
 void ImageBuilder::writeUInt32(qint64 offset, quint32 value)
 {
-    *((quint32 *)((quint64)mResultImage.data() + offset)) = value;
+    *(quint32 *)((quint64)mResultImage.data() + offset) = value;
 }
 
 void ImageBuilder::writeUInt64(qint64 offset, quint64 value)
 {
-    *((quint64 *)((quint64)mResultImage.data() + offset)) = value;
+    *(quint64 *)((quint64)mResultImage.data() + offset) = value;
 }

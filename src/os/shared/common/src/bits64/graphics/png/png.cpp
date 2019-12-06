@@ -24,7 +24,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
 
-    COMMON_ASSERT(*((u64 *)&data[0]) == PNG_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(u64 *)&data[0] == PNG_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
 
 
 

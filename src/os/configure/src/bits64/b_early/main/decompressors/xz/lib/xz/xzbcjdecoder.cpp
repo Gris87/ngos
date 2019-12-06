@@ -11,8 +11,8 @@
 
 
 
-#define GET_UNALIGNED_LE32(pointer)        *((u32 *)(pointer))
-#define PUT_UNALIGNED_LE32(value, pointer) *((u32 *)(pointer)) = (value)
+#define GET_UNALIGNED_LE32(pointer)        *(u32 *)(pointer)
+#define PUT_UNALIGNED_LE32(value, pointer) *(u32 *)(pointer) = (value)
 
 
 

@@ -43,7 +43,7 @@ NgosStatus Assets::init()
 
 
 
-        sEntries[sEntriesCount].contentSize =  (*(u64 *)currentAddress);
+        sEntries[sEntriesCount].contentSize =  *(u64 *)currentAddress;
         currentAddress                      += sizeof(sEntries[sEntriesCount].contentSize);
 
         COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);

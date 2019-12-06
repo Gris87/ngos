@@ -94,6 +94,10 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystementry.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmichassistype.h \
     $$PWD/src/bits64/early/earlyassert.h \
     $$PWD/src/bits64/early/earlylog.h \
     $$PWD/src/bits64/fpu/fpu.h \

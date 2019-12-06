@@ -8,7 +8,7 @@
 
 
 
-#define MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i) ((UefiMemoryDescriptor *)((u64)(*(bootMemoryMap)->memoryMap) + ((i) * (*(bootMemoryMap)->descriptorSize))))
+#define MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i) (UefiMemoryDescriptor *)((u64)(*(bootMemoryMap)->memoryMap) + (i) * (*(bootMemoryMap)->descriptorSize))
 
 
 

@@ -27,7 +27,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     if (
         expectedCompressedSize < sizeof(ZLibHeader) + 4 // + 4 for Adler32 checksum
         ||
-        ntohs(*((u16 *)compressedAddress)) % 31 // ntohs(*((u16 *)compressedAddress)) % 31 != 0
+        ntohs(*(u16 *)compressedAddress) % 31 // ntohs(*(u16 *)compressedAddress) % 31 != 0
        )
     {
         COMMON_LE(("Data is not a zlib archive"));

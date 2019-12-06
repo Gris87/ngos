@@ -178,7 +178,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
                         {
                             u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32)  at 0x%p:         0x%08X =>         0x%08X", relaAddress, *((u32 *)relaAddress), *((u32 *)relaAddress) + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32)  at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
 
                             *(u32 *)relaAddress += delta;
                         }
@@ -188,7 +188,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
                         {
                             u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32S) at 0x%p:         0x%08X =>         0x%08X", relaAddress, *((u32 *)relaAddress), *((u32 *)relaAddress) + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32S) at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
 
                             *(u32 *)relaAddress += delta;
                         }
@@ -198,7 +198,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
                         {
                             u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D64)  at 0x%p: 0x%016lX => 0x%016lX", relaAddress, *((u64 *)relaAddress), *((u64 *)relaAddress) + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D64)  at 0x%p: 0x%016lX => 0x%016lX", relaAddress, *(u64 *)relaAddress, *(u64 *)relaAddress + delta));
 
                             *(u64 *)relaAddress += delta;
                         }

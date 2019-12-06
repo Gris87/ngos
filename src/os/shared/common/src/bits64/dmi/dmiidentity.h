@@ -27,6 +27,7 @@ enum class DmiIdentity: u8
     CHASSIS_VERSION,
     CHASSIS_SERIAL_NUMBER,
     CHASSIS_ASSET_TAG,
+    CHASSIS_SKU_NUMBER,
     MAXIMUM
 };
 
@@ -58,6 +59,7 @@ inline const char8* dmiIdentityToString(DmiIdentity identity) // TEST: NO
         case DmiIdentity::CHASSIS_VERSION:         return "CHASSIS_VERSION";
         case DmiIdentity::CHASSIS_SERIAL_NUMBER:   return "CHASSIS_SERIAL_NUMBER";
         case DmiIdentity::CHASSIS_ASSET_TAG:       return "CHASSIS_ASSET_TAG";
+        case DmiIdentity::CHASSIS_SKU_NUMBER:      return "CHASSIS_SKU_NUMBER";
         case DmiIdentity::MAXIMUM:                 return "MAXIMUM";
 
         default: return "UNKNOWN";

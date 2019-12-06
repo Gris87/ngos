@@ -307,7 +307,11 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             if (values.contains("NONE"))
                             {
-                                if (values.first() != "NONE")
+                                if (
+                                    values.first() != "NONE"
+                                    &&
+                                    values.first() != "NULL"
+                                   )
                                 {
                                     worker->addError(path, i, "Enum value NONE should be first");
                                 }

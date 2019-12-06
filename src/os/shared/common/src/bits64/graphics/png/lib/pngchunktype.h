@@ -41,7 +41,7 @@ inline const char8* pngChunkTypeToString(PngChunkType type) // TEST: NO
 
     static char8 res[5];
 
-    *((u32 *)res) = (u32)type;
+    *(u32 *)res = (u32)type;
     COMMON_TEST_ASSERT(res[4] == 0, 0);
 
     return res;

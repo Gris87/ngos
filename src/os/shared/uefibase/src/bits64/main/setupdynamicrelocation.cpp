@@ -40,7 +40,7 @@ NgosStatus setupDynamicRelocation(u64 kernelLocation)
 
         u64 relaAddress = kernelLocation + rela.offset;
 
-        UEFI_LVV(("Handling RELA entry(ElfRelaType::RELATIVE) at 0x%p: 0x%016lX => 0x%016lX", relaAddress, *((u64 *)relaAddress), kernelLocation + rela.addend));
+        UEFI_LVV(("Handling RELA entry(ElfRelaType::RELATIVE) at 0x%p: 0x%016lX => 0x%016lX", relaAddress, *(u64 *)relaAddress, kernelLocation + rela.addend));
 
         *(u64 *)relaAddress = kernelLocation + rela.addend;
     }

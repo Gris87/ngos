@@ -11,14 +11,14 @@
 struct DmiSystemEntry
 {
     DmiEntryHeader header;
-    u8             manufacturer;
-    u8             productName;
-    u8             version;
-    u8             serialNumber;
+    u8             manufacturerStringId;
+    u8             productNameStringId;
+    u8             versionStringId;
+    u8             serialNumberStringId;
     Uuid           uuid;
     u8             wakeUpTime;
-    u8             skuNumber;
-    u8             family;
+    u8             skuNumberStringId;
+    u8             familyStringId;
 } __attribute__((packed));
 
 
