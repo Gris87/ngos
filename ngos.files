@@ -720,6 +720,11 @@ src/os/shared/common/src/bits64/dmi/entry/dmichassisentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimemorydeviceentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiprocessorentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystementry.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassisstate.h

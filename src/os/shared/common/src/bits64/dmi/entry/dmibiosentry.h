@@ -4,18 +4,27 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
 
 
 
 struct DmiBiosEntry
 {
-    DmiEntryHeader header;
-    u8             vendor;
-    u8             version;
-    u16            startingAddressSegment;
-    u8             releaseDate;
-    u8             romSize;
-    u64            characteristics;
+    DmiEntryHeader                  header;
+    u8                              vendorStringId;
+    u8                              biosVersionStringId;
+    u16                             biosSegment;
+    u8                              biosReleaseDateStringId;
+    u8                              biosSize;
+    dmi_bios_characteristics_flags  biosCharacteristics;
+    DmiBiosCharacteristicsExtension biosCharacteristicsExtension;
+    u8                              systemBiosMajorRelease;
+    u8                              systemBiosMinorRelease;
+    u8                              embeddedControllerFirmwareMajorRelease;
+    u8                              embeddedControllerFirmwareMinorRelease;
+    DmiBiosExtendedRomSize          extendedBiosSize;
 } __attribute__((packed));
 
 

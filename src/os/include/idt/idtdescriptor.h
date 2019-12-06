@@ -12,12 +12,12 @@ struct IdtDescriptor
     u16 offsetLow;
     u16 segment;
 
-    u16 ist:    3,
-        __pad1: 5,
-        type:   4,
-        __pad2: 1,
-        dpl:    2,
-        p:      1;
+    u16 ist:    3;
+    u16 __pad1: 5;
+    u16 type:   4;
+    u16 __pad2: 1;
+    u16 dpl:    2;
+    u16 p:      1;
 
     u16 offsetMiddle;
     u32 offsetHigh;

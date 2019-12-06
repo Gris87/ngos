@@ -95,6 +95,11 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmiprocessorentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystementry.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \

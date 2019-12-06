@@ -185,7 +185,7 @@ NgosStatus DMI::init()
 
         COMMON_TEST_ASSERT(sVersion                     == 0x00020800,            NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sStructureTableLength     == 394,                   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sStructureTableLength     == 395,                   NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sStructureTableAddress       == 0x000000003FBCB000,    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sChassisType                 == DmiChassisType::OTHER, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sNumberOfMemoryDevices       == 1,                     NgosStatus::ASSERTION);
@@ -193,7 +193,7 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sMemoryDevices[0].device     != 0,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sMemoryDevices[0].bank       == 0,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sMemoryDevices[0].size       == 1073741824,            NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 18,                    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 25,                    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]               != 0,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[2]               != 0,                     NgosStatus::ASSERTION);
@@ -212,6 +212,13 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sIdentities[15]              != 0,                     NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sIdentities[16]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[17]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[18]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sIdentities[19]              != 0,                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[20]              != 0,                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[21]              != 0,                     NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sIdentities[22]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[23]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[24]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM  == 1,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sUuids[0]                    != 0,                     NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sUuids[0]->data1          == 0x9FAE0773,            NgosStatus::ASSERTION); // Commented due to value variation
@@ -323,7 +330,7 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
         COMMON_TEST_ASSERT(smbios->formattedArea[4]                                  == 0,                                                                                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT((*(u64 *)smbios->intermediateAnchor & 0x000000FFFFFFFFFF) == SMBIOS_INTERMEDIATE_ANCHOR,                                                            NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->intermediateChecksum                              == checksum((u8 *)&smbios->intermediateAnchor, 15, smbios->intermediateChecksum),         NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(smbios->structureTableLength                           == 394,                                                                                   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(smbios->structureTableLength                           == 395,                                                                                   NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(smbios->structureTableAddress                             == 0x000000003FBCB000,                                                                    NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(smbios->numberOfSmbiosStructures                       == 9,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(smbios->bcdRevision                                       == 0x28,                                                                                  NgosStatus::ASSERTION);
@@ -439,15 +446,11 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
 
     switch (header->type)
     {
-        case DmiEntryType::BIOS:                     COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header),           NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM:                   COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),       NgosStatus::ASSERTION); break;
-        case DmiEntryType::BASEBOARD:                COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header), NgosStatus::ASSERTION); break;
-        case DmiEntryType::CHASSIS:                  COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),     NgosStatus::ASSERTION); break;
-        case DmiEntryType::PROCESSOR:                COMMON_ASSERT_EXECUTION(saveDmiProcessorEntry((DmiProcessorEntry *)header), NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_SLOTS:             return NgosStatus::NOT_SUPPORTED;
-        case DmiEntryType::OEM_STRINGS:              return NgosStatus::NOT_SUPPORTED;
-        case DmiEntryType::IPMI_DEVICE:              return NgosStatus::NOT_SUPPORTED;
-        case DmiEntryType::ONBOARD_DEVICES_EXTENDED: return NgosStatus::NOT_SUPPORTED;
+        case DmiEntryType::BIOS:      COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header),           NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM:    COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),       NgosStatus::ASSERTION); break;
+        case DmiEntryType::BASEBOARD: COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header), NgosStatus::ASSERTION); break;
+        case DmiEntryType::CHASSIS:   COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),     NgosStatus::ASSERTION); break;
+        case DmiEntryType::PROCESSOR: COMMON_ASSERT_EXECUTION(saveDmiProcessorEntry((DmiProcessorEntry *)header), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -471,21 +474,61 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->vendor                 = %u",       entry->vendor));
-        COMMON_LVVV(("entry->version                = %u",       entry->version));
-        COMMON_LVVV(("entry->startingAddressSegment = 0x%04X",   entry->startingAddressSegment));
-        COMMON_LVVV(("entry->releaseDate            = %u",       entry->releaseDate));
-        COMMON_LVVV(("entry->romSize                = %u",       entry->romSize));
-        COMMON_LVVV(("entry->characteristics        = 0x%016lX", entry->characteristics));
+        COMMON_LVVV(("entry->vendorStringId          = %u",            entry->vendorStringId));
+        COMMON_LVVV(("entry->biosVersionStringId     = %u",            entry->biosVersionStringId));
+        COMMON_LVVV(("entry->biosSegment             = 0x%04X",        entry->biosSegment));
+        COMMON_LVVV(("entry->biosReleaseDateStringId = %u",            entry->biosReleaseDateStringId));
+        COMMON_LVVV(("entry->biosSize                = %u",            entry->biosSize));
+        COMMON_LVVV(("entry->biosCharacteristics     = 0x%016lX (%s)", entry->biosCharacteristics, dmiBiosCharacteristicsFlagsToString(entry->biosCharacteristics)));
+
+        if (sVersion >= DMI_VERSION(2, 1))
+        {
+            COMMON_LVVV(("entry->biosCharacteristicsExtension.biosReserved = 0x%02X (%s)", entry->biosCharacteristicsExtension.biosReserved, dmiBiosCharacteristicsBiosReservedFlagsToString(entry->biosCharacteristicsExtension.biosReserved)));
+
+            if (sVersion >= DMI_VERSION(2, 3))
+            {
+                COMMON_LVVV(("entry->biosCharacteristicsExtension.systemReserved = 0x%02X (%s)", entry->biosCharacteristicsExtension.systemReserved, dmiBiosCharacteristicsSystemReservedFlagsToString(entry->biosCharacteristicsExtension.systemReserved)));
+                COMMON_LVVV(("entry->systemBiosMajorRelease                      = %u",          entry->systemBiosMajorRelease));
+                COMMON_LVVV(("entry->systemBiosMinorRelease                      = %u",          entry->systemBiosMinorRelease));
+                COMMON_LVVV(("entry->embeddedControllerFirmwareMajorRelease      = %u",          entry->embeddedControllerFirmwareMajorRelease));
+                COMMON_LVVV(("entry->embeddedControllerFirmwareMinorRelease      = %u",          entry->embeddedControllerFirmwareMinorRelease));
+
+                if (sVersion >= DMI_VERSION(3, 1))
+                {
+                    COMMON_LVVV(("entry->extendedBiosSize.size = %u", entry->extendedBiosSize.size));
+                    COMMON_LVVV(("entry->extendedBiosSize.unit = %u", entry->extendedBiosSize.unit));
+                }
+            }
+        }
 
 
 
-        COMMON_TEST_ASSERT(entry->vendor                 == 1,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->version                == 2,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->startingAddressSegment == 0xE800,             NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->releaseDate            == 3,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->romSize                == 0,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->characteristics        == 0x0000000000000008, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->vendorStringId          == 1,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->biosVersionStringId     == 2,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->biosSegment             == 0xE800,                                                                NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->biosReleaseDateStringId == 3,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->biosSize                == 0,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->biosCharacteristics     == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION);
+
+        if (sVersion >= DMI_VERSION(2, 1))
+        {
+            // COMMON_TEST_ASSERT(entry->biosCharacteristicsExtension.biosReserved == FLAG(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+
+            if (sVersion >= DMI_VERSION(2, 3))
+            {
+                // COMMON_TEST_ASSERT(entry->biosCharacteristicsExtension.systemReserved == FLAG(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->systemBiosMajorRelease                      == 0,                                                     NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->systemBiosMinorRelease                      == 0,                                                     NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->embeddedControllerFirmwareMajorRelease      == 0,                                                     NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->embeddedControllerFirmwareMinorRelease      == 0,                                                     NgosStatus::ASSERTION); // Commented due to value variation
+
+                if (sVersion >= DMI_VERSION(3, 1))
+                {
+                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.size == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.unit == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                }
+            }
+        }
     }
 
 
@@ -503,17 +546,17 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-            if (stringId == entry->vendor)
+            if (stringId == entry->vendorStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
             else
-            if (stringId == entry->version)
+            if (stringId == entry->biosVersionStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
             else
-            if (stringId == entry->releaseDate)
+            if (stringId == entry->biosReleaseDateStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
@@ -994,7 +1037,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         //                                                                     , DmiProcessorFeatureFlag::SSE2                         // Commented due to value variation
         //                                                                     , DmiProcessorFeatureFlag::SS), NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->processorVersionStringId            == 3,                                    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->voltage                          == FLAGS(DmiProcessorVoltageFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->voltage                          == FLAG(DmiProcessorVoltageFlag::NONE),  NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->externalClock                       == 0,                                    NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->maxSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->currentSpeed                     == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
@@ -1127,6 +1170,10 @@ NgosStatus DMI::storeDmiMemoryDevices(u8 *buf)
 
         COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, saveDmiMemoryDevice), NgosStatus::ASSERTION);
     }
+    else
+    {
+        COMMON_LW(("Memory devices not found"));
+    }
 
 
 
@@ -1233,6 +1280,8 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
 
 
+    sMemoryDevices[memoryId].device = nullptr;
+    sMemoryDevices[memoryId].bank   = nullptr;
     sMemoryDevices[memoryId].handle = entry->header.handle;
 
     if (!entry->size)   // entry->size == 0 // Not installed

@@ -36,7 +36,26 @@
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
 #include <common/src/bits64/dmi/entry/dmimemorydeviceentry.h>
+#include <common/src/bits64/dmi/entry/dmiprocessorentry.h>
 #include <common/src/bits64/dmi/entry/dmisystementry.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassisstate.h>
+#include <common/src/bits64/dmi/entry/lib/dmichassistype.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorfeatureflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorid.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorsignature.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessortype.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <common/src/bits64/fpu/fpustate.h>
 #include <common/src/bits64/fpu/fsavestate.h>
@@ -162,15 +181,34 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                  96);
         TEST_ASSERT_EQUALS(sizeof(DMI),                                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiBaseboardEntry),                             15);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  18);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsBiosReservedFlag),        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsExtension),               2);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsFlag),                    8);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsSystemReservedFlag),      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  26);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSize),                        2);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElement),                    3);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisEntry),                               21);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisSecurityStatus),                      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisState),                               1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisType),                                1);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),                                4);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(DmiIdentity),                                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               32);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          40);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntry),                             48);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily),                            1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily2),                           2);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFeatureFlag),                       4);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorId),                                8);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorSignature),                         4);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorType),                              1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorUpgrade),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageFlag),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),                                 1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemEntry),                                27);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemWakeUpTime),                           1);
         TEST_ASSERT_EQUALS(sizeof(FPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
         TEST_ASSERT_EQUALS(sizeof(FSaveState),                                    112);

@@ -10,6 +10,7 @@ NGOS:
 - Centralize CPUID like in edk2
 - Check for asm volatile
 - Print UEFI version on real hardware
+- Make global GET_UNALIGNED_LE32 and PUT_UNALIGNED_LE32 for all sizes
 
 - Complete with interruptions
 - Implement boot screen for kernel
