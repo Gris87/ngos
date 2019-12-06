@@ -14,6 +14,10 @@ NgosStatus setupHardwareId(BootParams *params)
 
 
 
+    AVOID_UNUSED(params); // TODO: Remove it
+
+
+
     UEFI_ASSERT_EXECUTION(DMI::init(), NgosStatus::ASSERTION);
 
 

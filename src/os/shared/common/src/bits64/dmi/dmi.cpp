@@ -1415,6 +1415,8 @@ NgosStatus DMI::getString(u8 *address, u64 size, u8 **destination)
 
 #ifdef UEFI_APPLICATION // Defined in Makefile
     *destination = address;
+
+    AVOID_UNUSED(size);
 #else
     COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, destination), NgosStatus::ASSERTION);
     memcpy(*destination, address, size);
