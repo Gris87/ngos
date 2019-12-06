@@ -27,7 +27,7 @@ struct ElfSymbol
         u8 __reserved: 5;
         u8 visibility: 3;
 
-        u8  other;
+        u8 other;
     };
 
     u16 sectionIndex;
