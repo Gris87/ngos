@@ -4,21 +4,22 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h>
 #include <uuid/uuid.h>
 
 
 
 struct DmiSystemEntry
 {
-    DmiEntryHeader header;
-    u8             manufacturerStringId;
-    u8             productNameStringId;
-    u8             versionStringId;
-    u8             serialNumberStringId;
-    Uuid           uuid;
-    u8             wakeUpTime;
-    u8             skuNumberStringId;
-    u8             familyStringId;
+    DmiEntryHeader      header;
+    u8                  manufacturerStringId;
+    u8                  productNameStringId;
+    u8                  versionStringId;
+    u8                  serialNumberStringId;
+    Uuid                uuid;
+    DmiSystemWakeUpTime wakeUpTime;
+    u8                  skuNumberStringId;
+    u8                  familyStringId;
 } __attribute__((packed));
 
 

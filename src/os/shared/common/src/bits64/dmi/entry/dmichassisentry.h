@@ -23,7 +23,7 @@ struct DmiChassisEntry
     DmiChassisState            powerSupplyState;
     DmiChassisState            thermalState;
     DmiChassisSecurityStatus   securityStatus;
-    u32                        oemDefined;
+    u8                         oemDefined[4];
     u8                         height;
     u8                         numberOfPowerCords;
     u8                         containedElementCount;
