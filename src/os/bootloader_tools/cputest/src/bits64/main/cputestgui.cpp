@@ -2423,11 +2423,11 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                    UEFI_LVVV(("info[%d].processorId      = %u",      i, info.processorId));
-                    UEFI_LVVV(("info[%d].status           = %u (%s)", i, info.status, uefiProcessorInformationStatusFlagsToString(info.status)));
-                    UEFI_LVVV(("info[%d].location.package = %u",      i, info.location.package));
-                    UEFI_LVVV(("info[%d].location.core    = %u",      i, info.location.core));
-                    UEFI_LVVV(("info[%d].location.thread  = %u",      i, info.location.thread));
+                    UEFI_LVVV(("info[%d].processorId      = %u",          i, info.processorId));
+                    UEFI_LVVV(("info[%d].status           = 0x%08X (%s)", i, info.status, uefiProcessorInformationStatusFlagsToString(info.status)));
+                    UEFI_LVVV(("info[%d].location.package = %u",          i, info.location.package));
+                    UEFI_LVVV(("info[%d].location.core    = %u",          i, info.location.core));
+                    UEFI_LVVV(("info[%d].location.thread  = %u",          i, info.location.thread));
 
 
 

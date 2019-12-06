@@ -28,6 +28,12 @@ enum class DmiIdentity: u8
     CHASSIS_SERIAL_NUMBER,
     CHASSIS_ASSET_TAG,
     CHASSIS_SKU_NUMBER,
+    PROCESSOR_SOCKET,
+    PROCESSOR_MANUFACTURER,
+    PROCESSOR_VERSION,
+    PROCESSOR_SERIAL_NUMBER,
+    PROCESSOR_ASSET_TAG,
+    PROCESSOR_PART_NUMBER,
     MAXIMUM
 };
 
@@ -60,6 +66,12 @@ inline const char8* dmiIdentityToString(DmiIdentity identity) // TEST: NO
         case DmiIdentity::CHASSIS_SERIAL_NUMBER:   return "CHASSIS_SERIAL_NUMBER";
         case DmiIdentity::CHASSIS_ASSET_TAG:       return "CHASSIS_ASSET_TAG";
         case DmiIdentity::CHASSIS_SKU_NUMBER:      return "CHASSIS_SKU_NUMBER";
+        case DmiIdentity::PROCESSOR_SOCKET:        return "PROCESSOR_SOCKET";
+        case DmiIdentity::PROCESSOR_MANUFACTURER:  return "PROCESSOR_MANUFACTURER";
+        case DmiIdentity::PROCESSOR_VERSION:       return "PROCESSOR_VERSION";
+        case DmiIdentity::PROCESSOR_SERIAL_NUMBER: return "PROCESSOR_SERIAL_NUMBER";
+        case DmiIdentity::PROCESSOR_ASSET_TAG:     return "PROCESSOR_ASSET_TAG";
+        case DmiIdentity::PROCESSOR_PART_NUMBER:   return "PROCESSOR_PART_NUMBER";
         case DmiIdentity::MAXIMUM:                 return "MAXIMUM";
 
         default: return "UNKNOWN";

@@ -10,6 +10,7 @@
 #include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
+#include <common/src/bits64/dmi/entry/dmiprocessorentry.h>
 #include <common/src/bits64/dmi/entry/dmisystementry.h>
 #include <ngos/status.h>
 #include <uefi/config/uefismbios3configurationtable.h>
@@ -39,6 +40,7 @@ private:
     static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry); // TEST: NO
     static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry); // TEST: NO
     static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry); // TEST: NO
+    static NgosStatus saveDmiProcessorEntry(DmiProcessorEntry *entry); // TEST: NO
     static NgosStatus storeDmiMemoryDevices(u8 *buf); // TEST: NO
     static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header); // TEST: NO

@@ -144,14 +144,14 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
 
             for (i64 i = 0; i < (i64)sAbsolutePointersCount; ++i)
             {
-                UEFI_LVVV(("sAbsolutePointers[%d]->waitForInput       = 0x%p",    i, sAbsolutePointers[i]->waitForInput));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinX = %u",      i, sAbsolutePointers[i]->mode->absoluteMinX));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinY = %u",      i, sAbsolutePointers[i]->mode->absoluteMinY));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinZ = %u",      i, sAbsolutePointers[i]->mode->absoluteMinZ));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxX = %u",      i, sAbsolutePointers[i]->mode->absoluteMaxX));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxY = %u",      i, sAbsolutePointers[i]->mode->absoluteMaxY));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxZ = %u",      i, sAbsolutePointers[i]->mode->absoluteMaxZ));
-                UEFI_LVVV(("sAbsolutePointers[%d]->mode->attributes   = %u (%s)", i, sAbsolutePointers[i]->mode->attributes, uefiAbsolutePointerModeAttributeFlagsToString(sAbsolutePointers[i]->mode->attributes)));
+                UEFI_LVVV(("sAbsolutePointers[%d]->waitForInput       = 0x%p",        i, sAbsolutePointers[i]->waitForInput));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinX = %u",          i, sAbsolutePointers[i]->mode->absoluteMinX));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinY = %u",          i, sAbsolutePointers[i]->mode->absoluteMinY));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinZ = %u",          i, sAbsolutePointers[i]->mode->absoluteMinZ));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxX = %u",          i, sAbsolutePointers[i]->mode->absoluteMaxX));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxY = %u",          i, sAbsolutePointers[i]->mode->absoluteMaxY));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMaxZ = %u",          i, sAbsolutePointers[i]->mode->absoluteMaxZ));
+                UEFI_LVVV(("sAbsolutePointers[%d]->mode->attributes   = 0x%08X (%s)", i, sAbsolutePointers[i]->mode->attributes, uefiAbsolutePointerModeAttributeFlagsToString(sAbsolutePointers[i]->mode->attributes)));
             }
 
             UEFI_LVVV(("-------------------------------------"));
@@ -277,14 +277,14 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
 
 
 
-        UEFI_LVVV(("pointer->waitForInput       = 0x%p",    pointer->waitForInput));
-        UEFI_LVVV(("pointer->mode->absoluteMinX = %u",      pointer->mode->absoluteMinX));
-        UEFI_LVVV(("pointer->mode->absoluteMinY = %u",      pointer->mode->absoluteMinY));
-        UEFI_LVVV(("pointer->mode->absoluteMinZ = %u",      pointer->mode->absoluteMinZ));
-        UEFI_LVVV(("pointer->mode->absoluteMaxX = %u",      pointer->mode->absoluteMaxX));
-        UEFI_LVVV(("pointer->mode->absoluteMaxY = %u",      pointer->mode->absoluteMaxY));
-        UEFI_LVVV(("pointer->mode->absoluteMaxZ = %u",      pointer->mode->absoluteMaxZ));
-        UEFI_LVVV(("pointer->mode->attributes   = %u (%s)", pointer->mode->attributes, uefiAbsolutePointerModeAttributeFlagsToString(pointer->mode->attributes)));
+        UEFI_LVVV(("pointer->waitForInput       = 0x%p",        pointer->waitForInput));
+        UEFI_LVVV(("pointer->mode->absoluteMinX = %u",          pointer->mode->absoluteMinX));
+        UEFI_LVVV(("pointer->mode->absoluteMinY = %u",          pointer->mode->absoluteMinY));
+        UEFI_LVVV(("pointer->mode->absoluteMinZ = %u",          pointer->mode->absoluteMinZ));
+        UEFI_LVVV(("pointer->mode->absoluteMaxX = %u",          pointer->mode->absoluteMaxX));
+        UEFI_LVVV(("pointer->mode->absoluteMaxY = %u",          pointer->mode->absoluteMaxY));
+        UEFI_LVVV(("pointer->mode->absoluteMaxZ = %u",          pointer->mode->absoluteMaxZ));
+        UEFI_LVVV(("pointer->mode->attributes   = 0x%08X (%s)", pointer->mode->attributes, uefiAbsolutePointerModeAttributeFlagsToString(pointer->mode->attributes)));
 
 
 
