@@ -11,6 +11,7 @@
 struct JpegStartOfScanComponent
 {
     JpegComponentId id;
+
     u8              huffmanAcTableId: 4;
     u8              huffmanDcTableId: 4;
 } __attribute__((packed));
