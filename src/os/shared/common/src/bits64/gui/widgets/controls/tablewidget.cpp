@@ -158,88 +158,6 @@ NgosStatus TableWidget::onKeyboardEvent(const UefiInputKey &key)
         }
         break;
 
-        case UefiInputKeyScanCode::PAGE_UP:
-        {
-            u64 visibleRow = mHeight / mRowHeight;
-
-            if (visibleRow <= 1)
-            {
-                visibleRow = 1;
-            }
-            else
-            {
-                --visibleRow;
-            }
-
-
-
-            u64 selectedRow;
-
-            if (mSelectedRow <= visibleRow)
-            {
-                selectedRow = 0;
-            }
-            else
-            {
-                selectedRow = mSelectedRow - visibleRow;
-            }
-
-
-
-            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-            COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(),       NgosStatus::ASSERTION);
-
-            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
-
-
-
-            return NgosStatus::OK;
-        }
-        break;
-
-        case UefiInputKeyScanCode::PAGE_DOWN:
-        {
-            u64 visibleRow = mHeight / mRowHeight;
-
-            if (visibleRow <= 1)
-            {
-                visibleRow = 1;
-            }
-            else
-            {
-                --visibleRow;
-            }
-
-
-
-            u64 selectedRow;
-
-            if (mSelectedRow >= mRows.getSize() - visibleRow)
-            {
-                selectedRow = mRows.getSize() - 1;
-            }
-            else
-            {
-                selectedRow = mSelectedRow + visibleRow;
-            }
-
-
-
-            COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-            COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(scrollToSelectedRow(),       NgosStatus::ASSERTION);
-
-            COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
-
-
-
-            return NgosStatus::OK;
-        }
-        break;
-
         case UefiInputKeyScanCode::HOME:
         {
             COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
@@ -269,6 +187,9 @@ NgosStatus TableWidget::onKeyboardEvent(const UefiInputKey &key)
             return NgosStatus::OK;
         }
         break;
+
+        case UefiInputKeyScanCode::PAGE_UP:   return pageUp();
+        case UefiInputKeyScanCode::PAGE_DOWN: return pageDown();
 
         default:
         {
@@ -300,6 +221,104 @@ NgosStatus TableWidget::scrollToSelectedRow()
     {
         mRowsWrapperWidget->setPosition(0, (i64)mWrapperWidget->getHeight() - localPositionY - mRowHeight);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus TableWidget::pageUp()
+{
+    COMMON_LT((""));
+
+
+
+    u64 visibleRow = mWrapperWidget->getHeight() / mRowHeight;
+
+    if (visibleRow < 1)
+    {
+        visibleRow = 1;
+    }
+
+
+
+    u64 selectedRow;
+
+    if (mSelectedRow <= visibleRow)
+    {
+        selectedRow = 0;
+    }
+    else
+    {
+        selectedRow = mSelectedRow - visibleRow;
+    }
+
+
+
+    i64 positionY = mRowsWrapperWidget->getPositionY() + visibleRow * mRowHeight;
+
+    if (positionY > 0)
+    {
+        positionY = 0;
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus TableWidget::pageDown()
+{
+    COMMON_LT((""));
+
+
+
+    u64 visibleRow = mWrapperWidget->getHeight() / mRowHeight;
+
+    if (visibleRow < 1)
+    {
+        visibleRow = 1;
+    }
+
+
+
+    u64 selectedRow;
+
+    if (mSelectedRow >= mRows.getSize() - visibleRow)
+    {
+        selectedRow = mRows.getSize() - 1;
+    }
+    else
+    {
+        selectedRow = mSelectedRow + visibleRow;
+    }
+
+
+
+    i64 positionY = mRowsWrapperWidget->getPositionY() - visibleRow * mRowHeight;
+
+    if (positionY < (i64)(mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight()))
+    {
+        positionY = mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight();
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 

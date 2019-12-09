@@ -23,6 +23,8 @@ public:
     NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
 
     NgosStatus scrollToSelectedRow(); // TEST: NO
+    NgosStatus pageUp(); // TEST: NO
+    NgosStatus pageDown(); // TEST: NO
 
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO

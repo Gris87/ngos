@@ -132,8 +132,8 @@ Please refer to [How to debug chapter](../../0.%20Intro/5.%20How%20to%20debug/RE
             UEFI_LF(("CPU flag \"%s\" is not supported\n", wantedCpuFlag));
         }
 
-        UEFI_LF(("Your CPU is already outdated. Please upgrade your hardware."));
-        UEFI_LF(("It is expected Intel Skylake CPU or newer or AMD Zen CPU or newer."));
+        UEFI_LF(("Your CPU is already outdated. Please upgrade it"));
+        UEFI_LF(("We recommend Intel Core i9-10980XE Extreme Edition or newer or AMD Ryzen Threadripper 3990X or newer"));
 
 
 

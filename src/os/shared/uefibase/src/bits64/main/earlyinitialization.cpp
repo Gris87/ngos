@@ -122,7 +122,7 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
-        UEFI_LF(("Your CPU is already outdated. Please upgrade your hardware"));
+        UEFI_LF(("Your CPU is already outdated. Please upgrade it"));
         UEFI_LF(("We recommend Intel Core i9-10980XE Extreme Edition or newer or AMD Ryzen Threadripper 3990X or newer"));
 
 

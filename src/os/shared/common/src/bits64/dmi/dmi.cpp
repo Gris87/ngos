@@ -183,16 +183,16 @@ NgosStatus DMI::init()
 
 
 
-        COMMON_TEST_ASSERT(sVersion                     == 0x00020800,            NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sVersion                  == 0x00020800,            NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sStructureTableLength     == 395,                   NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sStructureTableAddress       == 0x000000003FBCB000,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sChassisType                 == DmiChassisType::OTHER, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sNumberOfMemoryDevices       == 1,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sMemoryDevices[0].handle     == 0x1100,                NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sMemoryDevices[0].device     != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sMemoryDevices[0].bank       == 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sMemoryDevices[0].size       == 1073741824,            NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sStructureTableAddress       != 0,                     NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sChassisType              == DmiChassisType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfMemoryDevices    == 1,                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].handle  == 0x1100,                NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].device  != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].bank    == 0,                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].size    == 1073741824,            NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 25,                    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]               != 0,                     NgosStatus::ASSERTION);
@@ -265,13 +265,13 @@ NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)
         COMMON_TEST_ASSERT((*(u64 *)smbios3->anchor & 0x000000FFFFFFFFFF) == SMBIOS_3_ANCHOR,                                                                          NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios3->entryPointStructureChecksum           == checksum((u8 *)smbios3, smbios3->entryPointLength, smbios3->entryPointStructureChecksum), NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios3->entryPointLength                      == 24,                                                                                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->majorVersion                          == 0,                                                                                        NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->minorVersion                          == 0,                                                                                        NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->docRevision                           == 0,                                                                                        NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->entryPointRevision                    == 0,                                                                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->majorVersion                          == 3,                                                                                        NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(smbios3->minorVersion                       == 1,                                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(smbios3->docRevision                        == 0,                                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(smbios3->entryPointRevision                    == 1,                                                                                        NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios3->reserved                              == 0,                                                                                        NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->structureTableMaximumSize             == 0,                                                                                        NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->structureTableAddress                 == 0,                                                                                        NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(smbios3->structureTableMaximumSize          == 4070,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(smbios3->structureTableAddress                 != 0,                                                                                        NgosStatus::ASSERTION);
     }
 
 
@@ -320,7 +320,7 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
         COMMON_TEST_ASSERT(smbios->entryPointStructureChecksum                       == checksum((u8 *)smbios, smbios->entryPointLength, smbios->entryPointStructureChecksum), NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->entryPointLength                                  == 31,                                                                                    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->majorVersion                                      == 2,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->minorVersion                                      == 8,                                                                                     NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(smbios->minorVersion                                   == 8,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(smbios->maximumStructureSize                           == 81,                                                                                    NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(smbios->entryPointRevision                                == 0,                                                                                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->formattedArea[0]                                  == 0,                                                                                     NgosStatus::ASSERTION);
@@ -331,9 +331,9 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
         COMMON_TEST_ASSERT((*(u64 *)smbios->intermediateAnchor & 0x000000FFFFFFFFFF) == SMBIOS_INTERMEDIATE_ANCHOR,                                                            NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->intermediateChecksum                              == checksum((u8 *)&smbios->intermediateAnchor, 15, smbios->intermediateChecksum),         NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(smbios->structureTableLength                           == 395,                                                                                   NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(smbios->structureTableAddress                             == 0x000000003FBCB000,                                                                    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios->structureTableAddress                             != 0,                                                                                     NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(smbios->numberOfSmbiosStructures                       == 9,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(smbios->bcdRevision                                       == 0x28,                                                                                  NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(smbios->bcdRevision                                    == 0x28,                                                                                  NgosStatus::ASSERTION); // Commented due to value variation
     }
 
 
