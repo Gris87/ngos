@@ -735,7 +735,7 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
         // COMMON_TEST_ASSERT(entry->assetTagStringId            == 5,                                           NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->featureFlags                   == FLAGS(DmiBaseboardFeatureFlag::MOTHERBOARD), NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->locationInChassisStringId   == 6,                                           NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->chassisHandle                  == 0x0300,                                   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->chassisHandle               == 0x0300,                                      NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->boardType                      == DmiBaseboardType::MOTHERBOARD,               NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,                                           NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,                                           NgosStatus::ASSERTION); // Commented due to value variation
