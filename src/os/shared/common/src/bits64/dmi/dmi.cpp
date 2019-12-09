@@ -1207,6 +1207,10 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
 
 
+    AVOID_UNUSED(entry);
+
+
+
     // Validation
     {
         COMMON_LVVV(("entry->location                     = 0x%02X (%s)", entry->location, dmiPhysicalMemoryArrayLocationToString(entry->location)));
@@ -1262,6 +1266,10 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
 
 
+    AVOID_UNUSED(entry);
+
+
+
     // Validation
     {
         COMMON_LVVV(("entry->startingAddress   = 0x%08X", entry->startingAddress));
@@ -1312,6 +1320,10 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
     COMMON_LT((" | entry = 0x%p", entry));
 
     COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
 
 
 
