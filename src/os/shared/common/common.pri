@@ -92,9 +92,14 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
     $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
+    $$PWD/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
+    $$PWD/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h \
     $$PWD/src/bits64/dmi/entry/dmiprocessorentry.h \
+    $$PWD/src/bits64/dmi/entry/dmisystembootentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystementry.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibaseboardtype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h \
@@ -104,6 +109,9 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassistype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorfamily.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorfeatureflags.h \
@@ -112,6 +120,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessortype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystembootstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h \
     $$PWD/src/bits64/early/earlyassert.h \
     $$PWD/src/bits64/early/earlylog.h \

@@ -717,8 +717,11 @@ src/os/shared/common/src/bits64/dmi/dmistoreduuid.h
 src/os/shared/common/src/bits64/dmi/entry/dmibaseboardentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibiosentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmichassisentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimemorydeviceentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiprocessorentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmisystembootentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystementry.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibaseboardtype.h
@@ -731,6 +734,9 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassisstate.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassistype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorfamily.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorfeatureflags.h
@@ -739,6 +745,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorsignature.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessortype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystembootstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h
 src/os/shared/common/src/bits64/early/earlyassert.h
 src/os/shared/common/src/bits64/early/earlylog.h

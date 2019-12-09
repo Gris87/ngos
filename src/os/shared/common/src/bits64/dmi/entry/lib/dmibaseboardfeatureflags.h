@@ -34,7 +34,12 @@ inline const char8* dmiBaseboardFeatureFlagToString(DmiBaseboardFeatureFlag flag
 
     switch (flag)
     {
-        case DmiBaseboardFeatureFlag::NONE:  return "NONE";
+        case DmiBaseboardFeatureFlag::NONE:                   return "NONE";
+        case DmiBaseboardFeatureFlag::MOTHERBOARD:            return "MOTHERBOARD";
+        case DmiBaseboardFeatureFlag::REQUIRES_DAUGHTER_CARD: return "REQUIRES_DAUGHTER_CARD";
+        case DmiBaseboardFeatureFlag::REMOVABLE:              return "REMOVABLE";
+        case DmiBaseboardFeatureFlag::REPLACEABLE:            return "REPLACEABLE";
+        case DmiBaseboardFeatureFlag::HOT_SWAPPABLE:          return "HOT_SWAPPABLE";
 
         default: return "UNKNOWN";
     }
@@ -55,7 +60,7 @@ inline const char8* dmiBaseboardFeatureFlagsToString(dmi_baseboard_feature_flags
 
 
 
-    static char8 res[181];
+    static char8 res[94];
 
     FLAGS_TO_STRING(res, flags, dmiBaseboardFeatureFlagToString, DmiBaseboardFeatureFlag);
 
