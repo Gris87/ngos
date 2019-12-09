@@ -193,7 +193,7 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sMemoryDevices[0].device  != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDevices[0].bank    == 0,                     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDevices[0].size    == 1073741824,            NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 25,                    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 27,                    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]               != 0,                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[2]               != 0,                     NgosStatus::ASSERTION);
@@ -701,16 +701,16 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturer                   = %u",     entry->manufacturer));
-        COMMON_LVVV(("entry->product                        = %u",     entry->product));
-        COMMON_LVVV(("entry->version                        = %u",     entry->version));
-        COMMON_LVVV(("entry->serialNumber                   = %u",     entry->serialNumber));
-        COMMON_LVVV(("entry->assetTag                       = %u",     entry->assetTag));
-        COMMON_LVVV(("entry->featureFlags                   = 0x%02X", entry->featureFlags));
-        COMMON_LVVV(("entry->locationInChassis              = %u",     entry->locationInChassis));
-        COMMON_LVVV(("entry->chassisHandle                  = 0x%04X", entry->chassisHandle));
-        COMMON_LVVV(("entry->boardType                      = %u",     entry->boardType));
-        COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",     entry->numberOfContainedObjectHandles));
+        COMMON_LVVV(("entry->manufacturerStringId           = %u",          entry->manufacturerStringId));
+        COMMON_LVVV(("entry->productStringId                = %u",          entry->productStringId));
+        COMMON_LVVV(("entry->versionStringId                = %u",          entry->versionStringId));
+        COMMON_LVVV(("entry->serialNumberStringId           = %u",          entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId               = %u",          entry->assetTagStringId));
+        COMMON_LVVV(("entry->featureFlags                   = 0x%02X (%s)", entry->featureFlags, dmiBaseboardFeatureFlagsToString(entry->featureFlags)));
+        COMMON_LVVV(("entry->locationInChassisStringId      = %u",          entry->locationInChassisStringId));
+        COMMON_LVVV(("entry->chassisHandle                  = 0x%04X",      entry->chassisHandle));
+        COMMON_LVVV(("entry->boardType                      = %u (%s)",     entry->boardType, dmiBaseboardTypeToString(entry->boardType)));
+        COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",          entry->numberOfContainedObjectHandles));
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
@@ -728,17 +728,17 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
 
 
-        COMMON_TEST_ASSERT(entry->manufacturer                   == 1,      NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->product                        == 2,      NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->version                        == 3,      NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->serialNumber                == 4,      NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->assetTag                    == 5,      NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->featureFlags                   == 0x01,   NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->locationInChassis              == 0,      NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->chassisHandle                  == 0x0300, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->boardType                      == 10,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,      NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->manufacturerStringId           == 1,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->productStringId                == 2,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->versionStringId                == 3,                                           NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->serialNumberStringId        == 4,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->assetTagStringId            == 5,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->featureFlags                   == FLAGS(DmiBaseboardFeatureFlag::MOTHERBOARD), NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->locationInChassisStringId   == 6,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->chassisHandle                  == 0x0300,                                   NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->boardType                      == DmiBaseboardType::MOTHERBOARD,               NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,                                           NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,                                           NgosStatus::ASSERTION); // Commented due to value variation
     }
 
 
@@ -756,29 +756,34 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
 
 
-            if (stringId == entry->manufacturer)
+            if (stringId == entry->manufacturerStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
             else
-            if (stringId == entry->product)
+            if (stringId == entry->productStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
             else
-            if (stringId == entry->version)
+            if (stringId == entry->versionStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
             else
-            if (stringId == entry->serialNumber)
+            if (stringId == entry->serialNumberStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
             else
-            if (stringId == entry->assetTag)
+            if (stringId == entry->assetTagStringId)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+            }
+            else
+            if (stringId == entry->locationInChassisStringId)
+            {
+                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_LOCATION_IN_CHASSIS, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
 
 

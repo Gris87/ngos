@@ -4,23 +4,25 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmibaseboardtype.h>
 
 
 
 struct DmiBaseboardEntry
 {
-    DmiEntryHeader header;
-    u8             manufacturer;
-    u8             product;
-    u8             version;
-    u8             serialNumber;
-    u8             assetTag;
-    u8             featureFlags;
-    u8             locationInChassis;
-    u16            chassisHandle;
-    u8             boardType;
-    u8             numberOfContainedObjectHandles;
-    u16            containedObjectHandles[0];
+    DmiEntryHeader              header;
+    u8                          manufacturerStringId;
+    u8                          productStringId;
+    u8                          versionStringId;
+    u8                          serialNumberStringId;
+    u8                          assetTagStringId;
+    dmi_baseboard_feature_flags featureFlags;
+    u8                          locationInChassisStringId;
+    u16                         chassisHandle;
+    DmiBaseboardType            boardType;
+    u8                          numberOfContainedObjectHandles;
+    u16                         containedObjectHandles[0];
 } __attribute__((packed));
 
 
