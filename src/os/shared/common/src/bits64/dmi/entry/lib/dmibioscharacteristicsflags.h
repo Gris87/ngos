@@ -112,7 +112,7 @@ inline const char8* dmiBiosCharacteristicsFlagsToString(dmi_bios_characteristics
 
 
 
-    static char8 res[712];
+    static char8 res[713];
 
     FLAGS_TO_STRING(res, flags, dmiBiosCharacteristicsFlagToString, DmiBiosCharacteristicsFlag);
 

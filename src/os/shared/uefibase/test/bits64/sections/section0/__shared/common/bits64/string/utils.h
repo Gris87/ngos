@@ -4097,6 +4097,25 @@ TEST_CASES(section0, __shared_common_bits64_string_utils);
         TEST_ASSERT_EQUALS(strcmp(hertzToString(1510000000000000000), "1.51 EHz"), 0);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("boolToString()");
+    {
+        TEST_ASSERT_EQUALS(strcmp(boolToString(true),  "true"),  0);
+        TEST_ASSERT_EQUALS(strcmp(boolToString(false), "false"), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("stringToString()");
+    {
+        TEST_ASSERT_EQUALS(strcmp(stringToString(nullptr), "null"),  0);
+        TEST_ASSERT_EQUALS(strcmp(stringToString("Hello"), "Hello"), 0);
+        TEST_ASSERT_EQUALS(strcmp(stringToString("World"), "World"), 0);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 

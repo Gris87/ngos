@@ -734,6 +734,11 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassisstate.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassistype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicetype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h

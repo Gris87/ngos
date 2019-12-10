@@ -109,6 +109,11 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassistype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h \

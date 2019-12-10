@@ -139,6 +139,24 @@ inline const char8* hertzToString(u64 hertz)
     return res;
 }
 
+inline const char8* boolToString(bool value)
+{
+    // COMMON_LT((" | value = %u", value)); // Commented to avoid bad looking logs
+
+
+
+    return value ? "true" : "false";
+}
+
+inline const char8* stringToString(const char8 *str)
+{
+    // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
+
+
+
+    return str ? str : "null";
+}
+
 
 
 #endif // OS_SHARED_COMMON_SRC_BITS64_STRING_UTILS_H

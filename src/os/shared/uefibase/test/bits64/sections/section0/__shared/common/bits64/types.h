@@ -52,6 +52,11 @@
 #include <common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassisstate.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassistype.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemorydevicetype.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h>
@@ -207,8 +212,13 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(DmiIdentity),                                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),              31);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               32);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          40);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               72);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          84);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceFormFactor),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceOperatingModeCapabilityFlag),    2);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTechnology),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceType),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTypeDetailFlag),                 2);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntry),                   23);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayErrorCorrection),         1);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayLocation),                1);
