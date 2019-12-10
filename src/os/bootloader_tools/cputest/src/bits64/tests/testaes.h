@@ -5,6 +5,8 @@
 
 #include "src/bits64/tests/testbase.h"
 
+#include <common/src/bits64/cryptography/aes.h>
+
 
 
 class TestAes: public TestBase
@@ -12,6 +14,11 @@ class TestAes: public TestBase
 public:
     TestAes(); // TEST: NO
     ~TestAes(); // TEST: NO
+
+    AES& getAES(); // TEST: NO
+
+private:
+    AES mAES;
 };
 
 

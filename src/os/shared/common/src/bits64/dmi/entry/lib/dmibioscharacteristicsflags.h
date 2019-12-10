@@ -46,7 +46,8 @@ enum class DmiBiosCharacteristicsFlag: dmi_bios_characteristics_flags
     SERIAL_SUPPORTED                   = (1ULL << 28),
     PRINTER_SUPPORTED                  = (1ULL << 29),
     CGA_MONO_SUPPORTED                 = (1ULL << 30),
-    NEC_PC_98                          = (1ULL << 31)
+    NEC_PC_98                          = (1ULL << 31),
+    RESERVED                           = (1ULL << 32)
 };
 
 
@@ -90,6 +91,7 @@ inline const char8* dmiBiosCharacteristicsFlagToString(DmiBiosCharacteristicsFla
         case DmiBiosCharacteristicsFlag::PRINTER_SUPPORTED:                  return "PRINTER_SUPPORTED";
         case DmiBiosCharacteristicsFlag::CGA_MONO_SUPPORTED:                 return "CGA_MONO_SUPPORTED";
         case DmiBiosCharacteristicsFlag::NEC_PC_98:                          return "NEC_PC_98";
+        case DmiBiosCharacteristicsFlag::RESERVED:                           return "RESERVED";
 
         default: return "UNKNOWN";
     }
@@ -110,7 +112,7 @@ inline const char8* dmiBiosCharacteristicsFlagsToString(dmi_bios_characteristics
 
 
 
-    static char8 res[702];
+    static char8 res[712];
 
     FLAGS_TO_STRING(res, flags, dmiBiosCharacteristicsFlagToString, DmiBiosCharacteristicsFlag);
 

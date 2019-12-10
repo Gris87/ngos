@@ -2,7 +2,6 @@
 
 #include <asm/instructions.h>
 #include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/cryptography/aes.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <ngos/linkage.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
@@ -42,17 +41,11 @@ void UEFI_API testAesProcedure(void *buffer)
 
 
 
-        AES aes;
-
-        const char8 *key = "My dear password";
-
-        UEFI_TEST_ASSERT(strlen(key) == 16);
+        AES& aes = test->getAES();
 
 
 
         u64 startTime = rdtsc();
-
-        UEFI_ASSERT_EXECUTION(aes.setKey((u8 *)key, strlen(key)));
 
         for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
@@ -76,13 +69,33 @@ void UEFI_API testAesProcedure(void *buffer)
 
 TestAes::TestAes()
     : TestBase(TestType::AES, "Testing AES instructions", testAesProcedure)
+    , mAES()
 {
     UEFI_LT((""));
+
+
+
+    const char8 *key = "My dear password";
+
+    UEFI_TEST_ASSERT(strlen(key) == 16);
+
+
+
+    UEFI_ASSERT_EXECUTION(mAES.setKey((u8 *)key, strlen(key)));
 }
 
 TestAes::~TestAes()
 {
     UEFI_LT((""));
+}
+
+AES& TestAes::getAES()
+{
+    // UEFI_LT(("")); // Commented to avoid bad looking logs
+
+
+
+    return mAES;
 }
 
 

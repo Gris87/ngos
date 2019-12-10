@@ -44,7 +44,7 @@ TEST_CASES(section1, bits64_types);
         TEST_ASSERT_EQUALS(sizeof(CacheInfo),    8);
         TEST_ASSERT_EQUALS(sizeof(CpuTest),      1);
         TEST_ASSERT_EQUALS(sizeof(CpuTestGUI),   1);
-        TEST_ASSERT_EQUALS(sizeof(TestAes),      32);
+        TEST_ASSERT_EQUALS(sizeof(TestAes),      96);
         TEST_ASSERT_EQUALS(sizeof(TestAvx2),     32);
         TEST_ASSERT_EQUALS(sizeof(TestAvx),      32);
         TEST_ASSERT_EQUALS(sizeof(TestAvx512Bw), 32);

@@ -242,34 +242,41 @@ NgosStatus TableWidget::pageUp()
 
 
 
-    u64 selectedRow;
-
-    if (mSelectedRow <= visibleRow)
+    if (visibleRow >= mRows.getSize())
     {
-        selectedRow = 0;
+        COMMON_ASSERT_EXECUTION(setSelectedRow(0), NgosStatus::ASSERTION);
     }
     else
     {
-        selectedRow = mSelectedRow - visibleRow;
+        u64 selectedRow;
+
+        if (mSelectedRow <= visibleRow)
+        {
+            selectedRow = 0;
+        }
+        else
+        {
+            selectedRow = mSelectedRow - visibleRow;
+        }
+
+
+
+        i64 positionY = mRowsWrapperWidget->getPositionY() + visibleRow * mRowHeight;
+
+        if (positionY > 0)
+        {
+            positionY = 0;
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
-
-
-
-    i64 positionY = mRowsWrapperWidget->getPositionY() + visibleRow * mRowHeight;
-
-    if (positionY > 0)
-    {
-        positionY = 0;
-    }
-
-
-
-    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 
@@ -291,34 +298,41 @@ NgosStatus TableWidget::pageDown()
 
 
 
-    u64 selectedRow;
-
-    if (mSelectedRow >= mRows.getSize() - visibleRow)
+    if (visibleRow >= mRows.getSize())
     {
-        selectedRow = mRows.getSize() - 1;
+        COMMON_ASSERT_EXECUTION(setSelectedRow(mRows.getSize() - 1), NgosStatus::ASSERTION);
     }
     else
     {
-        selectedRow = mSelectedRow + visibleRow;
+        u64 selectedRow;
+
+        if (mSelectedRow >= mRows.getSize() - visibleRow)
+        {
+            selectedRow = mRows.getSize() - 1;
+        }
+        else
+        {
+            selectedRow = mSelectedRow + visibleRow;
+        }
+
+
+
+        i64 positionY = mRowsWrapperWidget->getPositionY() - visibleRow * mRowHeight;
+
+        if (positionY < (i64)(mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight()))
+        {
+            positionY = mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight();
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
-
-
-
-    i64 positionY = mRowsWrapperWidget->getPositionY() - visibleRow * mRowHeight;
-
-    if (positionY < (i64)(mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight()))
-    {
-        positionY = mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight();
-    }
-
-
-
-    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 

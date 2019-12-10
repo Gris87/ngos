@@ -1232,6 +1232,11 @@ NgosStatus CpuTestGUI::fillIssuesTable()
     }
 #endif
 
+    if (!CPU::hasFlag(X86Feature::FMA))
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FMA3 that highly required"), NgosStatus::ASSERTION);
+    }
+
     if (!CPU::hasFlag(X86Feature::XMM))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE that highly required"), NgosStatus::ASSERTION);
@@ -1275,11 +1280,6 @@ NgosStatus CpuTestGUI::fillIssuesTable()
     if (!CPU::hasFlag(X86Feature::AVX512F))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "CPU doesn't support AVX512F for best performance"), NgosStatus::ASSERTION);
-    }
-
-    if (!CPU::hasFlag(X86Feature::FMA))
-    {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FMA3 that highly required"), NgosStatus::ASSERTION);
     }
 
 
@@ -2459,7 +2459,9 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                sCurrentTest = (TestType)0;
+                sCurrentTest   = (TestType)0;
+                sDisplayedTest = (TestType)0;
+                sTerminated    = false;
 
                 for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
                 {
@@ -2486,11 +2488,6 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
                 if (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
                 {
-                    sDisplayedTest = (TestType)0;
-                    sTerminated    = false;
-
-
-
                     UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
                     UEFI_ASSERT_EXECUTION(sStartButton->setContentImage(sStopImage), NgosStatus::ASSERTION);
