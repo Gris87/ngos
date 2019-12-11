@@ -29,7 +29,38 @@ enum class DmiMemoryDeviceFormFactor: u8
 
 
 
-inline const char8* dmiMemoryDeviceFormFactorToString(DmiMemoryDeviceFormFactor factor) // TEST: NO
+inline const char8* enumToString(DmiMemoryDeviceFormFactor factor) // TEST: NO
+{
+    // COMMON_LT((" | factor = %u", factor)); // Commented to avoid bad looking logs
+
+
+
+    switch (factor)
+    {
+        case DmiMemoryDeviceFormFactor::NONE:             return "NONE";
+        case DmiMemoryDeviceFormFactor::OTHER:            return "OTHER";
+        case DmiMemoryDeviceFormFactor::UNKNOWN:          return "UNKNOWN";
+        case DmiMemoryDeviceFormFactor::SIMM:             return "SIMM";
+        case DmiMemoryDeviceFormFactor::SIP:              return "SIP";
+        case DmiMemoryDeviceFormFactor::CHIP:             return "CHIP";
+        case DmiMemoryDeviceFormFactor::DIP:              return "DIP";
+        case DmiMemoryDeviceFormFactor::ZIP:              return "ZIP";
+        case DmiMemoryDeviceFormFactor::PROPRIETARY_CARD: return "PROPRIETARY_CARD";
+        case DmiMemoryDeviceFormFactor::DIMM:             return "DIMM";
+        case DmiMemoryDeviceFormFactor::TSOP:             return "TSOP";
+        case DmiMemoryDeviceFormFactor::ROW_OF_CHIPS:     return "ROW_OF_CHIPS";
+        case DmiMemoryDeviceFormFactor::RIMM:             return "RIMM";
+        case DmiMemoryDeviceFormFactor::SODIUM:           return "SODIUM";
+        case DmiMemoryDeviceFormFactor::SRIMM:            return "SRIMM";
+        case DmiMemoryDeviceFormFactor::FB_DIMM:          return "FB_DIMM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiMemoryDeviceFormFactor factor) // TEST: NO
 {
     // COMMON_LT((" | factor = %u", factor)); // Commented to avoid bad looking logs
 

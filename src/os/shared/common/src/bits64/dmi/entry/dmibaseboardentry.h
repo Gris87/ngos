@@ -11,18 +11,18 @@
 
 struct DmiBaseboardEntry
 {
-    DmiEntryHeader              header;
-    u8                          manufacturerStringId;
-    u8                          productStringId;
-    u8                          versionStringId;
-    u8                          serialNumberStringId;
-    u8                          assetTagStringId;
-    dmi_baseboard_feature_flags featureFlags;
-    u8                          locationInChassisStringId;
-    u16                         chassisHandle;
-    DmiBaseboardType            boardType;
-    u8                          numberOfContainedObjectHandles;
-    u16                         containedObjectHandles[0];
+    DmiEntryHeader           header;
+    u8                       manufacturerStringId;
+    u8                       productStringId;
+    u8                       versionStringId;
+    u8                       serialNumberStringId;
+    u8                       assetTagStringId;
+    DmiBaseboardFeatureFlags featureFlags;
+    u8                       locationInChassisStringId;
+    u16                      chassisHandle;
+    DmiBaseboardType         boardType;
+    u8                       numberOfContainedObjectHandles;
+    u16                      containedObjectHandles[0];
 } __attribute__((packed));
 
 

@@ -36,16 +36,16 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
     {
         EARLY_LVVV(("memberHeader->signature         = 0x%04X",      memberHeader->signature));
         EARLY_LVVV(("memberHeader->compressionMethod = %u (%s)",     memberHeader->compressionMethod, gzipCompressionMethodToString(memberHeader->compressionMethod)));
-        EARLY_LVVV(("memberHeader->flags             = 0x%02X (%s)", memberHeader->flags, gzipMemberFlagsToString(memberHeader->flags)));
+        EARLY_LVVV(("memberHeader->flags             = %s",          flagsToFullString(memberHeader->flags)));
         EARLY_LVVV(("memberHeader->modificationTime  = %u",          memberHeader->modificationTime));
-        EARLY_LVVV(("memberHeader->extraFlags        = 0x%02X (%s)", memberHeader->extraFlags, gzipMemberExtraFlagsToString(memberHeader->extraFlags)));
+        EARLY_LVVV(("memberHeader->extraFlags        = %s",          flagsToFullString(memberHeader->extraFlags)));
         EARLY_LVVV(("memberHeader->operatingSystem   = %u (%s)",     memberHeader->operatingSystem, gzipOperatingSystemToString(memberHeader->operatingSystem)));
 
 
 
         EARLY_TEST_ASSERT(memberHeader->signature         == GZIP_MEMBER_HEADER_SIGNATURE,             NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->compressionMethod == GzipCompressionMethod::DEFLATE,           NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberHeader->flags             == FLAG(GzipMemberFlag::NONE),               NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->flags             == FLAGS(GzipMemberFlag::NONE),              NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->modificationTime  == 0,                                        NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->extraFlags        == FLAGS(GzipMemberExtraFlag::DEFLATE_SLOW), NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->operatingSystem   == GzipOperatingSystem::UNIX,                NgosStatus::ASSERTION);

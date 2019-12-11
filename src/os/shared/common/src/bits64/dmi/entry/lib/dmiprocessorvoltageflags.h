@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -23,9 +24,11 @@ enum class DmiProcessorVoltageFlag: dmi_processor_voltage_flags
     INDICATE_LEGACY = (1ULL << 7)
 };
 
+DEFINE_FLAGS(DmiProcessorVoltageFlags, dmi_processor_voltage_flags);
 
 
-inline const char8* dmiProcessorVoltageFlagToString(DmiProcessorVoltageFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiProcessorVoltageFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -45,13 +48,13 @@ inline const char8* dmiProcessorVoltageFlagToString(DmiProcessorVoltageFlag flag
 
 
 
-inline const char8* dmiProcessorVoltageFlagsToString(dmi_processor_voltage_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiProcessorVoltageFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -60,7 +63,29 @@ inline const char8* dmiProcessorVoltageFlagsToString(dmi_processor_voltage_flags
 
     static char8 res[83];
 
-    FLAGS_TO_STRING(res, flags, dmiProcessorVoltageFlagToString, DmiProcessorVoltageFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorVoltageFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiProcessorVoltageFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[83];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorVoltageFlag);
 
     return res;
 }

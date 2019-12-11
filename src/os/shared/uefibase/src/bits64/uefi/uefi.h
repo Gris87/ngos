@@ -34,9 +34,9 @@ public:
     static bool canPrint(); // TEST: NO
 
     static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, u8 **data); // TEST: NO
-    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, u8 *data); // TEST: NO
+    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, u64 *dataSize, u8 *data); // TEST: NO
     static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, u64 dataSize, u8 *data); // TEST: NO
-    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, u8 *data); // TEST: NO
+    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, const UefiVariableAttributeFlags &attributes, u64 dataSize, u8 *data); // TEST: NO
 
     static UefiFileProtocol* openVolume(uefi_handle handle); // TEST: NO
     static bool fileExists(UefiFileProtocol *parentDirectory, const char16 *path); // TEST: NO

@@ -8,6 +8,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -30,9 +31,11 @@ enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier
     UNCOMPRESSED_SIZE_PRESENT = (1ULL << 7)
 };
 
+DEFINE_FLAGS(XzBlockFlags, xz_block_flags);
 
 
-inline const char8* xzBlockFlagToString(XzBlockFlag flag) // TEST: NO
+
+inline const char8* flagToString(XzBlockFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -50,15 +53,15 @@ inline const char8* xzBlockFlagToString(XzBlockFlag flag) // TEST: NO
 
 
 
-inline const char8* xzBlockFlagsToString(xz_block_flags flags) // TEST: NO
+inline const char8* flagsToString(const XzBlockFlags &flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    flags &= ~NUMBER_OF_FILTERS_MASK;
+    xz_block_flags temp = flags & ~NUMBER_OF_FILTERS_MASK;
 
-    if (!flags)
+    if (!temp)
     {
         return "NONE";
     }
@@ -67,7 +70,31 @@ inline const char8* xzBlockFlagsToString(xz_block_flags flags) // TEST: NO
 
     static char8 res[67];
 
-    FLAGS_TO_STRING(res, flags, xzBlockFlagToString, XzBlockFlag);
+    FLAGS_TO_STRING(res, temp, flagToString, XzBlockFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const XzBlockFlags &flags) // TEST: NO
+{
+    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    xz_block_flags temp = flags & ~NUMBER_OF_FILTERS_MASK;
+
+    if (!temp)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[67];
+
+    FLAGS_TO_STRING(res, temp, flagToString, XzBlockFlag);
 
     return res;
 }

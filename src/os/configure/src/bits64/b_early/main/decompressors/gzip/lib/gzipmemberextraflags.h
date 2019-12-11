@@ -8,6 +8,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -26,9 +27,11 @@ enum class GzipMemberExtraFlag: gzip_member_extra_flags
     DEFLATE_FAST = (1ULL << 2)
 };
 
+DEFINE_FLAGS(GzipMemberExtraFlags, gzip_member_extra_flags);
 
 
-inline const char8* gzipMemberExtraFlagToString(GzipMemberExtraFlag flag) // TEST: NO
+
+inline const char8* flagToString(GzipMemberExtraFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -46,13 +49,13 @@ inline const char8* gzipMemberExtraFlagToString(GzipMemberExtraFlag flag) // TES
 
 
 
-inline const char8* gzipMemberExtraFlagsToString(gzip_member_extra_flags flags) // TEST: NO
+inline const char8* flagsToString(const GzipMemberExtraFlags &flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -61,7 +64,29 @@ inline const char8* gzipMemberExtraFlagsToString(gzip_member_extra_flags flags) 
 
     static char8 res[43];
 
-    FLAGS_TO_STRING(res, flags, gzipMemberExtraFlagToString, GzipMemberExtraFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, GzipMemberExtraFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const GzipMemberExtraFlags &flags) // TEST: NO
+{
+    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[43];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, GzipMemberExtraFlag);
 
     return res;
 }

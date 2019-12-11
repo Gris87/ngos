@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -24,9 +25,11 @@ enum class DmiBiosCharacteristicsSystemReservedFlag: dmi_bios_characteristics_sy
     VIRTUAL_MACHINE_SUPPORTED           = (1ULL << 4)
 };
 
+DEFINE_FLAGS(DmiBiosCharacteristicsSystemReservedFlags, dmi_bios_characteristics_system_reserved_flags);
 
 
-inline const char8* dmiBiosCharacteristicsSystemReservedFlagToString(DmiBiosCharacteristicsSystemReservedFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiBiosCharacteristicsSystemReservedFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -47,13 +50,13 @@ inline const char8* dmiBiosCharacteristicsSystemReservedFlagToString(DmiBiosChar
 
 
 
-inline const char8* dmiBiosCharacteristicsSystemReservedFlagsToString(dmi_bios_characteristics_system_reserved_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiBiosCharacteristicsSystemReservedFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -62,7 +65,29 @@ inline const char8* dmiBiosCharacteristicsSystemReservedFlagsToString(dmi_bios_c
 
     static char8 res[184];
 
-    FLAGS_TO_STRING(res, flags, dmiBiosCharacteristicsSystemReservedFlagToString, DmiBiosCharacteristicsSystemReservedFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsSystemReservedFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiBiosCharacteristicsSystemReservedFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[184];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsSystemReservedFlag);
 
     return res;
 }

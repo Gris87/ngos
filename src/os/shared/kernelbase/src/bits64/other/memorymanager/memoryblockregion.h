@@ -15,8 +15,8 @@ struct MemoryBlockRegion
 {
     u64                         start;
     u64                         size;
-    memory_block_region_flags   flags;
-    memory_block_region_node_id nodeId;
+    MemoryBlockRegionFlags      flags;
+    memory_block_region_node_id nodeId; // TODO: encapsulate into a struct
 
 
 

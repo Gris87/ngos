@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -46,9 +47,11 @@ enum class DmiProcessorFeatureFlag: dmi_processor_feature_flags
     TM    = (1ULL << 29)
 };
 
+DEFINE_FLAGS(DmiProcessorFeatureFlags, dmi_processor_feature_flags);
 
 
-inline const char8* dmiProcessorFeatureFlagToString(DmiProcessorFeatureFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiProcessorFeatureFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -91,13 +94,13 @@ inline const char8* dmiProcessorFeatureFlagToString(DmiProcessorFeatureFlag flag
 
 
 
-inline const char8* dmiProcessorFeatureFlagsToString(dmi_processor_feature_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiProcessorFeatureFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -106,7 +109,29 @@ inline const char8* dmiProcessorFeatureFlagsToString(dmi_processor_feature_flags
 
     static char8 res[181];
 
-    FLAGS_TO_STRING(res, flags, dmiProcessorFeatureFlagToString, DmiProcessorFeatureFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorFeatureFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiProcessorFeatureFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[181];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorFeatureFlag);
 
     return res;
 }

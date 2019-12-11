@@ -22,8 +22,8 @@ struct XzBlockHeader
     // Header as multiples of four bytes, minimum size being eight
     // bytes
 
-    u8             blockHeaderSize;
-    xz_block_flags blockFlags;
+    u8           blockHeaderSize;
+    XzBlockFlags blockFlags;
 } __attribute__((packed));
 
 

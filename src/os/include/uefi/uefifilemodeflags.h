@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -20,9 +21,11 @@ enum class UefiFileModeFlag: uefi_file_mode_flags
     CREATE = (1ULL << 63)
 };
 
+DEFINE_FLAGS(UefiFileModeFlags, uefi_file_mode_flags);
 
 
-inline const char8* uefiFileModeFlagToString(UefiFileModeFlag flag) // TEST: NO
+
+inline const char8* flagToString(UefiFileModeFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -37,9 +40,9 @@ inline const char8* uefiFileModeFlagToString(UefiFileModeFlag flag) // TEST: NO
 
 
 
-inline const char8* uefiFileModeFlagsToString(uefi_file_mode_flags flags) // TEST: NO
+inline const char8* flagsToString(const UefiFileModeFlags &flags) // TEST: NO
 {
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -48,7 +51,25 @@ inline const char8* uefiFileModeFlagsToString(uefi_file_mode_flags flags) // TES
 
     static char8 res[37];
 
-    FLAGS_TO_STRING(res, flags, uefiFileModeFlagToString, UefiFileModeFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiFileModeFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const UefiFileModeFlags &flags) // TEST: NO
+{
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[37];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiFileModeFlag);
 
     return res;
 }

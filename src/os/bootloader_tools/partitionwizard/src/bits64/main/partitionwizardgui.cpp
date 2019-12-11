@@ -327,10 +327,10 @@ NgosStatus PartitionWizardGUI::processAbsolutePointerEvent(UefiAbsolutePointerPr
 
     if (pointer->getState(pointer, &state) == UefiStatus::SUCCESS)
     {
-        UEFI_LVVV(("state.currentX      = %u",          state.currentX));
-        UEFI_LVVV(("state.currentY      = %u",          state.currentY));
-        UEFI_LVVV(("state.currentZ      = %u",          state.currentZ));
-        UEFI_LVVV(("state.activeButtons = 0x%08X (%s)", state.activeButtons, uefiAbsolutePointerStateActiveButtonFlagsToString(state.activeButtons)));
+        UEFI_LVVV(("state.currentX      = %u", state.currentX));
+        UEFI_LVVV(("state.currentY      = %u", state.currentY));
+        UEFI_LVVV(("state.currentZ      = %u", state.currentZ));
+        UEFI_LVVV(("state.activeButtons = %s", flagsToFullString(state.activeButtons)));
 
 
 

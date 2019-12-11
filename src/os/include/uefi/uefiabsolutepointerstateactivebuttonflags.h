@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -19,9 +20,11 @@ enum class UefiAbsolutePointerStateActiveButtonFlag: uefi_absolute_pointer_state
     ALTERNATE_ACTIVE = (1ULL << 1)
 };
 
+DEFINE_FLAGS(UefiAbsolutePointerStateActiveButtonFlags, uefi_absolute_pointer_state_active_button_flags);
 
 
-inline const char8* uefiAbsolutePointerStateActiveButtonFlagToString(UefiAbsolutePointerStateActiveButtonFlag flag) // TEST: NO
+
+inline const char8* flagToString(UefiAbsolutePointerStateActiveButtonFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -35,9 +38,9 @@ inline const char8* uefiAbsolutePointerStateActiveButtonFlagToString(UefiAbsolut
 
 
 
-inline const char8* uefiAbsolutePointerStateActiveButtonFlagsToString(uefi_absolute_pointer_state_active_button_flags flags) // TEST: NO
+inline const char8* flagsToString(const UefiAbsolutePointerStateActiveButtonFlags &flags) // TEST: NO
 {
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -46,7 +49,25 @@ inline const char8* uefiAbsolutePointerStateActiveButtonFlagsToString(uefi_absol
 
     static char8 res[47];
 
-    FLAGS_TO_STRING(res, flags, uefiAbsolutePointerStateActiveButtonFlagToString, UefiAbsolutePointerStateActiveButtonFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerStateActiveButtonFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const UefiAbsolutePointerStateActiveButtonFlags &flags) // TEST: NO
+{
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[47];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerStateActiveButtonFlag);
 
     return res;
 }

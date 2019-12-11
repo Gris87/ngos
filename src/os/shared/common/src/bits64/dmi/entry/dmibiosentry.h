@@ -18,7 +18,7 @@ struct DmiBiosEntry
     u16                             biosSegment;
     u8                              biosReleaseDateStringId;
     u8                              biosSize;
-    dmi_bios_characteristics_flags  biosCharacteristics;
+    DmiBiosCharacteristicsFlags     biosCharacteristics;
     DmiBiosCharacteristicsExtension biosCharacteristicsExtension;
     u8                              systemBiosMajorRelease;
     u8                              systemBiosMinorRelease;

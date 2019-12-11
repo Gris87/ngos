@@ -10,8 +10,8 @@
 
 struct DmiBiosCharacteristicsExtension
 {
-    dmi_bios_characteristics_bios_reserved_flags   biosReserved;
-    dmi_bios_characteristics_system_reserved_flags systemReserved;
+    DmiBiosCharacteristicsBiosReservedFlags   biosReserved;
+    DmiBiosCharacteristicsSystemReservedFlags systemReserved;
 } __attribute__((packed));
 
 

@@ -21,14 +21,14 @@
 
 
 
-FpuState             FPU::sState;
-u32                  FPU::sStateKernelSize;
-u32                  FPU::sStateUserSize;
-u32                  FPU::sMxcsrMask;
-x_feature_type_flags FPU::sXFeatures;
-u32                  FPU::sXFeaturesOffsets[(u64)XFeature::MAXIMUM];
-u32                  FPU::sXFeaturesCompactedOffsets[(u64)XFeature::MAXIMUM];
-u32                  FPU::sXFeaturesSizes[(u64)XFeature::MAXIMUM];
+FpuState          FPU::sState;
+u32               FPU::sStateKernelSize;
+u32               FPU::sStateUserSize;
+u32               FPU::sMxcsrMask;
+XFeatureTypeFlags FPU::sXFeatures;
+u32               FPU::sXFeaturesOffsets[(u64)XFeature::MAXIMUM];
+u32               FPU::sXFeaturesCompactedOffsets[(u64)XFeature::MAXIMUM];
+u32               FPU::sXFeaturesSizes[(u64)XFeature::MAXIMUM];
 
 
 
@@ -70,12 +70,12 @@ NgosStatus FPU::initForBootStrapProcessor()
             COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016lX", i, sState.fxsave.xmm[i][1]));
         }
 
-        COMMON_LVVV(("sState.xsave.header.xFeatures   = 0x%016lX (%s)", sState.xsave.header.xFeatures, xFeatureTypeFlagsToString(sState.xsave.header.xFeatures)));
-        COMMON_LVVV(("sState.xsave.header.xComponents = 0x%016lX",      sState.xsave.header.xComponents));
-        COMMON_LVVV(("sStateKernelSize                = %u",            sStateKernelSize));
-        COMMON_LVVV(("sStateUserSize                  = %u",            sStateUserSize));
-        COMMON_LVVV(("sMxcsrMask                      = 0x%08X",        sMxcsrMask));
-        COMMON_LVVV(("sXFeatures                      = 0x%016lX (%s)", sXFeatures, xFeatureTypeFlagsToString(sXFeatures)));
+        COMMON_LVVV(("sState.xsave.header.xFeatures   = %s",       flagsToFullString(sState.xsave.header.xFeatures)));
+        COMMON_LVVV(("sState.xsave.header.xComponents = 0x%016lX", sState.xsave.header.xComponents));
+        COMMON_LVVV(("sStateKernelSize                = %u",       sStateKernelSize));
+        COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
+        COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));
+        COMMON_LVVV(("sXFeatures                      = %s",       flagsToFullString(sXFeatures)));
 
         for (i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {
@@ -197,7 +197,7 @@ NgosStatus FPU::initForApplicationProcessor()
 
     if (CPU::isCpuIdLevelSupported(XSTATE_CPUID))
     {
-        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures.flags), NgosStatus::ASSERTION);
     }
 
 
@@ -352,7 +352,7 @@ NgosStatus FPU::initXState()
 
 
 
-        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures.flags), NgosStatus::ASSERTION);
 
         COMMON_ASSERT_EXECUTION(initXFeaturesOffsetsAndSizes(), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(initStateSizes(),               NgosStatus::ASSERTION);
@@ -505,7 +505,7 @@ NgosStatus FPU::copyStateFromFPU() // TODO: check is it from FPU?
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
         // We need to set bit 63 of xComponents field to avoid General Protection during xrstors64 call
-        sState.xsave.header.xComponents = XCOMPONENTS_COMPACTED_FORMAT | sXFeatures;
+        sState.xsave.header.xComponents = sXFeatures | XCOMPONENTS_COMPACTED_FORMAT;
 
         COMMON_ASSERT_EXECUTION(xrstors64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
@@ -559,7 +559,7 @@ bool FPU::isXFeatureSupervisor(XFeature xFeature)
 
 
 
-    bool res = !!(ecx & FLAG(XFeatureFlag::SUPERVISOR));
+    bool res = !!(ecx & FLAGS(XFeatureFlag::SUPERVISOR));
 
     COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
 
@@ -580,7 +580,7 @@ bool FPU::isXFeatureUser(XFeature xFeature)
 
 
 
-    bool res = !(ecx & FLAG(XFeatureFlag::SUPERVISOR));
+    bool res = !(ecx & FLAGS(XFeatureFlag::SUPERVISOR));
 
     COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
 
@@ -602,7 +602,7 @@ bool FPU::isXFeatureAligned(XFeature xFeature)
 
 
 
-    return ecx & FLAG(XFeatureFlag::ALIGNED);
+    return ecx & FLAGS(XFeatureFlag::ALIGNED);
 }
 
 NgosStatus FPU::setFeature(XFeature xFeature)
@@ -646,7 +646,7 @@ NgosStatus FPU::setFlag(XFeatureTypeFlag flag)
 
 
 
-    sXFeatures |= FLAG(flag);
+    sXFeatures |= FLAGS(flag);
 
 
 
@@ -659,7 +659,7 @@ NgosStatus FPU::clearFlag(XFeatureTypeFlag flag)
 
 
 
-    sXFeatures &= ~FLAG(flag);
+    sXFeatures &= ~FLAGS(flag);
 
 
 
@@ -672,7 +672,7 @@ bool FPU::hasFlag(XFeatureTypeFlag flag)
 
 
 
-    return sXFeatures & FLAG(flag);
+    return sXFeatures & FLAGS(flag);
 }
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier

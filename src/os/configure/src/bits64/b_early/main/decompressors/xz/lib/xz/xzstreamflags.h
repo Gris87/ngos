@@ -8,6 +8,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -31,9 +32,11 @@ enum class XzStreamFlag: xz_stream_flags
     TYPE_OF_CHECK_SHA256 = (1ULL << 9 | 1ULL << 11)
 };
 
+DEFINE_FLAGS(XzStreamFlags, xz_stream_flags);
 
 
-inline const char8* xzStreamFlagToString(XzStreamFlag flag) // TEST: NO
+
+inline const char8* flagToString(XzStreamFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -52,13 +55,13 @@ inline const char8* xzStreamFlagToString(XzStreamFlag flag) // TEST: NO
 
 
 
-inline const char8* xzStreamFlagsToString(xz_stream_flags flags) // TEST: NO
+inline const char8* flagsToString(const XzStreamFlags &flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -67,7 +70,29 @@ inline const char8* xzStreamFlagsToString(xz_stream_flags flags) // TEST: NO
 
     static char8 res[80];
 
-    FLAGS_TO_STRING(res, flags, xzStreamFlagToString, XzStreamFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, XzStreamFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const XzStreamFlags &flags) // TEST: NO
+{
+    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[80];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, XzStreamFlag);
 
     return res;
 }

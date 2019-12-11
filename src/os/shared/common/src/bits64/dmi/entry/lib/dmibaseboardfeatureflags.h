@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -24,9 +25,11 @@ enum class DmiBaseboardFeatureFlag: dmi_baseboard_feature_flags
     HOT_SWAPPABLE          = (1ULL << 4)
 };
 
+DEFINE_FLAGS(DmiBaseboardFeatureFlags, dmi_baseboard_feature_flags);
 
 
-inline const char8* dmiBaseboardFeatureFlagToString(DmiBaseboardFeatureFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiBaseboardFeatureFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -47,13 +50,13 @@ inline const char8* dmiBaseboardFeatureFlagToString(DmiBaseboardFeatureFlag flag
 
 
 
-inline const char8* dmiBaseboardFeatureFlagsToString(dmi_baseboard_feature_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiBaseboardFeatureFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -62,7 +65,29 @@ inline const char8* dmiBaseboardFeatureFlagsToString(dmi_baseboard_feature_flags
 
     static char8 res[94];
 
-    FLAGS_TO_STRING(res, flags, dmiBaseboardFeatureFlagToString, DmiBaseboardFeatureFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBaseboardFeatureFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiBaseboardFeatureFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[94];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBaseboardFeatureFlag);
 
     return res;
 }

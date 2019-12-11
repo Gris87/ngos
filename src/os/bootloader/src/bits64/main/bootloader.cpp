@@ -357,7 +357,7 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
 
 
-    if (sMainVolume->rootDirectory->open(sMainVolume->rootDirectory, &imageFile, absolutePath, FLAGS(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
+    if (sMainVolume->rootDirectory->open(sMainVolume->rootDirectory, &imageFile, absolutePath, FLAGS(UefiFileModeFlag::READ), FLAGS(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
     {
         UEFI_LV(("%ls image file openned", absolutePath));
 

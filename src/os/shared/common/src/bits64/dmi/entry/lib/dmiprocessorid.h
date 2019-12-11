@@ -10,8 +10,8 @@
 
 struct DmiProcessorId
 {
-    DmiProcessorSignature       signature;
-    dmi_processor_feature_flags featureFlags;
+    DmiProcessorSignature    signature;
+    DmiProcessorFeatureFlags featureFlags;
 } __attribute__((packed));
 
 

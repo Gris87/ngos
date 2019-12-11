@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -24,9 +25,11 @@ enum class DmiMemoryDeviceOperatingModeCapabilityFlag: dmi_memory_device_operati
     BLOCK_ACCESSIBLE_PERSISTENT_MEMORY = (1ULL << 5)
 };
 
+DEFINE_FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlags, dmi_memory_device_operating_mode_capability_flags);
 
 
-inline const char8* dmiMemoryDeviceOperatingModeCapabilityFlagToString(DmiMemoryDeviceOperatingModeCapabilityFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiMemoryDeviceOperatingModeCapabilityFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -47,13 +50,13 @@ inline const char8* dmiMemoryDeviceOperatingModeCapabilityFlagToString(DmiMemory
 
 
 
-inline const char8* dmiMemoryDeviceOperatingModeCapabilityFlagsToString(dmi_memory_device_operating_mode_capability_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiMemoryDeviceOperatingModeCapabilityFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags) // flags.flags == 0
     {
         return "NONE";
     }
@@ -62,7 +65,29 @@ inline const char8* dmiMemoryDeviceOperatingModeCapabilityFlagsToString(dmi_memo
 
     static char8 res[122];
 
-    FLAGS_TO_STRING(res, flags, dmiMemoryDeviceOperatingModeCapabilityFlagToString, DmiMemoryDeviceOperatingModeCapabilityFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiMemoryDeviceOperatingModeCapabilityFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiMemoryDeviceOperatingModeCapabilityFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags) // flags.flags == 0
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[122];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiMemoryDeviceOperatingModeCapabilityFlag);
 
     return res;
 }

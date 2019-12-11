@@ -21,7 +21,30 @@ enum class DmiMemoryDeviceTechnology: u8
 
 
 
-inline const char8* dmiMemoryDeviceTechnologyToString(DmiMemoryDeviceTechnology technology) // TEST: NO
+inline const char8* enumToString(DmiMemoryDeviceTechnology technology) // TEST: NO
+{
+    // COMMON_LT((" | technology = %u", technology)); // Commented to avoid bad looking logs
+
+
+
+    switch (technology)
+    {
+        case DmiMemoryDeviceTechnology::NONE:                    return "NONE";
+        case DmiMemoryDeviceTechnology::OTHER:                   return "OTHER";
+        case DmiMemoryDeviceTechnology::UNKNOWN:                 return "UNKNOWN";
+        case DmiMemoryDeviceTechnology::DRAM:                    return "DRAM";
+        case DmiMemoryDeviceTechnology::NVDIMM_N:                return "NVDIMM_N";
+        case DmiMemoryDeviceTechnology::NVDIMM_F:                return "NVDIMM_F";
+        case DmiMemoryDeviceTechnology::NVDIMM_P:                return "NVDIMM_P";
+        case DmiMemoryDeviceTechnology::INTEL_PERSISTENT_MEMORY: return "INTEL_PERSISTENT_MEMORY";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiMemoryDeviceTechnology technology) // TEST: NO
 {
     // COMMON_LT((" | technology = %u", technology)); // Commented to avoid bad looking logs
 

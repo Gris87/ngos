@@ -143,7 +143,7 @@ NgosStatus reservePciRomImages()
 
         for (i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
         {
-            EARLY_LVVV(("#%-3d: 0x%p-0x%p | 0x%02X (%s) | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), MemoryManager::sMemoryBlock.reserved.regions[i].flags, memoryBlockRegionFlagsToString(MemoryManager::sMemoryBlock.reserved.regions[i].flags), MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
+            EARLY_LVVV(("#%-3d: 0x%p-0x%p | %s | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), flagsToFullString(MemoryManager::sMemoryBlock.reserved.regions[i].flags), MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
         }
 
         EARLY_LVVV(("-------------------------------------"));

@@ -104,6 +104,7 @@ include/elf/type.h
 include/elf/version.h
 include/macro/constants.h
 include/macro/utils.h
+include/ngos/flags.h
 include/ngos/linkage.h
 include/ngos/status.h
 include/ngos/types.h

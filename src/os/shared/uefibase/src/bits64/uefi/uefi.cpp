@@ -279,7 +279,7 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *
     return UefiStatus::SUCCESS;
 }
 
-UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, u8 *data)
+UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, u64 *dataSize, u8 *data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, attributes, dataSize, data));
 
@@ -312,9 +312,9 @@ UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, u64 d
                         data);
 }
 
-UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, u8 *data)
+UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, const UefiVariableAttributeFlags &attributes, u64 dataSize, u8 *data)
 {
-    UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = %u, dataSize = %u, data = 0x%p", variableName, vendorGuid, attributes, dataSize, data));
+    UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = ..., dataSize = %u, data = 0x%p", variableName, vendorGuid, dataSize, data));
 
     UEFI_ASSERT(variableName,                           "variableName is null", UefiStatus::ABORTED);
     UEFI_ASSERT(vendorGuid,                             "vendorGuid is null",   UefiStatus::ABORTED);
@@ -324,7 +324,7 @@ UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, uefi_
 
 
 
-    return sSystemTable->runtimeServices->setVariable(variableName, vendorGuid, attributes, dataSize, data);
+    return sSystemTable->runtimeServices->setVariable(variableName, vendorGuid, attributes.flags, dataSize, data);
 }
 
 UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
@@ -372,7 +372,7 @@ bool UEFI::fileExists(UefiFileProtocol *parentDirectory, const char16 *path)
 
     UefiFileProtocol *tempFile;
 
-    if (parentDirectory->open(parentDirectory, &tempFile, path, FLAGS(UefiFileModeFlag::READ), FLAG(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
+    if (parentDirectory->open(parentDirectory, &tempFile, path, FLAGS(UefiFileModeFlag::READ), FLAGS(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
     {
         UEFI_ASSERT_EXECUTION(tempFile->close(tempFile), UefiStatus, UefiStatus::SUCCESS, false);
 

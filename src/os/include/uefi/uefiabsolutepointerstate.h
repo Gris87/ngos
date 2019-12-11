@@ -10,10 +10,10 @@
 
 struct UefiAbsolutePointerState
 {
-    u64                                             currentX;
-    u64                                             currentY;
-    u64                                             currentZ;
-    uefi_absolute_pointer_state_active_button_flags activeButtons;
+    u64                                       currentX;
+    u64                                       currentY;
+    u64                                       currentZ;
+    UefiAbsolutePointerStateActiveButtonFlags activeButtons;
 };
 
 

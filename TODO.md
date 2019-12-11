@@ -11,6 +11,8 @@ NGOS:
 - Check for asm volatile
 - Make global GET_UNALIGNED_LE32 and PUT_UNALIGNED_LE32 for all sizes
 - Encapsulate flag types into struct
+- Check for mouse wheel on table widget
+- Convert FLAGS_TO_STRING to template
 
 - Complete with interruptions
 - Implement boot screen for kernel

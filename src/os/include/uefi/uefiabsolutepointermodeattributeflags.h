@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -19,9 +20,11 @@ enum class UefiAbsolutePointerModeAttributeFlag: uefi_absolute_pointer_mode_attr
     SUPPORTS_PRESSURE_AS_Z    = (1ULL << 1)
 };
 
+DEFINE_FLAGS(UefiAbsolutePointerModeAttributeFlags, uefi_absolute_pointer_mode_attribute_flags);
 
 
-inline const char8* uefiAbsolutePointerModeAttributeFlagToString(UefiAbsolutePointerModeAttributeFlag flag) // TEST: NO
+
+inline const char8* flagToString(UefiAbsolutePointerModeAttributeFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -35,9 +38,9 @@ inline const char8* uefiAbsolutePointerModeAttributeFlagToString(UefiAbsolutePoi
 
 
 
-inline const char8* uefiAbsolutePointerModeAttributeFlagsToString(uefi_absolute_pointer_mode_attribute_flags flags) // TEST: NO
+inline const char8* flagsToString(const UefiAbsolutePointerModeAttributeFlags &flags) // TEST: NO
 {
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -46,7 +49,25 @@ inline const char8* uefiAbsolutePointerModeAttributeFlagsToString(uefi_absolute_
 
     static char8 res[66];
 
-    FLAGS_TO_STRING(res, flags, uefiAbsolutePointerModeAttributeFlagToString, UefiAbsolutePointerModeAttributeFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerModeAttributeFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const UefiAbsolutePointerModeAttributeFlags &flags) // TEST: NO
+{
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[66];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerModeAttributeFlag);
 
     return res;
 }

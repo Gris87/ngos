@@ -13,6 +13,12 @@
 
 union FpuState
 {
+    FpuState()
+        : __pad()
+    {
+        // Nothing
+    }
+
     FSaveState  fsave;
     FXSaveState fxsave;
     XSaveState  xsave;

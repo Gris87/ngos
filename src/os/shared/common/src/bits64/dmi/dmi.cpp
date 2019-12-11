@@ -452,24 +452,24 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->vendorStringId          = %u",            entry->vendorStringId));
-        COMMON_LVVV(("entry->biosVersionStringId     = %u",            entry->biosVersionStringId));
-        COMMON_LVVV(("entry->biosSegment             = 0x%04X",        entry->biosSegment));
-        COMMON_LVVV(("entry->biosReleaseDateStringId = %u",            entry->biosReleaseDateStringId));
-        COMMON_LVVV(("entry->biosSize                = %u",            entry->biosSize));
-        COMMON_LVVV(("entry->biosCharacteristics     = 0x%016lX (%s)", entry->biosCharacteristics, dmiBiosCharacteristicsFlagsToString(entry->biosCharacteristics)));
+        COMMON_LVVV(("entry->vendorStringId          = %u",     entry->vendorStringId));
+        COMMON_LVVV(("entry->biosVersionStringId     = %u",     entry->biosVersionStringId));
+        COMMON_LVVV(("entry->biosSegment             = 0x%04X", entry->biosSegment));
+        COMMON_LVVV(("entry->biosReleaseDateStringId = %u",     entry->biosReleaseDateStringId));
+        COMMON_LVVV(("entry->biosSize                = %u",     entry->biosSize));
+        COMMON_LVVV(("entry->biosCharacteristics     = %s",     flagsToFullString(entry->biosCharacteristics)));
 
         if (sVersion >= DMI_VERSION(2, 1))
         {
-            COMMON_LVVV(("entry->biosCharacteristicsExtension.biosReserved = 0x%02X (%s)", entry->biosCharacteristicsExtension.biosReserved, dmiBiosCharacteristicsBiosReservedFlagsToString(entry->biosCharacteristicsExtension.biosReserved)));
+            COMMON_LVVV(("entry->biosCharacteristicsExtension.biosReserved = %s", flagsToFullString(entry->biosCharacteristicsExtension.biosReserved)));
 
             if (sVersion >= DMI_VERSION(2, 3))
             {
-                COMMON_LVVV(("entry->biosCharacteristicsExtension.systemReserved = 0x%02X (%s)", entry->biosCharacteristicsExtension.systemReserved, dmiBiosCharacteristicsSystemReservedFlagsToString(entry->biosCharacteristicsExtension.systemReserved)));
-                COMMON_LVVV(("entry->systemBiosMajorRelease                      = %u",          entry->systemBiosMajorRelease));
-                COMMON_LVVV(("entry->systemBiosMinorRelease                      = %u",          entry->systemBiosMinorRelease));
-                COMMON_LVVV(("entry->embeddedControllerFirmwareMajorRelease      = %u",          entry->embeddedControllerFirmwareMajorRelease));
-                COMMON_LVVV(("entry->embeddedControllerFirmwareMinorRelease      = %u",          entry->embeddedControllerFirmwareMinorRelease));
+                COMMON_LVVV(("entry->biosCharacteristicsExtension.systemReserved = %s", flagsToFullString(entry->biosCharacteristicsExtension.systemReserved)));
+                COMMON_LVVV(("entry->systemBiosMajorRelease                      = %u", entry->systemBiosMajorRelease));
+                COMMON_LVVV(("entry->systemBiosMinorRelease                      = %u", entry->systemBiosMinorRelease));
+                COMMON_LVVV(("entry->embeddedControllerFirmwareMajorRelease      = %u", entry->embeddedControllerFirmwareMajorRelease));
+                COMMON_LVVV(("entry->embeddedControllerFirmwareMinorRelease      = %u", entry->embeddedControllerFirmwareMinorRelease));
 
                 if (sVersion >= DMI_VERSION(3, 1))
                 {
@@ -700,16 +700,16 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturerStringId           = %u",          entry->manufacturerStringId));
-        COMMON_LVVV(("entry->productStringId                = %u",          entry->productStringId));
-        COMMON_LVVV(("entry->versionStringId                = %u",          entry->versionStringId));
-        COMMON_LVVV(("entry->serialNumberStringId           = %u",          entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId               = %u",          entry->assetTagStringId));
-        COMMON_LVVV(("entry->featureFlags                   = 0x%02X (%s)", entry->featureFlags, dmiBaseboardFeatureFlagsToString(entry->featureFlags)));
-        COMMON_LVVV(("entry->locationInChassisStringId      = %u",          entry->locationInChassisStringId));
-        COMMON_LVVV(("entry->chassisHandle                  = 0x%04X",      entry->chassisHandle));
-        COMMON_LVVV(("entry->boardType                      = %u (%s)",     entry->boardType, dmiBaseboardTypeToString(entry->boardType)));
-        COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",          entry->numberOfContainedObjectHandles));
+        COMMON_LVVV(("entry->manufacturerStringId           = %u",      entry->manufacturerStringId));
+        COMMON_LVVV(("entry->productStringId                = %u",      entry->productStringId));
+        COMMON_LVVV(("entry->versionStringId                = %u",      entry->versionStringId));
+        COMMON_LVVV(("entry->serialNumberStringId           = %u",      entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId               = %u",      entry->assetTagStringId));
+        COMMON_LVVV(("entry->featureFlags                   = %s",      flagsToFullString(entry->featureFlags)));
+        COMMON_LVVV(("entry->locationInChassisStringId      = %u",      entry->locationInChassisStringId));
+        COMMON_LVVV(("entry->chassisHandle                  = 0x%04X",  entry->chassisHandle));
+        COMMON_LVVV(("entry->boardType                      = %u (%s)", entry->boardType, dmiBaseboardTypeToString(entry->boardType)));
+        COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",      entry->numberOfContainedObjectHandles));
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
@@ -973,30 +973,30 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->socketStringId                   = %u",          entry->socketStringId));
-        COMMON_LVVV(("entry->processorType                    = %u (%s)",     entry->processorType, dmiProcessorTypeToString(entry->processorType)));
-        COMMON_LVVV(("entry->processorFamily                  = %u (%s)",     entry->processorFamily, dmiProcessorFamilyToString(entry->processorFamily)));
-        COMMON_LVVV(("entry->processorManufactureStringId     = %u",          entry->processorManufactureStringId));
-        COMMON_LVVV(("entry->processorId.signature.steppingId = %u",          entry->processorId.signature.steppingId));
-        COMMON_LVVV(("entry->processorId.signature.model      = %u",          entry->processorId.signature.model));
-        COMMON_LVVV(("entry->processorId.signature.family     = %u",          entry->processorId.signature.family));
-        COMMON_LVVV(("entry->processorId.signature.type       = %u",          entry->processorId.signature.type));
-        COMMON_LVVV(("entry->processorId.signature.xModel     = %u",          entry->processorId.signature.xModel));
-        COMMON_LVVV(("entry->processorId.signature.xFamily    = %u",          entry->processorId.signature.xFamily));
-        COMMON_LVVV(("entry->processorId.featureFlags         = 0x%02X (%s)", entry->processorId.featureFlags, dmiProcessorFeatureFlagsToString(entry->processorId.featureFlags)));
-        COMMON_LVVV(("entry->processorVersionStringId         = %u",          entry->processorVersionStringId));
-        COMMON_LVVV(("entry->voltage                          = 0x%02X (%s)", entry->voltage, dmiProcessorVoltageFlagsToString(entry->voltage)));
-        COMMON_LVVV(("entry->externalClock                    = %u",          entry->externalClock));
-        COMMON_LVVV(("entry->maxSpeed                         = %u",          entry->maxSpeed));
-        COMMON_LVVV(("entry->currentSpeed                     = %u",          entry->currentSpeed));
-        COMMON_LVVV(("entry->status                           = %u",          entry->status));
-        COMMON_LVVV(("entry->processorUpgrade                 = %u (%s)",     entry->processorUpgrade, dmiProcessorUpgradeToString(entry->processorUpgrade)));
-        COMMON_LVVV(("entry->l1CacheHandle                    = 0x%04X",      entry->l1CacheHandle));
-        COMMON_LVVV(("entry->l2CacheHandle                    = 0x%04X",      entry->l2CacheHandle));
-        COMMON_LVVV(("entry->l3CacheHandle                    = 0x%04X",      entry->l3CacheHandle));
-        COMMON_LVVV(("entry->serialNumberStringId             = %u",          entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId                 = %u",          entry->assetTagStringId));
-        COMMON_LVVV(("entry->partNumberStringId               = %u",          entry->partNumberStringId));
+        COMMON_LVVV(("entry->socketStringId                   = %u",      entry->socketStringId));
+        COMMON_LVVV(("entry->processorType                    = %u (%s)", entry->processorType, dmiProcessorTypeToString(entry->processorType)));
+        COMMON_LVVV(("entry->processorFamily                  = %u (%s)", entry->processorFamily, dmiProcessorFamilyToString(entry->processorFamily)));
+        COMMON_LVVV(("entry->processorManufactureStringId     = %u",      entry->processorManufactureStringId));
+        COMMON_LVVV(("entry->processorId.signature.steppingId = %u",      entry->processorId.signature.steppingId));
+        COMMON_LVVV(("entry->processorId.signature.model      = %u",      entry->processorId.signature.model));
+        COMMON_LVVV(("entry->processorId.signature.family     = %u",      entry->processorId.signature.family));
+        COMMON_LVVV(("entry->processorId.signature.type       = %u",      entry->processorId.signature.type));
+        COMMON_LVVV(("entry->processorId.signature.xModel     = %u",      entry->processorId.signature.xModel));
+        COMMON_LVVV(("entry->processorId.signature.xFamily    = %u",      entry->processorId.signature.xFamily));
+        COMMON_LVVV(("entry->processorId.featureFlags         = %s",      flagsToFullString(entry->processorId.featureFlags)));
+        COMMON_LVVV(("entry->processorVersionStringId         = %u",      entry->processorVersionStringId));
+        COMMON_LVVV(("entry->voltage                          = %s",      flagsToFullString(entry->voltage)));
+        COMMON_LVVV(("entry->externalClock                    = %u",      entry->externalClock));
+        COMMON_LVVV(("entry->maxSpeed                         = %u",      entry->maxSpeed));
+        COMMON_LVVV(("entry->currentSpeed                     = %u",      entry->currentSpeed));
+        COMMON_LVVV(("entry->status                           = %u",      entry->status));
+        COMMON_LVVV(("entry->processorUpgrade                 = %u (%s)", entry->processorUpgrade, dmiProcessorUpgradeToString(entry->processorUpgrade)));
+        COMMON_LVVV(("entry->l1CacheHandle                    = 0x%04X",  entry->l1CacheHandle));
+        COMMON_LVVV(("entry->l2CacheHandle                    = 0x%04X",  entry->l2CacheHandle));
+        COMMON_LVVV(("entry->l3CacheHandle                    = 0x%04X",  entry->l3CacheHandle));
+        COMMON_LVVV(("entry->serialNumberStringId             = %u",      entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId                 = %u",      entry->assetTagStringId));
+        COMMON_LVVV(("entry->partNumberStringId               = %u",      entry->partNumberStringId));
 
         if (sVersion >= DMI_VERSION(2, 5))
         {
@@ -1407,51 +1407,51 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
     // Validation
     {
-        COMMON_LVVV(("entry->memoryArrayHandle            = 0x%04X",      entry->memoryArrayHandle));
-        COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X",      entry->memoryErrorInformationHandle));
-        COMMON_LVVV(("entry->totalWidth                   = %u",          entry->totalWidth));
-        COMMON_LVVV(("entry->dataWidth                    = %u",          entry->dataWidth));
-        COMMON_LVVV(("entry->size                         = %u",          entry->size));
-        COMMON_LVVV(("entry->formFactor                   = %u (%s)",     entry->formFactor, dmiMemoryDeviceFormFactorToString(entry->formFactor)));
-        COMMON_LVVV(("entry->deviceSet                    = %u",          entry->deviceSet));
-        COMMON_LVVV(("entry->deviceLocatorStringId        = %u",          entry->deviceLocatorStringId));
-        COMMON_LVVV(("entry->bankLocatorStringId          = %u",          entry->bankLocatorStringId));
-        COMMON_LVVV(("entry->memoryType                   = %u (%s)",     entry->memoryType, dmiMemoryDeviceTypeToString(entry->memoryType)));
-        COMMON_LVVV(("entry->typeDetail                   = 0x%04X (%s)", entry->typeDetail, dmiMemoryDeviceTypeDetailFlagsToString(entry->typeDetail)));
-        COMMON_LVVV(("entry->speed                        = %u",          entry->speed));
-        COMMON_LVVV(("entry->manufacturerStringId         = %u",          entry->manufacturerStringId));
-        COMMON_LVVV(("entry->serialNumberStringId         = %u",          entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId             = %u",          entry->assetTagStringId));
-        COMMON_LVVV(("entry->partNumberStringId           = %u",          entry->partNumberStringId));
+        COMMON_LVVV(("entry->memoryArrayHandle            = 0x%04X", entry->memoryArrayHandle));
+        COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));
+        COMMON_LVVV(("entry->totalWidth                   = %u",     entry->totalWidth));
+        COMMON_LVVV(("entry->dataWidth                    = %u",     entry->dataWidth));
+        COMMON_LVVV(("entry->size                         = %u",     entry->size));
+        COMMON_LVVV(("entry->formFactor                   = %s",     enumToFullString(entry->formFactor)));
+        COMMON_LVVV(("entry->deviceSet                    = %u",     entry->deviceSet));
+        COMMON_LVVV(("entry->deviceLocatorStringId        = %u",     entry->deviceLocatorStringId));
+        COMMON_LVVV(("entry->bankLocatorStringId          = %u",     entry->bankLocatorStringId));
+        COMMON_LVVV(("entry->memoryType                   = %s",     enumToFullString(entry->memoryType)));
+        COMMON_LVVV(("entry->typeDetail                   = %s",     flagsToFullString(entry->typeDetail)));
+        COMMON_LVVV(("entry->speed                        = %u",     entry->speed));
+        COMMON_LVVV(("entry->manufacturerStringId         = %u",     entry->manufacturerStringId));
+        COMMON_LVVV(("entry->serialNumberStringId         = %u",     entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId             = %u",     entry->assetTagStringId));
+        COMMON_LVVV(("entry->partNumberStringId           = %u",     entry->partNumberStringId));
 
         if (sVersion >= DMI_VERSION(2, 6))
         {
-            COMMON_LVVV(("entry->attributes = 0x%02X",      entry->attributes));
+            COMMON_LVVV(("entry->attributes = 0x%02X", entry->attributes));
 
             if (sVersion >= DMI_VERSION(2, 7))
             {
-                COMMON_LVVV(("entry->extendedSize          = %u",          entry->extendedSize));
-                COMMON_LVVV(("entry->configuredMemorySpeed = %u",          entry->configuredMemorySpeed));
+                COMMON_LVVV(("entry->extendedSize          = %u", entry->extendedSize));
+                COMMON_LVVV(("entry->configuredMemorySpeed = %u", entry->configuredMemorySpeed));
 
                 if (sVersion >= DMI_VERSION(2, 8))
                 {
-                    COMMON_LVVV(("entry->minimumVoltage    = %u",          entry->minimumVoltage));
-                    COMMON_LVVV(("entry->maximumVoltage    = %u",          entry->maximumVoltage));
-                    COMMON_LVVV(("entry->configuredVoltage = %u",          entry->configuredVoltage));
+                    COMMON_LVVV(("entry->minimumVoltage    = %u", entry->minimumVoltage));
+                    COMMON_LVVV(("entry->maximumVoltage    = %u", entry->maximumVoltage));
+                    COMMON_LVVV(("entry->configuredVoltage = %u", entry->configuredVoltage));
 
                     if (sVersion >= DMI_VERSION(3, 2))
                     {
-                        COMMON_LVVV(("entry->memoryTechnology                        = %u (%s)",     entry->memoryTechnology, dmiMemoryDeviceTechnologyToString(entry->memoryTechnology)));
-                        COMMON_LVVV(("entry->memoryOperatingModeCapability           = 0x%04X (%s)", entry->memoryOperatingModeCapability, dmiMemoryDeviceOperatingModeCapabilityFlagsToString(entry->memoryOperatingModeCapability)));
-                        COMMON_LVVV(("entry->firmwareVersionStringId                 = %u",          entry->firmwareVersionStringId));
-                        COMMON_LVVV(("entry->moduleManufacturerID                    = %u",          entry->moduleManufacturerID));
-                        COMMON_LVVV(("entry->moduleProductID                         = %u",          entry->moduleProductID));
-                        COMMON_LVVV(("entry->memorySubsystemControllerManufacturerID = %u",          entry->memorySubsystemControllerManufacturerID));
-                        COMMON_LVVV(("entry->memorySubsystemControllerProductID      = %u",          entry->memorySubsystemControllerProductID));
-                        COMMON_LVVV(("entry->nonVolatileSize                         = %u",          entry->nonVolatileSize));
-                        COMMON_LVVV(("entry->volatileSize                            = %u",          entry->volatileSize));
-                        COMMON_LVVV(("entry->cacheSize                               = %u",          entry->cacheSize));
-                        COMMON_LVVV(("entry->logicalSize                             = %u",          entry->logicalSize));
+                        COMMON_LVVV(("entry->memoryTechnology                        = %s", enumToFullString(entry->memoryTechnology)));
+                        COMMON_LVVV(("entry->memoryOperatingModeCapability           = %s", flagsToFullString(entry->memoryOperatingModeCapability)));
+                        COMMON_LVVV(("entry->firmwareVersionStringId                 = %u", entry->firmwareVersionStringId));
+                        COMMON_LVVV(("entry->moduleManufacturerID                    = %u", entry->moduleManufacturerID));
+                        COMMON_LVVV(("entry->moduleProductID                         = %u", entry->moduleProductID));
+                        COMMON_LVVV(("entry->memorySubsystemControllerManufacturerID = %u", entry->memorySubsystemControllerManufacturerID));
+                        COMMON_LVVV(("entry->memorySubsystemControllerProductID      = %u", entry->memorySubsystemControllerProductID));
+                        COMMON_LVVV(("entry->nonVolatileSize                         = %u", entry->nonVolatileSize));
+                        COMMON_LVVV(("entry->volatileSize                            = %u", entry->volatileSize));
+                        COMMON_LVVV(("entry->cacheSize                               = %u", entry->cacheSize));
+                        COMMON_LVVV(("entry->logicalSize                             = %u", entry->logicalSize));
                     }
                 }
             }
@@ -1459,22 +1459,22 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
 
 
-        COMMON_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                          NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                          NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->totalWidth                   == 65535,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->dataWidth                    == 65535,                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->size                         == 1024,                            NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->deviceSet                    == 0,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->deviceLocatorStringId        == 1,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->bankLocatorStringId          == 0,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,        NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->typeDetail                   == 2,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->speed                        == 0,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->manufacturerStringId         == 2,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->serialNumberStringId         == 0,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->assetTagStringId             == 0,                               NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->partNumberStringId           == 0,                               NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                                      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->totalWidth                   == 65535,                                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->dataWidth                    == 65535,                                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->size                         == 1024,                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->deviceSet                    == 0,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->deviceLocatorStringId        == 1,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->bankLocatorStringId          == 0,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->typeDetail.flags             == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->speed                        == 0,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->manufacturerStringId         == 2,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->serialNumberStringId         == 0,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->assetTagStringId             == 0,                                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->partNumberStringId           == 0,                                           NgosStatus::ASSERTION);
 
         if (sVersion >= DMI_VERSION(2, 6))
         {
@@ -1493,17 +1493,17 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
                     if (sVersion >= DMI_VERSION(3, 2))
                     {
-                        COMMON_TEST_ASSERT(entry->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE, NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->memoryOperatingModeCapability           == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->firmwareVersionStringId                 == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->moduleManufacturerID                    == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->moduleProductID                         == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerManufacturerID == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerProductID      == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->nonVolatileSize                         == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->volatileSize                            == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->cacheSize                               == 0,                               NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->logicalSize                             == 0,                               NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                        NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memoryOperatingModeCapability.flags     == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->firmwareVersionStringId                 == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->moduleManufacturerID                    == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->moduleProductID                         == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerManufacturerID == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerProductID      == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->nonVolatileSize                         == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->volatileSize                            == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->cacheSize                               == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->logicalSize                             == 0,                                                      NgosStatus::ASSERTION);
 
                         COMMON_TEST_ASSERT(entry->header.length == 84,                           NgosStatus::ASSERTION);
                         COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryDeviceEntry), NgosStatus::ASSERTION);

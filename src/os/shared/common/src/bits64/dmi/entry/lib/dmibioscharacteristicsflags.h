@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -50,9 +51,11 @@ enum class DmiBiosCharacteristicsFlag: dmi_bios_characteristics_flags
     RESERVED                           = (1ULL << 32)
 };
 
+DEFINE_FLAGS(DmiBiosCharacteristicsFlags, dmi_bios_characteristics_flags);
 
 
-inline const char8* dmiBiosCharacteristicsFlagToString(DmiBiosCharacteristicsFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiBiosCharacteristicsFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -99,13 +102,13 @@ inline const char8* dmiBiosCharacteristicsFlagToString(DmiBiosCharacteristicsFla
 
 
 
-inline const char8* dmiBiosCharacteristicsFlagsToString(dmi_bios_characteristics_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiBiosCharacteristicsFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -114,7 +117,29 @@ inline const char8* dmiBiosCharacteristicsFlagsToString(dmi_bios_characteristics
 
     static char8 res[713];
 
-    FLAGS_TO_STRING(res, flags, dmiBiosCharacteristicsFlagToString, DmiBiosCharacteristicsFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiBiosCharacteristicsFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[713];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsFlag);
 
     return res;
 }

@@ -82,9 +82,9 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
     // Validation
     {
         EARLY_LVVV(("streamHeader->signature   = 0x%02X %.4s 0x%02X", streamHeader->signature[0], &streamHeader->signature[1], streamHeader->signature[5]));
-        EARLY_LVVV(("streamHeader->streamFlags = 0x%04X (%s)",        streamHeader->streamFlags, xzStreamFlagsToString(streamHeader->streamFlags)));
+        EARLY_LVVV(("streamHeader->streamFlags = %s",                 flagsToFullString(streamHeader->streamFlags)));
         EARLY_LVVV(("streamHeader->crc32       = 0x%08X",             streamHeader->crc32));
-        EARLY_LVVV(("typeOfCheckFlag           = 0x%04X (%s)",        typeOfCheckFlag, xzStreamFlagToString(typeOfCheckFlag)));
+        EARLY_LVVV(("typeOfCheckFlag           = 0x%04X (%s)",        typeOfCheckFlag, flagToString(typeOfCheckFlag)));
 
 
 
@@ -110,8 +110,8 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            EARLY_LVVV(("blockHeader->blockHeaderSize = %u",          blockHeader->blockHeaderSize));
-            EARLY_LVVV(("blockHeader->blockFlags      = 0x%02X (%s)", blockHeader->blockFlags, xzBlockFlagsToString(blockHeader->blockFlags)));
+            EARLY_LVVV(("blockHeader->blockHeaderSize = %u", blockHeader->blockHeaderSize));
+            EARLY_LVVV(("blockHeader->blockFlags      = %s", flagsToFullString(blockHeader->blockFlags)));
 
 
 
@@ -128,7 +128,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             u64 blockCompressedSize = 0;
 
-            if (blockHeader->blockFlags & FLAG(XzBlockFlag::COMPRESSED_SIZE_PRESENT))
+            if (blockHeader->blockFlags & FLAGS(XzBlockFlag::COMPRESSED_SIZE_PRESENT))
             {
                 currentBlockPointer += decodeMultibyteInteger(currentBlockPointer, -1, &blockCompressedSize);
             }
@@ -139,7 +139,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             u64 blockUncompressedSize = 0;
 
-            if (blockHeader->blockFlags & FLAG(XzBlockFlag::UNCOMPRESSED_SIZE_PRESENT))
+            if (blockHeader->blockFlags & FLAGS(XzBlockFlag::UNCOMPRESSED_SIZE_PRESENT))
             {
                 currentBlockPointer += decodeMultibyteInteger(currentBlockPointer, -1, &blockUncompressedSize);
             }
@@ -307,7 +307,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
             else
             if (typeOfCheckFlag != XzStreamFlag::NONE)
             {
-                EARLY_LF(("Unsupported type of check 0x%04X (%s)", typeOfCheckFlag, xzStreamFlagToString(typeOfCheckFlag)));
+                EARLY_LF(("Unsupported type of check 0x%04X (%s)", typeOfCheckFlag, flagToString(typeOfCheckFlag)));
 
                 return NgosStatus::NOT_SUPPORTED;
             }
@@ -392,10 +392,10 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             // Validation
             {
-                EARLY_LVVV(("streamFooter->crc32        = 0x%08X",       streamFooter->crc32));
-                EARLY_LVVV(("streamFooter->backwardSize = %u",           streamFooter->backwardSize));
-                EARLY_LVVV(("streamFooter->streamFlags  = 0x%04X (%s)",  streamFooter->streamFlags, xzStreamFlagsToString(streamFooter->streamFlags)));
-                EARLY_LVVV(("streamFooter->signature    = %.2s",        &streamFooter->signature));
+                EARLY_LVVV(("streamFooter->crc32        = 0x%08X", streamFooter->crc32));
+                EARLY_LVVV(("streamFooter->backwardSize = %u",     streamFooter->backwardSize));
+                EARLY_LVVV(("streamFooter->streamFlags  = %s",     flagsToFullString(streamFooter->streamFlags)));
+                EARLY_LVVV(("streamFooter->signature    = %.2s",   &streamFooter->signature));
 
 
 

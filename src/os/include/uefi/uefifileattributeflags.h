@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -23,9 +24,11 @@ enum class UefiFileAttributeFlag: uefi_file_attribute_flags
     ARCHIVE   = (1ULL << 5)
 };
 
+DEFINE_FLAGS(UefiFileAttributeFlags, uefi_file_attribute_flags);
 
 
-inline const char8* uefiFileAttributeFlagToString(UefiFileAttributeFlag flag) // TEST: NO
+
+inline const char8* flagToString(UefiFileAttributeFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -43,9 +46,9 @@ inline const char8* uefiFileAttributeFlagToString(UefiFileAttributeFlag flag) //
 
 
 
-inline const char8* uefiFileAttributeFlagsToString(uefi_file_attribute_flags flags) // TEST: NO
+inline const char8* flagsToString(const UefiFileAttributeFlags &flags) // TEST: NO
 {
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -54,7 +57,25 @@ inline const char8* uefiFileAttributeFlagsToString(uefi_file_attribute_flags fla
 
     static char8 res[76];
 
-    FLAGS_TO_STRING(res, flags, uefiFileAttributeFlagToString, UefiFileAttributeFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiFileAttributeFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const UefiFileAttributeFlags &flags) // TEST: NO
+{
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[76];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiFileAttributeFlag);
 
     return res;
 }

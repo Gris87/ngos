@@ -17,8 +17,8 @@ TEST_CASES(section0, __shared_common_bits64_fpu_fpu);
 {
     TEST_CASE("setFeature()/clearFeature()/hasFeature()");
     {
-        x_feature_type_flags temp = FPU::sXFeatures;
-        FPU::sXFeatures           = 0;
+        XFeatureTypeFlags temp = FPU::sXFeatures;
+        FPU::sXFeatures        = 0;
 
         TEST_ASSERT_EQUALS(FPU::hasFeature(XFeature::AVX), false);
         TEST_ASSERT_EQUALS(FPU::hasFeature(XFeature::SSE), false);
@@ -66,8 +66,8 @@ TEST_CASES(section0, __shared_common_bits64_fpu_fpu);
 
     TEST_CASE("setFlag()/clearFlag()/hasFlag()");
     {
-        x_feature_type_flags temp = FPU::sXFeatures;
-        FPU::sXFeatures           = 0;
+        XFeatureTypeFlags temp = FPU::sXFeatures;
+        FPU::sXFeatures        = 0;
 
         TEST_ASSERT_EQUALS(FPU::hasFlag(XFeatureTypeFlag::AVX), false);
         TEST_ASSERT_EQUALS(FPU::hasFlag(XFeatureTypeFlag::SSE), false);

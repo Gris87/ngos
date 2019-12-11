@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -19,9 +20,11 @@ enum class ThreadInfoFlag: thread_info_flags
     NONE = 0
 };
 
+DEFINE_FLAGS(ThreadInfoFlags, thread_info_flags);
 
 
-inline const char8* threadInfoFlagToString(ThreadInfoFlag flag) // TEST: NO
+
+inline const char8* flagToString(ThreadInfoFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -37,13 +40,13 @@ inline const char8* threadInfoFlagToString(ThreadInfoFlag flag) // TEST: NO
 
 
 
-inline const char8* threadInfoFlagsToString(thread_info_flags flags) // TEST: NO
+inline const char8* flagsToString(const ThreadInfoFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -52,7 +55,29 @@ inline const char8* threadInfoFlagsToString(thread_info_flags flags) // TEST: NO
 
     static char8 res[13];
 
-    FLAGS_TO_STRING(res, flags, threadInfoFlagToString, ThreadInfoFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, ThreadInfoFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const ThreadInfoFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[13];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, ThreadInfoFlag);
 
     return res;
 }

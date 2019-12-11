@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -21,9 +22,11 @@ enum class XFeatureFlag: x_feature_flags
     ALIGNED    = (1ULL << 1)
 };
 
+DEFINE_FLAGS(XFeatureFlags, x_feature_flags);
 
 
-inline const char8* xFeatureFlagToString(XFeatureFlag flag) // TEST: NO
+
+inline const char8* flagToString(XFeatureFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -41,13 +44,13 @@ inline const char8* xFeatureFlagToString(XFeatureFlag flag) // TEST: NO
 
 
 
-inline const char8* xFeatureFlagsToString(x_feature_flags flags) // TEST: NO
+inline const char8* flagsToString(const XFeatureFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -56,7 +59,29 @@ inline const char8* xFeatureFlagsToString(x_feature_flags flags) // TEST: NO
 
     static char8 res[36];
 
-    FLAGS_TO_STRING(res, flags, xFeatureFlagToString, XFeatureFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, XFeatureFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const XFeatureFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[36];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, XFeatureFlag);
 
     return res;
 }

@@ -57,7 +57,7 @@ NgosStatus MemoryManager::add(u64 start, u64 size)
 
 
 
-    return addRange(&sMemoryBlock.memory, start, size, FLAG(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
+    return addRange(&sMemoryBlock.memory, start, size, FLAGS(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
 }
 
 NgosStatus MemoryManager::reserve(u64 start, u64 size)
@@ -68,12 +68,12 @@ NgosStatus MemoryManager::reserve(u64 start, u64 size)
 
 
 
-    return addRange(&sMemoryBlock.reserved, start, size, FLAG(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
+    return addRange(&sMemoryBlock.reserved, start, size, FLAGS(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
 }
 
-NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 start, u64 size, memory_block_region_flags flags, memory_block_region_node_id nodeId)
+NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
 {
-    COMMON_LT((" | type = 0x%p, index = %u, start = 0x%016lX, size = 0x%016lX, flags = 0x%02X, nodeId = 0x%04X", type, index, start, size, flags, nodeId));
+    COMMON_LT((" | type = 0x%p, index = %u, start = 0x%016lX, size = 0x%016lX, flags = ..., nodeId = 0x%04X", type, index, start, size, nodeId));
 
     COMMON_ASSERT(type,                    "type is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(type->count < type->max, "type is full",      NgosStatus::ASSERTION);
@@ -201,9 +201,9 @@ NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, memory_block_region_flags flags, memory_block_region_node_id nodeId)
+NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
 {
-    COMMON_LT((" | type = 0x%p, start = 0x%016lX, size = 0x%016lX, flags = 0x%02X, nodeId = 0x%04X", type, start, size, flags, nodeId));
+    COMMON_LT((" | type = 0x%p, start = 0x%016lX, size = 0x%016lX, flags = ..., nodeId = 0x%04X", type, start, size, nodeId));
 
     COMMON_ASSERT(type,                   "type is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0,               "size is zero",      NgosStatus::ASSERTION);

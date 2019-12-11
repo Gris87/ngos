@@ -28,7 +28,7 @@ struct UefiRuntimeServices
     UefiStatus (UEFI_API *setVirtualAddressMap)(u64 memoryMapSize, u64 descriptorSize, u32 descriptorVersion, UefiMemoryDescriptor *virtualMap); // TEST: NO
     UefiStatus (UEFI_API *convertPointer)(u64 debugDisposition, void **address); // TEST: NO
 
-    UefiStatus (UEFI_API *getVariable)(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags *attributes, u64 *dataSize, u8 *data); // TEST: NO
+    UefiStatus (UEFI_API *getVariable)(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, u64 *dataSize, u8 *data); // TEST: NO
     UefiStatus (UEFI_API *getNextVariableName)(u64 *variableNameSize, const char16 *variableName, Guid *vendorGuid); // TEST: NO
     UefiStatus (UEFI_API *setVariable)(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, u8 *data); // TEST: NO
 

@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -34,9 +35,11 @@ enum class DmiMemoryDeviceTypeDetailFlag: dmi_memory_device_type_detail_flags
     LR_DIMM       = (1ULL << 15)
 };
 
+DEFINE_FLAGS(DmiMemoryDeviceTypeDetailFlags, dmi_memory_device_type_detail_flags);
 
 
-inline const char8* dmiMemoryDeviceTypeDetailFlagToString(DmiMemoryDeviceTypeDetailFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiMemoryDeviceTypeDetailFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -67,13 +70,13 @@ inline const char8* dmiMemoryDeviceTypeDetailFlagToString(DmiMemoryDeviceTypeDet
 
 
 
-inline const char8* dmiMemoryDeviceTypeDetailFlagsToString(dmi_memory_device_type_detail_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiMemoryDeviceTypeDetailFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags) // flags.flags == 0
     {
         return "NONE";
     }
@@ -82,7 +85,29 @@ inline const char8* dmiMemoryDeviceTypeDetailFlagsToString(dmi_memory_device_typ
 
     static char8 res[190];
 
-    FLAGS_TO_STRING(res, flags, dmiMemoryDeviceTypeDetailFlagToString, DmiMemoryDeviceTypeDetailFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiMemoryDeviceTypeDetailFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiMemoryDeviceTypeDetailFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags) // flags.flags == 0
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[190];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiMemoryDeviceTypeDetailFlag);
 
     return res;
 }

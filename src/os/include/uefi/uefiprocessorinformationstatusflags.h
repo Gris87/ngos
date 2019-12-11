@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -20,9 +21,11 @@ enum class UefiProcessorInformationStatusFlag: uefi_processor_information_status
     HEALTH_STATUS = (1ULL << 2)
 };
 
+DEFINE_FLAGS(UefiProcessorInformationStatusFlags, uefi_processor_information_status_flags);
 
 
-inline const char8* uefiProcessorInformationStatusFlagToString(UefiProcessorInformationStatusFlag flag) // TEST: NO
+
+inline const char8* flagToString(UefiProcessorInformationStatusFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -37,9 +40,9 @@ inline const char8* uefiProcessorInformationStatusFlagToString(UefiProcessorInfo
 
 
 
-inline const char8* uefiProcessorInformationStatusFlagsToString(uefi_processor_information_status_flags flags) // TEST: NO
+inline const char8* flagsToString(const UefiProcessorInformationStatusFlags &flags) // TEST: NO
 {
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -48,7 +51,25 @@ inline const char8* uefiProcessorInformationStatusFlagsToString(uefi_processor_i
 
     static char8 res[51];
 
-    FLAGS_TO_STRING(res, flags, uefiProcessorInformationStatusFlagToString, UefiProcessorInformationStatusFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiProcessorInformationStatusFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const UefiProcessorInformationStatusFlags &flags) // TEST: NO
+{
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[51];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiProcessorInformationStatusFlag);
 
     return res;
 }

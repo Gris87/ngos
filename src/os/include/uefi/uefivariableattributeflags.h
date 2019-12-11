@@ -3,6 +3,7 @@
 
 
 
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -27,9 +28,11 @@ enum class UefiVariableAttributeFlag: uefi_variable_attribute_flags
     APPEND_WRITE                          = (1ULL << 6)
 };
 
+DEFINE_FLAGS(UefiVariableAttributeFlags, uefi_variable_attribute_flags);
 
 
-inline const char8* uefiVariableAttributeFlagToString(UefiVariableAttributeFlag flag) // TEST: NO
+
+inline const char8* flagToString(UefiVariableAttributeFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -52,9 +55,9 @@ inline const char8* uefiVariableAttributeFlagToString(UefiVariableAttributeFlag 
 
 
 
-inline const char8* uefiVariableAttributeFlagsToString(uefi_variable_attribute_flags flags) // TEST: NO
+inline const char8* flagsToString(const UefiVariableAttributeFlags &flags) // TEST: NO
 {
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -63,7 +66,25 @@ inline const char8* uefiVariableAttributeFlagsToString(uefi_variable_attribute_f
 
     static char8 res[156];
 
-    FLAGS_TO_STRING(res, flags, uefiVariableAttributeFlagToString, UefiVariableAttributeFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiVariableAttributeFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const UefiVariableAttributeFlags &flags) // TEST: NO
+{
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[156];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiVariableAttributeFlag);
 
     return res;
 }

@@ -1777,10 +1777,10 @@ NgosStatus CpuTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *
 
     if (pointer->getState(pointer, &state) == UefiStatus::SUCCESS)
     {
-        UEFI_LVVV(("state.currentX      = %u",          state.currentX));
-        UEFI_LVVV(("state.currentY      = %u",          state.currentY));
-        UEFI_LVVV(("state.currentZ      = %u",          state.currentZ));
-        UEFI_LVVV(("state.activeButtons = 0x%08X (%s)", state.activeButtons, uefiAbsolutePointerStateActiveButtonFlagsToString(state.activeButtons)));
+        UEFI_LVVV(("state.currentX      = %u", state.currentX));
+        UEFI_LVVV(("state.currentY      = %u", state.currentY));
+        UEFI_LVVV(("state.currentZ      = %u", state.currentZ));
+        UEFI_LVVV(("state.activeButtons = %s", flagsToFullString(state.activeButtons)));
 
 
 
@@ -2430,11 +2430,11 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                    UEFI_LVVV(("info[%d].processorId      = %u",          i, info.processorId));
-                    UEFI_LVVV(("info[%d].status           = 0x%08X (%s)", i, info.status, uefiProcessorInformationStatusFlagsToString(info.status)));
-                    UEFI_LVVV(("info[%d].location.package = %u",          i, info.location.package));
-                    UEFI_LVVV(("info[%d].location.core    = %u",          i, info.location.core));
-                    UEFI_LVVV(("info[%d].location.thread  = %u",          i, info.location.thread));
+                    UEFI_LVVV(("info[%d].processorId      = %u", i, info.processorId));
+                    UEFI_LVVV(("info[%d].status           = %s", i, flagsToFullString(info.status)));
+                    UEFI_LVVV(("info[%d].location.package = %u", i, info.location.package));
+                    UEFI_LVVV(("info[%d].location.core    = %u", i, info.location.core));
+                    UEFI_LVVV(("info[%d].location.thread  = %u", i, info.location.thread));
 
 
 

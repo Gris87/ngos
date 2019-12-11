@@ -7,6 +7,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -27,9 +28,11 @@ enum class DmiBiosCharacteristicsBiosReservedFlag: dmi_bios_characteristics_bios
     SMART_BATTERY_SUPPORTED        = (1ULL << 7)
 };
 
+DEFINE_FLAGS(DmiBiosCharacteristicsBiosReservedFlags, dmi_bios_characteristics_bios_reserved_flags);
 
 
-inline const char8* dmiBiosCharacteristicsBiosReservedFlagToString(DmiBiosCharacteristicsBiosReservedFlag flag) // TEST: NO
+
+inline const char8* flagToString(DmiBiosCharacteristicsBiosReservedFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -53,13 +56,13 @@ inline const char8* dmiBiosCharacteristicsBiosReservedFlagToString(DmiBiosCharac
 
 
 
-inline const char8* dmiBiosCharacteristicsBiosReservedFlagsToString(dmi_bios_characteristics_bios_reserved_flags flags) // TEST: NO
+inline const char8* flagsToString(const DmiBiosCharacteristicsBiosReservedFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -68,7 +71,29 @@ inline const char8* dmiBiosCharacteristicsBiosReservedFlagsToString(dmi_bios_cha
 
     static char8 res[194];
 
-    FLAGS_TO_STRING(res, flags, dmiBiosCharacteristicsBiosReservedFlagToString, DmiBiosCharacteristicsBiosReservedFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsBiosReservedFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const DmiBiosCharacteristicsBiosReservedFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[194];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsBiosReservedFlag);
 
     return res;
 }

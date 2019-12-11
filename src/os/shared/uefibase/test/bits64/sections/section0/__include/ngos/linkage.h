@@ -59,17 +59,6 @@ TEST_CASES(section0, __include_ngos_linkage);
 
 
 
-    TEST_CASE("FLAG()");
-    {
-        TEST_ASSERT_EQUALS(FLAG(1), 1);
-        TEST_ASSERT_EQUALS(FLAG(2), 2);
-        TEST_ASSERT_EQUALS(FLAG(4), 4);
-        TEST_ASSERT_EQUALS(FLAG(8), 8);
-    }
-    TEST_CASE_END();
-
-
-
     TEST_CASE("FLAGS()");
     {
         TEST_ASSERT_EQUALS(FLAGS(1),          1);

@@ -42,7 +42,51 @@ enum class DmiMemoryDeviceType: u8
 
 
 
-inline const char8* dmiMemoryDeviceTypeToString(DmiMemoryDeviceType type) // TEST: NO
+inline const char8* enumToString(DmiMemoryDeviceType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case DmiMemoryDeviceType::NONE:                        return "NONE";
+        case DmiMemoryDeviceType::OTHER:                       return "OTHER";
+        case DmiMemoryDeviceType::UNKNOWN:                     return "UNKNOWN";
+        case DmiMemoryDeviceType::DRAM:                        return "DRAM";
+        case DmiMemoryDeviceType::EDRAM:                       return "EDRAM";
+        case DmiMemoryDeviceType::VRAM:                        return "VRAM";
+        case DmiMemoryDeviceType::SRAM:                        return "SRAM";
+        case DmiMemoryDeviceType::RAM:                         return "RAM";
+        case DmiMemoryDeviceType::ROM:                         return "ROM";
+        case DmiMemoryDeviceType::FLASH:                       return "FLASH";
+        case DmiMemoryDeviceType::EERPOM:                      return "EERPOM";
+        case DmiMemoryDeviceType::FEPROM:                      return "FEPROM";
+        case DmiMemoryDeviceType::EPROM:                       return "EPROM";
+        case DmiMemoryDeviceType::CDRAM:                       return "CDRAM";
+        case DmiMemoryDeviceType::_3DRAM:                      return "_3DRAM";
+        case DmiMemoryDeviceType::SDRAM:                       return "SDRAM";
+        case DmiMemoryDeviceType::SGRAM:                       return "SGRAM";
+        case DmiMemoryDeviceType::RDRAM:                       return "RDRAM";
+        case DmiMemoryDeviceType::DDR:                         return "DDR";
+        case DmiMemoryDeviceType::DDR2:                        return "DDR2";
+        case DmiMemoryDeviceType::DDR2_FB_DIMM:                return "DDR2_FB_DIMM";
+        case DmiMemoryDeviceType::DDR3:                        return "DDR3";
+        case DmiMemoryDeviceType::FBD2:                        return "FBD2";
+        case DmiMemoryDeviceType::DDR4:                        return "DDR4";
+        case DmiMemoryDeviceType::LPDDR:                       return "LPDDR";
+        case DmiMemoryDeviceType::LPDDR2:                      return "LPDDR2";
+        case DmiMemoryDeviceType::LPDDR3:                      return "LPDDR3";
+        case DmiMemoryDeviceType::LPDDR4:                      return "LPDDR4";
+        case DmiMemoryDeviceType::LOGICAL_NON_VOLATILE_DEVICE: return "LOGICAL_NON_VOLATILE_DEVICE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiMemoryDeviceType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

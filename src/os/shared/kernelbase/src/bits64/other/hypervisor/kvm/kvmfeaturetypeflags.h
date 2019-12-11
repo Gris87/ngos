@@ -8,6 +8,7 @@
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
 #include <kernelbase/src/bits64/other/hypervisor/kvm/kvmfeature.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -32,9 +33,11 @@ enum class KvmFeatureTypeFlag: kvm_feature_type_flags
     CLOCKSOURCE_STABLE = (1ULL << (u64)KvmFeature::CLOCKSOURCE_STABLE)
 };
 
+DEFINE_FLAGS(KvmFeatureTypeFlags, kvm_feature_type_flags);
 
 
-inline const char8* kvmFeatureTypeFlagToString(KvmFeatureTypeFlag flag) // TEST: NO
+
+inline const char8* flagToString(KvmFeatureTypeFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -62,13 +65,13 @@ inline const char8* kvmFeatureTypeFlagToString(KvmFeatureTypeFlag flag) // TEST:
 
 
 
-inline const char8* kvmFeatureTypeFlagsToString(kvm_feature_type_flags flags) // TEST: NO
+inline const char8* flagsToString(const KvmFeatureTypeFlags &flags) // TEST: NO
 {
     // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -77,7 +80,29 @@ inline const char8* kvmFeatureTypeFlagsToString(kvm_feature_type_flags flags) //
 
     static char8 res[179];
 
-    FLAGS_TO_STRING(res, flags, kvmFeatureTypeFlagToString, KvmFeatureTypeFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, KvmFeatureTypeFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const KvmFeatureTypeFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[179];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, KvmFeatureTypeFlag);
 
     return res;
 }

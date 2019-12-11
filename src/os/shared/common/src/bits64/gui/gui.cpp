@@ -362,7 +362,7 @@ NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerProtocol *pointer
 
     if (sPressedWidget)
     {
-        if (!(state->activeButtons & FLAG(UefiAbsolutePointerStateActiveButtonFlag::TOUCH_ACTIVE)))
+        if (!(state->activeButtons & FLAGS(UefiAbsolutePointerStateActiveButtonFlag::TOUCH_ACTIVE)))
         {
             COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
 
@@ -382,7 +382,7 @@ NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerProtocol *pointer
         COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
 
         if (
-            (state->activeButtons & FLAG(UefiAbsolutePointerStateActiveButtonFlag::TOUCH_ACTIVE))
+            (state->activeButtons & FLAGS(UefiAbsolutePointerStateActiveButtonFlag::TOUCH_ACTIVE))
             &&
             sHoveredWidget
            )

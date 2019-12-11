@@ -8,6 +8,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
+#include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
@@ -29,9 +30,11 @@ enum class GzipMemberFlag: gzip_member_flags
     COMMENT     = (1ULL << 4)
 };
 
+DEFINE_FLAGS(GzipMemberFlags, gzip_member_flags);
 
 
-inline const char8* gzipMemberFlagToString(GzipMemberFlag flag) // TEST: NO
+
+inline const char8* flagToString(GzipMemberFlag flag) // TEST: NO
 {
     // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
 
@@ -52,13 +55,13 @@ inline const char8* gzipMemberFlagToString(GzipMemberFlag flag) // TEST: NO
 
 
 
-inline const char8* gzipMemberFlagsToString(gzip_member_flags flags) // TEST: NO
+inline const char8* flagsToString(const GzipMemberFlags &flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
 
 
 
-    if (!flags)
+    if (!flags.flags)
     {
         return "NONE";
     }
@@ -67,7 +70,29 @@ inline const char8* gzipMemberFlagsToString(gzip_member_flags flags) // TEST: NO
 
     static char8 res[58];
 
-    FLAGS_TO_STRING(res, flags, gzipMemberFlagToString, GzipMemberFlag);
+    FLAGS_TO_STRING(res, flags.flags, flagToString, GzipMemberFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const GzipMemberFlags &flags) // TEST: NO
+{
+    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+
+
+
+    if (!flags.flags)
+    {
+        return "NONE";
+    }
+
+
+
+    static char8 res[58];
+
+    FLAGS_TO_STRING(res, flags.flags, flagToString, GzipMemberFlag);
 
     return res;
 }

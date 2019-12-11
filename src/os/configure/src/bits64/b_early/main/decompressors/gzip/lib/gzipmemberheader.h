@@ -23,12 +23,12 @@
 
 struct GzipMemberHeader
 {
-    u16                     signature;
-    GzipCompressionMethod   compressionMethod;
-    gzip_member_flags       flags;
-    u32                     modificationTime;
-    gzip_member_extra_flags extraFlags;
-    GzipOperatingSystem     operatingSystem;
+    u16                   signature;
+    GzipCompressionMethod compressionMethod;
+    GzipMemberFlags       flags;
+    u32                   modificationTime;
+    GzipMemberExtraFlags  extraFlags;
+    GzipOperatingSystem   operatingSystem;
 } __attribute__((packed));
 
 

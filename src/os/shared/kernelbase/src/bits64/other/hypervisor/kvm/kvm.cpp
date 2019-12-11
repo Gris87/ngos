@@ -114,7 +114,7 @@ NgosStatus KVM::setFlag(KvmFeatureTypeFlag flag)
 
 
 
-    sFeatures |= FLAG(flag);
+    sFeatures |= FLAGS(flag);
 
 
 
@@ -127,7 +127,7 @@ NgosStatus KVM::clearFlag(KvmFeatureTypeFlag flag)
 
 
 
-    sFeatures &= ~FLAG(flag);
+    sFeatures &= ~FLAGS(flag);
 
 
 
@@ -140,7 +140,7 @@ bool KVM::hasFlag(KvmFeatureTypeFlag flag)
 
 
 
-    return sFeatures & FLAG(flag);
+    return sFeatures & FLAGS(flag);
 }
 
 NgosStatus KVM::initPlatform(u32 id)
@@ -160,7 +160,7 @@ NgosStatus KVM::initPlatform(u32 id)
 
     // Validation
     {
-        COMMON_LVVV(("sFeatures = 0x%08X (%s)", sFeatures, kvmFeatureTypeFlagsToString(sFeatures)));
+        COMMON_LVVV(("sFeatures = %s", sFeatures, flagsToFullString(sFeatures)));
 
 
 
