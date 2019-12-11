@@ -15,14 +15,14 @@
 
 struct UefiFileInfo
 {
-    u64                       size;
-    u64                       fileSize;
-    u64                       physicalSize;
-    UefiTime                  createTime;
-    UefiTime                  lastAccessTime;
-    UefiTime                  modificationTime;
-    uefi_file_attribute_flags attributes;
-    char16                    fileName[0];
+    u64                    size;
+    u64                    fileSize;
+    u64                    physicalSize;
+    UefiTime               createTime;
+    UefiTime               lastAccessTime;
+    UefiTime               modificationTime;
+    UefiFileAttributeFlags attributes;
+    char16                 fileName[0];
 };
 
 

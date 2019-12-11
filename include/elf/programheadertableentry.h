@@ -10,14 +10,14 @@
 
 struct ElfProgramHeaderTableEntry
 {
-    ElfProgramType    type;
-    elf_program_flags flags;
-    u64               offset;
-    u64               virtualAddress;
-    u64               physicalAddress;
-    u64               fileSize;
-    u64               memorySize;
-    u64               align;
+    ElfProgramType  type;
+    ElfProgramFlags flags;
+    u64             offset;
+    u64             virtualAddress;
+    u64             physicalAddress;
+    u64             fileSize;
+    u64             memorySize;
+    u64             align;
 };
 
 

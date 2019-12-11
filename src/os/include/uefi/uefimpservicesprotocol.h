@@ -26,7 +26,7 @@ struct UefiMpServicesProtocol
     UefiStatus (UEFI_API *startupAllAPs)(UefiMpServicesProtocol *obj, uefi_ap_procedure procedure, bool singleThread, uefi_event waitEvent, u64 timeoutInMicroSeconds, void *procedureArgument, u64 **failedCpuList); // TEST: NO
     UefiStatus (UEFI_API *startupThisAP)(UefiMpServicesProtocol *obj, uefi_ap_procedure procedure, u64 processorNumber, uefi_event waitEvent, u64 timeoutInMicroSeconds, void *procedureArgument, bool *finished); // TEST: NO
     UefiStatus (UEFI_API *switchBSP)(UefiMpServicesProtocol *obj, u64 processorNumber, bool enableOldBSP); // TEST: NO
-    UefiStatus (UEFI_API *enableDisableAP)(UefiMpServicesProtocol *obj, u64 processorNumber, bool enableAP, uefi_processor_information_status_flags *health); // TEST: NO
+    UefiStatus (UEFI_API *enableDisableAP)(UefiMpServicesProtocol *obj, u64 processorNumber, bool enableAP, UefiProcessorInformationStatusFlags *health); // TEST: NO
     UefiStatus (UEFI_API *whoAmI)(UefiMpServicesProtocol *obj, u64 *processorNumber); // TEST: NO
 };
 

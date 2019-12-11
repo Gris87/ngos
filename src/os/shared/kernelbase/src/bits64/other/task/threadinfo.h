@@ -10,7 +10,7 @@
 
 struct ThreadInfo
 {
-    thread_info_flags flags;
+    ThreadInfoFlags flags;
 };
 
 

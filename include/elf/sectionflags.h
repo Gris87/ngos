@@ -3,6 +3,7 @@
 
 
 
+#include <ngos/flags.h>
 #include <ngos/types.h>
 
 
@@ -30,6 +31,8 @@ enum class ElfSectionFlag: elf_section_flags // Ignore CppEnumVerifier
     ORDERED            = (1ULL << 26),
     EXCLUDE            = (1ULL << 27)
 };
+
+DEFINE_FLAGS(ElfSectionFlags, elf_section_flags);
 
 
 

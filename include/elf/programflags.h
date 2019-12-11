@@ -3,6 +3,7 @@
 
 
 
+#include <ngos/flags.h>
 #include <ngos/types.h>
 
 
@@ -16,6 +17,8 @@ enum class ElfProgramFlag: elf_program_flags // Ignore CppEnumVerifier
     WRITABLE   = (1ULL << 1),
     READABLE   = (1ULL << 2)
 };
+
+DEFINE_FLAGS(ElfProgramFlags, elf_program_flags);
 
 
 

@@ -18,7 +18,7 @@
 
 
 
-kvm_feature_type_flags KVM::sFeatures;
+KvmFeatureTypeFlags KVM::sFeatures;
 
 
 
@@ -153,14 +153,14 @@ NgosStatus KVM::initPlatform(u32 id)
 
     u32 ignored;
 
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(id | 0x01, 0, &sFeatures, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(KvmClock::init(),                                                   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(id | 0x01, 0, (u32 *)&sFeatures, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(KvmClock::init(),                                                          NgosStatus::ASSERTION);
 
 
 
     // Validation
     {
-        COMMON_LVVV(("sFeatures = %s", sFeatures, flagsToFullString(sFeatures)));
+        COMMON_LVVV(("sFeatures = %s", flagsToFullString(sFeatures)));
 
 
 

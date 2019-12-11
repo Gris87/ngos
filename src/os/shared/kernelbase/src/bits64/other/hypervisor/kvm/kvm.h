@@ -29,7 +29,7 @@ private:
 #endif
     static NgosStatus initPlatform(u32 id); // TEST: NO
 
-    static kvm_feature_type_flags sFeatures;
+    static KvmFeatureTypeFlags sFeatures;
 };
 
 
