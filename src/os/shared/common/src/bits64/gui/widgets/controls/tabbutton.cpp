@@ -317,7 +317,7 @@ NgosStatus TabButton::repaint()
             case WidgetState::INACTIVE:
             case WidgetState::INACTIVE_HOVERED:
             {
-                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unexpected widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -325,7 +325,7 @@ NgosStatus TabButton::repaint()
 
             default:
             {
-                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unknown widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -346,7 +346,7 @@ NgosStatus TabButton::repaint()
             case WidgetState::INACTIVE:
             case WidgetState::INACTIVE_HOVERED:
             {
-                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unexpected widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -354,7 +354,7 @@ NgosStatus TabButton::repaint()
 
             default:
             {
-                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unknown widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }

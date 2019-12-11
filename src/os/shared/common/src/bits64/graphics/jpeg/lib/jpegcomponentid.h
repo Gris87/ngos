@@ -21,7 +21,28 @@ enum class JpegComponentId: u8
 
 
 
-inline const char8* jpegComponentIdToString(JpegComponentId id) // TEST: NO
+inline const char8* enumToString(JpegComponentId id) // TEST: NO
+{
+    // COMMON_LT((" | id = %u", id)); // Commented to avoid bad looking logs
+
+
+
+    switch (id)
+    {
+        case JpegComponentId::NONE: return "NONE";
+        case JpegComponentId::Y:    return "Y"; // Ignore CppSingleCharVerifier
+        case JpegComponentId::CB:   return "CB";
+        case JpegComponentId::CR:   return "CR";
+        case JpegComponentId::I:    return "I"; // Ignore CppSingleCharVerifier
+        case JpegComponentId::Q:    return "Q"; // Ignore CppSingleCharVerifier
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(JpegComponentId id) // TEST: NO
 {
     // COMMON_LT((" | id = %u", id)); // Commented to avoid bad looking logs
 

@@ -69,7 +69,7 @@ NgosStatus TableRowWidget::invalidate()
             case WidgetState::NONE:
             case WidgetState::NORMAL:
             {
-                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unexpected widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -77,7 +77,7 @@ NgosStatus TableRowWidget::invalidate()
 
             default:
             {
-                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unknown widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }

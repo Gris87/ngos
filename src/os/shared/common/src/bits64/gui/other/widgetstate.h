@@ -21,7 +21,30 @@ enum class WidgetState: u8
 
 
 
-inline const char8* widgetStateToString(WidgetState state) // TEST: NO
+inline const char8* enumToString(WidgetState state) // TEST: NO
+{
+    // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    switch (state)
+    {
+        case WidgetState::NONE:             return "NONE";
+        case WidgetState::NORMAL:           return "NORMAL";
+        case WidgetState::HOVERED:          return "HOVERED";
+        case WidgetState::PRESSED:          return "PRESSED";
+        case WidgetState::FOCUSED:          return "FOCUSED";
+        case WidgetState::FOCUSED_HOVERED:  return "FOCUSED_HOVERED";
+        case WidgetState::INACTIVE:         return "INACTIVE";
+        case WidgetState::INACTIVE_HOVERED: return "INACTIVE_HOVERED";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(WidgetState state) // TEST: NO
 {
     // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 

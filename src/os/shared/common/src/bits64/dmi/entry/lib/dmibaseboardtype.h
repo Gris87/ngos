@@ -27,7 +27,36 @@ enum class DmiBaseboardType: u8
 
 
 
-inline const char8* dmiBaseboardTypeToString(DmiBaseboardType type) // TEST: NO
+inline const char8* enumToString(DmiBaseboardType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case DmiBaseboardType::NONE:                     return "NONE";
+        case DmiBaseboardType::UNKNOWN:                  return "UNKNOWN";
+        case DmiBaseboardType::OTHER:                    return "OTHER";
+        case DmiBaseboardType::SERVER_BLADE:             return "SERVER_BLADE";
+        case DmiBaseboardType::CONNECTIVITY_SWITCH:      return "CONNECTIVITY_SWITCH";
+        case DmiBaseboardType::SYSTEM_MANAGEMENT_MODULE: return "SYSTEM_MANAGEMENT_MODULE";
+        case DmiBaseboardType::PROCESSOR_MODULE:         return "PROCESSOR_MODULE";
+        case DmiBaseboardType::IO_MODULE:                return "IO_MODULE";
+        case DmiBaseboardType::MEMORY_MODULE:            return "MEMORY_MODULE";
+        case DmiBaseboardType::DAUGHTER_BOARD:           return "DAUGHTER_BOARD";
+        case DmiBaseboardType::MOTHERBOARD:              return "MOTHERBOARD";
+        case DmiBaseboardType::PROCESSOR_MEMORY_MODULE:  return "PROCESSOR_MEMORY_MODULE";
+        case DmiBaseboardType::PROCESSOR_IO_MODULE:      return "PROCESSOR_IO_MODULE";
+        case DmiBaseboardType::INTERCONNECT_BOARD:       return "INTERCONNECT_BOARD";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiBaseboardType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

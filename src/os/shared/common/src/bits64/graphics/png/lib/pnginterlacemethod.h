@@ -17,7 +17,24 @@ enum class PngInterlaceMethod: u8
 
 
 
-inline const char8* pngInterlaceMethodToString(PngInterlaceMethod method) // TEST: NO
+inline const char8* enumToString(PngInterlaceMethod method) // TEST: NO
+{
+    // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
+
+
+
+    switch (method)
+    {
+        case PngInterlaceMethod::NONE:   return "NONE";
+        case PngInterlaceMethod::ADAM_7: return "ADAM_7";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PngInterlaceMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

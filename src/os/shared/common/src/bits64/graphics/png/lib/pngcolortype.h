@@ -20,7 +20,27 @@ enum class PngColorType: u8
 
 
 
-inline const char8* pngColorTypeToString(PngColorType type) // TEST: NO
+inline const char8* enumToString(PngColorType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case PngColorType::GREYSCALE:           return "GREYSCALE";
+        case PngColorType::RGB:                 return "RGB";
+        case PngColorType::PALETTE:             return "PALETTE";
+        case PngColorType::GREYSCALE_AND_ALPHA: return "GREYSCALE_AND_ALPHA";
+        case PngColorType::RGBA:                return "RGBA";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PngColorType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

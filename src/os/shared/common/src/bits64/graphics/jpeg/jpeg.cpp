@@ -243,7 +243,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
 
 
 
-    COMMON_LVVV(("marker->type = 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+    COMMON_LVVV(("marker->type = %s", enumToFullString(marker->type)));
 
 
 
@@ -309,7 +309,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
         case JpegMarkerType::RESTART_6:
         case JpegMarkerType::RESTART_7:
         {
-            COMMON_LC(("Unexpected marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+            COMMON_LC(("Unexpected marker type: %s", enumToFullString(marker->type)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -317,7 +317,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
 
         default:
         {
-            COMMON_LC(("Unknown marker type: 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+            COMMON_LC(("Unknown marker type: %s", enumToFullString(marker->type)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -424,7 +424,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         u8              samplingFactorY     = component->samplingFactorY;
         u8              quantizationTableId = component->quantizationTableId;
 
-        COMMON_LVVV(("componentId         = %u (%s)", componentId, jpegComponentIdToString(componentId)));
+        COMMON_LVVV(("componentId         = %s", enumToFullString(componentId)));
         COMMON_LVVV(("samplingFactorX     = %u", samplingFactorX));
         COMMON_LVVV(("samplingFactorY     = %u", samplingFactorY));
         COMMON_LVVV(("quantizationTableId = %u", quantizationTableId));
@@ -447,7 +447,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         {
             COMMON_LE(("Invalid JPEG component:"));
 
-            COMMON_LE(("componentId         = %u (%s)", componentId, jpegComponentIdToString(componentId)));
+            COMMON_LE(("componentId         = %s", enumToFullString(componentId)));
             COMMON_LE(("samplingFactorX     = %u", samplingFactorX));
             COMMON_LE(("samplingFactorY     = %u", samplingFactorY));
             COMMON_LE(("quantizationTableId = %u", quantizationTableId));
@@ -528,10 +528,10 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-        COMMON_LVVV(("generalComponent->id         = %u (%s)", generalComponent->id, jpegComponentIdToString(generalComponent->id)));
-        COMMON_LVVV(("generalComponent->width      = %u", generalComponent->width));
-        COMMON_LVVV(("generalComponent->height     = %u", generalComponent->height));
-        COMMON_LVVV(("generalComponent->stride     = %u", generalComponent->stride));
+        COMMON_LVVV(("generalComponent->id         = %s",   enumToFullString(generalComponent->id)));
+        COMMON_LVVV(("generalComponent->width      = %u",   generalComponent->width));
+        COMMON_LVVV(("generalComponent->height     = %u",   generalComponent->height));
+        COMMON_LVVV(("generalComponent->stride     = %u",   generalComponent->stride));
         COMMON_LVVV(("generalComponent->dataBuffer = 0x%p", generalComponent->dataBuffer));
     }
 
@@ -593,12 +593,12 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-        u8 tableType = table->type;
+        JpegHuffmanTableType tableType = (JpegHuffmanTableType)table->type;
 
-        COMMON_LVVV(("tableType = %u (%s)", tableType, jpegHuffmanTableTypeToString(tableType)));
+        COMMON_LVVV(("tableType = %s", enumToFullString(tableType)));
 
-        COMMON_TEST_ASSERT(tableType == JPEG_HUFFMAN_TABLE_TYPE_DC || tableType == JPEG_HUFFMAN_TABLE_TYPE_AC, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(table->__reserved == 0,                                                             NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(tableType == JpegHuffmanTableType::DC || tableType == JpegHuffmanTableType::AC, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(table->__reserved == 0,                                                         NgosStatus::ASSERTION);
 
 
 
@@ -616,7 +616,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-        if (tableType == JPEG_HUFFMAN_TABLE_TYPE_DC)
+        if (tableType == JpegHuffmanTableType::DC)
         {
             COMMON_TEST_ASSERT(decoder->vlcDcTables[tableId] == 0, NgosStatus::ASSERTION);
 
@@ -968,7 +968,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
         u8              huffmanDcTableId = component->huffmanDcTableId;
         u8              huffmanAcTableId = component->huffmanAcTableId;
 
-        COMMON_LVVV(("componentId      = %u (%s)", componentId, jpegComponentIdToString(componentId)));
+        COMMON_LVVV(("componentId      = %s", enumToFullString(componentId)));
         COMMON_LVVV(("huffmanDcTableId = %u", huffmanDcTableId));
         COMMON_LVVV(("huffmanAcTableId = %u", huffmanAcTableId));
 
@@ -990,7 +990,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
         {
             COMMON_LE(("Invalid JPEG component:"));
 
-            COMMON_LE(("componentId      = %u (%s)", componentId, jpegComponentIdToString(componentId)));
+            COMMON_LE(("componentId      = %s", enumToFullString(componentId)));
             COMMON_LE(("huffmanDcTableId = %u", huffmanDcTableId));
             COMMON_LE(("huffmanAcTableId = %u", huffmanAcTableId));
 
@@ -1123,13 +1123,13 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-                COMMON_LVVV(("marker->type = 0x%02X (%s)", marker->type, jpegMarkerTypeToString(marker->type)));
+                COMMON_LVVV(("marker->type = %s", enumToFullString(marker->type)));
 
 
 
                 if (marker->type != nextRestartMarker)
                 {
-                    COMMON_LE(("Unexpected restart marker %u (%s). Expecting for %u (%s)", marker->type, jpegMarkerTypeToString(marker->type), nextRestartMarker, jpegMarkerTypeToString(nextRestartMarker)));
+                    COMMON_LE(("Unexpected restart marker %s. Expecting for %s", enumToFullString(marker->type), enumToFullString(nextRestartMarker)));
 
                     status = NgosStatus::INVALID_DATA;
 

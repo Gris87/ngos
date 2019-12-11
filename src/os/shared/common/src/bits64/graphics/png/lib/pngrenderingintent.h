@@ -19,7 +19,26 @@ enum class PngRenderingIntent: u8
 
 
 
-inline const char8* pngRenderingIntentToString(PngRenderingIntent intent) // TEST: NO
+inline const char8* enumToString(PngRenderingIntent intent) // TEST: NO
+{
+    // COMMON_LT((" | intent = %u", intent)); // Commented to avoid bad looking logs
+
+
+
+    switch (intent)
+    {
+        case PngRenderingIntent::PERCEPTUAL:            return "PERCEPTUAL";
+        case PngRenderingIntent::RELATIVE_COLORIMETRIC: return "RELATIVE_COLORIMETRIC";
+        case PngRenderingIntent::SATURATION:            return "SATURATION";
+        case PngRenderingIntent::ABSOLUTE_COLORIMETRIC: return "ABSOLUTE_COLORIMETRIC";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PngRenderingIntent intent) // TEST: NO
 {
     // COMMON_LT((" | intent = %u", intent)); // Commented to avoid bad looking logs
 

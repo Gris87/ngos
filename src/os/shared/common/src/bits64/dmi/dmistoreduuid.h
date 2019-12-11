@@ -15,7 +15,24 @@ enum class DmiStoredUuid: u8
 
 
 
-inline const char8* dmiStoredUuidToString(DmiStoredUuid uuid) // TEST: NO
+inline const char8* enumToString(DmiStoredUuid uuid) // TEST: NO
+{
+    // COMMON_LT((" | uuid = %u", uuid)); // Commented to avoid bad looking logs
+
+
+
+    switch (uuid)
+    {
+        case DmiStoredUuid::SYSTEM_UUID: return "SYSTEM_UUID";
+        case DmiStoredUuid::MAXIMUM:     return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiStoredUuid uuid) // TEST: NO
 {
     // COMMON_LT((" | uuid = %u", uuid)); // Commented to avoid bad looking logs
 

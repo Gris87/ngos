@@ -74,7 +74,83 @@ enum class DmiProcessorUpgrade: u8
 
 
 
-inline const char8* dmiProcessorUpgradeToString(DmiProcessorUpgrade upgrade) // TEST: NO
+inline const char8* enumToString(DmiProcessorUpgrade upgrade) // TEST: NO
+{
+    // COMMON_LT((" | upgrade = %u", upgrade)); // Commented to avoid bad looking logs
+
+
+
+    switch (upgrade)
+    {
+        case DmiProcessorUpgrade::NULL:             return "NULL";
+        case DmiProcessorUpgrade::OTHER:            return "OTHER";
+        case DmiProcessorUpgrade::UNKNOWN:          return "UNKNOWN";
+        case DmiProcessorUpgrade::DAUGHTER_BOARD:   return "DAUGHTER_BOARD";
+        case DmiProcessorUpgrade::ZIF_SOCKET:       return "ZIF_SOCKET";
+        case DmiProcessorUpgrade::PIGGY_BACK:       return "PIGGY_BACK";
+        case DmiProcessorUpgrade::NONE:             return "NONE";
+        case DmiProcessorUpgrade::LIF_SOCKET:       return "LIF_SOCKET";
+        case DmiProcessorUpgrade::SLOT_1:           return "SLOT_1";
+        case DmiProcessorUpgrade::SLOT_2:           return "SLOT_2";
+        case DmiProcessorUpgrade::_370_PIN_SOCKET:  return "_370_PIN_SOCKET";
+        case DmiProcessorUpgrade::SLOT_A:           return "SLOT_A";
+        case DmiProcessorUpgrade::SLOT_M:           return "SLOT_M";
+        case DmiProcessorUpgrade::SOCKET_423:       return "SOCKET_423";
+        case DmiProcessorUpgrade::SOCKET_A:         return "SOCKET_A";
+        case DmiProcessorUpgrade::SOCKET_478:       return "SOCKET_478";
+        case DmiProcessorUpgrade::SOCKET_754:       return "SOCKET_754";
+        case DmiProcessorUpgrade::SOCKET_940:       return "SOCKET_940";
+        case DmiProcessorUpgrade::SOCKET_939:       return "SOCKET_939";
+        case DmiProcessorUpgrade::SOCKET_MPGA604:   return "SOCKET_MPGA604";
+        case DmiProcessorUpgrade::SOCKET_LGA771:    return "SOCKET_LGA771";
+        case DmiProcessorUpgrade::SOCKET_LGA775:    return "SOCKET_LGA775";
+        case DmiProcessorUpgrade::SOCKET_S1:        return "SOCKET_S1";
+        case DmiProcessorUpgrade::AM2:              return "AM2";
+        case DmiProcessorUpgrade::F1207:            return "F1207";
+        case DmiProcessorUpgrade::LGA1366:          return "LGA1366";
+        case DmiProcessorUpgrade::SOCKET_G34:       return "SOCKET_G34";
+        case DmiProcessorUpgrade::SOCKET_AM3:       return "SOCKET_AM3";
+        case DmiProcessorUpgrade::SOCKET_C32:       return "SOCKET_C32";
+        case DmiProcessorUpgrade::SOCKET_LGA1156:   return "SOCKET_LGA1156";
+        case DmiProcessorUpgrade::SOCKET_LGA1567:   return "SOCKET_LGA1567";
+        case DmiProcessorUpgrade::SOCKET_PGA988A:   return "SOCKET_PGA988A";
+        case DmiProcessorUpgrade::SOCKET_BGA1288:   return "SOCKET_BGA1288";
+        case DmiProcessorUpgrade::SOCKET_RPGA988B:  return "SOCKET_RPGA988B";
+        case DmiProcessorUpgrade::SOCKET_BGA1023:   return "SOCKET_BGA1023";
+        case DmiProcessorUpgrade::SOCKET_BGA1224:   return "SOCKET_BGA1224";
+        case DmiProcessorUpgrade::SOCKET_LGA1155:   return "SOCKET_LGA1155";
+        case DmiProcessorUpgrade::SOCKET_LGA1356:   return "SOCKET_LGA1356";
+        case DmiProcessorUpgrade::SOCKET_LGA2011:   return "SOCKET_LGA2011";
+        case DmiProcessorUpgrade::SOCKET_FS1:       return "SOCKET_FS1";
+        case DmiProcessorUpgrade::SOCKET_FS2:       return "SOCKET_FS2";
+        case DmiProcessorUpgrade::SOCKET_FM1:       return "SOCKET_FM1";
+        case DmiProcessorUpgrade::SOCKET_FM2:       return "SOCKET_FM2";
+        case DmiProcessorUpgrade::SOCKET_LGA2011_3: return "SOCKET_LGA2011_3";
+        case DmiProcessorUpgrade::SOCKET_LGA1356_3: return "SOCKET_LGA1356_3";
+        case DmiProcessorUpgrade::SOCKET_LGA1150:   return "SOCKET_LGA1150";
+        case DmiProcessorUpgrade::SOCKET_BGA1168:   return "SOCKET_BGA1168";
+        case DmiProcessorUpgrade::SOCKET_BGA1234:   return "SOCKET_BGA1234";
+        case DmiProcessorUpgrade::SOCKET_BGA1364:   return "SOCKET_BGA1364";
+        case DmiProcessorUpgrade::SOCKET_AM4:       return "SOCKET_AM4";
+        case DmiProcessorUpgrade::SOCKET_LGA1151:   return "SOCKET_LGA1151";
+        case DmiProcessorUpgrade::SOCKET_BGA1356:   return "SOCKET_BGA1356";
+        case DmiProcessorUpgrade::SOCKET_BGA1440:   return "SOCKET_BGA1440";
+        case DmiProcessorUpgrade::SOCKET_BGA1515:   return "SOCKET_BGA1515";
+        case DmiProcessorUpgrade::SOCKET_LGA3647_1: return "SOCKET_LGA3647_1";
+        case DmiProcessorUpgrade::SOCKET_SP3:       return "SOCKET_SP3";
+        case DmiProcessorUpgrade::SOCKET_SP3R2:     return "SOCKET_SP3R2";
+        case DmiProcessorUpgrade::SOCKET_LGA2066:   return "SOCKET_LGA2066";
+        case DmiProcessorUpgrade::SOCKET_BGA1392:   return "SOCKET_BGA1392";
+        case DmiProcessorUpgrade::SOCKET_BGA1510:   return "SOCKET_BGA1510";
+        case DmiProcessorUpgrade::SOCKET_BGA1528:   return "SOCKET_BGA1528";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiProcessorUpgrade upgrade) // TEST: NO
 {
     // COMMON_LT((" | upgrade = %u", upgrade)); // Commented to avoid bad looking logs
 

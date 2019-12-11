@@ -376,7 +376,7 @@ NgosStatus TableWidget::setState(WidgetState state)
                     case WidgetState::FOCUSED_HOVERED:
                     case WidgetState::INACTIVE_HOVERED:
                     {
-                        COMMON_LF(("Unexpected widget state: %u (%s) %d", selectedRow->getState(), widgetStateToString(selectedRow->getState()), __LINE__));
+                        COMMON_LF(("Unexpected widget state: %s", enumToFullString(selectedRow->getState())));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -384,7 +384,7 @@ NgosStatus TableWidget::setState(WidgetState state)
 
                     default:
                     {
-                        COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+                        COMMON_LF(("Unknown widget state: %s", enumToFullString(selectedRow->getState())));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -414,7 +414,7 @@ NgosStatus TableWidget::setState(WidgetState state)
                     case WidgetState::FOCUSED_HOVERED:
                     case WidgetState::INACTIVE_HOVERED:
                     {
-                        COMMON_LF(("Unexpected widget state: %u (%s) %d", selectedRow->getState(), widgetStateToString(selectedRow->getState()), __LINE__));
+                        COMMON_LF(("Unexpected widget state: %s", enumToFullString(selectedRow->getState())));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -422,7 +422,7 @@ NgosStatus TableWidget::setState(WidgetState state)
 
                     default:
                     {
-                        COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+                        COMMON_LF(("Unknown widget state: %s", enumToFullString(selectedRow->getState())));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -450,7 +450,7 @@ NgosStatus TableWidget::setState(WidgetState state)
                     case WidgetState::PRESSED:
                     case WidgetState::INACTIVE:
                     {
-                        COMMON_LF(("Unexpected widget state: %u (%s) %d", selectedRow->getState(), widgetStateToString(selectedRow->getState()), __LINE__));
+                        COMMON_LF(("Unexpected widget state: %s", enumToFullString(selectedRow->getState())));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -458,7 +458,7 @@ NgosStatus TableWidget::setState(WidgetState state)
 
                     default:
                     {
-                        COMMON_LF(("Unknown widget state: %u (%s)", selectedRow->getState(), widgetStateToString(selectedRow->getState())));
+                        COMMON_LF(("Unknown widget state: %s", enumToFullString(selectedRow->getState())));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -486,7 +486,7 @@ NgosStatus TableWidget::setState(WidgetState state)
             case WidgetState::INACTIVE:
             case WidgetState::INACTIVE_HOVERED:
             {
-                COMMON_LF(("Unexpected widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unexpected widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -494,7 +494,7 @@ NgosStatus TableWidget::setState(WidgetState state)
 
             default:
             {
-                COMMON_LF(("Unknown widget state: %u (%s)", mState, widgetStateToString(mState)));
+                COMMON_LF(("Unknown widget state: %s", enumToFullString(mState)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -827,7 +827,7 @@ NgosStatus TableWidget::setSelectedRow(u64 row)
             case WidgetState::HOVERED:
             case WidgetState::PRESSED:
             {
-                COMMON_LF(("Unexpected widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+                COMMON_LF(("Unexpected widget state: %s", enumToFullString(previousRow->getState())));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -835,7 +835,7 @@ NgosStatus TableWidget::setSelectedRow(u64 row)
 
             default:
             {
-                COMMON_LF(("Unknown widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+                COMMON_LF(("Unknown widget state: %s", enumToFullString(previousRow->getState())));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -856,7 +856,7 @@ NgosStatus TableWidget::setSelectedRow(u64 row)
             case WidgetState::INACTIVE:
             case WidgetState::INACTIVE_HOVERED:
             {
-                COMMON_LF(("Unexpected widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+                COMMON_LF(("Unexpected widget state: %s", enumToFullString(newRow->getState())));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -864,7 +864,7 @@ NgosStatus TableWidget::setSelectedRow(u64 row)
 
             default:
             {
-                COMMON_LF(("Unknown widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+                COMMON_LF(("Unknown widget state: %s", enumToFullString(newRow->getState())));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -915,7 +915,7 @@ NgosStatus TableWidget::setHighlightedRow(u64 row)
                 case WidgetState::FOCUSED:
                 case WidgetState::INACTIVE:
                 {
-                    COMMON_LF(("Unexpected widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+                    COMMON_LF(("Unexpected widget state: %s", enumToFullString(previousRow->getState())));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
@@ -923,7 +923,7 @@ NgosStatus TableWidget::setHighlightedRow(u64 row)
 
                 default:
                 {
-                    COMMON_LF(("Unknown widget state: %u (%s)", previousRow->getState(), widgetStateToString(previousRow->getState())));
+                    COMMON_LF(("Unknown widget state: %s", enumToFullString(previousRow->getState())));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
@@ -947,7 +947,7 @@ NgosStatus TableWidget::setHighlightedRow(u64 row)
                 case WidgetState::FOCUSED_HOVERED:
                 case WidgetState::INACTIVE_HOVERED:
                 {
-                    COMMON_LF(("Unexpected widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+                    COMMON_LF(("Unexpected widget state: %s", enumToFullString(newRow->getState())));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
@@ -955,7 +955,7 @@ NgosStatus TableWidget::setHighlightedRow(u64 row)
 
                 default:
                 {
-                    COMMON_LF(("Unknown widget state: %u (%s)", newRow->getState(), widgetStateToString(newRow->getState())));
+                    COMMON_LF(("Unknown widget state: %s", enumToFullString(newRow->getState())));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }

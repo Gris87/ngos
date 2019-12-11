@@ -17,7 +17,24 @@ enum class PngUnitSpecifier: u8
 
 
 
-inline const char8* pngUnitSpecifierToString(PngUnitSpecifier specifier) // TEST: NO
+inline const char8* enumToString(PngUnitSpecifier specifier) // TEST: NO
+{
+    // COMMON_LT((" | specifier = %u", specifier)); // Commented to avoid bad looking logs
+
+
+
+    switch (specifier)
+    {
+        case PngUnitSpecifier::UNKNOWN: return "UNKNOWN";
+        case PngUnitSpecifier::METER:   return "METER";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PngUnitSpecifier specifier) // TEST: NO
 {
     // COMMON_LT((" | specifier = %u", specifier)); // Commented to avoid bad looking logs
 

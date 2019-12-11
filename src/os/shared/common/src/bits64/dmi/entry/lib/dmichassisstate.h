@@ -20,7 +20,29 @@ enum class DmiChassisState: u8
 
 
 
-inline const char8* dmiChassisStateToString(DmiChassisState state) // TEST: NO
+inline const char8* enumToString(DmiChassisState state) // TEST: NO
+{
+    // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    switch (state)
+    {
+        case DmiChassisState::NONE:            return "NONE";
+        case DmiChassisState::OTHER:           return "OTHER";
+        case DmiChassisState::UNKNOWN:         return "UNKNOWN";
+        case DmiChassisState::SAFE:            return "SAFE";
+        case DmiChassisState::WARNING:         return "WARNING";
+        case DmiChassisState::CRITICAL:        return "CRITICAL";
+        case DmiChassisState::NON_RECOVERABLE: return "NON_RECOVERABLE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiChassisState state) // TEST: NO
 {
     // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 

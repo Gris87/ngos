@@ -20,7 +20,27 @@ enum class PngFilterType: u8
 
 
 
-inline const char8* pngFilterTypeToString(PngFilterType type) // TEST: NO
+inline const char8* enumToString(PngFilterType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case PngFilterType::NONE:    return "NONE";
+        case PngFilterType::SUB:     return "SUB";
+        case PngFilterType::UP:      return "UP";
+        case PngFilterType::AVERAGE: return "AVERAGE";
+        case PngFilterType::PAETH:   return "PAETH";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PngFilterType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

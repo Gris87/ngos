@@ -794,6 +794,7 @@ src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegdefinehuffmantablemarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegdefinequantizationtablemarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegdefinerestartintervalmarker.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpeghuffmantable.h
+src/os/shared/common/src/bits64/graphics/jpeg/lib/jpeghuffmantabletype.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegmarkerheader.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegmarkertype.h
 src/os/shared/common/src/bits64/graphics/jpeg/lib/jpegquantizationtable.h

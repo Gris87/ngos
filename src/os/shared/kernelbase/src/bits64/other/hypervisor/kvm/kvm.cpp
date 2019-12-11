@@ -152,9 +152,12 @@ NgosStatus KVM::initPlatform(u32 id)
 
 
     u32 ignored;
+    u32 eax;
 
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(id | 0x01, 0, (u32 *)&sFeatures, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(KvmClock::init(),                                                          NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(id | 0x01, 0, &eax, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+    sFeatures = eax;
+
+    COMMON_ASSERT_EXECUTION(KvmClock::init(), NgosStatus::ASSERTION);
 
 
 

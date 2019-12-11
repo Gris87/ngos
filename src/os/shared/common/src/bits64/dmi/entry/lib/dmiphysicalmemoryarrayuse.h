@@ -21,7 +21,30 @@ enum class DmiPhysicalMemoryArrayUse: u8
 
 
 
-inline const char8* dmiPhysicalMemoryArrayUseToString(DmiPhysicalMemoryArrayUse use) // TEST: NO
+inline const char8* enumToString(DmiPhysicalMemoryArrayUse use) // TEST: NO
+{
+    // COMMON_LT((" | use = %u", use)); // Commented to avoid bad looking logs
+
+
+
+    switch (use)
+    {
+        case DmiPhysicalMemoryArrayUse::NONE:             return "NONE";
+        case DmiPhysicalMemoryArrayUse::OTHER:            return "OTHER";
+        case DmiPhysicalMemoryArrayUse::UNKNOWN:          return "UNKNOWN";
+        case DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY:    return "SYSTEM_MEMORY";
+        case DmiPhysicalMemoryArrayUse::VIDEO_MEMORY:     return "VIDEO_MEMORY";
+        case DmiPhysicalMemoryArrayUse::FLASH_MEMORY:     return "FLASH_MEMORY";
+        case DmiPhysicalMemoryArrayUse::NON_VOLATILE_RAM: return "NON_VOLATILE_RAM";
+        case DmiPhysicalMemoryArrayUse::CACHE_MEMORY:     return "CACHE_MEMORY";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiPhysicalMemoryArrayUse use) // TEST: NO
 {
     // COMMON_LT((" | use = %u", use)); // Commented to avoid bad looking logs
 

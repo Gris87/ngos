@@ -66,7 +66,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
         u64 totalChunkLength = sizeof(PngChunk) + chunkLength + 4; // 4 == size of CRC
 
         COMMON_LVVV(("chunkLength      = %u", chunkLength));
-        COMMON_LVVV(("chunk->type      = 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
+        COMMON_LVVV(("chunk->type      = %s", enumToFullString(chunk->type)));
         COMMON_LVVV(("totalChunkLength = %u", totalChunkLength));
         COMMON_LVVV(("size             = %u", size));
 
@@ -244,7 +244,7 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
         case PngChunkType::TEXT:
         case PngChunkType::ZTXT:
         {
-            COMMON_LVV(("Ignore PNG chunk 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
+            COMMON_LVV(("Ignore PNG chunk %s", chunk->type, enumToFullString(chunk->type)));
         }
         break;
 
@@ -255,13 +255,13 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
         case PngChunkType::TRNS:
         case PngChunkType::SPLT:
         {
-            COMMON_LE(("Unexpected PNG chunk found: 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
+            COMMON_LE(("Unexpected PNG chunk found: %s", enumToFullString(chunk->type)));
         }
         break;
 
         default:
         {
-            COMMON_LW(("Unknown PNG chunk found: 0x%08X (%s)", chunk->type, pngChunkTypeToString(chunk->type)));
+            COMMON_LW(("Unknown PNG chunk found: %s", enumToFullString(chunk->type)));
         }
         break;
     }
@@ -282,7 +282,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
     if (chunkLength != sizeof(PngImageHeader))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngImageHeader)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", enumToString(chunk->type), chunkLength, sizeof(PngImageHeader)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -306,10 +306,10 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
     COMMON_LVVV(("width                          = %u", width));
     COMMON_LVVV(("height                         = %u", height));
     COMMON_LVVV(("imageHeader->bitDepth          = %u", imageHeader->bitDepth));
-    COMMON_LVVV(("imageHeader->colorType         = %u (%s)", imageHeader->colorType, pngColorTypeToString(imageHeader->colorType)));
-    COMMON_LVVV(("imageHeader->compressionMethod = %u (%s)", imageHeader->compressionMethod, pngCompressionMethodToString(imageHeader->compressionMethod)));
-    COMMON_LVVV(("imageHeader->filterMethod      = %u (%s)", imageHeader->filterMethod, pngFilterMethodToString(imageHeader->filterMethod)));
-    COMMON_LVVV(("imageHeader->interlaceMethod   = %u (%s)", imageHeader->interlaceMethod, pngInterlaceMethodToString(imageHeader->interlaceMethod)));
+    COMMON_LVVV(("imageHeader->colorType         = %s", enumToFullString(imageHeader->colorType)));
+    COMMON_LVVV(("imageHeader->compressionMethod = %s", enumToFullString(imageHeader->compressionMethod)));
+    COMMON_LVVV(("imageHeader->filterMethod      = %s", enumToFullString(imageHeader->filterMethod)));
+    COMMON_LVVV(("imageHeader->interlaceMethod   = %s", enumToFullString(imageHeader->interlaceMethod)));
 
 
 
@@ -334,7 +334,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
     if (status != NgosStatus::OK)
     {
-        COMMON_LE(("PNG image has invalid color type %u (%s) and bit depth %u", imageHeader->colorType, pngColorTypeToString(imageHeader->colorType), imageHeader->bitDepth));
+        COMMON_LE(("PNG image has invalid color type %s and bit depth %u", enumToFullString(imageHeader->colorType), imageHeader->bitDepth));
 
         return status;
     }
@@ -343,7 +343,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
     if (imageHeader->compressionMethod != PngCompressionMethod::DEFLATE)
     {
-        COMMON_LE(("PNG decoder doesn't support compression method %u (%s)", imageHeader->compressionMethod, pngCompressionMethodToString(imageHeader->compressionMethod)));
+        COMMON_LE(("PNG decoder doesn't support compression method %s", enumToFullString(imageHeader->compressionMethod)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -352,7 +352,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
     if (imageHeader->filterMethod != PngFilterMethod::ADAPTIVE)
     {
-        COMMON_LE(("PNG decoder doesn't support filter method %u (%s)", imageHeader->filterMethod, pngFilterMethodToString(imageHeader->filterMethod)));
+        COMMON_LE(("PNG decoder doesn't support filter method %s", enumToFullString(imageHeader->filterMethod)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -365,7 +365,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
         imageHeader->interlaceMethod != PngInterlaceMethod::ADAM_7
        )
     {
-        COMMON_LE(("PNG decoder doesn't support interlace method %u (%s)", imageHeader->interlaceMethod, pngInterlaceMethodToString(imageHeader->interlaceMethod)));
+        COMMON_LE(("PNG decoder doesn't support interlace method %s", enumToFullString(imageHeader->interlaceMethod)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -382,7 +382,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
         default:
         {
-            COMMON_LC(("Unexpected PNG color type: 0x%02X (%s)", imageHeader->colorType, pngColorTypeToString(imageHeader->colorType)));
+            COMMON_LC(("Unexpected PNG color type: %s", enumToFullString(imageHeader->colorType)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -423,7 +423,7 @@ NgosStatus Png::decodePrimaryChromaticities(PngDecoder *decoder, PngChunk *chunk
 
     if (chunkLength != sizeof(PngPrimaryChromaticities))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngPrimaryChromaticities)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", enumToString(chunk->type), chunkLength, sizeof(PngPrimaryChromaticities)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -454,7 +454,7 @@ NgosStatus Png::decodePrimaryChromaticities(PngDecoder *decoder, PngChunk *chunk
 
     if (decoder->primaryChromaticities)
     {
-        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Found duplicate %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -477,7 +477,7 @@ NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunk
 
     if (chunkLength != sizeof(PngImageGamma))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngImageGamma)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", enumToString(chunk->type), chunkLength, sizeof(PngImageGamma)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -494,7 +494,7 @@ NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunk
 
     if (decoder->imageGamma)
     {
-        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Found duplicate %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -517,7 +517,7 @@ NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u
 
     if (chunkLength < sizeof(PngEmbeddedIccProfile) + 1)
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected at least %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngEmbeddedIccProfile) + 1));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected at least %u", enumToString(chunk->type), chunkLength, sizeof(PngEmbeddedIccProfile) + 1));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -532,7 +532,7 @@ NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u
 
     if (len >= (i64)sizeof(embeddedIccProfile->profileName))
     {
-        COMMON_LE(("Invalid %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Invalid %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -543,14 +543,14 @@ NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u
 
 
 
-    COMMON_LVVV(("embeddedIccProfile->profileName       = %s",      embeddedIccProfile->profileName));
-    COMMON_LVVV(("embeddedIccProfile->compressionMethod = %u (%s)", compressionMethod, pngCompressionMethodToString(compressionMethod)));
+    COMMON_LVVV(("embeddedIccProfile->profileName       = %s", embeddedIccProfile->profileName));
+    COMMON_LVVV(("embeddedIccProfile->compressionMethod = %s", enumToFullString(compressionMethod)));
 
 
 
     if (decoder->embeddedIccProfile)
     {
-        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Found duplicate %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -573,7 +573,7 @@ NgosStatus Png::decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, u32 
 
     if (chunkLength != sizeof(PngSignificantBits))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngSignificantBits)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", enumToString(chunk->type), chunkLength, sizeof(PngSignificantBits)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -601,7 +601,7 @@ NgosStatus Png::decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, u32 
 
     if (decoder->significantBits)
     {
-        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Found duplicate %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -624,7 +624,7 @@ NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk
 
     if (chunkLength != sizeof(PngStandardRgbColorSpace))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngStandardRgbColorSpace)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", enumToString(chunk->type), chunkLength, sizeof(PngStandardRgbColorSpace)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -633,13 +633,13 @@ NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk
 
     PngStandardRgbColorSpace *standardRgbColorSpace = (PngStandardRgbColorSpace *)&chunk->data;
 
-    COMMON_LVVV(("standardRgbColorSpace->renderingIntent = %u (%s)", standardRgbColorSpace->renderingIntent, pngRenderingIntentToString(standardRgbColorSpace->renderingIntent)));
+    COMMON_LVVV(("standardRgbColorSpace->renderingIntent = %s", enumToFullString(standardRgbColorSpace->renderingIntent)));
 
 
 
     if (decoder->standardRgbColorSpace)
     {
-        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Found duplicate %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -662,7 +662,7 @@ NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chu
 
     if (chunkLength != sizeof(PngPhysicalPixelDimensions))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngPhysicalPixelDimensions)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", enumToString(chunk->type), chunkLength, sizeof(PngPhysicalPixelDimensions)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -673,13 +673,13 @@ NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chu
 
     COMMON_LVVV(("physicalPixelDimensions->pixelsPerUnitX = %u", ntohl(physicalPixelDimensions->pixelsPerUnitX)));
     COMMON_LVVV(("physicalPixelDimensions->pixelsPerUnitY = %u", ntohl(physicalPixelDimensions->pixelsPerUnitY)));
-    COMMON_LVVV(("physicalPixelDimensions->unitSpecifier  = %u (%s)", physicalPixelDimensions->unitSpecifier, pngUnitSpecifierToString(physicalPixelDimensions->unitSpecifier)));
+    COMMON_LVVV(("physicalPixelDimensions->unitSpecifier  = %s", enumToFullString(physicalPixelDimensions->unitSpecifier)));
 
 
 
     if (decoder->physicalPixelDimensions)
     {
-        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Found duplicate %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -702,7 +702,7 @@ NgosStatus Png::decodeImageLastModificationTime(PngDecoder *decoder, PngChunk *c
 
     if (chunkLength != sizeof(PngImageLastModificationTime))
     {
-        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", pngChunkTypeToString(chunk->type), chunkLength, sizeof(PngImageLastModificationTime)));
+        COMMON_LE(("Invalid %s chunk size (%u). Expected %u", enumToString(chunk->type), chunkLength, sizeof(PngImageLastModificationTime)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -722,7 +722,7 @@ NgosStatus Png::decodeImageLastModificationTime(PngDecoder *decoder, PngChunk *c
 
     if (decoder->imageLastModificationTime)
     {
-        COMMON_LE(("Found duplicate %s chunk", pngChunkTypeToString(chunk->type)));
+        COMMON_LE(("Found duplicate %s chunk", enumToString(chunk->type)));
 
         return NgosStatus::INVALID_DATA;
     }
@@ -889,7 +889,7 @@ NgosStatus Png::processImageInterlace(PngDecoder *decoder)
 
         default:
         {
-            COMMON_LE(("Unknown interlace method %u (%s)", decoder->imageHeader->interlaceMethod, pngInterlaceMethodToString(decoder->imageHeader->interlaceMethod)));
+            COMMON_LE(("Unknown interlace method %s", enumToFullString(decoder->imageHeader->interlaceMethod)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -1547,7 +1547,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
 
         default:
         {
-            COMMON_LE(("Unknown filter type %u (%s)", filterType, pngFilterTypeToString(filterType)));
+            COMMON_LE(("Unknown filter type %s", enumToFullString(filterType)));
 
             return NgosStatus::INVALID_DATA;
         }
@@ -1649,7 +1649,7 @@ NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth)
 
         default:
         {
-            COMMON_LC(("Unexpected PNG color type: 0x%02X (%s)", colorType, pngColorTypeToString(colorType)));
+            COMMON_LC(("Unexpected PNG color type: %s", enumToFullString(colorType)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -1782,7 +1782,7 @@ NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, u64 *size)
 
         default:
         {
-            COMMON_LE(("Unknown interlace method %u (%s)", decoder->imageHeader->interlaceMethod, pngInterlaceMethodToString(decoder->imageHeader->interlaceMethod)));
+            COMMON_LE(("Unknown interlace method %s", enumToFullString(decoder->imageHeader->interlaceMethod)));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }

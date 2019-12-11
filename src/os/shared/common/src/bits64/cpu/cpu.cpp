@@ -1185,8 +1185,8 @@ NgosStatus CPU::doCommonPreprocessing()
 
 
 
-        u32 ebx;
         u32 ignored;
+        u32 ebx;
 
         COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ebx, &ignored, &ignored), NgosStatus::ASSERTION);
 
@@ -1240,8 +1240,8 @@ NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u
 
 
 
-    u32 maximumLevel;
     u32 ignored;
+    u32 maximumLevel;
     u32 registers[4];
 
     COMMON_ASSERT_EXECUTION(cpuid(level & 0xFFFF0000, 0, &maximumLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);

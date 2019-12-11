@@ -19,7 +19,28 @@ enum class DmiChassisSecurityStatus: u8
 
 
 
-inline const char8* dmiChassisSecurityStatusToString(DmiChassisSecurityStatus status) // TEST: NO
+inline const char8* enumToString(DmiChassisSecurityStatus status) // TEST: NO
+{
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
+
+
+
+    switch (status)
+    {
+        case DmiChassisSecurityStatus::NULL:                              return "NULL";
+        case DmiChassisSecurityStatus::OTHER:                             return "OTHER";
+        case DmiChassisSecurityStatus::UNKNOWN:                           return "UNKNOWN";
+        case DmiChassisSecurityStatus::NONE:                              return "NONE";
+        case DmiChassisSecurityStatus::EXTERNAL_INTERFACE_LOCKED_OUT:     return "EXTERNAL_INTERFACE_LOCKED_OUT";
+        case DmiChassisSecurityStatus::EXTERNAL_INTERFACE_LOCKED_ENABLED: return "EXTERNAL_INTERFACE_LOCKED_ENABLED";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiChassisSecurityStatus status) // TEST: NO
 {
     // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
 

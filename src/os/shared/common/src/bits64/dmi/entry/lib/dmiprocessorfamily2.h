@@ -27,7 +27,36 @@ enum class DmiProcessorFamily2: u16
 
 
 
-inline const char8* dmiProcessorFamily2ToString(DmiProcessorFamily2 family2) // TEST: NO
+inline const char8* enumToString(DmiProcessorFamily2 family2) // TEST: NO
+{
+    // COMMON_LT((" | family2 = %u", family2)); // Commented to avoid bad looking logs
+
+
+
+    switch (family2)
+    {
+        case DmiProcessorFamily2::NONE:            return "NONE";
+        case DmiProcessorFamily2::OTHER:           return "OTHER";
+        case DmiProcessorFamily2::ARM_V7:          return "ARM_V7";
+        case DmiProcessorFamily2::ARM_V8:          return "ARM_V8";
+        case DmiProcessorFamily2::SH3:             return "SH3";
+        case DmiProcessorFamily2::SH4:             return "SH4";
+        case DmiProcessorFamily2::ARM:             return "ARM";
+        case DmiProcessorFamily2::STRONG_ARM:      return "STRONG_ARM";
+        case DmiProcessorFamily2::_6_X86:          return "_6_X86";
+        case DmiProcessorFamily2::MEDIA_GX:        return "MEDIA_GX";
+        case DmiProcessorFamily2::MII:             return "MII";
+        case DmiProcessorFamily2::WIN_CHIP:        return "WIN_CHIP";
+        case DmiProcessorFamily2::DSP:             return "DSP";
+        case DmiProcessorFamily2::VIDEO_PROCESSOR: return "VIDEO_PROCESSOR";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiProcessorFamily2 family2) // TEST: NO
 {
     // COMMON_LT((" | family2 = %u", family2)); // Commented to avoid bad looking logs
 

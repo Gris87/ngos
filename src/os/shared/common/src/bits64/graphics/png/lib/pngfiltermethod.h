@@ -16,7 +16,23 @@ enum class PngFilterMethod: u8
 
 
 
-inline const char8* pngFilterMethodToString(PngFilterMethod method) // TEST: NO
+inline const char8* enumToString(PngFilterMethod method) // TEST: NO
+{
+    // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
+
+
+
+    switch (method)
+    {
+        case PngFilterMethod::ADAPTIVE: return "ADAPTIVE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PngFilterMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

@@ -103,12 +103,12 @@ NgosStatus DMI::init()
 
     // Validation
     {
-        COMMON_LVVV(("sVersion                  = 0x%08X",  sVersion));
-        COMMON_LVVV(("sNumberOfSmbiosStructures = %u",      sNumberOfSmbiosStructures));
-        COMMON_LVVV(("sStructureTableLength     = %u",      sStructureTableLength));
-        COMMON_LVVV(("sStructureTableAddress    = 0x%p",    sStructureTableAddress));
-        COMMON_LVVV(("sChassisType              = %u (%s)", sChassisType, dmiChassisTypeToString(sChassisType)));
-        COMMON_LVVV(("sNumberOfMemoryDevices    = %u",      sNumberOfMemoryDevices));
+        COMMON_LVVV(("sVersion                  = 0x%08X", sVersion));
+        COMMON_LVVV(("sNumberOfSmbiosStructures = %u",     sNumberOfSmbiosStructures));
+        COMMON_LVVV(("sStructureTableLength     = %u",     sStructureTableLength));
+        COMMON_LVVV(("sStructureTableAddress    = 0x%p",   sStructureTableAddress));
+        COMMON_LVVV(("sChassisType              = %s",     enumToFullString(sChassisType)));
+        COMMON_LVVV(("sNumberOfMemoryDevices    = %u",     sNumberOfMemoryDevices));
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
@@ -131,11 +131,11 @@ NgosStatus DMI::init()
             {
                 if (sIdentities[i])
                 {
-                    COMMON_LVVV(("%-29s: 0x%p | %s", dmiIdentityToString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
+                    COMMON_LVVV(("%-29s: 0x%p | %s", enumToFullString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
                 }
                 else
                 {
-                    COMMON_LVVV(("%-29s: 0x%p", dmiIdentityToString((DmiIdentity)i), sIdentities[i]));
+                    COMMON_LVVV(("%-29s: 0x%p", enumToFullString((DmiIdentity)i), sIdentities[i]));
                 }
             }
 
@@ -148,7 +148,7 @@ NgosStatus DMI::init()
 
             for (i64 i = 0; i < (i64)DmiStoredUuid::MAXIMUM; ++i)
             {
-                COMMON_LVVV(("%-11s: %s", dmiStoredUuidToString((DmiStoredUuid)i), uuidToString(sUuids[i])));
+                COMMON_LVVV(("%-11s: %s", enumToFullString((DmiStoredUuid)i), uuidToString(sUuids[i])));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -352,9 +352,9 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
 
         COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));
 
-        COMMON_LVVV(("dmiEntryHeader->type   = %u (%s)", dmiEntryHeader->type, dmiEntryTypeToString(dmiEntryHeader->type)));
-        COMMON_LVVV(("dmiEntryHeader->length = %u",      dmiEntryHeader->length));
-        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X",  dmiEntryHeader->handle));
+        COMMON_LVVV(("dmiEntryHeader->type   = %s",     enumToFullString(dmiEntryHeader->type)));
+        COMMON_LVVV(("dmiEntryHeader->length = %u",     dmiEntryHeader->length));
+        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X", dmiEntryHeader->handle));
 
 
 
@@ -432,7 +432,7 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
 
         default:
         {
-            COMMON_LVV(("Ignoring DMI entry at address 0x%p with type %u (%s)", header, header->type, dmiEntryTypeToString(header->type)));
+            COMMON_LVV(("Ignoring DMI entry at address 0x%p with type %s", header, enumToFullString(header->type)));
         }
         break;
     }
@@ -587,14 +587,14 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturerStringId = %u",      entry->manufacturerStringId));
-        COMMON_LVVV(("entry->productNameStringId  = %u",      entry->productNameStringId));
-        COMMON_LVVV(("entry->versionStringId      = %u",      entry->versionStringId));
-        COMMON_LVVV(("entry->serialNumberStringId = %u",      entry->serialNumberStringId));
-        COMMON_LVVV(("entry->uuid                 = %s",      uuidToString(entry->uuid)));
-        COMMON_LVVV(("entry->wakeUpTime           = %u (%s)", entry->wakeUpTime, dmiSystemWakeUpTimeToString(entry->wakeUpTime)));
-        COMMON_LVVV(("entry->skuNumberStringId    = %u",      entry->skuNumberStringId));
-        COMMON_LVVV(("entry->familyStringId       = %u",      entry->familyStringId));
+        COMMON_LVVV(("entry->manufacturerStringId = %u", entry->manufacturerStringId));
+        COMMON_LVVV(("entry->productNameStringId  = %u", entry->productNameStringId));
+        COMMON_LVVV(("entry->versionStringId      = %u", entry->versionStringId));
+        COMMON_LVVV(("entry->serialNumberStringId = %u", entry->serialNumberStringId));
+        COMMON_LVVV(("entry->uuid                 = %s", uuidToString(entry->uuid)));
+        COMMON_LVVV(("entry->wakeUpTime           = %s", enumToFullString(entry->wakeUpTime)));
+        COMMON_LVVV(("entry->skuNumberStringId    = %u", entry->skuNumberStringId));
+        COMMON_LVVV(("entry->familyStringId       = %u", entry->familyStringId));
 
 
 
@@ -700,16 +700,16 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturerStringId           = %u",      entry->manufacturerStringId));
-        COMMON_LVVV(("entry->productStringId                = %u",      entry->productStringId));
-        COMMON_LVVV(("entry->versionStringId                = %u",      entry->versionStringId));
-        COMMON_LVVV(("entry->serialNumberStringId           = %u",      entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId               = %u",      entry->assetTagStringId));
-        COMMON_LVVV(("entry->featureFlags                   = %s",      flagsToFullString(entry->featureFlags)));
-        COMMON_LVVV(("entry->locationInChassisStringId      = %u",      entry->locationInChassisStringId));
-        COMMON_LVVV(("entry->chassisHandle                  = 0x%04X",  entry->chassisHandle));
-        COMMON_LVVV(("entry->boardType                      = %u (%s)", entry->boardType, dmiBaseboardTypeToString(entry->boardType)));
-        COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",      entry->numberOfContainedObjectHandles));
+        COMMON_LVVV(("entry->manufacturerStringId           = %u",     entry->manufacturerStringId));
+        COMMON_LVVV(("entry->productStringId                = %u",     entry->productStringId));
+        COMMON_LVVV(("entry->versionStringId                = %u",     entry->versionStringId));
+        COMMON_LVVV(("entry->serialNumberStringId           = %u",     entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId               = %u",     entry->assetTagStringId));
+        COMMON_LVVV(("entry->featureFlags                   = %s",     flagsToFullString(entry->featureFlags)));
+        COMMON_LVVV(("entry->locationInChassisStringId      = %u",     entry->locationInChassisStringId));
+        COMMON_LVVV(("entry->chassisHandle                  = 0x%04X", entry->chassisHandle));
+        COMMON_LVVV(("entry->boardType                      = %s",     enumToFullString(entry->boardType)));
+        COMMON_LVVV(("entry->numberOfContainedObjectHandles = %u",     entry->numberOfContainedObjectHandles));
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
@@ -829,23 +829,23 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturerStringId         = %u",      entry->manufacturerStringId));
-        COMMON_LVVV(("entry->type                         = %u (%s)", entry->type, dmiChassisTypeToString(entry->type)));
-        COMMON_LVVV(("entry->versionStringId              = %u",      entry->versionStringId));
-        COMMON_LVVV(("entry->serialNumberStringId         = %u",      entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId             = %u",      entry->assetTagStringId));
-        COMMON_LVVV(("entry->bootUpState                  = %u (%s)", entry->bootUpState, dmiChassisStateToString(entry->bootUpState)));
-        COMMON_LVVV(("entry->powerSupplyState             = %u (%s)", entry->powerSupplyState, dmiChassisStateToString(entry->powerSupplyState)));
-        COMMON_LVVV(("entry->thermalState                 = %u (%s)", entry->thermalState, dmiChassisStateToString(entry->thermalState)));
-        COMMON_LVVV(("entry->securityStatus               = %u (%s)", entry->securityStatus, dmiChassisSecurityStatusToString(entry->securityStatus)));
-        COMMON_LVVV(("entry->oemDefined[0]                = %u",      entry->oemDefined[0]));
-        COMMON_LVVV(("entry->oemDefined[1]                = %u",      entry->oemDefined[1]));
-        COMMON_LVVV(("entry->oemDefined[2]                = %u",      entry->oemDefined[2]));
-        COMMON_LVVV(("entry->oemDefined[3]                = %u",      entry->oemDefined[3]));
-        COMMON_LVVV(("entry->height                       = %u",      entry->height));
-        COMMON_LVVV(("entry->numberOfPowerCords           = %u",      entry->numberOfPowerCords));
-        COMMON_LVVV(("entry->containedElementCount        = %u",      entry->containedElementCount));
-        COMMON_LVVV(("entry->containedElementRecordLength = %u",      entry->containedElementRecordLength));
+        COMMON_LVVV(("entry->manufacturerStringId         = %u", entry->manufacturerStringId));
+        COMMON_LVVV(("entry->type                         = %s", enumToFullString(entry->type)));
+        COMMON_LVVV(("entry->versionStringId              = %u", entry->versionStringId));
+        COMMON_LVVV(("entry->serialNumberStringId         = %u", entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId             = %u", entry->assetTagStringId));
+        COMMON_LVVV(("entry->bootUpState                  = %s", enumToFullString(entry->bootUpState)));
+        COMMON_LVVV(("entry->powerSupplyState             = %s", enumToFullString(entry->powerSupplyState)));
+        COMMON_LVVV(("entry->thermalState                 = %s", enumToFullString(entry->thermalState)));
+        COMMON_LVVV(("entry->securityStatus               = %s", enumToFullString(entry->securityStatus)));
+        COMMON_LVVV(("entry->oemDefined[0]                = %u", entry->oemDefined[0]));
+        COMMON_LVVV(("entry->oemDefined[1]                = %u", entry->oemDefined[1]));
+        COMMON_LVVV(("entry->oemDefined[2]                = %u", entry->oemDefined[2]));
+        COMMON_LVVV(("entry->oemDefined[3]                = %u", entry->oemDefined[3]));
+        COMMON_LVVV(("entry->height                       = %u", entry->height));
+        COMMON_LVVV(("entry->numberOfPowerCords           = %u", entry->numberOfPowerCords));
+        COMMON_LVVV(("entry->containedElementCount        = %u", entry->containedElementCount));
+        COMMON_LVVV(("entry->containedElementRecordLength = %u", entry->containedElementRecordLength));
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
@@ -856,9 +856,9 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
             {
                 DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
 
-                COMMON_LVVV(("containedElement[%-3d]->type    = %u (%s)", i, containedElement->type, dmiChassisTypeToString(containedElement->type)));
-                COMMON_LVVV(("containedElement[%-3d]->minimum = %u",      i, containedElement->minimum));
-                COMMON_LVVV(("containedElement[%-3d]->maximum = %u",      i, containedElement->maximum));
+                COMMON_LVVV(("containedElement[%-3d]->type    = %s", i, enumToFullString(containedElement->type)));
+                COMMON_LVVV(("containedElement[%-3d]->minimum = %u", i, containedElement->minimum));
+                COMMON_LVVV(("containedElement[%-3d]->maximum = %u", i, containedElement->maximum));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -973,30 +973,30 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->socketStringId                   = %u",      entry->socketStringId));
-        COMMON_LVVV(("entry->processorType                    = %u (%s)", entry->processorType, dmiProcessorTypeToString(entry->processorType)));
-        COMMON_LVVV(("entry->processorFamily                  = %u (%s)", entry->processorFamily, dmiProcessorFamilyToString(entry->processorFamily)));
-        COMMON_LVVV(("entry->processorManufactureStringId     = %u",      entry->processorManufactureStringId));
-        COMMON_LVVV(("entry->processorId.signature.steppingId = %u",      entry->processorId.signature.steppingId));
-        COMMON_LVVV(("entry->processorId.signature.model      = %u",      entry->processorId.signature.model));
-        COMMON_LVVV(("entry->processorId.signature.family     = %u",      entry->processorId.signature.family));
-        COMMON_LVVV(("entry->processorId.signature.type       = %u",      entry->processorId.signature.type));
-        COMMON_LVVV(("entry->processorId.signature.xModel     = %u",      entry->processorId.signature.xModel));
-        COMMON_LVVV(("entry->processorId.signature.xFamily    = %u",      entry->processorId.signature.xFamily));
-        COMMON_LVVV(("entry->processorId.featureFlags         = %s",      flagsToFullString(entry->processorId.featureFlags)));
-        COMMON_LVVV(("entry->processorVersionStringId         = %u",      entry->processorVersionStringId));
-        COMMON_LVVV(("entry->voltage                          = %s",      flagsToFullString(entry->voltage)));
-        COMMON_LVVV(("entry->externalClock                    = %u",      entry->externalClock));
-        COMMON_LVVV(("entry->maxSpeed                         = %u",      entry->maxSpeed));
-        COMMON_LVVV(("entry->currentSpeed                     = %u",      entry->currentSpeed));
-        COMMON_LVVV(("entry->status                           = %u",      entry->status));
-        COMMON_LVVV(("entry->processorUpgrade                 = %u (%s)", entry->processorUpgrade, dmiProcessorUpgradeToString(entry->processorUpgrade)));
-        COMMON_LVVV(("entry->l1CacheHandle                    = 0x%04X",  entry->l1CacheHandle));
-        COMMON_LVVV(("entry->l2CacheHandle                    = 0x%04X",  entry->l2CacheHandle));
-        COMMON_LVVV(("entry->l3CacheHandle                    = 0x%04X",  entry->l3CacheHandle));
-        COMMON_LVVV(("entry->serialNumberStringId             = %u",      entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId                 = %u",      entry->assetTagStringId));
-        COMMON_LVVV(("entry->partNumberStringId               = %u",      entry->partNumberStringId));
+        COMMON_LVVV(("entry->socketStringId                   = %u",     entry->socketStringId));
+        COMMON_LVVV(("entry->processorType                    = %s",     enumToFullString(entry->processorType)));
+        COMMON_LVVV(("entry->processorFamily                  = %s",     enumToFullString(entry->processorFamily)));
+        COMMON_LVVV(("entry->processorManufactureStringId     = %u",     entry->processorManufactureStringId));
+        COMMON_LVVV(("entry->processorId.signature.steppingId = %u",     entry->processorId.signature.steppingId));
+        COMMON_LVVV(("entry->processorId.signature.model      = %u",     entry->processorId.signature.model));
+        COMMON_LVVV(("entry->processorId.signature.family     = %u",     entry->processorId.signature.family));
+        COMMON_LVVV(("entry->processorId.signature.type       = %u",     entry->processorId.signature.type));
+        COMMON_LVVV(("entry->processorId.signature.xModel     = %u",     entry->processorId.signature.xModel));
+        COMMON_LVVV(("entry->processorId.signature.xFamily    = %u",     entry->processorId.signature.xFamily));
+        COMMON_LVVV(("entry->processorId.featureFlags         = %s",     flagsToFullString(entry->processorId.featureFlags)));
+        COMMON_LVVV(("entry->processorVersionStringId         = %u",     entry->processorVersionStringId));
+        COMMON_LVVV(("entry->voltage                          = %s",     flagsToFullString(entry->voltage)));
+        COMMON_LVVV(("entry->externalClock                    = %u",     entry->externalClock));
+        COMMON_LVVV(("entry->maxSpeed                         = %u",     entry->maxSpeed));
+        COMMON_LVVV(("entry->currentSpeed                     = %u",     entry->currentSpeed));
+        COMMON_LVVV(("entry->status                           = %u",     entry->status));
+        COMMON_LVVV(("entry->processorUpgrade                 = %s",     enumToFullString(entry->processorUpgrade)));
+        COMMON_LVVV(("entry->l1CacheHandle                    = 0x%04X", entry->l1CacheHandle));
+        COMMON_LVVV(("entry->l2CacheHandle                    = 0x%04X", entry->l2CacheHandle));
+        COMMON_LVVV(("entry->l3CacheHandle                    = 0x%04X", entry->l3CacheHandle));
+        COMMON_LVVV(("entry->serialNumberStringId             = %u",     entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId                 = %u",     entry->assetTagStringId));
+        COMMON_LVVV(("entry->partNumberStringId               = %u",     entry->partNumberStringId));
 
         if (sVersion >= DMI_VERSION(2, 5))
         {
@@ -1007,7 +1007,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
             if (sVersion >= DMI_VERSION(2, 6))
             {
-                COMMON_LVVV(("entry->processorFamily2 = %u (%s)", entry->processorFamily2, dmiProcessorFamily2ToString(entry->processorFamily2)));
+                COMMON_LVVV(("entry->processorFamily2 = %s", enumToFullString(entry->processorFamily2)));
 
                 if (sVersion >= DMI_VERSION(3, 0))
                 {
@@ -1187,12 +1187,12 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
     // Validation
     {
-        COMMON_LVVV(("entry->location                     = 0x%02X (%s)", entry->location, dmiPhysicalMemoryArrayLocationToString(entry->location)));
-        COMMON_LVVV(("entry->use                          = %u (%s)",     entry->use, dmiPhysicalMemoryArrayUseToString(entry->use)));
-        COMMON_LVVV(("entry->memoryErrorCorrection        = %u (%s)",     entry->memoryErrorCorrection, dmiPhysicalMemoryArrayErrorCorrectionToString(entry->memoryErrorCorrection)));
-        COMMON_LVVV(("entry->maximumCapacity              = 0x%08X",      entry->maximumCapacity));
-        COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X",      entry->memoryErrorInformationHandle));
-        COMMON_LVVV(("entry->numberOfMemoryDevices        = %u",          entry->numberOfMemoryDevices));
+        COMMON_LVVV(("entry->location                     = %s",     enumToFullString(entry->location)));
+        COMMON_LVVV(("entry->use                          = %s",     enumToFullString(entry->use)));
+        COMMON_LVVV(("entry->memoryErrorCorrection        = %s",     enumToFullString(entry->memoryErrorCorrection)));
+        COMMON_LVVV(("entry->maximumCapacity              = 0x%08X", entry->maximumCapacity));
+        COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));
+        COMMON_LVVV(("entry->numberOfMemoryDevices        = %u",     entry->numberOfMemoryDevices));
 
         if (sVersion >= DMI_VERSION(2, 7))
         {
@@ -1303,7 +1303,7 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->bootStatus = %u (%s)", entry->bootStatus, dmiSystemBootStatusToString(entry->bootStatus)));
+        COMMON_LVVV(("entry->bootStatus = %s", enumToFullString(entry->bootStatus)));
 
         // COMMON_TEST_ASSERT(entry->bootStatus == DmiSystemBootStatus::NO_ERROR, NgosStatus::ASSERTION); // Commented due to value variation
 

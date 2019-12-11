@@ -25,7 +25,34 @@ enum class DmiSystemBootStatus: u8
 
 
 
-inline const char8* dmiSystemBootStatusToString(DmiSystemBootStatus status) // TEST: NO
+inline const char8* enumToString(DmiSystemBootStatus status) // TEST: NO
+{
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
+
+
+
+    switch (status)
+    {
+        case DmiSystemBootStatus::NO_ERROR:                  return "NO_ERROR";
+        case DmiSystemBootStatus::NO_BOOTABLE_MEDIA:         return "NO_BOOTABLE_MEDIA";
+        case DmiSystemBootStatus::NORMAL_OS_FAILED_LOADING:  return "NORMAL_OS_FAILED_LOADING";
+        case DmiSystemBootStatus::FIRMWARE_DETECTED_FAILURE: return "FIRMWARE_DETECTED_FAILURE";
+        case DmiSystemBootStatus::OS_DETECTED_FAILURE:       return "OS_DETECTED_FAILURE";
+        case DmiSystemBootStatus::USER_REQUESTED_BOOT:       return "USER_REQUESTED_BOOT";
+        case DmiSystemBootStatus::SYSTEM_SECURITY_VIOLATION: return "SYSTEM_SECURITY_VIOLATION";
+        case DmiSystemBootStatus::PREVIOUS_REQUESTED_IMAGE:  return "PREVIOUS_REQUESTED_IMAGE";
+        case DmiSystemBootStatus::WATCHDOG_TIMER_EXPIRED:    return "WATCHDOG_TIMER_EXPIRED";
+        case DmiSystemBootStatus::START_RESERVED:            return "START_RESERVED";
+        case DmiSystemBootStatus::START_OEM_SPECIFIC:        return "START_OEM_SPECIFIC";
+        case DmiSystemBootStatus::START_PRODUCT_SPECIFIC:    return "START_PRODUCT_SPECIFIC";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiSystemBootStatus status) // TEST: NO
 {
     // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
 

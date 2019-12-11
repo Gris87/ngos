@@ -16,7 +16,23 @@ enum class PngCompressionMethod: u8
 
 
 
-inline const char8* pngCompressionMethodToString(PngCompressionMethod method) // TEST: NO
+inline const char8* enumToString(PngCompressionMethod method) // TEST: NO
+{
+    // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
+
+
+
+    switch (method)
+    {
+        case PngCompressionMethod::DEFLATE: return "DEFLATE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PngCompressionMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

@@ -59,7 +59,68 @@ enum class DmiEntryType: u8
 
 
 
-inline const char8* dmiEntryTypeToString(DmiEntryType type) // TEST: NO
+inline const char8* enumToString(DmiEntryType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case DmiEntryType::BIOS:                                 return "BIOS";
+        case DmiEntryType::SYSTEM:                               return "SYSTEM";
+        case DmiEntryType::BASEBOARD:                            return "BASEBOARD";
+        case DmiEntryType::CHASSIS:                              return "CHASSIS";
+        case DmiEntryType::PROCESSOR:                            return "PROCESSOR";
+        case DmiEntryType::MEMORY_CONTROLLER:                    return "MEMORY_CONTROLLER";
+        case DmiEntryType::MEMORY_MODULE:                        return "MEMORY_MODULE";
+        case DmiEntryType::CACHE:                                return "CACHE";
+        case DmiEntryType::PORT_CONNECTOR:                       return "PORT_CONNECTOR";
+        case DmiEntryType::SYSTEM_SLOTS:                         return "SYSTEM_SLOTS";
+        case DmiEntryType::ONBOARD_DEVICES:                      return "ONBOARD_DEVICES";
+        case DmiEntryType::OEM_STRINGS:                          return "OEM_STRINGS";
+        case DmiEntryType::SYSTEM_CONFIGURATION:                 return "SYSTEM_CONFIGURATION";
+        case DmiEntryType::BIOS_LANGUAGE:                        return "BIOS_LANGUAGE";
+        case DmiEntryType::GROUP_ASSOCIATIONS:                   return "GROUP_ASSOCIATIONS";
+        case DmiEntryType::SYSTEM_EVENT_LOG:                     return "SYSTEM_EVENT_LOG";
+        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:                return "PHYSICAL_MEMORY_ARRAY";
+        case DmiEntryType::MEMORY_DEVICE:                        return "MEMORY_DEVICE";
+        case DmiEntryType::BITS32_MEMORY_ERROR:                  return "BITS32_MEMORY_ERROR";
+        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:          return "MEMORY_ARRAY_MAPPED_ADDRESS";
+        case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:         return "MEMORY_DEVICE_MAPPED_ADDRESS";
+        case DmiEntryType::BUILTIN_POINTING_DEVICE:              return "BUILTIN_POINTING_DEVICE";
+        case DmiEntryType::PORTABLE_BATTERY:                     return "PORTABLE_BATTERY";
+        case DmiEntryType::SYSTEM_RESET:                         return "SYSTEM_RESET";
+        case DmiEntryType::HARDWARE_SECURITY:                    return "HARDWARE_SECURITY";
+        case DmiEntryType::SYSTEM_POWER_CONTROLS:                return "SYSTEM_POWER_CONTROLS";
+        case DmiEntryType::VOLTAGE_PROBE:                        return "VOLTAGE_PROBE";
+        case DmiEntryType::COOLING_DEVICE:                       return "COOLING_DEVICE";
+        case DmiEntryType::TEMPERATURE_PROBE:                    return "TEMPERATURE_PROBE";
+        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:             return "ELECTRICAL_CURRENT_PROBE";
+        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:            return "OUT_OF_BAND_REMOTE_ACCESS";
+        case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:  return "BOOT_INTEGRITY_SERVICES_ENTRY_POINT";
+        case DmiEntryType::SYSTEM_BOOT:                          return "SYSTEM_BOOT";
+        case DmiEntryType::BITS64_MEMORY_ERROR:                  return "BITS64_MEMORY_ERROR";
+        case DmiEntryType::MANAGEMENT_DEVICE:                    return "MANAGEMENT_DEVICE";
+        case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:          return "MANAGEMENT_DEVICE_COMPONENT";
+        case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA:     return "MANAGEMENT_DEVICE_THRESHOLD_DATA";
+        case DmiEntryType::MEMORY_CHANNEL:                       return "MEMORY_CHANNEL";
+        case DmiEntryType::IPMI_DEVICE:                          return "IPMI_DEVICE";
+        case DmiEntryType::SYSTEM_POWER_SUPPLY:                  return "SYSTEM_POWER_SUPPLY";
+        case DmiEntryType::ADDITIONAL:                           return "ADDITIONAL";
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:             return "ONBOARD_DEVICES_EXTENDED";
+        case DmiEntryType::MANAGEMENT_CONTROLLER_HOST_INTERFACE: return "MANAGEMENT_CONTROLLER_HOST_INTERFACE";
+        case DmiEntryType::TPM_DEVICE:                           return "TPM_DEVICE";
+        case DmiEntryType::INACTIVE:                             return "INACTIVE";
+        case DmiEntryType::END_OF_TABLE:                         return "END_OF_TABLE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiEntryType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

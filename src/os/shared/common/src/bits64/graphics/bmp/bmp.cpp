@@ -63,7 +63,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
     COMMON_LVVV(("bmpInfoHeader->height            = %u", bmpInfoHeader->height));
     COMMON_LVVV(("bmpInfoHeader->numberOfPlanes    = %u", bmpInfoHeader->numberOfPlanes));
     COMMON_LVVV(("bmpInfoHeader->bitsPerPixel      = %u", bmpInfoHeader->bitsPerPixel));
-    COMMON_LVVV(("bmpInfoHeader->compressionMethod = %u (%s)", bmpInfoHeader->compressionMethod, bmpCompressionMethodToString(bmpInfoHeader->compressionMethod)));
+    COMMON_LVVV(("bmpInfoHeader->compressionMethod = %s", enumToFullString(bmpInfoHeader->compressionMethod)));
     COMMON_LVVV(("bmpInfoHeader->imageSize         = %u", bmpInfoHeader->imageSize));
     COMMON_LVVV(("bmpInfoHeader->xPixelsPerMeter   = %u", bmpInfoHeader->xPixelsPerMeter));
     COMMON_LVVV(("bmpInfoHeader->yPixelsPerMeter   = %u", bmpInfoHeader->yPixelsPerMeter));
@@ -82,7 +82,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
     if (bmpInfoHeader->compressionMethod != BmpCompressionMethod::RGB)
     {
-        COMMON_LE(("Unsupported BMP compression method %u (%s)", bmpInfoHeader->compressionMethod, bmpCompressionMethodToString(bmpInfoHeader->compressionMethod)));
+        COMMON_LE(("Unsupported BMP compression method %s", enumToFullString(bmpInfoHeader->compressionMethod)));
 
         return NgosStatus::NOT_SUPPORTED;
     }

@@ -53,7 +53,55 @@ enum class JpegMarkerType: u8
 
 
 
-inline const char8* jpegMarkerTypeToString(JpegMarkerType type) // TEST: NO
+inline const char8* enumToString(JpegMarkerType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case JpegMarkerType::NONE:                      return "NONE";
+        case JpegMarkerType::START_OF_IMAGE:            return "START_OF_IMAGE";
+        case JpegMarkerType::START_OF_FRAME:            return "START_OF_FRAME";
+        case JpegMarkerType::DEFINE_HUFFMAN_TABLE:      return "DEFINE_HUFFMAN_TABLE";
+        case JpegMarkerType::DEFINE_QUANTIZATION_TABLE: return "DEFINE_QUANTIZATION_TABLE";
+        case JpegMarkerType::DEFINE_RESTART_INTERVAL:   return "DEFINE_RESTART_INTERVAL";
+        case JpegMarkerType::START_OF_SCAN:             return "START_OF_SCAN";
+        case JpegMarkerType::RESTART_0:                 return "RESTART_0";
+        case JpegMarkerType::RESTART_1:                 return "RESTART_1";
+        case JpegMarkerType::RESTART_2:                 return "RESTART_2";
+        case JpegMarkerType::RESTART_3:                 return "RESTART_3";
+        case JpegMarkerType::RESTART_4:                 return "RESTART_4";
+        case JpegMarkerType::RESTART_5:                 return "RESTART_5";
+        case JpegMarkerType::RESTART_6:                 return "RESTART_6";
+        case JpegMarkerType::RESTART_7:                 return "RESTART_7";
+        case JpegMarkerType::APPLICATION_0:             return "APPLICATION_0";
+        case JpegMarkerType::APPLICATION_1:             return "APPLICATION_1";
+        case JpegMarkerType::APPLICATION_2:             return "APPLICATION_2";
+        case JpegMarkerType::APPLICATION_3:             return "APPLICATION_3";
+        case JpegMarkerType::APPLICATION_4:             return "APPLICATION_4";
+        case JpegMarkerType::APPLICATION_5:             return "APPLICATION_5";
+        case JpegMarkerType::APPLICATION_6:             return "APPLICATION_6";
+        case JpegMarkerType::APPLICATION_7:             return "APPLICATION_7";
+        case JpegMarkerType::APPLICATION_8:             return "APPLICATION_8";
+        case JpegMarkerType::APPLICATION_9:             return "APPLICATION_9";
+        case JpegMarkerType::APPLICATION_10:            return "APPLICATION_10";
+        case JpegMarkerType::APPLICATION_11:            return "APPLICATION_11";
+        case JpegMarkerType::APPLICATION_12:            return "APPLICATION_12";
+        case JpegMarkerType::APPLICATION_13:            return "APPLICATION_13";
+        case JpegMarkerType::APPLICATION_14:            return "APPLICATION_14";
+        case JpegMarkerType::APPLICATION_15:            return "APPLICATION_15";
+        case JpegMarkerType::COMMENT:                   return "COMMENT";
+        case JpegMarkerType::END_OF_IMAGE:              return "END_OF_IMAGE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(JpegMarkerType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

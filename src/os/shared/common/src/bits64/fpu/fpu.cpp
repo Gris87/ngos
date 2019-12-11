@@ -79,9 +79,9 @@ NgosStatus FPU::initForBootStrapProcessor()
 
         for (i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {
-            COMMON_LVVV(("sXFeaturesOffsets[%-37s]          = 0x%08X", xFeatureToString((XFeature)i), sXFeaturesOffsets[i]));
-            COMMON_LVVV(("sXFeaturesCompactedOffsets[%-37s] = 0x%08X", xFeatureToString((XFeature)i), sXFeaturesCompactedOffsets[i]));
-            COMMON_LVVV(("sXFeaturesSizes[%-37s]            = 0x%08X", xFeatureToString((XFeature)i), sXFeaturesSizes[i]));
+            COMMON_LVVV(("sXFeaturesOffsets[%-37s]          = 0x%08X", enumToString((XFeature)i), sXFeaturesOffsets[i]));
+            COMMON_LVVV(("sXFeaturesCompactedOffsets[%-37s] = 0x%08X", enumToString((XFeature)i), sXFeaturesCompactedOffsets[i]));
+            COMMON_LVVV(("sXFeaturesSizes[%-37s]            = 0x%08X", enumToString((XFeature)i), sXFeaturesSizes[i]));
         }
 
 
@@ -402,7 +402,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
             if (isXFeatureSupervisor(feature))
             {
-                COMMON_LF(("Can't get offset of X feature %s", xFeatureToString(feature)));
+                COMMON_LF(("Can't get offset of X feature %s", enumToFullString(feature)));
 
                 sXFeaturesOffsets[i] = 0;
             }
@@ -434,7 +434,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 
             if (isXFeatureAligned(feature))
             {
-                COMMON_LVV(("X feature %s should be aligned to 64 bytes", xFeatureToString(feature)));
+                COMMON_LVV(("X feature %s should be aligned to 64 bytes", enumToFullString(feature)));
 
                 sXFeaturesCompactedOffsets[i] = ROUND_UP(sXFeaturesCompactedOffsets[i], 64);
             }
@@ -709,7 +709,7 @@ u32 FPU::expectedStateSize()
                 case XFeature::SSE:
                 case XFeature::PT:
                 {
-                    COMMON_LF(("Unexpected X feature %u (%s)", feature, xFeatureToString(feature)));
+                    COMMON_LF(("Unexpected X feature %s", enumToFullString(feature)));
 
                     return 0;
                 }
@@ -717,7 +717,7 @@ u32 FPU::expectedStateSize()
 
                 default:
                 {
-                    COMMON_LF(("Unknown X feature %u (%s)", feature, xFeatureToString(feature)));
+                    COMMON_LF(("Unknown X feature %s", enumToFullString(feature)));
 
                     return 0;
                 }
@@ -726,7 +726,7 @@ u32 FPU::expectedStateSize()
 
 
 
-            COMMON_LVVV(("X feature %s: featureSize = %u, featureStructSize = %u", xFeatureToString(feature), featureSize, featureStructSize));
+            COMMON_LVVV(("X feature %s: featureSize = %u, featureStructSize = %u", enumToFullString(feature), featureSize, featureStructSize));
 
             COMMON_TEST_ASSERT(featureSize != 0,                 0);
             COMMON_TEST_ASSERT(featureSize == featureStructSize, 0);
@@ -739,14 +739,14 @@ u32 FPU::expectedStateSize()
                 isXFeatureSupervisor(feature)
                )
             {
-                COMMON_LF(("X feature %s is supervisor, but X86Feature::XSAVES not supported", xFeatureToString(feature)));
+                COMMON_LF(("X feature %s is supervisor, but X86Feature::XSAVES not supported", enumToFullString(feature)));
             }
 
 
 
             if (isXFeatureAligned(feature))
             {
-                COMMON_LVV(("X feature %s should be aligned to 64 bytes", xFeatureToString(feature)));
+                COMMON_LVV(("X feature %s should be aligned to 64 bytes", enumToFullString(feature)));
 
                 res = ROUND_UP(res, 64);
             }
