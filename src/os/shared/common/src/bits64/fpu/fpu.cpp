@@ -79,9 +79,9 @@ NgosStatus FPU::initForBootStrapProcessor()
 
         for (i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {
-            COMMON_LVVV(("sXFeaturesOffsets[%-37s]          = 0x%08X", enumToString((XFeature)i), sXFeaturesOffsets[i]));
-            COMMON_LVVV(("sXFeaturesCompactedOffsets[%-37s] = 0x%08X", enumToString((XFeature)i), sXFeaturesCompactedOffsets[i]));
-            COMMON_LVVV(("sXFeaturesSizes[%-37s]            = 0x%08X", enumToString((XFeature)i), sXFeaturesSizes[i]));
+            COMMON_LVVV(("sXFeaturesOffsets[%-37s]          = 0x%08X", enumToFullString((XFeature)i), sXFeaturesOffsets[i]));
+            COMMON_LVVV(("sXFeaturesCompactedOffsets[%-37s] = 0x%08X", enumToFullString((XFeature)i), sXFeaturesCompactedOffsets[i]));
+            COMMON_LVVV(("sXFeaturesSizes[%-37s]            = 0x%08X", enumToFullString((XFeature)i), sXFeaturesSizes[i]));
         }
 
 
