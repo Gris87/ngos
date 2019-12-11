@@ -18,7 +18,23 @@ enum class ElfType: u16
 
 
 
-inline const char8* elfTypeToString(ElfType type) // TEST: NO
+inline const char8* enumToString(ElfType type) // TEST: NO
+{
+    switch (type)
+    {
+        case ElfType::NONE:            return "NONE";
+        case ElfType::RELOCATABLE:     return "RELOCATABLE";
+        case ElfType::EXECUTABLE:      return "EXECUTABLE";
+        case ElfType::DYNAMIC_LIBRARY: return "DYNAMIC_LIBRARY";
+        case ElfType::CORE:            return "CORE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ElfType type) // TEST: NO
 {
     switch (type)
     {

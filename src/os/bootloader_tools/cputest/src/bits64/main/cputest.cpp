@@ -103,7 +103,7 @@ NgosStatus CpuTest::initCpuCaches()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            UEFI_LF(("Unexpected CPU vendor %u (%s)", CPU::getVendor(), cpuVendorToString(CPU::getVendor())));
+            UEFI_LF(("Unexpected CPU vendor %s", enumToFullString(CPU::getVendor())));
 
             return NgosStatus::NOT_SUPPORTED;
         }
@@ -111,7 +111,7 @@ NgosStatus CpuTest::initCpuCaches()
 
         default:
         {
-            UEFI_LF(("Unknown CPU vendor %u (%s)", CPU::getVendor(), cpuVendorToString(CPU::getVendor())));
+            UEFI_LF(("Unknown CPU vendor %s", enumToFullString(CPU::getVendor())));
 
             return NgosStatus::NOT_SUPPORTED;
         }

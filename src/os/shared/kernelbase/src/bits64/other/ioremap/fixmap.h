@@ -14,7 +14,7 @@ enum class FixMap: u8
 
 
 
-inline const char8* fixMapToString(FixMap map) // TEST: NO
+inline const char8* enumToString(FixMap map) // TEST: NO
 {
     // COMMON_LT((" | map = %u", map)); // Commented to avoid bad looking logs
 

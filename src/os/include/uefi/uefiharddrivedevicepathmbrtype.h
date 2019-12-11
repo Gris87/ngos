@@ -16,7 +16,21 @@ enum class UefiHardDriveDevicePathMbrType: u8
 
 
 
-inline const char8* uefiHardDriveDevicePathMbrTypeToString(UefiHardDriveDevicePathMbrType type) // TEST: NO
+inline const char8* enumToString(UefiHardDriveDevicePathMbrType type) // TEST: NO
+{
+    switch (type)
+    {
+        case UefiHardDriveDevicePathMbrType::NONE:                        return "NONE";
+        case UefiHardDriveDevicePathMbrType::PCAT:                        return "PCAT";
+        case UefiHardDriveDevicePathMbrType::UEFI_PARTITION_TABLE_HEADER: return "UEFI_PARTITION_TABLE_HEADER";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UefiHardDriveDevicePathMbrType type) // TEST: NO
 {
     switch (type)
     {

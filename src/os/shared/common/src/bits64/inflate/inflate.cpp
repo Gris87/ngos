@@ -1044,7 +1044,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
         InflateBlockType blockType  = (InflateBlockType)(readBits(decoder, 2)); // next 2 bits    BTYPE   BTYPE specifies how the data are compressed
 
         COMMON_LVVV(("blockFinal = %s", blockFinal ? "true" : "false"));
-        COMMON_LVVV(("blockType  = %u (%s)", blockType, inflateBlockTypeToString(blockType)));
+        COMMON_LVVV(("blockType  = %s", enumToFullString(blockType)));
 
 
 
@@ -1085,7 +1085,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
 
             default:
             {
-                COMMON_LF(("Unexpected blockType: %u (%s)", blockType, inflateBlockTypeToString(blockType)));
+                COMMON_LF(("Unexpected blockType: %s", enumToFullString(blockType)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }

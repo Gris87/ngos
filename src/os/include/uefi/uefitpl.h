@@ -18,7 +18,23 @@ enum class UefiTpl: u64
 
 
 
-inline const char8* uefiTplToString(UefiTpl tpl) // TEST: NO
+inline const char8* enumToString(UefiTpl tpl) // TEST: NO
+{
+    switch (tpl)
+    {
+        case UefiTpl::NONE:        return "NONE";
+        case UefiTpl::APPLICATION: return "APPLICATION";
+        case UefiTpl::CALLBACK:    return "CALLBACK";
+        case UefiTpl::NOTIFY:      return "NOTIFY";
+        case UefiTpl::HIGH_LEVEL:  return "HIGH_LEVEL";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UefiTpl tpl) // TEST: NO
 {
     switch (tpl)
     {

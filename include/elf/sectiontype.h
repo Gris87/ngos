@@ -35,7 +35,36 @@ enum class ElfSectionType: u32
 
 
 
-inline const char8* elfSectionTypeToString(ElfSectionType type) // TEST: NO
+inline const char8* enumToString(ElfSectionType type) // TEST: NO
+{
+    switch (type)
+    {
+        case ElfSectionType::NONE:          return "NONE";
+        case ElfSectionType::PROGBITS:      return "PROGBITS";
+        case ElfSectionType::SYMTAB:        return "SYMTAB";
+        case ElfSectionType::STRTAB:        return "STRTAB";
+        case ElfSectionType::RELA:          return "RELA";
+        case ElfSectionType::HASH:          return "HASH";
+        case ElfSectionType::DYNAMIC:       return "DYNAMIC";
+        case ElfSectionType::NOTE:          return "NOTE";
+        case ElfSectionType::NOBITS:        return "NOBITS";
+        case ElfSectionType::REL:           return "REL";
+        case ElfSectionType::SHLIB:         return "SHLIB";
+        case ElfSectionType::DYNSYM:        return "DYNSYM";
+        case ElfSectionType::INIT_ARRAY:    return "INIT_ARRAY";
+        case ElfSectionType::FINI_ARRAY:    return "FINI_ARRAY";
+        case ElfSectionType::PREINIT_ARRAY: return "PREINIT_ARRAY";
+        case ElfSectionType::GROUP:         return "GROUP";
+        case ElfSectionType::SYMTAB_SHNDX:  return "SYMTAB_SHNDX";
+        case ElfSectionType::NUM:           return "NUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ElfSectionType type) // TEST: NO
 {
     switch (type)
     {

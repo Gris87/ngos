@@ -57,6 +57,7 @@
 
 #define IDT_EXCEPTIONS_COUNT                    32
 
+// TODO: Use enums
 #define IDT_EXCEPTION_DIVIDE_ERROR              0
 #define IDT_EXCEPTION_DEBUG                     1
 #define IDT_EXCEPTION_NMI                       2

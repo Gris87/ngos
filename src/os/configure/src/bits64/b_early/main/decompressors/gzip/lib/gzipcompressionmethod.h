@@ -22,7 +22,24 @@ enum class GzipCompressionMethod: u8
 
 
 
-inline const char8* gzipCompressionMethodToString(GzipCompressionMethod method) // TEST: NO
+inline const char8* enumToString(GzipCompressionMethod method) // TEST: NO
+{
+    // EARLY_LT((" | method = %u", method)); // Commented to avoid bad looking logs
+
+
+
+    switch (method)
+    {
+        case GzipCompressionMethod::NONE:    return "NONE";
+        case GzipCompressionMethod::DEFLATE: return "DEFLATE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(GzipCompressionMethod method) // TEST: NO
 {
     // EARLY_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 

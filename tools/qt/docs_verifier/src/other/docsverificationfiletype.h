@@ -21,7 +21,21 @@ enum class DocsVerificationFileType: quint64
 
 
 
-inline const char8* docsVerificationFileTypeToString(DocsVerificationFileType type) // TEST: NO
+inline const char8* enumToString(DocsVerificationFileType type) // TEST: NO
+{
+    switch (type)
+    {
+        case DocsVerificationFileType::NONE: return "NONE";
+        case DocsVerificationFileType::TEXT: return "TEXT";
+        case DocsVerificationFileType::MD:   return "MD";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DocsVerificationFileType type) // TEST: NO
 {
     switch (type)
     {

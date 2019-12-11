@@ -21,7 +21,59 @@ enum class CpuHotplugState: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* cpuHotplugStateToString(CpuHotplugState state) // TEST: NO
+inline const char8* enumToString(CpuHotplugState state) // TEST: NO
+{
+    // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[24];
+
+
+
+    if (
+        (u64)state > (u64)CpuHotplugState::BP_PREPARE_DYNAMIC
+        &&
+        (u64)state < (u64)CpuHotplugState::BP_PREPARE_DYNAMIC_END
+       )
+    {
+        sprintf(res, "BP_PREPARE_DYNAMIC + %u", (u64)state - (u64)CpuHotplugState::BP_PREPARE_DYNAMIC);
+
+        return res;
+    }
+
+
+
+    if (
+        (u64)state > (u64)CpuHotplugState::AP_ONLINE_DYNAMIC
+        &&
+        (u64)state < (u64)CpuHotplugState::AP_ONLINE_DYNAMIC_END
+       )
+    {
+        sprintf(res, "AP_ONLINE_DYNAMIC + %u", (u64)state - (u64)CpuHotplugState::AP_ONLINE_DYNAMIC);
+
+        return res;
+    }
+
+
+
+    switch (state)
+    {
+        case CpuHotplugState::OFFLINE:                return "OFFLINE";
+        case CpuHotplugState::BP_PREPARE_DYNAMIC:     return "BP_PREPARE_DYNAMIC";
+        case CpuHotplugState::BP_PREPARE_DYNAMIC_END: return "BP_PREPARE_DYNAMIC_END";
+        case CpuHotplugState::AP_ONLINE_DYNAMIC:      return "AP_ONLINE_DYNAMIC";
+        case CpuHotplugState::AP_ONLINE_DYNAMIC_END:  return "AP_ONLINE_DYNAMIC_END";
+        case CpuHotplugState::ONLINE:                 return "ONLINE";
+        case CpuHotplugState::MAXIMUM:                return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(CpuHotplugState state) // TEST: NO
 {
     // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 

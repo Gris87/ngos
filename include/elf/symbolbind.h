@@ -23,7 +23,21 @@ enum class ElfSymbolBind: u8
 
 
 
-inline const char8* elfSymbolBindToString(ElfSymbolBind bind) // TEST: NO
+inline const char8* enumToString(ElfSymbolBind bind) // TEST: NO
+{
+    switch (bind)
+    {
+        case ElfSymbolBind::LOCAL:  return "LOCAL";
+        case ElfSymbolBind::GLOBAL: return "GLOBAL";
+        case ElfSymbolBind::WEAK:   return "WEAK";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 {
     switch (bind)
     {

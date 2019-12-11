@@ -43,7 +43,34 @@ enum class LzmaState: u8
 
 
 
-inline const char8* lzmaStateToString(LzmaState state) // TEST: NO
+inline const char8* enumToString(LzmaState state) // TEST: NO
+{
+    // EARLY_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    switch (state)
+    {
+        case LzmaState::LITERAL_LITERAL:             return "LITERAL_LITERAL";
+        case LzmaState::MATCH_LITERAL_LITERAL:       return "MATCH_LITERAL_LITERAL";
+        case LzmaState::REPEAT_LITERAL_LITERAL:      return "REPEAT_LITERAL_LITERAL";
+        case LzmaState::SHORTREPEAT_LITERAL_LITERAL: return "SHORTREPEAT_LITERAL_LITERAL";
+        case LzmaState::MATCH_LITERAL:               return "MATCH_LITERAL";
+        case LzmaState::REPEAT_LITERAL:              return "REPEAT_LITERAL";
+        case LzmaState::SHORTREPEAT_LITERAL:         return "SHORTREPEAT_LITERAL";
+        case LzmaState::LITERAL_MATCH:               return "LITERAL_MATCH";
+        case LzmaState::LITERAL_LONGREPEAT:          return "LITERAL_LONGREPEAT";
+        case LzmaState::LITERAL_SHORTREPEAT:         return "LITERAL_SHORTREPEAT";
+        case LzmaState::NONLITERAL_MATCH:            return "NONLITERAL_MATCH";
+        case LzmaState::NONLITERAL_REPEAT:           return "NONLITERAL_REPEAT";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(LzmaState state) // TEST: NO
 {
     // EARLY_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 

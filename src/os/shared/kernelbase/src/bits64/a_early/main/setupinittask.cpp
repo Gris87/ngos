@@ -26,7 +26,7 @@ NgosStatus setupInitTask()
     {
         EARLY_LVVV(("sizeof(initTask)          == %u",        sizeof(initTask)));
         EARLY_LVVV(("initTask.threadInfo.flags == %s",        flagsToFullString(initTask.threadInfo.flags)));
-        EARLY_LVVV(("initTask.state            == %u (%s)",   initTask.state, taskStateToString(initTask.state)));
+        EARLY_LVVV(("initTask.state            == %s",        enumToFullString(initTask.state)));
         EARLY_LVVV(("initTask.stack            == 0x%p",      initTask.stack));
         EARLY_LVVV(("initTask.stackCanary      == %u",        initTask.stackCanary));
         EARLY_LVVV(("*(u64 *)initTask.stack    == 0x%016lX", *(u64 *)initTask.stack));

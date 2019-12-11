@@ -34,12 +34,12 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
     // Validation
     {
-        EARLY_LVVV(("memberHeader->signature         = 0x%04X",  memberHeader->signature));
-        EARLY_LVVV(("memberHeader->compressionMethod = %u (%s)", memberHeader->compressionMethod, gzipCompressionMethodToString(memberHeader->compressionMethod)));
-        EARLY_LVVV(("memberHeader->flags             = %s",      flagsToFullString(memberHeader->flags)));
-        EARLY_LVVV(("memberHeader->modificationTime  = %u",      memberHeader->modificationTime));
-        EARLY_LVVV(("memberHeader->extraFlags        = %s",      flagsToFullString(memberHeader->extraFlags)));
-        EARLY_LVVV(("memberHeader->operatingSystem   = %u (%s)", memberHeader->operatingSystem, gzipOperatingSystemToString(memberHeader->operatingSystem)));
+        EARLY_LVVV(("memberHeader->signature         = 0x%04X", memberHeader->signature));
+        EARLY_LVVV(("memberHeader->compressionMethod = %s",     enumToFullString(memberHeader->compressionMethod)));
+        EARLY_LVVV(("memberHeader->flags             = %s",     flagsToFullString(memberHeader->flags)));
+        EARLY_LVVV(("memberHeader->modificationTime  = %u",     memberHeader->modificationTime));
+        EARLY_LVVV(("memberHeader->extraFlags        = %s",     flagsToFullString(memberHeader->extraFlags)));
+        EARLY_LVVV(("memberHeader->operatingSystem   = %s",     enumToFullString(memberHeader->operatingSystem)));
 
 
 

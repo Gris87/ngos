@@ -19,7 +19,23 @@ enum class UsbBootMakerState: quint8
 
 
 
-inline const char8* usbBootMakerStateToString(UsbBootMakerState state) // TEST: NO
+inline const char8* enumToString(UsbBootMakerState state) // TEST: NO
+{
+    switch (state)
+    {
+        case UsbBootMakerState::INITIAL:            return "INITIAL";
+        case UsbBootMakerState::GET_LATEST_VERSION: return "GET_LATEST_VERSION";
+        case UsbBootMakerState::GET_FILE_LIST:      return "GET_FILE_LIST";
+        case UsbBootMakerState::DOWNLOAD:           return "DOWNLOAD";
+        case UsbBootMakerState::BURNING:            return "BURNING";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UsbBootMakerState state) // TEST: NO
 {
     switch (state)
     {

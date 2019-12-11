@@ -18,7 +18,25 @@ enum class InflateBlockType: u8
 
 
 
-inline const char8* inflateBlockTypeToString(InflateBlockType type) // TEST: NO
+inline const char8* enumToString(InflateBlockType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case InflateBlockType::NO_COMPRESSION:             return "NO_COMPRESSION";
+        case InflateBlockType::COMPRESSED_FIXED_HUFFMAN:   return "COMPRESSED_FIXED_HUFFMAN";
+        case InflateBlockType::COMPRESSED_DYNAMIC_HUFFMAN: return "COMPRESSED_DYNAMIC_HUFFMAN";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(InflateBlockType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

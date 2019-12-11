@@ -17,7 +17,26 @@ enum class CpuVendor: u8
 
 
 
-inline const char8* cpuVendorToString(CpuVendor vendor) // TEST: NO
+inline const char8* enumToString(CpuVendor vendor) // TEST: NO
+{
+    // COMMON_LT((" | vendor = %u", vendor)); // Commented to avoid bad looking logs
+
+
+
+    switch (vendor)
+    {
+        case CpuVendor::NONE:    return "NONE";
+        case CpuVendor::INTEL:   return "INTEL";
+        case CpuVendor::AMD:     return "AMD";
+        case CpuVendor::UNKNOWN: return "UNKNOWN";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(CpuVendor vendor) // TEST: NO
 {
     // COMMON_LT((" | vendor = %u", vendor)); // Commented to avoid bad looking logs
 

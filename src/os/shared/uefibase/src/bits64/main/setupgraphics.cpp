@@ -93,10 +93,10 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
             u64 screenResolution = info->horizontalResolution * info->verticalResolution;
 
-            UEFI_LVVV(("info->pixelFormat          = %u (%s)", info->pixelFormat, uefiGraphicsPixelFormatToString(info->pixelFormat)));
-            UEFI_LVVV(("info->horizontalResolution = %u",      info->horizontalResolution));
-            UEFI_LVVV(("info->verticalResolution   = %u",      info->verticalResolution));
-            UEFI_LVVV(("screenResolution           = %u",      screenResolution));
+            UEFI_LVVV(("info->pixelFormat          = %s", enumToFullString(info->pixelFormat)));
+            UEFI_LVVV(("info->horizontalResolution = %u", info->horizontalResolution));
+            UEFI_LVVV(("info->verticalResolution   = %u", info->verticalResolution));
+            UEFI_LVVV(("screenResolution           = %u", screenResolution));
 
             if (
                 info->pixelFormat != UefiGraphicsPixelFormat::BLT_ONLY
@@ -142,20 +142,20 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
             for (i64 i = 0; i < (i64)screensCount; ++i)
             {
-                UEFI_LVVV(("screens[%d]->mode->frameBufferBase                     = 0x%p",    i, screens[i]->mode->frameBufferBase));
-                UEFI_LVVV(("screens[%d]->mode->frameBufferSize                     = %u",      i, screens[i]->mode->frameBufferSize));
-                UEFI_LVVV(("screens[%d]->mode->maxMode                             = %u",      i, screens[i]->mode->maxMode));
-                UEFI_LVVV(("screens[%d]->mode->mode                                = %u",      i, screens[i]->mode->mode));
-                UEFI_LVVV(("screens[%d]->mode->sizeOfInfo                          = %u",      i, screens[i]->mode->sizeOfInfo));
-                UEFI_LVVV(("screens[%d]->mode->info->version                       = %u",      i, screens[i]->mode->info->version));
-                UEFI_LVVV(("screens[%d]->mode->info->horizontalResolution          = %u",      i, screens[i]->mode->info->horizontalResolution));
-                UEFI_LVVV(("screens[%d]->mode->info->verticalResolution            = %u",      i, screens[i]->mode->info->verticalResolution));
-                UEFI_LVVV(("screens[%d]->mode->info->pixelsPerScanLine             = %u",      i, screens[i]->mode->info->pixelsPerScanLine));
-                UEFI_LVVV(("screens[%d]->mode->info->pixelFormat                   = %u (%s)", i, screens[i]->mode->info->pixelFormat, uefiGraphicsPixelFormatToString(screens[i]->mode->info->pixelFormat)));
-                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.redMask      = 0x%08X",  i, screens[i]->mode->info->pixelInformation.redMask));
-                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.greenMask    = 0x%08X",  i, screens[i]->mode->info->pixelInformation.greenMask));
-                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.blueMask     = 0x%08X",  i, screens[i]->mode->info->pixelInformation.blueMask));
-                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.reservedMask = 0x%08X",  i, screens[i]->mode->info->pixelInformation.reservedMask));
+                UEFI_LVVV(("screens[%d]->mode->frameBufferBase                     = 0x%p",   i, screens[i]->mode->frameBufferBase));
+                UEFI_LVVV(("screens[%d]->mode->frameBufferSize                     = %u",     i, screens[i]->mode->frameBufferSize));
+                UEFI_LVVV(("screens[%d]->mode->maxMode                             = %u",     i, screens[i]->mode->maxMode));
+                UEFI_LVVV(("screens[%d]->mode->mode                                = %u",     i, screens[i]->mode->mode));
+                UEFI_LVVV(("screens[%d]->mode->sizeOfInfo                          = %u",     i, screens[i]->mode->sizeOfInfo));
+                UEFI_LVVV(("screens[%d]->mode->info->version                       = %u",     i, screens[i]->mode->info->version));
+                UEFI_LVVV(("screens[%d]->mode->info->horizontalResolution          = %u",     i, screens[i]->mode->info->horizontalResolution));
+                UEFI_LVVV(("screens[%d]->mode->info->verticalResolution            = %u",     i, screens[i]->mode->info->verticalResolution));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelsPerScanLine             = %u",     i, screens[i]->mode->info->pixelsPerScanLine));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelFormat                   = %s",     i, enumToFullString(screens[i]->mode->info->pixelFormat)));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.redMask      = 0x%08X", i, screens[i]->mode->info->pixelInformation.redMask));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.greenMask    = 0x%08X", i, screens[i]->mode->info->pixelInformation.greenMask));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.blueMask     = 0x%08X", i, screens[i]->mode->info->pixelInformation.blueMask));
+                UEFI_LVVV(("screens[%d]->mode->info->pixelInformation.reservedMask = 0x%08X", i, screens[i]->mode->info->pixelInformation.reservedMask));
             }
 
             UEFI_LVVV(("-------------------------------------"));

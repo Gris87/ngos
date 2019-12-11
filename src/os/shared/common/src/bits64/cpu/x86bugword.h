@@ -15,7 +15,24 @@ enum class x86BugWord: u8
 
 
 
-inline const char8* x86BugWordToString(x86BugWord word) // TEST: NO
+inline const char8* enumToString(x86BugWord word) // TEST: NO
+{
+    // COMMON_LT((" | word = %u", word)); // Commented to avoid bad looking logs
+
+
+
+    switch (word)
+    {
+        case x86BugWord::NGOS_COMMON_FLAGS: return "NGOS_COMMON_FLAGS";
+        case x86BugWord::MAXIMUM:           return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(x86BugWord word) // TEST: NO
 {
     // COMMON_LT((" | word = %u", word)); // Commented to avoid bad looking logs
 

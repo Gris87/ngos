@@ -118,41 +118,41 @@ NgosStatus CPU::init()
 
     // Validation
     {
-        COMMON_LVVV(("sVendor[0]                 = 0x%08X",  sVendor[0]));
-        COMMON_LVVV(("sVendor[1]                 = 0x%08X",  sVendor[1]));
-        COMMON_LVVV(("sVendor[2]                 = 0x%08X",  sVendor[2]));
-        COMMON_LVVV(("sVendor                    = %.12s",   sVendor));
-        COMMON_LVVV(("sCpuVendor                 = %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
-        COMMON_LVVV(("sModelName[0]              = 0x%08X",  sModelName[0]));
-        COMMON_LVVV(("sModelName[1]              = 0x%08X",  sModelName[1]));
-        COMMON_LVVV(("sModelName[2]              = 0x%08X",  sModelName[2]));
-        COMMON_LVVV(("sModelName[3]              = 0x%08X",  sModelName[3]));
-        COMMON_LVVV(("sModelName[4]              = 0x%08X",  sModelName[4]));
-        COMMON_LVVV(("sModelName[5]              = 0x%08X",  sModelName[5]));
-        COMMON_LVVV(("sModelName[6]              = 0x%08X",  sModelName[6]));
-        COMMON_LVVV(("sModelName[7]              = 0x%08X",  sModelName[7]));
-        COMMON_LVVV(("sModelName[8]              = 0x%08X",  sModelName[8]));
-        COMMON_LVVV(("sModelName[9]              = 0x%08X",  sModelName[9]));
-        COMMON_LVVV(("sModelName[10]             = 0x%08X",  sModelName[10]));
-        COMMON_LVVV(("sModelName[11]             = 0x%08X",  sModelName[11]));
-        COMMON_LVVV(("sModelName                 = %.48s",   sModelName));
-        COMMON_LVVV(("sCpuidLevel                = 0x%08X",  sCpuidLevel));
-        COMMON_LVVV(("sExtendedCpuidLevel        = 0x%08X",  sExtendedCpuidLevel));
-        COMMON_LVVV(("sFamily                    = %u (%s)", sFamily, cpuFamilyToString(sCpuVendor, sFamily)));
-        COMMON_LVVV(("sModel                     = %u (%s)", sModel, cpuModelToString(sCpuVendor, sFamily, sModel)));
-        COMMON_LVVV(("sStepping                  = %u",      sStepping));
-        COMMON_LVVV(("sMicrocodeRevision         = 0x%08X",  sMicrocodeRevision));
-        COMMON_LVVV(("sNumberOfCores             = %u",      sNumberOfCores));
-        COMMON_LVVV(("sNumberOfThreads           = %u",      sNumberOfThreads));
-        COMMON_LVVV(("sNumberOfApicIdsPerPackage = %u",      sNumberOfApicIdsPerPackage));
-        COMMON_LVVV(("sX86CoreIdBits             = %d",      sX86CoreIdBits));
-        COMMON_LVVV(("sCacheLineFlushSize        = %u",      sCacheLineFlushSize));
-        COMMON_LVVV(("sCacheAlignment            = %u",      sCacheAlignment));
-        COMMON_LVVV(("sCacheMaxRmid              = %d",      sCacheMaxRmid));
-        COMMON_LVVV(("sCacheOccScale             = %d",      sCacheOccScale));
-        COMMON_LVVV(("sPower                     = %u",      sPower));
-        COMMON_LVVV(("sPhysicalBits              = %u",      sPhysicalBits));
-        COMMON_LVVV(("sVirtualBits               = %u",      sVirtualBits));
+        COMMON_LVVV(("sVendor[0]                 = 0x%08X", sVendor[0]));
+        COMMON_LVVV(("sVendor[1]                 = 0x%08X", sVendor[1]));
+        COMMON_LVVV(("sVendor[2]                 = 0x%08X", sVendor[2]));
+        COMMON_LVVV(("sVendor                    = %.12s",  sVendor));
+        COMMON_LVVV(("sCpuVendor                 = %s",     enumToFullString(sCpuVendor)));
+        COMMON_LVVV(("sModelName[0]              = 0x%08X", sModelName[0]));
+        COMMON_LVVV(("sModelName[1]              = 0x%08X", sModelName[1]));
+        COMMON_LVVV(("sModelName[2]              = 0x%08X", sModelName[2]));
+        COMMON_LVVV(("sModelName[3]              = 0x%08X", sModelName[3]));
+        COMMON_LVVV(("sModelName[4]              = 0x%08X", sModelName[4]));
+        COMMON_LVVV(("sModelName[5]              = 0x%08X", sModelName[5]));
+        COMMON_LVVV(("sModelName[6]              = 0x%08X", sModelName[6]));
+        COMMON_LVVV(("sModelName[7]              = 0x%08X", sModelName[7]));
+        COMMON_LVVV(("sModelName[8]              = 0x%08X", sModelName[8]));
+        COMMON_LVVV(("sModelName[9]              = 0x%08X", sModelName[9]));
+        COMMON_LVVV(("sModelName[10]             = 0x%08X", sModelName[10]));
+        COMMON_LVVV(("sModelName[11]             = 0x%08X", sModelName[11]));
+        COMMON_LVVV(("sModelName                 = %.48s",  sModelName));
+        COMMON_LVVV(("sCpuidLevel                = 0x%08X", sCpuidLevel));
+        COMMON_LVVV(("sExtendedCpuidLevel        = 0x%08X", sExtendedCpuidLevel));
+        COMMON_LVVV(("sFamily                    = %s",     enumToFullString(sCpuVendor, sFamily)));
+        COMMON_LVVV(("sModel                     = %s",     enumToFullString(sCpuVendor, sFamily, sModel)));
+        COMMON_LVVV(("sStepping                  = %u",     sStepping));
+        COMMON_LVVV(("sMicrocodeRevision         = 0x%08X", sMicrocodeRevision));
+        COMMON_LVVV(("sNumberOfCores             = %u",     sNumberOfCores));
+        COMMON_LVVV(("sNumberOfThreads           = %u",     sNumberOfThreads));
+        COMMON_LVVV(("sNumberOfApicIdsPerPackage = %u",     sNumberOfApicIdsPerPackage));
+        COMMON_LVVV(("sX86CoreIdBits             = %d",     sX86CoreIdBits));
+        COMMON_LVVV(("sCacheLineFlushSize        = %u",     sCacheLineFlushSize));
+        COMMON_LVVV(("sCacheAlignment            = %u",     sCacheAlignment));
+        COMMON_LVVV(("sCacheMaxRmid              = %d",     sCacheMaxRmid));
+        COMMON_LVVV(("sCacheOccScale             = %d",     sCacheOccScale));
+        COMMON_LVVV(("sPower                     = %u",     sPower));
+        COMMON_LVVV(("sPhysicalBits              = %u",     sPhysicalBits));
+        COMMON_LVVV(("sVirtualBits               = %u",     sVirtualBits));
 
 
 
@@ -162,14 +162,14 @@ NgosStatus CPU::init()
 
             for (i64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
             {
-                COMMON_LVVV(("sFlags[%-20s] = 0x%08X", x86FeatureWordToString((x86FeatureWord)i), sFlags[i]));
+                COMMON_LVVV(("sFlags[%-20s] = 0x%08X", enumToFullString((x86FeatureWord)i), sFlags[i]));
             }
 
             COMMON_LVVV(("CPU bugs:"));
 
             for (i64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
             {
-                COMMON_LVVV(("sBugs[%-17s] = 0x%08X", x86BugWordToString((x86BugWord)i), sBugs[i]));
+                COMMON_LVVV(("sBugs[%-17s] = 0x%08X", enumToFullString((x86BugWord)i), sBugs[i]));
             }
         }
 #endif
@@ -539,7 +539,7 @@ bool CPU::isOutdated()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unexpected CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+            COMMON_LF(("Unexpected CPU vendor %s", enumToFullString(sCpuVendor)));
 
             return true;
         }
@@ -547,7 +547,7 @@ bool CPU::isOutdated()
 
         default:
         {
-            COMMON_LF(("Unknown CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+            COMMON_LF(("Unknown CPU vendor %s", enumToFullString(sCpuVendor)));
 
             return true;
         }
@@ -1090,13 +1090,13 @@ NgosStatus CPU::doPreprocessing()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unexpected CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+            COMMON_LF(("Unexpected CPU vendor %s", enumToFullString(sCpuVendor)));
         }
         break;
 
         default:
         {
-            COMMON_LF(("Unknown CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+            COMMON_LF(("Unknown CPU vendor %s", enumToFullString(sCpuVendor)));
         }
         break;
     }
@@ -1381,13 +1381,13 @@ NgosStatus CPU::doPostprocessing()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unexpected CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+            COMMON_LF(("Unexpected CPU vendor %s", enumToFullString(sCpuVendor)));
         }
         break;
 
         default:
         {
-            COMMON_LF(("Unknown CPU vendor %u (%s)", sCpuVendor, cpuVendorToString(sCpuVendor)));
+            COMMON_LF(("Unknown CPU vendor %s", enumToFullString(sCpuVendor)));
         }
         break;
     }

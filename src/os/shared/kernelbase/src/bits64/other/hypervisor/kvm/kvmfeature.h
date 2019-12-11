@@ -25,7 +25,34 @@ enum class KvmFeature: u8
 
 
 
-inline const char8* kvmFeatureToString(KvmFeature feature) // TEST: NO
+inline const char8* enumToString(KvmFeature feature) // TEST: NO
+{
+    // COMMON_LT((" | feature = %u", feature)); // Commented to avoid bad looking logs
+
+
+
+    switch (feature)
+    {
+        case KvmFeature::CLOCKSOURCE:        return "CLOCKSOURCE";
+        case KvmFeature::NOP_IO_DELAY:       return "NOP_IO_DELAY";
+        case KvmFeature::MMU_OP:             return "MMU_OP";
+        case KvmFeature::CLOCKSOURCE2:       return "CLOCKSOURCE2";
+        case KvmFeature::ASYNC_PF:           return "ASYNC_PF";
+        case KvmFeature::STEAL_TIME:         return "STEAL_TIME";
+        case KvmFeature::PV_EOI:             return "PV_EOI";
+        case KvmFeature::PV_UNHALT:          return "PV_UNHALT";
+        case KvmFeature::PV_TLB_FLUSH:       return "PV_TLB_FLUSH";
+        case KvmFeature::ASYNC_PF_VMEXIT:    return "ASYNC_PF_VMEXIT";
+        case KvmFeature::PV_SEND_IPI:        return "PV_SEND_IPI";
+        case KvmFeature::CLOCKSOURCE_STABLE: return "CLOCKSOURCE_STABLE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(KvmFeature feature) // TEST: NO
 {
     // COMMON_LT((" | feature = %u", feature)); // Commented to avoid bad looking logs
 

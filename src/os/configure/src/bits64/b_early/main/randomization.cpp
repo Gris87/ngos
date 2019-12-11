@@ -208,7 +208,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 
         for (i64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
         {
-            EARLY_LVVV(("%-16s: 0x%p-0x%p", unavailableMemoryAreaToString((UnavailableMemoryArea)i), areas[i].start, areas[i].end));
+            EARLY_LVVV(("%-16s: 0x%p-0x%p", enumToFullString((UnavailableMemoryArea)i), areas[i].start, areas[i].end));
         }
 
         EARLY_LVVV(("params->pciRomImages:"));

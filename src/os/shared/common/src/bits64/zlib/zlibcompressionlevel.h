@@ -19,7 +19,26 @@ enum class ZLibCompressionLevel: u8
 
 
 
-inline const char8* zLibCompressionLevelToString(ZLibCompressionLevel level) // TEST: NO
+inline const char8* enumToString(ZLibCompressionLevel level) // TEST: NO
+{
+    // COMMON_LT((" | level = %u", level)); // Commented to avoid bad looking logs
+
+
+
+    switch (level)
+    {
+        case ZLibCompressionLevel::FASTEST:             return "FASTEST";
+        case ZLibCompressionLevel::FAST:                return "FAST";
+        case ZLibCompressionLevel::DEFAULT:             return "DEFAULT";
+        case ZLibCompressionLevel::MAXIMUM_COMPRESSION: return "MAXIMUM_COMPRESSION";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ZLibCompressionLevel level) // TEST: NO
 {
     // COMMON_LT((" | level = %u", level)); // Commented to avoid bad looking logs
 

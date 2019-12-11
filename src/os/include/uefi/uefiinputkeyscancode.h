@@ -38,7 +38,43 @@ enum class UefiInputKeyScanCode: u16
 
 
 
-inline const char8* uefiInputKeyScanCodeToString(UefiInputKeyScanCode code) // TEST: NO
+inline const char8* enumToString(UefiInputKeyScanCode code) // TEST: NO
+{
+    switch (code)
+    {
+        case UefiInputKeyScanCode::NONE:      return "NONE";
+        case UefiInputKeyScanCode::UP:        return "UP";
+        case UefiInputKeyScanCode::DOWN:      return "DOWN";
+        case UefiInputKeyScanCode::RIGHT:     return "RIGHT";
+        case UefiInputKeyScanCode::LEFT:      return "LEFT";
+        case UefiInputKeyScanCode::HOME:      return "HOME";
+        case UefiInputKeyScanCode::END:       return "END";
+        case UefiInputKeyScanCode::INSERT:    return "INSERT";
+        case UefiInputKeyScanCode::DELETE:    return "DELETE";
+        case UefiInputKeyScanCode::PAGE_UP:   return "PAGE_UP";
+        case UefiInputKeyScanCode::PAGE_DOWN: return "PAGE_DOWN";
+        case UefiInputKeyScanCode::F1:        return "F1";
+        case UefiInputKeyScanCode::F2:        return "F2";
+        case UefiInputKeyScanCode::F3:        return "F3";
+        case UefiInputKeyScanCode::F4:        return "F4";
+        case UefiInputKeyScanCode::F5:        return "F5";
+        case UefiInputKeyScanCode::F6:        return "F6";
+        case UefiInputKeyScanCode::F7:        return "F7";
+        case UefiInputKeyScanCode::F8:        return "F8";
+        case UefiInputKeyScanCode::F9:        return "F9";
+        case UefiInputKeyScanCode::F10:       return "F10";
+        case UefiInputKeyScanCode::F11:       return "F11";
+        case UefiInputKeyScanCode::F12:       return "F12";
+        case UefiInputKeyScanCode::ESC:       return "ESC";
+        case UefiInputKeyScanCode::BREAK:     return "BREAK";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UefiInputKeyScanCode code) // TEST: NO
 {
     switch (code)
     {

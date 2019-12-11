@@ -7,7 +7,7 @@
 
 
 
-enum class UsbSpeed: quint8 // Ignore CppEnumVerifier
+enum class UsbSpeed: quint8
 {
     NONE           = 0,
     LOW            = 1,
@@ -18,7 +18,39 @@ enum class UsbSpeed: quint8 // Ignore CppEnumVerifier
 
 
 
-inline const char* usbSpeedToString(UsbSpeed speed) // TEST: NO
+inline const char* enumToString(UsbSpeed speed) // TEST: NO
+{
+    switch (speed)
+    {
+        case UsbSpeed::NONE:           return "NONE";
+        case UsbSpeed::LOW:            return "LOW";
+        case UsbSpeed::FULL:           return "FULL";
+        case UsbSpeed::HIGH:           return "HIGH";
+        case UsbSpeed::SUPER_OR_LATER: return "SUPER_OR_LATER";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char* enumToFullString(UsbSpeed speed) // TEST: NO
+{
+    switch (speed)
+    {
+        case UsbSpeed::NONE:           return "NONE";
+        case UsbSpeed::LOW:            return "LOW";
+        case UsbSpeed::FULL:           return "FULL";
+        case UsbSpeed::HIGH:           return "HIGH";
+        case UsbSpeed::SUPER_OR_LATER: return "SUPER_OR_LATER";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char* enumToHumanString(UsbSpeed speed) // TEST: NO
 {
     switch (speed)
     {
@@ -31,7 +63,6 @@ inline const char* usbSpeedToString(UsbSpeed speed) // TEST: NO
         default: return "UNKNOWN";
     }
 }
-
 
 
 #endif // USB_BOOT_MAKER_SRC_OTHER_USBSPEED_H

@@ -20,7 +20,29 @@ enum class UnavailableMemoryArea: u8
 
 
 
-inline const char8* unavailableMemoryAreaToString(UnavailableMemoryArea area) // TEST: NO
+inline const char8* enumToString(UnavailableMemoryArea area) // TEST: NO
+{
+    // EARLY_LT((" | area = %u", area)); // Commented to avoid bad looking logs
+
+
+
+    switch (area)
+    {
+        case UnavailableMemoryArea::ZERO_PAGE:        return "ZERO_PAGE";
+        case UnavailableMemoryArea::BOOT_PARAMS:      return "BOOT_PARAMS";
+        case UnavailableMemoryArea::RELOCATED_KERNEL: return "RELOCATED_KERNEL";
+        case UnavailableMemoryArea::UEFI_MEMORY_MAP:  return "UEFI_MEMORY_MAP";
+        case UnavailableMemoryArea::MEMORY_MAP:       return "MEMORY_MAP";
+        case UnavailableMemoryArea::VIDEO_RAM:        return "VIDEO_RAM";
+        case UnavailableMemoryArea::MAXIMUM:          return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UnavailableMemoryArea area) // TEST: NO
 {
     // EARLY_LT((" | area = %u", area)); // Commented to avoid bad looking logs
 

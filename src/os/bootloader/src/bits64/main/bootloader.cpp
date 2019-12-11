@@ -723,9 +723,9 @@ NgosStatus Bootloader::initVolumes()
 
             do
             {
-                UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
-                UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
-                UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
+                UEFI_LVVV(("currentDevicePath->type    = %s", enumToFullString(currentDevicePath->type)));
+                UEFI_LVVV(("currentDevicePath->subtype = %s", enumToFullString(currentDevicePath->type, currentDevicePath->subType)));
+                UEFI_LVVV(("currentDevicePath->length  = %u", currentDevicePath->length));
 
                 if (UEFI::isDevicePathEndType(currentDevicePath))
                 {
@@ -753,9 +753,9 @@ NgosStatus Bootloader::initVolumes()
 
                 do
                 {
-                    UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
-                    UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
-                    UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
+                    UEFI_LVVV(("currentDevicePath->type    = %s", enumToFullString(currentDevicePath->type)));
+                    UEFI_LVVV(("currentDevicePath->subtype = %s", enumToFullString(currentDevicePath->type, currentDevicePath->subType)));
+                    UEFI_LVVV(("currentDevicePath->length  = %u", currentDevicePath->length));
 
                     if (UEFI::isDevicePathEndType(currentDevicePath))
                     {
@@ -770,14 +770,14 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-            UEFI_LVVV(("volume.gptData.protectiveMbr        = 0x%p",    volume.gptData.protectiveMbr));
-            UEFI_LVVV(("volume.gptData.header               = 0x%p",    volume.gptData.header));
-            UEFI_LVVV(("volume.gptData.entries              = 0x%p",    volume.gptData.entries));
-            UEFI_LVVV(("volume.type                         = %u (%s)", volume.type, volumeTypeToString(volume.type)));
-            UEFI_LVVV(("volume.name                         = %ls",     volume.name));
-            UEFI_LVVV(("volume.partitionUniqueGuidAllocated = %u",      volume.partitionUniqueGuidAllocated));
-            UEFI_LVVV(("volume.partitionUniqueGuid          = %s",      guidToString(volume.partitionUniqueGuid)));
-            UEFI_LVVV(("volume.rootDirectory                = 0x%p",    volume.rootDirectory));
+            UEFI_LVVV(("volume.gptData.protectiveMbr        = 0x%p", volume.gptData.protectiveMbr));
+            UEFI_LVVV(("volume.gptData.header               = 0x%p", volume.gptData.header));
+            UEFI_LVVV(("volume.gptData.entries              = 0x%p", volume.gptData.entries));
+            UEFI_LVVV(("volume.type                         = %s",   enumToFullString(volume.type)));
+            UEFI_LVVV(("volume.name                         = %ls",  volume.name));
+            UEFI_LVVV(("volume.partitionUniqueGuidAllocated = %u",   volume.partitionUniqueGuidAllocated));
+            UEFI_LVVV(("volume.partitionUniqueGuid          = %s",   guidToString(volume.partitionUniqueGuid)));
+            UEFI_LVVV(("volume.rootDirectory                = 0x%p", volume.rootDirectory));
 
 
 
@@ -1469,9 +1469,9 @@ NgosStatus Bootloader::initOSes()
         {
             const OsInfo &os = sOSes.at(i);
 
-            UEFI_LVVV(("os.type   = %u (%s)", os.type, osTypeToString(os.type)));
-            UEFI_LVVV(("os.volume = 0x%p",    os.volume));
-            UEFI_LVVV(("os.path   = %ls",     os.path));
+            UEFI_LVVV(("os.type   = %s",   enumToFullString(os.type)));
+            UEFI_LVVV(("os.volume = 0x%p", os.volume));
+            UEFI_LVVV(("os.path   = %ls",  os.path));
 
             UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
             UEFI_TEST_ASSERT(os.volume,                 NgosStatus::ASSERTION);
@@ -1675,9 +1675,9 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path, 
 
         do
         {
-            UEFI_LVVV(("currentDevicePath->type    = 0x%02X (%s)", currentDevicePath->type, uefiDevicePathTypeToString(currentDevicePath->type)));
-            UEFI_LVVV(("currentDevicePath->subtype = 0x%02X (%s)", currentDevicePath->subType, uefiDevicePathSubTypeToString(currentDevicePath->type, currentDevicePath->subType)));
-            UEFI_LVVV(("currentDevicePath->length  = %u",          currentDevicePath->length));
+            UEFI_LVVV(("currentDevicePath->type    = %s", enumToFullString(currentDevicePath->type)));
+            UEFI_LVVV(("currentDevicePath->subtype = %s", enumToFullString(currentDevicePath->type, currentDevicePath->subType)));
+            UEFI_LVVV(("currentDevicePath->length  = %u", currentDevicePath->length));
 
             if (UEFI::isDevicePathEndType(currentDevicePath))
             {

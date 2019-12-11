@@ -4,6 +4,7 @@
 
 
 #include <ngos/flags.h>
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
@@ -36,7 +37,7 @@ DEFINE_FLAGS(ElfSectionFlags, elf_section_flags);
 
 
 
-inline const char8* elfSectionFlagToString(ElfSectionFlag flag) // TEST: NO
+inline const char8* flagToString(ElfSectionFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -56,6 +57,24 @@ inline const char8* elfSectionFlagToString(ElfSectionFlag flag) // TEST: NO
 
         default: return "UNKNOWN";
     }
+}
+
+
+
+inline const char8* flagsToString(const ElfSectionFlags &flags) // TEST: NO
+{
+    AVOID_UNUSED(flags);
+
+    return "NOT_SUPPORTED";
+}
+
+
+
+inline const char8* flagsToFullString(const ElfSectionFlags &flags) // TEST: NO
+{
+    AVOID_UNUSED(flags);
+
+    return "NOT_SUPPORTED";
 }
 
 

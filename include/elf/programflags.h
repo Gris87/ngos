@@ -4,13 +4,14 @@
 
 
 #include <ngos/flags.h>
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
 
 typedef u32 elf_program_flags;
 
-enum class ElfProgramFlag: elf_program_flags // Ignore CppEnumVerifier
+enum class ElfProgramFlag: elf_program_flags
 {
     NONE       = 0,
     EXECUTABLE = (1ULL << 0),
@@ -22,7 +23,7 @@ DEFINE_FLAGS(ElfProgramFlags, elf_program_flags);
 
 
 
-inline const char8* elfProgramFlagToString(ElfProgramFlag flag) // TEST: NO
+inline const char8* flagToString(ElfProgramFlag flag) // TEST: NO
 {
     switch (flag)
     {
@@ -33,6 +34,24 @@ inline const char8* elfProgramFlagToString(ElfProgramFlag flag) // TEST: NO
 
         default: return "UNKNOWN";
     }
+}
+
+
+
+inline const char8* flagsToString(const ElfProgramFlags &flags) // TEST: NO
+{
+    AVOID_UNUSED(flags);
+
+    return "NOT_SUPPORTED";
+}
+
+
+
+inline const char8* flagsToFullString(const ElfProgramFlags &flags) // TEST: NO
+{
+    AVOID_UNUSED(flags);
+
+    return "NOT_SUPPORTED";
 }
 
 

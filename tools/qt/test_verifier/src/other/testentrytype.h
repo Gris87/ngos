@@ -18,12 +18,42 @@ enum class TestEntryType: quint8
 
 
 
-inline const char8* testEntryTypeToString(TestEntryType type) // TEST: NO
+inline const char8* enumToString(TestEntryType type) // TEST: NO
 {
     switch (type)
     {
         case TestEntryType::NONE:              return "NONE";
         case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL_FUNCTION";
+        case TestEntryType::DEFINE:            return "DEFINE";
+        case TestEntryType::FUNCTION:          return "FUNCTION";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(TestEntryType type) // TEST: NO
+{
+    switch (type)
+    {
+        case TestEntryType::NONE:              return "NONE";
+        case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL_FUNCTION";
+        case TestEntryType::DEFINE:            return "DEFINE";
+        case TestEntryType::FUNCTION:          return "FUNCTION";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(TestEntryType type) // TEST: NO
+{
+    switch (type)
+    {
+        case TestEntryType::NONE:              return "NONE";
+        case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL FUNCTION";
         case TestEntryType::DEFINE:            return "DEFINE";
         case TestEntryType::FUNCTION:          return "FUNCTION";
 

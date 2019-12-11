@@ -1706,8 +1706,8 @@ NgosStatus CpuTestGUI::processKeyboardEvent()
 
     UEFI_ASSERT_EXECUTION(UEFI::getSystemTable()->stdin->readKeyStroke(UEFI::getSystemTable()->stdin, &key), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
-    UEFI_LVVV(("key.scanCode    = 0x%04X (%s)", key.scanCode, uefiInputKeyScanCodeToString(key.scanCode)));
-    UEFI_LVVV(("key.unicodeChar = 0x%04X",      key.unicodeChar));
+    UEFI_LVVV(("key.scanCode    = %s",     enumToFullString(key.scanCode)));
+    UEFI_LVVV(("key.unicodeChar = 0x%04X", key.unicodeChar));
 
 
 
@@ -1851,7 +1851,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
             if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
             {
-                UEFI_LV(("Test %u (%s) started on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+                UEFI_LV(("Test %s started on processor %u", enumToFullString(sCurrentTest), processorId));
 
 
 
@@ -1859,7 +1859,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
             }
             else
             {
-                UEFI_LF(("Failed to start test %u (%s) on processor %u", sCurrentTest, testTypeToString(sCurrentTest), processorId));
+                UEFI_LF(("Failed to start test %s on processor %u", enumToFullString(sCurrentTest), processorId));
 
                 --sNumberOfRunningProcessors;
 
@@ -2469,7 +2469,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
                     if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
                     {
-                        UEFI_LV(("Test %u (%s) started on processor %d", sCurrentTest, testTypeToString(sCurrentTest), i));
+                        UEFI_LV(("Test %s started on processor %d", enumToFullString(sCurrentTest), i));
 
                         ++sNumberOfRunningProcessors;
 

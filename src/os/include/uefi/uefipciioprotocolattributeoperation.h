@@ -19,7 +19,24 @@ enum class UefiPciIoProtocolAttributeOperation: u32
 
 
 
-inline const char8* uefiPciIoProtocolAttributeOperationToString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
+inline const char8* enumToString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
+{
+    switch (operation)
+    {
+        case UefiPciIoProtocolAttributeOperation::GET:       return "GET";
+        case UefiPciIoProtocolAttributeOperation::SET:       return "SET";
+        case UefiPciIoProtocolAttributeOperation::ENABLE:    return "ENABLE";
+        case UefiPciIoProtocolAttributeOperation::DISABLE:   return "DISABLE";
+        case UefiPciIoProtocolAttributeOperation::SUPPORTED: return "SUPPORTED";
+        case UefiPciIoProtocolAttributeOperation::MAXIMUM:   return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
 {
     switch (operation)
     {

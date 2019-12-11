@@ -42,6 +42,7 @@ Code verifier:
 - Verify for headers in assembler
 - Verify for function asserts
 - Verify for log alignment
+- Verify for amount of arguments in log
 - Verify for asserts alignment
 - Upgrade verifier for trace arguments (Check format with the types)
 - Verify for `;;` or `\n;`

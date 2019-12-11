@@ -33,7 +33,37 @@ enum class GzipOperatingSystem: u8
 
 
 
-inline const char8* gzipOperatingSystemToString(GzipOperatingSystem system) // TEST: NO
+inline const char8* enumToString(GzipOperatingSystem system) // TEST: NO
+{
+    // EARLY_LT((" | system = %u", system)); // Commented to avoid bad looking logs
+
+
+
+    switch (system)
+    {
+        case GzipOperatingSystem::FAT_FILESYSTEM:  return "FAT_FILESYSTEM";
+        case GzipOperatingSystem::AMIGA:           return "AMIGA";
+        case GzipOperatingSystem::VMS:             return "VMS";
+        case GzipOperatingSystem::UNIX:            return "UNIX";
+        case GzipOperatingSystem::VM_CMS:          return "VM_CMS";
+        case GzipOperatingSystem::ATARI_TOS:       return "ATARI_TOS";
+        case GzipOperatingSystem::HPFS_FILESYSTEM: return "HPFS_FILESYSTEM";
+        case GzipOperatingSystem::MACINTOSH:       return "MACINTOSH";
+        case GzipOperatingSystem::Z_SYSTEM:        return "Z_SYSTEM";
+        case GzipOperatingSystem::CP_M:            return "CP_M";
+        case GzipOperatingSystem::TOPS_20:         return "TOPS_20";
+        case GzipOperatingSystem::NTFS_FILESYSTEM: return "NTFS_FILESYSTEM";
+        case GzipOperatingSystem::QDOS:            return "QDOS";
+        case GzipOperatingSystem::ACORN_RISCOS:    return "ACORN_RISCOS";
+        case GzipOperatingSystem::UNKNOWN:         return "UNKNOWN";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(GzipOperatingSystem system) // TEST: NO
 {
     // EARLY_LT((" | system = %u", system)); // Commented to avoid bad looking logs
 

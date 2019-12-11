@@ -51,7 +51,7 @@ NgosStatus E820::init()
 
             for (i64 i = 0; i < (i64)sTable.count; ++i)
             {
-                COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, memoryMapEntryTypeToString(sTable.entries[i].type), sTable.entries[i].start, sTable.entries[i].end()));
+                COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTable.entries[i].type), sTable.entries[i].start, sTable.entries[i].end()));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -63,7 +63,7 @@ NgosStatus E820::init()
 
             for (i64 i = 0; i < (i64)sTableKExec.count; ++i)
             {
-                COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, memoryMapEntryTypeToString(sTableKExec.entries[i].type), sTableKExec.entries[i].start, sTableKExec.entries[i].end()));
+                COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTableKExec.entries[i].type), sTableKExec.entries[i].start, sTableKExec.entries[i].end()));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -75,7 +75,7 @@ NgosStatus E820::init()
 
             for (i64 i = 0; i < (i64)sTableFirmware.count; ++i)
             {
-                COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, memoryMapEntryTypeToString(sTableFirmware.entries[i].type), sTableFirmware.entries[i].start, sTableFirmware.entries[i].end()));
+                COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTableFirmware.entries[i].type), sTableFirmware.entries[i].start, sTableFirmware.entries[i].end()));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -277,7 +277,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, Memor
 
     u64 end = start + size;
 
-    COMMON_LVV(("Converting memory type %s to %s for E820 range: 0x%p-0x%p", memoryMapEntryTypeToString(oldType), memoryMapEntryTypeToString(newType), start, end));
+    COMMON_LVV(("Converting memory type %s to %s for E820 range: 0x%p-0x%p", enumToFullString(oldType), enumToFullString(newType), start, end));
 
 
 

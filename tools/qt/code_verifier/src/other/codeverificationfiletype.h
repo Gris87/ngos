@@ -72,7 +72,33 @@ enum class CodeVerificationFileType: quint64
 
 
 
-inline const char8* codeVerificationFileTypeToString(CodeVerificationFileType type) // TEST: NO
+inline const char8* enumToString(CodeVerificationFileType type) // TEST: NO
+{
+    switch (type)
+    {
+        case CodeVerificationFileType::NONE:     return "NONE";
+        case CodeVerificationFileType::TEXT:     return "TEXT";
+        case CodeVerificationFileType::CPP:      return "CPP";
+        case CodeVerificationFileType::H:        return "H"; // Ignore CppSingleCharVerifier
+        case CodeVerificationFileType::S:        return "S"; // Ignore CppSingleCharVerifier
+        case CodeVerificationFileType::PHP:      return "PHP";
+        case CodeVerificationFileType::MAKEFILE: return "MAKEFILE";
+        case CodeVerificationFileType::PRO:      return "PRO";
+        case CodeVerificationFileType::PRI:      return "PRI";
+        case CodeVerificationFileType::LD:       return "LD";
+        case CodeVerificationFileType::SH:       return "SH";
+        case CodeVerificationFileType::INCLUDES: return "INCLUDES";
+        case CodeVerificationFileType::XML:      return "XML";
+        case CodeVerificationFileType::UI:       return "UI";
+        case CodeVerificationFileType::QRC:      return "QRC";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(CodeVerificationFileType type) // TEST: NO
 {
     switch (type)
     {

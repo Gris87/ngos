@@ -257,7 +257,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                     case OsType::CENTOS_8:   pathToImage = "images/os_centos.png";  break;
                     case OsType::MAXIMUM:
                     {
-                        UEFI_LF(("Unexpected OS type: %u (%s)", os.type, osTypeToString(os.type)));
+                        UEFI_LF(("Unexpected OS type: %s", enumToFullString(os.type)));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -265,7 +265,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                     default:
                     {
-                        UEFI_LF(("Unknown OS type: %u (%s)", os.type, osTypeToString(os.type)));
+                        UEFI_LF(("Unknown OS type: %s", enumToFullString(os.type)));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -294,7 +294,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                     case VolumeType::MAXIMUM:
                     {
-                        UEFI_LF(("Unexpected volume type: %u (%s)", os.volume->type, volumeTypeToString(os.volume->type)));
+                        UEFI_LF(("Unexpected volume type: %s", enumToFullString(os.volume->type)));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -302,7 +302,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                     default:
                     {
-                        UEFI_LF(("Unknown volume type: %u (%s)", os.volume->type, volumeTypeToString(os.volume->type)));
+                        UEFI_LF(("Unknown volume type: %s", enumToFullString(os.volume->type)));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -1038,8 +1038,8 @@ NgosStatus BootloaderGUI::processKeyboardEvent()
 
     UEFI_ASSERT_EXECUTION(UEFI::getSystemTable()->stdin->readKeyStroke(UEFI::getSystemTable()->stdin, &key), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
-    UEFI_LVVV(("key.scanCode    = 0x%04X (%s)", key.scanCode, uefiInputKeyScanCodeToString(key.scanCode)));
-    UEFI_LVVV(("key.unicodeChar = 0x%04X",      key.unicodeChar));
+    UEFI_LVVV(("key.scanCode    = %s",     enumToFullString(key.scanCode)));
+    UEFI_LVVV(("key.unicodeChar = 0x%04X", key.unicodeChar));
 
 
 

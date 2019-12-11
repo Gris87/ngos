@@ -17,7 +17,26 @@ enum class TaskState: u8
 
 
 
-inline const char8* taskStateToString(TaskState state) // TEST: NO
+inline const char8* enumToString(TaskState state) // TEST: NO
+{
+    // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
+
+
+
+    switch (state)
+    {
+        case TaskState::NONE:       return "NONE";
+        case TaskState::UNRUNNABLE: return "UNRUNNABLE";
+        case TaskState::RUNNABLE:   return "RUNNABLE";
+        case TaskState::STOPPED:    return "STOPPED";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(TaskState state) // TEST: NO
 {
     // COMMON_LT((" | state = %u", state)); // Commented to avoid bad looking logs
 

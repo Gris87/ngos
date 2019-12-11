@@ -46,17 +46,17 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
     AVOID_UNUSED(compressionLevel);
 
-    COMMON_LVVV(("compressionMethod            = %u (%s)", compressionMethod, zLibCompressionMethodToString(compressionMethod)));
-    COMMON_LVVV(("compressionInfo              = %u (%s)", compressionInfo, zLibCompressionInfoToString(compressionInfo)));
-    COMMON_LVVV(("zlibHeader->checkBits        = 0x%02X",  zlibHeader->checkBits));
-    COMMON_LVVV(("presetDictionary             = %u",      presetDictionary));
-    COMMON_LVVV(("compressionLevel             = %u (%s)", compressionLevel, zLibCompressionLevelToString(compressionLevel)));
+    COMMON_LVVV(("compressionMethod     = %s",     enumToFullString(compressionMethod)));
+    COMMON_LVVV(("compressionInfo       = %s",     enumToFullString(compressionInfo)));
+    COMMON_LVVV(("zlibHeader->checkBits = 0x%02X", zlibHeader->checkBits));
+    COMMON_LVVV(("presetDictionary      = %u",     presetDictionary));
+    COMMON_LVVV(("compressionLevel      = %s",     enumToFullString(compressionLevel)));
 
 
 
     if (compressionMethod != ZLibCompressionMethod::DEFLATE)
     {
-        COMMON_LE(("zlib doesn't support compression method %u (%s)", compressionMethod, zLibCompressionMethodToString(compressionMethod)));
+        COMMON_LE(("zlib doesn't support compression method %s", enumToFullString(compressionMethod)));
 
         return NgosStatus::NOT_SUPPORTED;
     }

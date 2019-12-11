@@ -16,7 +16,21 @@ enum class UefiHardDriveDevicePathSignatureType: u8
 
 
 
-inline const char8* uefiHardDriveDevicePathSignatureTypeToString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
+inline const char8* enumToString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
+{
+    switch (type)
+    {
+        case UefiHardDriveDevicePathSignatureType::NONE: return "NONE";
+        case UefiHardDriveDevicePathSignatureType::MBR:  return "MBR";
+        case UefiHardDriveDevicePathSignatureType::GUID: return "GUID";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
 {
     switch (type)
     {

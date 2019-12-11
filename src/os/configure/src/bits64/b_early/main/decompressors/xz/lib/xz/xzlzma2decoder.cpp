@@ -1158,7 +1158,7 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
     {
         EARLY_LVVV(("buffer->inPosition      = %u", buffer->inPosition));
         EARLY_LVVV(("buffer->inSize          = %u", buffer->inSize));
-        EARLY_LVVV(("decoder->lzma2.sequence = %u (%s)", decoder->lzma2.sequence, lzma2SequenceToString(decoder->lzma2.sequence)));
+        EARLY_LVVV(("decoder->lzma2.sequence = %s", enumToFullString(decoder->lzma2.sequence)));
 
 
 
@@ -1384,7 +1384,7 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             default:
             {
-                EARLY_LF(("Unknown decoder->lzma2.sequence: %u (%s)", decoder->lzma2.sequence, lzma2SequenceToString(decoder->lzma2.sequence)));
+                EARLY_LF(("Unknown decoder->lzma2.sequence: %s", enumToFullString(decoder->lzma2.sequence)));
 
                 return NgosStatus::INVALID_DATA;
             }

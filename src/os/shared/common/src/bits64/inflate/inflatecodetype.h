@@ -16,7 +16,25 @@ enum class InflateCodeType: u8
 
 
 
-inline const char8* inflateCodeTypeToString(InflateCodeType type) // TEST: NO
+inline const char8* enumToString(InflateCodeType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case InflateCodeType::CODES:     return "CODES";
+        case InflateCodeType::LENGTHS:   return "LENGTHS";
+        case InflateCodeType::DISTANCES: return "DISTANCES";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(InflateCodeType type) // TEST: NO
 {
     // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

@@ -102,7 +102,7 @@ QString TestEntry::getTestModule() const
 QString TestEntry::toString() const
 {
     return QString("%1 | %2 | %3 | %4")
-            .arg(testEntryTypeToString(mType), 17, QChar(' '))
+            .arg(enumToHumanString(mType), 17, QChar(' '))
             .arg(mPath + ':' + QString::number(mLine + 1), -120, QChar(' '))
             .arg(mName, 35, QChar(' '))
             .arg(mTestModule);

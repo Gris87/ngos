@@ -149,7 +149,7 @@ NgosStatus UEFI::initMemoryMap()
                 UefiMemoryDescriptor *memoryDescriptor = UEFI_MEMORY_MAP_DESCRIPTOR(i);
                 COMMON_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
 
-                COMMON_LVVV(("#%-3d: type = %-2u (%-27s) | 0x%p-0x%p | 0x%016lX", i, memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
+                COMMON_LVVV(("#%-3d: type = %-27s | 0x%p-0x%p | 0x%016lX", i, enumToFullString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
             }
 
             COMMON_LVVV(("-------------------------------------"));

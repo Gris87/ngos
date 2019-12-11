@@ -23,7 +23,36 @@ enum class AmdCpuModel: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* amdCpuModelToString(CpuFamily family, AmdCpuModel model) // TEST: NO
+inline const char8* enumToString(CpuFamily family, AmdCpuModel model) // TEST: NO
+{
+    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
+
+
+
+    switch (family)
+    {
+        case CpuFamily::AMD_FAMILY_23:
+        {
+            switch (model)
+            {
+                case AmdCpuModel::FAMILY_23_NAPLES:         return "FAMILY_23_NAPLES";
+                case AmdCpuModel::FAMILY_23_PINNACLE_RIDGE: return "FAMILY_23_PINNACLE_RIDGE";
+                case AmdCpuModel::FAMILY_23_RAVEN_RIDGE:    return "FAMILY_23_RAVEN_RIDGE";
+                case AmdCpuModel::FAMILY_23_ROME:           return "FAMILY_23_ROME";
+                case AmdCpuModel::FAMILY_23_MATISSE:        return "FAMILY_23_MATISSE";
+
+                default: return "UNKNOWN";
+            }
+        }
+        break;
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(CpuFamily family, AmdCpuModel model) // TEST: NO
 {
     // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
 

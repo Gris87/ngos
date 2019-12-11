@@ -997,7 +997,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-        UEFI_LVVV(("type          = %u (%s)",  memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type)));
+        UEFI_LVVV(("type          = %s",       enumToFullString(memoryDescriptor->type)));
         UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
         UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
         UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
@@ -1007,7 +1007,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
         if (memoryDescriptor->type != UefiMemoryType::CONVENTIONAL_MEMORY)
         {
-            UEFI_LVV(("Skipped memory descriptor 0x%p because type = %u (%s)", memoryDescriptor, memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type)));
+            UEFI_LVV(("Skipped memory descriptor 0x%p because type = %s", memoryDescriptor, enumToFullString(memoryDescriptor->type)));
 
             continue;
         }
@@ -1318,22 +1318,22 @@ NgosStatus UEFI::switchConsoleControlScreenMode(UefiConsoleControlScreenMode mod
 
         if (consoleControl->getMode(consoleControl, &oldMode, nullptr, nullptr) == UefiStatus::SUCCESS)
         {
-            UEFI_LVV(("Got current console control screen mode: %u (%s)", oldMode, uefiConsoleControlScreenModeToString(oldMode)));
+            UEFI_LVV(("Got current console control screen mode: %s", enumToFullString(oldMode)));
 
             if (oldMode != mode)
             {
                 if (consoleControl->setMode(consoleControl, mode) == UefiStatus::SUCCESS)
                 {
-                    UEFI_LVV(("Switched console control screen mode to %u (%s) mode", mode, uefiConsoleControlScreenModeToString(mode)));
+                    UEFI_LVV(("Switched console control screen mode to %s mode", enumToFullString(mode)));
                 }
                 else
                 {
-                    UEFI_LV(("Failed to switch console control screen mode to %u (%s) mode", mode, uefiConsoleControlScreenModeToString(mode)));
+                    UEFI_LV(("Failed to switch console control screen mode to %s mode", enumToFullString(mode)));
                 }
             }
             else
             {
-                UEFI_LVV(("Already in %u (%s) mode", mode, uefiConsoleControlScreenModeToString(mode)));
+                UEFI_LVV(("Already in %s mode", enumToFullString(mode)));
             }
         }
         else

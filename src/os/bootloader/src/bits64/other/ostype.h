@@ -20,7 +20,27 @@ enum class OsType: u8
 
 
 
-inline const char8* osTypeToString(OsType type) // TEST: NO
+inline const char8* enumToString(OsType type) // TEST: NO
+{
+    // UEFI_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case OsType::NGOS:       return "NGOS";
+        case OsType::WINDOWS_10: return "WINDOWS_10";
+        case OsType::UBUNTU_19:  return "UBUNTU_19";
+        case OsType::CENTOS_8:   return "CENTOS_8";
+        case OsType::MAXIMUM:    return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(OsType type) // TEST: NO
 {
     // UEFI_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 

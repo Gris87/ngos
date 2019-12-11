@@ -16,7 +16,21 @@ enum class UefiConsoleControlScreenMode: u32
 
 
 
-inline const char8* uefiConsoleControlScreenModeToString(UefiConsoleControlScreenMode mode) // TEST: NO
+inline const char8* enumToString(UefiConsoleControlScreenMode mode) // TEST: NO
+{
+    switch (mode)
+    {
+        case UefiConsoleControlScreenMode::TEXT:     return "TEXT";
+        case UefiConsoleControlScreenMode::GRAPHICS: return "GRAPHICS";
+        case UefiConsoleControlScreenMode::MAXIMUM:  return "MAXIMUM";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(UefiConsoleControlScreenMode mode) // TEST: NO
 {
     switch (mode)
     {

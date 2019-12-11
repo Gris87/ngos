@@ -27,7 +27,25 @@ enum class ElfProgramType: u32
 
 
 
-inline const char8* elfProgramTypeToString(ElfProgramType type) // TEST: NO
+inline const char8* enumToString(ElfProgramType type) // TEST: NO
+{
+    switch (type)
+    {
+        case ElfProgramType::NONE:    return "NONE";
+        case ElfProgramType::LOAD:    return "LOAD";
+        case ElfProgramType::DYNAMIC: return "DYNAMIC";
+        case ElfProgramType::INTERP:  return "INTERP";
+        case ElfProgramType::NOTE:    return "NOTE";
+        case ElfProgramType::SHLIB:   return "SHLIB";
+        case ElfProgramType::PHDR:    return "PHDR";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ElfProgramType type) // TEST: NO
 {
     switch (type)
     {

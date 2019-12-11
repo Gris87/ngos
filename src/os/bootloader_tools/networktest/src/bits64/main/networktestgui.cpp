@@ -449,8 +449,8 @@ NgosStatus NetworkTestGUI::processKeyboardEvent()
 
     UEFI_ASSERT_EXECUTION(UEFI::getSystemTable()->stdin->readKeyStroke(UEFI::getSystemTable()->stdin, &key), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
-    UEFI_LVVV(("key.scanCode    = 0x%04X (%s)", key.scanCode, uefiInputKeyScanCodeToString(key.scanCode)));
-    UEFI_LVVV(("key.unicodeChar = 0x%04X",      key.unicodeChar));
+    UEFI_LVVV(("key.scanCode    = %s",     enumToFullString(key.scanCode)));
+    UEFI_LVVV(("key.unicodeChar = 0x%04X", key.unicodeChar));
 
 
 

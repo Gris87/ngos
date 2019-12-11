@@ -55,7 +55,61 @@ enum class IntelCpuModel: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* intelCpuModelToString(CpuFamily family, IntelCpuModel model) // TEST: NO
+inline const char8* enumToString(CpuFamily family, IntelCpuModel model) // TEST: NO
+{
+    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
+
+
+
+    switch (family)
+    {
+        case CpuFamily::INTEL_FAMILY_6:
+        {
+            switch (model)
+            {
+                case IntelCpuModel::FAMILY_6_HASWELL_S:                return "FAMILY_6_HASWELL_S";
+                case IntelCpuModel::FAMILY_6_BROADWELL_U_Y_S:          return "FAMILY_6_BROADWELL_U_Y_S";
+                case IntelCpuModel::FAMILY_6_IVY_BRIDGE_SERVER:        return "FAMILY_6_IVY_BRIDGE_SERVER";
+                case IntelCpuModel::FAMILY_6_HASWELL_SERVER:           return "FAMILY_6_HASWELL_SERVER";
+                case IntelCpuModel::FAMILY_6_HASWELL_ULT:              return "FAMILY_6_HASWELL_ULT";
+                case IntelCpuModel::FAMILY_6_HASWELL_GT3E:             return "FAMILY_6_HASWELL_GT3E";
+                case IntelCpuModel::FAMILY_6_BROADWELL_H_C_W:          return "FAMILY_6_BROADWELL_H_C_W";
+                case IntelCpuModel::FAMILY_6_TANGIER:                  return "FAMILY_6_TANGIER";
+                case IntelCpuModel::FAMILY_6_CHERRY_TRAIL:             return "FAMILY_6_CHERRY_TRAIL";
+                case IntelCpuModel::FAMILY_6_AVOTON:                   return "FAMILY_6_AVOTON";
+                case IntelCpuModel::FAMILY_6_SKYLAKE_Y_U:              return "FAMILY_6_SKYLAKE_Y_U";
+                case IntelCpuModel::FAMILY_6_BROADWELL_SERVER_E_EP_EX: return "FAMILY_6_BROADWELL_SERVER_E_EP_EX";
+                case IntelCpuModel::FAMILY_6_COOPER_LAKE:              return "FAMILY_6_COOPER_LAKE";
+                case IntelCpuModel::FAMILY_6_BROADWELL_SERVER_DE:      return "FAMILY_6_BROADWELL_SERVER_DE";
+                case IntelCpuModel::FAMILY_6_KNIGHTS_LANDING:          return "FAMILY_6_KNIGHTS_LANDING";
+                case IntelCpuModel::FAMILY_6_ANNIEDALE:                return "FAMILY_6_ANNIEDALE";
+                case IntelCpuModel::FAMILY_6_APOLLO_LAKE:              return "FAMILY_6_APOLLO_LAKE";
+                case IntelCpuModel::FAMILY_6_SOFIA:                    return "FAMILY_6_SOFIA";
+                case IntelCpuModel::FAMILY_6_SKYLAKE_DT_H_S:           return "FAMILY_6_SKYLAKE_DT_H_S";
+                case IntelCpuModel::FAMILY_6_DENVERTON:                return "FAMILY_6_DENVERTON";
+                case IntelCpuModel::FAMILY_6_CANNON_LAKE:              return "FAMILY_6_CANNON_LAKE";
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_SERVER_DE:       return "FAMILY_6_ICE_LAKE_SERVER_DE";
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_SERVER_SP:       return "FAMILY_6_ICE_LAKE_SERVER_SP";
+                case IntelCpuModel::FAMILY_6_GEMINI_LAKE:              return "FAMILY_6_GEMINI_LAKE";
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_Y:               return "FAMILY_6_ICE_LAKE_Y";
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_U:               return "FAMILY_6_ICE_LAKE_U";
+                case IntelCpuModel::FAMILY_6_KNIGHTS_MILL:             return "FAMILY_6_KNIGHTS_MILL";
+                case IntelCpuModel::FAMILY_6_ELKHART_LAKE:             return "FAMILY_6_ELKHART_LAKE";
+                case IntelCpuModel::FAMILY_6_COMET_LAKE:               return "FAMILY_6_COMET_LAKE";
+                case IntelCpuModel::FAMILY_6_COFFEE_LAKE_S_H_E:        return "FAMILY_6_COFFEE_LAKE_S_H_E";
+
+                default: return "UNKNOWN";
+            }
+        }
+        break;
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(CpuFamily family, IntelCpuModel model) // TEST: NO
 {
     // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
 

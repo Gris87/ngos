@@ -21,7 +21,26 @@ enum class MemoryMapEntryType: u8
 
 
 
-inline const char8* memoryMapEntryTypeToString(MemoryMapEntryType type) // TEST: NO
+inline const char8* enumToString(MemoryMapEntryType type) // TEST: NO
+{
+    switch (type)
+    {
+        case MemoryMapEntryType::NONE:               return "NONE";
+        case MemoryMapEntryType::RAM:                return "RAM";
+        case MemoryMapEntryType::ACPI:               return "ACPI";
+        case MemoryMapEntryType::NVS:                return "NVS";
+        case MemoryMapEntryType::PERSISTENT_MEMORY:  return "PERSISTENT_MEMORY";
+        case MemoryMapEntryType::UNUSABLE:           return "UNUSABLE";
+        case MemoryMapEntryType::RESERVED:           return "RESERVED";
+        case MemoryMapEntryType::RESERVED_BY_KERNEL: return "RESERVED_BY_KERNEL";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(MemoryMapEntryType type) // TEST: NO
 {
     switch (type)
     {

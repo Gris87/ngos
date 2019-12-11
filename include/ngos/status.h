@@ -23,7 +23,28 @@ enum class NgosStatus: u64
 
 
 
-inline const char8* ngosStatusToString(NgosStatus status) // TEST: NO
+inline const char8* enumToString(NgosStatus status) // TEST: NO
+{
+    switch (status)
+    {
+        case NgosStatus::OK:                   return "OK";
+        case NgosStatus::FAILED:               return "FAILED";
+        case NgosStatus::NO_EFFECT:            return "NO_EFFECT";
+        case NgosStatus::INVALID_DATA:         return "INVALID_DATA";
+        case NgosStatus::UNEXPECTED_BEHAVIOUR: return "UNEXPECTED_BEHAVIOUR";
+        case NgosStatus::NOT_SUPPORTED:        return "NOT_SUPPORTED";
+        case NgosStatus::NOT_FOUND:            return "NOT_FOUND";
+        case NgosStatus::OUT_OF_MEMORY:        return "OUT_OF_MEMORY";
+        case NgosStatus::BUFFER_TOO_SMALL:     return "BUFFER_TOO_SMALL";
+        case NgosStatus::ASSERTION:            return "ASSERTION";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(NgosStatus status) // TEST: NO
 {
     switch (status)
     {

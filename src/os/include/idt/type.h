@@ -18,7 +18,23 @@ enum class IdtType: u8
 
 
 
-inline const char8* idtTypeToString(IdtType type) // TEST: NO
+inline const char8* enumToString(IdtType type) // TEST: NO
+{
+    switch (type)
+    {
+        case IdtType::NONE:           return "NONE";
+        case IdtType::GATE_TASK:      return "GATE_TASK";
+        case IdtType::GATE_CALL:      return "GATE_CALL";
+        case IdtType::GATE_INTERRUPT: return "GATE_INTERRUPT";
+        case IdtType::GATE_TRAP:      return "GATE_TRAP";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(IdtType type) // TEST: NO
 {
     switch (type)
     {

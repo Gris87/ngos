@@ -20,7 +20,25 @@ enum class ElfSymbolVisibility: u8
 
 
 
-inline const char8* elfSymbolVisibilityToString(ElfSymbolVisibility visibility) // TEST: NO
+inline const char8* enumToString(ElfSymbolVisibility visibility) // TEST: NO
+{
+    switch (visibility)
+    {
+        case ElfSymbolVisibility::DEFAULT:   return "DEFAULT";
+        case ElfSymbolVisibility::INTERNAL:  return "INTERNAL";
+        case ElfSymbolVisibility::HIDDEN:    return "HIDDEN";
+        case ElfSymbolVisibility::PROTECTED: return "PROTECTED";
+        case ElfSymbolVisibility::EXPORTED:  return "EXPORTED";
+        case ElfSymbolVisibility::SINGLETON: return "SINGLETON";
+        case ElfSymbolVisibility::ELIMINATE: return "ELIMINATE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 {
     switch (visibility)
     {

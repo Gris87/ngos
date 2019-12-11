@@ -16,7 +16,21 @@ enum class ElfClass: u8
 
 
 
-inline const char8* elfClassToString(ElfClass elfClass) // TEST: NO
+inline const char8* enumToString(ElfClass elfClass) // TEST: NO
+{
+    switch (elfClass)
+    {
+        case ElfClass::NONE:     return "NONE";
+        case ElfClass::CLASS_32: return "CLASS_32";
+        case ElfClass::CLASS_64: return "CLASS_64";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ElfClass elfClass) // TEST: NO
 {
     switch (elfClass)
     {

@@ -20,24 +20,24 @@ u64 getElfMemorySize(ElfHeader *header)
 
     // Validation
     {
-        EARLY_LVVV(("header->identification.signature     = 0x%08X",      header->identification.signature));
-        EARLY_LVVV(("header->identification.fileClass     = %u (%s)",     header->identification.fileClass, elfClassToString(header->identification.fileClass)));
-        EARLY_LVVV(("header->identification.fileData      = %u (%s)",     header->identification.fileData, elfDataToString(header->identification.fileData)));
-        EARLY_LVVV(("header->identification.version       = %u (%s)",     header->identification.version, elfFileVersionToString(header->identification.version)));
-        EARLY_LVVV(("header->identification.osAbi         = 0x%02X (%s)", header->identification.osAbi, elfOsAbiToString(header->identification.osAbi)));
-        EARLY_LVVV(("header->type                         = %u (%s)",     header->type, elfTypeToString(header->type)));
-        EARLY_LVVV(("header->machine                      = 0x%04X (%s)", header->machine, elfMachineToString(header->machine)));
-        EARLY_LVVV(("header->version                      = %u (%s)",     header->version, elfVersionToString(header->version)));
-        EARLY_LVVV(("header->entryPoint                   = 0x%016lX",    header->entryPoint));
-        EARLY_LVVV(("header->programHeaderTableOffset     = %u",          header->programHeaderTableOffset));
-        EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",          header->sectionHeaderTableOffset));
-        EARLY_LVVV(("header->flags                        = %u",          header->flags));
-        EARLY_LVVV(("header->headerSize                   = %u",          header->headerSize));
-        EARLY_LVVV(("header->programHeaderTableEntrySize  = %u",          header->programHeaderTableEntrySize));
-        EARLY_LVVV(("header->programHeaderTableEntryCount = %u",          header->programHeaderTableEntryCount));
-        EARLY_LVVV(("header->sectionHeaderTableEntrySize  = %u",          header->sectionHeaderTableEntrySize));
-        EARLY_LVVV(("header->sectionHeaderTableEntryCount = %u",          header->sectionHeaderTableEntryCount));
-        EARLY_LVVV(("header->sectionHeaderTableNamesIndex = %u",          header->sectionHeaderTableNamesIndex));
+        EARLY_LVVV(("header->identification.signature     = 0x%08X",   header->identification.signature));
+        EARLY_LVVV(("header->identification.fileClass     = %s",       enumToFullString(header->identification.fileClass)));
+        EARLY_LVVV(("header->identification.fileData      = %s",       enumToFullString(header->identification.fileData)));
+        EARLY_LVVV(("header->identification.version       = %s",       enumToFullString(header->identification.version)));
+        EARLY_LVVV(("header->identification.osAbi         = %s",       enumToFullString(header->identification.osAbi)));
+        EARLY_LVVV(("header->type                         = %s",       enumToFullString(header->type)));
+        EARLY_LVVV(("header->machine                      = %s",       enumToFullString(header->machine)));
+        EARLY_LVVV(("header->version                      = %s",       enumToFullString(header->version)));
+        EARLY_LVVV(("header->entryPoint                   = 0x%016lX", header->entryPoint));
+        EARLY_LVVV(("header->programHeaderTableOffset     = %u",       header->programHeaderTableOffset));
+        EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",       header->sectionHeaderTableOffset));
+        EARLY_LVVV(("header->flags                        = %u",       header->flags));
+        EARLY_LVVV(("header->headerSize                   = %u",       header->headerSize));
+        EARLY_LVVV(("header->programHeaderTableEntrySize  = %u",       header->programHeaderTableEntrySize));
+        EARLY_LVVV(("header->programHeaderTableEntryCount = %u",       header->programHeaderTableEntryCount));
+        EARLY_LVVV(("header->sectionHeaderTableEntrySize  = %u",       header->sectionHeaderTableEntrySize));
+        EARLY_LVVV(("header->sectionHeaderTableEntryCount = %u",       header->sectionHeaderTableEntryCount));
+        EARLY_LVVV(("header->sectionHeaderTableNamesIndex = %u",       header->sectionHeaderTableNamesIndex));
 
 
 
@@ -70,8 +70,8 @@ u64 getElfMemorySize(ElfHeader *header)
     {
         ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((u64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
 
-        EARLY_LVVV(("programHeader[%d]->type            = %u (%s)",  i, programHeader->type, elfProgramTypeToString(programHeader->type)));
-        EARLY_LVVV(("programHeader[%d]->flags           = 0x%08X",   i, programHeader->flags));
+        EARLY_LVVV(("programHeader[%d]->type            = %s",       i, enumToFullString(programHeader->type)));
+        EARLY_LVVV(("programHeader[%d]->flags           = %s",       i, flagsToFullString(programHeader->flags)));
         EARLY_LVVV(("programHeader[%d]->offset          = 0x%016lX", i, programHeader->offset));
         EARLY_LVVV(("programHeader[%d]->virtualAddress  = 0x%016lX", i, programHeader->virtualAddress));
         EARLY_LVVV(("programHeader[%d]->physicalAddress = 0x%016lX", i, programHeader->physicalAddress));
@@ -104,7 +104,7 @@ NgosStatus loadElfToAddress(ElfHeader *header, u64 address)
         }
         else
         {
-            EARLY_LVV(("Ignoring program header with the type %u (%s)", programHeader->type, elfProgramTypeToString(programHeader->type)));
+            EARLY_LVV(("Ignoring program header with the type %s", enumToFullString(programHeader->type)));
         }
     }
 

@@ -33,7 +33,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-        UEFI_LVVV(("type          = %u (%s)",  memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type)));
+        UEFI_LVVV(("type          = %us",      enumToFullString(memoryDescriptor->type)));
         UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
         UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
         UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
@@ -92,7 +92,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
             case UefiMemoryType::MAXIMUM:
             {
-                UEFI_LF(("Unexpected memory descriptor type %u (%s)", memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type)));
+                UEFI_LF(("Unexpected memory descriptor type %s", enumToFullString(memoryDescriptor->type)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -100,7 +100,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
             default:
             {
-                UEFI_LF(("Unknown memory descriptor type %u (%s)", memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type)));
+                UEFI_LF(("Unknown memory descriptor type %s", enumToFullString(memoryDescriptor->type)));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -163,7 +163,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
                 UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
                 UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
 
-                UEFI_LVVV(("#%-3d: type = %-2u (%-27s) | 0x%p-0x%p | 0x%016lX", i, memoryDescriptor->type, uefiMemoryTypeToString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
+                UEFI_LVVV(("#%-3d: type = %-27s | 0x%p-0x%p | 0x%016lX", i, enumToFullString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
             }
 
             UEFI_LVVV(("-------------------------------------"));

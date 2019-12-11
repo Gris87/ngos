@@ -27,7 +27,25 @@ enum class ElfSymbolType: u8
 
 
 
-inline const char8* elfSymbolTypeToString(ElfSymbolType type) // TEST: NO
+inline const char8* enumToString(ElfSymbolType type) // TEST: NO
+{
+    switch (type)
+    {
+        case ElfSymbolType::NOTYPE:  return "NOTYPE";
+        case ElfSymbolType::OBJECT:  return "OBJECT";
+        case ElfSymbolType::FUNC:    return "FUNC";
+        case ElfSymbolType::SECTION: return "SECTION";
+        case ElfSymbolType::FILE:    return "FILE";
+        case ElfSymbolType::COMMON:  return "COMMON";
+        case ElfSymbolType::TLS:     return "TLS";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ElfSymbolType type) // TEST: NO
 {
     switch (type)
     {

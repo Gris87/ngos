@@ -17,7 +17,24 @@ enum class ZLibCompressionMethod: u8
 
 
 
-inline const char8* zLibCompressionMethodToString(ZLibCompressionMethod method) // TEST: NO
+inline const char8* enumToString(ZLibCompressionMethod method) // TEST: NO
+{
+    // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
+
+
+
+    switch (method)
+    {
+        case ZLibCompressionMethod::NONE:    return "NONE";
+        case ZLibCompressionMethod::DEFLATE: return "DEFLATE";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(ZLibCompressionMethod method) // TEST: NO
 {
     // COMMON_LT((" | method = %u", method)); // Commented to avoid bad looking logs
 
