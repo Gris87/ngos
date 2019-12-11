@@ -1469,7 +1469,7 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
         COMMON_TEST_ASSERT(entry->deviceLocatorStringId        == 1,                                           NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->bankLocatorStringId          == 0,                                           NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->typeDetail.flags             == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->typeDetail                   == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->speed                        == 0,                                           NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->manufacturerStringId         == 2,                                           NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->serialNumberStringId         == 0,                                           NgosStatus::ASSERTION);
@@ -1493,17 +1493,17 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
                     if (sVersion >= DMI_VERSION(3, 2))
                     {
-                        COMMON_TEST_ASSERT(entry->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                        NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->memoryOperatingModeCapability.flags     == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->firmwareVersionStringId                 == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->moduleManufacturerID                    == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->moduleProductID                         == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerManufacturerID == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerProductID      == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->nonVolatileSize                         == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->volatileSize                            == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->cacheSize                               == 0,                                                      NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->logicalSize                             == 0,                                                      NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                         NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memoryOperatingModeCapability           == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->firmwareVersionStringId                 == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->moduleManufacturerID                    == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->moduleProductID                         == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerManufacturerID == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->memorySubsystemControllerProductID      == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->nonVolatileSize                         == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->volatileSize                            == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->cacheSize                               == 0,                                                       NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->logicalSize                             == 0,                                                       NgosStatus::ASSERTION);
 
                         COMMON_TEST_ASSERT(entry->header.length == 84,                           NgosStatus::ASSERTION);
                         COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryDeviceEntry), NgosStatus::ASSERTION);

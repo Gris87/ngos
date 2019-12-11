@@ -392,9 +392,9 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
             // Validation
             {
-                EARLY_LVVV(("streamFooter->crc32        = 0x%08X", streamFooter->crc32));
-                EARLY_LVVV(("streamFooter->backwardSize = %u",     streamFooter->backwardSize));
-                EARLY_LVVV(("streamFooter->streamFlags  = %s",     flagsToFullString(streamFooter->streamFlags)));
+                EARLY_LVVV(("streamFooter->crc32        = 0x%08X",  streamFooter->crc32));
+                EARLY_LVVV(("streamFooter->backwardSize = %u",      streamFooter->backwardSize));
+                EARLY_LVVV(("streamFooter->streamFlags  = %s",      flagsToFullString(streamFooter->streamFlags)));
                 EARLY_LVVV(("streamFooter->signature    = %.2s",   &streamFooter->signature));
 
 
