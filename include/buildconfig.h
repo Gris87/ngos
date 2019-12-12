@@ -296,6 +296,43 @@
 
 
 
+#if NGOS_BUILD_RELEASE == OPTION_NO
+/***
+ *** Category: General -> Logging
+ *** Name: Log to UEFI file
+ ***
+ *** Description: Enable logging to file located on ESP.
+ ***
+ *** Type: Boolean
+ ***
+ *** Values: true = OPTION_YES, false = OPTION_NO
+ *** Value description: true = Log to UEFI file, false = Do not log to UEFI file
+ ***
+ *** Default: OPTION_YES
+ ***/
+#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_YES
+#else
+#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_NO
+#endif
+
+
+
+/***
+ *** Category: General -> Logging
+ *** Name: UEFI log file
+ ***
+ *** Description: Path to log file located on ESP.
+ ***
+ *** Enabled: NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+ ***
+ *** Type: Text
+ ***
+ *** Default: "EFI/Log/NGOS.log"
+ ***/
+#define NGOS_BUILD_UEFI_LOG_FILE "EFI/Log/NGOS.log"
+
+
+
 /***
  *** Category: General -> Realtime
  *** Name: Use realtime mode
@@ -442,6 +479,10 @@
 
 #if NGOS_BUILD_EARLY_LOG_LEVEL < OPTION_LOG_LEVEL_INHERIT || NGOS_BUILD_EARLY_LOG_LEVEL > OPTION_LOG_LEVEL_TRACE
 #error Invalid value for NGOS_BUILD_EARLY_LOG_LEVEL parameter
+#endif
+
+#if NGOS_BUILD_LOG_TO_UEFI_FILE != OPTION_NO && NGOS_BUILD_LOG_TO_UEFI_FILE != OPTION_YES
+#error Invalid value for NGOS_BUILD_LOG_TO_UEFI_FILE parameter
 #endif
 
 #if NGOS_BUILD_REALTIME != OPTION_NO && NGOS_BUILD_REALTIME != OPTION_YES
