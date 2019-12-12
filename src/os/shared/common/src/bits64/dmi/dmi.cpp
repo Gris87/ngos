@@ -157,56 +157,56 @@ NgosStatus DMI::init()
 
 
 
-        // COMMON_TEST_ASSERT(sVersion                  == 0x00020800,            NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sStructureTableLength     == 395,                   NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sStructureTableAddress       != 0,                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sChassisType              == DmiChassisType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sNumberOfMemoryDevices    == 1,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].handle  == 0x1100,                NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].device  != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].bank    == 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].size    == 1073741824,            NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 26,                    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[0]               != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[1]               != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[2]               != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[3]               != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[4]               != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[5]               != 0,                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sIdentities[6]            != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[7]            != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[8]            != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[9]            1= 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[10]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[11]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[12]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[13]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[14]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sIdentities[15]              != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[16]              != 0,                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sIdentities[17]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[18]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[19]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sIdentities[20]              != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[21]              != 0,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[22]              != 0,                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sIdentities[23]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[24]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[25]           != 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM  == 1,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sUuids[0]                    != 0,                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sUuids[0]->data1          == 0x9FAE0773,            NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data2          == 0xF53F,                NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data3          == 0x4A15,                NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data4          == 0x8A,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data5          == 0x11,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]       == 0xED,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]       == 0x76,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]       == 0xA1,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]       == 0x0F,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]       == 0x4E,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]       == 0x5B,                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVersion                  == 0x00020800,              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sStructureTableLength     == 395,                     NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sStructureTableAddress       != 0,                       NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sChassisType              == DmiChassisType::DESKTOP, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfMemoryDevices    == 1,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].handle  == 0x1100,                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].device  != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].bank    == 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices[0].size    == 1073741824,              NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 26,                      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[0]               != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[1]               != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[2]               != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[3]               != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[4]               != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[5]               != 0,                       NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sIdentities[6]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[7]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[8]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[9]            1= 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[10]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[11]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[12]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[13]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[14]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sIdentities[15]              != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[16]              != 0,                       NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sIdentities[17]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[18]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[19]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sIdentities[20]              != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[21]              != 0,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[22]              != 0,                       NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sIdentities[23]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[24]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[25]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM  == 1,                       NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sUuids[0]                    != 0,                       NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sUuids[0]->data1          == 0x9FAE0773,              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data2          == 0xF53F,                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data3          == 0x4A15,                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data4          == 0x8A,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data5          == 0x11,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]       == 0xED,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]       == 0x76,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]       == 0xA1,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]       == 0x0F,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]       == 0x4E,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]       == 0x5B,                    NgosStatus::ASSERTION); // Commented due to value variation
     }
 
 
@@ -505,25 +505,25 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
                     // COMMON_TEST_ASSERT(entry->extendedBiosSize.size == 0, NgosStatus::ASSERTION); // Commented due to value variation
                     // COMMON_TEST_ASSERT(entry->extendedBiosSize.unit == 0, NgosStatus::ASSERTION); // Commented due to value variation
 
-                    COMMON_TEST_ASSERT(entry->header.length == 26,                   NgosStatus::ASSERTION);
-                    COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= 26,                   NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
                 }
                 else
                 {
-                    // COMMON_TEST_ASSERT(entry->header.length == 24,                       NgosStatus::ASSERTION); // Commented to avoid failure // TODO: Fix in EDK2
-                    // COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiBiosEntry) - 2, NgosStatus::ASSERTION); // Commented to avoid failure // TODO: Fix in EDK2
+                    COMMON_TEST_ASSERT(entry->header.length >= 24,                       NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry) - 2, NgosStatus::ASSERTION);
                 }
             }
             else
             {
-                COMMON_TEST_ASSERT(entry->header.length == 19,                       NgosStatus::ASSERTION);
-                COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiBiosEntry) - 7, NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= 19,                       NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry) - 7, NgosStatus::ASSERTION);
             }
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length == 18,                       NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiBiosEntry) - 8, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 18,                       NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry) - 8, NgosStatus::ASSERTION);
         }
     }
 
@@ -617,8 +617,8 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         // COMMON_TEST_ASSERT(entry->skuNumberStringId     == 5,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->familyStringId        == 6,                                 NgosStatus::ASSERTION); // Commented due to value variation
 
-        COMMON_TEST_ASSERT(entry->header.length == 27,                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= 27,                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
     }
 
 
@@ -739,8 +739,8 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
         COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,                                           NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,                                           NgosStatus::ASSERTION); // Commented due to value variation
 
-        COMMON_TEST_ASSERT(entry->header.length == 15                        + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiBaseboardEntry) + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= 15                        + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBaseboardEntry) + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
     }
 
 
@@ -870,22 +870,22 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
         COMMON_TEST_ASSERT(entry->manufacturerStringId                         == 1,                                 NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->type                                         == DmiChassisType::OTHER,             NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->type                                      == DmiChassisType::OTHER,             NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->versionStringId                              == 2,                                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->serialNumberStringId                      == 3,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->assetTagStringId                          == 4,                                 NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->bootUpState                                  == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->powerSupplyState                             == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->thermalState                                 == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->securityStatus                               == DmiChassisSecurityStatus::UNKNOWN, NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->securityStatus                            == DmiChassisSecurityStatus::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->oemDefined[0]                                == 0,                                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->oemDefined[1]                                == 0,                                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->oemDefined[2]                                == 0,                                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->oemDefined[3]                                == 0,                                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->height                                       == 0,                                 NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->numberOfPowerCords                           == 0,                                 NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->numberOfPowerCords                        == 1,                                 NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->containedElementCount                        == 0,                                 NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->containedElementRecordLength                 == 0,                                 NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->containedElementRecordLength              == 3,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type    == DmiChassisType::OTHER,             NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->minimum == 0,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->maximum == 0,                                 NgosStatus::ASSERTION); // Commented due to value variation
@@ -893,13 +893,13 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
         if (sVersion >= DMI_VERSION(2, 7))
         {
-            COMMON_TEST_ASSERT(entry->header.length == 21                      + entry->containedElementCount * entry->containedElementRecordLength + 1, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiChassisEntry) + entry->containedElementCount * entry->containedElementRecordLength + 1, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 21                      + entry->containedElementCount * entry->containedElementRecordLength + 1, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntry) + entry->containedElementCount * entry->containedElementRecordLength + 1, NgosStatus::ASSERTION);
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length == 21                      + entry->containedElementCount * entry->containedElementRecordLength, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiChassisEntry) + entry->containedElementCount * entry->containedElementRecordLength, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 21                      + entry->containedElementCount * entry->containedElementRecordLength, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntry) + entry->containedElementCount * entry->containedElementRecordLength, NgosStatus::ASSERTION);
         }
     }
 
@@ -1086,25 +1086,25 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
                     // COMMON_TEST_ASSERT(entry->enabledCoreCount2 == 2, NgosStatus::ASSERTION); // Commented due to value variation
                     // COMMON_TEST_ASSERT(entry->threadCount2      == 2, NgosStatus::ASSERTION); // Commented due to value variation
 
-                    COMMON_TEST_ASSERT(entry->header.length == 48,                        NgosStatus::ASSERTION);
-                    COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiProcessorEntry), NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= 48,                        NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry), NgosStatus::ASSERTION);
                 }
                 else
                 {
-                    COMMON_TEST_ASSERT(entry->header.length == 42,                            NgosStatus::ASSERTION);
-                    COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiProcessorEntry) - 6, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= 42,                            NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 6, NgosStatus::ASSERTION);
                 }
             }
             else
             {
-                COMMON_TEST_ASSERT(entry->header.length == 40,                            NgosStatus::ASSERTION);
-                COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiProcessorEntry) - 8, NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= 40,                            NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 8, NgosStatus::ASSERTION);
             }
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length == 35,                             NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiProcessorEntry) - 13, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 35,                             NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 13, NgosStatus::ASSERTION);
         }
     }
 
@@ -1212,13 +1212,13 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
         {
             // COMMON_TEST_ASSERT(entry->extendedMaximumCapacity == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            COMMON_TEST_ASSERT(entry->header.length == 23,                                  NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiPhysicalMemoryArrayEntry), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 23,                                  NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntry), NgosStatus::ASSERTION);
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length == 15,                                      NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiPhysicalMemoryArrayEntry) - 8, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 15,                                      NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntry) - 8, NgosStatus::ASSERTION);
         }
     }
 
@@ -1269,13 +1269,13 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
             // COMMON_TEST_ASSERT(entry->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
             // COMMON_TEST_ASSERT(entry->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            COMMON_TEST_ASSERT(entry->header.length == 31,                                       NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 31,                                       NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length == 15,                                            NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryArrayMappedAddressEntry) - 16, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 15,                                            NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry) - 16, NgosStatus::ASSERTION);
         }
     }
 
@@ -1307,8 +1307,8 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
         // COMMON_TEST_ASSERT(entry->bootStatus == DmiSystemBootStatus::NO_ERROR, NgosStatus::ASSERTION); // Commented due to value variation
 
-        COMMON_TEST_ASSERT(entry->header.length == 11,                         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiSystemBootEntry), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= 11,                         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemBootEntry), NgosStatus::ASSERTION);
     }
 
 
@@ -1505,31 +1505,31 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
                         COMMON_TEST_ASSERT(entry->cacheSize                               == 0,                                                       NgosStatus::ASSERTION);
                         COMMON_TEST_ASSERT(entry->logicalSize                             == 0,                                                       NgosStatus::ASSERTION);
 
-                        COMMON_TEST_ASSERT(entry->header.length == 84,                           NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryDeviceEntry), NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->header.length >= 84,                           NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntry), NgosStatus::ASSERTION);
                     }
                     else
                     {
-                        COMMON_TEST_ASSERT(entry->header.length == 40,                                NgosStatus::ASSERTION);
-                        COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryDeviceEntry) - 44, NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->header.length >= 40,                                NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntry) - 44, NgosStatus::ASSERTION);
                     }
                 }
                 else
                 {
-                    COMMON_TEST_ASSERT(entry->header.length == 34,                                NgosStatus::ASSERTION);
-                    COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryDeviceEntry) - 50, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= 34,                                NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntry) - 50, NgosStatus::ASSERTION);
                 }
             }
             else
             {
-                COMMON_TEST_ASSERT(entry->header.length == 28,                                NgosStatus::ASSERTION);
-                COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryDeviceEntry) - 56, NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= 28,                                NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntry) - 56, NgosStatus::ASSERTION);
             }
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length == 27,                                NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length == sizeof(DmiMemoryDeviceEntry) - 57, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 27,                                NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntry) - 57, NgosStatus::ASSERTION);
         }
     }
 
