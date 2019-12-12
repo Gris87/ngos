@@ -870,7 +870,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
         COMMON_TEST_ASSERT(entry->manufacturerStringId                         == 1,                                 NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->type                                      == DmiChassisType::OTHER,             NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->type                                      == DmiChassisType::DESKTOP,           NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->versionStringId                              == 2,                                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->serialNumberStringId                      == 3,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->assetTagStringId                          == 4,                                 NgosStatus::ASSERTION); // Commented due to value variation
