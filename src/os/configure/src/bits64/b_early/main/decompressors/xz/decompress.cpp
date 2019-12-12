@@ -84,7 +84,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
         EARLY_LVVV(("streamHeader->signature   = 0x%02X %.4s 0x%02X", streamHeader->signature[0], &streamHeader->signature[1], streamHeader->signature[5]));
         EARLY_LVVV(("streamHeader->streamFlags = %s",                 flagsToFullString(streamHeader->streamFlags)));
         EARLY_LVVV(("streamHeader->crc32       = 0x%08X",             streamHeader->crc32));
-        EARLY_LVVV(("typeOfCheckFlag           = 0x%04X (%s)",        typeOfCheckFlag, flagToString(typeOfCheckFlag)));
+        EARLY_LVVV(("typeOfCheckFlag           = %s",                 flagToFullString(typeOfCheckFlag)));
 
 
 
@@ -307,7 +307,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
             else
             if (typeOfCheckFlag != XzStreamFlag::NONE)
             {
-                EARLY_LF(("Unsupported type of check 0x%04X (%s)", typeOfCheckFlag, flagToString(typeOfCheckFlag)));
+                EARLY_LF(("Unsupported type of check %s", flagToFullString(typeOfCheckFlag)));
 
                 return NgosStatus::NOT_SUPPORTED;
             }

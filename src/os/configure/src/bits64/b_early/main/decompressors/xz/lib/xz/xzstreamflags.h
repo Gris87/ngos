@@ -55,6 +55,25 @@ inline const char8* flagToString(XzStreamFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(XzStreamFlag flag) // TEST: NO
+{
+    // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    switch (flag)
+    {
+        case XzStreamFlag::NONE:                 return "NONE";
+        case XzStreamFlag::TYPE_OF_CHECK_CRC32:  return "TYPE_OF_CHECK_CRC32";
+        case XzStreamFlag::TYPE_OF_CHECK_CRC64:  return "TYPE_OF_CHECK_CRC64";
+        case XzStreamFlag::TYPE_OF_CHECK_SHA256: return "TYPE_OF_CHECK_SHA256";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 inline const char8* flagsToString(const XzStreamFlags &flags) // TEST: NO
 {
     // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
