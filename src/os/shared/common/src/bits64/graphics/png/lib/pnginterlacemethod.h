@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -40,13 +41,11 @@ inline const char8* enumToFullString(PngInterlaceMethod method) // TEST: NO
 
 
 
-    switch (method)
-    {
-        case PngInterlaceMethod::NONE:   return "NONE";
-        case PngInterlaceMethod::ADAM_7: return "ADAM_7";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", method, enumToString(method));
+
+    return res;
 }
 
 

@@ -13,6 +13,10 @@ NGOS:
 - Encapsulate flag types into struct
 - Check for mouse wheel on table widget
 - Convert FLAGS_TO_STRING to template
+- Move include to shared/common
+- Check for log includes: common or early?
+- Convert installer to UEFI application
+- Make kernelbase just for kernel
 
 - Complete with interruptions
 - Implement boot screen for kernel

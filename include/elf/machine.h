@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class ElfMachine: u16
@@ -56,30 +60,22 @@ inline const char8* enumToString(ElfMachine machine) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfMachine machine) // TEST: NO
 {
-    switch (machine)
-    {
-        case ElfMachine::NONE:             return "NONE";
-        case ElfMachine::MACHINE_M32:      return "MACHINE_M32";
-        case ElfMachine::MACHINE_SPARC:    return "MACHINE_SPARC";
-        case ElfMachine::MACHINE_X86:      return "MACHINE_X86";
-        case ElfMachine::MACHINE_68K:      return "MACHINE_68K";
-        case ElfMachine::MACHINE_88K:      return "MACHINE_88K";
-        case ElfMachine::MACHINE_860:      return "MACHINE_860";
-        case ElfMachine::MACHINE_MIPS:     return "MACHINE_MIPS";
-        case ElfMachine::MACHINE_POWER_PC: return "MACHINE_POWER_PC";
-        case ElfMachine::MACHINE_S390:     return "MACHINE_S390";
-        case ElfMachine::MACHINE_ARM:      return "MACHINE_ARM";
-        case ElfMachine::MACHINE_SUPERH:   return "MACHINE_SUPERH";
-        case ElfMachine::MACHINE_IA_64:    return "MACHINE_IA_64";
-        case ElfMachine::MACHINE_X86_64:   return "MACHINE_X86_64";
-        case ElfMachine::MACHINE_AARCH64:  return "MACHINE_AARCH64";
-        case ElfMachine::MACHINE_RISC_V:   return "MACHINE_RISC_V";
+    static char8 res[26];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%04X (%s)", machine, enumToString(machine));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

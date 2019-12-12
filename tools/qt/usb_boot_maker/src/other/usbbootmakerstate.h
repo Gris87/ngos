@@ -5,10 +5,11 @@
 
 #include <Qt>
 #include <ngos/types.h>
+#include <stdio.h>
 
 
 
-enum class UsbBootMakerState: quint8
+enum class UsbBootMakerState: quint8 // Ignore CppEnumVerifier
 {
     INITIAL            = 0,
     GET_LATEST_VERSION = 1,
@@ -37,16 +38,11 @@ inline const char8* enumToString(UsbBootMakerState state) // TEST: NO
 
 inline const char8* enumToFullString(UsbBootMakerState state) // TEST: NO
 {
-    switch (state)
-    {
-        case UsbBootMakerState::INITIAL:            return "INITIAL";
-        case UsbBootMakerState::GET_LATEST_VERSION: return "GET_LATEST_VERSION";
-        case UsbBootMakerState::GET_FILE_LIST:      return "GET_FILE_LIST";
-        case UsbBootMakerState::DOWNLOAD:           return "DOWNLOAD";
-        case UsbBootMakerState::BURNING:            return "BURNING";
+    static char8 res[26];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", (quint8)state, enumToString(state));
+
+    return res;
 }
 
 

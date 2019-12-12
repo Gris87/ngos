@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class ElfData: u8
@@ -30,17 +34,22 @@ inline const char8* enumToString(ElfData data) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfData data) // TEST: NO
 {
-    switch (data)
-    {
-        case ElfData::NONE:                   return "NONE";
-        case ElfData::LEAST_SIGNIFICANT_BYTE: return "LEAST_SIGNIFICANT_BYTE";
-        case ElfData::MOST_SIGNIFICANT_BYTE:  return "MOST_SIGNIFICANT_BYTE";
+    static char8 res[30];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", data, enumToString(data));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -34,15 +35,11 @@ inline const char8* enumToString(UefiPciIoProtocolOperation operation) // TEST: 
 
 inline const char8* enumToFullString(UefiPciIoProtocolOperation operation) // TEST: NO
 {
-    switch (operation)
-    {
-        case UefiPciIoProtocolOperation::BUS_MASTER_READ:          return "BUS_MASTER_READ";
-        case UefiPciIoProtocolOperation::BUS_MASTER_WRITE:         return "BUS_MASTER_WRITE";
-        case UefiPciIoProtocolOperation::BUS_MASTER_COMMON_BUFFER: return "BUS_MASTER_COMMON_BUFFER";
-        case UefiPciIoProtocolOperation::MAXIMUM:                  return "MAXIMUM";
+    static char8 res[38];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
+
+    return res;
 }
 
 

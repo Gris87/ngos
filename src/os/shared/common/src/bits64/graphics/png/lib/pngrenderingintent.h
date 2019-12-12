@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -44,15 +45,11 @@ inline const char8* enumToFullString(PngRenderingIntent intent) // TEST: NO
 
 
 
-    switch (intent)
-    {
-        case PngRenderingIntent::PERCEPTUAL:            return "PERCEPTUAL";
-        case PngRenderingIntent::RELATIVE_COLORIMETRIC: return "RELATIVE_COLORIMETRIC";
-        case PngRenderingIntent::SATURATION:            return "SATURATION";
-        case PngRenderingIntent::ABSOLUTE_COLORIMETRIC: return "ABSOLUTE_COLORIMETRIC";
+    static char8 res[29];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", intent, enumToString(intent));
+
+    return res;
 }
 
 

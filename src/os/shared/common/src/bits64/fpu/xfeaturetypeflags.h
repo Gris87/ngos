@@ -36,7 +36,7 @@ enum class XFeatureTypeFlag: x_feature_type_flags
     PKRU                                  = (1ULL << (u64)XFeature::PKRU)
 };
 
-DEFINE_FLAGS(XFeatureTypeFlags, x_feature_type_flags);
+DEFINE_FLAGS(XFeatureTypeFlags, x_feature_type_flags); // TEST: NO
 
 
 
@@ -66,22 +66,30 @@ inline const char8* flagToString(XFeatureTypeFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(XFeatureTypeFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[59];
+
+    sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const XFeatureTypeFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[174];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, XFeatureTypeFlag);
+    FLAGS_TO_STRING(res, flags.flags, XFeatureTypeFlag);
 
     return res;
 }
@@ -90,20 +98,13 @@ inline const char8* flagsToString(const XFeatureTypeFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const XFeatureTypeFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[195];
 
-
-
-    static char8 res[174];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, XFeatureTypeFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, XFeatureTypeFlag, "0x%016lX");
 
     return res;
 }

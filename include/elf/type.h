@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class ElfType: u16
@@ -34,19 +38,22 @@ inline const char8* enumToString(ElfType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfType type) // TEST: NO
 {
-    switch (type)
-    {
-        case ElfType::NONE:            return "NONE";
-        case ElfType::RELOCATABLE:     return "RELOCATABLE";
-        case ElfType::EXECUTABLE:      return "EXECUTABLE";
-        case ElfType::DYNAMIC_LIBRARY: return "DYNAMIC_LIBRARY";
-        case ElfType::CORE:            return "CORE";
+    static char8 res[25];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%04X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

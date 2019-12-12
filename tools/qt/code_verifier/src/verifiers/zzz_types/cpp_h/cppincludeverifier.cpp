@@ -23,8 +23,6 @@ CppIncludeVerifier::CppIncludeVerifier()
 void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
 {
     if (
-        path.endsWith("src/os/include/uefi/uefivariableattributeflags.h")
-        ||
         path.endsWith("src/os/shared/common/src/bits64/dmi/dmi.cpp")
         ||
         path.endsWith("src/os/shared/common/src/bits64/log/assert.h")
@@ -47,6 +45,74 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
         path.endsWith("_win.cpp")
         ||
         path.endsWith("_win.h")
+       )
+    {
+        return;
+    }
+
+
+
+    if (
+        lines.length() > 12
+        &&
+        lines.at(2) == ""
+        &&
+        lines.at(3) == ""
+        &&
+        lines.at(4) == ""
+        &&
+        lines.at(5) == "#include <ngos/types.h>"
+        &&
+        lines.at(6) == ""
+        &&
+        lines.at(7) == "#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile"
+        &&
+        lines.at(8) == "#include <common/src/bits64/printf/printf.h>"
+        &&
+        lines.at(9) == "#endif"
+        &&
+        lines.at(10) == ""
+        &&
+        lines.at(11) == ""
+        &&
+        lines.at(12) == ""
+       )
+    {
+        return;
+    }
+
+
+
+    if (
+        lines.length() > 15
+        &&
+        lines.at(2) == ""
+        &&
+        lines.at(3) == ""
+        &&
+        lines.at(4) == ""
+        &&
+        lines.at(5) == "#include <ngos/flags.h>"
+        &&
+        lines.at(6) == "#include <ngos/linkage.h>"
+        &&
+        lines.at(7) == "#include <ngos/types.h>"
+        &&
+        lines.at(8) == ""
+        &&
+        lines.at(9) == "#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile"
+        &&
+        lines.at(10) == "#include <common/src/bits64/printf/printf.h>"
+        &&
+        lines.at(11) == "#include <common/src/bits64/string/string.h>"
+        &&
+        lines.at(12) == "#endif"
+        &&
+        lines.at(13) == ""
+        &&
+        lines.at(14) == ""
+        &&
+        lines.at(15) == ""
        )
     {
         return;

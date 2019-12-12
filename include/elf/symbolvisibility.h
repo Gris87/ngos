@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class ElfSymbolVisibility: u8
@@ -38,21 +42,22 @@ inline const char8* enumToString(ElfSymbolVisibility visibility) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 {
-    switch (visibility)
-    {
-        case ElfSymbolVisibility::DEFAULT:   return "DEFAULT";
-        case ElfSymbolVisibility::INTERNAL:  return "INTERNAL";
-        case ElfSymbolVisibility::HIDDEN:    return "HIDDEN";
-        case ElfSymbolVisibility::PROTECTED: return "PROTECTED";
-        case ElfSymbolVisibility::EXPORTED:  return "EXPORTED";
-        case ElfSymbolVisibility::SINGLETON: return "SINGLETON";
-        case ElfSymbolVisibility::ELIMINATE: return "ELIMINATE";
+    static char8 res[17];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", visibility, enumToString(visibility));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

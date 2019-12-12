@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class MemoryMapEntryType: u8
@@ -40,22 +44,22 @@ inline const char8* enumToString(MemoryMapEntryType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(MemoryMapEntryType type) // TEST: NO
 {
-    switch (type)
-    {
-        case MemoryMapEntryType::NONE:               return "NONE";
-        case MemoryMapEntryType::RAM:                return "RAM";
-        case MemoryMapEntryType::ACPI:               return "ACPI";
-        case MemoryMapEntryType::NVS:                return "NVS";
-        case MemoryMapEntryType::PERSISTENT_MEMORY:  return "PERSISTENT_MEMORY";
-        case MemoryMapEntryType::UNUSABLE:           return "UNUSABLE";
-        case MemoryMapEntryType::RESERVED:           return "RESERVED";
-        case MemoryMapEntryType::RESERVED_BY_KERNEL: return "RESERVED_BY_KERNEL";
+    static char8 res[26];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

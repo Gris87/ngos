@@ -24,7 +24,7 @@ enum class DmiProcessorVoltageFlag: dmi_processor_voltage_flags
     INDICATE_LEGACY = (1ULL << 7)
 };
 
-DEFINE_FLAGS(DmiProcessorVoltageFlags, dmi_processor_voltage_flags);
+DEFINE_FLAGS(DmiProcessorVoltageFlags, dmi_processor_voltage_flags); // TEST: NO
 
 
 
@@ -48,22 +48,30 @@ inline const char8* flagToString(DmiProcessorVoltageFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(DmiProcessorVoltageFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[23];
+
+    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const DmiProcessorVoltageFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[83];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorVoltageFlag);
+    FLAGS_TO_STRING(res, flags.flags, DmiProcessorVoltageFlag);
 
     return res;
 }
@@ -72,20 +80,13 @@ inline const char8* flagsToString(const DmiProcessorVoltageFlags &flags) // TEST
 
 inline const char8* flagsToFullString(const DmiProcessorVoltageFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[90];
 
-
-
-    static char8 res[83];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorVoltageFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiProcessorVoltageFlag, "0x%02X");
 
     return res;
 }

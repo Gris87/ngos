@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -44,15 +45,11 @@ inline const char8* enumToFullString(ZLibCompressionLevel level) // TEST: NO
 
 
 
-    switch (level)
-    {
-        case ZLibCompressionLevel::FASTEST:             return "FASTEST";
-        case ZLibCompressionLevel::FAST:                return "FAST";
-        case ZLibCompressionLevel::DEFAULT:             return "DEFAULT";
-        case ZLibCompressionLevel::MAXIMUM_COMPRESSION: return "MAXIMUM_COMPRESSION";
+    static char8 res[27];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", level, enumToString(level));
+
+    return res;
 }
 
 

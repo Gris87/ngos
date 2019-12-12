@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -48,18 +51,11 @@ inline const char8* enumToFullString(DmiChassisState state) // TEST: NO
 
 
 
-    switch (state)
-    {
-        case DmiChassisState::NONE:            return "NONE";
-        case DmiChassisState::OTHER:           return "OTHER";
-        case DmiChassisState::UNKNOWN:         return "UNKNOWN";
-        case DmiChassisState::SAFE:            return "SAFE";
-        case DmiChassisState::WARNING:         return "WARNING";
-        case DmiChassisState::CRITICAL:        return "CRITICAL";
-        case DmiChassisState::NON_RECOVERABLE: return "NON_RECOVERABLE";
+    static char8 res[23];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", state, enumToString(state));
+
+    return res;
 }
 
 

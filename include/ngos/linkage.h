@@ -128,14 +128,21 @@
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
-#define FLAGS_TO_STRING(res, flags, typeToString, type) \
+#define FLAGS_TO_STRING(res, flags, type) \
     { \
+        if (!flags) \
+        { \
+            return "NONE"; \
+        } \
+        \
         char8 *cur = res; \
         *cur       = 0; \
         \
+        char8 *start = cur; \
+        \
+        \
+        \
         u8 unknownCount = 0; \
-        \
-        \
         \
         for (i64 i = 0; i < (i64)(sizeof(flags) << 3); ++i) \
         { \
@@ -143,7 +150,7 @@
             \
             if (flags & flag) \
             { \
-                const char8 *flagString = typeToString((type)flag); \
+                const char8 *flagString = flagToString((type)flag); \
                 \
                 if (!strcmp(flagString, "UNKNOWN")) \
                 { \
@@ -151,7 +158,7 @@
                 } \
                 else \
                 { \
-                    if (cur != res) \
+                    if (cur != start) \
                     { \
                         cur = strapp(cur, " | "); \
                     } \
@@ -167,7 +174,7 @@
         \
         if (unknownCount) \
         { \
-            if (cur != res) \
+            if (cur != start) \
             { \
                 cur = strapp(cur, " | "); \
             } \
@@ -182,6 +189,80 @@
             { \
                 sprintf(cur, "UNKNOWN x %u", unknownCount); \
             } \
+        } \
+    }
+// Ignore CppAlignmentVerifier [END]
+
+
+
+// Ignore CppAlignmentVerifier [BEGIN]
+#define FLAGS_TO_FULL_STRING(res, flags, type, typeFormat) \
+    { \
+        char8 *cur = res + sprintf(res, typeFormat " (", flags); \
+        \
+        if (!flags) \
+        { \
+            strapp(cur, "NONE)"); \
+            \
+            return res; \
+        } \
+        \
+        char8 *start = cur; \
+        \
+        \
+        \
+        u8 unknownCount = 0; \
+        \
+        for (i64 i = 0; i < (i64)(sizeof(flags) << 3); ++i) \
+        { \
+            u64 flag = (1ULL << i); \
+            \
+            if (flags & flag) \
+            { \
+                const char8 *flagString = flagToString((type)flag); \
+                \
+                if (!strcmp(flagString, "UNKNOWN")) \
+                { \
+                    ++unknownCount; \
+                } \
+                else \
+                { \
+                    if (cur != start) \
+                    { \
+                        cur = strapp(cur, " | "); \
+                    } \
+                    \
+                    \
+                    \
+                    cur = strapp(cur, flagString); \
+                } \
+            } \
+        } \
+        \
+        \
+        \
+        if (unknownCount) \
+        { \
+            if (cur != start) \
+            { \
+                cur = strapp(cur, " | "); \
+            } \
+            \
+            \
+            \
+            if (unknownCount == 1) \
+            { \
+                strapp(cur, "UNKNOWN)"); \
+            } \
+            else \
+            { \
+                sprintf(cur, "UNKNOWN x %u)", unknownCount); \
+            } \
+        } \
+        else \
+        { \
+            cur[0] = ')'; \
+            cur[1] = 0; \
         } \
     }
 // Ignore CppAlignmentVerifier [END]

@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -46,17 +49,11 @@ inline const char8* enumToFullString(DmiChassisSecurityStatus status) // TEST: N
 
 
 
-    switch (status)
-    {
-        case DmiChassisSecurityStatus::NULL:                              return "NULL";
-        case DmiChassisSecurityStatus::OTHER:                             return "OTHER";
-        case DmiChassisSecurityStatus::UNKNOWN:                           return "UNKNOWN";
-        case DmiChassisSecurityStatus::NONE:                              return "NONE";
-        case DmiChassisSecurityStatus::EXTERNAL_INTERFACE_LOCKED_OUT:     return "EXTERNAL_INTERFACE_LOCKED_OUT";
-        case DmiChassisSecurityStatus::EXTERNAL_INTERFACE_LOCKED_ENABLED: return "EXTERNAL_INTERFACE_LOCKED_ENABLED";
+    static char8 res[41];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", status, enumToString(status));
+
+    return res;
 }
 
 

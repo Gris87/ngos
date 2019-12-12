@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -56,22 +59,11 @@ inline const char8* enumToFullString(XFeature feature) // TEST: NO
 
 
 
-    switch (feature)
-    {
-        case XFeature::FPU:                                   return "FPU";
-        case XFeature::SSE:                                   return "SSE";
-        case XFeature::AVX:                                   return "AVX";
-        case XFeature::MPX_BOUND_REGISTERS:                   return "MPX_BOUND_REGISTERS";
-        case XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS: return "MPX_BOUND_CONFIG_AND_STATUS_REGISTERS";
-        case XFeature::AVX512_OPMASK:                         return "AVX512_OPMASK";
-        case XFeature::AVX512_ZMM_FROM_0_TO_15:               return "AVX512_ZMM_FROM_0_TO_15";
-        case XFeature::AVX512_ZMM_FROM_16_TO_31:              return "AVX512_ZMM_FROM_16_TO_31";
-        case XFeature::PT:                                    return "PT";
-        case XFeature::PKRU:                                  return "PKRU";
-        case XFeature::MAXIMUM:                               return "MAXIMUM";
+    static char8 res[45];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", feature, enumToString(feature));
+
+    return res;
 }
 
 

@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -50,19 +53,11 @@ inline const char8* enumToFullString(DmiPhysicalMemoryArrayErrorCorrection corre
 
 
 
-    switch (correction)
-    {
-        case DmiPhysicalMemoryArrayErrorCorrection::NULL:           return "NULL";
-        case DmiPhysicalMemoryArrayErrorCorrection::OTHER:          return "OTHER";
-        case DmiPhysicalMemoryArrayErrorCorrection::UNKNOWN:        return "UNKNOWN";
-        case DmiPhysicalMemoryArrayErrorCorrection::NONE:           return "NONE";
-        case DmiPhysicalMemoryArrayErrorCorrection::PARITY:         return "PARITY";
-        case DmiPhysicalMemoryArrayErrorCorrection::SINGLE_BIT_ECC: return "SINGLE_BIT_ECC";
-        case DmiPhysicalMemoryArrayErrorCorrection::MULTI_BIT_ECC:  return "MULTI_BIT_ECC";
-        case DmiPhysicalMemoryArrayErrorCorrection::CRC:            return "CRC";
+    static char8 res[22];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", correction, enumToString(correction));
+
+    return res;
 }
 
 

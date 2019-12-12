@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiTimerDelay: u32
@@ -32,18 +36,22 @@ inline const char8* enumToString(UefiTimerDelay delay) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiTimerDelay delay) // TEST: NO
 {
-    switch (delay)
-    {
-        case UefiTimerDelay::CANCEL:   return "CANCEL";
-        case UefiTimerDelay::PERIODIC: return "PERIODIC";
-        case UefiTimerDelay::RELATIVE: return "RELATIVE";
-        case UefiTimerDelay::MAXIMUM:  return "MAXIMUM";
+    static char8 res[22];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", delay, enumToString(delay));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

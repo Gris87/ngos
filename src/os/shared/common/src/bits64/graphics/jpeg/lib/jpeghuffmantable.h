@@ -3,9 +3,9 @@
 
 
 
+#include <common/src/bits64/graphics/jpeg/lib/jpeghuffmantabletype.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpeghuffmantabletype.h>
 #include <ngos/types.h>
 
 

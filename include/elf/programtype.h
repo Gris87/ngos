@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 #define ELF_PROGRAM_TYPE_OS_LOW         0x60000000
@@ -45,21 +49,22 @@ inline const char8* enumToString(ElfProgramType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfProgramType type) // TEST: NO
 {
-    switch (type)
-    {
-        case ElfProgramType::NONE:    return "NONE";
-        case ElfProgramType::LOAD:    return "LOAD";
-        case ElfProgramType::DYNAMIC: return "DYNAMIC";
-        case ElfProgramType::INTERP:  return "INTERP";
-        case ElfProgramType::NOTE:    return "NOTE";
-        case ElfProgramType::SHLIB:   return "SHLIB";
-        case ElfProgramType::PHDR:    return "PHDR";
+    static char8 res[21];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

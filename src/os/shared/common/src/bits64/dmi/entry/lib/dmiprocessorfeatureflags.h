@@ -47,7 +47,7 @@ enum class DmiProcessorFeatureFlag: dmi_processor_feature_flags
     TM    = (1ULL << 29)
 };
 
-DEFINE_FLAGS(DmiProcessorFeatureFlags, dmi_processor_feature_flags);
+DEFINE_FLAGS(DmiProcessorFeatureFlags, dmi_processor_feature_flags); // TEST: NO
 
 
 
@@ -94,22 +94,30 @@ inline const char8* flagToString(DmiProcessorFeatureFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(DmiProcessorFeatureFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[21];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const DmiProcessorFeatureFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[181];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorFeatureFlag);
+    FLAGS_TO_STRING(res, flags.flags, DmiProcessorFeatureFlag);
 
     return res;
 }
@@ -118,20 +126,13 @@ inline const char8* flagsToString(const DmiProcessorFeatureFlags &flags) // TEST
 
 inline const char8* flagsToFullString(const DmiProcessorFeatureFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[194];
 
-
-
-    static char8 res[181];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiProcessorFeatureFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiProcessorFeatureFlag, "0x%08X");
 
     return res;
 }

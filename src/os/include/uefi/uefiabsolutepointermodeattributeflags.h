@@ -20,7 +20,7 @@ enum class UefiAbsolutePointerModeAttributeFlag: uefi_absolute_pointer_mode_attr
     SUPPORTS_PRESSURE_AS_Z    = (1ULL << 1)
 };
 
-DEFINE_FLAGS(UefiAbsolutePointerModeAttributeFlags, uefi_absolute_pointer_mode_attribute_flags);
+DEFINE_FLAGS(UefiAbsolutePointerModeAttributeFlags, uefi_absolute_pointer_mode_attribute_flags); // TEST: NO
 
 
 
@@ -38,18 +38,22 @@ inline const char8* flagToString(UefiAbsolutePointerModeAttributeFlag flag) // T
 
 
 
+inline const char8* flagToFullString(UefiAbsolutePointerModeAttributeFlag flag) // TEST: NO
+{
+    static char8 res[39];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const UefiAbsolutePointerModeAttributeFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
-
-
-
     static char8 res[66];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerModeAttributeFlag);
+    FLAGS_TO_STRING(res, flags.flags, UefiAbsolutePointerModeAttributeFlag);
 
     return res;
 }
@@ -58,16 +62,9 @@ inline const char8* flagsToString(const UefiAbsolutePointerModeAttributeFlags &f
 
 inline const char8* flagsToFullString(const UefiAbsolutePointerModeAttributeFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[79];
 
-
-
-    static char8 res[66];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerModeAttributeFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, UefiAbsolutePointerModeAttributeFlag, "0x%08X");
 
     return res;
 }

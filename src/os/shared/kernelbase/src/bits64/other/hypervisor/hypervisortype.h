@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -38,13 +41,11 @@ inline const char8* enumToFullString(HypervisorType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case HypervisorType::NONE: return "NONE";
-        case HypervisorType::KVM:  return "KVM";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

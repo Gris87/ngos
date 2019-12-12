@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class ElfClass: u8
@@ -30,17 +34,22 @@ inline const char8* enumToString(ElfClass elfClass) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfClass elfClass) // TEST: NO
 {
-    switch (elfClass)
-    {
-        case ElfClass::NONE:     return "NONE";
-        case ElfClass::CLASS_32: return "CLASS_32";
-        case ElfClass::CLASS_64: return "CLASS_64";
+    static char8 res[16];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", elfClass, enumToString(elfClass));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

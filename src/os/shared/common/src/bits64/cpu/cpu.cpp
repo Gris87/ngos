@@ -4,9 +4,9 @@
 #include <common/src/bits64/cpu/flags.h>
 #include <common/src/bits64/cpu/generated/x86bugsnames.h>
 #include <common/src/bits64/cpu/generated/x86featuresnames.h>
-#include <common/src/bits64/cpu/model/amd.h>
+#include <common/src/bits64/cpu/model/amdcpumodel.h>
 #include <common/src/bits64/cpu/model/cpumodel.h>
-#include <common/src/bits64/cpu/model/intel.h>
+#include <common/src/bits64/cpu/model/intelcpumodel.h>
 #include <common/src/bits64/cpu/msr/msr.h>
 #include <common/src/bits64/cpu/msr/msrregisters.h>
 #include <common/src/bits64/log/assert.h>

@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -48,18 +51,11 @@ inline const char8* enumToFullString(DmiProcessorType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case DmiProcessorType::NONE:              return "NONE";
-        case DmiProcessorType::OTHER:             return "OTHER";
-        case DmiProcessorType::UNKNOWN:           return "UNKNOWN";
-        case DmiProcessorType::CENTRAL_PROCESSOR: return "CENTRAL_PROCESSOR";
-        case DmiProcessorType::MATH_PROCESSOR:    return "MATH_PROCESSOR";
-        case DmiProcessorType::DSP_PROCESSOR:     return "DSP_PROCESSOR";
-        case DmiProcessorType::VIDEO_PROCESSOR:   return "VIDEO_PROCESSOR";
+    static char8 res[25];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

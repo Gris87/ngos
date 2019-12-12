@@ -27,7 +27,7 @@ enum class GzipMemberExtraFlag: gzip_member_extra_flags
     DEFLATE_FAST = (1ULL << 2)
 };
 
-DEFINE_FLAGS(GzipMemberExtraFlags, gzip_member_extra_flags);
+DEFINE_FLAGS(GzipMemberExtraFlags, gzip_member_extra_flags); // TEST: NO
 
 
 
@@ -49,22 +49,30 @@ inline const char8* flagToString(GzipMemberExtraFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(GzipMemberExtraFlag flag) // TEST: NO
+{
+    // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[20];
+
+    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const GzipMemberExtraFlags &flags) // TEST: NO
 {
-    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // EARLY_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[43];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, GzipMemberExtraFlag);
+    FLAGS_TO_STRING(res, flags.flags, GzipMemberExtraFlag);
 
     return res;
 }
@@ -73,20 +81,13 @@ inline const char8* flagsToString(const GzipMemberExtraFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const GzipMemberExtraFlags &flags) // TEST: NO
 {
-    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // EARLY_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[50];
 
-
-
-    static char8 res[43];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, GzipMemberExtraFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, GzipMemberExtraFlag, "0x%02X");
 
     return res;
 }

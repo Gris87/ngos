@@ -7,7 +7,7 @@
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
 #endif
@@ -28,7 +28,7 @@ enum class UefiVariableAttributeFlag: uefi_variable_attribute_flags
     APPEND_WRITE                          = (1ULL << 6)
 };
 
-DEFINE_FLAGS(UefiVariableAttributeFlags, uefi_variable_attribute_flags);
+DEFINE_FLAGS(UefiVariableAttributeFlags, uefi_variable_attribute_flags); // TEST: NO
 
 
 
@@ -51,22 +51,26 @@ inline const char8* flagToString(UefiVariableAttributeFlag flag) // TEST: NO
 
 
 
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
+inline const char8* flagToFullString(UefiVariableAttributeFlag flag) // TEST: NO
+{
+    static char8 res[51];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
 
 
 
 inline const char8* flagsToString(const UefiVariableAttributeFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
-
-
-
     static char8 res[156];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiVariableAttributeFlag);
+    FLAGS_TO_STRING(res, flags.flags, UefiVariableAttributeFlag);
 
     return res;
 }
@@ -75,16 +79,9 @@ inline const char8* flagsToString(const UefiVariableAttributeFlags &flags) // TE
 
 inline const char8* flagsToFullString(const UefiVariableAttributeFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[169];
 
-
-
-    static char8 res[156];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiVariableAttributeFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, UefiVariableAttributeFlag, "0x%08X");
 
     return res;
 }

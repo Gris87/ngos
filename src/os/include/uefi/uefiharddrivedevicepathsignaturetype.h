@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -32,14 +33,11 @@ inline const char8* enumToString(UefiHardDriveDevicePathSignatureType type) // T
 
 inline const char8* enumToFullString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
 {
-    switch (type)
-    {
-        case UefiHardDriveDevicePathSignatureType::NONE: return "NONE";
-        case UefiHardDriveDevicePathSignatureType::MBR:  return "MBR";
-        case UefiHardDriveDevicePathSignatureType::GUID: return "GUID";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

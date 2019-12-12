@@ -18,8 +18,8 @@
 #include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/cpu/cpufamily.h>
 #include <common/src/bits64/cpu/cpuvendor.h>
-#include <common/src/bits64/cpu/model/amd.h>
-#include <common/src/bits64/cpu/model/intel.h>
+#include <common/src/bits64/cpu/model/amdcpumodel.h>
+#include <common/src/bits64/cpu/model/intelcpumodel.h>
 #include <common/src/bits64/cpu/msr/msr.h>
 #include <common/src/bits64/cpu/x86bug.h>
 #include <common/src/bits64/cpu/x86bugword.h>
@@ -260,6 +260,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(JpegDefineQuantizationTableMarker),             4);
         TEST_ASSERT_EQUALS(sizeof(JpegDefineRestartIntervalMarker),               6);
         TEST_ASSERT_EQUALS(sizeof(JpegHuffmanTable),                              17);
+        TEST_ASSERT_EQUALS(sizeof(JpegHuffmanTableType),                          1);
         TEST_ASSERT_EQUALS(sizeof(JpegMarkerHeader),                              4);
         TEST_ASSERT_EQUALS(sizeof(JpegMarkerType),                                1);
         TEST_ASSERT_EQUALS(sizeof(JpegQuantizationTable),                         1);

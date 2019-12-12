@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -40,13 +41,11 @@ inline const char8* enumToFullString(ZLibCompressionMethod method) // TEST: NO
 
 
 
-    switch (method)
-    {
-        case ZLibCompressionMethod::NONE:    return "NONE";
-        case ZLibCompressionMethod::DEFLATE: return "DEFLATE";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", method, enumToString(method));
+
+    return res;
 }
 
 

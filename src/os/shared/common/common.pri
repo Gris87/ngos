@@ -73,9 +73,9 @@ HEADERS += \
     $$PWD/src/bits64/cpu/flags.h \
     $$PWD/src/bits64/cpu/generated/x86bugsnames.h \
     $$PWD/src/bits64/cpu/generated/x86featuresnames.h \
-    $$PWD/src/bits64/cpu/model/amd.h \
+    $$PWD/src/bits64/cpu/model/amdcpumodel.h \
     $$PWD/src/bits64/cpu/model/cpumodel.h \
-    $$PWD/src/bits64/cpu/model/intel.h \
+    $$PWD/src/bits64/cpu/model/intelcpumodel.h \
     $$PWD/src/bits64/cpu/msr/msr.h \
     $$PWD/src/bits64/cpu/msr/msrregisters.h \
     $$PWD/src/bits64/cpu/x86bug.h \
@@ -163,6 +163,7 @@ HEADERS += \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegdefinequantizationtablemarker.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegdefinerestartintervalmarker.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpeghuffmantable.h \
+    $$PWD/src/bits64/graphics/jpeg/lib/jpeghuffmantabletype.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegmarkerheader.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegmarkertype.h \
     $$PWD/src/bits64/graphics/jpeg/lib/jpegquantizationtable.h \

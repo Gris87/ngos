@@ -25,7 +25,7 @@ enum class DmiBiosCharacteristicsSystemReservedFlag: dmi_bios_characteristics_sy
     VIRTUAL_MACHINE_SUPPORTED           = (1ULL << 4)
 };
 
-DEFINE_FLAGS(DmiBiosCharacteristicsSystemReservedFlags, dmi_bios_characteristics_system_reserved_flags);
+DEFINE_FLAGS(DmiBiosCharacteristicsSystemReservedFlags, dmi_bios_characteristics_system_reserved_flags); // TEST: NO
 
 
 
@@ -50,22 +50,30 @@ inline const char8* flagToString(DmiBiosCharacteristicsSystemReservedFlag flag) 
 
 
 
+inline const char8* flagToFullString(DmiBiosCharacteristicsSystemReservedFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[43];
+
+    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const DmiBiosCharacteristicsSystemReservedFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[184];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsSystemReservedFlag);
+    FLAGS_TO_STRING(res, flags.flags, DmiBiosCharacteristicsSystemReservedFlag);
 
     return res;
 }
@@ -74,20 +82,13 @@ inline const char8* flagsToString(const DmiBiosCharacteristicsSystemReservedFlag
 
 inline const char8* flagsToFullString(const DmiBiosCharacteristicsSystemReservedFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[191];
 
-
-
-    static char8 res[184];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsSystemReservedFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiBiosCharacteristicsSystemReservedFlag, "0x%02X");
 
     return res;
 }

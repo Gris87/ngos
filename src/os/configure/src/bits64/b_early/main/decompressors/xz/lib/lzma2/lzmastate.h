@@ -76,23 +76,11 @@ inline const char8* enumToFullString(LzmaState state) // TEST: NO
 
 
 
-    switch (state)
-    {
-        case LzmaState::LITERAL_LITERAL:             return "LITERAL_LITERAL";
-        case LzmaState::MATCH_LITERAL_LITERAL:       return "MATCH_LITERAL_LITERAL";
-        case LzmaState::REPEAT_LITERAL_LITERAL:      return "REPEAT_LITERAL_LITERAL";
-        case LzmaState::SHORTREPEAT_LITERAL_LITERAL: return "SHORTREPEAT_LITERAL_LITERAL";
-        case LzmaState::MATCH_LITERAL:               return "MATCH_LITERAL";
-        case LzmaState::REPEAT_LITERAL:              return "REPEAT_LITERAL";
-        case LzmaState::SHORTREPEAT_LITERAL:         return "SHORTREPEAT_LITERAL";
-        case LzmaState::LITERAL_MATCH:               return "LITERAL_MATCH";
-        case LzmaState::LITERAL_LONGREPEAT:          return "LITERAL_LONGREPEAT";
-        case LzmaState::LITERAL_SHORTREPEAT:         return "LITERAL_SHORTREPEAT";
-        case LzmaState::NONLITERAL_MATCH:            return "NONLITERAL_MATCH";
-        case LzmaState::NONLITERAL_REPEAT:           return "NONLITERAL_REPEAT";
+    static char8 res[35];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", state, enumToString(state));
+
+    return res;
 }
 
 

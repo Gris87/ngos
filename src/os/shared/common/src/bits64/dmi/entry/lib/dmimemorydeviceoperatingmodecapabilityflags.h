@@ -25,7 +25,7 @@ enum class DmiMemoryDeviceOperatingModeCapabilityFlag: dmi_memory_device_operati
     BLOCK_ACCESSIBLE_PERSISTENT_MEMORY = (1ULL << 5)
 };
 
-DEFINE_FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlags, dmi_memory_device_operating_mode_capability_flags);
+DEFINE_FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlags, dmi_memory_device_operating_mode_capability_flags); // TEST: NO
 
 
 
@@ -50,22 +50,30 @@ inline const char8* flagToString(DmiMemoryDeviceOperatingModeCapabilityFlag flag
 
 
 
+inline const char8* flagToFullString(DmiMemoryDeviceOperatingModeCapabilityFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[44];
+
+    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const DmiMemoryDeviceOperatingModeCapabilityFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags) // flags.flags == 0
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[122];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiMemoryDeviceOperatingModeCapabilityFlag);
+    FLAGS_TO_STRING(res, flags.flags, DmiMemoryDeviceOperatingModeCapabilityFlag);
 
     return res;
 }
@@ -74,20 +82,13 @@ inline const char8* flagsToString(const DmiMemoryDeviceOperatingModeCapabilityFl
 
 inline const char8* flagsToFullString(const DmiMemoryDeviceOperatingModeCapabilityFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags) // flags.flags == 0
-    {
-        return "NONE";
-    }
+    static char8 res[131];
 
-
-
-    static char8 res[122];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiMemoryDeviceOperatingModeCapabilityFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiMemoryDeviceOperatingModeCapabilityFlag, "0x%04X");
 
     return res;
 }

@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -42,14 +43,11 @@ inline const char8* enumToFullString(InflateBlockType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case InflateBlockType::NO_COMPRESSION:             return "NO_COMPRESSION";
-        case InflateBlockType::COMPRESSED_FIXED_HUFFMAN:   return "COMPRESSED_FIXED_HUFFMAN";
-        case InflateBlockType::COMPRESSED_DYNAMIC_HUFFMAN: return "COMPRESSED_DYNAMIC_HUFFMAN";
+    static char8 res[34];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

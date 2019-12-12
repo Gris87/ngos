@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -54,21 +57,11 @@ inline const char8* enumToFullString(BmpCompressionMethod method) // TEST: NO
 
 
 
-    switch (method)
-    {
-        case BmpCompressionMethod::RGB:              return "RGB";
-        case BmpCompressionMethod::RLE8:             return "RLE8";
-        case BmpCompressionMethod::RLE4:             return "RLE4";
-        case BmpCompressionMethod::BIT_FIELDS:       return "BIT_FIELDS";
-        case BmpCompressionMethod::JPEG:             return "JPEG";
-        case BmpCompressionMethod::PNG:              return "PNG";
-        case BmpCompressionMethod::ALPHA_BIT_FIELDS: return "ALPHA_BIT_FIELDS";
-        case BmpCompressionMethod::CMYK:             return "CMYK";
-        case BmpCompressionMethod::CMYK_RLE8:        return "CMYK_RLE8";
-        case BmpCompressionMethod::CMYK_RLE4:        return "CMYK_RLE4";
+    static char8 res[30];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", method, enumToString(method));
+
+    return res;
 }
 
 

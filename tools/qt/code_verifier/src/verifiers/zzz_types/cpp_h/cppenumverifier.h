@@ -19,6 +19,7 @@ public:
 private:
     QRegularExpression mDefinitionRegExp;
     QRegularExpression mValueRegExp;
+    QRegularExpression mTypedefRegExp;
 };
 
 

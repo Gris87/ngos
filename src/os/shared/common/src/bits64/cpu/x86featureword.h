@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -68,28 +71,11 @@ inline const char8* enumToFullString(x86FeatureWord word) // TEST: NO
 
 
 
-    switch (word)
-    {
-        case x86FeatureWord::CPUID_00000001_ECX:   return "CPUID_00000001_ECX";
-        case x86FeatureWord::CPUID_00000001_EDX:   return "CPUID_00000001_EDX";
-        case x86FeatureWord::CPUID_00000006_EAX:   return "CPUID_00000006_EAX";
-        case x86FeatureWord::CPUID_00000007_EBX:   return "CPUID_00000007_EBX";
-        case x86FeatureWord::CPUID_00000007_ECX:   return "CPUID_00000007_ECX";
-        case x86FeatureWord::CPUID_00000007_EDX:   return "CPUID_00000007_EDX";
-        case x86FeatureWord::CPUID_0000000D_1_EAX: return "CPUID_0000000D_1_EAX";
-        case x86FeatureWord::CPUID_0000000F_0_EDX: return "CPUID_0000000F_0_EDX";
-        case x86FeatureWord::CPUID_0000000F_1_EDX: return "CPUID_0000000F_1_EDX";
-        case x86FeatureWord::CPUID_80000001_ECX:   return "CPUID_80000001_ECX";
-        case x86FeatureWord::CPUID_80000001_EDX:   return "CPUID_80000001_EDX";
-        case x86FeatureWord::CPUID_80000007_EBX:   return "CPUID_80000007_EBX";
-        case x86FeatureWord::CPUID_80000008_EBX:   return "CPUID_80000008_EBX";
-        case x86FeatureWord::CPUID_8000000A_EDX:   return "CPUID_8000000A_EDX";
-        case x86FeatureWord::NGOS_AUXILIARY_FLAGS: return "NGOS_AUXILIARY_FLAGS";
-        case x86FeatureWord::NGOS_OTHER_FLAGS:     return "NGOS_OTHER_FLAGS";
-        case x86FeatureWord::MAXIMUM:              return "MAXIMUM";
+    static char8 res[28];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", word, enumToString(word));
+
+    return res;
 }
 
 

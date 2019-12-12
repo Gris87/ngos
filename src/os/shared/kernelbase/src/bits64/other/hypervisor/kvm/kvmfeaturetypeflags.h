@@ -33,7 +33,7 @@ enum class KvmFeatureTypeFlag: kvm_feature_type_flags
     CLOCKSOURCE_STABLE = (1ULL << (u64)KvmFeature::CLOCKSOURCE_STABLE)
 };
 
-DEFINE_FLAGS(KvmFeatureTypeFlags, kvm_feature_type_flags);
+DEFINE_FLAGS(KvmFeatureTypeFlags, kvm_feature_type_flags); // TEST: NO
 
 
 
@@ -65,22 +65,30 @@ inline const char8* flagToString(KvmFeatureTypeFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(KvmFeatureTypeFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const KvmFeatureTypeFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[179];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, KvmFeatureTypeFlag);
+    FLAGS_TO_STRING(res, flags.flags, KvmFeatureTypeFlag);
 
     return res;
 }
@@ -89,20 +97,13 @@ inline const char8* flagsToString(const KvmFeatureTypeFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const KvmFeatureTypeFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[192];
 
-
-
-    static char8 res[179];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, KvmFeatureTypeFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, KvmFeatureTypeFlag, "0x%08X");
 
     return res;
 }

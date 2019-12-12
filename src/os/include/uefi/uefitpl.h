@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiTpl: u64
@@ -34,19 +38,22 @@ inline const char8* enumToString(UefiTpl tpl) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiTpl tpl) // TEST: NO
 {
-    switch (tpl)
-    {
-        case UefiTpl::NONE:        return "NONE";
-        case UefiTpl::APPLICATION: return "APPLICATION";
-        case UefiTpl::CALLBACK:    return "CALLBACK";
-        case UefiTpl::NOTIFY:      return "NOTIFY";
-        case UefiTpl::HIGH_LEVEL:  return "HIGH_LEVEL";
+    static char8 res[33];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%016lX (%s)", tpl, enumToString(tpl));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

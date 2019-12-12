@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -38,13 +41,11 @@ inline const char8* enumToFullString(DmiStoredUuid uuid) // TEST: NO
 
 
 
-    switch (uuid)
-    {
-        case DmiStoredUuid::SYSTEM_UUID: return "SYSTEM_UUID";
-        case DmiStoredUuid::MAXIMUM:     return "MAXIMUM";
+    static char8 res[19];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", uuid, enumToString(uuid));
+
+    return res;
 }
 
 

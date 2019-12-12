@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -46,16 +47,11 @@ inline const char8* enumToFullString(PngColorType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case PngColorType::GREYSCALE:           return "GREYSCALE";
-        case PngColorType::RGB:                 return "RGB";
-        case PngColorType::PALETTE:             return "PALETTE";
-        case PngColorType::GREYSCALE_AND_ALPHA: return "GREYSCALE_AND_ALPHA";
-        case PngColorType::RGBA:                return "RGBA";
+    static char8 res[27];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

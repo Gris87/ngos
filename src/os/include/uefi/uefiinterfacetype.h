@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiInterfaceType: u32
@@ -28,16 +32,22 @@ inline const char8* enumToString(UefiInterfaceType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiInterfaceType type) // TEST: NO
 {
-    switch (type)
-    {
-        case UefiInterfaceType::NATIVE_INTERFACE: return "NATIVE_INTERFACE";
-        case UefiInterfaceType::PCODE_INTERFACE:  return "PCODE_INTERFACE";
+    static char8 res[30];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

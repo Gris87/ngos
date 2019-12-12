@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -50,19 +53,11 @@ inline const char8* enumToFullString(DmiPhysicalMemoryArrayUse use) // TEST: NO
 
 
 
-    switch (use)
-    {
-        case DmiPhysicalMemoryArrayUse::NONE:             return "NONE";
-        case DmiPhysicalMemoryArrayUse::OTHER:            return "OTHER";
-        case DmiPhysicalMemoryArrayUse::UNKNOWN:          return "UNKNOWN";
-        case DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY:    return "SYSTEM_MEMORY";
-        case DmiPhysicalMemoryArrayUse::VIDEO_MEMORY:     return "VIDEO_MEMORY";
-        case DmiPhysicalMemoryArrayUse::FLASH_MEMORY:     return "FLASH_MEMORY";
-        case DmiPhysicalMemoryArrayUse::NON_VOLATILE_RAM: return "NON_VOLATILE_RAM";
-        case DmiPhysicalMemoryArrayUse::CACHE_MEMORY:     return "CACHE_MEMORY";
+    static char8 res[24];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", use, enumToString(use));
+
+    return res;
 }
 
 

@@ -24,7 +24,7 @@ enum class UefiFileAttributeFlag: uefi_file_attribute_flags
     ARCHIVE   = (1ULL << 5)
 };
 
-DEFINE_FLAGS(UefiFileAttributeFlags, uefi_file_attribute_flags);
+DEFINE_FLAGS(UefiFileAttributeFlags, uefi_file_attribute_flags); // TEST: NO
 
 
 
@@ -46,18 +46,22 @@ inline const char8* flagToString(UefiFileAttributeFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(UefiFileAttributeFlag flag) // TEST: NO
+{
+    static char8 res[31];
+
+    sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const UefiFileAttributeFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
-
-
-
     static char8 res[76];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiFileAttributeFlag);
+    FLAGS_TO_STRING(res, flags.flags, UefiFileAttributeFlag);
 
     return res;
 }
@@ -66,16 +70,9 @@ inline const char8* flagsToString(const UefiFileAttributeFlags &flags) // TEST: 
 
 inline const char8* flagsToFullString(const UefiFileAttributeFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[97];
 
-
-
-    static char8 res[76];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiFileAttributeFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, UefiFileAttributeFlag, "0x%016lX");
 
     return res;
 }

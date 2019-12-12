@@ -46,16 +46,11 @@ inline const char8* enumToFullString(VolumeType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case VolumeType::INTERNAL: return "INTERNAL";
-        case VolumeType::EXTERNAL: return "EXTERNAL";
-        case VolumeType::OPTICAL:  return "OPTICAL";
-        case VolumeType::NETWORK:  return "NETWORK";
-        case VolumeType::MAXIMUM:  return "MAXIMUM";
+    static char8 res[16];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -46,16 +47,11 @@ inline const char8* enumToFullString(PngFilterType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case PngFilterType::NONE:    return "NONE";
-        case PngFilterType::SUB:     return "SUB";
-        case PngFilterType::UP:      return "UP";
-        case PngFilterType::AVERAGE: return "AVERAGE";
-        case PngFilterType::PAETH:   return "PAETH";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

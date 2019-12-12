@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -62,25 +65,11 @@ inline const char8* enumToFullString(DmiProcessorFamily2 family2) // TEST: NO
 
 
 
-    switch (family2)
-    {
-        case DmiProcessorFamily2::NONE:            return "NONE";
-        case DmiProcessorFamily2::OTHER:           return "OTHER";
-        case DmiProcessorFamily2::ARM_V7:          return "ARM_V7";
-        case DmiProcessorFamily2::ARM_V8:          return "ARM_V8";
-        case DmiProcessorFamily2::SH3:             return "SH3";
-        case DmiProcessorFamily2::SH4:             return "SH4";
-        case DmiProcessorFamily2::ARM:             return "ARM";
-        case DmiProcessorFamily2::STRONG_ARM:      return "STRONG_ARM";
-        case DmiProcessorFamily2::_6_X86:          return "_6_X86";
-        case DmiProcessorFamily2::MEDIA_GX:        return "MEDIA_GX";
-        case DmiProcessorFamily2::MII:             return "MII";
-        case DmiProcessorFamily2::WIN_CHIP:        return "WIN_CHIP";
-        case DmiProcessorFamily2::DSP:             return "DSP";
-        case DmiProcessorFamily2::VIDEO_PROCESSOR: return "VIDEO_PROCESSOR";
+    static char8 res[25];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%04X (%s)", family2, enumToString(family2));
+
+    return res;
 }
 
 

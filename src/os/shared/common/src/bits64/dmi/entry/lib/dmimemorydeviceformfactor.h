@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -66,27 +69,11 @@ inline const char8* enumToFullString(DmiMemoryDeviceFormFactor factor) // TEST: 
 
 
 
-    switch (factor)
-    {
-        case DmiMemoryDeviceFormFactor::NONE:             return "NONE";
-        case DmiMemoryDeviceFormFactor::OTHER:            return "OTHER";
-        case DmiMemoryDeviceFormFactor::UNKNOWN:          return "UNKNOWN";
-        case DmiMemoryDeviceFormFactor::SIMM:             return "SIMM";
-        case DmiMemoryDeviceFormFactor::SIP:              return "SIP";
-        case DmiMemoryDeviceFormFactor::CHIP:             return "CHIP";
-        case DmiMemoryDeviceFormFactor::DIP:              return "DIP";
-        case DmiMemoryDeviceFormFactor::ZIP:              return "ZIP";
-        case DmiMemoryDeviceFormFactor::PROPRIETARY_CARD: return "PROPRIETARY_CARD";
-        case DmiMemoryDeviceFormFactor::DIMM:             return "DIMM";
-        case DmiMemoryDeviceFormFactor::TSOP:             return "TSOP";
-        case DmiMemoryDeviceFormFactor::ROW_OF_CHIPS:     return "ROW_OF_CHIPS";
-        case DmiMemoryDeviceFormFactor::RIMM:             return "RIMM";
-        case DmiMemoryDeviceFormFactor::SODIUM:           return "SODIUM";
-        case DmiMemoryDeviceFormFactor::SRIMM:            return "SRIMM";
-        case DmiMemoryDeviceFormFactor::FB_DIMM:          return "FB_DIMM";
+    static char8 res[24];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", factor, enumToString(factor));
+
+    return res;
 }
 
 

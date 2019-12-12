@@ -4,6 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/bits64/early/earlylog.h>
 #include <ngos/types.h>
 
 
@@ -69,26 +71,11 @@ inline const char8* enumToFullString(GzipOperatingSystem system) // TEST: NO
 
 
 
-    switch (system)
-    {
-        case GzipOperatingSystem::FAT_FILESYSTEM:  return "FAT_FILESYSTEM";
-        case GzipOperatingSystem::AMIGA:           return "AMIGA";
-        case GzipOperatingSystem::VMS:             return "VMS";
-        case GzipOperatingSystem::UNIX:            return "UNIX";
-        case GzipOperatingSystem::VM_CMS:          return "VM_CMS";
-        case GzipOperatingSystem::ATARI_TOS:       return "ATARI_TOS";
-        case GzipOperatingSystem::HPFS_FILESYSTEM: return "HPFS_FILESYSTEM";
-        case GzipOperatingSystem::MACINTOSH:       return "MACINTOSH";
-        case GzipOperatingSystem::Z_SYSTEM:        return "Z_SYSTEM";
-        case GzipOperatingSystem::CP_M:            return "CP_M";
-        case GzipOperatingSystem::TOPS_20:         return "TOPS_20";
-        case GzipOperatingSystem::NTFS_FILESYSTEM: return "NTFS_FILESYSTEM";
-        case GzipOperatingSystem::QDOS:            return "QDOS";
-        case GzipOperatingSystem::ACORN_RISCOS:    return "ACORN_RISCOS";
-        case GzipOperatingSystem::UNKNOWN:         return "UNKNOWN";
+    static char8 res[23];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", system, enumToString(system));
+
+    return res;
 }
 
 

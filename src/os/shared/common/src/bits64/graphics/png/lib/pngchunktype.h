@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -55,10 +56,9 @@ inline const char8* enumToFullString(PngChunkType type) // TEST: NO
 
 
 
-    static char8 res[5];
+    static char8 res[19];
 
-    *(u32 *)res = (u32)type;
-    COMMON_TEST_ASSERT(res[4] == 0, 0);
+    sprintf(res, "0x%08X (%s)", type, enumToString(type));
 
     return res;
 }

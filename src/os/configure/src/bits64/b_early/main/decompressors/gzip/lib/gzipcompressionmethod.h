@@ -45,13 +45,11 @@ inline const char8* enumToFullString(GzipCompressionMethod method) // TEST: NO
 
 
 
-    switch (method)
-    {
-        case GzipCompressionMethod::NONE:    return "NONE";
-        case GzipCompressionMethod::DEFLATE: return "DEFLATE";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", method, enumToString(method));
+
+    return res;
 }
 
 

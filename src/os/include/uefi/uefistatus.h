@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiStatus: u64
@@ -88,46 +92,22 @@ inline const char8* enumToString(UefiStatus status) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiStatus status) // TEST: NO
 {
-    switch (status)
-    {
-        case UefiStatus::SUCCESS:              return "SUCCESS";
-        case UefiStatus::LOAD_ERROR:           return "LOAD_ERROR";
-        case UefiStatus::INVALID_PARAMETER:    return "INVALID_PARAMETER";
-        case UefiStatus::UNSUPPORTED:          return "UNSUPPORTED";
-        case UefiStatus::BAD_BUFFER_SIZE:      return "BAD_BUFFER_SIZE";
-        case UefiStatus::BUFFER_TOO_SMALL:     return "BUFFER_TOO_SMALL";
-        case UefiStatus::NOT_READY:            return "NOT_READY";
-        case UefiStatus::DEVICE_ERROR:         return "DEVICE_ERROR";
-        case UefiStatus::WRITE_PROTECTED:      return "WRITE_PROTECTED";
-        case UefiStatus::OUT_OF_RESOURCES:     return "OUT_OF_RESOURCES";
-        case UefiStatus::VOLUME_CORRUPTED:     return "VOLUME_CORRUPTED";
-        case UefiStatus::VOLUME_FULL:          return "VOLUME_FULL";
-        case UefiStatus::NO_MEDIA:             return "NO_MEDIA";
-        case UefiStatus::MEDIA_CHANGED:        return "MEDIA_CHANGED";
-        case UefiStatus::NOT_FOUND:            return "NOT_FOUND";
-        case UefiStatus::ACCESS_DENIED:        return "ACCESS_DENIED";
-        case UefiStatus::NO_RESPONSE:          return "NO_RESPONSE";
-        case UefiStatus::NO_MAPPING:           return "NO_MAPPING";
-        case UefiStatus::TIMEOUT:              return "TIMEOUT";
-        case UefiStatus::NOT_STARTED:          return "NOT_STARTED";
-        case UefiStatus::ALREADY_STARTED:      return "ALREADY_STARTED";
-        case UefiStatus::ABORTED:              return "ABORTED";
-        case UefiStatus::ICMP_ERROR:           return "ICMP_ERROR";
-        case UefiStatus::TFTP_ERROR:           return "TFTP_ERROR";
-        case UefiStatus::PROTOCOL_ERROR:       return "PROTOCOL_ERROR";
-        case UefiStatus::INCOMPATIBLE_VERSION: return "INCOMPATIBLE_VERSION";
-        case UefiStatus::SECURITY_VIOLATION:   return "SECURITY_VIOLATION";
-        case UefiStatus::CRC_ERROR:            return "CRC_ERROR";
-        case UefiStatus::END_OF_MEDIA:         return "END_OF_MEDIA";
-        case UefiStatus::END_OF_FILE:          return "END_OF_FILE";
-        case UefiStatus::INVALID_LANGUAGE:     return "INVALID_LANGUAGE";
-        case UefiStatus::COMPROMISED_DATA:     return "COMPROMISED_DATA";
+    static char8 res[42];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%016lX (%s)", status, enumToString(status));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

@@ -59,20 +59,11 @@ inline const char8* enumToFullString(Lzma2Sequence sequence) // TEST: NO
 
 
 
-    switch (sequence)
-    {
-        case Lzma2Sequence::SEQ_CONTROL:        return "SEQ_CONTROL";
-        case Lzma2Sequence::SEQ_UNCOMPRESSED_1: return "SEQ_UNCOMPRESSED_1";
-        case Lzma2Sequence::SEQ_UNCOMPRESSED_2: return "SEQ_UNCOMPRESSED_2";
-        case Lzma2Sequence::SEQ_COMPRESSED_0:   return "SEQ_COMPRESSED_0";
-        case Lzma2Sequence::SEQ_COMPRESSED_1:   return "SEQ_COMPRESSED_1";
-        case Lzma2Sequence::SEQ_PROPERTIES:     return "SEQ_PROPERTIES";
-        case Lzma2Sequence::SEQ_LZMA_PREPARE:   return "SEQ_LZMA_PREPARE";
-        case Lzma2Sequence::SEQ_LZMA_RUN:       return "SEQ_LZMA_RUN";
-        case Lzma2Sequence::SEQ_COPY:           return "SEQ_COPY";
+    static char8 res[26];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", sequence, enumToString(sequence));
+
+    return res;
 }
 
 

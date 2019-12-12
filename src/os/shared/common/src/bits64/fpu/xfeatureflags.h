@@ -22,7 +22,7 @@ enum class XFeatureFlag: x_feature_flags
     ALIGNED    = (1ULL << 1)
 };
 
-DEFINE_FLAGS(XFeatureFlags, x_feature_flags);
+DEFINE_FLAGS(XFeatureFlags, x_feature_flags); // TEST: NO
 
 
 
@@ -44,22 +44,30 @@ inline const char8* flagToString(XFeatureFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(XFeatureFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[24];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const XFeatureFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[36];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, XFeatureFlag);
+    FLAGS_TO_STRING(res, flags.flags, XFeatureFlag);
 
     return res;
 }
@@ -68,20 +76,13 @@ inline const char8* flagsToString(const XFeatureFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const XFeatureFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[49];
 
-
-
-    static char8 res[36];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, XFeatureFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, XFeatureFlag, "0x%08X");
 
     return res;
 }

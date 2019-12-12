@@ -51,7 +51,7 @@ enum class DmiBiosCharacteristicsFlag: dmi_bios_characteristics_flags
     RESERVED                           = (1ULL << 32)
 };
 
-DEFINE_FLAGS(DmiBiosCharacteristicsFlags, dmi_bios_characteristics_flags);
+DEFINE_FLAGS(DmiBiosCharacteristicsFlags, dmi_bios_characteristics_flags); // TEST: NO
 
 
 
@@ -102,22 +102,30 @@ inline const char8* flagToString(DmiBiosCharacteristicsFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(DmiBiosCharacteristicsFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[56];
+
+    sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const DmiBiosCharacteristicsFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[713];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsFlag);
+    FLAGS_TO_STRING(res, flags.flags, DmiBiosCharacteristicsFlag);
 
     return res;
 }
@@ -126,20 +134,13 @@ inline const char8* flagsToString(const DmiBiosCharacteristicsFlags &flags) // T
 
 inline const char8* flagsToFullString(const DmiBiosCharacteristicsFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[734];
 
-
-
-    static char8 res[713];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiBiosCharacteristicsFlag, "0x%016lX");
 
     return res;
 }

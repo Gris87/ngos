@@ -28,7 +28,7 @@ enum class DmiBiosCharacteristicsBiosReservedFlag: dmi_bios_characteristics_bios
     SMART_BATTERY_SUPPORTED        = (1ULL << 7)
 };
 
-DEFINE_FLAGS(DmiBiosCharacteristicsBiosReservedFlags, dmi_bios_characteristics_bios_reserved_flags);
+DEFINE_FLAGS(DmiBiosCharacteristicsBiosReservedFlags, dmi_bios_characteristics_bios_reserved_flags); // TEST: NO
 
 
 
@@ -56,22 +56,30 @@ inline const char8* flagToString(DmiBiosCharacteristicsBiosReservedFlag flag) //
 
 
 
+inline const char8* flagToFullString(DmiBiosCharacteristicsBiosReservedFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[38];
+
+    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const DmiBiosCharacteristicsBiosReservedFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[194];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsBiosReservedFlag);
+    FLAGS_TO_STRING(res, flags.flags, DmiBiosCharacteristicsBiosReservedFlag);
 
     return res;
 }
@@ -80,20 +88,13 @@ inline const char8* flagsToString(const DmiBiosCharacteristicsBiosReservedFlags 
 
 inline const char8* flagsToFullString(const DmiBiosCharacteristicsBiosReservedFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[201];
 
-
-
-    static char8 res[194];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBiosCharacteristicsBiosReservedFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiBiosCharacteristicsBiosReservedFlag, "0x%02X");
 
     return res;
 }

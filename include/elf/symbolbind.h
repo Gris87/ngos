@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 #define ELF_SYMBOL_BIND_OS_LOW         10
@@ -37,17 +41,22 @@ inline const char8* enumToString(ElfSymbolBind bind) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 {
-    switch (bind)
-    {
-        case ElfSymbolBind::LOCAL:  return "LOCAL";
-        case ElfSymbolBind::GLOBAL: return "GLOBAL";
-        case ElfSymbolBind::WEAK:   return "WEAK";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", bind, enumToString(bind));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -42,15 +45,11 @@ inline const char8* enumToFullString(CpuVendor vendor) // TEST: NO
 
 
 
-    switch (vendor)
-    {
-        case CpuVendor::NONE:    return "NONE";
-        case CpuVendor::INTEL:   return "INTEL";
-        case CpuVendor::AMD:     return "AMD";
-        case CpuVendor::UNKNOWN: return "UNKNOWN";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", vendor, enumToString(vendor));
+
+    return res;
 }
 
 

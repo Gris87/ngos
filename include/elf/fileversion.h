@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class ElfFileVersion: u8
@@ -28,16 +32,22 @@ inline const char8* enumToString(ElfFileVersion version) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfFileVersion version) // TEST: NO
 {
-    switch (version)
-    {
-        case ElfFileVersion::NONE:    return "NONE";
-        case ElfFileVersion::CURRENT: return "CURRENT";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", version, enumToString(version));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiResetType: u32
@@ -30,17 +34,22 @@ inline const char8* enumToString(UefiResetType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiResetType type) // TEST: NO
 {
-    switch (type)
-    {
-        case UefiResetType::COLD:     return "COLD";
-        case UefiResetType::WARM:     return "WARM";
-        case UefiResetType::SHUTDOWN: return "SHUTDOWN";
+    static char8 res[22];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

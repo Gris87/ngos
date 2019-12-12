@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiLocateSearchType: u32
@@ -30,17 +34,22 @@ inline const char8* enumToString(UefiLocateSearchType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiLocateSearchType type) // TEST: NO
 {
-    switch (type)
-    {
-        case UefiLocateSearchType::ALL_HANDLES:        return "ALL_HANDLES";
-        case UefiLocateSearchType::BY_REGISTER_NOTIFY: return "BY_REGISTER_NOTIFY";
-        case UefiLocateSearchType::BY_PROTOCOL:        return "BY_PROTOCOL";
+    static char8 res[32];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

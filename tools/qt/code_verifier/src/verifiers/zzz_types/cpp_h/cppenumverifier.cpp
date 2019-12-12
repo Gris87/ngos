@@ -8,6 +8,7 @@ CppEnumVerifier::CppEnumVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
     , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(?:: *(\\w+))?$")
     , mValueRegExp("^ *([A-Z_][A-Z\\d_]*)(?: *= *([^,]+))?,?(?: *\\/\\/.*)?$")
+    , mTypedefRegExp("^ *typedef (\\w+) (\\w+);$")
 {
     // Nothing
 }
@@ -26,6 +27,8 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
         if (match.hasMatch())
         {
+            qint64 enumLocation = i;
+
             QString enumClass = match.captured(1);
             QString enumName  = match.captured(2);
             QString enumType  = match.captured(3);
@@ -108,23 +111,23 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
 
 
+                    bool    isFlag       = (variableName == "flag");
+                    QString typeShort    = isFlag ? "flag" : "enum";
+                    QString traceCommand = traceCommandFromPath(path);
+
+
+
                     // Ignore CppAlignmentVerifier [BEGIN]
                     QString toStringFunction = "\n\n\n";
 
-                    toStringFunction += "inline const char8* " + enumNameFromLowerCase + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
+                    toStringFunction += "inline const char8* " + typeShort + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
                     toStringFunction += "{\n";
-
-
-
-                    QString traceCommand = traceCommandFromPath(path);
 
                     if (traceCommand != "")
                     {
                         toStringFunction += "    // " + traceCommand + "((\" | " + variableName + " = %u\", " + variableName + ")); // Commented to avoid bad looking logs\n";
                         toStringFunction += "\n\n\n";
                     }
-
-
 
                     toStringFunction += "    switch (" + variableName + ")\n";
                     toStringFunction += "    {\n";
@@ -152,7 +155,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
 
 
-                    if (enumName.endsWith("Flag"))
+                    if (isFlag)
                     {
                         QString expectedEnumType = "";
 
@@ -178,6 +181,74 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         if (enumType != expectedEnumType)
                         {
                             worker->addError(path, i, QString("Enum should use type %1 for flags").arg(expectedEnumType));
+                        }
+
+
+
+                        QString expectedFlagsDefinition = "DEFINE_FLAGS(" + enumName + "s, " + expectedEnumType + "); // TEST: NO";
+
+                        if (
+                            i >= lines.length() - 2
+                            ||
+                            lines.at(i + 2) != expectedFlagsDefinition
+                           )
+                        {
+                            worker->addError(path, i, QString("Flags definition not found: %1").arg(expectedFlagsDefinition));
+                        }
+
+
+
+                        QString enumTypeFormat       = "0x%016lX";
+                        quint8  enumTypeFormatLength = 18;
+
+                        if (enumLocation >= 2)
+                        {
+                            QRegularExpressionMatch match = mTypedefRegExp.match(lines.at(enumLocation - 2));
+
+                            if (match.hasMatch())
+                            {
+                                QString enumStandardType = match.captured(1);
+                                QString enumFlagType     = match.captured(2);
+
+                                if (enumFlagType == expectedEnumType)
+                                {
+                                    if (enumStandardType == "u8" || enumStandardType == "quint8")
+                                    {
+                                        enumTypeFormat       = "0x%02X";
+                                        enumTypeFormatLength = 4;
+                                    }
+                                    else
+                                    if (enumStandardType == "u16" || enumStandardType == "quint16")
+                                    {
+                                        enumTypeFormat       = "0x%04X";
+                                        enumTypeFormatLength = 6;
+                                    }
+                                    else
+                                    if (enumStandardType == "u32" || enumStandardType == "quint32")
+                                    {
+                                        enumTypeFormat       = "0x%08X";
+                                        enumTypeFormatLength = 10;
+                                    }
+                                    else
+                                    if (enumStandardType == "u64" || enumStandardType == "quint64")
+                                    {
+                                        enumTypeFormat       = "0x%016lX";
+                                        enumTypeFormatLength = 18;
+                                    }
+                                    else
+                                    {
+                                        worker->addError(path, i, "Enum type expecting to be one of the standard types");
+                                    }
+                                }
+                                else
+                                {
+                                    worker->addError(path, i, QString("Enum type %1 definition not found for flags").arg(expectedEnumType));
+                                }
+                            }
+                            else
+                            {
+                                worker->addError(path, i, QString("Enum type %1 definition not found for flags").arg(expectedEnumType));
+                            }
                         }
 
 
@@ -213,7 +284,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
 
 
-                        quint64 totalStringSize = 13; // Length of "UNKNOWN x 99" + zero byte
+                        quint64 totalStringSize = QString("UNKNOWN x 99").length() + 1;
 
                         for (qint64 j = 0; j < values.length(); ++j)
                         {
@@ -229,27 +300,72 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         // Ignore CppAlignmentVerifier [BEGIN]
                         toStringFunction =  "\n\n\n";
-                        toStringFunction += "inline const char8* " + enumNameFromLowerCase + "sToString(" + enumType + " flags) // TEST: NO\n";
+                        toStringFunction += "inline const char8* flagToFullString(" + enumName + " flag) // TEST: NO\n";
                         toStringFunction += "{\n";
-
-
 
                         if (traceCommand != "")
                         {
-                            toStringFunction += "    // " + traceCommand + "((\" | flags = %u\", flags)); // Commented to avoid bad looking logs\n";
+                            toStringFunction += "    // " + traceCommand + "((\" | flag = %u\", flag)); // Commented to avoid bad looking logs\n";
                             toStringFunction += "\n\n\n";
                         }
 
-
-
-                        toStringFunction += "    if (!flags)\n";
-                        toStringFunction += "    {\n";
-                        toStringFunction += "        return \"NONE\";\n";
-                        toStringFunction += "    }\n";
+                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLength, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" // 4 == space, brackets and zero terminator
+                        toStringFunction += '\n';
+                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", flag, flagToString(flag));\n";
+                        toStringFunction += '\n';
+                        toStringFunction += "    return res;\n";
+                        toStringFunction += "}\n";
                         toStringFunction += "\n\n\n";
+
+                        if (!content.contains(toStringFunction))
+                        {
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                        }
+                        // Ignore CppAlignmentVerifier [END]
+
+
+
+                        // Ignore CppAlignmentVerifier [BEGIN]
+                        toStringFunction =  "\n\n\n";
+                        toStringFunction += "inline const char8* flagsToString(const " + enumName + "s &flags) // TEST: NO\n";
+                        toStringFunction += "{\n";
+
+                        if (traceCommand != "")
+                        {
+                            toStringFunction += "    // " + traceCommand + "((\" | flags = ...\")); // Commented to avoid bad looking logs\n";
+                            toStringFunction += "\n\n\n";
+                        }
+
                         toStringFunction += "    static char8 res[" + QString::number(totalStringSize) + "];\n";
                         toStringFunction += '\n';
-                        toStringFunction += "    FLAGS_TO_STRING(res, flags, " + enumNameFromLowerCase + "ToString, " + enumName + ");\n";
+                        toStringFunction += "    FLAGS_TO_STRING(res, flags.flags, " + enumName + ");\n";
+                        toStringFunction += '\n';
+                        toStringFunction += "    return res;\n";
+                        toStringFunction += "}\n";
+                        toStringFunction += "\n\n\n";
+
+                        if (!content.contains(toStringFunction))
+                        {
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                        }
+                        // Ignore CppAlignmentVerifier [END]
+
+
+
+                        // Ignore CppAlignmentVerifier [BEGIN]
+                        toStringFunction =  "\n\n\n";
+                        toStringFunction += "inline const char8* flagsToFullString(const " + enumName + "s &flags) // TEST: NO\n";
+                        toStringFunction += "{\n";
+
+                        if (traceCommand != "")
+                        {
+                            toStringFunction += "    // " + traceCommand + "((\" | flags = ...\")); // Commented to avoid bad looking logs\n";
+                            toStringFunction += "\n\n\n";
+                        }
+
+                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + totalStringSize + 3) + "];\n"; // 3 == space, brackets without zero terminator
+                        toStringFunction += '\n';
+                        toStringFunction += "    FLAGS_TO_FULL_STRING(res, flags.flags, " + enumName + ", \"" + enumTypeFormat + "\");\n";
                         toStringFunction += '\n';
                         toStringFunction += "    return res;\n";
                         toStringFunction += "}\n";
@@ -263,23 +379,33 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                     }
                     else
                     {
-                        if (
-                            enumType != "u8"
-                            &&
-                            enumType != "u16"
-                            &&
-                            enumType != "u32"
-                            &&
-                            enumType != "u64"
-                            &&
-                            enumType != "quint8"
-                            &&
-                            enumType != "quint16"
-                            &&
-                            enumType != "quint32"
-                            &&
-                            enumType != "quint64"
-                           )
+                        QString enumTypeFormat       = "0x%016lX";
+                        quint8  enumTypeFormatLength = 18;
+
+                        if (enumType == "u8" || enumType == "quint8")
+                        {
+                            enumTypeFormat       = "0x%02X";
+                            enumTypeFormatLength = 4;
+                        }
+                        else
+                        if (enumType == "u16" || enumType == "quint16")
+                        {
+                            enumTypeFormat       = "0x%04X";
+                            enumTypeFormatLength = 6;
+                        }
+                        else
+                        if (enumType == "u32" || enumType == "quint32")
+                        {
+                            enumTypeFormat       = "0x%08X";
+                            enumTypeFormatLength = 10;
+                        }
+                        else
+                        if (enumType == "u64" || enumType == "quint64")
+                        {
+                            enumTypeFormat       = "0x%016lX";
+                            enumTypeFormatLength = 18;
+                        }
+                        else
                         {
                             worker->addError(path, i, "Enum type expecting to be one of the standard types");
                         }
@@ -323,7 +449,11 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             }
                             else
                             {
-                                if (valuesNumeric.first() != '0')
+                                if (
+                                    !valuesNumeric.length() // valuesNumeric.length() == 0
+                                    ||
+                                    valuesNumeric.first() != '0'
+                                   )
                                 {
                                     worker->addError(path, i, "Enum value NONE should be first");
                                 }
@@ -334,6 +464,33 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                                 worker->addError(path, i, "Numeric values should be provided for enum");
                             }
                         }
+
+
+
+                        // Ignore CppAlignmentVerifier [BEGIN]
+                        toStringFunction =  "\n\n\n";
+                        toStringFunction += "inline const char8* enumToFullString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
+                        toStringFunction += "{\n";
+
+                        if (traceCommand != "")
+                        {
+                            toStringFunction += "    // " + traceCommand + "((\" | " + variableName + " = %u\", " + variableName + ")); // Commented to avoid bad looking logs\n";
+                            toStringFunction += "\n\n\n";
+                        }
+
+                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLength, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" , 4 == space, brackets and zero terminator
+                        toStringFunction += '\n';
+                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", " + variableName + ", enumToString(" + variableName + "));\n";
+                        toStringFunction += '\n';
+                        toStringFunction += "    return res;\n";
+                        toStringFunction += "}\n";
+                        toStringFunction += "\n\n\n";
+
+                        if (!content.contains(toStringFunction))
+                        {
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                        }
+                        // Ignore CppAlignmentVerifier [END]
                     }
                 }
                 else

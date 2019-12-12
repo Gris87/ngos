@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -32,14 +33,11 @@ inline const char8* enumToString(UefiHardDriveDevicePathMbrType type) // TEST: N
 
 inline const char8* enumToFullString(UefiHardDriveDevicePathMbrType type) // TEST: NO
 {
-    switch (type)
-    {
-        case UefiHardDriveDevicePathMbrType::NONE:                        return "NONE";
-        case UefiHardDriveDevicePathMbrType::PCAT:                        return "PCAT";
-        case UefiHardDriveDevicePathMbrType::UEFI_PARTITION_TABLE_HEADER: return "UEFI_PARTITION_TABLE_HEADER";
+    static char8 res[35];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -32,14 +33,11 @@ inline const char8* enumToString(UefiConsoleControlScreenMode mode) // TEST: NO
 
 inline const char8* enumToFullString(UefiConsoleControlScreenMode mode) // TEST: NO
 {
-    switch (mode)
-    {
-        case UefiConsoleControlScreenMode::TEXT:     return "TEXT";
-        case UefiConsoleControlScreenMode::GRAPHICS: return "GRAPHICS";
-        case UefiConsoleControlScreenMode::MAXIMUM:  return "MAXIMUM";
+    static char8 res[22];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", mode, enumToString(mode));
+
+    return res;
 }
 
 

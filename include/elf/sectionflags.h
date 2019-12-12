@@ -7,6 +7,11 @@
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
+#endif
+
 
 
 #define ELF_SECTION_FLAGS_OS_MASK        0x0FF00000
@@ -16,7 +21,7 @@
 
 typedef u64 elf_section_flags;
 
-enum class ElfSectionFlag: elf_section_flags // Ignore CppEnumVerifier
+enum class ElfSectionFlag: elf_section_flags
 {
     NONE               = 0,
     WRITE              = (1ULL << 0),
@@ -33,7 +38,7 @@ enum class ElfSectionFlag: elf_section_flags // Ignore CppEnumVerifier
     EXCLUDE            = (1ULL << 27)
 };
 
-DEFINE_FLAGS(ElfSectionFlags, elf_section_flags);
+DEFINE_FLAGS(ElfSectionFlags, elf_section_flags); // TEST: NO
 
 
 
@@ -61,21 +66,44 @@ inline const char8* flagToString(ElfSectionFlag flag) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
+inline const char8* flagToFullString(ElfSectionFlag flag) // TEST: NO
+{
+    static char8 res[38];
+
+    sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const ElfSectionFlags &flags) // TEST: NO
 {
-    AVOID_UNUSED(flags);
+    static char8 res[137];
 
-    return "NOT_SUPPORTED";
+    FLAGS_TO_STRING(res, flags.flags, ElfSectionFlag);
+
+    return res;
 }
 
 
 
 inline const char8* flagsToFullString(const ElfSectionFlags &flags) // TEST: NO
 {
-    AVOID_UNUSED(flags);
+    static char8 res[158];
 
-    return "NOT_SUPPORTED";
+    FLAGS_TO_FULL_STRING(res, flags.flags, ElfSectionFlag, "0x%016lX");
+
+    return res;
 }
+
+
+
+#endif
 
 
 

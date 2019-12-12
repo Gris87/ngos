@@ -7,6 +7,11 @@
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
+#endif
+
 
 
 typedef u32 elf_program_flags;
@@ -19,7 +24,7 @@ enum class ElfProgramFlag: elf_program_flags
     READABLE   = (1ULL << 2)
 };
 
-DEFINE_FLAGS(ElfProgramFlags, elf_program_flags);
+DEFINE_FLAGS(ElfProgramFlags, elf_program_flags); // TEST: NO
 
 
 
@@ -38,21 +43,44 @@ inline const char8* flagToString(ElfProgramFlag flag) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
+inline const char8* flagToFullString(ElfProgramFlag flag) // TEST: NO
+{
+    static char8 res[24];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const ElfProgramFlags &flags) // TEST: NO
 {
-    AVOID_UNUSED(flags);
+    static char8 res[48];
 
-    return "NOT_SUPPORTED";
+    FLAGS_TO_STRING(res, flags.flags, ElfProgramFlag);
+
+    return res;
 }
 
 
 
 inline const char8* flagsToFullString(const ElfProgramFlags &flags) // TEST: NO
 {
-    AVOID_UNUSED(flags);
+    static char8 res[61];
 
-    return "NOT_SUPPORTED";
+    FLAGS_TO_FULL_STRING(res, flags.flags, ElfProgramFlag, "0x%08X");
+
+    return res;
 }
+
+
+
+#endif
 
 
 

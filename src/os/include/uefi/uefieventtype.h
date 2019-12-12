@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiEventType: u32
@@ -38,21 +42,22 @@ inline const char8* enumToString(UefiEventType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiEventType type) // TEST: NO
 {
-    switch (type)
-    {
-        case UefiEventType::NONE:                          return "NONE";
-        case UefiEventType::NOTIFY_WAIT:                   return "NOTIFY_WAIT";
-        case UefiEventType::NOTIFY_SIGNAL:                 return "NOTIFY_SIGNAL";
-        case UefiEventType::SIGNAL_EXIT_BOOT_SERVICES:     return "SIGNAL_EXIT_BOOT_SERVICES";
-        case UefiEventType::RUNTIME:                       return "RUNTIME";
-        case UefiEventType::SIGNAL_VIRTUAL_ADDRESS_CHANGE: return "SIGNAL_VIRTUAL_ADDRESS_CHANGE";
-        case UefiEventType::TIMER:                         return "TIMER";
+    static char8 res[43];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

@@ -21,7 +21,7 @@ enum class UefiProcessorInformationStatusFlag: uefi_processor_information_status
     HEALTH_STATUS = (1ULL << 2)
 };
 
-DEFINE_FLAGS(UefiProcessorInformationStatusFlags, uefi_processor_information_status_flags);
+DEFINE_FLAGS(UefiProcessorInformationStatusFlags, uefi_processor_information_status_flags); // TEST: NO
 
 
 
@@ -40,18 +40,22 @@ inline const char8* flagToString(UefiProcessorInformationStatusFlag flag) // TES
 
 
 
+inline const char8* flagToFullString(UefiProcessorInformationStatusFlag flag) // TEST: NO
+{
+    static char8 res[27];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const UefiProcessorInformationStatusFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
-
-
-
     static char8 res[51];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiProcessorInformationStatusFlag);
+    FLAGS_TO_STRING(res, flags.flags, UefiProcessorInformationStatusFlag);
 
     return res;
 }
@@ -60,16 +64,9 @@ inline const char8* flagsToString(const UefiProcessorInformationStatusFlags &fla
 
 inline const char8* flagsToFullString(const UefiProcessorInformationStatusFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[64];
 
-
-
-    static char8 res[51];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiProcessorInformationStatusFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, UefiProcessorInformationStatusFlag, "0x%08X");
 
     return res;
 }

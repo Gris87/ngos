@@ -4,10 +4,12 @@
 
 
 #include <Qt>
+#include <ngos/types.h>
+#include <stdio.h>
 
 
 
-enum class UsbSpeed: quint8
+enum class UsbSpeed: quint8 // Ignore CppEnumVerifier
 {
     NONE           = 0,
     LOW            = 1,
@@ -18,7 +20,7 @@ enum class UsbSpeed: quint8
 
 
 
-inline const char* enumToString(UsbSpeed speed) // TEST: NO
+inline const char8* enumToString(UsbSpeed speed) // TEST: NO
 {
     switch (speed)
     {
@@ -34,23 +36,18 @@ inline const char* enumToString(UsbSpeed speed) // TEST: NO
 
 
 
-inline const char* enumToFullString(UsbSpeed speed) // TEST: NO
+inline const char8* enumToFullString(UsbSpeed speed) // TEST: NO
 {
-    switch (speed)
-    {
-        case UsbSpeed::NONE:           return "NONE";
-        case UsbSpeed::LOW:            return "LOW";
-        case UsbSpeed::FULL:           return "FULL";
-        case UsbSpeed::HIGH:           return "HIGH";
-        case UsbSpeed::SUPER_OR_LATER: return "SUPER_OR_LATER";
+    static char8 res[22];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", (quint8)speed, enumToString(speed));
+
+    return res;
 }
 
 
 
-inline const char* enumToHumanString(UsbSpeed speed) // TEST: NO
+inline const char8* enumToHumanString(UsbSpeed speed) // TEST: NO
 {
     switch (speed)
     {

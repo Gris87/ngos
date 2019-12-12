@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
@@ -46,16 +47,11 @@ inline const char8* enumToFullString(OsType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case OsType::NGOS:       return "NGOS";
-        case OsType::WINDOWS_10: return "WINDOWS_10";
-        case OsType::UBUNTU_19:  return "UBUNTU_19";
-        case OsType::CENTOS_8:   return "CENTOS_8";
-        case OsType::MAXIMUM:    return "MAXIMUM";
+    static char8 res[18];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

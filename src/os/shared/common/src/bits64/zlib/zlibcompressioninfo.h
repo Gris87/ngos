@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -50,18 +51,11 @@ inline const char8* enumToFullString(ZLibCompressionInfo info) // TEST: NO
 
 
 
-    switch (info)
-    {
-        case ZLibCompressionInfo::NONE:       return "NONE";
-        case ZLibCompressionInfo::WINDOW_1K:  return "WINDOW_1K";
-        case ZLibCompressionInfo::WINDOW_2K:  return "WINDOW_2K";
-        case ZLibCompressionInfo::WINDOW_4K:  return "WINDOW_4K";
-        case ZLibCompressionInfo::WINDOW_8K:  return "WINDOW_8K";
-        case ZLibCompressionInfo::WINDOW_16K: return "WINDOW_16K";
-        case ZLibCompressionInfo::WINDOW_32K: return "WINDOW_32K";
+    static char8 res[18];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", info, enumToString(info));
+
+    return res;
 }
 
 

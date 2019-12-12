@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -58,23 +61,11 @@ inline const char8* enumToFullString(KvmFeature feature) // TEST: NO
 
 
 
-    switch (feature)
-    {
-        case KvmFeature::CLOCKSOURCE:        return "CLOCKSOURCE";
-        case KvmFeature::NOP_IO_DELAY:       return "NOP_IO_DELAY";
-        case KvmFeature::MMU_OP:             return "MMU_OP";
-        case KvmFeature::CLOCKSOURCE2:       return "CLOCKSOURCE2";
-        case KvmFeature::ASYNC_PF:           return "ASYNC_PF";
-        case KvmFeature::STEAL_TIME:         return "STEAL_TIME";
-        case KvmFeature::PV_EOI:             return "PV_EOI";
-        case KvmFeature::PV_UNHALT:          return "PV_UNHALT";
-        case KvmFeature::PV_TLB_FLUSH:       return "PV_TLB_FLUSH";
-        case KvmFeature::ASYNC_PF_VMEXIT:    return "ASYNC_PF_VMEXIT";
-        case KvmFeature::PV_SEND_IPI:        return "PV_SEND_IPI";
-        case KvmFeature::CLOCKSOURCE_STABLE: return "CLOCKSOURCE_STABLE";
+    static char8 res[26];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", feature, enumToString(feature));
+
+    return res;
 }
 
 

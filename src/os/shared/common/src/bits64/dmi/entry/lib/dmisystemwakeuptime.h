@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -52,20 +55,11 @@ inline const char8* enumToFullString(DmiSystemWakeUpTime time) // TEST: NO
 
 
 
-    switch (time)
-    {
-        case DmiSystemWakeUpTime::NONE:              return "NONE";
-        case DmiSystemWakeUpTime::OTHER:             return "OTHER";
-        case DmiSystemWakeUpTime::UNKNOWN:           return "UNKNOWN";
-        case DmiSystemWakeUpTime::APM_TIMER:         return "APM_TIMER";
-        case DmiSystemWakeUpTime::MODEOM_RING:       return "MODEOM_RING";
-        case DmiSystemWakeUpTime::LAN_REMOTE:        return "LAN_REMOTE";
-        case DmiSystemWakeUpTime::POWER_SWITCH:      return "POWER_SWITCH";
-        case DmiSystemWakeUpTime::PCI_PME:           return "PCI_PME";
-        case DmiSystemWakeUpTime::AC_POWER_RESTORED: return "AC_POWER_RESTORED";
+    static char8 res[25];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", time, enumToString(time));
+
+    return res;
 }
 
 

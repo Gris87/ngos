@@ -31,7 +31,7 @@ enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier
     UNCOMPRESSED_SIZE_PRESENT = (1ULL << 7)
 };
 
-DEFINE_FLAGS(XzBlockFlags, xz_block_flags);
+DEFINE_FLAGS(XzBlockFlags, xz_block_flags); // TEST: NO
 
 
 
@@ -53,24 +53,34 @@ inline const char8* flagToString(XzBlockFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(XzBlockFlag flag) // TEST: NO
+{
+    // EARLY_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[33];
+
+    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const XzBlockFlags &flags) // TEST: NO
 {
-    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // EARLY_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     xz_block_flags temp = flags & ~NUMBER_OF_FILTERS_MASK;
 
-    if (!temp)
-    {
-        return "NONE";
-    }
-
 
 
     static char8 res[67];
 
-    FLAGS_TO_STRING(res, temp, flagToString, XzBlockFlag);
+    FLAGS_TO_STRING(res, temp, XzBlockFlag);
 
     return res;
 }
@@ -79,22 +89,17 @@ inline const char8* flagsToString(const XzBlockFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const XzBlockFlags &flags) // TEST: NO
 {
-    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // EARLY_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     xz_block_flags temp = flags & ~NUMBER_OF_FILTERS_MASK;
 
-    if (!temp)
-    {
-        return "NONE";
-    }
 
 
+    static char8 res[74];
 
-    static char8 res[67];
-
-    FLAGS_TO_STRING(res, temp, flagToString, XzBlockFlag);
+    FLAGS_TO_FULL_STRING(res, temp, XzBlockFlag, "0x%02X");
 
     return res;
 }

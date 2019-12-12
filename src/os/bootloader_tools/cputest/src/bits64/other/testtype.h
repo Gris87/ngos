@@ -3,7 +3,10 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
+#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/bits64/uefi/uefilog.h>
 
 
 
@@ -74,31 +77,11 @@ inline const char8* enumToFullString(TestType type) // TEST: NO
 
 
 
-    switch (type)
-    {
-        case TestType::INTEGER:  return "INTEGER";
-        case TestType::BITWISE:  return "BITWISE";
-        case TestType::LOGICAL:  return "LOGICAL";
-        case TestType::FLOAT:    return "FLOAT";
-        case TestType::DOUBLE:   return "DOUBLE";
-        case TestType::SSE:      return "SSE";
-        case TestType::SSE2:     return "SSE2";
-        case TestType::SSE3:     return "SSE3";
-        case TestType::SSE41:    return "SSE41";
-        case TestType::SSE42:    return "SSE42";
-        case TestType::AVX:      return "AVX";
-        case TestType::AVX2:     return "AVX2";
-        case TestType::AVX512BW: return "AVX512BW";
-        case TestType::AVX512CD: return "AVX512CD";
-        case TestType::AVX512DQ: return "AVX512DQ";
-        case TestType::AVX512F:  return "AVX512F";
-        case TestType::AVX512VL: return "AVX512VL";
-        case TestType::FMA3:     return "FMA3";
-        case TestType::AES:      return "AES";
-        case TestType::MAXIMUM:  return "MAXIMUM";
+    static char8 res[16];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

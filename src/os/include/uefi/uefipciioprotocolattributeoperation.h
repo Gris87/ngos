@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -38,17 +39,11 @@ inline const char8* enumToString(UefiPciIoProtocolAttributeOperation operation) 
 
 inline const char8* enumToFullString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
 {
-    switch (operation)
-    {
-        case UefiPciIoProtocolAttributeOperation::GET:       return "GET";
-        case UefiPciIoProtocolAttributeOperation::SET:       return "SET";
-        case UefiPciIoProtocolAttributeOperation::ENABLE:    return "ENABLE";
-        case UefiPciIoProtocolAttributeOperation::DISABLE:   return "DISABLE";
-        case UefiPciIoProtocolAttributeOperation::SUPPORTED: return "SUPPORTED";
-        case UefiPciIoProtocolAttributeOperation::MAXIMUM:   return "MAXIMUM";
+    static char8 res[23];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
+
+    return res;
 }
 
 

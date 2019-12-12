@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -50,19 +53,11 @@ inline const char8* enumToFullString(WidgetState state) // TEST: NO
 
 
 
-    switch (state)
-    {
-        case WidgetState::NONE:             return "NONE";
-        case WidgetState::NORMAL:           return "NORMAL";
-        case WidgetState::HOVERED:          return "HOVERED";
-        case WidgetState::PRESSED:          return "PRESSED";
-        case WidgetState::FOCUSED:          return "FOCUSED";
-        case WidgetState::FOCUSED_HOVERED:  return "FOCUSED_HOVERED";
-        case WidgetState::INACTIVE:         return "INACTIVE";
-        case WidgetState::INACTIVE_HOVERED: return "INACTIVE_HOVERED";
+    static char8 res[24];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", state, enumToString(state));
+
+    return res;
 }
 
 

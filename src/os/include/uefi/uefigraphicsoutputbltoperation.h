@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiGraphicsOutputBltOperation: u32
@@ -34,19 +38,22 @@ inline const char8* enumToString(UefiGraphicsOutputBltOperation operation) // TE
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiGraphicsOutputBltOperation operation) // TEST: NO
 {
-    switch (operation)
-    {
-        case UefiGraphicsOutputBltOperation::VIDEO_FILL:          return "VIDEO_FILL";
-        case UefiGraphicsOutputBltOperation::VIDEO_TO_BLT_BUFFER: return "VIDEO_TO_BLT_BUFFER";
-        case UefiGraphicsOutputBltOperation::BLT_BUFFER_TO_VIDEO: return "BLT_BUFFER_TO_VIDEO";
-        case UefiGraphicsOutputBltOperation::VIDEO_TO_VIDEO:      return "VIDEO_TO_VIDEO";
-        case UefiGraphicsOutputBltOperation::MAXIMUM:             return "MAXIMUM";
+    static char8 res[33];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -52,24 +53,11 @@ inline const char8* enumToString(UefiPciIoProtocolWidth width) // TEST: NO
 
 inline const char8* enumToFullString(UefiPciIoProtocolWidth width) // TEST: NO
 {
-    switch (width)
-    {
-        case UefiPciIoProtocolWidth::UINT8:       return "UINT8";
-        case UefiPciIoProtocolWidth::UINT16:      return "UINT16";
-        case UefiPciIoProtocolWidth::UINT32:      return "UINT32";
-        case UefiPciIoProtocolWidth::UINT64:      return "UINT64";
-        case UefiPciIoProtocolWidth::FIFO_UINT8:  return "FIFO_UINT8";
-        case UefiPciIoProtocolWidth::FIFO_UINT16: return "FIFO_UINT16";
-        case UefiPciIoProtocolWidth::FIFO_UINT32: return "FIFO_UINT32";
-        case UefiPciIoProtocolWidth::FIFO_UINT64: return "FIFO_UINT64";
-        case UefiPciIoProtocolWidth::FILL_UINT8:  return "FILL_UINT8";
-        case UefiPciIoProtocolWidth::FILL_UINT16: return "FILL_UINT16";
-        case UefiPciIoProtocolWidth::FILL_UINT32: return "FILL_UINT32";
-        case UefiPciIoProtocolWidth::FILL_UINT64: return "FILL_UINT64";
-        case UefiPciIoProtocolWidth::MAXIMUM:     return "MAXIMUM";
+    static char8 res[25];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%08X (%s)", width, enumToString(width));
+
+    return res;
 }
 
 

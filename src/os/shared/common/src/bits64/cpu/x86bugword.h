@@ -3,6 +3,9 @@
 
 
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -38,13 +41,11 @@ inline const char8* enumToFullString(x86BugWord word) // TEST: NO
 
 
 
-    switch (word)
-    {
-        case x86BugWord::NGOS_COMMON_FLAGS: return "NGOS_COMMON_FLAGS";
-        case x86BugWord::MAXIMUM:           return "MAXIMUM";
+    static char8 res[25];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", word, enumToString(word));
+
+    return res;
 }
 
 

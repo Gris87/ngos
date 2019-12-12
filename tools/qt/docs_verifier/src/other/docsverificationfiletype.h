@@ -5,6 +5,7 @@
 
 #include <Qt>
 #include <ngos/types.h>
+#include <stdio.h>
 
 
 
@@ -12,7 +13,7 @@
 
 
 
-enum class DocsVerificationFileType: quint64
+enum class DocsVerificationFileType: quint64 // Ignore CppEnumVerifier
 {
     NONE = 0,
     TEXT = (1ULL << 0),
@@ -37,14 +38,11 @@ inline const char8* enumToString(DocsVerificationFileType type) // TEST: NO
 
 inline const char8* enumToFullString(DocsVerificationFileType type) // TEST: NO
 {
-    switch (type)
-    {
-        case DocsVerificationFileType::NONE: return "NONE";
-        case DocsVerificationFileType::TEXT: return "TEXT";
-        case DocsVerificationFileType::MD:   return "MD";
+    static char8 res[29];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%016llX (%s)", (quint64)type, enumToString(type));
+
+    return res;
 }
 
 

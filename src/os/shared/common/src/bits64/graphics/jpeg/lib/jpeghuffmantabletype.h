@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -19,7 +20,7 @@ enum class JpegHuffmanTableType: u8
 
 inline const char8* enumToString(JpegHuffmanTableType type) // TEST: NO
 {
-    // COMMON_LT((" | type = %u", type)); // Commented to avotype bad looking logs
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 
 
 
@@ -36,17 +37,15 @@ inline const char8* enumToString(JpegHuffmanTableType type) // TEST: NO
 
 inline const char8* enumToFullString(JpegHuffmanTableType type) // TEST: NO
 {
-    // COMMON_LT((" | type = %u", type)); // Commented to avotype bad looking logs
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
 
 
 
-    switch (type)
-    {
-        case JpegHuffmanTableType::DC: return "DC";
-        case JpegHuffmanTableType::AC: return "AC";
+    static char8 res[15];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
 
 

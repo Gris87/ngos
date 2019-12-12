@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
@@ -38,12 +39,11 @@ inline const char8* enumToFullString(PngFilterMethod method) // TEST: NO
 
 
 
-    switch (method)
-    {
-        case PngFilterMethod::ADAPTIVE: return "ADAPTIVE";
+    static char8 res[16];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", method, enumToString(method));
+
+    return res;
 }
 
 

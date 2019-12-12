@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class UefiDevicePathType: u8
@@ -38,21 +42,22 @@ inline const char8* enumToString(UefiDevicePathType type) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(UefiDevicePathType type) // TEST: NO
 {
-    switch (type)
-    {
-        case UefiDevicePathType::NONE:                  return "NONE";
-        case UefiDevicePathType::HARDWARE_DEVICE_PATH:  return "HARDWARE_DEVICE_PATH";
-        case UefiDevicePathType::ACPI_DEVICE_PATH:      return "ACPI_DEVICE_PATH";
-        case UefiDevicePathType::MESSAGING_DEVICE_PATH: return "MESSAGING_DEVICE_PATH";
-        case UefiDevicePathType::MEDIA_DEVICE_PATH:     return "MEDIA_DEVICE_PATH";
-        case UefiDevicePathType::BBS_DEVICE_PATH:       return "BBS_DEVICE_PATH";
-        case UefiDevicePathType::END_DEVICE_PATH_TYPE:  return "END_DEVICE_PATH_TYPE";
+    static char8 res[29];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

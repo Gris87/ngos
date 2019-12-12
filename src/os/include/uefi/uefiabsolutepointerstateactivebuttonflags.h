@@ -20,7 +20,7 @@ enum class UefiAbsolutePointerStateActiveButtonFlag: uefi_absolute_pointer_state
     ALTERNATE_ACTIVE = (1ULL << 1)
 };
 
-DEFINE_FLAGS(UefiAbsolutePointerStateActiveButtonFlags, uefi_absolute_pointer_state_active_button_flags);
+DEFINE_FLAGS(UefiAbsolutePointerStateActiveButtonFlags, uefi_absolute_pointer_state_active_button_flags); // TEST: NO
 
 
 
@@ -38,18 +38,22 @@ inline const char8* flagToString(UefiAbsolutePointerStateActiveButtonFlag flag) 
 
 
 
+inline const char8* flagToFullString(UefiAbsolutePointerStateActiveButtonFlag flag) // TEST: NO
+{
+    static char8 res[30];
+
+    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const UefiAbsolutePointerStateActiveButtonFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
-
-
-
     static char8 res[47];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerStateActiveButtonFlag);
+    FLAGS_TO_STRING(res, flags.flags, UefiAbsolutePointerStateActiveButtonFlag);
 
     return res;
 }
@@ -58,16 +62,9 @@ inline const char8* flagsToString(const UefiAbsolutePointerStateActiveButtonFlag
 
 inline const char8* flagsToFullString(const UefiAbsolutePointerStateActiveButtonFlags &flags) // TEST: NO
 {
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[60];
 
-
-
-    static char8 res[47];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, UefiAbsolutePointerStateActiveButtonFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, UefiAbsolutePointerStateActiveButtonFlag, "0x%08X");
 
     return res;
 }

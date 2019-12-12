@@ -404,6 +404,11 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
         {
             qualifier = *format;
             ++format;
+
+            if (qualifier == 'l' && *format == 'l')
+            {
+                ++format;
+            }
         }
 
 

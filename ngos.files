@@ -696,9 +696,9 @@ src/os/shared/common/src/bits64/cpu/generated/x86bugsnames.cpp
 src/os/shared/common/src/bits64/cpu/generated/x86bugsnames.h
 src/os/shared/common/src/bits64/cpu/generated/x86featuresnames.cpp
 src/os/shared/common/src/bits64/cpu/generated/x86featuresnames.h
-src/os/shared/common/src/bits64/cpu/model/amd.h
+src/os/shared/common/src/bits64/cpu/model/amdcpumodel.h
 src/os/shared/common/src/bits64/cpu/model/cpumodel.h
-src/os/shared/common/src/bits64/cpu/model/intel.h
+src/os/shared/common/src/bits64/cpu/model/intelcpumodel.h
 src/os/shared/common/src/bits64/cpu/msr/msr.cpp
 src/os/shared/common/src/bits64/cpu/msr/msr.h
 src/os/shared/common/src/bits64/cpu/msr/msrregisters.h

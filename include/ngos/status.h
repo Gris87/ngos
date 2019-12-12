@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class NgosStatus: u64
@@ -44,24 +48,22 @@ inline const char8* enumToString(NgosStatus status) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(NgosStatus status) // TEST: NO
 {
-    switch (status)
-    {
-        case NgosStatus::OK:                   return "OK";
-        case NgosStatus::FAILED:               return "FAILED";
-        case NgosStatus::NO_EFFECT:            return "NO_EFFECT";
-        case NgosStatus::INVALID_DATA:         return "INVALID_DATA";
-        case NgosStatus::UNEXPECTED_BEHAVIOUR: return "UNEXPECTED_BEHAVIOUR";
-        case NgosStatus::NOT_SUPPORTED:        return "NOT_SUPPORTED";
-        case NgosStatus::NOT_FOUND:            return "NOT_FOUND";
-        case NgosStatus::OUT_OF_MEMORY:        return "OUT_OF_MEMORY";
-        case NgosStatus::BUFFER_TOO_SMALL:     return "BUFFER_TOO_SMALL";
-        case NgosStatus::ASSERTION:            return "ASSERTION";
+    static char8 res[42];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%016lX (%s)", status, enumToString(status));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

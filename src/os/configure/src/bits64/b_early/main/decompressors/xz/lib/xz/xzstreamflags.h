@@ -32,7 +32,7 @@ enum class XzStreamFlag: xz_stream_flags
     TYPE_OF_CHECK_SHA256 = (1ULL << 9 | 1ULL << 11)
 };
 
-DEFINE_FLAGS(XzStreamFlags, xz_stream_flags);
+DEFINE_FLAGS(XzStreamFlags, xz_stream_flags); // TEST: NO
 
 
 
@@ -61,35 +61,24 @@ inline const char8* flagToFullString(XzStreamFlag flag) // TEST: NO
 
 
 
-    switch (flag)
-    {
-        case XzStreamFlag::NONE:                 return "NONE";
-        case XzStreamFlag::TYPE_OF_CHECK_CRC32:  return "TYPE_OF_CHECK_CRC32";
-        case XzStreamFlag::TYPE_OF_CHECK_CRC64:  return "TYPE_OF_CHECK_CRC64";
-        case XzStreamFlag::TYPE_OF_CHECK_SHA256: return "TYPE_OF_CHECK_SHA256";
+    static char8 res[30];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
+
+    return res;
 }
 
 
 
 inline const char8* flagsToString(const XzStreamFlags &flags) // TEST: NO
 {
-    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // EARLY_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[80];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, XzStreamFlag);
+    FLAGS_TO_STRING(res, flags.flags, XzStreamFlag);
 
     return res;
 }
@@ -98,20 +87,13 @@ inline const char8* flagsToString(const XzStreamFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const XzStreamFlags &flags) // TEST: NO
 {
-    // EARLY_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // EARLY_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[89];
 
-
-
-    static char8 res[80];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, XzStreamFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, XzStreamFlag, "0x%04X");
 
     return res;
 }

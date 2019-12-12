@@ -25,7 +25,7 @@ enum class DmiBaseboardFeatureFlag: dmi_baseboard_feature_flags
     HOT_SWAPPABLE          = (1ULL << 4)
 };
 
-DEFINE_FLAGS(DmiBaseboardFeatureFlags, dmi_baseboard_feature_flags);
+DEFINE_FLAGS(DmiBaseboardFeatureFlags, dmi_baseboard_feature_flags); // TEST: NO
 
 
 
@@ -50,22 +50,30 @@ inline const char8* flagToString(DmiBaseboardFeatureFlag flag) // TEST: NO
 
 
 
+inline const char8* flagToFullString(DmiBaseboardFeatureFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[30];
+
+    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+
+    return res;
+}
+
+
+
 inline const char8* flagsToString(const DmiBaseboardFeatureFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
-
-
-
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
     static char8 res[94];
 
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBaseboardFeatureFlag);
+    FLAGS_TO_STRING(res, flags.flags, DmiBaseboardFeatureFlag);
 
     return res;
 }
@@ -74,20 +82,13 @@ inline const char8* flagsToString(const DmiBaseboardFeatureFlags &flags) // TEST
 
 inline const char8* flagsToFullString(const DmiBaseboardFeatureFlags &flags) // TEST: NO
 {
-    // COMMON_LT((" | flags = %u", flags)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
 
 
 
-    if (!flags.flags)
-    {
-        return "NONE";
-    }
+    static char8 res[101];
 
-
-
-    static char8 res[94];
-
-    FLAGS_TO_STRING(res, flags.flags, flagToString, DmiBaseboardFeatureFlag);
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiBaseboardFeatureFlag, "0x%02X");
 
     return res;
 }

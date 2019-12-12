@@ -5,10 +5,11 @@
 
 #include <Qt>
 #include <ngos/types.h>
+#include <stdio.h>
 
 
 
-enum class TestEntryType: quint8
+enum class TestEntryType: quint8 // Ignore CppEnumVerifier
 {
     NONE              = 0,
     INTERNAL_FUNCTION = 1,
@@ -35,15 +36,11 @@ inline const char8* enumToString(TestEntryType type) // TEST: NO
 
 inline const char8* enumToFullString(TestEntryType type) // TEST: NO
 {
-    switch (type)
-    {
-        case TestEntryType::NONE:              return "NONE";
-        case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL_FUNCTION";
-        case TestEntryType::DEFINE:            return "DEFINE";
-        case TestEntryType::FUNCTION:          return "FUNCTION";
+    static char8 res[25];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", (quint8)type, enumToString(type));
+
+    return res;
 }
 
 

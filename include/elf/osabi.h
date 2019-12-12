@@ -5,6 +5,10 @@
 
 #include <ngos/types.h>
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#include <common/src/bits64/printf/printf.h>
+#endif
+
 
 
 enum class ElfOsAbi: u8
@@ -60,32 +64,22 @@ inline const char8* enumToString(ElfOsAbi abi) // TEST: NO
 
 
 
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+
+
+
 inline const char8* enumToFullString(ElfOsAbi abi) // TEST: NO
 {
-    switch (abi)
-    {
-        case ElfOsAbi::SYSTEM_V:       return "SYSTEM_V";
-        case ElfOsAbi::HP_UX:          return "HP_UX";
-        case ElfOsAbi::NETBSD:         return "NETBSD";
-        case ElfOsAbi::LINUX:          return "LINUX";
-        case ElfOsAbi::GNU_HURD:       return "GNU_HURD";
-        case ElfOsAbi::SOLARIS:        return "SOLARIS";
-        case ElfOsAbi::AIX:            return "AIX";
-        case ElfOsAbi::IRIX:           return "IRIX";
-        case ElfOsAbi::FREEBSD:        return "FREEBSD";
-        case ElfOsAbi::TRU64:          return "TRU64";
-        case ElfOsAbi::NOVELL_MODESTO: return "NOVELL_MODESTO";
-        case ElfOsAbi::OPENBSD:        return "OPENBSD";
-        case ElfOsAbi::OPENVMS:        return "OPENVMS";
-        case ElfOsAbi::NONSTOP_KERNEL: return "NONSTOP_KERNEL";
-        case ElfOsAbi::AROS:           return "AROS";
-        case ElfOsAbi::FENIX_OS:       return "FENIX_OS";
-        case ElfOsAbi::CLOUD_ABI:      return "CLOUD_ABI";
-        case ElfOsAbi::SORTIX:         return "SORTIX";
+    static char8 res[22];
 
-        default: return "UNKNOWN";
-    }
+    sprintf(res, "0x%02X (%s)", abi, enumToString(abi));
+
+    return res;
 }
+
+
+
+#endif
 
 
 

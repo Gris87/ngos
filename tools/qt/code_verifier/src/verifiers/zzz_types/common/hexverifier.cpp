@@ -53,9 +53,11 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
                             hexTrimmed != "%08X"
                             &&
                             hexTrimmed != "%016lX"
+                            &&
+                            hexTrimmed != "%016llX"
                            )
                         {
-                            worker->addError(path, i, QString("Unexpected hex format %1. Expecting for: 0x%p, 0x%02X, 0x%04X, 0x%08X, 0x%016lX").arg(hex));
+                            worker->addError(path, i, QString("Unexpected hex format %1. Expecting for: 0x%p, 0x%02X, 0x%04X, 0x%08X, 0x%016lX, 0x%016llX").arg(hex));
                         }
                     }
                     else
