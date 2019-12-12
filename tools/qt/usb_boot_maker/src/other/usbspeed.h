@@ -65,4 +65,5 @@ inline const char* enumToHumanString(UsbSpeed speed) // TEST: NO
 }
 
 
+
 #endif // USB_BOOT_MAKER_SRC_OTHER_USBSPEED_H
