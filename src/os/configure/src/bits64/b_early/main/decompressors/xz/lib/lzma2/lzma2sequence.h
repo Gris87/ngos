@@ -6,6 +6,7 @@
 #include <buildconfig.h>
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
+#include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 
 
