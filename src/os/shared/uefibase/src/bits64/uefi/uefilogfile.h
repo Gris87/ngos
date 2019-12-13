@@ -29,8 +29,7 @@ public:
     static bool canPrint(); // TEST: NO
 
 private:
-    static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size); // TEST: NO
-    static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
+    static NgosStatus initVolume(uefi_handle handle); // TEST: NO
 
     static NgosStatus write(u8 *data, u64 size); // TEST: NO
 

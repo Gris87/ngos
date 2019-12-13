@@ -1,6 +1,7 @@
 #include "uefilogfile.h"
 
 #include <uefi/uefiblockioprotocol.h>
+#include <uefi/uefiloadedimageprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -29,28 +30,35 @@ NgosStatus UefiLogFile::init()
 
 
 
-        Guid         blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
-        u64          blockIoSize     = 0;
-        uefi_handle *blockIoHandles  = 0;
+        Guid        protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
+        uefi_handle handle   = UEFI::getImageHandle();
 
 
 
-        if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &blockIoProtocol, 0, &blockIoSize, blockIoHandles) == UefiStatus::BUFFER_TOO_SMALL)
+        UefiLoadedImageProtocol *image;
+
+        if (UEFI::handleProtocol(handle, &protocol, (void **)&image) != UefiStatus::SUCCESS)
         {
-            UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoSize));
+            UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_LOADED_IMAGE_PROTOCOL", handle));
 
-            if (initBlockIoProtocol(&blockIoProtocol, blockIoSize) != NgosStatus::OK)
-            {
-                UEFI_LF(("Failed to setup UEFI_BLOCK_IO_PROTOCOL"));
+            return NgosStatus::FAILED;
+        }
 
-                return NgosStatus::FAILED;
-            }
+        UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_LOADED_IMAGE_PROTOCOL", handle, image));
 
-            UEFI_LV(("Setup UEFI_BLOCK_IO_PROTOCOL completed"));
+
+
+        UEFI_ASSERT_EXECUTION(initVolume(image->deviceHandle), NgosStatus::ASSERTION);
+
+
+
+        if (sLogFile)
+        {
+            sIsAborted = false; // To avoid infinite loop
         }
         else
         {
-            UEFI_LW(("Handle for UEFI_BLOCK_IO_PROTOCOL not found"));
+            UEFI_LW(("Failed to create " NGOS_BUILD_UEFI_LOG_FILE " log file"));
         }
     }
 
@@ -171,75 +179,91 @@ bool UefiLogFile::canPrint()
     return !sIsAborted;
 }
 
-NgosStatus UefiLogFile::initBlockIoProtocol(Guid *protocol, u64 size)
+NgosStatus UefiLogFile::initVolume(uefi_handle handle)
 {
-    UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
+    UEFI_LT((" | handle = 0x%p", handle));
 
-    UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
-
-
-
-    uefi_handle *blockIoHandles = 0;
+    UEFI_ASSERT(handle, "handle is null", NgosStatus::ASSERTION);
 
 
 
-    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&blockIoHandles) != UefiStatus::SUCCESS)
+    UefiFileProtocol *rootDirectory = UEFI::openVolume(handle);
+
+    if (rootDirectory)
     {
-        UEFI_LF(("Failed to allocate pool(%u) for handles for UEFI_BLOCK_IO_PROTOCOL", size));
-
-        return NgosStatus::OUT_OF_MEMORY;
-    }
-
-    UEFI_LVV(("Allocated pool(0x%p, %u) for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles, size));
+        const char8 *logPath8 = NGOS_BUILD_UEFI_LOG_FILE;
 
 
 
-    NgosStatus status = NgosStatus::FAILED;
+        char16 *logPath16;
+        u64     size = (strlen(logPath8) + 1) * sizeof(char16);
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, blockIoHandles) == UefiStatus::SUCCESS)
-    {
-        UEFI_LVV(("Located handles(0x%p) for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
+        if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&logPath16) != UefiStatus::SUCCESS)
+        {
+            UEFI_LF(("Failed to allocate pool(%u) for string", size));
 
-        status = initBlockIoProtocol(protocol, size, blockIoHandles);
-    }
-    else
-    {
-        UEFI_LF(("Failed to locate handles(0x%p) for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
-    }
+            return NgosStatus::OUT_OF_MEMORY;
+        }
 
-
-
-    if (UEFI::freePool(blockIoHandles) == UefiStatus::SUCCESS)
-    {
-        UEFI_LVV(("Released pool(0x%p) for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
-    }
-    else
-    {
-        UEFI_LE(("Failed to release pool(0x%p) for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
-    }
+        UEFI_LVV(("Allocated pool(0x%p, %u) for string", logPath16, size));
 
 
 
-    return status;
-}
+        const char8 *cur8  = logPath8;
+        char16      *cur16 = logPath16;
 
-NgosStatus UefiLogFile::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle *blockIoHandles)
-{
-    UEFI_LT((" | protocol = 0x%p, size = %u, blockIoHandles = 0x%p", protocol, size, blockIoHandles));
+        while (*cur8)
+        {
+            if (
+                *cur8 == '/'
+                ||
+                *cur8 == '\\'
+               )
+            {
+                if (cur16 != logPath16)
+                {
+                    *cur16 = 0;
 
-    UEFI_ASSERT(protocol,       "protocol is null",       NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0,       "size is zero",           NgosStatus::ASSERTION);
-    UEFI_ASSERT(blockIoHandles, "blockIoHandles is null", NgosStatus::ASSERTION);
+
+
+                    UEFI_LV(("Create folder: %ls", logPath16));
 
 
 
-    u64 numberOfVolumes = size / sizeof(uefi_handle);
-    UEFI_LVVV(("numberOfVolumes = %u", numberOfVolumes));
+                    *cur16 = '\\';
+                    ++cur16;
+                }
+            }
+            else
+            {
+                *cur16 = *cur8;
+                ++cur16;
+            }
 
-    for (i64 i = 0; i < (i64)numberOfVolumes; ++i)
-    {
+            ++cur8;
+        }
 
+
+
+        if (UEFI::freePool(logPath16) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Released pool(0x%p) for string", logPath16));
+        }
+        else
+        {
+            UEFI_LE(("Failed to release pool(0x%p) for string", logPath16));
+        }
+
+
+
+        if (rootDirectory->close(rootDirectory) == UefiStatus::SUCCESS)
+        {
+            UEFI_LV(("Closed volume root directory"));
+        }
+        else
+        {
+            UEFI_LW(("Failed to close volume root directory"));
+        }
     }
 
 
