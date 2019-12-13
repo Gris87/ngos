@@ -1,6 +1,5 @@
 #include "uefilogfile.h"
 
-#include <uefi/uefiblockioprotocol.h>
 #include <uefi/uefiloadedimageprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
