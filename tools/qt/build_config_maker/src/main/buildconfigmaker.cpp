@@ -76,6 +76,8 @@ qint64 BuildConfigMaker::process()
         QString parameter = it.key();
         QString value     = it.value();
 
+        QString parameterType = "";
+
 
 
         bool found = false;
@@ -84,9 +86,16 @@ qint64 BuildConfigMaker::process()
         {
             QString &line = lines[i];
 
+            if (line.startsWith(" *** Type: "))
+            {
+                parameterType = line.mid(11);
+            }
+            else
             if (line.startsWith("#define " + parameter + ' '))
             {
                 found = true;
+
+
 
                 qint64 index = parameter.length() + 9;
 
@@ -95,7 +104,18 @@ qint64 BuildConfigMaker::process()
                     ++index;
                 }
 
-                line = line.left(index) + value;
+
+
+                if (parameterType == "Text")
+                {
+                    line = line.left(index) + '\"' + value + '\"';
+                }
+                else
+                {
+                    line = line.left(index) + value;
+                }
+
+
 
                 break;
             }

@@ -2,6 +2,10 @@
 
 
 
+ParameterWidget *ParameterWidget::sHoveredWidget;
+
+
+
 ParameterWidget::ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &/*options*/, QWidget *parent)
     : QWidget(parent)
     , mId(id)
@@ -37,6 +41,11 @@ void ParameterWidget::setValue(const QString &value)
         setFont(font);
 
 
+
+        if (sHoveredWidget)
+        {
+            emit detailsUpdated(sHoveredWidget->generateDetails());
+        }
 
         emit valueChanged();
     }
@@ -81,11 +90,15 @@ void ParameterWidget::handleValueChanged(const QHash<QString, ParameterWidget *>
 
 void ParameterWidget::widgetEntered()
 {
+    sHoveredWidget = this;
+
     emit detailsUpdated(generateDetails());
 }
 
 void ParameterWidget::widgetLeaved()
 {
+    sHoveredWidget = nullptr;
+
     emit detailsUpdated("");
 }
 

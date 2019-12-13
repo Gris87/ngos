@@ -40,6 +40,8 @@ protected:
 private:
     QString generateDetails(); // TEST: NO
 
+    static ParameterWidget *sHoveredWidget;
+
 signals:
     void valueChanged(); // TEST: NO
     void detailsUpdated(const QString &details); // TEST: NO
