@@ -1121,6 +1121,8 @@ src/os/shared/uefibase/src/bits64/uefi/uefi.cpp
 src/os/shared/uefibase/src/bits64/uefi/uefi.h
 src/os/shared/uefibase/src/bits64/uefi/uefiassert.h
 src/os/shared/uefibase/src/bits64/uefi/uefilog.h
+src/os/shared/uefibase/src/bits64/uefi/uefilogfile.cpp
+src/os/shared/uefibase/src/bits64/uefi/uefilogfile.h
 src/os/shared/uefibase/src/bits64/uefi/uefipointerdevices.cpp
 src/os/shared/uefibase/src/bits64/uefi/uefipointerdevices.h
 src/os/shared/uefibase/test/bits64/sections/section0/__include/asm/bitutils.h

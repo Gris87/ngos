@@ -100,6 +100,7 @@ SOURCES += \
     $$PWD/src/bits64/main/setupgraphics.cpp \
     $$PWD/src/bits64/main/setuphardwareid.cpp \
     $$PWD/src/bits64/uefi/uefi.cpp \
+    $$PWD/src/bits64/uefi/uefilogfile.cpp \
     $$PWD/src/bits64/uefi/uefipointerdevices.cpp \
     $$PWD/test/bits64/testresults.cpp
 
@@ -115,6 +116,7 @@ HEADERS += \
     $$PWD/src/bits64/uefi/uefi.h \
     $$PWD/src/bits64/uefi/uefiassert.h \
     $$PWD/src/bits64/uefi/uefilog.h \
+    $$PWD/src/bits64/uefi/uefilogfile.h \
     $$PWD/src/bits64/uefi/uefipointerdevices.h \
     $$PWD/test/bits64/sections/section0/__include/asm/bitutils.h \
     $$PWD/test/bits64/sections/section0/__include/asm/instructions.h \
