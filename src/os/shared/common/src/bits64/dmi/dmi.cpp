@@ -871,7 +871,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
         COMMON_TEST_ASSERT(entry->manufacturerStringId                         == 1,                                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->type                                      == DmiChassisType::DESKTOP,           NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->versionStringId                              == 2,                                 NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->versionStringId                           == 2,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->serialNumberStringId                      == 3,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->assetTagStringId                          == 4,                                 NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->bootUpState                                  == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
@@ -884,7 +884,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         COMMON_TEST_ASSERT(entry->oemDefined[3]                                == 0,                                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->height                                       == 0,                                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->numberOfPowerCords                        == 1,                                 NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->containedElementCount                        == 0,                                 NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->containedElementCount                     == 0,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->containedElementRecordLength              == 3,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type    == DmiChassisType::OTHER,             NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->minimum == 0,                                 NgosStatus::ASSERTION); // Commented due to value variation
@@ -1056,7 +1056,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         //                                                                     , DmiProcessorFeatureFlag::SS), NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->processorVersionStringId            == 3,                                    NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->voltage                          == FLAG(DmiProcessorVoltageFlag::NONE),  NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->externalClock                       == 0,                                    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->externalClock                    == 100,                                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maxSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->currentSpeed                     == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->status                              == 65,                                   NgosStatus::ASSERTION);

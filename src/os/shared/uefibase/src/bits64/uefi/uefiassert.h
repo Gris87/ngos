@@ -17,7 +17,6 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
-#if NGOS_BUILD_RELEASE == OPTION_NO
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
 #define __UEFI_LOG_FILE_PRINT_ASSERT_1(message) \
     if (UefiLogFile::canPrint()) \
@@ -37,6 +36,7 @@
 
 
 
+#if NGOS_BUILD_RELEASE == OPTION_NO
 #define __UEFI_PRINT_ASSERT(message) \
     __UEFI_LOG_FILE_PRINT_ASSERT_1(message); \
     \
