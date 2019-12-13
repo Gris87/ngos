@@ -11,12 +11,27 @@
 #include <macro/utils.h>
 #include <ngos/status.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
+#include <uefibase/src/bits64/uefi/uefilogfile.h>
 
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+#define __UEFI_LOG_FILE_PRINT_ASSERT(message) \
+    if (UefiLogFile::canPrint()) \
+    { \
+        UefiLogFile::init(); \
+        \
+        UefiLogFile::println(printfBuffer); \
+    }
+#else
+#define __UEFI_LOG_FILE_PRINT_ASSERT(message)
+#endif
+
+
+
 #define __UEFI_PRINT_ASSERT(message) \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -39,7 +54,9 @@
     else \
     { \
         Serial::printf message; \
-    }
+    } \
+    \
+    __UEFI_LOG_FILE_PRINT_ASSERT(message);
 
 
 

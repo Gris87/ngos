@@ -1789,6 +1789,10 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path, 
 
     UEFI_ASSERT_EXECUTION(GraphicalConsole::noMorePrint(), NgosStatus::ASSERTION);
 
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+    UEFI_ASSERT_EXECUTION(UefiLogFile::noMorePrint(), NgosStatus::ASSERTION);
+#endif
+
 
 
     RgbaPixel blackPixel;

@@ -55,6 +55,12 @@ NgosStatus exitBootServices(UefiBootMemoryMap *bootMemoryMap)
 
 
 
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+    UEFI_ASSERT_EXECUTION(UefiLogFile::noMorePrint(), NgosStatus::ASSERTION);
+#endif
+
+
+
     UefiStatus status = exitBootServicesAttempt(bootMemoryMap);
 
     // exitBootServices may return UefiStatus::INVALID_PARAMETER. It is means that memory map became invalid and we have one more attempt to repeat

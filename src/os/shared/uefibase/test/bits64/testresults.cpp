@@ -3,6 +3,7 @@
 #include <buildconfig.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/bits64/uefi/uefilogfile.h>
 
 
 
@@ -68,6 +69,17 @@ void TestResults::testFailed(const char8 *fileName, u64 line, const char8 *descr
     {
         Serial::println(buffer);
     }
+
+
+
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+    if (UefiLogFile::canPrint())
+    {
+        UefiLogFile::init();
+
+        UefiLogFile::println(buffer);
+    }
+#endif
 }
 
 NgosStatus TestResults::summary()
@@ -104,6 +116,17 @@ NgosStatus TestResults::summary()
     {
         Serial::println(buffer);
     }
+
+
+
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+    if (UefiLogFile::canPrint())
+    {
+        UefiLogFile::init();
+
+        UefiLogFile::println(buffer);
+    }
+#endif
 
 
 

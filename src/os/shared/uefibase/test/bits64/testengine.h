@@ -7,6 +7,7 @@
 #include <macro/utils.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/bits64/uefi/uefilogfile.h>
 #include <uefibase/test/bits64/testresults.h>
 
 
@@ -27,6 +28,22 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+#define __UEFI_LOG_FILE_TEST_TRACE(name) \
+    if (UefiLogFile::canPrint()) \
+    { \
+        UefiLogFile::init(); \
+        \
+        UefiLogFile::print("TRACE:     TEST_CASE(\""); \
+        UefiLogFile::print(name); \
+        UefiLogFile::println("\")"); \
+    }
+#else
+#define __UEFI_LOG_FILE_TEST_TRACE(name)
+#endif
+
+
+
 #define TEST_CASE(name) \
         do \
         { \
@@ -67,7 +84,9 @@
                 Serial::print("TRACE:     TEST_CASE(\""); \
                 Serial::print(name); \
                 Serial::println("\")"); \
-            }
+            } \
+            \
+            __UEFI_LOG_FILE_TEST_TRACE(name);
 #else
 #define TEST_CASE(name) \
         do \

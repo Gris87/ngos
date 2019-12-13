@@ -9,11 +9,43 @@
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/serial/serial.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
+#include <uefibase/src/bits64/uefi/uefilogfile.h>
 
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+#define __UEFI_LOG_FILE_LOG(level, message) \
+    if (UefiLogFile::canPrint()) \
+    { \
+        UefiLogFile::init(); \
+        \
+        UefiLogFile::print(level); \
+        UefiLogFile::println(printfBuffer); \
+    }
+#else
+#define __UEFI_LOG_FILE_LOG(level, message)
+#endif
+
+
+
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+#define __UEFI_LOG_FILE_PRINT_LT(message) \
+    if (UefiLogFile::canPrint()) \
+    { \
+        UefiLogFile::init(); \
+        \
+        UefiLogFile::print("TRACE:     "); \
+        UefiLogFile::print(__PRETTY_FUNCTION__); \
+        UefiLogFile::println(printfBuffer); \
+    }
+#else
+#define __UEFI_LOG_FILE_PRINT_LT(message)
+#endif
+
+
+
 #define __UEFI_PRINT_LOG(level, message) \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -44,7 +76,9 @@
     { \
         Serial::print(level); \
         Serial::printf message; \
-    }
+    } \
+    \
+    __UEFI_LOG_FILE_LOG(level, message);
 
 
 
@@ -86,7 +120,9 @@
         Serial::print("TRACE:     "); \
         Serial::print(__PRETTY_FUNCTION__); \
         Serial::printf message; \
-    }
+    } \
+    \
+    __UEFI_LOG_FILE_PRINT_LT(message);
 
 
 
