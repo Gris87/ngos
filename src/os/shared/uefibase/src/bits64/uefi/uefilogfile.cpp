@@ -247,8 +247,6 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
 
 
 
-
-
                     *cur16 = '\\';
                     ++cur16;
                 }
