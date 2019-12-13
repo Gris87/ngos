@@ -1684,7 +1684,7 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
 
 
 #ifdef UEFI_APPLICATION // Defined in Makefile
-    sUuids[(u64)id] = (Uuid *)&uuid;
+    sUuids[(u64)id] = (Uuid *)&uuid; // TODO: Invalid UUID stored
 #else
     u8 *brkAddress;
 

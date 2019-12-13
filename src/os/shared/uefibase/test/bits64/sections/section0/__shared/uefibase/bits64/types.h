@@ -22,8 +22,11 @@ TEST_CASES(section0, __shared_uefibase_bits64_types);
     {
         TEST_ASSERT_EQUALS(sizeof(UEFI),               1);
         TEST_ASSERT_EQUALS(sizeof(UefiBootMemoryMap),  48);
-        TEST_ASSERT_EQUALS(sizeof(UefiLogFile),        1);
         TEST_ASSERT_EQUALS(sizeof(UefiPointerDevices), 1);
+
+#if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+        TEST_ASSERT_EQUALS(sizeof(UefiLogFile), 1);
+#endif
     }
     TEST_CASE_END();
 }
