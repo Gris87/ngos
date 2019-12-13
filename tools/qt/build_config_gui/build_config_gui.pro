@@ -47,10 +47,12 @@ SOURCES += \
     src/widgets/common/trackingcheckbox.cpp \
     src/widgets/common/trackingcombobox.cpp \
     src/widgets/common/trackinggroupbox.cpp \
+    src/widgets/common/trackinglineedit.cpp \
     src/widgets/parameters/booleanparameterwidget.cpp \
     src/widgets/parameters/comboboxparameterwidget.cpp \
     src/widgets/parameters/integerpowerof2parameterwidget.cpp \
-    src/widgets/parameters/parameterwidget.cpp
+    src/widgets/parameters/parameterwidget.cpp \
+    src/widgets/parameters/textparameterwidget.cpp
 
 HEADERS += \
     src/main/aboutdialog.h \
@@ -61,10 +63,12 @@ HEADERS += \
     src/widgets/common/trackingcheckbox.h \
     src/widgets/common/trackingcombobox.h \
     src/widgets/common/trackinggroupbox.h \
+    src/widgets/common/trackinglineedit.h \
     src/widgets/parameters/booleanparameterwidget.h \
     src/widgets/parameters/comboboxparameterwidget.h \
     src/widgets/parameters/integerpowerof2parameterwidget.h \
-    src/widgets/parameters/parameterwidget.h
+    src/widgets/parameters/parameterwidget.h \
+    src/widgets/parameters/textparameterwidget.h
 
 FORMS += \
     src/main/aboutdialog.ui \

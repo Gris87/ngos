@@ -13,6 +13,7 @@
 #include "src/widgets/parameters/booleanparameterwidget.h"
 #include "src/widgets/parameters/comboboxparameterwidget.h"
 #include "src/widgets/parameters/integerpowerof2parameterwidget.h"
+#include "src/widgets/parameters/textparameterwidget.h"
 
 
 
@@ -523,6 +524,11 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
                             }
                         }
                         else
+                        if (metaType == "Text")
+                        {
+                            // Nothing
+                        }
+                        else
                         {
                             qCritical() << "Unexpected meta information \"Type\" (" << metaType << ") was specified for parameter:" << id;
 
@@ -657,6 +663,11 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
         if (metaType == "Integer (Power of 2)")
         {
             parameterWidget = new IntegerPowerOf2ParameterWidget(id, metaInformation, mOptions, categoryItem->getPage());
+        }
+        else
+        if (metaType == "Text")
+        {
+            parameterWidget = new TextParameterWidget(id, metaInformation, mOptions, categoryItem->getPage());
         }
         else
         {

@@ -1323,6 +1323,8 @@ tools/qt/build_config_gui/src/widgets/common/trackingcombobox.cpp
 tools/qt/build_config_gui/src/widgets/common/trackingcombobox.h
 tools/qt/build_config_gui/src/widgets/common/trackinggroupbox.cpp
 tools/qt/build_config_gui/src/widgets/common/trackinggroupbox.h
+tools/qt/build_config_gui/src/widgets/common/trackinglineedit.cpp
+tools/qt/build_config_gui/src/widgets/common/trackinglineedit.h
 tools/qt/build_config_gui/src/widgets/parameters/booleanparameterwidget.cpp
 tools/qt/build_config_gui/src/widgets/parameters/booleanparameterwidget.h
 tools/qt/build_config_gui/src/widgets/parameters/comboboxparameterwidget.cpp
@@ -1331,6 +1333,8 @@ tools/qt/build_config_gui/src/widgets/parameters/integerpowerof2parameterwidget.
 tools/qt/build_config_gui/src/widgets/parameters/integerpowerof2parameterwidget.h
 tools/qt/build_config_gui/src/widgets/parameters/parameterwidget.cpp
 tools/qt/build_config_gui/src/widgets/parameters/parameterwidget.h
+tools/qt/build_config_gui/src/widgets/parameters/textparameterwidget.cpp
+tools/qt/build_config_gui/src/widgets/parameters/textparameterwidget.h
 tools/qt/build_config_maker/.gitignore
 tools/qt/build_config_maker/build_config_maker.pro
 tools/qt/build_config_maker/README.md

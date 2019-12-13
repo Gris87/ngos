@@ -327,9 +327,9 @@
  ***
  *** Type: Text
  ***
- *** Default: "EFI/Log/NGOS.log"
+ *** Default: "EFI/Logs/NGOS.log"
  ***/
-#define NGOS_BUILD_UEFI_LOG_FILE "EFI/Log/NGOS.log"
+#define NGOS_BUILD_UEFI_LOG_FILE "EFI/Logs/NGOS.log"
 
 
 
