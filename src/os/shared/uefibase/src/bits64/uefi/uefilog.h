@@ -16,37 +16,49 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_LOG(level, message) \
+#define __UEFI_LOG_FILE_PRINT_LOG_1(level, message) \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
-        \
+    }
+
+#define __UEFI_LOG_FILE_PRINT_LOG_2(level, message) \
+    if (UefiLogFile::canPrint()) \
+    { \
         UefiLogFile::print(level); \
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_PRINT_LOG(level, message)
+#define __UEFI_LOG_FILE_PRINT_LOG_1(level, message)
+#define __UEFI_LOG_FILE_PRINT_LOG_2(level, message)
 #endif
 
 
 
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_LT(message) \
+#define __UEFI_LOG_FILE_PRINT_LT_1(message) \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
-        \
+    }
+
+#define __UEFI_LOG_FILE_PRINT_LT_2(message) \
+    if (UefiLogFile::canPrint()) \
+    { \
         UefiLogFile::print("TRACE:     "); \
         UefiLogFile::print(__PRETTY_FUNCTION__); \
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_PRINT_LT(message)
+#define __UEFI_LOG_FILE_PRINT_LT_1(message)
+#define __UEFI_LOG_FILE_PRINT_LT_2(message)
 #endif
 
 
 
 #define __UEFI_PRINT_LOG(level, message) \
+    __UEFI_LOG_FILE_PRINT_LOG_1(level, message); \
+    \
     if (GraphicalConsole::canPrint()) \
     { \
         GraphicalConsole::init(); \
@@ -78,11 +90,13 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_LOG(level, message);
+    __UEFI_LOG_FILE_PRINT_LOG_2(level, message);
 
 
 
 #define __UEFI_PRINT_LT(message) \
+    __UEFI_LOG_FILE_PRINT_LT_1(message); \
+    \
     if (GraphicalConsole::canPrint()) \
     { \
         GraphicalConsole::init(); \
@@ -122,7 +136,7 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_LT(message);
+    __UEFI_LOG_FILE_PRINT_LT_2(message);
 
 
 

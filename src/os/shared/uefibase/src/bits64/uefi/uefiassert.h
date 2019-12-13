@@ -19,20 +19,27 @@
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_RELEASE == OPTION_NO
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_ASSERT(message) \
+#define __UEFI_LOG_FILE_PRINT_ASSERT_1(message) \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
-        \
+    }
+
+#define __UEFI_LOG_FILE_PRINT_ASSERT_2(message) \
+    if (UefiLogFile::canPrint()) \
+    { \
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_PRINT_ASSERT(message)
+#define __UEFI_LOG_FILE_PRINT_ASSERT_1(message)
+#define __UEFI_LOG_FILE_PRINT_ASSERT_2(message)
 #endif
 
 
 
 #define __UEFI_PRINT_ASSERT(message) \
+    __UEFI_LOG_FILE_PRINT_ASSERT_1(message); \
+    \
     if (GraphicalConsole::canPrint()) \
     { \
         GraphicalConsole::init(); \
@@ -56,7 +63,7 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_ASSERT(message);
+    __UEFI_LOG_FILE_PRINT_ASSERT_2(message);
 
 
 
