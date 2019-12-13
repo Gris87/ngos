@@ -6,6 +6,7 @@
 #include <buildconfig.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
+#include <uefi/uefifileprotocol.h>
 
 
 
@@ -28,7 +29,13 @@ public:
     static bool canPrint(); // TEST: NO
 
 private:
+    static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size); // TEST: NO
+    static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
+
     static NgosStatus write(u8 *data, u64 size); // TEST: NO
+
+    static bool              sIsAborted;
+    static UefiFileProtocol *sLogFile;
 };
 
 
