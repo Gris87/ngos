@@ -225,7 +225,27 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
 
 
 
-                    UEFI_LV(("Create folder: %ls", logPath16));
+                    UefiFileProtocol *folder;
+
+                    if (rootDirectory->open(rootDirectory, &folder, logPath16, FLAGS(UefiFileModeFlag::CREATE, UefiFileModeFlag::READ, UefiFileModeFlag::WRITE), FLAGS(UefiFileAttributeFlag::DIRECTORY)) == UefiStatus::SUCCESS)
+                    {
+                        UEFI_LV(("Created folder: %ls", logPath16));
+
+                        if (folder->close(folder) == UefiStatus::SUCCESS)
+                        {
+                            UEFI_LV(("Closed created folder"));
+                        }
+                        else
+                        {
+                            UEFI_LW(("Failed to close created folder"));
+                        }
+                    }
+                    else
+                    {
+                        UEFI_LW(("Failed to create folder: %ls", logPath16));
+                    }
+
+
 
 
 
@@ -240,6 +260,15 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
             }
 
             ++cur8;
+        }
+
+        *cur16 = 0;
+
+
+
+        if (rootDirectory->open(rootDirectory, &sLogFile, logPath16, FLAGS(UefiFileModeFlag::CREATE, UefiFileModeFlag::READ, UefiFileModeFlag::WRITE), FLAGS(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
+        {
+            UEFI_LV(("Created log file: %ls", logPath16));
         }
 
 
@@ -282,6 +311,7 @@ NgosStatus UefiLogFile::write(u8 *data, u64 size)
     if (sLogFile)
     {
         sLogFile->write(sLogFile, &size, data);
+        sLogFile->flush(sLogFile);
     }
 
 
