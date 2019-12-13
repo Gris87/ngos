@@ -17,6 +17,7 @@ NGOS:
 - Check for log includes: common or early?
 - Convert installer to UEFI application
 - Make kernelbase just for kernel
+- Check where we can use enumToString and flagToString
 
 - Complete with interruptions
 - Implement boot screen for kernel

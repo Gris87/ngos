@@ -196,7 +196,7 @@
  ***
  *** Default: OPTION_LOG_LEVEL_DEBUG
  ***/
-#define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+#define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_DEBUG
 #else
 #define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_ERROR
 #endif
@@ -308,9 +308,9 @@
  *** Values: true = OPTION_YES, false = OPTION_NO
  *** Value description: true = Log to UEFI file, false = Do not log to UEFI file
  ***
- *** Default: OPTION_YES
+ *** Default: OPTION_NO
  ***/
-#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_YES
+#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_NO
 #else
 #define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_NO
 #endif
