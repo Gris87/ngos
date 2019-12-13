@@ -26,7 +26,6 @@ NGOS:
 
 - Add option to log in serial only/UDP only/All
 - Add option to log with UDP
-- Add option to log to file
 - Add option to disable inline
 - Add stack protector to build
 
