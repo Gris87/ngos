@@ -16,7 +16,7 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_LOG(level, message) \
+#define __UEFI_LOG_FILE_PRINT_LOG(level, message) \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
@@ -25,7 +25,7 @@
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_LOG(level, message)
+#define __UEFI_LOG_FILE_PRINT_LOG(level, message)
 #endif
 
 
@@ -78,7 +78,7 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_LOG(level, message);
+    __UEFI_LOG_FILE_PRINT_LOG(level, message);
 
 
 
