@@ -102,6 +102,11 @@ NgosStatus UefiLogFile::println()
 
     UEFI_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
 
+    if (sLogFile)
+    {
+        sLogFile->flush(sLogFile);
+    }
+
 
 
     return NgosStatus::OK;
@@ -115,6 +120,11 @@ NgosStatus UefiLogFile::println(char8 ch)
 
     UEFI_ASSERT_EXECUTION(print(ch),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
+
+    if (sLogFile)
+    {
+        sLogFile->flush(sLogFile);
+    }
 
 
 
@@ -131,6 +141,11 @@ NgosStatus UefiLogFile::println(const char8 *str)
 
     UEFI_ASSERT_EXECUTION(print(str),  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
+
+    if (sLogFile)
+    {
+        sLogFile->flush(sLogFile);
+    }
 
 
 
@@ -309,7 +324,6 @@ NgosStatus UefiLogFile::write(u8 *data, u64 size)
     if (sLogFile)
     {
         sLogFile->write(sLogFile, &size, data);
-        sLogFile->flush(sLogFile);
     }
 
 
