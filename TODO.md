@@ -18,6 +18,8 @@ NGOS:
 - Convert installer to UEFI application
 - Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
+- Add SecureBoot support: https://m.habr.com/ru/post/273497/
+- Replace UEFI Shell with Device Manager via DMI
 
 - Complete with interruptions
 - Implement boot screen for kernel
