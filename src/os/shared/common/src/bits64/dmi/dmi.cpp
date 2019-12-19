@@ -1026,7 +1026,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        COMMON_TEST_ASSERT(entry->socketStringId                      == 1,                                    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->socketStringId                   == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->processorType                       == DmiProcessorType::CENTRAL_PROCESSOR,  NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->processorFamily                  == DmiProcessorFamily::OTHER,            NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->processorManufactureStringId        == 2,                                    NgosStatus::ASSERTION);
@@ -1059,7 +1059,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         //                                                                     , DmiProcessorFeatureFlag::SSE                          // Commented due to value variation
         //                                                                     , DmiProcessorFeatureFlag::SSE2                         // Commented due to value variation
         //                                                                     , DmiProcessorFeatureFlag::SS), NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->processorVersionStringId            == 3,                                    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->processorVersionStringId         == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->voltage                          == FLAG(DmiProcessorVoltageFlag::NONE),  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->externalClock                    == 100,                                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maxSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
@@ -1483,18 +1483,18 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
         if (sVersion >= DMI_VERSION(2, 6))
         {
-            COMMON_TEST_ASSERT(entry->attributes == 0, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->attributes == 0, NgosStatus::ASSERTION); // Commented due to value variation
 
             if (sVersion >= DMI_VERSION(2, 7))
             {
-                // COMMON_TEST_ASSERT(entry->extendedSize          == 0, NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entry->configuredMemorySpeed == 0, NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entry->extendedSize          == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->configuredMemorySpeed == 0, NgosStatus::ASSERTION); // Commented due to value variation
 
                 if (sVersion >= DMI_VERSION(2, 8))
                 {
-                    // COMMON_TEST_ASSERT(entry->minimumVoltage    == 0, NgosStatus::ASSERTION);
-                    // COMMON_TEST_ASSERT(entry->maximumVoltage    == 0, NgosStatus::ASSERTION);
-                    // COMMON_TEST_ASSERT(entry->configuredVoltage == 0, NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entry->minimumVoltage    == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->maximumVoltage    == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->configuredVoltage == 0, NgosStatus::ASSERTION); // Commented due to value variation
 
                     if (sVersion >= DMI_VERSION(3, 2))
                     {

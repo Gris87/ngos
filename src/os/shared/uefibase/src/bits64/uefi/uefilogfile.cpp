@@ -286,6 +286,20 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
 
 
 
+        if (sLogFile->deleteFile(sLogFile) == UefiStatus::SUCCESS)
+        {
+            UEFI_LV(("Deleted log file: %ls", logPath16));
+        }
+
+
+
+        if (rootDirectory->open(rootDirectory, &sLogFile, logPath16, FLAGS(UefiFileModeFlag::CREATE, UefiFileModeFlag::READ, UefiFileModeFlag::WRITE), FLAGS(UefiFileAttributeFlag::NONE)) == UefiStatus::SUCCESS)
+        {
+            UEFI_LV(("Created log file: %ls", logPath16));
+        }
+
+
+
         if (UEFI::freePool(logPath16) == UefiStatus::SUCCESS)
         {
             UEFI_LVV(("Released pool(0x%p) for string", logPath16));
