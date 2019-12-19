@@ -117,7 +117,7 @@ NgosStatus DMI::init()
 
             for (i64 i = 0; i < (i64)sNumberOfMemoryDevices; ++i)
             {
-                COMMON_LVVV(("#%-3d: 0x%04X | %u | %s | %s | %s | %s | %s | %s | %s", i, sMemoryDevices[i].handle, sMemoryDevices[i].size, stringToString(sMemoryDevices[i].device), stringToString(sMemoryDevices[i].bank), stringToString(sMemoryDevices[i].manufacturer), stringToString(sMemoryDevices[i].serialNumber), stringToString(sMemoryDevices[i].assetTag), stringToString(sMemoryDevices[i].partNumber), stringToString(sMemoryDevices[i].firmwareVersion)));
+                COMMON_LVVV(("#%-3d: 0x%04X | %s | %s | %s | %s | %s | %s | %s | %s", i, sMemoryDevices[i].handle, bytesToString(sMemoryDevices[i].size), stringToString(sMemoryDevices[i].device), stringToString(sMemoryDevices[i].bank), stringToString(sMemoryDevices[i].manufacturer), stringToString(sMemoryDevices[i].serialNumber), stringToString(sMemoryDevices[i].assetTag), stringToString(sMemoryDevices[i].partNumber), stringToString(sMemoryDevices[i].firmwareVersion)));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -131,11 +131,11 @@ NgosStatus DMI::init()
             {
                 if (sIdentities[i])
                 {
-                    COMMON_LVVV(("%-29s: 0x%p | %s", enumToFullString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
+                    COMMON_LVVV(("%-36s: 0x%p | %s", enumToFullString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
                 }
                 else
                 {
-                    COMMON_LVVV(("%-29s: 0x%p", enumToFullString((DmiIdentity)i), sIdentities[i]));
+                    COMMON_LVVV(("%-36s: 0x%p", enumToFullString((DmiIdentity)i), sIdentities[i]));
                 }
             }
 
@@ -184,7 +184,7 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sIdentities[13]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[14]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sIdentities[15]              != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[16]              != 0,                       NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sIdentities[16]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[17]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[18]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[19]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
