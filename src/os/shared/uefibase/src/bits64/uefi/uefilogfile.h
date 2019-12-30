@@ -31,8 +31,6 @@ public:
 private:
     static NgosStatus initVolume(uefi_handle handle); // TEST: NO
 
-    static NgosStatus write(u8 *data, u64 size); // TEST: NO
-
     static bool              sIsAborted;
     static UefiFileProtocol *sLogFile;
 };

@@ -33,9 +33,9 @@ inline const char8* uuidToString(Uuid *uuid) // TEST: NO
 
 
 
-    static char8 res[50];
+    static char8 res[39];
 
-    sprintf(res, "0x%p {%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", uuid, uuid->data1, uuid->data2, uuid->data3, uuid->data4, uuid->data5, uuid->data6[0], uuid->data6[1], uuid->data6[2], uuid->data6[3], uuid->data6[4], uuid->data6[5]);
+    sprintf(res, "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", uuid->data1, uuid->data2, uuid->data3, uuid->data4, uuid->data5, uuid->data6[0], uuid->data6[1], uuid->data6[2], uuid->data6[3], uuid->data6[4], uuid->data6[5]);
 
     return res;
 }

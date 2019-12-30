@@ -72,7 +72,12 @@ NgosStatus UefiLogFile::print(char8 ch)
 
 
 
-    UEFI_ASSERT_EXECUTION(write((u8 *)&ch, sizeof(ch)), NgosStatus::ASSERTION);
+    if (sLogFile)
+    {
+        u64 size = sizeof(ch);
+
+        sLogFile->write(sLogFile, &size, &ch);
+    }
 
 
 
@@ -86,8 +91,12 @@ NgosStatus UefiLogFile::print(const char8 *str)
     UEFI_ASSERT(str, "str is null", NgosStatus::ASSERTION);
 
 
+    if (sLogFile)
+    {
+        u64 size = strlen(str);
 
-    UEFI_ASSERT_EXECUTION(write((u8 *)str, strlen(str)), NgosStatus::ASSERTION);
+        sLogFile->write(sLogFile, &size, (void *)str);
+    }
 
 
 
@@ -100,10 +109,12 @@ NgosStatus UefiLogFile::println()
 
 
 
-    UEFI_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
-
     if (sLogFile)
     {
+        char8 ch   = '\n';
+        u64   size = sizeof(ch);
+
+        sLogFile->write(sLogFile, &size, &ch);
         sLogFile->flush(sLogFile);
     }
 
@@ -118,11 +129,14 @@ NgosStatus UefiLogFile::println(char8 ch)
 
 
 
-    UEFI_ASSERT_EXECUTION(print(ch),   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
-
     if (sLogFile)
     {
+        char8 ch2   = '\n';
+        u64   size  = sizeof(ch);
+        u64   size2 = sizeof(ch2);
+
+        sLogFile->write(sLogFile, &size, &ch);
+        sLogFile->write(sLogFile, &size2, &ch2);
         sLogFile->flush(sLogFile);
     }
 
@@ -139,11 +153,14 @@ NgosStatus UefiLogFile::println(const char8 *str)
 
 
 
-    UEFI_ASSERT_EXECUTION(print(str),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
-
     if (sLogFile)
     {
+        char8 ch    = '\n';
+        u64   size  = strlen(str);
+        u64   size2 = sizeof(ch);
+
+        sLogFile->write(sLogFile, &size, (void *)str);
+        sLogFile->write(sLogFile, &size2, &ch);
         sLogFile->flush(sLogFile);
     }
 
@@ -319,25 +336,6 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
         {
             UEFI_LW(("Failed to close volume root directory"));
         }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus UefiLogFile::write(u8 *data, u64 size)
-{
-    // UEFI_LT((" | data = 0x%p, size = %u", data, size)); // Commented to avoid bad looking logs
-
-    UEFI_ASSERT(data,     "data is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
-
-
-
-    if (sLogFile)
-    {
-        sLogFile->write(sLogFile, &size, data);
     }
 
 

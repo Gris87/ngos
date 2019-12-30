@@ -556,7 +556,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
     lines.append("");
     lines.append("CFLAGS              = " + mEntries.value("QMAKE_CFLAGS").join(' ') + tail);
-    lines.append("CXXFLAGS            = -m64 -W -Wall -Werror -nostdinc -mno-red-zone -fPIE -ffreestanding -fno-strict-aliasing -fno-stack-protector -fomit-frame-pointer -fno-exceptions -fno-asynchronous-unwind-tables -fno-unwind-tables " + mEntries.value("QMAKE_CXXFLAGS").join(' ') + tail);
+    lines.append("CXXFLAGS            = -m64 -W -Wall -Werror -Wno-address-of-packed-member -nostdinc -mno-red-zone -fPIE -ffreestanding -fno-strict-aliasing -fno-stack-protector -fomit-frame-pointer -fno-exceptions -fno-asynchronous-unwind-tables -fno-unwind-tables " + mEntries.value("QMAKE_CXXFLAGS").join(' ') + tail);
     lines.append("LFLAGS              = " + mEntries.value("QMAKE_LFLAGS").join(' '));
     lines.append("");
     lines.append("OUTPUT_DIR          = build");

@@ -30,6 +30,9 @@ class DMI
 public:
     static NgosStatus init(); // TEST: NO
 
+    static const char8* getIdentity(DmiIdentity id); // TEST: NO
+    static Uuid* getUuid(DmiStoredUuid id); // TEST: NO
+
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
@@ -51,7 +54,7 @@ private:
     static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveIdentity(DmiIdentity id, u8 *address, u64 size); // TEST: NO
-    static NgosStatus saveUuid(DmiStoredUuid id, const Uuid &uuid); // TEST: NO
+    static NgosStatus saveUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
     static NgosStatus getString(u8 *address, u64 size, u8 **destination); // TEST: NO
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 

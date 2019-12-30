@@ -214,6 +214,24 @@ NgosStatus DMI::init()
     return NgosStatus::OK;
 }
 
+const char8* DMI::getIdentity(DmiIdentity id)
+{
+    COMMON_LT((" | id = %u", id));
+
+
+
+    return sIdentities[(u64)id];
+}
+
+Uuid* DMI::getUuid(DmiStoredUuid id)
+{
+    COMMON_LT((" | id = %u", id));
+
+
+
+    return sUuids[(u64)id];
+}
+
 NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)
 {
     COMMON_LT((" | smbios3 = 0x%p", smbios3));
@@ -623,7 +641,7 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
-    COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, entry->uuid), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, &entry->uuid), NgosStatus::ASSERTION);
 
 
 
@@ -1664,7 +1682,7 @@ NgosStatus DMI::saveIdentity(DmiIdentity id, u8 *address, u64 size)
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
+NgosStatus DMI::saveUuid(DmiStoredUuid id, Uuid *uuid)
 { // Ignore CppNgosTraceVerifier
     COMMON_LT((" | id = %u, uuid = %s", id, uuidToString(uuid)));
 
@@ -1676,13 +1694,13 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, const Uuid &uuid)
 
 
 #ifdef UEFI_APPLICATION // Defined in Makefile
-    sUuids[(u64)id] = (Uuid *)&uuid; // TODO: Invalid UUID stored
+    sUuids[(u64)id] = uuid;
 #else
     u8 *brkAddress;
 
     COMMON_ASSERT_EXECUTION(BRK::allocate(sizeof(Uuid), 1, &brkAddress), NgosStatus::ASSERTION);
-    ((u64 *)brkAddress)[0] = ((u64 *)&uuid)[0];
-    ((u64 *)brkAddress)[1] = ((u64 *)&uuid)[1];
+    ((u64 *)brkAddress)[0] = ((u64 *)uuid)[0];
+    ((u64 *)brkAddress)[1] = ((u64 *)uuid)[1];
 
     sUuids[(u64)id] = (Uuid *)brkAddress;
 #endif
