@@ -244,7 +244,7 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
         case PngChunkType::TEXT:
         case PngChunkType::ZTXT:
         {
-            COMMON_LVV(("Ignore PNG chunk %s", chunk->type, enumToFullString(chunk->type)));
+            COMMON_LVV(("Ignore PNG chunk %s", enumToFullString(chunk->type)));
         }
         break;
 

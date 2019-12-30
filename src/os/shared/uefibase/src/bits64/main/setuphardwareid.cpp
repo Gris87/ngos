@@ -163,7 +163,7 @@ NgosStatus saveHardwareIdToFile(BootParams *params)
         {
             UEFI_LV(("Created hardware ID file: %ls", HARDWARE_ID_PATH));
 
-            u64 size = sizeof(params->hardwareId);
+            u64 size = sizeof(params->hardwareId) - 1;
 
             if (hardwareIdFile->write(hardwareIdFile, &size, params->hardwareId) == UefiStatus::SUCCESS)
             {
@@ -254,6 +254,8 @@ NgosStatus loadHardwareIdFromFile(BootParams *params)
 
             if (hardwareIdFile->read(hardwareIdFile, &size, hardwareId) == UefiStatus::SUCCESS)
             {
+                hardwareId[size] = 0;
+
                 UEFI_LV(("Loaded HardwareID: %s", hardwareId));
             }
             else
