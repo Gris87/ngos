@@ -91,6 +91,7 @@ NgosStatus UefiLogFile::print(const char8 *str)
     UEFI_ASSERT(str, "str is null", NgosStatus::ASSERTION);
 
 
+
     if (sLogFile)
     {
         u64 size = strlen(str);

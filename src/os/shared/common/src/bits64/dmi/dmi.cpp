@@ -444,6 +444,11 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::BASEBOARD:                   COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header),                               NgosStatus::ASSERTION); break;
         case DmiEntryType::CHASSIS:                     COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),                                   NgosStatus::ASSERTION); break;
         case DmiEntryType::PROCESSOR:                   COMMON_ASSERT_EXECUTION(saveDmiProcessorEntry((DmiProcessorEntry *)header),                               NgosStatus::ASSERTION); break;
+        case DmiEntryType::PORT_CONNECTOR:              COMMON_ASSERT_EXECUTION(saveDmiPortConnectorEntry((DmiPortConnectorEntry *)header),                       NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM_SLOTS:                COMMON_ASSERT_EXECUTION(saveDmiSystemSlotsEntry((DmiSystemSlotsEntry *)header),                           NgosStatus::ASSERTION); break;
+        case DmiEntryType::ONBOARD_DEVICES:             COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesEntry((DmiOnboardDevicesEntry *)header),                     NgosStatus::ASSERTION); break;
+        case DmiEntryType::OEM_STRINGS:                 COMMON_ASSERT_EXECUTION(saveDmiOemStringsEntry((DmiOemStringsEntry *)header),                             NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM_CONFIGURATION:        COMMON_ASSERT_EXECUTION(saveDmiSystemConfigurationEntry((DmiSystemConfigurationEntry *)header),           NgosStatus::ASSERTION); break;
         case DmiEntryType::PHYSICAL_MEMORY_ARRAY:       COMMON_ASSERT_EXECUTION(saveDmiPhysicalMemoryArrayEntry((DmiPhysicalMemoryArrayEntry *)header),           NgosStatus::ASSERTION); break;
         case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS: COMMON_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header), NgosStatus::ASSERTION); break;
         case DmiEntryType::SYSTEM_BOOT:                 COMMON_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                             NgosStatus::ASSERTION); break;
@@ -1175,6 +1180,343 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             {
                 COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_PART_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
             }
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->internalReferenceDesignatorStringId = %u", entry->internalReferenceDesignatorStringId));
+        COMMON_LVVV(("entry->internalConnectorType               = %s", enumToFullString(entry->internalConnectorType)));
+        COMMON_LVVV(("entry->externalReferenceDesignatorStringId = %u", entry->externalReferenceDesignatorStringId));
+        COMMON_LVVV(("entry->externalConnectorType               = %s", enumToFullString(entry->externalConnectorType)));
+        COMMON_LVVV(("entry->portType                            = %s", enumToFullString(entry->portType)));
+
+
+
+        // COMMON_TEST_ASSERT(entry->internalReferenceDesignatorStringId == 1,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->internalConnectorType               == DmiPortConnectorType::OTHER,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->externalReferenceDesignatorStringId == 2,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->externalConnectorType               == DmiPortConnectorType::OTHER,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->portType                            == DmiPortConnectorPortType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 9,                             NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortConnectorEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->slotDesignationStringId = %u", entry->slotDesignationStringId));
+        COMMON_LVVV(("entry->slotType                = %s", enumToFullString(entry->slotType)));
+        COMMON_LVVV(("entry->slotDataBusWidth        = %s", enumToFullString(entry->slotDataBusWidth)));
+        COMMON_LVVV(("entry->currentUsage            = %s", enumToFullString(entry->currentUsage)));
+        COMMON_LVVV(("entry->slotLength              = %s", enumToFullString(entry->slotLength)));
+        COMMON_LVVV(("entry->slotID                  = %u", entry->slotID));
+        COMMON_LVVV(("entry->slotCharacteristics     = %s", flagsToFullString(entry->slotCharacteristics)));
+
+        if (sVersion >= DMI_VERSION(2, 6))
+        {
+            COMMON_LVVV(("entry->segmentGroupNumber  = %u", entry->segmentGroupNumber));
+            COMMON_LVVV(("entry->busNumber           = %u", entry->busNumber));
+            COMMON_LVVV(("entry->deviceFuncionNumber = %u", entry->deviceFuncionNumber));
+
+            if (sVersion >= DMI_VERSION(3, 2))
+            {
+                COMMON_LVVV(("entry->dataBusWidth      = %s", enumToFullString(entry->dataBusWidth)));
+                COMMON_LVVV(("entry->peerGroupingCount = %u", entry->peerGroupingCount));
+
+                for (i64 i = 0; i < entry->peerGroupingCount; ++i)
+                {
+                    COMMON_LVVV(("entry->peerGroups[i].segmentGroupNumber   = %u", entry->peerGroups[i].segmentGroupNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].busNumber            = %u", entry->peerGroups[i].busNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].deviceFunctionNumber = %u", entry->peerGroups[i].deviceFunctionNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].dataBusWidth         = %s", enumToFullString(entry->peerGroups[i].dataBusWidth)));
+                }
+            }
+        }
+
+
+
+        // COMMON_TEST_ASSERT(entry->slotDesignationStringId == 1,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->slotType                == DmiSystemSlotsType::UNKNOWN,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->slotDataBusWidth        == DmiSystemSlotsDataBusWidth::UNKNOWN,            NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->currentUsage            == DmiSystemSlotsUsage::AVAILABLE,                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->slotLength              == DmiSystemSlotsLength::UNKNOWN,                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->slotID                  == 1,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->slotCharacteristics     == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+
+        if (sVersion >= DMI_VERSION(2, 6))
+        {
+            // COMMON_TEST_ASSERT(entry->segmentGroupNumber  == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->busNumber           == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->deviceFuncionNumber == 1, NgosStatus::ASSERTION); // Commented due to value variation
+
+            if (sVersion >= DMI_VERSION(3, 2))
+            {
+                // COMMON_TEST_ASSERT(entry->dataBusWidth                       == DmiSystemSlotsDataBusWidth::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->peerGroupingCount                  == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->peerGroups[0].segmentGroupNumber   == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->peerGroups[0].busNumber            == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->peerGroups[0].deviceFunctionNumber == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->peerGroups[0].dataBusWidth         == DmiSystemSlotsDataBusWidth::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+
+                COMMON_TEST_ASSERT(entry->header.length >= 19 + entry->peerGroupingCount * 5,                          NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry) + entry->peerGroupingCount * 5, NgosStatus::ASSERTION);
+            }
+            else
+            {
+                COMMON_TEST_ASSERT(entry->header.length >= 17,                              NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry) - 2, NgosStatus::ASSERTION);
+            }
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(entry->header.length >= 13,                              NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry) - 6, NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->device[0].enabled             = %u", entry->device[0].enabled));
+        COMMON_LVVV(("entry->device[0].deviceType          = %s", enumToFullString((DmiOnboardDevicesDeviceType)entry->device[0].deviceType)));
+        COMMON_LVVV(("entry->device[0].descriptionStringId = %u", entry->device[0].descriptionStringId));
+
+
+
+        // COMMON_TEST_ASSERT(entry->device[0].enabled                                 == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT((DmiOnboardDevicesDeviceType)entry->device[0].deviceType == DmiOnboardDevicesDeviceType::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->device[0].descriptionStringId                     == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 6,                              NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOnboardDevicesEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->stringCount = %u", entry->stringCount));
+
+
+
+        // COMMON_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 5,                          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOemStringsEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->stringCount = %u", entry->stringCount));
+
+
+
+        // COMMON_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 5,                                   NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemConfigurationEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 

@@ -162,14 +162,14 @@ NgosStatus CPU::init()
 
             for (i64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
             {
-                COMMON_LVVV(("sFlags[%-20s] = 0x%08X", enumToFullString((x86FeatureWord)i), sFlags[i]));
+                COMMON_LVVV(("sFlags[%-27s] = 0x%08X", enumToFullString((x86FeatureWord)i), sFlags[i]));
             }
 
             COMMON_LVVV(("CPU bugs:"));
 
             for (i64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
             {
-                COMMON_LVVV(("sBugs[%-17s] = 0x%08X", enumToFullString((x86BugWord)i), sBugs[i]));
+                COMMON_LVVV(("sBugs[%-24s] = 0x%08X", enumToFullString((x86BugWord)i), sBugs[i]));
             }
         }
 #endif

@@ -48,8 +48,8 @@ NgosStatus generateHardwareId(BootParams *params, i64 *length)
 
 
 
-        params->hardwareId[i] = digits[rand & 0x0F];
-        rand >>= 4;
+        params->hardwareId[i] =   digits[rand & 0x0F];
+        rand                  >>= 4;
     }
 
     params->hardwareId[sizeof(params->hardwareId) - 1] = 0;

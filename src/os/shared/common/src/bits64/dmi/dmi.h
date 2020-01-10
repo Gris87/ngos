@@ -11,10 +11,15 @@
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
 #include <common/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h>
+#include <common/src/bits64/dmi/entry/dmioemstringsentry.h>
+#include <common/src/bits64/dmi/entry/dmionboarddevicesentry.h>
 #include <common/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h>
+#include <common/src/bits64/dmi/entry/dmiportconnectorentry.h>
 #include <common/src/bits64/dmi/entry/dmiprocessorentry.h>
 #include <common/src/bits64/dmi/entry/dmisystembootentry.h>
+#include <common/src/bits64/dmi/entry/dmisystemconfigurationentry.h>
 #include <common/src/bits64/dmi/entry/dmisystementry.h>
+#include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
 #include <ngos/status.h>
 #include <uefi/config/uefismbios3configurationtable.h>
 #include <uefi/config/uefismbiosconfigurationtable.h>
@@ -47,6 +52,11 @@ private:
     static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry); // TEST: NO
     static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry); // TEST: NO
     static NgosStatus saveDmiProcessorEntry(DmiProcessorEntry *entry); // TEST: NO
+    static NgosStatus saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry); // TEST: NO
+    static NgosStatus saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry); // TEST: NO
+    static NgosStatus saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry); // TEST: NO
+    static NgosStatus saveDmiOemStringsEntry(DmiOemStringsEntry *entry); // TEST: NO
+    static NgosStatus saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *entry); // TEST: NO
     static NgosStatus saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemBootEntry(DmiSystemBootEntry *entry); // TEST: NO
