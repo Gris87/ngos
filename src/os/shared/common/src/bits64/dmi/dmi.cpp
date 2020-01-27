@@ -439,19 +439,26 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
 
     switch (header->type)
     {
-        case DmiEntryType::BIOS:                        COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header),                                         NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM:                      COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),                                     NgosStatus::ASSERTION); break;
-        case DmiEntryType::BASEBOARD:                   COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header),                               NgosStatus::ASSERTION); break;
-        case DmiEntryType::CHASSIS:                     COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::PROCESSOR:                   COMMON_ASSERT_EXECUTION(saveDmiProcessorEntry((DmiProcessorEntry *)header),                               NgosStatus::ASSERTION); break;
-        case DmiEntryType::PORT_CONNECTOR:              COMMON_ASSERT_EXECUTION(saveDmiPortConnectorEntry((DmiPortConnectorEntry *)header),                       NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_SLOTS:                COMMON_ASSERT_EXECUTION(saveDmiSystemSlotsEntry((DmiSystemSlotsEntry *)header),                           NgosStatus::ASSERTION); break;
-        case DmiEntryType::ONBOARD_DEVICES:             COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesEntry((DmiOnboardDevicesEntry *)header),                     NgosStatus::ASSERTION); break;
-        case DmiEntryType::OEM_STRINGS:                 COMMON_ASSERT_EXECUTION(saveDmiOemStringsEntry((DmiOemStringsEntry *)header),                             NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_CONFIGURATION:        COMMON_ASSERT_EXECUTION(saveDmiSystemConfigurationEntry((DmiSystemConfigurationEntry *)header),           NgosStatus::ASSERTION); break;
-        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:       COMMON_ASSERT_EXECUTION(saveDmiPhysicalMemoryArrayEntry((DmiPhysicalMemoryArrayEntry *)header),           NgosStatus::ASSERTION); break;
-        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS: COMMON_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header), NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_BOOT:                 COMMON_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                             NgosStatus::ASSERTION); break;
+        case DmiEntryType::BIOS:                             COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header),                                                   NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM:                           COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),                                               NgosStatus::ASSERTION); break;
+        case DmiEntryType::BASEBOARD:                        COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header),                                         NgosStatus::ASSERTION); break;
+        case DmiEntryType::CHASSIS:                          COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),                                             NgosStatus::ASSERTION); break;
+        case DmiEntryType::PROCESSOR:                        COMMON_ASSERT_EXECUTION(saveDmiProcessorEntry((DmiProcessorEntry *)header),                                         NgosStatus::ASSERTION); break;
+        case DmiEntryType::PORT_CONNECTOR:                   COMMON_ASSERT_EXECUTION(saveDmiPortConnectorEntry((DmiPortConnectorEntry *)header),                                 NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM_SLOTS:                     COMMON_ASSERT_EXECUTION(saveDmiSystemSlotsEntry((DmiSystemSlotsEntry *)header),                                     NgosStatus::ASSERTION); break;
+        case DmiEntryType::ONBOARD_DEVICES:                  COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesEntry((DmiOnboardDevicesEntry *)header),                               NgosStatus::ASSERTION); break;
+        case DmiEntryType::OEM_STRINGS:                      COMMON_ASSERT_EXECUTION(saveDmiOemStringsEntry((DmiOemStringsEntry *)header),                                       NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM_CONFIGURATION:             COMMON_ASSERT_EXECUTION(saveDmiSystemConfigurationEntry((DmiSystemConfigurationEntry *)header),                     NgosStatus::ASSERTION); break;
+        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            COMMON_ASSERT_EXECUTION(saveDmiPhysicalMemoryArrayEntry((DmiPhysicalMemoryArrayEntry *)header),                     NgosStatus::ASSERTION); break;
+        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      COMMON_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header),           NgosStatus::ASSERTION); break;
+        case DmiEntryType::VOLTAGE_PROBE:                    COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
+        case DmiEntryType::COOLING_DEVICE:                   COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
+        case DmiEntryType::TEMPERATURE_PROBE:                COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
+        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM_BOOT:                      COMMON_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                                       NgosStatus::ASSERTION); break;
+        case DmiEntryType::MANAGEMENT_DEVICE:                COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceEntry((DmiManagementDeviceEntry *)header),                           NgosStatus::ASSERTION); break;
+        case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceComponentEntry((DmiManagementDeviceComponentEntry *)header),         NgosStatus::ASSERTION); break;
+        case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA: COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceThresholdDataEntry((DmiManagementDeviceThresholdDataEntry *)header), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -1654,6 +1661,297 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
     return NgosStatus::OK;
 }
 
+NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->descriptionStringId        = %u", entry->descriptionStringId));
+        COMMON_LVVV(("entry->locationAndStatus.location = %s", enumToFullString((DmiVoltageProbeLocation)entry->locationAndStatus.location)));
+        COMMON_LVVV(("entry->locationAndStatus.status   = %s", enumToFullString((DmiVoltageProbeStatus)entry->locationAndStatus.status)));
+        COMMON_LVVV(("entry->maximumValue               = %u", entry->maximumValue));
+        COMMON_LVVV(("entry->minimumValue               = %u", entry->minimumValue));
+        COMMON_LVVV(("entry->resolution                 = %u", entry->resolution));
+        COMMON_LVVV(("entry->tolerance                  = %u", entry->tolerance));
+        COMMON_LVVV(("entry->accuracy                   = %u", entry->accuracy));
+        COMMON_LVVV(("entry->oemDefined                 = %u", entry->oemDefined));
+        COMMON_LVVV(("entry->nominalValue               = %u", entry->nominalValue));
+
+
+
+        // COMMON_TEST_ASSERT(entry->descriptionStringId        == 1,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiVoltageProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiVoltageProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->resolution                 == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->oemDefined                 == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 22,                           NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiVoltageProbeEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->temperatureProbeHandle     = 0x%04X", entry->temperatureProbeHandle));
+        COMMON_LVVV(("entry->deviceTypeAndStatus.type   = %s",     enumToFullString((DmiCoolingDeviceType)entry->deviceTypeAndStatus.type)));
+        COMMON_LVVV(("entry->deviceTypeAndStatus.status = %s",     enumToFullString((DmiCoolingDeviceStatus)entry->deviceTypeAndStatus.status)));
+        COMMON_LVVV(("entry->coolingUnitGroup           = %u",     entry->coolingUnitGroup));
+        COMMON_LVVV(("entry->oemDefined                 = %u",     entry->oemDefined));
+        COMMON_LVVV(("entry->nominalSpeed               = %u",     entry->nominalSpeed));
+
+        if (sVersion >= DMI_VERSION(2, 7))
+        {
+            COMMON_LVVV(("entry->descriptionStringId = %u", entry->descriptionStringId));
+        }
+
+
+
+        // COMMON_TEST_ASSERT(entry->temperatureProbeHandle     == 0x0000,                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.type   == DmiCoolingDeviceType::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.status == DmiCoolingDeviceStatus::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->coolingUnitGroup           == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->oemDefined                 == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->nominalSpeed               == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
+
+        if (sVersion >= DMI_VERSION(2, 7))
+        {
+            // COMMON_TEST_ASSERT(entry->descriptionStringId  == 1, NgosStatus::ASSERTION); // Commented due to value variation
+
+            COMMON_TEST_ASSERT(entry->header.length >= 15,                            NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(entry->header.length >= 14,                                NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry) - 1, NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->descriptionStringId        = %u", entry->descriptionStringId));
+        COMMON_LVVV(("entry->locationAndStatus.location = %s", enumToFullString((DmiTemperatureProbeLocation)entry->locationAndStatus.location)));
+        COMMON_LVVV(("entry->locationAndStatus.status   = %s", enumToFullString((DmiTemperatureProbeStatus)entry->locationAndStatus.status)));
+        COMMON_LVVV(("entry->maximumValue               = %u", entry->maximumValue));
+        COMMON_LVVV(("entry->minimumValue               = %u", entry->minimumValue));
+        COMMON_LVVV(("entry->resolution                 = %u", entry->resolution));
+        COMMON_LVVV(("entry->tolerance                  = %u", entry->tolerance));
+        COMMON_LVVV(("entry->accuracy                   = %u", entry->accuracy));
+        COMMON_LVVV(("entry->oemDefined                 = %u", entry->oemDefined));
+        COMMON_LVVV(("entry->nominalValue               = %u", entry->nominalValue));
+
+
+
+        // COMMON_TEST_ASSERT(entry->descriptionStringId        == 1,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiTemperatureProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiTemperatureProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->oemDefined                 == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 22,                               NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiTemperatureProbeEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->descriptionStringId        = %u", entry->descriptionStringId));
+        COMMON_LVVV(("entry->locationAndStatus.location = %s", enumToFullString((DmiElectricalCurrentProbeLocation)entry->locationAndStatus.location)));
+        COMMON_LVVV(("entry->locationAndStatus.status   = %s", enumToFullString((DmiElectricalCurrentProbeStatus)entry->locationAndStatus.status)));
+        COMMON_LVVV(("entry->maximumValue               = %u", entry->maximumValue));
+        COMMON_LVVV(("entry->minimumValue               = %u", entry->minimumValue));
+        COMMON_LVVV(("entry->resolution                 = %u", entry->resolution));
+        COMMON_LVVV(("entry->tolerance                  = %u", entry->tolerance));
+        COMMON_LVVV(("entry->accuracy                   = %u", entry->accuracy));
+        COMMON_LVVV(("entry->oemDefined                 = %u", entry->oemDefined));
+        COMMON_LVVV(("entry->nominalValue               = %u", entry->nominalValue));
+
+
+
+        // COMMON_TEST_ASSERT(entry->descriptionStringId        == 1,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiElectricalCurrentProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiElectricalCurrentProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->oemDefined                 == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 22,                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiElectricalCurrentProbeEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
@@ -1674,6 +1972,166 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
         COMMON_TEST_ASSERT(entry->header.length >= 11,                         NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemBootEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->descriptionStringId = %u",     entry->descriptionStringId));
+        COMMON_LVVV(("entry->type                = %s",     enumToFullString(entry->type)));
+        COMMON_LVVV(("entry->address             = 0x%08X", entry->address));
+        COMMON_LVVV(("entry->addressType         = %s",     enumToFullString(entry->addressType)));
+
+
+
+        // COMMON_TEST_ASSERT(entry->descriptionStringId == 1,                                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->type                == DmiManagementDeviceType::OTHER,        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->address             == 0x00000000,                            NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->addressType         == DmiManagementDeviceAddressType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 11,                               NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceComponentEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->descriptionStringId    = %u",     entry->descriptionStringId));
+        COMMON_LVVV(("entry->managementDeviceHandle = 0x%04X", entry->managementDeviceHandle));
+        COMMON_LVVV(("entry->componentHandle        = 0x%04X", entry->componentHandle));
+        COMMON_LVVV(("entry->thresholdHandle        = 0x%04X", entry->thresholdHandle));
+
+
+
+        // COMMON_TEST_ASSERT(entry->descriptionStringId    == 1,      NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->managementDeviceHandle == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->componentHandle        == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->thresholdHandle        == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 11,                                        NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceComponentEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThresholdDataEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->lowerThresholdNonCritical    = %u", entry->lowerThresholdNonCritical));
+        COMMON_LVVV(("entry->upperThresholdNonCritical    = %u", entry->upperThresholdNonCritical));
+        COMMON_LVVV(("entry->lowerThresholdCritical       = %u", entry->lowerThresholdCritical));
+        COMMON_LVVV(("entry->upperThresholdCritical       = %u", entry->upperThresholdCritical));
+        COMMON_LVVV(("entry->lowerThresholdNonRecoverable = %u", entry->lowerThresholdNonRecoverable));
+        COMMON_LVVV(("entry->upperThresholdNonRecoverable = %u", entry->upperThresholdNonRecoverable));
+
+        // COMMON_TEST_ASSERT(entry->lowerThresholdNonCritical    == 0, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->upperThresholdNonCritical    == 0, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->lowerThresholdCritical       == 0, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->upperThresholdCritical       == 0, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->lowerThresholdNonRecoverable == 0, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->upperThresholdNonRecoverable == 0, NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 16,                                            NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceThresholdDataEntry), NgosStatus::ASSERTION);
     }
 
 

@@ -92,6 +92,11 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
     $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
+    $$PWD/src/bits64/dmi/entry/dmicoolingdeviceentry.h \
+    $$PWD/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h \
+    $$PWD/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h \
+    $$PWD/src/bits64/dmi/entry/dmimanagementdeviceentry.h \
+    $$PWD/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmioemstringsentry.h \
@@ -103,6 +108,8 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmisystemconfigurationentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystementry.h \
     $$PWD/src/bits64/dmi/entry/dmisystemslotsentry.h \
+    $$PWD/src/bits64/dmi/entry/dmitemperatureprobeentry.h \
+    $$PWD/src/bits64/dmi/entry/dmivoltageprobeentry.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardtype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h \
@@ -114,6 +121,14 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassistype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicoolingdevicetypeandstatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h \
@@ -142,6 +157,12 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotstype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotsusage.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobelocationandstatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmivoltageprobelocationandstatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmivoltageprobestatus.h \
     $$PWD/src/bits64/early/earlyassert.h \
     $$PWD/src/bits64/early/earlylog.h \
     $$PWD/src/bits64/fpu/fpu.h \

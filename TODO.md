@@ -117,6 +117,13 @@ MathZip:
 
 
 
+SpecVerifier:
+
+- Implement tool
+- Check the code with several specifications like SMBIOS, TCP ...
+
+
+
 webapps:
 
 - Replicate apps to registered server
