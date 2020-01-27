@@ -94,11 +94,15 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
+    $$PWD/src/bits64/dmi/entry/dmioemstringsentry.h \
+    $$PWD/src/bits64/dmi/entry/dmionboarddevicesentry.h \
     $$PWD/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h \
     $$PWD/src/bits64/dmi/entry/dmiportconnectorentry.h \
     $$PWD/src/bits64/dmi/entry/dmiprocessorentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystembootentry.h \
+    $$PWD/src/bits64/dmi/entry/dmisystemconfigurationentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystementry.h \
+    $$PWD/src/bits64/dmi/entry/dmisystemslotsentry.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardtype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h \
@@ -115,6 +119,8 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h \
@@ -129,6 +135,12 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystembootstatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemslotslength.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemslotspeergroup.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemslotstype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemslotsusage.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h \
     $$PWD/src/bits64/early/earlyassert.h \
     $$PWD/src/bits64/early/earlylog.h \

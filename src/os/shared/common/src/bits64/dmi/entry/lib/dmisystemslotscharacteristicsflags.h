@@ -44,7 +44,19 @@ inline const char8* flagToString(DmiSystemSlotsCharacteristicsFlag flag) // TEST
 
     switch (flag)
     {
-        case DmiSystemSlotsCharacteristicsFlag::NONE:                               return "NONE";
+        case DmiSystemSlotsCharacteristicsFlag::NONE:                        return "NONE";
+        case DmiSystemSlotsCharacteristicsFlag::CHARACTERISTICS_UNKNOWN:     return "CHARACTERISTICS_UNKNOWN";
+        case DmiSystemSlotsCharacteristicsFlag::PROVIDES_50_VOLTS:           return "PROVIDES_50_VOLTS";
+        case DmiSystemSlotsCharacteristicsFlag::PROVIDES_33_VOLTS:           return "PROVIDES_33_VOLTS";
+        case DmiSystemSlotsCharacteristicsFlag::SHARED_SLOT:                 return "SHARED_SLOT";
+        case DmiSystemSlotsCharacteristicsFlag::PC_CARD_16_SUPPORTED:        return "PC_CARD_16_SUPPORTED";
+        case DmiSystemSlotsCharacteristicsFlag::CARD_BUS_SUPPORTED:          return "CARD_BUS_SUPPORTED";
+        case DmiSystemSlotsCharacteristicsFlag::ZOOM_VIDEO_SUPPORTED:        return "ZOOM_VIDEO_SUPPORTED";
+        case DmiSystemSlotsCharacteristicsFlag::MODEM_RING_RESUME_SUPPORTED: return "MODEM_RING_RESUME_SUPPORTED";
+        case DmiSystemSlotsCharacteristicsFlag::PME_SIGNAL_SUPPORTED:        return "PME_SIGNAL_SUPPORTED";
+        case DmiSystemSlotsCharacteristicsFlag::HOT_PLUG_DEVICES_SUPPORTED:  return "HOT_PLUG_DEVICES_SUPPORTED";
+        case DmiSystemSlotsCharacteristicsFlag::SMBUS_SIGNAL_SUPPORTED:      return "SMBUS_SIGNAL_SUPPORTED";
+        case DmiSystemSlotsCharacteristicsFlag::BIFURCATION_SUPPORTED:       return "BIFURCATION_SUPPORTED";
 
         default: return "UNKNOWN";
     }
@@ -58,9 +70,9 @@ inline const char8* flagToFullString(DmiSystemSlotsCharacteristicsFlag flag) // 
 
 
 
-    static char8 res[56];
+    static char8 res[37];
 
-    sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
 
     return res;
 }
@@ -73,7 +85,7 @@ inline const char8* flagsToString(const DmiSystemSlotsCharacteristicsFlags &flag
 
 
 
-    static char8 res[713];
+    static char8 res[291];
 
     FLAGS_TO_STRING(res, flags.flags, DmiSystemSlotsCharacteristicsFlag);
 
@@ -88,7 +100,7 @@ inline const char8* flagsToFullString(const DmiSystemSlotsCharacteristicsFlags &
 
 
 
-    static char8 res[734];
+    static char8 res[300];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, DmiSystemSlotsCharacteristicsFlag, "0x%04X");
 

@@ -35,7 +35,17 @@ inline const char8* enumToString(DmiOnboardDevicesDeviceType type) // TEST: NO
 
     switch (type)
     {
-        case DmiOnboardDevicesDeviceType::NONE:              return "NONE";
+        case DmiOnboardDevicesDeviceType::NONE:            return "NONE";
+        case DmiOnboardDevicesDeviceType::OTHER:           return "OTHER";
+        case DmiOnboardDevicesDeviceType::UNKNOWN:         return "UNKNOWN";
+        case DmiOnboardDevicesDeviceType::VIDEO:           return "VIDEO";
+        case DmiOnboardDevicesDeviceType::SCSI_CONTROLLER: return "SCSI_CONTROLLER";
+        case DmiOnboardDevicesDeviceType::ETHERNET:        return "ETHERNET";
+        case DmiOnboardDevicesDeviceType::TOKEN_RING:      return "TOKEN_RING";
+        case DmiOnboardDevicesDeviceType::SOUND:           return "SOUND";
+        case DmiOnboardDevicesDeviceType::PATA_CONTROLLER: return "PATA_CONTROLLER";
+        case DmiOnboardDevicesDeviceType::SATA_CONTROLLER: return "SATA_CONTROLLER";
+        case DmiOnboardDevicesDeviceType::SAS_CONTROLLER:  return "SAS_CONTROLLER";
 
         default: return "UNKNOWN";
     }
@@ -49,7 +59,7 @@ inline const char8* enumToFullString(DmiOnboardDevicesDeviceType type) // TEST: 
 
 
 
-    static char8 res[25];
+    static char8 res[23];
 
     sprintf(res, "0x%02X (%s)", type, enumToString(type));
 

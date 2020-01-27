@@ -29,7 +29,11 @@ inline const char8* enumToString(DmiSystemSlotsLength length) // TEST: NO
 
     switch (length)
     {
-        case DmiSystemSlotsLength::NONE:              return "NONE";
+        case DmiSystemSlotsLength::NONE:    return "NONE";
+        case DmiSystemSlotsLength::OTHER:   return "OTHER";
+        case DmiSystemSlotsLength::UNKNOWN: return "UNKNOWN";
+        case DmiSystemSlotsLength::SHORT:   return "SHORT";
+        case DmiSystemSlotsLength::LONG:    return "LONG";
 
         default: return "UNKNOWN";
     }
@@ -43,7 +47,7 @@ inline const char8* enumToFullString(DmiSystemSlotsLength length) // TEST: NO
 
 
 
-    static char8 res[25];
+    static char8 res[15];
 
     sprintf(res, "0x%02X (%s)", length, enumToString(length));
 

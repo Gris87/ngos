@@ -30,7 +30,12 @@ inline const char8* enumToString(DmiSystemSlotsUsage usage) // TEST: NO
 
     switch (usage)
     {
-        case DmiSystemSlotsUsage::NONE:              return "NONE";
+        case DmiSystemSlotsUsage::NONE:        return "NONE";
+        case DmiSystemSlotsUsage::OTHER:       return "OTHER";
+        case DmiSystemSlotsUsage::UNKNOWN:     return "UNKNOWN";
+        case DmiSystemSlotsUsage::AVAILABLE:   return "AVAILABLE";
+        case DmiSystemSlotsUsage::IN_USE:      return "IN_USE";
+        case DmiSystemSlotsUsage::UNAVAILABLE: return "UNAVAILABLE";
 
         default: return "UNKNOWN";
     }
@@ -44,7 +49,7 @@ inline const char8* enumToFullString(DmiSystemSlotsUsage usage) // TEST: NO
 
 
 
-    static char8 res[25];
+    static char8 res[19];
 
     sprintf(res, "0x%02X (%s)", usage, enumToString(usage));
 

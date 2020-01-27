@@ -73,7 +73,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
     if (block != blockOriginal)
     {
-        worker->addWarning(path, -1, "Includes should be sorted");
+        worker->addWarning(path, -1, QString("Includes should be sorted:\n%1").arg(block.join('\n')));
     }
 
 

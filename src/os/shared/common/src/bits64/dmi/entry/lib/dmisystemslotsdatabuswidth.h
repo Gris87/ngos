@@ -39,7 +39,21 @@ inline const char8* enumToString(DmiSystemSlotsDataBusWidth width) // TEST: NO
 
     switch (width)
     {
-        case DmiSystemSlotsDataBusWidth::NONE:              return "NONE";
+        case DmiSystemSlotsDataBusWidth::NONE:    return "NONE";
+        case DmiSystemSlotsDataBusWidth::OTHER:   return "OTHER";
+        case DmiSystemSlotsDataBusWidth::UNKNOWN: return "UNKNOWN";
+        case DmiSystemSlotsDataBusWidth::BIT_8:   return "BIT_8";
+        case DmiSystemSlotsDataBusWidth::BIT_16:  return "BIT_16";
+        case DmiSystemSlotsDataBusWidth::BIT_32:  return "BIT_32";
+        case DmiSystemSlotsDataBusWidth::BIT_64:  return "BIT_64";
+        case DmiSystemSlotsDataBusWidth::BIT_128: return "BIT_128";
+        case DmiSystemSlotsDataBusWidth::X1:      return "X1";
+        case DmiSystemSlotsDataBusWidth::X2:      return "X2";
+        case DmiSystemSlotsDataBusWidth::X4:      return "X4";
+        case DmiSystemSlotsDataBusWidth::X8:      return "X8";
+        case DmiSystemSlotsDataBusWidth::X12:     return "X12";
+        case DmiSystemSlotsDataBusWidth::X16:     return "X16";
+        case DmiSystemSlotsDataBusWidth::X32:     return "X32";
 
         default: return "UNKNOWN";
     }
@@ -53,7 +67,7 @@ inline const char8* enumToFullString(DmiSystemSlotsDataBusWidth width) // TEST: 
 
 
 
-    static char8 res[25];
+    static char8 res[15];
 
     sprintf(res, "0x%02X (%s)", width, enumToString(width));
 
