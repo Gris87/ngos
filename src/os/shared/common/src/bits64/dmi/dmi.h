@@ -9,6 +9,7 @@
 #include <common/src/bits64/dmi/dmistoreduuid.h>
 #include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
+#include <common/src/bits64/dmi/entry/dmicacheentry.h>
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
 #include <common/src/bits64/dmi/entry/dmicoolingdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h>
@@ -61,6 +62,7 @@ private:
     static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry); // TEST: NO
     static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry); // TEST: NO
     static NgosStatus saveDmiProcessorEntry(DmiProcessorEntry *entry); // TEST: NO
+    static NgosStatus saveDmiCacheEntry(DmiCacheEntry *entry); // TEST: NO
     static NgosStatus saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry); // TEST: NO
     static NgosStatus saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry); // TEST: NO

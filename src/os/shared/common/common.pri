@@ -91,6 +91,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/dmistoreduuid.h \
     $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
     $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
+    $$PWD/src/bits64/dmi/entry/dmicacheentry.h \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
     $$PWD/src/bits64/dmi/entry/dmicoolingdeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h \
@@ -119,6 +120,15 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicacheassociativity.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicacheconfiguration.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicachelocation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicacheoperationalmode.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicachesize.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicachesize2.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicachetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \
