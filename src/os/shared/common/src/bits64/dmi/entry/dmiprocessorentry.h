@@ -4,9 +4,11 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorid.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorstatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessortype.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h>
@@ -15,33 +17,38 @@
 
 struct DmiProcessorEntry
 {
-    DmiEntryHeader           header;
-    u8                       socketStringId;
-    DmiProcessorType         processorType;
-    DmiProcessorFamily       processorFamily;
-    u8                       processorManufactureStringId;
-    DmiProcessorId           processorId;
-    u8                       processorVersionStringId;
-    DmiProcessorVoltageFlags voltage;
-    u16                      externalClock;
-    u16                      maxSpeed;
-    u16                      currentSpeed;
-    u8                       status;
-    DmiProcessorUpgrade      processorUpgrade;
-    u16                      l1CacheHandle;
-    u16                      l2CacheHandle;
-    u16                      l3CacheHandle;
-    u8                       serialNumberStringId;
-    u8                       assetTagStringId;
-    u8                       partNumberStringId;
-    u8                       coreCount;
-    u8                       enabledCoreCount;
-    u8                       threadCount;
-    u16                      processorCharacteristics;
-    DmiProcessorFamily2      processorFamily2;
-    u16                      coreCount2;
-    u16                      enabledCoreCount2;
-    u16                      threadCount2;
+    DmiEntryHeader                   header;
+    u8                               socketStringId;
+    DmiProcessorType                 processorType;
+    DmiProcessorFamily               processorFamily;
+    u8                               processorManufactureStringId;
+    DmiProcessorId                   processorId;
+    u8                               processorVersionStringId;
+    DmiProcessorVoltageFlags         voltage;
+    u16                              externalClock;
+    u16                              maxSpeed;
+    u16                              currentSpeed;
+
+    u8                               __reserved:      1;
+    u8                               socketPopulated: 1;
+    u8                               __reserved2:     3;
+    u8                               status:          3; // TODO: Use enum DmiProcessorStatus
+
+    DmiProcessorUpgrade              processorUpgrade;
+    u16                              l1CacheHandle;
+    u16                              l2CacheHandle;
+    u16                              l3CacheHandle;
+    u8                               serialNumberStringId;
+    u8                               assetTagStringId;
+    u8                               partNumberStringId;
+    u8                               coreCount;
+    u8                               enabledCoreCount;
+    u8                               threadCount;
+    DmiProcessorCharacteristicsFlags processorCharacteristics;
+    DmiProcessorFamily2              processorFamily2;
+    u16                              coreCount2;
+    u16                              enabledCoreCount2;
+    u16                              threadCount2;
 } __attribute__((packed));
 
 

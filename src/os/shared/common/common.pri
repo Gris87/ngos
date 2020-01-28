@@ -154,11 +154,13 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiportconnectorporttype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiportconnectortype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorfamily.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorfeatureflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorid.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorsignature.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiprocessorstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessortype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h \

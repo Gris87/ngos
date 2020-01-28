@@ -1027,7 +1027,8 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         COMMON_LVVV(("entry->externalClock                    = %u",     entry->externalClock));
         COMMON_LVVV(("entry->maxSpeed                         = %u",     entry->maxSpeed));
         COMMON_LVVV(("entry->currentSpeed                     = %u",     entry->currentSpeed));
-        COMMON_LVVV(("entry->status                           = %u",     entry->status));
+        COMMON_LVVV(("entry->socketPopulated                  = %u",     entry->socketPopulated));
+        COMMON_LVVV(("entry->status                           = %s",     enumToFullString((DmiProcessorStatus)entry->status)));
         COMMON_LVVV(("entry->processorUpgrade                 = %s",     enumToFullString(entry->processorUpgrade)));
         COMMON_LVVV(("entry->l1CacheHandle                    = 0x%04X", entry->l1CacheHandle));
         COMMON_LVVV(("entry->l2CacheHandle                    = 0x%04X", entry->l2CacheHandle));
@@ -1038,10 +1039,10 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
         if (sVersion >= DMI_VERSION(2, 5))
         {
-            COMMON_LVVV(("entry->coreCount                = %u",     entry->coreCount));
-            COMMON_LVVV(("entry->enabledCoreCount         = %u",     entry->enabledCoreCount));
-            COMMON_LVVV(("entry->threadCount              = %u",     entry->threadCount));
-            COMMON_LVVV(("entry->processorCharacteristics = 0x%04X", entry->processorCharacteristics));
+            COMMON_LVVV(("entry->coreCount                = %u", entry->coreCount));
+            COMMON_LVVV(("entry->enabledCoreCount         = %u", entry->enabledCoreCount));
+            COMMON_LVVV(("entry->threadCount              = %u", entry->threadCount));
+            COMMON_LVVV(("entry->processorCharacteristics = %s", flagsToFullString(entry->processorCharacteristics)));
 
             if (sVersion >= DMI_VERSION(2, 6))
             {
@@ -1097,7 +1098,8 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         // COMMON_TEST_ASSERT(entry->externalClock                    == 100,                                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maxSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->currentSpeed                     == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->status                              == 65,                                   NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->socketPopulated                  == 1,                                    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->status                           == DmiProcessorStatus::ENABLED,          NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->processorUpgrade                 == DmiProcessorUpgrade::OTHER,           NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->l1CacheHandle                    == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->l2CacheHandle                    == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
@@ -1109,10 +1111,10 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
         if (sVersion >= DMI_VERSION(2, 5))
         {
-            // COMMON_TEST_ASSERT(entry->coreCount                == 2,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->enabledCoreCount         == 2,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->threadCount              == 2,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorCharacteristics == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->coreCount                == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->enabledCoreCount         == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->threadCount              == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION); // Commented due to value variation
 
             if (sVersion >= DMI_VERSION(2, 6))
             {

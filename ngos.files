@@ -780,11 +780,13 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiportconnectorporttype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiportconnectortype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorfamily.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorfeatureflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorid.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorsignature.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessortype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h
