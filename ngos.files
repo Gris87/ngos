@@ -733,6 +733,7 @@ src/os/shared/common/src/bits64/dmi/entry/dmiprocessorentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystembootentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystemconfigurationentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystementry.h
+src/os/shared/common/src/bits64/dmi/entry/dmisystempowersupplyentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystemslotsentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmitemperatureprobeentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmivoltageprobeentry.h
@@ -776,6 +777,10 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessortype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystembootstatus.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplycharacteristics.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplystatus.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplytype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotslength.h

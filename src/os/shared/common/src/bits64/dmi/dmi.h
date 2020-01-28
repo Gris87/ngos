@@ -24,6 +24,7 @@
 #include <common/src/bits64/dmi/entry/dmisystembootentry.h>
 #include <common/src/bits64/dmi/entry/dmisystemconfigurationentry.h>
 #include <common/src/bits64/dmi/entry/dmisystementry.h>
+#include <common/src/bits64/dmi/entry/dmisystempowersupplyentry.h>
 #include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
 #include <common/src/bits64/dmi/entry/dmitemperatureprobeentry.h>
 #include <common/src/bits64/dmi/entry/dmivoltageprobeentry.h>
@@ -74,6 +75,7 @@ private:
     static NgosStatus saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiManagementDeviceComponentEntry(DmiManagementDeviceComponentEntry *entry); // TEST: NO
     static NgosStatus saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThresholdDataEntry *entry); // TEST: NO
+    static NgosStatus saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry); // TEST: NO
     static NgosStatus storeDmiMemoryDevices(u8 *buf); // TEST: NO
     static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header); // TEST: NO

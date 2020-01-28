@@ -107,6 +107,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmisystembootentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystemconfigurationentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystementry.h \
+    $$PWD/src/bits64/dmi/entry/dmisystempowersupplyentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystemslotsentry.h \
     $$PWD/src/bits64/dmi/entry/dmitemperatureprobeentry.h \
     $$PWD/src/bits64/dmi/entry/dmivoltageprobeentry.h \
@@ -150,6 +151,10 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystembootstatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplycharacteristics.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplystatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplytype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotslength.h \

@@ -1,0 +1,67 @@
+#ifndef OS_SHARED_COMMON_SRC_BITS64_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H
+#define OS_SHARED_COMMON_SRC_BITS64_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H
+
+
+
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+#include <common/src/bits64/printf/printf.h>
+#include <ngos/types.h>
+
+
+
+enum class DmiSystemPowerSupplyType: u8
+{
+    NONE      = 0,
+    OTHER     = 1,
+    UNKNOWN   = 2,
+    LINEAR    = 3,
+    SWITCHING = 4,
+    BATTERY   = 5,
+    UPS       = 6,
+    CONVERTER = 7,
+    REGULATOR = 8
+};
+
+
+
+inline const char8* enumToString(DmiSystemPowerSupplyType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case DmiSystemPowerSupplyType::NONE:      return "NONE";
+        case DmiSystemPowerSupplyType::OTHER:     return "OTHER";
+        case DmiSystemPowerSupplyType::UNKNOWN:   return "UNKNOWN";
+        case DmiSystemPowerSupplyType::LINEAR:    return "LINEAR";
+        case DmiSystemPowerSupplyType::SWITCHING: return "SWITCHING";
+        case DmiSystemPowerSupplyType::BATTERY:   return "BATTERY";
+        case DmiSystemPowerSupplyType::UPS:       return "UPS";
+        case DmiSystemPowerSupplyType::CONVERTER: return "CONVERTER";
+        case DmiSystemPowerSupplyType::REGULATOR: return "REGULATOR";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(DmiSystemPowerSupplyType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[17];
+
+    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+
+    return res;
+}
+
+
+
+#endif // OS_SHARED_COMMON_SRC_BITS64_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H

@@ -101,6 +101,8 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             enumName.at(j).isUpper()
                             &&
                             enumName.mid(j) != "Class"
+                            &&
+                            enumName.mid(j) != "Switch"
                            )
                         {
                             variableName = enumName.at(j).toLower() + enumName.mid(j + 1);
