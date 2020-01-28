@@ -101,6 +101,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmioemstringsentry.h \
     $$PWD/src/bits64/dmi/entry/dmionboarddevicesentry.h \
+    $$PWD/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h \
     $$PWD/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h \
     $$PWD/src/bits64/dmi/entry/dmiportconnectorentry.h \
     $$PWD/src/bits64/dmi/entry/dmiprocessorentry.h \
@@ -137,6 +138,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h \
     $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h \

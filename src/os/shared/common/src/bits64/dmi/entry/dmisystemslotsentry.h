@@ -25,7 +25,10 @@ struct DmiSystemSlotsEntry
     DmiSystemSlotsCharacteristicsFlags slotCharacteristics;
     u16                                segmentGroupNumber;
     u8                                 busNumber;
-    u8                                 deviceFuncionNumber;
+
+    u8                                 deviceNumber:   5;
+    u8                                 functionNumber: 3;
+
     DmiSystemSlotsDataBusWidth         dataBusWidth;
     u8                                 peerGroupingCount;
     DmiSystemSlotsPeerGroup            peerGroups[0];

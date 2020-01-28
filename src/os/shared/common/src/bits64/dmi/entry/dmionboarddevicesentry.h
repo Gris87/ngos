@@ -11,7 +11,7 @@
 struct DmiOnboardDevicesEntry
 {
     DmiEntryHeader          header;
-    DmiOnboardDevicesDevice device[1];
+    DmiOnboardDevicesDevice device[0];
 } __attribute__((packed));
 
 

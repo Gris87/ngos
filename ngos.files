@@ -727,6 +727,7 @@ src/os/shared/common/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimemorydeviceentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmioemstringsentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmionboarddevicesentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiportconnectorentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiprocessorentry.h
@@ -763,6 +764,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h
