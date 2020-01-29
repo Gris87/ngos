@@ -91,6 +91,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/dmistoreduuid.h \
     $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
     $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
+    $$PWD/src/bits64/dmi/entry/dmibioslanguageentry.h \
     $$PWD/src/bits64/dmi/entry/dmicacheentry.h \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
     $$PWD/src/bits64/dmi/entry/dmicoolingdeviceentry.h \
@@ -106,6 +107,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmionboarddevicesentry.h \
     $$PWD/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h \
     $$PWD/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h \
+    $$PWD/src/bits64/dmi/entry/dmiportablebatteryentry.h \
     $$PWD/src/bits64/dmi/entry/dmiportconnectorentry.h \
     $$PWD/src/bits64/dmi/entry/dmiprocessorentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystembootentry.h \
@@ -122,6 +124,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibioslanguageflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheassociativity.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheconfiguration.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h \
@@ -155,6 +158,8 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiportablebatterydevicechemistry.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiportconnectorporttype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiportconnectortype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h \

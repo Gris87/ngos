@@ -9,6 +9,7 @@
 #include <common/src/bits64/dmi/dmistoreduuid.h>
 #include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
+#include <common/src/bits64/dmi/entry/dmibioslanguageentry.h>
 #include <common/src/bits64/dmi/entry/dmicacheentry.h>
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
 #include <common/src/bits64/dmi/entry/dmicoolingdeviceentry.h>
@@ -23,6 +24,7 @@
 #include <common/src/bits64/dmi/entry/dmionboarddevicesentry.h>
 #include <common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h>
 #include <common/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h>
+#include <common/src/bits64/dmi/entry/dmiportablebatteryentry.h>
 #include <common/src/bits64/dmi/entry/dmiportconnectorentry.h>
 #include <common/src/bits64/dmi/entry/dmiprocessorentry.h>
 #include <common/src/bits64/dmi/entry/dmisystembootentry.h>
@@ -70,10 +72,12 @@ private:
     static NgosStatus saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry); // TEST: NO
     static NgosStatus saveDmiOemStringsEntry(DmiOemStringsEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *entry); // TEST: NO
+    static NgosStatus saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry); // TEST: NO
     static NgosStatus saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry); // TEST: NO
     static NgosStatus saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry); // TEST: NO
+    static NgosStatus saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry); // TEST: NO
     static NgosStatus saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry); // TEST: NO
     static NgosStatus saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry); // TEST: NO

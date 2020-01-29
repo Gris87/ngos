@@ -717,6 +717,7 @@ src/os/shared/common/src/bits64/dmi/dmimemorydevice.h
 src/os/shared/common/src/bits64/dmi/dmistoreduuid.h
 src/os/shared/common/src/bits64/dmi/entry/dmibaseboardentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibiosentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmibioslanguageentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmicacheentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmichassisentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmicoolingdeviceentry.h
@@ -732,6 +733,7 @@ src/os/shared/common/src/bits64/dmi/entry/dmioemstringsentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmionboarddevicesentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmiportablebatteryentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiportconnectorentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiprocessorentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystembootentry.h
@@ -748,6 +750,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibioslanguageflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheassociativity.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheconfiguration.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h
@@ -781,6 +784,8 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetyp
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiportablebatterydevicechemistry.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiportconnectorporttype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiportconnectortype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h
