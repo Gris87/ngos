@@ -450,8 +450,10 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::ONBOARD_DEVICES:                  COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesEntry((DmiOnboardDevicesEntry *)header),                               NgosStatus::ASSERTION); break;
         case DmiEntryType::OEM_STRINGS:                      COMMON_ASSERT_EXECUTION(saveDmiOemStringsEntry((DmiOemStringsEntry *)header),                                       NgosStatus::ASSERTION); break;
         case DmiEntryType::SYSTEM_CONFIGURATION:             COMMON_ASSERT_EXECUTION(saveDmiSystemConfigurationEntry((DmiSystemConfigurationEntry *)header),                     NgosStatus::ASSERTION); break;
+        case DmiEntryType::GROUP_ASSOCIATIONS:               COMMON_ASSERT_EXECUTION(saveDmiGroupAssociationsEntry((DmiGroupAssociationsEntry *)header),                         NgosStatus::ASSERTION); break;
         case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            COMMON_ASSERT_EXECUTION(saveDmiPhysicalMemoryArrayEntry((DmiPhysicalMemoryArrayEntry *)header),                     NgosStatus::ASSERTION); break;
         case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      COMMON_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header),           NgosStatus::ASSERTION); break;
+        case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     COMMON_ASSERT_EXECUTION(saveDmiMemoryDeviceMappedAddressEntry((DmiMemoryDeviceMappedAddressEntry *)header),         NgosStatus::ASSERTION); break;
         case DmiEntryType::VOLTAGE_PROBE:                    COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
         case DmiEntryType::COOLING_DEVICE:                   COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
         case DmiEntryType::TEMPERATURE_PROBE:                COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
@@ -1509,10 +1511,14 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
 
     // Validation
     {
-        // TODO: Iterate all devices
-        COMMON_LVVV(("entry->device[0].enabled             = %u", entry->device[0].enabled));
-        COMMON_LVVV(("entry->device[0].deviceType          = %s", enumToFullString((DmiOnboardDevicesDeviceType)entry->device[0].deviceType)));
-        COMMON_LVVV(("entry->device[0].descriptionStringId = %u", entry->device[0].descriptionStringId));
+        u8 count = (entry->header.length - sizeof(entry->header)) / sizeof(entry->device[0]);
+
+        for (i64 i = 0; i < count; ++i)
+        {
+            COMMON_LVVV(("entry->device[%d].enabled             = %u", i, entry->device[i].enabled));
+            COMMON_LVVV(("entry->device[%d].deviceType          = %s", i, enumToFullString((DmiOnboardDevicesDeviceType)entry->device[i].deviceType)));
+            COMMON_LVVV(("entry->device[%d].descriptionStringId = %u", i, entry->device[i].descriptionStringId));
+        }
 
 
 
@@ -1663,6 +1669,69 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
     return NgosStatus::OK;
 }
 
+NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->groupNameStringId = %u", entry->groupNameStringId));
+
+        u8 count = (entry->header.length - sizeof(entry->header) - sizeof(entry->groupNameStringId)) / sizeof(entry->group[0]);
+
+        for (i64 i = 0; i < count; ++i)
+        {
+            COMMON_LVVV(("entry->group[%d].type   = %s",     i, enumToFullString(entry->group[i].type)));
+            COMMON_LVVV(("entry->group[%d].handle = 0x%04X", i, entry->group[i].handle));
+        }
+
+
+
+        // COMMON_TEST_ASSERT(entry->groupNameStringId == 1,                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->group[0].type     == DmiEntryType::BIOS, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->group[0].handle   == 0x0000,             NgosStatus::ASSERTION); // Commented due to value variation
+
+        COMMON_TEST_ASSERT(entry->header.length >= 8,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiGroupAssociationsEntry) + sizeof(DmiGroupAssociationsGroup), NgosStatus::ASSERTION);
+    }
+
+
+
+    u8 *cur      = (u8 *)entry + entry->header.length;
+    u8 *begin    = cur;
+    u8  stringId = 0;
+
+    do
+    {
+        if (!cur[0]) // cur[0] == 0
+        {
+            ++stringId;
+            COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+            if (!cur[1]) // cur[1] == 0
+            {
+                break;
+            }
+
+            begin = cur + 1;
+        }
+
+
+
+        ++cur;
+    } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
@@ -1766,6 +1835,69 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
         {
             COMMON_TEST_ASSERT(entry->header.length >= 15,                                            NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry) - 16, NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry)
+{
+    COMMON_LT((" | entry = 0x%p", entry));
+
+    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
+
+
+
+    // Validation
+    {
+        COMMON_LVVV(("entry->startingAddress                = 0x%08X", entry->startingAddress));
+        COMMON_LVVV(("entry->endingAddress                  = 0x%08X", entry->endingAddress));
+        COMMON_LVVV(("entry->memoryDeviceHandle             = 0x%04X", entry->memoryDeviceHandle));
+        COMMON_LVVV(("entry->memoryArrayMappedAddressHandle = 0x%04X", entry->memoryArrayMappedAddressHandle));
+        COMMON_LVVV(("entry->partitionRowPosition           = %u",     entry->partitionRowPosition));
+        COMMON_LVVV(("entry->interleavePosition             = %u",     entry->interleavePosition));
+        COMMON_LVVV(("entry->interleavedDataDepth           = %u",     entry->interleavedDataDepth));
+
+        if (sVersion >= DMI_VERSION(2, 7))
+        {
+            COMMON_LVVV(("entry->extendedStartingAddress = 0x%016lX", entry->extendedStartingAddress));
+            COMMON_LVVV(("entry->extendedEndingAddress   = 0x%016lX", entry->extendedEndingAddress));
+        }
+
+
+
+        // COMMON_TEST_ASSERT(entry->startingAddress                == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->endingAddress                  == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->memoryDeviceHandle             == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->memoryArrayMappedAddressHandle == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->partitionRowPosition           == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->interleavePosition             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->interleavedDataDepth           == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+
+        if (sVersion >= DMI_VERSION(2, 7))
+        {
+            // COMMON_TEST_ASSERT(entry->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+
+            COMMON_TEST_ASSERT(entry->header.length >= 35,                                        NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(entry->header.length >= 19,                                             NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry) - 16, NgosStatus::ASSERTION);
         }
     }
 

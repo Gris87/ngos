@@ -13,10 +13,12 @@
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
 #include <common/src/bits64/dmi/entry/dmicoolingdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h>
+#include <common/src/bits64/dmi/entry/dmigroupassociationsentry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h>
 #include <common/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h>
+#include <common/src/bits64/dmi/entry/dmimemorydevicemappedaddressentry.h>
 #include <common/src/bits64/dmi/entry/dmioemstringsentry.h>
 #include <common/src/bits64/dmi/entry/dmionboarddevicesentry.h>
 #include <common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h>
@@ -68,8 +70,10 @@ private:
     static NgosStatus saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry); // TEST: NO
     static NgosStatus saveDmiOemStringsEntry(DmiOemStringsEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *entry); // TEST: NO
+    static NgosStatus saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry); // TEST: NO
     static NgosStatus saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry); // TEST: NO
+    static NgosStatus saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry); // TEST: NO
     static NgosStatus saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry); // TEST: NO

@@ -95,11 +95,13 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
     $$PWD/src/bits64/dmi/entry/dmicoolingdeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h \
+    $$PWD/src/bits64/dmi/entry/dmigroupassociationsentry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h \
     $$PWD/src/bits64/dmi/entry/dmimemorydeviceentry.h \
+    $$PWD/src/bits64/dmi/entry/dmimemorydevicemappedaddressentry.h \
     $$PWD/src/bits64/dmi/entry/dmioemstringsentry.h \
     $$PWD/src/bits64/dmi/entry/dmionboarddevicesentry.h \
     $$PWD/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h \
@@ -139,6 +141,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h \
