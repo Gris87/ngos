@@ -457,9 +457,9 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     COMMON_ASSERT_EXECUTION(saveDmiMemoryDeviceMappedAddressEntry((DmiMemoryDeviceMappedAddressEntry *)header),         NgosStatus::ASSERTION); break;
         case DmiEntryType::PORTABLE_BATTERY:                 COMMON_ASSERT_EXECUTION(saveDmiPortableBatteryEntry((DmiPortableBatteryEntry *)header),                             NgosStatus::ASSERTION); break;
         case DmiEntryType::VOLTAGE_PROBE:                    COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::COOLING_DEVICE:                   COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::TEMPERATURE_PROBE:                COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
+        case DmiEntryType::COOLING_DEVICE:                   COMMON_ASSERT_EXECUTION(saveDmiCoolingDeviceEntry((DmiCoolingDeviceEntry *)header),                                 NgosStatus::ASSERTION); break;
+        case DmiEntryType::TEMPERATURE_PROBE:                COMMON_ASSERT_EXECUTION(saveDmiTemperatureProbeEntry((DmiTemperatureProbeEntry *)header),                           NgosStatus::ASSERTION); break;
+        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         COMMON_ASSERT_EXECUTION(saveDmiElectricalCurrentProbeEntry((DmiElectricalCurrentProbeEntry *)header),               NgosStatus::ASSERTION); break;
         case DmiEntryType::SYSTEM_BOOT:                      COMMON_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                                       NgosStatus::ASSERTION); break;
         case DmiEntryType::MANAGEMENT_DEVICE:                COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceEntry((DmiManagementDeviceEntry *)header),                           NgosStatus::ASSERTION); break;
         case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceComponentEntry((DmiManagementDeviceComponentEntry *)header),         NgosStatus::ASSERTION); break;
@@ -1404,7 +1404,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         COMMON_LVVV(("entry->slotID                  = %u", entry->slotID));
         COMMON_LVVV(("entry->slotCharacteristics     = %s", flagsToFullString(entry->slotCharacteristics)));
 
-        if (sVersion >= DMI_VERSION(2, 6))
+        if (sVersion >= DMI_VERSION(2, 7))
         {
             COMMON_LVVV(("entry->segmentGroupNumber = %u", entry->segmentGroupNumber));
             COMMON_LVVV(("entry->busNumber          = %u", entry->busNumber));
@@ -1437,7 +1437,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         // COMMON_TEST_ASSERT(entry->slotID                  == 1,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->slotCharacteristics     == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (sVersion >= DMI_VERSION(2, 6))
+        if (sVersion >= DMI_VERSION(2, 7))
         {
             // COMMON_TEST_ASSERT(entry->segmentGroupNumber == 1, NgosStatus::ASSERTION); // Commented due to value variation
             // COMMON_TEST_ASSERT(entry->busNumber          == 1, NgosStatus::ASSERTION); // Commented due to value variation
