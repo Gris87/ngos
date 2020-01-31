@@ -18,6 +18,7 @@ TestWorkerThread::TestWorkerThread()
     , mDefineRegexp("^#define +(\\w+)\\(([^)]*)\\) +(.+)$")
     , mFunctionRegexp("^(?:(?:static|const|inline) +)*(?:\\w[\\w<,>*& ]* )?(~?\\w+|operator(<|<=|>|>=|==|!=|\\||\\|\\||&|&&|^|~|!|-|\\+|\\*|\\/))\\([^)]*\\);?.*$")
     , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$")
+    , mBitsDefinitionRegExp("^ *\\w+ +\\w+ *: *\\d+;.*$")
 {
     // Nothing
 }
@@ -186,7 +187,9 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
 
                     if (match.hasMatch())
                     {
-                        addTestEntry(TestEntryType::INTERNAL_FUNCTION, path, lineNum, match.captured(1), testModule, prevLine1, prevLine2);
+                        QString name = match.captured(1);
+
+                        addTestEntry(TestEntryType::INTERNAL_FUNCTION, path, lineNum, name, testModule, prevLine1, prevLine2);
                     }
                 }
             }
@@ -282,7 +285,9 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
             {
                 QString prevLine = (i >= 1) ? lines.at(i - 1) : "";
 
-                addTestEntry(TestEntryType::FUNCTION, path, i, match.captured(1), testModule, line, prevLine);
+                QString name = match.captured(1);
+
+                addTestEntry(TestEntryType::FUNCTION, path, i, name, testModule, line, prevLine);
             }
         }
         else
@@ -293,7 +298,9 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
 
                 if (match.hasMatch())
                 {
-                    addTestStructureEntry(path, i, match.captured(1));
+                    QString name = match.captured(1);
+
+                    addTestStructureEntry(path, i, name);
                 }
             }
         }

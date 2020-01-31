@@ -18,7 +18,7 @@ struct DmiCacheSize2
 
 
 
-        return granularity ? (value << 16) : (value << 10);
+        return granularity ? ((u64)value << 16) : ((u64)value << 10);
     }
 } __attribute__((packed));
 

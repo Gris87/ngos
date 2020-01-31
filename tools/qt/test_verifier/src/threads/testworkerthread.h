@@ -47,6 +47,7 @@ private:
     QRegularExpression        mDefineRegexp;
     QRegularExpression        mFunctionRegexp;
     QRegularExpression        mDefinitionRegExp;
+    QRegularExpression        mBitsDefinitionRegExp;
 };
 
 

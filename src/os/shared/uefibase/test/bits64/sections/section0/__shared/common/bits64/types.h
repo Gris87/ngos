@@ -34,13 +34,32 @@
 #include <common/src/bits64/dmi/dmistoreduuid.h>
 #include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
+#include <common/src/bits64/dmi/entry/dmibioslanguageentry.h>
+#include <common/src/bits64/dmi/entry/dmicacheentry.h>
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
+#include <common/src/bits64/dmi/entry/dmicoolingdeviceentry.h>
+#include <common/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h>
+#include <common/src/bits64/dmi/entry/dmigroupassociationsentry.h>
+#include <common/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h>
+#include <common/src/bits64/dmi/entry/dmimanagementdeviceentry.h>
+#include <common/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h>
 #include <common/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h>
 #include <common/src/bits64/dmi/entry/dmimemorydeviceentry.h>
+#include <common/src/bits64/dmi/entry/dmimemorydevicemappedaddressentry.h>
+#include <common/src/bits64/dmi/entry/dmioemstringsentry.h>
+#include <common/src/bits64/dmi/entry/dmionboarddevicesentry.h>
+#include <common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h>
 #include <common/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h>
+#include <common/src/bits64/dmi/entry/dmiportablebatteryentry.h>
+#include <common/src/bits64/dmi/entry/dmiportconnectorentry.h>
 #include <common/src/bits64/dmi/entry/dmiprocessorentry.h>
 #include <common/src/bits64/dmi/entry/dmisystembootentry.h>
+#include <common/src/bits64/dmi/entry/dmisystemconfigurationentry.h>
 #include <common/src/bits64/dmi/entry/dmisystementry.h>
+#include <common/src/bits64/dmi/entry/dmisystempowersupplyentry.h>
+#include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
+#include <common/src/bits64/dmi/entry/dmitemperatureprobeentry.h>
+#include <common/src/bits64/dmi/entry/dmivoltageprobeentry.h>
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardtype.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
@@ -48,28 +67,72 @@
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioslanguageflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmicacheassociativity.h>
+#include <common/src/bits64/dmi/entry/lib/dmicacheconfiguration.h>
+#include <common/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h>
+#include <common/src/bits64/dmi/entry/lib/dmicachelocation.h>
+#include <common/src/bits64/dmi/entry/lib/dmicacheoperationalmode.h>
+#include <common/src/bits64/dmi/entry/lib/dmicachesize.h>
+#include <common/src/bits64/dmi/entry/lib/dmicachesize2.h>
+#include <common/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmicachetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassisstate.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassistype.h>
+#include <common/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h>
+#include <common/src/bits64/dmi/entry/lib/dmicoolingdevicetypeandstatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h>
+#include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h>
+#include <common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h>
+#include <common/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydevicetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h>
+#include <common/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h>
+#include <common/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h>
+#include <common/src/bits64/dmi/entry/lib/dmiportablebatterydevicechemistry.h>
+#include <common/src/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h>
+#include <common/src/bits64/dmi/entry/lib/dmiportconnectorporttype.h>
+#include <common/src/bits64/dmi/entry/lib/dmiportconnectortype.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorfeatureflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorid.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorsignature.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorstatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessortype.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystembootstatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystempowersupplycharacteristics.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystempowersupplystatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystempowersupplytype.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemslotslength.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemslotspeergroup.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemslotstype.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemslotsusage.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h>
+#include <common/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h>
+#include <common/src/bits64/dmi/entry/lib/dmitemperatureprobelocationandstatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h>
+#include <common/src/bits64/dmi/entry/lib/dmivoltageprobelocationandstatus.h>
+#include <common/src/bits64/dmi/entry/lib/dmivoltageprobestatus.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <common/src/bits64/fpu/fpustate.h>
 #include <common/src/bits64/fpu/fsavestate.h>
@@ -203,40 +266,103 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsSystemReservedFlag),      1);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  26);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSize),                        2);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageEntry),                          22);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageFlag),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheAssociativity),                         1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheConfiguration),                         2);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntry),                                 27);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheErrorCorrectionType),                   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheLocation),                              1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheOperationalMode),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSize),                                  2);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSize2),                                 4);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSramTypeFlag),                          2);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElement),                    3);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisEntry),                               21);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisSecurityStatus),                      1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisState),                               1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisType),                                1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntry),                         15);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceStatus),                        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceType),                          1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceTypeAndStatus),                 1);
+        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeEntry),                22);
+        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeLocation),             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeLocationAndStatus),    1);
+        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeStatus),               1);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),                                4);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsEntry),                     5);
+        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsGroup),                     3);
         TEST_ASSERT_EQUALS(sizeof(DmiIdentity),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceAddressType),                1);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceComponentEntry),             11);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceEntry),                      11);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceThresholdDataEntry),         16);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceType),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),              31);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               72);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          84);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceFormFactor),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntry),             35);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceOperatingModeCapabilityFlag),    2);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTechnology),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceType),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTypeDetailFlag),                 2);
+        TEST_ASSERT_EQUALS(sizeof(DmiOemStringsEntry),                            5);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesDevice),                       2);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesDeviceType),                   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesEntry),                        4);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedDeviceType),           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedEntry),                11);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntry),                   23);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayErrorCorrection),         1);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayLocation),                1);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayUse),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryDeviceChemistry),             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryEntry),                       26);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryManufactureDate),             2);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorEntry),                         9);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorPortType),                      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorType),                          1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorCharacteristicsFlag),               2);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntry),                             48);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily),                            1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily2),                           2);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFeatureFlag),                       4);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorId),                                8);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorSignature),                         4);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorStatus),                            1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorType),                              1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorUpgrade),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageFlag),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),                                 1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemBootEntry),                            11);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemBootStatus),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemConfigurationEntry),                   5);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemEntry),                                27);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyCharacteristics),           2);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyEntry),                     22);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyInputVoltageRangeSwitch),   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyStatus),                    1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyType),                      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsCharacteristicsFlag),             2);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsDataBusWidth),                    1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntry),                           19);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsLength),                          1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsPeerGroup),                       5);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsType),                            1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsUsage),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemWakeUpTime),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeEntry),                      22);
+        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeLocation),                   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeLocationAndStatus),          1);
+        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeStatus),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeEntry),                          22);
+        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeLocation),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeLocationAndStatus),              1);
+        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeStatus),                         1);
         TEST_ASSERT_EQUALS(sizeof(FPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
         TEST_ASSERT_EQUALS(sizeof(FSaveState),                                    112);
