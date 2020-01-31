@@ -13,8 +13,8 @@ struct DmiOnboardDevicesExtendedEntry
     DmiEntryHeader header;
     u8             referenceDesignationStringId;
 
-    u8             enabled:    1;
     u8             deviceType: 7; // TODO: Use enum DmiOnboardDevicesExtendedDeviceType
+    u8             enabled:    1;
 
     u8             deviceTypeInstance;
     u16            segmentGroupNumber;

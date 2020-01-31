@@ -556,7 +556,6 @@ NgosStatus UEFI::initSystemTable()
         COMMON_LVVV(("sSystemTable.header.revision             = 0x%08X",   sSystemTable.header.revision));
         COMMON_LVVV(("sSystemTable.header.headerSize           = %u",       sSystemTable.header.headerSize));
         COMMON_LVVV(("sSystemTable.header.crc32                = 0x%08X",   sSystemTable.header.crc32));
-        COMMON_LVVV(("sSystemTable.header.reserved             = %u",       sSystemTable.header.reserved));
         COMMON_LVVV(("sSystemTable.firmwareVendor              = 0x%p",     sSystemTable.firmwareVendor));
         COMMON_LVVV(("sSystemTable.firmwareRevision            = 0x%08X",   sSystemTable.firmwareRevision));
         COMMON_LVVV(("sSystemTable.stdinHandle                 = 0x%p",     sSystemTable.stdinHandle));
@@ -593,7 +592,6 @@ NgosStatus UEFI::initSystemTable()
         COMMON_TEST_ASSERT(sSystemTable.header.revision             == 0x00020046,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sSystemTable.header.headerSize           == 120,                         NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sSystemTable.header.crc32                == 0x938F9502,                  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTable.header.reserved             == 0,                           NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sSystemTable.firmwareVendor              != 0,                           NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sSystemTable.firmwareRevision            == 0x00010000,                  NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sSystemTable.stdinHandle                 == 0,                           NgosStatus::ASSERTION);
@@ -825,14 +823,12 @@ NgosStatus UEFI::initMemoryAttributes()
         COMMON_LVVV(("memoryAttrs->version         = %u", memoryAttrs->version));
         COMMON_LVVV(("memoryAttrs->numberOfEntries = %u", memoryAttrs->numberOfEntries));
         COMMON_LVVV(("memoryAttrs->descriptorSize  = %u", memoryAttrs->descriptorSize));
-        COMMON_LVVV(("memoryAttrs->reserved        = %u", memoryAttrs->reserved));
 
 
 
         COMMON_TEST_ASSERT(memoryAttrs->version            == 1,  NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(memoryAttrs->numberOfEntries == 28, NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(memoryAttrs->descriptorSize  == 48, NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(memoryAttrs->reserved           == 0,  NgosStatus::ASSERTION);
     }
 
 

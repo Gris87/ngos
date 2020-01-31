@@ -23,7 +23,7 @@ struct UefiSmbios3ConfigurationTable
     u8  minorVersion;
     u8  docRevision;
     u8  entryPointRevision;
-    u8  reserved;
+    u8  __reserved;
     u32 structureTableMaximumSize;
     u64 structureTableAddress;
 } __attribute__((packed));

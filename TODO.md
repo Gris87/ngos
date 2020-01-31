@@ -70,6 +70,7 @@ Docs verifier:
 Tests verifier:
 
 - Missing tests for `operator[]()`
+- Add tests for bits
 
 
 

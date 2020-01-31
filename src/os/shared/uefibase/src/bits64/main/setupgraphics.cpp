@@ -57,10 +57,10 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
 
 
-        UEFI_LVVV(("gop->mode->maxMode = %u",           gop->mode->maxMode));
-        UEFI_LVVV(("gop->mode->mode = %u",              gop->mode->mode));
-        UEFI_LVVV(("gop->mode->info = 0x%p",            gop->mode->info));
-        UEFI_LVVV(("gop->mode->sizeOfInfo = %u",        gop->mode->sizeOfInfo));
+        UEFI_LVVV(("gop->mode->maxMode         = %u",   gop->mode->maxMode));
+        UEFI_LVVV(("gop->mode->mode            = %u",   gop->mode->mode));
+        UEFI_LVVV(("gop->mode->info            = 0x%p", gop->mode->info));
+        UEFI_LVVV(("gop->mode->sizeOfInfo      = %u",   gop->mode->sizeOfInfo));
         UEFI_LVVV(("gop->mode->frameBufferBase = 0x%p", gop->mode->frameBufferBase));
         UEFI_LVVV(("gop->mode->frameBufferSize = %u",   gop->mode->frameBufferSize));
 

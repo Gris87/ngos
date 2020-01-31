@@ -9,8 +9,8 @@
 
 struct DmiOnboardDevicesDevice
 {
-    u8 enabled:    1;
     u8 deviceType: 7; // TODO: Use enum DmiOnboardDevicesDeviceType
+    u8 enabled:    1;
 
     u8 descriptionStringId;
 } __attribute__((packed));

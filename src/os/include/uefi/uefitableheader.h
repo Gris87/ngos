@@ -13,7 +13,7 @@ struct UefiTableHeader
     u32 revision;
     u32 headerSize;
     u32 crc32;
-    u32 reserved;
+    u32 __reserved;
 };
 
 
