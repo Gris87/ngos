@@ -21,6 +21,8 @@ TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicachesize);
     {
         DmiCacheSize temp;
 
+
+
         temp.granularity = 0;
         temp.value       = 1;
 

@@ -34,7 +34,6 @@ protected:
 
 private:
     void processTestStructureEntry(const TestStructureEntry &entry); // TEST: NO
-    bool processTestStructureEntryWithTestModule(const TestStructureEntry &entry, const QString &path); // TEST: NO
     void processTestEntry(const TestEntry &entry); // TEST: NO
     bool processTestEntryWithTestModule(const TestEntry &entry, const QString &path); // TEST: NO
 

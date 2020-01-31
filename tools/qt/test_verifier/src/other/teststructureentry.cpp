@@ -2,10 +2,11 @@
 
 
 
-TestStructureEntry::TestStructureEntry(const QString &path, qint64 line, const QString &name)
+TestStructureEntry::TestStructureEntry(const QString &path, qint64 line, const QString &name, bool bitsDefined)
     : mPath(path)
     , mLine(line)
     , mName(name)
+    , mBitsDefined(bitsDefined)
 {
     // Nothing
 }
@@ -47,6 +48,11 @@ QString TestStructureEntry::getPath() const
 QString TestStructureEntry::getName() const
 {
     return mName;
+}
+
+bool TestStructureEntry::isBitsDefined() const
+{
+    return mBitsDefined;
 }
 
 QString TestStructureEntry::toString() const

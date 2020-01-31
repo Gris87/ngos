@@ -34,7 +34,7 @@ private:
     void processFile(const QString &path); // TEST: NO
     void processLines(const QString &path, const QStringList &lines); // TEST: NO
 
-    void addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name); // TEST: NO
+    void addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name, bool bitsDefined); // TEST: NO
     void addTestEntry(TestEntryType type, const QString &path, qint64 lineNum, const QString &name, QString testModule, const QString &line, const QString &prevLine); // TEST: NO
 
     static quint64     sAmountOfFiles;

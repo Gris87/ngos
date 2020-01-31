@@ -271,6 +271,49 @@ TEST_CASES(section0, __include_types);
 #endif
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("ElfSymbol");
+    {
+        ElfSymbol temp;
+
+
+
+        temp.info  = 0x12;
+        temp.other = 0x12;
+
+        TEST_ASSERT_EQUALS(temp.bind, 2);
+        TEST_ASSERT_EQUALS(temp.type, 1);
+
+        TEST_ASSERT_EQUALS(temp.__reserved, 18);
+        TEST_ASSERT_EQUALS(temp.visibility, 0);
+
+
+
+        temp.bind = 3;
+
+        TEST_ASSERT_EQUALS(temp.info, 0x13);
+
+
+
+        temp.type = 4;
+
+        TEST_ASSERT_EQUALS(temp.info, 0x43);
+
+
+
+        temp.__reserved = 3;
+
+        TEST_ASSERT_EQUALS(temp.other, 3);
+
+
+
+        temp.visibility = 4;
+
+        TEST_ASSERT_EQUALS(temp.other, 131);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 

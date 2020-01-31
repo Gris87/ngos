@@ -16,16 +16,22 @@ struct ElfSymbol
 
     union
     {
-        u8 bind: 4; // TODO: Use enum ElfSymbolBind
-        u8 type: 4; // TODO: Use enum ElfSymbolType
+        struct
+        {
+            u8 bind: 4; // TODO: Use enum ElfSymbolBind
+            u8 type: 4; // TODO: Use enum ElfSymbolType
+        };
 
         u8 info;
     };
 
     union
     {
-        u8 __reserved: 5;
-        u8 visibility: 3; // TODO: Use enum ElfSymbolVisibility
+        struct
+        {
+            u8 __reserved: 5;
+            u8 visibility: 3; // TODO: Use enum ElfSymbolVisibility
+        };
 
         u8 other;
     };

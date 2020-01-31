@@ -21,6 +21,8 @@ TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmiportablebatterymanu
     {
         DmiPortableBatteryManufactureDate temp;
 
+
+
         temp.year = 0;
 
         TEST_ASSERT_EQUALS(temp.realYear(), 1980);

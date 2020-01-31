@@ -89,7 +89,7 @@ TestEntry TestVerifyThread::popTestEntry()
 void TestVerifyThread::noMoreTestStructureEntries()
 {
     QList<TestStructureEntry> temp;
-    temp.append(TestStructureEntry("", -1, ""));
+    temp.append(TestStructureEntry("", -1, "", false));
 
     pushTestStructureEntries(temp);
 }
@@ -212,7 +212,8 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
 
 
 
-    bool good = false;
+    bool good  = false;
+    bool good2 = !entry.isBitsDefined();
 
 
 
@@ -241,10 +242,65 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
         {
             if (fileName == "types.h")
             {
-                if (processTestStructureEntryWithTestModule(entry, path))
-                {
-                    good = true;
+                QFile file(path);
 
+                if (!file.open(QIODevice::ReadOnly))
+                {
+                    continue;
+                }
+
+                QString content = QString::fromUtf8(file.readAll());
+                file.close();
+
+
+
+                QStringList lines = content.split('\n');
+
+
+
+                if (!good)
+                {
+                    for (qint64 i = 0; i < lines.length(); ++i)
+                    {
+                        QString line = lines.at(i).trimmed();
+
+                        QRegularExpressionMatch match = sStructureSizeTestRegExp.match(line);
+
+                        if (match.hasMatch())
+                        {
+                            QString structureName = match.captured(1);
+
+                            if (structureName == entry.getName())
+                            {
+                                good = true;
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+
+                if (!good2)
+                {
+                    QString searchLine = "    TEST_CASE(\"" + entry.getName() + "\");";
+
+                    for (qint64 i = 0; i < lines.length(); ++i)
+                    {
+                        if (lines.at(i) == searchLine)
+                        {
+                            good2 = true;
+
+                            break;
+                        }
+                    }
+                }
+
+
+
+                if (good && good2)
+                {
                     break;
                 }
             }
@@ -257,44 +313,11 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
     {
         addMessage(entry.getPath(), QString("Test not found for size of structure: %1").arg(entry.getName()));
     }
-}
 
-bool TestVerifyThread::processTestStructureEntryWithTestModule(const TestStructureEntry &entry, const QString &path)
-{
-    QFile file(path);
-
-    if (!file.open(QIODevice::ReadOnly))
+    if (!good2)
     {
-        return false;
+        addMessage(entry.getPath(), QString("Test not found for bits of structure: %1").arg(entry.getName()));
     }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.length(); ++i)
-    {
-        QString line = lines.at(i).trimmed();
-
-        QRegularExpressionMatch match = sStructureSizeTestRegExp.match(line);
-
-        if (match.hasMatch())
-        {
-            QString structureName = match.captured(1);
-
-            if (structureName == entry.getName())
-            {
-                return true;
-            }
-        }
-    }
-
-
-
-    return false;
 }
 
 void TestVerifyThread::processTestEntry(const TestEntry &entry)

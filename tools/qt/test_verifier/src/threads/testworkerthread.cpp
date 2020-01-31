@@ -300,16 +300,34 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
                 {
                     QString name = match.captured(1);
 
-                    addTestStructureEntry(path, i, name);
+
+
+                    bool bitsDefined = false;
+
+                    for (qint64 j = i + 1; j < lines.length(); ++j)
+                    {
+                        QRegularExpressionMatch match2 = mBitsDefinitionRegExp.match(lines.at(j));
+
+                        if (match2.hasMatch())
+                        {
+                            bitsDefined = true;
+
+                            break;
+                        }
+                    }
+
+
+
+                    addTestStructureEntry(path, i, name, bitsDefined);
                 }
             }
         }
     }
 }
 
-void TestWorkerThread::addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name)
+void TestWorkerThread::addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name, bool bitsDefined)
 {
-    mTestStructureEntries.append(TestStructureEntry(path, lineNum, name));
+    mTestStructureEntries.append(TestStructureEntry(path, lineNum, name, bitsDefined));
 }
 
 void TestWorkerThread::addTestEntry(TestEntryType type, const QString &path, qint64 lineNum, const QString &name, QString testModule, const QString &line, const QString &prevLine)
