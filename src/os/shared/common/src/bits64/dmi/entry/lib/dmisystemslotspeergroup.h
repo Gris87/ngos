@@ -9,11 +9,19 @@
 
 struct DmiSystemSlotsPeerGroup
 {
-    u16                        segmentGroupNumber;
-    u8                         busNumber;
+    u16 segmentGroupNumber;
+    u8  busNumber;
 
-    u8                         deviceNumber:   5;
-    u8                         functionNumber: 3;
+    union
+    {
+        struct
+        {
+            u8 functionNumber: 3;
+            u8 deviceNumber:   5;
+        };
+
+        u8 functionNumberAndDeviceNumber;
+    };
 
     DmiSystemSlotsDataBusWidth dataBusWidth;
 } __attribute__((packed));

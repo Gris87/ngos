@@ -17,22 +17,30 @@
 
 struct DmiProcessorEntry
 {
-    DmiEntryHeader                   header;
-    u8                               socketStringId;
-    DmiProcessorType                 processorType;
-    DmiProcessorFamily               processorFamily;
-    u8                               processorManufactureStringId;
-    DmiProcessorId                   processorId;
-    u8                               processorVersionStringId;
-    DmiProcessorVoltageFlags         voltage;
-    u16                              externalClock;
-    u16                              maxSpeed;
-    u16                              currentSpeed;
+    DmiEntryHeader           header;
+    u8                       socketStringId;
+    DmiProcessorType         processorType;
+    DmiProcessorFamily       processorFamily;
+    u8                       processorManufactureStringId;
+    DmiProcessorId           processorId;
+    u8                       processorVersionStringId;
+    DmiProcessorVoltageFlags voltage;
+    u16                      externalClock;
+    u16                      maxSpeed;
+    u16                      currentSpeed;
 
-    u8                               __reserved:      1;
-    u8                               socketPopulated: 1;
-    u8                               __reserved2:     3;
-    u8                               status:          3; // TODO: Use enum DmiProcessorStatus
+    union
+    {
+        struct
+        {
+            u8 status:          3; // TODO: Use enum DmiProcessorStatus
+            u8 __reserved:      3;
+            u8 socketPopulated: 1;
+            u8 __reserved2:     1;
+        };
+
+        u8 processorStatus;
+    };
 
     DmiProcessorUpgrade              processorUpgrade;
     u16                              l1CacheHandle;

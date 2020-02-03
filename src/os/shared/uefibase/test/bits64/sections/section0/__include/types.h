@@ -441,18 +441,18 @@ TEST_CASES(section0, __include_types);
 
 
         //  IdtDescriptor - type:
-        // ======================================================
-        // |  p : 1  |  dpl : 2  |  __pad : 1  |  gateType : 4  |
-        // ======================================================
+        // ===========================================================
+        // |  p : 1  |  dpl : 2  |  __reserved : 1  |  gateType : 4  |
+        // ===========================================================
 
 
 
         temp.type = 0xAA;       // ||  1  |  01  |  0  |  1010  ||
 
-        TEST_ASSERT_EQUALS(temp.gateType, 10);
-        TEST_ASSERT_EQUALS(temp.__pad,    0);
-        TEST_ASSERT_EQUALS(temp.dpl,      1);
-        TEST_ASSERT_EQUALS(temp.p,        1);
+        TEST_ASSERT_EQUALS(temp.gateType,   10);
+        TEST_ASSERT_EQUALS(temp.__reserved, 0);
+        TEST_ASSERT_EQUALS(temp.dpl,        1);
+        TEST_ASSERT_EQUALS(temp.p,          1);
 
 
 
@@ -462,7 +462,7 @@ TEST_CASES(section0, __include_types);
 
 
 
-        temp.__pad = 1;         // ||  1  |  01  |  1  |  0101  ||
+        temp.__reserved = 1;    // ||  1  |  01  |  1  |  0101  ||
 
         TEST_ASSERT_EQUALS(temp.type, 0xB5);
 
