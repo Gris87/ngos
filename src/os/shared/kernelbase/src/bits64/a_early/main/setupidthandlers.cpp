@@ -38,8 +38,8 @@ NgosStatus setupIdtInterruptGate(u8 vectorNumber, void *address)
     idtEntry.gateType     = (u8)IdtGateType::INTERRUPT;
     idtEntry.dpl          = IDT_DESCRIPTOR_PRIVELEGE_LEVEL_0_HIGHEST;
     idtEntry.p            = IDT_ENTRY_PRESENT_YES;
-    idtEntry.__pad        = 0;
     idtEntry.__reserved   = 0;
+    idtEntry.__reserved2  = 0;
 
 
 

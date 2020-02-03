@@ -526,6 +526,88 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiProcessorEntry");
+    {
+        DmiProcessorEntry temp;
+
+
+
+        //  DmiProcessorEntry - processorStatus:
+        // ===============================================================================
+        // |  __reserved2 : 1  |  socketPopulated : 1  |  __reserved : 3  |  status : 3  |
+        // ===============================================================================
+
+
+
+        temp.processorStatus = 0x55;    // ||  0  |  1  |  010  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.status,          5);
+        TEST_ASSERT_EQUALS(temp.__reserved,      2);
+        TEST_ASSERT_EQUALS(temp.socketPopulated, 1);
+        TEST_ASSERT_EQUALS(temp.__reserved2,     0);
+
+
+
+        temp.status = 2;                // ||  0  |  1  |  010  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x52);
+
+
+
+        temp.__reserved = 1;            // ||  0  |  1  |  001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x4A);
+
+
+
+        temp.socketPopulated = 0;       // ||  0  |  0  |  001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x0A);
+
+
+
+        temp.__reserved2 = 0;           // ||  1  |  0  |  001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x8A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiSystemSlotsEntry");
+    {
+        DmiSystemSlotsEntry temp;
+
+
+
+        //  DmiSystemSlotsEntry - functionNumberAndDeviceNumber:
+        // =============================================
+        // |  deviceNumber : 5  |  functionNumber : 3  |
+        // =============================================
+
+
+
+        temp.functionNumberAndDeviceNumber = 0x0D;  // ||  00001  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumber, 5);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,   1);
+
+
+
+        temp.functionNumber = 2;                    // ||  00001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x0A);
+
+
+
+        temp.deviceNumber = 9;                      // ||  01001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 
