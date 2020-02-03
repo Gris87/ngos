@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/entry/lib/dmicachesizegranularity.h>
+#include <common/src/bits64/log/log.h>
 
 
 
