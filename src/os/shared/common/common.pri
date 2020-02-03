@@ -133,6 +133,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheoperationalmode.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicachesize.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicachesize2.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmicachesizegranularity.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicachetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h \

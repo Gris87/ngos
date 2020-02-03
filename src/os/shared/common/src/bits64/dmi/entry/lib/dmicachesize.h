@@ -3,14 +3,22 @@
 
 
 
-#include <ngos/types.h>
+#include <common/src/bits64/dmi/entry/lib/dmicachesizegranularity.h>
 
 
 
 struct DmiCacheSize
 {
-    u16 granularity: 1; // TODO: Use enum
-    u16 value:       15;
+    union
+    {
+        struct
+        {
+            u16 value:       15;
+            u16 granularity: 1; // TODO: Use enum DmiCacheSizeGranularity
+        };
+
+        u16 value16;
+    };
 
     u32 size()
     {
@@ -18,7 +26,23 @@ struct DmiCacheSize
 
 
 
-        return granularity ? (value << 16) : (value << 10);
+        switch ((DmiCacheSizeGranularity)granularity)
+        {
+            case DmiCacheSizeGranularity::_1_KILOBYTE:   return (u32)value << 10;
+            case DmiCacheSizeGranularity::_64_KILOBYTES: return (u32)value << 16;
+
+            default:
+            {
+                COMMON_LF(("Unknown cache size granularity %s", enumToFullString((DmiCacheSizeGranularity)granularity)));
+
+                return 0;
+            }
+            break;
+        }
+
+
+
+        return value;
     }
 } __attribute__((packed));
 

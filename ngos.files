@@ -759,6 +759,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmicachelocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheoperationalmode.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicachesize.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicachesize2.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmicachesizegranularity.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicachetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h

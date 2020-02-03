@@ -76,6 +76,7 @@
 #include <common/src/bits64/dmi/entry/lib/dmicacheoperationalmode.h>
 #include <common/src/bits64/dmi/entry/lib/dmicachesize.h>
 #include <common/src/bits64/dmi/entry/lib/dmicachesize2.h>
+#include <common/src/bits64/dmi/entry/lib/dmicachesizegranularity.h>
 #include <common/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmicachetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h>
@@ -278,6 +279,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheOperationalMode),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheSize),                                  2);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheSize2),                                 4);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSizeGranularity),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheSramTypeFlag),                          2);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElement),                    3);
@@ -712,6 +714,74 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.__reserved2 = 11;      // ||  001011  |  01  ||  1  |  01  |  0  |  1  |  010  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2DAA);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiCacheSize");
+    {
+        DmiCacheSize temp;
+
+
+
+        //  DmiCacheSize - value16:
+        // ====================================
+        // |  granularity : 1  |  value : 15  |
+        // ====================================
+
+
+
+        temp.value16 = 0x8005;  // ||  1  |  000000000000101  ||
+
+        TEST_ASSERT_EQUALS(temp.value,        5);
+        TEST_ASSERT_EQUALS(temp.granularity,  1);
+
+
+
+        temp.value = 8;         // ||  1  |  000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x8008);
+
+
+
+        temp.granularity = 0;   // ||  0  |  000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x0008);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiCacheSize2");
+    {
+        DmiCacheSize2 temp;
+
+
+
+        //  DmiCacheSize2 - value32:
+        // ====================================
+        // |  granularity : 1  |  value : 31  |
+        // ====================================
+
+
+
+        temp.value32 = 0x80000005;  // ||  1  |  0000000000000000000000000000101  ||
+
+        TEST_ASSERT_EQUALS(temp.value,        5);
+        TEST_ASSERT_EQUALS(temp.granularity,  1);
+
+
+
+        temp.value = 8;         // ||  1  |  0000000000000000000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x80000008);
+
+
+
+        temp.granularity = 0;   // ||  0  |  0000000000000000000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x00000008);
     }
     TEST_CASE_END();
 }

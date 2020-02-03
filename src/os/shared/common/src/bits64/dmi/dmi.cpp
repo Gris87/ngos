@@ -508,10 +508,10 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
                 if (sVersion >= DMI_VERSION(3, 1))
                 {
-                    COMMON_LVVV(("entry->extendedBiosSize.value   = %u", entry->extendedBiosSize.value));
-                    COMMON_LVVV(("entry->extendedBiosSize.unit    = %s", enumToFullString((DmiBiosExtendedRomSizeUnit)entry->extendedBiosSize.unit)));
-                    COMMON_LVVV(("entry->extendedBiosSize.value16 = %u", entry->extendedBiosSize.value16));
-                    COMMON_LVVV(("entry->extendedBiosSize         = %s", bytesToString(entry->extendedBiosSize.size())));
+                    COMMON_LVVV(("entry->extendedBiosSize.value   = %u",     entry->extendedBiosSize.value));
+                    COMMON_LVVV(("entry->extendedBiosSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entry->extendedBiosSize.unit)));
+                    COMMON_LVVV(("entry->extendedBiosSize.value16 = 0x%04X", entry->extendedBiosSize.value16));
+                    COMMON_LVVV(("entry->extendedBiosSize         = %s",     bytesToString(entry->extendedBiosSize.size())));
                 }
             }
         }
@@ -541,7 +541,7 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
                 {
                     // COMMON_TEST_ASSERT(entry->extendedBiosSize.value   == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
                     // COMMON_TEST_ASSERT(entry->extendedBiosSize.unit    == DmiBiosExtendedRomSizeUnit::MEGABYTES, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.value16 == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.value16 == 0x0000,                                NgosStatus::ASSERTION); // Commented due to value variation
 
                     COMMON_TEST_ASSERT(entry->header.length >= 26,                   NgosStatus::ASSERTION);
                     COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
@@ -1050,7 +1050,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         COMMON_LVVV(("entry->currentSpeed                     = %u",     entry->currentSpeed));
         COMMON_LVVV(("entry->status                           = %s",     enumToFullString((DmiProcessorStatus)entry->status)));
         COMMON_LVVV(("entry->socketPopulated                  = %u",     entry->socketPopulated));
-        COMMON_LVVV(("entry->processorStatus                  = %u",     entry->processorStatus));
+        COMMON_LVVV(("entry->processorStatus                  = 0x%02X", entry->processorStatus));
         COMMON_LVVV(("entry->processorUpgrade                 = %s",     enumToFullString(entry->processorUpgrade)));
         COMMON_LVVV(("entry->l1CacheHandle                    = 0x%04X", entry->l1CacheHandle));
         COMMON_LVVV(("entry->l2CacheHandle                    = 0x%04X", entry->l2CacheHandle));
@@ -1120,9 +1120,9 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         // COMMON_TEST_ASSERT(entry->externalClock                    == 100,                                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maxSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->currentSpeed                     == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->status                           == DmiProcessorStatus::ENABLED,          NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->socketPopulated                  == 1,                                    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->processorStatus                  == 65,                                   NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->status                           == DmiProcessorStatus::ENABLED,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->socketPopulated                  == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorStatus                  == 0x41,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->processorUpgrade                 == DmiProcessorUpgrade::OTHER,           NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->l1CacheHandle                    == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->l2CacheHandle                    == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
@@ -1250,33 +1250,38 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->socketDesignationStringId          = %u", entry->socketDesignationStringId));
-        COMMON_LVVV(("entry->cacheConfiguration.level           = %u", entry->cacheConfiguration.level));
-        COMMON_LVVV(("entry->cacheConfiguration.socketed        = %u", entry->cacheConfiguration.socketed));
-        COMMON_LVVV(("entry->cacheConfiguration.location        = %s", enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location)));
-        COMMON_LVVV(("entry->cacheConfiguration.enabled         = %u", entry->cacheConfiguration.enabled));
-        COMMON_LVVV(("entry->cacheConfiguration.operationalMode = %s", enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode)));
-        COMMON_LVVV(("entry->maximumCacheSize.granularity       = %u", entry->maximumCacheSize.granularity));
-        COMMON_LVVV(("entry->maximumCacheSize.value             = %u", entry->maximumCacheSize.value));
-        COMMON_LVVV(("entry->maximumCacheSize                   = %s", bytesToString(entry->maximumCacheSize.size())));
-        COMMON_LVVV(("entry->installedSize.granularity          = %u", entry->installedSize.granularity));
-        COMMON_LVVV(("entry->installedSize.value                = %u", entry->installedSize.value));
-        COMMON_LVVV(("entry->installedSize                      = %s", bytesToString(entry->installedSize.size())));
-        COMMON_LVVV(("entry->supportedSramType                  = %s", flagsToFullString(entry->supportedSramType)));
-        COMMON_LVVV(("entry->currentSramType                    = %s", flagsToFullString(entry->currentSramType)));
-        COMMON_LVVV(("entry->cacheSpeed                         = %u", entry->cacheSpeed));
-        COMMON_LVVV(("entry->errorCorrectionType                = %s", enumToFullString(entry->errorCorrectionType)));
-        COMMON_LVVV(("entry->systemCacheType                    = %s", enumToFullString(entry->systemCacheType)));
-        COMMON_LVVV(("entry->associativity                      = %s", enumToFullString(entry->associativity)));
+        COMMON_LVVV(("entry->socketDesignationStringId          = %u",     entry->socketDesignationStringId));
+        COMMON_LVVV(("entry->cacheConfiguration.level           = %u",     entry->cacheConfiguration.level));
+        COMMON_LVVV(("entry->cacheConfiguration.socketed        = %u",     entry->cacheConfiguration.socketed));
+        COMMON_LVVV(("entry->cacheConfiguration.location        = %s",     enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location)));
+        COMMON_LVVV(("entry->cacheConfiguration.enabled         = %u",     entry->cacheConfiguration.enabled));
+        COMMON_LVVV(("entry->cacheConfiguration.operationalMode = %s",     enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode)));
+        COMMON_LVVV(("entry->cacheConfiguration.value16         = 0x%04X", entry->cacheConfiguration.value16));
+        COMMON_LVVV(("entry->maximumCacheSize.value             = %u",     entry->maximumCacheSize.value));
+        COMMON_LVVV(("entry->maximumCacheSize.granularity       = %u",     entry->maximumCacheSize.granularity));
+        COMMON_LVVV(("entry->maximumCacheSize.value16           = 0x%04X", entry->maximumCacheSize.value16));
+        COMMON_LVVV(("entry->maximumCacheSize                   = %s",     bytesToString(entry->maximumCacheSize.size())));
+        COMMON_LVVV(("entry->installedSize.value                = %u",     entry->installedSize.value));
+        COMMON_LVVV(("entry->installedSize.granularity          = %u",     entry->installedSize.granularity));
+        COMMON_LVVV(("entry->installedSize.value16              = 0x%04X", entry->installedSize.value16));
+        COMMON_LVVV(("entry->installedSize                      = %s",     bytesToString(entry->installedSize.size())));
+        COMMON_LVVV(("entry->supportedSramType                  = %s",     flagsToFullString(entry->supportedSramType)));
+        COMMON_LVVV(("entry->currentSramType                    = %s",     flagsToFullString(entry->currentSramType)));
+        COMMON_LVVV(("entry->cacheSpeed                         = %u",     entry->cacheSpeed));
+        COMMON_LVVV(("entry->errorCorrectionType                = %s",     enumToFullString(entry->errorCorrectionType)));
+        COMMON_LVVV(("entry->systemCacheType                    = %s",     enumToFullString(entry->systemCacheType)));
+        COMMON_LVVV(("entry->associativity                      = %s",     enumToFullString(entry->associativity)));
 
         if (sVersion >= DMI_VERSION(3, 1))
         {
-            COMMON_LVVV(("entry->maximumCacheSize2.granularity = %u", entry->maximumCacheSize2.granularity));
-            COMMON_LVVV(("entry->maximumCacheSize2.value       = %u", entry->maximumCacheSize2.value));
-            COMMON_LVVV(("entry->maximumCacheSize2             = %s", bytesToString(entry->maximumCacheSize2.size())));
-            COMMON_LVVV(("entry->installedSize2.granularity    = %u", entry->installedSize2.granularity));
-            COMMON_LVVV(("entry->installedSize2.value          = %u", entry->installedSize2.value));
-            COMMON_LVVV(("entry->installedSize2                = %s", bytesToString(entry->installedSize2.size())));
+            COMMON_LVVV(("entry->maximumCacheSize2.value       = %u",     entry->maximumCacheSize2.value));
+            COMMON_LVVV(("entry->maximumCacheSize2.granularity = %u",     entry->maximumCacheSize2.granularity));
+            COMMON_LVVV(("entry->maximumCacheSize2.value32     = 0x%08X", entry->maximumCacheSize2.value32));
+            COMMON_LVVV(("entry->maximumCacheSize2             = %s",     bytesToString(entry->maximumCacheSize2.size())));
+            COMMON_LVVV(("entry->installedSize2.value          = %u",     entry->installedSize2.value));
+            COMMON_LVVV(("entry->installedSize2.granularity    = %u",     entry->installedSize2.granularity));
+            COMMON_LVVV(("entry->installedSize2.value32        = 0x%08X", entry->installedSize2.value32));
+            COMMON_LVVV(("entry->installedSize2                = %s",     bytesToString(entry->installedSize2.size())));
         }
 
 
@@ -1287,10 +1292,13 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         // COMMON_TEST_ASSERT(entry->cacheConfiguration.location        == DmiCacheLocation::UNKNOWN,                      NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->cacheConfiguration.enabled         == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->cacheConfiguration.operationalMode == DmiCacheOperationalMode::UNKNOWN,               NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->maximumCacheSize.granularity       == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->cacheConfiguration.value16         == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maximumCacheSize.value             == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->installedSize.granularity          == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumCacheSize.granularity       == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumCacheSize.value16           == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->installedSize.value                == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->installedSize.granularity          == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->installedSize.value16              == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->supportedSramType                  == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->currentSramType                    == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->cacheSpeed                         == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
@@ -1300,10 +1308,12 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
         if (sVersion >= DMI_VERSION(3, 1))
         {
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.granularity == 1, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.value       == 1, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize2.granularity    == 1, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize2.value          == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.value       == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.granularity == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.value32     == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->installedSize2.value          == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->installedSize2.granularity    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->installedSize2.value32        == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
 
             COMMON_TEST_ASSERT(entry->header.length >= 27,                    NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry), NgosStatus::ASSERTION);
@@ -1437,11 +1447,11 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
         if (sVersion >= DMI_VERSION(2, 7))
         {
-            COMMON_LVVV(("entry->segmentGroupNumber            = %u", entry->segmentGroupNumber));
-            COMMON_LVVV(("entry->busNumber                     = %u", entry->busNumber));
-            COMMON_LVVV(("entry->functionNumber                = %u", entry->functionNumber));
-            COMMON_LVVV(("entry->deviceNumber                  = %u", entry->deviceNumber));
-            COMMON_LVVV(("entry->functionNumberAndDeviceNumber = %u", entry->functionNumberAndDeviceNumber));
+            COMMON_LVVV(("entry->segmentGroupNumber            = %u",     entry->segmentGroupNumber));
+            COMMON_LVVV(("entry->busNumber                     = %u",     entry->busNumber));
+            COMMON_LVVV(("entry->functionNumber                = %u",     entry->functionNumber));
+            COMMON_LVVV(("entry->deviceNumber                  = %u",     entry->deviceNumber));
+            COMMON_LVVV(("entry->functionNumberAndDeviceNumber = 0x%02X", entry->functionNumberAndDeviceNumber));
 
             if (sVersion >= DMI_VERSION(3, 2))
             {
@@ -1450,12 +1460,12 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
                 for (i64 i = 0; i < entry->peerGroupingCount; ++i)
                 {
-                    COMMON_LVVV(("entry->peerGroups[i].segmentGroupNumber            = %u", entry->peerGroups[i].segmentGroupNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].busNumber                     = %u", entry->peerGroups[i].busNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].functionNumber                = %u", entry->peerGroups[i].functionNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].deviceNumber                  = %u", entry->peerGroups[i].deviceNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].functionNumberAndDeviceNumber = %u", entry->peerGroups[i].functionNumberAndDeviceNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].dataBusWidth                  = %s", enumToFullString(entry->peerGroups[i].dataBusWidth)));
+                    COMMON_LVVV(("entry->peerGroups[i].segmentGroupNumber            = %u",     entry->peerGroups[i].segmentGroupNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].busNumber                     = %u",     entry->peerGroups[i].busNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].functionNumber                = %u",     entry->peerGroups[i].functionNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].deviceNumber                  = %u",     entry->peerGroups[i].deviceNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].functionNumberAndDeviceNumber = 0x%02X", entry->peerGroups[i].functionNumberAndDeviceNumber));
+                    COMMON_LVVV(("entry->peerGroups[i].dataBusWidth                  = %s",     enumToFullString(entry->peerGroups[i].dataBusWidth)));
                 }
             }
         }
@@ -1472,11 +1482,11 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
         if (sVersion >= DMI_VERSION(2, 7))
         {
-            // COMMON_TEST_ASSERT(entry->segmentGroupNumber            == 1, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->busNumber                     == 1, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->functionNumber                == 1, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceNumber                  == 1, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->segmentGroupNumber            == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->busNumber                     == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->functionNumber                == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->deviceNumber                  == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
 
             if (sVersion >= DMI_VERSION(3, 2))
             {
@@ -1486,7 +1496,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
                 // COMMON_TEST_ASSERT(entry->peerGroups[0].busNumber                     == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
                 // COMMON_TEST_ASSERT(entry->peerGroups[0].functionNumber                == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
                 // COMMON_TEST_ASSERT(entry->peerGroups[0].deviceNumber                  == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entry->peerGroups[0].functionNumberAndDeviceNumber == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->peerGroups[0].functionNumberAndDeviceNumber == 0x00,                                NgosStatus::ASSERTION); // Commented due to value variation
                 // COMMON_TEST_ASSERT(entry->peerGroups[0].dataBusWidth                  == DmiSystemSlotsDataBusWidth::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
 
                 COMMON_TEST_ASSERT(entry->header.length >= 19 + entry->peerGroupingCount * 5,                          NgosStatus::ASSERTION);
@@ -2727,29 +2737,29 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
 
     // Validation
     {
-        COMMON_LVVV(("entry->referenceDesignationStringId  = %u", entry->referenceDesignationStringId));
-        COMMON_LVVV(("entry->deviceType                    = %s", enumToFullString((DmiOnboardDevicesExtendedDeviceType)entry->deviceType)));
-        COMMON_LVVV(("entry->enabled                       = %u", entry->enabled));
-        COMMON_LVVV(("entry->deviceTypeAndEnabled          = %u", entry->deviceTypeAndEnabled));
-        COMMON_LVVV(("entry->deviceTypeInstance            = %u", entry->deviceTypeInstance));
-        COMMON_LVVV(("entry->segmentGroupNumber            = %u", entry->segmentGroupNumber));
-        COMMON_LVVV(("entry->busNumber                     = %u", entry->busNumber));
-        COMMON_LVVV(("entry->functionNumber                = %u", entry->functionNumber));
-        COMMON_LVVV(("entry->deviceNumber                  = %u", entry->deviceNumber));
-        COMMON_LVVV(("entry->functionNumberAndDeviceNumber = %u", entry->functionNumberAndDeviceNumber));
+        COMMON_LVVV(("entry->referenceDesignationStringId  = %u",     entry->referenceDesignationStringId));
+        COMMON_LVVV(("entry->deviceType                    = %s",     enumToFullString((DmiOnboardDevicesExtendedDeviceType)entry->deviceType)));
+        COMMON_LVVV(("entry->enabled                       = %u",     entry->enabled));
+        COMMON_LVVV(("entry->deviceTypeAndEnabled          = 0x%02X", entry->deviceTypeAndEnabled));
+        COMMON_LVVV(("entry->deviceTypeInstance            = %u",     entry->deviceTypeInstance));
+        COMMON_LVVV(("entry->segmentGroupNumber            = %u",     entry->segmentGroupNumber));
+        COMMON_LVVV(("entry->busNumber                     = %u",     entry->busNumber));
+        COMMON_LVVV(("entry->functionNumber                = %u",     entry->functionNumber));
+        COMMON_LVVV(("entry->deviceNumber                  = %u",     entry->deviceNumber));
+        COMMON_LVVV(("entry->functionNumberAndDeviceNumber = 0x%02X", entry->functionNumberAndDeviceNumber));
 
 
 
         // COMMON_TEST_ASSERT(entry->referenceDesignationStringId  == 1,                                          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->deviceType                    == DmiOnboardDevicesExtendedDeviceType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->enabled                       == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled          == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled          == 0x00,                                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->deviceTypeInstance            == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->segmentGroupNumber            == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->busNumber                     == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->functionNumber                == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->deviceNumber                  == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber == 0x00,                                       NgosStatus::ASSERTION); // Commented due to value variation
 
         COMMON_TEST_ASSERT(entry->header.length >= 11,                                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOnboardDevicesExtendedEntry), NgosStatus::ASSERTION);

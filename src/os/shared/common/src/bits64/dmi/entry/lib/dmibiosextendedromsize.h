@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsizeunit.h>
+#include <common/src/bits64/log/log.h>
 
 
 
@@ -31,8 +32,18 @@ struct DmiBiosExtendedRomSize
             case DmiBiosExtendedRomSizeUnit::MEGABYTES: return (u64)value << 20;
             case DmiBiosExtendedRomSizeUnit::GIGABYTES: return (u64)value << 30;
 
-            default: return value;
+            default:
+            {
+                COMMON_LF(("Unknown BIOS extended rom size unit %s", enumToFullString((DmiBiosExtendedRomSizeUnit)unit)));
+
+                return 0;
+            }
+            break;
         }
+
+
+
+        return value;
     }
 } __attribute__((packed));
 
