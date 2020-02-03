@@ -547,9 +547,9 @@ src/os/include/guid/guid.h
 src/os/include/guid/utils.h
 src/os/include/idt/flags.h
 src/os/include/idt/idtdescriptor.h
+src/os/include/idt/idtgatetype.h
 src/os/include/idt/idtregister.h
 src/os/include/idt/macros.h
-src/os/include/idt/type.h
 src/os/include/mbr/mbr.h
 src/os/include/mbr/mbrpartition.h
 src/os/include/mbr/mbrpartitiontype.h

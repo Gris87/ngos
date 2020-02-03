@@ -12,12 +12,20 @@ struct IdtDescriptor
     u16 offsetLow;
     u16 segment;
 
-    u16 ist:    3;
-    u16 __pad1: 5;
-    u16 type:   4; // TODO: Use enum IdtType
-    u16 __pad2: 1;
-    u16 dpl:    2;
-    u16 p:      1;
+    u8 ist;
+
+    union
+    {
+        struct
+        {
+            u8 gateType: 4; // TODO: Use enum IdtGateType
+            u8 __pad:    1;
+            u8 dpl:      2;
+            u8 p:        1;
+        };
+
+        u8 type;
+    };
 
     u16 offsetMiddle;
     u32 offsetHigh;

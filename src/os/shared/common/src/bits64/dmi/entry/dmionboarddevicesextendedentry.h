@@ -13,15 +13,31 @@ struct DmiOnboardDevicesExtendedEntry
     DmiEntryHeader header;
     u8             referenceDesignationStringId;
 
-    u8             deviceType: 7; // TODO: Use enum DmiOnboardDevicesExtendedDeviceType
-    u8             enabled:    1;
+    union
+    {
+        struct
+        {
+            u8 deviceType: 7; // TODO: Use enum DmiOnboardDevicesExtendedDeviceType
+            u8 enabled:    1;
+        };
 
-    u8             deviceTypeInstance;
-    u16            segmentGroupNumber;
-    u8             busNumber;
+        u8 deviceTypeAndEnabled;
+    };
 
-    u8             deviceNumber:   5;
-    u8             functionNumber: 3;
+    u8  deviceTypeInstance;
+    u16 segmentGroupNumber;
+    u8  busNumber;
+
+    union
+    {
+        struct
+        {
+            u8 functionNumber: 3;
+            u8 deviceNumber:   5;
+        };
+
+        u8 functionNumberAndDeviceNumber;
+    };
 } __attribute__((packed));
 
 

@@ -28,8 +28,8 @@
 #include <gpt/gptheader.h>
 #include <guid/guid.h>
 #include <idt/idtdescriptor.h>
+#include <idt/idtgatetype.h>
 #include <idt/idtregister.h>
-#include <idt/type.h>
 #include <mbr/mbr.h>
 #include <mbr/mbrpartition.h>
 #include <mbr/mbrpartitiontype.h>
@@ -164,7 +164,7 @@ TEST_CASES(section0, __include_types);
         TEST_ASSERT_EQUALS(sizeof(Guid),                                         16);
         TEST_ASSERT_EQUALS(sizeof(IdtDescriptor),                                16);
         TEST_ASSERT_EQUALS(sizeof(IdtRegister),                                  10);
-        TEST_ASSERT_EQUALS(sizeof(IdtType),                                      1);
+        TEST_ASSERT_EQUALS(sizeof(IdtGateType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(Mbr),                                          512);
         TEST_ASSERT_EQUALS(sizeof(MbrPartition),                                 16);
         TEST_ASSERT_EQUALS(sizeof(MbrPartitionType),                             1);
@@ -280,38 +280,203 @@ TEST_CASES(section0, __include_types);
 
 
 
-        temp.info  = 0x12;
-        temp.other = 0x12;
+        // ElfSymbol - info:
+        // ===========================
+        // |  type : 4  |  bind : 4  |
+        // ===========================
+
+
+
+        temp.info = 0x12;       // ||  0001  |  0010  ||
 
         TEST_ASSERT_EQUALS(temp.bind, 2);
         TEST_ASSERT_EQUALS(temp.type, 1);
+
+
+
+        temp.bind = 3;          // ||  0001  |  0011  ||
+
+        TEST_ASSERT_EQUALS(temp.info, 0x13);
+
+
+
+        temp.type = 4;          // ||  0100  |  0011  ||
+
+        TEST_ASSERT_EQUALS(temp.info, 0x43);
+
+
+
+        // ElfSymbol - other:
+        // =======================================
+        // |  visibility : 3  |  __reserved : 5  |
+        // =======================================
+
+
+
+        temp.other = 0x12;      // ||  000  |  10010  ||
 
         TEST_ASSERT_EQUALS(temp.__reserved, 18);
         TEST_ASSERT_EQUALS(temp.visibility, 0);
 
 
 
-        temp.bind = 3;
+        temp.__reserved = 3;    // ||  000  |  00011  ||
 
-        TEST_ASSERT_EQUALS(temp.info, 0x13);
-
-
-
-        temp.type = 4;
-
-        TEST_ASSERT_EQUALS(temp.info, 0x43);
+        TEST_ASSERT_EQUALS(temp.other, 0x03);
 
 
 
-        temp.__reserved = 3;
+        temp.visibility = 4;    // ||  100  |  00011  ||
 
-        TEST_ASSERT_EQUALS(temp.other, 3);
+        TEST_ASSERT_EQUALS(temp.other, 0x83);
+    }
+    TEST_CASE_END();
 
 
 
-        temp.visibility = 4;
+    TEST_CASE("GdtDescriptor");
+    {
+        GdtDescriptor temp;
 
-        TEST_ASSERT_EQUALS(temp.other, 131);
+
+
+        // GdtDescriptor - b:
+        // ==========================================================
+        // |                       base2 : 8                        |
+        // |  g : 1  |  d : 1  |  l : 1  |  avl : 1  |  limit1 : 4  |
+        // |  p : 1  |      dpl : 2      |   s : 1   |   type : 4   |
+        // |                       base1 : 8                        |
+        // ==========================================================
+
+
+
+        temp.b = 0x0855AA20;    // ||  00001000  ||  0  |  1  |  0  |  1  |  0101  ||  1  |  01  |  0  |  1010  ||  00100000  ||
+
+        TEST_ASSERT_EQUALS(temp.base1,  32);
+        TEST_ASSERT_EQUALS(temp.type,   10);
+        TEST_ASSERT_EQUALS(temp.s,      0);
+        TEST_ASSERT_EQUALS(temp.dpl,    1);
+        TEST_ASSERT_EQUALS(temp.p,      1);
+        TEST_ASSERT_EQUALS(temp.limit1, 5);
+        TEST_ASSERT_EQUALS(temp.avl,    1);
+        TEST_ASSERT_EQUALS(temp.l,      0);
+        TEST_ASSERT_EQUALS(temp.d,      1);
+        TEST_ASSERT_EQUALS(temp.g,      0);
+        TEST_ASSERT_EQUALS(temp.base2,  8);
+
+
+
+        temp.base1 = 3;         // ||  00001000  ||  0  |  1  |  0  |  1  |  0101  ||  1  |  01  |  0  |  1010  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x0855AA03);
+
+
+
+        temp.type = 5;          // ||  00001000  ||  0  |  1  |  0  |  1  |  0101  ||  1  |  01  |  0  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x0855A503);
+
+
+
+        temp.s = 1;             // ||  00001000  ||  0  |  1  |  0  |  1  |  0101  ||  1  |  01  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x0855B503);
+
+
+
+        temp.dpl = 3;           // ||  00001000  ||  0  |  1  |  0  |  1  |  0101  ||  1  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x0855F503);
+
+
+
+        temp.p = 0;             // ||  00001000  ||  0  |  1  |  0  |  1  |  0101  ||  0  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x08557503);
+
+
+
+        temp.limit1 = 3;        // ||  00001000  ||  0  |  1  |  0  |  1  |  0011  ||  0  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x08537503);
+
+
+
+        temp.avl = 0;           // ||  00001000  ||  0  |  1  |  0  |  0  |  0011  ||  0  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x08437503);
+
+
+
+        temp.l = 1;             // ||  00001000  ||  0  |  1  |  1  |  0  |  0011  ||  0  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x08637503);
+
+
+
+        temp.d = 0;             // ||  00001000  ||  0  |  0  |  1  |  0  |  0011  ||  0  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x08237503);
+
+
+
+        temp.g = 1;             // ||  00001000  ||  1  |  0  |  1  |  0  |  0011  ||  0  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x08A37503);
+
+
+
+        temp.base2 = 7;         // ||  00000111  ||  1  |  0  |  1  |  0  |  0011  ||  0  |  11  |  1  |  0101  ||  00000011  ||
+
+        TEST_ASSERT_EQUALS(temp.b, 0x07A37503);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("IdtDescriptor");
+    {
+        IdtDescriptor temp;
+
+
+
+        //  IdtDescriptor - type:
+        // ======================================================
+        // |  p : 1  |  dpl : 2  |  __pad : 1  |  gateType : 4  |
+        // ======================================================
+
+
+
+        temp.type = 0xAA;       // ||  1  |  01  |  0  |  1010  ||
+
+        TEST_ASSERT_EQUALS(temp.gateType, 10);
+        TEST_ASSERT_EQUALS(temp.__pad,    0);
+        TEST_ASSERT_EQUALS(temp.dpl,      1);
+        TEST_ASSERT_EQUALS(temp.p,        1);
+
+
+
+        temp.gateType = 5;      // ||  1  |  01  |  0  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.type, 0xA5);
+
+
+
+        temp.__pad = 1;         // ||  1  |  01  |  1  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.type, 0xB5);
+
+
+
+        temp.dpl = 3;           // ||  1  |  11  |  1  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.type, 0xF5);
+
+
+
+        temp.p = 0;             // ||  0  |  11  |  1  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.type, 0x75);
     }
     TEST_CASE_END();
 }

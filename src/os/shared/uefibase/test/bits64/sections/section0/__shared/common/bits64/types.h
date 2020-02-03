@@ -466,6 +466,66 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                    2);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiOnboardDevicesExtendedEntry");
+    {
+        DmiOnboardDevicesExtendedEntry temp;
+
+
+
+        //  DmiOnboardDevicesExtendedEntry - deviceTypeAndEnabled:
+        // ====================================
+        // |  enabled : 1  |  deviceType : 7  |
+        // ====================================
+
+
+
+        temp.deviceTypeAndEnabled = 0x85;   // ||  1  |  0000101  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceType, 5);
+        TEST_ASSERT_EQUALS(temp.enabled,    1);
+
+
+
+        temp.deviceType = 10;               // ||  1  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x8A);
+
+
+
+        temp.enabled = 0;                   // ||  0  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x0A);
+
+
+
+        //  DmiOnboardDevicesExtendedEntry - functionNumberAndDeviceNumber:
+        // =============================================
+        // |  deviceNumber : 5  |  functionNumber : 3  |
+        // =============================================
+
+
+
+        temp.functionNumberAndDeviceNumber = 0x0D;  // ||  00001  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumber, 5);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,   1);
+
+
+
+        temp.functionNumber = 2;                    // ||  00001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x0A);
+
+
+
+        temp.deviceNumber = 9;                      // ||  01001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 

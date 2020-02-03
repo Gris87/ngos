@@ -5,9 +5,9 @@
 #include <gdt/segments.h>
 #include <idt/flags.h>
 #include <idt/idtdescriptor.h>
+#include <idt/idtgatetype.h>
 #include <idt/idtregister.h>
 #include <idt/macros.h>
-#include <idt/type.h>
 #include <kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h>
 #include <ngos/linkage.h>
 
@@ -35,11 +35,10 @@ NgosStatus setupIdtInterruptGate(u8 vectorNumber, void *address)
     idtEntry.offsetMiddle = ((u64)address >> 16) & 0xFFFF;
     idtEntry.offsetHigh   = (u64)address >> 32;
     idtEntry.ist          = IDT_INTERRUPT_STACK_TABLE_NOT_USED;
-    idtEntry.type         = (u8)IdtType::GATE_INTERRUPT;
+    idtEntry.gateType     = (u8)IdtGateType::INTERRUPT;
     idtEntry.dpl          = IDT_DESCRIPTOR_PRIVELEGE_LEVEL_0_HIGHEST;
     idtEntry.p            = IDT_ENTRY_PRESENT_YES;
-    idtEntry.__pad1       = 0;
-    idtEntry.__pad2       = 0;
+    idtEntry.__pad        = 0;
     idtEntry.__reserved   = 0;
 
 

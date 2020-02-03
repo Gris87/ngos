@@ -9,7 +9,7 @@
 
 struct DmiCacheSize2
 {
-    u32 granularity: 1;
+    u32 granularity: 1; // TODO: Use enum
     u32 value:       31;
 
     u64 size()
