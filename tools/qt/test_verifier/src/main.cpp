@@ -222,8 +222,20 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
+        quint64 amountOfBitsTests = 0;
+
+        for (qint64 i = 0; i < testStructureEntries.length(); ++i)
+        {
+            if (testStructureEntries.at(i).isBitsDefined())
+            {
+                ++amountOfBitsTests;
+            }
+        }
+
+
+
         Console::err("");
-        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / (testStructureEntries.length() + testEntries.length())));
+        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / (testStructureEntries.length() + amountOfBitsTests + testEntries.length())));
         Console::err("");
 
         return 1;

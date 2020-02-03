@@ -25,6 +25,7 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize2.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h>
@@ -93,6 +94,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
     CALL_TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_dmi);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmibiosextendedromsize);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicachesize);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicachesize2);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmiportablebatterymanufacturedate);

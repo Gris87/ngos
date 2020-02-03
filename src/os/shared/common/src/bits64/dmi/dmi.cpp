@@ -508,8 +508,10 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
                 if (sVersion >= DMI_VERSION(3, 1))
                 {
-                    COMMON_LVVV(("entry->extendedBiosSize.size = %u", entry->extendedBiosSize.size));
-                    COMMON_LVVV(("entry->extendedBiosSize.unit = %u", entry->extendedBiosSize.unit));
+                    COMMON_LVVV(("entry->extendedBiosSize.value   = %u", entry->extendedBiosSize.value));
+                    COMMON_LVVV(("entry->extendedBiosSize.unit    = %s", enumToFullString((DmiBiosExtendedRomSizeUnit)entry->extendedBiosSize.unit)));
+                    COMMON_LVVV(("entry->extendedBiosSize.value16 = %u", entry->extendedBiosSize.value16));
+                    COMMON_LVVV(("entry->extendedBiosSize         = %s", bytesToString(entry->extendedBiosSize.size())));
                 }
             }
         }
@@ -537,8 +539,9 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
                 if (sVersion >= DMI_VERSION(3, 1))
                 {
-                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.size == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.unit == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.value   == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.unit    == DmiBiosExtendedRomSizeUnit::MEGABYTES, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedBiosSize.value16 == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
 
                     COMMON_TEST_ASSERT(entry->header.length >= 26,                   NgosStatus::ASSERTION);
                     COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
@@ -1248,11 +1251,11 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
     // Validation
     {
         COMMON_LVVV(("entry->socketDesignationStringId          = %u", entry->socketDesignationStringId));
-        COMMON_LVVV(("entry->cacheConfiguration.operationalMode = %s", enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode)));
-        COMMON_LVVV(("entry->cacheConfiguration.enabled         = %u", entry->cacheConfiguration.enabled));
-        COMMON_LVVV(("entry->cacheConfiguration.location        = %s", enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location)));
-        COMMON_LVVV(("entry->cacheConfiguration.socketed        = %u", entry->cacheConfiguration.socketed));
         COMMON_LVVV(("entry->cacheConfiguration.level           = %u", entry->cacheConfiguration.level));
+        COMMON_LVVV(("entry->cacheConfiguration.socketed        = %u", entry->cacheConfiguration.socketed));
+        COMMON_LVVV(("entry->cacheConfiguration.location        = %s", enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location)));
+        COMMON_LVVV(("entry->cacheConfiguration.enabled         = %u", entry->cacheConfiguration.enabled));
+        COMMON_LVVV(("entry->cacheConfiguration.operationalMode = %s", enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode)));
         COMMON_LVVV(("entry->maximumCacheSize.granularity       = %u", entry->maximumCacheSize.granularity));
         COMMON_LVVV(("entry->maximumCacheSize.value             = %u", entry->maximumCacheSize.value));
         COMMON_LVVV(("entry->maximumCacheSize                   = %s", bytesToString(entry->maximumCacheSize.size())));
@@ -1279,11 +1282,11 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
         // COMMON_TEST_ASSERT(entry->socketDesignationStringId          == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->cacheConfiguration.operationalMode == DmiCacheOperationalMode::UNKNOWN,               NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->cacheConfiguration.enabled         == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->cacheConfiguration.location        == DmiCacheLocation::UNKNOWN,                      NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->cacheConfiguration.socketed        == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->cacheConfiguration.level           == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->cacheConfiguration.socketed        == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->cacheConfiguration.location        == DmiCacheLocation::UNKNOWN,                      NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->cacheConfiguration.enabled         == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->cacheConfiguration.operationalMode == DmiCacheOperationalMode::UNKNOWN,               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maximumCacheSize.granularity       == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maximumCacheSize.value             == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->installedSize.granularity          == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation

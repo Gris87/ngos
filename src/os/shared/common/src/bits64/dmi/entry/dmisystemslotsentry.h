@@ -37,7 +37,6 @@ struct DmiSystemSlotsEntry
         u8 functionNumberAndDeviceNumber;
     };
 
-
     DmiSystemSlotsDataBusWidth dataBusWidth;
     u8                         peerGroupingCount;
     DmiSystemSlotsPeerGroup    peerGroups[0];

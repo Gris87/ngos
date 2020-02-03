@@ -10,13 +10,21 @@
 
 struct DmiCacheConfiguration
 {
-    u16 __reserved:      6;
-    u16 operationalMode: 2; // TODO: Use enum DmiCacheOperationalMode
-    u16 enabled:         1;
-    u16 location:        2; // TODO: Use enum DmiCacheLocation
-    u16 __reserved2:     1;
-    u16 socketed:        1;
-    u16 level:           3;
+    union
+    {
+        struct
+        {
+            u16 level:           3;
+            u16 socketed:        1;
+            u16 __reserved:      1;
+            u16 location:        2; // TODO: Use enum DmiCacheLocation
+            u16 enabled:         1;
+            u16 operationalMode: 2; // TODO: Use enum DmiCacheOperationalMode
+            u16 __reserved2:     6;
+        };
+
+        u16 value16;
+    };
 } __attribute__((packed));
 
 

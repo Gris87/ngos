@@ -67,6 +67,7 @@
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
+#include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsizeunit.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioslanguageflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmicacheassociativity.h>
 #include <common/src/bits64/dmi/entry/lib/dmicacheconfiguration.h>
@@ -266,6 +267,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsSystemReservedFlag),      1);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  26);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSize),                        2);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSizeUnit),                    1);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageEntry),                          22);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageFlag),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheAssociativity),                         1);
@@ -569,7 +571,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
-        temp.__reserved2 = 0;           // ||  1  |  0  |  001  |  010  ||
+        temp.__reserved2 = 1;           // ||  1  |  0  |  001  |  010  ||
 
         TEST_ASSERT_EQUALS(temp.processorStatus, 0x8A);
     }
@@ -606,6 +608,110 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.deviceNumber = 9;                      // ||  01001  |  010  ||
 
         TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiBiosExtendedRomSize");
+    {
+        DmiBiosExtendedRomSize temp;
+
+
+
+        //  DmiBiosExtendedRomSize - value16:
+        // =============================
+        // |  unit : 2  |  value : 14  |
+        // =============================
+
+
+
+        temp.value16 = 0x4005;  // ||  01  |  00000000000101  ||
+
+        TEST_ASSERT_EQUALS(temp.value, 5);
+        TEST_ASSERT_EQUALS(temp.unit,  1);
+
+
+
+        temp.value = 8;         // ||  01  |  00000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4008);
+
+
+
+        temp.unit = 2;          // ||  10  |  00000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x8008);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiCacheConfiguration");
+    {
+        DmiCacheConfiguration temp;
+
+
+
+        //  DmiCacheConfiguration - value16:
+        // =====================================================================================================
+        // |  enabled : 1  |  location : 2  |  __reserved : 1  |  socketed : 1  |          level : 3           |
+        // |                             __reserved2 : 6                               |  operationalMode : 2  |
+        // =====================================================================================================
+
+
+
+        temp.value16 = 0x4A55;      // ||  010010  |  10  ||  0  |  10  |  1  |  0  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.level,           5);
+        TEST_ASSERT_EQUALS(temp.socketed,        0);
+        TEST_ASSERT_EQUALS(temp.__reserved,      1);
+        TEST_ASSERT_EQUALS(temp.location,        2);
+        TEST_ASSERT_EQUALS(temp.enabled,         0);
+        TEST_ASSERT_EQUALS(temp.operationalMode, 2);
+        TEST_ASSERT_EQUALS(temp.__reserved2,     18);
+
+
+
+        temp.level = 2;             // ||  010010  |  10  ||  0  |  10  |  1  |  0  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4A52);
+
+
+
+        temp.socketed = 1;          // ||  010010  |  10  ||  0  |  10  |  1  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4A5A);
+
+
+
+        temp.__reserved = 0;        // ||  010010  |  10  ||  0  |  10  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4A4A);
+
+
+
+        temp.location = 1;          // ||  010010  |  10  ||  0  |  01  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4A2A);
+
+
+
+        temp.enabled = 1;           // ||  010010  |  10  ||  1  |  01  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4AAA);
+
+
+
+        temp.operationalMode = 1;   // ||  010010  |  01  ||  1  |  01  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x49AA);
+
+
+
+        temp.__reserved2 = 11;      // ||  001011  |  01  ||  1  |  01  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2DAA);
     }
     TEST_CASE_END();
 }
