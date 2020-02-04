@@ -85,9 +85,7 @@
 #include <common/src/bits64/dmi/entry/lib/dmichassistype.h>
 #include <common/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h>
-#include <common/src/bits64/dmi/entry/lib/dmicoolingdevicetypeandstatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h>
-#include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h>
 #include <common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h>
@@ -130,10 +128,8 @@
 #include <common/src/bits64/dmi/entry/lib/dmisystemslotsusage.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h>
 #include <common/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h>
-#include <common/src/bits64/dmi/entry/lib/dmitemperatureprobelocationandstatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h>
-#include <common/src/bits64/dmi/entry/lib/dmivoltageprobelocationandstatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmivoltageprobestatus.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <common/src/bits64/fpu/fpustate.h>
@@ -290,10 +286,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntry),                         15);
         TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceStatus),                        1);
         TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceType),                          1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceTypeAndStatus),                 1);
         TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeEntry),                22);
         TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeLocation),             1);
-        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeLocationAndStatus),    1);
         TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeStatus),               1);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),                                4);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                  1);
@@ -361,11 +355,9 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemWakeUpTime),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeEntry),                      22);
         TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeLocation),                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeLocationAndStatus),          1);
         TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeStatus),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeEntry),                          22);
         TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeLocation),                       1);
-        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeLocationAndStatus),              1);
         TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeStatus),                         1);
         TEST_ASSERT_EQUALS(sizeof(FPU),                                           1);
         TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
@@ -782,6 +774,399 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.granularity = 0;   // ||  0  |  0000000000000000000000000001000  ||
 
         TEST_ASSERT_EQUALS(temp.value32, 0x00000008);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiCoolingDeviceEntry");
+    {
+        DmiCoolingDeviceEntry temp;
+
+
+
+        //  DmiCoolingDeviceEntry - deviceTypeAndStatus:
+        // ===================================
+        // |  status : 3  |  deviceType : 5  |
+        // ===================================
+
+
+
+        temp.deviceTypeAndStatus = 0x45;    // ||  010  |  00101  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceType, 5);
+        TEST_ASSERT_EQUALS(temp.status,     2);
+
+
+
+        temp.deviceType = 8;                // ||  010  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndStatus, 0x48);
+
+
+
+        temp.status = 1;                    // ||  001  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndStatus, 0x28);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiElectricalCurrentProbeEntry");
+    {
+        DmiElectricalCurrentProbeEntry temp;
+
+
+
+        //  DmiElectricalCurrentProbeEntry - locationAndStatus:
+        // =================================
+        // |  status : 3  |  location : 5  |
+        // =================================
+
+
+
+        temp.locationAndStatus = 0x45;      // ||  010  |  00101  ||
+
+        TEST_ASSERT_EQUALS(temp.location, 5);
+        TEST_ASSERT_EQUALS(temp.status,   2);
+
+
+
+        temp.location = 8;                  // ||  010  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x48);
+
+
+
+        temp.status = 1;                    // ||  001  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x28);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiOnboardDevicesDevice");
+    {
+        DmiOnboardDevicesDevice temp;
+
+
+
+        //  DmiOnboardDevicesDevice - deviceTypeAndEnabled:
+        // ====================================
+        // |  enabled : 1  |  deviceType : 7  |
+        // ====================================
+
+
+
+        temp.deviceTypeAndEnabled = 0x85;   // ||  1  |  0000101  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceType, 5);
+        TEST_ASSERT_EQUALS(temp.enabled,    1);
+
+
+
+        temp.deviceType = 10;               // ||  1  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x8A);
+
+
+
+        temp.enabled = 0;                   // ||  0  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x0A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiPortableBatteryManufactureDate");
+    {
+        DmiPortableBatteryManufactureDate temp;
+
+
+
+        //  DmiPortableBatteryManufactureDate - value16:
+        // =========================================
+        // |  year : 7  |  month : 4  |  date : 5  |
+        // =========================================
+
+
+
+        temp.value16 = 0x4BB6;    // ||  0100101  |  1101  |  10110  ||
+
+        TEST_ASSERT_EQUALS(temp.date,  22);
+        TEST_ASSERT_EQUALS(temp.month, 13);
+        TEST_ASSERT_EQUALS(temp.year,  37);
+
+
+
+        temp.date = 26;         // ||  0100101  |  1101  |  11010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4BBA);
+
+
+
+        temp.month = 7;         // ||  0100101  |  0111  |  11010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4AFA);
+
+
+
+        temp.year = 7;          // ||  0000111  |  0111  |  11010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x0EFA);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiProcessorSignature");
+    {
+        DmiProcessorSignature temp;
+
+
+
+        //  DmiProcessorSignature - value32:
+        // ====================================================
+        // |           model : 4           |  steppingId : 4  |
+        // |  __reserved : 2  |  type : 2  |    family : 4    |
+        // |          -xFamily : 8         |    xModel : 4    |
+        // |        __reserved2 : 4        |   xFamily- : 8   |
+        // ====================================================
+
+
+
+        temp.value32 = 0x5AAB65D6;      // ||  0101  |  10101010  |  1011  ||  01  |  10  |  0101  ||  1101  |  0110  ||
+
+        TEST_ASSERT_EQUALS(temp.steppingId,  6);
+        TEST_ASSERT_EQUALS(temp.model,       13);
+        TEST_ASSERT_EQUALS(temp.family,      5);
+        TEST_ASSERT_EQUALS(temp.type,        2);
+        TEST_ASSERT_EQUALS(temp.__reserved,  1);
+        TEST_ASSERT_EQUALS(temp.xModel,      11);
+        TEST_ASSERT_EQUALS(temp.xFamily,     170);
+        TEST_ASSERT_EQUALS(temp.__reserved2, 5);
+
+
+
+        temp.steppingId = 11;           // ||  0101  |  10101010  |  1011  ||  01  |  10  |  0101  ||  1101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5AAB65DB);
+
+
+
+        temp.model = 5;                 // ||  0101  |  10101010  |  1011  ||  01  |  10  |  0101  ||  0101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5AAB655B);
+
+
+
+        temp.family = 2;                // ||  0101  |  10101010  |  1011  ||  01  |  10  |  0010  ||  0101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5AAB625B);
+
+
+
+        temp.type = 1;                  // ||  0101  |  10101010  |  1011  ||  01  |  01  |  0010  ||  0101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5AAB525B);
+
+
+
+        temp.__reserved = 3;            // ||  0101  |  10101010  |  1011  ||  11  |  01  |  0010  ||  0101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5AABD25B);
+
+
+
+        temp.xModel = 8;                // ||  0101  |  10101010  |  1000  ||  11  |  01  |  0010  ||  0101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5AA8D25B);
+
+
+
+        temp.xFamily = 21;              // ||  0101  |  00010101  |  1000  ||  11  |  01  |  0010  ||  0101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5158D25B);
+
+
+
+        temp.__reserved2 = 7;           // ||  0111  |  00010101  |  1000  ||  11  |  01  |  0010  ||  0101  |  1011 ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x7158D25B);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiSystemPowerSupplyCharacteristics");
+    {
+        DmiSystemPowerSupplyCharacteristics temp;
+
+
+
+        //  DmiSystemPowerSupplyCharacteristics - value16:
+        // =========================================================================================================================================
+        // |  __reserved : 2  |  type : 4  |  status : 3  |  inputVoltageRangeSwitch : 4  |  unplugged : 1  |  present : 1  |  hotReplaceable : 1  |
+        // =========================================================================================================================================
+
+
+
+        temp.value16 = 0x97AA;              // ||  10  |  0101  |  111  |  0101  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.hotReplaceable,          0);
+        TEST_ASSERT_EQUALS(temp.present,                 1);
+        TEST_ASSERT_EQUALS(temp.unplugged,               0);
+        TEST_ASSERT_EQUALS(temp.inputVoltageRangeSwitch, 5);
+        TEST_ASSERT_EQUALS(temp.status,                  7);
+        TEST_ASSERT_EQUALS(temp.type,                    5);
+        TEST_ASSERT_EQUALS(temp.__reserved,              2);
+
+
+
+        temp.hotReplaceable = 1;            // ||  10  |  0101  |  111  |  0101  |  0  |  1  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x97AB);
+
+
+
+        temp.present = 0;                   // ||  10  |  0101  |  111  |  0101  |  0  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x97A9);
+
+
+
+        temp.unplugged = 1;                 // ||  10  |  0101  |  111  |  0101  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x97AD);
+
+
+
+        temp.inputVoltageRangeSwitch = 8;   // ||  10  |  0101  |  111  |  1000  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x97C5);
+
+
+
+        temp.status = 2;                    // ||  10  |  0101  |  010  |  1000  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9545);
+
+
+
+        temp.type = 8;                      // ||  10  |  1000  |  010  |  1000  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA145);
+
+
+
+        temp.__reserved = 1;                // ||  01  |  1000  |  010  |  1000  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x6145);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiSystemSlotsPeerGroup");
+    {
+        DmiSystemSlotsPeerGroup temp;
+
+
+
+        //  DmiSystemSlotsPeerGroup - functionNumberAndDeviceNumber:
+        // =============================================
+        // |  deviceNumber : 5  |  functionNumber : 3  |
+        // =============================================
+
+
+
+        temp.functionNumberAndDeviceNumber = 0x0D;  // ||  00001  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumber, 5);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,   1);
+
+
+
+        temp.functionNumber = 2;                    // ||  00001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x0A);
+
+
+
+        temp.deviceNumber = 9;                      // ||  01001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiTemperatureProbeEntry");
+    {
+        DmiTemperatureProbeEntry temp;
+
+
+
+        //  DmiTemperatureProbeEntry - locationAndStatus:
+        // =================================
+        // |  status : 3  |  location : 5  |
+        // =================================
+
+
+
+        temp.locationAndStatus = 0x45;      // ||  010  |  00101  ||
+
+        TEST_ASSERT_EQUALS(temp.location, 5);
+        TEST_ASSERT_EQUALS(temp.status,   2);
+
+
+
+        temp.location = 8;                  // ||  010  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x48);
+
+
+
+        temp.status = 1;                    // ||  001  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x28);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiVoltageProbeEntry");
+    {
+        DmiVoltageProbeEntry temp;
+
+
+
+        //  DmiVoltageProbeEntry - locationAndStatus:
+        // =================================
+        // |  status : 3  |  location : 5  |
+        // =================================
+
+
+
+        temp.locationAndStatus = 0x45;      // ||  010  |  00101  ||
+
+        TEST_ASSERT_EQUALS(temp.location, 5);
+        TEST_ASSERT_EQUALS(temp.status,   2);
+
+
+
+        temp.location = 8;                  // ||  010  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x48);
+
+
+
+        temp.status = 1;                    // ||  001  |  01000  ||
+
+        TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x28);
     }
     TEST_CASE_END();
 }

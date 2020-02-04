@@ -10,9 +10,17 @@
 
 struct DmiPortableBatteryManufactureDate
 {
-    u16 year:  7;
-    u16 month: 4;
-    u16 date:  5;
+    union
+    {
+        struct
+        {
+            u16 date:  5;
+            u16 month: 4;
+            u16 year:  7;
+        };
+
+        u16 value16;
+    };
 
     u16 realYear()
     {

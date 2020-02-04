@@ -142,9 +142,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmichassistype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h \
-    $$PWD/src/bits64/dmi/entry/lib/dmicoolingdevicetypeandstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h \
-    $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h \
@@ -187,10 +185,8 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotsusage.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h \
     $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h \
-    $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobelocationandstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h \
-    $$PWD/src/bits64/dmi/entry/lib/dmivoltageprobelocationandstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmivoltageprobestatus.h \
     $$PWD/src/bits64/early/earlyassert.h \
     $$PWD/src/bits64/early/earlylog.h \

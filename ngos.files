@@ -768,9 +768,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmichassisstate.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassistype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h
-src/os/shared/common/src/bits64/dmi/entry/lib/dmicoolingdevicetypeandstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h
-src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h
@@ -813,10 +811,8 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotstype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotsusage.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h
-src/os/shared/common/src/bits64/dmi/entry/lib/dmitemperatureprobelocationandstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h
-src/os/shared/common/src/bits64/dmi/entry/lib/dmivoltageprobelocationandstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmivoltageprobestatus.h
 src/os/shared/common/src/bits64/early/earlyassert.h
 src/os/shared/common/src/bits64/early/earlylog.h
