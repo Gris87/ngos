@@ -115,6 +115,7 @@ ngos.creator.shared
 README.md
 scripts/add_rc_version_tag.sh
 scripts/add_version_tag.sh
+scripts/amount_of_code_lines.sh
 scripts/commit.sh
 scripts/deploy.sh
 scripts/prerequisites/centos_7_6.sh
