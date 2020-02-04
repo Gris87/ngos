@@ -1042,6 +1042,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         COMMON_LVVV(("entry->processorId.signature.type       = %u",     entry->processorId.signature.type));
         COMMON_LVVV(("entry->processorId.signature.xModel     = %u",     entry->processorId.signature.xModel));
         COMMON_LVVV(("entry->processorId.signature.xFamily    = %u",     entry->processorId.signature.xFamily));
+        COMMON_LVVV(("entry->processorId.signature.value32    = 0x08X",  entry->processorId.signature.value32));
         COMMON_LVVV(("entry->processorId.featureFlags         = %s",     flagsToFullString(entry->processorId.featureFlags)));
         COMMON_LVVV(("entry->processorVersionStringId         = %u",     entry->processorVersionStringId));
         COMMON_LVVV(("entry->voltage                          = %s",     flagsToFullString(entry->voltage)));
@@ -1092,6 +1093,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         COMMON_TEST_ASSERT(entry->processorId.signature.type          == 0,                                    NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->processorId.signature.xModel     == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->processorId.signature.xFamily    == 0,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorId.signature.value32    == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->processorId.featureFlags         == FLAGS(DmiProcessorFeatureFlag::FPU                            // Commented due to value variation
         //                                                                     , DmiProcessorFeatureFlag::VME                          // Commented due to value variation
         //                                                                     , DmiProcessorFeatureFlag::DE                           // Commented due to value variation
@@ -2673,6 +2675,7 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
         COMMON_LVVV(("entry->powerSupplyCharacteristics.inputVoltageRangeSwitch = %s",     enumToFullString((DmiSystemPowerSupplyInputVoltageRangeSwitch)entry->powerSupplyCharacteristics.inputVoltageRangeSwitch)));
         COMMON_LVVV(("entry->powerSupplyCharacteristics.status                  = %s",     enumToFullString((DmiSystemPowerSupplyStatus)entry->powerSupplyCharacteristics.status)));
         COMMON_LVVV(("entry->powerSupplyCharacteristics.type                    = %s",     enumToFullString((DmiSystemPowerSupplyType)entry->powerSupplyCharacteristics.type)));
+        COMMON_LVVV(("entry->powerSupplyCharacteristics.value16                 = 0x%04X", entry->powerSupplyCharacteristics.value16));
         COMMON_LVVV(("entry->inputVoltageProbeHandle                            = 0x%04X", entry->inputVoltageProbeHandle));
         COMMON_LVVV(("entry->coolingDeviceHandle                                = 0x%04X", entry->coolingDeviceHandle));
         COMMON_LVVV(("entry->inputCurrentProbeHandle                            = 0x%04X", entry->inputCurrentProbeHandle));
@@ -2694,6 +2697,7 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
         // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.inputVoltageRangeSwitch == DmiSystemPowerSupplyInputVoltageRangeSwitch::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.status                  == DmiSystemPowerSupplyStatus::OTHER,                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.type                    == DmiSystemPowerSupplyType::OTHER,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.value16                 == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->inputVoltageProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->coolingDeviceHandle                                == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->inputCurrentProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation

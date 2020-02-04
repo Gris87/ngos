@@ -18,9 +18,17 @@
 
 struct JpegHuffmanTable
 {
-    u8 id:         4;
-    u8 type:       1; // TODO: Use enum JpegHuffmanTableType
-    u8 __reserved: 3;
+    union
+    {
+        struct
+        {
+            u8 id:         4;
+            u8 type:       1; // TODO: Use enum JpegHuffmanTableType
+            u8 __reserved: 3;
+        };
+
+        u8 idAndType;
+    };
 
     u8 numberOfSymbols[JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT];
     u8 symbols[0];

@@ -12,10 +12,18 @@ struct JpegStartOfFrameComponent
 {
     JpegComponentId id;
 
-    u8              samplingFactorY: 4;
-    u8              samplingFactorX: 4;
+    union
+    {
+        struct
+        {
+            u8 samplingFactorY: 4;
+            u8 samplingFactorX: 4;
+        };
 
-    u8              quantizationTableId;
+        u8 samplingFactor;
+    };
+
+    u8 quantizationTableId;
 } __attribute__((packed));
 
 

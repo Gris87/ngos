@@ -1169,6 +1169,205 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x28);
     }
     TEST_CASE_END();
+
+
+
+    TEST_CASE("JpegHuffmanTable");
+    {
+        JpegHuffmanTable temp;
+
+
+
+        //  JpegHuffmanTable - idAndType:
+        // ============================================
+        // |  __reserved : 3  |  type : 1  |  id : 4  |
+        // ===========================================
+
+
+
+        temp.idAndType = 0x55;      // ||  010  |  1  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.id,         5);
+        TEST_ASSERT_EQUALS(temp.type,       1);
+        TEST_ASSERT_EQUALS(temp.__reserved, 2);
+
+
+
+        temp.id = 2;                // ||  010  |  1  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.idAndType, 0x52);
+
+
+
+        temp.type = 0;              // ||  010  |  0  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.idAndType, 0x42);
+
+
+
+        temp.__reserved = 4;        // ||  100  |  0  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.idAndType, 0x82);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("JpegQuantizationTable");
+    {
+        JpegQuantizationTable temp;
+
+
+
+        //  JpegQuantizationTable - idAndPrecision:
+        // ==============================
+        // |  precision : 4  |  id : 4  |
+        // ==============================
+
+
+
+        temp.idAndPrecision = 0x95;     // ||  1001  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.id,        5);
+        TEST_ASSERT_EQUALS(temp.precision, 9);
+
+
+
+        temp.id = 2;                    // ||  1001  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.idAndPrecision, 0x92);
+
+
+
+        temp.precision = 7;             // ||  0111  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.idAndPrecision, 0x72);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("JpegStartOfFrameComponent");
+    {
+        JpegStartOfFrameComponent temp;
+
+
+
+        //  JpegStartOfFrameComponent - samplingFactor:
+        // =================================================
+        // |  samplingFactorX : 4  |  samplingFactorY : 4  |
+        // =================================================
+
+
+
+        temp.samplingFactor = 0x95;     // ||  1001  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.samplingFactorY, 5);
+        TEST_ASSERT_EQUALS(temp.samplingFactorX, 9);
+
+
+
+        temp.samplingFactorY = 2;       // ||  1001  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.samplingFactor, 0x92);
+
+
+
+        temp.samplingFactorX = 7;       // ||  0111  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.samplingFactor, 0x72);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("JpegStartOfScanComponent");
+    {
+        JpegStartOfScanComponent temp;
+
+
+
+        //  JpegStartOfScanComponent - huffmanTableIds:
+        // ===================================================
+        // |  huffmanDcTableId : 4  |  huffmanAcTableId : 4  |
+        // ===================================================
+
+
+
+        temp.huffmanTableIds = 0x95;    // ||  1001  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.huffmanAcTableId, 5);
+        TEST_ASSERT_EQUALS(temp.huffmanDcTableId, 9);
+
+
+
+        temp.huffmanAcTableId = 2;      // ||  1001  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.huffmanTableIds, 0x92);
+
+
+
+        temp.huffmanDcTableId = 7;      // ||  0111  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.huffmanTableIds, 0x72);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ZLibHeader");
+    {
+        ZLibHeader temp;
+
+
+
+        //  ZLibHeader - value16:
+        // ===================================================================================
+        // |                compressionInfo : 4                    |  compressionMethod : 4  |
+        // |  compressionLevel : 2 | presetDictionary : 1  |          checkBits : 5          |
+        // ===================================================================================
+
+
+
+        temp.value16 = 0xAC95;          // ||  10  |  1  |  01100  ||  1001  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.compressionMethod, 5);
+        TEST_ASSERT_EQUALS(temp.compressionInfo,   9);
+        TEST_ASSERT_EQUALS(temp.checkBits,         12);
+        TEST_ASSERT_EQUALS(temp.presetDictionary,  1);
+        TEST_ASSERT_EQUALS(temp.compressionLevel,  2);
+
+
+
+        temp.compressionMethod = 2;     // ||  10  |  1  |  01100  ||  1001  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAC92);
+
+
+
+        temp.compressionInfo = 7;       // ||  10  |  1  |  01100  ||  0111  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAC72);
+
+
+
+        temp.checkBits = 11;            // ||  10  |  1  |  01011  ||  0111  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAB72);
+
+
+
+        temp.presetDictionary = 0;      // ||  10  |  0  |  01011  ||  0111  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x8B72);
+
+
+
+        temp.compressionLevel = 1;      // ||  01  |  0  |  01011  ||  0111  |  0010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4B72);
+    }
+    TEST_CASE_END();
 }
 TEST_CASES_END();
 

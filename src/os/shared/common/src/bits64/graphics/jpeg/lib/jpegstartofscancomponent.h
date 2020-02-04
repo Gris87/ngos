@@ -12,8 +12,16 @@ struct JpegStartOfScanComponent
 {
     JpegComponentId id;
 
-    u8              huffmanAcTableId: 4;
-    u8              huffmanDcTableId: 4;
+    union
+    {
+        struct
+        {
+            u8 huffmanAcTableId: 4;
+            u8 huffmanDcTableId: 4;
+        };
+
+        u8 huffmanTableIds;
+    };
 } __attribute__((packed));
 
 
