@@ -19,6 +19,7 @@ NGOS:
 - Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
 - Add SecureBoot support: https://m.habr.com/ru/post/273497/
+- Unify MemoryTest GUI and share with another apps
 - Replace UEFI Shell with Device Manager via DMI
 
 - Complete with interruptions
@@ -70,7 +71,6 @@ Docs verifier:
 Tests verifier:
 
 - Missing tests for `operator[]()`
-- Add tests for bits
 
 
 
