@@ -567,52 +567,68 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->vendorStringId
+        ||
+        entry->biosVersionStringId
+        ||
+        entry->biosReleaseDateStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (stringId == entry->vendorStringId)
+            if (!cur[0]) // cur[0] == 0
             {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (stringId == entry->vendorStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->biosVersionStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->biosReleaseDateStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
-            else
-            if (stringId == entry->biosVersionStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->biosReleaseDateStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
 
 
 
-            if (!cur[1]) // cur[1] == 0
-            {
-                break;
-            }
-
-            begin = cur + 1;
-        }
-
-
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -669,67 +685,89 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->manufacturerStringId
+        ||
+        entry->productNameStringId
+        ||
+        entry->versionStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->skuNumberStringId
+        ||
+        entry->familyStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (stringId == entry->manufacturerStringId)
+            if (!cur[0]) // cur[0] == 0
             {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->productNameStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->versionStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->serialNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->skuNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->familyStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_FAMILY, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (stringId == entry->manufacturerStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->productNameStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->versionStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->serialNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->skuNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->familyStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_FAMILY, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
 
 
-            if (!cur[1]) // cur[1] == 0
-            {
-                break;
-            }
-
-            begin = cur + 1;
-        }
-
-
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -791,67 +829,89 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->manufacturerStringId
+        ||
+        entry->productStringId
+        ||
+        entry->versionStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->assetTagStringId
+        ||
+        entry->locationInChassisStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (stringId == entry->manufacturerStringId)
+            if (!cur[0]) // cur[0] == 0
             {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->productStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->versionStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->serialNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->assetTagStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->locationInChassisStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_LOCATION_IN_CHASSIS, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (stringId == entry->manufacturerStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->productStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->versionStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->serialNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->assetTagStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->locationInChassisStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_LOCATION_IN_CHASSIS, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
 
 
-            if (!cur[1]) // cur[1] == 0
-            {
-                break;
-            }
-
-            begin = cur + 1;
-        }
-
-
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -960,62 +1020,82 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->manufacturerStringId
+        ||
+        entry->versionStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->assetTagStringId
+        ||
+        skuNumberStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (stringId == entry->manufacturerStringId)
+            if (!cur[0]) // cur[0] == 0
             {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (stringId == entry->manufacturerStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->versionStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->serialNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->assetTagStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == skuNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
-            else
-            if (stringId == entry->versionStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->serialNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->assetTagStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == skuNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
 
 
 
-            if (!cur[1]) // cur[1] == 0
-            {
-                break;
-            }
-
-            begin = cur + 1;
-        }
-
-
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1175,67 +1255,89 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->socketStringId
+        ||
+        entry->processorManufactureStringId
+        ||
+        entry->processorVersionStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->assetTagStringId
+        ||
+        entry->partNumberStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (stringId == entry->socketStringId)
+            if (!cur[0]) // cur[0] == 0
             {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SOCKET, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->processorManufactureStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->processorVersionStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->serialNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->assetTagStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->partNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_PART_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (stringId == entry->socketStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SOCKET, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->processorManufactureStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->processorVersionStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->serialNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->assetTagStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->partNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_PART_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
 
 
-            if (!cur[1]) // cur[1] == 0
-            {
-                break;
-            }
-
-            begin = cur + 1;
-        }
-
-
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1329,35 +1431,45 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->socketDesignationStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1394,35 +1506,49 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->internalReferenceDesignatorStringId
+        ||
+        entry->externalReferenceDesignatorStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1519,35 +1645,45 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->slotDesignationStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1562,10 +1698,10 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
 
 
 
+    u8 count = (entry->header.length - sizeof(entry->header)) / sizeof(entry->device[0]);
+
     // Validation
     {
-        u8 count = (entry->header.length - sizeof(entry->header)) / sizeof(entry->device[0]);
-
         for (i64 i = 0; i < count; ++i)
         {
             COMMON_LVVV(("entry->device[%d].deviceType           = %s",     i, enumToFullString((DmiOnboardDevicesDeviceType)entry->device[i].deviceType)));
@@ -1576,6 +1712,7 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
 
 
 
+        COMMON_TEST_ASSERT(count                                                       >  0,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT((DmiOnboardDevicesDeviceType)entry->device[0].deviceType == DmiOnboardDevicesDeviceType::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->device[0].enabled                                 == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->device[0].deviceTypeAndEnabled                    == 0x00,                                 NgosStatus::ASSERTION); // Commented due to value variation
@@ -1587,35 +1724,49 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        count > 0
+        &&
+        entry->device[0].descriptionStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1644,35 +1795,45 @@ NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->stringCount > 0)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1701,35 +1862,45 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->stringCount > 0)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1762,35 +1933,49 @@ NgosStatus DMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->installableLanguages
+        ||
+        entry->currentLanguageStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -1829,35 +2014,45 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->groupNameStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2100,35 +2295,59 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->locationStringId
+        ||
+        entry->manufacturerStringId
+        ||
+        entry->manufactureDateStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->deviceNameStringId
+        ||
+        entry->sbdsVersionNumberStringId
+        ||
+        entry->sbdsDeviceChemistryStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2177,35 +2396,45 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->descriptionStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2261,35 +2490,49 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
 
 
-    // COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION); // Commented due to unexpected behaviour
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        sVersion >= DMI_VERSION(2, 7)
+        &&
+        entry->descriptionStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2338,35 +2581,45 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->descriptionStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2415,35 +2668,45 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->descriptionStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2510,35 +2773,45 @@ NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->descriptionStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2573,35 +2846,45 @@ NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceCompone
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->descriptionStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2708,35 +2991,59 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->locationStringId
+        ||
+        entry->deviceNameStringId
+        ||
+        entry->manufacturerStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->assetTagNumberStringId
+        ||
+        entry->modelPartNumberStringId
+        ||
+        entry->revisionLevelStringId
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -2783,35 +3090,45 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (entry->referenceDesignationStringId)
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-            if (!cur[1]) // cur[1] == 0
+            if (!cur[0]) // cur[0] == 0
             {
-                break;
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
-            begin = cur + 1;
-        }
 
 
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -3061,77 +3378,105 @@ NgosStatus DMI::saveDmiMemoryDevice(DmiEntryHeader *header)
 
 
 
-    COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-    u8 *cur      = (u8 *)entry + entry->header.length;
-    u8 *begin    = cur;
-    u8  stringId = 0;
-
-    do
+    if (
+        entry->deviceLocatorStringId
+        ||
+        entry->bankLocatorStringId
+        ||
+        entry->manufacturerStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->assetTagStringId
+        ||
+        entry->partNumberStringId
+        ||
+        (
+         sVersion >= DMI_VERSION(3, 2)
+         &&
+         entry->firmwareVersionStringId
+        )
+       )
     {
-        if (!cur[0]) // cur[0] == 0
+        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        u8 *cur      = (u8 *)entry + entry->header.length;
+        u8 *begin    = cur;
+        u8  stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
         {
-            ++stringId;
-            COMMON_LVVV(("String #%u: %s", stringId, begin));
+            if (!cur[0]) // cur[0] == 0
+            {
+                ++stringId;
+                COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 
-            if (stringId == entry->deviceLocatorStringId)
-            {
-                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].device), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->bankLocatorStringId)
-            {
-                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].bank), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->manufacturerStringId)
-            {
-                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].manufacturer), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->serialNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].serialNumber), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->assetTagStringId)
-            {
-                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].assetTag), NgosStatus::ASSERTION);
-            }
-            else
-            if (stringId == entry->partNumberStringId)
-            {
-                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].partNumber), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                if (sVersion >= DMI_VERSION(3, 2))
+                if (stringId == entry->deviceLocatorStringId)
                 {
-                    if (stringId == entry->firmwareVersionStringId)
+                    COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].device), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->bankLocatorStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].bank), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->manufacturerStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].manufacturer), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->serialNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].serialNumber), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->assetTagStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].assetTag), NgosStatus::ASSERTION);
+                }
+                else
+                if (stringId == entry->partNumberStringId)
+                {
+                    COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].partNumber), NgosStatus::ASSERTION);
+                }
+                else
+                {
+                    if (sVersion >= DMI_VERSION(3, 2))
                     {
-                        COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].firmwareVersion), NgosStatus::ASSERTION);
+                        if (stringId == entry->firmwareVersionStringId)
+                        {
+                            COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, (u8 **)&sMemoryDevices[memoryId].firmwareVersion), NgosStatus::ASSERTION);
+                        }
                     }
                 }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
             }
 
 
 
-            if (!cur[1]) // cur[1] == 0
-            {
-                break;
-            }
-
-            begin = cur + 1;
-        }
-
-
-
-        ++cur;
-    } while(true);
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
 
 
 
