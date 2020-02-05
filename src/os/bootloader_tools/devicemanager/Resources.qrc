@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/glyphs/console.bin</file>
+        <file>assets/glyphs/gui.bin</file>
+        <file>assets/images/background.jpg</file>
+        <file>assets/images/button_focused.9.png</file>
+        <file>assets/images/button_focused_hover.9.png</file>
+        <file>assets/images/button_hover.9.png</file>
+        <file>assets/images/button_normal.9.png</file>
+        <file>assets/images/button_pressed.9.png</file>
+        <file>assets/images/console.9.png</file>
+        <file>assets/images/critical.png</file>
+        <file>assets/images/cursor.png</file>
+        <file>assets/images/issues.png</file>
+        <file>assets/images/reboot.png</file>
+        <file>assets/images/selectedtab_focused.9.png</file>
+        <file>assets/images/selectedtab_focused_hover.9.png</file>
+        <file>assets/images/selectedtab_hover.9.png</file>
+        <file>assets/images/selectedtab_normal.9.png</file>
+        <file>assets/images/selectedtab_pressed.9.png</file>
+        <file>assets/images/shutdown.png</file>
+        <file>assets/images/start.png</file>
+        <file>assets/images/stop.png</file>
+        <file>assets/images/summary.png</file>
+        <file>assets/images/system_information.png</file>
+        <file>assets/images/tab_focused.9.png</file>
+        <file>assets/images/tab_focused_hover.9.png</file>
+        <file>assets/images/tab_hover.9.png</file>
+        <file>assets/images/tab_normal.9.png</file>
+        <file>assets/images/tab_pressed.9.png</file>
+        <file>assets/images/table_background.9.png</file>
+        <file>assets/images/table_header.9.png</file>
+        <file>assets/images/tabwidget_panel.9.png</file>
+        <file>assets/images/test.png</file>
+        <file>assets/images/warning.png</file>
+    </qresource>
+</RCC>
