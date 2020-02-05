@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.6.1.5.1.5. Partition Wizard
+0.6.1.5.1.6. Partition Wizard
 -----------------------------
 
 <p align="center">

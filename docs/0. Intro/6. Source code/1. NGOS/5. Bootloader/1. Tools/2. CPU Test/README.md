@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.6.1.5.1.1. CPU Test
+0.6.1.5.1.2. CPU Test
 ---------------------
 
 <p align="center">
