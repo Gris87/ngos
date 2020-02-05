@@ -7,4 +7,4 @@ NGOS Bootloader Tool - Network Test
 
 Source code for the NGOS Bootloader Tool - Network Test.
 
-Please read [for more details](../../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/3.%20Network%20Test/README.md).
+Please read [for more details](../../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/4.%20Network%20Test/README.md).

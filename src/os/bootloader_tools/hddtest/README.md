@@ -7,4 +7,4 @@ NGOS Bootloader Tool - HDD Test
 
 Source code for the NGOS Bootloader Tool - HDD Test.
 
-Please read [for more details](../../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/4.%20HDD%20Test/README.md).
+Please read [for more details](../../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/5.%20Bootloader/1.%20Tools/5.%20HDD%20Test/README.md).
