@@ -1154,7 +1154,7 @@ UefiSmbios3ConfigurationTable* UEFI::getSmbios3Config()
 
         if (isGuidEquals(configurationTable->vendorGuid, UEFI_SMBIOS_3_CONFIGURATION_TABLE_GUID))
         {
-            UEFI_LV(("SMBIOS 3.0 configuration table found at address 0x%p", configurationTable->vendorTable));
+            UEFI_LV(("SMBIOS 3 configuration table found at address 0x%p", configurationTable->vendorTable));
 
             return (UefiSmbios3ConfigurationTable *)configurationTable->vendorTable;
         }

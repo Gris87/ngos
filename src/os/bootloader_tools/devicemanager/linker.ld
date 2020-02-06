@@ -8,17 +8,17 @@ SECTIONS
 
 
 
-    .memorytest_code : { *(.memorytest_code) }
-    .asm_code        : { *(.asm_code) }
-    .text            : { *(.text*) }
-    .rodata          : { *(.rodata*) }
-    .data            : { *(.data*) }
+    .devicemanager_code : { *(.devicemanager_code) }
+    .asm_code           : { *(.asm_code) }
+    .text               : { *(.text*) }
+    .rodata             : { *(.rodata*) }
+    .data               : { *(.data*) }
 
-    .gdt             : { *(.gdt) }
+    .gdt                : { *(.gdt) }
 
 
 
-    .ctors           : {
+    .ctors              : {
         _ctors_begin = .;
         *(.ctors)
         _ctors_end = .;
@@ -28,18 +28,18 @@ SECTIONS
 
     . = ALIGN(8);
     _rela_begin = .;
-    .rela.dyn        : { *(.rela.dyn) }
+    .rela.dyn           : { *(.rela.dyn) }
     _rela_end = .;
 
 
 
-    .assets          : {
+    .assets             : {
         _assets_begin = .;
         *(.assets)
         _assets_end = .;
     }
 
-    .noinit          : {
+    .noinit             : {
         *(.noinit)
         *(.bss*)
     }

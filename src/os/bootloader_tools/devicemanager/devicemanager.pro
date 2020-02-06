@@ -2,7 +2,7 @@ QT -= gui
 
 CONFIG += c++17
 
-TARGET = memorytest
+TARGET = devicemanager
 TEMPLATE = uefi
 
 RESOURCES += Resources.qrc
@@ -10,7 +10,7 @@ RESOURCES += Resources.qrc
 
 
 DEFINES += \
-    BUILD_TARGET_MEMORYTEST \
+    BUILD_TARGET_DEVICEMANAGER \
     UEFI_APPLICATION
 
 
@@ -37,12 +37,12 @@ QMAKE_LFLAGS += \
 
 SOURCES += \
     asm/arch/x86_64/main.S \
-    src/bits64/main/memorytest.cpp \
-    src/bits64/main/memorytestgui.cpp \
+    src/bits64/main/devicemanager.cpp \
+    src/bits64/main/devicemanagergui.cpp \
     src/main.cpp
 
 HEADERS += \
-    src/bits64/main/memorytest.h \
-    src/bits64/main/memorytestgui.h \
+    src/bits64/main/devicemanager.h \
+    src/bits64/main/devicemanagergui.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h

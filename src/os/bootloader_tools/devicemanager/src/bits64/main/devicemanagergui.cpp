@@ -1,4 +1,4 @@
-#include "memorytestgui.h"
+#include "devicemanagergui.h"
 
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
@@ -13,7 +13,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/bits64/main/memorytest.h"
+#include "src/bits64/main/devicemanager.h"
 
 
 
@@ -40,23 +40,23 @@
 
 
 
-Button     *MemoryTestGUI::sRebootButton;
-Button     *MemoryTestGUI::sShutdownButton;
-TabWidget  *MemoryTestGUI::sTabWidget;
-TabButton  *MemoryTestGUI::sSystemInformationTabButton;
-TabButton  *MemoryTestGUI::sIssuesTabButton;
-TabButton  *MemoryTestGUI::sTestTabButton;
-TabButton  *MemoryTestGUI::sSummaryTabButton;
-Image      *MemoryTestGUI::sWarningImage;
-Image      *MemoryTestGUI::sCriticalImage;
-Image      *MemoryTestGUI::sStartImage;
-Image      *MemoryTestGUI::sStopImage;
-u16         MemoryTestGUI::sWaitEventsCount;
-uefi_event *MemoryTestGUI::sWaitEvents;
+Button     *DeviceManagerGUI::sRebootButton;
+Button     *DeviceManagerGUI::sShutdownButton;
+TabWidget  *DeviceManagerGUI::sTabWidget;
+TabButton  *DeviceManagerGUI::sSystemInformationTabButton;
+TabButton  *DeviceManagerGUI::sIssuesTabButton;
+TabButton  *DeviceManagerGUI::sTestTabButton;
+TabButton  *DeviceManagerGUI::sSummaryTabButton;
+Image      *DeviceManagerGUI::sWarningImage;
+Image      *DeviceManagerGUI::sCriticalImage;
+Image      *DeviceManagerGUI::sStartImage;
+Image      *DeviceManagerGUI::sStopImage;
+u16         DeviceManagerGUI::sWaitEventsCount;
+uefi_event *DeviceManagerGUI::sWaitEvents;
 
 
 
-NgosStatus MemoryTestGUI::init(BootParams *params)
+NgosStatus DeviceManagerGUI::init(BootParams *params)
 {
     UEFI_LT((" | params = 0x%p", params));
 
@@ -333,7 +333,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::exec()
+NgosStatus DeviceManagerGUI::exec()
 {
     UEFI_LT((""));
 
@@ -351,7 +351,7 @@ NgosStatus MemoryTestGUI::exec()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::focusTabFirstWidget()
+NgosStatus DeviceManagerGUI::focusTabFirstWidget()
 {
     UEFI_LT((""));
 
@@ -360,7 +360,7 @@ NgosStatus MemoryTestGUI::focusTabFirstWidget()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::generateWaitEventList()
+NgosStatus DeviceManagerGUI::generateWaitEventList()
 {
     UEFI_LT((""));
 
@@ -408,7 +408,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::waitForEvent()
+NgosStatus DeviceManagerGUI::waitForEvent()
 {
     UEFI_LT((""));
 
@@ -439,7 +439,7 @@ NgosStatus MemoryTestGUI::waitForEvent()
     return processAbsolutePointerEvent(UefiPointerDevices::getAbsolutePointer(eventIndex - UefiPointerDevices::getSimplePointersCount() - 1));
 }
 
-NgosStatus MemoryTestGUI::processKeyboardEvent()
+NgosStatus DeviceManagerGUI::processKeyboardEvent()
 {
     UEFI_LT((""));
 
@@ -480,7 +480,7 @@ NgosStatus MemoryTestGUI::processKeyboardEvent()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
+NgosStatus DeviceManagerGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
 {
     UEFI_LT((" | pointer = 0x%p", pointer));
 
@@ -508,7 +508,7 @@ NgosStatus MemoryTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *p
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
+NgosStatus DeviceManagerGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
 {
     UEFI_LT((" | pointer = 0x%p", pointer));
 
@@ -535,7 +535,7 @@ NgosStatus MemoryTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtoco
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus DeviceManagerGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -572,7 +572,7 @@ NgosStatus MemoryTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus MemoryTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus DeviceManagerGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -608,7 +608,7 @@ NgosStatus MemoryTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus MemoryTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus DeviceManagerGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -644,7 +644,7 @@ NgosStatus MemoryTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiIn
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus MemoryTestGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus DeviceManagerGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -681,7 +681,7 @@ NgosStatus MemoryTestGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &key
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus MemoryTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus DeviceManagerGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -718,7 +718,7 @@ NgosStatus MemoryTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus MemoryTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus DeviceManagerGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -755,7 +755,7 @@ NgosStatus MemoryTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &ke
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus MemoryTestGUI::onRebootButtonPressed()
+NgosStatus DeviceManagerGUI::onRebootButtonPressed()
 {
     UEFI_LT((""));
 
@@ -768,7 +768,7 @@ NgosStatus MemoryTestGUI::onRebootButtonPressed()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::onShutdownButtonPressed()
+NgosStatus DeviceManagerGUI::onShutdownButtonPressed()
 {
     UEFI_LT((""));
 
@@ -781,7 +781,7 @@ NgosStatus MemoryTestGUI::onShutdownButtonPressed()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::onSystemInformationTabButtonPressed()
+NgosStatus DeviceManagerGUI::onSystemInformationTabButtonPressed()
 {
     UEFI_LT((""));
 
@@ -794,7 +794,7 @@ NgosStatus MemoryTestGUI::onSystemInformationTabButtonPressed()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::onIssuesTabButtonPressed()
+NgosStatus DeviceManagerGUI::onIssuesTabButtonPressed()
 {
     UEFI_LT((""));
 
@@ -807,7 +807,7 @@ NgosStatus MemoryTestGUI::onIssuesTabButtonPressed()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::onTestTabButtonPressed()
+NgosStatus DeviceManagerGUI::onTestTabButtonPressed()
 {
     UEFI_LT((""));
 
@@ -820,7 +820,7 @@ NgosStatus MemoryTestGUI::onTestTabButtonPressed()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::onSummaryTabButtonPressed()
+NgosStatus DeviceManagerGUI::onSummaryTabButtonPressed()
 {
     UEFI_LT((""));
 

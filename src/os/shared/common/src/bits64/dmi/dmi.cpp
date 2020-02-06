@@ -1122,7 +1122,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         COMMON_LVVV(("entry->processorId.signature.type       = %u",     entry->processorId.signature.type));
         COMMON_LVVV(("entry->processorId.signature.xModel     = %u",     entry->processorId.signature.xModel));
         COMMON_LVVV(("entry->processorId.signature.xFamily    = %u",     entry->processorId.signature.xFamily));
-        COMMON_LVVV(("entry->processorId.signature.value32    = 0x08X",  entry->processorId.signature.value32));
+        COMMON_LVVV(("entry->processorId.signature.value32    = 0x%08X", entry->processorId.signature.value32));
         COMMON_LVVV(("entry->processorId.featureFlags         = %s",     flagsToFullString(entry->processorId.featureFlags)));
         COMMON_LVVV(("entry->processorVersionStringId         = %u",     entry->processorVersionStringId));
         COMMON_LVVV(("entry->voltage                          = %s",     flagsToFullString(entry->voltage)));

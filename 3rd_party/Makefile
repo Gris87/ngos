@@ -4,20 +4,17 @@ COPY  = cp
 
 
 
-LIBRARIES_DIR   = libs
-FREETYPE_DIR    = $(LIBRARIES_DIR)/freetype
-SHELLBINPKG_DIR = $(LIBRARIES_DIR)/ShellBinPkg
+LIBRARIES_DIR = libs
+FREETYPE_DIR  = $(LIBRARIES_DIR)/freetype
 
 
 
-TARGET_FREETYPE    = $(FREETYPE_DIR)/objs/.libs/libfreetype.a
-TARGET_SHELLBINPKG = $(SHELLBINPKG_DIR)/UefiShell
+TARGET_FREETYPE = $(FREETYPE_DIR)/objs/.libs/libfreetype.a
 
 
 
 ALL_TARGETS = \
-	$(TARGET_FREETYPE) \
-	$(TARGET_SHELLBINPKG)
+	$(TARGET_FREETYPE)
 
 
 
@@ -35,14 +32,5 @@ $(TARGET_FREETYPE): $(FREETYPE_DIR)
 
 
 
-$(TARGET_SHELLBINPKG): $(SHELLBINPKG_DIR)
-
-
-
 $(FREETYPE_DIR):
 	./fetch_freetype.sh
-
-
-
-$(SHELLBINPKG_DIR):
-	./fetch_shellbinpkg.sh

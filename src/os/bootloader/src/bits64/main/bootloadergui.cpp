@@ -1842,7 +1842,7 @@ NgosStatus BootloaderGUI::onShellButtonPressed()
 
 
 
-    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\shell.efi"), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\devicemanager.efi"), NgosStatus::ASSERTION);
 
 
 

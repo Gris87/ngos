@@ -1,11 +1,11 @@
-#include "memorytest.h"
+#include "devicemanager.h"
 
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
 
 
-NgosStatus MemoryTest::init()
+NgosStatus DeviceManager::init()
 {
     UEFI_LT((""));
 

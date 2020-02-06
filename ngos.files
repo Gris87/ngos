@@ -325,14 +325,14 @@ src/os/bootloader_tools/devicemanager/assets/images/tabwidget_panel.9.png
 src/os/bootloader_tools/devicemanager/assets/images/test.png
 src/os/bootloader_tools/devicemanager/assets/images/warning.png
 src/os/bootloader_tools/devicemanager/Image structure.png
+src/os/bootloader_tools/devicemanager/devicemanager.pro
 src/os/bootloader_tools/devicemanager/linker.ld
-src/os/bootloader_tools/devicemanager/memorytest.pro
 src/os/bootloader_tools/devicemanager/README.md
 src/os/bootloader_tools/devicemanager/Resources.qrc
-src/os/bootloader_tools/devicemanager/src/bits64/main/memorytest.cpp
-src/os/bootloader_tools/devicemanager/src/bits64/main/memorytest.h
-src/os/bootloader_tools/devicemanager/src/bits64/main/memorytestgui.cpp
-src/os/bootloader_tools/devicemanager/src/bits64/main/memorytestgui.h
+src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanager.cpp
+src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanager.h
+src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanagergui.cpp
+src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanagergui.h
 src/os/bootloader_tools/devicemanager/src/main.cpp
 src/os/bootloader_tools/devicemanager/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader_tools/devicemanager/test/bits64/sections/section1/testcase.h

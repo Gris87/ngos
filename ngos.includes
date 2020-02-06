@@ -13,6 +13,7 @@ src/libs/qt/
 src/os/boot/
 src/os/bootloader/
 src/os/bootloader_tools/cputest/
+src/os/bootloader_tools/devicemanager/
 src/os/bootloader_tools/hddtest/
 src/os/bootloader_tools/memorytest/
 src/os/bootloader_tools/networktest/

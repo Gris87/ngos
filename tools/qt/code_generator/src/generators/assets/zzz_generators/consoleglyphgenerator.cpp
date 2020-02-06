@@ -168,6 +168,8 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
             &&
             save(path + "/bootloader_tools/cputest/"         + FILE_PATH, data)
             &&
+            save(path + "/bootloader_tools/devicemanager/"   + FILE_PATH, data)
+            &&
             save(path + "/bootloader_tools/hddtest/"         + FILE_PATH, data)
             &&
             save(path + "/bootloader_tools/memorytest/"      + FILE_PATH, data)

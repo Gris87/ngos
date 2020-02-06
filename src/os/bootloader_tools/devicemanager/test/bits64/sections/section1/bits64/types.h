@@ -1,13 +1,13 @@
-#ifndef MEMORYTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
-#define MEMORYTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#ifndef DEVICEMANAGER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#define DEVICEMANAGER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/memorytest.h"
-#include "src/bits64/main/memorytestgui.h"
+#include "src/bits64/main/devicemanager.h"
+#include "src/bits64/main/devicemanagergui.h"
 
 
 
@@ -19,8 +19,8 @@ TEST_CASES(section1, bits64_types);
 {
     TEST_CASE("Size of structures");
     {
-        TEST_ASSERT_EQUALS(sizeof(MemoryTest),    1);
-        TEST_ASSERT_EQUALS(sizeof(MemoryTestGUI), 1);
+        TEST_ASSERT_EQUALS(sizeof(DeviceManager),    1);
+        TEST_ASSERT_EQUALS(sizeof(DeviceManagerGUI), 1);
     }
     TEST_CASE_END();
 }
@@ -32,4 +32,4 @@ TEST_CASES_END();
 
 
 
-#endif // MEMORYTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#endif // DEVICEMANAGER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H

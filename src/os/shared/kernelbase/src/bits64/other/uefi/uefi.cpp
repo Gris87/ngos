@@ -757,7 +757,7 @@ NgosStatus UEFI::initConfigurationTables()
         else
         if (isGuidEquals(configurationTables[i].vendorGuid, UEFI_SMBIOS_3_CONFIGURATION_TABLE_GUID))
         {
-            COMMON_LV(("SMBIOS 3.0 configuration table found at address 0x%p", configurationTables[i].vendorTable));
+            COMMON_LV(("SMBIOS 3 configuration table found at address 0x%p", configurationTables[i].vendorTable));
 
             sSmbios3Config = (UefiSmbios3ConfigurationTable *)configurationTables[i].vendorTable;
         }
