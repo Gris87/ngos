@@ -19,7 +19,6 @@ NGOS:
 - Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
 - Add SecureBoot support: https://m.habr.com/ru/post/273497/
-- Unify MemoryTest GUI and share with another apps
 
 - Complete with interruptions
 - Implement boot screen for kernel
