@@ -6,8 +6,8 @@
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/devicemanager.h"
-#include "src/bits64/main/devicemanagergui.h"
+#include "src/bits64/main/memorytest.h"
+#include "src/bits64/main/memorytestgui.h"
 
 
 

@@ -13,7 +13,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/bits64/main/devicemanager.h"
+#include "src/bits64/main/memorytest.h"
 
 
 
