@@ -514,9 +514,9 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     sDeviceManagerButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sDeviceManagerImage, nullptr, "Device Manager", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setPosition(screenWidth * DEVICE_MANAGER_BUTTON_POSITION_X_PERCENT / 100, screenHeight * DEVICE_MANAGER_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setSize(toolButtonWidth, toolButtonHeight),                                                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setKeyboardEventHandler(onDeviceManagerButtonKeyboardEvent),                                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setPressEventHandler(onDeviceManagerButtonPressed),                                                                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setKeyboardEventHandler(onDeviceManagerButtonKeyboardEvent),                                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setPressEventHandler(onDeviceManagerButtonPressed),                                                                                       NgosStatus::ASSERTION);
 
 
 
