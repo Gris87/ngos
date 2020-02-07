@@ -44,24 +44,24 @@ private:
     static NgosStatus onOsButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onDeviceManagerButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onCpuTestButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onMemoryTestButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onNetworkTestButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onHddTestButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onPartitionWizardButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
-    static NgosStatus onShellButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
     static NgosStatus onOsButtonPressed(); // TEST: NO
     static NgosStatus onLeftButtonPressed(); // TEST: NO
     static NgosStatus onRightButtonPressed(); // TEST: NO
+    static NgosStatus onDeviceManagerButtonPressed(); // TEST: NO
     static NgosStatus onCpuTestButtonPressed(); // TEST: NO
     static NgosStatus onMemoryTestButtonPressed(); // TEST: NO
     static NgosStatus onNetworkTestButtonPressed(); // TEST: NO
     static NgosStatus onHddTestButtonPressed(); // TEST: NO
     static NgosStatus onPartitionWizardButtonPressed(); // TEST: NO
-    static NgosStatus onShellButtonPressed(); // TEST: NO
 
     static Image               *sBackgroundImage;
     static Image               *sButtonNormalImage;
@@ -69,12 +69,12 @@ private:
     static Image               *sButtonPressedImage;
     static Image               *sButtonFocusedImage;
     static Image               *sButtonFocusedHoverImage;
+    static Image               *sDeviceManagerImage;
     static Image               *sCpuTestImage;
     static Image               *sMemoryTestImage;
     static Image               *sNetworkTestImage;
     static Image               *sHddTestImage;
     static Image               *sPartitionWizardImage;
-    static Image               *sShellImage;
     static Image               *sRebootImage;
     static Image               *sShutdownImage;
     static Image               *sCursorImage;
@@ -90,12 +90,12 @@ private:
     static Button              *sRightButton;
     static LabelWidget         *sTimeoutLabelWidget;
     static u8                   sTimeoutTick;
+    static Button              *sDeviceManagerButton;
     static Button              *sCpuTestButton;
     static Button              *sMemoryTestButton;
     static Button              *sNetworkTestButton;
     static Button              *sHddTestButton;
     static Button              *sPartitionWizardButton;
-    static Button              *sShellButton;
     static u16                  sWaitEventsCount;
     static uefi_event          *sWaitEvents;
     static uefi_event           sTimerEvent;

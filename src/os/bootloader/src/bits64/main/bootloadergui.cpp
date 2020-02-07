@@ -42,23 +42,23 @@
 #define TIMEOUT_TEXT_WIDTH_PERCENT      80
 #define TIMEOUT_TEXT_HEIGHT_PERCENT     2
 
-#define CPU_TEST_BUTTON_POSITION_X_PERCENT 10
+#define DEVICE_MANAGER_BUTTON_POSITION_X_PERCENT 10
+#define DEVICE_MANAGER_BUTTON_POSITION_Y_PERCENT 48
+
+#define CPU_TEST_BUTTON_POSITION_X_PERCENT 37
 #define CPU_TEST_BUTTON_POSITION_Y_PERCENT 48
 
-#define MEMORY_TEST_BUTTON_POSITION_X_PERCENT 37
+#define MEMORY_TEST_BUTTON_POSITION_X_PERCENT 64
 #define MEMORY_TEST_BUTTON_POSITION_Y_PERCENT 48
 
-#define NETWORK_TEST_BUTTON_POSITION_X_PERCENT 64
-#define NETWORK_TEST_BUTTON_POSITION_Y_PERCENT 48
+#define NETWORK_TEST_BUTTON_POSITION_X_PERCENT 10
+#define NETWORK_TEST_BUTTON_POSITION_Y_PERCENT 59
 
-#define HDD_TEST_BUTTON_POSITION_X_PERCENT 10
+#define HDD_TEST_BUTTON_POSITION_X_PERCENT 37
 #define HDD_TEST_BUTTON_POSITION_Y_PERCENT 59
 
-#define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 37
+#define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 64
 #define PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT 59
-
-#define SHELL_BUTTON_POSITION_X_PERCENT 64
-#define SHELL_BUTTON_POSITION_Y_PERCENT 59
 
 #define OS_BUTTON_SIZE_PERCENT     20
 #define ARROW_BUTTON_SIZE_PERCENT  6
@@ -77,12 +77,12 @@ Image               *BootloaderGUI::sButtonHoverImage;
 Image               *BootloaderGUI::sButtonPressedImage;
 Image               *BootloaderGUI::sButtonFocusedImage;
 Image               *BootloaderGUI::sButtonFocusedHoverImage;
+Image               *BootloaderGUI::sDeviceManagerImage;
 Image               *BootloaderGUI::sCpuTestImage;
 Image               *BootloaderGUI::sMemoryTestImage;
 Image               *BootloaderGUI::sNetworkTestImage;
 Image               *BootloaderGUI::sHddTestImage;
 Image               *BootloaderGUI::sPartitionWizardImage;
-Image               *BootloaderGUI::sShellImage;
 Image               *BootloaderGUI::sRebootImage;
 Image               *BootloaderGUI::sShutdownImage;
 Image               *BootloaderGUI::sCursorImage;
@@ -98,12 +98,12 @@ Button              *BootloaderGUI::sLeftButton;
 Button              *BootloaderGUI::sRightButton;
 LabelWidget         *BootloaderGUI::sTimeoutLabelWidget;
 u8                   BootloaderGUI::sTimeoutTick;
+Button              *BootloaderGUI::sDeviceManagerButton;
 Button              *BootloaderGUI::sCpuTestButton;
 Button              *BootloaderGUI::sMemoryTestButton;
 Button              *BootloaderGUI::sNetworkTestButton;
 Button              *BootloaderGUI::sHddTestButton;
 Button              *BootloaderGUI::sPartitionWizardButton;
-Button              *BootloaderGUI::sShellButton;
 u16                  BootloaderGUI::sWaitEventsCount;
 uefi_event          *BootloaderGUI::sWaitEvents;
 uefi_event           BootloaderGUI::sTimerEvent;
@@ -138,12 +138,12 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_pressed.9.png",       &sButtonPressedImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused.9.png",       &sButtonFocusedImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused_hover.9.png", &sButtonFocusedHoverImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/device_manager.png",         &sDeviceManagerImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cpu_test.png",               &sCpuTestImage),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/memory_test.png",            &sMemoryTestImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/network_test.png",           &sNetworkTestImage),        NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/hdd_test.png",               &sHddTestImage),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/partition_wizard.png",       &sPartitionWizardImage),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shell.png",                  &sShellImage),              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/reboot.png",                 &sRebootImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/shutdown.png",               &sShutdownImage),           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cursor.png",                 &sCursorImage),             NgosStatus::ASSERTION);
@@ -511,7 +511,16 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sCpuTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sCpuTestImage, nullptr, "CPU Test    ", rootWidget);
+    sDeviceManagerButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sDeviceManagerImage, nullptr, "Device Manager", rootWidget);
+
+    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setPosition(screenWidth * DEVICE_MANAGER_BUTTON_POSITION_X_PERCENT / 100, screenHeight * DEVICE_MANAGER_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setSize(toolButtonWidth, toolButtonHeight),                                                                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setKeyboardEventHandler(onDeviceManagerButtonKeyboardEvent),                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceManagerButton->setPressEventHandler(onDeviceManagerButtonPressed),                                                                     NgosStatus::ASSERTION);
+
+
+
+    sCpuTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sCpuTestImage, nullptr, "CPU Test      ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sCpuTestButton->setPosition(screenWidth * CPU_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * CPU_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sCpuTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
@@ -520,7 +529,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sMemoryTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sMemoryTestImage, nullptr, "Memory Test ", rootWidget);
+    sMemoryTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sMemoryTestImage, nullptr, "Memory Test   ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sMemoryTestButton->setPosition(screenWidth * MEMORY_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MEMORY_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sMemoryTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                         NgosStatus::ASSERTION);
@@ -529,7 +538,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sNetworkTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sNetworkTestImage, nullptr, "Network Test", rootWidget);
+    sNetworkTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sNetworkTestImage, nullptr, "Network Test  ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sNetworkTestButton->setPosition(screenWidth * NETWORK_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * NETWORK_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sNetworkTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                           NgosStatus::ASSERTION);
@@ -538,7 +547,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sHddTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sHddTestImage, nullptr, "HDD Test    ", rootWidget);
+    sHddTestButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sHddTestImage, nullptr, "HDD Test      ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sHddTestButton->setPosition(screenWidth * HDD_TEST_BUTTON_POSITION_X_PERCENT / 100, screenHeight * HDD_TEST_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sHddTestButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                   NgosStatus::ASSERTION);
@@ -547,21 +556,12 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    sPartitionWizardButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sPartitionWizardImage, nullptr, "Partition   \nWizard      ", rootWidget);
+    sPartitionWizardButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sPartitionWizardImage, nullptr, "Partition     \nWizard        ", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setPosition(screenWidth * PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT / 100, screenHeight * PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setSize(toolButtonWidth, toolButtonHeight),                                                                                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setKeyboardEventHandler(onPartitionWizardButtonKeyboardEvent),                                                                                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sPartitionWizardButton->setPressEventHandler(onPartitionWizardButtonPressed),                                                                                         NgosStatus::ASSERTION);
-
-
-
-    sShellButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, sShellImage, nullptr, "Shell       ", rootWidget);
-
-    UEFI_ASSERT_EXECUTION(sShellButton->setPosition(screenWidth * SHELL_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHELL_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShellButton->setSize(toolButtonWidth, toolButtonHeight),                                                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShellButton->setKeyboardEventHandler(onShellButtonKeyboardEvent),                                                                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShellButton->setPressEventHandler(onShellButtonPressed),                                                                             NgosStatus::ASSERTION);
 
 
 
@@ -571,7 +571,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     }
     else
     {
-        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sCpuTestButton), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sDeviceManagerButton), NgosStatus::ASSERTION);
     }
 
 
@@ -651,12 +651,12 @@ NgosStatus BootloaderGUI::cleanUp()
     delete sButtonPressedImage;
     delete sButtonFocusedImage;
     delete sButtonFocusedHoverImage;
+    delete sDeviceManagerImage;
     delete sCpuTestImage;
     delete sMemoryTestImage;
     delete sNetworkTestImage;
     delete sHddTestImage;
     delete sPartitionWizardImage;
-    delete sShellImage;
     delete sRebootImage;
     delete sShutdownImage;
     delete sCursorImage;
@@ -913,7 +913,7 @@ NgosStatus BootloaderGUI::focusNextOsButtonOrGoDown()
 
     if (status == NgosStatus::NO_EFFECT)
     {
-        return GUI::setFocusedWidget(sCpuTestButton);
+        return GUI::setFocusedWidget(sDeviceManagerButton);
     }
 
 
@@ -1220,7 +1220,7 @@ NgosStatus BootloaderGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
-        case UefiInputKeyScanCode::DOWN:  return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sMemoryTestButton);
+        case UefiInputKeyScanCode::DOWN:  return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1256,7 +1256,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sMemoryTestButton);
+        case UefiInputKeyScanCode::DOWN: return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1269,7 +1269,7 @@ NgosStatus BootloaderGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_TAB: return sOsButtonRight > 0 ? focusFirstOsButton() : GUI::setFocusedWidget(sCpuTestButton);
+        case KEY_TAB: return sOsButtonRight > 0 ? focusFirstOsButton() : GUI::setFocusedWidget(sDeviceManagerButton);
 
         default:
         {
@@ -1294,7 +1294,7 @@ NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
         case UefiInputKeyScanCode::LEFT:  return focusPreviousOsButton();
         case UefiInputKeyScanCode::RIGHT: return focusNextOsButton();
         case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sMemoryTestButton);
+        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1331,7 +1331,7 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::RIGHT: return focusOsButtonLeft();
         case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sCpuTestButton);
+        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sDeviceManagerButton);
 
         default:
         {
@@ -1368,7 +1368,44 @@ NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::LEFT: return focusOsButtonRight();
         case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sNetworkTestButton);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sMemoryTestButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sDeviceManagerButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus BootloaderGUI::onDeviceManagerButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sCpuTestButton);
+        case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sNetworkTestButton);
 
         default:
         {
@@ -1403,6 +1440,7 @@ NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sDeviceManagerButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sMemoryTestButton);
         case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sHddTestButton);
@@ -1441,7 +1479,6 @@ NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &ke
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sCpuTestButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sNetworkTestButton);
         case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sPartitionWizardButton);
 
@@ -1478,9 +1515,8 @@ NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &k
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sMemoryTestButton);
-        case UefiInputKeyScanCode::UP:   return sOsButtonRight > 0 ? focusOsButton() : GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sShellButton);
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sHddTestButton);
+        case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sDeviceManagerButton);
 
         default:
         {
@@ -1515,6 +1551,7 @@ NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sNetworkTestButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sPartitionWizardButton);
         case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sCpuTestButton);
 
@@ -1551,45 +1588,8 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKe
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sHddTestButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShellButton);
-        case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sMemoryTestButton);
-
-        default:
-        {
-            // Nothing
-        }
-        break;
-    }
-
-
-
-    switch (key.unicodeChar)
-    {
-        case KEY_TAB: return GUI::setFocusedWidget(sShellButton);
-
-        default:
-        {
-            // Nothing
-        }
-        break;
-    }
-
-
-
-    return NgosStatus::NO_EFFECT;
-}
-
-NgosStatus BootloaderGUI::onShellButtonKeyboardEvent(const UefiInputKey &key)
-{
-    UEFI_LT((" | key = ..."));
-
-
-
-    switch (key.scanCode)
-    {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sPartitionWizardButton);
-        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sNetworkTestButton);
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sHddTestButton);
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sMemoryTestButton);
 
         default:
         {
@@ -1771,6 +1771,19 @@ NgosStatus BootloaderGUI::onRightButtonPressed()
     return NgosStatus::OK;
 }
 
+NgosStatus BootloaderGUI::onDeviceManagerButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\devicemanager.efi"), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus BootloaderGUI::onCpuTestButtonPressed()
 {
     UEFI_LT((""));
@@ -1830,19 +1843,6 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\partitionwizard.efi"), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus BootloaderGUI::onShellButtonPressed()
-{
-    UEFI_LT((""));
-
-
-
-    UEFI_ASSERT_EXECUTION(Bootloader::startTool("tools\\devicemanager.efi"), NgosStatus::ASSERTION);
 
 
 
