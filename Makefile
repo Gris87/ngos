@@ -18,8 +18,8 @@ SUBDIRS = \
 
 TARGET_APPS = \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi \
-	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/devicemanager.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/memorytest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/networktest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/hddtest.efi \
@@ -39,13 +39,13 @@ $(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi: src/os/boot/build/boot
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader/build/bootloader.elf -o $@
 
-$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/cputest/build/cputest.elf tools/qt/image_builder/build/image_builder
-	$(MKDIR) $(@D)
-	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/cputest/build/cputest.elf -o $@
-
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/devicemanager.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/devicemanager/build/devicemanager.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/devicemanager/build/devicemanager.elf -o $@
+
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/cputest/build/cputest.elf tools/qt/image_builder/build/image_builder
+	$(MKDIR) $(@D)
+	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/cputest/build/cputest.elf -o $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/memorytest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/memorytest/build/memorytest.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)

@@ -1,7 +1,6 @@
 .gitignore
 3rd_party/.gitignore
 3rd_party/fetch_freetype.sh
-3rd_party/fetch_shellbinpkg.sh
 3rd_party/Makefile
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
@@ -163,6 +162,7 @@ src/os/bootloader/assets/images/button_pressed.9.png
 src/os/bootloader/assets/images/console.9.png
 src/os/bootloader/assets/images/cpu_test.png
 src/os/bootloader/assets/images/cursor.png
+src/os/bootloader/assets/images/device_manager.png
 src/os/bootloader/assets/images/hdd_test.png
 src/os/bootloader/assets/images/memory_test.png
 src/os/bootloader/assets/images/network_test.png
@@ -172,7 +172,6 @@ src/os/bootloader/assets/images/os_ubuntu.png
 src/os/bootloader/assets/images/os_windows.png
 src/os/bootloader/assets/images/partition_wizard.png
 src/os/bootloader/assets/images/reboot.png
-src/os/bootloader/assets/images/shell.png
 src/os/bootloader/assets/images/shutdown.png
 src/os/bootloader/assets/images/volume_external.png
 src/os/bootloader/assets/images/volume_internal.png
@@ -324,8 +323,8 @@ src/os/bootloader_tools/devicemanager/assets/images/table_header.9.png
 src/os/bootloader_tools/devicemanager/assets/images/tabwidget_panel.9.png
 src/os/bootloader_tools/devicemanager/assets/images/test.png
 src/os/bootloader_tools/devicemanager/assets/images/warning.png
-src/os/bootloader_tools/devicemanager/Image structure.png
 src/os/bootloader_tools/devicemanager/devicemanager.pro
+src/os/bootloader_tools/devicemanager/Image structure.png
 src/os/bootloader_tools/devicemanager/linker.ld
 src/os/bootloader_tools/devicemanager/README.md
 src/os/bootloader_tools/devicemanager/Resources.qrc
