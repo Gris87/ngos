@@ -61,8 +61,10 @@ SOURCES += \
     src/verifiers/zzz_types/common/lineseparatorverifier.cpp \
     src/verifiers/zzz_types/common/whitespaceverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppalignmentverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cpparrayinitializationverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppblockdefinitionverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppblockorderverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cppcommentverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppdefinesverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppemptycodeverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppenumverifier.cpp \
@@ -78,6 +80,7 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cpppowerof2verifier.cpp \
     src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp \
+    src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.cpp \
@@ -125,8 +128,10 @@ HEADERS += \
     src/verifiers/zzz_types/common/lineseparatorverifier.h \
     src/verifiers/zzz_types/common/whitespaceverifier.h \
     src/verifiers/zzz_types/cpp_h/cppalignmentverifier.h \
+    src/verifiers/zzz_types/cpp_h/cpparrayinitializationverifier.h \
     src/verifiers/zzz_types/cpp_h/cppblockdefinitionverifier.h \
     src/verifiers/zzz_types/cpp_h/cppblockorderverifier.h \
+    src/verifiers/zzz_types/cpp_h/cppcommentverifier.h \
     src/verifiers/zzz_types/cpp_h/cppdefinesverifier.h \
     src/verifiers/zzz_types/cpp_h/cppemptycodeverifier.h \
     src/verifiers/zzz_types/cpp_h/cppenumverifier.h \
@@ -142,6 +147,7 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cpppowerof2verifier.h \
     src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.h \
     src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.h \
+    src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.h \
     src/verifiers/zzz_types/cpp_h/cppshiftverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.h \

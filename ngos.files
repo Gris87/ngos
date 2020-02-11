@@ -1521,10 +1521,14 @@ tools/qt/code_verifier/src/verifiers/zzz_types/common/whitespaceverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/common/whitespaceverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppalignmentverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppalignmentverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpparrayinitializationverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpparrayinitializationverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppblockdefinitionverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppblockdefinitionverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppblockorderverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppblockorderverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppcommentverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppcommentverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppdefinesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppdefinesverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppemptycodeverifier.cpp
@@ -1555,6 +1559,8 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.h
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.cpp
+tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp

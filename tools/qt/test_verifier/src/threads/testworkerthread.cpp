@@ -16,7 +16,7 @@ TestWorkerThread::TestWorkerThread()
     , mTestStructureEntries()
     , mTestEntries()
     , mDefineRegexp("^#define +(\\w+)\\(([^)]*)\\) +(.+)$")
-    , mFunctionRegexp("^(?:(?:static|const|inline) +)*(?:\\w[\\w<,>*& ]* )?(~?\\w+|operator(<|<=|>|>=|==|!=|\\||\\|\\||&|&&|^|~|!|-|\\+|\\*|\\/))\\([^)]*\\);?.*$")
+    , mFunctionRegexp("^(?:(?:static|const|inline) +)*(?:\\w[\\w<,>*& ]* )?(~?\\w+|operator.+)\\([^)]*\\).*$")
     , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$")
     , mBitsDefinitionRegExp("^ *\\w+ +\\w+ *: *\\d+;.*$")
 {

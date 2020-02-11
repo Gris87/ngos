@@ -25,6 +25,7 @@ NGOS:
 - Per CPU?
 - Initialization via multiple CPU cores
 
+- Add option to provide timestamp for logs
 - Add option to log in serial only/UDP only/All
 - Add option to log with UDP
 - Add option to disable inline
@@ -50,8 +51,6 @@ Code verifier:
 - Verify for amount of arguments in log
 - Verify for asserts alignment
 - Upgrade verifier for trace arguments (Check format with the types)
-- Verify for `;;` or `\n;`
-- Verify for `// `
 - Verify for spaces in `{ 5, 4 }`
 
 
@@ -68,7 +67,7 @@ Docs verifier:
 
 Tests verifier:
 
-- Missing tests for `operator[]()`
+- Verify code
 
 
 

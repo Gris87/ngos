@@ -14,7 +14,7 @@
 enum class ElfData: u8
 {
     NONE                   = 0,
-    LEAST_SIGNIFICANT_BYTE = 1 ,
+    LEAST_SIGNIFICANT_BYTE = 1,
     MOST_SIGNIFICANT_BYTE  = 2
 };
 
