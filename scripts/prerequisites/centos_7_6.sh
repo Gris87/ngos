@@ -93,6 +93,7 @@ yum install -y mesa-libGL-devel
 yum install -y socat
 yum install -y ImageMagick
 yum install -y nodejs
+yum install -y efitools
 yum install -y sbsigntools
 
 npm i sinon --save-dev       || exit 1
