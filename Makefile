@@ -38,38 +38,47 @@ all: $(SUBDIRS) $(TARGET_APPS)
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi: src/os/boot/build/boot.elf src/os/bootloader/build/bootloader.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader/build/bootloader.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/devicemanager.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/devicemanager/build/devicemanager.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/devicemanager/build/devicemanager.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/cputest/build/cputest.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/cputest/build/cputest.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/memorytest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/memorytest/build/memorytest.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/memorytest/build/memorytest.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/networktest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/networktest/build/networktest.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/networktest/build/networktest.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/hddtest.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/hddtest/build/hddtest.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/hddtest/build/hddtest.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/partitionwizard.efi: src/os/boot/build/boot.elf src/os/bootloader_tools/partitionwizard/build/partitionwizard.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/partitionwizard/build/partitionwizard.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -k src/os/kernel/build/kernel.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 $(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/installer/build/installer.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -i src/os/installer/build/installer.elf -o $@
+	./scripts/sign_uefi_application.sh $@
 
 
 

@@ -130,6 +130,11 @@ scripts/sign_uefi_application.sh
 scripts/simplify_spelling.sh
 scripts/update_ngos_files.sh
 secure_boot/.gitignore
+secure_boot/keys/ISK.key.gpg
+secure_boot/keys/ISK.pem
+secure_boot/setup/db.auth
+secure_boot/setup/KEK.auth
+secure_boot/setup/PK.auth
 src/.gitignore
 src/apps/.gitignore
 src/apps/apps.pro
