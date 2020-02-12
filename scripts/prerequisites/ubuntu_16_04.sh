@@ -87,6 +87,7 @@ apt-get install -y libgl-dev
 apt-get install -y socat
 apt-get install -y imagemagick
 apt-get install -y npm
+apt-get install -y sbsigntool
 
 ln -s /usr/bin/nodejs /usr/bin/node
 npm i sinon --save-dev       || exit 1
