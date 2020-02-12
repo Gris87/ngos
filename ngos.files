@@ -116,6 +116,8 @@ scripts/add_version_tag.sh
 scripts/amount_of_code_lines.sh
 scripts/commit.sh
 scripts/deploy.sh
+scripts/extract_secure_boot_private_key.sh
+scripts/generate_secure_boot_keys.sh
 scripts/prerequisites/centos_7_6.sh
 scripts/prerequisites/install.sh
 scripts/prerequisites/ubuntu_16_04.sh
@@ -124,8 +126,10 @@ scripts/prerequisites/ubuntu_18_10.sh
 scripts/prerequisites/ubuntu_19_04.sh
 scripts/pull.sh
 scripts/push.sh
+scripts/sign_uefi_application.sh
 scripts/simplify_spelling.sh
 scripts/update_ngos_files.sh
+secure_boot/.gitignore
 src/.gitignore
 src/apps/.gitignore
 src/apps/apps.pro
