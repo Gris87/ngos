@@ -6,7 +6,6 @@ NGOS:
 - Refactor
 - Use global variable for GUID
 - Replace zeros with nullptr
-- Bool to string
 - Centralize CPUID like in edk2
 - Check for asm volatile
 - Make global GET_UNALIGNED_LE32 and PUT_UNALIGNED_LE32 for all sizes
@@ -18,6 +17,7 @@ NGOS:
 - Convert installer to UEFI application
 - Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
+- Check warnings from sbsign
 
 - Complete with interruptions
 - Implement boot screen for kernel

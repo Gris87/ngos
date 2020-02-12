@@ -8,6 +8,7 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/string/utils.h>
 
 
 
@@ -1043,7 +1044,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
         bool             blockFinal = readBits(decoder, 1);                     // first bit      BFINAL  BFINAL is set if and only if this is the last block of the data set.
         InflateBlockType blockType  = (InflateBlockType)(readBits(decoder, 2)); // next 2 bits    BTYPE   BTYPE specifies how the data are compressed
 
-        COMMON_LVVV(("blockFinal = %s", blockFinal ? "true" : "false"));
+        COMMON_LVVV(("blockFinal = %s", boolToString(blockFinal)));
         COMMON_LVVV(("blockType  = %s", enumToFullString(blockType)));
 
 

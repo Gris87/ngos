@@ -6,6 +6,7 @@
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
+#include <common/src/bits64/string/utils.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
@@ -495,8 +496,8 @@ NgosStatus NetworkTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *
         UEFI_LVVV(("state.relativeMovementX = %d", state.relativeMovementX));
         UEFI_LVVV(("state.relativeMovementY = %d", state.relativeMovementY));
         UEFI_LVVV(("state.relativeMovementZ = %d", state.relativeMovementZ));
-        UEFI_LVVV(("state.leftButton        = %s", state.leftButton ? "true" : "false"));
-        UEFI_LVVV(("state.rightButton       = %s", state.rightButton ? "true" : "false"));
+        UEFI_LVVV(("state.leftButton        = %s", boolToString(state.leftButton)));
+        UEFI_LVVV(("state.rightButton       = %s", boolToString(state.rightButton)));
 
 
 

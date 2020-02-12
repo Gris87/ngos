@@ -14,6 +14,7 @@
 #include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
+#include <common/src/bits64/string/utils.h>
 #include <ngos/utils.h>
 
 
@@ -282,7 +283,7 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
     // COMMON_LVVV(("destinationStride        = %u", destinationStride));         // Commented to avoid too frequent logs
     // COMMON_LVVV(("positionX                = %d", positionX));                 // Commented to avoid too frequent logs
     // COMMON_LVVV(("positionY                = %d", positionY));                 // Commented to avoid too frequent logs
-    // COMMON_LVVV(("opaque                   = %s", opaque ? "true" : "false")); // Commented to avoid too frequent logs
+    // COMMON_LVVV(("opaque                   = %s", boolToString(opaque)));      // Commented to avoid too frequent logs
 
 
 

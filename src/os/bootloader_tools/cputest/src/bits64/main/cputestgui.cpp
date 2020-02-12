@@ -1752,8 +1752,8 @@ NgosStatus CpuTestGUI::processSimplePointerEvent(UefiSimplePointerProtocol *poin
         UEFI_LVVV(("state.relativeMovementX = %d", state.relativeMovementX));
         UEFI_LVVV(("state.relativeMovementY = %d", state.relativeMovementY));
         UEFI_LVVV(("state.relativeMovementZ = %d", state.relativeMovementZ));
-        UEFI_LVVV(("state.leftButton        = %s", state.leftButton ? "true" : "false"));
-        UEFI_LVVV(("state.rightButton       = %s", state.rightButton ? "true" : "false"));
+        UEFI_LVVV(("state.leftButton        = %s", boolToString(state.leftButton)));
+        UEFI_LVVV(("state.rightButton       = %s", boolToString(state.rightButton)));
 
 
 

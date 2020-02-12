@@ -6,6 +6,7 @@
 #include <asm/bitutils.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/string/utils.h>
 #include <kernelbase/src/bits64/other/kerneldefines.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
@@ -18,7 +19,7 @@ class CpuMask
 public:
     static inline NgosStatus setCpuOnline(u64 cpu, bool enabled)
     {
-        COMMON_LT((" | cpu = %u, enabled = %s", cpu, enabled ? "true" : "false"));
+        COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
         COMMON_ASSERT(cpu < NUMBER_OF_CPUS, "cpu is invalid", NgosStatus::ASSERTION);
 
@@ -33,7 +34,7 @@ public:
 
     static inline NgosStatus setCpuActive(u64 cpu, bool enabled)
     {
-        COMMON_LT((" | cpu = %u, enabled = %s", cpu, enabled ? "true" : "false"));
+        COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
         COMMON_ASSERT(cpu < NUMBER_OF_CPUS, "cpu is invalid", NgosStatus::ASSERTION);
 
@@ -48,7 +49,7 @@ public:
 
     static inline NgosStatus setCpuPresent(u64 cpu, bool enabled)
     {
-        COMMON_LT((" | cpu = %u, enabled = %s", cpu, enabled ? "true" : "false"));
+        COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
         COMMON_ASSERT(cpu < NUMBER_OF_CPUS, "cpu is invalid", NgosStatus::ASSERTION);
 
@@ -63,7 +64,7 @@ public:
 
     static inline NgosStatus setCpuPossible(u64 cpu, bool enabled)
     {
-        COMMON_LT((" | cpu = %u, enabled = %s", cpu, enabled ? "true" : "false"));
+        COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
         COMMON_ASSERT(cpu < NUMBER_OF_CPUS, "cpu is invalid", NgosStatus::ASSERTION);
 
@@ -83,7 +84,7 @@ private:
 #endif
     inline NgosStatus setCpuMask(u64 cpu, bool enabled)
     {
-        COMMON_LT((" | cpu = %u, enabled = %s, this = 0x%p", cpu, enabled ? "true" : "false", this));
+        COMMON_LT((" | cpu = %u, enabled = %s, this = 0x%p", cpu, boolToString(enabled), this));
 
         COMMON_ASSERT(cpu < NUMBER_OF_CPUS, "cpu is invalid", NgosStatus::ASSERTION);
 

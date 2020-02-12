@@ -1,5 +1,6 @@
 #include "uefipointerdevices.h"
 
+#include <common/src/bits64/string/utils.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
@@ -355,8 +356,8 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
                 UEFI_LVVV(("sSimplePointers[%d]->mode->resolutionX = %u",   i, sSimplePointers[i]->mode->resolutionX));
                 UEFI_LVVV(("sSimplePointers[%d]->mode->resolutionY = %u",   i, sSimplePointers[i]->mode->resolutionY));
                 UEFI_LVVV(("sSimplePointers[%d]->mode->resolutionZ = %u",   i, sSimplePointers[i]->mode->resolutionZ));
-                UEFI_LVVV(("sSimplePointers[%d]->mode->leftButton  = %s",   i, sSimplePointers[i]->mode->leftButton ? "true" : "false"));
-                UEFI_LVVV(("sSimplePointers[%d]->mode->rightButton = %s",   i, sSimplePointers[i]->mode->rightButton ? "true" : "false"));
+                UEFI_LVVV(("sSimplePointers[%d]->mode->leftButton  = %s",   i, boolToString(sSimplePointers[i]->mode->leftButton)));
+                UEFI_LVVV(("sSimplePointers[%d]->mode->rightButton = %s",   i, boolToString(sSimplePointers[i]->mode->rightButton)));
             }
 
             UEFI_LVVV(("-------------------------------------"));
@@ -484,8 +485,8 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
         UEFI_LVVV(("pointer->mode->resolutionX = %u",   pointer->mode->resolutionX));
         UEFI_LVVV(("pointer->mode->resolutionY = %u",   pointer->mode->resolutionY));
         UEFI_LVVV(("pointer->mode->resolutionZ = %u",   pointer->mode->resolutionZ));
-        UEFI_LVVV(("pointer->mode->leftButton  = %s",   pointer->mode->leftButton ? "true" : "false"));
-        UEFI_LVVV(("pointer->mode->rightButton = %s",   pointer->mode->rightButton ? "true" : "false"));
+        UEFI_LVVV(("pointer->mode->leftButton  = %s",   boolToString(pointer->mode->leftButton)));
+        UEFI_LVVV(("pointer->mode->rightButton = %s",   boolToString(pointer->mode->rightButton)));
 
 
 

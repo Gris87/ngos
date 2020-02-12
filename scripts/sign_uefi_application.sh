@@ -45,9 +45,11 @@ fi
 
 
 if [ -f secure_boot/keys/ISK.key ]; then
-    sbsign --key secure_boot/keys/ISK.key --cert secure_boot/keys/ISK.pem --output ${APPLICATION_PATH} ${APPLICATION_PATH}
+    sbsign --key secure_boot/keys/ISK.key --cert secure_boot/keys/ISK.pem --output ${APPLICATION_PATH} ${APPLICATION_PATH}.unsigned
 else
-    echo "Secure boot private key is unavailable. Please run ./scripts/extract_secure_boot_private_key.sh" 1>&2
+    echo -e "\e[31mSecure boot private key is unavailable. Please run ./scripts/extract_secure_boot_private_key.sh\e[0m"
+
+    mv ${APPLICATION_PATH}.unsigned ${APPLICATION_PATH}
 fi
 
 
