@@ -51,7 +51,6 @@ Code verifier:
 - Verify for amount of arguments in log
 - Verify for asserts alignment
 - Upgrade verifier for trace arguments (Check format with the types)
-- Verify for spaces in `{ 5, 4 }`
 
 
 
