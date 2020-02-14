@@ -132,6 +132,7 @@ scripts/update_ngos_files.sh
 secure_boot/.gitignore
 secure_boot/keys/ISK.key.gpg
 secure_boot/keys/ISK.pem
+secure_boot/keys/KEK.pem
 secure_boot/setup/db.auth
 secure_boot/setup/KEK.auth
 secure_boot/setup/PK.auth
