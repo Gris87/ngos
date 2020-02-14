@@ -770,6 +770,7 @@ src/os/shared/common/src/bits64/dmi/dmientrytype.h
 src/os/shared/common/src/bits64/dmi/dmiidentity.h
 src/os/shared/common/src/bits64/dmi/dmimemorydevice.h
 src/os/shared/common/src/bits64/dmi/dmistoreduuid.h
+src/os/shared/common/src/bits64/dmi/entry/dmiadditionalinformationentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibaseboardentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibiosentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibioslanguageentry.h
@@ -798,6 +799,7 @@ src/os/shared/common/src/bits64/dmi/entry/dmisystempowersupplyentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystemslotsentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmitemperatureprobeentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmivoltageprobeentry.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiadditionalinformation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibaseboardtype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h

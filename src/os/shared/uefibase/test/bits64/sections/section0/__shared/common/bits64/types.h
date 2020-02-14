@@ -32,6 +32,7 @@
 #include <common/src/bits64/dmi/dmiidentity.h>
 #include <common/src/bits64/dmi/dmimemorydevice.h>
 #include <common/src/bits64/dmi/dmistoreduuid.h>
+#include <common/src/bits64/dmi/entry/dmiadditionalinformationentry.h>
 #include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
 #include <common/src/bits64/dmi/entry/dmibioslanguageentry.h>
@@ -60,6 +61,7 @@
 #include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
 #include <common/src/bits64/dmi/entry/dmitemperatureprobeentry.h>
 #include <common/src/bits64/dmi/entry/dmivoltageprobeentry.h>
+#include <common/src/bits64/dmi/entry/lib/dmiadditionalinformation.h>
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardtype.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
@@ -255,6 +257,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(Crc),                                           1);
         TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                  96);
         TEST_ASSERT_EQUALS(sizeof(DMI),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiAdditionalInformation),                      5);
+        TEST_ASSERT_EQUALS(sizeof(DmiAdditionalInformationEntry),                 5);
         TEST_ASSERT_EQUALS(sizeof(DmiBaseboardEntry),                             15);
         TEST_ASSERT_EQUALS(sizeof(DmiBaseboardFeatureFlag),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiBaseboardType),                              1);

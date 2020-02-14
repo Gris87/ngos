@@ -89,6 +89,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/dmiidentity.h \
     $$PWD/src/bits64/dmi/dmimemorydevice.h \
     $$PWD/src/bits64/dmi/dmistoreduuid.h \
+    $$PWD/src/bits64/dmi/entry/dmiadditionalinformationentry.h \
     $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
     $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
     $$PWD/src/bits64/dmi/entry/dmibioslanguageentry.h \
@@ -117,6 +118,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmisystemslotsentry.h \
     $$PWD/src/bits64/dmi/entry/dmitemperatureprobeentry.h \
     $$PWD/src/bits64/dmi/entry/dmivoltageprobeentry.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiadditionalinformation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardtype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h \

@@ -178,6 +178,12 @@ qint32 main(qint32 argc, char *argv[])
                     &&
                     !fileName.endsWith(".hex")
                     &&
+                    !fileName.endsWith(".gpg")
+                    &&
+                    !fileName.endsWith(".pem")
+                    &&
+                    !fileName.endsWith(".auth")
+                    &&
                     !fileName.endsWith(".ttf")
                     &&
                     !fileName.endsWith(".ico")

@@ -36,6 +36,9 @@ wc -l ` \
                 -ve \.bin$ \
                 -ve \.dll$ \
                 -ve \.exe$ \
+                -ve \.gpg$ \
+                -ve \.pem$ \
+                -ve \.auth$ \
                 -ve \.ttf$ \
                 -ve \.ico$ \
                 -ve \.png$ \
