@@ -94,6 +94,7 @@ mkdir keys
 
 mv ISK.key keys/
 mv ISK.pem keys/
+mv KEK.pem keys/
 
 gpg -c -o keys/ISK.key.gpg keys/ISK.key
 
