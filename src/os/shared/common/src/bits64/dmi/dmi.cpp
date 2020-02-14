@@ -3066,6 +3066,8 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
     {
         COMMON_LVVV(("entry->numberOfAdditionalInformationEntries = %u", entry->numberOfAdditionalInformationEntries));
 
+
+
         DmiAdditionalInformation *curInfo = &entry->additionalInformationEntries[0];
 
         for (i64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
@@ -3078,6 +3080,8 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
 
             curInfo = (DmiAdditionalInformation *)((u64)curInfo + curInfo->entryLength);
         }
+
+
 
         // COMMON_TEST_ASSERT(entry->numberOfAdditionalInformationEntries             == 1,      NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].entryLength      == 6,      NgosStatus::ASSERTION); // Commented due to value variation
