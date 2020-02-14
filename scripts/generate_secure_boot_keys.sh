@@ -75,7 +75,7 @@ sign-efi-sig-list -k PK.key  -c PK.pem  KEK KEK.esl KEK.auth
 sign-efi-sig-list -k KEK.key -c KEK.pem db  db.esl  db.auth
 
 rm PK.key KEK.key
-rm PK.pem KEK.pem
+rm PK.pem
 rm PK.esl KEK.esl db.esl
 
 
