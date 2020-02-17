@@ -321,7 +321,6 @@ src/os/bootloader_tools/devicemanager/assets/images/selectedtab_pressed.9.png
 src/os/bootloader_tools/devicemanager/assets/images/shutdown.png
 src/os/bootloader_tools/devicemanager/assets/images/start.png
 src/os/bootloader_tools/devicemanager/assets/images/stop.png
-src/os/bootloader_tools/devicemanager/assets/images/summary.png
 src/os/bootloader_tools/devicemanager/assets/images/system_information.png
 src/os/bootloader_tools/devicemanager/assets/images/tab_focused.9.png
 src/os/bootloader_tools/devicemanager/assets/images/tab_focused_hover.9.png
@@ -331,7 +330,6 @@ src/os/bootloader_tools/devicemanager/assets/images/tab_pressed.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_header.9.png
 src/os/bootloader_tools/devicemanager/assets/images/tabwidget_panel.9.png
-src/os/bootloader_tools/devicemanager/assets/images/test.png
 src/os/bootloader_tools/devicemanager/assets/images/warning.png
 src/os/bootloader_tools/devicemanager/devicemanager.pro
 src/os/bootloader_tools/devicemanager/Image structure.png

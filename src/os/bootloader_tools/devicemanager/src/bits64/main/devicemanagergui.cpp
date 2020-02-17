@@ -36,8 +36,6 @@
 
 #define TABWIDGET_PAGE_SYSTEM_INFORMATION 0
 #define TABWIDGET_PAGE_ISSUES             1
-#define TABWIDGET_PAGE_TEST               2
-#define TABWIDGET_PAGE_SUMMARY            3
 
 
 
@@ -46,8 +44,6 @@ Button     *DeviceManagerGUI::sShutdownButton;
 TabWidget  *DeviceManagerGUI::sTabWidget;
 TabButton  *DeviceManagerGUI::sSystemInformationTabButton;
 TabButton  *DeviceManagerGUI::sIssuesTabButton;
-TabButton  *DeviceManagerGUI::sTestTabButton;
-TabButton  *DeviceManagerGUI::sSummaryTabButton;
 Image      *DeviceManagerGUI::sWarningImage;
 Image      *DeviceManagerGUI::sCriticalImage;
 Image      *DeviceManagerGUI::sStartImage;
@@ -103,8 +99,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     Image *tabWidgetPanelImage;
     Image *systemInformationImage;
     Image *issuesImage;
-    Image *testImage;
-    Image *summaryImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -132,8 +126,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tabwidget_panel.9.png",           &tabWidgetPanelImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",          &systemInformationImage),       NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/issues.png",                      &issuesImage),                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/test.png",                        &testImage),                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/summary.png",                     &summaryImage),                 NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_header.9.png",              &tableHeaderImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
@@ -265,24 +257,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    sTestTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, testImage, nullptr, "Test       ", sTabWidget);
-
-    UEFI_ASSERT_EXECUTION(sTestTabButton->setSize(tabButtonWidth, tabButtonHeight),              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestTabButton->setKeyboardEventHandler(onTestTabButtonKeyboardEvent), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestTabButton->setPressEventHandler(onTestTabButtonPressed),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTabWidget->addTabButton(sTestTabButton),                              NgosStatus::ASSERTION);
-
-
-
-    sSummaryTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, summaryImage, nullptr, "Summary    ", sTabWidget);
-
-    UEFI_ASSERT_EXECUTION(sSummaryTabButton->setSize(tabButtonWidth, tabButtonHeight),                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sSummaryTabButton->setKeyboardEventHandler(onSummaryTabButtonKeyboardEvent), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sSummaryTabButton->setPressEventHandler(onSummaryTabButtonPressed),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTabWidget->addTabButton(sSummaryTabButton),                                 NgosStatus::ASSERTION);
-
-
-
     TabPageWidget *systemInformationTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(systemInformationTabPageWidget), NgosStatus::ASSERTION);
@@ -292,18 +266,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     TabPageWidget *issuesTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(issuesTabPageWidget), NgosStatus::ASSERTION);
-
-
-
-    TabPageWidget *testTabPageWidget = new TabPageWidget(sTabWidget);
-
-    UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(testTabPageWidget), NgosStatus::ASSERTION);
-
-
-
-    TabPageWidget *summaryTabPageWidget = new TabPageWidget(sTabWidget);
-
-    UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(summaryTabPageWidget), NgosStatus::ASSERTION);
 
 
 
@@ -544,7 +506,7 @@ NgosStatus DeviceManagerGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSummaryTabButton);
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
@@ -654,80 +616,6 @@ NgosStatus DeviceManagerGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
-
-        default:
-        {
-            // Nothing
-        }
-        break;
-    }
-
-
-
-    switch (key.unicodeChar)
-    {
-        case KEY_TAB: return GUI::setFocusedWidget(sTestTabButton);
-
-        default:
-        {
-            // Nothing
-        }
-        break;
-    }
-
-
-
-    return NgosStatus::NO_EFFECT;
-}
-
-NgosStatus DeviceManagerGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
-{
-    UEFI_LT((" | key = ..."));
-
-
-
-    switch (key.scanCode)
-    {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sIssuesTabButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sSummaryTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
-
-        default:
-        {
-            // Nothing
-        }
-        break;
-    }
-
-
-
-    switch (key.unicodeChar)
-    {
-        case KEY_TAB: return GUI::setFocusedWidget(sSummaryTabButton);
-
-        default:
-        {
-            // Nothing
-        }
-        break;
-    }
-
-
-
-    return NgosStatus::NO_EFFECT;
-}
-
-NgosStatus DeviceManagerGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
-{
-    UEFI_LT((" | key = ..."));
-
-
-
-    switch (key.scanCode)
-    {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sTestTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
@@ -802,32 +690,6 @@ NgosStatus DeviceManagerGUI::onIssuesTabButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_ISSUES), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DeviceManagerGUI::onTestTabButtonPressed()
-{
-    UEFI_LT((""));
-
-
-
-    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_TEST), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DeviceManagerGUI::onSummaryTabButtonPressed()
-{
-    UEFI_LT((""));
-
-
-
-    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SUMMARY), NgosStatus::ASSERTION);
 
 
 

@@ -17,7 +17,6 @@ NGOS:
 - Convert installer to UEFI application
 - Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
-- Check warnings from sbsign
 
 - Complete with interruptions
 - Implement boot screen for kernel

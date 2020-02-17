@@ -33,23 +33,17 @@ private:
     static NgosStatus onShutdownButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onIssuesTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
-    static NgosStatus onTestTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
-    static NgosStatus onSummaryTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
     static NgosStatus onSystemInformationTabButtonPressed(); // TEST: NO
     static NgosStatus onIssuesTabButtonPressed(); // TEST: NO
-    static NgosStatus onTestTabButtonPressed(); // TEST: NO
-    static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
 
     static Button     *sRebootButton;
     static Button     *sShutdownButton;
     static TabWidget  *sTabWidget;
     static TabButton  *sSystemInformationTabButton;
     static TabButton  *sIssuesTabButton;
-    static TabButton  *sTestTabButton;
-    static TabButton  *sSummaryTabButton;
     static Image      *sWarningImage;
     static Image      *sCriticalImage;
     static Image      *sStartImage;
