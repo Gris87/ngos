@@ -328,6 +328,7 @@ src/os/bootloader_tools/devicemanager/assets/images/tab_pressed.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_header.9.png
 src/os/bootloader_tools/devicemanager/assets/images/tabwidget_panel.9.png
+src/os/bootloader_tools/devicemanager/assets/images/tree_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/warning.png
 src/os/bootloader_tools/devicemanager/devicemanager.pro
 src/os/bootloader_tools/devicemanager/Image structure.png
