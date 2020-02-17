@@ -36,24 +36,37 @@
 #define DEVICES_TREEWIDGET_WIDTH_PERCENT      29
 #define DEVICES_TREEWIDGET_HEIGHT_PERCENT     98
 
+#define DEVICE_INFO_TABLEWIDGET_POSITION_X_PERCENT 31
+#define DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT 1
+#define DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT      68
+#define DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT     98
+#define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 7
+
+#define DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  80
+#define DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT 20
+
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
 
 #define TABWIDGET_PAGE_SYSTEM_INFORMATION 0
 #define TABWIDGET_PAGE_ISSUES             1
 
+#define COLUMN_NAME  0
+#define COLUMN_VALUE 1
 
 
-Button     *DeviceManagerGUI::sRebootButton;
-Button     *DeviceManagerGUI::sShutdownButton;
-TabWidget  *DeviceManagerGUI::sTabWidget;
-TabButton  *DeviceManagerGUI::sSystemInformationTabButton;
-TabButton  *DeviceManagerGUI::sIssuesTabButton;
-TreeWidget *DeviceManagerGUI::sDevicesTreeWidget;
-Image      *DeviceManagerGUI::sWarningImage;
-Image      *DeviceManagerGUI::sCriticalImage;
-u16         DeviceManagerGUI::sWaitEventsCount;
-uefi_event *DeviceManagerGUI::sWaitEvents;
+
+Button      *DeviceManagerGUI::sRebootButton;
+Button      *DeviceManagerGUI::sShutdownButton;
+TabWidget   *DeviceManagerGUI::sTabWidget;
+TabButton   *DeviceManagerGUI::sSystemInformationTabButton;
+TabButton   *DeviceManagerGUI::sIssuesTabButton;
+TreeWidget  *DeviceManagerGUI::sDevicesTreeWidget;
+TableWidget *DeviceManagerGUI::sDeviceInfoTableWidget;
+Image       *DeviceManagerGUI::sWarningImage;
+Image       *DeviceManagerGUI::sCriticalImage;
+u16          DeviceManagerGUI::sWaitEventsCount;
+uefi_event  *DeviceManagerGUI::sWaitEvents;
 
 
 
@@ -265,8 +278,10 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    u64 devicesTreeWidth  = tabPageWidth  * DEVICES_TREEWIDGET_WIDTH_PERCENT  / 100;
-    u64 devicesTreeHeight = tabPageHeight * DEVICES_TREEWIDGET_HEIGHT_PERCENT / 100;
+    u64 devicesTreeWidth      = tabPageWidth  * DEVICES_TREEWIDGET_WIDTH_PERCENT       / 100;
+    u64 devicesTreeHeight     = tabPageHeight * DEVICES_TREEWIDGET_HEIGHT_PERCENT      / 100;
+    u64 deviceInfoTableWidth  = tabPageWidth  * DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    u64 deviceInfoTableHeight = tabPageHeight * DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
 
 
@@ -275,6 +290,26 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setPosition(tabPageWidth * DEVICES_TREEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * DEVICES_TREEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setSize(devicesTreeWidth, devicesTreeHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setKeyboardEventHandler(onDevicesTreeWidgetKeyboardEvent),                                                                            NgosStatus::ASSERTION);
+
+
+
+    sDeviceInfoTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setPosition(tabPageWidth * DEVICE_INFO_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setSize(deviceInfoTableWidth, deviceInfoTableHeight),                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setKeyboardEventHandler(onDeviceInfoTableWidgetKeyboardEvent),                                                                                  NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowHeight(tabPageHeight * DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setColumnWidth(COLUMN_NAME,  deviceInfoTableWidth * DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setColumnWidth(COLUMN_VALUE, deviceInfoTableWidth * DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setHeaderText(COLUMN_NAME,  "Name"),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setHeaderText(COLUMN_VALUE, "Value"), NgosStatus::ASSERTION);
 
 
 
@@ -683,7 +718,44 @@ NgosStatus DeviceManagerGUI::onDevicesTreeWidgetKeyboardEvent(const UefiInputKey
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sDeviceInfoTableWidget);
+        case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sSystemInformationTabButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sDeviceInfoTableWidget);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus DeviceManagerGUI::onDeviceInfoTableWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sDevicesTreeWidget);
+        case UefiInputKeyScanCode::UP:   return (!sDeviceInfoTableWidget->getSelectedRow()) ? GUI::setFocusedWidget(sSystemInformationTabButton) : NgosStatus::NO_EFFECT; // sDeviceInfoTableWidget->getSelectedRow() == 0
 
         default:
         {

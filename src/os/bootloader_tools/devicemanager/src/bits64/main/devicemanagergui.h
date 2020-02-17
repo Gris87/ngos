@@ -35,22 +35,24 @@ private:
     static NgosStatus onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onIssuesTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onDevicesTreeWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onDeviceInfoTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
     static NgosStatus onSystemInformationTabButtonPressed(); // TEST: NO
     static NgosStatus onIssuesTabButtonPressed(); // TEST: NO
 
-    static Button     *sRebootButton;
-    static Button     *sShutdownButton;
-    static TabWidget  *sTabWidget;
-    static TabButton  *sSystemInformationTabButton;
-    static TabButton  *sIssuesTabButton;
-    static TreeWidget *sDevicesTreeWidget;
-    static Image      *sWarningImage;
-    static Image      *sCriticalImage;
-    static u16         sWaitEventsCount;
-    static uefi_event *sWaitEvents;
+    static Button      *sRebootButton;
+    static Button      *sShutdownButton;
+    static TabWidget   *sTabWidget;
+    static TabButton   *sSystemInformationTabButton;
+    static TabButton   *sIssuesTabButton;
+    static TreeWidget  *sDevicesTreeWidget;
+    static TableWidget *sDeviceInfoTableWidget;
+    static Image       *sWarningImage;
+    static Image       *sCriticalImage;
+    static u16          sWaitEventsCount;
+    static uefi_event  *sWaitEvents;
 };
 
 
