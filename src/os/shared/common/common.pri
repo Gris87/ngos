@@ -40,6 +40,7 @@ SOURCES += \
     $$PWD/src/bits64/gui/widgets/misc/tableheaderwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/tablerowwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/tabpagewidget.cpp \
+    $$PWD/src/bits64/gui/widgets/misc/treenodewidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/wrapperwidget.cpp \
     $$PWD/src/bits64/gui/widgets/special/rootwidget.cpp \
     $$PWD/src/bits64/gui/widgets/special/screenwidget.cpp \
@@ -276,6 +277,7 @@ HEADERS += \
     $$PWD/src/bits64/gui/widgets/misc/tableheaderwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/tablerowwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/tabpagewidget.h \
+    $$PWD/src/bits64/gui/widgets/misc/treenodewidget.h \
     $$PWD/src/bits64/gui/widgets/misc/wrapperwidget.h \
     $$PWD/src/bits64/gui/widgets/special/rootwidget.h \
     $$PWD/src/bits64/gui/widgets/special/screenwidget.h \

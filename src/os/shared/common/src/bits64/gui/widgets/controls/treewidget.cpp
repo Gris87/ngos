@@ -6,12 +6,15 @@
 
 
 
-TreeWidget::TreeWidget(Widget *parent)
+TreeWidget::TreeWidget(Image *backgroundImage, Widget *parent)
     : Widget(parent)
+    , mBackgroundImage(backgroundImage)
+    , mWrapperWidget(new WrapperWidget(this))
 {
-    COMMON_LT((" | parent = 0x%p", parent));
+    COMMON_LT((" | backgroundImage = 0x%p, parent = 0x%p", backgroundImage, parent));
 
-    COMMON_ASSERT(parent, "parent is null");
+    COMMON_ASSERT(backgroundImage, "backgroundImage is null");
+    COMMON_ASSERT(parent,          "parent is null");
 }
 
 TreeWidget::~TreeWidget()
@@ -19,6 +22,11 @@ TreeWidget::~TreeWidget()
     COMMON_LT((""));
 
 
+
+    if (mOwnResultImage)
+    {
+        delete mOwnResultImage;
+    }
 
     if (mResultImage)
     {
@@ -37,15 +45,7 @@ NgosStatus TreeWidget::invalidate()
         delete mOwnResultImage;
     }
 
-    RgbaPixel pixel;
-
-    pixel.red   = 0;
-    pixel.green = 0;
-    pixel.blue  = 255;
-    pixel.alpha = 255;
-
-    mOwnResultImage = new Image(mWidth, mHeight, false, true);
-    mOwnResultImage->fill(pixel);
+    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mBackgroundImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
 
 
 
@@ -58,13 +58,29 @@ NgosStatus TreeWidget::repaint()
 
 
 
-    COMMON_TEST_ASSERT(mOwnResultImage     != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mChildren.getHead() == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mOwnResultImage != nullptr, NgosStatus::ASSERTION);
 
 
 
-    mResultImage = mOwnResultImage;
+    if (mResultImage)
+    {
+        delete mResultImage;
+    }
 
+    mResultImage = new Image(*mOwnResultImage);
+
+
+
+    ListElement<Widget *> *element = mChildren.getHead();
+
+    while (element)
+    {
+        Widget *widget = element->getData();
+
+        COMMON_ASSERT_EXECUTION(drawWidget(widget, widget->getPositionX(), widget->getPositionY()), NgosStatus::ASSERTION);
+
+        element = element->getNext();
+    }
 
 
 

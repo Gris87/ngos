@@ -116,6 +116,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     Image *tabWidgetPanelImage;
     Image *systemInformationImage;
     Image *issuesImage;
+    Image *treeBackgroundImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -143,6 +144,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tabwidget_panel.9.png",           &tabWidgetPanelImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",          &systemInformationImage),       NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/issues.png",                      &issuesImage),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tree_background.9.png",           &treeBackgroundImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_header.9.png",              &tableHeaderImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
@@ -285,11 +287,15 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    sDevicesTreeWidget = new TreeWidget(systemInformationTabPageWidget);
+    sDevicesTreeWidget = new TreeWidget(treeBackgroundImage, systemInformationTabPageWidget);
 
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setPosition(tabPageWidth * DEVICES_TREEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * DEVICES_TREEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setSize(devicesTreeWidth, devicesTreeHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setKeyboardEventHandler(onDevicesTreeWidgetKeyboardEvent),                                                                            NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(fillDevicesTree(), NgosStatus::ASSERTION);
 
 
 
@@ -358,6 +364,15 @@ NgosStatus DeviceManagerGUI::exec()
     {
         UEFI_ASSERT_EXECUTION(waitForEvent(), NgosStatus::ASSERTION);
     } while(true);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerGUI::fillDevicesTree()
+{
+    UEFI_LT((""));
 
 
 

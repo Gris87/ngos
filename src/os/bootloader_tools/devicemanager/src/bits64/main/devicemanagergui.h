@@ -22,6 +22,8 @@ public:
     static NgosStatus exec(); // TEST: NO
 
 private:
+    static NgosStatus fillDevicesTree(); // TEST: NO
+
     static NgosStatus focusTabFirstWidget(); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
