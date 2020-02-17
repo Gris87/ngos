@@ -31,6 +31,11 @@
 
 #define TAB_PAGE_PROPORTION 2
 
+#define DEVICES_TREEWIDGET_POSITION_X_PERCENT 1
+#define DEVICES_TREEWIDGET_POSITION_Y_PERCENT 1
+#define DEVICES_TREEWIDGET_WIDTH_PERCENT      29
+#define DEVICES_TREEWIDGET_HEIGHT_PERCENT     98
+
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        2
 
@@ -44,10 +49,9 @@ Button     *DeviceManagerGUI::sShutdownButton;
 TabWidget  *DeviceManagerGUI::sTabWidget;
 TabButton  *DeviceManagerGUI::sSystemInformationTabButton;
 TabButton  *DeviceManagerGUI::sIssuesTabButton;
+TreeWidget *DeviceManagerGUI::sDevicesTreeWidget;
 Image      *DeviceManagerGUI::sWarningImage;
 Image      *DeviceManagerGUI::sCriticalImage;
-Image      *DeviceManagerGUI::sStartImage;
-Image      *DeviceManagerGUI::sStopImage;
 u16         DeviceManagerGUI::sWaitEventsCount;
 uefi_event *DeviceManagerGUI::sWaitEvents;
 
@@ -133,8 +137,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/warning.png",                     &sWarningImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/critical.png",                    &sCriticalImage),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/start.png",                       &sStartImage),                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &sStopImage),                   NgosStatus::ASSERTION);
 
 
 
@@ -263,6 +265,19 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
+    u64 devicesTreeWidth  = tabPageWidth  * DEVICES_TREEWIDGET_WIDTH_PERCENT  / 100;
+    u64 devicesTreeHeight = tabPageHeight * DEVICES_TREEWIDGET_HEIGHT_PERCENT / 100;
+
+
+
+    sDevicesTreeWidget = new TreeWidget(systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setPosition(tabPageWidth * DEVICES_TREEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * DEVICES_TREEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setSize(devicesTreeWidth, devicesTreeHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setKeyboardEventHandler(onDevicesTreeWidgetKeyboardEvent),                                                                            NgosStatus::ASSERTION);
+
+
+
     TabPageWidget *issuesTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(issuesTabPageWidget), NgosStatus::ASSERTION);
@@ -317,6 +332,22 @@ NgosStatus DeviceManagerGUI::exec()
 NgosStatus DeviceManagerGUI::focusTabFirstWidget()
 {
     UEFI_LT((""));
+
+
+
+    switch (sTabWidget->getCurrentPage())
+    {
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sDevicesTreeWidget);
+        case TABWIDGET_PAGE_ISSUES:             return NgosStatus::NO_EFFECT;
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d", sTabWidget->getCurrentPage()));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
 
 
 
@@ -631,6 +662,41 @@ NgosStatus DeviceManagerGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &
     switch (key.unicodeChar)
     {
         case KEY_TAB: return focusTabFirstWidget();
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus DeviceManagerGUI::onDevicesTreeWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sSystemInformationTabButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {

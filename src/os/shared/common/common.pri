@@ -30,6 +30,7 @@ SOURCES += \
     $$PWD/src/bits64/gui/widgets/controls/tabbutton.cpp \
     $$PWD/src/bits64/gui/widgets/controls/tablewidget.cpp \
     $$PWD/src/bits64/gui/widgets/controls/tabwidget.cpp \
+    $$PWD/src/bits64/gui/widgets/controls/treewidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/consolewidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/cursorwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.cpp \
@@ -265,6 +266,7 @@ HEADERS += \
     $$PWD/src/bits64/gui/widgets/controls/tabbutton.h \
     $$PWD/src/bits64/gui/widgets/controls/tablewidget.h \
     $$PWD/src/bits64/gui/widgets/controls/tabwidget.h \
+    $$PWD/src/bits64/gui/widgets/controls/treewidget.h \
     $$PWD/src/bits64/gui/widgets/misc/consolewidget.h \
     $$PWD/src/bits64/gui/widgets/misc/cursorwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.h \

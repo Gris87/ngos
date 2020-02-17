@@ -8,6 +8,7 @@
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
+#include <common/src/bits64/gui/widgets/controls/treewidget.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
@@ -33,6 +34,7 @@ private:
     static NgosStatus onShutdownButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSystemInformationTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onIssuesTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onDevicesTreeWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
@@ -44,10 +46,9 @@ private:
     static TabWidget  *sTabWidget;
     static TabButton  *sSystemInformationTabButton;
     static TabButton  *sIssuesTabButton;
+    static TreeWidget *sDevicesTreeWidget;
     static Image      *sWarningImage;
     static Image      *sCriticalImage;
-    static Image      *sStartImage;
-    static Image      *sStopImage;
     static u16         sWaitEventsCount;
     static uefi_event *sWaitEvents;
 };
