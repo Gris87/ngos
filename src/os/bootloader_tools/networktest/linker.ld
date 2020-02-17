@@ -46,6 +46,13 @@ SECTIONS
 
 
 
+    . = ALIGN(64);
+
+    .align        :       {
+        . += 63;
+        BYTE(0x00);
+    }
+
     _end = .;
 
 

@@ -8,7 +8,8 @@
 
 
 
-#define RELOC_SECTION_SIZE 0x40
+#define SECTION_ALIGNMENT  0x40
+#define RELOC_SECTION_SIZE SECTION_ALIGNMENT
 
 #define TEXT_SECTION_NAME 0x000000747865742E
 
@@ -194,6 +195,15 @@ qint64 ImageBuilder::process()
 
             mResultImage.append((char *)&kernelDescriptor, sizeof(kernelDescriptor));
             mResultImage.append(mInstallerElf);
+        }
+
+
+
+        qint8 alignmentNeeded = mResultImage.size() & (SECTION_ALIGNMENT - 1);
+
+        if (alignmentNeeded)
+        {
+            mResultImage.append(SECTION_ALIGNMENT - alignmentNeeded, 0x00);
         }
 
 
