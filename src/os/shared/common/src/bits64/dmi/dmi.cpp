@@ -350,16 +350,11 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
 
     i64  i   = 0;
     u8  *cur = buf;
-    u8  *end = buf + sStructureTableLength;
 
     while (
-           (
-            !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
-            ||
-            i < sNumberOfSmbiosStructures
-           )
-           &&
-           cur + sizeof(DmiEntryHeader) <= end
+           !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
+           ||
+           i < sNumberOfSmbiosStructures
           )
     {
         DmiEntryHeader *dmiEntryHeader = (DmiEntryHeader *)cur;
@@ -378,26 +373,15 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
 
         // We are getting total DMI entry size until we met 2 zeros in buffer that let us avoid issues on decoding
         while (
-               (cur < end - 1)
-               &&
-               (
-                cur[0]
-                ||
-                cur[1]
-               )
+               cur[0]
+               ||
+               cur[1]
               )
         {
             ++cur;
         }
 
-        if (cur < end - 1)
-        {
-            COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
-        }
-        else
-        {
-            break;
-        }
+        COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
 
 
 
@@ -418,12 +402,8 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
         }
     }
 
-    COMMON_LF(("cur = 0x%p", cur)); // TODO: Remove it
-    COMMON_LF(("end = 0x%p", end)); // TODO: Remove it
-
-    COMMON_TEST_ASSERT(cur                             == end,                       NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sStructureTableLength           == cur - buf,                 NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || i == sNumberOfSmbiosStructures, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || cur == buf + sStructureTableLength, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || i   == sNumberOfSmbiosStructures,   NgosStatus::ASSERTION);
 
 
 
