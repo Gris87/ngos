@@ -67,13 +67,16 @@ TEST_CASES(section0, __shared_common_bits64_dmi_dmi);
             'i', 's', 0,
             'm', 'y', 0,
             'p', 'i', 'z', 'z', 'a', 0,
+            0,
+
+            127, 4, 0x00, 0x15,
+            0,
             0
         };
 
 
 
-        testAmount                 = 0;
-        DMI::sStructureTableLength = sizeof(buf);
+        testAmount = 0;
 
         TEST_ASSERT_EQUALS(DMI::iterateDmiEntries(buf, testCountEntry), NgosStatus::OK);
         TEST_ASSERT_EQUALS(testAmount,                                  3);
