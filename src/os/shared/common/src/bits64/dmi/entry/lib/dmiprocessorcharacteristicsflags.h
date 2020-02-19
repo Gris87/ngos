@@ -18,13 +18,14 @@ typedef u16 dmi_processor_characteristics_flags;
 enum class DmiProcessorCharacteristicsFlag: dmi_processor_characteristics_flags
 {
     NONE                      = 0,
-    SUPPORT_64_BIT            = (1ULL << 1),
-    MULTI_CORE                = (1ULL << 2),
-    HARDWARE_THREAD           = (1ULL << 3),
-    EXECUTE_PROTECTION        = (1ULL << 4),
-    ENHANCED_VIRTUALIZATION   = (1ULL << 5),
-    POWER_PERFORMANCE_CONTROL = (1ULL << 6),
-    SUPPORT_128_BIT           = (1ULL << 7)
+    UNKNOWN                   = (1ULL << 1),
+    SUPPORT_64_BIT            = (1ULL << 2),
+    MULTI_CORE                = (1ULL << 3),
+    HARDWARE_THREAD           = (1ULL << 4),
+    EXECUTE_PROTECTION        = (1ULL << 5),
+    ENHANCED_VIRTUALIZATION   = (1ULL << 6),
+    POWER_PERFORMANCE_CONTROL = (1ULL << 7),
+    SUPPORT_128_BIT           = (1ULL << 8)
 };
 
 DEFINE_FLAGS(DmiProcessorCharacteristicsFlags, dmi_processor_characteristics_flags); // TEST: NO
@@ -40,6 +41,7 @@ inline const char8* flagToString(DmiProcessorCharacteristicsFlag flag) // TEST: 
     switch (flag)
     {
         case DmiProcessorCharacteristicsFlag::NONE:                      return "NONE";
+        case DmiProcessorCharacteristicsFlag::UNKNOWN:                   return "UNKNOWN";
         case DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT:            return "SUPPORT_64_BIT";
         case DmiProcessorCharacteristicsFlag::MULTI_CORE:                return "MULTI_CORE";
         case DmiProcessorCharacteristicsFlag::HARDWARE_THREAD:           return "HARDWARE_THREAD";
@@ -75,7 +77,7 @@ inline const char8* flagsToString(const DmiProcessorCharacteristicsFlags &flags)
 
 
 
-    static char8 res[154];
+    static char8 res[164];
 
     FLAGS_TO_STRING(res, flags.flags, DmiProcessorCharacteristicsFlag);
 
@@ -90,7 +92,7 @@ inline const char8* flagsToFullString(const DmiProcessorCharacteristicsFlags &fl
 
 
 
-    static char8 res[163];
+    static char8 res[173];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, DmiProcessorCharacteristicsFlag, "0x%04X");
 
