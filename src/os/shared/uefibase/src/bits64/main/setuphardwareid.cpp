@@ -27,7 +27,7 @@ NgosStatus generateHardwareId(BootParams *params, i64 *length)
 
 
 
-    i64 len = sprintf(params->hardwareId, "%s %s %s - ", stringToString(DMI::getIdentity(DmiIdentity::SYSTEM_MANUFACTURER)), stringToString(DMI::getIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME)), uuidToString(DMI::getUuid(DmiStoredUuid::SYSTEM_UUID)));
+    i64 len = sprintf(params->hardwareId, "%s %s %s - ", stringToString(DMI::getIdentity(DmiIdentity::BASEBOARD_MANUFACTURER)), stringToString(DMI::getIdentity(DmiIdentity::BASEBOARD_PRODUCT)), uuidToString(DMI::getUuid(DmiStoredUuid::SYSTEM_UUID)));
 
     UEFI_LVVV(("len = %u", len));
 
@@ -167,7 +167,17 @@ NgosStatus saveHardwareIdToFile(BootParams *params)
 
             if (hardwareIdFile->write(hardwareIdFile, &size, params->hardwareId) == UefiStatus::SUCCESS)
             {
-                UEFI_LV(("Stored HardwareID to file: %s", params->hardwareId));
+                char8 ch = '\n';
+                size     = sizeof(ch);
+
+                if (hardwareIdFile->write(hardwareIdFile, &size, &ch) == UefiStatus::SUCCESS)
+                {
+                    UEFI_LV(("Stored HardwareID to file: %s", params->hardwareId));
+                }
+                else
+                {
+                    UEFI_LW(("Failed to write hardware ID file: %ls", HARDWARE_ID_PATH));
+                }
             }
             else
             {
@@ -237,7 +247,7 @@ NgosStatus loadHardwareIdFromFile(BootParams *params)
 
 
 
-    char8 hardwareId[1024];
+    char8 hardwareId[HARDWARE_ID_LENGTH];
     u64   size = sizeof(hardwareId);
 
 
@@ -254,7 +264,16 @@ NgosStatus loadHardwareIdFromFile(BootParams *params)
 
             if (hardwareIdFile->read(hardwareIdFile, &size, hardwareId) == UefiStatus::SUCCESS)
             {
-                hardwareId[size] = 0;
+                if (size < sizeof(hardwareId))
+                {
+                    hardwareId[size] = 0;
+                }
+                else
+                {
+                    hardwareId[sizeof(hardwareId) - 1] = 0;
+                }
+
+
 
                 UEFI_LV(("Loaded HardwareID: %s", hardwareId));
             }
