@@ -330,6 +330,9 @@ src/os/bootloader_tools/devicemanager/assets/images/tab_pressed.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_header.9.png
 src/os/bootloader_tools/devicemanager/assets/images/tabwidget_panel.9.png
+src/os/bootloader_tools/devicemanager/assets/images/toolbutton_hover.9.png
+src/os/bootloader_tools/devicemanager/assets/images/toolbutton_normal.9.png
+src/os/bootloader_tools/devicemanager/assets/images/toolbutton_pressed.9.png
 src/os/bootloader_tools/devicemanager/assets/images/tree_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/warning.png
 src/os/bootloader_tools/devicemanager/devicemanager.pro

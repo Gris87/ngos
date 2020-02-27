@@ -30,6 +30,9 @@
         <file>assets/images/table_background.9.png</file>
         <file>assets/images/table_header.9.png</file>
         <file>assets/images/tabwidget_panel.9.png</file>
+        <file>assets/images/toolbutton_hover.9.png</file>
+        <file>assets/images/toolbutton_normal.9.png</file>
+        <file>assets/images/toolbutton_pressed.9.png</file>
         <file>assets/images/tree_background.9.png</file>
         <file>assets/images/warning.png</file>
     </qresource>
