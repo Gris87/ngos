@@ -7,17 +7,18 @@
 
 
 
-TreeNodeWidget::TreeNodeWidget(Image *collapsedImage, Image *expandedImage, const char8 *text, Widget *parent)
+TreeNodeWidget::TreeNodeWidget(Image *collapsedImage, Image *expandedImage, Image *image, const char8 *text, Widget *parent)
     : Widget(parent)
     , mCollapsedImage(collapsedImage)
     , mExpandedImage(expandedImage)
+    , mImage(image)
     , mLabelWidget(nullptr)
 {
-    COMMON_LT((" | collapsedImage = 0x%p, expandedImage = 0x%p, text = 0x%p, parent = 0x%p", collapsedImage, expandedImage, text, parent));
+    COMMON_LT((" | collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", collapsedImage, expandedImage, image, text, parent));
 
     COMMON_ASSERT(collapsedImage, "collapsedImage is null");
     COMMON_ASSERT(expandedImage,  "expandedImage is null");
-    COMMON_ASSERT(text,           "text is null");
+    COMMON_ASSERT(image,          "image is null");
     COMMON_ASSERT(parent,         "parent is null");
 
 

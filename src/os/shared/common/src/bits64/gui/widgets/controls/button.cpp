@@ -291,7 +291,7 @@ NgosStatus Button::repaint()
     u16 imageWidth  = mImageWidget->getImage()->getWidth()  * scale;
     u16 imageHeight = mImageWidget->getImage()->getHeight() * scale;
 
-    COMMON_LVVV(("imageWidth = %u",  imageWidth));
+    COMMON_LVVV(("imageWidth  = %u", imageWidth));
     COMMON_LVVV(("imageHeight = %u", imageHeight));
 
 

@@ -15,7 +15,6 @@ TableHeaderWidget::TableHeaderWidget(Image *image, const char8 *text, Widget *pa
     COMMON_LT((" | image = 0x%p, text = 0x%p, parent = 0x%p", image, text, parent));
 
     COMMON_ASSERT(image,  "image is null");
-    COMMON_ASSERT(text,   "text is null");
     COMMON_ASSERT(parent, "parent is null");
 
 

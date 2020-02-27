@@ -12,7 +12,7 @@
 class TreeNodeWidget: public Widget
 {
 public:
-    TreeNodeWidget(Image *collapsedImage, Image *expandedImage, const char8* text, Widget *parent = 0); // TEST: NO
+    TreeNodeWidget(Image *collapsedImage, Image *expandedImage, Image *image, const char8* text, Widget *parent = 0); // TEST: NO
     ~TreeNodeWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO
@@ -21,6 +21,7 @@ public:
 private:
     Image       *mCollapsedImage;
     Image       *mExpandedImage;
+    Image       *mImage;
     LabelWidget *mLabelWidget;
 };
 

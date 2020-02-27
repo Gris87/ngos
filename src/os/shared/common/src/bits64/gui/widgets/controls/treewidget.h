@@ -6,6 +6,7 @@
 #include <common/src/bits64/gui/widgets/widget.h>
 
 #include <common/src/bits64/gui/widgets/misc/wrapperwidget.h>
+#include <common/src/bits64/gui/widgets/misc/treenodewidget.h>
 
 
 
@@ -18,9 +19,17 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    WrapperWidget* getWrapperWidget() const; // TEST: NO
+
+    NgosStatus setRowHeight(u64 height); // TEST: NO
+    u64 getRowHeight() const; // TEST: NO
+
+    NgosStatus setRootNodeWidget(TreeNodeWidget *widget); // TEST: NO
+
 private:
     Image         *mBackgroundImage;
     WrapperWidget *mWrapperWidget;
+    u64            mRowHeight;
 };
 
 

@@ -396,7 +396,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
         tabPageWidth = screenWidth;
 
         tabPageHeight   = tabPageWidth / TAB_PAGE_PROPORTION;
-        tabWidgetHeight = tabPageHeight + tabButtonHeight;
+        tabWidgetHeight = tabButtonHeight + tabPageHeight;
     }
 
 

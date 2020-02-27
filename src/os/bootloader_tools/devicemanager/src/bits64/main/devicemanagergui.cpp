@@ -3,6 +3,7 @@
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/treenodewidget.h>
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
@@ -35,6 +36,7 @@
 #define DEVICES_TREEWIDGET_POSITION_Y_PERCENT 1
 #define DEVICES_TREEWIDGET_WIDTH_PERCENT      29
 #define DEVICES_TREEWIDGET_HEIGHT_PERCENT     98
+#define DEVICES_TREEWIDGET_ROW_HEIGHT_PERCENT 5
 
 #define DEVICE_INFO_TABLEWIDGET_POSITION_X_PERCENT 31
 #define DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT 1
@@ -181,7 +183,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
         tabPageWidth = screenWidth;
 
         tabPageHeight   = tabPageWidth / TAB_PAGE_PROPORTION;
-        tabWidgetHeight = tabPageHeight + tabButtonHeight;
+        tabWidgetHeight = tabButtonHeight + tabPageHeight;
     }
 
 
@@ -293,6 +295,8 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setSize(devicesTreeWidth, devicesTreeHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setKeyboardEventHandler(onDevicesTreeWidgetKeyboardEvent),                                                                            NgosStatus::ASSERTION);
 
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRowHeight(tabPageHeight * DEVICES_TREEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+
 
 
     UEFI_ASSERT_EXECUTION(fillDevicesTree(), NgosStatus::ASSERTION);
@@ -373,6 +377,23 @@ NgosStatus DeviceManagerGUI::exec()
 NgosStatus DeviceManagerGUI::fillDevicesTree()
 {
     UEFI_LT((""));
+
+
+
+    Image *collapseImage;
+    Image *expandImage;
+
+
+
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/collapse.9.png", &collapseImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/expand.9.png",   &expandImage),   NgosStatus::ASSERTION);
+
+
+
+
+    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(collapseImage, expandImage, expandImage, "System", sDevicesTreeWidget->getWrapperWidget());
+
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget), NgosStatus::ASSERTION);
 
 
 
