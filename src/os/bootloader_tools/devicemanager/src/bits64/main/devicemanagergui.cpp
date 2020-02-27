@@ -394,8 +394,8 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/toolbutton_normal.9.png",  &toolButtonNormalImage),  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/toolbutton_hover.9.png",   &toolButtonHoverImage),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/toolbutton_pressed.9.png", &toolButtonPressedImage), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/collapsed.9.png",          &collapsedImage),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/expanded.9.png",           &expandedImage),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/collapsed.png",            &collapsedImage),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/expanded.png",             &expandedImage),          NgosStatus::ASSERTION);
 
 
 
