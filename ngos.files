@@ -308,11 +308,11 @@ src/os/bootloader_tools/devicemanager/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/devicemanager/assets/images/button_hover.9.png
 src/os/bootloader_tools/devicemanager/assets/images/button_normal.9.png
 src/os/bootloader_tools/devicemanager/assets/images/button_pressed.9.png
-src/os/bootloader_tools/devicemanager/assets/images/collapsed.9.png
+src/os/bootloader_tools/devicemanager/assets/images/collapsed.png
 src/os/bootloader_tools/devicemanager/assets/images/console.9.png
 src/os/bootloader_tools/devicemanager/assets/images/critical.png
 src/os/bootloader_tools/devicemanager/assets/images/cursor.png
-src/os/bootloader_tools/devicemanager/assets/images/expanded.9.png
+src/os/bootloader_tools/devicemanager/assets/images/expanded.png
 src/os/bootloader_tools/devicemanager/assets/images/issues.png
 src/os/bootloader_tools/devicemanager/assets/images/reboot.png
 src/os/bootloader_tools/devicemanager/assets/images/selectedtab_focused.9.png
