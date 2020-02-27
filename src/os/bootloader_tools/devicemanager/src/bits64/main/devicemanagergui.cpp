@@ -65,6 +65,7 @@ TabButton   *DeviceManagerGUI::sSystemInformationTabButton;
 TabButton   *DeviceManagerGUI::sIssuesTabButton;
 TreeWidget  *DeviceManagerGUI::sDevicesTreeWidget;
 TableWidget *DeviceManagerGUI::sDeviceInfoTableWidget;
+Image       *DeviceManagerGUI::sSystemInformationImage;
 Image       *DeviceManagerGUI::sWarningImage;
 Image       *DeviceManagerGUI::sCriticalImage;
 u16          DeviceManagerGUI::sWaitEventsCount;
@@ -116,7 +117,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     Image *selectedTabFocusedResizedImage;
     Image *selectedTabFocusedHoverResizedImage;
     Image *tabWidgetPanelImage;
-    Image *systemInformationImage;
     Image *issuesImage;
     Image *treeBackgroundImage;
     Image *tableBackgroundImage;
@@ -144,7 +144,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/selectedtab_focused.9.png",       &selectedTabFocusedImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/selectedtab_focused_hover.9.png", &selectedTabFocusedHoverImage), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tabwidget_panel.9.png",           &tabWidgetPanelImage),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",          &systemInformationImage),       NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/issues.png",                      &issuesImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tree_background.9.png",           &treeBackgroundImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
@@ -152,6 +151,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",                    &shutdownImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",          &sSystemInformationImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/warning.png",                     &sWarningImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/critical.png",                    &sCriticalImage),               NgosStatus::ASSERTION);
 
@@ -258,7 +258,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    sSystemInformationTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, systemInformationImage, nullptr, "System Info", sTabWidget);
+    sSystemInformationTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, sSystemInformationImage, nullptr, "System Info", sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setSize(tabButtonWidth, tabButtonHeight),                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSystemInformationTabButton->setKeyboardEventHandler(onSystemInformationTabButtonKeyboardEvent), NgosStatus::ASSERTION);
@@ -391,7 +391,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
-    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(collapseImage, expandImage, expandImage, "System", sDevicesTreeWidget->getWrapperWidget());
+    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(collapseImage, expandImage, sSystemInformationImage, "System", sDevicesTreeWidget->getWrapperWidget());
 
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget), NgosStatus::ASSERTION);
 
