@@ -963,6 +963,8 @@ src/os/shared/common/src/bits64/gui/widgets/controls/tablewidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/controls/tablewidget.h
 src/os/shared/common/src/bits64/gui/widgets/controls/tabwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/controls/tabwidget.h
+src/os/shared/common/src/bits64/gui/widgets/controls/toolbutton.cpp
+src/os/shared/common/src/bits64/gui/widgets/controls/toolbutton.h
 src/os/shared/common/src/bits64/gui/widgets/controls/treewidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/controls/treewidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/consolewidget.cpp
