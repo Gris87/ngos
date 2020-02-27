@@ -180,6 +180,7 @@ NgosStatus TreeWidget::setRootNodeWidget(TreeNodeWidget *widget)
 
 
 
+    COMMON_ASSERT_EXECUTION(widget->setRowHeight(mRowHeight),                        NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(widget->setSize(mWrapperWidget->getWidth(), mRowHeight), NgosStatus::ASSERTION);
 
 

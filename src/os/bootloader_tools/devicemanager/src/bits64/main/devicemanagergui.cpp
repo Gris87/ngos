@@ -65,6 +65,11 @@ TabButton   *DeviceManagerGUI::sSystemInformationTabButton;
 TabButton   *DeviceManagerGUI::sIssuesTabButton;
 TreeWidget  *DeviceManagerGUI::sDevicesTreeWidget;
 TableWidget *DeviceManagerGUI::sDeviceInfoTableWidget;
+Image       *DeviceManagerGUI::sButtonNormalImage;
+Image       *DeviceManagerGUI::sButtonHoverImage;
+Image       *DeviceManagerGUI::sButtonPressedImage;
+Image       *DeviceManagerGUI::sButtonFocusedImage;
+Image       *DeviceManagerGUI::sButtonFocusedHoverImage;
 Image       *DeviceManagerGUI::sSystemInformationImage;
 Image       *DeviceManagerGUI::sWarningImage;
 Image       *DeviceManagerGUI::sCriticalImage;
@@ -86,11 +91,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
     Image *backgroundImage;
-    Image *buttonNormalImage;
-    Image *buttonHoverImage;
-    Image *buttonPressedImage;
-    Image *buttonFocusedImage;
-    Image *buttonFocusedHoverImage;
     Image *buttonNormalResizedImage;
     Image *buttonHoverResizedImage;
     Image *buttonPressedResizedImage;
@@ -128,11 +128,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/background.jpg",                  &backgroundImage),              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_normal.9.png",             &buttonNormalImage),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_hover.9.png",              &buttonHoverImage),             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_pressed.9.png",            &buttonPressedImage),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_focused.9.png",            &buttonFocusedImage),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_focused_hover.9.png",      &buttonFocusedHoverImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tab_normal.9.png",                &tabNormalImage),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tab_hover.9.png",                 &tabHoverImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/tab_pressed.9.png",               &tabPressedImage),              NgosStatus::ASSERTION);
@@ -151,6 +146,11 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",                    &shutdownImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_normal.9.png",             &sButtonNormalImage),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_hover.9.png",              &sButtonHoverImage),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_pressed.9.png",            &sButtonPressedImage),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_focused.9.png",            &sButtonFocusedImage),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/button_focused_hover.9.png",      &sButtonFocusedHoverImage),     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",          &sSystemInformationImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/warning.png",                     &sWarningImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/critical.png",                    &sCriticalImage),               NgosStatus::ASSERTION);
@@ -215,15 +215,15 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       systemButtonSize, systemButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        systemButtonSize, systemButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      systemButtonSize, systemButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      systemButtonSize, systemButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, systemButtonSize, systemButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       systemButtonSize, systemButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        systemButtonSize, systemButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonPressedImage,      systemButtonSize, systemButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedImage,      systemButtonSize, systemButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedHoverImage, systemButtonSize, systemButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
 
 
 
-    sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, rebootImage, nullptr, "", rootWidget);
+    sRebootButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, rebootImage, nullptr, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
@@ -232,7 +232,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shutdownImage, nullptr, "", rootWidget);
+    sShutdownButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shutdownImage, nullptr, "", rootWidget);
 
     UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
@@ -380,18 +380,34 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
-    Image *collapseImage;
-    Image *expandImage;
+    Image *buttonNormalResizedImage;
+    Image *buttonHoverResizedImage;
+    Image *buttonPressedResizedImage;
+    Image *buttonFocusedResizedImage;
+    Image *buttonFocusedHoverResizedImage;
+    Image *collapsedImage;
+    Image *expandedImage;
 
 
 
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/collapse.9.png", &collapseImage), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/expand.9.png",   &expandImage),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/collapsed.9.png", &collapsedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/expanded.9.png",  &expandedImage),  NgosStatus::ASSERTION);
 
 
 
+    u64 expandButtonSize = sDevicesTreeWidget->getRowHeight();
 
-    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(collapseImage, expandImage, sSystemInformationImage, "System", sDevicesTreeWidget->getWrapperWidget());
+
+
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       expandButtonSize, expandButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        expandButtonSize, expandButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonPressedImage,      expandButtonSize, expandButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedImage,      expandButtonSize, expandButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonFocusedHoverImage, expandButtonSize, expandButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+
+
+
+    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "System", sDevicesTreeWidget->getWrapperWidget());
 
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget), NgosStatus::ASSERTION);
 
