@@ -51,11 +51,6 @@ private:
     static TabButton   *sIssuesTabButton;
     static TreeWidget  *sDevicesTreeWidget;
     static TableWidget *sDeviceInfoTableWidget;
-    static Image       *sButtonNormalImage;
-    static Image       *sButtonHoverImage;
-    static Image       *sButtonPressedImage;
-    static Image       *sButtonFocusedImage;
-    static Image       *sButtonFocusedHoverImage;
     static Image       *sSystemInformationImage;
     static Image       *sWarningImage;
     static Image       *sCriticalImage;

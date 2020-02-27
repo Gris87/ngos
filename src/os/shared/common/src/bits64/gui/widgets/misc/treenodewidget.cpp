@@ -7,26 +7,24 @@
 
 
 
-TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8 *text, Widget *parent)
+TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8 *text, Widget *parent)
     : Widget(parent)
     , mCollapsedImage(collapsedImage)
     , mExpandedImage(expandedImage)
     , mImage(image)
-    , mExpandButton(new Button(normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, collapsedImage, nullptr, nullptr, this))
+    , mExpandToolButton(new ToolButton(normalImage, hoverImage, pressedImage, collapsedImage, nullptr, nullptr, this))
     , mImageWidget(nullptr)
     , mLabelWidget(nullptr)
     , mRowHeight(0)
 {
-    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, collapsedImage, expandedImage, image, text, parent));
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, collapsedImage, expandedImage, image, text, parent));
 
-    COMMON_ASSERT(normalImage,       "normalImage is null");
-    COMMON_ASSERT(hoverImage,        "hoverImage is null");
-    COMMON_ASSERT(pressedImage,      "pressedImage is null");
-    COMMON_ASSERT(focusedImage,      "focusedImage is null");
-    COMMON_ASSERT(focusedHoverImage, "focusedHoverImage is null");
-    COMMON_ASSERT(collapsedImage,    "collapsedImage is null");
-    COMMON_ASSERT(expandedImage,     "expandedImage is null");
-    COMMON_ASSERT(parent,            "parent is null");
+    COMMON_ASSERT(normalImage,    "normalImage is null");
+    COMMON_ASSERT(hoverImage,     "hoverImage is null");
+    COMMON_ASSERT(pressedImage,   "pressedImage is null");
+    COMMON_ASSERT(collapsedImage, "collapsedImage is null");
+    COMMON_ASSERT(expandedImage,  "expandedImage is null");
+    COMMON_ASSERT(parent,         "parent is null");
 
 
 
@@ -41,31 +39,27 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     }
 }
 
-TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8 *text, Widget *parent)
+TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8 *text, Widget *parent)
     : Widget(parent)
     , mCollapsedImage(collapsedImage)
     , mExpandedImage(expandedImage)
     , mImage(image)
-    , mExpandButton(new Button(normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, collapsedImage, nullptr, nullptr, this))
+    , mExpandToolButton(new ToolButton(normalImage, hoverImage, pressedImage, normalResizedImage, hoverResizedImage, pressedResizedImage, collapsedImage, nullptr, nullptr, this))
     , mImageWidget(nullptr)
     , mLabelWidget(nullptr)
     , mRowHeight(0)
 {
-    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, collapsedImage, expandedImage, image, text, parent));
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, normalResizedImage, hoverResizedImage, pressedResizedImage, collapsedImage, expandedImage, image, text, parent));
 
-    COMMON_ASSERT(normalImage,              "normalImage is null");
-    COMMON_ASSERT(hoverImage,               "hoverImage is null");
-    COMMON_ASSERT(pressedImage,             "pressedImage is null");
-    COMMON_ASSERT(focusedImage,             "focusedImage is null");
-    COMMON_ASSERT(focusedHoverImage,        "focusedHoverImage is null");
-    COMMON_ASSERT(normalResizedImage,       "normalResizedImage is null");
-    COMMON_ASSERT(hoverResizedImage,        "hoverResizedImage is null");
-    COMMON_ASSERT(pressedResizedImage,      "pressedResizedImage is null");
-    COMMON_ASSERT(focusedResizedImage,      "focusedResizedImage is null");
-    COMMON_ASSERT(focusedHoverResizedImage, "focusedHoverResizedImage is null");
-    COMMON_ASSERT(collapsedImage,           "collapsedImage is null");
-    COMMON_ASSERT(expandedImage,            "expandedImage is null");
-    COMMON_ASSERT(parent,                   "parent is null");
+    COMMON_ASSERT(normalImage,         "normalImage is null");
+    COMMON_ASSERT(hoverImage,          "hoverImage is null");
+    COMMON_ASSERT(pressedImage,        "pressedImage is null");
+    COMMON_ASSERT(normalResizedImage,  "normalResizedImage is null");
+    COMMON_ASSERT(hoverResizedImage,   "hoverResizedImage is null");
+    COMMON_ASSERT(pressedResizedImage, "pressedResizedImage is null");
+    COMMON_ASSERT(collapsedImage,      "collapsedImage is null");
+    COMMON_ASSERT(expandedImage,       "expandedImage is null");
+    COMMON_ASSERT(parent,              "parent is null");
 
 
 
@@ -139,10 +133,10 @@ NgosStatus TreeNodeWidget::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(mExpandButton->lockUpdates(),                   NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mExpandButton->setPosition(0, 0),               NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mExpandButton->setSize(mRowHeight, mRowHeight), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mExpandButton->unlockUpdates(),                 NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->lockUpdates(),                   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->setPosition(0, 0),               NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->setSize(mRowHeight, mRowHeight), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->unlockUpdates(),                 NgosStatus::ASSERTION);
 
 
 
