@@ -130,13 +130,13 @@ NgosStatus TreeWidget::repaint()
     return NgosStatus::OK;
 }
 
-WrapperWidget* TreeWidget::getWrapperWidget() const
+bool TreeWidget::isFocusable()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-    return mWrapperWidget;
+    return true;
 }
 
 NgosStatus TreeWidget::setRowHeight(u64 height)
@@ -175,11 +175,11 @@ NgosStatus TreeWidget::setRootNodeWidget(TreeNodeWidget *widget)
 
 
 
-    COMMON_TEST_ASSERT(widget->getParent() == mWrapperWidget, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mRowHeight != 0,                       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mRowHeight != 0, NgosStatus::ASSERTION);
 
 
 
+    COMMON_ASSERT_EXECUTION(widget->setParent(mWrapperWidget),                       NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(widget->setRowHeight(mRowHeight),                        NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(widget->setSize(mWrapperWidget->getWidth(), mRowHeight), NgosStatus::ASSERTION);
 

@@ -367,6 +367,15 @@ bool Button::isAcceptMouseEvents()
     return true;
 }
 
+bool Button::isFocusable()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return true;
+}
+
 NgosStatus Button::setContentImage(Image *contentImage)
 {
     COMMON_LT((" | contentImage = %u", contentImage));

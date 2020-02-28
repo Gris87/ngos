@@ -22,6 +22,7 @@ public:
     NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
 
     bool isAcceptMouseEvents() override; // TEST: NO
+    bool isFocusable() override; // TEST: NO
 
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO

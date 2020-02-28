@@ -19,7 +19,7 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
-    WrapperWidget* getWrapperWidget() const; // TEST: NO
+    bool isFocusable() override; // TEST: NO
 
     NgosStatus setRowHeight(u64 height); // TEST: NO
     u64 getRowHeight() const; // TEST: NO

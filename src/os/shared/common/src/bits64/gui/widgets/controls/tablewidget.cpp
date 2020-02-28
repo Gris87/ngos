@@ -339,6 +339,15 @@ NgosStatus TableWidget::pageDown()
     return NgosStatus::OK;
 }
 
+bool TableWidget::isFocusable()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return true;
+}
+
 NgosStatus TableWidget::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));

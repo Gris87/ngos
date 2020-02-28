@@ -178,27 +178,6 @@ NgosStatus Widget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus Widget::moveToFront()
-{
-    COMMON_LT((""));
-
-
-
-    if (mParent)
-    {
-        COMMON_ASSERT_EXECUTION(mParent->mChildren.moveToEnd(this), NgosStatus::ASSERTION);
-
-        if (isVisible())
-        {
-            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
 NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
 {
     // COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY)); // Commented to avoid too frequent logs
@@ -382,6 +361,15 @@ bool Widget::isFocused()
 
 
     return GUI::getFocusedWidget() == this;
+}
+
+bool Widget::isFocusable()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return false;
 }
 
 Widget* Widget::getOwnerWidget()

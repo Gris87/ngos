@@ -496,6 +496,15 @@ bool TabButton::isAcceptMouseEvents()
     return true;
 }
 
+bool TabButton::isFocusable()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return true;
+}
+
 NgosStatus TabButton::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));

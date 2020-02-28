@@ -21,6 +21,13 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    bool isAcceptMouseEvents() override; // TEST: NO
+
+    Widget* getOwnerWidget() override; // TEST: NO
+
+    NgosStatus setState(WidgetState state) override; // TEST: NO
+    WidgetState getState() const override; // TEST: NO
+
     NgosStatus setRowHeight(u64 height); // TEST: NO
     u64 getRowHeight() const; // TEST: NO
 
@@ -31,6 +38,7 @@ private:
     ToolButton  *mExpandToolButton;
     ImageWidget *mImageWidget;
     LabelWidget *mLabelWidget;
+    WidgetState  mState;
     u64          mRowHeight;
 };
 

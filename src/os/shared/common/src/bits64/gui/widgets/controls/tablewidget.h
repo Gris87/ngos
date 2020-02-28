@@ -26,6 +26,8 @@ public:
     NgosStatus pageUp(); // TEST: NO
     NgosStatus pageDown(); // TEST: NO
 
+    bool isFocusable() override; // TEST: NO
+
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 

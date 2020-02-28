@@ -11,7 +11,7 @@ struct RgbPixel
 {
     u8 blue;
     u8 green;
-    u8 red;
+    u8 red; // TODO: Set with u32
 } __attribute__((packed));
 
 
