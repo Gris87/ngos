@@ -237,7 +237,11 @@ Widget* TreeNodeWidget::getOwnerWidget()
 
 
 
-    Widget *widget = getParent();
+    
+    COMMON_TEST_ASSERT(getParent(),              nullptr);
+    COMMON_TEST_ASSERT(getParent()->getParent(), nullptr);
+
+    Widget *widget = getParent()->getParent();
 
     do
     {
