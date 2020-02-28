@@ -356,7 +356,7 @@ NgosStatus TableWidget::setState(WidgetState state)
 
     if (mState != state)
     {
-        mState = state;
+        mState = state; // TODO: Fix issue with selecting inactive first row
 
 
 
