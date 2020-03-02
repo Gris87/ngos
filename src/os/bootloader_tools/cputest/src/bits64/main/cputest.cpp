@@ -103,7 +103,7 @@ NgosStatus CpuTest::initCpuCaches()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            UEFI_LF(("Unexpected CPU vendor %s", enumToFullString(CPU::getVendor())));
+            UEFI_LF(("Unexpected CPU vendor %s, %s:%u", enumToFullString(CPU::getVendor()), __FILE__, __LINE__));
 
             return NgosStatus::NOT_SUPPORTED;
         }
@@ -111,7 +111,7 @@ NgosStatus CpuTest::initCpuCaches()
 
         default:
         {
-            UEFI_LF(("Unknown CPU vendor %s", enumToFullString(CPU::getVendor())));
+            UEFI_LF(("Unknown CPU vendor %s, %s:%u", enumToFullString(CPU::getVendor()), __FILE__, __LINE__));
 
             return NgosStatus::NOT_SUPPORTED;
         }
@@ -229,14 +229,14 @@ NgosStatus CpuTest::initCpuCachesIntel()
                 }
                 else
                 {
-                    UEFI_LF(("Unknown cache level: %u", cacheLevel));
+                    UEFI_LF(("Unknown cache level: %u, %s:%u", cacheLevel, __FILE__, __LINE__));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
             }
             else
             {
-                UEFI_LF(("Unknown cache type: %u", cacheType));
+                UEFI_LF(("Unknown cache type: %u, %s:%u", cacheType, __FILE__, __LINE__));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -384,7 +384,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
                 default:
                 {
-                    UEFI_LF(("Unknown register byte for CACHE_INFO_CPUID: 0x%02X", registerByte[i]));
+                    UEFI_LF(("Unknown register byte for CACHE_INFO_CPUID: 0x%02X, %s:%u", registerByte[i], __FILE__, __LINE__));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }

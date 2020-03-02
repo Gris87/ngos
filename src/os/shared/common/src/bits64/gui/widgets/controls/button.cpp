@@ -218,7 +218,7 @@ NgosStatus Button::repaint()
         case WidgetState::INACTIVE:
         case WidgetState::INACTIVE_HOVERED:
         {
-            COMMON_LF(("Unexpected widget state: %s", enumToFullString(mState)));
+            COMMON_LF(("Unexpected widget state: %s, %s:%u", enumToFullString(mState), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -226,7 +226,7 @@ NgosStatus Button::repaint()
 
         default:
         {
-            COMMON_LF(("Unknown widget state: %s", enumToFullString(mState)));
+            COMMON_LF(("Unknown widget state: %s, %s:%u", enumToFullString(mState), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }

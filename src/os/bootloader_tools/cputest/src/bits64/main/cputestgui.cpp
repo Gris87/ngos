@@ -1522,7 +1522,7 @@ NgosStatus CpuTestGUI::focusTabFirstWidget()
 
         default:
         {
-            UEFI_LF(("Unknown tab page: %d", sTabWidget->getCurrentPage()));
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTabWidget->getCurrentPage(), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }

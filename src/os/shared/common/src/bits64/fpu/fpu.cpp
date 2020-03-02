@@ -709,7 +709,7 @@ u32 FPU::expectedStateSize()
                 case XFeature::SSE:
                 case XFeature::PT:
                 {
-                    COMMON_LF(("Unexpected X feature %s", enumToFullString(feature)));
+                    COMMON_LF(("Unexpected X feature %s, %s:%u", enumToFullString(feature), __FILE__, __LINE__));
 
                     return 0;
                 }
@@ -717,7 +717,7 @@ u32 FPU::expectedStateSize()
 
                 default:
                 {
-                    COMMON_LF(("Unknown X feature %s", enumToFullString(feature)));
+                    COMMON_LF(("Unknown X feature %s, %s:%u", enumToFullString(feature), __FILE__, __LINE__));
 
                     return 0;
                 }

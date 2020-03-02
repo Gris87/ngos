@@ -1384,7 +1384,7 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             default:
             {
-                EARLY_LF(("Unknown decoder->lzma2.sequence: %s", enumToFullString(decoder->lzma2.sequence)));
+                EARLY_LF(("Unknown decoder->lzma2.sequence: %s, %s:%u", enumToFullString(decoder->lzma2.sequence), __FILE__, __LINE__));
 
                 return NgosStatus::INVALID_DATA;
             }

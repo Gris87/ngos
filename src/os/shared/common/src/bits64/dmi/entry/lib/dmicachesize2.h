@@ -34,7 +34,7 @@ struct DmiCacheSize2
 
             default:
             {
-                COMMON_LF(("Unknown cache size granularity %s", enumToFullString((DmiCacheSizeGranularity)granularity)));
+                COMMON_LF(("Unknown cache size granularity %s, %s:%u", enumToFullString((DmiCacheSizeGranularity)granularity), __FILE__, __LINE__));
 
                 return 0;
             }

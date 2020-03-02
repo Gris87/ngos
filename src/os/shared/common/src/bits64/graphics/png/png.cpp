@@ -255,7 +255,7 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
         case PngChunkType::TRNS:
         case PngChunkType::SPLT:
         {
-            COMMON_LE(("Unexpected PNG chunk found: %s", enumToFullString(chunk->type)));
+            COMMON_LW(("Unexpected PNG chunk found: %s", enumToFullString(chunk->type)));
         }
         break;
 
@@ -382,7 +382,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
         default:
         {
-            COMMON_LC(("Unexpected PNG color type: %s", enumToFullString(imageHeader->colorType)));
+            COMMON_LF(("Unexpected PNG color type: %s, %s:%u", enumToFullString(imageHeader->colorType), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -889,7 +889,7 @@ NgosStatus Png::processImageInterlace(PngDecoder *decoder)
 
         default:
         {
-            COMMON_LE(("Unknown interlace method %s", enumToFullString(decoder->imageHeader->interlaceMethod)));
+            COMMON_LF(("Unknown interlace method %s, %s:%u", enumToFullString(decoder->imageHeader->interlaceMethod), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -1547,7 +1547,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
 
         default:
         {
-            COMMON_LE(("Unknown filter type %s", enumToFullString(filterType)));
+            COMMON_LF(("Unknown filter type %s, %s:%u", enumToFullString(filterType), __FILE__, __LINE__));
 
             return NgosStatus::INVALID_DATA;
         }
@@ -1649,7 +1649,7 @@ NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth)
 
         default:
         {
-            COMMON_LC(("Unexpected PNG color type: %s", enumToFullString(colorType)));
+            COMMON_LF(("Unexpected PNG color type: %s, %s:%u", enumToFullString(colorType), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -1782,7 +1782,7 @@ NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, u64 *size)
 
         default:
         {
-            COMMON_LE(("Unknown interlace method %s", enumToFullString(decoder->imageHeader->interlaceMethod)));
+            COMMON_LF(("Unknown interlace method %s, %s:%u", enumToFullString(decoder->imageHeader->interlaceMethod), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }

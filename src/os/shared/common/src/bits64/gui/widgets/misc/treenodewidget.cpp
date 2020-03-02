@@ -129,7 +129,7 @@ NgosStatus TreeNodeWidget::invalidate()
             case WidgetState::NONE:
             case WidgetState::NORMAL:
             {
-                COMMON_LF(("Unexpected widget state: %s", enumToFullString(mState)));
+                COMMON_LF(("Unexpected widget state: %s, %s:%u", enumToFullString(mState), __FILE__, __LINE__));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -137,7 +137,7 @@ NgosStatus TreeNodeWidget::invalidate()
 
             default:
             {
-                COMMON_LF(("Unknown widget state: %s", enumToFullString(mState)));
+                COMMON_LF(("Unknown widget state: %s, %s:%u", enumToFullString(mState), __FILE__, __LINE__));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -237,7 +237,7 @@ Widget* TreeNodeWidget::getOwnerWidget()
 
 
 
-    
+
     COMMON_TEST_ASSERT(getParent(),              nullptr);
     COMMON_TEST_ASSERT(getParent()->getParent(), nullptr);
 

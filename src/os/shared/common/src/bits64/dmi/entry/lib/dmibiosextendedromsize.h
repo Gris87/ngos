@@ -34,7 +34,7 @@ struct DmiBiosExtendedRomSize
 
             default:
             {
-                COMMON_LF(("Unknown BIOS extended rom size unit %s", enumToFullString((DmiBiosExtendedRomSizeUnit)unit)));
+                COMMON_LF(("Unknown BIOS extended rom size unit %s, %s:%u", enumToFullString((DmiBiosExtendedRomSizeUnit)unit), __FILE__, __LINE__));
 
                 return 0;
             }

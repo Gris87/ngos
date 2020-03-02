@@ -250,7 +250,7 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
         default:
         {
-            COMMON_LF(("Unexpected key size: %u", size));
+            COMMON_LF(("Unexpected key size: %u, %s:%u", size, __FILE__, __LINE__));
 
             return NgosStatus::INVALID_DATA;
         }

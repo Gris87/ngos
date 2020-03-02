@@ -258,7 +258,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                     case OsType::CENTOS_8:   pathToImage = "images/os_centos.png";  break;
                     case OsType::MAXIMUM:
                     {
-                        UEFI_LF(("Unexpected OS type: %s", enumToFullString(os.type)));
+                        UEFI_LF(("Unexpected OS type: %s, %s:%u", enumToFullString(os.type), __FILE__, __LINE__));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -266,7 +266,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                     default:
                     {
-                        UEFI_LF(("Unknown OS type: %s", enumToFullString(os.type)));
+                        UEFI_LF(("Unknown OS type: %s, %s:%u", enumToFullString(os.type), __FILE__, __LINE__));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -295,7 +295,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                     case VolumeType::MAXIMUM:
                     {
-                        UEFI_LF(("Unexpected volume type: %s", enumToFullString(os.volume->type)));
+                        UEFI_LF(("Unexpected volume type: %s, %s:%u", enumToFullString(os.volume->type), __FILE__, __LINE__));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }
@@ -303,7 +303,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                     default:
                     {
-                        UEFI_LF(("Unknown volume type: %s", enumToFullString(os.volume->type)));
+                        UEFI_LF(("Unknown volume type: %s, %s:%u", enumToFullString(os.volume->type), __FILE__, __LINE__));
 
                         return NgosStatus::UNEXPECTED_BEHAVIOUR;
                     }

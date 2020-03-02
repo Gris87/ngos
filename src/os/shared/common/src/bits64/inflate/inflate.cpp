@@ -275,7 +275,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
         default:
         {
-            COMMON_LF(("Unknown code type: %d", codeType));
+            COMMON_LF(("Unknown code type: %d, %s:%u", codeType, __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -1086,7 +1086,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
 
             default:
             {
-                COMMON_LF(("Unexpected blockType: %s", enumToFullString(blockType)));
+                COMMON_LF(("Unexpected blockType: %s, %s:%u", enumToFullString(blockType), __FILE__, __LINE__));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }

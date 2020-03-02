@@ -92,7 +92,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
             case UefiMemoryType::MAXIMUM:
             {
-                UEFI_LF(("Unexpected memory descriptor type %s", enumToFullString(memoryDescriptor->type)));
+                UEFI_LF(("Unexpected memory descriptor type %s, %s:%u", enumToFullString(memoryDescriptor->type), __FILE__, __LINE__));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }
@@ -100,7 +100,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
             default:
             {
-                UEFI_LF(("Unknown memory descriptor type %s", enumToFullString(memoryDescriptor->type)));
+                UEFI_LF(("Unknown memory descriptor type %s, %s:%u", enumToFullString(memoryDescriptor->type), __FILE__, __LINE__));
 
                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
             }

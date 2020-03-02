@@ -539,7 +539,7 @@ bool CPU::isOutdated()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unexpected CPU vendor %s", enumToFullString(sCpuVendor)));
+            COMMON_LF(("Unexpected CPU vendor %s, %s:%u", enumToFullString(sCpuVendor), __FILE__, __LINE__));
 
             return true;
         }
@@ -547,7 +547,7 @@ bool CPU::isOutdated()
 
         default:
         {
-            COMMON_LF(("Unknown CPU vendor %s", enumToFullString(sCpuVendor)));
+            COMMON_LF(("Unknown CPU vendor %s, %s:%u", enumToFullString(sCpuVendor), __FILE__, __LINE__));
 
             return true;
         }
@@ -1090,13 +1090,13 @@ NgosStatus CPU::doPreprocessing()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unexpected CPU vendor %s", enumToFullString(sCpuVendor)));
+            COMMON_LF(("Unexpected CPU vendor %s, %s:%u", enumToFullString(sCpuVendor), __FILE__, __LINE__));
         }
         break;
 
         default:
         {
-            COMMON_LF(("Unknown CPU vendor %s", enumToFullString(sCpuVendor)));
+            COMMON_LF(("Unknown CPU vendor %s, %s:%u", enumToFullString(sCpuVendor), __FILE__, __LINE__));
         }
         break;
     }
@@ -1381,13 +1381,13 @@ NgosStatus CPU::doPostprocessing()
         case CpuVendor::NONE:
         case CpuVendor::UNKNOWN:
         {
-            COMMON_LF(("Unexpected CPU vendor %s", enumToFullString(sCpuVendor)));
+            COMMON_LF(("Unexpected CPU vendor %s, %s:%u", enumToFullString(sCpuVendor), __FILE__, __LINE__));
         }
         break;
 
         default:
         {
-            COMMON_LF(("Unknown CPU vendor %s", enumToFullString(sCpuVendor)));
+            COMMON_LF(("Unknown CPU vendor %s, %s:%u", enumToFullString(sCpuVendor), __FILE__, __LINE__));
         }
         break;
     }

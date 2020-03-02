@@ -309,7 +309,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
         case JpegMarkerType::RESTART_6:
         case JpegMarkerType::RESTART_7:
         {
-            COMMON_LC(("Unexpected marker type: %s", enumToFullString(marker->type)));
+            COMMON_LF(("Unexpected marker type: %s, %s:%u", enumToFullString(marker->type), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -317,7 +317,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
 
         default:
         {
-            COMMON_LC(("Unknown marker type: %s", enumToFullString(marker->type)));
+            COMMON_LF(("Unknown marker type: %s, %s:%u", enumToFullString(marker->type), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
