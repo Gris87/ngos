@@ -116,7 +116,7 @@ NgosStatus TableWidget::onKeyboardEvent(const UefiInputKey &key)
     {
         case UefiInputKeyScanCode::UP:
         {
-            if (!mSelectedRow) // mSelectedRow == 0
+            if (mSelectedRow <= 0)
             {
                 return NgosStatus::NO_EFFECT;
             }
@@ -356,7 +356,7 @@ NgosStatus TableWidget::setState(WidgetState state)
 
     if (mState != state)
     {
-        mState = state; // TODO: Fix issue with selecting inactive first row
+        mState = state;
 
 
 
@@ -487,7 +487,37 @@ NgosStatus TableWidget::setState(WidgetState state)
 
             case WidgetState::HOVERED:
             {
-                // Nothing
+                switch (selectedRow->getState())
+                {
+                    case WidgetState::FOCUSED:         COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::INACTIVE),         NgosStatus::ASSERTION); break;
+                    case WidgetState::FOCUSED_HOVERED: COMMON_ASSERT_EXECUTION(selectedRow->setState(WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
+
+                    case WidgetState::INACTIVE:
+                    case WidgetState::INACTIVE_HOVERED:
+                    {
+                        // Nothing
+                    }
+                    break;
+
+                    case WidgetState::NONE:
+                    case WidgetState::NORMAL:
+                    case WidgetState::HOVERED:
+                    case WidgetState::PRESSED:
+                    {
+                        COMMON_LF(("Unexpected widget state: %s, %s:%u", enumToFullString(selectedRow->getState()), __FILE__, __LINE__));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
+
+                    default:
+                    {
+                        COMMON_LF(("Unknown widget state: %s, %s:%u", enumToFullString(selectedRow->getState()), __FILE__, __LINE__));
+
+                        return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                    }
+                    break;
+                }
             }
             break;
 
