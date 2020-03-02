@@ -413,60 +413,66 @@ NgosStatus TreeWidget::setSelectedTreeNodeWidget(TreeNodeWidget *node)
 
 
 
-        switch (previousNode->getState())
+        if (previousNode)
         {
-            case WidgetState::FOCUSED:          COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
-            case WidgetState::FOCUSED_HOVERED:  COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::HOVERED), NgosStatus::ASSERTION); break;
-            case WidgetState::INACTIVE:         COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
-            case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::HOVERED), NgosStatus::ASSERTION); break;
-
-            case WidgetState::NONE:
-            case WidgetState::NORMAL:
-            case WidgetState::HOVERED:
-            case WidgetState::PRESSED:
+            switch (previousNode->getState())
             {
-                COMMON_LF(("Unexpected widget state: %s, %s:%u", enumToFullString(previousNode->getState()), __FILE__, __LINE__));
+                case WidgetState::FOCUSED:          COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
+                case WidgetState::FOCUSED_HOVERED:  COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::HOVERED), NgosStatus::ASSERTION); break;
+                case WidgetState::INACTIVE:         COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::NORMAL),  NgosStatus::ASSERTION); break;
+                case WidgetState::INACTIVE_HOVERED: COMMON_ASSERT_EXECUTION(previousNode->setState(WidgetState::HOVERED), NgosStatus::ASSERTION); break;
 
-                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                case WidgetState::NONE:
+                case WidgetState::NORMAL:
+                case WidgetState::HOVERED:
+                case WidgetState::PRESSED:
+                {
+                    COMMON_LF(("Unexpected widget state: %s, %s:%u", enumToFullString(previousNode->getState()), __FILE__, __LINE__));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+
+                default:
+                {
+                    COMMON_LF(("Unknown widget state: %s, %s:%u", enumToFullString(previousNode->getState()), __FILE__, __LINE__));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
             }
-            break;
-
-            default:
-            {
-                COMMON_LF(("Unknown widget state: %s, %s:%u", enumToFullString(previousNode->getState()), __FILE__, __LINE__));
-
-                return NgosStatus::UNEXPECTED_BEHAVIOUR;
-            }
-            break;
         }
 
 
 
-        switch (mSelectedTreeNodeWidget->getState())
+        if (mSelectedTreeNodeWidget)
         {
-            case WidgetState::NORMAL:  COMMON_ASSERT_EXECUTION(mSelectedTreeNodeWidget->setState(isFocused() ? WidgetState::FOCUSED         : WidgetState::INACTIVE),         NgosStatus::ASSERTION); break;
-            case WidgetState::HOVERED: COMMON_ASSERT_EXECUTION(mSelectedTreeNodeWidget->setState(isFocused() ? WidgetState::FOCUSED_HOVERED : WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
-
-            case WidgetState::NONE:
-            case WidgetState::PRESSED:
-            case WidgetState::FOCUSED:
-            case WidgetState::FOCUSED_HOVERED:
-            case WidgetState::INACTIVE:
-            case WidgetState::INACTIVE_HOVERED:
+            switch (mSelectedTreeNodeWidget->getState())
             {
-                COMMON_LF(("Unexpected widget state: %s, %s:%u", enumToFullString(mSelectedTreeNodeWidget->getState()), __FILE__, __LINE__));
+                case WidgetState::NORMAL:  COMMON_ASSERT_EXECUTION(mSelectedTreeNodeWidget->setState(isFocused() ? WidgetState::FOCUSED         : WidgetState::INACTIVE),         NgosStatus::ASSERTION); break;
+                case WidgetState::HOVERED: COMMON_ASSERT_EXECUTION(mSelectedTreeNodeWidget->setState(isFocused() ? WidgetState::FOCUSED_HOVERED : WidgetState::INACTIVE_HOVERED), NgosStatus::ASSERTION); break;
 
-                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                case WidgetState::NONE:
+                case WidgetState::PRESSED:
+                case WidgetState::FOCUSED:
+                case WidgetState::FOCUSED_HOVERED:
+                case WidgetState::INACTIVE:
+                case WidgetState::INACTIVE_HOVERED:
+                {
+                    COMMON_LF(("Unexpected widget state: %s, %s:%u", enumToFullString(mSelectedTreeNodeWidget->getState()), __FILE__, __LINE__));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
+
+                default:
+                {
+                    COMMON_LF(("Unknown widget state: %s, %s:%u", enumToFullString(mSelectedTreeNodeWidget->getState()), __FILE__, __LINE__));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
             }
-            break;
-
-            default:
-            {
-                COMMON_LF(("Unknown widget state: %s, %s:%u", enumToFullString(mSelectedTreeNodeWidget->getState()), __FILE__, __LINE__));
-
-                return NgosStatus::UNEXPECTED_BEHAVIOUR;
-            }
-            break;
         }
     }
 
