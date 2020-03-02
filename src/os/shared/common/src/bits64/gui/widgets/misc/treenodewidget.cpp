@@ -237,7 +237,6 @@ Widget* TreeNodeWidget::getOwnerWidget()
 
 
 
-
     COMMON_TEST_ASSERT(getParent(),              nullptr);
     COMMON_TEST_ASSERT(getParent()->getParent(), nullptr);
 
