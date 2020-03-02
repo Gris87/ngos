@@ -17,6 +17,7 @@ NGOS:
 - Convert installer to UEFI application
 - Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
+- Replace u64 with i64 where needed
 
 - Complete with interruptions
 - Implement boot screen for kernel

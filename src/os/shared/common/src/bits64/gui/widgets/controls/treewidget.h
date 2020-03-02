@@ -21,15 +21,31 @@ public:
 
     bool isFocusable() override; // TEST: NO
 
+    NgosStatus setState(WidgetState state) override; // TEST: NO
+    WidgetState getState() const override; // TEST: NO
+
     NgosStatus setRowHeight(u64 height); // TEST: NO
     u64 getRowHeight() const; // TEST: NO
 
-    NgosStatus setRootNodeWidget(TreeNodeWidget *widget); // TEST: NO
+    NgosStatus setRootNodeWidget(TreeNodeWidget *node); // TEST: NO
+
+    NgosStatus setSelectedTreeNodeWidget(TreeNodeWidget *node); // TEST: NO
+    TreeNodeWidget* getSelectedTreeNodeWidget() const; // TEST: NO
+
+    NgosStatus setHighlightedTreeNodeWidget(TreeNodeWidget *node); // TEST: NO
+    TreeNodeWidget* getHighlightedTreeNodeWidget() const; // TEST: NO
+
+    NgosStatus setKeyboardEventHandler(keyboard_event_handler handler) override; // TEST: NO
+    keyboard_event_handler getKeyboardEventHandler() const override; // TEST: NO
 
 private:
-    Image         *mBackgroundImage;
-    WrapperWidget *mWrapperWidget;
-    u64            mRowHeight;
+    Image                  *mBackgroundImage;
+    WidgetState             mState;
+    u64                     mRowHeight;
+    WrapperWidget          *mWrapperWidget;
+    TreeNodeWidget         *mSelectedTreeNodeWidget;
+    TreeNodeWidget         *mHighlightedTreeNodeWidget;
+    keyboard_event_handler  mKeyboardEventHandler;
 };
 
 

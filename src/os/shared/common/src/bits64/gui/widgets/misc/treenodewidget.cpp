@@ -258,6 +258,10 @@ Widget* TreeNodeWidget::getOwnerWidget()
 
 
 
+    COMMON_ASSERT_EXECUTION(treeWidget->setHighlightedTreeNodeWidget(this), nullptr);
+
+
+
     return treeWidget;
 }
 
