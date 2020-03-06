@@ -49,6 +49,7 @@ Code verifier:
 - Verify for log alignment
 - Verify for amount of arguments in log
 - Verify for asserts alignment
+- Remove verifier for zero
 - Upgrade verifier for trace arguments (Check format with the types)
 
 

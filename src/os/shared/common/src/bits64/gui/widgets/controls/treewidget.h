@@ -5,8 +5,8 @@
 
 #include <common/src/bits64/gui/widgets/widget.h>
 
-#include <common/src/bits64/gui/widgets/misc/wrapperwidget.h>
 #include <common/src/bits64/gui/widgets/misc/treenodewidget.h>
+#include <common/src/bits64/gui/widgets/misc/wrapperwidget.h>
 
 
 

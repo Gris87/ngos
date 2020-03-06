@@ -263,6 +263,8 @@ HEADERS += \
     $$PWD/src/bits64/graphics/rgbpixel.h \
     $$PWD/src/bits64/graphics/stretchrange.h \
     $$PWD/src/bits64/gui/gui.h \
+    $$PWD/src/bits64/gui/other/horizontalalignment.h \
+    $$PWD/src/bits64/gui/other/verticalalignment.h \
     $$PWD/src/bits64/gui/other/widgetstate.h \
     $$PWD/src/bits64/gui/widgets/controls/button.h \
     $$PWD/src/bits64/gui/widgets/controls/tabbutton.h \

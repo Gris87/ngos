@@ -19,6 +19,8 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     , mText(text)
     , mGlyphOffsets(nullptr)
     , mColor()
+    , mHorizontalAlignment(HorizontalAlignment::CENTER)
+    , mVerticalAlignment(VerticalAlignment::MIDDLE)
 {
     COMMON_LT((" | text = 0x%p, parent = 0x%p", text, parent));
 

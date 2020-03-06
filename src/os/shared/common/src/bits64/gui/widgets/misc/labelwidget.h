@@ -5,6 +5,9 @@
 
 #include <common/src/bits64/gui/widgets/widget.h>
 
+#include <common/src/bits64/gui/other/horizontalalignment.h>
+#include <common/src/bits64/gui/other/verticalalignment.h>
+
 
 
 class LabelWidget: public Widget
@@ -22,9 +25,11 @@ public:
     const RgbaPixel& getColor() const; // TEST: NO
 
 private:
-    const char8 *mText;
-    u16         *mGlyphOffsets;
-    RgbaPixel    mColor;
+    const char8         *mText;
+    u16                 *mGlyphOffsets;
+    RgbaPixel            mColor;
+    HorizontalAlignment  mHorizontalAlignment;
+    VerticalAlignment    mVerticalAlignment;
 };
 
 

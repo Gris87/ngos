@@ -954,6 +954,8 @@ src/os/shared/common/src/bits64/graphics/stretchrange.cpp
 src/os/shared/common/src/bits64/graphics/stretchrange.h
 src/os/shared/common/src/bits64/gui/gui.cpp
 src/os/shared/common/src/bits64/gui/gui.h
+src/os/shared/common/src/bits64/gui/other/horizontalalignment.h
+src/os/shared/common/src/bits64/gui/other/verticalalignment.h
 src/os/shared/common/src/bits64/gui/other/widgetstate.h
 src/os/shared/common/src/bits64/gui/widgets/controls/button.cpp
 src/os/shared/common/src/bits64/gui/widgets/controls/button.h
