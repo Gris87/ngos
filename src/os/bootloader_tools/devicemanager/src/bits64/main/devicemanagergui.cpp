@@ -421,6 +421,21 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
+    // TODO: Remove it
+    for (i64 i = 0; i < 50; ++i)
+    {
+        TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "temp", sDevicesTreeWidget);
+
+        UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->setExpanded(true), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->setExpanded(true),  NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 

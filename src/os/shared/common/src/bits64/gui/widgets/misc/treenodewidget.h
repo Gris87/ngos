@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/gui/widgets/widget.h>
 
+#include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/gui/widgets/controls/toolbutton.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
@@ -31,22 +32,26 @@ public:
     NgosStatus setRowHeight(u64 height); // TEST: NO
     u64 getRowHeight() const; // TEST: NO
 
+    NgosStatus setExpanded(bool expanded); // TEST: NO
+    bool isExpanded() const; // TEST: NO
+
     NgosStatus setParentNode(TreeNodeWidget *node); // TEST: NO
     TreeNodeWidget* getParentNode() const; // TEST: NO
 
     NgosStatus addChildNode(TreeNodeWidget *node); // TEST: NO
 
 private:
-    Image                  *mCollapsedImage;
-    Image                  *mExpandedImage;
-    Image                  *mImage;
-    ToolButton             *mExpandToolButton;
-    ImageWidget            *mImageWidget;
-    LabelWidget            *mLabelWidget;
-    WidgetState             mState;
-    u64                     mRowHeight;
-    TreeNodeWidget         *mParentNode;
-    List<TreeNodeWidget *>  mChildrenNodes;
+    Image                       *mCollapsedImage;
+    Image                       *mExpandedImage;
+    Image                       *mImage;
+    ToolButton                  *mExpandToolButton;
+    ImageWidget                 *mImageWidget;
+    LabelWidget                 *mLabelWidget;
+    WidgetState                  mState;
+    u64                          mRowHeight;
+    bool                         mExpanded;
+    TreeNodeWidget              *mParentNode;
+    ArrayList<TreeNodeWidget *>  mChildrenNodes;
 };
 
 

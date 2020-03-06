@@ -18,6 +18,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
     , mRowHeight(0)
+    , mExpanded(false)
     , mParentNode(nullptr)
     , mChildrenNodes()
 {
@@ -53,6 +54,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
     , mRowHeight(0)
+    , mExpanded(false)
     , mParentNode(nullptr)
     , mChildrenNodes()
 {
@@ -335,6 +337,28 @@ u64 TreeNodeWidget::getRowHeight() const
 
 
     return mRowHeight;
+}
+
+NgosStatus TreeNodeWidget::setExpanded(bool expanded)
+{
+    COMMON_LT((" | expanded = %u", expanded));
+
+
+
+    mExpanded = expanded;
+
+
+
+    return NgosStatus::OK;
+}
+
+bool TreeNodeWidget::isExpanded() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mExpanded;
 }
 
 NgosStatus TreeNodeWidget::setParentNode(TreeNodeWidget *node)
