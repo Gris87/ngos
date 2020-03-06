@@ -31,15 +31,22 @@ public:
     NgosStatus setRowHeight(u64 height); // TEST: NO
     u64 getRowHeight() const; // TEST: NO
 
+    NgosStatus setParentNode(TreeNodeWidget *node); // TEST: NO
+    TreeNodeWidget* getParentNode() const; // TEST: NO
+
+    NgosStatus addChildNode(TreeNodeWidget *node); // TEST: NO
+
 private:
-    Image       *mCollapsedImage;
-    Image       *mExpandedImage;
-    Image       *mImage;
-    ToolButton  *mExpandToolButton;
-    ImageWidget *mImageWidget;
-    LabelWidget *mLabelWidget;
-    WidgetState  mState;
-    u64          mRowHeight;
+    Image                  *mCollapsedImage;
+    Image                  *mExpandedImage;
+    Image                  *mImage;
+    ToolButton             *mExpandToolButton;
+    ImageWidget            *mImageWidget;
+    LabelWidget            *mLabelWidget;
+    WidgetState             mState;
+    u64                     mRowHeight;
+    TreeNodeWidget         *mParentNode;
+    List<TreeNodeWidget *>  mChildrenNodes;
 };
 
 

@@ -415,6 +415,12 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
+    TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "DMI", sDevicesTreeWidget);
+
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->addChildNode(dmiNodeWidget), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 

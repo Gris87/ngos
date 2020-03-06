@@ -18,6 +18,8 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
     , mRowHeight(0)
+    , mParentNode(nullptr)
+    , mChildrenNodes()
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, collapsedImage, expandedImage, image, text, parent));
 
@@ -51,6 +53,8 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mLabelWidget(nullptr)
     , mState(WidgetState::NORMAL)
     , mRowHeight(0)
+    , mParentNode(nullptr)
+    , mChildrenNodes()
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, normalResizedImage, hoverResizedImage, pressedResizedImage, collapsedImage, expandedImage, image, text, parent));
 
@@ -331,4 +335,53 @@ u64 TreeNodeWidget::getRowHeight() const
 
 
     return mRowHeight;
+}
+
+NgosStatus TreeNodeWidget::setParentNode(TreeNodeWidget *node)
+{
+    COMMON_LT((" | node = 0x%p", node));
+
+    COMMON_ASSERT(node, "node is null", NgosStatus::ASSERTION);
+
+
+
+    mParentNode = node;
+
+
+
+    return NgosStatus::OK;
+}
+
+TreeNodeWidget* TreeNodeWidget::getParentNode() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mParentNode;
+}
+
+NgosStatus TreeNodeWidget::addChildNode(TreeNodeWidget *node)
+{
+    COMMON_LT((" | node = 0x%p", node));
+
+    COMMON_ASSERT(node, "node is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mRowHeight != 0, NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(node->setParent(getParent()),   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(node->setRowHeight(mRowHeight), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(node->setVisible(false),        NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(node->setSize(mWidth, mHeight), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(node->setParentNode(this),   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mChildrenNodes.append(node), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
