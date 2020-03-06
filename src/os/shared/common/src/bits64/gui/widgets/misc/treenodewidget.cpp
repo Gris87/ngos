@@ -44,6 +44,8 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     if (text && *text)
     {
         mLabelWidget = new LabelWidget(text, this);
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED));
     }
 }
 
@@ -86,6 +88,8 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     if (text && *text)
     {
         mLabelWidget = new LabelWidget(text, this);
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED));
     }
 }
 
