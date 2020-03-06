@@ -18,6 +18,7 @@ public:
 
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
+    NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
 
     bool isFocusable() override; // TEST: NO
 
@@ -42,7 +43,7 @@ private:
     Image                  *mBackgroundImage;
     WidgetState             mState;
     u64                     mRowHeight;
-    WrapperWidget          *mWrapperWidget;
+    WrapperWidget          *mContentWrapperWidget;
     TreeNodeWidget         *mSelectedTreeNodeWidget;
     TreeNodeWidget         *mHighlightedTreeNodeWidget;
     keyboard_event_handler  mKeyboardEventHandler;

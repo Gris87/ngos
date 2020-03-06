@@ -26,6 +26,8 @@ public:
 
     Widget* getOwnerWidget() override; // TEST: NO
 
+    LabelWidget* getLabelWidget() const; // TEST: NO
+
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 
@@ -38,9 +40,16 @@ public:
     NgosStatus setParentNode(TreeNodeWidget *node); // TEST: NO
     TreeNodeWidget* getParentNode() const; // TEST: NO
 
+    i64 getNodeIndexInParent() const; // TEST: NO
+
     NgosStatus addChildNode(TreeNodeWidget *node); // TEST: NO
 
+    const ArrayList<TreeNodeWidget *>& getChildrenNodes() const; // TEST: NO
+
 private:
+    NgosStatus doExpand(); // TEST: NO
+    NgosStatus doCollapse(); // TEST: NO
+
     Image                       *mCollapsedImage;
     Image                       *mExpandedImage;
     Image                       *mImage;
@@ -51,6 +60,7 @@ private:
     u64                          mRowHeight;
     bool                         mExpanded;
     TreeNodeWidget              *mParentNode;
+    i64                          mNodeIndexInParent;
     ArrayList<TreeNodeWidget *>  mChildrenNodes;
 };
 

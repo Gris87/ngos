@@ -27,6 +27,8 @@ public:
     NgosStatus moveToEnd(const T &value);
     NgosStatus sort();
 
+    bool isEmpty() const;
+
     ListElement<T>* getHead() const;
     ListElement<T>* getTail() const;
 
@@ -316,6 +318,16 @@ NgosStatus List<T>::sort()
 
 
     return NgosStatus::OK;
+}
+
+template<typename T>
+bool List<T>::isEmpty() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mHead == nullptr;
 }
 
 template<typename T>

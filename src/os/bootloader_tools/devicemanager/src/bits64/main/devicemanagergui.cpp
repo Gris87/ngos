@@ -409,15 +409,26 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
+    RgbaPixel blackColor;
+
+    blackColor.red   = 0;
+    blackColor.green = 0;
+    blackColor.blue  = 0;
+    blackColor.alpha = 0xFF;
+
+
+
     TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "System", sDevicesTreeWidget);
 
-    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),  NgosStatus::ASSERTION);
 
 
 
     TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "DMI", sDevicesTreeWidget);
 
-    UEFI_ASSERT_EXECUTION(rootNodeWidget->addChildNode(dmiNodeWidget), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->addChildNode(dmiNodeWidget),           NgosStatus::ASSERTION);
 
 
 
@@ -426,7 +437,8 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     {
         TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "temp", sDevicesTreeWidget);
 
-        UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget),            NgosStatus::ASSERTION);
     }
 
 
@@ -793,8 +805,7 @@ NgosStatus DeviceManagerGUI::onDevicesTreeWidgetKeyboardEvent(const UefiInputKey
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sDeviceInfoTableWidget);
-        case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case UefiInputKeyScanCode::UP: return (sDevicesTreeWidget->getSelectedTreeNodeWidget()->getNodeIndexInParent() < 0) ? GUI::setFocusedWidget(sSystemInformationTabButton) : NgosStatus::NO_EFFECT;
 
         default:
         {

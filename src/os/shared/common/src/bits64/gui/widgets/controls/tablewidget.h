@@ -67,8 +67,8 @@ private:
     ArrayList<u64>                  mColumnWidth;
     u64                             mTotalColumnWidth;
     ArrayList<TableHeaderWidget *>  mHeaders;
-    WrapperWidget                  *mWrapperWidget;
-    WrapperWidget                  *mRowsWrapperWidget;
+    WrapperWidget                  *mContentWrapperWidget;
+    WrapperWidget                  *mScrollWrapperWidget;
     ArrayList<TableRowWidget *>     mRows;
     u64                             mSelectedRow;
     u64                             mHighlightedRow;

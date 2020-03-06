@@ -20,6 +20,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mRowHeight(0)
     , mExpanded(false)
     , mParentNode(nullptr)
+    , mNodeIndexInParent(-1)
     , mChildrenNodes()
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, collapsedImage, expandedImage, image, text, parent));
@@ -32,6 +33,8 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     COMMON_ASSERT(parent,         "parent is null");
 
 
+
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->setVisible(false));
 
     if (image)
     {
@@ -56,6 +59,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mRowHeight(0)
     , mExpanded(false)
     , mParentNode(nullptr)
+    , mNodeIndexInParent(-1)
     , mChildrenNodes()
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, normalResizedImage, hoverResizedImage, pressedResizedImage, collapsedImage, expandedImage, image, text, parent));
@@ -71,6 +75,8 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     COMMON_ASSERT(parent,              "parent is null");
 
 
+
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->setVisible(false));
 
     if (image)
     {
@@ -271,6 +277,15 @@ Widget* TreeNodeWidget::getOwnerWidget()
     return treeWidget;
 }
 
+LabelWidget* TreeNodeWidget::getLabelWidget() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mLabelWidget;
+}
+
 NgosStatus TreeNodeWidget::setState(WidgetState state)
 {
     COMMON_LT((" | state = %u", state));
@@ -345,7 +360,31 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
 
 
-    mExpanded = expanded;
+    if (mExpanded != expanded)
+    {
+        mExpanded = expanded;
+
+
+
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        if (mExpanded)
+        {
+            COMMON_ASSERT_EXECUTION(mExpandToolButton->setContentImage(mExpandedImage), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(doExpand(),                                         NgosStatus::ASSERTION);
+        }
+        else
+        {
+            COMMON_ASSERT_EXECUTION(mExpandToolButton->setContentImage(mCollapsedImage), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(doCollapse(),                                        NgosStatus::ASSERTION);
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -385,6 +424,15 @@ TreeNodeWidget* TreeNodeWidget::getParentNode() const
     return mParentNode;
 }
 
+i64 TreeNodeWidget::getNodeIndexInParent() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mNodeIndexInParent;
+}
+
 NgosStatus TreeNodeWidget::addChildNode(TreeNodeWidget *node)
 {
     COMMON_LT((" | node = 0x%p", node));
@@ -397,13 +445,77 @@ NgosStatus TreeNodeWidget::addChildNode(TreeNodeWidget *node)
 
 
 
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->setVisible(true), NgosStatus::ASSERTION);
+
     COMMON_ASSERT_EXECUTION(node->setParent(getParent()),   NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(node->setRowHeight(mRowHeight), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(node->setVisible(false),        NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(node->setSize(mWidth, mHeight), NgosStatus::ASSERTION);
 
+    node->mNodeIndexInParent = mChildrenNodes.getSize();
+
     COMMON_ASSERT_EXECUTION(node->setParentNode(this),   NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(mChildrenNodes.append(node), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+const ArrayList<TreeNodeWidget *>& TreeNodeWidget::getChildrenNodes() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mChildrenNodes;
+}
+
+NgosStatus TreeNodeWidget::doExpand()
+{
+    COMMON_LT((""));
+
+
+
+    i64 positionY = mPositionY;
+
+    for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+    {
+        TreeNodeWidget *node = mChildrenNodes.at(i);
+
+        positionY += mRowHeight;
+
+        COMMON_ASSERT_EXECUTION(node->setPosition(mPositionX + mRowHeight, positionY), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(node->setVisible(true),                                NgosStatus::ASSERTION);
+
+        if (node->isExpanded())
+        {
+            COMMON_ASSERT_EXECUTION(node->doExpand(), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus TreeNodeWidget::doCollapse()
+{
+    COMMON_LT((""));
+
+
+
+    for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+    {
+        TreeNodeWidget *node = mChildrenNodes.at(i);
+
+        COMMON_ASSERT_EXECUTION(node->setVisible(false), NgosStatus::ASSERTION);
+
+        if (node->isExpanded())
+        {
+            COMMON_ASSERT_EXECUTION(node->doCollapse(), NgosStatus::ASSERTION);
+        }
+    }
 
 
 

@@ -31,6 +31,7 @@ public:
     T& operator[](u64 index);
 
     u64 getSize() const;
+    bool isEmpty() const;
 
     NgosStatus setCapacity(u64 capacity);
     u64 getCapacity() const;
@@ -186,6 +187,16 @@ u64 ArrayList<T>::getSize() const
 
 
     return mSize;
+}
+
+template<typename T>
+bool ArrayList<T>::isEmpty() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mSize == 0;
 }
 
 template<typename T>

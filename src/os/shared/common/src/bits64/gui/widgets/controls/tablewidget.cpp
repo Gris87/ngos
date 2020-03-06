@@ -22,8 +22,8 @@ TableWidget::TableWidget(Image *backgroundImage, Image *headerImage, Widget *par
     , mColumnWidth()
     , mTotalColumnWidth(0)
     , mHeaders()
-    , mWrapperWidget(nullptr)
-    , mRowsWrapperWidget(nullptr)
+    , mContentWrapperWidget(nullptr)
+    , mScrollWrapperWidget(nullptr)
     , mRows()
     , mSelectedRow(0)
     , mHighlightedRow(INVALID_ROW)
@@ -210,16 +210,16 @@ NgosStatus TableWidget::scrollToSelectedRow()
 
 
     i64 localPositionY  = mSelectedRow * mRowHeight;
-    i64 globalPositionY = localPositionY + mRowsWrapperWidget->getPositionY();
+    i64 globalPositionY = localPositionY + mScrollWrapperWidget->getPositionY();
 
     if (globalPositionY < 0)
     {
-        mRowsWrapperWidget->setPosition(0, -localPositionY);
+        mScrollWrapperWidget->setPosition(0, -localPositionY);
     }
     else
-    if (globalPositionY + (i64)mRowHeight > (i64)mWrapperWidget->getHeight())
+    if (globalPositionY + (i64)mRowHeight > (i64)mContentWrapperWidget->getHeight())
     {
-        mRowsWrapperWidget->setPosition(0, (i64)mWrapperWidget->getHeight() - localPositionY - mRowHeight);
+        mScrollWrapperWidget->setPosition(0, (i64)mContentWrapperWidget->getHeight() - localPositionY - mRowHeight);
     }
 
 
@@ -233,7 +233,7 @@ NgosStatus TableWidget::pageUp()
 
 
 
-    u64 visibleRow = mWrapperWidget->getHeight() / mRowHeight;
+    u64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
 
     if (visibleRow < 1)
     {
@@ -261,7 +261,7 @@ NgosStatus TableWidget::pageUp()
 
 
 
-        i64 positionY = mRowsWrapperWidget->getPositionY() + visibleRow * mRowHeight;
+        i64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
 
         if (positionY > 0)
         {
@@ -272,8 +272,8 @@ NgosStatus TableWidget::pageUp()
 
         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                     NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
 
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
@@ -289,7 +289,7 @@ NgosStatus TableWidget::pageDown()
 
 
 
-    u64 visibleRow = mWrapperWidget->getHeight() / mRowHeight;
+    u64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
 
     if (visibleRow < 1)
     {
@@ -317,19 +317,19 @@ NgosStatus TableWidget::pageDown()
 
 
 
-        i64 positionY = mRowsWrapperWidget->getPositionY() - visibleRow * mRowHeight;
+        i64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
 
-        if (positionY < (i64)(mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight()))
+        if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
         {
-            positionY = mWrapperWidget->getHeight() - mRowsWrapperWidget->getHeight();
+            positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
         }
 
 
 
         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                   NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                     NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
 
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
@@ -563,8 +563,8 @@ NgosStatus TableWidget::setRowHeight(u64 height)
 
 
 
-    COMMON_TEST_ASSERT(mRowHeight     == 0,       NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mWrapperWidget == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mRowHeight            == 0,       NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mContentWrapperWidget == nullptr, NgosStatus::ASSERTION);
 
 
 
@@ -572,10 +572,10 @@ NgosStatus TableWidget::setRowHeight(u64 height)
 
 
 
-    mWrapperWidget = new WrapperWidget(this);
+    mContentWrapperWidget = new WrapperWidget(this);
 
-    COMMON_ASSERT_EXECUTION(mWrapperWidget->setPosition(0, mRowHeight),            NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mWrapperWidget->setSize(mWidth, mHeight - mRowHeight), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mContentWrapperWidget->setPosition(0, mRowHeight),            NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mContentWrapperWidget->setSize(mWidth, mHeight - mRowHeight), NgosStatus::ASSERTION);
 
 
 
@@ -692,18 +692,18 @@ NgosStatus TableWidget::setRowCount(u64 rows)
 
 
 
-    if (!mRowsWrapperWidget)
+    if (!mScrollWrapperWidget)
     {
-        COMMON_TEST_ASSERT(mWrapperWidget != nullptr, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mContentWrapperWidget != nullptr, NgosStatus::ASSERTION);
 
-        mRowsWrapperWidget = new WrapperWidget(mWrapperWidget);
+        mScrollWrapperWidget = new WrapperWidget(mContentWrapperWidget);
     }
 
 
 
     for (i64 i = mRows.getSize(); i < (i64)rows; ++i)
     {
-        TableRowWidget *rowWidget = new TableRowWidget(mRowsWrapperWidget);
+        TableRowWidget *rowWidget = new TableRowWidget(mScrollWrapperWidget);
 
         if (i == (i64)mSelectedRow)
         {
@@ -746,7 +746,7 @@ NgosStatus TableWidget::setRowCount(u64 rows)
     {
         TableRowWidget *rowWidget = mRows.at(i - 1);
 
-        mRowsWrapperWidget->getChildren().remove(rowWidget);
+        mScrollWrapperWidget->getChildren().remove(rowWidget);
 
 
 
@@ -766,13 +766,13 @@ NgosStatus TableWidget::setRowCount(u64 rows)
             COMMON_ASSERT_EXECUTION(mRows.at(mSelectedRow)->setState(isFocused() ? WidgetState::FOCUSED : WidgetState::INACTIVE), NgosStatus::ASSERTION);
         }
 
-        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setSize(mTotalColumnWidth, rows * mRowHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setSize(mTotalColumnWidth, rows * mRowHeight), NgosStatus::ASSERTION);
     }
     else
     {
         mSelectedRow = 0;
 
-        COMMON_ASSERT_EXECUTION(mRowsWrapperWidget->setSize(mTotalColumnWidth, 1), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setSize(mTotalColumnWidth, 1), NgosStatus::ASSERTION);
     }
 
 
