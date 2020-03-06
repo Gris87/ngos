@@ -50,6 +50,7 @@ Code verifier:
 - Verify for amount of arguments in log
 - Verify for asserts alignment
 - Remove verifier for zero
+- Remove verifier for shift
 - Upgrade verifier for trace arguments (Check format with the types)
 
 
