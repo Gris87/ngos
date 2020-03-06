@@ -420,15 +420,19 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
     TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "System", sDevicesTreeWidget);
 
-    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(blackColor),                                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget), NgosStatus::ASSERTION);
 
 
 
     TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "DMI", sDevicesTreeWidget);
 
-    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(rootNodeWidget->addChildNode(dmiNodeWidget),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(blackColor),                                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->addChildNode(dmiNodeWidget), NgosStatus::ASSERTION);
 
 
 
@@ -437,8 +441,10 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     {
         TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, sSystemInformationImage, "temp", sDevicesTreeWidget);
 
-        UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget),            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setColor(blackColor),                                        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget), NgosStatus::ASSERTION);
     }
 
 

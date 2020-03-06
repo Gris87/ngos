@@ -147,7 +147,7 @@ NgosStatus LabelWidget::repaint()
                                                 oneLineImage->getBytesPerPixel(),
                                                 fullImage->getBytesPerPixel(),
                                                 false,
-                                                (targetWidth - curX) >> 1,
+                                                applyHorizontalAlignment(targetWidth, curX),
                                                 curY),
                                             NgosStatus::ASSERTION);
 
@@ -220,7 +220,7 @@ NgosStatus LabelWidget::repaint()
                                         oneLineImage->getBytesPerPixel(),
                                         fullImage->getBytesPerPixel(),
                                         false,
-                                        (targetWidth - curX) >> 1,
+                                        applyHorizontalAlignment(targetWidth, curX),
                                         curY),
                                     NgosStatus::ASSERTION);
         }
@@ -241,8 +241,8 @@ NgosStatus LabelWidget::repaint()
                                     resizedImage->getBytesPerPixel(),
                                     mOwnResultImage->getBytesPerPixel(),
                                     true,
-                                    (mOwnResultImage->getWidth() - resizedImage->getWidth()) >> 1,
-                                    (mOwnResultImage->getHeight() - resizedImage->getHeight()) >> 1),
+                                    applyHorizontalAlignment(mOwnResultImage->getWidth(), resizedImage->getWidth()),
+                                    applyVerticalAlignment(mOwnResultImage->getHeight(), resizedImage->getHeight())),
                                 NgosStatus::ASSERTION);
 
         delete fullImage;
@@ -334,4 +334,150 @@ const RgbaPixel& LabelWidget::getColor() const
 
 
     return mColor;
+}
+
+NgosStatus LabelWidget::setHorizontalAlignment(HorizontalAlignment alignment)
+{
+    COMMON_LT((" | alignment = %u", alignment));
+
+
+
+    if (mHorizontalAlignment != alignment)
+    {
+        mHorizontalAlignment = alignment;
+
+        if (
+            mWidth // mWidth > 0
+            &&
+            mHeight // mHeight > 0
+           )
+        {
+            COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+            if (isVisible())
+            {
+                COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+HorizontalAlignment LabelWidget::getHorizontalAlignment() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mHorizontalAlignment;
+}
+
+NgosStatus LabelWidget::setVerticalAlignment(VerticalAlignment alignment)
+{
+    COMMON_LT((" | alignment = %u", alignment));
+
+
+
+    if (mVerticalAlignment != alignment)
+    {
+        mVerticalAlignment = alignment;
+
+        if (
+            mWidth // mWidth > 0
+            &&
+            mHeight // mHeight > 0
+           )
+        {
+            COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
+
+            if (isVisible())
+            {
+                COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+VerticalAlignment LabelWidget::getVerticalAlignment() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mVerticalAlignment;
+}
+
+i64 LabelWidget::applyHorizontalAlignment(i64 fullWidth, i64 targetWidth)
+{
+    COMMON_LT((" | fullWidth = %d, targetWidth = %d", fullWidth, targetWidth)); // Commented to avoid too frequent logs
+
+
+
+    switch (mHorizontalAlignment)
+    {
+        case HorizontalAlignment::LEFT_JUSTIFIED:  return 0;
+        case HorizontalAlignment::CENTER:          return (fullWidth - targetWidth) / 2;
+        case HorizontalAlignment::RIGHT_JUSTIFIED: return fullWidth - targetWidth;
+
+        case HorizontalAlignment::NONE:
+        {
+            COMMON_LF(("Unexpected horizontal alignment %s, %s:%u", enumToFullString(mHorizontalAlignment), __FILE__, __LINE__));
+
+            return 0;
+        }
+        break;
+
+        default:
+        {
+            COMMON_LF(("Unknown horizontal alignment %s, %s:%u", enumToFullString(mHorizontalAlignment), __FILE__, __LINE__));
+
+            return 0;
+        }
+        break;
+    }
+
+
+
+    return 0;
+}
+
+i64 LabelWidget::applyVerticalAlignment(i64 fullHeight, i64 targetHeight)
+{
+    COMMON_LT((" | fullHeight = %d, targetHeight = %d", fullHeight, targetHeight)); // Commented to avoid too frequent logs
+
+
+
+    switch (mVerticalAlignment)
+    {
+        case VerticalAlignment::TOP:    return 0;
+        case VerticalAlignment::MIDDLE: return (fullHeight - targetHeight) / 2;
+        case VerticalAlignment::BOTTOM: return fullHeight - targetHeight;
+
+        case VerticalAlignment::NONE:
+        {
+            COMMON_LF(("Unexpected vertical alignment %s, %s:%u", enumToFullString(mVerticalAlignment), __FILE__, __LINE__));
+
+            return 0;
+        }
+        break;
+
+        default:
+        {
+            COMMON_LF(("Unknown vertical alignment %s, %s:%u", enumToFullString(mVerticalAlignment), __FILE__, __LINE__));
+
+            return 0;
+        }
+        break;
+    }
+
+
+
+    return 0;
 }

@@ -24,7 +24,16 @@ public:
     NgosStatus setColor(const RgbaPixel &color); // TEST: NO
     const RgbaPixel& getColor() const; // TEST: NO
 
+    NgosStatus setHorizontalAlignment(HorizontalAlignment alignment); // TEST: NO
+    HorizontalAlignment getHorizontalAlignment() const; // TEST: NO
+
+    NgosStatus setVerticalAlignment(VerticalAlignment alignment); // TEST: NO
+    VerticalAlignment getVerticalAlignment() const; // TEST: NO
+
 private:
+    i64 applyHorizontalAlignment(i64 fullWidth, i64 targetWidth); // TEST: NO
+    i64 applyVerticalAlignment(i64 fullHeight, i64 targetHeight); // TEST: NO
+
     const char8         *mText;
     u16                 *mGlyphOffsets;
     RgbaPixel            mColor;
