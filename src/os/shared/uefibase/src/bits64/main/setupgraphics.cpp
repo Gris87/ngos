@@ -91,12 +91,32 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
 
 
-            u64 screenResolution = info->horizontalResolution * info->verticalResolution;
-
             UEFI_LVVV(("info->pixelFormat          = %s", enumToFullString(info->pixelFormat)));
             UEFI_LVVV(("info->horizontalResolution = %u", info->horizontalResolution));
             UEFI_LVVV(("info->verticalResolution   = %u", info->verticalResolution));
-            UEFI_LVVV(("screenResolution           = %u", screenResolution));
+
+
+
+#if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
+            if (
+                info->pixelFormat != UefiGraphicsPixelFormat::BLT_ONLY
+                &&
+                info->horizontalResolution == 1920
+                &&
+                info->verticalResolution == 1080
+               )
+            {
+                foundMode = j;
+
+                break;
+            }
+#endif
+
+
+
+            u64 screenResolution = info->horizontalResolution * info->verticalResolution;
+
+            UEFI_LVVV(("screenResolution = %u", screenResolution));
 
             if (
                 info->pixelFormat != UefiGraphicsPixelFormat::BLT_ONLY
