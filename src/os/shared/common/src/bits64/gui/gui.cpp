@@ -660,6 +660,23 @@ NgosStatus GUI::setFocusedWidget(Widget *widget)
 
         COMMON_ASSERT_EXECUTION(unlockUpdates(), NgosStatus::ASSERTION);
     }
+    else
+    {
+        if (sFocusedWidget)
+        {
+            if (sFocusedWidget != sPressedWidget)
+            {
+                if (sFocusedWidget == sHoveredWidget)
+                {
+                    sFocusedWidget->setState(WidgetState::FOCUSED_HOVERED);
+                }
+                else
+                {
+                    sFocusedWidget->setState(WidgetState::FOCUSED);
+                }
+            }
+        }
+    }
 
 
 
