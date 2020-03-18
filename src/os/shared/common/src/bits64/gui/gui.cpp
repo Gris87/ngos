@@ -325,7 +325,30 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
             sMouseLeftButton = state->leftButton;
 
             COMMON_ASSERT_EXECUTION(setPressedWidget(sHoveredWidget), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(setFocusedWidget(sHoveredWidget), NgosStatus::ASSERTION);
+
+
+
+            Widget *focusedWidget = sHoveredWidget;
+
+            while (
+                   focusedWidget
+                   &&
+                   !focusedWidget->isFocusable()
+                  )
+            {
+                Widget *focusedWidgetOwner = focusedWidget->getOwnerWidget();
+
+                if (focusedWidget == focusedWidgetOwner)
+                {
+                    focusedWidget = focusedWidget->getParent();
+                }
+                else
+                {
+                    focusedWidget = focusedWidgetOwner;
+                }
+            }
+
+            COMMON_ASSERT_EXECUTION(setFocusedWidget(focusedWidget), NgosStatus::ASSERTION);
         }
     }
 
@@ -388,7 +411,30 @@ NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerProtocol *pointer
            )
         {
             COMMON_ASSERT_EXECUTION(setPressedWidget(sHoveredWidget), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(setFocusedWidget(sHoveredWidget), NgosStatus::ASSERTION);
+
+
+
+            Widget *focusedWidget = sHoveredWidget;
+
+            while (
+                   focusedWidget
+                   &&
+                   !focusedWidget->isFocusable()
+                  )
+            {
+                Widget *focusedWidgetOwner = focusedWidget->getOwnerWidget();
+
+                if (focusedWidget == focusedWidgetOwner)
+                {
+                    focusedWidget = focusedWidget->getParent();
+                }
+                else
+                {
+                    focusedWidget = focusedWidgetOwner;
+                }
+            }
+
+            COMMON_ASSERT_EXECUTION(setFocusedWidget(focusedWidget), NgosStatus::ASSERTION);
         }
     }
 
