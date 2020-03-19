@@ -10,30 +10,16 @@
         <file>assets/images/button_pressed.9.png</file>
         <file>assets/images/collapsed.png</file>
         <file>assets/images/console.9.png</file>
-        <file>assets/images/critical.png</file>
         <file>assets/images/cursor.png</file>
         <file>assets/images/expanded.png</file>
-        <file>assets/images/issues.png</file>
         <file>assets/images/reboot.png</file>
-        <file>assets/images/selectedtab_focused.9.png</file>
-        <file>assets/images/selectedtab_focused_hover.9.png</file>
-        <file>assets/images/selectedtab_hover.9.png</file>
-        <file>assets/images/selectedtab_normal.9.png</file>
-        <file>assets/images/selectedtab_pressed.9.png</file>
         <file>assets/images/shutdown.png</file>
-        <file>assets/images/system_information.png</file>
-        <file>assets/images/tab_focused.9.png</file>
-        <file>assets/images/tab_focused_hover.9.png</file>
-        <file>assets/images/tab_hover.9.png</file>
-        <file>assets/images/tab_normal.9.png</file>
-        <file>assets/images/tab_pressed.9.png</file>
+        <file>assets/images/system.png</file>
         <file>assets/images/table_background.9.png</file>
         <file>assets/images/table_header.9.png</file>
-        <file>assets/images/tabwidget_panel.9.png</file>
         <file>assets/images/toolbutton_hover.9.png</file>
         <file>assets/images/toolbutton_normal.9.png</file>
         <file>assets/images/toolbutton_pressed.9.png</file>
         <file>assets/images/tree_background.9.png</file>
-        <file>assets/images/warning.png</file>
     </qresource>
 </RCC>
