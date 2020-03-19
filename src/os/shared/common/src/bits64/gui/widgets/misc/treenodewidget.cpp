@@ -35,6 +35,9 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
 
 
     COMMON_ASSERT_EXECUTION(mExpandToolButton->setVisible(false));
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->setPressEventHandlerObject(this));
+
+
 
     if (image)
     {
@@ -79,6 +82,9 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
 
 
     COMMON_ASSERT_EXECUTION(mExpandToolButton->setVisible(false));
+    COMMON_ASSERT_EXECUTION(mExpandToolButton->setPressEventHandlerObject(this));
+
+
 
     if (image)
     {
@@ -245,6 +251,22 @@ bool TreeNodeWidget::isAcceptMouseEvents()
 
 
     return true;
+}
+
+NgosStatus TreeNodeWidget::onWidgetPressed(Widget *sender)
+{
+    COMMON_LT((" | sender = 0x%p", sender));
+
+    COMMON_ASSERT(sender,                      "sender is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(sender == mExpandToolButton, "sender is unknown", NgosStatus::ASSERTION);
+
+
+
+    COMMON_ASSERT_EXECUTION(setExpanded(!mExpanded), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
 Widget* TreeNodeWidget::getOwnerWidget()

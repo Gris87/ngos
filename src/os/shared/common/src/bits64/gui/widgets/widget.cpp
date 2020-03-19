@@ -447,6 +447,28 @@ press_event_handler Widget::getPressEventHandler() const
     return nullptr;
 }
 
+NgosStatus Widget::setPressEventHandlerObject(PressEventHandler *handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    AVOID_UNUSED(handler);
+
+
+
+    return NgosStatus::OK;
+}
+
+PressEventHandler* Widget::getPressEventHandlerObject() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return nullptr;
+}
+
 NgosStatus Widget::setParent(Widget *parent)
 {
     COMMON_LT((" | parent = 0x%p", parent));

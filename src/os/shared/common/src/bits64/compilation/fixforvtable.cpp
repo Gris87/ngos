@@ -22,6 +22,13 @@ class __class_type_info
 
 
 
+class __vmi_class_type_info
+{
+    virtual void dummy(); // TEST: NO
+};
+
+
+
 void __si_class_type_info::dummy()
 {
     COMMON_LT((""));
@@ -32,6 +39,15 @@ void __class_type_info::dummy()
     COMMON_LT((""));
 }
 
+void __vmi_class_type_info::dummy()
+{
+    COMMON_LT((""));
+}
+
 
 
 };
+
+
+
+u64 __cxa_pure_virtual;

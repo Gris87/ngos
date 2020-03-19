@@ -39,6 +39,9 @@ public:
     NgosStatus setPressEventHandler(press_event_handler handler) override; // TEST: NO
     press_event_handler getPressEventHandler() const override; // TEST: NO
 
+    NgosStatus setPressEventHandlerObject(PressEventHandler *handler) override; // TEST: NO
+    PressEventHandler* getPressEventHandlerObject() const override; // TEST: NO
+
 private:
     Image                  *mNormalImage;
     Image                  *mHoverImage;
@@ -57,6 +60,7 @@ private:
     bool                    mPredefined;
     keyboard_event_handler  mKeyboardEventHandler;
     press_event_handler     mPressEventHandler;
+    PressEventHandler      *mPressEventHandlerObject;
 };
 
 

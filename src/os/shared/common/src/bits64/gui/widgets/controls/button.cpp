@@ -27,6 +27,7 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mPredefined(false)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
+    , mPressEventHandlerObject(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, contentImage, badgeImage, text, parent));
 
@@ -70,6 +71,7 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     , mPredefined(true)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
+    , mPressEventHandlerObject(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, contentImage, badgeImage, text, parent));
 
@@ -351,6 +353,11 @@ NgosStatus Button::onKeyboardEvent(const UefiInputKey &key)
         {
             return mPressEventHandler();
         }
+        else
+        if (mPressEventHandlerObject)
+        {
+            return mPressEventHandlerObject->onWidgetPressed(this);
+        }
     }
 
 
@@ -503,4 +510,26 @@ press_event_handler Button::getPressEventHandler() const
 
 
     return mPressEventHandler;
+}
+
+NgosStatus Button::setPressEventHandlerObject(PressEventHandler *handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    mPressEventHandlerObject = handler;
+
+
+
+    return NgosStatus::OK;
+}
+
+PressEventHandler* Button::getPressEventHandlerObject() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mPressEventHandlerObject;
 }

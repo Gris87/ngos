@@ -23,6 +23,7 @@ ToolButton::ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImag
     , mPredefined(false)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
+    , mPressEventHandlerObject(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, contentImage, badgeImage, text, parent));
 
@@ -60,6 +61,7 @@ ToolButton::ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImag
     , mPredefined(true)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
+    , mPressEventHandlerObject(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, normalResizedImage, hoverResizedImage, pressedResizedImage, contentImage, badgeImage, text, parent));
 
@@ -313,6 +315,11 @@ NgosStatus ToolButton::onKeyboardEvent(const UefiInputKey &key)
         {
             return mPressEventHandler();
         }
+        else
+        if (mPressEventHandlerObject)
+        {
+            return mPressEventHandlerObject->onWidgetPressed(this);
+        }
     }
 
 
@@ -456,4 +463,26 @@ press_event_handler ToolButton::getPressEventHandler() const
 
 
     return mPressEventHandler;
+}
+
+NgosStatus ToolButton::setPressEventHandlerObject(PressEventHandler *handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    mPressEventHandlerObject = handler;
+
+
+
+    return NgosStatus::OK;
+}
+
+PressEventHandler* ToolButton::getPressEventHandlerObject() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mPressEventHandlerObject;
 }

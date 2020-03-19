@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/containers/list.h>
 #include <common/src/bits64/graphics/image.h>
+#include <common/src/bits64/gui/other/presseventhandler.h>
 #include <common/src/bits64/gui/other/widgetstate.h>
 #include <uefi/uefiinputkey.h>
 
@@ -54,6 +55,9 @@ public:
 
     virtual NgosStatus setPressEventHandler(press_event_handler handler); // TEST: NO
     virtual press_event_handler getPressEventHandler() const; // TEST: NO
+
+    virtual NgosStatus setPressEventHandlerObject(PressEventHandler *handler); // TEST: NO
+    virtual PressEventHandler* getPressEventHandlerObject() const; // TEST: NO
 
     NgosStatus setParent(Widget *parent); // TEST: NO
     Widget* getParent() const; // TEST: NO

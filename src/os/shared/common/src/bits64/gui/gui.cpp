@@ -304,6 +304,11 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
                     {
                         COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandler()(), NgosStatus::ASSERTION);
                     }
+                    else
+                    if (sPressedWidget->getPressEventHandlerObject())
+                    {
+                        COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandlerObject()->onWidgetPressed(sPressedWidget), NgosStatus::ASSERTION);
+                    }
                 }
             }
 
@@ -394,6 +399,11 @@ NgosStatus GUI::processAbsolutePointerState(UefiAbsolutePointerProtocol *pointer
                 if (sPressedWidget->getPressEventHandler())
                 {
                     COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandler()(), NgosStatus::ASSERTION);
+                }
+                else
+                if (sPressedWidget->getPressEventHandlerObject())
+                {
+                    COMMON_ASSERT_EXECUTION(sPressedWidget->getPressEventHandlerObject()->onWidgetPressed(sPressedWidget), NgosStatus::ASSERTION);
                 }
             }
 

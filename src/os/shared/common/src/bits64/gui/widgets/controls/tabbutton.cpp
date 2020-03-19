@@ -38,6 +38,7 @@ TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage,
     , mPredefined(false)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
+    , mPressEventHandlerObject(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, selectedNormalImage = 0x%p, selectedHoverImage = 0x%p, selectedPressedImage = 0x%p, selectedFocusedImage = 0x%p, selectedFocusedHoverImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, selectedNormalImage, selectedHoverImage, selectedPressedImage, selectedFocusedImage, selectedFocusedHoverImage, contentImage, badgeImage, text, parent));
 
@@ -97,6 +98,7 @@ TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage,
     , mPredefined(true)
     , mKeyboardEventHandler(nullptr)
     , mPressEventHandler(nullptr)
+    , mPressEventHandlerObject(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, selectedNormalImage = 0x%p, selectedHoverImage = 0x%p, selectedPressedImage = 0x%p, selectedFocusedImage = 0x%p, selectedFocusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, selectedNormalResizedImage = 0x%p, selectedHoverResizedImage = 0x%p, selectedPressedResizedImage = 0x%p, selectedFocusedResizedImage = 0x%p, selectedFocusedHoverResizedImage = 0x%p, contentImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, selectedNormalImage, selectedHoverImage, selectedPressedImage, selectedFocusedImage, selectedFocusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, selectedNormalResizedImage, selectedHoverResizedImage, selectedPressedResizedImage, selectedFocusedResizedImage, selectedFocusedHoverResizedImage, contentImage, badgeImage, text, parent));
 
@@ -480,6 +482,11 @@ NgosStatus TabButton::onKeyboardEvent(const UefiInputKey &key)
         {
             return mPressEventHandler();
         }
+        else
+        if (mPressEventHandlerObject)
+        {
+            return mPressEventHandlerObject->onWidgetPressed(this);
+        }
     }
 
 
@@ -625,4 +632,26 @@ press_event_handler TabButton::getPressEventHandler() const
 
 
     return mPressEventHandler;
+}
+
+NgosStatus TabButton::setPressEventHandlerObject(PressEventHandler *handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    mPressEventHandlerObject = handler;
+
+
+
+    return NgosStatus::OK;
+}
+
+PressEventHandler* TabButton::getPressEventHandlerObject() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mPressEventHandlerObject;
 }

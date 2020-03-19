@@ -6,13 +6,14 @@
 #include <common/src/bits64/gui/widgets/widget.h>
 
 #include <common/src/bits64/containers/arraylist.h>
+#include <common/src/bits64/gui/other/presseventhandler.h>
 #include <common/src/bits64/gui/widgets/controls/toolbutton.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
 
 
 
-class TreeNodeWidget: public Widget
+class TreeNodeWidget: public Widget, public PressEventHandler
 {
 public:
     TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8* text, Widget *parent = 0); // TEST: NO
@@ -23,6 +24,7 @@ public:
     NgosStatus repaint() override; // TEST: NO
 
     bool isAcceptMouseEvents() override; // TEST: NO
+    NgosStatus onWidgetPressed(Widget *sender) override; // TEST: NO
 
     Widget* getOwnerWidget() override; // TEST: NO
 
