@@ -300,17 +300,11 @@ NgosStatus TreeWidget::setState(WidgetState state)
         )
        )
     {
-        mState = state;
-
-        if (
-            (
-             mState == WidgetState::FOCUSED
-             ||
-             mState == WidgetState::FOCUSED_HOVERED
-            )
-            &&
-            mHighlightedTreeNodeWidget
-           )
+        if (mState != state)
+        {
+            mState = state;
+        }
+        else
         {
             COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mHighlightedTreeNodeWidget), NgosStatus::ASSERTION);
         }

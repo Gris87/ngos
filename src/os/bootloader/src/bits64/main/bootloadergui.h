@@ -6,6 +6,7 @@
 #include <bootparams/bootparams.h>
 #include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
+#include <common/src/bits64/gui/widgets/misc/panelwidget.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
@@ -69,6 +70,7 @@ private:
     static Image               *sButtonPressedImage;
     static Image               *sButtonFocusedImage;
     static Image               *sButtonFocusedHoverImage;
+    static Image               *sInfoPanelImage;
     static Image               *sDeviceManagerImage;
     static Image               *sCpuTestImage;
     static Image               *sMemoryTestImage;
@@ -88,6 +90,7 @@ private:
     static u64                  sOsButtonSelected;
     static Button              *sLeftButton;
     static Button              *sRightButton;
+    static PanelWidget         *sTimeoutPanelWidget;
     static LabelWidget         *sTimeoutLabelWidget;
     static u8                   sTimeoutTick;
     static Button              *sDeviceManagerButton;

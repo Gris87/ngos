@@ -38,10 +38,15 @@
 #define LEFT_BUTTON_POSITION_X_PERCENT  2
 #define RIGHT_BUTTON_POSITION_X_PERCENT 92
 
-#define TIMEOUT_TEXT_POSITION_X_PERCENT 10
-#define TIMEOUT_TEXT_POSITION_Y_PERCENT 46
-#define TIMEOUT_TEXT_WIDTH_PERCENT      80
-#define TIMEOUT_TEXT_HEIGHT_PERCENT     2
+#define TIMEOUT_PANEL_POSITION_X_PERCENT 36
+#define TIMEOUT_PANEL_POSITION_Y_PERCENT 43
+#define TIMEOUT_PANEL_WIDTH_PERCENT      28
+#define TIMEOUT_PANEL_HEIGHT_PERCENT     4
+
+#define TIMEOUT_TEXT_POSITION_X_PERCENT 5
+#define TIMEOUT_TEXT_POSITION_Y_PERCENT 20
+#define TIMEOUT_TEXT_WIDTH_PERCENT      90
+#define TIMEOUT_TEXT_HEIGHT_PERCENT     60
 
 #define DEVICE_MANAGER_BUTTON_POSITION_X_PERCENT 10
 #define DEVICE_MANAGER_BUTTON_POSITION_Y_PERCENT 48
@@ -78,6 +83,7 @@ Image               *BootloaderGUI::sButtonHoverImage;
 Image               *BootloaderGUI::sButtonPressedImage;
 Image               *BootloaderGUI::sButtonFocusedImage;
 Image               *BootloaderGUI::sButtonFocusedHoverImage;
+Image               *BootloaderGUI::sInfoPanelImage;
 Image               *BootloaderGUI::sDeviceManagerImage;
 Image               *BootloaderGUI::sCpuTestImage;
 Image               *BootloaderGUI::sMemoryTestImage;
@@ -97,6 +103,7 @@ u64                  BootloaderGUI::sOsButtonRight;
 u64                  BootloaderGUI::sOsButtonSelected;
 Button              *BootloaderGUI::sLeftButton;
 Button              *BootloaderGUI::sRightButton;
+PanelWidget         *BootloaderGUI::sTimeoutPanelWidget;
 LabelWidget         *BootloaderGUI::sTimeoutLabelWidget;
 u8                   BootloaderGUI::sTimeoutTick;
 Button              *BootloaderGUI::sDeviceManagerButton;
@@ -139,6 +146,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_pressed.9.png",       &sButtonPressedImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused.9.png",       &sButtonFocusedImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/button_focused_hover.9.png", &sButtonFocusedHoverImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/info_panel.9.png",           &sInfoPanelImage),          NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/device_manager.png",         &sDeviceManagerImage),      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/cpu_test.png",               &sCpuTestImage),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets("images/memory_test.png",            &sMemoryTestImage),         NgosStatus::ASSERTION);
@@ -496,10 +504,22 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        sTimeoutLabelWidget = new LabelWidget(timeoutText, rootWidget);
+        u64 timeoutPanelWidth  = screenWidth  * TIMEOUT_PANEL_WIDTH_PERCENT  / 100;
+        u64 timeoutPanelHeight = screenHeight * TIMEOUT_PANEL_HEIGHT_PERCENT / 100;
 
-        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(screenWidth * TIMEOUT_TEXT_POSITION_X_PERCENT / 100, screenHeight * TIMEOUT_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(screenWidth     * TIMEOUT_TEXT_WIDTH_PERCENT      / 100, screenHeight * TIMEOUT_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+        sTimeoutPanelWidget = new PanelWidget(sInfoPanelImage, rootWidget);
+
+        UEFI_ASSERT_EXECUTION(sTimeoutPanelWidget->setPosition(screenWidth * TIMEOUT_PANEL_POSITION_X_PERCENT / 100, screenHeight * TIMEOUT_PANEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTimeoutPanelWidget->setSize(timeoutPanelWidth, timeoutPanelHeight),                                                                           NgosStatus::ASSERTION);
+
+
+
+        sTimeoutLabelWidget = new LabelWidget(timeoutText, sTimeoutPanelWidget);
+
+        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(timeoutPanelWidth * TIMEOUT_TEXT_POSITION_X_PERCENT / 100, timeoutPanelHeight * TIMEOUT_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(timeoutPanelWidth     * TIMEOUT_TEXT_WIDTH_PERCENT      / 100, timeoutPanelHeight * TIMEOUT_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     }
 
 
@@ -652,6 +672,7 @@ NgosStatus BootloaderGUI::cleanUp()
     delete sButtonPressedImage;
     delete sButtonFocusedImage;
     delete sButtonFocusedHoverImage;
+    delete sInfoPanelImage;
     delete sDeviceManagerImage;
     delete sCpuTestImage;
     delete sMemoryTestImage;
@@ -1205,7 +1226,7 @@ NgosStatus BootloaderGUI::disableTimerEvent()
 
 
 
-    sTimeoutLabelWidget->setVisible(false);
+    sTimeoutPanelWidget->setVisible(false);
 
 
 
