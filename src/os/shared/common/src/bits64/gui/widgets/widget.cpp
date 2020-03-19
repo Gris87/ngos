@@ -178,6 +178,21 @@ NgosStatus Widget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus Widget::onMouseScrollEvent(i32 delta)
+{
+    COMMON_LT((" | delta = %d", delta));
+
+    COMMON_ASSERT(delta != 0, "delta is zero", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(delta);
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
 NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
 {
     // COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY)); // Commented to avoid too frequent logs

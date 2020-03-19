@@ -199,6 +199,12 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(addDeviceInfoEntry("", ""), NgosStatus::ASSERTION);
 
+    // TODO: Remove it
+    for (i64 i = 0; i < 50; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(addDeviceInfoEntry("asd", "awetr"), NgosStatus::ASSERTION);
+    }
+
 
 
     UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sDevicesTreeWidget), NgosStatus::ASSERTION);

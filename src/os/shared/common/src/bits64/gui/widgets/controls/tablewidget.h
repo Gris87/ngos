@@ -21,6 +21,7 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
     NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
+    NgosStatus onMouseScrollEvent(i32 delta) override; // TEST: NO
 
     NgosStatus scrollToSelectedRow(); // TEST: NO
     NgosStatus pageUp(); // TEST: NO

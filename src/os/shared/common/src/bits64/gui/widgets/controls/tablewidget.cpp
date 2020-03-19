@@ -203,6 +203,28 @@ NgosStatus TableWidget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus TableWidget::onMouseScrollEvent(i32 delta)
+{
+    COMMON_LT((" | delta = %d", delta));
+
+    COMMON_ASSERT(delta != 0, "delta is zero", NgosStatus::ASSERTION);
+
+
+
+    if (delta > 0)
+    {
+        mScrollWrapperWidget->setPosition(0, mScrollWrapperWidget->getPositionY() - mRowHeight);
+    }
+    else
+    {
+        mScrollWrapperWidget->setPosition(0, mScrollWrapperWidget->getPositionY() + mRowHeight);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus TableWidget::scrollToSelectedRow()
 {
     COMMON_LT((""));

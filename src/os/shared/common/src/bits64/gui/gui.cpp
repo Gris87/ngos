@@ -184,6 +184,48 @@ NgosStatus GUI::processKeyboardEvent(const UefiInputKey &key)
         }
         break;
 
+        case 'q':
+        case 'Q':
+        {
+            UefiSimplePointerState state;
+
+            state.relativeMovementX = 0;
+            state.relativeMovementY = 0;
+            state.relativeMovementZ = -1;
+            state.leftButton        = false;
+            state.rightButton       = false;
+
+
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
+        case 'e':
+        case 'E':
+        {
+            UefiSimplePointerState state;
+
+            state.relativeMovementX = 0;
+            state.relativeMovementY = 0;
+            state.relativeMovementZ = 1;
+            state.leftButton        = false;
+            state.rightButton       = false;
+
+
+
+            COMMON_ASSERT_EXECUTION(processSimplePointerState(&state), NgosStatus::ASSERTION);
+
+
+
+            return NgosStatus::OK;
+        }
+        break;
+
         case KEY_SPACE:
         {
             UefiSimplePointerState state;
@@ -279,6 +321,29 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
         if (!sPressedWidget)
         {
             COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    if (
+        state->relativeMovementZ != 0
+        &&
+        sHoveredWidget
+       )
+    {
+        NgosStatus status = sHoveredWidget->onMouseScrollEvent(state->relativeMovementZ);
+
+        COMMON_TEST_ASSERT(status == NgosStatus::OK
+                            ||
+                            status == NgosStatus::NO_EFFECT, NgosStatus::ASSERTION);
+
+        if (status == NgosStatus::OK)
+        {
+            if (!sPressedWidget)
+            {
+                COMMON_ASSERT_EXECUTION(detectHoveredWidget(), NgosStatus::ASSERTION);
+            }
         }
     }
 

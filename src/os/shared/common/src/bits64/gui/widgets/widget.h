@@ -28,6 +28,7 @@ public:
     virtual NgosStatus invalidate(); // TEST: NO
     virtual NgosStatus repaint(); // TEST: NO
     virtual NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    virtual NgosStatus onMouseScrollEvent(i32 delta); // TEST: NO
 
     NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY); // TEST: NO
     NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom); // TEST: NO

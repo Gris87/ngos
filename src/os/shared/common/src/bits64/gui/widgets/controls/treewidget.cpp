@@ -271,6 +271,28 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus TreeWidget::onMouseScrollEvent(i32 delta)
+{
+    COMMON_LT((" | delta = %d", delta));
+
+    COMMON_ASSERT(delta != 0, "delta is zero", NgosStatus::ASSERTION);
+
+
+
+    if (delta > 0)
+    {
+        // TODO: Implement
+    }
+    else
+    {
+        // TODO: Implement
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 bool TreeWidget::isFocusable()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
