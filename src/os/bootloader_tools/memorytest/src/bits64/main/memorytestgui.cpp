@@ -319,8 +319,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getGlobalPositionX() + (GUI::getFocusedWidget()->getWidth() >> 1), GUI::getFocusedWidget()->getGlobalPositionY() + (GUI::getFocusedWidget()->getHeight() >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth >> 1, screenHeight >> 1), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                  NgosStatus::ASSERTION);
 
 
 

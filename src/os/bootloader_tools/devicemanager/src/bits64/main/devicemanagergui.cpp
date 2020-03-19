@@ -207,8 +207,8 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getGlobalPositionX() + (GUI::getFocusedWidget()->getWidth() >> 1), GUI::getFocusedWidget()->getGlobalPositionY() + (GUI::getFocusedWidget()->getHeight() >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth >> 1, screenHeight >> 1), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                  NgosStatus::ASSERTION);
 
 
 
@@ -254,7 +254,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     Image *toolButtonPressedResizedImage;
     Image *collapsedImage;
     Image *expandedImage;
-    Image *systemInformationImage;
+    Image *systemImage;
 
 
 
@@ -263,7 +263,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/toolbutton_pressed.9.png", &toolButtonPressedImage), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/collapsed.png",            &collapsedImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/expanded.png",             &expandedImage),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system_information.png",   &systemInformationImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system.png",               &systemImage),            NgosStatus::ASSERTION);
 
 
 
@@ -286,14 +286,14 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
-    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemInformationImage, "System", sDevicesTreeWidget);
+    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "System", sDevicesTreeWidget);
 
     UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),  NgosStatus::ASSERTION);
 
 
 
-    TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemInformationImage, "DMI", sDevicesTreeWidget);
+    TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "DMI", sDevicesTreeWidget);
 
     UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(rootNodeWidget->addChildNode(dmiNodeWidget),           NgosStatus::ASSERTION);
@@ -303,7 +303,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     // TODO: Remove it
     for (i64 i = 0; i < 50; ++i)
     {
-        TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemInformationImage, "temp", sDevicesTreeWidget);
+        TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "temp", sDevicesTreeWidget);
 
         UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget),            NgosStatus::ASSERTION);
