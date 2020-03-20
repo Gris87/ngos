@@ -160,6 +160,7 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                     {
                         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                    NgosStatus::ASSERTION);
                         COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(parentNode), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                NgosStatus::ASSERTION);
                         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                  NgosStatus::ASSERTION);
                     }
                 }
@@ -186,6 +187,7 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                 {
                     COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                           NgosStatus::ASSERTION);
                     COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mSelectedTreeNodeWidget->getChildrenNodes().at(0)), NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                       NgosStatus::ASSERTION);
                     COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                         NgosStatus::ASSERTION);
                 }
             }
@@ -210,12 +212,14 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                     {
                         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                          NgosStatus::ASSERTION);
                         COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(parentNode->getChildrenNodes().at(nodeIndex - 1)), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                      NgosStatus::ASSERTION);
                         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                        NgosStatus::ASSERTION);
                     }
                     else
                     {
                         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                    NgosStatus::ASSERTION);
                         COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(parentNode), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                NgosStatus::ASSERTION);
                         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                  NgosStatus::ASSERTION);
                     }
                 }
@@ -235,6 +239,7 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                 {
                     COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                           NgosStatus::ASSERTION);
                     COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mSelectedTreeNodeWidget->getChildrenNodes().at(0)), NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                       NgosStatus::ASSERTION);
                     COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                         NgosStatus::ASSERTION);
                 }
                 else
@@ -249,6 +254,7 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                         {
                             COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                          NgosStatus::ASSERTION);
                             COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(parentNode->getChildrenNodes().at(nodeIndex + 1)), NgosStatus::ASSERTION);
+                            COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                      NgosStatus::ASSERTION);
                             COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                        NgosStatus::ASSERTION);
                         }
                     }
