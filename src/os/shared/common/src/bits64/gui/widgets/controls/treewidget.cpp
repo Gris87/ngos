@@ -210,10 +210,21 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
 
                     if (nodeIndex > 0)
                     {
-                        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                          NgosStatus::ASSERTION);
-                        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(parentNode->getChildrenNodes().at(nodeIndex - 1)), NgosStatus::ASSERTION);
-                        COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                      NgosStatus::ASSERTION);
-                        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                        NgosStatus::ASSERTION);
+                        TreeNodeWidget *node = parentNode->getChildrenNodes().at(nodeIndex - 1);
+
+                        while (node->isExpanded())
+                        {
+                            const ArrayList<TreeNodeWidget *> &childrenNodes = node->getChildrenNodes();
+
+                            node = childrenNodes.at(childrenNodes.getSize() - 1);
+                        }
+
+
+
+                        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),              NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(node), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),          NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),            NgosStatus::ASSERTION);
                     }
                     else
                     {
