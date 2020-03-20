@@ -21,6 +21,12 @@ public:
     NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
     NgosStatus onMouseScrollEvent(i32 delta) override; // TEST: NO
 
+    NgosStatus scrollToSelectedNode(); // TEST: NO
+    NgosStatus pageUp(); // TEST: NO
+    NgosStatus pageDown(); // TEST: NO
+
+    NgosStatus invalidateScrollWrapperWidget(); // TEST: NO
+
     bool isFocusable() override; // TEST: NO
 
     NgosStatus setState(WidgetState state) override; // TEST: NO
@@ -45,6 +51,8 @@ private:
     WidgetState             mState;
     u64                     mRowHeight;
     WrapperWidget          *mContentWrapperWidget;
+    WrapperWidget          *mScrollWrapperWidget;
+    TreeNodeWidget         *mRootNodeWidget;
     TreeNodeWidget         *mSelectedTreeNodeWidget;
     TreeNodeWidget         *mHighlightedTreeNodeWidget;
     keyboard_event_handler  mKeyboardEventHandler;

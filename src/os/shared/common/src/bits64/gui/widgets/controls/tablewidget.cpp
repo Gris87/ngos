@@ -211,28 +211,19 @@ NgosStatus TableWidget::onMouseScrollEvent(i32 delta)
 
 
 
-    if (delta > 0)
+    i64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
+
+    if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
     {
-        i64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
-
-        if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
-        {
-            positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
-        }
-
-        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+        positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
     }
-    else
+
+    if (positionY > 0)
     {
-        i64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
-
-        if (positionY > 0)
-        {
-            positionY = 0;
-        }
-
-        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+        positionY = 0;
     }
+
+    COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
 
 
 

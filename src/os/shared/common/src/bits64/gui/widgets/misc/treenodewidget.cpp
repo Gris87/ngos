@@ -409,6 +409,31 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
 
 
+        COMMON_TEST_ASSERT(getParent(),              NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(getParent()->getParent(), NgosStatus::ASSERTION);
+
+        Widget *widget = getParent()->getParent();
+
+        do
+        {
+            COMMON_TEST_ASSERT(widget, NgosStatus::ASSERTION);
+
+            if (widget->isFocusable())
+            {
+                break;
+            }
+
+            widget = widget->getParent();
+        } while(true);
+
+        TreeWidget *treeWidget = (TreeWidget *)widget;
+
+
+
+        COMMON_ASSERT_EXECUTION(treeWidget->invalidateScrollWrapperWidget(), NgosStatus::ASSERTION);
+
+
+
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
 

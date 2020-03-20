@@ -448,7 +448,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(TabWidget),                                     152);
         TEST_ASSERT_EQUALS(sizeof(ToolButton),                                    192);
         TEST_ASSERT_EQUALS(sizeof(TreeNodeWidget),                                208);
-        TEST_ASSERT_EQUALS(sizeof(TreeWidget),                                    144);
+        TEST_ASSERT_EQUALS(sizeof(TreeWidget),                                    160);
         TEST_ASSERT_EQUALS(sizeof(VerticalAlignment),                             1);
         TEST_ASSERT_EQUALS(sizeof(Widget),                                        88);
         TEST_ASSERT_EQUALS(sizeof(WidgetState),                                   1);
