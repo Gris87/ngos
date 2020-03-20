@@ -213,11 +213,25 @@ NgosStatus TableWidget::onMouseScrollEvent(i32 delta)
 
     if (delta > 0)
     {
-        mScrollWrapperWidget->setPosition(0, mScrollWrapperWidget->getPositionY() - mRowHeight);
+        i64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
+
+        if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+        {
+            positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
+        }
+
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
     }
     else
     {
-        mScrollWrapperWidget->setPosition(0, mScrollWrapperWidget->getPositionY() + mRowHeight);
+        i64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
+
+        if (positionY > 0)
+        {
+            positionY = 0;
+        }
+
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
     }
 
 
@@ -236,12 +250,30 @@ NgosStatus TableWidget::scrollToSelectedRow()
 
     if (globalPositionY < 0)
     {
-        mScrollWrapperWidget->setPosition(0, -localPositionY);
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, -localPositionY), NgosStatus::ASSERTION);
+
+        if (!GUI::getPressedWidget())
+        {
+            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
     else
     if (globalPositionY + (i64)mRowHeight > (i64)mContentWrapperWidget->getHeight())
     {
-        mScrollWrapperWidget->setPosition(0, (i64)mContentWrapperWidget->getHeight() - localPositionY - mRowHeight);
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, (i64)mContentWrapperWidget->getHeight() - localPositionY - mRowHeight), NgosStatus::ASSERTION);
+
+        if (!GUI::getPressedWidget())
+        {
+            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
 
 
@@ -296,6 +328,11 @@ NgosStatus TableWidget::pageUp()
 
         COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                     NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+
+        if (!GUI::getPressedWidget())
+        {
+            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
 
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
@@ -352,6 +389,11 @@ NgosStatus TableWidget::pageDown()
 
         COMMON_ASSERT_EXECUTION(setSelectedRow(selectedRow),                     NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+
+        if (!GUI::getPressedWidget())
+        {
+            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
 
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
@@ -795,6 +837,20 @@ NgosStatus TableWidget::setRowCount(u64 rows)
         mSelectedRow = 0;
 
         COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setSize(mTotalColumnWidth, 1), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (mScrollWrapperWidget->getPositionY() < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+    {
+        i64 positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
+
+        if (positionY > 0)
+        {
+            positionY = 0;
+        }
+
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
     }
 
 
