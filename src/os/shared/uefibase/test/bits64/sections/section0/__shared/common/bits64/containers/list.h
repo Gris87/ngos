@@ -519,6 +519,10 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
         TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(temp.isEmpty(), false);
+
+        TEST_ASSERT_EQUALS(temp.clear(), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.isEmpty(), true);
     }
     TEST_CASE_END();
 
