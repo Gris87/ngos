@@ -17,7 +17,7 @@ u64 Time::currentTimestampInMilliseconds()
 
 #if defined(UEFI_APPLICATION) // Defined in Makefile
     UefiTime             time;
-    UefiTimeCapabilities capabilities
+    UefiTimeCapabilities capabilities;
 
     if (UEFI::getTime(&time, &capabilities) != UefiStatus::SUCCESS)
     {
