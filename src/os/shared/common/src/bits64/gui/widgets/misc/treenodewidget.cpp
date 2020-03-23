@@ -471,6 +471,17 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
 
 
+        if (
+            GUI::getRootWidget()
+            &&
+            !GUI::getPressedWidget()
+           )
+        {
+            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
+
+
+
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
 

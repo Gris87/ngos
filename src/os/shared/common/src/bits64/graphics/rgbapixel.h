@@ -5,17 +5,28 @@
 
 #include <ngos/types.h>
 
+#include <common/src/bits64/log/assert.h>
+#include <common/src/bits64/log/log.h>
+
 
 
 struct RgbaPixel
 {
     RgbaPixel()
     {
+        COMMON_LT((""));
+
+
+
         value32 = 0;
     }
 
     RgbaPixel(u8 r, u8 g, u8 b, u8 a)
     {
+        COMMON_LT((" | r = %u, g = %u, b = %u, a = %u", r, g, b, a));
+
+
+
         red   = r;
         green = g;
         blue  = b;
@@ -24,6 +35,10 @@ struct RgbaPixel
 
     RgbaPixel(u32 value)
     {
+        COMMON_LT((" | value = %u", value));
+
+
+
         value32 = value;
     }
 

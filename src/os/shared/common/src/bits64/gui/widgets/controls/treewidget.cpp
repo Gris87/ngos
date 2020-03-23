@@ -256,10 +256,11 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                 else
                 {
                     TreeNodeWidget *parentNode = mSelectedTreeNodeWidget->getParentNode();
+                    TreeNodeWidget *curNode    = mSelectedTreeNodeWidget;
 
-                    if (parentNode)
+                    while (parentNode)
                     {
-                        i64 nodeIndex = mSelectedTreeNodeWidget->getNodeIndexInParent();
+                        i64 nodeIndex = curNode->getNodeIndexInParent();
 
                         if (nodeIndex < (i64)parentNode->getChildrenNodes().getSize() - 1)
                         {
@@ -267,7 +268,12 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                             COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(parentNode->getChildrenNodes().at(nodeIndex + 1)), NgosStatus::ASSERTION);
                             COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                      NgosStatus::ASSERTION);
                             COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                        NgosStatus::ASSERTION);
+
+                            break;
                         }
+
+                        curNode    = parentNode;
+                        parentNode = parentNode->getParentNode();
                     }
                 }
             }
@@ -411,7 +417,76 @@ NgosStatus TreeWidget::pageUp()
 {
     COMMON_LT((""));
 
-    // TODO: Implement
+
+
+    if (mSelectedTreeNodeWidget)
+    {
+        u64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
+
+        if (visibleRow < 1)
+        {
+            visibleRow = 1;
+        }
+
+
+
+        TreeNodeWidget *selectedTreeNodeWidget = mSelectedTreeNodeWidget;
+
+        for (i64 i = 0; i < (i64)visibleRow; ++i)
+        {
+            TreeNodeWidget *parentNode = selectedTreeNodeWidget->getParentNode();
+
+            if (parentNode)
+            {
+                i64 nodeIndex = selectedTreeNodeWidget->getNodeIndexInParent();
+
+                if (nodeIndex > 0)
+                {
+                    TreeNodeWidget *node = parentNode->getChildrenNodes().at(nodeIndex - 1);
+
+                    while (node->isExpanded())
+                    {
+                        const ArrayList<TreeNodeWidget *> &childrenNodes = node->getChildrenNodes();
+
+                        node = childrenNodes.at(childrenNodes.getSize() - 1);
+                    }
+
+
+
+                    selectedTreeNodeWidget = node;
+                }
+                else
+                {
+                    selectedTreeNodeWidget = parentNode;
+                }
+            }
+        }
+
+
+
+        i64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
+
+        if (positionY > 0)
+        {
+            positionY = 0;
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(selectedTreeNodeWidget), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY),   NgosStatus::ASSERTION);
+
+        if (!GUI::getPressedWidget())
+        {
+            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    }
+
+
 
     return NgosStatus::OK;
 }
@@ -420,7 +495,74 @@ NgosStatus TreeWidget::pageDown()
 {
     COMMON_LT((""));
 
-    // TODO: Implement
+
+
+    if (mSelectedTreeNodeWidget)
+    {
+        u64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
+
+        if (visibleRow < 1)
+        {
+            visibleRow = 1;
+        }
+
+
+
+        TreeNodeWidget *selectedTreeNodeWidget = mSelectedTreeNodeWidget;
+
+        for (i64 i = 0; i < (i64)visibleRow; ++i)
+        {
+            if (selectedTreeNodeWidget->isExpanded())
+            {
+                selectedTreeNodeWidget = selectedTreeNodeWidget->getChildrenNodes().at(0);
+            }
+            else
+            {
+                TreeNodeWidget *parentNode = selectedTreeNodeWidget->getParentNode();
+                TreeNodeWidget *curNode    = selectedTreeNodeWidget;
+
+                while (parentNode)
+                {
+                    i64 nodeIndex = curNode->getNodeIndexInParent();
+
+                    if (nodeIndex < (i64)parentNode->getChildrenNodes().getSize() - 1)
+                    {
+                        selectedTreeNodeWidget = parentNode->getChildrenNodes().at(nodeIndex + 1);
+
+                        break;
+                    }
+
+                    curNode    = parentNode;
+                    parentNode = parentNode->getParentNode();
+                }
+            }
+        }
+
+
+
+        i64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
+
+        if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+        {
+            positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(selectedTreeNodeWidget), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY),   NgosStatus::ASSERTION);
+
+        if (!GUI::getPressedWidget())
+        {
+            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+        }
+
+        COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    }
+
+
 
     return NgosStatus::OK;
 }
