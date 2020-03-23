@@ -7,18 +7,6 @@
 
 
 
-// Ignore CppAlignmentVerifier [BEGIN]
-#define RGBA_FROM_HEX(value) \
-    (u32)( \
-        ((((value) >> 24) & 0xFF) << 8 ) | \
-        ((((value) >> 16) & 0xFF) << 16) | \
-        ((((value) >> 8 ) & 0xFF) << 24) | \
-        ((((value)      ) & 0xFF)      ) \
-    )
-// Ignore CppAlignmentVerifier [END]
-
-
-
 struct RgbaPixel
 {
     RgbaPixel()
@@ -36,7 +24,7 @@ struct RgbaPixel
 
     RgbaPixel(u32 value)
     {
-        value32 = RGBA_FROM_HEX(value);
+        value32 = value;
     }
 
     union

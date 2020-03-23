@@ -16,16 +16,6 @@
 
 TEST_CASES(section0, __shared_common_bits64_graphics_rgbapixel);
 {
-    TEST_CASE("RGBA_FROM_HEX()");
-    {
-        TEST_ASSERT_EQUALS(RGBA_FROM_HEX(0x01020304), 0x03020104);
-        TEST_ASSERT_EQUALS(RGBA_FROM_HEX(0x11223344), 0x33221144);
-        TEST_ASSERT_EQUALS(RGBA_FROM_HEX(0x22446688), 0x66442288);
-    }
-    TEST_CASE_END();
-
-
-
     TEST_CASE("RgbaPixel()");
     {
         RgbaPixel temp;
@@ -44,17 +34,17 @@ TEST_CASES(section0, __shared_common_bits64_graphics_rgbapixel);
         TEST_ASSERT_EQUALS(temp2.green,   0x02);
         TEST_ASSERT_EQUALS(temp2.blue,    0x03);
         TEST_ASSERT_EQUALS(temp2.alpha,   0x04);
-        TEST_ASSERT_EQUALS(temp2.value32, 0x03020104);
+        TEST_ASSERT_EQUALS(temp2.value32, 0x04010203);
 
 
 
-        RgbaPixel temp3(0x01020304);
+        RgbaPixel temp3(0x04010203);
 
         TEST_ASSERT_EQUALS(temp3.red,     0x01);
         TEST_ASSERT_EQUALS(temp3.green,   0x02);
         TEST_ASSERT_EQUALS(temp3.blue,    0x03);
         TEST_ASSERT_EQUALS(temp3.alpha,   0x04);
-        TEST_ASSERT_EQUALS(temp3.value32, 0x03020104);
+        TEST_ASSERT_EQUALS(temp3.value32, 0x04010203);
     }
     TEST_CASE_END();
 }
