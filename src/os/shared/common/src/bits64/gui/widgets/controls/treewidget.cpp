@@ -2,8 +2,10 @@
 
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
+#include <common/src/bits64/gui/other/defines.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/time/time.h>
 
 
 
@@ -18,6 +20,7 @@ TreeWidget::TreeWidget(Image *backgroundImage, Widget *parent)
     , mSelectedTreeNodeWidget(nullptr)
     , mHighlightedTreeNodeWidget(nullptr)
     , mKeyboardEventHandler(nullptr)
+    , mLastTimePressed(0)
 {
     COMMON_LT((" | backgroundImage = 0x%p, parent = 0x%p", backgroundImage, parent));
 
@@ -765,7 +768,21 @@ NgosStatus TreeWidget::setState(WidgetState state)
             {
                 if (mHighlightedTreeNodeWidget)
                 {
-                    COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mHighlightedTreeNodeWidget), NgosStatus::ASSERTION);
+                    u64 currentTime = Time::currentTimestampInMilliseconds();
+
+                    if (mSelectedTreeNodeWidget != mHighlightedTreeNodeWidget)
+                    {
+                        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mHighlightedTreeNodeWidget), NgosStatus::ASSERTION);
+                    }
+                    else
+                    {
+                        if (currentTime - mLastTimePressed <= DOUBLE_CLICK_TIME_DELTA_IN_MILLISECONDS)
+                        {
+                            COMMON_ASSERT_EXECUTION(mSelectedTreeNodeWidget->setExpanded(!mSelectedTreeNodeWidget->isExpanded()), NgosStatus::ASSERTION);
+                        }
+                    }
+
+                    mLastTimePressed = currentTime;
                 }
             }
             break;

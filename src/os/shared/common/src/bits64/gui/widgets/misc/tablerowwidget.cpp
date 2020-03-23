@@ -1,18 +1,10 @@
 #include "tablerowwidget.h"
 
 #include <common/src/bits64/graphics/graphics.h>
+#include <common/src/bits64/gui/other/defines.h>
 #include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
-
-
-
-#define HOVERED_COLOR          0xDD909090
-#define PRESSED_COLOR          0xDD606060
-#define FOCUSED_COLOR          0xDD406090
-#define FOCUSED_HOVERED_COLOR  0xDD304060
-#define INACTIVE_COLOR         0xDDC0C0C0
-#define INACTIVE_HOVERED_COLOR 0xDDE0E0E0
 
 
 

@@ -941,6 +941,7 @@ src/os/shared/common/src/bits64/graphics/stretchrange.cpp
 src/os/shared/common/src/bits64/graphics/stretchrange.h
 src/os/shared/common/src/bits64/gui/gui.cpp
 src/os/shared/common/src/bits64/gui/gui.h
+src/os/shared/common/src/bits64/gui/other/defines.h
 src/os/shared/common/src/bits64/gui/other/horizontalalignment.h
 src/os/shared/common/src/bits64/gui/other/presseventhandler.cpp
 src/os/shared/common/src/bits64/gui/other/presseventhandler.h
@@ -1015,6 +1016,8 @@ src/os/shared/common/src/bits64/string/generated/numberdecimals.h
 src/os/shared/common/src/bits64/string/string.cpp
 src/os/shared/common/src/bits64/string/string.h
 src/os/shared/common/src/bits64/string/utils.h
+src/os/shared/common/src/bits64/time/time.cpp
+src/os/shared/common/src/bits64/time/time.h
 src/os/shared/common/src/bits64/zlib/zlib.cpp
 src/os/shared/common/src/bits64/zlib/zlib.h
 src/os/shared/common/src/bits64/zlib/zlibcompressioninfo.h
