@@ -779,6 +779,8 @@ NgosStatus TreeWidget::setState(WidgetState state)
                         if (currentTime - mLastTimePressed <= DOUBLE_CLICK_TIME_DELTA_IN_MILLISECONDS)
                         {
                             COMMON_ASSERT_EXECUTION(mSelectedTreeNodeWidget->setExpanded(!mSelectedTreeNodeWidget->isExpanded()), NgosStatus::ASSERTION);
+
+                            currentTime = 0;
                         }
                     }
 
