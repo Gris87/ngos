@@ -51,6 +51,7 @@ public:
 private:
     NgosStatus doExpand(); // TEST: NO
     NgosStatus doCollapse(); // TEST: NO
+    NgosStatus invalidatePositionY(i64 &positionY); // TEST: NO
 
     Image                       *mCollapsedImage;
     Image                       *mExpandedImage;

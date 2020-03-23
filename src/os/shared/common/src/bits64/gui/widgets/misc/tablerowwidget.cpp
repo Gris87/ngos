@@ -7,6 +7,15 @@
 
 
 
+#define HOVERED_COLOR          0x909090DD
+#define PRESSED_COLOR          0x606060DD
+#define FOCUSED_COLOR          0x406090DD
+#define FOCUSED_HOVERED_COLOR  0x304060DD
+#define INACTIVE_COLOR         0xC0C0C0DD
+#define INACTIVE_HOVERED_COLOR 0xE0E0E0DD
+
+
+
 TableRowWidget::TableRowWidget(Widget *parent)
     : Widget(parent)
     , mCells()
@@ -59,12 +68,12 @@ NgosStatus TableRowWidget::invalidate()
 
         switch (mState)
         {
-            case WidgetState::HOVERED:          color.red = 0x90; color.green = 0x90; color.blue = 0x90; color.alpha = 0xDD; break;
-            case WidgetState::PRESSED:          color.red = 0x60; color.green = 0x60; color.blue = 0x60; color.alpha = 0xDD; break;
-            case WidgetState::FOCUSED:          color.red = 0x40; color.green = 0x60; color.blue = 0x90; color.alpha = 0xDD; break;
-            case WidgetState::FOCUSED_HOVERED:  color.red = 0x30; color.green = 0x40; color.blue = 0x60; color.alpha = 0xDD; break;
-            case WidgetState::INACTIVE:         color.red = 0xC0; color.green = 0xC0; color.blue = 0xC0; color.alpha = 0xDD; break;
-            case WidgetState::INACTIVE_HOVERED: color.red = 0xE0; color.green = 0xE0; color.blue = 0xE0; color.alpha = 0xDD; break;
+            case WidgetState::HOVERED:          color.value32 = HOVERED_COLOR;          break;
+            case WidgetState::PRESSED:          color.value32 = PRESSED_COLOR;          break;
+            case WidgetState::FOCUSED:          color.value32 = FOCUSED_COLOR;          break;
+            case WidgetState::FOCUSED_HOVERED:  color.value32 = FOCUSED_HOVERED_COLOR;  break;
+            case WidgetState::INACTIVE:         color.value32 = INACTIVE_COLOR;         break;
+            case WidgetState::INACTIVE_HOVERED: color.value32 = INACTIVE_HOVERED_COLOR; break;
 
             case WidgetState::NONE:
             case WidgetState::NORMAL:

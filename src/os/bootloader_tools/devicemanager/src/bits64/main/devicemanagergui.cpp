@@ -309,10 +309,26 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     // TODO: Remove it
     for (i64 i = 0; i < 50; ++i)
     {
-        TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "temp", sDevicesTreeWidget);
+        TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "AAA", sDevicesTreeWidget);
 
         UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget),            NgosStatus::ASSERTION);
+
+        for (i64 j = 0; j < 5; ++j)
+        {
+            TreeNodeWidget *tempNodeWidget2 = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "BBB", sDevicesTreeWidget);
+
+            UEFI_ASSERT_EXECUTION(tempNodeWidget2->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(tempNodeWidget->addChildNode(tempNodeWidget2),           NgosStatus::ASSERTION);
+
+            for (i64 k = 0; k < 5; ++k)
+            {
+                TreeNodeWidget *tempNodeWidget3 = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "CCC", sDevicesTreeWidget);
+
+                UEFI_ASSERT_EXECUTION(tempNodeWidget3->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(tempNodeWidget2->addChildNode(tempNodeWidget3),          NgosStatus::ASSERTION);
+            }
+        }
     }
 
 

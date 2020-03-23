@@ -9,10 +9,36 @@
 
 struct RgbaPixel
 {
-    u8 blue;
-    u8 green;
-    u8 red;
-    u8 alpha; // TODO: Set with u32
+    RgbaPixel()
+    {
+        value32 = 0;
+    }
+
+    RgbaPixel(u8 r, u8 g, u8 b, u8 a)
+    {
+        red   = r;
+        green = g;
+        blue  = b;
+        alpha = a;
+    }
+
+    RgbaPixel(u32 value)
+    {
+        value32 = value;
+    }
+
+    union
+    {
+        struct
+        {
+            u8 blue;
+            u8 green;
+            u8 red;
+            u8 alpha;
+        };
+
+        u32 value32;
+    };
 } __attribute__((packed));
 
 

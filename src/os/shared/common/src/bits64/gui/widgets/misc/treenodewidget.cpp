@@ -8,6 +8,15 @@
 
 
 
+#define HOVERED_COLOR          0x909090DD
+#define PRESSED_COLOR          0x606060DD
+#define FOCUSED_COLOR          0x406090DD
+#define FOCUSED_HOVERED_COLOR  0x304060DD
+#define INACTIVE_COLOR         0xC0C0C0DD
+#define INACTIVE_HOVERED_COLOR 0xE0E0E0DD
+
+
+
 TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8 *text, Widget *parent)
     : Widget(parent)
     , mCollapsedImage(collapsedImage)
@@ -141,12 +150,12 @@ NgosStatus TreeNodeWidget::invalidate()
 
         switch (mState)
         {
-            case WidgetState::HOVERED:          color.red = 0x90; color.green = 0x90; color.blue = 0x90; color.alpha = 0xDD; break;
-            case WidgetState::PRESSED:          color.red = 0x60; color.green = 0x60; color.blue = 0x60; color.alpha = 0xDD; break;
-            case WidgetState::FOCUSED:          color.red = 0x40; color.green = 0x60; color.blue = 0x90; color.alpha = 0xDD; break;
-            case WidgetState::FOCUSED_HOVERED:  color.red = 0x30; color.green = 0x40; color.blue = 0x60; color.alpha = 0xDD; break;
-            case WidgetState::INACTIVE:         color.red = 0xC0; color.green = 0xC0; color.blue = 0xC0; color.alpha = 0xDD; break;
-            case WidgetState::INACTIVE_HOVERED: color.red = 0xE0; color.green = 0xE0; color.blue = 0xE0; color.alpha = 0xDD; break;
+            case WidgetState::HOVERED:          color.value32 = HOVERED_COLOR;          break;
+            case WidgetState::PRESSED:          color.value32 = PRESSED_COLOR;          break;
+            case WidgetState::FOCUSED:          color.value32 = FOCUSED_COLOR;          break;
+            case WidgetState::FOCUSED_HOVERED:  color.value32 = FOCUSED_HOVERED_COLOR;  break;
+            case WidgetState::INACTIVE:         color.value32 = INACTIVE_COLOR;         break;
+            case WidgetState::INACTIVE_HOVERED: color.value32 = INACTIVE_HOVERED_COLOR; break;
 
             case WidgetState::NONE:
             case WidgetState::NORMAL:
@@ -409,6 +418,34 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
 
 
+        i64 positionY = mPositionY + mRowHeight;
+
+        if (isExpanded())
+        {
+            for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+            {
+                COMMON_ASSERT_EXECUTION(mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
+            }
+        }
+
+
+
+        TreeNodeWidget *parentNode = mParentNode;
+        TreeNodeWidget *curNode    = this;
+
+        while (parentNode)
+        {
+            for (i64 i = curNode->mNodeIndexInParent + 1; i < (i64)parentNode->mChildrenNodes.getSize(); ++i)
+            {
+                COMMON_ASSERT_EXECUTION(parentNode->mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
+            }
+
+            curNode    = parentNode;
+            parentNode = parentNode->getParentNode();
+        }
+
+
+
         COMMON_TEST_ASSERT(getParent(),              NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(getParent()->getParent(), NgosStatus::ASSERTION);
 
@@ -528,16 +565,11 @@ NgosStatus TreeNodeWidget::doExpand()
 
 
 
-    i64 positionY = mPositionY;
-
     for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
     {
         TreeNodeWidget *node = mChildrenNodes.at(i);
 
-        positionY += mRowHeight;
-
-        COMMON_ASSERT_EXECUTION(node->setPosition(mPositionX + mRowHeight, positionY), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(node->setVisible(true),                                NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(node->setVisible(true), NgosStatus::ASSERTION);
 
         if (node->isExpanded())
         {
@@ -565,6 +597,38 @@ NgosStatus TreeNodeWidget::doCollapse()
         if (node->isExpanded())
         {
             COMMON_ASSERT_EXECUTION(node->doCollapse(), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus TreeNodeWidget::invalidatePositionY(i64 &positionY)
+{
+    COMMON_LT((" | positionY = %d", positionY));
+
+
+
+    if (mParentNode)
+    {
+        COMMON_ASSERT_EXECUTION(setPosition(mParentNode->getPositionX() + mRowHeight, positionY), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        COMMON_ASSERT_EXECUTION(setPosition(0, positionY), NgosStatus::ASSERTION);
+    }
+
+    positionY += mRowHeight;
+
+
+
+    if (isExpanded())
+    {
+        for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+        {
+            COMMON_ASSERT_EXECUTION(mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
         }
     }
 
