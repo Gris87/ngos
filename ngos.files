@@ -942,6 +942,7 @@ src/os/shared/common/src/bits64/graphics/stretchrange.h
 src/os/shared/common/src/bits64/gui/gui.cpp
 src/os/shared/common/src/bits64/gui/gui.h
 src/os/shared/common/src/bits64/gui/other/horizontalalignment.h
+src/os/shared/common/src/bits64/gui/other/presseventhandler.cpp
 src/os/shared/common/src/bits64/gui/other/presseventhandler.h
 src/os/shared/common/src/bits64/gui/other/verticalalignment.h
 src/os/shared/common/src/bits64/gui/other/widgetstate.h
@@ -1377,6 +1378,7 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/image.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/ninepatch.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/png/png.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/rgbapixel.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/stretchrange.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/gui/widgets/widget.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h

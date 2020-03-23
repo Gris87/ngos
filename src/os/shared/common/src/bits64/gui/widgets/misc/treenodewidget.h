@@ -4,9 +4,9 @@
 
 
 #include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/bits64/gui/other/presseventhandler.h>
 
 #include <common/src/bits64/containers/arraylist.h>
-#include <common/src/bits64/gui/other/presseventhandler.h>
 #include <common/src/bits64/gui/widgets/controls/toolbutton.h>
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>

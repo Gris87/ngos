@@ -416,7 +416,7 @@ VerticalAlignment LabelWidget::getVerticalAlignment() const
 
 i64 LabelWidget::applyHorizontalAlignment(i64 fullWidth, i64 targetWidth)
 {
-    COMMON_LT((" | fullWidth = %d, targetWidth = %d", fullWidth, targetWidth)); // Commented to avoid too frequent logs
+    COMMON_LT((" | fullWidth = %d, targetWidth = %d", fullWidth, targetWidth));
 
 
 
@@ -450,7 +450,7 @@ i64 LabelWidget::applyHorizontalAlignment(i64 fullWidth, i64 targetWidth)
 
 i64 LabelWidget::applyVerticalAlignment(i64 fullHeight, i64 targetHeight)
 {
-    COMMON_LT((" | fullHeight = %d, targetHeight = %d", fullHeight, targetHeight)); // Commented to avoid too frequent logs
+    COMMON_LT((" | fullHeight = %d, targetHeight = %d", fullHeight, targetHeight));
 
 
 

@@ -198,6 +198,7 @@
 #include <common/src/bits64/graphics/stretchrange.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/other/horizontalalignment.h>
+#include <common/src/bits64/gui/other/presseventhandler.h>
 #include <common/src/bits64/gui/other/verticalalignment.h>
 #include <common/src/bits64/gui/other/widgetstate.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
@@ -430,6 +431,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(PngSignificantBits),                            4);
         TEST_ASSERT_EQUALS(sizeof(PngStandardRgbColorSpace),                      1);
         TEST_ASSERT_EQUALS(sizeof(PngUnitSpecifier),                              1);
+        TEST_ASSERT_EQUALS(sizeof(PressEventHandler),                             8);
         TEST_ASSERT_EQUALS(sizeof(Register128Bit),                                16);
         TEST_ASSERT_EQUALS(sizeof(Register256Bit),                                32);
         TEST_ASSERT_EQUALS(sizeof(Register512Bit),                                64);

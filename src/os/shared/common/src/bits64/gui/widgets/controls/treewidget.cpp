@@ -743,6 +743,7 @@ NgosStatus TreeWidget::setRootNodeWidget(TreeNodeWidget *node)
     mScrollWrapperWidget = new WrapperWidget(mContentWrapperWidget);
 
 
+
     mRootNodeWidget = node;
 
     COMMON_ASSERT_EXECUTION(mRootNodeWidget->setParent(mScrollWrapperWidget),                        NgosStatus::ASSERTION);

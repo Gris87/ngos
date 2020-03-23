@@ -46,6 +46,7 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/image.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/ninepatch.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/png/png.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/rgbapixel.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/stretchrange.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/gui/widgets/widget.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h>
@@ -115,6 +116,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_graphics_image);
     CALL_TEST_CASES(section0, __shared_common_bits64_graphics_ninepatch);
     CALL_TEST_CASES(section0, __shared_common_bits64_graphics_png_png);
+    CALL_TEST_CASES(section0, __shared_common_bits64_graphics_rgbapixel);
     CALL_TEST_CASES(section0, __shared_common_bits64_graphics_stretchrange);
     CALL_TEST_CASES(section0, __shared_common_bits64_gui_widgets_widget);
     CALL_TEST_CASES(section0, __shared_common_bits64_memory_memory);

@@ -14,6 +14,8 @@ class Widget;
 class PressEventHandler
 {
 public:
+    virtual ~PressEventHandler(); // TEST: NO
+
     virtual NgosStatus onWidgetPressed(Widget *sender) = 0; // TEST: NO
 };
 

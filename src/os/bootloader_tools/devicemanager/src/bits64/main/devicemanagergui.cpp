@@ -166,8 +166,8 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     sDevicesTreeWidget = new TreeWidget(treeBackgroundImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setPosition(screenWidth * DEVICES_TREEWIDGET_POSITION_X_PERCENT / 100, screenHeight * DEVICES_TREEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setSize(devicesTreeWidth, devicesTreeHeight),                                                                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setKeyboardEventHandler(onDevicesTreeWidgetKeyboardEvent),                                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setSize(devicesTreeWidth, devicesTreeHeight),                                                                                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setKeyboardEventHandler(onDevicesTreeWidgetKeyboardEvent),                                                                          NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRowHeight(screenHeight * DEVICES_TREEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 
@@ -180,8 +180,8 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     sDeviceInfoTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setPosition(screenWidth * DEVICE_INFO_TABLEWIDGET_POSITION_X_PERCENT / 100, screenHeight * DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setSize(deviceInfoTableWidth, deviceInfoTableHeight),                                                                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setKeyboardEventHandler(onDeviceInfoTableWidgetKeyboardEvent),                                                                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setSize(deviceInfoTableWidth, deviceInfoTableHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setKeyboardEventHandler(onDeviceInfoTableWidgetKeyboardEvent),                                                                                NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowHeight(screenHeight * DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
 

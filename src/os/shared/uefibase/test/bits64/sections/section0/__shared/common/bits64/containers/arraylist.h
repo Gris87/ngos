@@ -322,6 +322,20 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
 
+    TEST_CASE("isEmpty()");
+    {
+        ArrayList<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.isEmpty(), true);
+
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.isEmpty(), false);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("setCapacity()");
     {
         ArrayList<u8> temp;

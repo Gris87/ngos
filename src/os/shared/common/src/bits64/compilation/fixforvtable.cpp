@@ -50,4 +50,4 @@ void __vmi_class_type_info::dummy()
 
 
 
-u64 __cxa_pure_virtual;
+u64 __cxa_pure_virtual; // Ignore CppEqualAlignmentVerifier

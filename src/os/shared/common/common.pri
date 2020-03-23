@@ -26,6 +26,7 @@ SOURCES += \
     $$PWD/src/bits64/graphics/png/png.cpp \
     $$PWD/src/bits64/graphics/stretchrange.cpp \
     $$PWD/src/bits64/gui/gui.cpp \
+    $$PWD/src/bits64/gui/other/presseventhandler.cpp \
     $$PWD/src/bits64/gui/widgets/controls/button.cpp \
     $$PWD/src/bits64/gui/widgets/controls/tabbutton.cpp \
     $$PWD/src/bits64/gui/widgets/controls/tablewidget.cpp \
@@ -264,6 +265,7 @@ HEADERS += \
     $$PWD/src/bits64/graphics/stretchrange.h \
     $$PWD/src/bits64/gui/gui.h \
     $$PWD/src/bits64/gui/other/horizontalalignment.h \
+    $$PWD/src/bits64/gui/other/presseventhandler.h \
     $$PWD/src/bits64/gui/other/verticalalignment.h \
     $$PWD/src/bits64/gui/other/widgetstate.h \
     $$PWD/src/bits64/gui/widgets/controls/button.h \

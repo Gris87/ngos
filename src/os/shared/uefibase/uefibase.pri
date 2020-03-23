@@ -253,6 +253,7 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/image.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/ninepatch.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/png/png.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/rgbapixel.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/stretchrange.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/gui/widgets/widget.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h \
