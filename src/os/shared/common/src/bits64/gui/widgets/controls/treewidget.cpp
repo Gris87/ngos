@@ -768,7 +768,7 @@ NgosStatus TreeWidget::setState(WidgetState state)
             {
                 if (mHighlightedTreeNodeWidget)
                 {
-                    u64 currentTime = Time::currentTimestampInMilliseconds();
+                    i64 currentTime = Time::currentTimestampInMilliseconds();
 
                     if (mSelectedTreeNodeWidget != mHighlightedTreeNodeWidget)
                     {

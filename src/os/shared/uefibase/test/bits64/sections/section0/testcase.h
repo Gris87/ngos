@@ -54,6 +54,7 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/string/string.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/string/utils.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/time/time.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/types.h>
 #include <uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/other/uefibootmemorymap.h>
 #include <uefibase/test/bits64/sections/section0/__shared/uefibase/bits64/types.h>
@@ -124,6 +125,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_random_random);
     CALL_TEST_CASES(section0, __shared_common_bits64_string_string);
     CALL_TEST_CASES(section0, __shared_common_bits64_string_utils);
+    CALL_TEST_CASES(section0, __shared_common_bits64_time_time);
     CALL_TEST_CASES(section0, __shared_common_bits64_types);
     CALL_TEST_CASES(section0, __shared_uefibase_bits64_other_uefibootmemorymap);
     CALL_TEST_CASES(section0, __shared_uefibase_bits64_types);

@@ -56,7 +56,7 @@ private:
     TreeNodeWidget         *mSelectedTreeNodeWidget;
     TreeNodeWidget         *mHighlightedTreeNodeWidget;
     keyboard_event_handler  mKeyboardEventHandler;
-    u64                     mLastTimePressed;
+    i64                     mLastTimePressed;
 };
 
 
