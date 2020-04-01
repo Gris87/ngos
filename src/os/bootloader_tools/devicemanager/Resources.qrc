@@ -2,24 +2,64 @@
     <qresource prefix="/">
         <file>assets/glyphs/console.bin</file>
         <file>assets/glyphs/gui.bin</file>
+        <file>assets/images/additional.png</file>
         <file>assets/images/background.jpg</file>
+        <file>assets/images/baseboard.png</file>
+        <file>assets/images/bios.png</file>
+        <file>assets/images/bios_language.png</file>
         <file>assets/images/button_focused.9.png</file>
         <file>assets/images/button_focused_hover.9.png</file>
         <file>assets/images/button_hover.9.png</file>
         <file>assets/images/button_normal.9.png</file>
         <file>assets/images/button_pressed.9.png</file>
+        <file>assets/images/cache.png</file>
+        <file>assets/images/chassis.png</file>
         <file>assets/images/collapsed.png</file>
         <file>assets/images/console.9.png</file>
+        <file>assets/images/cooling_device.png</file>
         <file>assets/images/cursor.png</file>
+        <file>assets/images/electrical_current_probe.png</file>
         <file>assets/images/expanded.png</file>
+        <file>assets/images/group_associations.png</file>
+        <file>assets/images/management_device.png</file>
+        <file>assets/images/management_device_component.png</file>
+        <file>assets/images/management_device_threshold_data.png</file>
+        <file>assets/images/memory_array_mapped_address.png</file>
+        <file>assets/images/memory_controller.png</file>
+        <file>assets/images/memory_device.png</file>
+        <file>assets/images/memory_device_mapped_address.png</file>
+        <file>assets/images/memory_module.png</file>
+        <file>assets/images/onboard_audio.png</file>
+        <file>assets/images/onboard_devices.png</file>
+        <file>assets/images/onboard_ethernet.png</file>
+        <file>assets/images/onboard_sata.png</file>
+        <file>assets/images/onboard_video.png</file>
+        <file>assets/images/other.png</file>
+        <file>assets/images/physical_memory_array.png</file>
+        <file>assets/images/port_audio.png</file>
+        <file>assets/images/port_connector.png</file>
+        <file>assets/images/port_fan.png</file>
+        <file>assets/images/port_network.png</file>
+        <file>assets/images/port_ps2.png</file>
+        <file>assets/images/port_sata.png</file>
+        <file>assets/images/port_usb.png</file>
+        <file>assets/images/port_video.png</file>
+        <file>assets/images/portable_battery.png</file>
+        <file>assets/images/processor.png</file>
         <file>assets/images/reboot.png</file>
         <file>assets/images/shutdown.png</file>
         <file>assets/images/system.png</file>
+        <file>assets/images/system_boot.png</file>
+        <file>assets/images/system_power_supply.png</file>
+        <file>assets/images/system_slot_pci_express.png</file>
+        <file>assets/images/system_slots.png</file>
         <file>assets/images/table_background.9.png</file>
         <file>assets/images/table_header.9.png</file>
+        <file>assets/images/temperature_probe.png</file>
         <file>assets/images/toolbutton_hover.9.png</file>
         <file>assets/images/toolbutton_normal.9.png</file>
         <file>assets/images/toolbutton_pressed.9.png</file>
         <file>assets/images/tree_background.9.png</file>
+        <file>assets/images/voltage_probe.png</file>
     </qresource>
 </RCC>
