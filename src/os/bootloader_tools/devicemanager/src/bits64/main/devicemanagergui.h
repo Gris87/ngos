@@ -23,6 +23,7 @@ public:
 
 private:
     static NgosStatus fillDevicesTree(); // TEST: NO
+    static NgosStatus fillDevicesTreeForDmi(); // TEST: NO
     static NgosStatus addDeviceInfoEntry(const char8 *name, const char8 *value); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO

@@ -214,9 +214,89 @@ NgosStatus DMI::init()
     return NgosStatus::OK;
 }
 
+NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
+{
+    COMMON_LT((" | buf = 0x%p, processDmiEntry = 0x%p", buf, processDmiEntry));
+
+    COMMON_ASSERT(buf,             "buf is null",             NgosStatus::ASSERTION);
+    COMMON_ASSERT(processDmiEntry, "processDmiEntry is null", NgosStatus::ASSERTION);
+
+
+
+    i64  i   = 0;
+    u8  *cur = buf;
+
+    while (
+           !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
+           ||
+           i < sNumberOfSmbiosStructures
+          )
+    {
+        DmiEntryHeader *dmiEntryHeader = (DmiEntryHeader *)cur;
+
+
+
+        COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));
+
+        COMMON_LVVV(("dmiEntryHeader->type   = %s",     enumToFullString(dmiEntryHeader->type)));
+        COMMON_LVVV(("dmiEntryHeader->length = %u",     dmiEntryHeader->length));
+        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X", dmiEntryHeader->handle));
+
+
+
+        cur += dmiEntryHeader->length;
+
+        // We are getting total DMI entry size until we met 2 zeros in buffer that let us avoid issues on decoding
+        while (
+               cur[0]
+               ||
+               cur[1]
+              )
+        {
+            ++cur;
+        }
+
+        COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
+
+
+
+        cur += 2;
+        ++i;
+
+
+
+        // Starting from SMBIOS 3 there is no information about amount of entries.
+        // Therefore we should stop iterating when we met entry with the special DmiEntryType::END_OF_TABLE type
+        if (
+            !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
+            &&
+            dmiEntryHeader->type == DmiEntryType::END_OF_TABLE
+           )
+        {
+            break;
+        }
+    }
+
+    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || cur == buf + sStructureTableLength, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || i   == sNumberOfSmbiosStructures,   NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 DMI::getStructureTableAddress()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sStructureTableAddress;
+}
+
 const char8* DMI::getIdentity(DmiIdentity id)
 {
-    COMMON_LT((" | id = %u", id));
+    // COMMON_LT((" | id = %u", id)); // Commented to avoid too frequent logs
 
 
 
@@ -225,7 +305,7 @@ const char8* DMI::getIdentity(DmiIdentity id)
 
 Uuid* DMI::getUuid(DmiStoredUuid id)
 {
-    COMMON_LT((" | id = %u", id));
+    // COMMON_LT((" | id = %u", id)); // Commented to avoid too frequent logs
 
 
 
@@ -333,77 +413,6 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
     sNumberOfSmbiosStructures = smbios->numberOfSmbiosStructures;
     sStructureTableLength     = smbios->structureTableLength;
     sStructureTableAddress    = smbios->structureTableAddress;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
-{
-    COMMON_LT((" | buf = 0x%p, processDmiEntry = 0x%p", buf, processDmiEntry));
-
-    COMMON_ASSERT(buf,             "buf is null",             NgosStatus::ASSERTION);
-    COMMON_ASSERT(processDmiEntry, "processDmiEntry is null", NgosStatus::ASSERTION);
-
-
-
-    i64  i   = 0;
-    u8  *cur = buf;
-
-    while (
-           !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
-           ||
-           i < sNumberOfSmbiosStructures
-          )
-    {
-        DmiEntryHeader *dmiEntryHeader = (DmiEntryHeader *)cur;
-
-
-
-        COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));
-
-        COMMON_LVVV(("dmiEntryHeader->type   = %s",     enumToFullString(dmiEntryHeader->type)));
-        COMMON_LVVV(("dmiEntryHeader->length = %u",     dmiEntryHeader->length));
-        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X", dmiEntryHeader->handle));
-
-
-
-        cur += dmiEntryHeader->length;
-
-        // We are getting total DMI entry size until we met 2 zeros in buffer that let us avoid issues on decoding
-        while (
-               cur[0]
-               ||
-               cur[1]
-              )
-        {
-            ++cur;
-        }
-
-        COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
-
-
-
-        cur += 2;
-        ++i;
-
-
-
-        // Starting from SMBIOS 3 there is no information about amount of entries.
-        // Therefore we should stop iterating when we met entry with the special DmiEntryType::END_OF_TABLE type
-        if (
-            !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
-            &&
-            dmiEntryHeader->type == DmiEntryType::END_OF_TABLE
-           )
-        {
-            break;
-        }
-    }
-
-    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || cur == buf + sStructureTableLength, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || i   == sNumberOfSmbiosStructures,   NgosStatus::ASSERTION);
 
 
 

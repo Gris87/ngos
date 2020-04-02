@@ -37,11 +37,13 @@ QMAKE_LFLAGS += \
 
 SOURCES += \
     asm/arch/x86_64/main.S \
+    src/bits64/main/sources/dmi/devicemanagerdmi.cpp \
     src/bits64/main/devicemanager.cpp \
     src/bits64/main/devicemanagergui.cpp \
     src/main.cpp
 
 HEADERS += \
+    src/bits64/main/sources/dmi/devicemanagerdmi.h \
     src/bits64/main/devicemanager.h \
     src/bits64/main/devicemanagergui.h \
     test/bits64/sections/section1/bits64/types.h \
