@@ -13,7 +13,7 @@
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
-#include "src/bits64/main/other/devicemanagerimage.h"
+#include "src/bits64/other/devicemanagerimage.h"
 
 
 

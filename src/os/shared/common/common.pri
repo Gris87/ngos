@@ -265,6 +265,7 @@ HEADERS += \
     $$PWD/src/bits64/graphics/rgbpixel.h \
     $$PWD/src/bits64/graphics/stretchrange.h \
     $$PWD/src/bits64/gui/gui.h \
+    $$PWD/src/bits64/gui/other/defines.h \
     $$PWD/src/bits64/gui/other/horizontalalignment.h \
     $$PWD/src/bits64/gui/other/presseventhandler.h \
     $$PWD/src/bits64/gui/other/verticalalignment.h \
