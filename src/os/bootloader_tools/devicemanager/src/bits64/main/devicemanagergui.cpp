@@ -326,7 +326,6 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
-
     TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::SYSTEM), "System", sDevicesTreeWidget);
 
     UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
