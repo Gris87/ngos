@@ -922,6 +922,15 @@ NgosStatus TreeWidget::setRootNodeWidget(TreeNodeWidget *node)
     return NgosStatus::OK;
 }
 
+TreeNodeWidget* TreeWidget::getRootNodeWidget() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mRootNodeWidget;
+}
+
 NgosStatus TreeWidget::setSelectedTreeNodeWidget(TreeNodeWidget *node)
 {
     COMMON_LT((" | node = 0x%p", node));

@@ -36,6 +36,7 @@ public:
     u64 getRowHeight() const; // TEST: NO
 
     NgosStatus setRootNodeWidget(TreeNodeWidget *node); // TEST: NO
+    TreeNodeWidget* getRootNodeWidget() const; // TEST: NO
 
     NgosStatus setSelectedTreeNodeWidget(TreeNodeWidget *node); // TEST: NO
     TreeNodeWidget* getSelectedTreeNodeWidget() const; // TEST: NO

@@ -43,6 +43,7 @@ SOURCES += \
     src/main.cpp
 
 HEADERS += \
+    src/bits64/main/other/devicemanagerimage.h \
     src/bits64/main/sources/dmi/devicemanagerdmi.h \
     src/bits64/main/devicemanager.h \
     src/bits64/main/devicemanagergui.h \

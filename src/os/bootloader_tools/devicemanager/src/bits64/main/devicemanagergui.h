@@ -13,6 +13,8 @@
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
+#include "src/bits64/main/other/devicemanagerimage.h"
+
 
 
 class DeviceManagerGUI
@@ -23,7 +25,7 @@ public:
 
 private:
     static NgosStatus fillDevicesTree(); // TEST: NO
-    static NgosStatus fillDevicesTreeForDmi(); // TEST: NO
+    static NgosStatus fillDevicesTreeForDmi(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
     static NgosStatus addDeviceInfoEntry(const char8 *name, const char8 *value); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
@@ -40,12 +42,17 @@ private:
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
 
+    static Image* getImage(DeviceManagerImage image); // TEST: NO
+
     static Button      *sRebootButton;
     static Button      *sShutdownButton;
     static TreeWidget  *sDevicesTreeWidget;
     static TableWidget *sDeviceInfoTableWidget;
     static u16          sWaitEventsCount;
     static uefi_event  *sWaitEvents;
+    static RgbaPixel    sBlackColor;
+    static Image*       sImages[(u64)DeviceManagerImage::MAXIMUM];
+    static const char8* sImagesPath[(u64)DeviceManagerImage::MAXIMUM];
 };
 
 

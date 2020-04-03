@@ -373,6 +373,7 @@ src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanager.cpp
 src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanager.h
 src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanagergui.cpp
 src/os/bootloader_tools/devicemanager/src/bits64/main/devicemanagergui.h
+src/os/bootloader_tools/devicemanager/src/bits64/main/other/devicemanagerimage.h
 src/os/bootloader_tools/devicemanager/src/bits64/main/sources/dmi/devicemanagerdmi.cpp
 src/os/bootloader_tools/devicemanager/src/bits64/main/sources/dmi/devicemanagerdmi.h
 src/os/bootloader_tools/devicemanager/src/main.cpp

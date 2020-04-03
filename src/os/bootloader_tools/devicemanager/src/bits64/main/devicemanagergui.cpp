@@ -54,6 +54,57 @@ TreeWidget  *DeviceManagerGUI::sDevicesTreeWidget;
 TableWidget *DeviceManagerGUI::sDeviceInfoTableWidget;
 u16          DeviceManagerGUI::sWaitEventsCount;
 uefi_event  *DeviceManagerGUI::sWaitEvents;
+RgbaPixel    DeviceManagerGUI::sBlackColor(0xFF000000);
+Image*       DeviceManagerGUI::sImages[(u64)DeviceManagerImage::MAXIMUM];
+
+
+
+const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
+{
+    "images/additional.png",                        // DeviceManagerImage::ADDITIONAL
+    "images/baseboard.png",                         // DeviceManagerImage::BASEBOARD
+    "images/bios.png",                              // DeviceManagerImage::BIOS
+    "images/bios_language.png",                     // DeviceManagerImage::BIOS_LANGUAGE
+    "images/cache.png",                             // DeviceManagerImage::CACHE
+    "images/chassis.png",                           // DeviceManagerImage::CHASSIS
+    "images/cooling_device.png",                    // DeviceManagerImage::COOLING_DEVICE
+    "images/electrical_current_probe.png",          // DeviceManagerImage::ELECTRICAL_CURRENT_PROBE
+    "images/group_associations.png",                // DeviceManagerImage::GROUP_ASSOCIATIONS
+    "images/management_device.png",                 // DeviceManagerImage::MANAGEMENT_DEVICE
+    "images/management_device_component.png",       // DeviceManagerImage::MANAGEMENT_DEVICE_COMPONENT
+    "images/management_device_threshold_data.png",  // DeviceManagerImage::MANAGEMENT_DEVICE_THRESHOLD_DATA
+    "images/memory_array_mapped_address.png",       // DeviceManagerImage::MEMORY_ARRAY_MAPPED_ADDRESS
+    "images/memory_controller.png",                 // DeviceManagerImage::MEMORY_CONTROLLER
+    "images/memory_device.png",                     // DeviceManagerImage::MEMORY_DEVICE
+    "images/memory_device_mapped_address.png",      // DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS
+    "images/memory_module.png",                     // DeviceManagerImage::MEMORY_MODULE
+    "images/onboard_devices.png",                   // DeviceManagerImage::ONBOARD_DEVICES
+    "images/onboard_ethernet.png",                  // DeviceManagerImage::ONBOARD_ETHERNET
+    "images/onboard_other.png",                     // DeviceManagerImage::ONBOARD_OTHER
+    "images/onboard_sata.png",                      // DeviceManagerImage::ONBOARD_SATA
+    "images/onboard_sound.png",                     // DeviceManagerImage::ONBOARD_SOUND
+    "images/onboard_video.png",                     // DeviceManagerImage::ONBOARD_VIDEO
+    "images/other.png",                             // DeviceManagerImage::OTHER
+    "images/physical_memory_array.png",             // DeviceManagerImage::PHYSICAL_MEMORY_ARRAY
+    "images/port_audio.png",                        // DeviceManagerImage::PORT_AUDIO
+    "images/port_connector.png",                    // DeviceManagerImage::PORT_CONNECTOR
+    "images/port_fan.png",                          // DeviceManagerImage::PORT_FAN
+    "images/port_network.png",                      // DeviceManagerImage::PORT_NETWORK
+    "images/port_other.png",                        // DeviceManagerImage::PORT_OTHER
+    "images/port_ps2.png",                          // DeviceManagerImage::PORT_PS2
+    "images/port_sata.png",                         // DeviceManagerImage::PORT_SATA
+    "images/port_usb.png",                          // DeviceManagerImage::PORT_USB
+    "images/port_video.png",                        // DeviceManagerImage::PORT_VIDEO
+    "images/portable_battery.png",                  // DeviceManagerImage::PORTABLE_BATTERY
+    "images/processor.png",                         // DeviceManagerImage::PROCESSOR
+    "images/system.png",                            // DeviceManagerImage::SYSTEM
+    "images/system_boot.png",                       // DeviceManagerImage::SYSTEM_BOOT
+    "images/system_power_supply.png",               // DeviceManagerImage::SYSTEM_POWER_SUPPLY
+    "images/system_slot_pci_express.png",           // DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS
+    "images/system_slots.png",                      // DeviceManagerImage::SYSTEM_SLOTS
+    "images/temperature_probe.png",                 // DeviceManagerImage::TEMPERATURE_PROBE
+    "images/voltage_probe.png"                      // DeviceManagerImage::VOLTAGE_PROBE
+};
 
 
 
@@ -254,7 +305,6 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     Image *toolButtonPressedResizedImage;
     Image *collapsedImage;
     Image *expandedImage;
-    Image *systemImage;
 
 
 
@@ -263,7 +313,6 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/toolbutton_pressed.9.png", &toolButtonPressedImage), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/collapsed.png",            &collapsedImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/expanded.png",             &expandedImage),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/system.png",               &systemImage),            NgosStatus::ASSERTION);
 
 
 
@@ -277,41 +326,43 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
-    RgbaPixel blackColor;
 
-    blackColor.red   = 0;
-    blackColor.green = 0;
-    blackColor.blue  = 0;
-    blackColor.alpha = 0xFF;
+    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::SYSTEM), "System", sDevicesTreeWidget);
 
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),   NgosStatus::ASSERTION);
 
-
-    TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "System", sDevicesTreeWidget);
-
-    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),  NgosStatus::ASSERTION);
-
-
-
-    TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, systemImage, "DMI", sDevicesTreeWidget);
-
-    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(rootNodeWidget->addChildNode(dmiNodeWidget),           NgosStatus::ASSERTION);
-
-
+    UEFI_ASSERT_EXECUTION(fillDevicesTreeForDmi(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(rootNodeWidget->setExpanded(true), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(dmiNodeWidget->setExpanded(true),  NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-
-NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi()
+NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage)
 {
-    UEFI_LT((""));
+    UEFI_LT((" | toolButtonNormalImage = 0x%p, toolButtonHoverImage = 0x%p, toolButtonPressedImage = 0x%p, toolButtonNormalResizedImage = 0x%p, toolButtonHoverResizedImage = 0x%p, toolButtonPressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p", toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage));
+
+
+
+    TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::SYSTEM), "DMI", sDevicesTreeWidget);
+
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(sBlackColor),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->getRootNodeWidget()->addChildNode(dmiNodeWidget), NgosStatus::ASSERTION);
+
+
+
+    // TODO: Remove it
+    TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::BASEBOARD), "Baseboard", sDevicesTreeWidget);
+
+    UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget),             NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->setExpanded(true),  NgosStatus::ASSERTION);
 
 
 
@@ -327,15 +378,6 @@ NgosStatus DeviceManagerGUI::addDeviceInfoEntry(const char8 *name, const char8 *
 
 
 
-    RgbaPixel blackColor;
-
-    blackColor.red   = 0;
-    blackColor.green = 0;
-    blackColor.blue  = 0;
-    blackColor.alpha = 0xFF;
-
-
-
     u64 row = sDeviceInfoTableWidget->getRowCount();
 
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
@@ -343,11 +385,11 @@ NgosStatus DeviceManagerGUI::addDeviceInfoEntry(const char8 *name, const char8 *
 
 
     LabelWidget *nameLabelWidget = new LabelWidget(name, sDeviceInfoTableWidget);
-    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(blackColor),                                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(sBlackColor),                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget), NgosStatus::ASSERTION);
 
     LabelWidget *valueLabelWidget = new LabelWidget(value, sDeviceInfoTableWidget);
-    UEFI_ASSERT_EXECUTION(valueLabelWidget->setColor(blackColor),                                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(valueLabelWidget->setColor(sBlackColor),                                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_VALUE, valueLabelWidget), NgosStatus::ASSERTION);
 
 
@@ -683,4 +725,26 @@ NgosStatus DeviceManagerGUI::onShutdownButtonPressed()
 
 
     return NgosStatus::OK;
+}
+
+Image* DeviceManagerGUI::getImage(DeviceManagerImage image)
+{
+    UEFI_LT((" | image = %u", image));
+
+    UEFI_ASSERT(image < DeviceManagerImage::MAXIMUM, "image is invalid", nullptr);
+
+
+
+    Image *res = sImages[(u64)image];
+
+    if (!res)
+    {
+        UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sImagesPath[(u64)image], &res), nullptr);
+
+        sImages[(u64)image] = res;
+    }
+
+
+
+    return res;
 }
