@@ -53,7 +53,14 @@ NgosStatus Bootloader::cleanUp()
 
 
 
-    UEFI_ASSERT_EXECUTION(free(sApplicationDirPath), NgosStatus::ASSERTION);
+    if (UEFI::freePool(sApplicationDirPath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for string", sApplicationDirPath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to free pool(0x%p) for string", sApplicationDirPath));
+    }
 
 
 
@@ -470,7 +477,14 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
 
 
-    UEFI_ASSERT_EXECUTION(free(absolutePath), NgosStatus::ASSERTION);
+    if (UEFI::freePool(absolutePath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for string", absolutePath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to release pool(0x%p) for string", absolutePath));
+    }
 
 
 
@@ -578,7 +592,16 @@ NgosStatus Bootloader::initPaths()
 
 
 
-    UEFI_ASSERT_EXECUTION(free(applicationPath), NgosStatus::ASSERTION);
+    if (UEFI::freePool(applicationPath) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Released pool(0x%p) for string", applicationPath));
+    }
+    else
+    {
+        UEFI_LE(("Failed to free pool(0x%p) for string", applicationPath));
+
+        return NgosStatus::FAILED;
+    }
 
 
 
@@ -1751,7 +1774,14 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path, 
 
     if (freePath)
     {
-        UEFI_ASSERT_EXECUTION(free((char8 *)path), NgosStatus::ASSERTION);
+        if (UEFI::freePool((char8 *)path) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Released pool(0x%p) for string", path));
+        }
+        else
+        {
+            UEFI_LE(("Failed to release pool(0x%p) for string", path));
+        }
     }
 
 
