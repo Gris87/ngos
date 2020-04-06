@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/dmi/dmientryheader.h>
 #include <common/src/bits64/dmi/entry/dmiadditionalinformationentry.h>
 #include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
@@ -33,12 +34,16 @@
 #include <common/src/bits64/dmi/entry/dmitemperatureprobeentry.h>
 #include <common/src/bits64/dmi/entry/dmivoltageprobeentry.h>
 
+#include "src/bits64/other/devicemanagerentrydmi.h"
+
 
 
 class DeviceManagerDMI
 {
 public:
     static NgosStatus init(); // TEST: NO
+
+    static const ArrayList<DeviceManagerEntryDMI *>& getEntries(); //TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -74,6 +79,8 @@ private:
     static NgosStatus saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry); // TEST: NO
     static NgosStatus saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry *entry); // TEST: NO
     static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO
+
+    static ArrayList<DeviceManagerEntryDMI *> sEntries;
 };
 
 

@@ -1,8 +1,13 @@
 #include "devicemanagerdmi.h"
 
 #include <common/src/bits64/dmi/dmi.h>
+#include <common/src/bits64/string/utils.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
+
+
+
+ArrayList<DeviceManagerEntryDMI *> DeviceManagerDMI::sEntries;
 
 
 
@@ -17,6 +22,15 @@ NgosStatus DeviceManagerDMI::init()
 
 
     return NgosStatus::OK;
+}
+
+const ArrayList<DeviceManagerEntryDMI *>& DeviceManagerDMI::getEntries()
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sEntries;
 }
 
 NgosStatus DeviceManagerDMI::decodeDmiEntry(DmiEntryHeader *header)
@@ -75,6 +89,208 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
     UEFI_LT((" | entry = 0x%p", entry));
 
     UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("entry->vendorStringId          = %u",     entry->vendorStringId));
+        UEFI_LVVV(("entry->biosVersionStringId     = %u",     entry->biosVersionStringId));
+        UEFI_LVVV(("entry->biosSegment             = 0x%04X", entry->biosSegment));
+        UEFI_LVVV(("entry->biosReleaseDateStringId = %u",     entry->biosReleaseDateStringId));
+        UEFI_LVVV(("entry->biosSize                = %u",     entry->biosSize));
+        UEFI_LVVV(("entry->biosCharacteristics     = %s",     flagsToFullString(entry->biosCharacteristics)));
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        {
+            UEFI_LVVV(("entry->biosCharacteristicsExtension.biosReserved = %s", flagsToFullString(entry->biosCharacteristicsExtension.biosReserved)));
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            {
+                UEFI_LVVV(("entry->biosCharacteristicsExtension.systemReserved = %s", flagsToFullString(entry->biosCharacteristicsExtension.systemReserved)));
+                UEFI_LVVV(("entry->systemBiosMajorRelease                      = %u", entry->systemBiosMajorRelease));
+                UEFI_LVVV(("entry->systemBiosMinorRelease                      = %u", entry->systemBiosMinorRelease));
+                UEFI_LVVV(("entry->embeddedControllerFirmwareMajorRelease      = %u", entry->embeddedControllerFirmwareMajorRelease));
+                UEFI_LVVV(("entry->embeddedControllerFirmwareMinorRelease      = %u", entry->embeddedControllerFirmwareMinorRelease));
+
+                if (DMI::getVersion() >= DMI_VERSION(3, 1))
+                {
+                    UEFI_LVVV(("entry->extendedBiosSize.value   = %u",     entry->extendedBiosSize.value));
+                    UEFI_LVVV(("entry->extendedBiosSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entry->extendedBiosSize.unit)));
+                    UEFI_LVVV(("entry->extendedBiosSize.value16 = 0x%04X", entry->extendedBiosSize.value16));
+                    UEFI_LVVV(("entry->extendedBiosSize         = %s",     bytesToString(entry->extendedBiosSize.size())));
+                }
+            }
+        }
+
+
+
+        UEFI_TEST_ASSERT(entry->vendorStringId          == 1,                                                                     NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(entry->biosVersionStringId     == 2,                                                                     NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(entry->biosSegment          == 0xE800,                                                                NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(entry->biosReleaseDateStringId == 3,                                                                     NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(entry->biosSize             == 39,                                                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->biosCharacteristics  == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION); // Commented due to value variation
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        {
+            // UEFI_TEST_ASSERT(entry->biosCharacteristicsExtension.biosReserved == FLAG(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            {
+                // UEFI_TEST_ASSERT(entry->biosCharacteristicsExtension.systemReserved == FLAG(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->systemBiosMajorRelease                      == 15,                                                   NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->systemBiosMinorRelease                      == 103,                                                  NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->embeddedControllerFirmwareMajorRelease      == 151,                                                  NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->embeddedControllerFirmwareMinorRelease      == 78,                                                   NgosStatus::ASSERTION); // Commented due to value variation
+
+                if (DMI::getVersion() >= DMI_VERSION(3, 1))
+                {
+                    // UEFI_TEST_ASSERT(entry->extendedBiosSize.value   == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->extendedBiosSize.unit    == DmiBiosExtendedRomSizeUnit::MEGABYTES, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->extendedBiosSize.value16 == 0x0000,                                NgosStatus::ASSERTION); // Commented due to value variation
+
+                    UEFI_TEST_ASSERT(entry->header.length >= 26,                   NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
+                }
+                else
+                {
+                    UEFI_TEST_ASSERT(entry->header.length >= 24,                       NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry) - 2, NgosStatus::ASSERTION);
+                }
+            }
+            else
+            {
+                UEFI_TEST_ASSERT(entry->header.length >= 19,                       NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry) - 7, NgosStatus::ASSERTION);
+            }
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(entry->header.length >= 18,                       NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry) - 8, NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    const char8 *vendorString          = "N/A";
+    const char8 *biosVersionString     = "N/A";
+    const char8 *biosReleaseDateString = "N/A";
+
+
+
+    if (
+        entry->vendorStringId
+        ||
+        entry->biosVersionStringId
+        ||
+        entry->biosReleaseDateStringId
+       )
+    {
+        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        char8 *cur      = (char8 *)entry + entry->header.length;
+        char8 *begin    = cur;
+        u8     stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
+        {
+            if (!cur[0]) // cur[0] == 0
+            {
+                ++stringId;
+                UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (stringId == entry->vendorStringId)
+                {
+                    vendorString = begin;
+                }
+                else
+                if (stringId == entry->biosVersionStringId)
+                {
+                    biosVersionString = begin;
+                }
+                else
+                if (stringId == entry->biosReleaseDateStringId)
+                {
+                    biosReleaseDateString = begin;
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
+            }
+
+
+
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
+
+
+
+    const char8 *biosCharacteristicsExtensionBiosReserved   = "N/A";
+    const char8 *biosCharacteristicsExtensionSystemReserved = "N/A";
+    const char8 *systemBiosMajorRelease                     = "N/A";
+    const char8 *systemBiosMinorRelease                     = "N/A";
+    const char8 *embeddedControllerFirmwareMajorRelease     = "N/A";
+    const char8 *embeddedControllerFirmwareMinorRelease     = "N/A";
+    const char8 *extendedBiosSize                           = "N/A";
+
+    if (DMI::getVersion() >= DMI_VERSION(2, 1))
+    {
+        biosCharacteristicsExtensionBiosReserved = strdup(flagsToFullString(entry->biosCharacteristicsExtension.biosReserved));
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 3))
+        {
+            biosCharacteristicsExtensionSystemReserved = strdup(flagsToFullString(entry->biosCharacteristicsExtension.systemReserved));
+            systemBiosMajorRelease                     = mprintf("%u", entry->systemBiosMajorRelease);
+            systemBiosMinorRelease                     = mprintf("%u", entry->systemBiosMinorRelease);
+            embeddedControllerFirmwareMajorRelease     = mprintf("%u", entry->embeddedControllerFirmwareMajorRelease);
+            embeddedControllerFirmwareMinorRelease     = mprintf("%u", entry->embeddedControllerFirmwareMinorRelease);
+
+            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            {
+                extendedBiosSize = strdup(bytesToString(entry->extendedBiosSize.size()));
+            }
+        }
+    }
+
+
+
+    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::BIOS);
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",                                     vendorString),                                          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",                                    biosVersionString),                                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",                                    mprintf("0x%04X", entry->biosSegment)),                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Release date",                               biosReleaseDateString),                                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                                       strdup(bytesToString(entry->biosSize))),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics",                            strdup(flagsToFullString(entry->biosCharacteristics))), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics (BIOS reserved)",            biosCharacteristicsExtensionBiosReserved),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics (System reserved)",          biosCharacteristicsExtensionSystemReserved),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System BIOS major release",                  systemBiosMajorRelease),                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System BIOS minor release",                  systemBiosMinorRelease),                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Embedded controller firmware major release", embeddedControllerFirmwareMajorRelease),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Embedded controller firmware minor release", embeddedControllerFirmwareMinorRelease),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended size",                              extendedBiosSize),                                      NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 

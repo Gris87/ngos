@@ -41,6 +41,11 @@
 
 
 
+#define DMI_VERSION(major, minor)        (((major) << 16) + ((minor) << 8))
+#define DMI_VERSION_3(major, minor, doc) (((major) << 16) + ((minor) << 8) + (doc))
+
+
+
 typedef NgosStatus (*process_dmi_entry) (DmiEntryHeader *header);
 
 
@@ -51,6 +56,8 @@ public:
     static NgosStatus init(); // TEST: NO
 
     static NgosStatus iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry);
+
+    static u32 getVersion(); // TEST: NO
 
     static u64 getStructureTableAddress(); // TEST: NO
 
@@ -96,9 +103,9 @@ private:
     static NgosStatus storeDmiMemoryDevices(u8 *buf); // TEST: NO
     static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header); // TEST: NO
-    static NgosStatus saveIdentity(DmiIdentity id, u8 *address, u64 size); // TEST: NO
+    static NgosStatus saveIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
     static NgosStatus saveUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
-    static NgosStatus getString(u8 *address, u64 size, u8 **destination); // TEST: NO
+    static NgosStatus getString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
     static u32              sVersion;

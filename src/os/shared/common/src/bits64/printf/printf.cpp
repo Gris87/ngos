@@ -2,6 +2,8 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/malloc.h>
+#include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 
 
@@ -653,6 +655,48 @@ i64 sprintf(char8 *buffer, const char8 *format, ...)
 
     va_start(args, format);
     i64 res = vsprintf(buffer, format, args);
+    va_end(args);
+
+    return res;
+}
+
+char8* vmprintf(const char8 *format, va_list args)
+{
+    // COMMON_LT((" | format = 0x%p, args = ...", format)); // Commented to avoid infinite loop
+
+    COMMON_ASSERT(format, "format is null", 0);
+
+
+
+    i64 len = vsprintf(printfBuffer, format, args);
+
+    COMMON_TEST_ASSERT(len < (i64)sizeof(printfBuffer), 0);
+
+
+
+    u64 size = (len + 1) * sizeof(char8);
+
+    char8 *res = (char8 *)malloc(size);
+
+    memcpy(res, printfBuffer, size);
+
+
+
+    return res;
+}
+
+char8* mprintf(const char8 *format, ...)
+{
+    // COMMON_LT((" | format = 0x%p", format)); // Commented to avoid too frequent logs
+
+    COMMON_ASSERT(format, "format is null", 0);
+
+
+
+    va_list args;
+
+    va_start(args, format);
+    char8 *res = vmprintf(format, args);
     va_end(args);
 
     return res;
