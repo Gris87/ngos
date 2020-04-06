@@ -677,6 +677,7 @@ char8* vmprintf(const char8 *format, va_list args)
     u64 size = (len + 1) * sizeof(char8);
 
     char8 *res = (char8 *)malloc(size);
+    COMMON_TEST_ASSERT(res, 0);
 
     memcpy(res, printfBuffer, size);
 
