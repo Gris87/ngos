@@ -11,6 +11,18 @@ DeviceManagerEntry::DeviceManagerEntry()
     UEFI_LT((""));
 }
 
+DeviceManagerEntry::~DeviceManagerEntry()
+{
+    UEFI_LT((""));
+
+
+
+    for (i64 i = 0; i < mRecords.getSize(); ++i)
+    {
+        delete mRecords.at(i);
+    }
+}
+
 NgosStatus DeviceManagerEntry::addRecord(const char8 *name, const char8 *value)
 {
     UEFI_LT((" | name = 0x%p, value = 0x%p", name, value));

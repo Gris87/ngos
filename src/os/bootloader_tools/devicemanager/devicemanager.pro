@@ -40,6 +40,7 @@ SOURCES += \
     src/bits64/main/devicemanager.cpp \
     src/bits64/main/devicemanagergui.cpp \
     src/bits64/other/devicemanagerentry.cpp \
+    src/bits64/other/devicemanagerentrydmi.cpp \
     src/bits64/other/devicemanagerentryrecord.cpp \
     src/bits64/sources/dmi/devicemanagerdmi.cpp \
     src/main.cpp
@@ -48,6 +49,7 @@ HEADERS += \
     src/bits64/main/devicemanager.h \
     src/bits64/main/devicemanagergui.h \
     src/bits64/other/devicemanagerentry.h \
+    src/bits64/other/devicemanagerentrydmi.h \
     src/bits64/other/devicemanagerentryrecord.h \
     src/bits64/other/devicemanagerimage.h \
     src/bits64/sources/dmi/devicemanagerdmi.h \
