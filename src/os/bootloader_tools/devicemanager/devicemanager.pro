@@ -39,12 +39,16 @@ SOURCES += \
     asm/arch/x86_64/main.S \
     src/bits64/main/devicemanager.cpp \
     src/bits64/main/devicemanagergui.cpp \
+    src/bits64/other/devicemanagerentry.cpp \
+    src/bits64/other/devicemanagerentryrecord.cpp \
     src/bits64/sources/dmi/devicemanagerdmi.cpp \
     src/main.cpp
 
 HEADERS += \
     src/bits64/main/devicemanager.h \
     src/bits64/main/devicemanagergui.h \
+    src/bits64/other/devicemanagerentry.h \
+    src/bits64/other/devicemanagerentryrecord.h \
     src/bits64/other/devicemanagerimage.h \
     src/bits64/sources/dmi/devicemanagerdmi.h \
     test/bits64/sections/section1/bits64/types.h \

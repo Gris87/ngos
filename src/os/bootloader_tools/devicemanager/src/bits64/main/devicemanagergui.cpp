@@ -728,7 +728,7 @@ NgosStatus DeviceManagerGUI::onShutdownButtonPressed()
 
 Image* DeviceManagerGUI::getImage(DeviceManagerImage image)
 {
-    UEFI_LT((" | image = %u", image));
+    // UEFI_LT((" | image = %u", image)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(image < DeviceManagerImage::MAXIMUM, "image is invalid", nullptr);
 

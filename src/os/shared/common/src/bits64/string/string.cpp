@@ -2,6 +2,8 @@
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
+#include <common/src/bits64/memory/malloc.h>
+#include <common/src/bits64/memory/memory.h>
 
 
 
@@ -91,6 +93,44 @@ char16* strcpy(char16 *str1, const char16 *str2)
 
 
     return str1;
+}
+
+char8* strdup(const char8 *str)
+{
+    COMMON_LT((" | str = 0x%p", str));
+
+    COMMON_ASSERT(str, "str is null", 0);
+
+
+
+    u64 size = (strlen(str) + 1) * sizeof(char8);
+
+    char8 *res = (char8 *)malloc(size);
+
+    memcpy(res, str, size);
+
+
+
+    return res;
+}
+
+char16* strdup(const char16 *str)
+{
+    COMMON_LT((" | str = 0x%p", str));
+
+    COMMON_ASSERT(str, "str is null", 0);
+
+
+
+    u64 size = (strlen(str) + 1) * sizeof(char16);
+
+    char16 *res = (char16 *)malloc(size);
+
+    memcpy(res, str, size);
+
+
+
+    return res;
 }
 
 char8* strcat(char8 *str1, const char8 *str2)

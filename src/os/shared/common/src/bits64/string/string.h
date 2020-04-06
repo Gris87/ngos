@@ -13,6 +13,8 @@ char8 toUpper(char8 ch);
 char16 toUpper(char16 ch);
 char8* strcpy(char8 *str1, const char8 *str2);
 char16* strcpy(char16 *str1, const char16 *str2);
+char8* strdup(const char8 *str);
+char16* strdup(const char16 *str);
 char8* strcat(char8 *str1, const char8 *str2);
 char16* strcat(char16 *str1, const char16 *str2);
 char8* strapp(char8 *str1, const char8 *str2);
