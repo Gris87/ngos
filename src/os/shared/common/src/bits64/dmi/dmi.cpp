@@ -938,19 +938,19 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturerStringId = %u", entry->manufacturerStringId));
-        COMMON_LVVV(("entry->type                 = %s", enumToFullString(entry->type)));
-        COMMON_LVVV(("entry->versionStringId      = %u", entry->versionStringId));
-        COMMON_LVVV(("entry->serialNumberStringId = %u", entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId     = %u", entry->assetTagStringId));
-        COMMON_LVVV(("entry->bootUpState          = %s", enumToFullString(entry->bootUpState)));
-        COMMON_LVVV(("entry->powerSupplyState     = %s", enumToFullString(entry->powerSupplyState)));
-        COMMON_LVVV(("entry->thermalState         = %s", enumToFullString(entry->thermalState)));
-        COMMON_LVVV(("entry->securityStatus       = %s", enumToFullString(entry->securityStatus)));
-        COMMON_LVVV(("entry->oemDefined[0]        = %u", entry->oemDefined[0]));
-        COMMON_LVVV(("entry->oemDefined[1]        = %u", entry->oemDefined[1]));
-        COMMON_LVVV(("entry->oemDefined[2]        = %u", entry->oemDefined[2]));
-        COMMON_LVVV(("entry->oemDefined[3]        = %u", entry->oemDefined[3]));
+        COMMON_LVVV(("entry->manufacturerStringId = %u",     entry->manufacturerStringId));
+        COMMON_LVVV(("entry->type                 = %s",     enumToFullString(entry->type)));
+        COMMON_LVVV(("entry->versionStringId      = %u",     entry->versionStringId));
+        COMMON_LVVV(("entry->serialNumberStringId = %u",     entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId     = %u",     entry->assetTagStringId));
+        COMMON_LVVV(("entry->bootUpState          = %s",     enumToFullString(entry->bootUpState)));
+        COMMON_LVVV(("entry->powerSupplyState     = %s",     enumToFullString(entry->powerSupplyState)));
+        COMMON_LVVV(("entry->thermalState         = %s",     enumToFullString(entry->thermalState)));
+        COMMON_LVVV(("entry->securityStatus       = %s",     enumToFullString(entry->securityStatus)));
+        COMMON_LVVV(("entry->oemDefined[0]        = 0x%02X", entry->oemDefined[0]));
+        COMMON_LVVV(("entry->oemDefined[1]        = 0x%02X", entry->oemDefined[1]));
+        COMMON_LVVV(("entry->oemDefined[2]        = 0x%02X", entry->oemDefined[2]));
+        COMMON_LVVV(("entry->oemDefined[3]        = 0x%02X", entry->oemDefined[3]));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
@@ -968,9 +968,9 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                 {
                     DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
 
-                    COMMON_LVVV(("containedElement[%-3d]->type    = %s", i, enumToFullString(containedElement->type)));
-                    COMMON_LVVV(("containedElement[%-3d]->minimum = %u", i, containedElement->minimum));
-                    COMMON_LVVV(("containedElement[%-3d]->maximum = %u", i, containedElement->maximum));
+                    COMMON_LVVV(("containedElement[%-3d]->type    = %s",     i, enumToFullString(containedElement->type)));
+                    COMMON_LVVV(("containedElement[%-3d]->minimum = 0x%02X", i, containedElement->minimum));
+                    COMMON_LVVV(("containedElement[%-3d]->maximum = 0x%02X", i, containedElement->maximum));
                 }
 
                 COMMON_LVVV(("-------------------------------------"));

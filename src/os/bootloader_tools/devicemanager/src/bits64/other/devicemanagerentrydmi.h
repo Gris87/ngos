@@ -12,8 +12,10 @@
 class DeviceManagerEntryDMI : public DeviceManagerEntry
 {
 public:
-    DeviceManagerEntryDMI(DmiEntryType type);
+    DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerImage image);
     ~DeviceManagerEntryDMI();
+
+    bool operator<(const DeviceManagerEntryDMI &another) const; // TEST: NO
 
     NgosStatus setType(DmiEntryType type); // TEST: NO
     DmiEntryType getType() const; // TEST: NO

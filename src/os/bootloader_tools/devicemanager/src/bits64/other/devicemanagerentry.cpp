@@ -5,10 +5,11 @@
 
 
 
-DeviceManagerEntry::DeviceManagerEntry()
-    : mRecords()
+DeviceManagerEntry::DeviceManagerEntry(DeviceManagerImage image)
+    : mImage(image)
+    , mRecords()
 {
-    UEFI_LT((""));
+    UEFI_LT((" | image = %u", image));
 }
 
 DeviceManagerEntry::~DeviceManagerEntry()
@@ -50,4 +51,26 @@ const ArrayList<DeviceManagerEntryRecord *>& DeviceManagerEntry::getRecords()
 
 
     return mRecords;
+}
+
+NgosStatus DeviceManagerEntry::setImage(DeviceManagerImage image)
+{
+    UEFI_LT((" | image = %u", image));
+
+
+
+    mImage = image;
+
+
+
+    return NgosStatus::OK;
+}
+
+DeviceManagerImage DeviceManagerEntry::getImage() const
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mImage;
 }

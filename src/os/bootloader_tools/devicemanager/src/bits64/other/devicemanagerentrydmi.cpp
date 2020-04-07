@@ -5,8 +5,8 @@
 
 
 
-DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type)
-    : DeviceManagerEntry()
+DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerImage image)
+    : DeviceManagerEntry(image)
     , mType(type)
 {
     UEFI_LT((" | type = %u", type));
@@ -15,6 +15,15 @@ DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type)
 DeviceManagerEntryDMI::~DeviceManagerEntryDMI()
 {
     UEFI_LT((""));
+}
+
+bool DeviceManagerEntryDMI::operator<(const DeviceManagerEntryDMI &another) const
+{
+    UEFI_LT((" | another = ..."));
+
+
+
+    return mType < another.mType;
 }
 
 NgosStatus DeviceManagerEntryDMI::setType(DmiEntryType type)

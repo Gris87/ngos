@@ -15,7 +15,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/bits64/main/devicemanager.h"
+#include "src/bits64/sources/dmi/devicemanagerdmi.h"
 
 
 
@@ -353,11 +353,19 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
 
 
-    // TODO: Remove it
-    TreeNodeWidget *tempNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::BASEBOARD), "Baseboard", sDevicesTreeWidget);
+    const ArrayList<DeviceManagerEntryDMI *>& entries = DeviceManagerDMI::getEntries();
 
-    UEFI_ASSERT_EXECUTION(tempNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(tempNodeWidget),             NgosStatus::ASSERTION);
+    for (i64 i = 0; i < (i64)entries.getSize(); ++i)
+    {
+        DeviceManagerEntryDMI *entry = entries.at(i);
+
+
+
+        TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
+
+        UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(entryNodeWidget),             NgosStatus::ASSERTION);
+    }
 
 
 

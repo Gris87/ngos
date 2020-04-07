@@ -6,23 +6,28 @@
 #include <common/src/bits64/containers/arraylist.h>
 
 #include "src/bits64/other/devicemanagerentryrecord.h"
+#include "src/bits64/other/devicemanagerimage.h"
 
 
 
 class DeviceManagerEntry
 {
 public:
-    DeviceManagerEntry(); // TEST: NO
+    DeviceManagerEntry(DeviceManagerImage image); // TEST: NO
     virtual ~DeviceManagerEntry(); // TEST: NO
 
     NgosStatus addRecord(const char8 *name, const char8 *value); // TEST: NO
     const ArrayList<DeviceManagerEntryRecord *>& getRecords(); // TEST: NO
+
+    NgosStatus setImage(DeviceManagerImage image); // TEST: NO
+    DeviceManagerImage getImage() const; // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
+    DeviceManagerImage                    mImage;
     ArrayList<DeviceManagerEntryRecord *> mRecords;
 };
 
