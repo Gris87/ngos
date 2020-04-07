@@ -13,14 +13,14 @@ struct DmiProcessorSignature
     {
         struct
         {
-            u32 steppingId:  4;
-            u32 model:       4;
-            u32 family:      4;
-            u32 type:        2;
-            u32 __reserved:  2;
-            u32 xModel:      4;
-            u32 xFamily:     8;
-            u32 __reserved2: 4;
+            u32 stepping:       4;
+            u32 model:          4;
+            u32 family:         4;
+            u32 type:           2;
+            u32 __reserved:     2;
+            u32 extendedModel:  4;
+            u32 extendedFamily: 8;
+            u32 __reserved2:    4;
         };
 
         u32 value32;

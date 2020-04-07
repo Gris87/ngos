@@ -945,29 +945,29 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
         //  DmiProcessorSignature - value32:
-        // ====================================================
-        // |           model : 4           |  steppingId : 4  |
-        // |  __reserved : 2  |  type : 2  |    family : 4    |
-        // |          -xFamily : 8         |    xModel : 4    |
-        // |        __reserved2 : 4        |   xFamily- : 8   |
-        // ====================================================
+        // =========================================================
+        // |           model : 4           |      stepping : 4     |
+        // |  __reserved : 2  |  type : 2  |       family : 4      |
+        // |      -extendedFamily : 8      |   extendedModel : 4   |
+        // |        __reserved2 : 4        |  extendedFamily- : 8  |
+        // =========================================================
 
 
 
         temp.value32 = 0x5AAB65D6;      // ||  0101  |  10101010  |  1011  ||  01  |  10  |  0101  ||  1101  |  0110  ||
 
-        TEST_ASSERT_EQUALS(temp.steppingId,  6);
-        TEST_ASSERT_EQUALS(temp.model,       13);
-        TEST_ASSERT_EQUALS(temp.family,      5);
-        TEST_ASSERT_EQUALS(temp.type,        2);
-        TEST_ASSERT_EQUALS(temp.__reserved,  1);
-        TEST_ASSERT_EQUALS(temp.xModel,      11);
-        TEST_ASSERT_EQUALS(temp.xFamily,     170);
-        TEST_ASSERT_EQUALS(temp.__reserved2, 5);
+        TEST_ASSERT_EQUALS(temp.stepping,       6);
+        TEST_ASSERT_EQUALS(temp.model,          13);
+        TEST_ASSERT_EQUALS(temp.family,         5);
+        TEST_ASSERT_EQUALS(temp.type,           2);
+        TEST_ASSERT_EQUALS(temp.__reserved,     1);
+        TEST_ASSERT_EQUALS(temp.extendedModel,  11);
+        TEST_ASSERT_EQUALS(temp.extendedFamily, 170);
+        TEST_ASSERT_EQUALS(temp.__reserved2,    5);
 
 
 
-        temp.steppingId = 11;           // ||  0101  |  10101010  |  1011  ||  01  |  10  |  0101  ||  1101  |  1011 ||
+        temp.stepping = 11;             // ||  0101  |  10101010  |  1011  ||  01  |  10  |  0101  ||  1101  |  1011 ||
 
         TEST_ASSERT_EQUALS(temp.value32, 0x5AAB65DB);
 
@@ -997,13 +997,13 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
-        temp.xModel = 8;                // ||  0101  |  10101010  |  1000  ||  11  |  01  |  0010  ||  0101  |  1011 ||
+        temp.extendedModel = 8;         // ||  0101  |  10101010  |  1000  ||  11  |  01  |  0010  ||  0101  |  1011 ||
 
         TEST_ASSERT_EQUALS(temp.value32, 0x5AA8D25B);
 
 
 
-        temp.xFamily = 21;              // ||  0101  |  00010101  |  1000  ||  11  |  01  |  0010  ||  0101  |  1011 ||
+        temp.extendedFamily = 21;       // ||  0101  |  00010101  |  1000  ||  11  |  01  |  0010  ||  0101  |  1011 ||
 
         TEST_ASSERT_EQUALS(temp.value32, 0x5158D25B);
 

@@ -1111,33 +1111,33 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->socketStringId                   = %u",     entry->socketStringId));
-        COMMON_LVVV(("entry->processorType                    = %s",     enumToFullString(entry->processorType)));
-        COMMON_LVVV(("entry->processorFamily                  = %s",     enumToFullString(entry->processorFamily)));
-        COMMON_LVVV(("entry->processorManufactureStringId     = %u",     entry->processorManufactureStringId));
-        COMMON_LVVV(("entry->processorId.signature.steppingId = %u",     entry->processorId.signature.steppingId));
-        COMMON_LVVV(("entry->processorId.signature.model      = %u",     entry->processorId.signature.model));
-        COMMON_LVVV(("entry->processorId.signature.family     = %u",     entry->processorId.signature.family));
-        COMMON_LVVV(("entry->processorId.signature.type       = %u",     entry->processorId.signature.type));
-        COMMON_LVVV(("entry->processorId.signature.xModel     = %u",     entry->processorId.signature.xModel));
-        COMMON_LVVV(("entry->processorId.signature.xFamily    = %u",     entry->processorId.signature.xFamily));
-        COMMON_LVVV(("entry->processorId.signature.value32    = 0x%08X", entry->processorId.signature.value32));
-        COMMON_LVVV(("entry->processorId.featureFlags         = %s",     flagsToFullString(entry->processorId.featureFlags)));
-        COMMON_LVVV(("entry->processorVersionStringId         = %u",     entry->processorVersionStringId));
-        COMMON_LVVV(("entry->voltage                          = %s",     flagsToFullString(entry->voltage)));
-        COMMON_LVVV(("entry->externalClock                    = %u",     entry->externalClock));
-        COMMON_LVVV(("entry->maxSpeed                         = %u",     entry->maxSpeed));
-        COMMON_LVVV(("entry->currentSpeed                     = %u",     entry->currentSpeed));
-        COMMON_LVVV(("entry->status                           = %s",     enumToFullString((DmiProcessorStatus)entry->status)));
-        COMMON_LVVV(("entry->socketPopulated                  = %u",     entry->socketPopulated));
-        COMMON_LVVV(("entry->processorStatus                  = 0x%02X", entry->processorStatus));
-        COMMON_LVVV(("entry->processorUpgrade                 = %s",     enumToFullString(entry->processorUpgrade)));
-        COMMON_LVVV(("entry->l1CacheHandle                    = 0x%04X", entry->l1CacheHandle));
-        COMMON_LVVV(("entry->l2CacheHandle                    = 0x%04X", entry->l2CacheHandle));
-        COMMON_LVVV(("entry->l3CacheHandle                    = 0x%04X", entry->l3CacheHandle));
-        COMMON_LVVV(("entry->serialNumberStringId             = %u",     entry->serialNumberStringId));
-        COMMON_LVVV(("entry->assetTagStringId                 = %u",     entry->assetTagStringId));
-        COMMON_LVVV(("entry->partNumberStringId               = %u",     entry->partNumberStringId));
+        COMMON_LVVV(("entry->socketStringId                       = %u",     entry->socketStringId));
+        COMMON_LVVV(("entry->processorType                        = %s",     enumToFullString(entry->processorType)));
+        COMMON_LVVV(("entry->processorFamily                      = %s",     enumToFullString(entry->processorFamily)));
+        COMMON_LVVV(("entry->processorManufactureStringId         = %u",     entry->processorManufactureStringId));
+        COMMON_LVVV(("entry->processorId.signature.stepping       = %u",     entry->processorId.signature.stepping));
+        COMMON_LVVV(("entry->processorId.signature.model          = %u",     entry->processorId.signature.model));
+        COMMON_LVVV(("entry->processorId.signature.family         = %u",     entry->processorId.signature.family));
+        COMMON_LVVV(("entry->processorId.signature.type           = %u",     entry->processorId.signature.type));
+        COMMON_LVVV(("entry->processorId.signature.extendedModel  = %u",     entry->processorId.signature.extendedModel));
+        COMMON_LVVV(("entry->processorId.signature.extendedFamily = %u",     entry->processorId.signature.extendedFamily));
+        COMMON_LVVV(("entry->processorId.signature.value32        = 0x%08X", entry->processorId.signature.value32));
+        COMMON_LVVV(("entry->processorId.featureFlags             = %s",     flagsToFullString(entry->processorId.featureFlags)));
+        COMMON_LVVV(("entry->processorVersionStringId             = %u",     entry->processorVersionStringId));
+        COMMON_LVVV(("entry->voltage                              = %s",     flagsToFullString(entry->voltage)));
+        COMMON_LVVV(("entry->externalClock                        = %u",     entry->externalClock));
+        COMMON_LVVV(("entry->maxSpeed                             = %u",     entry->maxSpeed));
+        COMMON_LVVV(("entry->currentSpeed                         = %u",     entry->currentSpeed));
+        COMMON_LVVV(("entry->status                               = %s",     enumToFullString((DmiProcessorStatus)entry->status)));
+        COMMON_LVVV(("entry->socketPopulated                      = %u",     entry->socketPopulated));
+        COMMON_LVVV(("entry->processorStatus                      = 0x%02X", entry->processorStatus));
+        COMMON_LVVV(("entry->processorUpgrade                     = %s",     enumToFullString(entry->processorUpgrade)));
+        COMMON_LVVV(("entry->l1CacheHandle                        = 0x%04X", entry->l1CacheHandle));
+        COMMON_LVVV(("entry->l2CacheHandle                        = 0x%04X", entry->l2CacheHandle));
+        COMMON_LVVV(("entry->l3CacheHandle                        = 0x%04X", entry->l3CacheHandle));
+        COMMON_LVVV(("entry->serialNumberStringId                 = %u",     entry->serialNumberStringId));
+        COMMON_LVVV(("entry->assetTagStringId                     = %u",     entry->assetTagStringId));
+        COMMON_LVVV(("entry->partNumberStringId                   = %u",     entry->partNumberStringId));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 5))
         {
@@ -1162,55 +1162,55 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        // COMMON_TEST_ASSERT(entry->socketStringId                   == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->processorType                       == DmiProcessorType::CENTRAL_PROCESSOR,  NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->processorFamily                  == DmiProcessorFamily::OTHER,            NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->processorManufactureStringId        == 2,                                    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->processorId.signature.steppingId == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorId.signature.model      == 12,                                   NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorId.signature.family     == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->processorId.signature.type          == 0,                                    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->processorId.signature.xModel     == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorId.signature.xFamily    == 0,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorId.signature.value32    == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorId.featureFlags         == FLAGS(DmiProcessorFeatureFlag::FPU                            // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::VME                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::DE                           // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::PSE                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::TSC                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::MSR                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::PAE                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::MCE                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::CX8                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::APIC                         // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::SEP                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::MTRR                         // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::PGE                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::MCA                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::CMOV                         // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::PAT                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::PSE36                        // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::CLFSH                        // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::MMX                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::FXSR                         // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::SSE                          // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::SSE2                         // Commented due to value variation
-        //                                                                     , DmiProcessorFeatureFlag::SS), NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorVersionStringId         == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->voltage                          == FLAG(DmiProcessorVoltageFlag::NONE),  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->externalClock                    == 100,                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->maxSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->currentSpeed                     == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->status                           == DmiProcessorStatus::ENABLED,          NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->socketPopulated                  == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorStatus                  == 0x41,                                 NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->processorUpgrade                 == DmiProcessorUpgrade::OTHER,           NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->l1CacheHandle                    == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->l2CacheHandle                    == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->l3CacheHandle                    == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->serialNumberStringId             == 4,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->assetTagStringId                 == 5,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->partNumberStringId               == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->socketStringId                       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->processorType                           == DmiProcessorType::CENTRAL_PROCESSOR,  NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->processorFamily                      == DmiProcessorFamily::OTHER,            NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->processorManufactureStringId            == 2,                                    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->processorId.signature.stepping       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorId.signature.model          == 12,                                   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorId.signature.family         == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->processorId.signature.type              == 0,                                    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->processorId.signature.extendedModel  == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorId.signature.extendedFamily == 0,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorId.signature.value32        == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorId.featureFlags             == FLAGS(DmiProcessorFeatureFlag::FPU                            // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::VME                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::DE                           // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::PSE                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::TSC                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::MSR                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::PAE                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::MCE                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::CX8                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::APIC                         // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::SEP                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::MTRR                         // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::PGE                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::MCA                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::CMOV                         // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::PAT                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::PSE36                        // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::CLFSH                        // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::MMX                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::FXSR                         // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::SSE                          // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::SSE2                         // Commented due to value variation
+        //                                                                         , DmiProcessorFeatureFlag::SS), NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorVersionStringId             == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->voltage                              == FLAG(DmiProcessorVoltageFlag::NONE),  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->externalClock                        == 100,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maxSpeed                             == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->currentSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->status                               == DmiProcessorStatus::ENABLED,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->socketPopulated                      == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorStatus                      == 0x41,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->processorUpgrade                     == DmiProcessorUpgrade::OTHER,           NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->l1CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->l2CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->l3CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->serialNumberStringId                 == 4,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->assetTagStringId                     == 5,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->partNumberStringId                   == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // Ignore CppAlignmentVerifier [END]
 
         if (DMI::getVersion() >= DMI_VERSION(2, 5))

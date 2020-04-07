@@ -885,6 +885,324 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
+    // Validation
+    {
+        UEFI_LVVV(("entry->socketStringId                       = %u",     entry->socketStringId));
+        UEFI_LVVV(("entry->processorType                        = %s",     enumToFullString(entry->processorType)));
+        UEFI_LVVV(("entry->processorFamily                      = %s",     enumToFullString(entry->processorFamily)));
+        UEFI_LVVV(("entry->processorManufactureStringId         = %u",     entry->processorManufactureStringId));
+        UEFI_LVVV(("entry->processorId.signature.stepping       = %u",     entry->processorId.signature.stepping));
+        UEFI_LVVV(("entry->processorId.signature.model          = %u",     entry->processorId.signature.model));
+        UEFI_LVVV(("entry->processorId.signature.family         = %u",     entry->processorId.signature.family));
+        UEFI_LVVV(("entry->processorId.signature.type           = %u",     entry->processorId.signature.type));
+        UEFI_LVVV(("entry->processorId.signature.extendedModel  = %u",     entry->processorId.signature.extendedModel));
+        UEFI_LVVV(("entry->processorId.signature.extendedFamily = %u",     entry->processorId.signature.extendedFamily));
+        UEFI_LVVV(("entry->processorId.signature.value32        = 0x%08X", entry->processorId.signature.value32));
+        UEFI_LVVV(("entry->processorId.featureFlags             = %s",     flagsToFullString(entry->processorId.featureFlags)));
+        UEFI_LVVV(("entry->processorVersionStringId             = %u",     entry->processorVersionStringId));
+        UEFI_LVVV(("entry->voltage                              = %s",     flagsToFullString(entry->voltage)));
+        UEFI_LVVV(("entry->externalClock                        = %u",     entry->externalClock));
+        UEFI_LVVV(("entry->maxSpeed                             = %u",     entry->maxSpeed));
+        UEFI_LVVV(("entry->currentSpeed                         = %u",     entry->currentSpeed));
+        UEFI_LVVV(("entry->status                               = %s",     enumToFullString((DmiProcessorStatus)entry->status)));
+        UEFI_LVVV(("entry->socketPopulated                      = %u",     entry->socketPopulated));
+        UEFI_LVVV(("entry->processorStatus                      = 0x%02X", entry->processorStatus));
+        UEFI_LVVV(("entry->processorUpgrade                     = %s",     enumToFullString(entry->processorUpgrade)));
+        UEFI_LVVV(("entry->l1CacheHandle                        = 0x%04X", entry->l1CacheHandle));
+        UEFI_LVVV(("entry->l2CacheHandle                        = 0x%04X", entry->l2CacheHandle));
+        UEFI_LVVV(("entry->l3CacheHandle                        = 0x%04X", entry->l3CacheHandle));
+        UEFI_LVVV(("entry->serialNumberStringId                 = %u",     entry->serialNumberStringId));
+        UEFI_LVVV(("entry->assetTagStringId                     = %u",     entry->assetTagStringId));
+        UEFI_LVVV(("entry->partNumberStringId                   = %u",     entry->partNumberStringId));
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 5))
+        {
+            UEFI_LVVV(("entry->coreCount                = %u", entry->coreCount));
+            UEFI_LVVV(("entry->enabledCoreCount         = %u", entry->enabledCoreCount));
+            UEFI_LVVV(("entry->threadCount              = %u", entry->threadCount));
+            UEFI_LVVV(("entry->processorCharacteristics = %s", flagsToFullString(entry->processorCharacteristics)));
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 6))
+            {
+                UEFI_LVVV(("entry->processorFamily2 = %s", enumToFullString(entry->processorFamily2)));
+
+                if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                {
+                    UEFI_LVVV(("entry->coreCount2        = %u", entry->coreCount2));
+                    UEFI_LVVV(("entry->enabledCoreCount2 = %u", entry->enabledCoreCount2));
+                    UEFI_LVVV(("entry->threadCount2      = %u", entry->threadCount2));
+                }
+            }
+        }
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        // UEFI_TEST_ASSERT(entry->socketStringId                       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(entry->processorType                           == DmiProcessorType::CENTRAL_PROCESSOR,  NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(entry->processorFamily                      == DmiProcessorFamily::OTHER,            NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(entry->processorManufactureStringId            == 2,                                    NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(entry->processorId.signature.stepping       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorId.signature.model          == 12,                                   NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorId.signature.family         == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(entry->processorId.signature.type              == 0,                                    NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(entry->processorId.signature.extendedModel  == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorId.signature.extendedFamily == 0,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorId.signature.value32        == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorId.featureFlags             == FLAGS(DmiProcessorFeatureFlag::FPU                            // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::VME                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::DE                           // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::PSE                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::TSC                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::MSR                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::PAE                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::MCE                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::CX8                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::APIC                         // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::SEP                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::MTRR                         // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::PGE                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::MCA                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::CMOV                         // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::PAT                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::PSE36                        // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::CLFSH                        // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::MMX                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::FXSR                         // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::SSE                          // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::SSE2                         // Commented due to value variation
+        //                                                                       , DmiProcessorFeatureFlag::SS), NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorVersionStringId             == 3,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->voltage                              == FLAG(DmiProcessorVoltageFlag::NONE),  NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->externalClock                        == 100,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->maxSpeed                             == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->currentSpeed                         == 2000,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->status                               == DmiProcessorStatus::ENABLED,          NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->socketPopulated                      == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorStatus                      == 0x41,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->processorUpgrade                     == DmiProcessorUpgrade::OTHER,           NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->l1CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->l2CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->l3CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->serialNumberStringId                 == 4,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->assetTagStringId                     == 5,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->partNumberStringId                   == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // Ignore CppAlignmentVerifier [END]
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 5))
+        {
+            // UEFI_TEST_ASSERT(entry->coreCount                == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->enabledCoreCount         == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->threadCount              == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION); // Commented due to value variation
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 6))
+            {
+                // UEFI_TEST_ASSERT(entry->processorFamily2 == DmiProcessorFamily2::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+
+                if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                {
+                    // UEFI_TEST_ASSERT(entry->coreCount2        == 2, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->enabledCoreCount2 == 2, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->threadCount2      == 2, NgosStatus::ASSERTION); // Commented due to value variation
+
+                    UEFI_TEST_ASSERT(entry->header.length >= 48,                        NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry), NgosStatus::ASSERTION);
+                }
+                else
+                {
+                    UEFI_TEST_ASSERT(entry->header.length >= 42,                            NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 6, NgosStatus::ASSERTION);
+                }
+            }
+            else
+            {
+                UEFI_TEST_ASSERT(entry->header.length >= 40,                            NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 8, NgosStatus::ASSERTION);
+            }
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(entry->header.length >= 35,                             NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 13, NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    const char8 *socketString               = "N/A";
+    const char8 *processorManufactureString = "N/A";
+    const char8 *processorVersionString     = "N/A";
+    const char8 *serialNumberString         = "N/A";
+    const char8 *assetTagString             = "N/A";
+    const char8 *partNumberString           = "N/A";
+
+    if (
+        entry->socketStringId
+        ||
+        entry->processorManufactureStringId
+        ||
+        entry->processorVersionStringId
+        ||
+        entry->serialNumberStringId
+        ||
+        entry->assetTagStringId
+        ||
+        entry->partNumberStringId
+       )
+    {
+        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        char8 *cur      = (char8 *)entry + entry->header.length;
+        char8 *begin    = cur;
+        u8     stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
+        {
+            if (!cur[0]) // cur[0] == 0
+            {
+                ++stringId;
+                UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                if (stringId == entry->socketStringId)
+                {
+                    socketString = begin;
+                }
+                else
+                if (stringId == entry->processorManufactureStringId)
+                {
+                    processorManufactureString = begin;
+                }
+                else
+                if (stringId == entry->processorVersionStringId)
+                {
+                    processorVersionString = begin;
+                }
+                else
+                if (stringId == entry->serialNumberStringId)
+                {
+                    serialNumberString = begin;
+                }
+                else
+                if (stringId == entry->assetTagStringId)
+                {
+                    assetTagString = begin;
+                }
+                else
+                if (stringId == entry->partNumberStringId)
+                {
+                    partNumberString = begin;
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
+            }
+
+
+
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
+
+
+
+    const char8 *coreCount                = "N/A";
+    const char8 *enabledCoreCount         = "N/A";
+    const char8 *threadCount              = "N/A";
+    const char8 *processorCharacteristics = "N/A";
+    const char8 *processorFamily2         = "N/A";
+    const char8 *coreCount2               = "N/A";
+    const char8 *enabledCoreCount2        = "N/A";
+    const char8 *threadCount2             = "N/A";
+
+    if (DMI::getVersion() >= DMI_VERSION(2, 5))
+    {
+        coreCount                = mprintf("%u", entry->coreCount);
+        enabledCoreCount         = mprintf("%u", entry->enabledCoreCount);
+        threadCount              = mprintf("%u", entry->threadCount);
+        processorCharacteristics = strdup(flagsToFullString(entry->processorCharacteristics));
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 6))
+        {
+            processorFamily2 = strdup(enumToFullString(entry->processorFamily2));
+
+            if (DMI::getVersion() >= DMI_VERSION(3, 0))
+            {
+                coreCount2        = mprintf("%u", entry->coreCount2);
+                enabledCoreCount2 = mprintf("%u", entry->enabledCoreCount2);
+                threadCount2      = mprintf("%u", entry->threadCount2);
+            }
+        }
+    }
+
+
+    UEFI_LVVV(("entry->l1CacheHandle                    = 0x%04X", entry->l1CacheHandle));
+    UEFI_LVVV(("entry->l2CacheHandle                    = 0x%04X", entry->l2CacheHandle));
+    UEFI_LVVV(("entry->l3CacheHandle                    = 0x%04X", entry->l3CacheHandle));
+    UEFI_LVVV(("entry->serialNumberStringId             = %u",     entry->serialNumberStringId));
+    UEFI_LVVV(("entry->assetTagStringId                 = %u",     entry->assetTagStringId));
+    UEFI_LVVV(("entry->partNumberStringId               = %u",     entry->partNumberStringId));
+
+
+
+    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::PROCESSOR, DeviceManagerImage::PROCESSOR);
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",               mprintf("0x%04X", entry->header.handle)),                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket",               socketString),                                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                 strdup(enumToFullString(entry->processorType))),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",               strdup(enumToFullString(entry->processorFamily))),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",         processorManufactureString),                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",             mprintf("%u", entry->processorId.signature.stepping)),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",                mprintf("%u", entry->processorId.signature.model)),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",               mprintf("%u", entry->processorId.signature.family)),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                 mprintf("%u", entry->processorId.signature.type)),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",       mprintf("%u", entry->processorId.signature.extendedModel)),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family",      mprintf("%u", entry->processorId.signature.extendedFamily)),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features",             strdup(flagsToFullString(entry->processorId.featureFlags))),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",              processorVersionString),                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Voltage",              strdup(flagsToFullString(entry->voltage))),                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External clock",       mprintf("%u", entry->externalClock)),                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum speed",        mprintf("%u", entry->maxSpeed)),                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current speed",        mprintf("%u", entry->currentSpeed)),                          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",               strdup(enumToFullString((DmiProcessorStatus)entry->status))), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket populated",     entry->socketPopulated ? "Yes" : "No"),                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upgrade",              strdup(enumToFullString(entry->processorUpgrade))),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L1 cache handle",      mprintf("0x%04X", entry->l1CacheHandle)),                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L2 cache handle",      mprintf("0x%04X", entry->l2CacheHandle)),                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L3 cache handle",      mprintf("0x%04X", entry->l3CacheHandle)),                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",        serialNumberString),                                          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",            assetTagString),                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",          partNumberString),                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count",           coreCount),                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count",   enabledCoreCount),                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count",         threadCount),                                                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics",      processorCharacteristics),                                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family 2",             processorFamily2),                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count 2",         coreCount2),                                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count 2", enabledCoreCount2),                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count 2",       threadCount2),                                                NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+
+
+
     return NgosStatus::OK;
 }
 
