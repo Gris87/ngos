@@ -1153,14 +1153,6 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     }
 
 
-    UEFI_LVVV(("entry->l1CacheHandle                    = 0x%04X", entry->l1CacheHandle));
-    UEFI_LVVV(("entry->l2CacheHandle                    = 0x%04X", entry->l2CacheHandle));
-    UEFI_LVVV(("entry->l3CacheHandle                    = 0x%04X", entry->l3CacheHandle));
-    UEFI_LVVV(("entry->serialNumberStringId             = %u",     entry->serialNumberStringId));
-    UEFI_LVVV(("entry->assetTagStringId                 = %u",     entry->assetTagStringId));
-    UEFI_LVVV(("entry->partNumberStringId               = %u",     entry->partNumberStringId));
-
-
 
     DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::PROCESSOR, DeviceManagerImage::PROCESSOR);
 
