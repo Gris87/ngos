@@ -9,7 +9,7 @@ DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerIma
     : DeviceManagerEntry(image)
     , mType(type)
 {
-    UEFI_LT((" | type = %u", type));
+    UEFI_LT((" | type = %u, image = %u", type, image));
 }
 
 DeviceManagerEntryDMI::~DeviceManagerEntryDMI()

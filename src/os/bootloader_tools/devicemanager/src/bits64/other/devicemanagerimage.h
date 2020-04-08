@@ -29,13 +29,13 @@ enum class DeviceManagerImage: u8
     MEMORY_DEVICE,
     MEMORY_DEVICE_MAPPED_ADDRESS,
     MEMORY_MODULE,
+    OEM_STRINGS,
     ONBOARD_DEVICES,
     ONBOARD_ETHERNET,
     ONBOARD_OTHER,
     ONBOARD_SATA,
     ONBOARD_SOUND,
     ONBOARD_VIDEO,
-    OTHER,
     PHYSICAL_MEMORY_ARRAY,
     PORT_AUDIO,
     PORT_CONNECTOR,
@@ -50,7 +50,9 @@ enum class DeviceManagerImage: u8
     PROCESSOR,
     SYSTEM,
     SYSTEM_BOOT,
+    SYSTEM_CONFIGURATION,
     SYSTEM_POWER_SUPPLY,
+    SYSTEM_SLOT_OTHER,
     SYSTEM_SLOT_PCI_EXPRESS,
     SYSTEM_SLOTS,
     TEMPERATURE_PROBE,
@@ -85,13 +87,13 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::MEMORY_DEVICE:                    return "MEMORY_DEVICE";
         case DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS:     return "MEMORY_DEVICE_MAPPED_ADDRESS";
         case DeviceManagerImage::MEMORY_MODULE:                    return "MEMORY_MODULE";
+        case DeviceManagerImage::OEM_STRINGS:                      return "OEM_STRINGS";
         case DeviceManagerImage::ONBOARD_DEVICES:                  return "ONBOARD_DEVICES";
         case DeviceManagerImage::ONBOARD_ETHERNET:                 return "ONBOARD_ETHERNET";
         case DeviceManagerImage::ONBOARD_OTHER:                    return "ONBOARD_OTHER";
         case DeviceManagerImage::ONBOARD_SATA:                     return "ONBOARD_SATA";
         case DeviceManagerImage::ONBOARD_SOUND:                    return "ONBOARD_SOUND";
         case DeviceManagerImage::ONBOARD_VIDEO:                    return "ONBOARD_VIDEO";
-        case DeviceManagerImage::OTHER:                            return "OTHER";
         case DeviceManagerImage::PHYSICAL_MEMORY_ARRAY:            return "PHYSICAL_MEMORY_ARRAY";
         case DeviceManagerImage::PORT_AUDIO:                       return "PORT_AUDIO";
         case DeviceManagerImage::PORT_CONNECTOR:                   return "PORT_CONNECTOR";
@@ -106,7 +108,9 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::PROCESSOR:                        return "PROCESSOR";
         case DeviceManagerImage::SYSTEM:                           return "SYSTEM";
         case DeviceManagerImage::SYSTEM_BOOT:                      return "SYSTEM_BOOT";
+        case DeviceManagerImage::SYSTEM_CONFIGURATION:             return "SYSTEM_CONFIGURATION";
         case DeviceManagerImage::SYSTEM_POWER_SUPPLY:              return "SYSTEM_POWER_SUPPLY";
+        case DeviceManagerImage::SYSTEM_SLOT_OTHER:                return "SYSTEM_SLOT_OTHER";
         case DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS:          return "SYSTEM_SLOT_PCI_EXPRESS";
         case DeviceManagerImage::SYSTEM_SLOTS:                     return "SYSTEM_SLOTS";
         case DeviceManagerImage::TEMPERATURE_PROBE:                return "TEMPERATURE_PROBE";

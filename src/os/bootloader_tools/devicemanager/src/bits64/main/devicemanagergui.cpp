@@ -78,13 +78,13 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/memory_device.png",                     // DeviceManagerImage::MEMORY_DEVICE
     "images/memory_device_mapped_address.png",      // DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS
     "images/memory_module.png",                     // DeviceManagerImage::MEMORY_MODULE
+    "images/oem_strings.png",                       // DeviceManagerImage::OEM_STRINGS
     "images/onboard_devices.png",                   // DeviceManagerImage::ONBOARD_DEVICES
     "images/onboard_ethernet.png",                  // DeviceManagerImage::ONBOARD_ETHERNET
     "images/onboard_other.png",                     // DeviceManagerImage::ONBOARD_OTHER
     "images/onboard_sata.png",                      // DeviceManagerImage::ONBOARD_SATA
     "images/onboard_sound.png",                     // DeviceManagerImage::ONBOARD_SOUND
     "images/onboard_video.png",                     // DeviceManagerImage::ONBOARD_VIDEO
-    "images/other.png",                             // DeviceManagerImage::OTHER
     "images/physical_memory_array.png",             // DeviceManagerImage::PHYSICAL_MEMORY_ARRAY
     "images/port_audio.png",                        // DeviceManagerImage::PORT_AUDIO
     "images/port_connector.png",                    // DeviceManagerImage::PORT_CONNECTOR
@@ -99,7 +99,9 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/processor.png",                         // DeviceManagerImage::PROCESSOR
     "images/system.png",                            // DeviceManagerImage::SYSTEM
     "images/system_boot.png",                       // DeviceManagerImage::SYSTEM_BOOT
+    "images/system_configuration.png",              // DeviceManagerImage::SYSTEM_CONFIGURATION
     "images/system_power_supply.png",               // DeviceManagerImage::SYSTEM_POWER_SUPPLY
+    "images/system_slot_other.png",                 // DeviceManagerImage::SYSTEM_SLOT_OTHER
     "images/system_slot_pci_express.png",           // DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS
     "images/system_slots.png",                      // DeviceManagerImage::SYSTEM_SLOTS
     "images/temperature_probe.png",                 // DeviceManagerImage::TEMPERATURE_PROBE

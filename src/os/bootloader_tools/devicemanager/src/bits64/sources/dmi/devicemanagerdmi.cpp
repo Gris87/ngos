@@ -1826,7 +1826,7 @@ NgosStatus DeviceManagerDMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::OEM_STRINGS, DeviceManagerImage::OTHER);
+    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::OEM_STRINGS, DeviceManagerImage::OEM_STRINGS);
 
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle", mprintf("0x%04X", entry->header.handle)), NgosStatus::ASSERTION);
 
@@ -1911,7 +1911,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurat
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::SYSTEM_CONFIGURATION, DeviceManagerImage::OTHER);
+    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::SYSTEM_CONFIGURATION, DeviceManagerImage::SYSTEM_CONFIGURATION);
 
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle", mprintf("0x%04X", entry->header.handle)), NgosStatus::ASSERTION);
 
@@ -1979,6 +1979,87 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
     UEFI_LT((" | entry = 0x%p", entry));
 
     UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("entry->installableLanguages    = %u", entry->installableLanguages));
+        UEFI_LVVV(("entry->flags                   = %s", flagsToFullString(entry->flags)));
+        UEFI_LVVV(("entry->currentLanguageStringId = %u", entry->currentLanguageStringId));
+
+
+
+        // UEFI_TEST_ASSERT(entry->installableLanguages    == 1,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->flags                   == FLAGS(DmiBiosLanguageFlags::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->currentLanguageStringId == 1,                                 NgosStatus::ASSERTION); // Commented due to value variation
+
+        UEFI_TEST_ASSERT(entry->header.length >= 22,                           NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosLanguageEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::SYSTEM_CONFIGURATION, DeviceManagerImage::SYSTEM_CONFIGURATION);
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle)),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installable languages", mprintf("%u", entry->installableLanguages)),    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Flags",                 strdup(flagsToFullString(entry->flags))),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current language",      mprintf("%u", entry->currentLanguageStringId)), NgosStatus::ASSERTION);
+
+
+
+    if (
+        entry->installableLanguages
+        ||
+        entry->currentLanguageStringId
+       )
+    {
+        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        char8 *cur      = (char8 *)entry + entry->header.length;
+        char8 *begin    = cur;
+        u8     stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
+        {
+            if (!cur[0]) // cur[0] == 0
+            {
+                ++stringId;
+                UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Language #%u", stringId), begin),NgosStatus::ASSERTION);
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
+            }
+
+
+
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
