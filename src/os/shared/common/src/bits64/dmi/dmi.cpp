@@ -1997,11 +1997,11 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
 
 
 
+    u8 count = (entry->header.length - sizeof(entry->header) - sizeof(entry->groupNameStringId)) / sizeof(entry->group[0]);
+
     // Validation
     {
         COMMON_LVVV(("entry->groupNameStringId = %u", entry->groupNameStringId));
-
-        u8 count = (entry->header.length - sizeof(entry->header) - sizeof(entry->groupNameStringId)) / sizeof(entry->group[0]);
 
         for (i64 i = 0; i < count; ++i)
         {
