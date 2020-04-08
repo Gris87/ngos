@@ -2273,7 +2273,7 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
         COMMON_LVVV(("entry->sbdsManufactureDate         = %04u-%02u-%02u", entry->sbdsManufactureDate.realYear(), entry->sbdsManufactureDate.month, entry->sbdsManufactureDate.date));
         COMMON_LVVV(("entry->sbdsDeviceChemistryStringId = %u",             entry->sbdsDeviceChemistryStringId));
         COMMON_LVVV(("entry->designCapacityMultiplier    = %u",             entry->designCapacityMultiplier));
-        COMMON_LVVV(("entry->oemSpecific                 = %u",             entry->oemSpecific));
+        COMMON_LVVV(("entry->oemSpecific                 = 0x%08X",         entry->oemSpecific));
 
 
 
