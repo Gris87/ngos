@@ -1689,6 +1689,118 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
 
 
 
+    u8 count = (entry->header.length - sizeof(entry->header)) / sizeof(entry->device[0]);
+
+    // Validation
+    {
+        for (i64 i = 0; i < count; ++i)
+        {
+            UEFI_LVVV(("entry->device[%d].deviceType           = %s",     i, enumToFullString((DmiOnboardDevicesDeviceType)entry->device[i].deviceType)));
+            UEFI_LVVV(("entry->device[%d].enabled              = %u",     i, entry->device[i].enabled));
+            UEFI_LVVV(("entry->device[%d].deviceTypeAndEnabled = 0x%02X", i, entry->device[i].deviceTypeAndEnabled));
+            UEFI_LVVV(("entry->device[%d].descriptionStringId  = %u",     i, entry->device[i].descriptionStringId));
+        }
+
+
+
+        UEFI_TEST_ASSERT(count                                                       >  0,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT((DmiOnboardDevicesDeviceType)entry->device[0].deviceType == DmiOnboardDevicesDeviceType::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->device[0].enabled                                 == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->device[0].deviceTypeAndEnabled                    == 0x00,                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->device[0].descriptionStringId                     == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+
+        UEFI_TEST_ASSERT(entry->header.length >= 6,                                                                NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiOnboardDevicesEntry) + sizeof(DmiOnboardDevicesDevice), NgosStatus::ASSERTION);
+    }
+
+
+
+    ArrayList<DeviceManagerEntryDMI *> onboardDevices;
+
+    for (i64 i = 0; i < count; ++i)
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::SYSTEM_SLOTS, DeviceManagerImage::SYSTEM_SLOTS);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle)),                                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type", strdup(enumToFullString((DmiOnboardDevicesDeviceType)entry->device[i].deviceType))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",     entry->device[i].enabled ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(onboardDevices.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (
+        count > 0
+        &&
+        entry->device[0].descriptionStringId
+       )
+    {
+        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+        char8 *cur      = (char8 *)entry + entry->header.length;
+        char8 *begin    = cur;
+        u8     stringId = 0;
+
+        AVOID_UNUSED(begin);
+
+        do
+        {
+            if (!cur[0]) // cur[0] == 0
+            {
+                ++stringId;
+                UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                for (i64 i = 0; i < count; ++i)
+                {
+                    if (stringId == entry->device[i].descriptionStringId)
+                    {
+                        UEFI_ASSERT_EXECUTION(onboardDevices.at(i)->addRecord("Description", begin), NgosStatus::ASSERTION);
+
+                        break;
+                    }
+                }
+
+
+
+                if (!cur[1]) // cur[1] == 0
+                {
+                    break;
+                }
+
+                begin = cur + 1;
+            }
+
+
+
+            ++cur;
+        } while(true);
+    }
+    else
+    {
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
+
+
+
+    for (i64 i = 0; i < count; ++i)
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = onboardDevices.at(i);
+
+        if (deviceManagerEntry->getRecords().getSize() < 4)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description", "N/A"), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
     return NgosStatus::OK;
 }
 
