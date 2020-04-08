@@ -29,13 +29,13 @@
         <file>assets/images/memory_device.png</file>
         <file>assets/images/memory_device_mapped_address.png</file>
         <file>assets/images/memory_module.png</file>
+        <file>assets/images/oem_strings.png</file>
         <file>assets/images/onboard_devices.png</file>
         <file>assets/images/onboard_ethernet.png</file>
         <file>assets/images/onboard_other.png</file>
         <file>assets/images/onboard_sata.png</file>
         <file>assets/images/onboard_sound.png</file>
         <file>assets/images/onboard_video.png</file>
-        <file>assets/images/other.png</file>
         <file>assets/images/physical_memory_array.png</file>
         <file>assets/images/port_audio.png</file>
         <file>assets/images/port_connector.png</file>
@@ -52,9 +52,11 @@
         <file>assets/images/shutdown.png</file>
         <file>assets/images/system.png</file>
         <file>assets/images/system_boot.png</file>
+        <file>assets/images/system_configuration.png</file>
         <file>assets/images/system_power_supply.png</file>
         <file>assets/images/system_slot_pci_express.png</file>
         <file>assets/images/system_slots.png</file>
+        <file>assets/images/system_slots_other.png</file>
         <file>assets/images/table_background.9.png</file>
         <file>assets/images/table_header.9.png</file>
         <file>assets/images/temperature_probe.png</file>

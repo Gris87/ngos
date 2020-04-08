@@ -330,13 +330,13 @@ src/os/bootloader_tools/devicemanager/assets/images/memory_controller.png
 src/os/bootloader_tools/devicemanager/assets/images/memory_device.png
 src/os/bootloader_tools/devicemanager/assets/images/memory_device_mapped_address.png
 src/os/bootloader_tools/devicemanager/assets/images/memory_module.png
+src/os/bootloader_tools/devicemanager/assets/images/oem_strings.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_devices.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_ethernet.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_other.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_sata.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_sound.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_video.png
-src/os/bootloader_tools/devicemanager/assets/images/other.png
 src/os/bootloader_tools/devicemanager/assets/images/physical_memory_array.png
 src/os/bootloader_tools/devicemanager/assets/images/port_audio.png
 src/os/bootloader_tools/devicemanager/assets/images/port_connector.png
@@ -353,9 +353,11 @@ src/os/bootloader_tools/devicemanager/assets/images/reboot.png
 src/os/bootloader_tools/devicemanager/assets/images/shutdown.png
 src/os/bootloader_tools/devicemanager/assets/images/system.png
 src/os/bootloader_tools/devicemanager/assets/images/system_boot.png
+src/os/bootloader_tools/devicemanager/assets/images/system_configuration.png
 src/os/bootloader_tools/devicemanager/assets/images/system_power_supply.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slot_pci_express.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slots.png
+src/os/bootloader_tools/devicemanager/assets/images/system_slots_other.png
 src/os/bootloader_tools/devicemanager/assets/images/table_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_header.9.png
 src/os/bootloader_tools/devicemanager/assets/images/temperature_probe.png
