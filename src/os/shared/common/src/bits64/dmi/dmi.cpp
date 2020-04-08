@@ -1587,12 +1587,12 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
                 for (i64 i = 0; i < entry->peerGroupingCount; ++i)
                 {
-                    COMMON_LVVV(("entry->peerGroups[i].segmentGroupNumber            = %u",     entry->peerGroups[i].segmentGroupNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].busNumber                     = %u",     entry->peerGroups[i].busNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].functionNumber                = %u",     entry->peerGroups[i].functionNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].deviceNumber                  = %u",     entry->peerGroups[i].deviceNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].functionNumberAndDeviceNumber = 0x%02X", entry->peerGroups[i].functionNumberAndDeviceNumber));
-                    COMMON_LVVV(("entry->peerGroups[i].dataBusWidth                  = %s",     enumToFullString(entry->peerGroups[i].dataBusWidth)));
+                    COMMON_LVVV(("entry->peerGroups[%d].segmentGroupNumber            = %u",     i, entry->peerGroups[i].segmentGroupNumber));
+                    COMMON_LVVV(("entry->peerGroups[%d].busNumber                     = %u",     i, entry->peerGroups[i].busNumber));
+                    COMMON_LVVV(("entry->peerGroups[%d].functionNumber                = %u",     i, entry->peerGroups[i].functionNumber));
+                    COMMON_LVVV(("entry->peerGroups[%d].deviceNumber                  = %u",     i, entry->peerGroups[i].deviceNumber));
+                    COMMON_LVVV(("entry->peerGroups[%d].functionNumberAndDeviceNumber = 0x%02X", i, entry->peerGroups[i].functionNumberAndDeviceNumber));
+                    COMMON_LVVV(("entry->peerGroups[%d].dataBusWidth                  = %s",     i, enumToFullString(entry->peerGroups[i].dataBusWidth)));
                 }
             }
         }
