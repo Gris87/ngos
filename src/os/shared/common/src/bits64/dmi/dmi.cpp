@@ -1827,6 +1827,10 @@ NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 
             ++cur;
         } while(true);
+
+
+
+        COMMON_TEST_ASSERT(stringId == entry->stringCount, NgosStatus::ASSERTION);
     }
     else
     {
@@ -1894,6 +1898,10 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
 
             ++cur;
         } while(true);
+
+
+
+        COMMON_TEST_ASSERT(stringId == entry->stringCount, NgosStatus::ASSERTION);
     }
     else
     {
