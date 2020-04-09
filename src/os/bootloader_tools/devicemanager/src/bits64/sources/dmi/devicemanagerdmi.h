@@ -18,6 +18,7 @@
 #include <common/src/bits64/dmi/entry/dmimanagementdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h>
 #include <common/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h>
+#include <common/src/bits64/dmi/entry/dmimemorydeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmimemorydevicemappedaddressentry.h>
 #include <common/src/bits64/dmi/entry/dmioemstringsentry.h>
 #include <common/src/bits64/dmi/entry/dmionboarddevicesentry.h>
@@ -65,6 +66,7 @@ private:
     static NgosStatus saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry); // TEST: NO
     static NgosStatus saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry); // TEST: NO
     static NgosStatus saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry); // TEST: NO
+    static NgosStatus saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry); // TEST: NO
