@@ -821,11 +821,17 @@ NgosStatus TableWidget::setRowCount(u64 rows)
             COMMON_ASSERT_EXECUTION(mRows.at(mSelectedRow)->setState(isFocused() ? WidgetState::FOCUSED : WidgetState::INACTIVE), NgosStatus::ASSERTION);
         }
 
+        if (mHighlightedRow >= rows)
+        {
+            mHighlightedRow = INVALID_ROW;
+        }
+
         COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setSize(mTotalColumnWidth, rows * mRowHeight), NgosStatus::ASSERTION);
     }
     else
     {
-        mSelectedRow = 0;
+        mSelectedRow    = 0;
+        mHighlightedRow = INVALID_ROW;
 
         COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setSize(mTotalColumnWidth, 1), NgosStatus::ASSERTION);
     }

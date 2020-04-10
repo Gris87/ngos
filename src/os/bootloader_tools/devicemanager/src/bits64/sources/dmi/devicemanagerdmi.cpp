@@ -1160,7 +1160,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                 mprintf("%u", entry->processorId.signature.type)),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",       mprintf("%u", entry->processorId.signature.extendedModel)),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family",      mprintf("%u", entry->processorId.signature.extendedFamily)),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features",             strdup(flagsToFullString(entry->processorId.featureFlags))),  NgosStatus::ASSERTION);
+    // UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features",          strdup(flagsToFullString(entry->processorId.featureFlags))),  NgosStatus::ASSERTION); // Commented to avoid bad looking table entry
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",              processorVersionString),                                      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Voltage",              strdup(flagsToFullString(entry->voltage))),                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External clock",       mprintf("%u", entry->externalClock)),                         NgosStatus::ASSERTION);
