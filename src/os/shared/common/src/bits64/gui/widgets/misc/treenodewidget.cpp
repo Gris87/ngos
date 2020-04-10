@@ -23,6 +23,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mParentNode(nullptr)
     , mNodeIndexInParent(-1)
     , mChildrenNodes()
+    , mUserData(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, collapsedImage, expandedImage, image, text, parent));
 
@@ -67,6 +68,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
     , mParentNode(nullptr)
     , mNodeIndexInParent(-1)
     , mChildrenNodes()
+    , mUserData(nullptr)
 {
     COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p, image = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, normalResizedImage, hoverResizedImage, pressedResizedImage, collapsedImage, expandedImage, image, text, parent));
 
@@ -638,4 +640,28 @@ NgosStatus TreeNodeWidget::invalidatePositionY(i64 &positionY)
 
 
     return NgosStatus::OK;
+}
+
+NgosStatus TreeNodeWidget::setUserData(void *data)
+{
+    COMMON_LT((" | data = 0x%p", data));
+
+    COMMON_ASSERT(data, "data is null", NgosStatus::ASSERTION);
+
+
+
+    mUserData = data;
+
+
+
+    return NgosStatus::OK;
+}
+
+void* TreeNodeWidget::getUserData() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mUserData;
 }

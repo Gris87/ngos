@@ -48,6 +48,9 @@ public:
 
     const ArrayList<TreeNodeWidget *>& getChildrenNodes() const; // TEST: NO
 
+    NgosStatus setUserData(void *data); // TEST: NO
+    void* getUserData() const; // TEST: NO
+
 private:
     NgosStatus doExpand(); // TEST: NO
     NgosStatus doCollapse(); // TEST: NO
@@ -65,6 +68,7 @@ private:
     TreeNodeWidget              *mParentNode;
     i64                          mNodeIndexInParent;
     ArrayList<TreeNodeWidget *>  mChildrenNodes;
+    void                        *mUserData;
 };
 
 

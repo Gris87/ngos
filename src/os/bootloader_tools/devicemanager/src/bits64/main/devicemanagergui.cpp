@@ -37,8 +37,8 @@
 #define DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT     68
 #define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 3
 
-#define DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  80
-#define DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT 20
+#define DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  60
+#define DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT 40
 
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
 #define CURSOR_SIZE_PERCENT        1
@@ -228,6 +228,8 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(fillDevicesTree(), NgosStatus::ASSERTION);
 
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setNodeSelectEventHandler(onDevicesTreeWidgetNodeSelected), NgosStatus::ASSERTION);
+
 
 
     sDeviceInfoTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, rootWidget);
@@ -366,6 +368,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
         TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
 
         UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                      NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(entryNodeWidget),             NgosStatus::ASSERTION);
     }
 
@@ -400,6 +403,43 @@ NgosStatus DeviceManagerGUI::addDeviceInfoEntry(const char8 *name, const char8 *
     LabelWidget *valueLabelWidget = new LabelWidget(value, sDeviceInfoTableWidget);
     UEFI_ASSERT_EXECUTION(valueLabelWidget->setColor(sBlackColor),                                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_VALUE, valueLabelWidget), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry)
+{
+    UEFI_LT((" | entry = 0x%p", entry));
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowCount(0), NgosStatus::ASSERTION);
+
+    if (entry)
+    {
+        const ArrayList<DeviceManagerEntryRecord *> &records = entry->getRecords();
+
+        for (i64 i = 0; i < (i64)records.getSize(); ++i)
+        {
+            DeviceManagerEntryRecord *record = records.at(i);
+
+            UEFI_ASSERT_EXECUTION(addDeviceInfoEntry(record->getName(), record->getValue()), NgosStatus::ASSERTION);
+        }
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(addDeviceInfoEntry("", ""), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 
@@ -730,6 +770,19 @@ NgosStatus DeviceManagerGUI::onShutdownButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::SHUTDOWN, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerGUI::onDevicesTreeWidgetNodeSelected(TreeNodeWidget *node)
+{
+    UEFI_LT((" | node = 0x%p", node));
+
+
+
+    UEFI_ASSERT_EXECUTION(fillDeviceInfoTableWidget(node ? (DeviceManagerEntry *)node->getUserData() : nullptr), NgosStatus::ASSERTION);
 
 
 

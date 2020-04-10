@@ -10,6 +10,10 @@
 
 
 
+typedef NgosStatus (*tree_widget_node_select_event_handler) (TreeNodeWidget *node);
+
+
+
 class TreeWidget: public Widget
 {
 public:
@@ -47,17 +51,21 @@ public:
     NgosStatus setKeyboardEventHandler(keyboard_event_handler handler) override; // TEST: NO
     keyboard_event_handler getKeyboardEventHandler() const override; // TEST: NO
 
+    NgosStatus setNodeSelectEventHandler(tree_widget_node_select_event_handler handler); // TEST: NO
+    tree_widget_node_select_event_handler getNodeSelectEventHandler() const; // TEST: NO
+
 private:
-    Image                  *mBackgroundImage;
-    WidgetState             mState;
-    u64                     mRowHeight;
-    WrapperWidget          *mContentWrapperWidget;
-    WrapperWidget          *mScrollWrapperWidget;
-    TreeNodeWidget         *mRootNodeWidget;
-    TreeNodeWidget         *mSelectedTreeNodeWidget;
-    TreeNodeWidget         *mHighlightedTreeNodeWidget;
-    keyboard_event_handler  mKeyboardEventHandler;
-    i64                     mLastTimePressed;
+    Image                                 *mBackgroundImage;
+    WidgetState                            mState;
+    u64                                    mRowHeight;
+    WrapperWidget                         *mContentWrapperWidget;
+    WrapperWidget                         *mScrollWrapperWidget;
+    TreeNodeWidget                        *mRootNodeWidget;
+    TreeNodeWidget                        *mSelectedTreeNodeWidget;
+    TreeNodeWidget                        *mHighlightedTreeNodeWidget;
+    keyboard_event_handler                 mKeyboardEventHandler;
+    tree_widget_node_select_event_handler  mNodeSelectEventHandler;
+    i64                                    mLastTimePressed;
 };
 
 

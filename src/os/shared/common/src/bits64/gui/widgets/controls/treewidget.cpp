@@ -20,6 +20,7 @@ TreeWidget::TreeWidget(Image *backgroundImage, Widget *parent)
     , mSelectedTreeNodeWidget(nullptr)
     , mHighlightedTreeNodeWidget(nullptr)
     , mKeyboardEventHandler(nullptr)
+    , mNodeSelectEventHandler(nullptr)
     , mLastTimePressed(0)
 {
     COMMON_LT((" | backgroundImage = 0x%p, parent = 0x%p", backgroundImage, parent));
@@ -1006,6 +1007,13 @@ NgosStatus TreeWidget::setSelectedTreeNodeWidget(TreeNodeWidget *node)
                 break;
             }
         }
+
+
+
+        if (mNodeSelectEventHandler)
+        {
+            mNodeSelectEventHandler(mSelectedTreeNodeWidget);
+        }
     }
 
 
@@ -1133,4 +1141,26 @@ keyboard_event_handler TreeWidget::getKeyboardEventHandler() const
 
 
     return mKeyboardEventHandler;
+}
+
+NgosStatus TreeWidget::setNodeSelectEventHandler(tree_widget_node_select_event_handler handler)
+{
+    COMMON_LT((" | handler = 0x%p", handler));
+
+
+
+    mNodeSelectEventHandler = handler;
+
+
+
+    return NgosStatus::OK;
+}
+
+tree_widget_node_select_event_handler TreeWidget::getNodeSelectEventHandler() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mNodeSelectEventHandler;
 }
