@@ -14,6 +14,8 @@ template<typename T>
 class List
 {
 public:
+    typedef bool (*element_comparator) (const T &first, const T &second);
+
     List();
     ~List(); // TEST: NO
 
@@ -26,6 +28,7 @@ public:
 
     NgosStatus moveToEnd(const T &value);
     NgosStatus sort();
+    NgosStatus sort(element_comparator comparator);
 
     bool isEmpty() const;
 
@@ -274,6 +277,71 @@ NgosStatus List<T>::sort()
         while (cur2)
         {
             if (cur2->getData() < min->getData())
+            {
+                min = cur2;
+            }
+
+            cur2 = cur2->getNext();
+        }
+
+
+
+        if (cur != min)
+        {
+            if (min->getPrevious())
+            {
+                min->getPrevious()->setNext(min->getNext());
+            }
+
+            if (min->getNext())
+            {
+                min->getNext()->setPrevious(min->getPrevious());
+            }
+
+            if (cur->getPrevious())
+            {
+                cur->getPrevious()->setNext(min);
+            }
+            else
+            {
+                mHead = min;
+            }
+
+            min->setPrevious(cur->getPrevious());
+            min->setNext(cur);
+            cur->setPrevious(min);
+        }
+        else
+        {
+            mTail = cur;
+            cur   = cur->getNext();
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus List<T>::sort(element_comparator comparator)
+{
+    COMMON_LT((" | comparator = 0x%p", comparator));
+
+    COMMON_ASSERT(comparator, "comparator is null", NgosStatus::ASSERTION);
+
+
+
+    ListElement<T> *cur = mHead;
+
+    while (cur)
+    {
+        ListElement<T> *min  = cur;
+        ListElement<T> *cur2 = cur->getNext();
+
+        while (cur2)
+        {
+            if (comparator(cur2->getData(), min->getData()))
             {
                 min = cur2;
             }

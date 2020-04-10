@@ -26,7 +26,17 @@ NgosStatus DeviceManagerDMI::init()
 
     UEFI_ASSERT_EXECUTION(DMI::iterateDmiEntries((u8 *)DMI::getStructureTableAddress(), decodeDmiEntry), NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sEntries.sort(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sEntries.sort([](DeviceManagerEntryDMI* const &first, DeviceManagerEntryDMI* const &second)
+    {
+        UEFI_LT((" | first = 0x%p, second = 0x%p"));
+
+        UEFI_ASSERT(first,  "first is null",  false);
+        UEFI_ASSERT(second, "second is null", false);
+
+
+
+        return (*first) < (*second);
+    }), NgosStatus::ASSERTION);
 
 
 

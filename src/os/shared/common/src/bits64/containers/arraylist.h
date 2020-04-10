@@ -17,6 +17,8 @@ template<typename T>
 class ArrayList
 {
 public:
+    typedef bool (*element_comparator) (const T &first, const T &second);
+
     ArrayList();
     ~ArrayList(); // TEST: NO
 
@@ -26,6 +28,7 @@ public:
     NgosStatus clear();
 
     NgosStatus sort();
+    NgosStatus sort(element_comparator comparator);
 
     const T& at(u64 index) const;
     T& operator[](u64 index);
@@ -43,6 +46,7 @@ private:
 #endif
     NgosStatus extendCapacity();
     NgosStatus quickSort(i64 left, i64 right);
+    NgosStatus quickSort(i64 left, i64 right, element_comparator comparator);
 
     u64  mCapacity;
     u64  mSize;
@@ -153,6 +157,25 @@ NgosStatus ArrayList<T>::sort()
 
 
     return quickSort(0, mSize - 1);
+}
+
+template<typename T>
+NgosStatus ArrayList<T>::sort(element_comparator comparator)
+{
+    COMMON_LT((" | comparator = 0x%p", comparator));
+
+    COMMON_ASSERT(comparator, "comparator is null", NgosStatus::ASSERTION);
+
+
+
+    if (mSize < 2)
+    {
+        return NgosStatus::OK;
+    }
+
+
+
+    return quickSort(0, mSize - 1, comparator);
 }
 
 template<typename T>
@@ -352,6 +375,80 @@ NgosStatus ArrayList<T>::quickSort(i64 left, i64 right)
         if (i < right)
         {
             COMMON_ASSERT_EXECUTION(quickSort(i, right), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus ArrayList<T>::quickSort(i64 left, i64 right, element_comparator comparator)
+{
+    COMMON_LT((" | left = %d, right = %d, comparator = 0x%p", left, right, comparator));
+
+    COMMON_ASSERT(left  < (i64)mSize, "left is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(right < (i64)mSize, "right is invalid",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(left  < right,      "left is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(comparator,         "comparator is null", NgosStatus::ASSERTION);
+
+
+
+    if (left + 1 == right)
+    {
+        if (comparator(mValues[right], mValues[left]))
+        {
+            T temp         = mValues[left];
+            mValues[left]  = mValues[right];
+            mValues[right] = temp;
+        }
+    }
+    else
+    {
+        i64 i = left;
+        i64 j = right;
+
+        T pivot = mValues[(left + right) >> 1]; // ">> 1" == "/ 2"
+
+
+
+        while (i <= j)
+        {
+            while (comparator(mValues[i], pivot))
+            {
+                ++i;
+            }
+
+            while (comparator(pivot, mValues[j]))
+            {
+                --j;
+            }
+
+            if (i <= j)
+            {
+                if (i != j)
+                {
+                    T temp     = mValues[i];
+                    mValues[i] = mValues[j];
+                    mValues[j] = temp;
+                }
+
+                ++i;
+                --j;
+            }
+        }
+
+
+
+        if (left < j)
+        {
+            COMMON_ASSERT_EXECUTION(quickSort(left, j, comparator), NgosStatus::ASSERTION);
+        }
+
+        if (i < right)
+        {
+            COMMON_ASSERT_EXECUTION(quickSort(i, right, comparator), NgosStatus::ASSERTION);
         }
     }
 

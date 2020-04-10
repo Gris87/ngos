@@ -226,6 +226,25 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.mValues[2], 5);
         TEST_ASSERT_EQUALS(temp.mValues[3], 7);
         TEST_ASSERT_EQUALS(temp.mValues[4], 9);
+
+
+
+        TEST_ASSERT_EQUALS(temp.sort([](const u8 &first, const u8 &second)
+        {
+            UEFI_LT((" | first = %u, second = %u", first, second));
+
+
+
+            return first > second;
+        }), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 7);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 1);
     }
     TEST_CASE_END();
 
@@ -492,7 +511,11 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.mValues[30], 206);
         TEST_ASSERT_EQUALS(temp.mValues[31], 119);
 
+
+
         TEST_ASSERT_EQUALS(temp.quickSort(7, 25), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp.mValues[0],  0);
         TEST_ASSERT_EQUALS(temp.mValues[1],  169);
@@ -520,6 +543,52 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.mValues[23], 231);
         TEST_ASSERT_EQUALS(temp.mValues[24], 236);
         TEST_ASSERT_EQUALS(temp.mValues[25], 241);
+        TEST_ASSERT_EQUALS(temp.mValues[26], 42);
+        TEST_ASSERT_EQUALS(temp.mValues[27], 211);
+        TEST_ASSERT_EQUALS(temp.mValues[28], 124);
+        TEST_ASSERT_EQUALS(temp.mValues[29], 37);
+        TEST_ASSERT_EQUALS(temp.mValues[30], 206);
+        TEST_ASSERT_EQUALS(temp.mValues[31], 119);
+
+
+
+        TEST_ASSERT_EQUALS(temp.quickSort(7, 25, [](const u8 &first, const u8 &second)
+        {
+            UEFI_LT((" | first = %u, second = %u", first, second));
+
+
+
+            return first > second;
+        }), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mValues[0],  0);
+        TEST_ASSERT_EQUALS(temp.mValues[1],  169);
+        TEST_ASSERT_EQUALS(temp.mValues[2],  82);
+        TEST_ASSERT_EQUALS(temp.mValues[3],  251);
+        TEST_ASSERT_EQUALS(temp.mValues[4],  164);
+        TEST_ASSERT_EQUALS(temp.mValues[5],  77);
+        TEST_ASSERT_EQUALS(temp.mValues[6],  246);
+        TEST_ASSERT_EQUALS(temp.mValues[7],  241);
+        TEST_ASSERT_EQUALS(temp.mValues[8],  236);
+        TEST_ASSERT_EQUALS(temp.mValues[9],  231);
+        TEST_ASSERT_EQUALS(temp.mValues[10], 226);
+        TEST_ASSERT_EQUALS(temp.mValues[11], 221);
+        TEST_ASSERT_EQUALS(temp.mValues[12], 216);
+        TEST_ASSERT_EQUALS(temp.mValues[13], 159);
+        TEST_ASSERT_EQUALS(temp.mValues[14], 154);
+        TEST_ASSERT_EQUALS(temp.mValues[15], 149);
+        TEST_ASSERT_EQUALS(temp.mValues[16], 144);
+        TEST_ASSERT_EQUALS(temp.mValues[17], 139);
+        TEST_ASSERT_EQUALS(temp.mValues[18], 134);
+        TEST_ASSERT_EQUALS(temp.mValues[19], 129);
+        TEST_ASSERT_EQUALS(temp.mValues[20], 72);
+        TEST_ASSERT_EQUALS(temp.mValues[21], 67);
+        TEST_ASSERT_EQUALS(temp.mValues[22], 62);
+        TEST_ASSERT_EQUALS(temp.mValues[23], 57);
+        TEST_ASSERT_EQUALS(temp.mValues[24], 52);
+        TEST_ASSERT_EQUALS(temp.mValues[25], 47);
         TEST_ASSERT_EQUALS(temp.mValues[26], 42);
         TEST_ASSERT_EQUALS(temp.mValues[27], 211);
         TEST_ASSERT_EQUALS(temp.mValues[28], 124);

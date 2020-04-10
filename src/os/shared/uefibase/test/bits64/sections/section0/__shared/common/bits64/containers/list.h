@@ -505,6 +505,52 @@ TEST_CASES(section0, __shared_common_bits64_containers_list);
         TEST_ASSERT_EQUALS(newEl5->mNext,     nullptr);
         TEST_ASSERT_EQUALS(newEl5->mData,     9);
         TEST_ASSERT_EQUALS(newEl5,            el2);
+
+
+
+        TEST_ASSERT_EQUALS(temp.sort([](const u8 &first, const u8 &second)
+        {
+            UEFI_LT((" | first = %u, second = %u", first, second));
+
+
+
+            return first > second;
+        }), NgosStatus::OK);
+
+
+
+        newEl1 = temp.mHead;
+        newEl2 = newEl1->mNext;
+        newEl3 = newEl2->mNext;
+        newEl4 = newEl3->mNext;
+        newEl5 = newEl4->mNext;
+
+        TEST_ASSERT_EQUALS(newEl1,            temp.mHead);
+        TEST_ASSERT_EQUALS(newEl1->mPrevious, nullptr);
+        TEST_ASSERT_EQUALS(newEl1->mNext,     newEl2);
+        TEST_ASSERT_EQUALS(newEl1->mData,     9);
+        TEST_ASSERT_EQUALS(newEl1,            el2);
+
+        TEST_ASSERT_EQUALS(newEl2->mPrevious, newEl1);
+        TEST_ASSERT_EQUALS(newEl2->mNext,     newEl3);
+        TEST_ASSERT_EQUALS(newEl2->mData,     7);
+        TEST_ASSERT_EQUALS(newEl2,            el5);
+
+        TEST_ASSERT_EQUALS(newEl3->mPrevious, newEl2);
+        TEST_ASSERT_EQUALS(newEl3->mNext,     newEl4);
+        TEST_ASSERT_EQUALS(newEl3->mData,     5);
+        TEST_ASSERT_EQUALS(newEl3,            el1);
+
+        TEST_ASSERT_EQUALS(newEl4->mPrevious, newEl3);
+        TEST_ASSERT_EQUALS(newEl4->mNext,     newEl5);
+        TEST_ASSERT_EQUALS(newEl4->mData,     3);
+        TEST_ASSERT_EQUALS(newEl4,            el3);
+
+        TEST_ASSERT_EQUALS(newEl5,            temp.mTail);
+        TEST_ASSERT_EQUALS(newEl5->mPrevious, newEl4);
+        TEST_ASSERT_EQUALS(newEl5->mNext,     nullptr);
+        TEST_ASSERT_EQUALS(newEl5->mData,     1);
+        TEST_ASSERT_EQUALS(newEl5,            el4);
     }
     TEST_CASE_END();
 

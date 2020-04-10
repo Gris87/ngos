@@ -365,11 +365,50 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
 
 
+        TreeNodeWidget *parentNodeWidget = dmiNodeWidget;
+
+        if (
+            i < (i64)entries.getSize() - 1
+            &&
+            entries.at(i + 1)->getType() == entry->getType()
+           )
+        {
+            TreeNodeWidget *groupNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
+
+            UEFI_ASSERT_EXECUTION(groupNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(groupNodeWidget),          NgosStatus::ASSERTION);
+
+            parentNodeWidget = groupNodeWidget;
+
+
+
+            while (
+                   i < (i64)entries.getSize() - 1
+                   &&
+                   entries.at(i + 1)->getType() == entry->getType()
+                  )
+            {
+                TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
+
+                UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                      NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(entryNodeWidget),          NgosStatus::ASSERTION);
+
+
+
+                ++i;
+
+                entry = entries.at(i);
+            }
+        }
+
+
+
         TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
 
         UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(dmiNodeWidget->addChildNode(entryNodeWidget),             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(entryNodeWidget),          NgosStatus::ASSERTION);
     }
 
 
