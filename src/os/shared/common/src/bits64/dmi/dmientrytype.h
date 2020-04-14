@@ -138,4 +138,65 @@ inline const char8* enumToFullString(DmiEntryType type) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(DmiEntryType type) // TEST: NO
+{
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
+    switch (type)
+    {
+        case DmiEntryType::BIOS:                                 return "BIOS";
+        case DmiEntryType::SYSTEM:                               return "System";
+        case DmiEntryType::BASEBOARD:                            return "Baseboard";
+        case DmiEntryType::CHASSIS:                              return "Chassis";
+        case DmiEntryType::PROCESSOR:                            return "Processor";
+        case DmiEntryType::MEMORY_CONTROLLER:                    return "Memory controller";
+        case DmiEntryType::MEMORY_MODULE:                        return "Memory module";
+        case DmiEntryType::CACHE:                                return "Cache";
+        case DmiEntryType::PORT_CONNECTOR:                       return "Port connector";
+        case DmiEntryType::SYSTEM_SLOTS:                         return "System slots";
+        case DmiEntryType::ONBOARD_DEVICES:                      return "Onboard devices";
+        case DmiEntryType::OEM_STRINGS:                          return "OEM strings";
+        case DmiEntryType::SYSTEM_CONFIGURATION:                 return "System configuration";
+        case DmiEntryType::BIOS_LANGUAGE:                        return "Bios language";
+        case DmiEntryType::GROUP_ASSOCIATIONS:                   return "Group associations";
+        case DmiEntryType::SYSTEM_EVENT_LOG:                     return "System event log";
+        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:                return "Physical memory array";
+        case DmiEntryType::MEMORY_DEVICE:                        return "Memory device";
+        case DmiEntryType::BITS32_MEMORY_ERROR:                  return "Bits32 memory error";
+        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:          return "Memory array mapped address";
+        case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:         return "Memory device mapped address";
+        case DmiEntryType::BUILTIN_POINTING_DEVICE:              return "Built-in pointing device";
+        case DmiEntryType::PORTABLE_BATTERY:                     return "Portable battery";
+        case DmiEntryType::SYSTEM_RESET:                         return "System reset";
+        case DmiEntryType::HARDWARE_SECURITY:                    return "Hardware security";
+        case DmiEntryType::SYSTEM_POWER_CONTROLS:                return "System power controls";
+        case DmiEntryType::VOLTAGE_PROBE:                        return "Voltage probe";
+        case DmiEntryType::COOLING_DEVICE:                       return "Cooling device";
+        case DmiEntryType::TEMPERATURE_PROBE:                    return "Temperature probe";
+        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:             return "Electrical current probe";
+        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:            return "Out of band remote access";
+        case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:  return "Boot integrity services entry point";
+        case DmiEntryType::SYSTEM_BOOT:                          return "System boot";
+        case DmiEntryType::BITS64_MEMORY_ERROR:                  return "Bits64 memory error";
+        case DmiEntryType::MANAGEMENT_DEVICE:                    return "Management device";
+        case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:          return "Management device component";
+        case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA:     return "Management device threshold data";
+        case DmiEntryType::MEMORY_CHANNEL:                       return "Memory channel";
+        case DmiEntryType::IPMI_DEVICE:                          return "IPMI device";
+        case DmiEntryType::SYSTEM_POWER_SUPPLY:                  return "System power supply";
+        case DmiEntryType::ADDITIONAL:                           return "Additional";
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:             return "Onboard devices extended";
+        case DmiEntryType::MANAGEMENT_CONTROLLER_HOST_INTERFACE: return "Management controller host interface";
+        case DmiEntryType::TPM_DEVICE:                           return "TPM device";
+        case DmiEntryType::INACTIVE:                             return "Inactive";
+        case DmiEntryType::END_OF_TABLE:                         return "End of table";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
 #endif // OS_SHARED_COMMON_SRC_BITS64_DMI_DMIENTRYTYPE_H

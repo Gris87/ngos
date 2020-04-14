@@ -373,7 +373,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
             entries.at(i + 1)->getType() == entry->getType()
            )
         {
-            TreeNodeWidget *groupNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
+            TreeNodeWidget *groupNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getType()), strdup(enumToHumanString(entry->getType())), sDevicesTreeWidget);
 
             UEFI_ASSERT_EXECUTION(groupNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(groupNodeWidget),          NgosStatus::ASSERTION);
@@ -388,7 +388,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
                    entries.at(i + 1)->getType() == entry->getType()
                   )
             {
-                TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
+                TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToHumanString(entry->getType())), sDevicesTreeWidget);
 
                 UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
                 UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                      NgosStatus::ASSERTION);
@@ -404,7 +404,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
 
 
-        TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToString(entry->getType())), sDevicesTreeWidget);
+        TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), strdup(enumToHumanString(entry->getType())), sDevicesTreeWidget);
 
         UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                      NgosStatus::ASSERTION);
@@ -849,4 +849,76 @@ Image* DeviceManagerGUI::getImage(DeviceManagerImage image)
 
 
     return res;
+}
+
+Image* DeviceManagerGUI::getImage(DmiEntryType type)
+{
+    // UEFI_LT((" | type = %u", type)); // Commented to avoid too frequent logs
+
+
+
+    switch (type)
+    {
+        case DmiEntryType::BIOS:                             return getImage(DeviceManagerImage::BIOS);
+        case DmiEntryType::SYSTEM:                           return getImage(DeviceManagerImage::SYSTEM);
+        case DmiEntryType::BASEBOARD:                        return getImage(DeviceManagerImage::BASEBOARD);
+        case DmiEntryType::CHASSIS:                          return getImage(DeviceManagerImage::CHASSIS);
+        case DmiEntryType::PROCESSOR:                        return getImage(DeviceManagerImage::PROCESSOR);
+        case DmiEntryType::MEMORY_CONTROLLER:                return getImage(DeviceManagerImage::MEMORY_CONTROLLER);
+        case DmiEntryType::MEMORY_MODULE:                    return getImage(DeviceManagerImage::MEMORY_MODULE);
+        case DmiEntryType::CACHE:                            return getImage(DeviceManagerImage::CACHE);
+        case DmiEntryType::PORT_CONNECTOR:                   return getImage(DeviceManagerImage::PORT_CONNECTOR);
+        case DmiEntryType::SYSTEM_SLOTS:                     return getImage(DeviceManagerImage::SYSTEM_SLOTS);
+        case DmiEntryType::ONBOARD_DEVICES:                  return getImage(DeviceManagerImage::ONBOARD_DEVICES);
+        case DmiEntryType::OEM_STRINGS:                      return getImage(DeviceManagerImage::OEM_STRINGS);
+        case DmiEntryType::SYSTEM_CONFIGURATION:             return getImage(DeviceManagerImage::SYSTEM_CONFIGURATION);
+        case DmiEntryType::BIOS_LANGUAGE:                    return getImage(DeviceManagerImage::BIOS_LANGUAGE);
+        case DmiEntryType::GROUP_ASSOCIATIONS:               return getImage(DeviceManagerImage::GROUP_ASSOCIATIONS);
+        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            return getImage(DeviceManagerImage::PHYSICAL_MEMORY_ARRAY);
+        case DmiEntryType::MEMORY_DEVICE:                    return getImage(DeviceManagerImage::MEMORY_DEVICE);
+        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      return getImage(DeviceManagerImage::MEMORY_ARRAY_MAPPED_ADDRESS);
+        case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     return getImage(DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS);
+        case DmiEntryType::PORTABLE_BATTERY:                 return getImage(DeviceManagerImage::PORTABLE_BATTERY);
+        case DmiEntryType::VOLTAGE_PROBE:                    return getImage(DeviceManagerImage::VOLTAGE_PROBE);
+        case DmiEntryType::COOLING_DEVICE:                   return getImage(DeviceManagerImage::COOLING_DEVICE);
+        case DmiEntryType::TEMPERATURE_PROBE:                return getImage(DeviceManagerImage::TEMPERATURE_PROBE);
+        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         return getImage(DeviceManagerImage::ELECTRICAL_CURRENT_PROBE);
+        case DmiEntryType::SYSTEM_BOOT:                      return getImage(DeviceManagerImage::SYSTEM_BOOT);
+        case DmiEntryType::MANAGEMENT_DEVICE:                return getImage(DeviceManagerImage::MANAGEMENT_DEVICE);
+        case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      return getImage(DeviceManagerImage::MANAGEMENT_DEVICE_COMPONENT);
+        case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA: return getImage(DeviceManagerImage::MANAGEMENT_DEVICE_THRESHOLD_DATA);
+        case DmiEntryType::SYSTEM_POWER_SUPPLY:              return getImage(DeviceManagerImage::SYSTEM_POWER_SUPPLY);
+        case DmiEntryType::ADDITIONAL:                       return getImage(DeviceManagerImage::ADDITIONAL);
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:         return getImage(DeviceManagerImage::ONBOARD_DEVICES);
+
+        case DmiEntryType::SYSTEM_EVENT_LOG:
+        case DmiEntryType::BITS32_MEMORY_ERROR:
+        case DmiEntryType::BUILTIN_POINTING_DEVICE:
+        case DmiEntryType::SYSTEM_RESET:
+        case DmiEntryType::HARDWARE_SECURITY:
+        case DmiEntryType::SYSTEM_POWER_CONTROLS:
+        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:
+        case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:
+        case DmiEntryType::BITS64_MEMORY_ERROR:
+        case DmiEntryType::MEMORY_CHANNEL:
+        case DmiEntryType::IPMI_DEVICE:
+        case DmiEntryType::MANAGEMENT_CONTROLLER_HOST_INTERFACE:
+        case DmiEntryType::TPM_DEVICE:
+        case DmiEntryType::INACTIVE:
+        case DmiEntryType::END_OF_TABLE:
+        {
+            UEFI_LF(("Unexpected DMI entry type %s, %s:%u", enumToFullString(type), __FILE__, __LINE__));
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown DMI entry type %s, %s:%u", enumToFullString(type), __FILE__, __LINE__));
+        }
+        break;
+    }
+
+
+
+    return getImage(DeviceManagerImage::ADDITIONAL);
 }
