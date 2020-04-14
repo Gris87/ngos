@@ -10,6 +10,8 @@ DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerIma
     , mType(type)
 {
     UEFI_LT((" | type = %u, image = %u, name = 0x%p", type, image, name));
+
+    UEFI_ASSERT(name,  "name is null");
 }
 
 DeviceManagerEntryDMI::~DeviceManagerEntryDMI()
