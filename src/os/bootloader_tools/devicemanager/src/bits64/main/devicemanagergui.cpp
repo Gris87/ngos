@@ -35,7 +35,7 @@
 #define DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT 1
 #define DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT      58
 #define DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT     68
-#define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 3
+#define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 2.5
 
 #define DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  60
 #define DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT 40
@@ -436,8 +436,9 @@ NgosStatus DeviceManagerGUI::addDeviceInfoEntry(const char8 *name, const char8 *
 
 
     LabelWidget *nameLabelWidget = new LabelWidget(name, sDeviceInfoTableWidget);
-    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(sBlackColor),                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(sBlackColor),                                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),     NgosStatus::ASSERTION);
 
     LabelWidget *valueLabelWidget = new LabelWidget(value, sDeviceInfoTableWidget);
     UEFI_ASSERT_EXECUTION(valueLabelWidget->setColor(sBlackColor),                                    NgosStatus::ASSERTION);

@@ -1466,23 +1466,52 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
     DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::CACHE, DeviceManagerImage::CACHE);
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle)),                                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation",    socketDesignationString),                                                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",                 mprintf("%u", entry->cacheConfiguration.level)),                                               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socketed",              entry->cacheConfiguration.socketed ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",              strdup(enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location))),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",               entry->cacheConfiguration.enabled ? "Yes" : "No"),                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Operational mode",      strdup(enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size",    strdup(bytesToString(entry->maximumCacheSize.size()))),                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",        strdup(bytesToString(entry->installedSize.size()))),                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Supported SRAM type",   strdup(flagsToFullString(entry->supportedSramType))),                                          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current SRAM type",     strdup(flagsToFullString(entry->currentSramType))),                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                 mprintf("%u", entry->cacheSpeed)),                                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error correction type", strdup(enumToFullString(entry->errorCorrectionType))),                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System cache type",     strdup(enumToFullString(entry->systemCacheType))),                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Associativity",         strdup(enumToFullString(entry->associativity))),                                               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size 2",  maximumCacheSize2),                                                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size 2",      installedSize2),                                                                               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle)),                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignationString),                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",              mprintf("%u", entry->cacheConfiguration.level)),                                               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socketed",           entry->cacheConfiguration.socketed ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",           strdup(enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location))),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",            entry->cacheConfiguration.enabled ? "Yes" : "No"),                                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Operational mode",   strdup(enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode))), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", strdup(bytesToString(entry->maximumCacheSize.size()))),                                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     strdup(bytesToString(entry->installedSize.size()))),                                           NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Supported SRAM type", mprintf("0x%04X", entry->supportedSramType.flags)), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < (i64)(sizeof(entry->supportedSramType) * 8); ++i)
+    {
+        u64 flag = 1ULL << i;
+
+        if (entry->supportedSramType & flag)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Supported SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current SRAM type", mprintf("0x%04X", entry->currentSramType.flags)), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < (i64)(sizeof(entry->currentSramType) * 8); ++i)
+    {
+        u64 flag = 1ULL << i;
+
+        if (entry->currentSramType & flag)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Current SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                 mprintf("%u", entry->cacheSpeed)),                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error correction type", strdup(enumToFullString(entry->errorCorrectionType))), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System cache type",     strdup(enumToFullString(entry->systemCacheType))),     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Associativity",         strdup(enumToFullString(entry->associativity))),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size 2",  maximumCacheSize2),                                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size 2",      installedSize2),                                       NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
@@ -1760,20 +1789,36 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
     DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::SYSTEM_SLOTS, DeviceManagerImage::SYSTEM_SLOTS);
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",               mprintf("0x%04X", entry->header.handle)),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Designation",          slotDesignationString),                                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                 strdup(enumToFullString(entry->slotType))),             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width",       strdup(enumToFullString(entry->slotDataBusWidth))),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current usage",        strdup(enumToFullString(entry->currentUsage))),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Length",               strdup(enumToFullString(entry->slotLength))),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ID",                   mprintf("%u", entry->slotID)),                          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics",      strdup(flagsToFullString(entry->slotCharacteristics))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number", segmentGroupNumber),                                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",           busNumber),                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",      functionNumber),                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",        deviceNumber),                                          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width",       dataBusWidth),                                          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Peer grouping count",  peerGroupingCount),                                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",         mprintf("0x%04X", entry->header.handle)),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Designation",    slotDesignationString),                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",           strdup(enumToFullString(entry->slotType))),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width", strdup(enumToFullString(entry->slotDataBusWidth))), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current usage",  strdup(enumToFullString(entry->currentUsage))),     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Length",         strdup(enumToFullString(entry->slotLength))),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ID",             mprintf("%u", entry->slotID)),                      NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics", mprintf("0x%04X", entry->slotCharacteristics.flags)), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < (i64)(sizeof(entry->slotCharacteristics) * 8); ++i)
+    {
+        u64 flag = 1ULL << i;
+
+        if (entry->slotCharacteristics & flag)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Characteristics: %s", flagToString((DmiSystemSlotsCharacteristicsFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number", segmentGroupNumber), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",           busNumber),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",      functionNumber),     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",        deviceNumber),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width",       dataBusWidth),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Peer grouping count",  peerGroupingCount),  NgosStatus::ASSERTION);
 
     if (DMI::getVersion() >= DMI_VERSION(3, 2))
     {
@@ -2109,10 +2154,26 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
 
     DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::BIOS_LANGUAGE, DeviceManagerImage::BIOS_LANGUAGE);
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle)),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installable languages", mprintf("%u", entry->installableLanguages)),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Flags",                 strdup(flagsToFullString(entry->flags))),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current language",      mprintf("%u", entry->currentLanguageStringId)), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle)),    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installable languages", mprintf("%u", entry->installableLanguages)), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Flags", mprintf("0x%02X", entry->flags.flags)), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < (i64)(sizeof(entry->flags) * 8); ++i)
+    {
+        u64 flag = 1ULL << i;
+
+        if (entry->flags & flag)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Flags: %s", flagToString((DmiBiosLanguageFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current language", mprintf("%u", entry->currentLanguageStringId)), NgosStatus::ASSERTION);
 
 
 
@@ -2614,7 +2675,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
             if (DMI::getVersion() >= DMI_VERSION(3, 2))
             {
                 memoryTechnology                        = strdup(enumToFullString(entry->memoryTechnology));
-                memoryOperatingModeCapability           = strdup(flagsToFullString(entry->memoryOperatingModeCapability));
+                memoryOperatingModeCapability           = mprintf("0x%04X", entry->memoryOperatingModeCapability.flags);
                 moduleManufacturerID                    = mprintf("%u", entry->moduleManufacturerID);
                 moduleProductID                         = mprintf("%u", entry->moduleProductID);
                 memorySubsystemControllerManufacturerID = mprintf("%u", entry->memorySubsystemControllerManufacturerID);
@@ -2631,40 +2692,75 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
     DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::MEMORY_DEVICE, DeviceManagerImage::MEMORY_DEVICE);
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                                      mprintf("0x%04X", entry->header.handle)),                NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",                         mprintf("0x%04X", entry->memoryArrayHandle)),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle",             mprintf("0x%04X", entry->memoryErrorInformationHandle)), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Total width",                                 mprintf("%u", entry->totalWidth)),                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data width",                                  mprintf("%u", entry->dataWidth)),                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                                        mprintf("%u", entry->size)),                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Form factor",                                 strdup(enumToFullString(entry->formFactor))),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device set",                                  mprintf("%u", entry->deviceSet)),                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device locator",                              deviceLocatorString),                                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bank locator",                                bankLocatorString),                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory type",                                 strdup(enumToFullString(entry->memoryType))),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type detail",                                 strdup(flagsToFullString(entry->typeDetail))),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                                       mprintf("%u", entry->speed)),                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",                                manufacturerString),                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",                               serialNumberString),                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",                                   assetTagString),                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",                                 partNumberString),                                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Attributes",                                  attributes),                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended size",                               extendedSize),                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured memory speed",                     configuredMemorySpeed),                                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum voltage",                             minimumVoltage),                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum voltage",                             maximumVoltage),                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured voltage",                          configuredVoltage),                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory technology",                           memoryTechnology),                                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory operating mode capability",            memoryOperatingModeCapability),                          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Firmware version",                            firmwareVersionString),                                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module manufacturer ID",                      moduleManufacturerID),                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module product ID",                           moduleProductID),                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller manufacturer ID", memorySubsystemControllerManufacturerID),                NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller product ID",      memorySubsystemControllerProductID),                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("NonVolatile size",                            nonVolatileSize),                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Volatile size",                               volatileSize),                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache size",                                  cacheSize),                                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Logical size",                                logicalSize),                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",             mprintf("0x%04X", entry->memoryArrayHandle)),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle", mprintf("0x%04X", entry->memoryErrorInformationHandle)), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Total width",                     mprintf("%u", entry->totalWidth)),                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data width",                      mprintf("%u", entry->dataWidth)),                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                            mprintf("%u", entry->size)),                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Form factor",                     strdup(enumToFullString(entry->formFactor))),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device set",                      mprintf("%u", entry->deviceSet)),                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device locator",                  deviceLocatorString),                                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bank locator",                    bankLocatorString),                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory type",                     strdup(enumToFullString(entry->memoryType))),            NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type detail", mprintf("0x%04X", entry->typeDetail.flags)), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < (i64)(sizeof(entry->typeDetail) * 8); ++i)
+    {
+        u64 flag = 1ULL << i;
+
+        if (entry->typeDetail & flag)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Type detail: %s", flagToString((DmiMemoryDeviceTypeDetailFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                   mprintf("%u", entry->speed)), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",            manufacturerString),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",           serialNumberString),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",               assetTagString),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",             partNumberString),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Attributes",              attributes),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended size",           extendedSize),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured memory speed", configuredMemorySpeed),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum voltage",         minimumVoltage),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum voltage",         maximumVoltage),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured voltage",      configuredVoltage),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory technology",       memoryTechnology),            NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory operating mode capability", memoryOperatingModeCapability), NgosStatus::ASSERTION);
+
+    if (DMI::getVersion() >= DMI_VERSION(3, 2))
+    {
+        for (i64 i = 0; i < (i64)(sizeof(entry->memoryOperatingModeCapability) * 8); ++i)
+        {
+            u64 flag = 1ULL << i;
+
+            if (entry->memoryOperatingModeCapability & flag)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Memory operating mode capability: %s", flagToString((DmiMemoryDeviceOperatingModeCapabilityFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+            }
+        }
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Firmware version",                            firmwareVersionString),                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module manufacturer ID",                      moduleManufacturerID),                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module product ID",                           moduleProductID),                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller manufacturer ID", memorySubsystemControllerManufacturerID), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller product ID",      memorySubsystemControllerProductID),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("NonVolatile size",                            nonVolatileSize),                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Volatile size",                               volatileSize),                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache size",                                  cacheSize),                               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Logical size",                                logicalSize),                             NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
