@@ -5,7 +5,6 @@
 
 #include <bootparams/bootparams.h>
 #include <common/src/bits64/containers/arraylist.h>
-#include <common/src/bits64/dmi/dmientrytype.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
@@ -48,7 +47,6 @@ private:
     static NgosStatus onDevicesTreeWidgetNodeSelected(TreeNodeWidget *node); // TEST: NO
 
     static Image* getImage(DeviceManagerImage image); // TEST: NO
-    static Image* getImage(DmiEntryType type); // TEST: NO
 
     static Button      *sRebootButton;
     static Button      *sShutdownButton;

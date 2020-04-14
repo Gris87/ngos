@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/dmi/dmientrytype.h>
 #include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -134,6 +135,80 @@ inline const char8* enumToFullString(DeviceManagerImage image) // TEST: NO
     sprintf(res, "0x%02X (%s)", image, enumToString(image));
 
     return res;
+}
+
+
+
+inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type)
+{
+    // UEFI_LT((" | type = %u", type)); // Commented to avoid too frequent logs
+
+
+
+    switch (type)
+    {
+        case DmiEntryType::BIOS:                             return DeviceManagerImage::BIOS;
+        case DmiEntryType::SYSTEM:                           return DeviceManagerImage::SYSTEM;
+        case DmiEntryType::BASEBOARD:                        return DeviceManagerImage::BASEBOARD;
+        case DmiEntryType::CHASSIS:                          return DeviceManagerImage::CHASSIS;
+        case DmiEntryType::PROCESSOR:                        return DeviceManagerImage::PROCESSOR;
+        case DmiEntryType::MEMORY_CONTROLLER:                return DeviceManagerImage::MEMORY_CONTROLLER;
+        case DmiEntryType::MEMORY_MODULE:                    return DeviceManagerImage::MEMORY_MODULE;
+        case DmiEntryType::CACHE:                            return DeviceManagerImage::CACHE;
+        case DmiEntryType::PORT_CONNECTOR:                   return DeviceManagerImage::PORT_CONNECTOR;
+        case DmiEntryType::SYSTEM_SLOTS:                     return DeviceManagerImage::SYSTEM_SLOTS;
+        case DmiEntryType::ONBOARD_DEVICES:                  return DeviceManagerImage::ONBOARD_DEVICES;
+        case DmiEntryType::OEM_STRINGS:                      return DeviceManagerImage::OEM_STRINGS;
+        case DmiEntryType::SYSTEM_CONFIGURATION:             return DeviceManagerImage::SYSTEM_CONFIGURATION;
+        case DmiEntryType::BIOS_LANGUAGE:                    return DeviceManagerImage::BIOS_LANGUAGE;
+        case DmiEntryType::GROUP_ASSOCIATIONS:               return DeviceManagerImage::GROUP_ASSOCIATIONS;
+        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            return DeviceManagerImage::PHYSICAL_MEMORY_ARRAY;
+        case DmiEntryType::MEMORY_DEVICE:                    return DeviceManagerImage::MEMORY_DEVICE;
+        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      return DeviceManagerImage::MEMORY_ARRAY_MAPPED_ADDRESS;
+        case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     return DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS;
+        case DmiEntryType::PORTABLE_BATTERY:                 return DeviceManagerImage::PORTABLE_BATTERY;
+        case DmiEntryType::VOLTAGE_PROBE:                    return DeviceManagerImage::VOLTAGE_PROBE;
+        case DmiEntryType::COOLING_DEVICE:                   return DeviceManagerImage::COOLING_DEVICE;
+        case DmiEntryType::TEMPERATURE_PROBE:                return DeviceManagerImage::TEMPERATURE_PROBE;
+        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         return DeviceManagerImage::ELECTRICAL_CURRENT_PROBE;
+        case DmiEntryType::SYSTEM_BOOT:                      return DeviceManagerImage::SYSTEM_BOOT;
+        case DmiEntryType::MANAGEMENT_DEVICE:                return DeviceManagerImage::MANAGEMENT_DEVICE;
+        case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      return DeviceManagerImage::MANAGEMENT_DEVICE_COMPONENT;
+        case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA: return DeviceManagerImage::MANAGEMENT_DEVICE_THRESHOLD_DATA;
+        case DmiEntryType::SYSTEM_POWER_SUPPLY:              return DeviceManagerImage::SYSTEM_POWER_SUPPLY;
+        case DmiEntryType::ADDITIONAL:                       return DeviceManagerImage::ADDITIONAL;
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:         return DeviceManagerImage::ONBOARD_DEVICES;
+
+        case DmiEntryType::SYSTEM_EVENT_LOG:
+        case DmiEntryType::BITS32_MEMORY_ERROR:
+        case DmiEntryType::BUILTIN_POINTING_DEVICE:
+        case DmiEntryType::SYSTEM_RESET:
+        case DmiEntryType::HARDWARE_SECURITY:
+        case DmiEntryType::SYSTEM_POWER_CONTROLS:
+        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:
+        case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:
+        case DmiEntryType::BITS64_MEMORY_ERROR:
+        case DmiEntryType::MEMORY_CHANNEL:
+        case DmiEntryType::IPMI_DEVICE:
+        case DmiEntryType::MANAGEMENT_CONTROLLER_HOST_INTERFACE:
+        case DmiEntryType::TPM_DEVICE:
+        case DmiEntryType::INACTIVE:
+        case DmiEntryType::END_OF_TABLE:
+        {
+            UEFI_LF(("Unexpected DMI entry type %s, %s:%u", enumToFullString(type), __FILE__, __LINE__));
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown DMI entry type %s, %s:%u", enumToFullString(type), __FILE__, __LINE__));
+        }
+        break;
+    }
+
+
+
+    return DeviceManagerImage::ADDITIONAL;
 }
 
 

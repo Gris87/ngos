@@ -12,7 +12,7 @@
 class DeviceManagerEntryDMI : public DeviceManagerEntry
 {
 public:
-    DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerImage image);
+    DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerImage image, const char8 *name);
     ~DeviceManagerEntryDMI();
 
     bool operator<(const DeviceManagerEntryDMI &another) const; // TEST: NO

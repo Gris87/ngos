@@ -5,11 +5,14 @@
 
 
 
-DeviceManagerEntry::DeviceManagerEntry(DeviceManagerImage image)
+DeviceManagerEntry::DeviceManagerEntry(DeviceManagerImage image, const char8 *name)
     : mImage(image)
+    , mName(name)
     , mRecords()
 {
-    UEFI_LT((" | image = %u", image));
+    UEFI_LT((" | image = %u, name = 0x%p", image, name));
+
+    UEFI_ASSERT(name,  "name is null");
 }
 
 DeviceManagerEntry::~DeviceManagerEntry()
@@ -73,4 +76,26 @@ DeviceManagerImage DeviceManagerEntry::getImage() const
 
 
     return mImage;
+}
+
+NgosStatus DeviceManagerEntry::setName(const char8 *name)
+{
+    UEFI_LT((" | name = %u", name));
+
+
+
+    mName = name;
+
+
+
+    return NgosStatus::OK;
+}
+
+const char8* DeviceManagerEntry::getName() const
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mName;
 }

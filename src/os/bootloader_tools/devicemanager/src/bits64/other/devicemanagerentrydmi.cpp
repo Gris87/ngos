@@ -5,11 +5,11 @@
 
 
 
-DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerImage image)
-    : DeviceManagerEntry(image)
+DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerImage image, const char8 *name)
+    : DeviceManagerEntry(image, name)
     , mType(type)
 {
-    UEFI_LT((" | type = %u, image = %u", type, image));
+    UEFI_LT((" | type = %u, image = %u, name = 0x%p", type, image, name));
 }
 
 DeviceManagerEntryDMI::~DeviceManagerEntryDMI()
