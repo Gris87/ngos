@@ -199,7 +199,7 @@
         \
         u8 unknownCount = 0; \
         \
-        for (i64 i = 0; i < (i64)(sizeof(flags) << 3); ++i) \
+        for (i64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
         { \
             u64 flag = (1ULL << i); \
             \
@@ -268,7 +268,7 @@
         \
         u8 unknownCount = 0; \
         \
-        for (i64 i = 0; i < (i64)(sizeof(flags) << 3); ++i) \
+        for (i64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
         { \
             u64 flag = (1ULL << i); \
             \

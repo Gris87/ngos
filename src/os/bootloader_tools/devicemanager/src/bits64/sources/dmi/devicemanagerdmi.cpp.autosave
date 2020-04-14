@@ -1237,6 +1237,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
+    // Commented to avoid too many records
     // UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features", mprintf("0x%08X", entry->processorId.featureFlags.flags)), NgosStatus::ASSERTION);
     //
     // for (i64 i = 0; i < (i64)(sizeof(entry->processorId.featureFlags) * 8); ++i)
