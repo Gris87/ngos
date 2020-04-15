@@ -464,6 +464,10 @@ NgosStatus TreeWidget::pageUp()
                     selectedTreeNodeWidget = parentNode;
                 }
             }
+            else
+            {
+                break;
+            }
         }
 
 
