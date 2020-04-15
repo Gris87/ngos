@@ -128,7 +128,7 @@
 #include <common/src/bits64/dmi/entry/lib/dmisystemslotspeergroup.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemslotstype.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemslotsusage.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptype.h>
 #include <common/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h>
 #include <common/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h>
@@ -362,7 +362,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsPeerGroup),                       5);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsType),                            1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsUsage),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemWakeUpTime),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemWakeUpType),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeEntry),                      22);
         TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeLocation),                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeStatus),                     1);

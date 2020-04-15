@@ -13,9 +13,20 @@
 
 struct DmiChassisEntry
 {
-    DmiEntryHeader             header;
-    u8                         manufacturerStringId;
-    DmiChassisType             type;
+    DmiEntryHeader header;
+    u8             manufacturerStringId;
+
+    union
+    {
+        struct
+        {
+            u8 type:   7; // TODO: Use enum DmiChassisType
+            u8 locked: 1;
+        };
+
+        u8 typeAndLocked;
+    };
+
     u8                         versionStringId;
     u8                         serialNumberStringId;
     u8                         assetTagStringId;

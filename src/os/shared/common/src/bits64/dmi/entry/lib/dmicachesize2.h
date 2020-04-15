@@ -10,17 +10,6 @@
 
 struct DmiCacheSize2
 {
-    union
-    {
-        struct
-        {
-            u32 value:       31;
-            u32 granularity: 1; // TODO: Use enum DmiCacheSizeGranularity
-        };
-
-        u32 value32;
-    };
-
     u64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
@@ -45,6 +34,19 @@ struct DmiCacheSize2
 
         return value;
     }
+
+
+
+    union
+    {
+        struct
+        {
+            u32 value:       31;
+            u32 granularity: 1; // TODO: Use enum DmiCacheSizeGranularity
+        };
+
+        u32 value32;
+    };
 } __attribute__((packed));
 
 

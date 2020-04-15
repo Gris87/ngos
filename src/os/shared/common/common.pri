@@ -190,7 +190,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotspeergroup.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotstype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotsusage.h \
-    $$PWD/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemwakeuptype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h \

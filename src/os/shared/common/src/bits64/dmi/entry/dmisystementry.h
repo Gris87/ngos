@@ -4,7 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h>
+#include <common/src/bits64/dmi/entry/lib/dmisystemwakeuptype.h>
 #include <uuid/uuid.h>
 
 
@@ -17,7 +17,7 @@ struct DmiSystemEntry
     u8                  versionStringId;
     u8                  serialNumberStringId;
     Uuid                uuid;
-    DmiSystemWakeUpTime wakeUpTime;
+    DmiSystemWakeUpType wakeUpType;
     u8                  skuNumberStringId;
     u8                  familyStringId;
 } __attribute__((packed));

@@ -909,7 +909,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotslength.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotspeergroup.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotstype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotsusage.h
-src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemwakeuptime.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemwakeuptype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmitemperatureprobelocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmitemperatureprobestatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h

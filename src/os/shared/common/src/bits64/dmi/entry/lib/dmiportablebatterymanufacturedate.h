@@ -10,6 +10,17 @@
 
 struct DmiPortableBatteryManufactureDate
 {
+    u16 realYear()
+    {
+        // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+        return year + 1980;
+    }
+
+
+
     union
     {
         struct
@@ -21,15 +32,6 @@ struct DmiPortableBatteryManufactureDate
 
         u16 value16;
     };
-
-    u16 realYear()
-    {
-        // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-        return year + 1980;
-    }
 } __attribute__((packed));
 
 
