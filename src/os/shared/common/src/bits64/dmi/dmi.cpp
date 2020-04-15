@@ -500,17 +500,21 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
             if (DMI::getVersion() >= DMI_VERSION(2, 3))
             {
                 COMMON_LVVV(("entry->biosCharacteristicsExtension.systemReserved = %s", flagsToFullString(entry->biosCharacteristicsExtension.systemReserved)));
-                COMMON_LVVV(("entry->systemBiosMajorRelease                      = %u", entry->systemBiosMajorRelease));
-                COMMON_LVVV(("entry->systemBiosMinorRelease                      = %u", entry->systemBiosMinorRelease));
-                COMMON_LVVV(("entry->embeddedControllerFirmwareMajorRelease      = %u", entry->embeddedControllerFirmwareMajorRelease));
-                COMMON_LVVV(("entry->embeddedControllerFirmwareMinorRelease      = %u", entry->embeddedControllerFirmwareMinorRelease));
 
-                if (DMI::getVersion() >= DMI_VERSION(3, 1))
+                if (DMI::getVersion() >= DMI_VERSION(2, 4))
                 {
-                    COMMON_LVVV(("entry->extendedBiosRomSize.value   = %u",     entry->extendedBiosRomSize.value));
-                    COMMON_LVVV(("entry->extendedBiosRomSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entry->extendedBiosRomSize.unit)));
-                    COMMON_LVVV(("entry->extendedBiosRomSize.value16 = 0x%04X", entry->extendedBiosRomSize.value16));
-                    COMMON_LVVV(("entry->extendedBiosRomSize         = %s",     bytesToString(entry->extendedBiosRomSize.size())));
+                    COMMON_LVVV(("entry->systemBiosMajorRelease                 = %u", entry->systemBiosMajorRelease));
+                    COMMON_LVVV(("entry->systemBiosMinorRelease                 = %u", entry->systemBiosMinorRelease));
+                    COMMON_LVVV(("entry->embeddedControllerFirmwareMajorRelease = %u", entry->embeddedControllerFirmwareMajorRelease));
+                    COMMON_LVVV(("entry->embeddedControllerFirmwareMinorRelease = %u", entry->embeddedControllerFirmwareMinorRelease));
+
+                    if (DMI::getVersion() >= DMI_VERSION(3, 1))
+                    {
+                        COMMON_LVVV(("entry->extendedBiosRomSize.value   = %u",     entry->extendedBiosRomSize.value));
+                        COMMON_LVVV(("entry->extendedBiosRomSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entry->extendedBiosRomSize.unit)));
+                        COMMON_LVVV(("entry->extendedBiosRomSize.value16 = 0x%04X", entry->extendedBiosRomSize.value16));
+                        COMMON_LVVV(("entry->extendedBiosRomSize         = %s",     bytesToString(entry->extendedBiosRomSize.size())));
+                    }
                 }
             }
         }
