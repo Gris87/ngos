@@ -972,6 +972,8 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
+    sChassisType = entry->type;
+
     u8 skuNumberStringId = 0;
 
     if (DMI::getVersion() >= DMI_VERSION(2, 7))
