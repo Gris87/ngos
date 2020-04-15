@@ -468,24 +468,32 @@ NgosStatus TreeWidget::pageUp()
 
 
 
-        i64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
-
-        if (positionY > 0)
-        {
-            positionY = 0;
-        }
-
-
-
         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(selectedTreeNodeWidget), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY),   NgosStatus::ASSERTION);
 
-        if (!GUI::getPressedWidget())
+
+        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(selectedTreeNodeWidget), NgosStatus::ASSERTION);
+
+        if (mScrollWrapperWidget->getHeight() > mContentWrapperWidget->getHeight())
         {
-            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+            i64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
+
+            if (positionY > 0)
+            {
+                positionY = 0;
+            }
+
+            COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY), NgosStatus::ASSERTION);
+
+
+
+            if (!GUI::getPressedWidget())
+            {
+                COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+            }
         }
+
+
 
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
@@ -544,24 +552,32 @@ NgosStatus TreeWidget::pageDown()
 
 
 
-        i64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
-
-        if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
-        {
-            positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
-        }
-
-
-
         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(selectedTreeNodeWidget), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY),   NgosStatus::ASSERTION);
 
-        if (!GUI::getPressedWidget())
+
+        COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(selectedTreeNodeWidget), NgosStatus::ASSERTION);
+
+        if (mScrollWrapperWidget->getHeight() > mContentWrapperWidget->getHeight())
         {
-            COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+            i64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
+
+            if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+            {
+                positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
+            }
+
+            COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, positionY),   NgosStatus::ASSERTION);
+
+
+
+            if (!GUI::getPressedWidget())
+            {
+                COMMON_ASSERT_EXECUTION(GUI::detectHoveredWidget(), NgosStatus::ASSERTION);
+            }
         }
+
+
 
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }

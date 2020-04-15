@@ -1147,13 +1147,14 @@ NgosStatus CpuTestGUI::addIssueEntry(Image *icon, const char8 *description)
     if (icon)
     {
         ImageWidget *iconImageWidget = new ImageWidget(icon, sIssuesTableWidget);
+
         UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_ICON, iconImageWidget), NgosStatus::ASSERTION);
     }
 
     LabelWidget *descriptionLabelWidget = new LabelWidget(description, sIssuesTableWidget);
-    UEFI_ASSERT_EXECUTION(descriptionLabelWidget->setColor(blackColor),                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(descriptionLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_DESCRIPTION, descriptionLabelWidget),  NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(descriptionLabelWidget->setColor(blackColor),                                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_DESCRIPTION, descriptionLabelWidget), NgosStatus::ASSERTION);
 
 
 
@@ -1340,11 +1341,13 @@ NgosStatus CpuTestGUI::addTestEntry(const char8 *name, const char8 *score)
 
 
     LabelWidget *nameLabelWidget = new LabelWidget(name, sTestTableWidget);
+
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(blackColor),                                        NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),           NgosStatus::ASSERTION);
 
     LabelWidget *scoreLabelWidget = new LabelWidget(score, sTestTableWidget);
+
     UEFI_ASSERT_EXECUTION(scoreLabelWidget->setColor(blackColor),                               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setCellWidget(row, COLUMN_SCORE, scoreLabelWidget), NgosStatus::ASSERTION);
 
@@ -1463,11 +1466,13 @@ NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
 
 
     LabelWidget *nameLabelWidget = new LabelWidget(name, sSummaryTableWidget);
+
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(blackColor),                                        NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),        NgosStatus::ASSERTION);
 
     LabelWidget *scoreLabelWidget = new LabelWidget(scoreString, sSummaryTableWidget);
+
     UEFI_ASSERT_EXECUTION(scoreLabelWidget->setColor(blackColor),                                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_SCORE, scoreLabelWidget), NgosStatus::ASSERTION);
 

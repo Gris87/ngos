@@ -436,11 +436,13 @@ NgosStatus DeviceManagerGUI::addDeviceInfoEntry(const char8 *name, const char8 *
 
 
     LabelWidget *nameLabelWidget = new LabelWidget(name, sDeviceInfoTableWidget);
+
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(sBlackColor),                                       NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),     NgosStatus::ASSERTION);
 
     LabelWidget *valueLabelWidget = new LabelWidget(value, sDeviceInfoTableWidget);
+
     UEFI_ASSERT_EXECUTION(valueLabelWidget->setColor(sBlackColor),                                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_VALUE, valueLabelWidget), NgosStatus::ASSERTION);
 

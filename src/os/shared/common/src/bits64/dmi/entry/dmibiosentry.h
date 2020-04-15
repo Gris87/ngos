@@ -12,19 +12,30 @@
 
 struct DmiBiosEntry
 {
+    u64 romSize()
+    {
+        // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+        return (biosRomSize + 1) * 65536;
+    }
+
+
+
     DmiEntryHeader                  header;
     u8                              vendorStringId;
     u8                              biosVersionStringId;
     u16                             biosSegment;
     u8                              biosReleaseDateStringId;
-    u8                              biosSize;
+    u8                              biosRomSize;
     DmiBiosCharacteristicsFlags     biosCharacteristics;
     DmiBiosCharacteristicsExtension biosCharacteristicsExtension;
     u8                              systemBiosMajorRelease;
     u8                              systemBiosMinorRelease;
     u8                              embeddedControllerFirmwareMajorRelease;
     u8                              embeddedControllerFirmwareMinorRelease;
-    DmiBiosExtendedRomSize          extendedBiosSize;
+    DmiBiosExtendedRomSize          extendedBiosRomSize;
 } __attribute__((packed));
 
 

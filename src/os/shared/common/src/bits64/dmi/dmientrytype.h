@@ -159,7 +159,7 @@ inline const char8* enumToHumanString(DmiEntryType type) // TEST: NO
         case DmiEntryType::ONBOARD_DEVICES:                      return "Onboard devices";
         case DmiEntryType::OEM_STRINGS:                          return "OEM strings";
         case DmiEntryType::SYSTEM_CONFIGURATION:                 return "System configuration";
-        case DmiEntryType::BIOS_LANGUAGE:                        return "Bios language";
+        case DmiEntryType::BIOS_LANGUAGE:                        return "BIOS language";
         case DmiEntryType::GROUP_ASSOCIATIONS:                   return "Group associations";
         case DmiEntryType::SYSTEM_EVENT_LOG:                     return "System event log";
         case DmiEntryType::PHYSICAL_MEMORY_ARRAY:                return "Physical memory array";

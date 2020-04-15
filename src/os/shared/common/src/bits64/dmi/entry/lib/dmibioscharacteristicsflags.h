@@ -33,7 +33,7 @@ enum class DmiBiosCharacteristicsFlag: dmi_bios_characteristics_flags
     ESCD_SUPPORT_AVAILABLE             = (1ULL << 14),
     BOOT_FROM_CD_SUPPORTED             = (1ULL << 15),
     SELECTABLE_BOOT_SUPPORTED          = (1ULL << 16),
-    ROM_BIOS_SOCKETED                  = (1ULL << 17),
+    BIOS_ROM_SOCKETED                  = (1ULL << 17),
     BOOT_FROM_PCMCIA_SUPPORTED         = (1ULL << 18),
     EDD_SPECIFICATION_SUPPORTED        = (1ULL << 19),
     JAPANESE_NEC_FLOPPY_SUPPORTED      = (1ULL << 20),
@@ -79,7 +79,7 @@ inline const char8* flagToString(DmiBiosCharacteristicsFlag flag) // TEST: NO
         case DmiBiosCharacteristicsFlag::ESCD_SUPPORT_AVAILABLE:             return "ESCD_SUPPORT_AVAILABLE";
         case DmiBiosCharacteristicsFlag::BOOT_FROM_CD_SUPPORTED:             return "BOOT_FROM_CD_SUPPORTED";
         case DmiBiosCharacteristicsFlag::SELECTABLE_BOOT_SUPPORTED:          return "SELECTABLE_BOOT_SUPPORTED";
-        case DmiBiosCharacteristicsFlag::ROM_BIOS_SOCKETED:                  return "ROM_BIOS_SOCKETED";
+        case DmiBiosCharacteristicsFlag::BIOS_ROM_SOCKETED:                  return "BIOS_ROM_SOCKETED";
         case DmiBiosCharacteristicsFlag::BOOT_FROM_PCMCIA_SUPPORTED:         return "BOOT_FROM_PCMCIA_SUPPORTED";
         case DmiBiosCharacteristicsFlag::EDD_SPECIFICATION_SUPPORTED:        return "EDD_SPECIFICATION_SUPPORTED";
         case DmiBiosCharacteristicsFlag::JAPANESE_NEC_FLOPPY_SUPPORTED:      return "JAPANESE_NEC_FLOPPY_SUPPORTED";

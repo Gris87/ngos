@@ -10,17 +10,6 @@
 
 struct DmiBiosExtendedRomSize
 {
-    union
-    {
-        struct
-        {
-            u16 value: 14;
-            u16 unit:  2;    // TODO: Use enum DmiBiosExtendedRomSizeUnit
-        };
-
-        u16 value16;
-    };
-
     u64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
@@ -45,6 +34,19 @@ struct DmiBiosExtendedRomSize
 
         return value;
     }
+
+
+
+    union
+    {
+        struct
+        {
+            u16 value: 14;
+            u16 unit:  2;    // TODO: Use enum DmiBiosExtendedRomSizeUnit
+        };
+
+        u16 value16;
+    };
 } __attribute__((packed));
 
 
