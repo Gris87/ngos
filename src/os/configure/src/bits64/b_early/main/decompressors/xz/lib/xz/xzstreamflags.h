@@ -29,7 +29,7 @@ enum class XzStreamFlag: xz_stream_flags
     NONE                 = 0,
     TYPE_OF_CHECK_CRC32  = (1ULL << 8),
     TYPE_OF_CHECK_CRC64  = (1ULL << 10),
-    TYPE_OF_CHECK_SHA256 = (1ULL << 9 | 1ULL << 11)
+    TYPE_OF_CHECK_SHA256 = ((1ULL << 9) | (1ULL << 11))
 };
 
 DEFINE_FLAGS(XzStreamFlags, xz_stream_flags); // TEST: NO

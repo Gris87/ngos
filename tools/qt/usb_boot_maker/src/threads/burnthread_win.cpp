@@ -749,7 +749,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
     driveLayout.PartitionCount = 1;
 
     driveLayout.PartitionEntry[0].PartitionStyle           = PARTITION_STYLE_GPT;
-    driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = 1 << 20; // 1 MB
+    driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = (1ULL << 20); // 1 MB
     driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 << 9); // "<< 9" == "* 512" // Last 33 sectors reserved for Secondary GPT header
     driveLayout.PartitionEntry[0].PartitionNumber          = 1;
     driveLayout.PartitionEntry[0].RewritePartition         = true;

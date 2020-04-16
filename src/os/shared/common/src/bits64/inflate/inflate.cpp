@@ -329,8 +329,8 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // replicate for those indices with low len bits equal to huff
-        u32 incr = 1ULL << (len - drop);
-        u32 fill = 1ULL << curr;
+        u32 incr = (1ULL << (len - drop));
+        u32 fill = (1ULL << curr);
 
         // save offset to next table
         u32 temp = fill;
@@ -345,7 +345,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // backwards increment the len-bit code huff
-        incr = 1ULL << (len - 1);
+        incr = (1ULL << (len - 1));
 
         while (huff & incr)
         {
@@ -403,7 +403,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
             // determine length of next table
             curr = len - drop;
-            left = 1ULL << curr;
+            left = (1ULL << curr);
 
             while (curr + drop < max)
             {
@@ -469,7 +469,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // backwards increment the len-bit code huff
-        u32 incr = 1ULL << (len - 1);
+        u32 incr = (1ULL << (len - 1));
 
         while (huff & incr)
         {

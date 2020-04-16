@@ -7,6 +7,7 @@
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
+#include <macro/constants.h>
 
 
 
@@ -18,7 +19,7 @@ struct DmiBiosEntry
 
 
 
-        return (biosRomSize + 1) * 65536;
+        return (biosRomSize + 1) * 64 * KB;
     }
 
 
@@ -26,7 +27,7 @@ struct DmiBiosEntry
     DmiEntryHeader                  header;
     u8                              vendorStringId;
     u8                              biosVersionStringId;
-    u16                             biosSegment;
+    u16                             biosStartingAddressSegment;
     u8                              biosReleaseDateStringId;
     u8                              biosRomSize;
     DmiBiosCharacteristicsFlags     biosCharacteristics;

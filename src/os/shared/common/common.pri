@@ -144,6 +144,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicachetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelementtypeselect.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassistype.h \

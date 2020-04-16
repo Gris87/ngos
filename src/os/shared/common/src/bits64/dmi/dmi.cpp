@@ -486,12 +486,12 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->vendorStringId          = %u",     entry->vendorStringId));
-        COMMON_LVVV(("entry->biosVersionStringId     = %u",     entry->biosVersionStringId));
-        COMMON_LVVV(("entry->biosSegment             = 0x%04X", entry->biosSegment));
-        COMMON_LVVV(("entry->biosReleaseDateStringId = %u",     entry->biosReleaseDateStringId));
-        COMMON_LVVV(("entry->biosRomSize             = 0x%02X", entry->biosRomSize));
-        COMMON_LVVV(("entry->biosCharacteristics     = %s",     flagsToFullString(entry->biosCharacteristics)));
+        COMMON_LVVV(("entry->vendorStringId             = %u",     entry->vendorStringId));
+        COMMON_LVVV(("entry->biosVersionStringId        = %u",     entry->biosVersionStringId));
+        COMMON_LVVV(("entry->biosStartingAddressSegment = 0x%04X", entry->biosStartingAddressSegment));
+        COMMON_LVVV(("entry->biosReleaseDateStringId    = %u",     entry->biosReleaseDateStringId));
+        COMMON_LVVV(("entry->biosRomSize                = 0x%02X", entry->biosRomSize));
+        COMMON_LVVV(("entry->biosCharacteristics        = %s",     flagsToFullString(entry->biosCharacteristics)));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
@@ -521,12 +521,12 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-        COMMON_TEST_ASSERT(entry->vendorStringId          == 1,                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->biosVersionStringId     == 2,                                                                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->biosSegment          == 0xE800,                                                                NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->biosReleaseDateStringId == 3,                                                                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->biosRomSize          == 0xFF,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->biosCharacteristics  == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->vendorStringId                == 1,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->biosVersionStringId           == 2,                                                                     NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->biosStartingAddressSegment == 0xE800,                                                                NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->biosReleaseDateStringId       == 3,                                                                     NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->biosRomSize                == 0xFF,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->biosCharacteristics        == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
@@ -579,67 +579,70 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-    if (
-        entry->vendorStringId
-        ||
-        entry->biosVersionStringId
-        ||
-        entry->biosReleaseDateStringId
-       )
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (
+            entry->vendorStringId
+            ||
+            entry->biosVersionStringId
+            ||
+            entry->biosReleaseDateStringId
+           )
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->vendorStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->vendorStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->biosVersionStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->biosReleaseDateStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
-                else
-                if (stringId == entry->biosVersionStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->biosReleaseDateStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
-
-                begin = cur + 1;
-            }
-
-
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -661,6 +664,7 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         COMMON_LVVV(("entry->productNameStringId  = %u", entry->productNameStringId));
         COMMON_LVVV(("entry->versionStringId      = %u", entry->versionStringId));
         COMMON_LVVV(("entry->serialNumberStringId = %u", entry->serialNumberStringId));
+
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
             COMMON_LVVV(("entry->uuid       = %s", uuidToString(entry->uuid)));
@@ -722,97 +726,102 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
-    if (
-        entry->manufacturerStringId
-        ||
-        entry->productNameStringId
-        ||
-        entry->versionStringId
-        ||
-        entry->serialNumberStringId
-        ||
-        (
-         DMI::getVersion() >= DMI_VERSION(2, 4)
-         &&
-         (
-          entry->skuNumberStringId
-          ||
-          entry->familyStringId
-         )
-        )
-       )
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+        u8 skuNumberStringId = 0;
+        u8 familyStringId    = 0;
 
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (DMI::getVersion() >= DMI_VERSION(2, 4))
         {
-            if (!cur[0]) // cur[0] == 0
+            skuNumberStringId = entry->skuNumberStringId;
+            familyStringId    = entry->familyStringId;
+        }
+
+
+
+        if (
+            entry->manufacturerStringId
+            ||
+            entry->productNameStringId
+            ||
+            entry->versionStringId
+            ||
+            entry->serialNumberStringId
+            ||
+            skuNumberStringId
+            ||
+            familyStringId
+           )
+        {
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
+                if (!cur[0]) // cur[0] == 0
+                {
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
 
 
 
-                if (stringId == entry->manufacturerStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->productNameStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->versionStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->serialNumberStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (DMI::getVersion() >= DMI_VERSION(2, 4))
-                {
-                    if (stringId == entry->skuNumberStringId)
+                    if (stringId == entry->manufacturerStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->productNameStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->versionStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->serialNumberStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == skuNumberStringId)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
-                    if (stringId == entry->familyStringId)
+                    if (stringId == familyStringId)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_FAMILY, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
-
-                begin = cur + 1;
-            }
-
-
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -875,88 +884,91 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
 
 
-    if (
-        entry->manufacturerStringId
-        ||
-        entry->productStringId
-        ||
-        entry->versionStringId
-        ||
-        entry->serialNumberStringId
-        ||
-        entry->assetTagStringId
-        ||
-        entry->locationInChassisStringId
-       )
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (
+            entry->manufacturerStringId
+            ||
+            entry->productStringId
+            ||
+            entry->versionStringId
+            ||
+            entry->serialNumberStringId
+            ||
+            entry->assetTagStringId
+            ||
+            entry->locationInChassisStringId
+           )
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->manufacturerStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->productStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->versionStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->serialNumberStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->assetTagStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->locationInChassisStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_LOCATION_IN_CHASSIS, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->manufacturerStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->productStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->versionStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->serialNumberStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->assetTagStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->locationInChassisStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_LOCATION_IN_CHASSIS, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
-
-                begin = cur + 1;
-            }
-
-
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -972,7 +984,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-    sChassisType = entry->type;
+    sChassisType = (DmiChassisType)entry->type;
 
     u8 skuNumberStringId = 0;
 
@@ -988,7 +1000,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         COMMON_LVVV(("entry->manufacturerStringId = %u",     entry->manufacturerStringId));
         COMMON_LVVV(("entry->type                 = %s",     enumToFullString((DmiChassisType)entry->type)));
         COMMON_LVVV(("entry->locked               = %u",     entry->locked));
-        COMMON_LVVV(("entry->typeAndLocked        = 0x%02X", entry->lockedAndType));
+        COMMON_LVVV(("entry->typeAndLocked        = 0x%02X", entry->typeAndLocked));
         COMMON_LVVV(("entry->versionStringId      = %u",     entry->versionStringId));
         COMMON_LVVV(("entry->serialNumberStringId = %u",     entry->serialNumberStringId));
         COMMON_LVVV(("entry->assetTagStringId     = %u",     entry->assetTagStringId));
@@ -1002,10 +1014,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
             if (DMI::getVersion() >= DMI_VERSION(2, 3))
             {
-                COMMON_LVVV(("entry->oemDefined[0]                = 0x%02X", entry->oemDefined[0]));
-                COMMON_LVVV(("entry->oemDefined[1]                = 0x%02X", entry->oemDefined[1]));
-                COMMON_LVVV(("entry->oemDefined[2]                = 0x%02X", entry->oemDefined[2]));
-                COMMON_LVVV(("entry->oemDefined[3]                = 0x%02X", entry->oemDefined[3]));
+                COMMON_LVVV(("entry->oemDefined                   = 0x%08X", entry->oemDefined));
                 COMMON_LVVV(("entry->height                       = %u",     entry->height));
                 COMMON_LVVV(("entry->numberOfPowerCords           = %u",     entry->numberOfPowerCords));
                 COMMON_LVVV(("entry->containedElementCount        = %u",     entry->containedElementCount));
@@ -1020,9 +1029,25 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                     {
                         DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
 
-                        COMMON_LVVV(("containedElement[%-3d]->type    = %s",     i, enumToFullString(containedElement->type)));
-                        COMMON_LVVV(("containedElement[%-3d]->minimum = 0x%02X", i, containedElement->minimum));
-                        COMMON_LVVV(("containedElement[%-3d]->maximum = 0x%02X", i, containedElement->maximum));
+                        COMMON_LVVV(("containedElement[%-3d]->typeSelect = %s", i, enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect)));
+
+                        switch ((DmiChassisContainedElementTypeSelect)containedElement->typeSelect)
+                        {
+                            case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: COMMON_LVVV(("containedElement[%-3d]->baseboardType = %s", i, enumToFullString((DmiBaseboardType)containedElement->baseboardType))); break;
+                            case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: COMMON_LVVV(("containedElement[%-3d]->dmiEntryType  = %s", i, enumToFullString((DmiEntryType)containedElement->dmiEntryType)));      break;
+
+                            default:
+                            {
+                                COMMON_LF(("Unknown DMI chassis contained element type select %s, %s:%u", enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect), __FILE__, __LINE__));
+
+                                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                            }
+                            break;
+                        }
+
+                        COMMON_LVVV(("containedElement[%-3d]->typeAndTypeSelect = 0x%02X", i, containedElement->typeAndTypeSelect));
+                        COMMON_LVVV(("containedElement[%-3d]->minimum           = %u",     i, containedElement->minimum));
+                        COMMON_LVVV(("containedElement[%-3d]->maximum           = %u",     i, containedElement->maximum));
                     }
 
                     COMMON_LVVV(("-------------------------------------"));
@@ -1055,17 +1080,16 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
             if (DMI::getVersion() >= DMI_VERSION(2, 3))
             {
-                COMMON_TEST_ASSERT(entry->oemDefined[0]                                == 0,                     NgosStatus::ASSERTION);
-                COMMON_TEST_ASSERT(entry->oemDefined[1]                                == 0,                     NgosStatus::ASSERTION);
-                COMMON_TEST_ASSERT(entry->oemDefined[2]                                == 0,                     NgosStatus::ASSERTION);
-                COMMON_TEST_ASSERT(entry->oemDefined[3]                                == 0,                     NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entry->height                                    == 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entry->numberOfPowerCords                        == 1,                     NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entry->containedElementCount                     == 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entry->containedElementRecordLength              == 3,                     NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type    == DmiChassisType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->minimum == 0,                     NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->maximum == 0,                     NgosStatus::ASSERTION); // Commented due to value variation
+                COMMON_TEST_ASSERT(entry->oemDefined                                             == 0x00000000,                                           NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entry->height                                              == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->numberOfPowerCords                                  == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->containedElementCount                               == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->containedElementRecordLength                        == 3,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->typeSelect        == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->dmiEntryType      == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->typeAndTypeSelect == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->minimum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->maximum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
 
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
@@ -1095,81 +1119,84 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-    if (
-        entry->manufacturerStringId
-        ||
-        entry->versionStringId
-        ||
-        entry->serialNumberStringId
-        ||
-        entry->assetTagStringId
-        ||
-        skuNumberStringId
-       )
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (
+            entry->manufacturerStringId
+            ||
+            entry->versionStringId
+            ||
+            entry->serialNumberStringId
+            ||
+            entry->assetTagStringId
+            ||
+            skuNumberStringId
+           )
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->manufacturerStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->manufacturerStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->versionStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->serialNumberStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == entry->assetTagStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+                    else
+                    if (stringId == skuNumberStringId)
+                    {
+                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
-                else
-                if (stringId == entry->versionStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->serialNumberStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == entry->assetTagStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
-                else
-                if (stringId == skuNumberStringId)
-                {
-                    COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
-
-                begin = cur + 1;
-            }
-
-
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 

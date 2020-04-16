@@ -1894,11 +1894,11 @@ NgosStatus Png::setBitOfReversedStream(i64 *bitPointer, u8 *bitStream, u8 bit)
 
     if (bit)
     {
-        bitStream[(*bitPointer) >> 3] |= (1 << (7 - ((*bitPointer) & 7)));
+        bitStream[(*bitPointer) >> 3] |= (1ULL << (7 - ((*bitPointer) & 7)));
     }
     else
     {
-        bitStream[(*bitPointer) >> 3] &= (u8)(~(1 << (7 - ((*bitPointer) & 7))));
+        bitStream[(*bitPointer) >> 3] &= (u8)(~(1ULL << (7 - ((*bitPointer) & 7))));
     }
 
     ++(*bitPointer);

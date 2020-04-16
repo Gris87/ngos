@@ -40,7 +40,7 @@ NgosStatus MSR::setMsrBit(u32 msr, u8 bit, bool enabled)
 
     if (enabled)
     {
-        value |= 1ULL << bit;
+        value |= (1ULL << bit);
     }
     else
     {

@@ -18,6 +18,8 @@ NGOS:
 - Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
 - Replace u64 with i64 where needed
+- guidToFullString
+- uuidToFullString
 
 - Complete with interruptions
 - Implement boot screen for kernel

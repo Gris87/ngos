@@ -47,7 +47,7 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 lev
 
     u8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
 
-    u64 pageSize = 1ULL << bits;
+    u64 pageSize = (1ULL << bits);
     u64 pageMask = ~(pageSize - 1);
 
 

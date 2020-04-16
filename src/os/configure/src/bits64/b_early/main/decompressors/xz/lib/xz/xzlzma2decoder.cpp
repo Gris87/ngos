@@ -440,7 +440,7 @@ inline NgosStatus rcDecodeBitTreeReverse(LzmaRcDecoder *rc, u16 *probs, u32 *des
         if (rcDecodeBit(rc, &probs[symbol]))
         {
             symbol =  (symbol << 1) + 1;
-            *dest  += 1ULL << i;
+            *dest  += (1ULL << i);
         }
         else
         {
