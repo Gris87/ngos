@@ -144,6 +144,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicachetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelementtype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassiscontainedelementtypeselect.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmichassisstate.h \
@@ -179,7 +180,9 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessortype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiprocessorvoltage.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiprocessorvoltagemodetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystembootstatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplycharacteristics.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h \

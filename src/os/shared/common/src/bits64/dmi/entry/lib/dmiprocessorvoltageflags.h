@@ -20,8 +20,7 @@ enum class DmiProcessorVoltageFlag: dmi_processor_voltage_flags
     NONE            = 0,
     CAPABILITY_5V   = (1ULL << 0),
     CAPABILITY_3_3V = (1ULL << 1),
-    CAPABILITY_2_9V = (1ULL << 2),
-    INDICATE_LEGACY = (1ULL << 7)
+    CAPABILITY_2_9V = (1ULL << 2)
 };
 
 DEFINE_FLAGS(DmiProcessorVoltageFlags, dmi_processor_voltage_flags); // TEST: NO
@@ -40,7 +39,6 @@ inline const char8* flagToString(DmiProcessorVoltageFlag flag) // TEST: NO
         case DmiProcessorVoltageFlag::CAPABILITY_5V:   return "CAPABILITY_5V";
         case DmiProcessorVoltageFlag::CAPABILITY_3_3V: return "CAPABILITY_3_3V";
         case DmiProcessorVoltageFlag::CAPABILITY_2_9V: return "CAPABILITY_2_9V";
-        case DmiProcessorVoltageFlag::INDICATE_LEGACY: return "INDICATE_LEGACY";
 
         default: return "UNKNOWN";
     }
@@ -69,7 +67,7 @@ inline const char8* flagsToString(const DmiProcessorVoltageFlags &flags) // TEST
 
 
 
-    static char8 res[83];
+    static char8 res[65];
 
     FLAGS_TO_STRING(res, flags.flags, DmiProcessorVoltageFlag);
 
@@ -84,7 +82,7 @@ inline const char8* flagsToFullString(const DmiProcessorVoltageFlags &flags) // 
 
 
 
-    static char8 res[90];
+    static char8 res[72];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, DmiProcessorVoltageFlag, "0x%02X");
 

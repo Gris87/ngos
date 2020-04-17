@@ -1029,23 +1029,23 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                     {
                         DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
 
-                        COMMON_LVVV(("containedElement[%-3d]->typeSelect = %s", i, enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect)));
+                        COMMON_LVVV(("containedElement[%-3d]->type.typeSelect = %s", i, enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)));
 
-                        switch ((DmiChassisContainedElementTypeSelect)containedElement->typeSelect)
+                        switch ((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)
                         {
-                            case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: COMMON_LVVV(("containedElement[%-3d]->baseboardType = %s", i, enumToFullString((DmiBaseboardType)containedElement->baseboardType))); break;
-                            case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: COMMON_LVVV(("containedElement[%-3d]->dmiEntryType  = %s", i, enumToFullString((DmiEntryType)containedElement->dmiEntryType)));      break;
+                            case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: COMMON_LVVV(("containedElement[%-3d]->type.baseboardType = %s", i, enumToFullString((DmiBaseboardType)containedElement->type.baseboardType))); break;
+                            case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: COMMON_LVVV(("containedElement[%-3d]->type.dmiEntryType  = %s", i, enumToFullString((DmiEntryType)containedElement->type.dmiEntryType)));      break;
 
                             default:
                             {
-                                COMMON_LF(("Unknown DMI chassis contained element type select %s, %s:%u", enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect), __FILE__, __LINE__));
+                                COMMON_LF(("Unknown DMI chassis contained element type select %s, %s:%u", enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect), __FILE__, __LINE__));
 
                                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
                             }
                             break;
                         }
 
-                        COMMON_LVVV(("containedElement[%-3d]->typeAndTypeSelect = 0x%02X", i, containedElement->typeAndTypeSelect));
+                        COMMON_LVVV(("containedElement[%-3d]->type.value8 = 0x%02X", i, containedElement->type.value8));
                         COMMON_LVVV(("containedElement[%-3d]->minimum           = %u",     i, containedElement->minimum));
                         COMMON_LVVV(("containedElement[%-3d]->maximum           = %u",     i, containedElement->maximum));
                     }
@@ -1085,9 +1085,9 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                 // COMMON_TEST_ASSERT(entry->numberOfPowerCords                                  == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
                 // COMMON_TEST_ASSERT(entry->containedElementCount                               == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
                 // COMMON_TEST_ASSERT(entry->containedElementRecordLength                        == 3,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->typeSelect        == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->dmiEntryType      == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->typeAndTypeSelect == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.typeSelect   == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.dmiEntryType == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.value8       == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
                 // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->minimum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
                 // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->maximum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
 
@@ -1227,7 +1227,23 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         COMMON_LVVV(("entry->processorId.signature.value32        = 0x%08X", entry->processorId.signature.value32));
         COMMON_LVVV(("entry->processorId.featureFlags             = %s",     flagsToFullString(entry->processorId.featureFlags)));
         COMMON_LVVV(("entry->processorVersionStringId             = %u",     entry->processorVersionStringId));
-        COMMON_LVVV(("entry->voltage                              = %s",     flagsToFullString(entry->voltage)));
+        COMMON_LVVV(("entry->voltage.modeType                     = %s",     enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType)));
+
+        switch ((DmiProcessorVoltageModeType)entry->voltage.modeType)
+        {
+            case DmiProcessorVoltageModeType::LEGACY_MODE:          COMMON_LVVV(("entry->voltage.flags = %s", i, flagsToFullString((DmiProcessorVoltageFlags)entry->voltage.flags))); break;
+            case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE: COMMON_LVVV(("entry->voltage.value = %u", i, entry->voltage.value));                                              break;
+
+            default:
+            {
+                COMMON_LF(("Unknown DMI processor voltage mode type %s, %s:%u", enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType), __FILE__, __LINE__));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+        }
+
+        COMMON_LVVV(("entry->voltage.value8   = 0x%02X", entry->voltage.value8));
         COMMON_LVVV(("entry->externalClock                        = %u",     entry->externalClock));
         COMMON_LVVV(("entry->maxSpeed                             = %u",     entry->maxSpeed));
         COMMON_LVVV(("entry->currentSpeed                         = %u",     entry->currentSpeed));
@@ -1235,9 +1251,15 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         COMMON_LVVV(("entry->socketPopulated                      = %u",     entry->socketPopulated));
         COMMON_LVVV(("entry->processorStatus                      = 0x%02X", entry->processorStatus));
         COMMON_LVVV(("entry->processorUpgrade                     = %s",     enumToFullString(entry->processorUpgrade)));
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        {
         COMMON_LVVV(("entry->l1CacheHandle                        = 0x%04X", entry->l1CacheHandle));
         COMMON_LVVV(("entry->l2CacheHandle                        = 0x%04X", entry->l2CacheHandle));
         COMMON_LVVV(("entry->l3CacheHandle                        = 0x%04X", entry->l3CacheHandle));
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            {
         COMMON_LVVV(("entry->serialNumberStringId                 = %u",     entry->serialNumberStringId));
         COMMON_LVVV(("entry->assetTagStringId                     = %u",     entry->assetTagStringId));
         COMMON_LVVV(("entry->partNumberStringId                   = %u",     entry->partNumberStringId));
@@ -1259,6 +1281,8 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
                     COMMON_LVVV(("entry->enabledCoreCount2 = %u", entry->enabledCoreCount2));
                     COMMON_LVVV(("entry->threadCount2      = %u", entry->threadCount2));
                 }
+            }
+        }
             }
         }
 
@@ -1308,9 +1332,15 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         // COMMON_TEST_ASSERT(entry->socketPopulated                      == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->processorStatus                      == 0x41,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->processorUpgrade                     == DmiProcessorUpgrade::OTHER,           NgosStatus::ASSERTION); // Commented due to value variation
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        {
         // COMMON_TEST_ASSERT(entry->l1CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->l2CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->l3CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            {
         // COMMON_TEST_ASSERT(entry->serialNumberStringId                 == 4,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->assetTagStringId                     == 5,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->partNumberStringId                   == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
@@ -1354,6 +1384,33 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 13, NgosStatus::ASSERTION);
         }
     }
+            else
+            {
+                COMMON_TEST_ASSERT(entry->header.length >= 32,                             NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 16, NgosStatus::ASSERTION);
+            }
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(entry->header.length >= 26,                             NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 22, NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    // Get strings
+    {
+        u8 serialNumberStringId = 0;
+        u8 assetTagStringId     = 0;
+        u8 partNumberStringId   = 0;
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 3))
+        {
+            serialNumberStringId = entry->serialNumberStringId;
+            assetTagStringId     = entry->assetTagStringId;
+            partNumberStringId   = entry->partNumberStringId;
+        }
 
 
 
@@ -1364,11 +1421,11 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         ||
         entry->processorVersionStringId
         ||
-        entry->serialNumberStringId
+        serialNumberStringId
         ||
-        entry->assetTagStringId
+        assetTagStringId
         ||
-        entry->partNumberStringId
+        partNumberStringId
        )
     {
         COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
@@ -1405,17 +1462,17 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
                     COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
                 }
                 else
-                if (stringId == entry->serialNumberStringId)
+                if (stringId == serialNumberStringId)
                 {
                     COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
                 }
                 else
-                if (stringId == entry->assetTagStringId)
+                if (stringId == assetTagStringId)
                 {
                     COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
                 }
                 else
-                if (stringId == entry->partNumberStringId)
+                if (stringId == partNumberStringId)
                 {
                     COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_PART_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
                 }
@@ -1439,6 +1496,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     {
         COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    }
     }
 
 

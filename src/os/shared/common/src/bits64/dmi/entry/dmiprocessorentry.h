@@ -11,23 +11,23 @@
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorstatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessortype.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltage.h>
 
 
 
 struct DmiProcessorEntry
 {
-    DmiEntryHeader           header;
-    u8                       socketStringId;
-    DmiProcessorType         processorType;
-    DmiProcessorFamily       processorFamily;
-    u8                       processorManufactureStringId;
-    DmiProcessorId           processorId;
-    u8                       processorVersionStringId;
-    DmiProcessorVoltageFlags voltage;
-    u16                      externalClock;
-    u16                      maxSpeed;
-    u16                      currentSpeed;
+    DmiEntryHeader      header;
+    u8                  socketStringId;
+    DmiProcessorType    processorType;
+    DmiProcessorFamily  processorFamily;
+    u8                  processorManufactureStringId;
+    DmiProcessorId      processorId;
+    u8                  processorVersionStringId;
+    DmiProcessorVoltage voltage;
+    u16                 externalClock;
+    u16                 maxSpeed;
+    u16                 currentSpeed;
 
     union
     {

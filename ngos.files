@@ -863,6 +863,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmicachesizegranularity.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicachetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelementtype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassiscontainedelementtypeselect.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmichassisstate.h
@@ -898,7 +899,9 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorsignature.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessortype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorvoltage.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiprocessorvoltagemodetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystembootstatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplycharacteristics.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h

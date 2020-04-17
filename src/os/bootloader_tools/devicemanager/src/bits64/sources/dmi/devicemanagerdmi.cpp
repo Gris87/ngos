@@ -903,25 +903,25 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                     {
                         DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
 
-                        UEFI_LVVV(("containedElement[%-3d]->typeSelect = %s", i, enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect)));
+                        UEFI_LVVV(("containedElement[%-3d]->type.typeSelect = %s", i, enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)));
 
-                        switch ((DmiChassisContainedElementTypeSelect)containedElement->typeSelect)
+                        switch ((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)
                         {
-                            case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_LVVV(("containedElement[%-3d]->baseboardType = %s", i, enumToFullString((DmiBaseboardType)containedElement->baseboardType))); break;
-                            case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_LVVV(("containedElement[%-3d]->dmiEntryType  = %s", i, enumToFullString((DmiEntryType)containedElement->dmiEntryType)));      break;
+                            case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_LVVV(("containedElement[%-3d]->type.baseboardType = %s", i, enumToFullString((DmiBaseboardType)containedElement->type.baseboardType))); break;
+                            case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_LVVV(("containedElement[%-3d]->type.dmiEntryType  = %s", i, enumToFullString((DmiEntryType)containedElement->type.dmiEntryType)));      break;
 
                             default:
                             {
-                                UEFI_LF(("Unknown DMI chassis contained element type select %s, %s:%u", enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect), __FILE__, __LINE__));
+                                UEFI_LF(("Unknown DMI chassis contained element type select %s, %s:%u", enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect), __FILE__, __LINE__));
 
                                 return NgosStatus::UNEXPECTED_BEHAVIOUR;
                             }
                             break;
                         }
 
-                        UEFI_LVVV(("containedElement[%-3d]->typeAndTypeSelect = 0x%02X", i, containedElement->typeAndTypeSelect));
-                        UEFI_LVVV(("containedElement[%-3d]->minimum           = %u",     i, containedElement->minimum));
-                        UEFI_LVVV(("containedElement[%-3d]->maximum           = %u",     i, containedElement->maximum));
+                        UEFI_LVVV(("containedElement[%-3d]->type.value8 = 0x%02X", i, containedElement->type.value8));
+                        UEFI_LVVV(("containedElement[%-3d]->minimum     = %u",     i, containedElement->minimum));
+                        UEFI_LVVV(("containedElement[%-3d]->maximum     = %u",     i, containedElement->maximum));
                     }
 
                     UEFI_LVVV(("-------------------------------------"));
@@ -959,9 +959,9 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                 // UEFI_TEST_ASSERT(entry->numberOfPowerCords                                  == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
                 // UEFI_TEST_ASSERT(entry->containedElementCount                               == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
                 // UEFI_TEST_ASSERT(entry->containedElementRecordLength                        == 3,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->typeSelect        == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->dmiEntryType      == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->typeAndTypeSelect == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.typeSelect   == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.dmiEntryType == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.value8       == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
                 // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->minimum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
                 // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->maximum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
 
@@ -1080,6 +1080,7 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
     }
 
 
+
     const char8 *bootUpState                  = "N/A";
     const char8 *powerSupplyState             = "N/A";
     const char8 *thermalState                 = "N/A";
@@ -1154,16 +1155,16 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                 {
                     DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type select"), strdup(enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect))), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type select"), strdup(enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect))), NgosStatus::ASSERTION);
 
-                    switch ((DmiChassisContainedElementTypeSelect)containedElement->typeSelect)
+                    switch ((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)
                     {
-                        case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiBaseboardType)containedElement->baseboardtype))), NgosStatus::ASSERTION); break;
-                        case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiEntryType)containedElement->dmiEntrytype))),      NgosStatus::ASSERTION); break;
+                        case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiBaseboardType)containedElement->type.baseboardtype))), NgosStatus::ASSERTION); break;
+                        case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiEntryType)containedElement->type.dmiEntrytype))),      NgosStatus::ASSERTION); break;
 
                         default:
                         {
-                            UEFI_LF(("Unknown DMI chassis contained element type select %s, %s:%u", enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->typeSelect), __FILE__, __LINE__));
+                            UEFI_LF(("Unknown DMI chassis contained element type select %s, %s:%u", enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect), __FILE__, __LINE__));
 
                             return NgosStatus::UNEXPECTED_BEHAVIOUR;
                         }
@@ -1209,37 +1210,61 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         UEFI_LVVV(("entry->processorId.signature.value32        = 0x%08X", entry->processorId.signature.value32));
         UEFI_LVVV(("entry->processorId.featureFlags             = %s",     flagsToFullString(entry->processorId.featureFlags)));
         UEFI_LVVV(("entry->processorVersionStringId             = %u",     entry->processorVersionStringId));
-        UEFI_LVVV(("entry->voltage                              = %s",     flagsToFullString(entry->voltage)));
-        UEFI_LVVV(("entry->externalClock                        = %u",     entry->externalClock));
-        UEFI_LVVV(("entry->maxSpeed                             = %u",     entry->maxSpeed));
-        UEFI_LVVV(("entry->currentSpeed                         = %u",     entry->currentSpeed));
-        UEFI_LVVV(("entry->status                               = %s",     enumToFullString((DmiProcessorStatus)entry->status)));
-        UEFI_LVVV(("entry->socketPopulated                      = %u",     entry->socketPopulated));
-        UEFI_LVVV(("entry->processorStatus                      = 0x%02X", entry->processorStatus));
-        UEFI_LVVV(("entry->processorUpgrade                     = %s",     enumToFullString(entry->processorUpgrade)));
-        UEFI_LVVV(("entry->l1CacheHandle                        = 0x%04X", entry->l1CacheHandle));
-        UEFI_LVVV(("entry->l2CacheHandle                        = 0x%04X", entry->l2CacheHandle));
-        UEFI_LVVV(("entry->l3CacheHandle                        = 0x%04X", entry->l3CacheHandle));
-        UEFI_LVVV(("entry->serialNumberStringId                 = %u",     entry->serialNumberStringId));
-        UEFI_LVVV(("entry->assetTagStringId                     = %u",     entry->assetTagStringId));
-        UEFI_LVVV(("entry->partNumberStringId                   = %u",     entry->partNumberStringId));
+        UEFI_LVVV(("entry->voltage.modeType                     = %s",     enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType)));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 5))
+        switch ((DmiProcessorVoltageModeType)entry->voltage.modeType)
         {
-            UEFI_LVVV(("entry->coreCount                = %u", entry->coreCount));
-            UEFI_LVVV(("entry->enabledCoreCount         = %u", entry->enabledCoreCount));
-            UEFI_LVVV(("entry->threadCount              = %u", entry->threadCount));
-            UEFI_LVVV(("entry->processorCharacteristics = %s", flagsToFullString(entry->processorCharacteristics)));
+            case DmiProcessorVoltageModeType::LEGACY_MODE:          UEFI_LVVV(("entry->voltage.flags = %s", i, flagsToFullString((DmiProcessorVoltageFlags)entry->voltage.flags))); break;
+            case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE: UEFI_LVVV(("entry->voltage.value = %u", i, entry->voltage.value));                                              break;
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 6))
+            default:
             {
-                UEFI_LVVV(("entry->processorFamily2 = %s", enumToFullString(entry->processorFamily2)));
+                UEFI_LF(("Unknown DMI processor voltage mode type %s, %s:%u", enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType), __FILE__, __LINE__));
 
-                if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+        }
+
+        UEFI_LVVV(("entry->voltage.value8   = 0x%02X", entry->voltage.value8));
+        UEFI_LVVV(("entry->externalClock    = %u",     entry->externalClock));
+        UEFI_LVVV(("entry->maxSpeed         = %u",     entry->maxSpeed));
+        UEFI_LVVV(("entry->currentSpeed     = %u",     entry->currentSpeed));
+        UEFI_LVVV(("entry->status           = %s",     enumToFullString((DmiProcessorStatus)entry->status)));
+        UEFI_LVVV(("entry->socketPopulated  = %u",     entry->socketPopulated));
+        UEFI_LVVV(("entry->processorStatus  = 0x%02X", entry->processorStatus));
+        UEFI_LVVV(("entry->processorUpgrade = %s",     enumToFullString(entry->processorUpgrade)));
+
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        {
+            UEFI_LVVV(("entry->l1CacheHandle = 0x%04X", entry->l1CacheHandle));
+            UEFI_LVVV(("entry->l2CacheHandle = 0x%04X", entry->l2CacheHandle));
+            UEFI_LVVV(("entry->l3CacheHandle = 0x%04X", entry->l3CacheHandle));
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            {
+                UEFI_LVVV(("entry->serialNumberStringId = %u", entry->serialNumberStringId));
+                UEFI_LVVV(("entry->assetTagStringId     = %u", entry->assetTagStringId));
+                UEFI_LVVV(("entry->partNumberStringId   = %u", entry->partNumberStringId));
+
+                if (DMI::getVersion() >= DMI_VERSION(2, 5))
                 {
-                    UEFI_LVVV(("entry->coreCount2        = %u", entry->coreCount2));
-                    UEFI_LVVV(("entry->enabledCoreCount2 = %u", entry->enabledCoreCount2));
-                    UEFI_LVVV(("entry->threadCount2      = %u", entry->threadCount2));
+                    UEFI_LVVV(("entry->coreCount                = %u", entry->coreCount));
+                    UEFI_LVVV(("entry->enabledCoreCount         = %u", entry->enabledCoreCount));
+                    UEFI_LVVV(("entry->threadCount              = %u", entry->threadCount));
+                    UEFI_LVVV(("entry->processorCharacteristics = %s", flagsToFullString(entry->processorCharacteristics)));
+
+                    if (DMI::getVersion() >= DMI_VERSION(2, 6))
+                    {
+                        UEFI_LVVV(("entry->processorFamily2 = %s", enumToFullString(entry->processorFamily2)));
+
+                        if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                        {
+                            UEFI_LVVV(("entry->coreCount2        = %u", entry->coreCount2));
+                            UEFI_LVVV(("entry->enabledCoreCount2 = %u", entry->enabledCoreCount2));
+                            UEFI_LVVV(("entry->threadCount2      = %u", entry->threadCount2));
+                        }
+                    }
                 }
             }
         }
@@ -1290,50 +1315,68 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         // UEFI_TEST_ASSERT(entry->socketPopulated                      == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->processorStatus                      == 0x41,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->processorUpgrade                     == DmiProcessorUpgrade::OTHER,           NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->l1CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->l2CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->l3CacheHandle                        == 0xFFFF,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->serialNumberStringId                 == 4,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->assetTagStringId                     == 5,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->partNumberStringId                   == 6,                                    NgosStatus::ASSERTION); // Commented due to value variation
-        // Ignore CppAlignmentVerifier [END]
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 5))
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
-            // UEFI_TEST_ASSERT(entry->coreCount                == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->enabledCoreCount         == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->threadCount              == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->l1CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->l2CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->l3CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 6))
+            if (DMI::getVersion() >= DMI_VERSION(2, 3))
             {
-                // UEFI_TEST_ASSERT(entry->processorFamily2 == DmiProcessorFamily2::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->serialNumberStringId == 4, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->assetTagStringId     == 5, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->partNumberStringId   == 6, NgosStatus::ASSERTION); // Commented due to value variation
+                // Ignore CppAlignmentVerifier [END]
 
-                if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                if (DMI::getVersion() >= DMI_VERSION(2, 5))
                 {
-                    // UEFI_TEST_ASSERT(entry->coreCount2        == 2, NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entry->enabledCoreCount2 == 2, NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entry->threadCount2      == 2, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->coreCount                == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->enabledCoreCount         == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->threadCount              == 2,                                                      NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION); // Commented due to value variation
 
-                    UEFI_TEST_ASSERT(entry->header.length >= 48,                        NgosStatus::ASSERTION);
-                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry), NgosStatus::ASSERTION);
+                    if (DMI::getVersion() >= DMI_VERSION(2, 6))
+                    {
+                        // UEFI_TEST_ASSERT(entry->processorFamily2 == DmiProcessorFamily2::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+
+                        if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                        {
+                            // UEFI_TEST_ASSERT(entry->coreCount2        == 2, NgosStatus::ASSERTION); // Commented due to value variation
+                            // UEFI_TEST_ASSERT(entry->enabledCoreCount2 == 2, NgosStatus::ASSERTION); // Commented due to value variation
+                            // UEFI_TEST_ASSERT(entry->threadCount2      == 2, NgosStatus::ASSERTION); // Commented due to value variation
+
+                            UEFI_TEST_ASSERT(entry->header.length >= 48,                        NgosStatus::ASSERTION);
+                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry), NgosStatus::ASSERTION);
+                        }
+                        else
+                        {
+                            UEFI_TEST_ASSERT(entry->header.length >= 42,                            NgosStatus::ASSERTION);
+                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 6, NgosStatus::ASSERTION);
+                        }
+                    }
+                    else
+                    {
+                        UEFI_TEST_ASSERT(entry->header.length >= 40,                            NgosStatus::ASSERTION);
+                        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 8, NgosStatus::ASSERTION);
+                    }
                 }
                 else
                 {
-                    UEFI_TEST_ASSERT(entry->header.length >= 42,                            NgosStatus::ASSERTION);
-                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 6, NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= 35,                             NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 13, NgosStatus::ASSERTION);
                 }
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= 40,                            NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 8, NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= 32,                             NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 16, NgosStatus::ASSERTION);
             }
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 35,                             NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 13, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= 26,                             NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 22, NgosStatus::ASSERTION);
         }
     }
 
@@ -1347,100 +1390,119 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     const char8 *assetTagString             = "N/A";
     const char8 *partNumberString           = "N/A";
 
-    if (
-        entry->socketStringId
-        ||
-        entry->processorManufactureStringId
-        ||
-        entry->processorVersionStringId
-        ||
-        entry->serialNumberStringId
-        ||
-        entry->assetTagStringId
-        ||
-        entry->partNumberStringId
-       )
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+        u8 serialNumberStringId = 0;
+        u8 assetTagStringId     = 0;
+        u8 partNumberStringId   = 0;
 
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            if (!cur[0]) // cur[0] == 0
+            serialNumberStringId = entry->serialNumberStringId;
+            assetTagStringId     = entry->assetTagStringId;
+            partNumberStringId   = entry->partNumberStringId;
+        }
+
+
+
+        if (
+            entry->socketStringId
+            ||
+            entry->processorManufactureStringId
+            ||
+            entry->processorVersionStringId
+            ||
+            serialNumberStringId
+            ||
+            assetTagStringId
+            ||
+            partNumberStringId
+           )
+        {
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->socketStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    socketString = begin;
-                }
-                else
-                if (stringId == entry->processorManufactureStringId)
-                {
-                    processorManufactureString = begin;
-                }
-                else
-                if (stringId == entry->processorVersionStringId)
-                {
-                    processorVersionString = begin;
-                    entryName              = processorVersionString;
-                }
-                else
-                if (stringId == entry->serialNumberStringId)
-                {
-                    serialNumberString = begin;
-                }
-                else
-                if (stringId == entry->assetTagStringId)
-                {
-                    assetTagString = begin;
-                }
-                else
-                if (stringId == entry->partNumberStringId)
-                {
-                    partNumberString = begin;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->socketStringId)
+                    {
+                        socketString = begin;
+                    }
+                    else
+                    if (stringId == entry->processorManufactureStringId)
+                    {
+                        processorManufactureString = begin;
+                    }
+                    else
+                    if (stringId == entry->processorVersionStringId)
+                    {
+                        processorVersionString = begin;
+                        entryName              = processorVersionString;
+                    }
+                    else
+                    if (stringId == serialNumberStringId)
+                    {
+                        serialNumberString = begin;
+                    }
+                    else
+                    if (stringId == assetTagStringId)
+                    {
+                        assetTagString = begin;
+                    }
+                    else
+                    if (stringId == partNumberStringId)
+                    {
+                        partNumberString = begin;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
     }
-    else
-    {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-    }
 
 
 
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
+    const char8 *l1CacheHandle            = "N/A";
+    const char8 *l2CacheHandle            = "N/A";
+    const char8 *l3CacheHandle            = "N/A";
     const char8 *coreCount                = "N/A";
     const char8 *enabledCoreCount         = "N/A";
     const char8 *threadCount              = "N/A";
@@ -1450,119 +1512,162 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     const char8 *enabledCoreCount2        = "N/A";
     const char8 *threadCount2             = "N/A";
 
-    if (DMI::getVersion() >= DMI_VERSION(2, 5))
+    // Get strings base on version
     {
-        coreCount                = mprintf("%u",     entry->coreCount);
-        enabledCoreCount         = mprintf("%u",     entry->enabledCoreCount);
-        threadCount              = mprintf("%u",     entry->threadCount);
-        processorCharacteristics = mprintf("0x%04X", entry->processorCharacteristics.flags);
-
-        if (DMI::getVersion() >= DMI_VERSION(2, 6))
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
-            processorFamily2 = strdup(enumToFullString(entry->processorFamily2));
+            l1CacheHandle = mprintf("0x%04X", entry->l1CacheHandle);
+            l2CacheHandle = mprintf("0x%04X", entry->l2CacheHandle);
+            l3CacheHandle = mprintf("0x%04X", entry->l3CacheHandle);
 
-            if (DMI::getVersion() >= DMI_VERSION(3, 0))
+            if (DMI::getVersion() >= DMI_VERSION(2, 5))
             {
-                coreCount2        = mprintf("%u", entry->coreCount2);
-                enabledCoreCount2 = mprintf("%u", entry->enabledCoreCount2);
-                threadCount2      = mprintf("%u", entry->threadCount2);
+                coreCount                = mprintf("%u",     entry->coreCount);
+                enabledCoreCount         = mprintf("%u",     entry->enabledCoreCount);
+                threadCount              = mprintf("%u",     entry->threadCount);
+                processorCharacteristics = mprintf("0x%04X", entry->processorCharacteristics.flags);
+
+                if (DMI::getVersion() >= DMI_VERSION(2, 6))
+                {
+                    processorFamily2 = strdup(enumToFullString(entry->processorFamily2));
+
+                    if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                    {
+                        coreCount2        = mprintf("%u", entry->coreCount2);
+                        enabledCoreCount2 = mprintf("%u", entry->enabledCoreCount2);
+                        threadCount2      = mprintf("%u", entry->threadCount2);
+                    }
+                }
             }
         }
     }
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",      strdup(enumToFullString(entry->header.type))),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",          mprintf("0x%04X", entry->header.handle)),                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket",          socketString),                                               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",  strdup(enumToFullString(entry->processorType))),             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",          strdup(enumToFullString(entry->processorFamily))),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",    processorManufactureString),                                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",        mprintf("%u", entry->processorId.signature.stepping)),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",           mprintf("%u", entry->processorId.signature.model)),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",          mprintf("%u", entry->processorId.signature.family)),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",            mprintf("%u", entry->processorId.signature.type)),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",  mprintf("%u", entry->processorId.signature.extendedModel)),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family", mprintf("%u", entry->processorId.signature.extendedFamily)), NgosStatus::ASSERTION);
-
-
-
-    // Commented to avoid too many records
-    // UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features", mprintf("0x%08X", entry->processorId.featureFlags.flags)), NgosStatus::ASSERTION);
-    //
-    // for (i64 i = 0; i < (i64)(sizeof(entry->processorId.featureFlags) * 8); ++i)
-    // {
-    //     u64 flag = (1ULL << i);
-    //
-    //     if (entry->processorId.featureFlags & flag)
-    //     {
-    //         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Features: %s", flagToString((DmiProcessorFeatureFlag)flag)), "Yes"), NgosStatus::ASSERTION);
-    //     }
-    // }
-
-
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version", processorVersionString), NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Voltage", mprintf("0x%02X", entry->voltage.flags)), NgosStatus::ASSERTION);
-
-    for (i64 i = 0; i < (i64)(sizeof(entry->voltage) * 8); ++i)
+    // Add Device Manager entry
     {
-        u64 flag = (1ULL << i);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        if (entry->voltage & flag)
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",      strdup(enumToFullString(entry->header.type))),               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",          mprintf("0x%04X", entry->header.handle)),                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket",          socketString),                                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",  strdup(enumToFullString(entry->processorType))),             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",          strdup(enumToFullString(entry->processorFamily))),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",    processorManufactureString),                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",        mprintf("%u", entry->processorId.signature.stepping)),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",           mprintf("%u", entry->processorId.signature.model)),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",          mprintf("%u", entry->processorId.signature.family)),         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",            mprintf("%u", entry->processorId.signature.type)),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",  mprintf("%u", entry->processorId.signature.extendedModel)),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family", mprintf("%u", entry->processorId.signature.extendedFamily)), NgosStatus::ASSERTION);
+
+
+
+        // Add records for Features
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Voltage: %s", flagToString((DmiProcessorVoltageFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+            // Commented to avoid too many records
+            // UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features", mprintf("0x%08X", entry->processorId.featureFlags.flags)), NgosStatus::ASSERTION);
+            //
+            // for (i64 i = 0; i < (i64)(sizeof(entry->processorId.featureFlags) * 8); ++i)
+            // {
+            //     u64 flag = (1ULL << i);
+            //
+            //     if (entry->processorId.featureFlags & flag)
+            //     {
+            //         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Features: %s", flagToString((DmiProcessorFeatureFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+            //     }
+            // }
         }
-    }
 
 
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External clock",     mprintf("%u", entry->externalClock)),                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum speed",      mprintf("%u", entry->maxSpeed)),                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current speed",      mprintf("%u", entry->currentSpeed)),                          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",             strdup(enumToFullString((DmiProcessorStatus)entry->status))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket populated",   entry->socketPopulated ? "Yes" : "No"),                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upgrade",            strdup(enumToFullString(entry->processorUpgrade))),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L1 cache handle",    mprintf("0x%04X", entry->l1CacheHandle)),                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L2 cache handle",    mprintf("0x%04X", entry->l2CacheHandle)),                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L3 cache handle",    mprintf("0x%04X", entry->l3CacheHandle)),                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",      serialNumberString),                                          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",          assetTagString),                                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",        partNumberString),                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count",         coreCount),                                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count", enabledCoreCount),                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count",       threadCount),                                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version", processorVersionString), NgosStatus::ASSERTION);
 
 
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics", processorCharacteristics), NgosStatus::ASSERTION);
-
-    if (DMI::getVersion() >= DMI_VERSION(2, 5))
-    {
-        for (i64 i = 0; i < (i64)(sizeof(entry->processorCharacteristics) * 8); ++i)
+        // Add records for Voltage
         {
-            u64 flag = (1ULL << i);
-
-            if (entry->processorCharacteristics & flag)
+            switch ((DmiProcessorVoltageModeType)entry->voltage.modeType)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Characteristics: %s", flagToString((DmiProcessorCharacteristicsFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+                case DmiProcessorVoltageModeType::LEGACY_MODE:
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Voltage", mprintf("0x%02X", entry->voltage.flags)), NgosStatus::ASSERTION);
+
+                    for (i64 i = 0; i < (i64)(sizeof(entry->voltage) * 8); ++i)
+                    {
+                        u64 flag = (1ULL << i);
+
+                        if (entry->voltage.flags & flag)
+                        {
+                            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Voltage: %s", flagToString((DmiProcessorVoltageFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+                        }
+                    }
+                }
+                break;
+
+                case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE:
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Voltage", mprintf("%u.%u V", entry->voltage.value / 10, entry->voltage.value % 10)), NgosStatus::ASSERTION);
+                }
+                break;
+
+                default:
+                {
+                    UEFI_LF(("Unknown DMI processor voltage mode type %s, %s:%u", enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType), __FILE__, __LINE__));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
             }
         }
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External clock",     mprintf("%u MHz", entry->externalClock)),                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum speed",      mprintf("%u MHz", entry->maxSpeed)),                          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current speed",      mprintf("%u MHz", entry->currentSpeed)),                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",             strdup(enumToFullString((DmiProcessorStatus)entry->status))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket populated",   entry->socketPopulated ? "Yes" : "No"),                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upgrade",            strdup(enumToFullString(entry->processorUpgrade))),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L1 cache handle",    l1CacheHandle),                                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L2 cache handle",    l2CacheHandle),                                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L3 cache handle",    l3CacheHandle),                                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",      serialNumberString),                                          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",          assetTagString),                                              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",        partNumberString),                                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count",         coreCount),                                                   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count", enabledCoreCount),                                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count",       threadCount),                                                 NgosStatus::ASSERTION);
+
+
+
+        // Add records for Characteristics
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics", processorCharacteristics), NgosStatus::ASSERTION);
+
+            if (DMI::getVersion() >= DMI_VERSION(2, 5))
+            {
+                for (i64 i = 0; i < (i64)(sizeof(entry->processorCharacteristics) * 8); ++i)
+                {
+                    u64 flag = (1ULL << i);
+
+                    if (entry->processorCharacteristics & flag)
+                    {
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Characteristics: %s", flagToString((DmiProcessorCharacteristicsFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+                    }
+                }
+            }
+        }
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family 2",             processorFamily2),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count 2",         coreCount2),        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count 2", enabledCoreCount2), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count 2",       threadCount2),      NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family 2",             processorFamily2),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count 2",         coreCount2),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count 2", enabledCoreCount2), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count 2",       threadCount2),      NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 

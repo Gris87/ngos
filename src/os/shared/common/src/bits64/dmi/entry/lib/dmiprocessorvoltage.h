@@ -1,0 +1,36 @@
+#ifndef OS_SHARED_COMMON_SRC_BITS64_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H
+#define OS_SHARED_COMMON_SRC_BITS64_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H
+
+
+
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltagemodetype.h>
+
+
+
+struct DmiProcessorVoltage
+{
+    union
+    {
+        // DmiProcessorVoltageModeType::LEGACY_MODE
+        struct
+        {
+            u8 flags:    7; // TODO: Use enum DmiProcessorVoltageFlags
+            u8 modeType: 1; // TODO: Use enum DmiProcessorVoltageModeType
+        };
+
+        // DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE
+        struct
+        {
+            u8 value: 7;
+            u8 __pad: 1; // Ignore this field. The same as modeType
+        };
+
+        u8 value8;
+    };
+} __attribute__((packed));
+
+
+
+
+#endif // OS_SHARED_COMMON_SRC_BITS64_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H

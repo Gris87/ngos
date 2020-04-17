@@ -20,6 +20,7 @@ NGOS:
 - Replace u64 with i64 where needed
 - guidToFullString
 - uuidToFullString
+- DmiStringId
 
 - Complete with interruptions
 - Implement boot screen for kernel
