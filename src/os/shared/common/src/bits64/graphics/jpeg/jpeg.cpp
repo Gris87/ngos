@@ -1384,7 +1384,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *v
 
 
 
-    if (valueTemp < (1LL << (bits - 1)))
+    if (valueTemp < (i64)(1ULL << (bits - 1)))
     {
         valueTemp += (0xFFFFFFFFFFFFFFFF << bits) + 1;
 
