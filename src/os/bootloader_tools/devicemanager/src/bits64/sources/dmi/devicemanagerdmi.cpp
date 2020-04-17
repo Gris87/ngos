@@ -1214,8 +1214,8 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
         switch ((DmiProcessorVoltageModeType)entry->voltage.modeType)
         {
-            case DmiProcessorVoltageModeType::LEGACY_MODE:          UEFI_LVVV(("entry->voltage.flags = %s", i, flagsToFullString((DmiProcessorVoltageFlags)entry->voltage.flags))); break;
-            case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE: UEFI_LVVV(("entry->voltage.value = %u", i, entry->voltage.value));                                              break;
+            case DmiProcessorVoltageModeType::LEGACY_MODE:          UEFI_LVVV(("entry->voltage.flags = %s", flagsToFullString((DmiProcessorVoltageFlags)entry->voltage.flags))); break;
+            case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE: UEFI_LVVV(("entry->voltage.value = %u", entry->voltage.value));                                              break;
 
             default:
             {
