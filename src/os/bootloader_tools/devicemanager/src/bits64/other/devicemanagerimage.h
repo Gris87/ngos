@@ -225,17 +225,17 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
     switch (entry->portType)
     {
-        case DmiPortConnectorPortType::AUDIO_PORT:   return DeviceManagerImage::PORT_AUDIO;
-        case DmiPortConnectorPortType::VIDEO_PORT:   return DeviceManagerImage::PORT_VIDEO;
-        case DmiPortConnectorPortType::NETWORK_PORT: return DeviceManagerImage::PORT_NETWORK;
-        case DmiPortConnectorPortType::USB:          return DeviceManagerImage::PORT_USB;
+        case DmiPortConnectorPortType::PARALLEL_PS2: return DeviceManagerImage::PORT_PS2;
         case DmiPortConnectorPortType::KEYBOARD:     return DeviceManagerImage::PORT_PS2;
         case DmiPortConnectorPortType::MOUSE:        return DeviceManagerImage::PORT_PS2;
+        case DmiPortConnectorPortType::USB:          return DeviceManagerImage::PORT_USB;
+        case DmiPortConnectorPortType::VIDEO_PORT:   return DeviceManagerImage::PORT_VIDEO;
+        case DmiPortConnectorPortType::AUDIO_PORT:   return DeviceManagerImage::PORT_AUDIO;
+        case DmiPortConnectorPortType::NETWORK_PORT: return DeviceManagerImage::PORT_NETWORK;
         case DmiPortConnectorPortType::SATA:         return DeviceManagerImage::PORT_SATA;
 
         case DmiPortConnectorPortType::NONE:
         case DmiPortConnectorPortType::PARALLEL_XT_AT_COMPATIBLE:
-        case DmiPortConnectorPortType::PARALLEL_PS2:
         case DmiPortConnectorPortType::PARALLEL_ECP:
         case DmiPortConnectorPortType::PARALLEL_EPP:
         case DmiPortConnectorPortType::PARALLEL_ECP_EPP:
