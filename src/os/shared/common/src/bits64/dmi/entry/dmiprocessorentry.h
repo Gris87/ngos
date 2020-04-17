@@ -18,7 +18,7 @@
 struct DmiProcessorEntry
 {
     DmiEntryHeader      header;
-    u8                  socketStringId;
+    u8                  socketDesignationStringId;
     DmiProcessorType    processorType;
     DmiProcessorFamily  processorFamily;
     u8                  processorManufactureStringId;

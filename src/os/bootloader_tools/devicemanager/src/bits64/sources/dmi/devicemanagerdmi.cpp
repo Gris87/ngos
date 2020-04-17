@@ -1197,7 +1197,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
     // Validation
     {
-        UEFI_LVVV(("entry->socketStringId                       = %u",     entry->socketStringId));
+        UEFI_LVVV(("entry->socketDesignationStringId            = %u",     entry->socketDesignationStringId));
         UEFI_LVVV(("entry->processorType                        = %s",     enumToFullString(entry->processorType)));
         UEFI_LVVV(("entry->processorFamily                      = %s",     enumToFullString(entry->processorFamily)));
         UEFI_LVVV(("entry->processorManufactureStringId         = %u",     entry->processorManufactureStringId));
@@ -1272,7 +1272,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        // UEFI_TEST_ASSERT(entry->socketStringId                       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->socketDesignationStringId            == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
         UEFI_TEST_ASSERT(entry->processorType                           == DmiProcessorType::CENTRAL_PROCESSOR,  NgosStatus::ASSERTION);
         // UEFI_TEST_ASSERT(entry->processorFamily                      == DmiProcessorFamily::OTHER,            NgosStatus::ASSERTION); // Commented due to value variation
         UEFI_TEST_ASSERT(entry->processorManufactureStringId            == 2,                                    NgosStatus::ASSERTION);
@@ -1383,7 +1383,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
     const char8 *entryName                  = nullptr;
-    const char8 *socketString               = "N/A";
+    const char8 *socketDesignationString    = "N/A";
     const char8 *processorManufactureString = "N/A";
     const char8 *processorVersionString     = "N/A";
     const char8 *serialNumberString         = "N/A";
@@ -1406,7 +1406,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
         if (
-            entry->socketStringId
+            entry->socketDesignationStringId
             ||
             entry->processorManufactureStringId
             ||
@@ -1438,9 +1438,9 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
-                    if (stringId == entry->socketStringId)
+                    if (stringId == entry->socketDesignationStringId)
                     {
-                        socketString = begin;
+                        socketDesignationString = begin;
                     }
                     else
                     if (stringId == entry->processorManufactureStringId)
@@ -1548,18 +1548,18 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",      strdup(enumToFullString(entry->header.type))),               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",          mprintf("0x%04X", entry->header.handle)),                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket",          socketString),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",  strdup(enumToFullString(entry->processorType))),             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",          strdup(enumToFullString(entry->processorFamily))),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",    processorManufactureString),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",        mprintf("%u", entry->processorId.signature.stepping)),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",           mprintf("%u", entry->processorId.signature.model)),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",          mprintf("%u", entry->processorId.signature.family)),         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",            mprintf("%u", entry->processorId.signature.type)),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",  mprintf("%u", entry->processorId.signature.extendedModel)),  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family", mprintf("%u", entry->processorId.signature.extendedFamily)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type))),               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle)),                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignationString),                                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",     strdup(enumToFullString(entry->processorType))),             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             strdup(enumToFullString(entry->processorFamily))),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",       processorManufactureString),                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",           mprintf("%u", entry->processorId.signature.stepping)),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",              mprintf("%u", entry->processorId.signature.model)),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("%u", entry->processorId.signature.family)),         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",               mprintf("%u", entry->processorId.signature.type)),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",     mprintf("%u", entry->processorId.signature.extendedModel)),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family",    mprintf("%u", entry->processorId.signature.extendedFamily)), NgosStatus::ASSERTION);
 
 
 
@@ -1692,30 +1692,34 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         UEFI_LVVV(("entry->cacheConfiguration.operationalMode = %s",     enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode)));
         UEFI_LVVV(("entry->cacheConfiguration.value16         = 0x%04X", entry->cacheConfiguration.value16));
         UEFI_LVVV(("entry->maximumCacheSize.value             = %u",     entry->maximumCacheSize.value));
-        UEFI_LVVV(("entry->maximumCacheSize.granularity       = %u",     entry->maximumCacheSize.granularity));
+        UEFI_LVVV(("entry->maximumCacheSize.granularity       = %s",     enumToFullString((DmiCacheSizeGranularity)entry->maximumCacheSize.granularity)));
         UEFI_LVVV(("entry->maximumCacheSize.value16           = 0x%04X", entry->maximumCacheSize.value16));
         UEFI_LVVV(("entry->maximumCacheSize                   = %s",     bytesToString(entry->maximumCacheSize.size())));
         UEFI_LVVV(("entry->installedSize.value                = %u",     entry->installedSize.value));
-        UEFI_LVVV(("entry->installedSize.granularity          = %u",     entry->installedSize.granularity));
+        UEFI_LVVV(("entry->installedSize.granularity          = %s",     enumToFullString((DmiCacheSizeGranularity)entry->installedSize.granularity)));
         UEFI_LVVV(("entry->installedSize.value16              = 0x%04X", entry->installedSize.value16));
         UEFI_LVVV(("entry->installedSize                      = %s",     bytesToString(entry->installedSize.size())));
         UEFI_LVVV(("entry->supportedSramType                  = %s",     flagsToFullString(entry->supportedSramType)));
         UEFI_LVVV(("entry->currentSramType                    = %s",     flagsToFullString(entry->currentSramType)));
-        UEFI_LVVV(("entry->cacheSpeed                         = %u",     entry->cacheSpeed));
-        UEFI_LVVV(("entry->errorCorrectionType                = %s",     enumToFullString(entry->errorCorrectionType)));
-        UEFI_LVVV(("entry->systemCacheType                    = %s",     enumToFullString(entry->systemCacheType)));
-        UEFI_LVVV(("entry->associativity                      = %s",     enumToFullString(entry->associativity)));
 
-        if (DMI::getVersion() >= DMI_VERSION(3, 1))
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
-            UEFI_LVVV(("entry->maximumCacheSize2.value       = %u",     entry->maximumCacheSize2.value));
-            UEFI_LVVV(("entry->maximumCacheSize2.granularity = %u",     entry->maximumCacheSize2.granularity));
-            UEFI_LVVV(("entry->maximumCacheSize2.value32     = 0x%08X", entry->maximumCacheSize2.value32));
-            UEFI_LVVV(("entry->maximumCacheSize2             = %s",     bytesToString(entry->maximumCacheSize2.size())));
-            UEFI_LVVV(("entry->installedSize2.value          = %u",     entry->installedSize2.value));
-            UEFI_LVVV(("entry->installedSize2.granularity    = %u",     entry->installedSize2.granularity));
-            UEFI_LVVV(("entry->installedSize2.value32        = 0x%08X", entry->installedSize2.value32));
-            UEFI_LVVV(("entry->installedSize2                = %s",     bytesToString(entry->installedSize2.size())));
+            UEFI_LVVV(("entry->cacheSpeed          = %u", entry->cacheSpeed));
+            UEFI_LVVV(("entry->errorCorrectionType = %s", enumToFullString(entry->errorCorrectionType)));
+            UEFI_LVVV(("entry->systemCacheType     = %s", enumToFullString(entry->systemCacheType)));
+            UEFI_LVVV(("entry->associativity       = %s", enumToFullString(entry->associativity)));
+
+            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            {
+                UEFI_LVVV(("entry->maximumCacheSize2.value       = %u",     entry->maximumCacheSize2.value));
+                UEFI_LVVV(("entry->maximumCacheSize2.granularity = %s",     enumToFullString((DmiCacheSizeGranularity)entry->maximumCacheSize2.granularity)));
+                UEFI_LVVV(("entry->maximumCacheSize2.value32     = 0x%08X", entry->maximumCacheSize2.value32));
+                UEFI_LVVV(("entry->maximumCacheSize2             = %s",     bytesToString(entry->maximumCacheSize2.size())));
+                UEFI_LVVV(("entry->installedSize2.value          = %u",     entry->installedSize2.value));
+                UEFI_LVVV(("entry->installedSize2.granularity    = %s",     enumToFullString((DmiCacheSizeGranularity)entry->installedSize2.granularity)));
+                UEFI_LVVV(("entry->installedSize2.value32        = 0x%08X", entry->installedSize2.value32));
+                UEFI_LVVV(("entry->installedSize2                = %s",     bytesToString(entry->installedSize2.size())));
+            }
         }
 
 
@@ -1735,27 +1739,36 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         // UEFI_TEST_ASSERT(entry->installedSize.value16              == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->supportedSramType                  == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->currentSramType                    == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->cacheSpeed                         == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->errorCorrectionType                == DmiCacheErrorCorrectionType::OTHER,             NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->systemCacheType                    == DmiCacheType::OTHER,                            NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->associativity                      == DmiCacheAssociativity::OTHER,                   NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(3, 1))
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
-            // UEFI_TEST_ASSERT(entry->maximumCacheSize2.value       == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->maximumCacheSize2.granularity == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->maximumCacheSize2.value32     == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->installedSize2.value          == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->installedSize2.granularity    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->installedSize2.value32        == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->cacheSpeed          == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorCorrectionType == DmiCacheErrorCorrectionType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->systemCacheType     == DmiCacheType::OTHER,                NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->associativity       == DmiCacheAssociativity::OTHER,       NgosStatus::ASSERTION); // Commented due to value variation
 
-            UEFI_TEST_ASSERT(entry->header.length >= 27,                    NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry), NgosStatus::ASSERTION);
+            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            {
+                // UEFI_TEST_ASSERT(entry->maximumCacheSize2.value       == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->maximumCacheSize2.granularity == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->maximumCacheSize2.value32     == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->installedSize2.value          == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->installedSize2.granularity    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->installedSize2.value32        == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+
+                UEFI_TEST_ASSERT(entry->header.length >= 27,                    NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                UEFI_TEST_ASSERT(entry->header.length >= 19,                        NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 8, NgosStatus::ASSERTION);
+            }
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 19,                        NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 8, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= 15,                         NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 12, NgosStatus::ASSERTION);
         }
     }
 
@@ -1764,125 +1777,156 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
     const char8 *entryName               = nullptr;
     const char8 *socketDesignationString = "N/A";
 
-    if (entry->socketDesignationStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->socketDesignationStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->socketDesignationStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    socketDesignationString = begin;
-                    entryName               = socketDesignationString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->socketDesignationStringId)
+                    {
+                        socketDesignationString = begin;
+                        entryName               = socketDesignationString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
+
+
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
+    }
+
+
+
+    const char8 *cacheSpeed          = "N/A";
+    const char8 *errorCorrectionType = "N/A";
+    const char8 *systemCacheType     = "N/A";
+    const char8 *associativity       = "N/A";
+    const char8 *maximumCacheSize2   = "N/A";
+    const char8 *installedSize2      = "N/A";
+
+    // Get strings base on version
+    {
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        {
+            if (entry->cacheSpeed)
+            {
+                cacheSpeed = mprintf("%u ns", entry->cacheSpeed);
             }
 
+            errorCorrectionType = strdup(enumToFullString(entry->errorCorrectionType));
+            systemCacheType     = strdup(enumToFullString(entry->systemCacheType));
+            associativity       = strdup(enumToFullString(entry->associativity));
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-    }
-
-
-
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
-    const char8 *maximumCacheSize2 = "N/A";
-    const char8 *installedSize2    = "N/A";
-
-    if (DMI::getVersion() >= DMI_VERSION(3, 1))
-    {
-        maximumCacheSize2 = strdup(bytesToString(entry->maximumCacheSize2.size()));
-        installedSize2    = strdup(bytesToString(entry->installedSize2.size()));
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type))),                                                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle)),                                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignationString),                                                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",              mprintf("%u", entry->cacheConfiguration.level)),                                               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socketed",           entry->cacheConfiguration.socketed ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",           strdup(enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location))),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",            entry->cacheConfiguration.enabled ? "Yes" : "No"),                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Operational mode",   strdup(enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", strdup(bytesToString(entry->maximumCacheSize.size()))),                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     strdup(bytesToString(entry->installedSize.size()))),                                           NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Supported SRAM type", mprintf("0x%04X", entry->supportedSramType.flags)), NgosStatus::ASSERTION);
-
-    for (i64 i = 0; i < (i64)(sizeof(entry->supportedSramType) * 8); ++i)
-    {
-        u64 flag = (1ULL << i);
-
-        if (entry->supportedSramType & flag)
-        {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Supported SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            {
+                maximumCacheSize2 = strdup(bytesToString(entry->maximumCacheSize2.size()));
+                installedSize2    = strdup(bytesToString(entry->installedSize2.size()));
+            }
         }
     }
 
 
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current SRAM type", mprintf("0x%04X", entry->currentSramType.flags)), NgosStatus::ASSERTION);
-
-    for (i64 i = 0; i < (i64)(sizeof(entry->currentSramType) * 8); ++i)
+    // Add Device Manager entry
     {
-        u64 flag = (1ULL << i);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        if (entry->currentSramType & flag)
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type))),                                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle)),                                                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignationString),                                                                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",              mprintf("%u", entry->cacheConfiguration.level + 1)),                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socketed",           entry->cacheConfiguration.socketed ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",           strdup(enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location))),               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",            entry->cacheConfiguration.enabled ? "Yes" : "No"),                                             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Operational mode",   strdup(enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", strdup(bytesToString(entry->maximumCacheSize.size()))),                                        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     strdup(bytesToString(entry->installedSize.size()))),                                           NgosStatus::ASSERTION);
+
+
+
+        // Add records for Supported SRAM type
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Current SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Supported SRAM type", mprintf("0x%04X", entry->supportedSramType.flags)), NgosStatus::ASSERTION);
+
+            for (i64 i = 0; i < (i64)(sizeof(entry->supportedSramType) * 8); ++i)
+            {
+                u64 flag = (1ULL << i);
+
+                if (entry->supportedSramType & flag)
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Supported SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+                }
+            }
         }
+
+
+
+        // Add records for Current SRAM type
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current SRAM type", mprintf("0x%04X", entry->currentSramType.flags)), NgosStatus::ASSERTION);
+
+            for (i64 i = 0; i < (i64)(sizeof(entry->currentSramType) * 8); ++i)
+            {
+                u64 flag = (1ULL << i);
+
+                if (entry->currentSramType & flag)
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Current SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+                }
+            }
+        }
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                 cacheSpeed),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error correction type", errorCorrectionType), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System cache type",     systemCacheType),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Associativity",         associativity),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size 2",  maximumCacheSize2),   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size 2",      installedSize2),      NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                 mprintf("%u", entry->cacheSpeed)),                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error correction type", strdup(enumToFullString(entry->errorCorrectionType))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System cache type",     strdup(enumToFullString(entry->systemCacheType))),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Associativity",         strdup(enumToFullString(entry->associativity))),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size 2",  maximumCacheSize2),                                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size 2",      installedSize2),                                       NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 

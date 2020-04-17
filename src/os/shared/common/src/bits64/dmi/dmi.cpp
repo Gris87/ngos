@@ -1214,7 +1214,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->socketStringId                       = %u",     entry->socketStringId));
+        COMMON_LVVV(("entry->socketDesignationStringId            = %u",     entry->socketDesignationStringId));
         COMMON_LVVV(("entry->processorType                        = %s",     enumToFullString(entry->processorType)));
         COMMON_LVVV(("entry->processorFamily                      = %s",     enumToFullString(entry->processorFamily)));
         COMMON_LVVV(("entry->processorManufactureStringId         = %u",     entry->processorManufactureStringId));
@@ -1289,7 +1289,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        // COMMON_TEST_ASSERT(entry->socketStringId                       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->socketDesignationStringId            == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->processorType                           == DmiProcessorType::CENTRAL_PROCESSOR,  NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->processorFamily                      == DmiProcessorFamily::OTHER,            NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->processorManufactureStringId            == 2,                                    NgosStatus::ASSERTION);
@@ -1415,7 +1415,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
         if (
-            entry->socketStringId
+            entry->socketDesignationStringId
             ||
             entry->processorManufactureStringId
             ||
@@ -1447,7 +1447,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
-                    if (stringId == entry->socketStringId)
+                    if (stringId == entry->socketDesignationStringId)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SOCKET, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
@@ -1522,30 +1522,34 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         COMMON_LVVV(("entry->cacheConfiguration.operationalMode = %s",     enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode)));
         COMMON_LVVV(("entry->cacheConfiguration.value16         = 0x%04X", entry->cacheConfiguration.value16));
         COMMON_LVVV(("entry->maximumCacheSize.value             = %u",     entry->maximumCacheSize.value));
-        COMMON_LVVV(("entry->maximumCacheSize.granularity       = %u",     entry->maximumCacheSize.granularity));
+        COMMON_LVVV(("entry->maximumCacheSize.granularity       = %s",     enumToFullString((DmiCacheSizeGranularity)entry->maximumCacheSize.granularity)));
         COMMON_LVVV(("entry->maximumCacheSize.value16           = 0x%04X", entry->maximumCacheSize.value16));
         COMMON_LVVV(("entry->maximumCacheSize                   = %s",     bytesToString(entry->maximumCacheSize.size())));
         COMMON_LVVV(("entry->installedSize.value                = %u",     entry->installedSize.value));
-        COMMON_LVVV(("entry->installedSize.granularity          = %u",     entry->installedSize.granularity));
+        COMMON_LVVV(("entry->installedSize.granularity          = %s",     enumToFullString((DmiCacheSizeGranularity)entry->installedSize.granularity)));
         COMMON_LVVV(("entry->installedSize.value16              = 0x%04X", entry->installedSize.value16));
         COMMON_LVVV(("entry->installedSize                      = %s",     bytesToString(entry->installedSize.size())));
         COMMON_LVVV(("entry->supportedSramType                  = %s",     flagsToFullString(entry->supportedSramType)));
         COMMON_LVVV(("entry->currentSramType                    = %s",     flagsToFullString(entry->currentSramType)));
-        COMMON_LVVV(("entry->cacheSpeed                         = %u",     entry->cacheSpeed));
-        COMMON_LVVV(("entry->errorCorrectionType                = %s",     enumToFullString(entry->errorCorrectionType)));
-        COMMON_LVVV(("entry->systemCacheType                    = %s",     enumToFullString(entry->systemCacheType)));
-        COMMON_LVVV(("entry->associativity                      = %s",     enumToFullString(entry->associativity)));
 
-        if (DMI::getVersion() >= DMI_VERSION(3, 1))
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
-            COMMON_LVVV(("entry->maximumCacheSize2.value       = %u",     entry->maximumCacheSize2.value));
-            COMMON_LVVV(("entry->maximumCacheSize2.granularity = %u",     entry->maximumCacheSize2.granularity));
-            COMMON_LVVV(("entry->maximumCacheSize2.value32     = 0x%08X", entry->maximumCacheSize2.value32));
-            COMMON_LVVV(("entry->maximumCacheSize2             = %s",     bytesToString(entry->maximumCacheSize2.size())));
-            COMMON_LVVV(("entry->installedSize2.value          = %u",     entry->installedSize2.value));
-            COMMON_LVVV(("entry->installedSize2.granularity    = %u",     entry->installedSize2.granularity));
-            COMMON_LVVV(("entry->installedSize2.value32        = 0x%08X", entry->installedSize2.value32));
-            COMMON_LVVV(("entry->installedSize2                = %s",     bytesToString(entry->installedSize2.size())));
+            COMMON_LVVV(("entry->cacheSpeed          = %u", entry->cacheSpeed));
+            COMMON_LVVV(("entry->errorCorrectionType = %s", enumToFullString(entry->errorCorrectionType)));
+            COMMON_LVVV(("entry->systemCacheType     = %s", enumToFullString(entry->systemCacheType)));
+            COMMON_LVVV(("entry->associativity       = %s", enumToFullString(entry->associativity)));
+
+            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            {
+                COMMON_LVVV(("entry->maximumCacheSize2.value       = %u",     entry->maximumCacheSize2.value));
+                COMMON_LVVV(("entry->maximumCacheSize2.granularity = %s",     enumToFullString((DmiCacheSizeGranularity)entry->maximumCacheSize2.granularity)));
+                COMMON_LVVV(("entry->maximumCacheSize2.value32     = 0x%08X", entry->maximumCacheSize2.value32));
+                COMMON_LVVV(("entry->maximumCacheSize2             = %s",     bytesToString(entry->maximumCacheSize2.size())));
+                COMMON_LVVV(("entry->installedSize2.value          = %u",     entry->installedSize2.value));
+                COMMON_LVVV(("entry->installedSize2.granularity    = %s",     enumToFullString((DmiCacheSizeGranularity)entry->installedSize2.granularity)));
+                COMMON_LVVV(("entry->installedSize2.value32        = 0x%08X", entry->installedSize2.value32));
+                COMMON_LVVV(("entry->installedSize2                = %s",     bytesToString(entry->installedSize2.size())));
+            }
         }
 
 
@@ -1565,70 +1569,82 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         // COMMON_TEST_ASSERT(entry->installedSize.value16              == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->supportedSramType                  == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->currentSramType                    == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->cacheSpeed                         == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->errorCorrectionType                == DmiCacheErrorCorrectionType::OTHER,             NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->systemCacheType                    == DmiCacheType::OTHER,                            NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->associativity                      == DmiCacheAssociativity::OTHER,                   NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(3, 1))
+        if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.value       == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.granularity == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize2.value32     == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize2.value          == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize2.granularity    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize2.value32        == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->cacheSpeed          == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->errorCorrectionType == DmiCacheErrorCorrectionType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->systemCacheType     == DmiCacheType::OTHER,                NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->associativity       == DmiCacheAssociativity::OTHER,       NgosStatus::ASSERTION); // Commented due to value variation
 
-            COMMON_TEST_ASSERT(entry->header.length >= 27,                    NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry), NgosStatus::ASSERTION);
+            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            {
+                // COMMON_TEST_ASSERT(entry->maximumCacheSize2.value       == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->maximumCacheSize2.granularity == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->maximumCacheSize2.value32     == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->installedSize2.value          == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->installedSize2.granularity    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->installedSize2.value32        == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+
+                COMMON_TEST_ASSERT(entry->header.length >= 27,                    NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                COMMON_TEST_ASSERT(entry->header.length >= 19,                        NgosStatus::ASSERTION);
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 8, NgosStatus::ASSERTION);
+            }
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length >= 19,                        NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 8, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= 15,                         NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 12, NgosStatus::ASSERTION);
         }
     }
 
 
 
-    if (entry->socketDesignationStringId)
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->socketDesignationStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (!cur[1]) // cur[1] == 0
+                if (!cur[0]) // cur[0] == 0
                 {
-                    break;
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 

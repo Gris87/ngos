@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/dmi/entry/lib/dmicachesizegranularity.h>
 #include <common/src/bits64/log/log.h>
+#include <macro/constants.h>
 
 
 
@@ -18,8 +19,8 @@ struct DmiCacheSize2
 
         switch ((DmiCacheSizeGranularity)granularity)
         {
-            case DmiCacheSizeGranularity::_1_KILOBYTE:   return (u64)value << 10;
-            case DmiCacheSizeGranularity::_64_KILOBYTES: return (u64)value << 16;
+            case DmiCacheSizeGranularity::_1_KILOBYTE:   return (u64)value * KB;
+            case DmiCacheSizeGranularity::_64_KILOBYTES: return (u64)value * 64 * KB;
 
             default:
             {
