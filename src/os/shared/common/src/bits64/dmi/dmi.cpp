@@ -1682,48 +1682,51 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
 
 
 
-    if (
-        entry->internalReferenceDesignatorStringId
-        ||
-        entry->externalReferenceDesignatorStringId
-       )
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (
+            entry->internalReferenceDesignatorStringId
+            ||
+            entry->externalReferenceDesignatorStringId
+           )
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (!cur[1]) // cur[1] == 0
+                if (!cur[0]) // cur[0] == 0
                 {
-                    break;
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 

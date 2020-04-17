@@ -14,10 +14,10 @@ enum class DmiPortConnectorPortType: u8
 {
     NONE                        = 0,
     PARALLEL_XT_AT_COMPATIBLE   = 0x01,
-    PARALLEL_PORT_PS2           = 0x02,
-    PARALLEL_PORT_ECP           = 0x03,
-    PARALLEL_PORT_EPP           = 0x04,
-    PARALLEL_PORT_ECP_EPP       = 0x05,
+    PARALLEL_PS2                = 0x02,
+    PARALLEL_ECP                = 0x03,
+    PARALLEL_EPP                = 0x04,
+    PARALLEL_ECP_EPP            = 0x05,
     SERIAL_XT_AT_COMPATIBLE     = 0x06,
     SERIAL_16450_COMPATIBLE     = 0x07,
     SERIAL_16550_COMPATIBLE     = 0x08,
@@ -43,7 +43,7 @@ enum class DmiPortConnectorPortType: u8
     VIDEO_PORT                  = 0x1C,
     AUDIO_PORT                  = 0x1D,
     MODEM_PORT                  = 0x1E,
-    NETROWK_PORT                = 0x1F,
+    NETWORK_PORT                = 0x1F,
     SATA                        = 0x20,
     SAS                         = 0x21,
     MULTI_FUNCTION_DISPLAY_PORT = 0x22,
@@ -65,10 +65,10 @@ inline const char8* enumToString(DmiPortConnectorPortType type) // TEST: NO
     {
         case DmiPortConnectorPortType::NONE:                        return "NONE";
         case DmiPortConnectorPortType::PARALLEL_XT_AT_COMPATIBLE:   return "PARALLEL_XT_AT_COMPATIBLE";
-        case DmiPortConnectorPortType::PARALLEL_PORT_PS2:           return "PARALLEL_PORT_PS2";
-        case DmiPortConnectorPortType::PARALLEL_PORT_ECP:           return "PARALLEL_PORT_ECP";
-        case DmiPortConnectorPortType::PARALLEL_PORT_EPP:           return "PARALLEL_PORT_EPP";
-        case DmiPortConnectorPortType::PARALLEL_PORT_ECP_EPP:       return "PARALLEL_PORT_ECP_EPP";
+        case DmiPortConnectorPortType::PARALLEL_PS2:                return "PARALLEL_PS2";
+        case DmiPortConnectorPortType::PARALLEL_ECP:                return "PARALLEL_ECP";
+        case DmiPortConnectorPortType::PARALLEL_EPP:                return "PARALLEL_EPP";
+        case DmiPortConnectorPortType::PARALLEL_ECP_EPP:            return "PARALLEL_ECP_EPP";
         case DmiPortConnectorPortType::SERIAL_XT_AT_COMPATIBLE:     return "SERIAL_XT_AT_COMPATIBLE";
         case DmiPortConnectorPortType::SERIAL_16450_COMPATIBLE:     return "SERIAL_16450_COMPATIBLE";
         case DmiPortConnectorPortType::SERIAL_16550_COMPATIBLE:     return "SERIAL_16550_COMPATIBLE";
@@ -94,7 +94,7 @@ inline const char8* enumToString(DmiPortConnectorPortType type) // TEST: NO
         case DmiPortConnectorPortType::VIDEO_PORT:                  return "VIDEO_PORT";
         case DmiPortConnectorPortType::AUDIO_PORT:                  return "AUDIO_PORT";
         case DmiPortConnectorPortType::MODEM_PORT:                  return "MODEM_PORT";
-        case DmiPortConnectorPortType::NETROWK_PORT:                return "NETROWK_PORT";
+        case DmiPortConnectorPortType::NETWORK_PORT:                return "NETWORK_PORT";
         case DmiPortConnectorPortType::SATA:                        return "SATA";
         case DmiPortConnectorPortType::SAS:                         return "SAS";
         case DmiPortConnectorPortType::MULTI_FUNCTION_DISPLAY_PORT: return "MULTI_FUNCTION_DISPLAY_PORT";

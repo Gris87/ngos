@@ -4,6 +4,8 @@
 
 
 #include <common/src/bits64/dmi/dmientrytype.h>
+#include <common/src/bits64/dmi/entry/dmiportconnectorentry.h>
+#include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
 #include <common/src/bits64/printf/printf.h>
 #include <ngos/types.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
@@ -209,6 +211,88 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type)
 
 
     return DeviceManagerImage::ADDITIONAL;
+}
+
+
+
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *entry)
+{
+    // UEFI_LT((" | type = %u", type)); // Commented to avoid too frequent logs
+
+    UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
+
+
+
+    switch (entry->portType)
+    {
+        case DmiPortConnectorPortType::AUDIO_PORT:   return DeviceManagerImage::PORT_AUDIO;
+        case DmiPortConnectorPortType::VIDEO_PORT:   return DeviceManagerImage::PORT_VIDEO;
+        case DmiPortConnectorPortType::NETWORK_PORT: return DeviceManagerImage::PORT_NETWORK;
+        case DmiPortConnectorPortType::USB:          return DeviceManagerImage::PORT_USB;
+        case DmiPortConnectorPortType::KEYBOARD:     return DeviceManagerImage::PORT_PS2;
+        case DmiPortConnectorPortType::MOUSE:        return DeviceManagerImage::PORT_PS2;
+        case DmiPortConnectorPortType::SATA:         return DeviceManagerImage::PORT_SATA;
+
+        case DmiPortConnectorPortType::NONE:
+        case DmiPortConnectorPortType::PARALLEL_XT_AT_COMPATIBLE:
+        case DmiPortConnectorPortType::PARALLEL_PS2:
+        case DmiPortConnectorPortType::PARALLEL_ECP:
+        case DmiPortConnectorPortType::PARALLEL_EPP:
+        case DmiPortConnectorPortType::PARALLEL_ECP_EPP:
+        case DmiPortConnectorPortType::SERIAL_XT_AT_COMPATIBLE:
+        case DmiPortConnectorPortType::SERIAL_16450_COMPATIBLE:
+        case DmiPortConnectorPortType::SERIAL_16550_COMPATIBLE:
+        case DmiPortConnectorPortType::SERIAL_16550A_COMPATIBLE:
+        case DmiPortConnectorPortType::SCSI:
+        case DmiPortConnectorPortType::MIDI:
+        case DmiPortConnectorPortType::JOYSTICK:
+        case DmiPortConnectorPortType::SSA_SCSI:
+        case DmiPortConnectorPortType::FIREWIRE:
+        case DmiPortConnectorPortType::PCMCIA_TYPE_I:
+        case DmiPortConnectorPortType::PCMCIA_TYPE_II:
+        case DmiPortConnectorPortType::PCMCIA_TYPE_III:
+        case DmiPortConnectorPortType::CARD_BUS:
+        case DmiPortConnectorPortType::ACCESS_BUS_PORT:
+        case DmiPortConnectorPortType::SCSI_II:
+        case DmiPortConnectorPortType::SCSI_WIDE:
+        case DmiPortConnectorPortType::PC98:
+        case DmiPortConnectorPortType::PC98_HIRESO:
+        case DmiPortConnectorPortType::PCH98:
+        case DmiPortConnectorPortType::MODEM_PORT:
+        case DmiPortConnectorPortType::SAS:
+        case DmiPortConnectorPortType::MULTI_FUNCTION_DISPLAY_PORT:
+        case DmiPortConnectorPortType::THUNDERBOLT:
+        case DmiPortConnectorPortType::_8251_COMPATIBLE:
+        case DmiPortConnectorPortType::_8251_FIFO_COMPATIBLE:
+        case DmiPortConnectorPortType::OTHER:
+        {
+            // Nothing
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown DMI port connector port type %s, %s:%u", enumToFullString(entry->portType), __FILE__, __LINE__));
+        }
+        break;
+    }
+
+
+
+    return DeviceManagerImage::PORT_OTHER;
+}
+
+
+
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *entry)
+{
+    // UEFI_LT((" | type = %u", type)); // Commented to avoid too frequent logs
+
+    UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
+
+
+
+    return deviceManagerImageFromDmiEntryType(entry->header.type);
 }
 
 

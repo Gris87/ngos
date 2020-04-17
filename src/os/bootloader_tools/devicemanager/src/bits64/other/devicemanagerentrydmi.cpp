@@ -1,15 +1,17 @@
 #include "devicemanagerentrydmi.h"
 
+#include <common/src/bits64/string/string.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
 
 
-DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, DeviceManagerImage image, const char8 *name)
+DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, u16 handle, DeviceManagerImage image, const char8 *name)
     : DeviceManagerEntry(image, name)
     , mType(type)
+    , mHandle(handle)
 {
-    UEFI_LT((" | type = %u, image = %u, name = 0x%p", type, image, name));
+    UEFI_LT((" | type = %u, handle = %u, image = %u, name = 0x%p", type, handle, image, name));
 
     UEFI_ASSERT(name,  "name is null");
 }
@@ -25,7 +27,33 @@ bool DeviceManagerEntryDMI::operator<(const DeviceManagerEntryDMI &another) cons
 
 
 
-    return mType < another.mType;
+    if (mType < another.mType)
+    {
+        return true;
+    }
+    else
+    if (mType > another.mType)
+    {
+        return false;
+    }
+
+
+
+    i8 match = strcmpi(getName(), another.getName());
+
+    if (match < 0)
+    {
+        return true;
+    }
+    else
+    if (match > 0)
+    {
+        return false;
+    }
+
+
+
+    return mHandle < another.mHandle;
 }
 
 NgosStatus DeviceManagerEntryDMI::setType(DmiEntryType type)
@@ -48,4 +76,26 @@ DmiEntryType DeviceManagerEntryDMI::getType() const
 
 
     return mType;
+}
+
+NgosStatus DeviceManagerEntryDMI::setHandle(u16 handle)
+{
+    UEFI_LT((" | handle = %u", handle));
+
+
+
+    mHandle = handle;
+
+
+
+    return NgosStatus::OK;
+}
+
+u16 DeviceManagerEntryDMI::getHandle() const
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mHandle;
 }

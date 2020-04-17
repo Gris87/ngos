@@ -14,7 +14,7 @@ enum class DmiPortConnectorType: u8
 {
     NONE                    = 0,
     CENTRONICS              = 0x01,
-    MINE_CENTRONICS         = 0x02,
+    MINI_CENTRONICS         = 0x02,
     PROPRIETARY             = 0x03,
     DB25_MALE               = 0x04,
     DB25_FEMALE             = 0x05,
@@ -68,7 +68,7 @@ inline const char8* enumToString(DmiPortConnectorType type) // TEST: NO
     {
         case DmiPortConnectorType::NONE:                    return "NONE";
         case DmiPortConnectorType::CENTRONICS:              return "CENTRONICS";
-        case DmiPortConnectorType::MINE_CENTRONICS:         return "MINE_CENTRONICS";
+        case DmiPortConnectorType::MINI_CENTRONICS:         return "MINI_CENTRONICS";
         case DmiPortConnectorType::PROPRIETARY:             return "PROPRIETARY";
         case DmiPortConnectorType::DB25_MALE:               return "DB25_MALE";
         case DmiPortConnectorType::DB25_FEMALE:             return "DB25_FEMALE";
