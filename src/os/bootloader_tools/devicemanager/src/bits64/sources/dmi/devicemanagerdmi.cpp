@@ -1147,6 +1147,8 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Contained element count",         containedElementCount),                                 NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Contained element record length", containedElementRecordLength),                          NgosStatus::ASSERTION);
 
+
+
         // Add records for Contained elements
         {
             if (DMI::getVersion() >= DMI_VERSION(2, 3))
@@ -1176,6 +1178,8 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                 }
             }
         }
+
+
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SKU number", skuNumberString), NgosStatus::ASSERTION);
 
@@ -2067,15 +2071,15 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
     // Validation
     {
-        UEFI_LVVV(("entry->slotDesignationStringId = %u", entry->slotDesignationStringId));
-        UEFI_LVVV(("entry->slotType                = %s", enumToFullString(entry->slotType)));
-        UEFI_LVVV(("entry->slotDataBusWidth        = %s", enumToFullString(entry->slotDataBusWidth)));
-        UEFI_LVVV(("entry->currentUsage            = %s", enumToFullString(entry->currentUsage)));
-        UEFI_LVVV(("entry->slotLength              = %s", enumToFullString(entry->slotLength)));
-        UEFI_LVVV(("entry->slotID                  = %u", entry->slotID));
-        UEFI_LVVV(("entry->slotCharacteristics     = %s", flagsToFullString(entry->slotCharacteristics)));
+        UEFI_LVVV(("entry->slotDesignationStringId = %u",     entry->slotDesignationStringId));
+        UEFI_LVVV(("entry->slotType                = %s",     enumToFullString(entry->slotType)));
+        UEFI_LVVV(("entry->slotDataBusWidth        = %s",     enumToFullString(entry->slotDataBusWidth)));
+        UEFI_LVVV(("entry->currentUsage            = %s",     enumToFullString(entry->currentUsage)));
+        UEFI_LVVV(("entry->slotLength              = %s",     enumToFullString(entry->slotLength)));
+        UEFI_LVVV(("entry->slotID                  = 0x%04X", entry->slotID));
+        UEFI_LVVV(("entry->slotCharacteristics     = %s",     flagsToFullString(entry->slotCharacteristics)));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (DMI::getVersion() >= DMI_VERSION(2, 6))
         {
             UEFI_LVVV(("entry->segmentGroupNumber            = %u",     entry->segmentGroupNumber));
             UEFI_LVVV(("entry->busNumber                     = %u",     entry->busNumber));
@@ -2085,7 +2089,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
             if (DMI::getVersion() >= DMI_VERSION(3, 2))
             {
-                UEFI_LVVV(("entry->dataBusWidth      = %s", enumToFullString(entry->dataBusWidth)));
+                UEFI_LVVV(("entry->dataBusWidth      = %u", entry->dataBusWidth));
                 UEFI_LVVV(("entry->peerGroupingCount = %u", entry->peerGroupingCount));
 
                 for (i64 i = 0; i < entry->peerGroupingCount; ++i)
@@ -2095,7 +2099,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
                     UEFI_LVVV(("entry->peerGroups[%d].functionNumber                = %u",     i, entry->peerGroups[i].functionNumber));
                     UEFI_LVVV(("entry->peerGroups[%d].deviceNumber                  = %u",     i, entry->peerGroups[i].deviceNumber));
                     UEFI_LVVV(("entry->peerGroups[%d].functionNumberAndDeviceNumber = 0x%02X", i, entry->peerGroups[i].functionNumberAndDeviceNumber));
-                    UEFI_LVVV(("entry->peerGroups[%d].dataBusWidth                  = %s",     i, enumToFullString(entry->peerGroups[i].dataBusWidth)));
+                    UEFI_LVVV(("entry->peerGroups[%d].dataBusWidth                  = %u",     i, entry->peerGroups[i].dataBusWidth));
                 }
             }
         }
@@ -2107,10 +2111,10 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         // UEFI_TEST_ASSERT(entry->slotDataBusWidth        == DmiSystemSlotsDataBusWidth::UNKNOWN,            NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->currentUsage            == DmiSystemSlotsUsage::AVAILABLE,                 NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->slotLength              == DmiSystemSlotsLength::UNKNOWN,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->slotID                  == 1,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->slotID                  == 0x0001,                                         NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->slotCharacteristics     == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (DMI::getVersion() >= DMI_VERSION(2, 6))
         {
             // UEFI_TEST_ASSERT(entry->segmentGroupNumber            == 1,    NgosStatus::ASSERTION); // Commented due to value variation
             // UEFI_TEST_ASSERT(entry->busNumber                     == 1,    NgosStatus::ASSERTION); // Commented due to value variation
@@ -2120,14 +2124,14 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
             if (DMI::getVersion() >= DMI_VERSION(3, 2))
             {
-                // UEFI_TEST_ASSERT(entry->dataBusWidth                                == DmiSystemSlotsDataBusWidth::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroupingCount                           == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].segmentGroupNumber            == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].busNumber                     == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].functionNumber                == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].deviceNumber                  == 1,                                   NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].functionNumberAndDeviceNumber == 0x00,                                NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].dataBusWidth                  == DmiSystemSlotsDataBusWidth::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->dataBusWidth                                == 0,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->peerGroupingCount                           == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->peerGroups[0].segmentGroupNumber            == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->peerGroups[0].busNumber                     == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->peerGroups[0].functionNumber                == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->peerGroups[0].deviceNumber                  == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->peerGroups[0].functionNumberAndDeviceNumber == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->peerGroups[0].dataBusWidth                  == 0,    NgosStatus::ASSERTION); // Commented due to value variation
 
                 UEFI_TEST_ASSERT(entry->header.length >= 19 + entry->peerGroupingCount * 5,                          NgosStatus::ASSERTION);
                 UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry) + entry->peerGroupingCount * 5, NgosStatus::ASSERTION);
@@ -2150,59 +2154,62 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
     const char8 *entryName             = nullptr;
     const char8 *slotDesignationString = "N/A";
 
-    if (entry->slotDesignationStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->slotDesignationStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->slotDesignationStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    slotDesignationString = begin;
-                    entryName             = slotDesignationString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->slotDesignationStringId)
+                    {
+                        slotDesignationString = begin;
+                        entryName             = slotDesignationString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
-
-                begin = cur + 1;
-            }
-
-
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-    }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
 
 
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
     }
 
 
@@ -2214,69 +2221,85 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
     const char8 *dataBusWidth       = "N/A";
     const char8 *peerGroupingCount  = "N/A";
 
-    if (DMI::getVersion() >= DMI_VERSION(2, 7))
+    // Get strings base on version
     {
-        segmentGroupNumber = mprintf("%u", entry->segmentGroupNumber);
-        busNumber          = mprintf("%u", entry->busNumber);
-        functionNumber     = mprintf("%u", entry->functionNumber);
-        deviceNumber       = mprintf("%u", entry->deviceNumber);
-
-        if (DMI::getVersion() >= DMI_VERSION(3, 2))
+        if (DMI::getVersion() >= DMI_VERSION(2, 6))
         {
-            dataBusWidth      = strdup(enumToFullString(entry->dataBusWidth));
-            peerGroupingCount = mprintf("%u", entry->peerGroupingCount);
+            segmentGroupNumber = mprintf("%u", entry->segmentGroupNumber);
+            busNumber          = mprintf("%u", entry->busNumber);
+            functionNumber     = mprintf("%u", entry->functionNumber);
+            deviceNumber       = mprintf("%u", entry->deviceNumber);
+
+            if (DMI::getVersion() >= DMI_VERSION(3, 2))
+            {
+                dataBusWidth      = mprintf("%u", entry->dataBusWidth);
+                peerGroupingCount = mprintf("%u", entry->peerGroupingCount);
+            }
         }
     }
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",     strdup(enumToFullString(entry->header.type))),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",         mprintf("0x%04X", entry->header.handle)),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Designation",    slotDesignationString),                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",           strdup(enumToFullString(entry->slotType))),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width", strdup(enumToFullString(entry->slotDataBusWidth))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current usage",  strdup(enumToFullString(entry->currentUsage))),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Length",         strdup(enumToFullString(entry->slotLength))),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ID",             mprintf("%u", entry->slotID)),                      NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics", mprintf("0x%04X", entry->slotCharacteristics.flags)), NgosStatus::ASSERTION);
-
-    for (i64 i = 0; i < (i64)(sizeof(entry->slotCharacteristics) * 8); ++i)
+    // Add Device Manager entry
     {
-        u64 flag = (1ULL << i);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry), entryName);
 
-        if (entry->slotCharacteristics & flag)
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",     strdup(enumToFullString(entry->header.type))),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",         mprintf("0x%04X", entry->header.handle)),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Designation",    slotDesignationString),                             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",           strdup(enumToFullString(entry->slotType))),         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width", strdup(enumToFullString(entry->slotDataBusWidth))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current usage",  strdup(enumToFullString(entry->currentUsage))),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Length",         strdup(enumToFullString(entry->slotLength))),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ID",             mprintf("0x%04X", entry->slotID)),                  NgosStatus::ASSERTION);
+
+
+
+        // Add records for Characteristics
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Characteristics: %s", flagToString((DmiSystemSlotsCharacteristicsFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics", mprintf("0x%04X", entry->slotCharacteristics.flags)), NgosStatus::ASSERTION);
+
+            for (i64 i = 0; i < (i64)(sizeof(entry->slotCharacteristics) * 8); ++i)
+            {
+                u64 flag = (1ULL << i);
+
+                if (entry->slotCharacteristics & flag)
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Characteristics: %s", flagToString((DmiSystemSlotsCharacteristicsFlag)flag)), "Yes"), NgosStatus::ASSERTION);
+                }
+            }
         }
-    }
 
 
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number", segmentGroupNumber), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",           busNumber),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",      functionNumber),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",        deviceNumber),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width",       dataBusWidth),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Peer grouping count",  peerGroupingCount),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number", segmentGroupNumber), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",           busNumber),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",      functionNumber),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",        deviceNumber),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width",       dataBusWidth),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Peer grouping count",  peerGroupingCount),  NgosStatus::ASSERTION);
 
-    if (DMI::getVersion() >= DMI_VERSION(3, 2))
-    {
-        for (i64 i = 0; i < entry->peerGroupingCount; ++i)
+
+
+        // Add records for Peer groups
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d segment group number", i), mprintf("%u", entry->peerGroups[i].segmentGroupNumber)),      NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d bus number",           i), mprintf("%u", entry->peerGroups[i].busNumber)),               NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d function number",      i), mprintf("%u", entry->peerGroups[i].functionNumber)),          NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d device number",        i), mprintf("%u", entry->peerGroups[i].deviceNumber)),            NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d data bus width",       i), strdup(enumToFullString(entry->peerGroups[i].dataBusWidth))), NgosStatus::ASSERTION);
+            if (DMI::getVersion() >= DMI_VERSION(3, 2))
+            {
+                for (i64 i = 0; i < entry->peerGroupingCount; ++i)
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d segment group number", i), mprintf("%u", entry->peerGroups[i].segmentGroupNumber)), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d bus number",           i), mprintf("%u", entry->peerGroups[i].busNumber)),          NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d function number",      i), mprintf("%u", entry->peerGroups[i].functionNumber)),     NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d device number",        i), mprintf("%u", entry->peerGroups[i].deviceNumber)),       NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d data bus width",       i), mprintf("%u", entry->peerGroups[i].dataBusWidth)),       NgosStatus::ASSERTION);
+                }
+            }
         }
-    }
 
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
 
 
 

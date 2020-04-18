@@ -56,6 +56,7 @@ enum class DeviceManagerImage: u8
     SYSTEM_CONFIGURATION,
     SYSTEM_POWER_SUPPLY,
     SYSTEM_SLOT_OTHER,
+    SYSTEM_SLOT_PCI,
     SYSTEM_SLOT_PCI_EXPRESS,
     SYSTEM_SLOTS,
     TEMPERATURE_PROBE,
@@ -114,6 +115,7 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::SYSTEM_CONFIGURATION:             return "SYSTEM_CONFIGURATION";
         case DeviceManagerImage::SYSTEM_POWER_SUPPLY:              return "SYSTEM_POWER_SUPPLY";
         case DeviceManagerImage::SYSTEM_SLOT_OTHER:                return "SYSTEM_SLOT_OTHER";
+        case DeviceManagerImage::SYSTEM_SLOT_PCI:                  return "SYSTEM_SLOT_PCI";
         case DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS:          return "SYSTEM_SLOT_PCI_EXPRESS";
         case DeviceManagerImage::SYSTEM_SLOTS:                     return "SYSTEM_SLOTS";
         case DeviceManagerImage::TEMPERATURE_PROBE:                return "TEMPERATURE_PROBE";
@@ -225,14 +227,16 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
     switch (entry->portType)
     {
-        case DmiPortConnectorPortType::PARALLEL_PS2: return DeviceManagerImage::PORT_PS2;
-        case DmiPortConnectorPortType::KEYBOARD:     return DeviceManagerImage::PORT_PS2;
-        case DmiPortConnectorPortType::MOUSE:        return DeviceManagerImage::PORT_PS2;
-        case DmiPortConnectorPortType::USB:          return DeviceManagerImage::PORT_USB;
-        case DmiPortConnectorPortType::VIDEO_PORT:   return DeviceManagerImage::PORT_VIDEO;
-        case DmiPortConnectorPortType::AUDIO_PORT:   return DeviceManagerImage::PORT_AUDIO;
-        case DmiPortConnectorPortType::NETWORK_PORT: return DeviceManagerImage::PORT_NETWORK;
-        case DmiPortConnectorPortType::SATA:         return DeviceManagerImage::PORT_SATA;
+        case DmiPortConnectorPortType::PARALLEL_PS2:                return DeviceManagerImage::PORT_PS2;
+        case DmiPortConnectorPortType::KEYBOARD:                    return DeviceManagerImage::PORT_PS2;
+        case DmiPortConnectorPortType::MOUSE:                       return DeviceManagerImage::PORT_PS2;
+        case DmiPortConnectorPortType::USB:                         return DeviceManagerImage::PORT_USB;
+        case DmiPortConnectorPortType::VIDEO_PORT:                  return DeviceManagerImage::PORT_VIDEO;
+        case DmiPortConnectorPortType::AUDIO_PORT:                  return DeviceManagerImage::PORT_AUDIO;
+        case DmiPortConnectorPortType::MODEM_PORT:                  return DeviceManagerImage::PORT_NETWORK;
+        case DmiPortConnectorPortType::NETWORK_PORT:                return DeviceManagerImage::PORT_NETWORK;
+        case DmiPortConnectorPortType::SATA:                        return DeviceManagerImage::PORT_SATA;
+        case DmiPortConnectorPortType::MULTI_FUNCTION_DISPLAY_PORT: return DeviceManagerImage::PORT_VIDEO;
 
         case DmiPortConnectorPortType::NONE:
         case DmiPortConnectorPortType::PARALLEL_XT_AT_COMPATIBLE:
@@ -258,9 +262,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
         case DmiPortConnectorPortType::PC98:
         case DmiPortConnectorPortType::PC98_HIRESO:
         case DmiPortConnectorPortType::PCH98:
-        case DmiPortConnectorPortType::MODEM_PORT:
         case DmiPortConnectorPortType::SAS:
-        case DmiPortConnectorPortType::MULTI_FUNCTION_DISPLAY_PORT:
         case DmiPortConnectorPortType::THUNDERBOLT:
         case DmiPortConnectorPortType::_8251_COMPATIBLE:
         case DmiPortConnectorPortType::_8251_FIFO_COMPATIBLE:
@@ -279,6 +281,10 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
 
 
+    // TODO: Check for FAN
+
+
+
     return DeviceManagerImage::PORT_OTHER;
 }
 
@@ -292,7 +298,90 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *en
 
 
 
-    return deviceManagerImageFromDmiEntryType(entry->header.type);
+    switch (entry->slotType)
+    {
+        case DmiSystemSlotsType::PCI:                                  return DeviceManagerImage::SYSTEM_SLOT_PCI;
+        case DmiSystemSlotsType::PCI_66_MHZ_CAPABLE:                   return DeviceManagerImage::SYSTEM_SLOT_PCI;
+        case DmiSystemSlotsType::PCI_X:                                return DeviceManagerImage::SYSTEM_SLOT_PCI;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_2_SFF_8639:           return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_SFF_8639:           return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_MINI_52_PIN_WITH_BSKO:    return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_MINI_52_PIN_WITHOUT_BSKO: return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_MINI_76_PIN:              return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS:                          return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_X1:                       return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_X2:                       return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_X4:                       return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_X8:                       return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_X16:                      return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_2:                    return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_2_X1:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_2_X2:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_2_X4:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_2_X8:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_2_X16:                return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_3:                    return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X1:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X2:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X4:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X8:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X16:                return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4:                    return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X1:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X2:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X4:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X8:                 return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X16:                return DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS;
+
+        case DmiSystemSlotsType::NONE:
+        case DmiSystemSlotsType::OTHER:
+        case DmiSystemSlotsType::UNKNOWN:
+        case DmiSystemSlotsType::ISA:
+        case DmiSystemSlotsType::MCA:
+        case DmiSystemSlotsType::EISA:
+        case DmiSystemSlotsType::PCMCIA:
+        case DmiSystemSlotsType::VL_VESA:
+        case DmiSystemSlotsType::PROPRIETARY:
+        case DmiSystemSlotsType::PROCESSOR_CARD_SLOT:
+        case DmiSystemSlotsType::PROPRIETARY_MEMORY_CARD_SLOT:
+        case DmiSystemSlotsType::IO_RISER_CARD_SLOT:
+        case DmiSystemSlotsType::NU_BUS:
+        case DmiSystemSlotsType::AGP:
+        case DmiSystemSlotsType::APG_2X:
+        case DmiSystemSlotsType::AGP_4X:
+        case DmiSystemSlotsType::AGP_8X:
+        case DmiSystemSlotsType::M2_SOCKET_1_DP:
+        case DmiSystemSlotsType::M2_SOCKET_1_SD:
+        case DmiSystemSlotsType::M2_SOCKET_2:
+        case DmiSystemSlotsType::M2_SOCKET_3:
+        case DmiSystemSlotsType::MXM_TYPE_I:
+        case DmiSystemSlotsType::MXM_TYPE_II:
+        case DmiSystemSlotsType::MXM_TYPE_III_STANDARD:
+        case DmiSystemSlotsType::MXM_TYPE_III_HE:
+        case DmiSystemSlotsType::MXM_TYPE_IV:
+        case DmiSystemSlotsType::MXM_3_0_TYPE_A:
+        case DmiSystemSlotsType::MXM_3_0_TYPE_B:
+        case DmiSystemSlotsType::CXL_FLEXBUS_1_0:
+        case DmiSystemSlotsType::PC_98_C20:
+        case DmiSystemSlotsType::PC_98_C24:
+        case DmiSystemSlotsType::PC_98_E:
+        case DmiSystemSlotsType::PC_98_LOCAL_BUS:
+        case DmiSystemSlotsType::PC_98_CARD:
+        {
+            // Nothing
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown DMI system slot type %s, %s:%u", enumToFullString(entry->slotType), __FILE__, __LINE__));
+        }
+        break;
+    }
+
+
+
+    return DeviceManagerImage::SYSTEM_SLOT_OTHER;
 }
 
 

@@ -24,7 +24,7 @@ enum class DmiSystemSlotsType: u8
     PROPRIETARY                          = 0x09,
     PROCESSOR_CARD_SLOT                  = 0x0A,
     PROPRIETARY_MEMORY_CARD_SLOT         = 0x0B,
-    IORISER_CARD_SLOT                    = 0x0C,
+    IO_RISER_CARD_SLOT                   = 0x0C,
     NU_BUS                               = 0x0D,
     PCI_66_MHZ_CAPABLE                   = 0x0E,
     AGP                                  = 0x0F,
@@ -41,13 +41,14 @@ enum class DmiSystemSlotsType: u8
     MXM_TYPE_III_STANDARD                = 0x1A,
     MXM_TYPE_III_HE                      = 0x1B,
     MXM_TYPE_IV                          = 0x1C,
-    MXM_30_TYPE_A                        = 0x1D,
-    MXM_30_TYPE_B                        = 0x1E,
+    MXM_3_0_TYPE_A                       = 0x1D,
+    MXM_3_0_TYPE_B                       = 0x1E,
     PCI_EXPRESS_GEN_2_SFF_8639           = 0x1F,
     PCI_EXPRESS_GEN_3_SFF_8639           = 0x20,
     PCI_EXPRESS_MINI_52_PIN_WITH_BSKO    = 0x21,
     PCI_EXPRESS_MINI_52_PIN_WITHOUT_BSKO = 0x22,
     PCI_EXPRESS_MINI_76_PIN              = 0x23,
+    CXL_FLEXBUS_1_0                      = 0x30,
     PC_98_C20                            = 0xA0,
     PC_98_C24                            = 0xA1,
     PC_98_E                              = 0xA2,
@@ -70,7 +71,13 @@ enum class DmiSystemSlotsType: u8
     PCI_EXPRESS_GEN_3_X2                 = 0xB3,
     PCI_EXPRESS_GEN_3_X4                 = 0xB4,
     PCI_EXPRESS_GEN_3_X8                 = 0xB5,
-    PCI_EXPRESS_GEN_3_X16                = 0xB6
+    PCI_EXPRESS_GEN_3_X16                = 0xB6,
+    PCI_EXPRESS_GEN_4                    = 0xB8,
+    PCI_EXPRESS_GEN_4_X1                 = 0xB9,
+    PCI_EXPRESS_GEN_4_X2                 = 0xBA,
+    PCI_EXPRESS_GEN_4_X4                 = 0xBB,
+    PCI_EXPRESS_GEN_4_X8                 = 0xBC,
+    PCI_EXPRESS_GEN_4_X16                = 0xBD
 };
 
 
@@ -95,7 +102,7 @@ inline const char8* enumToString(DmiSystemSlotsType type) // TEST: NO
         case DmiSystemSlotsType::PROPRIETARY:                          return "PROPRIETARY";
         case DmiSystemSlotsType::PROCESSOR_CARD_SLOT:                  return "PROCESSOR_CARD_SLOT";
         case DmiSystemSlotsType::PROPRIETARY_MEMORY_CARD_SLOT:         return "PROPRIETARY_MEMORY_CARD_SLOT";
-        case DmiSystemSlotsType::IORISER_CARD_SLOT:                    return "IORISER_CARD_SLOT";
+        case DmiSystemSlotsType::IO_RISER_CARD_SLOT:                   return "IO_RISER_CARD_SLOT";
         case DmiSystemSlotsType::NU_BUS:                               return "NU_BUS";
         case DmiSystemSlotsType::PCI_66_MHZ_CAPABLE:                   return "PCI_66_MHZ_CAPABLE";
         case DmiSystemSlotsType::AGP:                                  return "AGP";
@@ -112,13 +119,14 @@ inline const char8* enumToString(DmiSystemSlotsType type) // TEST: NO
         case DmiSystemSlotsType::MXM_TYPE_III_STANDARD:                return "MXM_TYPE_III_STANDARD";
         case DmiSystemSlotsType::MXM_TYPE_III_HE:                      return "MXM_TYPE_III_HE";
         case DmiSystemSlotsType::MXM_TYPE_IV:                          return "MXM_TYPE_IV";
-        case DmiSystemSlotsType::MXM_30_TYPE_A:                        return "MXM_30_TYPE_A";
-        case DmiSystemSlotsType::MXM_30_TYPE_B:                        return "MXM_30_TYPE_B";
+        case DmiSystemSlotsType::MXM_3_0_TYPE_A:                       return "MXM_3_0_TYPE_A";
+        case DmiSystemSlotsType::MXM_3_0_TYPE_B:                       return "MXM_3_0_TYPE_B";
         case DmiSystemSlotsType::PCI_EXPRESS_GEN_2_SFF_8639:           return "PCI_EXPRESS_GEN_2_SFF_8639";
         case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_SFF_8639:           return "PCI_EXPRESS_GEN_3_SFF_8639";
         case DmiSystemSlotsType::PCI_EXPRESS_MINI_52_PIN_WITH_BSKO:    return "PCI_EXPRESS_MINI_52_PIN_WITH_BSKO";
         case DmiSystemSlotsType::PCI_EXPRESS_MINI_52_PIN_WITHOUT_BSKO: return "PCI_EXPRESS_MINI_52_PIN_WITHOUT_BSKO";
         case DmiSystemSlotsType::PCI_EXPRESS_MINI_76_PIN:              return "PCI_EXPRESS_MINI_76_PIN";
+        case DmiSystemSlotsType::CXL_FLEXBUS_1_0:                      return "CXL_FLEXBUS_1_0";
         case DmiSystemSlotsType::PC_98_C20:                            return "PC_98_C20";
         case DmiSystemSlotsType::PC_98_C24:                            return "PC_98_C24";
         case DmiSystemSlotsType::PC_98_E:                              return "PC_98_E";
@@ -142,6 +150,12 @@ inline const char8* enumToString(DmiSystemSlotsType type) // TEST: NO
         case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X4:                 return "PCI_EXPRESS_GEN_3_X4";
         case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X8:                 return "PCI_EXPRESS_GEN_3_X8";
         case DmiSystemSlotsType::PCI_EXPRESS_GEN_3_X16:                return "PCI_EXPRESS_GEN_3_X16";
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4:                    return "PCI_EXPRESS_GEN_4";
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X1:                 return "PCI_EXPRESS_GEN_4_X1";
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X2:                 return "PCI_EXPRESS_GEN_4_X2";
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X4:                 return "PCI_EXPRESS_GEN_4_X4";
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X8:                 return "PCI_EXPRESS_GEN_4_X8";
+        case DmiSystemSlotsType::PCI_EXPRESS_GEN_4_X16:                return "PCI_EXPRESS_GEN_4_X16";
 
         default: return "UNKNOWN";
     }

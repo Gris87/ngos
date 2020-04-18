@@ -102,6 +102,7 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/system_configuration.png",              // DeviceManagerImage::SYSTEM_CONFIGURATION
     "images/system_power_supply.png",               // DeviceManagerImage::SYSTEM_POWER_SUPPLY
     "images/system_slot_other.png",                 // DeviceManagerImage::SYSTEM_SLOT_OTHER
+    "images/system_slot_pci.png",                   // DeviceManagerImage::SYSTEM_SLOT_PCI
     "images/system_slot_pci_express.png",           // DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS
     "images/system_slots.png",                      // DeviceManagerImage::SYSTEM_SLOTS
     "images/temperature_probe.png",                 // DeviceManagerImage::TEMPERATURE_PROBE

@@ -37,9 +37,9 @@ struct DmiSystemSlotsEntry
         u8 functionNumberAndDeviceNumber;
     };
 
-    DmiSystemSlotsDataBusWidth dataBusWidth;
-    u8                         peerGroupingCount;
-    DmiSystemSlotsPeerGroup    peerGroups[0];
+    u8                      dataBusWidth;
+    u8                      peerGroupingCount;
+    DmiSystemSlotsPeerGroup peerGroups[0];
 } __attribute__((packed));
 
 

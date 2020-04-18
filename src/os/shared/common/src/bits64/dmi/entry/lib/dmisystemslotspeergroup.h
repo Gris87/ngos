@@ -23,7 +23,7 @@ struct DmiSystemSlotsPeerGroup
         u8 functionNumberAndDeviceNumber;
     };
 
-    DmiSystemSlotsDataBusWidth dataBusWidth;
+    u8 dataBusWidth;
 } __attribute__((packed));
 
 
