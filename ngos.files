@@ -356,6 +356,7 @@ src/os/bootloader_tools/devicemanager/assets/images/system_boot.png
 src/os/bootloader_tools/devicemanager/assets/images/system_configuration.png
 src/os/bootloader_tools/devicemanager/assets/images/system_power_supply.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slot_other.png
+src/os/bootloader_tools/devicemanager/assets/images/system_slot_pci.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slot_pci_express.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slots.png
 src/os/bootloader_tools/devicemanager/assets/images/table_background.9.png
