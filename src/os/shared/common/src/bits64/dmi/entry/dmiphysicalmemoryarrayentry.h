@@ -7,11 +7,23 @@
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h>
+#include <macro/constants.h>
 
 
 
 struct DmiPhysicalMemoryArrayEntry
 {
+    u64 capacity()
+    {
+        // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+        return maximumCapacity * KB;
+    }
+
+
+
     DmiEntryHeader                        header;
     DmiPhysicalMemoryArrayLocation        location;
     DmiPhysicalMemoryArrayUse             use;

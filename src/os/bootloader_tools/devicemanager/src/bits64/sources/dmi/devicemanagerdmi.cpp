@@ -2043,7 +2043,7 @@ NgosStatus DeviceManagerDMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *en
 
     // Add Device Manager entry
     {
-        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry), entryName);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry, entryName), entryName);
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                    strdup(enumToFullString(entry->header.type))),           NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                        mprintf("0x%04X", entry->header.handle)),                NgosStatus::ASSERTION);
@@ -2242,7 +2242,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
     // Add Device Manager entry
     {
-        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry), entryName);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry, entryName), entryName);
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",     strdup(enumToFullString(entry->header.type))),      NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",         mprintf("0x%04X", entry->header.handle)),           NgosStatus::ASSERTION);
@@ -2768,70 +2768,92 @@ NgosStatus DeviceManagerDMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsE
 
 
 
+    const char8 *entryName       = nullptr;
     const char8 *groupNameString = "N/A";
 
-    if (entry->groupNameStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->groupNameStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->groupNameStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    groupNameString = begin;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->groupNameStringId)
+                    {
+                        groupNameString = begin;
+                        entryName       = groupNameString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
+
+
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Name",       groupNameString),                              NgosStatus::ASSERTION);
+
+
+
+        // Add records for members
+        {
+            for (i64 i = 0; i < count; ++i)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Member #%d type", i),   strdup(enumToFullString(entry->group[i].type))), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Member #%d handle", i), mprintf("0x%04X", entry->group[i].handle)),      NgosStatus::ASSERTION);
             }
+        }
 
 
 
-            ++cur;
-        } while(true);
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-    else
-    {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Name",       groupNameString),                              NgosStatus::ASSERTION);
-
-    for (i64 i = 0; i < count; ++i)
-    {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Member #%d type", i),   strdup(enumToFullString(entry->group[i].type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Member #%d handle", i), mprintf("0x%04X", entry->group[i].handle)),      NgosStatus::ASSERTION);
-    }
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -2843,6 +2865,10 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
     UEFI_LT((" | entry = 0x%p", entry));
 
     UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
 
 
 
@@ -2892,26 +2918,53 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
 
     const char8 *extendedMaximumCapacity = "N/A";
 
-    if (DMI::getVersion() >= DMI_VERSION(2, 7))
+    // Get strings base on version
     {
-        extendedMaximumCapacity = mprintf("0x%016lX", entry->extendedMaximumCapacity);
+        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        {
+            extendedMaximumCapacity = mprintf("0x%016lX", entry->extendedMaximumCapacity);
+        }
     }
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+    const char8 *maximumCapacity;
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))),           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),                NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                        strdup(enumToFullString(entry->location))),              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Use",                             strdup(enumToFullString(entry->use))),                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error correction",         strdup(enumToFullString(entry->memoryErrorCorrection))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum capacity",                mprintf("0x%04X", entry->maximumCapacity)),              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle", mprintf("0x%04X", entry->memoryErrorInformationHandle)), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of memory devices",        mprintf("%u", entry->numberOfMemoryDevices)),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended maximum capacity",       extendedMaximumCapacity),                                NgosStatus::ASSERTION);
+    // Get string for Maximum capacity
+    {
+        if (
+            entry->maximumCapacity >= 0x80000000
+            &&
+            DMI::getVersion() >= DMI_VERSION(2, 7)
+           )
+        {
+            maximumCapacity = strdup(bytesToString(entry->extendedMaximumCapacity));
+        }
+        else
+        {
+            maximumCapacity = strdup(bytesToString(entry->capacity()));
+        }
+    }
 
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),                NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                        strdup(enumToFullString(entry->location))),              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Use",                             strdup(enumToFullString(entry->use))),                   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error correction",         strdup(enumToFullString(entry->memoryErrorCorrection))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum capacity",                maximumCapacity),                                        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum capacity",                mprintf("0x%04X", entry->maximumCapacity)),              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle", mprintf("0x%04X", entry->memoryErrorInformationHandle)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of memory devices",        mprintf("%u", entry->numberOfMemoryDevices)),            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended maximum capacity",       extendedMaximumCapacity),                                NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -3294,6 +3347,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
     UEFI_LT((" | entry = 0x%p", entry));
 
     UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
 
 
 
@@ -4870,64 +4927,67 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevice
     const char8 *entryName                  = nullptr;
     const char8 *referenceDesignationString = "N/A";
 
-    if (entry->referenceDesignationStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->referenceDesignationStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->referenceDesignationStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    referenceDesignationString = begin;
-                    entryName                  = referenceDesignationString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->referenceDesignationStringId)
+                    {
+                        referenceDesignationString = begin;
+                        entryName                  = referenceDesignationString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        if (!entryName)
+        {
+            entryName = enumToHumanString(DmiEntryType::ONBOARD_DEVICES);
+        }
     }
 
 
 
-    if (!entryName)
-    {
-        entryName = enumToHumanString(DmiEntryType::ONBOARD_DEVICES);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::ONBOARD_DEVICES, entry->header.handle, deviceManagerImageFromDmiEntry(entry->header.type, entryName), entryName);
+    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::ONBOARD_DEVICES, entry->header.handle, deviceManagerImageFromDmiEntry(entry, entryName), entryName);
 
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",            strdup(enumToFullString(entry->header.type))),                                     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle)),                                          NgosStatus::ASSERTION);
