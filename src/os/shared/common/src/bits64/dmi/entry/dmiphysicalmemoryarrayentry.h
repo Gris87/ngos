@@ -19,7 +19,7 @@ struct DmiPhysicalMemoryArrayEntry
 
 
 
-        return maximumCapacity * KB;
+        return (u64)maximumCapacity * KB;
     }
 
 
