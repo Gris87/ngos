@@ -4,9 +4,13 @@
 
 
 #include <common/src/bits64/dmi/dmientrytype.h>
+#include <common/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h>
+#include <common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h>
 #include <common/src/bits64/dmi/entry/dmiportconnectorentry.h>
 #include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
 #include <common/src/bits64/printf/printf.h>
+#include <common/src/bits64/string/string.h>
+#include <ngos/linkage.h>
 #include <ngos/types.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
@@ -217,11 +221,12 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type)
 
 
 
-inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *entry)
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *entry, const char8 *name)
 {
-    // UEFI_LT((" | type = %u", type)); // Commented to avoid too frequent logs
+    // UEFI_LT((" | entry = 0x%p, name = 0x%p", type, name)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
+    UEFI_ASSERT(name,  "name is null",  DeviceManagerImage::ADDITIONAL);
 
 
 
@@ -281,7 +286,10 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
 
 
-    // TODO: Check for FAN
+    if (strendi(name, "fan"))
+    {
+        return DeviceManagerImage::PORT_FAN;
+    }
 
 
 
@@ -290,11 +298,16 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
 
 
-inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *entry)
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *entry, const char8 *name)
 {
-    // UEFI_LT((" | type = %u", type)); // Commented to avoid too frequent logs
+    // UEFI_LT((" | entry = 0x%p, name = 0x%p", type, name)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
+    UEFI_ASSERT(name,  "name is null",  DeviceManagerImage::ADDITIONAL);
+
+
+
+    AVOID_UNUSED(name);
 
 
 
@@ -375,6 +388,93 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *en
         default:
         {
             UEFI_LF(("Unknown DMI system slot type %s, %s:%u", enumToFullString(entry->slotType), __FILE__, __LINE__));
+        }
+        break;
+    }
+
+
+
+    return DeviceManagerImage::SYSTEM_SLOT_OTHER;
+}
+
+
+
+inline DeviceManagerImage deviceManagerImageFromDmiOnboardDevice(DmiOnboardDevicesDevice *device)
+{
+    // UEFI_LT((" | device = 0x%p", device)); // Commented to avoid too frequent logs
+
+    UEFI_ASSERT(device, "device is null", DeviceManagerImage::ADDITIONAL);
+
+
+
+    switch ((DmiOnboardDevicesDeviceType)device->deviceType)
+    {
+        case DmiOnboardDevicesDeviceType::VIDEO:           return DeviceManagerImage::ONBOARD_VIDEO;
+        case DmiOnboardDevicesDeviceType::ETHERNET:        return DeviceManagerImage::ONBOARD_ETHERNET;
+        case DmiOnboardDevicesDeviceType::SOUND:           return DeviceManagerImage::ONBOARD_SOUND;
+        case DmiOnboardDevicesDeviceType::SATA_CONTROLLER: return DeviceManagerImage::ONBOARD_SATA;
+
+        case DmiOnboardDevicesDeviceType::NONE:
+        case DmiOnboardDevicesDeviceType::OTHER:
+        case DmiOnboardDevicesDeviceType::UNKNOWN:
+        case DmiOnboardDevicesDeviceType::SCSI_CONTROLLER:
+        case DmiOnboardDevicesDeviceType::TOKEN_RING:
+        case DmiOnboardDevicesDeviceType::PATA_CONTROLLER:
+        case DmiOnboardDevicesDeviceType::SAS_CONTROLLER:
+        {
+            // Nothing
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown DMI onboard device type %s, %s:%u", enumToFullString((DmiOnboardDevicesDeviceType)device->deviceType), __FILE__, __LINE__));
+        }
+        break;
+    }
+
+
+
+    return DeviceManagerImage::ONBOARD_OTHER;
+}
+
+
+
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiOnboardDevicesExtendedEntry *entry, const char8 *name)
+{
+    // UEFI_LT((" | entry = 0x%p, name = 0x%p", type, name)); // Commented to avoid too frequent logs
+
+    UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
+    UEFI_ASSERT(name,  "name is null",  DeviceManagerImage::ADDITIONAL);
+
+
+
+    AVOID_UNUSED(name);
+
+
+
+    switch ((DmiOnboardDevicesExtendedDeviceType)entry->deviceType)
+    {
+        case DmiOnboardDevicesExtendedDeviceType::VIDEO:           return DeviceManagerImage::ONBOARD_VIDEO;
+        case DmiOnboardDevicesExtendedDeviceType::ETHERNET:        return DeviceManagerImage::ONBOARD_ETHERNET;
+        case DmiOnboardDevicesExtendedDeviceType::SOUND:           return DeviceManagerImage::ONBOARD_SOUND;
+        case DmiOnboardDevicesExtendedDeviceType::SATA_CONTROLLER: return DeviceManagerImage::ONBOARD_SATA;
+
+        case DmiOnboardDevicesExtendedDeviceType::NONE:
+        case DmiOnboardDevicesExtendedDeviceType::OTHER:
+        case DmiOnboardDevicesExtendedDeviceType::UNKNOWN:
+        case DmiOnboardDevicesExtendedDeviceType::SCSI_CONTROLLER:
+        case DmiOnboardDevicesExtendedDeviceType::TOKEN_RING:
+        case DmiOnboardDevicesExtendedDeviceType::PATA_CONTROLLER:
+        case DmiOnboardDevicesExtendedDeviceType::SAS_CONTROLLER:
+        {
+            // Nothing
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown DMI onboard device type %s, %s:%u", enumToFullString((DmiOnboardDevicesExtendedDeviceType)entry->deviceType), __FILE__, __LINE__));
         }
         break;
     }
