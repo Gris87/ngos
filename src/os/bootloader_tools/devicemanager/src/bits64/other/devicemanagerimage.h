@@ -286,7 +286,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
 
 
-    if (strendi(name, "fan"))
+    if (strendi(name, "FAN"))
     {
         return DeviceManagerImage::PORT_FAN;
     }
