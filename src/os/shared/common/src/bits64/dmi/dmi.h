@@ -102,7 +102,7 @@ private:
     static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO
     static NgosStatus storeDmiMemoryDevices(u8 *buf); // TEST: NO
     static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header); // TEST: NO
-    static NgosStatus saveDmiMemoryDevice(DmiEntryHeader *header); // TEST: NO
+    static NgosStatus saveDmiMemoryDeviceEntry(DmiEntryHeader *header); // TEST: NO
     static NgosStatus saveIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
     static NgosStatus saveUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
     static NgosStatus getString(const char8 *address, u64 size, const char8 **destination); // TEST: NO

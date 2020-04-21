@@ -311,7 +311,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceType),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),              31);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               72);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          84);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          92);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceFormFactor),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntry),             35);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceOperatingModeCapabilityFlag),    2);

@@ -4,8 +4,10 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemorydeviceattributes.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemorydevicesize.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydevicetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h>
@@ -19,7 +21,7 @@ struct DmiMemoryDeviceEntry
     u16                                         memoryErrorInformationHandle;
     u16                                         totalWidth;
     u16                                         dataWidth;
-    u16                                         size;
+    DmiMemoryDeviceSize                         size;
     DmiMemoryDeviceFormFactor                   formFactor;
     u8                                          deviceSet;
     u8                                          deviceLocatorStringId;
@@ -31,7 +33,7 @@ struct DmiMemoryDeviceEntry
     u8                                          serialNumberStringId;
     u8                                          assetTagStringId;
     u8                                          partNumberStringId;
-    u8                                          attributes;
+    DmiMemoryDeviceAttributes                   attributes;
     u32                                         extendedSize;
     u16                                         configuredMemorySpeed;
     u16                                         minimumVoltage;
@@ -48,6 +50,8 @@ struct DmiMemoryDeviceEntry
     u64                                         volatileSize;
     u64                                         cacheSize;
     u64                                         logicalSize;
+    u32                                         extendedSpeed;
+    u32                                         extendedConfiguredMemorySpeed;
 } __attribute__((packed));
 
 
