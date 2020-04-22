@@ -3543,8 +3543,10 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
 
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
-                    COMMON_LVVV(("entry->extendedSize          = %u", entry->extendedSize));
-                    COMMON_LVVV(("entry->configuredMemorySpeed = %u", entry->configuredMemorySpeed));
+                    COMMON_LVVV(("entry->extendedSize.value    = %u",     entry->extendedSize.value));
+                    COMMON_LVVV(("entry->extendedSize.value32  = 0x%08X", entry->extendedSize.value32));
+                    COMMON_LVVV(("entry->extendedSize          = %s",     bytesToString(entry->extendedSize.size())));
+                    COMMON_LVVV(("entry->configuredMemorySpeed = %u",     entry->configuredMemorySpeed));
 
                     if (DMI::getVersion() >= DMI_VERSION(2, 8))
                     {
@@ -3595,26 +3597,28 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            // COMMON_TEST_ASSERT(entry->speed                == 0, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->manufacturerStringId == 3, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->serialNumberStringId == 4, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->assetTagStringId     == 5, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->partNumberStringId   == 6, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->speed                == 2133, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->manufacturerStringId == 3,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->serialNumberStringId == 4,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->assetTagStringId     == 5,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->partNumberStringId   == 6,    NgosStatus::ASSERTION); // Commented due to value variation
 
             if (DMI::getVersion() >= DMI_VERSION(2, 6))
             {
-                // COMMON_TEST_ASSERT(entry->attributes == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->attributes.rank   == 2,    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->attributes.value8 == 0x02, NgosStatus::ASSERTION); // Commented due to value variation
 
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
-                    // COMMON_TEST_ASSERT(entry->extendedSize          == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entry->configuredMemorySpeed == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedSize.value    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedSize.value    == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->configuredMemorySpeed == 2133,       NgosStatus::ASSERTION); // Commented due to value variation
 
                     if (DMI::getVersion() >= DMI_VERSION(2, 8))
                     {
-                        // COMMON_TEST_ASSERT(entry->minimumVoltage    == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entry->maximumVoltage    == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entry->configuredVoltage == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                        // COMMON_TEST_ASSERT(entry->minimumVoltage    == 1200, NgosStatus::ASSERTION); // Commented due to value variation
+                        // COMMON_TEST_ASSERT(entry->maximumVoltage    == 1200, NgosStatus::ASSERTION); // Commented due to value variation
+                        // COMMON_TEST_ASSERT(entry->configuredVoltage == 1200, NgosStatus::ASSERTION); // Commented due to value variation
 
                         if (DMI::getVersion() >= DMI_VERSION(3, 2))
                         {
@@ -3703,7 +3707,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
             DMI::getVersion() >= DMI_VERSION(2, 7)
            )
         {
-            sMemoryDevices[memoryId].size = (u64)entry->extendedSize << 20;
+            sMemoryDevices[memoryId].size = entry->extendedSize.size();
         }
         else
         {

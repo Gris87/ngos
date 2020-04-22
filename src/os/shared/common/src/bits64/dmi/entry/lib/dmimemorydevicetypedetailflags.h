@@ -32,7 +32,7 @@ enum class DmiMemoryDeviceTypeDetailFlag: dmi_memory_device_type_detail_flags
     NON_VOLATILE  = (1ULL << 12),
     REGISTERED    = (1ULL << 13),
     UNBUFFERED    = (1ULL << 14),
-    LR_DIMM       = (1ULL << 15)
+    LRDIMM        = (1ULL << 15)
 };
 
 DEFINE_FLAGS(DmiMemoryDeviceTypeDetailFlags, dmi_memory_device_type_detail_flags); // TEST: NO
@@ -62,7 +62,7 @@ inline const char8* flagToString(DmiMemoryDeviceTypeDetailFlag flag) // TEST: NO
         case DmiMemoryDeviceTypeDetailFlag::NON_VOLATILE:  return "NON_VOLATILE";
         case DmiMemoryDeviceTypeDetailFlag::REGISTERED:    return "REGISTERED";
         case DmiMemoryDeviceTypeDetailFlag::UNBUFFERED:    return "UNBUFFERED";
-        case DmiMemoryDeviceTypeDetailFlag::LR_DIMM:       return "LR_DIMM";
+        case DmiMemoryDeviceTypeDetailFlag::LRDIMM:        return "LRDIMM";
 
         default: return "UNKNOWN";
     }
@@ -91,7 +91,7 @@ inline const char8* flagsToString(const DmiMemoryDeviceTypeDetailFlags &flags) /
 
 
 
-    static char8 res[190];
+    static char8 res[189];
 
     FLAGS_TO_STRING(res, flags.flags, DmiMemoryDeviceTypeDetailFlag);
 
@@ -106,7 +106,7 @@ inline const char8* flagsToFullString(const DmiMemoryDeviceTypeDetailFlags &flag
 
 
 
-    static char8 res[199];
+    static char8 res[198];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, DmiMemoryDeviceTypeDetailFlag, "0x%04X");
 

@@ -2953,12 +2953,12 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
 
         // Get string for Memory error information handle
         {
-            if (entry->memoryErrorInformationHandle == 0xFFFE)
+            if (entry->memoryErrorInformationHandle == DMI_PHYSICAL_MEMORY_ARRAY_MEMORY_ERROR_INFORMATION_HANDLE_NOT_AVAILABLE)
             {
                 memoryErrorInformationHandle = "N/A";
             }
             else
-            if (entry->memoryErrorInformationHandle == 0xFFFF)
+            if (entry->memoryErrorInformationHandle == DMI_PHYSICAL_MEMORY_ARRAY_MEMORY_ERROR_INFORMATION_HANDLE_NO_ERROR)
             {
                 memoryErrorInformationHandle = "No error";
             }
@@ -3033,8 +3033,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
-                    UEFI_LVVV(("entry->extendedSize          = %u", entry->extendedSize));
-                    UEFI_LVVV(("entry->configuredMemorySpeed = %u", entry->configuredMemorySpeed));
+                    UEFI_LVVV(("entry->extendedSize.value    = %u",     entry->extendedSize.value));
+                    UEFI_LVVV(("entry->extendedSize.value32  = 0x%08X", entry->extendedSize.value32));
+                    UEFI_LVVV(("entry->extendedSize          = %s",     bytesToString(entry->extendedSize.size())));
+                    UEFI_LVVV(("entry->configuredMemorySpeed = %u",     entry->configuredMemorySpeed));
 
                     if (DMI::getVersion() >= DMI_VERSION(2, 8))
                     {
@@ -3085,26 +3087,28 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            // UEFI_TEST_ASSERT(entry->speed                == 0, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->manufacturerStringId == 3, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->serialNumberStringId == 4, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->assetTagStringId     == 5, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->partNumberStringId   == 6, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->speed                == 2133, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->manufacturerStringId == 3,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->serialNumberStringId == 4,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->assetTagStringId     == 5,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->partNumberStringId   == 6,    NgosStatus::ASSERTION); // Commented due to value variation
 
             if (DMI::getVersion() >= DMI_VERSION(2, 6))
             {
-                // UEFI_TEST_ASSERT(entry->attributes == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->attributes.rank   == 2,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entry->attributes.value8 == 0x02, NgosStatus::ASSERTION); // Commented due to value variation
 
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
-                    // UEFI_TEST_ASSERT(entry->extendedSize          == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entry->configuredMemorySpeed == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->extendedSize.value    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->extendedSize.value    == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->configuredMemorySpeed == 2133,       NgosStatus::ASSERTION); // Commented due to value variation
 
                     if (DMI::getVersion() >= DMI_VERSION(2, 8))
                     {
-                        // UEFI_TEST_ASSERT(entry->minimumVoltage    == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                        // UEFI_TEST_ASSERT(entry->maximumVoltage    == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                        // UEFI_TEST_ASSERT(entry->configuredVoltage == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entry->minimumVoltage    == 1200, NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entry->maximumVoltage    == 1200, NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entry->configuredVoltage == 1200, NgosStatus::ASSERTION); // Commented due to value variation
 
                         if (DMI::getVersion() >= DMI_VERSION(3, 2))
                         {
@@ -3329,13 +3333,13 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
         {
             // Get string for Speed
             {
-                if (entry->speed == 0)
+                if (entry->speed == DMI_MEMORY_DEVICE_SPEED_UNKNOWN)
                 {
                     speedReal = "Unknown";
                 }
                 else
                 if (
-                    entry->speed == 0xFFFF
+                    entry->speed == DMI_MEMORY_DEVICE_SPEED_NEED_TO_EXTEND
                     &&
                     DMI::getVersion() >= DMI_VERSION(3, 3)
                    )
@@ -3358,13 +3362,13 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
             {
                 // Get string for Rank
                 {
-                    if (entry->attributes.rank)
+                    if (entry->attributes.rank == DMI_MEMORY_DEVICE_RANK_UNKNOWN)
                     {
-                        rank = mprintf("%u", entry->attributes.rank);
+                        rank = "Unknown";
                     }
                     else
                     {
-                        rank = "Unknown";
+                        rank = mprintf("%u", entry->attributes.rank);
                     }
                 }
 
@@ -3372,19 +3376,19 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
-                    extendedSize = mprintf("0x%08X", entry->extendedSize);
+                    extendedSize = mprintf("0x%08X", entry->extendedSize.value32);
 
 
 
                     // Get string for Configured memory speed
                     {
-                        if (entry->configuredMemorySpeed == 0)
+                        if (entry->configuredMemorySpeed == DMI_MEMORY_DEVICE_CONFIGURED_MEMORY_SPEED_UNKNOWN)
                         {
                             configuredMemorySpeedReal = "Unknown";
                         }
                         else
                         if (
-                            entry->configuredMemorySpeed == 0xFFFF
+                            entry->configuredMemorySpeed == DMI_MEMORY_DEVICE_CONFIGURED_MEMORY_SPEED_NEED_TO_EXTEND
                             &&
                             DMI::getVersion() >= DMI_VERSION(3, 3)
                            )
@@ -3407,13 +3411,13 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
                     {
                         // Get string for Minimum voltage
                         {
-                            if (entry->minimumVoltage)
+                            if (entry->minimumVoltage == DMI_MEMORY_DEVICE_MINIMUM_VOLTAGE_UNKNOWN)
                             {
-                                minimumVoltage = mprintf("%u.%03u", entry->minimumVoltage / 1000, entry->minimumVoltage % 1000);
+                                minimumVoltage = "Unknown";
                             }
                             else
                             {
-                                minimumVoltage = "Unknown";
+                                minimumVoltage = mprintf("%u.%03u", entry->minimumVoltage / 1000, entry->minimumVoltage % 1000);
                             }
                         }
 
@@ -3421,13 +3425,13 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                         // Get string for Maximum voltage
                         {
-                            if (entry->maximumVoltage)
+                            if (entry->maximumVoltage == DMI_MEMORY_DEVICE_MAXIMUM_VOLTAGE_UNKNOWN)
                             {
-                                maximumVoltage = mprintf("%u.%03u", entry->maximumVoltage / 1000, entry->maximumVoltage % 1000);
+                                maximumVoltage = "Unknown";
                             }
                             else
                             {
-                                maximumVoltage = "Unknown";
+                                maximumVoltage = mprintf("%u.%03u", entry->maximumVoltage / 1000, entry->maximumVoltage % 1000);
                             }
                         }
 
@@ -3435,13 +3439,13 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                         // Get string for Configured voltage
                         {
-                            if (entry->configuredVoltage)
+                            if (entry->configuredVoltage == DMI_MEMORY_DEVICE_CONFIGURED_VOLTAGE_UNKNOWN)
                             {
-                                configuredVoltage = mprintf("%u.%03u", entry->configuredVoltage / 1000, entry->configuredVoltage % 1000);
+                                configuredVoltage = "Unknown";
                             }
                             else
                             {
-                                configuredVoltage = "Unknown";
+                                configuredVoltage = mprintf("%u.%03u", entry->configuredVoltage / 1000, entry->configuredVoltage % 1000);
                             }
                         }
 
@@ -3460,9 +3464,9 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                             // Get string for Non volatile size
                             {
-                                if (entry->nonVolatileSize)
+                                if (entry->nonVolatileSize != DMI_MEMORY_DEVICE_NON_VOLATILE_SIZE_NOT_AVAILABLE)
                                 {
-                                    if (entry->nonVolatileSize == 0xFFFFFFFFFFFFFFFF)
+                                    if (entry->nonVolatileSize == DMI_MEMORY_DEVICE_NON_VOLATILE_SIZE_UNKNOWN)
                                     {
                                         nonVolatileSize = "Unknown";
                                     }
@@ -3477,9 +3481,9 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                             // Get string for Volatile size
                             {
-                                if (entry->volatileSize)
+                                if (entry->volatileSize != DMI_MEMORY_DEVICE_VOLATILE_SIZE_NOT_AVAILABLE)
                                 {
-                                    if (entry->volatileSize == 0xFFFFFFFFFFFFFFFF)
+                                    if (entry->volatileSize == DMI_MEMORY_DEVICE_VOLATILE_SIZE_UNKNOWN)
                                     {
                                         volatileSize = "Unknown";
                                     }
@@ -3494,9 +3498,9 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                             // Get string for Cache size
                             {
-                                if (entry->cacheSize)
+                                if (entry->cacheSize != DMI_MEMORY_DEVICE_CACHE_SIZE_NOT_AVAILABLE)
                                 {
-                                    if (entry->cacheSize == 0xFFFFFFFFFFFFFFFF)
+                                    if (entry->cacheSize == DMI_MEMORY_DEVICE_CACHE_SIZE_UNKNOWN)
                                     {
                                         cacheSize = "Unknown";
                                     }
@@ -3511,7 +3515,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
                             // Get string for Logical size
                             {
-                                if (entry->logicalSize == 0xFFFFFFFFFFFFFFFF)
+                                if (entry->logicalSize == DMI_MEMORY_DEVICE_LOGICAL_SIZE_UNKNOWN)
                                 {
                                     logicalSize = "Unknown";
                                 }
@@ -3547,12 +3551,12 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
     {
         // Get string for Memory error information handle
         {
-            if (entry->memoryErrorInformationHandle == 0xFFFE)
+            if (entry->memoryErrorInformationHandle == DMI_MEMORY_DEVICE_MEMORY_ERROR_INFORMATION_HANDLE_NOT_AVAILABLE)
             {
                 memoryErrorInformationHandle = "N/A";
             }
             else
-            if (entry->memoryErrorInformationHandle == 0xFFFF)
+            if (entry->memoryErrorInformationHandle == DMI_MEMORY_DEVICE_MEMORY_ERROR_INFORMATION_HANDLE_NO_ERROR)
             {
                 memoryErrorInformationHandle = "No error";
             }
@@ -3566,7 +3570,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
         // Get string for Total width
         {
-            if (entry->totalWidth == 0xFFFF)
+            if (entry->totalWidth == DMI_MEMORY_DEVICE_TOTAL_WIDTH_UNKNOWN)
             {
                 totalWidth = "Unknown";
             }
@@ -3580,7 +3584,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
         // Get string for Data width
         {
-            if (entry->dataWidth == 0xFFFF)
+            if (entry->dataWidth == DMI_MEMORY_DEVICE_DATA_WIDTH_UNKNOWN)
             {
                 dataWidth = "Unknown";
             }
@@ -3610,7 +3614,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
                 DMI::getVersion() >= DMI_VERSION(2, 7)
                )
             {
-                size = strdup(bytesToString(entry->extendedSize));
+                size = strdup(bytesToString(entry->extendedSize.size()));
             }
             else
             {
@@ -3622,12 +3626,12 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
         // Get string for Device set
         {
-            if (entry->deviceSet == 0)
+            if (entry->deviceSet == DMI_MEMORY_DEVICE_DEVICE_SET_NO_SET)
             {
-                deviceSet = "Not installed";
+                deviceSet = "No set";
             }
             else
-            if (entry->deviceSet == 0xFF)
+            if (entry->deviceSet == DMI_MEMORY_DEVICE_DEVICE_SET_UNKNOWN)
             {
                 deviceSet = "Unknown";
             }

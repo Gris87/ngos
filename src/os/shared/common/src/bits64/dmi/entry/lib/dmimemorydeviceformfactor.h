@@ -25,9 +25,10 @@ enum class DmiMemoryDeviceFormFactor: u8
     TSOP             = 10,
     ROW_OF_CHIPS     = 11,
     RIMM             = 12,
-    SODIUM           = 13,
+    SODIMM           = 13,
     SRIMM            = 14,
-    FB_DIMM          = 15
+    FB_DIMM          = 15,
+    DIE              = 16
 };
 
 
@@ -53,9 +54,10 @@ inline const char8* enumToString(DmiMemoryDeviceFormFactor factor) // TEST: NO
         case DmiMemoryDeviceFormFactor::TSOP:             return "TSOP";
         case DmiMemoryDeviceFormFactor::ROW_OF_CHIPS:     return "ROW_OF_CHIPS";
         case DmiMemoryDeviceFormFactor::RIMM:             return "RIMM";
-        case DmiMemoryDeviceFormFactor::SODIUM:           return "SODIUM";
+        case DmiMemoryDeviceFormFactor::SODIMM:           return "SODIMM";
         case DmiMemoryDeviceFormFactor::SRIMM:            return "SRIMM";
         case DmiMemoryDeviceFormFactor::FB_DIMM:          return "FB_DIMM";
+        case DmiMemoryDeviceFormFactor::DIE:              return "DIE";
 
         default: return "UNKNOWN";
     }

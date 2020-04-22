@@ -31,8 +31,8 @@ enum class DmiMemoryDeviceType: u8
     SGRAM                       = 16,
     RDRAM                       = 17,
     DDR                         = 18,
-    DDR2                        = 22,
-    DDR2_FB_DIMM                = 23,
+    DDR2                        = 19,
+    DDR2_FB_DIMM                = 20,
     DDR3                        = 24,
     FBD2                        = 25,
     DDR4                        = 26,
@@ -40,7 +40,9 @@ enum class DmiMemoryDeviceType: u8
     LPDDR2                      = 28,
     LPDDR3                      = 29,
     LPDDR4                      = 30,
-    LOGICAL_NON_VOLATILE_DEVICE = 31
+    LOGICAL_NON_VOLATILE_DEVICE = 31,
+    HBM                         = 32,
+    HBM_2                       = 33
 };
 
 
@@ -82,6 +84,8 @@ inline const char8* enumToString(DmiMemoryDeviceType type) // TEST: NO
         case DmiMemoryDeviceType::LPDDR3:                      return "LPDDR3";
         case DmiMemoryDeviceType::LPDDR4:                      return "LPDDR4";
         case DmiMemoryDeviceType::LOGICAL_NON_VOLATILE_DEVICE: return "LOGICAL_NON_VOLATILE_DEVICE";
+        case DmiMemoryDeviceType::HBM:                         return "HBM";
+        case DmiMemoryDeviceType::HBM_2:                       return "HBM_2";
 
         default: return "UNKNOWN";
     }

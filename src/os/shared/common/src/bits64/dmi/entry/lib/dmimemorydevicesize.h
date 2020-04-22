@@ -9,12 +9,6 @@
 
 
 
-#define DMI_MEMORY_DEVICE_SIZE_NOT_INSTALLED  0x0000
-#define DMI_MEMORY_DEVICE_SIZE_UNKNOWN        0xFFFF
-#define DMI_MEMORY_DEVICE_SIZE_NEED_TO_EXTEND 0x7FFF
-
-
-
 struct DmiMemoryDeviceSize
 {
     u64 size()
