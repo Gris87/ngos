@@ -35,4 +35,3 @@ tools/qt/qmake/
 tools/qt/test_verifier/
 tools/qt/usb_boot_maker/
 tools/qt/usb_boot_maker/build/gen/
-src/os/shared/common/src/bits64/dmi/entry/lib
