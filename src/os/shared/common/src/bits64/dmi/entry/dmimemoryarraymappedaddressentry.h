@@ -4,18 +4,24 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h>
+
+
+
+#define DMI_MEMORY_ARRAY_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND 0xFFFFFFFF
+#define DMI_MEMORY_ARRAY_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND   0xFFFFFFFF
 
 
 
 struct DmiMemoryArrayMappedAddressEntry
 {
-    DmiEntryHeader header;
-    u32            startingAddress;
-    u32            endingAddress;
-    u16            memoryArrayHandle;
-    u8             partitionWidth;
-    u64            extendedStartingAddress;
-    u64            extendedEndingAddress;
+    DmiEntryHeader                   header;
+    DmiMemoryArrayMappedAddressRange startingAddress;
+    DmiMemoryArrayMappedAddressRange endingAddress;
+    u16                              memoryArrayHandle;
+    u8                               partitionWidth;
+    u64                              extendedStartingAddress;
+    u64                              extendedEndingAddress;
 } __attribute__((packed));
 
 

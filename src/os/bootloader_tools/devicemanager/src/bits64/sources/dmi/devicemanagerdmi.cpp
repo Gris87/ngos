@@ -3752,10 +3752,12 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
 
     // Validation
     {
-        UEFI_LVVV(("entry->startingAddress   = 0x%08X", entry->startingAddress));
-        UEFI_LVVV(("entry->endingAddress     = 0x%08X", entry->endingAddress));
-        UEFI_LVVV(("entry->memoryArrayHandle = 0x%04X", entry->memoryArrayHandle));
-        UEFI_LVVV(("entry->partitionWidth    = %u",     entry->partitionWidth));
+        UEFI_LVVV(("entry->startingAddress.value = 0x%08X", entry->startingAddress.value));
+        UEFI_LVVV(("entry->startingAddress       = %s",     bytesToString(entry->startingAddress.address())));
+        UEFI_LVVV(("entry->endingAddress.value   = 0x%08X", entry->endingAddress.value));
+        UEFI_LVVV(("entry->endingAddress         = %s",     bytesToString(entry->endingAddress.address())));
+        UEFI_LVVV(("entry->memoryArrayHandle     = 0x%04X", entry->memoryArrayHandle));
+        UEFI_LVVV(("entry->partitionWidth        = %u",     entry->partitionWidth));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
@@ -3765,10 +3767,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
 
 
 
-        // UEFI_TEST_ASSERT(entry->startingAddress   == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->endingAddress     == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->memoryArrayHandle == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->partitionWidth    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->startingAddress.value == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->endingAddress.value   == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->memoryArrayHandle     == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->partitionWidth        == 1,          NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
@@ -3795,26 +3797,65 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
     const char8 *extendedStartingAddress = "N/A";
     const char8 *extendedEndingAddress   = "N/A";
 
-    if (DMI::getVersion() >= DMI_VERSION(2, 7))
+    // Get strings base on version
     {
-        extendedStartingAddress = mprintf("0x%016lX", entry->extendedStartingAddress);
-        extendedEndingAddress   = mprintf("0x%016lX", entry->extendedEndingAddress);
+        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        {
+            extendedStartingAddress = mprintf("0x%016lX", entry->extendedStartingAddress);
+            extendedEndingAddress   = mprintf("0x%016lX", entry->extendedEndingAddress);
+        }
     }
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+    const char8 *range;
+    const char8 *range2;
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                    mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",          mprintf("0x%08X", entry->startingAddress)),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",            mprintf("0x%08X", entry->endingAddress)),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",       mprintf("0x%04X", entry->memoryArrayHandle)),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition width",           mprintf("%u", entry->partitionWidth)),         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address", extendedStartingAddress),                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",   extendedEndingAddress),                        NgosStatus::ASSERTION);
+    // Get other strings
+    {
+        u64 start;
+        u64 end;
 
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+        if (
+            entry->startingAddress.value == DMI_MEMORY_ARRAY_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
+            &&
+            entry->endingAddress.value == DMI_MEMORY_ARRAY_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
+            &&
+            DMI::getVersion() >= DMI_VERSION(2, 7)
+           )
+        {
+            start = entry->extendedStartingAddress;
+            end   = entry->extendedEndingAddress;
+        }
+        else
+        {
+            start = entry->startingAddress.address();
+            end   = entry->endingAddress.address(1);
+        }
+
+        range  = mprintf("%s - %s", strdup(bytesToString(start)), strdup(bytesToString(end)));
+        range2 = mprintf("0x%016lX - 0x%016lX", start, end);
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                strdup(enumToFullString(entry->header.type))),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                    mprintf("0x%04X", entry->header.handle)),         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                     range),                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                     range2),                                          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",          mprintf("0x%08X", entry->startingAddress.value)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",            mprintf("0x%08X", entry->endingAddress.value)),   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",       mprintf("0x%04X", entry->memoryArrayHandle)),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition width",           mprintf("%u", entry->partitionWidth)),            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address", extendedStartingAddress),                         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",   extendedEndingAddress),                           NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -3829,10 +3870,16 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
 
 
 
+    AVOID_UNUSED(entry);
+
+
+
     // Validation
     {
-        UEFI_LVVV(("entry->startingAddress                = 0x%08X", entry->startingAddress));
-        UEFI_LVVV(("entry->endingAddress                  = 0x%08X", entry->endingAddress));
+        UEFI_LVVV(("entry->startingAddress.value          = 0x%08X", entry->startingAddress.value));
+        UEFI_LVVV(("entry->startingAddress                = %s",     bytesToString(entry->startingAddress.address())));
+        UEFI_LVVV(("entry->endingAddress.value            = 0x%08X", entry->endingAddress.value));
+        UEFI_LVVV(("entry->endingAddress                  = %s",     bytesToString(entry->endingAddress.address())));
         UEFI_LVVV(("entry->memoryDeviceHandle             = 0x%04X", entry->memoryDeviceHandle));
         UEFI_LVVV(("entry->memoryArrayMappedAddressHandle = 0x%04X", entry->memoryArrayMappedAddressHandle));
         UEFI_LVVV(("entry->partitionRowPosition           = %u",     entry->partitionRowPosition));
@@ -3847,8 +3894,8 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
 
 
 
-        // UEFI_TEST_ASSERT(entry->startingAddress                == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->endingAddress                  == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->startingAddress.value          == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->endingAddress.value            == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->memoryDeviceHandle             == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->memoryArrayMappedAddressHandle == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->partitionRowPosition           == 1,          NgosStatus::ASSERTION); // Commented due to value variation
@@ -3880,29 +3927,126 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
     const char8 *extendedStartingAddress = "N/A";
     const char8 *extendedEndingAddress   = "N/A";
 
-    if (DMI::getVersion() >= DMI_VERSION(2, 7))
+    // Get strings base on version
     {
-        extendedStartingAddress = mprintf("0x%016lX", entry->extendedStartingAddress);
-        extendedEndingAddress   = mprintf("0x%016lX", entry->extendedEndingAddress);
+        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        {
+            extendedStartingAddress = mprintf("0x%016lX", entry->extendedStartingAddress);
+            extendedEndingAddress   = mprintf("0x%016lX", entry->extendedEndingAddress);
+        }
     }
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+    const char8 *range;
+    const char8 *range2;
+    const char8 *partitionRowPosition;
+    const char8 *interleavePosition;
+    const char8 *interleavedDataDepth;
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                         strdup(enumToFullString(entry->header.type))),             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                             mprintf("0x%04X", entry->header.handle)),                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",                   mprintf("0x%08X", entry->startingAddress)),                NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",                     mprintf("0x%08X", entry->endingAddress)),                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory device handle",               mprintf("0x%04X", entry->memoryDeviceHandle)),             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array mapped address handle", mprintf("0x%04X", entry->memoryArrayMappedAddressHandle)), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition row position",             mprintf("%u", entry->partitionRowPosition)),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleave position",                mprintf("%u", entry->interleavePosition)),                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleaved data depth",             mprintf("%u", entry->interleavedDataDepth)),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address",          extendedStartingAddress),                                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",            extendedEndingAddress),                                    NgosStatus::ASSERTION);
+    // Get other strings
+    {
+        // Get string for Range
+        {
+            u64 start;
+            u64 end;
 
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+            if (
+                entry->startingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
+                &&
+                entry->endingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
+                &&
+                DMI::getVersion() >= DMI_VERSION(2, 7)
+               )
+            {
+                start = entry->extendedStartingAddress;
+                end   = entry->extendedEndingAddress;
+            }
+            else
+            {
+                start = entry->startingAddress.address();
+                end   = entry->endingAddress.address(1);
+            }
+
+            range  = mprintf("%s - %s", strdup(bytesToString(start)), strdup(bytesToString(end)));
+            range2 = mprintf("0x%016lX - 0x%016lX", start, end);
+        }
+
+
+
+        // Get string for Partition row position
+        {
+            if (entry->partitionRowPosition == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_PARTITION_ROW_POSITION_UNKNOWN)
+            {
+                partitionRowPosition = "Unknown";
+            }
+            else
+            {
+                partitionRowPosition = mprintf("%u", entry->partitionRowPosition);
+            }
+        }
+
+
+
+        // Get string for Interleave position
+        {
+            if (entry->interleavePosition == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_INTERLEAVE_POSITION_NON_INTERLEAVED)
+            {
+                interleavePosition = "Non-interleaved";
+            }
+            else
+            if (entry->interleavePosition == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_INTERLEAVE_POSITION_UNKNOWN)
+            {
+                interleavePosition = "Unknown";
+            }
+            else
+            {
+                interleavePosition = mprintf("%u", entry->interleavePosition);
+            }
+        }
+
+
+
+        // Get string for Interleaved data depth
+        {
+            if (entry->interleavedDataDepth == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_INTERLEAVED_DATA_DEPTH_NON_INTERLEAVED)
+            {
+                interleavedDataDepth = "Non-interleaved";
+            }
+            else
+            if (entry->interleavedDataDepth == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_INTERLEAVED_DATA_DEPTH_UNKNOWN)
+            {
+                interleavedDataDepth = "Unknown";
+            }
+            else
+            {
+                interleavedDataDepth = mprintf("%u", entry->interleavedDataDepth);
+            }
+        }
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                         strdup(enumToFullString(entry->header.type))),             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                             mprintf("0x%04X", entry->header.handle)),                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                              range),                                                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                              range2),                                                   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",                   mprintf("0x%08X", entry->startingAddress.value)),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",                     mprintf("0x%08X", entry->endingAddress.value)),            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory device handle",               mprintf("0x%04X", entry->memoryDeviceHandle)),             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array mapped address handle", mprintf("0x%04X", entry->memoryArrayMappedAddressHandle)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition row position",             partitionRowPosition),                                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleave position",                interleavePosition),                                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleaved data depth",             interleavedDataDepth),                                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address",          extendedStartingAddress),                                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",            extendedEndingAddress),                                    NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
 
 
 

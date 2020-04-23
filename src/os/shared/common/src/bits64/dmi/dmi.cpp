@@ -2337,10 +2337,12 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
     // Validation
     {
-        COMMON_LVVV(("entry->startingAddress   = 0x%08X", entry->startingAddress));
-        COMMON_LVVV(("entry->endingAddress     = 0x%08X", entry->endingAddress));
-        COMMON_LVVV(("entry->memoryArrayHandle = 0x%04X", entry->memoryArrayHandle));
-        COMMON_LVVV(("entry->partitionWidth    = %u",     entry->partitionWidth));
+        COMMON_LVVV(("entry->startingAddress.value = 0x%08X", entry->startingAddress.value));
+        COMMON_LVVV(("entry->startingAddress       = %s",     bytesToString(entry->startingAddress.address())));
+        COMMON_LVVV(("entry->endingAddress.value   = 0x%08X", entry->endingAddress.value));
+        COMMON_LVVV(("entry->endingAddress         = %s",     bytesToString(entry->endingAddress.address())));
+        COMMON_LVVV(("entry->memoryArrayHandle     = 0x%04X", entry->memoryArrayHandle));
+        COMMON_LVVV(("entry->partitionWidth        = %u",     entry->partitionWidth));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
@@ -2350,10 +2352,10 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
 
 
-        // COMMON_TEST_ASSERT(entry->startingAddress   == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->endingAddress     == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->memoryArrayHandle == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->partitionWidth    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->startingAddress.value == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->endingAddress.value   == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->memoryArrayHandle     == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->partitionWidth        == 1,          NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
@@ -2394,8 +2396,10 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
     // Validation
     {
-        COMMON_LVVV(("entry->startingAddress                = 0x%08X", entry->startingAddress));
-        COMMON_LVVV(("entry->endingAddress                  = 0x%08X", entry->endingAddress));
+        COMMON_LVVV(("entry->startingAddress.value          = 0x%08X", entry->startingAddress.value));
+        COMMON_LVVV(("entry->startingAddress                = %s",     bytesToString(entry->startingAddress.address())));
+        COMMON_LVVV(("entry->endingAddress.value            = 0x%08X", entry->endingAddress.value));
+        COMMON_LVVV(("entry->endingAddress                  = %s",     bytesToString(entry->endingAddress.address())));
         COMMON_LVVV(("entry->memoryDeviceHandle             = 0x%04X", entry->memoryDeviceHandle));
         COMMON_LVVV(("entry->memoryArrayMappedAddressHandle = 0x%04X", entry->memoryArrayMappedAddressHandle));
         COMMON_LVVV(("entry->partitionRowPosition           = %u",     entry->partitionRowPosition));
@@ -2410,8 +2414,8 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
 
 
-        // COMMON_TEST_ASSERT(entry->startingAddress                == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->endingAddress                  == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->startingAddress.value          == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->endingAddress.value            == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->memoryDeviceHandle             == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->memoryArrayMappedAddressHandle == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->partitionRowPosition           == 1,          NgosStatus::ASSERTION); // Commented due to value variation

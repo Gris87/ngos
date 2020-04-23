@@ -876,9 +876,11 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydeviceattributes.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydeviceextendedsize.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicemappedaddressrange.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicesize.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicesizegranularity.h
