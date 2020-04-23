@@ -9,6 +9,12 @@
 
 
 
+#define DMI_PORTABLE_BATTERY_DESIGN_CAPACITY_UNKNOWN               0x0000
+#define DMI_PORTABLE_BATTERY_DESIGN_VOLTAGE_UNKNOWN                0x0000
+#define DMI_PORTABLE_BATTERY_MAXIMUM_ERROR_IN_BATTERY_DATA_UNKNOWN 0xFF
+
+
+
 struct DmiPortableBatteryEntry
 {
     DmiEntryHeader                    header;
@@ -18,7 +24,7 @@ struct DmiPortableBatteryEntry
     u8                                serialNumberStringId;
     u8                                deviceNameStringId;
     DmiPortableBatteryDeviceChemistry deviceChemistry;
-    u16                               deviceCapacity;
+    u16                               designCapacity;
     u16                               designVoltage;
     u8                                sbdsVersionNumberStringId;
     u8                                maximumErrorInBatteryData;
