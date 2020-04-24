@@ -18,12 +18,6 @@
 
 
 
-#define REBOOT_BUTTON_POSITION_X_PERCENT 90
-#define REBOOT_BUTTON_POSITION_Y_PERCENT 0
-
-#define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
-#define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
-
 #define TABWIDGET_HEIGHT_PERCENT 70
 
 #define TAB_BUTTON_WIDTH_PERCENT  20
@@ -214,19 +208,19 @@ NgosStatus NetworkTestGUI::init(BootParams *params)
 
     sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, rebootImage, nullptr, "", rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setKeyboardEventHandler(onRebootButtonKeyboardEvent),                                                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setPressEventHandler(onRebootButtonPressed),                                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth - systemButtonSize, screenHeight - systemButtonSize * 2), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setKeyboardEventHandler(onRebootButtonKeyboardEvent),                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setPressEventHandler(onRebootButtonPressed),                                      NgosStatus::ASSERTION);
 
 
 
     sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shutdownImage, nullptr, "", rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setKeyboardEventHandler(onShutdownButtonKeyboardEvent),                                                                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setPressEventHandler(onShutdownButtonPressed),                                                                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth - systemButtonSize, screenHeight - systemButtonSize), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setKeyboardEventHandler(onShutdownButtonKeyboardEvent),                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setPressEventHandler(onShutdownButtonPressed),                                NgosStatus::ASSERTION);
 
 
 
@@ -355,6 +349,51 @@ NgosStatus NetworkTestGUI::exec()
 NgosStatus NetworkTestGUI::focusTabFirstWidget()
 {
     UEFI_LT((""));
+
+
+
+    switch (sTabWidget->getCurrentPage())
+    {
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sRebootButton);
+        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sRebootButton);
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sRebootButton);
+        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTabWidget->getCurrentPage(), __FILE__, __LINE__));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus NetworkTestGUI::focusTabLastWidget()
+{
+    UEFI_LT((""));
+
+
+
+    switch (sTabWidget->getCurrentPage())
+    {
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTabButton);
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestTabButton);
+        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTabButton);
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTabWidget->getCurrentPage(), __FILE__, __LINE__));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
 
 
 
@@ -544,9 +583,8 @@ NgosStatus NetworkTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSummaryTabButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
+        case UefiInputKeyScanCode::UP:   return focusTabLastWidget();
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sShutdownButton);
 
         default:
         {
@@ -581,8 +619,7 @@ NgosStatus NetworkTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: return focusTabFirstWidget();
+        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -727,9 +764,8 @@ NgosStatus NetworkTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &k
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestTabButton);
+        case UefiInputKeyScanCode::DOWN: return focusTabFirstWidget();
 
         default:
         {
