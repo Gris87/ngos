@@ -7,6 +7,10 @@
 
 
 
+#define DMI_MANAGEMENT_DEVICE_COMPONENT_THRESHOLD_HANDLE_NOT_AVAILABLE 0xFFFF
+
+
+
 struct DmiManagementDeviceComponentEntry
 {
     DmiEntryHeader header;

@@ -5284,73 +5284,79 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEnt
     const char8 *entryName         = nullptr;
     const char8 *descriptionString = "N/A";
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->descriptionStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    descriptionString = begin;
-                    entryName         = descriptionString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->descriptionStringId)
+                    {
+                        descriptionString = begin;
+                        entryName         = descriptionString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
     }
-    else
+
+
+
+    // Add Device Manager entry
     {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",   strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",       mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",  descriptionString),                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",         strdup(enumToFullString(entry->type))),        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address",      mprintf("0x%08X", entry->address)),            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address type", strdup(enumToFullString(entry->addressType))), NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",   strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",       mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",  descriptionString),                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",         strdup(enumToFullString(entry->type))),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address",      mprintf("0x%08X", entry->address)),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address type", strdup(enumToFullString(entry->addressType))), NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -5388,73 +5394,98 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceComponentEntry(DmiManagement
     const char8 *entryName         = nullptr;
     const char8 *descriptionString = "N/A";
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->descriptionStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    descriptionString = begin;
-                    entryName         = descriptionString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->descriptionStringId)
+                    {
+                        descriptionString = begin;
+                        entryName         = descriptionString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
+
+
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
+    }
+
+
+
+    const char8 *thresholdHandle;
+
+    // Get other strings
+    {
+        // Get string for Threshold handle
+        {
+            if (entry->thresholdHandle == DMI_MANAGEMENT_DEVICE_COMPONENT_THRESHOLD_HANDLE_NOT_AVAILABLE)
+            {
+                thresholdHandle = "N/A";
             }
-
-
-
-            ++cur;
-        } while(true);
+            else
+            {
+                thresholdHandle = mprintf("0x%04X", entry->thresholdHandle);
+            }
+        }
     }
-    else
+
+
+
+    // Add Device Manager entry
     {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type))),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle)),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              descriptionString),                                NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Management device handle", mprintf("0x%04X", entry->managementDeviceHandle)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Component handle",         mprintf("0x%04X", entry->componentHandle)),        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Threshold handle",         thresholdHandle),                                  NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type))),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle)),          NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              descriptionString),                                NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Management device handle", mprintf("0x%04X", entry->managementDeviceHandle)), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Component handle",         mprintf("0x%04X", entry->componentHandle)),        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Threshold handle",         mprintf("0x%04X", entry->thresholdHandle)),        NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -5466,6 +5497,10 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceThresholdDataEntry(DmiManage
     UEFI_LT((" | entry = 0x%p", entry));
 
     UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
 
 
 
@@ -5496,18 +5531,115 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceThresholdDataEntry(DmiManage
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+    const char8 *lowerThresholdNonCritical;
+    const char8 *upperThresholdNonCritical;
+    const char8 *lowerThresholdCritical;
+    const char8 *upperThresholdCritical;
+    const char8 *lowerThresholdNonRecoverable;
+    const char8 *upperThresholdNonRecoverable;
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-critical",    mprintf("%u", entry->lowerThresholdNonCritical)),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-critical",    mprintf("%u", entry->upperThresholdNonCritical)),    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold critical",        mprintf("%u", entry->lowerThresholdCritical)),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold critical",        mprintf("%u", entry->upperThresholdCritical)),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-recoverable", mprintf("%u", entry->lowerThresholdNonRecoverable)), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-recoverable", mprintf("%u", entry->upperThresholdNonRecoverable)), NgosStatus::ASSERTION);
+    // Get other strings
+    {
+        // Get string for Lower threshold non-critical
+        {
+            if (entry->lowerThresholdNonCritical == DMI_MANAGEMENT_DEVICE_THRESHOLD_DATA_LOWER_THRESHOLD_NON_CRITICAL_NOT_AVAILABLE)
+            {
+                lowerThresholdNonCritical = "N/A";
+            }
+            else
+            {
+                lowerThresholdNonCritical = mprintf("%u", entry->lowerThresholdNonCritical);
+            }
+        }
 
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+
+
+        // Get string for Upper threshold non-critical
+        {
+            if (entry->upperThresholdNonCritical == DMI_MANAGEMENT_DEVICE_THRESHOLD_DATA_UPPER_THRESHOLD_NON_CRITICAL_NOT_AVAILABLE)
+            {
+                upperThresholdNonCritical = "N/A";
+            }
+            else
+            {
+                upperThresholdNonCritical = mprintf("%u", entry->upperThresholdNonCritical);
+            }
+        }
+
+
+
+        // Get string for Lower threshold critical
+        {
+            if (entry->lowerThresholdCritical == DMI_MANAGEMENT_DEVICE_THRESHOLD_DATA_LOWER_THRESHOLD_CRITICAL_NOT_AVAILABLE)
+            {
+                lowerThresholdCritical = "N/A";
+            }
+            else
+            {
+                lowerThresholdCritical = mprintf("%u", entry->lowerThresholdCritical);
+            }
+        }
+
+
+
+        // Get string for Upper threshold critical
+        {
+            if (entry->upperThresholdCritical == DMI_MANAGEMENT_DEVICE_THRESHOLD_DATA_UPPER_THRESHOLD_CRITICAL_NOT_AVAILABLE)
+            {
+                upperThresholdCritical = "N/A";
+            }
+            else
+            {
+                upperThresholdCritical = mprintf("%u", entry->upperThresholdCritical);
+            }
+        }
+
+
+
+        // Get string for Lower threshold non-recoverable
+        {
+            if (entry->lowerThresholdNonRecoverable == DMI_MANAGEMENT_DEVICE_THRESHOLD_DATA_LOWER_THRESHOLD_NON_RECOVERABLE_NOT_AVAILABLE)
+            {
+                lowerThresholdNonRecoverable = "N/A";
+            }
+            else
+            {
+                lowerThresholdNonRecoverable = mprintf("%u", entry->lowerThresholdNonRecoverable);
+            }
+        }
+
+
+
+        // Get string for Upper threshold non-recoverable
+        {
+            if (entry->upperThresholdNonRecoverable == DMI_MANAGEMENT_DEVICE_THRESHOLD_DATA_UPPER_THRESHOLD_NON_RECOVERABLE_NOT_AVAILABLE)
+            {
+                upperThresholdNonRecoverable = "N/A";
+            }
+            else
+            {
+                upperThresholdNonRecoverable = mprintf("%u", entry->upperThresholdNonRecoverable);
+            }
+        }
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-critical",    lowerThresholdNonCritical),                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-critical",    upperThresholdNonCritical),                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold critical",        lowerThresholdCritical),                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold critical",        upperThresholdCritical),                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-recoverable", lowerThresholdNonRecoverable),                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-recoverable", upperThresholdNonRecoverable),                 NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
 
 
 
