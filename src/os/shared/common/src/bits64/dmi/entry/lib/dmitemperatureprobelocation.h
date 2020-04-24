@@ -23,7 +23,11 @@ enum class DmiTemperatureProbeLocation: u8
     MEMORY_MODULE            = 8,
     PROCESSOR_MODULE         = 9,
     POWER_UNIT               = 10,
-    ADD_IN_CARD              = 11
+    ADD_IN_CARD              = 11,
+    FRONT_PANEL_BOARD        = 12,
+    BACK_PANEL_BOARD         = 13,
+    POWER_SYSTEM_BOARD       = 14,
+    DRIVE_BACK_PLANE         = 15
 };
 
 
@@ -48,6 +52,10 @@ inline const char8* enumToString(DmiTemperatureProbeLocation location) // TEST: 
         case DmiTemperatureProbeLocation::PROCESSOR_MODULE:         return "PROCESSOR_MODULE";
         case DmiTemperatureProbeLocation::POWER_UNIT:               return "POWER_UNIT";
         case DmiTemperatureProbeLocation::ADD_IN_CARD:              return "ADD_IN_CARD";
+        case DmiTemperatureProbeLocation::FRONT_PANEL_BOARD:        return "FRONT_PANEL_BOARD";
+        case DmiTemperatureProbeLocation::BACK_PANEL_BOARD:         return "BACK_PANEL_BOARD";
+        case DmiTemperatureProbeLocation::POWER_SYSTEM_BOARD:       return "POWER_SYSTEM_BOARD";
+        case DmiTemperatureProbeLocation::DRIVE_BACK_PLANE:         return "DRIVE_BACK_PLANE";
 
         default: return "UNKNOWN";
     }

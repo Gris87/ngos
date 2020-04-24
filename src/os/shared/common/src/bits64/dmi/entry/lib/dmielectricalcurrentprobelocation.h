@@ -23,11 +23,7 @@ enum class DmiElectricalCurrentProbeLocation: u8
     MEMORY_MODULE            = 8,
     PROCESSOR_MODULE         = 9,
     POWER_UNIT               = 10,
-    ADD_IN_CARD              = 11,
-    FRONT_PANEL_BOARD        = 12,
-    BACK_PANEL_BOARD         = 13,
-    POWER_SYSTEM_BOARD       = 14,
-    DRIVE_BACK_PLANE         = 15
+    ADD_IN_CARD              = 11
 };
 
 
@@ -52,10 +48,6 @@ inline const char8* enumToString(DmiElectricalCurrentProbeLocation location) // 
         case DmiElectricalCurrentProbeLocation::PROCESSOR_MODULE:         return "PROCESSOR_MODULE";
         case DmiElectricalCurrentProbeLocation::POWER_UNIT:               return "POWER_UNIT";
         case DmiElectricalCurrentProbeLocation::ADD_IN_CARD:              return "ADD_IN_CARD";
-        case DmiElectricalCurrentProbeLocation::FRONT_PANEL_BOARD:        return "FRONT_PANEL_BOARD";
-        case DmiElectricalCurrentProbeLocation::BACK_PANEL_BOARD:         return "BACK_PANEL_BOARD";
-        case DmiElectricalCurrentProbeLocation::POWER_SYSTEM_BOARD:       return "POWER_SYSTEM_BOARD";
-        case DmiElectricalCurrentProbeLocation::DRIVE_BACK_PLANE:         return "DRIVE_BACK_PLANE";
 
         default: return "UNKNOWN";
     }

@@ -9,6 +9,12 @@
 
 
 
+#define DMI_COOLING_DEVICE_TEMPERATURE_PROBE_HANDLE_NOT_AVAILABLE 0xFFFF
+#define DMI_COOLING_DEVICE_COOLING_UNIT_GROUP_NO_GROUP            0x00
+#define DMI_COOLING_DEVICE_NOMINAL_SPEED_UNKNOWN                  0x8000
+
+
+
 struct DmiCoolingDeviceEntry
 {
     DmiEntryHeader header;

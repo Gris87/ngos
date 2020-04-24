@@ -3462,7 +3462,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
 
 
-                            // Get string for Non volatile size
+                            // Get string for Non-volatile size
                             {
                                 if (entry->nonVolatileSize != DMI_MEMORY_DEVICE_NON_VOLATILE_SIZE_NOT_AVAILABLE)
                                 {
@@ -3723,7 +3723,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module product ID",                           moduleProductID),                         NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller manufacturer ID", memorySubsystemControllerManufacturerID), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller product ID",      memorySubsystemControllerProductID),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Non volatile size",                           nonVolatileSize),                         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Non-volatile size",                           nonVolatileSize),                         NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Volatile size",                               volatileSize),                            NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache size",                                  cacheSize),                               NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Logical size",                                logicalSize),                             NgosStatus::ASSERTION);
@@ -4268,7 +4268,18 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
             }
             else
             {
-                designCapacity = mprintf("%u.%03u W*h", entry->designCapacity / 1000, entry->designCapacity % 1000);
+                u64 capacity;
+
+                if (DMI::getVersion() >= DMI_VERSION(2, 2))
+                {
+                    capacity = entry->designCapacity * entry->designCapacityMultiplier;
+                }
+                else
+                {
+                    capacity = entry->designCapacity;
+                }
+
+                designCapacity = mprintf("%u.%03u W*h", capacity / 1000, capacity % 1000);
             }
         }
 
@@ -4378,79 +4389,179 @@ NgosStatus DeviceManagerDMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entr
     const char8 *entryName         = nullptr;
     const char8 *descriptionString = "N/A";
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->descriptionStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    descriptionString = begin;
-                    entryName         = descriptionString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->descriptionStringId)
+                    {
+                        descriptionString = begin;
+                        entryName         = descriptionString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
+
+
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
+    }
+
+
+
+    const char8 *maximumValue;
+    const char8 *minimumValue;
+    const char8 *resolution;
+    const char8 *tolerance;
+    const char8 *accuracy;
+    const char8 *nominalValue;
+
+    // Get other strings
+    {
+        // Get string for Maximum value
+        {
+            if (entry->maximumValue == DMI_VOLTAGE_PROBE_MAXIMUM_VALUE_UNKNOWN)
+            {
+                maximumValue = "Unknown";
             }
+            else
+            {
+                maximumValue = mprintf("%u.%03u V", entry->maximumValue / 1000, entry->maximumValue % 1000);
+            }
+        }
 
 
 
-            ++cur;
-        } while(true);
+        // Get string for Minimum value
+        {
+            if (entry->minimumValue == DMI_VOLTAGE_PROBE_MINIMUM_VALUE_UNKNOWN)
+            {
+                minimumValue = "Unknown";
+            }
+            else
+            {
+                minimumValue = mprintf("%u.%03u V", entry->minimumValue / 1000, entry->minimumValue % 1000);
+            }
+        }
+
+
+
+        // Get string for Resolution
+        {
+            if (entry->resolution == DMI_VOLTAGE_PROBE_RESOLUTION_UNKNOWN)
+            {
+                resolution = "Unknown";
+            }
+            else
+            {
+                resolution = mprintf("%u.%04u V", entry->resolution / 10000, entry->resolution % 10000);
+            }
+        }
+
+
+
+        // Get string for Tolerance
+        {
+            if (entry->tolerance == DMI_VOLTAGE_PROBE_TOLERANCE_UNKNOWN)
+            {
+                tolerance = "Unknown";
+            }
+            else
+            {
+                tolerance = mprintf("%u.%03u V", entry->tolerance / 1000, entry->tolerance % 1000);
+            }
+        }
+
+
+
+        // Get string for Accuracy
+        {
+            if (entry->accuracy == DMI_VOLTAGE_PROBE_ACCURACY_UNKNOWN)
+            {
+                accuracy = "Unknown";
+            }
+            else
+            {
+                accuracy = mprintf("%u.%02u %", entry->accuracy / 100, entry->accuracy % 100);
+            }
+        }
+
+
+
+        // Get string for Nominal value
+        {
+            if (entry->nominalValue == DMI_VOLTAGE_PROBE_NOMINAL_VALUE_UNKNOWN)
+            {
+                nominalValue = "Unknown";
+            }
+            else
+            {
+                nominalValue = mprintf("%u.%03u V", entry->nominalValue / 1000, entry->nominalValue % 1000);
+            }
+        }
     }
-    else
+
+
+
+    // Add Device Manager entry
     {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   descriptionString),                                                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiVoltageProbeLocation)entry->location))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiVoltageProbeStatus)entry->status))),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue),                                                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue),                                                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution),                                                         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance),                                                          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy),                                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue),                                                       NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   descriptionString),                                                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiVoltageProbeLocation)entry->location))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiVoltageProbeStatus)entry->status))),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", mprintf("%u", entry->maximumValue)),                                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", mprintf("%u", entry->minimumValue)),                                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    mprintf("%u", entry->resolution)),                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     mprintf("%u", entry->tolerance)),                                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      mprintf("%u", entry->accuracy)),                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", mprintf("%u", entry->nominalValue)),                                 NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -4509,80 +4620,140 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
     const char8 *entryName         = nullptr;
     const char8 *descriptionString = "N/A";
 
-    if (
-        DMI::getVersion() >= DMI_VERSION(2, 7)
-        &&
-        entry->descriptionStringId
-       )
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+        u8 descriptionStringId = 0;
 
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
-            if (!cur[0]) // cur[0] == 0
+            descriptionStringId = entry->descriptionStringId;
+        }
+
+
+
+        if (descriptionStringId)
+        {
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->descriptionStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    descriptionString = begin;
-                    entryName         = descriptionString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == descriptionStringId)
+                    {
+                        descriptionString = begin;
+                        entryName         = descriptionString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
+
+
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
+    }
+
+
+
+    const char8 *temperatureProbeHandle;
+    const char8 *coolingUnitGroup;
+    const char8 *nominalSpeed;
+
+    // Get other strings
+    {
+        // Get string for Temperature probe handle
+        {
+            if (entry->temperatureProbeHandle == DMI_COOLING_DEVICE_TEMPERATURE_PROBE_HANDLE_NOT_AVAILABLE)
+            {
+                temperatureProbeHandle = "N/A";
             }
+            else
+            {
+                temperatureProbeHandle = mprintf("0x%04X", entry->temperatureProbeHandle);
+            }
+        }
 
 
 
-            ++cur;
-        } while(true);
+        // Get string for Cooling unit group
+        {
+            if (entry->coolingUnitGroup == DMI_COOLING_DEVICE_COOLING_UNIT_GROUP_NO_GROUP)
+            {
+                coolingUnitGroup = "No group";
+            }
+            else
+            {
+                coolingUnitGroup = mprintf("%u", entry->coolingUnitGroup);
+            }
+        }
+
+
+
+        // Get string for Nominal speed
+        {
+            if (entry->nominalSpeed == DMI_COOLING_DEVICE_NOMINAL_SPEED_UNKNOWN)
+            {
+                nominalSpeed = "Unknown";
+            }
+            else
+            {
+                nominalSpeed = mprintf("%u rpm", entry->nominalSpeed);
+            }
+        }
     }
-    else
+
+
+
+    // Add Device Manager entry
     {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type))),                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle)),                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Temperature probe handle", temperatureProbeHandle),                                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type",              strdup(enumToFullString((DmiCoolingDeviceType)entry->deviceType))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                   strdup(enumToFullString((DmiCoolingDeviceStatus)entry->status))),   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cooling unit group",       coolingUnitGroup),                                                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",              mprintf("0x%08X", entry->oemDefined)),                              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal speed",            nominalSpeed),                                                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              descriptionString),                                                 NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type))),                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle)),                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Temperature probe handle", mprintf("0x%04X", entry->temperatureProbeHandle)),                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type",              strdup(enumToFullString((DmiCoolingDeviceType)entry->deviceType))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                   strdup(enumToFullString((DmiCoolingDeviceStatus)entry->status))),   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cooling unit group",       mprintf("%u", entry->coolingUnitGroup)),                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",              mprintf("0x%08X", entry->oemDefined)),                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal speed",            mprintf("%u", entry->nominalSpeed)),                                NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              descriptionString),                                                 NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -4634,79 +4805,179 @@ NgosStatus DeviceManagerDMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEnt
     const char8 *entryName         = nullptr;
     const char8 *descriptionString = "N/A";
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->descriptionStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    descriptionString = begin;
-                    entryName         = descriptionString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->descriptionStringId)
+                    {
+                        descriptionString = begin;
+                        entryName         = descriptionString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
+
+
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
+    }
+
+
+
+    const char8 *maximumValue;
+    const char8 *minimumValue;
+    const char8 *resolution;
+    const char8 *tolerance;
+    const char8 *accuracy;
+    const char8 *nominalValue;
+
+    // Get other strings
+    {
+        // Get string for Maximum value
+        {
+            if (entry->maximumValue == DMI_TEMPERATURE_PROBE_MAXIMUM_VALUE_UNKNOWN)
+            {
+                maximumValue = "Unknown";
             }
+            else
+            {
+                maximumValue = mprintf("%u.%u C", entry->maximumValue / 10, entry->maximumValue % 10);
+            }
+        }
 
 
 
-            ++cur;
-        } while(true);
+        // Get string for Minimum value
+        {
+            if (entry->minimumValue == DMI_TEMPERATURE_PROBE_MINIMUM_VALUE_UNKNOWN)
+            {
+                minimumValue = "Unknown";
+            }
+            else
+            {
+                minimumValue = mprintf("%u.%u C", entry->minimumValue / 10, entry->minimumValue % 10);
+            }
+        }
+
+
+
+        // Get string for Resolution
+        {
+            if (entry->resolution == DMI_TEMPERATURE_PROBE_RESOLUTION_UNKNOWN)
+            {
+                resolution = "Unknown";
+            }
+            else
+            {
+                resolution = mprintf("%u.%03u C", entry->resolution / 1000, entry->resolution % 1000);
+            }
+        }
+
+
+
+        // Get string for Tolerance
+        {
+            if (entry->tolerance == DMI_TEMPERATURE_PROBE_TOLERANCE_UNKNOWN)
+            {
+                tolerance = "Unknown";
+            }
+            else
+            {
+                tolerance = mprintf("%u.%u C", entry->tolerance / 10, entry->tolerance % 10);
+            }
+        }
+
+
+
+        // Get string for Accuracy
+        {
+            if (entry->accuracy == DMI_TEMPERATURE_PROBE_ACCURACY_UNKNOWN)
+            {
+                accuracy = "Unknown";
+            }
+            else
+            {
+                accuracy = mprintf("%u.%02u %", entry->accuracy / 100, entry->accuracy % 100);
+            }
+        }
+
+
+
+        // Get string for Nominal value
+        {
+            if (entry->nominalValue == DMI_TEMPERATURE_PROBE_NOMINAL_VALUE_UNKNOWN)
+            {
+                nominalValue = "Unknown";
+            }
+            else
+            {
+                nominalValue = mprintf("%u.%u C", entry->nominalValue / 10, entry->nominalValue % 10);
+            }
+        }
     }
-    else
+
+
+
+    // Add Device Manager entry
     {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                                NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   descriptionString),                                                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiTemperatureProbeLocation)entry->location))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiTemperatureProbeStatus)entry->status))),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue),                                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue),                                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution),                                                             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance),                                                              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy),                                                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                                   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue),                                                           NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                                NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   descriptionString),                                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiTemperatureProbeLocation)entry->location))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiTemperatureProbeStatus)entry->status))),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", mprintf("%u", entry->maximumValue)),                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", mprintf("%u", entry->minimumValue)),                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    mprintf("%u", entry->resolution)),                                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     mprintf("%u", entry->tolerance)),                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      mprintf("%u", entry->accuracy)),                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", mprintf("%u", entry->nominalValue)),                                     NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -4758,79 +5029,179 @@ NgosStatus DeviceManagerDMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCur
     const char8 *entryName         = nullptr;
     const char8 *descriptionString = "N/A";
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            UEFI_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                UEFI_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (stringId == entry->descriptionStringId)
+                if (!cur[0]) // cur[0] == 0
                 {
-                    descriptionString = begin;
-                    entryName         = descriptionString;
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (stringId == entry->descriptionStringId)
+                    {
+                        descriptionString = begin;
+                        entryName         = descriptionString;
+                    }
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
 
 
-                if (!cur[1]) // cur[1] == 0
-                {
-                    break;
-                }
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
 
-                begin = cur + 1;
+
+
+        if (!entryName)
+        {
+            entryName = enumToHumanString(entry->header.type);
+        }
+    }
+
+
+
+    const char8 *maximumValue;
+    const char8 *minimumValue;
+    const char8 *resolution;
+    const char8 *tolerance;
+    const char8 *accuracy;
+    const char8 *nominalValue;
+
+    // Get other strings
+    {
+        // Get string for Maximum value
+        {
+            if (entry->maximumValue == DMI_ELECTRICAL_CURRENT_PROBE_MAXIMUM_VALUE_UNKNOWN)
+            {
+                maximumValue = "Unknown";
             }
+            else
+            {
+                maximumValue = mprintf("%u.%03u A", entry->maximumValue / 1000, entry->maximumValue % 1000);
+            }
+        }
 
 
 
-            ++cur;
-        } while(true);
+        // Get string for Minimum value
+        {
+            if (entry->minimumValue == DMI_ELECTRICAL_CURRENT_PROBE_MINIMUM_VALUE_UNKNOWN)
+            {
+                minimumValue = "Unknown";
+            }
+            else
+            {
+                minimumValue = mprintf("%u.%03u A", entry->minimumValue / 1000, entry->minimumValue % 1000);
+            }
+        }
+
+
+
+        // Get string for Resolution
+        {
+            if (entry->resolution == DMI_ELECTRICAL_CURRENT_PROBE_RESOLUTION_UNKNOWN)
+            {
+                resolution = "Unknown";
+            }
+            else
+            {
+                resolution = mprintf("%u.%04u A", entry->resolution / 10000, entry->resolution % 10000);
+            }
+        }
+
+
+
+        // Get string for Tolerance
+        {
+            if (entry->tolerance == DMI_ELECTRICAL_CURRENT_PROBE_TOLERANCE_UNKNOWN)
+            {
+                tolerance = "Unknown";
+            }
+            else
+            {
+                tolerance = mprintf("%u.%03u A", entry->tolerance / 1000, entry->tolerance % 1000);
+            }
+        }
+
+
+
+        // Get string for Accuracy
+        {
+            if (entry->accuracy == DMI_ELECTRICAL_CURRENT_PROBE_ACCURACY_UNKNOWN)
+            {
+                accuracy = "Unknown";
+            }
+            else
+            {
+                accuracy = mprintf("%u.%02u %", entry->accuracy / 100, entry->accuracy % 100);
+            }
+        }
+
+
+
+        // Get string for Nominal value
+        {
+            if (entry->nominalValue == DMI_ELECTRICAL_CURRENT_PROBE_NOMINAL_VALUE_UNKNOWN)
+            {
+                nominalValue = "Unknown";
+            }
+            else
+            {
+                nominalValue = mprintf("%u.%03u A", entry->nominalValue / 1000, entry->nominalValue % 1000);
+            }
+        }
     }
-    else
+
+
+
+    // Add Device Manager entry
     {
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   descriptionString),                                                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiElectricalCurrentProbeLocation)entry->location))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiElectricalCurrentProbeStatus)entry->status))),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue),                                                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue),                                                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution),                                                                   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance),                                                                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy),                                                                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                                         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue),                                                                 NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
-
-
-
-    if (!entryName)
-    {
-        entryName = enumToHumanString(entry->header.type);
-    }
-
-
-
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
-
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                                 NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   descriptionString),                                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiElectricalCurrentProbeLocation)entry->location))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiElectricalCurrentProbeStatus)entry->status))),     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", mprintf("%u", entry->maximumValue)),                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", mprintf("%u", entry->minimumValue)),                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    mprintf("%u", entry->resolution)),                                             NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     mprintf("%u", entry->tolerance)),                                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      mprintf("%u", entry->accuracy)),                                               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                                         NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", mprintf("%u", entry->nominalValue)),                                           NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -4842,6 +5213,10 @@ NgosStatus DeviceManagerDMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
     UEFI_LT((" | entry = 0x%p", entry));
 
     UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
 
 
 
@@ -4862,13 +5237,16 @@ NgosStatus DeviceManagerDMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
 
 
-    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot status", strdup(enumToFullString(entry->bootStatus))),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot status", strdup(enumToFullString(entry->bootStatus))),  NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
 
 
 

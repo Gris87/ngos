@@ -2630,44 +2630,47 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 
 
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (!cur[1]) // cur[1] == 0
+                if (!cur[0]) // cur[0] == 0
                 {
-                    break;
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -2724,48 +2727,56 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
 
 
-    if (
-        DMI::getVersion() >= DMI_VERSION(2, 7)
-        &&
-        entry->descriptionStringId
-       )
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+        u8 descriptionStringId = 0;
 
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
-            if (!cur[0]) // cur[0] == 0
+            descriptionStringId = entry->descriptionStringId;
+        }
+
+
+
+        if (descriptionStringId)
+        {
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (!cur[1]) // cur[1] == 0
+                if (!cur[0]) // cur[0] == 0
                 {
-                    break;
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -2815,44 +2826,47 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
 
 
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (!cur[1]) // cur[1] == 0
+                if (!cur[0]) // cur[0] == 0
                 {
-                    break;
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -2902,44 +2916,47 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
 
 
 
-    if (entry->descriptionStringId)
+    // Get strings
     {
-        COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-        char8 *cur      = (char8 *)entry + entry->header.length;
-        char8 *begin    = cur;
-        u8     stringId = 0;
-
-        AVOID_UNUSED(begin);
-
-        do
+        if (entry->descriptionStringId)
         {
-            if (!cur[0]) // cur[0] == 0
+            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
+
+
+
+            char8 *cur      = (char8 *)entry + entry->header.length;
+            char8 *begin    = cur;
+            u8     stringId = 0;
+
+            AVOID_UNUSED(begin);
+
+            do
             {
-                ++stringId;
-                COMMON_LVVV(("String #%u: %s", stringId, begin));
-
-
-
-                if (!cur[1]) // cur[1] == 0
+                if (!cur[0]) // cur[0] == 0
                 {
-                    break;
+                    ++stringId;
+                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+
+
+
+                    if (!cur[1]) // cur[1] == 0
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
                 }
 
-                begin = cur + 1;
-            }
 
 
-
-            ++cur;
-        } while(true);
-    }
-    else
-    {
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
     }
 
 

@@ -53,6 +53,7 @@ Code verifier:
 - Verify for amount of arguments in log
 - Verify for asserts alignment
 - Verify for DeviceManagerGUI::sImagesPath
+- Verify for English chars only in source code
 - Remove verifier for zero
 - Remove verifier for shift
 - Upgrade verifier for trace arguments (Check format with the types)
