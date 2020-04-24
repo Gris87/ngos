@@ -22,6 +22,7 @@ public:
 
 private:
     static NgosStatus focusTabFirstWidget(); // TEST: NO
+    static NgosStatus focusTabLastWidget(); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO

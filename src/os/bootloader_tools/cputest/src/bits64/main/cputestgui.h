@@ -44,6 +44,7 @@ private:
     static NgosStatus addSummaryFeature(X86Feature flag, u64 score); // TEST: NO
 
     static NgosStatus focusTabFirstWidget(); // TEST: NO
+    static NgosStatus focusTabLastWidget(); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO

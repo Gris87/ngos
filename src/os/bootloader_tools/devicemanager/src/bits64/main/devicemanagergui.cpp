@@ -19,12 +19,6 @@
 
 
 
-#define REBOOT_BUTTON_POSITION_X_PERCENT 90
-#define REBOOT_BUTTON_POSITION_Y_PERCENT 0
-
-#define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
-#define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
-
 #define DEVICES_TREEWIDGET_POSITION_X_PERCENT 1
 #define DEVICES_TREEWIDGET_POSITION_Y_PERCENT 1
 #define DEVICES_TREEWIDGET_WIDTH_PERCENT      29
@@ -33,7 +27,7 @@
 
 #define DEVICE_INFO_TABLEWIDGET_POSITION_X_PERCENT 31
 #define DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT 1
-#define DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT      58
+#define DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT      68
 #define DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT     68
 #define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 2.5
 
@@ -194,19 +188,19 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, rebootImage, nullptr, "", rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setKeyboardEventHandler(onRebootButtonKeyboardEvent),                                                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setPressEventHandler(onRebootButtonPressed),                                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth - systemButtonSize, screenHeight - systemButtonSize * 2), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setKeyboardEventHandler(onRebootButtonKeyboardEvent),                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setPressEventHandler(onRebootButtonPressed),                                      NgosStatus::ASSERTION);
 
 
 
     sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shutdownImage, nullptr, "", rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setKeyboardEventHandler(onShutdownButtonKeyboardEvent),                                                                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setPressEventHandler(onShutdownButtonPressed),                                                                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth - systemButtonSize, screenHeight - systemButtonSize), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setKeyboardEventHandler(onShutdownButtonKeyboardEvent),                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setPressEventHandler(onShutdownButtonPressed),                                NgosStatus::ASSERTION);
 
 
 
@@ -672,8 +666,8 @@ NgosStatus DeviceManagerGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sDeviceInfoTableWidget);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sDeviceInfoTableWidget);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sShutdownButton);
 
         default:
         {
@@ -708,7 +702,7 @@ NgosStatus DeviceManagerGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &k
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -765,8 +759,8 @@ NgosStatus DeviceManagerGUI::onDeviceInfoTableWidgetKeyboardEvent(const UefiInpu
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sDevicesTreeWidget);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sDevicesTreeWidget);
+        case UefiInputKeyScanCode::DOWN: return sDeviceInfoTableWidget->getSelectedRow() == sDeviceInfoTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton) : NgosStatus::NO_EFFECT;
 
         default:
         {

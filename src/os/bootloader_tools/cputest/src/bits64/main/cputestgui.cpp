@@ -10,6 +10,7 @@
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/utils.h>
+#include <macro/constants.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
@@ -21,12 +22,6 @@
 #include "src/bits64/tests/testbase.h"
 
 
-
-#define REBOOT_BUTTON_POSITION_X_PERCENT 90
-#define REBOOT_BUTTON_POSITION_Y_PERCENT 0
-
-#define SHUTDOWN_BUTTON_POSITION_X_PERCENT 95
-#define SHUTDOWN_BUTTON_POSITION_Y_PERCENT 0
 
 #define TABWIDGET_HEIGHT_PERCENT 70
 
@@ -180,12 +175,12 @@
 #define COLUMN_ICON        0
 #define COLUMN_DESCRIPTION 1
 
-#define SCORE_PER_THREAD                          500
-#define SCORE_PER_100_MHZ                         200
-#define SCORE_L1_DATA_CACHE_PER_1_KB_1_WAY        2
-#define SCORE_L1_INSTRUCTION_CACHE_PER_1_KB_1_WAY 2
-#define SCORE_L2_CACHE_PER_1_MB_1_WAY             10
-#define SCORE_L3_CACHE_PER_1_MB_1_WAY             12
+#define SCORE_PER_THREAD                    500
+#define SCORE_PER_100_MHZ                   200
+#define SCORE_L1_DATA_CACHE_PER_1_KB        2
+#define SCORE_L1_INSTRUCTION_CACHE_PER_1_KB 2
+#define SCORE_L2_CACHE_PER_1_MB             20
+#define SCORE_L3_CACHE_PER_1_MB             20
 
 
 
@@ -438,19 +433,19 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     sRebootButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, rebootImage, nullptr, "", rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth * REBOOT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * REBOOT_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                                                              NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setKeyboardEventHandler(onRebootButtonKeyboardEvent),                                                                     NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sRebootButton->setPressEventHandler(onRebootButtonPressed),                                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setPosition(screenWidth - systemButtonSize, screenHeight - systemButtonSize * 2), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setSize(systemButtonSize, systemButtonSize),                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setKeyboardEventHandler(onRebootButtonKeyboardEvent),                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRebootButton->setPressEventHandler(onRebootButtonPressed),                                      NgosStatus::ASSERTION);
 
 
 
     sShutdownButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, shutdownImage, nullptr, "", rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth * SHUTDOWN_BUTTON_POSITION_X_PERCENT / 100, screenHeight * SHUTDOWN_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                                                                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setKeyboardEventHandler(onShutdownButtonKeyboardEvent),                                                                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sShutdownButton->setPressEventHandler(onShutdownButtonPressed),                                                                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setPosition(screenWidth - systemButtonSize, screenHeight - systemButtonSize), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setSize(systemButtonSize, systemButtonSize),                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setKeyboardEventHandler(onShutdownButtonKeyboardEvent),                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sShutdownButton->setPressEventHandler(onShutdownButtonPressed),                                NgosStatus::ASSERTION);
 
 
 
@@ -953,13 +948,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(addSummaryEntry("Previous test results",      0),                                                                                                                                                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuThreads,            CPU::getNumberOfThreads() * SCORE_PER_THREAD),                                                                                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuSpeed,              (CpuTest::getCpuSpeed() / 100000000) * SCORE_PER_100_MHZ),                                                                                               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1DataCache,        ((u64)CpuTest::getLevel1DataCache().size * CpuTest::getLevel1DataCache().numberOfWays * SCORE_L1_DATA_CACHE_PER_1_KB_1_WAY) >> 10),                      NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1InstructionCache, ((u64)CpuTest::getLevel1InstructionCache().size * CpuTest::getLevel1InstructionCache().numberOfWays * SCORE_L1_INSTRUCTION_CACHE_PER_1_KB_1_WAY) >> 10), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL2Cache,            ((u64)CpuTest::getLevel2Cache().size * CpuTest::getLevel2Cache().numberOfWays * SCORE_L2_CACHE_PER_1_MB_1_WAY) >> 20),                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL3Cache,            ((u64)CpuTest::getLevel3Cache().size * CpuTest::getLevel3Cache().numberOfWays * SCORE_L3_CACHE_PER_1_MB_1_WAY) >> 20),                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry("Previous test results",      0),                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuThreads,            CPU::getNumberOfThreads() * SCORE_PER_THREAD),                                                                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuSpeed,              (CpuTest::getCpuSpeed() / 100000000) * SCORE_PER_100_MHZ),                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1DataCache,        CPU::getNumberOfCores() * (u64)CpuTest::getLevel1DataCache().size * SCORE_L1_DATA_CACHE_PER_1_KB / KB),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1InstructionCache, CPU::getNumberOfCores() * (u64)CpuTest::getLevel1InstructionCache().size * SCORE_L1_INSTRUCTION_CACHE_PER_1_KB / KB), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL2Cache,            CPU::getNumberOfCores() * (u64)CpuTest::getLevel2Cache().size * SCORE_L2_CACHE_PER_1_MB / MB),                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL3Cache,            (u64)CpuTest::getLevel3Cache().size * SCORE_L3_CACHE_PER_1_MB / MB),                                                  NgosStatus::ASSERTION);
 
 
 
@@ -1523,9 +1518,36 @@ NgosStatus CpuTestGUI::focusTabFirstWidget()
 
     switch (sTabWidget->getCurrentPage())
     {
-        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return NgosStatus::NO_EFFECT;
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sRebootButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
         case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sStartButton);
+        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTabWidget->getCurrentPage(), __FILE__, __LINE__));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::focusTabLastWidget()
+{
+    UEFI_LT((""));
+
+
+
+    switch (sTabWidget->getCurrentPage())
+    {
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestTableWidget);
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
@@ -1963,9 +1985,8 @@ NgosStatus CpuTestGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSummaryTabButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sShutdownButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
+        case UefiInputKeyScanCode::UP:    return focusTabLastWidget();
+        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sShutdownButton);
 
         default:
         {
@@ -2000,8 +2021,7 @@ NgosStatus CpuTestGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::DOWN: return focusTabFirstWidget();
+        case UefiInputKeyScanCode::UP: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -2147,7 +2167,6 @@ NgosStatus CpuTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sRebootButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
@@ -2183,7 +2202,8 @@ NgosStatus CpuTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP: return (!sIssuesTableWidget->getSelectedRow()) ? GUI::setFocusedWidget(sIssuesTabButton) : NgosStatus::NO_EFFECT; // sIssuesTableWidget->getSelectedRow() == 0
+        case UefiInputKeyScanCode::UP:   return sIssuesTableWidget->getSelectedRow() == 0                                     ? GUI::setFocusedWidget(sIssuesTabButton) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sIssuesTableWidget->getSelectedRow() == sIssuesTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton)    : NgosStatus::NO_EFFECT;
 
         default:
         {
@@ -2254,7 +2274,8 @@ NgosStatus CpuTestGUI::onTestTableWidgetKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP: return (!sTestTableWidget->getSelectedRow()) ? GUI::setFocusedWidget(sStartButton) : NgosStatus::NO_EFFECT; // sTestTableWidget->getSelectedRow() == 0
+        case UefiInputKeyScanCode::UP:   return sTestTableWidget->getSelectedRow() == 0                                   ? GUI::setFocusedWidget(sStartButton)  : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sTestTableWidget->getSelectedRow() == sTestTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton) : NgosStatus::NO_EFFECT;
 
         default:
         {
@@ -2289,7 +2310,8 @@ NgosStatus CpuTestGUI::onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP: return (!sSummaryTableWidget->getSelectedRow()) ? GUI::setFocusedWidget(sSummaryTabButton) : NgosStatus::NO_EFFECT; // sSummaryTableWidget->getSelectedRow() == 0
+        case UefiInputKeyScanCode::UP:   return sSummaryTableWidget->getSelectedRow() == 0                                      ? GUI::setFocusedWidget(sSummaryTabButton) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sSummaryTableWidget->getSelectedRow() == sSummaryTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton)     : NgosStatus::NO_EFFECT;
 
         default:
         {
