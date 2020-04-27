@@ -486,11 +486,12 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->vendorStringId             = %u",     entry->vendorStringId));
-        COMMON_LVVV(("entry->biosVersionStringId        = %u",     entry->biosVersionStringId));
+        COMMON_LVVV(("entry->vendor.id                  = %u",     entry->vendor.id));
+        COMMON_LVVV(("entry->biosVersion.id             = %u",     entry->biosVersion.id));
         COMMON_LVVV(("entry->biosStartingAddressSegment = 0x%04X", entry->biosStartingAddressSegment));
-        COMMON_LVVV(("entry->biosReleaseDateStringId    = %u",     entry->biosReleaseDateStringId));
-        COMMON_LVVV(("entry->biosRomSize                = 0x%02X", entry->biosRomSize));
+        COMMON_LVVV(("entry->biosReleaseDate.id         = %u",     entry->biosReleaseDate.id));
+        COMMON_LVVV(("entry->biosRomSize.value          = 0x%02X", entry->biosRomSize.value));
+        COMMON_LVVV(("entry->biosRomSize                = %s",     bytesToString(entry->biosRomSize.size())));
         COMMON_LVVV(("entry->biosCharacteristics        = %s",     flagsToFullString(entry->biosCharacteristics)));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
@@ -521,11 +522,11 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-        COMMON_TEST_ASSERT(entry->vendorStringId                == 1,                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->biosVersionStringId           == 2,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->vendor.id                     == 1,                                                                     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->biosVersion.id                == 2,                                                                     NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(entry->biosStartingAddressSegment == 0xE800,                                                                NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(entry->biosReleaseDateStringId       == 3,                                                                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->biosRomSize                == 0xFF,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->biosReleaseDate.id            == 3,                                                                     NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->biosRomSize.value          == 0xFF,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->biosCharacteristics        == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
@@ -582,50 +583,51 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
     // Get strings
     {
         if (
-            entry->vendorStringId
+            entry->vendor.id
             ||
-            entry->biosVersionStringId
+            entry->biosVersion.id
             ||
-            entry->biosReleaseDateStringId
+            entry->biosReleaseDate.id
            )
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (stringId == entry->vendorStringId)
+                    if (stringId == entry->vendor)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
-                    if (stringId == entry->biosVersionStringId)
+                    if (stringId == entry->biosVersion)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
-                    if (stringId == entry->biosReleaseDateStringId)
+                    if (stringId == entry->biosReleaseDate)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (cur[1] == 0)
                     {
                         break;
                     }
@@ -660,10 +662,10 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->manufacturerStringId = %u", entry->manufacturerStringId));
-        COMMON_LVVV(("entry->productNameStringId  = %u", entry->productNameStringId));
-        COMMON_LVVV(("entry->versionStringId      = %u", entry->versionStringId));
-        COMMON_LVVV(("entry->serialNumberStringId = %u", entry->serialNumberStringId));
+        COMMON_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));
+        COMMON_LVVV(("entry->productName.id  = %u", entry->productName.id));
+        COMMON_LVVV(("entry->version.id      = %u", entry->version.id));
+        COMMON_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
@@ -672,17 +674,17 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
             if (DMI::getVersion() >= DMI_VERSION(2, 4))
             {
-                COMMON_LVVV(("entry->skuNumberStringId = %u", entry->skuNumberStringId));
-                COMMON_LVVV(("entry->familyStringId    = %u", entry->familyStringId));
+                COMMON_LVVV(("entry->skuNumber.id = %u", entry->skuNumber.id));
+                COMMON_LVVV(("entry->family.id    = %u", entry->family.id));
             }
         }
 
 
 
-        COMMON_TEST_ASSERT(entry->manufacturerStringId    == 1, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->productNameStringId     == 2, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->versionStringId         == 3, NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->serialNumberStringId == 4, NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->manufacturer.id    == 1, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->productName.id     == 2, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(entry->version.id         == 3, NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
@@ -701,8 +703,8 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
             if (DMI::getVersion() >= DMI_VERSION(2, 4))
             {
-                // COMMON_TEST_ASSERT(entry->skuNumberStringId == 5, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entry->familyStringId    == 6, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entry->family.id    == 6, NgosStatus::ASSERTION); // Commented due to value variation
 
                 COMMON_TEST_ASSERT(entry->header.length >= 27,                     NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
@@ -722,72 +724,76 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
-    COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, &entry->uuid), NgosStatus::ASSERTION);
+    if (DMI::getVersion() >= DMI_VERSION(2, 1))
+    {
+        COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, &entry->uuid), NgosStatus::ASSERTION);
+    }
 
 
 
     // Get strings
     {
-        u8 skuNumberStringId = 0;
-        u8 familyStringId    = 0;
+        DmiStringId skuNumberStringId;
+        DmiStringId familyStringId;
 
         if (DMI::getVersion() >= DMI_VERSION(2, 4))
         {
-            skuNumberStringId = entry->skuNumberStringId;
-            familyStringId    = entry->familyStringId;
+            skuNumberStringId = entry->skuNumber;
+            familyStringId    = entry->family;
         }
 
 
 
         if (
-            entry->manufacturerStringId
+            entry->manufacturer.id
             ||
-            entry->productNameStringId
+            entry->productName.id
             ||
-            entry->versionStringId
+            entry->version.id
             ||
-            entry->serialNumberStringId
+            entry->serialNumber.id
             ||
-            skuNumberStringId
+            skuNumberStringId.id
             ||
-            familyStringId
+            familyStringId.id
            )
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (stringId == entry->manufacturerStringId)
+                    if (stringId == entry->manufacturer)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
-                    if (stringId == entry->productNameStringId)
+                    if (stringId == entry->productName)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
-                    if (stringId == entry->versionStringId)
+                    if (stringId == entry->version)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
-                    if (stringId == entry->serialNumberStringId)
+                    if (stringId == entry->serialNumber)
                     {
                         COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
@@ -804,7 +810,7 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (cur[1] == 0)
                     {
                         break;
                     }

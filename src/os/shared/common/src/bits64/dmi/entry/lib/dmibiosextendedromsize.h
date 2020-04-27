@@ -5,6 +5,7 @@
 
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsizeunit.h>
 #include <common/src/bits64/log/log.h>
+#include <macro/constants.h>
 
 
 
@@ -18,8 +19,8 @@ struct DmiBiosExtendedRomSize
 
         switch ((DmiBiosExtendedRomSizeUnit)unit)
         {
-            case DmiBiosExtendedRomSizeUnit::MEGABYTES: return (u64)value << 20;
-            case DmiBiosExtendedRomSizeUnit::GIGABYTES: return (u64)value << 30;
+            case DmiBiosExtendedRomSizeUnit::MEGABYTES: return (u64)value * MB;
+            case DmiBiosExtendedRomSizeUnit::GIGABYTES: return (u64)value * GB;
 
             default:
             {

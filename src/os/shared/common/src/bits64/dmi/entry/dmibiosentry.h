@@ -4,32 +4,30 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
-#include <macro/constants.h>
+#include <common/src/bits64/dmi/entry/lib/dmibiosromsize.h>
+
+
+
+#define DMI_BIOS_BIOS_ROM_SIZE_NEED_TO_EXTEND                             0xFF
+#define DMI_BIOS_SYSTEM_BIOS_MAJOR_RELEASE_NOT_AVAILABLE                  0xFF
+#define DMI_BIOS_SYSTEM_BIOS_MINOR_RELEASE_NOT_AVAILABLE                  0xFF
+#define DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MAJOR_RELEASE_NOT_AVAILABLE 0xFF
+#define DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MINOR_RELEASE_NOT_AVAILABLE 0xFF
 
 
 
 struct DmiBiosEntry
 {
-    u64 romSize()
-    {
-        // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-        return (biosRomSize + 1) * 64 * KB;
-    }
-
-
-
     DmiEntryHeader                  header;
-    u8                              vendorStringId;
-    u8                              biosVersionStringId;
+    DmiStringId                     vendor;
+    DmiStringId                     biosVersion;
     u16                             biosStartingAddressSegment;
-    u8                              biosReleaseDateStringId;
-    u8                              biosRomSize;
+    DmiStringId                     biosReleaseDate;
+    DmiBiosRomSize                  biosRomSize;
     DmiBiosCharacteristicsFlags     biosCharacteristics;
     DmiBiosCharacteristicsExtension biosCharacteristicsExtension;
     u8                              systemBiosMajorRelease;

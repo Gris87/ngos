@@ -107,6 +107,8 @@
             return flags | another; \
         } \
         \
+        \
+        \
         numberType flags; \
     } __attribute__((packed));
 

@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardtype.h>
 
@@ -12,13 +13,13 @@
 struct DmiBaseboardEntry
 {
     DmiEntryHeader           header;
-    u8                       manufacturerStringId;
-    u8                       productStringId;
-    u8                       versionStringId;
-    u8                       serialNumberStringId;
-    u8                       assetTagStringId;
+    DmiStringId              manufacturer;
+    DmiStringId              product;
+    DmiStringId              version;
+    DmiStringId              serialNumber;
+    DmiStringId              assetTag;
     DmiBaseboardFeatureFlags featureFlags;
-    u8                       locationInChassisStringId;
+    DmiStringId              locationInChassis;
     u16                      chassisHandle;
     DmiBaseboardType         boardType;
     u8                       numberOfContainedObjectHandles;

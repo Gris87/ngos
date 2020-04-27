@@ -814,6 +814,7 @@ src/os/shared/common/src/bits64/dmi/dmientrytype.h
 src/os/shared/common/src/bits64/dmi/dmiidentity.h
 src/os/shared/common/src/bits64/dmi/dmimemorydevice.h
 src/os/shared/common/src/bits64/dmi/dmistoreduuid.h
+src/os/shared/common/src/bits64/dmi/dmistringid.h
 src/os/shared/common/src/bits64/dmi/entry/dmiadditionalinformationentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibaseboardentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibiosentry.h
@@ -853,6 +854,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreserv
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosextendedromsizeunit.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibioslanguageflags.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosromsize.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheassociativity.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheconfiguration.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h
