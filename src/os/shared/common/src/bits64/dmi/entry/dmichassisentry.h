@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassiscontainedelement.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassissecuritystatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmichassisstate.h>
@@ -11,10 +12,17 @@
 
 
 
+#define DMI_CHASSIS_HEIGHT_NOT_AVAILABLE                          0x00
+#define DMI_CHASSIS_NUMBER_OF_POWER_CORDS_NOT_AVAILABLE           0x00
+#define DMI_CHASSIS_CONTAINED_ELEMENT_COUNT_NOT_AVAILABLE         0x00
+#define DMI_CHASSIS_CONTAINED_ELEMENT_RECORD_LENGTH_NOT_AVAILABLE 0x00
+
+
+
 struct DmiChassisEntry
 {
     DmiEntryHeader header;
-    u8             manufacturerStringId;
+    DmiStringId    manufacturer;
 
     union
     {
@@ -27,9 +35,9 @@ struct DmiChassisEntry
         u8 typeAndLocked;
     };
 
-    u8                         versionStringId;
-    u8                         serialNumberStringId;
-    u8                         assetTagStringId;
+    DmiStringId                version;
+    DmiStringId                serialNumber;
+    DmiStringId                assetTag;
     DmiChassisState            bootUpState;
     DmiChassisState            powerSupplyState;
     DmiChassisState            thermalState;
