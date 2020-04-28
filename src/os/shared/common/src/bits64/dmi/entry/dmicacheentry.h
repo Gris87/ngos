@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmicacheassociativity.h>
 #include <common/src/bits64/dmi/entry/lib/dmicacheconfiguration.h>
 #include <common/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h>
@@ -14,10 +15,17 @@
 
 
 
+#define DMI_CACHE_MAXIMUM_CACHE_SIZE_NEED_TO_EXTEND 0xFFFF
+#define DMI_CACHE_INSTALLED_SIZE_NO_CACHE           0x0000
+#define DMI_CACHE_INSTALLED_SIZE_NEED_TO_EXTEND     0xFFFF
+#define DMI_CACHE_CACHE_SPEED_UNKNOWN               0x0000
+
+
+
 struct DmiCacheEntry
 {
     DmiEntryHeader              header;
-    u8                          socketDesignationStringId;
+    DmiStringId                 socketDesignation;
     DmiCacheConfiguration       cacheConfiguration;
     DmiCacheSize                maximumCacheSize;
     DmiCacheSize                installedSize;

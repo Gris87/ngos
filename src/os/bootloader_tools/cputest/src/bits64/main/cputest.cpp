@@ -423,7 +423,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
         u8  numberOfWays = (ecx >> 16) & 0xFF;
-        u64 cacheSize    = ((ecx >> 24) & 0xFF) << 10; // "<< 10" == "* 1024"
+        u64 cacheSize    = ((ecx >> 24) & 0xFF) * KB;
 
         UEFI_LVVV(("numberOfWays = %u", numberOfWays));
         UEFI_LVVV(("cacheSize    = %u", cacheSize));
@@ -433,7 +433,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
         numberOfWays = (edx >> 16) & 0xFF;
-        cacheSize    = ((edx >> 24) & 0xFF) << 10; // "<< 10" == "* 1024"
+        cacheSize    = ((edx >> 24) & 0xFF) * KB;
 
         UEFI_LVVV(("numberOfWays = %u", numberOfWays));
         UEFI_LVVV(("cacheSize    = %u", cacheSize));
@@ -468,7 +468,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
         u8  numberOfWays = numberOfWaysTable[(ecx >> 12) & 0x0F];
-        u64 cacheSize    = (ecx >> 16) << 10; // "<< 10" == "* 1024"
+        u64 cacheSize    = (ecx >> 16) * KB;
 
         UEFI_LVVV(("numberOfWays = %u", numberOfWays));
         UEFI_LVVV(("cacheSize    = %u", cacheSize));
@@ -478,7 +478,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
         numberOfWays = numberOfWaysTable[(edx >> 12) & 0x0F];
-        cacheSize    = (edx >> 18) << 19; // "<< 19" == "* 512 * 1024"
+        cacheSize    = (edx >> 18) * 512 * KB;
 
         UEFI_LVVV(("numberOfWays = %u", numberOfWays));
         UEFI_LVVV(("cacheSize    = %u", cacheSize));

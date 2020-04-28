@@ -1863,7 +1863,7 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
     // Validation
     {
-        UEFI_LVVV(("entry->socketDesignationStringId          = %u",     entry->socketDesignationStringId));
+        UEFI_LVVV(("entry->socketDesignation.id               = %u",     entry->socketDesignation.id));
         UEFI_LVVV(("entry->cacheConfiguration.level           = %u",     entry->cacheConfiguration.level));
         UEFI_LVVV(("entry->cacheConfiguration.socketed        = %u",     entry->cacheConfiguration.socketed));
         UEFI_LVVV(("entry->cacheConfiguration.location        = %s",     enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location)));
@@ -1903,7 +1903,7 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-        // UEFI_TEST_ASSERT(entry->socketDesignationStringId          == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->socketDesignation.id               == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->cacheConfiguration.level           == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->cacheConfiguration.socketed        == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->cacheConfiguration.location        == DmiCacheLocation::UNKNOWN,                      NgosStatus::ASSERTION); // Commented due to value variation
@@ -1953,20 +1953,23 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-    const char8 *entryName               = nullptr;
-    const char8 *socketDesignationString = "N/A";
+    const char8 *entryName         = nullptr;
+    const char8 *socketDesignation = "N/A";
 
     // Get strings
     {
-        if (entry->socketDesignationStringId)
+        if (entry->socketDesignation.id)
         {
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
             UEFI_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
 
             do
             {
@@ -1977,10 +1980,10 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-                    if (stringId == entry->socketDesignationStringId)
+                    if (stringId == entry->socketDesignation)
                     {
-                        socketDesignationString = begin;
-                        entryName               = socketDesignationString;
+                        socketDesignation = begin;
+                        entryName         = socketDesignation;
                     }
 
 
@@ -2025,10 +2028,19 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
     {
         if (DMI::getVersion() >= DMI_VERSION(2, 1))
         {
-            if (entry->cacheSpeed)
+            // Get string for Speed
             {
-                cacheSpeed = mprintf("%u ns", entry->cacheSpeed);
+                if (entry->cacheSpeed == DMI_CACHE_CACHE_SPEED_UNKNOWN)
+                {
+                    cacheSpeed = "Unknown";
+                }
+                else
+                {
+                    cacheSpeed = mprintf("%u ns", entry->cacheSpeed);
+                }
             }
+
+
 
             errorCorrectionType = strdup(enumToFullString(entry->errorCorrectionType));
             systemCacheType     = strdup(enumToFullString(entry->systemCacheType));
@@ -2036,8 +2048,55 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
             if (DMI::getVersion() >= DMI_VERSION(3, 1))
             {
-                maximumCacheSize2 = strdup(bytesToString(entry->maximumCacheSize2.size()));
-                installedSize2    = strdup(bytesToString(entry->installedSize2.size()));
+                maximumCacheSize2 = mprintf("0x%08X", entry->maximumCacheSize2.value32);
+                installedSize2    = mprintf("0x%08X", entry->installedSize2.value32);
+            }
+        }
+    }
+
+
+
+    const char8 *maximumCacheSize;
+    const char8 *installedSize;
+
+    // Get other strings
+    {
+        // Get string for Maximum cache size
+        {
+            if (
+                entry->maximumCacheSize.value16 == DMI_CACHE_MAXIMUM_CACHE_SIZE_NEED_TO_EXTEND
+                &&
+                DMI::getVersion() >= DMI_VERSION(3, 1)
+               )
+            {
+                maximumCacheSize = strdup(bytesToString(entry->maximumCacheSize2.size()));
+            }
+            else
+            {
+                maximumCacheSize = strdup(bytesToString(entry->maximumCacheSize.size()));
+            }
+        }
+
+
+
+        // Get string for Installed size
+        {
+            if (entry->installedSize.value16 == DMI_CACHE_INSTALLED_SIZE_NO_CACHE)
+            {
+                installedSize = "No cache";
+            }
+            else
+            if (
+                entry->installedSize.value16 == DMI_CACHE_INSTALLED_SIZE_NEED_TO_EXTEND
+                &&
+                DMI::getVersion() >= DMI_VERSION(3, 1)
+               )
+            {
+                installedSize = strdup(bytesToString(entry->installedSize2.size()));
+            }
+            else
+            {
+                installedSize = strdup(bytesToString(entry->installedSize.size()));
             }
         }
     }
@@ -2050,48 +2109,21 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type))),                                                 NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle)),                                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignationString),                                                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",              mprintf("%u", entry->cacheConfiguration.level + 1)),                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignation),                                                                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",              mprintf("%u", entry->cacheConfiguration.levelReal())),                                         NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socketed",           entry->cacheConfiguration.socketed ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",           strdup(enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location))),               NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",            entry->cacheConfiguration.enabled ? "Yes" : "No"),                                             NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Operational mode",   strdup(enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", strdup(bytesToString(entry->maximumCacheSize.size()))),                                        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     strdup(bytesToString(entry->installedSize.size()))),                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", maximumCacheSize),                                                                             NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     installedSize),                                                                                NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", mprintf("0x%04X", entry->maximumCacheSize.value16)),                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     mprintf("0x%04X", entry->installedSize.value16)),                                              NgosStatus::ASSERTION);
 
 
 
-        // Add records for Supported SRAM type
-        {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Supported SRAM type", mprintf("0x%04X", entry->supportedSramType.flags)), NgosStatus::ASSERTION);
-
-            for (i64 i = 0; i < (i64)(sizeof(entry->supportedSramType) * 8); ++i)
-            {
-                u64 flag = (1ULL << i);
-
-                if (entry->supportedSramType & flag)
-                {
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Supported SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
-                }
-            }
-        }
-
-
-
-        // Add records for Current SRAM type
-        {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current SRAM type", mprintf("0x%04X", entry->currentSramType.flags)), NgosStatus::ASSERTION);
-
-            for (i64 i = 0; i < (i64)(sizeof(entry->currentSramType) * 8); ++i)
-            {
-                u64 flag = (1ULL << i);
-
-                if (entry->currentSramType & flag)
-                {
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Current SRAM type: %s", flagToString((DmiCacheSramTypeFlag)flag)), "Yes"), NgosStatus::ASSERTION);
-                }
-            }
-        }
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Supported SRAM type", entry->supportedSramType, "0x%04X", DmiCacheSramTypeFlag);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Current SRAM type",   entry->currentSramType,   "0x%04X", DmiCacheSramTypeFlag);
 
 
 

@@ -10,6 +10,17 @@
 
 struct DmiCacheConfiguration
 {
+    u16 levelReal()
+    {
+        // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+        return level + 1;
+    }
+
+
+
     union
     {
         struct
