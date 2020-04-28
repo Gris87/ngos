@@ -875,7 +875,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h
-src/os/shared/common/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmigroupassociationsitem.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h
@@ -894,6 +894,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiportablebatterydevicechemistry.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h

@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmiportconnectorporttype.h>
 #include <common/src/bits64/dmi/entry/lib/dmiportconnectortype.h>
 
@@ -12,9 +13,9 @@
 struct DmiPortConnectorEntry
 {
     DmiEntryHeader           header;
-    u8                       internalReferenceDesignatorStringId;
+    DmiStringId              internalReferenceDesignator;
     DmiPortConnectorType     internalConnectorType;
-    u8                       externalReferenceDesignatorStringId;
+    DmiStringId              externalReferenceDesignator;
     DmiPortConnectorType     externalConnectorType;
     DmiPortConnectorPortType portType;
 } __attribute__((packed));

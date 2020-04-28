@@ -22,6 +22,7 @@ NGOS:
 - DmiStringId
 - Basic mode for Device Manager
 - Change brackets for #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+- ASSERTS for QEMU only for variated checks
 
 - Complete with interruptions
 - Implement boot screen for kernel

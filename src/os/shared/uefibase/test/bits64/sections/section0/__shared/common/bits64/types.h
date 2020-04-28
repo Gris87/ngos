@@ -89,7 +89,7 @@
 #include <common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h>
 #include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h>
-#include <common/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h>
+#include <common/src/bits64/dmi/entry/lib/dmigroupassociationsitem.h>
 #include <common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h>
 #include <common/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h>
@@ -302,7 +302,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),                                4);
         TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsEntry),                     5);
-        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsGroup),                     3);
+        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsItem),                      3);
         TEST_ASSERT_EQUALS(sizeof(DmiIdentity),                                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceAddressType),                1);
         TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceComponentEntry),             11);

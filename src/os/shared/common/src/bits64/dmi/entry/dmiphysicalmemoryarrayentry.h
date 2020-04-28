@@ -6,11 +6,13 @@
 #include <common/src/bits64/dmi/dmientryheader.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h>
+#include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
 #include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h>
 #include <macro/constants.h>
 
 
 
+#define DMI_PHYSICAL_MEMORY_ARRAY_MAXIMUM_CAPACITY_NEED_TO_EXTEND               0x80000000
 #define DMI_PHYSICAL_MEMORY_ARRAY_MEMORY_ERROR_INFORMATION_HANDLE_NOT_AVAILABLE 0xFFFE
 #define DMI_PHYSICAL_MEMORY_ARRAY_MEMORY_ERROR_INFORMATION_HANDLE_NO_ERROR      0xFFFF
 
@@ -18,22 +20,11 @@
 
 struct DmiPhysicalMemoryArrayEntry
 {
-    u64 capacity()
-    {
-        // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-        return (u64)maximumCapacity * KB;
-    }
-
-
-
     DmiEntryHeader                        header;
     DmiPhysicalMemoryArrayLocation        location;
     DmiPhysicalMemoryArrayUse             use;
     DmiPhysicalMemoryArrayErrorCorrection memoryErrorCorrection;
-    u32                                   maximumCapacity;
+    DmiPhysicalMemoryArrayMaximumCapacity maximumCapacity;
     u16                                   memoryErrorInformationHandle;
     u16                                   numberOfMemoryDevices;
     u64                                   extendedMaximumCapacity;

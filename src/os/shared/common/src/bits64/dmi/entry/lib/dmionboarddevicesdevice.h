@@ -3,6 +3,7 @@
 
 
 
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h>
 
 
@@ -20,7 +21,7 @@ struct DmiOnboardDevicesDevice
         u8 deviceTypeAndEnabled;
     };
 
-    u8 descriptionStringId;
+    DmiStringId description;
 } __attribute__((packed));
 
 

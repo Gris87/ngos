@@ -4,15 +4,16 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h>
+#include <common/src/bits64/dmi/dmistringid.h>
+#include <common/src/bits64/dmi/entry/lib/dmigroupassociationsitem.h>
 
 
 
 struct DmiGroupAssociationsEntry
 {
-    DmiEntryHeader            header;
-    u8                        groupNameStringId;
-    DmiGroupAssociationsGroup group[0];
+    DmiEntryHeader           header;
+    DmiStringId              groupName;
+    DmiGroupAssociationsItem items[0];
 } __attribute__((packed));
 
 

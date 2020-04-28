@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioslanguageflags.h>
 
 
@@ -14,7 +15,7 @@ struct DmiBiosLanguageEntry
     u8                   installableLanguages;
     DmiBiosLanguageFlags flags;
     u8                   __reserved[15];
-    u8                   currentLanguageStringId;
+    DmiStringId          currentLanguage;
 } __attribute__((packed));
 
 

@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemslotslength.h>
@@ -16,7 +17,7 @@
 struct DmiSystemSlotsEntry
 {
     DmiEntryHeader                     header;
-    u8                                 slotDesignationStringId;
+    DmiStringId                        slotDesignation;
     DmiSystemSlotsType                 slotType;
     DmiSystemSlotsDataBusWidth         slotDataBusWidth;
     DmiSystemSlotsUsage                currentUsage;
