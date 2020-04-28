@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily.h>
 #include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h>
@@ -15,15 +16,30 @@
 
 
 
+#define DMI_PROCESSOR_EXTERNAL_CLOCK_UNKNOWN            0x0000
+#define DMI_PROCESSOR_MAX_SPEED_UNKNOWN                 0x0000
+#define DMI_PROCESSOR_CURRENT_SPEED_UNKNOWN             0x0000
+#define DMI_PROCESSOR_L1_CACHE_HANDLE_NOT_AVAILABLE     0xFFFF
+#define DMI_PROCESSOR_L2_CACHE_HANDLE_NOT_AVAILABLE     0xFFFF
+#define DMI_PROCESSOR_L3_CACHE_HANDLE_NOT_AVAILABLE     0xFFFF
+#define DMI_PROCESSOR_CORE_COUNT_UNKNOWN                0x00
+#define DMI_PROCESSOR_CORE_COUNT_NEED_TO_EXTEND         0xFF
+#define DMI_PROCESSOR_ENABLED_CORE_COUNT_UNKNOWN        0x00
+#define DMI_PROCESSOR_ENABLED_CORE_COUNT_NEED_TO_EXTEND 0xFF
+#define DMI_PROCESSOR_THREAD_COUNT_UNKNOWN              0x00
+#define DMI_PROCESSOR_THREAD_COUNT_NEED_TO_EXTEND       0xFF
+
+
+
 struct DmiProcessorEntry
 {
     DmiEntryHeader      header;
-    u8                  socketDesignationStringId;
+    DmiStringId         socketDesignation;
     DmiProcessorType    processorType;
     DmiProcessorFamily  processorFamily;
-    u8                  processorManufactureStringId;
+    DmiStringId         processorManufacturer;
     DmiProcessorId      processorId;
-    u8                  processorVersionStringId;
+    DmiStringId         processorVersion;
     DmiProcessorVoltage voltage;
     u16                 externalClock;
     u16                 maxSpeed;
@@ -46,9 +62,9 @@ struct DmiProcessorEntry
     u16                              l1CacheHandle;
     u16                              l2CacheHandle;
     u16                              l3CacheHandle;
-    u8                               serialNumberStringId;
-    u8                               assetTagStringId;
-    u8                               partNumberStringId;
+    DmiStringId                      serialNumber;
+    DmiStringId                      assetTag;
+    DmiStringId                      partNumber;
     u8                               coreCount;
     u8                               enabledCoreCount;
     u8                               threadCount;
