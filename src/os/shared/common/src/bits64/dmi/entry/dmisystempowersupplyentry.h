@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystempowersupplycharacteristics.h>
 
 
@@ -20,13 +21,13 @@ struct DmiSystemPowerSupplyEntry
 {
     DmiEntryHeader                      header;
     u8                                  powerUnitGroup;
-    u8                                  locationStringId;
-    u8                                  deviceNameStringId;
-    u8                                  manufacturerStringId;
-    u8                                  serialNumberStringId;
-    u8                                  assetTagNumberStringId;
-    u8                                  modelPartNumberStringId;
-    u8                                  revisionLevelStringId;
+    DmiStringId                         location;
+    DmiStringId                         deviceName;
+    DmiStringId                         manufacturer;
+    DmiStringId                         serialNumber;
+    DmiStringId                         assetTagNumber;
+    DmiStringId                         modelPartNumber;
+    DmiStringId                         revisionLevel;
     u16                                 maxPowerCapacity;
     DmiSystemPowerSupplyCharacteristics powerSupplyCharacteristics;
     u16                                 inputVoltageProbeHandle;

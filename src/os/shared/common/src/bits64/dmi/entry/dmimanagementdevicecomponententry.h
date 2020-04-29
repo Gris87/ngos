@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 
 
 
@@ -14,7 +15,7 @@
 struct DmiManagementDeviceComponentEntry
 {
     DmiEntryHeader header;
-    u8             descriptionStringId;
+    DmiStringId    description;
     u16            managementDeviceHandle;
     u16            componentHandle;
     u16            thresholdHandle;

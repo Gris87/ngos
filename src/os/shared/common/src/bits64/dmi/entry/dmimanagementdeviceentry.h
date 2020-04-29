@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h>
 #include <common/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h>
 
@@ -12,7 +13,7 @@
 struct DmiManagementDeviceEntry
 {
     DmiEntryHeader                 header;
-    u8                             descriptionStringId;
+    DmiStringId                    description;
     DmiManagementDeviceType        type;
     u32                            address;
     DmiManagementDeviceAddressType addressType;

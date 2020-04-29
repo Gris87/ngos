@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h>
 
 
@@ -11,7 +12,7 @@
 struct DmiOnboardDevicesExtendedEntry
 {
     DmiEntryHeader header;
-    u8             referenceDesignationStringId;
+    DmiStringId    referenceDesignation;
 
     union
     {
