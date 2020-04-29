@@ -2554,15 +2554,15 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->locationStringId          = %u", entry->locationStringId));
-        COMMON_LVVV(("entry->manufacturerStringId      = %u", entry->manufacturerStringId));
-        COMMON_LVVV(("entry->manufactureDateStringId   = %u", entry->manufactureDateStringId));
-        COMMON_LVVV(("entry->serialNumberStringId      = %u", entry->serialNumberStringId));
-        COMMON_LVVV(("entry->deviceNameStringId        = %u", entry->deviceNameStringId));
+        COMMON_LVVV(("entry->location.id               = %u", entry->location.id));
+        COMMON_LVVV(("entry->manufacturer.id           = %u", entry->manufacturer.id));
+        COMMON_LVVV(("entry->manufactureDate.id        = %u", entry->manufactureDate.id));
+        COMMON_LVVV(("entry->serialNumber.id           = %u", entry->serialNumber.id));
+        COMMON_LVVV(("entry->deviceName.id             = %u", entry->deviceName.id));
         COMMON_LVVV(("entry->deviceChemistry           = %s", enumToFullString(entry->deviceChemistry)));
         COMMON_LVVV(("entry->designCapacity            = %u", entry->designCapacity));
         COMMON_LVVV(("entry->designVoltage             = %u", entry->designVoltage));
-        COMMON_LVVV(("entry->sbdsVersionNumberStringId = %u", entry->sbdsVersionNumberStringId));
+        COMMON_LVVV(("entry->sbdsVersionNumber.id      = %u", entry->sbdsVersionNumber.id));
         COMMON_LVVV(("entry->maximumErrorInBatteryData = %u", entry->maximumErrorInBatteryData));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 2))
@@ -2573,34 +2573,34 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
             COMMON_LVVV(("entry->sbdsManufactureDate.year    = %u",             entry->sbdsManufactureDate.year));
             COMMON_LVVV(("entry->sbdsManufactureDate.value16 = 0x%04X",         entry->sbdsManufactureDate.value16));
             COMMON_LVVV(("entry->sbdsManufactureDate         = %04u-%02u-%02u", entry->sbdsManufactureDate.realYear(), entry->sbdsManufactureDate.month, entry->sbdsManufactureDate.date));
-            COMMON_LVVV(("entry->sbdsDeviceChemistryStringId = %u",             entry->sbdsDeviceChemistryStringId));
+            COMMON_LVVV(("entry->sbdsDeviceChemistry.id      = %u",             entry->sbdsDeviceChemistry.id));
             COMMON_LVVV(("entry->designCapacityMultiplier    = %u",             entry->designCapacityMultiplier));
             COMMON_LVVV(("entry->oemSpecific                 = 0x%08X",         entry->oemSpecific));
         }
 
 
 
-        // COMMON_TEST_ASSERT(entry->locationStringId          == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->manufacturerStringId      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->manufactureDateStringId   == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->serialNumberStringId      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->deviceNameStringId        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->location.id               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->manufacturer.id           == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->manufactureDate.id        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->serialNumber.id           == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->deviceName.id             == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->deviceChemistry           == DmiPortableBatteryDeviceChemistry::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->designCapacity            == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->designVoltage             == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->sbdsVersionNumberStringId == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 2))
         {
-            // COMMON_TEST_ASSERT(entry->sbdsSerialNumber            == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.date    == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.month   == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.year    == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.value16 == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsDeviceChemistryStringId == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->designCapacityMultiplier    == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->oemSpecific                 == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
 
             COMMON_TEST_ASSERT(entry->header.length >= 26,                              NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);
@@ -2616,51 +2616,89 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
 
     // Get strings
     {
-        u8 sbdsDeviceChemistryStringId = 0;
+        DmiStringId sbdsDeviceChemistryStringId;
 
         if (DMI::getVersion() >= DMI_VERSION(2, 2))
         {
-            sbdsDeviceChemistryStringId = entry->sbdsDeviceChemistryStringId;
+            sbdsDeviceChemistryStringId = entry->sbdsDeviceChemistry;
         }
 
 
 
         if (
-            entry->locationStringId
+            entry->location.id
             ||
-            entry->manufacturerStringId
+            entry->manufacturer.id
             ||
-            entry->manufactureDateStringId
+            entry->manufactureDate.id
             ||
-            entry->serialNumberStringId
+            entry->serialNumber.id
             ||
-            entry->deviceNameStringId
+            entry->deviceName.id
             ||
-            entry->sbdsVersionNumberStringId
+            entry->sbdsVersionNumber.id
             ||
-            sbdsDeviceChemistryStringId
+            sbdsDeviceChemistryStringId.id
            )
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (stringId == entry->location)
+                    {
+                        COMMON_LVVV(("location = %s", begin));
+                    }
+                    else
+                    if (stringId == entry->manufacturer)
+                    {
+                        COMMON_LVVV(("manufacturer = %s", begin));
+                    }
+                    else
+                    if (stringId == entry->manufactureDate)
+                    {
+                        COMMON_LVVV(("manufactureDate = %s", begin));
+                    }
+                    else
+                    if (stringId == entry->serialNumber)
+                    {
+                        COMMON_LVVV(("serialNumber = %s", begin));
+                    }
+                    else
+                    if (stringId == entry->deviceName)
+                    {
+                        COMMON_LVVV(("deviceName = %s", begin));
+                    }
+                    else
+                    if (stringId == entry->sbdsVersionNumber)
+                    {
+                        COMMON_LVVV(("sbdsVersionNumber = %s", begin));
+                    }
+                    else
+                    if (stringId == sbdsDeviceChemistryStringId)
+                    {
+                        COMMON_LVVV(("sbdsDeviceChemistry = %s", begin));
+                    }
+
+
+
+                    if (cur[1] == 0)
                     {
                         break;
                     }
@@ -3681,18 +3719,18 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
         COMMON_LVVV(("entry->size                         = %s",     bytesToString(entry->size.size())));
         COMMON_LVVV(("entry->formFactor                   = %s",     enumToFullString(entry->formFactor)));
         COMMON_LVVV(("entry->deviceSet                    = %u",     entry->deviceSet));
-        COMMON_LVVV(("entry->deviceLocatorStringId        = %u",     entry->deviceLocatorStringId));
-        COMMON_LVVV(("entry->bankLocatorStringId          = %u",     entry->bankLocatorStringId));
+        COMMON_LVVV(("entry->deviceLocator.id             = %u",     entry->deviceLocator.id));
+        COMMON_LVVV(("entry->bankLocator.id               = %u",     entry->bankLocator.id));
         COMMON_LVVV(("entry->memoryType                   = %s",     enumToFullString(entry->memoryType)));
         COMMON_LVVV(("entry->typeDetail                   = %s",     flagsToFullString(entry->typeDetail)));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            COMMON_LVVV(("entry->speed                = %u", entry->speed));
-            COMMON_LVVV(("entry->manufacturerStringId = %u", entry->manufacturerStringId));
-            COMMON_LVVV(("entry->serialNumberStringId = %u", entry->serialNumberStringId));
-            COMMON_LVVV(("entry->assetTagStringId     = %u", entry->assetTagStringId));
-            COMMON_LVVV(("entry->partNumberStringId   = %u", entry->partNumberStringId));
+            COMMON_LVVV(("entry->speed           = %u", entry->speed));
+            COMMON_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));
+            COMMON_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
+            COMMON_LVVV(("entry->assetTag.id     = %u", entry->assetTag.id));
+            COMMON_LVVV(("entry->partNumber.id   = %u", entry->partNumber.id));
 
             if (DMI::getVersion() >= DMI_VERSION(2, 6))
             {
@@ -3716,7 +3754,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
                         {
                             COMMON_LVVV(("entry->memoryTechnology                        = %s", enumToFullString(entry->memoryTechnology)));
                             COMMON_LVVV(("entry->memoryOperatingModeCapability           = %s", flagsToFullString(entry->memoryOperatingModeCapability)));
-                            COMMON_LVVV(("entry->firmwareVersionStringId                 = %u", entry->firmwareVersionStringId));
+                            COMMON_LVVV(("entry->firmwareVersion.id                      = %u", entry->firmwareVersion.id));
                             COMMON_LVVV(("entry->moduleManufacturerID                    = %u", entry->moduleManufacturerID));
                             COMMON_LVVV(("entry->moduleProductID                         = %u", entry->moduleProductID));
                             COMMON_LVVV(("entry->memorySubsystemControllerManufacturerID = %u", entry->memorySubsystemControllerManufacturerID));
@@ -3748,18 +3786,18 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
         // COMMON_TEST_ASSERT(entry->size.value16              == 0x0400,                                      NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->formFactor                == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(entry->deviceSet                    == 0,                                           NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(entry->deviceLocatorStringId        == 1,                                           NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(entry->bankLocatorStringId       == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(entry->bankLocator.id            == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->memoryType                == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->typeDetail                == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            // COMMON_TEST_ASSERT(entry->speed                == 2133, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->manufacturerStringId == 3,    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->serialNumberStringId == 4,    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->assetTagStringId     == 5,    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->partNumberStringId   == 6,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->speed           == 2133, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->manufacturer.id == 3,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->serialNumber.id == 4,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->assetTag.id     == 5,    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->partNumber.id   == 6,    NgosStatus::ASSERTION); // Commented due to value variation
 
             if (DMI::getVersion() >= DMI_VERSION(2, 6))
             {
@@ -3769,7 +3807,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
                     // COMMON_TEST_ASSERT(entry->extendedSize.value    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entry->extendedSize.value    == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entry->extendedSize.value32  == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
                     // COMMON_TEST_ASSERT(entry->configuredMemorySpeed == 2133,       NgosStatus::ASSERTION); // Commented due to value variation
 
                     if (DMI::getVersion() >= DMI_VERSION(2, 8))
@@ -3782,7 +3820,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
                         {
                             COMMON_TEST_ASSERT(entry->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                         NgosStatus::ASSERTION);
                             COMMON_TEST_ASSERT(entry->memoryOperatingModeCapability           == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);
-                            COMMON_TEST_ASSERT(entry->firmwareVersionStringId                 == 7,                                                       NgosStatus::ASSERTION);
+                            COMMON_TEST_ASSERT(entry->firmwareVersion.id                      == 7,                                                       NgosStatus::ASSERTION);
                             COMMON_TEST_ASSERT(entry->moduleManufacturerID                    == 0,                                                       NgosStatus::ASSERTION);
                             COMMON_TEST_ASSERT(entry->moduleProductID                         == 0,                                                       NgosStatus::ASSERTION);
                             COMMON_TEST_ASSERT(entry->memorySubsystemControllerManufacturerID == 0,                                                       NgosStatus::ASSERTION);
@@ -3885,68 +3923,69 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
 
     // Get strings
     {
-        u8 manufacturerStringId    = 0;
-        u8 serialNumberStringId    = 0;
-        u8 assetTagStringId        = 0;
-        u8 partNumberStringId      = 0;
-        u8 firmwareVersionStringId = 0;
+        DmiStringId manufacturerStringId;
+        DmiStringId serialNumberStringId;
+        DmiStringId assetTagStringId;
+        DmiStringId partNumberStringId;
+        DmiStringId firmwareVersionStringId;
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            manufacturerStringId = entry->manufacturerStringId;
-            serialNumberStringId = entry->serialNumberStringId;
-            assetTagStringId     = entry->assetTagStringId;
-            partNumberStringId   = entry->partNumberStringId;
+            manufacturerStringId = entry->manufacturer;
+            serialNumberStringId = entry->serialNumber;
+            assetTagStringId     = entry->assetTag;
+            partNumberStringId   = entry->partNumber;
 
             if (DMI::getVersion() >= DMI_VERSION(3, 2))
             {
-                firmwareVersionStringId = entry->firmwareVersionStringId;
+                firmwareVersionStringId = entry->firmwareVersion;
             }
         }
 
 
 
         if (
-            entry->deviceLocatorStringId
+            entry->deviceLocator.id
             ||
-            entry->bankLocatorStringId
+            entry->bankLocator.id
             ||
-            manufacturerStringId
+            manufacturerStringId.id
             ||
-            serialNumberStringId
+            serialNumberStringId.id
             ||
-            assetTagStringId
+            assetTagStringId.id
             ||
-            partNumberStringId
+            partNumberStringId.id
             ||
-            firmwareVersionStringId
+            firmwareVersionStringId.id
            )
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (stringId == entry->deviceLocatorStringId)
+                    if (stringId == entry->deviceLocator)
                     {
                         COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &sMemoryDevices[memoryId].device), NgosStatus::ASSERTION);
                     }
                     else
-                    if (stringId == entry->bankLocatorStringId)
+                    if (stringId == entry->bankLocator)
                     {
                         COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &sMemoryDevices[memoryId].bank), NgosStatus::ASSERTION);
                     }
@@ -3978,7 +4017,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (cur[1] == 0)
                     {
                         break;
                     }

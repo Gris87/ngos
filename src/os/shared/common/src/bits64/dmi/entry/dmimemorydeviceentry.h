@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceattributes.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceextendedsize.h>
 #include <common/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h>
@@ -52,15 +53,15 @@ struct DmiMemoryDeviceEntry
     DmiMemoryDeviceSize                         size;
     DmiMemoryDeviceFormFactor                   formFactor;
     u8                                          deviceSet;
-    u8                                          deviceLocatorStringId;
-    u8                                          bankLocatorStringId;
+    DmiStringId                                 deviceLocator;
+    DmiStringId                                 bankLocator;
     DmiMemoryDeviceType                         memoryType;
     DmiMemoryDeviceTypeDetailFlags              typeDetail;
     u16                                         speed;
-    u8                                          manufacturerStringId;
-    u8                                          serialNumberStringId;
-    u8                                          assetTagStringId;
-    u8                                          partNumberStringId;
+    DmiStringId                                 manufacturer;
+    DmiStringId                                 serialNumber;
+    DmiStringId                                 assetTag;
+    DmiStringId                                 partNumber;
     DmiMemoryDeviceAttributes                   attributes;
     DmiMemoryDeviceExtendedSize                 extendedSize;
     u16                                         configuredMemorySpeed;
@@ -69,7 +70,7 @@ struct DmiMemoryDeviceEntry
     u16                                         configuredVoltage;
     DmiMemoryDeviceTechnology                   memoryTechnology;
     DmiMemoryDeviceOperatingModeCapabilityFlags memoryOperatingModeCapability;
-    u8                                          firmwareVersionStringId;
+    DmiStringId                                 firmwareVersion;
     u16                                         moduleManufacturerID;
     u16                                         moduleProductID;
     u16                                         memorySubsystemControllerManufacturerID;
