@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmiportablebatterydevicechemistry.h>
 #include <common/src/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h>
 
@@ -18,19 +19,19 @@
 struct DmiPortableBatteryEntry
 {
     DmiEntryHeader                    header;
-    u8                                locationStringId;
-    u8                                manufacturerStringId;
-    u8                                manufactureDateStringId;
-    u8                                serialNumberStringId;
-    u8                                deviceNameStringId;
+    DmiStringId                       location;
+    DmiStringId                       manufacturer;
+    DmiStringId                       manufactureDate;
+    DmiStringId                       serialNumber;
+    DmiStringId                       deviceName;
     DmiPortableBatteryDeviceChemistry deviceChemistry;
     u16                               designCapacity;
     u16                               designVoltage;
-    u8                                sbdsVersionNumberStringId;
+    DmiStringId                       sbdsVersionNumber;
     u8                                maximumErrorInBatteryData;
     u16                               sbdsSerialNumber;
     DmiPortableBatteryManufactureDate sbdsManufactureDate;
-    u8                                sbdsDeviceChemistryStringId;
+    DmiStringId                       sbdsDeviceChemistry;
     u8                                designCapacityMultiplier;
     u32                               oemSpecific;
 } __attribute__((packed));

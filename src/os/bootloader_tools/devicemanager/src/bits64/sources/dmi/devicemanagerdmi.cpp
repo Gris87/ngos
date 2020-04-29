@@ -3230,18 +3230,18 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
         UEFI_LVVV(("entry->size                         = %s",     bytesToString(entry->size.size())));
         UEFI_LVVV(("entry->formFactor                   = %s",     enumToFullString(entry->formFactor)));
         UEFI_LVVV(("entry->deviceSet                    = %u",     entry->deviceSet));
-        UEFI_LVVV(("entry->deviceLocatorStringId        = %u",     entry->deviceLocatorStringId));
-        UEFI_LVVV(("entry->bankLocatorStringId          = %u",     entry->bankLocatorStringId));
+        UEFI_LVVV(("entry->deviceLocator.id             = %u",     entry->deviceLocator.id));
+        UEFI_LVVV(("entry->bankLocator.id               = %u",     entry->bankLocator.id));
         UEFI_LVVV(("entry->memoryType                   = %s",     enumToFullString(entry->memoryType)));
         UEFI_LVVV(("entry->typeDetail                   = %s",     flagsToFullString(entry->typeDetail)));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            UEFI_LVVV(("entry->speed                = %u", entry->speed));
-            UEFI_LVVV(("entry->manufacturerStringId = %u", entry->manufacturerStringId));
-            UEFI_LVVV(("entry->serialNumberStringId = %u", entry->serialNumberStringId));
-            UEFI_LVVV(("entry->assetTagStringId     = %u", entry->assetTagStringId));
-            UEFI_LVVV(("entry->partNumberStringId   = %u", entry->partNumberStringId));
+            UEFI_LVVV(("entry->speed           = %u", entry->speed));
+            UEFI_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));
+            UEFI_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
+            UEFI_LVVV(("entry->assetTag.id     = %u", entry->assetTag.id));
+            UEFI_LVVV(("entry->partNumber.id   = %u", entry->partNumber.id));
 
             if (DMI::getVersion() >= DMI_VERSION(2, 6))
             {
@@ -3265,7 +3265,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
                         {
                             UEFI_LVVV(("entry->memoryTechnology                        = %s", enumToFullString(entry->memoryTechnology)));
                             UEFI_LVVV(("entry->memoryOperatingModeCapability           = %s", flagsToFullString(entry->memoryOperatingModeCapability)));
-                            UEFI_LVVV(("entry->firmwareVersionStringId                 = %u", entry->firmwareVersionStringId));
+                            UEFI_LVVV(("entry->firmwareVersion.id                      = %u", entry->firmwareVersion.id));
                             UEFI_LVVV(("entry->moduleManufacturerID                    = %u", entry->moduleManufacturerID));
                             UEFI_LVVV(("entry->moduleProductID                         = %u", entry->moduleProductID));
                             UEFI_LVVV(("entry->memorySubsystemControllerManufacturerID = %u", entry->memorySubsystemControllerManufacturerID));
@@ -3297,18 +3297,18 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
         // UEFI_TEST_ASSERT(entry->size.value16              == 0x0400,                                      NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->formFactor                == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION); // Commented due to value variation
         UEFI_TEST_ASSERT(entry->deviceSet                    == 0,                                           NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(entry->deviceLocatorStringId        == 1,                                           NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(entry->bankLocatorStringId       == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        UEFI_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION);
+        // UEFI_TEST_ASSERT(entry->bankLocator.id            == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->memoryType                == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->typeDetail                == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            // UEFI_TEST_ASSERT(entry->speed                == 2133, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->manufacturerStringId == 3,    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->serialNumberStringId == 4,    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->assetTagStringId     == 5,    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->partNumberStringId   == 6,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->speed           == 2133, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->manufacturer.id == 3,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->serialNumber.id == 4,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->assetTag.id     == 5,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->partNumber.id   == 6,    NgosStatus::ASSERTION); // Commented due to value variation
 
             if (DMI::getVersion() >= DMI_VERSION(2, 6))
             {
@@ -3318,7 +3318,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
                 if (DMI::getVersion() >= DMI_VERSION(2, 7))
                 {
                     // UEFI_TEST_ASSERT(entry->extendedSize.value    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entry->extendedSize.value    == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entry->extendedSize.value32  == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
                     // UEFI_TEST_ASSERT(entry->configuredMemorySpeed == 2133,       NgosStatus::ASSERTION); // Commented due to value variation
 
                     if (DMI::getVersion() >= DMI_VERSION(2, 8))
@@ -3331,7 +3331,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
                         {
                             UEFI_TEST_ASSERT(entry->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                         NgosStatus::ASSERTION);
                             UEFI_TEST_ASSERT(entry->memoryOperatingModeCapability           == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);
-                            UEFI_TEST_ASSERT(entry->firmwareVersionStringId                 == 7,                                                       NgosStatus::ASSERTION);
+                            UEFI_TEST_ASSERT(entry->firmwareVersion.id                      == 7,                                                       NgosStatus::ASSERTION);
                             UEFI_TEST_ASSERT(entry->moduleManufacturerID                    == 0,                                                       NgosStatus::ASSERTION);
                             UEFI_TEST_ASSERT(entry->moduleProductID                         == 0,                                                       NgosStatus::ASSERTION);
                             UEFI_TEST_ASSERT(entry->memorySubsystemControllerManufacturerID == 0,                                                       NgosStatus::ASSERTION);
@@ -3388,61 +3388,64 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
 
 
-    const char8 *entryName             = nullptr;
-    const char8 *deviceLocatorString   = "N/A";
-    const char8 *bankLocatorString     = "N/A";
-    const char8 *manufacturerString    = "N/A";
-    const char8 *serialNumberString    = "N/A";
-    const char8 *assetTagString        = "N/A";
-    const char8 *partNumberString      = "N/A";
-    const char8 *firmwareVersionString = "N/A";
+    const char8 *entryName       = nullptr;
+    const char8 *deviceLocator   = "N/A";
+    const char8 *bankLocator     = "N/A";
+    const char8 *manufacturer    = "N/A";
+    const char8 *serialNumber    = "N/A";
+    const char8 *assetTag        = "N/A";
+    const char8 *partNumber      = "N/A";
+    const char8 *firmwareVersion = "N/A";
 
     // Get strings
     {
-        u8 manufacturerStringId    = 0;
-        u8 serialNumberStringId    = 0;
-        u8 assetTagStringId        = 0;
-        u8 partNumberStringId      = 0;
-        u8 firmwareVersionStringId = 0;
+        DmiStringId manufacturerStringId;
+        DmiStringId serialNumberStringId;
+        DmiStringId assetTagStringId;
+        DmiStringId partNumberStringId;
+        DmiStringId firmwareVersionStringId;
 
         if (DMI::getVersion() >= DMI_VERSION(2, 3))
         {
-            manufacturerStringId = entry->manufacturerStringId;
-            serialNumberStringId = entry->serialNumberStringId;
-            assetTagStringId     = entry->assetTagStringId;
-            partNumberStringId   = entry->partNumberStringId;
+            manufacturerStringId = entry->manufacturer;
+            serialNumberStringId = entry->serialNumber;
+            assetTagStringId     = entry->assetTag;
+            partNumberStringId   = entry->partNumber;
 
             if (DMI::getVersion() >= DMI_VERSION(3, 2))
             {
-                firmwareVersionStringId = entry->firmwareVersionStringId;
+                firmwareVersionStringId = entry->firmwareVersion;
             }
         }
 
 
 
         if (
-            entry->deviceLocatorStringId
+            entry->deviceLocator.id
             ||
-            entry->bankLocatorStringId
+            entry->bankLocator.id
             ||
-            manufacturerStringId
+            manufacturerStringId.id
             ||
-            serialNumberStringId
+            serialNumberStringId.id
             ||
-            assetTagStringId
+            assetTagStringId.id
             ||
-            partNumberStringId
+            partNumberStringId.id
             ||
-            firmwareVersionStringId
+            firmwareVersionStringId.id
            )
         {
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
             UEFI_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
 
             do
             {
@@ -3453,40 +3456,40 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
 
 
-                    if (stringId == entry->deviceLocatorStringId)
+                    if (stringId == entry->deviceLocator)
                     {
-                        deviceLocatorString = begin;
-                        entryName           = deviceLocatorString;
+                        deviceLocator = begin;
+                        entryName     = deviceLocator;
                     }
                     else
-                    if (stringId == entry->bankLocatorStringId)
+                    if (stringId == entry->bankLocator)
                     {
-                        bankLocatorString = begin;
+                        bankLocator = begin;
                     }
                     else
                     if (stringId == manufacturerStringId)
                     {
-                        manufacturerString = begin;
+                        manufacturer = begin;
                     }
                     else
                     if (stringId == serialNumberStringId)
                     {
-                        serialNumberString = begin;
+                        serialNumber = begin;
                     }
                     else
                     if (stringId == assetTagStringId)
                     {
-                        assetTagString = begin;
+                        assetTag = begin;
                     }
                     else
                     if (stringId == partNumberStringId)
                     {
-                        partNumberString = begin;
+                        partNumber = begin;
                     }
                     else
                     if (stringId == firmwareVersionStringId)
                     {
-                        firmwareVersionString = begin;
+                        firmwareVersion = begin;
                     }
 
 
@@ -3631,7 +3634,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
                             }
                             else
                             {
-                                minimumVoltage = mprintf("%u.%03u", entry->minimumVoltage / 1000, entry->minimumVoltage % 1000);
+                                minimumVoltage = mprintf("%u.%03u V", entry->minimumVoltage / 1000, entry->minimumVoltage % 1000);
                             }
                         }
 
@@ -3645,7 +3648,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
                             }
                             else
                             {
-                                maximumVoltage = mprintf("%u.%03u", entry->maximumVoltage / 1000, entry->maximumVoltage % 1000);
+                                maximumVoltage = mprintf("%u.%03u V", entry->maximumVoltage / 1000, entry->maximumVoltage % 1000);
                             }
                         }
 
@@ -3871,8 +3874,8 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                            mprintf("0x%04X", entry->size.value16)),       NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Form factor",                     strdup(enumToFullString(entry->formFactor))),  NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device set",                      deviceSet),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device locator",                  deviceLocatorString),                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bank locator",                    bankLocatorString),                            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device locator",                  deviceLocator),                                NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bank locator",                    bankLocator),                                  NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory type",                     strdup(enumToFullString(entry->memoryType))),  NgosStatus::ASSERTION);
 
 
@@ -3883,10 +3886,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                   speedReal),                 NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                   speed),                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",            manufacturerString),        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",           serialNumberString),        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",               assetTagString),            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",             partNumberString),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",            manufacturer),              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",           serialNumber),              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",               assetTag),                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",             partNumber),                NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Rank",                    rank),                      NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended size",           extendedSize),              NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured memory speed", configuredMemorySpeedReal), NgosStatus::ASSERTION);
@@ -3912,7 +3915,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Firmware version",                            firmwareVersionString),                   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Firmware version",                            firmwareVersion),                         NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module manufacturer ID",                      moduleManufacturerID),                    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module product ID",                           moduleProductID),                         NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller manufacturer ID", memorySubsystemControllerManufacturerID), NgosStatus::ASSERTION);
@@ -4007,28 +4010,31 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
 
     // Get other strings
     {
-        u64 start;
-        u64 end;
-
-        if (
-            entry->startingAddress.value == DMI_MEMORY_ARRAY_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
-            &&
-            entry->endingAddress.value == DMI_MEMORY_ARRAY_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
-            &&
-            DMI::getVersion() >= DMI_VERSION(2, 7)
-           )
+        // Get string for Range
         {
-            start = entry->extendedStartingAddress;
-            end   = entry->extendedEndingAddress;
-        }
-        else
-        {
-            start = entry->startingAddress.address();
-            end   = entry->endingAddress.address(1);
-        }
+            u64 start;
+            u64 end;
 
-        range  = mprintf("%s - %s", strdup(bytesToString(start)), strdup(bytesToString(end)));
-        range2 = mprintf("0x%016lX - 0x%016lX", start, end);
+            if (
+                entry->startingAddress.value == DMI_MEMORY_ARRAY_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
+                &&
+                entry->endingAddress.value == DMI_MEMORY_ARRAY_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
+                &&
+                DMI::getVersion() >= DMI_VERSION(2, 7)
+               )
+            {
+                start = entry->extendedStartingAddress;
+                end   = entry->extendedEndingAddress;
+            }
+            else
+            {
+                start = entry->startingAddress.address();
+                end   = entry->endingAddress.address(1);
+            }
+
+            range  = mprintf("%s - %s", strdup(bytesToString(start)), strdup(bytesToString(end)));
+            range2 = mprintf("0x%016lX - 0x%016lX", start, end);
+        }
     }
 
 
@@ -4257,15 +4263,15 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
 
     // Validation
     {
-        UEFI_LVVV(("entry->locationStringId          = %u", entry->locationStringId));
-        UEFI_LVVV(("entry->manufacturerStringId      = %u", entry->manufacturerStringId));
-        UEFI_LVVV(("entry->manufactureDateStringId   = %u", entry->manufactureDateStringId));
-        UEFI_LVVV(("entry->serialNumberStringId      = %u", entry->serialNumberStringId));
-        UEFI_LVVV(("entry->deviceNameStringId        = %u", entry->deviceNameStringId));
+        UEFI_LVVV(("entry->location.id               = %u", entry->location.id));
+        UEFI_LVVV(("entry->manufacturer.id           = %u", entry->manufacturer.id));
+        UEFI_LVVV(("entry->manufactureDate.id        = %u", entry->manufactureDate.id));
+        UEFI_LVVV(("entry->serialNumber.id           = %u", entry->serialNumber.id));
+        UEFI_LVVV(("entry->deviceName.id             = %u", entry->deviceName.id));
         UEFI_LVVV(("entry->deviceChemistry           = %s", enumToFullString(entry->deviceChemistry)));
         UEFI_LVVV(("entry->designCapacity            = %u", entry->designCapacity));
         UEFI_LVVV(("entry->designVoltage             = %u", entry->designVoltage));
-        UEFI_LVVV(("entry->sbdsVersionNumberStringId = %u", entry->sbdsVersionNumberStringId));
+        UEFI_LVVV(("entry->sbdsVersionNumber.id      = %u", entry->sbdsVersionNumber.id));
         UEFI_LVVV(("entry->maximumErrorInBatteryData = %u", entry->maximumErrorInBatteryData));
 
         if (DMI::getVersion() >= DMI_VERSION(2, 2))
@@ -4276,34 +4282,34 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
             UEFI_LVVV(("entry->sbdsManufactureDate.year    = %u",             entry->sbdsManufactureDate.year));
             UEFI_LVVV(("entry->sbdsManufactureDate.value16 = 0x%04X",         entry->sbdsManufactureDate.value16));
             UEFI_LVVV(("entry->sbdsManufactureDate         = %04u-%02u-%02u", entry->sbdsManufactureDate.realYear(), entry->sbdsManufactureDate.month, entry->sbdsManufactureDate.date));
-            UEFI_LVVV(("entry->sbdsDeviceChemistryStringId = %u",             entry->sbdsDeviceChemistryStringId));
+            UEFI_LVVV(("entry->sbdsDeviceChemistry.id      = %u",             entry->sbdsDeviceChemistry.id));
             UEFI_LVVV(("entry->designCapacityMultiplier    = %u",             entry->designCapacityMultiplier));
             UEFI_LVVV(("entry->oemSpecific                 = 0x%08X",         entry->oemSpecific));
         }
 
 
 
-        // UEFI_TEST_ASSERT(entry->locationStringId          == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->manufacturerStringId      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->manufactureDateStringId   == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->serialNumberStringId      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->deviceNameStringId        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->location.id               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->manufacturer.id           == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->manufactureDate.id        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->serialNumber.id           == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->deviceName.id             == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->deviceChemistry           == DmiPortableBatteryDeviceChemistry::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->designCapacity            == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->designVoltage             == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->sbdsVersionNumberStringId == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
 
         if (DMI::getVersion() >= DMI_VERSION(2, 2))
         {
-            // UEFI_TEST_ASSERT(entry->sbdsSerialNumber            == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.date    == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.month   == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.year    == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.value16 == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsDeviceChemistryStringId == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->designCapacityMultiplier    == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->oemSpecific                 == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
 
             UEFI_TEST_ASSERT(entry->header.length >= 26,                              NgosStatus::ASSERTION);
             UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);
@@ -4317,48 +4323,51 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
 
 
 
-    const char8 *locationString            = "N/A";
-    const char8 *manufacturerString        = "N/A";
-    const char8 *manufactureDateString     = "N/A";
-    const char8 *serialNumberString        = "N/A";
-    const char8 *deviceNameString          = "N/A";
-    const char8 *sbdsVersionNumberString   = "N/A";
-    const char8 *sbdsDeviceChemistryString = "N/A";
+    const char8 *location            = "N/A";
+    const char8 *manufacturer        = "N/A";
+    const char8 *manufactureDate     = "N/A";
+    const char8 *serialNumber        = "N/A";
+    const char8 *deviceName          = "N/A";
+    const char8 *sbdsVersionNumber   = "N/A";
+    const char8 *sbdsDeviceChemistry = "N/A";
 
     // Get strings
     {
-        u8 sbdsDeviceChemistryStringId = 0;
+        DmiStringId sbdsDeviceChemistryStringId;
 
         if (DMI::getVersion() >= DMI_VERSION(2, 2))
         {
-            sbdsDeviceChemistryStringId = entry->sbdsDeviceChemistryStringId;
+            sbdsDeviceChemistryStringId = entry->sbdsDeviceChemistry;
         }
 
 
 
         if (
-            entry->locationStringId
+            entry->location.id
             ||
-            entry->manufacturerStringId
+            entry->manufacturer.id
             ||
-            entry->manufactureDateStringId
+            entry->manufactureDate.id
             ||
-            entry->serialNumberStringId
+            entry->serialNumber.id
             ||
-            entry->deviceNameStringId
+            entry->deviceName.id
             ||
-            entry->sbdsVersionNumberStringId
+            entry->sbdsVersionNumber.id
             ||
-            sbdsDeviceChemistryStringId
+            sbdsDeviceChemistryStringId.id
            )
         {
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
             UEFI_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
 
             do
             {
@@ -4369,39 +4378,39 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
 
 
 
-                    if (stringId == entry->locationStringId)
+                    if (stringId == entry->location)
                     {
-                        locationString = begin;
+                        location = begin;
                     }
                     else
-                    if (stringId == entry->manufacturerStringId)
+                    if (stringId == entry->manufacturer)
                     {
-                        manufacturerString = begin;
+                        manufacturer = begin;
                     }
                     else
-                    if (stringId == entry->manufactureDateStringId)
+                    if (stringId == entry->manufactureDate)
                     {
-                        manufactureDateString = begin;
+                        manufactureDate = begin;
                     }
                     else
-                    if (stringId == entry->serialNumberStringId)
+                    if (stringId == entry->serialNumber)
                     {
-                        serialNumberString = begin;
+                        serialNumber = begin;
                     }
                     else
-                    if (stringId == entry->deviceNameStringId)
+                    if (stringId == entry->deviceName)
                     {
-                        deviceNameString = begin;
+                        deviceName = begin;
                     }
                     else
-                    if (stringId == entry->sbdsVersionNumberStringId)
+                    if (stringId == entry->sbdsVersionNumber)
                     {
-                        sbdsVersionNumberString = begin;
+                        sbdsVersionNumber = begin;
                     }
                     else
                     if (stringId == sbdsDeviceChemistryStringId)
                     {
-                        sbdsDeviceChemistryString = begin;
+                        sbdsDeviceChemistry = begin;
                     }
 
 
@@ -4512,19 +4521,19 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                    strdup(enumToFullString(entry->header.type))),     NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                        mprintf("0x%04X", entry->header.handle)),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                      locationString),                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",                  manufacturerString),                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacture date",              manufactureDateString),                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",                 serialNumberString),                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",                   deviceNameString),                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                      location),                                         NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",                  manufacturer),                                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacture date",              manufactureDate),                                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",                 serialNumber),                                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",                   deviceName),                                       NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device chemistry",              strdup(enumToFullString(entry->deviceChemistry))), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design capacity",               designCapacity),                                   NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design voltage",                designVoltage),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS version number",           sbdsVersionNumberString),                          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS version number",           sbdsVersionNumber),                                NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum error in battery data", maximumErrorInBatteryData),                        NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS serial number",            sbdsSerialNumber),                                 NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS manufacture date",         sbdsManufactureDate),                              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS device chemistry",         sbdsDeviceChemistryString),                        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS device chemistry",         sbdsDeviceChemistry),                              NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design capacity multiplier",    designCapacityMultiplier),                         NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM specific",                  oemSpecific),                                      NgosStatus::ASSERTION);
 
