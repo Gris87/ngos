@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h>
 #include <common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h>
 
@@ -31,10 +32,10 @@ struct DmiCoolingDeviceEntry
         u8 deviceTypeAndStatus;
     };
 
-    u8  coolingUnitGroup;
-    u32 oemDefined;
-    u16 nominalSpeed;
-    u8  descriptionStringId;
+    u8          coolingUnitGroup;
+    u32         oemDefined;
+    u16         nominalSpeed;
+    DmiStringId description;
 } __attribute__((packed));
 
 

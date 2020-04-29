@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h>
 #include <common/src/bits64/dmi/entry/lib/dmivoltageprobestatus.h>
 
@@ -21,7 +22,7 @@
 struct DmiVoltageProbeEntry
 {
     DmiEntryHeader header;
-    u8             descriptionStringId;
+    DmiStringId    description;
 
     union
     {

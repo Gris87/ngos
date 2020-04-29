@@ -4,6 +4,7 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
+#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h>
 #include <common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h>
 
@@ -21,7 +22,7 @@
 struct DmiElectricalCurrentProbeEntry
 {
     DmiEntryHeader header;
-    u8             descriptionStringId;
+    DmiStringId    description;
 
     union
     {

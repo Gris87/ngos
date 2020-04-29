@@ -2733,31 +2733,31 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->descriptionStringId = %u",     entry->descriptionStringId));
-        COMMON_LVVV(("entry->location            = %s",     enumToFullString((DmiVoltageProbeLocation)entry->location)));
-        COMMON_LVVV(("entry->status              = %s",     enumToFullString((DmiVoltageProbeStatus)entry->status)));
-        COMMON_LVVV(("entry->locationAndStatus   = 0x%02X", entry->locationAndStatus));
-        COMMON_LVVV(("entry->maximumValue        = %u",     entry->maximumValue));
-        COMMON_LVVV(("entry->minimumValue        = %u",     entry->minimumValue));
-        COMMON_LVVV(("entry->resolution          = %u",     entry->resolution));
-        COMMON_LVVV(("entry->tolerance           = %u",     entry->tolerance));
-        COMMON_LVVV(("entry->accuracy            = %u",     entry->accuracy));
-        COMMON_LVVV(("entry->oemDefined          = 0x%08X", entry->oemDefined));
-        COMMON_LVVV(("entry->nominalValue        = %u",     entry->nominalValue));
+        COMMON_LVVV(("entry->description.id    = %u",     entry->description.id));
+        COMMON_LVVV(("entry->location          = %s",     enumToFullString((DmiVoltageProbeLocation)entry->location)));
+        COMMON_LVVV(("entry->status            = %s",     enumToFullString((DmiVoltageProbeStatus)entry->status)));
+        COMMON_LVVV(("entry->locationAndStatus = 0x%02X", entry->locationAndStatus));
+        COMMON_LVVV(("entry->maximumValue      = %u",     entry->maximumValue));
+        COMMON_LVVV(("entry->minimumValue      = %u",     entry->minimumValue));
+        COMMON_LVVV(("entry->resolution        = %u",     entry->resolution));
+        COMMON_LVVV(("entry->tolerance         = %u",     entry->tolerance));
+        COMMON_LVVV(("entry->accuracy          = %u",     entry->accuracy));
+        COMMON_LVVV(("entry->oemDefined        = 0x%08X", entry->oemDefined));
+        COMMON_LVVV(("entry->nominalValue      = %u",     entry->nominalValue));
 
 
 
-        // COMMON_TEST_ASSERT(entry->descriptionStringId == 1,                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->location            == DmiVoltageProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->status              == DmiVoltageProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->locationAndStatus   == 0x00,                           NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->maximumValue        == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->minimumValue        == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->resolution          == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->tolerance           == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->accuracy            == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->oemDefined          == 0x00000000,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->nominalValue        == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->description.id    == 1,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->location          == DmiVoltageProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->status            == DmiVoltageProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus == 0x00,                           NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumValue      == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->minimumValue      == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->resolution        == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->tolerance         == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->accuracy          == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->oemDefined        == 0x00000000,                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->nominalValue      == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
 
         COMMON_TEST_ASSERT(entry->header.length >= 22,                           NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiVoltageProbeEntry), NgosStatus::ASSERTION);
@@ -2767,28 +2767,36 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 
     // Get strings
     {
-        if (entry->descriptionStringId)
+        if (entry->description.id)
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (stringId == entry->description)
+                    {
+                        COMMON_LVVV(("description: %s", begin));
+                    }
+
+
+
+                    if (cur[1] == 0)
                     {
                         break;
                     }
@@ -2833,7 +2841,7 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
-            COMMON_LVVV(("entry->descriptionStringId = %u", entry->descriptionStringId));
+            COMMON_LVVV(("entry->description.id = %u", entry->description.id));
         }
 
 
@@ -2848,7 +2856,7 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
-            // COMMON_TEST_ASSERT(entry->descriptionStringId == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->description.id == 1, NgosStatus::ASSERTION); // Commented due to value variation
 
             COMMON_TEST_ASSERT(entry->header.length >= 15,                            NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);
@@ -2864,37 +2872,45 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
     // Get strings
     {
-        u8 descriptionStringId = 0;
+        DmiStringId descriptionStringId;
 
         if (DMI::getVersion() >= DMI_VERSION(2, 7))
         {
-            descriptionStringId = entry->descriptionStringId;
+            descriptionStringId = entry->description;
         }
 
 
 
-        if (descriptionStringId)
+        if (descriptionStringId.id)
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (stringId == descriptionStringId)
+                    {
+                        COMMON_LVVV(("description: %s", begin));
+                    }
+
+
+
+                    if (cur[1] == 0)
                     {
                         break;
                     }
@@ -2929,31 +2945,31 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
 
     // Validation
     {
-        COMMON_LVVV(("entry->descriptionStringId = %u",     entry->descriptionStringId));
-        COMMON_LVVV(("entry->location            = %s",     enumToFullString((DmiTemperatureProbeLocation)entry->location)));
-        COMMON_LVVV(("entry->status              = %s",     enumToFullString((DmiTemperatureProbeStatus)entry->status)));
-        COMMON_LVVV(("entry->locationAndStatus   = 0x%02X", entry->locationAndStatus));
-        COMMON_LVVV(("entry->maximumValue        = %u",     entry->maximumValue));
-        COMMON_LVVV(("entry->minimumValue        = %u",     entry->minimumValue));
-        COMMON_LVVV(("entry->resolution          = %u",     entry->resolution));
-        COMMON_LVVV(("entry->tolerance           = %u",     entry->tolerance));
-        COMMON_LVVV(("entry->accuracy            = %u",     entry->accuracy));
-        COMMON_LVVV(("entry->oemDefined          = 0x%08X", entry->oemDefined));
-        COMMON_LVVV(("entry->nominalValue        = %u",     entry->nominalValue));
+        COMMON_LVVV(("entry->description.id    = %u",     entry->description.id));
+        COMMON_LVVV(("entry->location          = %s",     enumToFullString((DmiTemperatureProbeLocation)entry->location)));
+        COMMON_LVVV(("entry->status            = %s",     enumToFullString((DmiTemperatureProbeStatus)entry->status)));
+        COMMON_LVVV(("entry->locationAndStatus = 0x%02X", entry->locationAndStatus));
+        COMMON_LVVV(("entry->maximumValue      = %u",     entry->maximumValue));
+        COMMON_LVVV(("entry->minimumValue      = %u",     entry->minimumValue));
+        COMMON_LVVV(("entry->resolution        = %u",     entry->resolution));
+        COMMON_LVVV(("entry->tolerance         = %u",     entry->tolerance));
+        COMMON_LVVV(("entry->accuracy          = %u",     entry->accuracy));
+        COMMON_LVVV(("entry->oemDefined        = 0x%08X", entry->oemDefined));
+        COMMON_LVVV(("entry->nominalValue      = %u",     entry->nominalValue));
 
 
 
-        // COMMON_TEST_ASSERT(entry->descriptionStringId == 1,                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->location            == DmiTemperatureProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->status              == DmiTemperatureProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->locationAndStatus   == 0x00,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->maximumValue        == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->minimumValue        == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->resolution          == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->tolerance           == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->accuracy            == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->oemDefined          == 0x00000000,                         NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->nominalValue        == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->description.id    == 1,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->location          == DmiTemperatureProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->status            == DmiTemperatureProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus == 0x00,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumValue      == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->minimumValue      == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->resolution        == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->tolerance         == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->accuracy          == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->oemDefined        == 0x00000000,                         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->nominalValue      == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
 
         COMMON_TEST_ASSERT(entry->header.length >= 22,                               NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiTemperatureProbeEntry), NgosStatus::ASSERTION);
@@ -2963,28 +2979,36 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
 
     // Get strings
     {
-        if (entry->descriptionStringId)
+        if (entry->description.id)
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (stringId == entry->description)
+                    {
+                        COMMON_LVVV(("description: %s", begin));
+                    }
+
+
+
+                    if (cur[1] == 0)
                     {
                         break;
                     }
@@ -3019,31 +3043,31 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
 
     // Validation
     {
-        COMMON_LVVV(("entry->descriptionStringId = %u",     entry->descriptionStringId));
-        COMMON_LVVV(("entry->location            = %s",     enumToFullString((DmiElectricalCurrentProbeLocation)entry->location)));
-        COMMON_LVVV(("entry->status              = %s",     enumToFullString((DmiElectricalCurrentProbeStatus)entry->status)));
-        COMMON_LVVV(("entry->locationAndStatus   = 0x%02X", entry->locationAndStatus));
-        COMMON_LVVV(("entry->maximumValue        = %u",     entry->maximumValue));
-        COMMON_LVVV(("entry->minimumValue        = %u",     entry->minimumValue));
-        COMMON_LVVV(("entry->resolution          = %u",     entry->resolution));
-        COMMON_LVVV(("entry->tolerance           = %u",     entry->tolerance));
-        COMMON_LVVV(("entry->accuracy            = %u",     entry->accuracy));
-        COMMON_LVVV(("entry->oemDefined          = 0x%08X", entry->oemDefined));
-        COMMON_LVVV(("entry->nominalValue        = %u",     entry->nominalValue));
+        COMMON_LVVV(("entry->description.id    = %u",     entry->description.id));
+        COMMON_LVVV(("entry->location          = %s",     enumToFullString((DmiElectricalCurrentProbeLocation)entry->location)));
+        COMMON_LVVV(("entry->status            = %s",     enumToFullString((DmiElectricalCurrentProbeStatus)entry->status)));
+        COMMON_LVVV(("entry->locationAndStatus = 0x%02X", entry->locationAndStatus));
+        COMMON_LVVV(("entry->maximumValue      = %u",     entry->maximumValue));
+        COMMON_LVVV(("entry->minimumValue      = %u",     entry->minimumValue));
+        COMMON_LVVV(("entry->resolution        = %u",     entry->resolution));
+        COMMON_LVVV(("entry->tolerance         = %u",     entry->tolerance));
+        COMMON_LVVV(("entry->accuracy          = %u",     entry->accuracy));
+        COMMON_LVVV(("entry->oemDefined        = 0x%08X", entry->oemDefined));
+        COMMON_LVVV(("entry->nominalValue      = %u",     entry->nominalValue));
 
 
 
-        // COMMON_TEST_ASSERT(entry->descriptionStringId == 1,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->location            == DmiElectricalCurrentProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->status              == DmiElectricalCurrentProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->locationAndStatus   == 0x00,                                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->maximumValue        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->minimumValue        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->resolution          == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->tolerance           == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->accuracy            == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->oemDefined          == 0x00000000,                               NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(entry->nominalValue        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->description.id    == 1,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->location          == DmiElectricalCurrentProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->status            == DmiElectricalCurrentProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->locationAndStatus == 0x00,                                     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->maximumValue      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->minimumValue      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->resolution        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->tolerance         == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->accuracy          == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->oemDefined        == 0x00000000,                               NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(entry->nominalValue      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
 
         COMMON_TEST_ASSERT(entry->header.length >= 22,                                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiElectricalCurrentProbeEntry), NgosStatus::ASSERTION);
@@ -3053,28 +3077,36 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
 
     // Get strings
     {
-        if (entry->descriptionStringId)
+        if (entry->description.id)
         {
-            COMMON_TEST_ASSERT((((u8 *)entry)[entry->header.length] != 0) || (((u8 *)entry)[entry->header.length + 1] != 0), NgosStatus::ASSERTION);
-
-
-
-            char8 *cur      = (char8 *)entry + entry->header.length;
-            char8 *begin    = cur;
-            u8     stringId = 0;
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
             do
             {
-                if (!cur[0]) // cur[0] == 0
+                if (cur[0] == 0)
                 {
                     ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId, begin));
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
 
 
 
-                    if (!cur[1]) // cur[1] == 0
+                    if (stringId == entry->description)
+                    {
+                        COMMON_LVVV(("description: %s", begin));
+                    }
+
+
+
+                    if (cur[1] == 0)
                     {
                         break;
                     }
