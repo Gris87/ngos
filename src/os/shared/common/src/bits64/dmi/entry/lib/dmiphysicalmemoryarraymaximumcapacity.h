@@ -10,7 +10,7 @@
 
 struct DmiPhysicalMemoryArrayMaximumCapacity
 {
-    u32 size()
+    u64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 

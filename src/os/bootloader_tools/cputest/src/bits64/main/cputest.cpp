@@ -409,7 +409,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
 
-    if (CPU::isCpuIdLevelSupported(L1_CACHE_IDENTIFIERS_CPUID))
+    if (CPU::isCpuIdLevelSupported(L1_CACHE_IDENTIFIERS_CPUID)) // TODO: Unify with CPUID structures
     {
         u32 ignored;
         u32 ecx;

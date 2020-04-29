@@ -2559,7 +2559,7 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
         {
             DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiOnboardDevice(&entry->devices[i]), enumToHumanString(entry->header.type));
 
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type))),                                       NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type))),                                        NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle)),                                             NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type", strdup(enumToFullString((DmiOnboardDevicesDeviceType)entry->devices[i].deviceType))), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",     entry->devices[i].enabled ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
