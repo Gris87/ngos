@@ -164,33 +164,14 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sMemoryDevices[0].device  != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDevices[0].bank    == 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDevices[0].size    == 1073741824,              NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 26,                      NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 7,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]               != 0,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]               != 0,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[2]               != 0,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[3]               != 0,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[4]               != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[5]               != 0,                       NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sIdentities[5]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[6]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[7]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[8]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[9]            1= 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[10]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[11]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[12]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[13]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[14]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sIdentities[15]              != 0,                       NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sIdentities[16]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[17]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[18]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[19]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sIdentities[20]              != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[21]              != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[22]              != 0,                       NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sIdentities[23]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[24]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[25]           != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM  == 1,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sUuids[0]                    != 0,                       NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sUuids[0]->data1          == 0x9FAE0773,              NgosStatus::ASSERTION); // Commented due to value variation
@@ -790,22 +771,22 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
                     else
                     if (stringId == entry->version)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("version = %s", begin));
                     }
                     else
                     if (stringId == entry->serialNumber)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("serialNumber = %s", begin));
                     }
                     else
                     if (stringId == skuNumberStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("skuNumber = %s", begin));
                     }
                     else
                     if (stringId == familyStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_FAMILY, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("family = %s", begin));
                     }
 
 
@@ -941,22 +922,22 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
                     else
                     if (stringId == entry->version)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("version = %s", begin));
                     }
                     else
                     if (stringId == entry->serialNumber)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("serialNumber = %s", begin));
                     }
                     else
                     if (stringId == entry->assetTag)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("assetTag = %s", begin));
                     }
                     else
                     if (stringId == entry->locationInChassis)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_LOCATION_IN_CHASSIS, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("locationInChassis = %s", begin));
                     }
 
 
@@ -1170,27 +1151,27 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
                     if (stringId == entry->manufacturer)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("manufacturer = %s", begin));
                     }
                     else
                     if (stringId == entry->version)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("version = %s", begin));
                     }
                     else
                     if (stringId == entry->serialNumber)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("serialNumber = %s", begin));
                     }
                     else
                     if (stringId == entry->assetTag)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("assetTag = %s", begin));
                     }
                     else
                     if (stringId == skuNumberStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::CHASSIS_SKU_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("skuNumber = %s", begin));
                     }
 
 
@@ -1468,32 +1449,32 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
                     if (stringId == entry->socketDesignation)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SOCKET, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("socketDesignation = %s", begin));
                     }
                     else
                     if (stringId == entry->processorManufacturer)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("processorManufacturer = %s", begin));
                     }
                     else
                     if (stringId == entry->processorVersion)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("processorVersion = %s", begin));
                     }
                     else
                     if (stringId == serialNumberStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_SERIAL_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("serialNumber = %s", begin));
                     }
                     else
                     if (stringId == assetTagStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_ASSET_TAG, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("assetTag = %s", begin));
                     }
                     else
                     if (stringId == partNumberStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::PROCESSOR_PART_NUMBER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("partNumber = %s", begin));
                     }
 
 
@@ -1649,7 +1630,7 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
                     if (stringId == entry->socketDesignation)
                     {
-                        // TODO: Add log here
+                        COMMON_LVVV(("socketDesignation = %s", begin));
                     }
 
 
@@ -1739,12 +1720,12 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
 
                     if (stringId == entry->internalReferenceDesignator)
                     {
-                        // TODO: Add log here
+                        COMMON_LVVV(("internalReferenceDesignator = %s", begin));
                     }
                     else
                     if (stringId == entry->externalReferenceDesignator)
                     {
-                        // TODO: Add log here
+                        COMMON_LVVV(("externalReferenceDesignator = %s", begin));
                     }
 
 
@@ -1902,7 +1883,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
                     if (stringId == entry->slotDesignation)
                     {
-                        // TODO: Add log here
+                        COMMON_LVVV(("slotDesignation = %s", begin));
                     }
 
 
@@ -2330,7 +2311,7 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
 
                     if (stringId == entry->groupName)
                     {
-                        // TODO: Add log here
+                        COMMON_LVVV(("groupName = %s", begin));
                     }
 
 
@@ -2791,7 +2772,7 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 
                     if (stringId == entry->description)
                     {
-                        COMMON_LVVV(("description: %s", begin));
+                        COMMON_LVVV(("description = %s", begin));
                     }
 
 
@@ -2905,7 +2886,7 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
                     if (stringId == descriptionStringId)
                     {
-                        COMMON_LVVV(("description: %s", begin));
+                        COMMON_LVVV(("description = %s", begin));
                     }
 
 
@@ -3003,7 +2984,7 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
 
                     if (stringId == entry->description)
                     {
-                        COMMON_LVVV(("description: %s", begin));
+                        COMMON_LVVV(("description = %s", begin));
                     }
 
 
@@ -3101,7 +3082,7 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
 
                     if (stringId == entry->description)
                     {
-                        COMMON_LVVV(("description: %s", begin));
+                        COMMON_LVVV(("description = %s", begin));
                     }
 
 
@@ -3471,7 +3452,7 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
 
                     if (stringId == entry->location)
                     {
-                        COMMON_LVVV(("description = %s", begin));
+                        COMMON_LVVV(("location = %s", begin));
                     }
                     else
                     if (stringId == entry->deviceName)
@@ -4004,13 +3985,10 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
             sMemoryDevices[memoryId].size = entry->size.size();
         }
 
-        sMemoryDevices[memoryId].device          = nullptr;
-        sMemoryDevices[memoryId].bank            = nullptr;
-        sMemoryDevices[memoryId].manufacturer    = nullptr;
-        sMemoryDevices[memoryId].serialNumber    = nullptr;
-        sMemoryDevices[memoryId].assetTag        = nullptr;
-        sMemoryDevices[memoryId].partNumber      = nullptr;
-        sMemoryDevices[memoryId].firmwareVersion = nullptr;
+        sMemoryDevices[memoryId].deviceLocator = nullptr;
+        sMemoryDevices[memoryId].manufacturer  = nullptr;
+        sMemoryDevices[memoryId].serialNumber  = nullptr;
+        sMemoryDevices[memoryId].partNumber    = nullptr;
     }
 
 
@@ -4076,12 +4054,12 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
 
                     if (stringId == entry->deviceLocator)
                     {
-                        COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &sMemoryDevices[memoryId].device), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &sMemoryDevices[memoryId].deviceLocator), NgosStatus::ASSERTION);
                     }
                     else
                     if (stringId == entry->bankLocator)
                     {
-                        COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &sMemoryDevices[memoryId].bank), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("bankLocator = %s", begin));
                     }
                     else
                     if (stringId == manufacturerStringId)
@@ -4096,7 +4074,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
                     else
                     if (stringId == assetTagStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &sMemoryDevices[memoryId].assetTag), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("assetTag = %s", begin));
                     }
                     else
                     if (stringId == partNumberStringId)
@@ -4106,7 +4084,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiEntryHeader *header)
                     else
                     if (stringId == firmwareVersionStringId)
                     {
-                        COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &sMemoryDevices[memoryId].firmwareVersion), NgosStatus::ASSERTION);
+                        COMMON_LVVV(("firmwareVersion = %s", begin));
                     }
 
 

@@ -27,7 +27,23 @@ NgosStatus generateHardwareId(BootParams *params, i64 *length)
 
 
 
-    i64 len = sprintf(params->hardwareId, "%s %s %s - ", stringToString(DMI::getIdentity(DmiIdentity::BASEBOARD_MANUFACTURER)), stringToString(DMI::getIdentity(DmiIdentity::BASEBOARD_PRODUCT)), uuidToString(DMI::getUuid(DmiStoredUuid::SYSTEM_UUID)));
+    const char8 *manufacturer = DMI::getIdentity(DmiIdentity::BASEBOARD_MANUFACTURER);
+    const char8 *product      = DMI::getIdentity(DmiIdentity::BASEBOARD_PRODUCT);
+    const char8 *systemUuid   = uuidToString(DMI::getUuid(DmiStoredUuid::SYSTEM_UUID));
+
+    if (!manufacturer)
+    {
+        manufacturer = DMI::getIdentity(DmiIdentity::SYSTEM_MANUFACTURER);
+    }
+
+    if (!product)
+    {
+        product = DMI::getIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME);
+    }
+
+
+
+    i64 len = sprintf(params->hardwareId, "%s %s %s - ", stringToString(manufacturer), stringToString(product), systemUuid);
 
     UEFI_LVVV(("len = %u", len));
 

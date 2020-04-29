@@ -6205,7 +6205,7 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
                 {
                     u8 valueSize = curInfo->entryLength - sizeof(DmiAdditionalInformation);
 
-                    if (valueSize > 0) // TODO: Move to function // TODO: Need to check
+                    if (valueSize > 0) // TODO: Move to function
                     {
                         const char8 *digits = "0123456789ABCDEF";
 
@@ -6238,8 +6238,8 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
                         {
                             u8 valueByte = curInfo->value[j];
 
-                            *cur = digits[valueByte >> 4];
-                            *cur = digits[valueByte & 0x0F];
+                            cur[0] = digits[valueByte >> 4];
+                            cur[1] = digits[valueByte & 0x0F];
 
                             cur += 2;
                         }
