@@ -32,14 +32,14 @@ inline const char8* enumToString(DmiIdentity identity) // TEST: NO
 
     switch (identity)
     {
-        case DmiIdentity::BIOS_VENDOR:                   return "BIOS_VENDOR";
-        case DmiIdentity::BIOS_VERSION:                  return "BIOS_VERSION";
-        case DmiIdentity::BIOS_RELEASE_DATE:             return "BIOS_RELEASE_DATE";
-        case DmiIdentity::SYSTEM_MANUFACTURER:           return "SYSTEM_MANUFACTURER";
-        case DmiIdentity::SYSTEM_PRODUCT_NAME:           return "SYSTEM_PRODUCT_NAME";
-        case DmiIdentity::BASEBOARD_MANUFACTURER:        return "BASEBOARD_MANUFACTURER";
-        case DmiIdentity::BASEBOARD_PRODUCT:             return "BASEBOARD_PRODUCT";
-        case DmiIdentity::MAXIMUM:                       return "MAXIMUM";
+        case DmiIdentity::BIOS_VENDOR:            return "BIOS_VENDOR";
+        case DmiIdentity::BIOS_VERSION:           return "BIOS_VERSION";
+        case DmiIdentity::BIOS_RELEASE_DATE:      return "BIOS_RELEASE_DATE";
+        case DmiIdentity::SYSTEM_MANUFACTURER:    return "SYSTEM_MANUFACTURER";
+        case DmiIdentity::SYSTEM_PRODUCT_NAME:    return "SYSTEM_PRODUCT_NAME";
+        case DmiIdentity::BASEBOARD_MANUFACTURER: return "BASEBOARD_MANUFACTURER";
+        case DmiIdentity::BASEBOARD_PRODUCT:      return "BASEBOARD_PRODUCT";
+        case DmiIdentity::MAXIMUM:                return "MAXIMUM";
 
         default: return "UNKNOWN";
     }
