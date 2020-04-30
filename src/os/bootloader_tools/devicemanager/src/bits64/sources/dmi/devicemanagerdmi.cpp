@@ -1218,6 +1218,14 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
+    DmiProcessorEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiProcessorEntryV21 *)entry : nullptr;
+    DmiProcessorEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiProcessorEntryV23 *)entry : nullptr;
+    DmiProcessorEntryV25 *entryV25 = DMI::getVersion() >= DMI_VERSION(2, 5) ? (DmiProcessorEntryV25 *)entry : nullptr;
+    DmiProcessorEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiProcessorEntryV26 *)entry : nullptr;
+    DmiProcessorEntryV30 *entryV30 = DMI::getVersion() >= DMI_VERSION(3, 0) ? (DmiProcessorEntryV30 *)entry : nullptr;
+
+
+
     // Validation
     {
         UEFI_LVVV(("entry->socketDesignation.id                 = %u",     entry->socketDesignation.id));
@@ -1235,18 +1243,21 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         UEFI_LVVV(("entry->processorVersion.id                  = %u",     entry->processorVersion.id));
         UEFI_LVVV(("entry->voltage.modeType                     = %s",     enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType)));
 
-        switch ((DmiProcessorVoltageModeType)entry->voltage.modeType)
+        // entry->voltage
         {
-            case DmiProcessorVoltageModeType::LEGACY_MODE:          UEFI_LVVV(("entry->voltage.flags = %s", flagsToFullString((DmiProcessorVoltageFlags)entry->voltage.flags))); break;
-            case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE: UEFI_LVVV(("entry->voltage.value = %u", entry->voltage.value));                                              break;
-
-            default:
+            switch ((DmiProcessorVoltageModeType)entry->voltage.modeType)
             {
-                UEFI_LF(("Unknown DMI processor voltage mode type %s, %s:%u", enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType), __FILE__, __LINE__));
+                case DmiProcessorVoltageModeType::LEGACY_MODE:          UEFI_LVVV(("entry->voltage.flags = %s", flagsToFullString((DmiProcessorVoltageFlags)entry->voltage.flags))); break;
+                case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE: UEFI_LVVV(("entry->voltage.value = %u", entry->voltage.value));                                              break;
 
-                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                default:
+                {
+                    UEFI_LF(("Unknown DMI processor voltage mode type %s, %s:%u", enumToFullString((DmiProcessorVoltageModeType)entry->voltage.modeType), __FILE__, __LINE__));
+
+                    return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                }
+                break;
             }
-            break;
         }
 
         UEFI_LVVV(("entry->voltage.value8   = 0x%02X", entry->voltage.value8));
@@ -1258,34 +1269,34 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         UEFI_LVVV(("entry->processorStatus  = 0x%02X", entry->processorStatus));
         UEFI_LVVV(("entry->processorUpgrade = %s",     enumToFullString(entry->processorUpgrade)));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            UEFI_LVVV(("entry->l1CacheHandle = 0x%04X", entry->l1CacheHandle));
-            UEFI_LVVV(("entry->l2CacheHandle = 0x%04X", entry->l2CacheHandle));
-            UEFI_LVVV(("entry->l3CacheHandle = 0x%04X", entry->l3CacheHandle));
+            UEFI_LVVV(("entryV21->l1CacheHandle = 0x%04X", entryV21->l1CacheHandle));
+            UEFI_LVVV(("entryV21->l2CacheHandle = 0x%04X", entryV21->l2CacheHandle));
+            UEFI_LVVV(("entryV21->l3CacheHandle = 0x%04X", entryV21->l3CacheHandle));
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            if (entryV23)
             {
-                UEFI_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
-                UEFI_LVVV(("entry->assetTag.id     = %u", entry->assetTag.id));
-                UEFI_LVVV(("entry->partNumber.id   = %u", entry->partNumber.id));
+                UEFI_LVVV(("entryV23->serialNumber.id = %u", entryV23->serialNumber.id));
+                UEFI_LVVV(("entryV23->assetTag.id     = %u", entryV23->assetTag.id));
+                UEFI_LVVV(("entryV23->partNumber.id   = %u", entryV23->partNumber.id));
 
-                if (DMI::getVersion() >= DMI_VERSION(2, 5))
+                if (entryV25)
                 {
-                    UEFI_LVVV(("entry->coreCount                = 0x%02X", entry->coreCount));
-                    UEFI_LVVV(("entry->enabledCoreCount         = 0x%02X", entry->enabledCoreCount));
-                    UEFI_LVVV(("entry->threadCount              = 0x%02X", entry->threadCount));
-                    UEFI_LVVV(("entry->processorCharacteristics = %s",     flagsToFullString(entry->processorCharacteristics)));
+                    UEFI_LVVV(("entryV25->coreCount                = 0x%02X", entryV25->coreCount));
+                    UEFI_LVVV(("entryV25->enabledCoreCount         = 0x%02X", entryV25->enabledCoreCount));
+                    UEFI_LVVV(("entryV25->threadCount              = 0x%02X", entryV25->threadCount));
+                    UEFI_LVVV(("entryV25->processorCharacteristics = %s",     flagsToFullString(entryV25->processorCharacteristics)));
 
-                    if (DMI::getVersion() >= DMI_VERSION(2, 6))
+                    if (entryV26)
                     {
-                        UEFI_LVVV(("entry->processorFamily2 = %s", enumToFullString(entry->processorFamily2)));
+                        UEFI_LVVV(("entryV26->processorFamily2 = %s", enumToFullString(entryV26->processorFamily2)));
 
-                        if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                        if (entryV30)
                         {
-                            UEFI_LVVV(("entry->coreCount2        = 0x%04X", entry->coreCount2));
-                            UEFI_LVVV(("entry->enabledCoreCount2 = 0x%04X", entry->enabledCoreCount2));
-                            UEFI_LVVV(("entry->threadCount2      = 0x%04X", entry->threadCount2));
+                            UEFI_LVVV(("entryV30->coreCount2        = 0x%04X", entryV30->coreCount2));
+                            UEFI_LVVV(("entryV30->enabledCoreCount2 = 0x%04X", entryV30->enabledCoreCount2));
+                            UEFI_LVVV(("entryV30->threadCount2      = 0x%04X", entryV30->threadCount2));
                         }
                     }
                 }
@@ -1342,66 +1353,60 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         // UEFI_TEST_ASSERT(entry->processorUpgrade                     == DmiProcessorUpgrade::OTHER,                        NgosStatus::ASSERTION); // Commented due to value variation
         // Ignore CppAlignmentVerifier [END]
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            // UEFI_TEST_ASSERT(entry->l1CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->l2CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->l3CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->l1CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->l2CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->l3CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            if (entryV23)
             {
-                // UEFI_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->assetTag.id     == 5, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->partNumber.id   == 6, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV23->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV23->assetTag.id     == 5, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV23->partNumber.id   == 6, NgosStatus::ASSERTION); // Commented due to value variation
 
-                if (DMI::getVersion() >= DMI_VERSION(2, 5))
+                if (entryV25)
                 {
-                    // UEFI_TEST_ASSERT(entry->coreCount                == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entry->enabledCoreCount         == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entry->threadCount              == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entry->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV25->coreCount                == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV25->enabledCoreCount         == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV25->threadCount              == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV25->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION); // Commented due to value variation
 
-                    if (DMI::getVersion() >= DMI_VERSION(2, 6))
+                    if (entryV26)
                     {
-                        // UEFI_TEST_ASSERT(entry->processorFamily2 == DmiProcessorFamily2::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entryV26->processorFamily2 == DmiProcessorFamily2::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
 
-                        if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                        if (entryV30)
                         {
-                            // UEFI_TEST_ASSERT(entry->coreCount2        == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
-                            // UEFI_TEST_ASSERT(entry->enabledCoreCount2 == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
-                            // UEFI_TEST_ASSERT(entry->threadCount2      == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
+                            // UEFI_TEST_ASSERT(entryV30->coreCount2        == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
+                            // UEFI_TEST_ASSERT(entryV30->enabledCoreCount2 == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
+                            // UEFI_TEST_ASSERT(entryV30->threadCount2      == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
 
-                            UEFI_TEST_ASSERT(entry->header.length >= 48,                        NgosStatus::ASSERTION);
-                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry), NgosStatus::ASSERTION);
+                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntryV30), NgosStatus::ASSERTION);
                         }
                         else
                         {
-                            UEFI_TEST_ASSERT(entry->header.length >= 42,                            NgosStatus::ASSERTION);
-                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 6, NgosStatus::ASSERTION);
+                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntryV26), NgosStatus::ASSERTION);
                         }
                     }
                     else
                     {
-                        UEFI_TEST_ASSERT(entry->header.length >= 40,                            NgosStatus::ASSERTION);
-                        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 8, NgosStatus::ASSERTION);
+                        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntryV25), NgosStatus::ASSERTION);
                     }
                 }
                 else
                 {
-                    UEFI_TEST_ASSERT(entry->header.length >= 35,                             NgosStatus::ASSERTION);
-                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 13, NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntryV23), NgosStatus::ASSERTION);
                 }
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= 32,                             NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 16, NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntryV21), NgosStatus::ASSERTION);
             }
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 26,                             NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry) - 22, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -1421,11 +1426,11 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         DmiStringId assetTagStringId;
         DmiStringId partNumberStringId;
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 3))
+        if (entryV23)
         {
-            serialNumberStringId = entry->serialNumber;
-            assetTagStringId     = entry->assetTag;
-            partNumberStringId   = entry->partNumber;
+            serialNumberStringId = entryV23->serialNumber;
+            assetTagStringId     = entryV23->assetTag;
+            partNumberStringId   = entryV23->partNumber;
         }
 
 
@@ -1542,13 +1547,13 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
             // Get string for L1 cache handle
             {
-                if (entry->l1CacheHandle != DMI_PROCESSOR_L1_CACHE_HANDLE_NOT_AVAILABLE)
+                if (entryV21->l1CacheHandle != DMI_PROCESSOR_L1_CACHE_HANDLE_NOT_AVAILABLE)
                 {
-                    l1CacheHandle = mprintf("0x%04X", entry->l1CacheHandle);
+                    l1CacheHandle = mprintf("0x%04X", entryV21->l1CacheHandle);
                 }
             }
 
@@ -1556,9 +1561,9 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
             // Get string for L2 cache handle
             {
-                if (entry->l2CacheHandle != DMI_PROCESSOR_L2_CACHE_HANDLE_NOT_AVAILABLE)
+                if (entryV21->l2CacheHandle != DMI_PROCESSOR_L2_CACHE_HANDLE_NOT_AVAILABLE)
                 {
-                    l2CacheHandle = mprintf("0x%04X", entry->l2CacheHandle);
+                    l2CacheHandle = mprintf("0x%04X", entryV21->l2CacheHandle);
                 }
             }
 
@@ -1566,106 +1571,106 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
             // Get string for L3 cache handle
             {
-                if (entry->l3CacheHandle != DMI_PROCESSOR_L3_CACHE_HANDLE_NOT_AVAILABLE)
+                if (entryV21->l3CacheHandle != DMI_PROCESSOR_L3_CACHE_HANDLE_NOT_AVAILABLE)
                 {
-                    l3CacheHandle = mprintf("0x%04X", entry->l3CacheHandle);
+                    l3CacheHandle = mprintf("0x%04X", entryV21->l3CacheHandle);
                 }
             }
 
 
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 5))
+            if (entryV25)
             {
                 // Get string for Core count
                 {
-                    if (entry->coreCount == DMI_PROCESSOR_CORE_COUNT_UNKNOWN)
+                    if (entryV25->coreCount == DMI_PROCESSOR_CORE_COUNT_UNKNOWN)
                     {
                         coreCountReal = "Unknown";
                     }
                     else
                     if (
-                        entry->coreCount == DMI_PROCESSOR_CORE_COUNT_NEED_TO_EXTEND
+                        entryV25->coreCount == DMI_PROCESSOR_CORE_COUNT_NEED_TO_EXTEND
                         &&
-                        DMI::getVersion() >= DMI_VERSION(3, 0)
+                        entryV30
                        )
                     {
-                        coreCountReal = mprintf("%u", entry->coreCount2);
+                        coreCountReal = mprintf("%u", entryV30->coreCount2);
                     }
                     else
                     {
-                        coreCountReal = mprintf("%u", entry->coreCount);
+                        coreCountReal = mprintf("%u", entryV25->coreCount);
                     }
 
 
 
-                    coreCount = mprintf("0x%02X", entry->coreCount);
+                    coreCount = mprintf("0x%02X", entryV25->coreCount);
                 }
 
 
 
                 // Get string for Enabled core count
                 {
-                    if (entry->enabledCoreCount == DMI_PROCESSOR_ENABLED_CORE_COUNT_UNKNOWN)
+                    if (entryV25->enabledCoreCount == DMI_PROCESSOR_ENABLED_CORE_COUNT_UNKNOWN)
                     {
                         enabledCoreCountReal = "Unknown";
                     }
                     else
                     if (
-                        entry->enabledCoreCount == DMI_PROCESSOR_ENABLED_CORE_COUNT_NEED_TO_EXTEND
+                        entryV25->enabledCoreCount == DMI_PROCESSOR_ENABLED_CORE_COUNT_NEED_TO_EXTEND
                         &&
-                        DMI::getVersion() >= DMI_VERSION(3, 0)
+                        entryV30
                        )
                     {
-                        enabledCoreCountReal = mprintf("%u", entry->enabledCoreCount2);
+                        enabledCoreCountReal = mprintf("%u", entryV30->enabledCoreCount2);
                     }
                     else
                     {
-                        enabledCoreCountReal = mprintf("%u", entry->enabledCoreCount);
+                        enabledCoreCountReal = mprintf("%u", entryV25->enabledCoreCount);
                     }
 
 
 
-                    enabledCoreCount = mprintf("0x%02X", entry->enabledCoreCount);
+                    enabledCoreCount = mprintf("0x%02X", entryV25->enabledCoreCount);
                 }
 
 
 
                 // Get string for Thread count
                 {
-                    if (entry->threadCount == DMI_PROCESSOR_THREAD_COUNT_UNKNOWN)
+                    if (entryV25->threadCount == DMI_PROCESSOR_THREAD_COUNT_UNKNOWN)
                     {
                         threadCountReal = "Unknown";
                     }
                     else
                     if (
-                        entry->threadCount == DMI_PROCESSOR_THREAD_COUNT_NEED_TO_EXTEND
+                        entryV25->threadCount == DMI_PROCESSOR_THREAD_COUNT_NEED_TO_EXTEND
                         &&
-                        DMI::getVersion() >= DMI_VERSION(3, 0)
+                        entryV30
                        )
                     {
-                        threadCountReal = mprintf("%u", entry->threadCount2);
+                        threadCountReal = mprintf("%u", entryV30->threadCount2);
                     }
                     else
                     {
-                        threadCountReal = mprintf("%u", entry->threadCount);
+                        threadCountReal = mprintf("%u", entryV25->threadCount);
                     }
 
 
 
-                    threadCount = mprintf("0x%02X", entry->threadCount);
+                    threadCount = mprintf("0x%02X", entryV25->threadCount);
                 }
 
 
 
-                if (DMI::getVersion() >= DMI_VERSION(2, 6))
+                if (entryV26)
                 {
-                    processorFamily2 = mprintf("0x%04X", entry->processorFamily2);
+                    processorFamily2 = mprintf("0x%04X", entryV26->processorFamily2);
 
-                    if (DMI::getVersion() >= DMI_VERSION(3, 0))
+                    if (entryV30)
                     {
-                        coreCount2        = mprintf("0x%04X", entry->coreCount2);
-                        enabledCoreCount2 = mprintf("0x%04X", entry->enabledCoreCount2);
-                        threadCount2      = mprintf("0x%04X", entry->threadCount2);
+                        coreCount2        = mprintf("0x%04X", entryV30->coreCount2);
+                        enabledCoreCount2 = mprintf("0x%04X", entryV30->enabledCoreCount2);
+                        threadCount2      = mprintf("0x%04X", entryV30->threadCount2);
                     }
                 }
             }
@@ -1686,10 +1691,10 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             if (
                 entry->processorFamily == DmiProcessorFamily::INDICATOR_FAMILY_2
                 &&
-                DMI::getVersion() >= DMI_VERSION(2, 6)
+                entryV26
                )
             {
-                processorFamily = strdup(enumToString(entry->processorFamily2));
+                processorFamily = strdup(enumToString(entryV26->processorFamily2));
             }
             else
             {
@@ -1827,9 +1832,9 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
         // Add records for Characteristics
         {
-            if (DMI::getVersion() >= DMI_VERSION(2, 5))
+            if (entryV25)
             {
-                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entry->processorCharacteristics, "0x%04X", DmiProcessorCharacteristicsFlag);
+                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entryV25->processorCharacteristics, "0x%04X", DmiProcessorCharacteristicsFlag);
             }
             else
             {
@@ -1860,6 +1865,11 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
+    DmiCacheEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiCacheEntryV21 *)entry : nullptr;
+    DmiCacheEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) ? (DmiCacheEntryV31 *)entry : nullptr;
+
+
+
     // Validation
     {
         UEFI_LVVV(("entry->socketDesignation.id               = %u",     entry->socketDesignation.id));
@@ -1880,23 +1890,23 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         UEFI_LVVV(("entry->supportedSramType                  = %s",     flagsToFullString(entry->supportedSramType)));
         UEFI_LVVV(("entry->currentSramType                    = %s",     flagsToFullString(entry->currentSramType)));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            UEFI_LVVV(("entry->cacheSpeed          = %u", entry->cacheSpeed));
-            UEFI_LVVV(("entry->errorCorrectionType = %s", enumToFullString(entry->errorCorrectionType)));
-            UEFI_LVVV(("entry->systemCacheType     = %s", enumToFullString(entry->systemCacheType)));
-            UEFI_LVVV(("entry->associativity       = %s", enumToFullString(entry->associativity)));
+            UEFI_LVVV(("entryV21->cacheSpeed          = %u", entryV21->cacheSpeed));
+            UEFI_LVVV(("entryV21->errorCorrectionType = %s", enumToFullString(entryV21->errorCorrectionType)));
+            UEFI_LVVV(("entryV21->systemCacheType     = %s", enumToFullString(entryV21->systemCacheType)));
+            UEFI_LVVV(("entryV21->associativity       = %s", enumToFullString(entryV21->associativity)));
 
-            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            if (entryV31)
             {
-                UEFI_LVVV(("entry->maximumCacheSize2.value       = %u",     entry->maximumCacheSize2.value));
-                UEFI_LVVV(("entry->maximumCacheSize2.granularity = %s",     enumToFullString((DmiCacheSizeGranularity)entry->maximumCacheSize2.granularity)));
-                UEFI_LVVV(("entry->maximumCacheSize2.value32     = 0x%08X", entry->maximumCacheSize2.value32));
-                UEFI_LVVV(("entry->maximumCacheSize2             = %s",     bytesToString(entry->maximumCacheSize2.size())));
-                UEFI_LVVV(("entry->installedSize2.value          = %u",     entry->installedSize2.value));
-                UEFI_LVVV(("entry->installedSize2.granularity    = %s",     enumToFullString((DmiCacheSizeGranularity)entry->installedSize2.granularity)));
-                UEFI_LVVV(("entry->installedSize2.value32        = 0x%08X", entry->installedSize2.value32));
-                UEFI_LVVV(("entry->installedSize2                = %s",     bytesToString(entry->installedSize2.size())));
+                UEFI_LVVV(("entryV31->maximumCacheSize2.value       = %u",     entryV31->maximumCacheSize2.value));
+                UEFI_LVVV(("entryV31->maximumCacheSize2.granularity = %s",     enumToFullString((DmiCacheSizeGranularity)entryV31->maximumCacheSize2.granularity)));
+                UEFI_LVVV(("entryV31->maximumCacheSize2.value32     = 0x%08X", entryV31->maximumCacheSize2.value32));
+                UEFI_LVVV(("entryV31->maximumCacheSize2             = %s",     bytesToString(entryV31->maximumCacheSize2.size())));
+                UEFI_LVVV(("entryV31->installedSize2.value          = %u",     entryV31->installedSize2.value));
+                UEFI_LVVV(("entryV31->installedSize2.granularity    = %s",     enumToFullString((DmiCacheSizeGranularity)entryV31->installedSize2.granularity)));
+                UEFI_LVVV(("entryV31->installedSize2.value32        = 0x%08X", entryV31->installedSize2.value32));
+                UEFI_LVVV(("entryV31->installedSize2                = %s",     bytesToString(entryV31->installedSize2.size())));
             }
         }
 
@@ -1918,35 +1928,32 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         // UEFI_TEST_ASSERT(entry->supportedSramType                  == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->currentSramType                    == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            // UEFI_TEST_ASSERT(entry->cacheSpeed          == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->errorCorrectionType == DmiCacheErrorCorrectionType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->systemCacheType     == DmiCacheType::OTHER,                NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->associativity       == DmiCacheAssociativity::OTHER,       NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->cacheSpeed          == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->errorCorrectionType == DmiCacheErrorCorrectionType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->systemCacheType     == DmiCacheType::OTHER,                NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->associativity       == DmiCacheAssociativity::OTHER,       NgosStatus::ASSERTION); // Commented due to value variation
 
-            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            if (entryV31)
             {
-                // UEFI_TEST_ASSERT(entry->maximumCacheSize2.value       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->maximumCacheSize2.granularity == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->maximumCacheSize2.value32     == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->installedSize2.value          == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->installedSize2.granularity    == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->installedSize2.value32        == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV31->maximumCacheSize2.value       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV31->maximumCacheSize2.granularity == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV31->maximumCacheSize2.value32     == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV31->installedSize2.value          == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV31->installedSize2.granularity    == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV31->installedSize2.value32        == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
 
-                UEFI_TEST_ASSERT(entry->header.length >= 27,                    NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry), NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntryV31), NgosStatus::ASSERTION);
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= 19,                        NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 8, NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntryV21), NgosStatus::ASSERTION);
             }
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 15,                         NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry) - 12, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -2025,30 +2032,30 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
             // Get string for Speed
             {
-                if (entry->cacheSpeed == DMI_CACHE_CACHE_SPEED_UNKNOWN)
+                if (entryV21->cacheSpeed == DMI_CACHE_CACHE_SPEED_UNKNOWN)
                 {
                     cacheSpeed = "Unknown";
                 }
                 else
                 {
-                    cacheSpeed = mprintf("%u ns", entry->cacheSpeed);
+                    cacheSpeed = mprintf("%u ns", entryV21->cacheSpeed);
                 }
             }
 
 
 
-            errorCorrectionType = strdup(enumToFullString(entry->errorCorrectionType));
-            systemCacheType     = strdup(enumToFullString(entry->systemCacheType));
-            associativity       = strdup(enumToFullString(entry->associativity));
+            errorCorrectionType = strdup(enumToFullString(entryV21->errorCorrectionType));
+            systemCacheType     = strdup(enumToFullString(entryV21->systemCacheType));
+            associativity       = strdup(enumToFullString(entryV21->associativity));
 
-            if (DMI::getVersion() >= DMI_VERSION(3, 1))
+            if (entryV31)
             {
-                maximumCacheSize2 = mprintf("0x%08X", entry->maximumCacheSize2.value32);
-                installedSize2    = mprintf("0x%08X", entry->installedSize2.value32);
+                maximumCacheSize2 = mprintf("0x%08X", entryV31->maximumCacheSize2.value32);
+                installedSize2    = mprintf("0x%08X", entryV31->installedSize2.value32);
             }
         }
     }
@@ -2065,10 +2072,10 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
             if (
                 entry->maximumCacheSize.value16 == DMI_CACHE_MAXIMUM_CACHE_SIZE_NEED_TO_EXTEND
                 &&
-                DMI::getVersion() >= DMI_VERSION(3, 1)
+                entryV31
                )
             {
-                maximumCacheSize = strdup(bytesToString(entry->maximumCacheSize2.size()));
+                maximumCacheSize = strdup(bytesToString(entryV31->maximumCacheSize2.size()));
             }
             else
             {
@@ -2088,10 +2095,10 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
             if (
                 entry->installedSize.value16 == DMI_CACHE_INSTALLED_SIZE_NEED_TO_EXTEND
                 &&
-                DMI::getVersion() >= DMI_VERSION(3, 1)
+                entryV31
                )
             {
-                installedSize = strdup(bytesToString(entry->installedSize2.size()));
+                installedSize = strdup(bytesToString(entryV31->installedSize2.size()));
             }
             else
             {
@@ -2274,6 +2281,11 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
 
 
+    DmiSystemSlotsEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiSystemSlotsEntryV26 *)entry : nullptr;
+    DmiSystemSlotsEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) ? (DmiSystemSlotsEntryV32 *)entry : nullptr;
+
+
+
     // Validation
     {
         UEFI_LVVV(("entry->slotDesignation.id  = %u",     entry->slotDesignation.id));
@@ -2284,35 +2296,35 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         UEFI_LVVV(("entry->slotID              = 0x%04X", entry->slotID));
         UEFI_LVVV(("entry->slotCharacteristics = %s",     flagsToFullString(entry->slotCharacteristics)));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 6))
+        if (entryV26)
         {
-            UEFI_LVVV(("entry->segmentGroupNumber            = %u",     entry->segmentGroupNumber));
-            UEFI_LVVV(("entry->busNumber                     = %u",     entry->busNumber));
-            UEFI_LVVV(("entry->functionNumber                = %u",     entry->functionNumber));
-            UEFI_LVVV(("entry->deviceNumber                  = %u",     entry->deviceNumber));
-            UEFI_LVVV(("entry->functionNumberAndDeviceNumber = 0x%02X", entry->functionNumberAndDeviceNumber));
+            UEFI_LVVV(("entryV26->segmentGroupNumber            = %u",     entryV26->segmentGroupNumber));
+            UEFI_LVVV(("entryV26->busNumber                     = %u",     entryV26->busNumber));
+            UEFI_LVVV(("entryV26->functionNumber                = %u",     entryV26->functionNumber));
+            UEFI_LVVV(("entryV26->deviceNumber                  = %u",     entryV26->deviceNumber));
+            UEFI_LVVV(("entryV26->functionNumberAndDeviceNumber = 0x%02X", entryV26->functionNumberAndDeviceNumber));
 
-            if (DMI::getVersion() >= DMI_VERSION(3, 2))
+            if (entryV32)
             {
-                UEFI_LVVV(("entry->dataBusWidth      = %u", entry->dataBusWidth));
-                UEFI_LVVV(("entry->peerGroupingCount = %u", entry->peerGroupingCount));
+                UEFI_LVVV(("entryV32->dataBusWidth      = %u", entryV32->dataBusWidth));
+                UEFI_LVVV(("entryV32->peerGroupingCount = %u", entryV32->peerGroupingCount));
 
 
 
-                // entry->peerGroups:
+                // entryV32->peerGroups:
                 {
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-                    UEFI_LVVV(("entry->peerGroups:"));
+                    UEFI_LVVV(("entryV32->peerGroups:"));
                     UEFI_LVVV(("-------------------------------------"));
 
-                    for (i64 i = 0; i < entry->peerGroupingCount; ++i)
+                    for (i64 i = 0; i < entryV32->peerGroupingCount; ++i)
                     {
-                        UEFI_LVVV(("entry->peerGroups[%d].segmentGroupNumber            = %u",     i, entry->peerGroups[i].segmentGroupNumber));
-                        UEFI_LVVV(("entry->peerGroups[%d].busNumber                     = %u",     i, entry->peerGroups[i].busNumber));
-                        UEFI_LVVV(("entry->peerGroups[%d].functionNumber                = %u",     i, entry->peerGroups[i].functionNumber));
-                        UEFI_LVVV(("entry->peerGroups[%d].deviceNumber                  = %u",     i, entry->peerGroups[i].deviceNumber));
-                        UEFI_LVVV(("entry->peerGroups[%d].functionNumberAndDeviceNumber = 0x%02X", i, entry->peerGroups[i].functionNumberAndDeviceNumber));
-                        UEFI_LVVV(("entry->peerGroups[%d].dataBusWidth                  = %u",     i, entry->peerGroups[i].dataBusWidth));
+                        UEFI_LVVV(("entryV32->peerGroups[%d].segmentGroupNumber            = %u",     i, entryV32->peerGroups[i].segmentGroupNumber));
+                        UEFI_LVVV(("entryV32->peerGroups[%d].busNumber                     = %u",     i, entryV32->peerGroups[i].busNumber));
+                        UEFI_LVVV(("entryV32->peerGroups[%d].functionNumber                = %u",     i, entryV32->peerGroups[i].functionNumber));
+                        UEFI_LVVV(("entryV32->peerGroups[%d].deviceNumber                  = %u",     i, entryV32->peerGroups[i].deviceNumber));
+                        UEFI_LVVV(("entryV32->peerGroups[%d].functionNumberAndDeviceNumber = 0x%02X", i, entryV32->peerGroups[i].functionNumberAndDeviceNumber));
+                        UEFI_LVVV(("entryV32->peerGroups[%d].dataBusWidth                  = %u",     i, entryV32->peerGroups[i].dataBusWidth));
                     }
 
                     UEFI_LVVV(("-------------------------------------"));
@@ -2331,38 +2343,35 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         // UEFI_TEST_ASSERT(entry->slotID              == 0x0001,                                         NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->slotCharacteristics == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 6))
+        if (entryV26)
         {
-            // UEFI_TEST_ASSERT(entry->segmentGroupNumber            == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->busNumber                     == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->functionNumber                == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->deviceNumber                  == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->functionNumberAndDeviceNumber == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV26->segmentGroupNumber            == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV26->busNumber                     == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV26->functionNumber                == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV26->deviceNumber                  == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV26->functionNumberAndDeviceNumber == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
 
-            if (DMI::getVersion() >= DMI_VERSION(3, 2))
+            if (entryV32)
             {
-                // UEFI_TEST_ASSERT(entry->dataBusWidth                                == 0,    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroupingCount                           == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].segmentGroupNumber            == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].busNumber                     == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].functionNumber                == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].deviceNumber                  == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].functionNumberAndDeviceNumber == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->peerGroups[0].dataBusWidth                  == 0,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->dataBusWidth                                == 0,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->peerGroupingCount                           == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->peerGroups[0].segmentGroupNumber            == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->peerGroups[0].busNumber                     == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->peerGroups[0].functionNumber                == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->peerGroups[0].deviceNumber                  == 1,    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->peerGroups[0].functionNumberAndDeviceNumber == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV32->peerGroups[0].dataBusWidth                  == 0,    NgosStatus::ASSERTION); // Commented due to value variation
 
-                UEFI_TEST_ASSERT(entry->header.length >= 19 + entry->peerGroupingCount * 5,                          NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry) + entry->peerGroupingCount * 5, NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntryV32) + entryV32->peerGroupingCount * sizeof(DmiSystemSlotsPeerGroup), NgosStatus::ASSERTION);
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= 17,                              NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry) - 2, NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntryV26), NgosStatus::ASSERTION);
             }
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 13,                              NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry) - 6, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -2441,17 +2450,17 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 6))
+        if (entryV26)
         {
-            segmentGroupNumber = mprintf("%u", entry->segmentGroupNumber);
-            busNumber          = mprintf("%u", entry->busNumber);
-            functionNumber     = mprintf("%u", entry->functionNumber);
-            deviceNumber       = mprintf("%u", entry->deviceNumber);
+            segmentGroupNumber = mprintf("%u", entryV26->segmentGroupNumber);
+            busNumber          = mprintf("%u", entryV26->busNumber);
+            functionNumber     = mprintf("%u", entryV26->functionNumber);
+            deviceNumber       = mprintf("%u", entryV26->deviceNumber);
 
-            if (DMI::getVersion() >= DMI_VERSION(3, 2))
+            if (entryV32)
             {
-                dataBusWidth      = mprintf("%u", entry->dataBusWidth);
-                peerGroupingCount = mprintf("%u", entry->peerGroupingCount);
+                dataBusWidth      = mprintf("%u", entryV32->dataBusWidth);
+                peerGroupingCount = mprintf("%u", entryV32->peerGroupingCount);
             }
         }
     }
@@ -2488,15 +2497,15 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
         // Add records for Peer groups
         {
-            if (DMI::getVersion() >= DMI_VERSION(3, 2))
+            if (entryV32)
             {
-                for (i64 i = 0; i < entry->peerGroupingCount; ++i)
+                for (i64 i = 0; i < entryV32->peerGroupingCount; ++i)
                 {
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d segment group number", i), mprintf("%u", entry->peerGroups[i].segmentGroupNumber)), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d bus number",           i), mprintf("%u", entry->peerGroups[i].busNumber)),          NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d function number",      i), mprintf("%u", entry->peerGroups[i].functionNumber)),     NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d device number",        i), mprintf("%u", entry->peerGroups[i].deviceNumber)),       NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d data bus width",       i), mprintf("%u", entry->peerGroups[i].dataBusWidth)),       NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d segment group number", i), mprintf("%u", entryV32->peerGroups[i].segmentGroupNumber)), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d bus number",           i), mprintf("%u", entryV32->peerGroups[i].busNumber)),          NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d function number",      i), mprintf("%u", entryV32->peerGroups[i].functionNumber)),     NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d device number",        i), mprintf("%u", entryV32->peerGroups[i].deviceNumber)),       NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d data bus width",       i), mprintf("%u", entryV32->peerGroups[i].dataBusWidth)),       NgosStatus::ASSERTION);
                 }
             }
         }
@@ -3089,7 +3098,7 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
 
 
 
-    AVOID_UNUSED(entry);
+    DmiPhysicalMemoryArrayEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiPhysicalMemoryArrayEntryV27 *)entry : nullptr;
 
 
 
@@ -3103,9 +3112,9 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
         UEFI_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));
         UEFI_LVVV(("entry->numberOfMemoryDevices        = %u",     entry->numberOfMemoryDevices));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            UEFI_LVVV(("entry->extendedMaximumCapacity = 0x%016lX", entry->extendedMaximumCapacity));
+            UEFI_LVVV(("entryV27->extendedMaximumCapacity = 0x%016lX", entryV27->extendedMaximumCapacity));
         }
 
 
@@ -3117,17 +3126,15 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
         // UEFI_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                               NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->numberOfMemoryDevices        == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            // UEFI_TEST_ASSERT(entry->extendedMaximumCapacity == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV27->extendedMaximumCapacity == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            UEFI_TEST_ASSERT(entry->header.length >= 23,                                  NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntry), NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27), NgosStatus::ASSERTION);
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 15,                                      NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntry) - 8, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -3142,9 +3149,9 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            extendedMaximumCapacity = mprintf("0x%016lX", entry->extendedMaximumCapacity);
+            extendedMaximumCapacity = mprintf("0x%016lX", entryV27->extendedMaximumCapacity);
         }
     }
 
@@ -3160,10 +3167,10 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
             if (
                 entry->maximumCapacity.value == DMI_PHYSICAL_MEMORY_ARRAY_MAXIMUM_CAPACITY_NEED_TO_EXTEND
                 &&
-                DMI::getVersion() >= DMI_VERSION(2, 7)
+                entryV27
                )
             {
-                maximumCapacity = strdup(bytesToString(entry->extendedMaximumCapacity));
+                maximumCapacity = strdup(bytesToString(entryV27->extendedMaximumCapacity));
             }
             else
             {

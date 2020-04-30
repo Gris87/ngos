@@ -24,19 +24,31 @@
 
 struct DmiCacheEntry
 {
-    DmiEntryHeader              header;
-    DmiStringId                 socketDesignation;
-    DmiCacheConfiguration       cacheConfiguration;
-    DmiCacheSize                maximumCacheSize;
-    DmiCacheSize                installedSize;
-    DmiCacheSramTypeFlags       supportedSramType;
-    DmiCacheSramTypeFlags       currentSramType;
+    DmiEntryHeader        header;
+    DmiStringId           socketDesignation;
+    DmiCacheConfiguration cacheConfiguration;
+    DmiCacheSize          maximumCacheSize;
+    DmiCacheSize          installedSize;
+    DmiCacheSramTypeFlags supportedSramType;
+    DmiCacheSramTypeFlags currentSramType;
+} __attribute__((packed));
+
+
+
+struct DmiCacheEntryV21: public DmiCacheEntry
+{
     u8                          cacheSpeed;
     DmiCacheErrorCorrectionType errorCorrectionType;
     DmiCacheType                systemCacheType;
     DmiCacheAssociativity       associativity;
-    DmiCacheSize2               maximumCacheSize2;
-    DmiCacheSize2               installedSize2;
+} __attribute__((packed));
+
+
+
+struct DmiCacheEntryV31: public DmiCacheEntryV21
+{
+    DmiCacheSize2 maximumCacheSize2;
+    DmiCacheSize2 installedSize2;
 } __attribute__((packed));
 
 

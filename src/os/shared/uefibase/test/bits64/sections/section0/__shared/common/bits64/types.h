@@ -281,7 +281,9 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageFlag),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheAssociativity),                         1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheConfiguration),                         2);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntry),                                 27);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntry),                                 15);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntryV21),                              19);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntryV31),                              27);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheErrorCorrectionType),                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheLocation),                              1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheOperationalMode),                       1);
@@ -329,7 +331,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesEntry),                        4);
         TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedDeviceType),           1);
         TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedEntry),                11);
-        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntry),                   23);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntry),                   15);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntryV27),                23);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayErrorCorrection),         1);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayLocation),                1);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayUse),                     1);
@@ -340,7 +343,12 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorPortType),                      1);
         TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorType),                          1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorCharacteristicsFlag),               2);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntry),                             48);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntry),                             26);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV21),                          32);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV23),                          35);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV25),                          40);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV26),                          42);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV30),                          48);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily),                            1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily2),                           2);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFeatureFlag),                       4);
@@ -364,7 +372,9 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyType),                      1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsCharacteristicsFlag),             2);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsDataBusWidth),                    1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntry),                           19);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntry),                           13);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntryV26),                        17);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntryV32),                        19);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsLength),                          1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsPeerGroup),                       5);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsType),                            1);
@@ -596,13 +606,13 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
-    TEST_CASE("DmiSystemSlotsEntry");
+    TEST_CASE("DmiSystemSlotsEntryV26");
     {
-        DmiSystemSlotsEntry temp;
+        DmiSystemSlotsEntryV26 temp;
 
 
 
-        //  DmiSystemSlotsEntry - functionNumberAndDeviceNumber:
+        //  DmiSystemSlotsEntryV26 - functionNumberAndDeviceNumber:
         // =============================================
         // |  deviceNumber : 5  |  functionNumber : 3  |
         // =============================================

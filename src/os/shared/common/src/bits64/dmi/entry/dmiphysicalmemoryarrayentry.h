@@ -27,7 +27,13 @@ struct DmiPhysicalMemoryArrayEntry
     DmiPhysicalMemoryArrayMaximumCapacity maximumCapacity;
     u16                                   memoryErrorInformationHandle;
     u16                                   numberOfMemoryDevices;
-    u64                                   extendedMaximumCapacity;
+} __attribute__((packed));
+
+
+
+struct DmiPhysicalMemoryArrayEntryV27: public DmiPhysicalMemoryArrayEntry
+{
+    u64 extendedMaximumCapacity;
 } __attribute__((packed));
 
 

@@ -24,8 +24,15 @@ struct DmiSystemSlotsEntry
     DmiSystemSlotsLength               slotLength;
     u16                                slotID;
     DmiSystemSlotsCharacteristicsFlags slotCharacteristics;
-    u16                                segmentGroupNumber;
-    u8                                 busNumber;
+
+} __attribute__((packed));
+
+
+
+struct DmiSystemSlotsEntryV26: public DmiSystemSlotsEntry
+{
+    u16 segmentGroupNumber;
+    u8  busNumber;
 
     union
     {
@@ -37,7 +44,12 @@ struct DmiSystemSlotsEntry
 
         u8 functionNumberAndDeviceNumber;
     };
+} __attribute__((packed));
 
+
+
+struct DmiSystemSlotsEntryV32: public DmiSystemSlotsEntryV26
+{
     u8                      dataBusWidth;
     u8                      peerGroupingCount;
     DmiSystemSlotsPeerGroup peerGroups[0];
