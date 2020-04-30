@@ -450,6 +450,11 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
+    DmiSystemEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiSystemEntryV21 *)entry : nullptr;
+    DmiSystemEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) ? (DmiSystemEntryV24 *)entry : nullptr;
+
+
+
     // Validation
     {
         UEFI_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));
@@ -457,15 +462,15 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         UEFI_LVVV(("entry->version.id      = %u", entry->version.id));
         UEFI_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            UEFI_LVVV(("entry->uuid       = %s", uuidToString(entry->uuid)));
-            UEFI_LVVV(("entry->wakeUpType = %s", enumToFullString(entry->wakeUpType)));
+            UEFI_LVVV(("entryV21->uuid       = %s", uuidToString(entryV21->uuid)));
+            UEFI_LVVV(("entryV21->wakeUpType = %s", enumToFullString(entryV21->wakeUpType)));
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 4))
+            if (entryV24)
             {
-                UEFI_LVVV(("entry->skuNumber.id = %u", entry->skuNumber.id));
-                UEFI_LVVV(("entry->family.id    = %u", entry->family.id));
+                UEFI_LVVV(("entryV24->skuNumber.id = %u", entryV24->skuNumber.id));
+                UEFI_LVVV(("entryV24->family.id    = %u", entryV24->family.id));
             }
         }
 
@@ -476,39 +481,36 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         UEFI_TEST_ASSERT(entry->version.id         == 3, NgosStatus::ASSERTION);
         // UEFI_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            // UEFI_TEST_ASSERT(entry->uuid.data1    == 0x9FAE0773,                        NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data2    == 0xF53F,                            NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data3    == 0x4A15,                            NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data4    == 0x8A,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data5    == 0x11,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data6[0] == 0xED,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data6[1] == 0x76,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data6[2] == 0xA1,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data6[3] == 0x0F,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data6[4] == 0x4E,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->uuid.data6[5] == 0x5B,                              NgosStatus::ASSERTION); // Commented due to value variation
-            UEFI_TEST_ASSERT(entry->wakeUpType       == DmiSystemWakeUpType::POWER_SWITCH, NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entryV21->uuid.data1    == 0x9FAE0773,                        NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data2    == 0xF53F,                            NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data3    == 0x4A15,                            NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data4    == 0x8A,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data5    == 0x11,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data6[0] == 0xED,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data6[1] == 0x76,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data6[2] == 0xA1,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data6[3] == 0x0F,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data6[4] == 0x4E,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->uuid.data6[5] == 0x5B,                              NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entryV21->wakeUpType       == DmiSystemWakeUpType::POWER_SWITCH, NgosStatus::ASSERTION);
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 4))
+            if (entryV24)
             {
-                // UEFI_TEST_ASSERT(entry->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->family.id    == 6, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV24->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV24->family.id    == 6, NgosStatus::ASSERTION); // Commented due to value variation
 
-                UEFI_TEST_ASSERT(entry->header.length >= 27,                     NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV24), NgosStatus::ASSERTION);
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= 25,                         NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry) - 2, NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV21), NgosStatus::ASSERTION);
             }
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 8,                           NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry) - 19, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -526,10 +528,10 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         DmiStringId skuNumberStringId;
         DmiStringId familyStringId;
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 4))
+        if (entryV24)
         {
-            skuNumberStringId = entry->skuNumber;
-            familyStringId    = entry->family;
+            skuNumberStringId = entryV24->skuNumber;
+            familyStringId    = entryV24->family;
         }
 
 
@@ -627,10 +629,10 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            uuid       = strdup(uuidToString(entry->uuid));
-            wakeUpType = strdup(enumToFullString(entry->wakeUpType));
+            uuid       = strdup(uuidToString(entryV21->uuid));
+            wakeUpType = strdup(enumToFullString(entryV21->wakeUpType));
         }
     }
 
@@ -865,12 +867,9 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-    DmiStringId skuNumberStringId;
-
-    if (DMI::getVersion() >= DMI_VERSION(2, 7))
-    {
-        skuNumberStringId = *(DmiStringId *)DMI_CHASSIS_CONTAINED_ELEMENT(entry, entry->containedElementCount);
-    }
+    DmiChassisEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiChassisEntryV21 *)entry                                                                    : nullptr;
+    DmiChassisEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiChassisEntryV23 *)entry                                                                    : nullptr;
+    DmiChassisEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiChassisEntryV27 *)DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, entryV23->containedElementCount) : nullptr;
 
 
 
@@ -884,32 +883,32 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         UEFI_LVVV(("entry->serialNumber.id = %u",     entry->serialNumber.id));
         UEFI_LVVV(("entry->assetTag.id     = %u",     entry->assetTag.id));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            UEFI_LVVV(("entry->bootUpState      = %s", enumToFullString(entry->bootUpState)));
-            UEFI_LVVV(("entry->powerSupplyState = %s", enumToFullString(entry->powerSupplyState)));
-            UEFI_LVVV(("entry->thermalState     = %s", enumToFullString(entry->thermalState)));
-            UEFI_LVVV(("entry->securityStatus   = %s", enumToFullString(entry->securityStatus)));
+            UEFI_LVVV(("entryV21->bootUpState      = %s", enumToFullString(entryV21->bootUpState)));
+            UEFI_LVVV(("entryV21->powerSupplyState = %s", enumToFullString(entryV21->powerSupplyState)));
+            UEFI_LVVV(("entryV21->thermalState     = %s", enumToFullString(entryV21->thermalState)));
+            UEFI_LVVV(("entryV21->securityStatus   = %s", enumToFullString(entryV21->securityStatus)));
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            if (entryV23)
             {
-                UEFI_LVVV(("entry->oemDefined                   = 0x%08X", entry->oemDefined));
-                UEFI_LVVV(("entry->height                       = %u",     entry->height));
-                UEFI_LVVV(("entry->numberOfPowerCords           = %u",     entry->numberOfPowerCords));
-                UEFI_LVVV(("entry->containedElementCount        = %u",     entry->containedElementCount));
-                UEFI_LVVV(("entry->containedElementRecordLength = %u",     entry->containedElementRecordLength));
+                UEFI_LVVV(("entryV23->oemDefined                   = 0x%08X", entryV23->oemDefined));
+                UEFI_LVVV(("entryV23->height                       = %u",     entryV23->height));
+                UEFI_LVVV(("entryV23->numberOfPowerCords           = %u",     entryV23->numberOfPowerCords));
+                UEFI_LVVV(("entryV23->containedElementCount        = %u",     entryV23->containedElementCount));
+                UEFI_LVVV(("entryV23->containedElementRecordLength = %u",     entryV23->containedElementRecordLength));
 
 
 
-                // entry->containedElements:
+                // entryV23->containedElements:
                 {
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-                    UEFI_LVVV(("entry->containedElements:"));
+                    UEFI_LVVV(("entryV23->containedElements:"));
                     UEFI_LVVV(("-------------------------------------"));
 
-                    for (i64 i = 0; i < entry->containedElementCount; ++i)
+                    for (i64 i = 0; i < entryV23->containedElementCount; ++i)
                     {
-                        DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
+                        DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, i);
 
                         UEFI_LVVV(("containedElement[%-3d]->type.typeSelect = %s", i, enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)));
 
@@ -938,9 +937,9 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-                if (DMI::getVersion() >= DMI_VERSION(2, 7))
+                if (entryV27)
                 {
-                    UEFI_LVVV(("skuNumberStringId.id = %u", skuNumberStringId.id));
+                    UEFI_LVVV(("entryV27->skuNumber.id = %u", entryV27->skuNumber.id));
                 }
             }
         }
@@ -955,49 +954,45 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         // UEFI_TEST_ASSERT(entry->serialNumber.id == 3,                       NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->assetTag.id     == 4,                       NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            UEFI_TEST_ASSERT(entry->bootUpState       == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->powerSupplyState  == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
-            // UEFI_TEST_ASSERT(entry->thermalState   == DmiChassisState::SAFE,             NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->securityStatus == DmiChassisSecurityStatus::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entryV21->bootUpState       == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entryV21->powerSupplyState  == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entryV21->thermalState   == DmiChassisState::SAFE,             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV21->securityStatus == DmiChassisSecurityStatus::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            if (entryV23)
             {
-                UEFI_TEST_ASSERT(entry->oemDefined                                             == 0x00000000,                                           NgosStatus::ASSERTION);
-                // UEFI_TEST_ASSERT(entry->height                                              == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->numberOfPowerCords                                  == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->containedElementCount                               == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entry->containedElementRecordLength                        == 3,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.typeSelect   == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.dmiEntryType == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->type.value8       == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->minimum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entry, 0)->maximum           == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                UEFI_TEST_ASSERT(entryV23->oemDefined                                             == 0x00000000,                                           NgosStatus::ASSERTION);
+                // UEFI_TEST_ASSERT(entryV23->height                                              == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV23->numberOfPowerCords                                  == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV23->containedElementCount                               == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV23->containedElementRecordLength                        == 3,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.typeSelect   == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.dmiEntryType == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.value8       == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->minimum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->maximum           == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
 
-                if (DMI::getVersion() >= DMI_VERSION(2, 7))
+                if (entryV27)
                 {
-                    // UEFI_TEST_ASSERT(skuNumberStringId.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV27->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
 
-                    UEFI_TEST_ASSERT(entry->header.length >= 21                      + entry->containedElementCount * entry->containedElementRecordLength + 1, NgosStatus::ASSERTION);
-                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntry) + entry->containedElementCount * entry->containedElementRecordLength + 1, NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntryV23) + entryV23->containedElementCount * entryV23->containedElementRecordLength + sizeof(DmiChassisEntryV27), NgosStatus::ASSERTION);
                 }
                 else
                 {
-                    UEFI_TEST_ASSERT(entry->header.length >= 21                      + entry->containedElementCount * entry->containedElementRecordLength, NgosStatus::ASSERTION);
-                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntry) + entry->containedElementCount * entry->containedElementRecordLength, NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntryV23) + entryV23->containedElementCount * entryV23->containedElementRecordLength, NgosStatus::ASSERTION);
                 }
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= 13,                          NgosStatus::ASSERTION);
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntry) - 8, NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntryV21), NgosStatus::ASSERTION);
             }
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 9,                            NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntry) - 12, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -1011,6 +1006,15 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
     // Get strings
     {
+        DmiStringId skuNumberStringId;
+
+        if (entryV27)
+        {
+            skuNumberStringId = entryV27->skuNumber;
+        }
+
+
+
         if (
             entry->manufacturer.id
             ||
@@ -1104,35 +1108,35 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 1))
+        if (entryV21)
         {
-            bootUpState      = strdup(enumToFullString(entry->bootUpState));
-            powerSupplyState = strdup(enumToFullString(entry->powerSupplyState));
-            thermalState     = strdup(enumToFullString(entry->thermalState));
-            securityStatus   = strdup(enumToFullString(entry->securityStatus));
+            bootUpState      = strdup(enumToFullString(entryV21->bootUpState));
+            powerSupplyState = strdup(enumToFullString(entryV21->powerSupplyState));
+            thermalState     = strdup(enumToFullString(entryV21->thermalState));
+            securityStatus   = strdup(enumToFullString(entryV21->securityStatus));
 
-            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            if (entryV23)
             {
-                oemDefined = mprintf("0x%08X", entry->oemDefined);
+                oemDefined = mprintf("0x%08X", entryV23->oemDefined);
 
-                if (entry->height != DMI_CHASSIS_HEIGHT_NOT_AVAILABLE)
+                if (entryV23->height != DMI_CHASSIS_HEIGHT_NOT_AVAILABLE)
                 {
-                    height = mprintf("%u U", entry->height);
+                    height = mprintf("%u U", entryV23->height);
                 }
 
-                if (entry->numberOfPowerCords != DMI_CHASSIS_NUMBER_OF_POWER_CORDS_NOT_AVAILABLE)
+                if (entryV23->numberOfPowerCords != DMI_CHASSIS_NUMBER_OF_POWER_CORDS_NOT_AVAILABLE)
                 {
-                    numberOfPowerCords = mprintf("%u", entry->numberOfPowerCords);
+                    numberOfPowerCords = mprintf("%u", entryV23->numberOfPowerCords);
                 }
 
                 if (
-                    entry->containedElementCount != DMI_CHASSIS_CONTAINED_ELEMENT_COUNT_NOT_AVAILABLE
+                    entryV23->containedElementCount != DMI_CHASSIS_CONTAINED_ELEMENT_COUNT_NOT_AVAILABLE
                     &&
-                    entry->containedElementRecordLength != DMI_CHASSIS_CONTAINED_ELEMENT_RECORD_LENGTH_NOT_AVAILABLE
+                    entryV23->containedElementRecordLength != DMI_CHASSIS_CONTAINED_ELEMENT_RECORD_LENGTH_NOT_AVAILABLE
                    )
                 {
-                    containedElementCount        = mprintf("%u", entry->containedElementCount);
-                    containedElementRecordLength = mprintf("%u", entry->containedElementRecordLength);
+                    containedElementCount        = mprintf("%u", entryV23->containedElementCount);
+                    containedElementRecordLength = mprintf("%u", entryV23->containedElementRecordLength);
                 }
             }
         }
@@ -1166,11 +1170,11 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
         // Add records for Contained elements
         {
-            if (DMI::getVersion() >= DMI_VERSION(2, 3))
+            if (entryV23)
             {
-                for (i64 i = 0; i < entry->containedElementCount; ++i)
+                for (i64 i = 0; i < entryV23->containedElementCount; ++i)
                 {
-                    DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entry, i);
+                    DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, i);
 
                     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type select"), strdup(enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect))), NgosStatus::ASSERTION);
 

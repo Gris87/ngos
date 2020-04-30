@@ -12,15 +12,27 @@
 
 struct DmiSystemEntry
 {
-    DmiEntryHeader      header;
-    DmiStringId         manufacturer;
-    DmiStringId         productName;
-    DmiStringId         version;
-    DmiStringId         serialNumber;
+    DmiEntryHeader header;
+    DmiStringId    manufacturer;
+    DmiStringId    productName;
+    DmiStringId    version;
+    DmiStringId    serialNumber;
+} __attribute__((packed));
+
+
+
+struct DmiSystemEntryV21: public DmiSystemEntry
+{
     Uuid                uuid;
     DmiSystemWakeUpType wakeUpType;
-    DmiStringId         skuNumber;
-    DmiStringId         family;
+} __attribute__((packed));
+
+
+
+struct DmiSystemEntryV24: public DmiSystemEntryV21
+{
+    DmiStringId skuNumber;
+    DmiStringId family;
 } __attribute__((packed));
 
 

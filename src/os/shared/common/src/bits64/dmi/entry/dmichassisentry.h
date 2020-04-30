@@ -35,19 +35,39 @@ struct DmiChassisEntry
         u8 typeAndLocked;
     };
 
-    DmiStringId                version;
-    DmiStringId                serialNumber;
-    DmiStringId                assetTag;
-    DmiChassisState            bootUpState;
-    DmiChassisState            powerSupplyState;
-    DmiChassisState            thermalState;
-    DmiChassisSecurityStatus   securityStatus;
+    DmiStringId version;
+    DmiStringId serialNumber;
+    DmiStringId assetTag;
+} __attribute__((packed));
+
+
+
+struct DmiChassisEntryV21: public DmiChassisEntry
+{
+    DmiChassisState          bootUpState;
+    DmiChassisState          powerSupplyState;
+    DmiChassisState          thermalState;
+    DmiChassisSecurityStatus securityStatus;
+} __attribute__((packed));
+
+
+
+struct DmiChassisEntryV23: public DmiChassisEntryV21
+{
     u32                        oemDefined;
     u8                         height;
     u8                         numberOfPowerCords;
     u8                         containedElementCount;
     u8                         containedElementRecordLength;
     DmiChassisContainedElement containedElements[0];
+} __attribute__((packed));
+
+
+
+// Since amount of containedElements may be different we will calculate location of DmiChassisEntryV27 as &containedElements[0] + containedElementCount * containedElementRecordLength
+struct DmiChassisEntryV27
+{
+    DmiStringId skuNumber;
 } __attribute__((packed));
 
 
