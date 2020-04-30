@@ -112,7 +112,7 @@ NgosStatus DMI::init()
 
             for (i64 i = 0; i < (i64)sNumberOfMemoryDevices; ++i)
             {
-                COMMON_LVVV(("#%-3d: %-5s | %s | %s | %s | %s | %s", i, bytesToString(sMemoryDevices[i].size), stringToString(sMemoryDevices[i].deviceLocator), stringToString(sMemoryDevices[i].manufacturer), stringToString(sMemoryDevices[i].serialNumber), stringToString(sMemoryDevices[i].assetTag), stringToString(sMemoryDevices[i].partNumber)));
+                COMMON_LVVV(("#%-3d: %-5s | %s | %s | %s | %s", i, bytesToString(sMemoryDevices[i].size), stringToString(sMemoryDevices[i].deviceLocator), stringToString(sMemoryDevices[i].manufacturer), stringToString(sMemoryDevices[i].serialNumber), stringToString(sMemoryDevices[i].partNumber)));
             }
 
             COMMON_LVVV(("-------------------------------------"));
