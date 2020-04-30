@@ -5,8 +5,9 @@
 
 #include <common/src/bits64/dmi/dmientryheader.h>
 #include <common/src/bits64/dmi/dmistringid.h>
-#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
+#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
 #include <common/src/bits64/dmi/entry/lib/dmibiosromsize.h>
 
@@ -22,19 +23,44 @@
 
 struct DmiBiosEntry
 {
-    DmiEntryHeader                  header;
-    DmiStringId                     vendor;
-    DmiStringId                     biosVersion;
-    u16                             biosStartingAddressSegment;
-    DmiStringId                     biosReleaseDate;
-    DmiBiosRomSize                  biosRomSize;
-    DmiBiosCharacteristicsFlags     biosCharacteristics;
-    DmiBiosCharacteristicsExtension biosCharacteristicsExtension;
-    u8                              systemBiosMajorRelease;
-    u8                              systemBiosMinorRelease;
-    u8                              embeddedControllerFirmwareMajorRelease;
-    u8                              embeddedControllerFirmwareMinorRelease;
-    DmiBiosExtendedRomSize          extendedBiosRomSize;
+    DmiEntryHeader              header;
+    DmiStringId                 vendor;
+    DmiStringId                 biosVersion;
+    u16                         biosStartingAddressSegment;
+    DmiStringId                 biosReleaseDate;
+    DmiBiosRomSize              biosRomSize;
+    DmiBiosCharacteristicsFlags biosCharacteristics;
+} __attribute__((packed));
+
+
+
+struct DmiBiosEntryV21: public DmiBiosEntry
+{
+    DmiBiosCharacteristicsBiosReservedFlags biosCharacteristicsExtensionBiosReserved;
+} __attribute__((packed));
+
+
+
+struct DmiBiosEntryV23: public DmiBiosEntryV21
+{
+    DmiBiosCharacteristicsSystemReservedFlags biosCharacteristicsExtensionSystemReserved;
+} __attribute__((packed));
+
+
+
+struct DmiBiosEntryV24: public DmiBiosEntryV23
+{
+    u8 systemBiosMajorRelease;
+    u8 systemBiosMinorRelease;
+    u8 embeddedControllerFirmwareMajorRelease;
+    u8 embeddedControllerFirmwareMinorRelease;
+} __attribute__((packed));
+
+
+
+struct DmiBiosEntryV31: public DmiBiosEntryV24
+{
+    DmiBiosExtendedRomSize extendedBiosRomSize;
 } __attribute__((packed));
 
 

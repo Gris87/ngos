@@ -65,7 +65,6 @@
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibaseboardtype.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h>
 #include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
@@ -269,10 +268,13 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiBaseboardFeatureFlag),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiBaseboardType),                              1);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsBiosReservedFlag),        1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsExtension),               2);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsFlag),                    8);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsSystemReservedFlag),      1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  26);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  18);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV21),                               19);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV23),                               20);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV24),                               24);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV31),                               26);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSize),                        2);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSizeUnit),                    1);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageEntry),                          22);

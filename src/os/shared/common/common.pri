@@ -127,7 +127,6 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardfeatureflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibaseboardtype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h \
-    $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsextension.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h \
