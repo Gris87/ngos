@@ -45,29 +45,59 @@
 
 struct DmiMemoryDeviceEntry
 {
-    DmiEntryHeader                              header;
-    u16                                         memoryArrayHandle;
-    u16                                         memoryErrorInformationHandle;
-    u16                                         totalWidth;
-    u16                                         dataWidth;
-    DmiMemoryDeviceSize                         size;
-    DmiMemoryDeviceFormFactor                   formFactor;
-    u8                                          deviceSet;
-    DmiStringId                                 deviceLocator;
-    DmiStringId                                 bankLocator;
-    DmiMemoryDeviceType                         memoryType;
-    DmiMemoryDeviceTypeDetailFlags              typeDetail;
-    u16                                         speed;
-    DmiStringId                                 manufacturer;
-    DmiStringId                                 serialNumber;
-    DmiStringId                                 assetTag;
-    DmiStringId                                 partNumber;
-    DmiMemoryDeviceAttributes                   attributes;
-    DmiMemoryDeviceExtendedSize                 extendedSize;
-    u16                                         configuredMemorySpeed;
-    u16                                         minimumVoltage;
-    u16                                         maximumVoltage;
-    u16                                         configuredVoltage;
+    DmiEntryHeader                 header;
+    u16                            memoryArrayHandle;
+    u16                            memoryErrorInformationHandle;
+    u16                            totalWidth;
+    u16                            dataWidth;
+    DmiMemoryDeviceSize            size;
+    DmiMemoryDeviceFormFactor      formFactor;
+    u8                             deviceSet;
+    DmiStringId                    deviceLocator;
+    DmiStringId                    bankLocator;
+    DmiMemoryDeviceType            memoryType;
+    DmiMemoryDeviceTypeDetailFlags typeDetail;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryDeviceEntryV23: public DmiMemoryDeviceEntry
+{
+    u16         speed;
+    DmiStringId manufacturer;
+    DmiStringId serialNumber;
+    DmiStringId assetTag;
+    DmiStringId partNumber;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryDeviceEntryV26: public DmiMemoryDeviceEntryV23
+{
+    DmiMemoryDeviceAttributes attributes;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryDeviceEntryV27: public DmiMemoryDeviceEntryV26
+{
+    DmiMemoryDeviceExtendedSize extendedSize;
+    u16                         configuredMemorySpeed;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryDeviceEntryV28: public DmiMemoryDeviceEntryV27
+{
+    u16 minimumVoltage;
+    u16 maximumVoltage;
+    u16 configuredVoltage;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryDeviceEntryV32: public DmiMemoryDeviceEntryV28
+{
     DmiMemoryDeviceTechnology                   memoryTechnology;
     DmiMemoryDeviceOperatingModeCapabilityFlags memoryOperatingModeCapability;
     DmiStringId                                 firmwareVersion;
@@ -79,8 +109,14 @@ struct DmiMemoryDeviceEntry
     u64                                         volatileSize;
     u64                                         cacheSize;
     u64                                         logicalSize;
-    u32                                         extendedSpeed;
-    u32                                         extendedConfiguredMemorySpeed;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryDeviceEntryV33: public DmiMemoryDeviceEntryV32
+{
+    u32 extendedSpeed;
+    u32 extendedConfiguredMemorySpeed;
 } __attribute__((packed));
 
 

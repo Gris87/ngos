@@ -9,7 +9,6 @@
 
 struct DmiMemoryDevice
 {
-    u16          handle;
     u64          size;
     const char8 *deviceLocator;
     const char8 *manufacturer;
