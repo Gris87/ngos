@@ -40,6 +40,8 @@ inline const char8* guidToString(Guid *guid) // TEST: NO
     return res;
 }
 
+// TODO: guidToFullString
+
 
 
 #endif // GUID_UTILS_H

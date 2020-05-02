@@ -135,35 +135,38 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
     // Validation
     {
-        UEFI_LVVV(("entry->vendor.id                  = %u",     entry->vendor.id));
-        UEFI_LVVV(("entry->biosVersion.id             = %u",     entry->biosVersion.id));
-        UEFI_LVVV(("entry->biosStartingAddressSegment = 0x%04X", entry->biosStartingAddressSegment));
-        UEFI_LVVV(("entry->biosReleaseDate.id         = %u",     entry->biosReleaseDate.id));
-        UEFI_LVVV(("entry->biosRomSize.value          = 0x%02X", entry->biosRomSize.value));
-        UEFI_LVVV(("entry->biosRomSize                = %s",     bytesToString(entry->biosRomSize.size())));
-        UEFI_LVVV(("entry->biosCharacteristics        = %s",     flagsToFullString(entry->biosCharacteristics)));
-
-        if (entryV21)
+        // Output variables
         {
-            UEFI_LVVV(("entryV21->biosCharacteristicsExtensionBiosReserved = %s", flagsToFullString(entryV21->biosCharacteristicsExtensionBiosReserved)));
+            UEFI_LVVV(("entry->vendor.id                  = %u",     entry->vendor.id));
+            UEFI_LVVV(("entry->biosVersion.id             = %u",     entry->biosVersion.id));
+            UEFI_LVVV(("entry->biosStartingAddressSegment = 0x%04X", entry->biosStartingAddressSegment));
+            UEFI_LVVV(("entry->biosReleaseDate.id         = %u",     entry->biosReleaseDate.id));
+            UEFI_LVVV(("entry->biosRomSize.value          = 0x%02X", entry->biosRomSize.value));
+            UEFI_LVVV(("entry->biosRomSize                = %s",     bytesToString(entry->biosRomSize.size())));
+            UEFI_LVVV(("entry->biosCharacteristics        = %s",     flagsToFullString(entry->biosCharacteristics)));
 
-            if (entryV23)
+            if (entryV21)
             {
-                UEFI_LVVV(("entryV23->biosCharacteristicsExtensionSystemReserved = %s", flagsToFullString(entryV23->biosCharacteristicsExtensionSystemReserved)));
+                UEFI_LVVV(("entryV21->biosCharacteristicsExtensionBiosReserved = %s", flagsToFullString(entryV21->biosCharacteristicsExtensionBiosReserved)));
 
-                if (entryV24)
+                if (entryV23)
                 {
-                    UEFI_LVVV(("entryV24->systemBiosMajorRelease                 = %u", entryV24->systemBiosMajorRelease));
-                    UEFI_LVVV(("entryV24->systemBiosMinorRelease                 = %u", entryV24->systemBiosMinorRelease));
-                    UEFI_LVVV(("entryV24->embeddedControllerFirmwareMajorRelease = %u", entryV24->embeddedControllerFirmwareMajorRelease));
-                    UEFI_LVVV(("entryV24->embeddedControllerFirmwareMinorRelease = %u", entryV24->embeddedControllerFirmwareMinorRelease));
+                    UEFI_LVVV(("entryV23->biosCharacteristicsExtensionSystemReserved = %s", flagsToFullString(entryV23->biosCharacteristicsExtensionSystemReserved)));
 
-                    if (entryV31)
+                    if (entryV24)
                     {
-                        UEFI_LVVV(("entryV31->extendedBiosRomSize.value   = %u",     entryV31->extendedBiosRomSize.value));
-                        UEFI_LVVV(("entryV31->extendedBiosRomSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entryV31->extendedBiosRomSize.unit)));
-                        UEFI_LVVV(("entryV31->extendedBiosRomSize.value16 = 0x%04X", entryV31->extendedBiosRomSize.value16));
-                        UEFI_LVVV(("entryV31->extendedBiosRomSize         = %s",     bytesToString(entryV31->extendedBiosRomSize.size())));
+                        UEFI_LVVV(("entryV24->systemBiosMajorRelease                 = %u", entryV24->systemBiosMajorRelease));
+                        UEFI_LVVV(("entryV24->systemBiosMinorRelease                 = %u", entryV24->systemBiosMinorRelease));
+                        UEFI_LVVV(("entryV24->embeddedControllerFirmwareMajorRelease = %u", entryV24->embeddedControllerFirmwareMajorRelease));
+                        UEFI_LVVV(("entryV24->embeddedControllerFirmwareMinorRelease = %u", entryV24->embeddedControllerFirmwareMinorRelease));
+
+                        if (entryV31)
+                        {
+                            UEFI_LVVV(("entryV31->extendedBiosRomSize.value   = %u",     entryV31->extendedBiosRomSize.value));
+                            UEFI_LVVV(("entryV31->extendedBiosRomSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entryV31->extendedBiosRomSize.unit)));
+                            UEFI_LVVV(("entryV31->extendedBiosRomSize.value16 = 0x%04X", entryV31->extendedBiosRomSize.value16));
+                            UEFI_LVVV(("entryV31->extendedBiosRomSize         = %s",     bytesToString(entryV31->extendedBiosRomSize.size())));
+                        }
                     }
                 }
             }
@@ -171,54 +174,57 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-        UEFI_TEST_ASSERT(entry->vendor.id                     == 1,                                                                     NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(entry->biosVersion.id                == 2,                                                                     NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(entry->biosStartingAddressSegment == 0xE800,                                                                NgosStatus::ASSERTION); // Commented due to value variation
-        UEFI_TEST_ASSERT(entry->biosReleaseDate.id            == 3,                                                                     NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(entry->biosRomSize.value          == 0xFF,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->biosCharacteristics        == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION); // Commented due to value variation
-
-        if (entryV21)
+        // Check variables
         {
-            // UEFI_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAG(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->vendor.id                     == 1,                                                                     NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->biosVersion.id                == 2,                                                                     NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->biosStartingAddressSegment == 0xE800,                                                                NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->biosReleaseDate.id            == 3,                                                                     NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->biosRomSize.value          == 0xFF,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->biosCharacteristics        == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION); // Commented due to value variation
 
-            if (entryV23)
+            if (entryV21)
             {
-                // UEFI_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAG(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAG(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
-                if (entryV24)
+                if (entryV23)
                 {
-                    // UEFI_TEST_ASSERT(entryV24->systemBiosMajorRelease                 == 15,  NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entryV24->systemBiosMinorRelease                 == 103, NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entryV24->embeddedControllerFirmwareMajorRelease == 151, NgosStatus::ASSERTION); // Commented due to value variation
-                    // UEFI_TEST_ASSERT(entryV24->embeddedControllerFirmwareMinorRelease == 78,  NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAG(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
-                    if (entryV31)
+                    if (entryV24)
                     {
-                        // UEFI_TEST_ASSERT(entryV31->extendedBiosRomSize.value   == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
-                        // UEFI_TEST_ASSERT(entryV31->extendedBiosRomSize.unit    == DmiBiosExtendedRomSizeUnit::MEGABYTES, NgosStatus::ASSERTION); // Commented due to value variation
-                        // UEFI_TEST_ASSERT(entryV31->extendedBiosRomSize.value16 == 0x0000,                                NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entryV24->systemBiosMajorRelease                 == 15,  NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entryV24->systemBiosMinorRelease                 == 103, NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entryV24->embeddedControllerFirmwareMajorRelease == 151, NgosStatus::ASSERTION); // Commented due to value variation
+                        // UEFI_TEST_ASSERT(entryV24->embeddedControllerFirmwareMinorRelease == 78,  NgosStatus::ASSERTION); // Commented due to value variation
 
-                        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV31), NgosStatus::ASSERTION);
+                        if (entryV31)
+                        {
+                            // UEFI_TEST_ASSERT(entryV31->extendedBiosRomSize.value   == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
+                            // UEFI_TEST_ASSERT(entryV31->extendedBiosRomSize.unit    == DmiBiosExtendedRomSizeUnit::MEGABYTES, NgosStatus::ASSERTION); // Commented due to value variation
+                            // UEFI_TEST_ASSERT(entryV31->extendedBiosRomSize.value16 == 0x0000,                                NgosStatus::ASSERTION); // Commented due to value variation
+
+                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV31), NgosStatus::ASSERTION);
+                        }
+                        else
+                        {
+                            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV24), NgosStatus::ASSERTION);
+                        }
                     }
                     else
                     {
-                        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV24), NgosStatus::ASSERTION);
+                        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV23), NgosStatus::ASSERTION);
                     }
                 }
                 else
                 {
-                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV23), NgosStatus::ASSERTION);
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV21), NgosStatus::ASSERTION);
                 }
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV21), NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
             }
-        }
-        else
-        {
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -455,60 +461,66 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
     // Validation
     {
-        UEFI_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));
-        UEFI_LVVV(("entry->productName.id  = %u", entry->productName.id));
-        UEFI_LVVV(("entry->version.id      = %u", entry->version.id));
-        UEFI_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
-
-        if (entryV21)
+        // Output variables
         {
-            UEFI_LVVV(("entryV21->uuid       = %s", uuidToString(entryV21->uuid)));
-            UEFI_LVVV(("entryV21->wakeUpType = %s", enumToFullString(entryV21->wakeUpType)));
+            UEFI_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));
+            UEFI_LVVV(("entry->productName.id  = %u", entry->productName.id));
+            UEFI_LVVV(("entry->version.id      = %u", entry->version.id));
+            UEFI_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
 
-            if (entryV24)
+            if (entryV21)
             {
-                UEFI_LVVV(("entryV24->skuNumber.id = %u", entryV24->skuNumber.id));
-                UEFI_LVVV(("entryV24->family.id    = %u", entryV24->family.id));
+                UEFI_LVVV(("entryV21->uuid       = %s", uuidToString(entryV21->uuid)));
+                UEFI_LVVV(("entryV21->wakeUpType = %s", enumToFullString(entryV21->wakeUpType)));
+
+                if (entryV24)
+                {
+                    UEFI_LVVV(("entryV24->skuNumber.id = %u", entryV24->skuNumber.id));
+                    UEFI_LVVV(("entryV24->family.id    = %u", entryV24->family.id));
+                }
             }
         }
 
 
 
-        UEFI_TEST_ASSERT(entry->manufacturer.id    == 1, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(entry->productName.id     == 2, NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(entry->version.id         == 3, NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
-
-        if (entryV21)
+        // Check variables
         {
-            // UEFI_TEST_ASSERT(entryV21->uuid.data1    == 0x9FAE0773,                        NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data2    == 0xF53F,                            NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data3    == 0x4A15,                            NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data4    == 0x8A,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data5    == 0x11,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data6[0] == 0xED,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data6[1] == 0x76,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data6[2] == 0xA1,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data6[3] == 0x0F,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data6[4] == 0x4E,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entryV21->uuid.data6[5] == 0x5B,                              NgosStatus::ASSERTION); // Commented due to value variation
-            UEFI_TEST_ASSERT(entryV21->wakeUpType       == DmiSystemWakeUpType::POWER_SWITCH, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->manufacturer.id    == 1, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->productName.id     == 2, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->version.id         == 3, NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
 
-            if (entryV24)
+            if (entryV21)
             {
-                // UEFI_TEST_ASSERT(entryV24->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
-                // UEFI_TEST_ASSERT(entryV24->family.id    == 6, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data1    == 0x9FAE0773,                        NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data2    == 0xF53F,                            NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data3    == 0x4A15,                            NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data4    == 0x8A,                              NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data5    == 0x11,                              NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data6[0] == 0xED,                              NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data6[1] == 0x76,                              NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data6[2] == 0xA1,                              NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data6[3] == 0x0F,                              NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data6[4] == 0x4E,                              NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->uuid.data6[5] == 0x5B,                              NgosStatus::ASSERTION); // Commented due to value variation
+                UEFI_TEST_ASSERT(entryV21->wakeUpType       == DmiSystemWakeUpType::POWER_SWITCH, NgosStatus::ASSERTION);
 
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV24), NgosStatus::ASSERTION);
+                if (entryV24)
+                {
+                    // UEFI_TEST_ASSERT(entryV24->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV24->family.id    == 6, NgosStatus::ASSERTION); // Commented due to value variation
+
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV24), NgosStatus::ASSERTION);
+                }
+                else
+                {
+                    UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV21), NgosStatus::ASSERTION);
+                }
             }
             else
             {
-                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV21), NgosStatus::ASSERTION);
+                UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
             }
-        }
-        else
-        {
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -669,50 +681,55 @@ NgosStatus DeviceManagerDMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
     // Validation
     {
-        UEFI_LVVV(("entry->manufacturer.id                = %u",     entry->manufacturer.id));
-        UEFI_LVVV(("entry->product.id                     = %u",     entry->product.id));
-        UEFI_LVVV(("entry->version.id                     = %u",     entry->version.id));
-        UEFI_LVVV(("entry->serialNumber.id                = %u",     entry->serialNumber.id));
-        UEFI_LVVV(("entry->assetTag.id                    = %u",     entry->assetTag.id));
-        UEFI_LVVV(("entry->featureFlags                   = %s",     flagsToFullString(entry->featureFlags)));
-        UEFI_LVVV(("entry->locationInChassis.id           = %u",     entry->locationInChassis.id));
-        UEFI_LVVV(("entry->chassisHandle                  = 0x%04X", entry->chassisHandle));
-        UEFI_LVVV(("entry->boardType                      = %s",     enumToFullString(entry->boardType)));
-        UEFI_LVVV(("entry->numberOfContainedObjectHandles = %u",     entry->numberOfContainedObjectHandles));
-
-
-
-        // entry->containedObjectHandles:
+        // Output variables
         {
-#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-            UEFI_LVVV(("entry->containedObjectHandles:"));
-            UEFI_LVVV(("-------------------------------------"));
+            UEFI_LVVV(("entry->manufacturer.id                = %u",     entry->manufacturer.id));
+            UEFI_LVVV(("entry->product.id                     = %u",     entry->product.id));
+            UEFI_LVVV(("entry->version.id                     = %u",     entry->version.id));
+            UEFI_LVVV(("entry->serialNumber.id                = %u",     entry->serialNumber.id));
+            UEFI_LVVV(("entry->assetTag.id                    = %u",     entry->assetTag.id));
+            UEFI_LVVV(("entry->featureFlags                   = %s",     flagsToFullString(entry->featureFlags)));
+            UEFI_LVVV(("entry->locationInChassis.id           = %u",     entry->locationInChassis.id));
+            UEFI_LVVV(("entry->chassisHandle                  = 0x%04X", entry->chassisHandle));
+            UEFI_LVVV(("entry->boardType                      = %s",     enumToFullString(entry->boardType)));
+            UEFI_LVVV(("entry->numberOfContainedObjectHandles = %u",     entry->numberOfContainedObjectHandles));
 
-            for (i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
+
+
+            // entry->containedObjectHandles:
             {
-                UEFI_LVVV(("#%-3d: 0x%04X", i, entry->containedObjectHandles[i]));
-            }
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+                UEFI_LVVV(("entry->containedObjectHandles:"));
+                UEFI_LVVV(("-------------------------------------"));
 
-            UEFI_LVVV(("-------------------------------------"));
+                for (i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
+                {
+                    UEFI_LVVV(("#%-3d: 0x%04X", i, entry->containedObjectHandles[i]));
+                }
+
+                UEFI_LVVV(("-------------------------------------"));
 #endif
+            }
         }
 
 
 
-        UEFI_TEST_ASSERT(entry->manufacturer.id                == 1,                                           NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(entry->product.id                     == 2,                                           NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(entry->version.id                     == 3,                                           NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(entry->serialNumber.id             == 4,                                           NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->assetTag.id                 == 5,                                           NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->featureFlags                == FLAGS(DmiBaseboardFeatureFlag::MOTHERBOARD), NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->locationInChassis.id        == 6,                                           NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->chassisHandle               == 0x0300,                                      NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(entry->boardType                   == DmiBaseboardType::MOTHERBOARD,               NgosStatus::ASSERTION); // Commented due to value variation
-        UEFI_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,                                           NgosStatus::ASSERTION);
-        // UEFI_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        // Check variables
+        {
+            UEFI_TEST_ASSERT(entry->manufacturer.id                == 1,                                           NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->product.id                     == 2,                                           NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->version.id                     == 3,                                           NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->serialNumber.id             == 4,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->assetTag.id                 == 5,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->featureFlags                == FLAGS(DmiBaseboardFeatureFlag::MOTHERBOARD), NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->locationInChassis.id        == 6,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->chassisHandle               == 0x0300,                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->boardType                   == DmiBaseboardType::MOTHERBOARD,               NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,                                           NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,                                           NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 15                        + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
-        UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBaseboardEntry) + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBaseboardEntry) + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -2170,7 +2187,6 @@ NgosStatus DeviceManagerDMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *en
         // UEFI_TEST_ASSERT(entry->externalConnectorType          == DmiPortConnectorType::OTHER,     NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->portType                       == DmiPortConnectorPortType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 9,                             NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPortConnectorEntry), NgosStatus::ASSERTION);
     }
 
@@ -2558,7 +2574,6 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
         // UEFI_TEST_ASSERT(entry->devices[0].deviceTypeAndEnabled                    == 0x00,                                 NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->devices[0].description.id                          == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 6,                                                                NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiOnboardDevicesEntry) + sizeof(DmiOnboardDevicesDevice), NgosStatus::ASSERTION);
     }
 
@@ -2681,7 +2696,6 @@ NgosStatus DeviceManagerDMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 
         // UEFI_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 5,                          NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiOemStringsEntry), NgosStatus::ASSERTION);
     }
 
@@ -2772,7 +2786,6 @@ NgosStatus DeviceManagerDMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurat
 
         // UEFI_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 5,                                   NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemConfigurationEntry), NgosStatus::ASSERTION);
     }
 
@@ -2867,7 +2880,6 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
         // UEFI_TEST_ASSERT(entry->flags                == FLAGS(DmiBiosLanguageFlags::NONE), NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->currentLanguage.id   == 1,                                 NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 22,                           NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosLanguageEntry), NgosStatus::ASSERTION);
     }
 
@@ -2989,7 +3001,6 @@ NgosStatus DeviceManagerDMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsE
         // UEFI_TEST_ASSERT(entry->items[0].type   == DmiEntryType::BIOS, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->items[0].handle == 0x0000,             NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 8,                                                                    NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiGroupAssociationsEntry) + sizeof(DmiGroupAssociationsItem), NgosStatus::ASSERTION);
     }
 
@@ -4592,7 +4603,6 @@ NgosStatus DeviceManagerDMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entr
         // UEFI_TEST_ASSERT(entry->oemDefined        == 0x00000000,                     NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->nominalValue      == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 22,                           NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiVoltageProbeEntry), NgosStatus::ASSERTION);
     }
 
@@ -5012,7 +5022,6 @@ NgosStatus DeviceManagerDMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEnt
         // UEFI_TEST_ASSERT(entry->oemDefined        == 0x00000000,                         NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->nominalValue      == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 22,                               NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiTemperatureProbeEntry), NgosStatus::ASSERTION);
     }
 
@@ -5237,7 +5246,6 @@ NgosStatus DeviceManagerDMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCur
         // UEFI_TEST_ASSERT(entry->oemDefined        == 0x00000000,                               NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->nominalValue      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 22,                                     NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiElectricalCurrentProbeEntry), NgosStatus::ASSERTION);
     }
 
@@ -5444,7 +5452,6 @@ NgosStatus DeviceManagerDMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
         // UEFI_TEST_ASSERT(entry->bootStatus == DmiSystemBootStatus::NO_ERROR, NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 11,                         NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemBootEntry), NgosStatus::ASSERTION);
     }
 
@@ -5493,7 +5500,6 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEnt
         // UEFI_TEST_ASSERT(entry->address        == 0x00000000,                            NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->addressType    == DmiManagementDeviceAddressType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 11,                               NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceEntry), NgosStatus::ASSERTION);
     }
 
@@ -5604,7 +5610,6 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceComponentEntry(DmiManagement
         // UEFI_TEST_ASSERT(entry->componentHandle        == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->thresholdHandle        == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 11,                                        NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceComponentEntry), NgosStatus::ASSERTION);
     }
 
@@ -5740,7 +5745,6 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceThresholdDataEntry(DmiManage
         // UEFI_TEST_ASSERT(entry->lowerThresholdNonRecoverable == 0, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->upperThresholdNonRecoverable == 0, NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 16,                                            NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceThresholdDataEntry), NgosStatus::ASSERTION);
     }
 
@@ -5918,7 +5922,6 @@ NgosStatus DeviceManagerDMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyE
         // UEFI_TEST_ASSERT(entry->coolingDeviceHandle                                == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->inputCurrentProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 22,                                NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemPowerSupplyEntry), NgosStatus::ASSERTION);
     }
 
@@ -6381,7 +6384,6 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevice
         // UEFI_TEST_ASSERT(entry->deviceNumber                  == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->functionNumberAndDeviceNumber == 0x00,                                       NgosStatus::ASSERTION); // Commented due to value variation
 
-        UEFI_TEST_ASSERT(entry->header.length >= 11,                                     NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiOnboardDevicesExtendedEntry), NgosStatus::ASSERTION);
     }
 

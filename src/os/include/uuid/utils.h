@@ -40,6 +40,8 @@ inline const char8* uuidToString(Uuid *uuid) // TEST: NO
     return res;
 }
 
+// TODO: uuidToFullString
+
 
 
 #endif // UUID_UTILS_H

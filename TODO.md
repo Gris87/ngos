@@ -25,6 +25,7 @@ NGOS:
 - ASSERTS for QEMU only for variated checks
 - Split DMI structures by version
 - Split validation regions to output/check region
+- Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"
 
 - Complete with interruptions
 - Implement boot screen for kernel
@@ -58,6 +59,7 @@ Code verifier:
 - Verify for asserts alignment
 - Verify for DeviceManagerGUI::sImagesPath
 - Verify for English chars only in source code
+- Verify that #if, #ifdef, #endif, #define starts from the beginning of line
 - Remove verifier for zero
 - Remove verifier for shift
 - Upgrade verifier for trace arguments (Check format with the types)
