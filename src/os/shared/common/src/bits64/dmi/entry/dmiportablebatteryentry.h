@@ -29,6 +29,12 @@ struct DmiPortableBatteryEntry
     u16                               designVoltage;
     DmiStringId                       sbdsVersionNumber;
     u8                                maximumErrorInBatteryData;
+} __attribute__((packed));
+
+
+
+struct DmiPortableBatteryEntryV22: public DmiPortableBatteryEntry
+{
     u16                               sbdsSerialNumber;
     DmiPortableBatteryManufactureDate sbdsManufactureDate;
     DmiStringId                       sbdsDeviceChemistry;

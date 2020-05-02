@@ -32,9 +32,15 @@ struct DmiCoolingDeviceEntry
         u8 deviceTypeAndStatus;
     };
 
-    u8          coolingUnitGroup;
-    u32         oemDefined;
-    u16         nominalSpeed;
+    u8  coolingUnitGroup;
+    u32 oemDefined;
+    u16 nominalSpeed;
+} __attribute__((packed));
+
+
+
+struct DmiCoolingDeviceEntryV27: public DmiCoolingDeviceEntry
+{
     DmiStringId description;
 } __attribute__((packed));
 

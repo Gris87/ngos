@@ -17,10 +17,6 @@
 
 
 
-#define DMI_CHASSIS_CONTAINED_ELEMENT(entry, i) (DmiChassisContainedElement *)((u64)(entry)->containedElements + (i) * (entry)->containedElementRecordLength)
-
-
-
 u32              DMI::sVersion;
 u16              DMI::sNumberOfSmbiosStructures;
 u64              DMI::sStructureTableAddress;
@@ -2417,7 +2413,7 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
 
 
-    AVOID_UNUSED(entry);
+    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryArrayMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -2430,10 +2426,10 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
         COMMON_LVVV(("entry->memoryArrayHandle     = 0x%04X", entry->memoryArrayHandle));
         COMMON_LVVV(("entry->partitionWidth        = %u",     entry->partitionWidth));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            COMMON_LVVV(("entry->extendedStartingAddress = 0x%016lX", entry->extendedStartingAddress));
-            COMMON_LVVV(("entry->extendedEndingAddress   = 0x%016lX", entry->extendedEndingAddress));
+            COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
+            COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
         }
 
 
@@ -2443,18 +2439,16 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
         // COMMON_TEST_ASSERT(entry->memoryArrayHandle     == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->partitionWidth        == 1,          NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            // COMMON_TEST_ASSERT(entry->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            COMMON_TEST_ASSERT(entry->header.length >= 31,                                       NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27), NgosStatus::ASSERTION);
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length >= 15,                                            NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry) - 16, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -2476,7 +2470,7 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
 
 
-    AVOID_UNUSED(entry);
+    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryDeviceMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -2492,10 +2486,10 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
         COMMON_LVVV(("entry->interleavePosition             = %u",     entry->interleavePosition));
         COMMON_LVVV(("entry->interleavedDataDepth           = %u",     entry->interleavedDataDepth));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            COMMON_LVVV(("entry->extendedStartingAddress = 0x%016lX", entry->extendedStartingAddress));
-            COMMON_LVVV(("entry->extendedEndingAddress   = 0x%016lX", entry->extendedEndingAddress));
+            COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
+            COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
         }
 
 
@@ -2508,18 +2502,16 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
         // COMMON_TEST_ASSERT(entry->interleavePosition             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->interleavedDataDepth           == 1,          NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            // COMMON_TEST_ASSERT(entry->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            COMMON_TEST_ASSERT(entry->header.length >= 35,                                        NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27), NgosStatus::ASSERTION);
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length >= 19,                                             NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry) - 16, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -2541,6 +2533,10 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
 
 
 
+    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) ? (DmiPortableBatteryEntryV22 *)entry : nullptr;
+
+
+
     // Validation
     {
         COMMON_LVVV(("entry->location.id               = %u", entry->location.id));
@@ -2554,17 +2550,17 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
         COMMON_LVVV(("entry->sbdsVersionNumber.id      = %u", entry->sbdsVersionNumber.id));
         COMMON_LVVV(("entry->maximumErrorInBatteryData = %u", entry->maximumErrorInBatteryData));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 2))
+        if (entryV22)
         {
-            COMMON_LVVV(("entry->sbdsSerialNumber            = %u",             entry->sbdsSerialNumber));
-            COMMON_LVVV(("entry->sbdsManufactureDate.date    = %u",             entry->sbdsManufactureDate.date));
-            COMMON_LVVV(("entry->sbdsManufactureDate.month   = %u",             entry->sbdsManufactureDate.month));
-            COMMON_LVVV(("entry->sbdsManufactureDate.year    = %u",             entry->sbdsManufactureDate.year));
-            COMMON_LVVV(("entry->sbdsManufactureDate.value16 = 0x%04X",         entry->sbdsManufactureDate.value16));
-            COMMON_LVVV(("entry->sbdsManufactureDate         = %04u-%02u-%02u", entry->sbdsManufactureDate.realYear(), entry->sbdsManufactureDate.month, entry->sbdsManufactureDate.date));
-            COMMON_LVVV(("entry->sbdsDeviceChemistry.id      = %u",             entry->sbdsDeviceChemistry.id));
-            COMMON_LVVV(("entry->designCapacityMultiplier    = %u",             entry->designCapacityMultiplier));
-            COMMON_LVVV(("entry->oemSpecific                 = 0x%08X",         entry->oemSpecific));
+            COMMON_LVVV(("entryV22->sbdsSerialNumber            = %u",             entryV22->sbdsSerialNumber));
+            COMMON_LVVV(("entryV22->sbdsManufactureDate.date    = %u",             entryV22->sbdsManufactureDate.date));
+            COMMON_LVVV(("entryV22->sbdsManufactureDate.month   = %u",             entryV22->sbdsManufactureDate.month));
+            COMMON_LVVV(("entryV22->sbdsManufactureDate.year    = %u",             entryV22->sbdsManufactureDate.year));
+            COMMON_LVVV(("entryV22->sbdsManufactureDate.value16 = 0x%04X",         entryV22->sbdsManufactureDate.value16));
+            COMMON_LVVV(("entryV22->sbdsManufactureDate         = %04u-%02u-%02u", entryV22->sbdsManufactureDate.realYear(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date));
+            COMMON_LVVV(("entryV22->sbdsDeviceChemistry.id      = %u",             entryV22->sbdsDeviceChemistry.id));
+            COMMON_LVVV(("entryV22->designCapacityMultiplier    = %u",             entryV22->designCapacityMultiplier));
+            COMMON_LVVV(("entryV22->oemSpecific                 = 0x%08X",         entryV22->oemSpecific));
         }
 
 
@@ -2580,24 +2576,22 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
         // COMMON_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 2))
+        if (entryV22)
         {
-            // COMMON_TEST_ASSERT(entry->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV22->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            COMMON_TEST_ASSERT(entry->header.length >= 26,                              NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntryV22), NgosStatus::ASSERTION);
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length >= 16,                                   NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry) - 10, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -2607,9 +2601,9 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
     {
         DmiStringId sbdsDeviceChemistryStringId;
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 2))
+        if (entryV22)
         {
-            sbdsDeviceChemistryStringId = entry->sbdsDeviceChemistry;
+            sbdsDeviceChemistryStringId = entryV22->sbdsDeviceChemistry;
         }
 
 
@@ -2818,6 +2812,10 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
 
 
+    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiCoolingDeviceEntryV27 *)entry : nullptr;
+
+
+
     // Validation
     {
         COMMON_LVVV(("entry->temperatureProbeHandle = 0x%04X", entry->temperatureProbeHandle));
@@ -2828,9 +2826,9 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
         COMMON_LVVV(("entry->oemDefined             = 0x%08X", entry->oemDefined));
         COMMON_LVVV(("entry->nominalSpeed           = %u",     entry->nominalSpeed));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            COMMON_LVVV(("entry->description.id = %u", entry->description.id));
+            COMMON_LVVV(("entryV27->description.id = %u", entryV27->description.id));
         }
 
 
@@ -2843,17 +2841,15 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
         // COMMON_TEST_ASSERT(entry->oemDefined             == 0x00000000,                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(entry->nominalSpeed           == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            // COMMON_TEST_ASSERT(entry->description.id == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entryV27->description.id == 1, NgosStatus::ASSERTION); // Commented due to value variation
 
-            COMMON_TEST_ASSERT(entry->header.length >= 15,                            NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntryV27), NgosStatus::ASSERTION);
         }
         else
         {
-            COMMON_TEST_ASSERT(entry->header.length >= 14,                                NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry) - 1, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -2863,9 +2859,9 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
     {
         DmiStringId descriptionStringId;
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            descriptionStringId = entry->description;
+            descriptionStringId = entryV27->description;
         }
 
 

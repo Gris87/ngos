@@ -24,8 +24,6 @@
 
 
 
-#define DMI_CHASSIS_CONTAINED_ELEMENT(entry, i) (DmiChassisContainedElement *)((u64)(entry)->containedElements + (i) * (entry)->containedElementRecordLength)
-
 #define VALUE_MAXIMUM_LENGTH 20
 
 
@@ -3958,7 +3956,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
 
 
 
-    AVOID_UNUSED(entry);
+    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryArrayMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -3971,10 +3969,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
         UEFI_LVVV(("entry->memoryArrayHandle     = 0x%04X", entry->memoryArrayHandle));
         UEFI_LVVV(("entry->partitionWidth        = %u",     entry->partitionWidth));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            UEFI_LVVV(("entry->extendedStartingAddress = 0x%016lX", entry->extendedStartingAddress));
-            UEFI_LVVV(("entry->extendedEndingAddress   = 0x%016lX", entry->extendedEndingAddress));
+            UEFI_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
+            UEFI_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
         }
 
 
@@ -3984,18 +3982,16 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
         // UEFI_TEST_ASSERT(entry->memoryArrayHandle     == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->partitionWidth        == 1,          NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            // UEFI_TEST_ASSERT(entry->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            UEFI_TEST_ASSERT(entry->header.length >= 31,                                       NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27), NgosStatus::ASSERTION);
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 15,                                            NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry) - 16, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -4011,10 +4007,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            extendedStartingAddress = mprintf("0x%016lX", entry->extendedStartingAddress);
-            extendedEndingAddress   = mprintf("0x%016lX", entry->extendedEndingAddress);
+            extendedStartingAddress = mprintf("0x%016lX", entryV27->extendedStartingAddress);
+            extendedEndingAddress   = mprintf("0x%016lX", entryV27->extendedEndingAddress);
         }
     }
 
@@ -4035,11 +4031,11 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
                 &&
                 entry->endingAddress.value == DMI_MEMORY_ARRAY_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
                 &&
-                DMI::getVersion() >= DMI_VERSION(2, 7)
+                entryV27
                )
             {
-                start = entry->extendedStartingAddress;
-                end   = entry->extendedEndingAddress;
+                start = entryV27->extendedStartingAddress;
+                end   = entryV27->extendedEndingAddress;
             }
             else
             {
@@ -4085,7 +4081,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
 
 
 
-    AVOID_UNUSED(entry);
+    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryDeviceMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -4101,10 +4097,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
         UEFI_LVVV(("entry->interleavePosition             = %u",     entry->interleavePosition));
         UEFI_LVVV(("entry->interleavedDataDepth           = %u",     entry->interleavedDataDepth));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            UEFI_LVVV(("entry->extendedStartingAddress = 0x%016lX", entry->extendedStartingAddress));
-            UEFI_LVVV(("entry->extendedEndingAddress   = 0x%016lX", entry->extendedEndingAddress));
+            UEFI_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
+            UEFI_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
         }
 
 
@@ -4117,18 +4113,16 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
         // UEFI_TEST_ASSERT(entry->interleavePosition             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->interleavedDataDepth           == 1,          NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            // UEFI_TEST_ASSERT(entry->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            UEFI_TEST_ASSERT(entry->header.length >= 35,                                        NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry), NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27), NgosStatus::ASSERTION);
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 19,                                             NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry) - 16, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -4144,10 +4138,10 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            extendedStartingAddress = mprintf("0x%016lX", entry->extendedStartingAddress);
-            extendedEndingAddress   = mprintf("0x%016lX", entry->extendedEndingAddress);
+            extendedStartingAddress = mprintf("0x%016lX", entryV27->extendedStartingAddress);
+            extendedEndingAddress   = mprintf("0x%016lX", entryV27->extendedEndingAddress);
         }
     }
 
@@ -4171,11 +4165,11 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
                 &&
                 entry->endingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
                 &&
-                DMI::getVersion() >= DMI_VERSION(2, 7)
+                entryV27
                )
             {
-                start = entry->extendedStartingAddress;
-                end   = entry->extendedEndingAddress;
+                start = entryV27->extendedStartingAddress;
+                end   = entryV27->extendedEndingAddress;
             }
             else
             {
@@ -4276,6 +4270,10 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
 
 
 
+    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) ? (DmiPortableBatteryEntryV22 *)entry : nullptr;
+
+
+
     // Validation
     {
         UEFI_LVVV(("entry->location.id               = %u", entry->location.id));
@@ -4289,17 +4287,17 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
         UEFI_LVVV(("entry->sbdsVersionNumber.id      = %u", entry->sbdsVersionNumber.id));
         UEFI_LVVV(("entry->maximumErrorInBatteryData = %u", entry->maximumErrorInBatteryData));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 2))
+        if (entryV22)
         {
-            UEFI_LVVV(("entry->sbdsSerialNumber            = %u",             entry->sbdsSerialNumber));
-            UEFI_LVVV(("entry->sbdsManufactureDate.date    = %u",             entry->sbdsManufactureDate.date));
-            UEFI_LVVV(("entry->sbdsManufactureDate.month   = %u",             entry->sbdsManufactureDate.month));
-            UEFI_LVVV(("entry->sbdsManufactureDate.year    = %u",             entry->sbdsManufactureDate.year));
-            UEFI_LVVV(("entry->sbdsManufactureDate.value16 = 0x%04X",         entry->sbdsManufactureDate.value16));
-            UEFI_LVVV(("entry->sbdsManufactureDate         = %04u-%02u-%02u", entry->sbdsManufactureDate.realYear(), entry->sbdsManufactureDate.month, entry->sbdsManufactureDate.date));
-            UEFI_LVVV(("entry->sbdsDeviceChemistry.id      = %u",             entry->sbdsDeviceChemistry.id));
-            UEFI_LVVV(("entry->designCapacityMultiplier    = %u",             entry->designCapacityMultiplier));
-            UEFI_LVVV(("entry->oemSpecific                 = 0x%08X",         entry->oemSpecific));
+            UEFI_LVVV(("entryV22->sbdsSerialNumber            = %u",             entryV22->sbdsSerialNumber));
+            UEFI_LVVV(("entryV22->sbdsManufactureDate.date    = %u",             entryV22->sbdsManufactureDate.date));
+            UEFI_LVVV(("entryV22->sbdsManufactureDate.month   = %u",             entryV22->sbdsManufactureDate.month));
+            UEFI_LVVV(("entryV22->sbdsManufactureDate.year    = %u",             entryV22->sbdsManufactureDate.year));
+            UEFI_LVVV(("entryV22->sbdsManufactureDate.value16 = 0x%04X",         entryV22->sbdsManufactureDate.value16));
+            UEFI_LVVV(("entryV22->sbdsManufactureDate         = %04u-%02u-%02u", entryV22->sbdsManufactureDate.realYear(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date));
+            UEFI_LVVV(("entryV22->sbdsDeviceChemistry.id      = %u",             entryV22->sbdsDeviceChemistry.id));
+            UEFI_LVVV(("entryV22->designCapacityMultiplier    = %u",             entryV22->designCapacityMultiplier));
+            UEFI_LVVV(("entryV22->oemSpecific                 = 0x%08X",         entryV22->oemSpecific));
         }
 
 
@@ -4315,24 +4313,22 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
         // UEFI_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 2))
+        if (entryV22)
         {
-            // UEFI_TEST_ASSERT(entry->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV22->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
 
-            UEFI_TEST_ASSERT(entry->header.length >= 26,                              NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntryV22), NgosStatus::ASSERTION);
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 16,                                   NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry) - 10, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -4350,9 +4346,9 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
     {
         DmiStringId sbdsDeviceChemistryStringId;
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 2))
+        if (entryV22)
         {
-            sbdsDeviceChemistryStringId = entry->sbdsDeviceChemistry;
+            sbdsDeviceChemistryStringId = entryV22->sbdsDeviceChemistry;
         }
 
 
@@ -4459,12 +4455,12 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
 
     // Get strings base on version
     {
-        if (DMI::getVersion() >= DMI_VERSION(2, 2))
+        if (entryV22)
         {
-            sbdsSerialNumber         = mprintf("%u", entry->sbdsSerialNumber);
-            sbdsManufactureDate      = mprintf("%04u-%02u-%02u", entry->sbdsManufactureDate.realYear(), entry->sbdsManufactureDate.month, entry->sbdsManufactureDate.date);
-            designCapacityMultiplier = mprintf("%u", entry->designCapacityMultiplier);
-            oemSpecific              = mprintf("0x%08X", entry->oemSpecific);
+            sbdsSerialNumber         = mprintf("%u",             entryV22->sbdsSerialNumber);
+            sbdsManufactureDate      = mprintf("%04u-%02u-%02u", entryV22->sbdsManufactureDate.realYear(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date);
+            designCapacityMultiplier = mprintf("%u",             entryV22->designCapacityMultiplier);
+            oemSpecific              = mprintf("0x%08X",         entryV22->oemSpecific);
         }
     }
 
@@ -4486,9 +4482,9 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
             {
                 u64 capacity;
 
-                if (DMI::getVersion() >= DMI_VERSION(2, 2))
+                if (entryV22)
                 {
-                    capacity = entry->designCapacity * entry->designCapacityMultiplier;
+                    capacity = entry->designCapacity * entryV22->designCapacityMultiplier;
                 }
                 else
                 {
@@ -4793,6 +4789,10 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
 
 
 
+    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiCoolingDeviceEntryV27 *)entry : nullptr;
+
+
+
     // Validation
     {
         UEFI_LVVV(("entry->temperatureProbeHandle = 0x%04X", entry->temperatureProbeHandle));
@@ -4803,9 +4803,9 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
         UEFI_LVVV(("entry->oemDefined             = 0x%08X", entry->oemDefined));
         UEFI_LVVV(("entry->nominalSpeed           = %u",     entry->nominalSpeed));
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            UEFI_LVVV(("entry->description.id = %u", entry->description.id));
+            UEFI_LVVV(("entryV27->description.id = %u", entryV27->description.id));
         }
 
 
@@ -4818,17 +4818,15 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
         // UEFI_TEST_ASSERT(entry->oemDefined             == 0x00000000,                    NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(entry->nominalSpeed           == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            // UEFI_TEST_ASSERT(entry->description.id == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entryV27->description.id == 1, NgosStatus::ASSERTION); // Commented due to value variation
 
-            UEFI_TEST_ASSERT(entry->header.length >= 15,                            NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntryV27), NgosStatus::ASSERTION);
         }
         else
         {
-            UEFI_TEST_ASSERT(entry->header.length >= 14,                                NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry) - 1, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);
         }
     }
 
@@ -4841,9 +4839,9 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
     {
         DmiStringId descriptionStringId;
 
-        if (DMI::getVersion() >= DMI_VERSION(2, 7))
+        if (entryV27)
         {
-            descriptionStringId = entry->description;
+            descriptionStringId = entryV27->description;
         }
 
 

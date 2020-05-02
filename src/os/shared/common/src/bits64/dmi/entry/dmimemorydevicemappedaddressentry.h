@@ -28,8 +28,14 @@ struct DmiMemoryDeviceMappedAddressEntry
     u8                                partitionRowPosition;
     u8                                interleavePosition;
     u8                                interleavedDataDepth;
-    u64                               extendedStartingAddress;
-    u64                               extendedEndingAddress;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryDeviceMappedAddressEntryV27: public DmiMemoryDeviceMappedAddressEntry
+{
+    u64 extendedStartingAddress;
+    u64 extendedEndingAddress;
 } __attribute__((packed));
 
 

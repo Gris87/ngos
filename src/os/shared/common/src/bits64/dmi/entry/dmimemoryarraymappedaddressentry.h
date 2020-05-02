@@ -20,8 +20,14 @@ struct DmiMemoryArrayMappedAddressEntry
     DmiMemoryArrayMappedAddressRange endingAddress;
     u16                              memoryArrayHandle;
     u8                               partitionWidth;
-    u64                              extendedStartingAddress;
-    u64                              extendedEndingAddress;
+} __attribute__((packed));
+
+
+
+struct DmiMemoryArrayMappedAddressEntryV27: public DmiMemoryArrayMappedAddressEntry
+{
+    u64 extendedStartingAddress;
+    u64 extendedEndingAddress;
 } __attribute__((packed));
 
 
