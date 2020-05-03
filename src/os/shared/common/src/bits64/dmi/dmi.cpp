@@ -1132,7 +1132,6 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-
     // Get strings
     {
         DmiStringId skuNumberStringId;
@@ -1433,7 +1432,6 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             }
         }
     }
-
 
 
 
