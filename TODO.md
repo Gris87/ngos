@@ -19,11 +19,9 @@ NGOS:
 - Replace u64 with i64 where needed
 - guidToFullString
 - uuidToFullString
-- DmiStringId
 - Basic mode for Device Manager
 - Change brackets for #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
 - ASSERTS for QEMU only for variated checks
-- Split DMI structures by version
 - Split validation regions to output/check region
 - Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"
 
@@ -60,6 +58,7 @@ Code verifier:
 - Verify for DeviceManagerGUI::sImagesPath
 - Verify for English chars only in source code
 - Verify that #if, #ifdef, #endif, #define starts from the beginning of line
+- Verify for Validation region
 - Remove verifier for zero
 - Remove verifier for shift
 - Upgrade verifier for trace arguments (Check format with the types)
