@@ -63,7 +63,7 @@ inline const char8* enumToHumanString(DeviceManagerMode mode) // TEST: NO
         case DeviceManagerMode::BASIC:     return "Basic";
         case DeviceManagerMode::EXPERT:    return "Expert";
         case DeviceManagerMode::TECHNICAL: return "Technical";
-        case DeviceManagerMode::MAXIMUM:   return "Maximum";
+        case DeviceManagerMode::MAXIMUM:   return "MAXIMUM";
 
         default: return "UNKNOWN";
     }
