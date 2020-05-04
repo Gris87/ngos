@@ -306,6 +306,7 @@ src/os/bootloader_tools/devicemanager/assets/glyphs/gui.bin
 src/os/bootloader_tools/devicemanager/assets/images/additional.png
 src/os/bootloader_tools/devicemanager/assets/images/background.jpg
 src/os/bootloader_tools/devicemanager/assets/images/baseboard.png
+src/os/bootloader_tools/devicemanager/assets/images/basic.png
 src/os/bootloader_tools/devicemanager/assets/images/bios.png
 src/os/bootloader_tools/devicemanager/assets/images/bios_language.png
 src/os/bootloader_tools/devicemanager/assets/images/button_focused.9.png
@@ -321,6 +322,7 @@ src/os/bootloader_tools/devicemanager/assets/images/cooling_device.png
 src/os/bootloader_tools/devicemanager/assets/images/cursor.png
 src/os/bootloader_tools/devicemanager/assets/images/electrical_current_probe.png
 src/os/bootloader_tools/devicemanager/assets/images/expanded.png
+src/os/bootloader_tools/devicemanager/assets/images/expert.png
 src/os/bootloader_tools/devicemanager/assets/images/group_associations.png
 src/os/bootloader_tools/devicemanager/assets/images/management_device.png
 src/os/bootloader_tools/devicemanager/assets/images/management_device_component.png
@@ -361,6 +363,7 @@ src/os/bootloader_tools/devicemanager/assets/images/system_slot_pci_express.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slots.png
 src/os/bootloader_tools/devicemanager/assets/images/table_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/table_header.9.png
+src/os/bootloader_tools/devicemanager/assets/images/technical.png
 src/os/bootloader_tools/devicemanager/assets/images/temperature_probe.png
 src/os/bootloader_tools/devicemanager/assets/images/toolbutton_hover.9.png
 src/os/bootloader_tools/devicemanager/assets/images/toolbutton_normal.9.png

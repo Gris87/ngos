@@ -5,6 +5,7 @@
         <file>assets/images/additional.png</file>
         <file>assets/images/background.jpg</file>
         <file>assets/images/baseboard.png</file>
+        <file>assets/images/basic.png</file>
         <file>assets/images/bios.png</file>
         <file>assets/images/bios_language.png</file>
         <file>assets/images/button_focused.9.png</file>
@@ -15,6 +16,7 @@
         <file>assets/images/cache.png</file>
         <file>assets/images/chassis.png</file>
         <file>assets/images/collapsed.png</file>
+        <file>assets/images/expert.png</file>
         <file>assets/images/console.9.png</file>
         <file>assets/images/cooling_device.png</file>
         <file>assets/images/cursor.png</file>
@@ -60,6 +62,7 @@
         <file>assets/images/system_slots.png</file>
         <file>assets/images/table_background.9.png</file>
         <file>assets/images/table_header.9.png</file>
+        <file>assets/images/technical.png</file>
         <file>assets/images/temperature_probe.png</file>
         <file>assets/images/toolbutton_hover.9.png</file>
         <file>assets/images/toolbutton_normal.9.png</file>
