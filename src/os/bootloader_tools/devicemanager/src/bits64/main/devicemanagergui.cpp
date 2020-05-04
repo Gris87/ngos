@@ -31,10 +31,9 @@
 #define DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT     68
 #define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 2.5
 
-#define MODE_BUTTON_POSITION_X_PERCENT 91
+#define MODE_BUTTON_POSITION_X_PERCENT 90
 #define MODE_BUTTON_POSITION_Y_PERCENT 70
-#define MODE_BUTTON_WIDTH_PERCENT      9
-#define MODE_BUTTON_HEIGHT_PERCENT     10
+#define MODE_BUTTON_WIDTH_PERCENT      10
 
 #define DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  60
 #define DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT 40
@@ -275,17 +274,12 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     sMode = DeviceManagerMode::BASIC;
 
-    u64 modeButtonWidth  = screenWidth  * MODE_BUTTON_WIDTH_PERCENT  / 100;
-    u64 modeButtonHeight = screenHeight * MODE_BUTTON_HEIGHT_PERCENT / 100;
-
-
-
     sModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(u64)sMode], nullptr, enumToHumanString(sMode), rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sModeButton->setPosition(screenWidth * MODE_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MODE_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sModeButton->setSize(modeButtonWidth, modeButtonHeight),                                                                           NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sModeButton->setKeyboardEventHandler(onModeButtonKeyboardEvent),                                                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sModeButton->setPressEventHandler(onModeButtonPressed),                                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setPosition(screenWidth * MODE_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MODE_BUTTON_POSITION_Y_PERCENT / 100),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setSize(screenWidth  * MODE_BUTTON_WIDTH_PERCENT  / 100, sRebootButton->getPositionY() - sModeButton->getPositionY()), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setKeyboardEventHandler(onModeButtonKeyboardEvent),                                                                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setPressEventHandler(onModeButtonPressed),                                                                             NgosStatus::ASSERTION);
 
 
 
