@@ -31,6 +31,11 @@
 #define DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT     68
 #define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 2.5
 
+#define MODE_BUTTON_POSITION_X_PERCENT 91
+#define MODE_BUTTON_POSITION_Y_PERCENT 70
+#define MODE_BUTTON_WIDTH_PERCENT      9
+#define MODE_BUTTON_HEIGHT_PERCENT     10
+
 #define DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  60
 #define DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT 40
 
@@ -42,14 +47,17 @@
 
 
 
-Button      *DeviceManagerGUI::sRebootButton;
-Button      *DeviceManagerGUI::sShutdownButton;
-TreeWidget  *DeviceManagerGUI::sDevicesTreeWidget;
-TableWidget *DeviceManagerGUI::sDeviceInfoTableWidget;
-u16          DeviceManagerGUI::sWaitEventsCount;
-uefi_event  *DeviceManagerGUI::sWaitEvents;
-RgbaPixel    DeviceManagerGUI::sBlackColor(0xFF000000);
-Image*       DeviceManagerGUI::sImages[(u64)DeviceManagerImage::MAXIMUM];
+Button            *DeviceManagerGUI::sRebootButton;
+Button            *DeviceManagerGUI::sShutdownButton;
+TreeWidget        *DeviceManagerGUI::sDevicesTreeWidget;
+TableWidget       *DeviceManagerGUI::sDeviceInfoTableWidget;
+Button            *DeviceManagerGUI::sModeButton;
+u16                DeviceManagerGUI::sWaitEventsCount;
+uefi_event        *DeviceManagerGUI::sWaitEvents;
+DeviceManagerMode  DeviceManagerGUI::sMode;
+RgbaPixel          DeviceManagerGUI::sBlackColor(0xFF000000);
+Image*             DeviceManagerGUI::sImages[(u64)DeviceManagerImage::MAXIMUM];
+Image*             DeviceManagerGUI::sModeImages[(u64)DeviceManagerMode::MAXIMUM];
 
 
 
@@ -105,6 +113,15 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
 
 
 
+const char8* DeviceManagerGUI::sModeImagesPath[(u64)DeviceManagerMode::MAXIMUM] =
+{
+    "images/basic.png",    // DeviceManagerMode::BASIC
+    "images/expert.png",   // DeviceManagerMode::EXPERT
+    "images/technical.png" // DeviceManagerMode::TECHNICAL
+};
+
+
+
 NgosStatus DeviceManagerGUI::init(BootParams *params)
 {
     UEFI_LT((" | params = 0x%p", params));
@@ -149,6 +166,11 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                 &rebootImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",               &shutdownImage),           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                 &cursorImage),             NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < (i64)DeviceManagerMode::MAXIMUM; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sModeImagesPath[i], &sModeImages[i]), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -248,6 +270,22 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
     UEFI_ASSERT_EXECUTION(addDeviceInfoEntry("", ""), NgosStatus::ASSERTION);
+
+
+
+    sMode = DeviceManagerMode::BASIC;
+
+    u64 modeButtonWidth  = screenWidth  * MODE_BUTTON_WIDTH_PERCENT  / 100;
+    u64 modeButtonHeight = screenHeight * MODE_BUTTON_HEIGHT_PERCENT / 100;
+
+
+
+    sModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(u64)sMode], nullptr, enumToHumanString(sMode), rootWidget);
+
+    UEFI_ASSERT_EXECUTION(sModeButton->setPosition(screenWidth * MODE_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MODE_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setSize(modeButtonWidth, modeButtonHeight),                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setKeyboardEventHandler(onModeButtonKeyboardEvent),                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setPressEventHandler(onModeButtonPressed),                                                                            NgosStatus::ASSERTION);
 
 
 
@@ -666,7 +704,7 @@ NgosStatus DeviceManagerGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sDeviceInfoTableWidget);
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sModeButton);
         case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sShutdownButton);
 
         default:
@@ -760,7 +798,43 @@ NgosStatus DeviceManagerGUI::onDeviceInfoTableWidgetKeyboardEvent(const UefiInpu
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sDevicesTreeWidget);
-        case UefiInputKeyScanCode::DOWN: return sDeviceInfoTableWidget->getSelectedRow() == sDeviceInfoTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sDeviceInfoTableWidget->getSelectedRow() == sDeviceInfoTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sModeButton) : NgosStatus::NO_EFFECT;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sModeButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus DeviceManagerGUI::onModeButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sDeviceInfoTableWidget);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sRebootButton);
 
         default:
         {
@@ -807,6 +881,39 @@ NgosStatus DeviceManagerGUI::onShutdownButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::SHUTDOWN, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerGUI::onModeButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    sMode = (DeviceManagerMode)((u64)sMode + 1);
+
+    if ((u64)sMode >= (u64)DeviceManagerMode::MAXIMUM)
+    {
+        sMode = DeviceManagerMode::BASIC;
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sModeButton->setContentImage(sModeImages[(u64)sMode]), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setText(enumToHumanString(sMode)),        NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(onDevicesTreeWidgetNodeSelected(sDevicesTreeWidget->getSelectedTreeNodeWidget()), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 

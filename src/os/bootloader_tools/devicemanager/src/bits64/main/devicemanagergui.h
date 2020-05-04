@@ -15,6 +15,7 @@
 
 #include "src/bits64/other/devicemanagerentry.h"
 #include "src/bits64/other/devicemanagerimage.h"
+#include "src/bits64/other/devicemanagermode.h"
 
 
 
@@ -40,23 +41,29 @@ private:
     static NgosStatus onShutdownButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onDevicesTreeWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onDeviceInfoTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onModeButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO
+    static NgosStatus onModeButtonPressed(); // TEST: NO
 
     static NgosStatus onDevicesTreeWidgetNodeSelected(TreeNodeWidget *node); // TEST: NO
 
     static Image* getImage(DeviceManagerImage image); // TEST: NO
 
-    static Button      *sRebootButton;
-    static Button      *sShutdownButton;
-    static TreeWidget  *sDevicesTreeWidget;
-    static TableWidget *sDeviceInfoTableWidget;
-    static u16          sWaitEventsCount;
-    static uefi_event  *sWaitEvents;
-    static RgbaPixel    sBlackColor;
-    static Image*       sImages[(u64)DeviceManagerImage::MAXIMUM];
-    static const char8* sImagesPath[(u64)DeviceManagerImage::MAXIMUM];
+    static Button            *sRebootButton;
+    static Button            *sShutdownButton;
+    static TreeWidget        *sDevicesTreeWidget;
+    static TableWidget       *sDeviceInfoTableWidget;
+    static Button            *sModeButton;
+    static u16                sWaitEventsCount;
+    static uefi_event        *sWaitEvents;
+    static DeviceManagerMode  sMode;
+    static RgbaPixel          sBlackColor;
+    static Image*             sImages[(u64)DeviceManagerImage::MAXIMUM];
+    static Image*             sModeImages[(u64)DeviceManagerMode::MAXIMUM];
+    static const char8*       sImagesPath[(u64)DeviceManagerImage::MAXIMUM];
+    static const char8*       sModeImagesPath[(u64)DeviceManagerMode::MAXIMUM];
 };
 
 
