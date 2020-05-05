@@ -9,7 +9,7 @@
 
 #define ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, name, flagsVar, format, flagType) \
     { \
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags)), NgosStatus::ASSERTION); \
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::BASIC), NgosStatus::ASSERTION); \
         \
         for (i64 i = 0; i < (i64)(sizeof(flagsVar) * 8); ++i) \
         { \
@@ -17,7 +17,7 @@
             \
             if (flagsVar.flags & flag) \
             { \
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString((flagType)flag)), "Yes"), NgosStatus::ASSERTION); \
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString((flagType)flag)), "Yes", DeviceManagerMode::BASIC), NgosStatus::ASSERTION); \
             } \
         } \
     }
@@ -389,14 +389,14 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type))),         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle)),              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",                   vendor),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",                  biosVersion),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address segment", mprintf("0x%04X", entry->biosStartingAddressSegment)), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Release date",             biosReleaseDate),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 biosRomSize),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 mprintf("0x%02X", entry->biosRomSize.value)),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type)),         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle),              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",                   vendor,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",                  biosVersion,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address segment", mprintf("0x%04X", entry->biosStartingAddressSegment), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Release date",             biosReleaseDate,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 biosRomSize,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 mprintf("0x%02X", entry->biosRomSize.value),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -412,7 +412,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
             }
             else
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics (BIOS reserved)", "N/A"), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics (BIOS reserved)", "N/A", DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
             }
         }
 
@@ -426,17 +426,17 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
             }
             else
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics (System reserved)", "N/A"), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics (System reserved)", "N/A", DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
             }
         }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System BIOS major release",                  systemBiosMajorRelease),                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System BIOS minor release",                  systemBiosMinorRelease),                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Embedded controller firmware major release", embeddedControllerFirmwareMajorRelease), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Embedded controller firmware minor release", embeddedControllerFirmwareMinorRelease), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ROM size",                          extendedBiosRomSize),                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System BIOS major release",                  systemBiosMajorRelease,                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System BIOS minor release",                  systemBiosMinorRelease,                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Embedded controller firmware major release", embeddedControllerFirmwareMajorRelease, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Embedded controller firmware minor release", embeddedControllerFirmwareMinorRelease, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ROM size",                          extendedBiosRomSize,                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -652,16 +652,16 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",  manufacturer),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Product name",  productName),                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",       version),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number", serialNumber),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("UUID",          uuid),                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Wake-Up type",  wakeUpType),                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SKU number",    skuNumber),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",        family),                                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",  manufacturer,                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Product name",  productName,                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",       version,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number", serialNumber,                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("UUID",          uuid,                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Wake-Up type",  wakeUpType,                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SKU number",    skuNumber,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",        family,                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -835,13 +835,13 @@ NgosStatus DeviceManagerDMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",  manufacturer),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Product",       product),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",       version),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number", serialNumber),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",     assetTag),                                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",  manufacturer,                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Product",       product,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",       version,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number", serialNumber,                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",     assetTag,                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -849,10 +849,10 @@ NgosStatus DeviceManagerDMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location in chassis",                locationInChassis),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Chassis handle",                     mprintf("0x%04X", entry->chassisHandle)),              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Board type",                         strdup(enumToFullString(entry->boardType))),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of contained object handles", mprintf("%u", entry->numberOfContainedObjectHandles)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location in chassis",                locationInChassis,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Chassis handle",                     mprintf("0x%04X", entry->chassisHandle),              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Board type",                         strdup(enumToFullString(entry->boardType)),           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of contained object handles", mprintf("%u", entry->numberOfContainedObjectHandles), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -860,7 +860,7 @@ NgosStatus DeviceManagerDMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
         {
             for (i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained object handle #%d", i), mprintf("0x%04X", entry->containedObjectHandles[i])), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained object handle #%d", i), mprintf("0x%04X", entry->containedObjectHandles[i]), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
             }
         }
 
@@ -1184,23 +1184,23 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",                    manufacturer),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                            strdup(enumToFullString((DmiChassisType)entry->type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Locked",                          entry->locked ? "Yes" : "No"),                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",                         version),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",                   serialNumber),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",                       assetTag),                                              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot up state",                   bootUpState),                                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Power supply state",              powerSupplyState),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thermal state",                   thermalState),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Security status",                 securityStatus),                                        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",                     oemDefined),                                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Height",                          height),                                                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of power cords",           numberOfPowerCords),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Contained element count",         containedElementCount),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Contained element record length", containedElementRecordLength),                          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type)),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle),               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",                    manufacturer,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                            strdup(enumToFullString((DmiChassisType)entry->type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Locked",                          entry->locked ? "Yes" : "No",                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",                         version,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",                   serialNumber,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",                       assetTag,                                              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot up state",                   bootUpState,                                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Power supply state",              powerSupplyState,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thermal state",                   thermalState,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Security status",                 securityStatus,                                        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",                     oemDefined,                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Height",                          height,                                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of power cords",           numberOfPowerCords,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Contained element count",         containedElementCount,                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Contained element record length", containedElementRecordLength,                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -1212,12 +1212,12 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                 {
                     DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, i);
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type select"), strdup(enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect))), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type select"), strdup(enumToFullString((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
                     switch ((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)
                     {
-                        case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiBaseboardType)containedElement->type.baseboardtype))), NgosStatus::ASSERTION); break;
-                        case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiEntryType)containedElement->type.dmiEntrytype))),      NgosStatus::ASSERTION); break;
+                        case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiBaseboardType)containedElement->type.baseboardtype)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION); break;
+                        case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiEntryType)containedElement->type.dmiEntrytype)),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION); break;
 
                         default:
                         {
@@ -1228,15 +1228,15 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                         break;
                     }
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d minimum"), mprintf("%u", containedElement->minimum)), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d maximum"), mprintf("%u", containedElement->maximum)), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d minimum"), mprintf("%u", containedElement->minimum), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d maximum"), mprintf("%u", containedElement->maximum), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
                 }
             }
         }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SKU number", skuNumber), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SKU number", skuNumber, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -1793,19 +1793,19 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type))),               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle)),                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignation),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",     strdup(enumToFullString(entry->processorType))),             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             processorFamily),                                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("0x%02X", entry->processorFamily)),                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",       processorManufacturer),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",           mprintf("%u", entry->processorId.signature.stepping)),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",              mprintf("%u", entry->processorId.signature.model)),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("%u", entry->processorId.signature.family)),         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",               mprintf("%u", entry->processorId.signature.type)),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",     mprintf("%u", entry->processorId.signature.extendedModel)),  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family",    mprintf("%u", entry->processorId.signature.extendedFamily)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type)),               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle),                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignation,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",     strdup(enumToFullString(entry->processorType)),             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             processorFamily,                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("0x%02X", entry->processorFamily),                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",       processorManufacturer,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",           mprintf("%u", entry->processorId.signature.stepping),       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",              mprintf("%u", entry->processorId.signature.model),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("%u", entry->processorId.signature.family),         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",               mprintf("%u", entry->processorId.signature.type),           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",     mprintf("%u", entry->processorId.signature.extendedModel),  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family",    mprintf("%u", entry->processorId.signature.extendedFamily), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -1815,12 +1815,12 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             // Commented to avoid too many records
             // ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Features", entry->processorId.featureFlags, "0x%08X", DmiProcessorFeatureFlag);
             // Use record below instead:
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features", mprintf("0x%08X", entry->processorId.featureFlags.flags)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features", mprintf("0x%08X", entry->processorId.featureFlags.flags), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
         }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version", processorVersion), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version", processorVersion, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -1836,7 +1836,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
                 case DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE:
                 {
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Voltage", mprintf("%u.%u V", entry->voltage.value / 10, entry->voltage.value % 10)), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Voltage", mprintf("%u.%u V", entry->voltage.value / 10, entry->voltage.value % 10), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
                 }
                 break;
 
@@ -1852,24 +1852,24 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External clock",     externalClock),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum speed",      maxSpeed),                                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current speed",      currentSpeed),                                                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",             strdup(enumToFullString((DmiProcessorStatus)entry->status))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket populated",   entry->socketPopulated ? "Yes" : "No"),                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upgrade",            strdup(enumToFullString(entry->processorUpgrade))),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L1 cache handle",    l1CacheHandle),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L2 cache handle",    l2CacheHandle),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L3 cache handle",    l3CacheHandle),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",      serialNumber),                                                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",          assetTag),                                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",        partNumber),                                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count",         coreCountReal),                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count", enabledCoreCountReal),                                        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count",       threadCountReal),                                             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count",         coreCount),                                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count", enabledCoreCount),                                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count",       threadCount),                                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External clock",     externalClock,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum speed",      maxSpeed,                                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current speed",      currentSpeed,                                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",             strdup(enumToFullString((DmiProcessorStatus)entry->status)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket populated",   entry->socketPopulated ? "Yes" : "No",                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upgrade",            strdup(enumToFullString(entry->processorUpgrade)),           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L1 cache handle",    l1CacheHandle,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L2 cache handle",    l2CacheHandle,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("L3 cache handle",    l3CacheHandle,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",      serialNumber,                                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",          assetTag,                                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",        partNumber,                                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count",         coreCountReal,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count", enabledCoreCountReal,                                        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count",       threadCountReal,                                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count",         coreCount,                                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count", enabledCoreCount,                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count",       threadCount,                                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -1881,16 +1881,16 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             }
             else
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics", "N/A"), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Characteristics", "N/A", DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
             }
         }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family 2",             processorFamily2),  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count 2",         coreCount2),        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count 2", enabledCoreCount2), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count 2",       threadCount2),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family 2",             processorFamily2,  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Core count 2",         coreCount2,        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled core count 2", enabledCoreCount2, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Thread count 2",       threadCount2,      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -2162,18 +2162,18 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type))),                                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle)),                                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignation),                                                                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",              mprintf("%u", entry->cacheConfiguration.levelReal())),                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socketed",           entry->cacheConfiguration.socketed ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",           strdup(enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location))),               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",            entry->cacheConfiguration.enabled ? "Yes" : "No"),                                             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Operational mode",   strdup(enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", maximumCacheSize),                                                                             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     installedSize),                                                                                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", mprintf("0x%04X", entry->maximumCacheSize.value16)),                                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     mprintf("0x%04X", entry->installedSize.value16)),                                              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type)),                                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle),                                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignation,                                                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Level",              mprintf("%u", entry->cacheConfiguration.levelReal()),                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socketed",           entry->cacheConfiguration.socketed ? "Yes" : "No",                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",           strdup(enumToFullString((DmiCacheLocation)entry->cacheConfiguration.location)),               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",            entry->cacheConfiguration.enabled ? "Yes" : "No",                                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Operational mode",   strdup(enumToFullString((DmiCacheOperationalMode)entry->cacheConfiguration.operationalMode)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", maximumCacheSize,                                                                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     installedSize,                                                                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size", mprintf("0x%04X", entry->maximumCacheSize.value16),                                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size",     mprintf("0x%04X", entry->installedSize.value16),                                              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -2182,12 +2182,12 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                 cacheSpeed),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error correction type", errorCorrectionType), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System cache type",     systemCacheType),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Associativity",         associativity),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size 2",  maximumCacheSize2),   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size 2",      installedSize2),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                 cacheSpeed,          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error correction type", errorCorrectionType, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System cache type",     systemCacheType,     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Associativity",         associativity,       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum cache size 2",  maximumCacheSize2,   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installed size 2",      installedSize2,      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -2311,13 +2311,13 @@ NgosStatus DeviceManagerDMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *en
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry, entryName), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                    strdup(enumToFullString(entry->header.type))),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                        mprintf("0x%04X", entry->header.handle)),                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Internal reference designator", internalReferenceDesignator),                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Internal connector type",       strdup(enumToFullString(entry->internalConnectorType))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External reference designator", externalReferenceDesignator),                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External connector type",       strdup(enumToFullString(entry->externalConnectorType))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port type",                     strdup(enumToFullString(entry->portType))),              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                    strdup(enumToFullString(entry->header.type)),           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                        mprintf("0x%04X", entry->header.handle),                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Internal reference designator", internalReferenceDesignator,                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Internal connector type",       strdup(enumToFullString(entry->internalConnectorType)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External reference designator", externalReferenceDesignator,                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("External connector type",       strdup(enumToFullString(entry->externalConnectorType)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port type",                     strdup(enumToFullString(entry->portType)),              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -2531,14 +2531,14 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntry(entry, entryName), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",     strdup(enumToFullString(entry->header.type))),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",         mprintf("0x%04X", entry->header.handle)),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Designation",    slotDesignation),                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",           strdup(enumToFullString(entry->slotType))),         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width", strdup(enumToFullString(entry->slotDataBusWidth))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current usage",  strdup(enumToFullString(entry->currentUsage))),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Length",         strdup(enumToFullString(entry->slotLength))),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ID",             mprintf("0x%04X", entry->slotID)),                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",     strdup(enumToFullString(entry->header.type)),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",         mprintf("0x%04X", entry->header.handle),           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Designation",    slotDesignation,                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",           strdup(enumToFullString(entry->slotType)),         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width", strdup(enumToFullString(entry->slotDataBusWidth)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current usage",  strdup(enumToFullString(entry->currentUsage)),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Length",         strdup(enumToFullString(entry->slotLength)),       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ID",             mprintf("0x%04X", entry->slotID),                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -2546,12 +2546,12 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number", segmentGroupNumber), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",           busNumber),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",      functionNumber),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",        deviceNumber),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width",       dataBusWidth),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Peer grouping count",  peerGroupingCount),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number", segmentGroupNumber, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",           busNumber,          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",      functionNumber,     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",        deviceNumber,       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data bus width",       dataBusWidth,       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Peer grouping count",  peerGroupingCount,  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -2561,11 +2561,11 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
             {
                 for (i64 i = 0; i < entryV32->peerGroupingCount; ++i)
                 {
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d segment group number", i), mprintf("%u", entryV32->peerGroups[i].segmentGroupNumber)), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d bus number",           i), mprintf("%u", entryV32->peerGroups[i].busNumber)),          NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d function number",      i), mprintf("%u", entryV32->peerGroups[i].functionNumber)),     NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d device number",        i), mprintf("%u", entryV32->peerGroups[i].deviceNumber)),       NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d data bus width",       i), mprintf("%u", entryV32->peerGroups[i].dataBusWidth)),       NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d segment group number", i), mprintf("%u", entryV32->peerGroups[i].segmentGroupNumber), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d bus number",           i), mprintf("%u", entryV32->peerGroups[i].busNumber),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d function number",      i), mprintf("%u", entryV32->peerGroups[i].functionNumber),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d device number",        i), mprintf("%u", entryV32->peerGroups[i].deviceNumber),       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d data bus width",       i), mprintf("%u", entryV32->peerGroups[i].dataBusWidth),       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
                 }
             }
         }
@@ -2639,10 +2639,10 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
         {
             DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiOnboardDevice(&entry->devices[i]), enumToHumanString(entry->header.type));
 
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type))),                                        NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle)),                                             NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type", strdup(enumToFullString((DmiOnboardDevicesDeviceType)entry->devices[i].deviceType))), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",     entry->devices[i].enabled ? "Yes" : "No"),                                            NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type)),                                        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle),                                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type", strdup(enumToFullString((DmiOnboardDevicesDeviceType)entry->devices[i].deviceType)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",     entry->devices[i].enabled ? "Yes" : "No",                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
             UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry),       NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(onboardDevices.append(deviceManagerEntry), NgosStatus::ASSERTION);
@@ -2684,7 +2684,7 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
                         if (stringId == entry->devices[i].description)
                         {
                             UEFI_ASSERT_EXECUTION(onboardDevices.at(i)->setName(begin),                  NgosStatus::ASSERTION);
-                            UEFI_ASSERT_EXECUTION(onboardDevices.at(i)->addRecord("Description", begin), NgosStatus::ASSERTION);
+                            UEFI_ASSERT_EXECUTION(onboardDevices.at(i)->addRecord("Description", begin, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
                             break;
                         }
@@ -2722,7 +2722,7 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
 
             if (deviceManagerEntry->getRecords().getSize() < 5)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description", "N/A"), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description", "N/A", DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
             }
         }
     }
@@ -2763,8 +2763,8 @@ NgosStatus DeviceManagerDMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 
     // Add Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -2795,7 +2795,7 @@ NgosStatus DeviceManagerDMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 
 
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM string", begin), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM string", begin, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -2859,8 +2859,8 @@ NgosStatus DeviceManagerDMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurat
 
     // Add Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -2891,7 +2891,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurat
 
 
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System configuration option", begin), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("System configuration option", begin, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -2959,9 +2959,9 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
 
     // Add Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",            strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installable languages", mprintf("%u", entry->installableLanguages)),   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",            strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Installable languages", mprintf("%u", entry->installableLanguages),   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -2969,7 +2969,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current language ID", mprintf("%u", entry->currentLanguage.id)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Current language ID", mprintf("%u", entry->currentLanguage.id), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -3004,7 +3004,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
 
 
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Language #%u", stringId.id), begin),NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Language #%u", stringId.id), begin,DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -3150,9 +3150,9 @@ NgosStatus DeviceManagerDMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsE
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Name",       groupName),                                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Name",       groupName,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -3160,8 +3160,8 @@ NgosStatus DeviceManagerDMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsE
         {
             for (i64 i = 0; i < count; ++i)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Item #%d type", i),   strdup(enumToFullString(entry->items[i].type))), NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Item #%d handle", i), mprintf("0x%04X", entry->items[i].handle)),      NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Item #%d type", i),   strdup(enumToFullString(entry->items[i].type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Item #%d handle", i), mprintf("0x%04X", entry->items[i].handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
             }
         }
 
@@ -3295,16 +3295,16 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))),           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                        strdup(enumToFullString(entry->location))),              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Use",                             strdup(enumToFullString(entry->use))),                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error correction",         strdup(enumToFullString(entry->memoryErrorCorrection))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum capacity",                maximumCapacity),                                        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum capacity",                mprintf("0x%08X", entry->maximumCapacity.value)),        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle", memoryErrorInformationHandle),                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of memory devices",        mprintf("%u", entry->numberOfMemoryDevices)),            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended maximum capacity",       extendedMaximumCapacity),                                NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type)),           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle),                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                        strdup(enumToFullString(entry->location)),              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Use",                             strdup(enumToFullString(entry->use)),                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error correction",         strdup(enumToFullString(entry->memoryErrorCorrection)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum capacity",                maximumCapacity,                                        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum capacity",                mprintf("0x%08X", entry->maximumCapacity.value),        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle", memoryErrorInformationHandle,                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of memory devices",        mprintf("%u", entry->numberOfMemoryDevices),            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended maximum capacity",       extendedMaximumCapacity,                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -3976,19 +3976,19 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",             mprintf("0x%04X", entry->memoryArrayHandle)),  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle", memoryErrorInformationHandle),                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Total width",                     totalWidth),                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data width",                      dataWidth),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                            size),                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                            mprintf("0x%04X", entry->size.value16)),       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Form factor",                     strdup(enumToFullString(entry->formFactor))),  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device set",                      deviceSet),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device locator",                  deviceLocator),                                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bank locator",                    bankLocator),                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory type",                     strdup(enumToFullString(entry->memoryType))),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",             mprintf("0x%04X", entry->memoryArrayHandle),  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory error information handle", memoryErrorInformationHandle,                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Total width",                     totalWidth,                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data width",                      dataWidth,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                            size,                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Size",                            mprintf("0x%04X", entry->size.value16),       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Form factor",                     strdup(enumToFullString(entry->formFactor)),  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device set",                      deviceSet,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device locator",                  deviceLocator,                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bank locator",                    bankLocator,                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory type",                     strdup(enumToFullString(entry->memoryType)),  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -3996,20 +3996,20 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                   speedReal),                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                   speed),                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",            manufacturer),              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",           serialNumber),              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",               assetTag),                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",             partNumber),                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Rank",                    rank),                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended size",           extendedSize),              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured memory speed", configuredMemorySpeedReal), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured memory speed", configuredMemorySpeed),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum voltage",         minimumVoltage),            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum voltage",         maximumVoltage),            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured voltage",      configuredVoltage),         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory technology",       memoryTechnology),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                   speedReal,                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Speed",                   speed,                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",            manufacturer,              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",           serialNumber,              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag",               assetTag,                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Part number",             partNumber,                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Rank",                    rank,                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended size",           extendedSize,              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured memory speed", configuredMemorySpeedReal, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured memory speed", configuredMemorySpeed,     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum voltage",         minimumVoltage,            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum voltage",         maximumVoltage,            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Configured voltage",      configuredVoltage,         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory technology",       memoryTechnology,          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -4021,23 +4021,23 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
             }
             else
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory operating mode capability", "N/A"), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory operating mode capability", "N/A", DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
             }
         }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Firmware version",                            firmwareVersion),                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module manufacturer ID",                      moduleManufacturerID),                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module product ID",                           moduleProductID),                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller manufacturer ID", memorySubsystemControllerManufacturerID), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller product ID",      memorySubsystemControllerProductID),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Non-volatile size",                           nonVolatileSize),                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Volatile size",                               volatileSize),                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache size",                                  cacheSize),                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Logical size",                                logicalSize),                             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended speed",                              extendedSpeed),                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended configured memory speed",            extendedConfiguredMemorySpeed),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Firmware version",                            firmwareVersion,                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module manufacturer ID",                      moduleManufacturerID,                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Module product ID",                           moduleProductID,                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller manufacturer ID", memorySubsystemControllerManufacturerID, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory subsystem controller product ID",      memorySubsystemControllerProductID,      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Non-volatile size",                           nonVolatileSize,                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Volatile size",                               volatileSize,                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache size",                                  cacheSize,                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Logical size",                                logicalSize,                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended speed",                              extendedSpeed,                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended configured memory speed",            extendedConfiguredMemorySpeed,           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -4159,16 +4159,16 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                strdup(enumToFullString(entry->header.type))),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                    mprintf("0x%04X", entry->header.handle)),         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                     range),                                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                     range2),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",          mprintf("0x%08X", entry->startingAddress.value)), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",            mprintf("0x%08X", entry->endingAddress.value)),   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",       mprintf("0x%04X", entry->memoryArrayHandle)),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition width",           mprintf("%u", entry->partitionWidth)),            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address", extendedStartingAddress),                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",   extendedEndingAddress),                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                strdup(enumToFullString(entry->header.type)),    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                    mprintf("0x%04X", entry->header.handle),         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                     range,                                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                     range2,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",          mprintf("0x%08X", entry->startingAddress.value), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",            mprintf("0x%08X", entry->endingAddress.value),   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array handle",       mprintf("0x%04X", entry->memoryArrayHandle),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition width",           mprintf("%u", entry->partitionWidth),            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address", extendedStartingAddress,                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",   extendedEndingAddress,                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -4351,19 +4351,19 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                         strdup(enumToFullString(entry->header.type))),             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                             mprintf("0x%04X", entry->header.handle)),                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                              range),                                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                              range2),                                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",                   mprintf("0x%08X", entry->startingAddress.value)),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",                     mprintf("0x%08X", entry->endingAddress.value)),            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory device handle",               mprintf("0x%04X", entry->memoryDeviceHandle)),             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array mapped address handle", mprintf("0x%04X", entry->memoryArrayMappedAddressHandle)), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition row position",             partitionRowPosition),                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleave position",                interleavePosition),                                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleaved data depth",             interleavedDataDepth),                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address",          extendedStartingAddress),                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",            extendedEndingAddress),                                    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                         strdup(enumToFullString(entry->header.type)),             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                             mprintf("0x%04X", entry->header.handle),                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                              range,                                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Range",                              range2,                                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address",                   mprintf("0x%08X", entry->startingAddress.value),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Ending address",                     mprintf("0x%08X", entry->endingAddress.value),            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory device handle",               mprintf("0x%04X", entry->memoryDeviceHandle),             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array mapped address handle", mprintf("0x%04X", entry->memoryArrayMappedAddressHandle), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Partition row position",             partitionRowPosition,                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleave position",                interleavePosition,                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interleaved data depth",             interleavedDataDepth,                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended starting address",          extendedStartingAddress,                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended ending address",            extendedEndingAddress,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -4647,23 +4647,23 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                    strdup(enumToFullString(entry->header.type))),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                        mprintf("0x%04X", entry->header.handle)),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                      location),                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",                  manufacturer),                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacture date",              manufactureDate),                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",                 serialNumber),                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",                   deviceName),                                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device chemistry",              strdup(enumToFullString(entry->deviceChemistry))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design capacity",               designCapacity),                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design voltage",                designVoltage),                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS version number",           sbdsVersionNumber),                                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum error in battery data", maximumErrorInBatteryData),                        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS serial number",            sbdsSerialNumber),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS manufacture date",         sbdsManufactureDate),                              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS device chemistry",         sbdsDeviceChemistry),                              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design capacity multiplier",    designCapacityMultiplier),                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM specific",                  oemSpecific),                                      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                    strdup(enumToFullString(entry->header.type)),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                        mprintf("0x%04X", entry->header.handle),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                      location,                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",                  manufacturer,                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacture date",              manufactureDate,                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",                 serialNumber,                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",                   deviceName,                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device chemistry",              strdup(enumToFullString(entry->deviceChemistry)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design capacity",               designCapacity,                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design voltage",                designVoltage,                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS version number",           sbdsVersionNumber,                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum error in battery data", maximumErrorInBatteryData,                        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS serial number",            sbdsSerialNumber,                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS manufacture date",         sbdsManufactureDate,                              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SBDS device chemistry",         sbdsDeviceChemistry,                              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Design capacity multiplier",    designCapacityMultiplier,                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM specific",                  oemSpecific,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -4882,18 +4882,18 @@ NgosStatus DeviceManagerDMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entr
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   description),                                                        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiVoltageProbeLocation)entry->location))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiVoltageProbeStatus)entry->status))),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue),                                                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue),                                                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution),                                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance),                                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy),                                                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue),                                                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type)),                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle),                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   description,                                                        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiVoltageProbeLocation)entry->location)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiVoltageProbeStatus)entry->status)),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue,                                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue,                                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution,                                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance,                                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy,                                                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined),                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue,                                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -5086,15 +5086,15 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type))),                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle)),                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Temperature probe handle", temperatureProbeHandle),                                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type",              strdup(enumToFullString((DmiCoolingDeviceType)entry->deviceType))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                   strdup(enumToFullString((DmiCoolingDeviceStatus)entry->status))),   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cooling unit group",       coolingUnitGroup),                                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",              mprintf("0x%08X", entry->oemDefined)),                              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal speed",            nominalSpeed),                                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              description),                                                       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type)),                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle),                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Temperature probe handle", temperatureProbeHandle,                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type",              strdup(enumToFullString((DmiCoolingDeviceType)entry->deviceType)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                   strdup(enumToFullString((DmiCoolingDeviceStatus)entry->status)),   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cooling unit group",       coolingUnitGroup,                                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",              mprintf("0x%08X", entry->oemDefined),                              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal speed",            nominalSpeed,                                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              description,                                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -5313,18 +5313,18 @@ NgosStatus DeviceManagerDMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEnt
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                                NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   description),                                                            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiTemperatureProbeLocation)entry->location))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiTemperatureProbeStatus)entry->status))),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue),                                                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue),                                                           NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution),                                                             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance),                                                              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy),                                                               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue),                                                           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type)),                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle),                                DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   description,                                                            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiTemperatureProbeLocation)entry->location)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiTemperatureProbeStatus)entry->status)),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue,                                                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue,                                                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution,                                                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance,                                                              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy,                                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined),                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue,                                                           DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -5543,18 +5543,18 @@ NgosStatus DeviceManagerDMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCur
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type))),                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle)),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   description),                                                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiElectricalCurrentProbeLocation)entry->location))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiElectricalCurrentProbeStatus)entry->status))),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue),                                                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue),                                                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution),                                                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance),                                                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy),                                                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined)),                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue),                                                                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",    strdup(enumToFullString(entry->header.type)),                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",        mprintf("0x%04X", entry->header.handle),                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",   description,                                                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",      strdup(enumToFullString((DmiElectricalCurrentProbeLocation)entry->location)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",        strdup(enumToFullString((DmiElectricalCurrentProbeStatus)entry->status)),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum value", maximumValue,                                                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum value", minimumValue,                                                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Resolution",    resolution,                                                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Tolerance",     tolerance,                                                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy,                                                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined),                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue,                                                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -5604,9 +5604,9 @@ NgosStatus DeviceManagerDMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot status", strdup(enumToFullString(entry->bootStatus))),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",  strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",      mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot status", strdup(enumToFullString(entry->bootStatus)),  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -5717,12 +5717,12 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEnt
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",   strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",       mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",  description),                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",         strdup(enumToFullString(entry->type))),        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address",      mprintf("0x%08X", entry->address)),            NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address type", strdup(enumToFullString(entry->addressType))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",   strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",       mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",  description,                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",         strdup(enumToFullString(entry->type)),        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address",      mprintf("0x%08X", entry->address),            DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address type", strdup(enumToFullString(entry->addressType)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -5852,12 +5852,12 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceComponentEntry(DmiManagement
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type))),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle)),          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              description),                                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Management device handle", mprintf("0x%04X", entry->managementDeviceHandle)), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Component handle",         mprintf("0x%04X", entry->componentHandle)),        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Threshold handle",         thresholdHandle),                                  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type)),     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Description",              description,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Management device handle", mprintf("0x%04X", entry->managementDeviceHandle), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Component handle",         mprintf("0x%04X", entry->componentHandle),        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Threshold handle",         thresholdHandle,                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -6011,14 +6011,14 @@ NgosStatus DeviceManagerDMI::saveDmiManagementDeviceThresholdDataEntry(DmiManage
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle)),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-critical",    lowerThresholdNonCritical),                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-critical",    upperThresholdNonCritical),                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold critical",        lowerThresholdCritical),                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold critical",        upperThresholdCritical),                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-recoverable", lowerThresholdNonRecoverable),                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-recoverable", upperThresholdNonRecoverable),                 NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                      strdup(enumToFullString(entry->header.type)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                          mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-critical",    lowerThresholdNonCritical,                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-critical",    upperThresholdNonCritical,                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold critical",        lowerThresholdCritical,                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold critical",        upperThresholdCritical,                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Lower threshold non-recoverable", lowerThresholdNonRecoverable,                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Upper threshold non-recoverable", upperThresholdNonRecoverable,                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -6288,26 +6288,26 @@ NgosStatus DeviceManagerDMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyE
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                 strdup(enumToFullString(entry->header.type))),                                                                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                     mprintf("0x%04X", entry->header.handle)),                                                                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Power unit group",           powerUnitGroup),                                                                                                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                   location),                                                                                                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",                deviceName),                                                                                                                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",               manufacturer),                                                                                                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",              serialNumber),                                                                                                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag number",           assetTagNumber),                                                                                                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model part number",          modelPartNumber),                                                                                                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Revision level",             revisionLevel),                                                                                                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum power capacity",     maxPowerCapacity),                                                                                                                 NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Hot replaceable",            entry->powerSupplyCharacteristics.hotReplaceable ? "Yes" : "No"),                                                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Present",                    entry->powerSupplyCharacteristics.present ? "Yes" : "No"),                                                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Unplugged",                  entry->powerSupplyCharacteristics.unplugged ? "Yes" : "No"),                                                                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Input voltage range switch", strdup(enumToFullString((DmiSystemPowerSupplyInputVoltageRangeSwitch)entry->powerSupplyCharacteristics.inputVoltageRangeSwitch))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                     strdup(enumToFullString((DmiSystemPowerSupplyStatus)entry->powerSupplyCharacteristics.status))),                                   NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                       strdup(enumToFullString((DmiSystemPowerSupplyType)entry->powerSupplyCharacteristics.type))),                                       NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Input voltage probe handle", inputVoltageProbeHandle),                                                                                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cooling device handle",      coolingDeviceHandle),                                                                                                              NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Input current probe handle", inputCurrentProbeHandle),                                                                                                          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                 strdup(enumToFullString(entry->header.type)),                                                                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                     mprintf("0x%04X", entry->header.handle),                                                                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Power unit group",           powerUnitGroup,                                                                                                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Location",                   location,                                                                                                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",                deviceName,                                                                                                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",               manufacturer,                                                                                                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number",              serialNumber,                                                                                                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Asset tag number",           assetTagNumber,                                                                                                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model part number",          modelPartNumber,                                                                                                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Revision level",             revisionLevel,                                                                                                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum power capacity",     maxPowerCapacity,                                                                                                                 DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Hot replaceable",            entry->powerSupplyCharacteristics.hotReplaceable ? "Yes" : "No",                                                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Present",                    entry->powerSupplyCharacteristics.present ? "Yes" : "No",                                                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Unplugged",                  entry->powerSupplyCharacteristics.unplugged ? "Yes" : "No",                                                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Input voltage range switch", strdup(enumToFullString((DmiSystemPowerSupplyInputVoltageRangeSwitch)entry->powerSupplyCharacteristics.inputVoltageRangeSwitch)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                     strdup(enumToFullString((DmiSystemPowerSupplyStatus)entry->powerSupplyCharacteristics.status)),                                   DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",                       strdup(enumToFullString((DmiSystemPowerSupplyType)entry->powerSupplyCharacteristics.type)),                                       DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Input voltage probe handle", inputVoltageProbeHandle,                                                                                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cooling device handle",      coolingDeviceHandle,                                                                                                              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Input current probe handle", inputCurrentProbeHandle,                                                                                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -6378,9 +6378,9 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
 
     // Add Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                               strdup(enumToFullString(entry->header.type))),               NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                                   mprintf("0x%04X", entry->header.handle)),                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of additional information entries", mprintf("%u", entry->numberOfAdditionalInformationEntries)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                               strdup(enumToFullString(entry->header.type)),               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                                   mprintf("0x%04X", entry->header.handle),                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of additional information entries", mprintf("%u", entry->numberOfAdditionalInformationEntries), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -6390,10 +6390,10 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
 
             for (i64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d length",            i), mprintf("%u",     curInfo->entryLength)),      NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d referenced handle", i), mprintf("0x%04X", curInfo->referencedHandle)), NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d referenced offset", i), mprintf("%u",     curInfo->referencedOffset)), NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d string ID",         i), mprintf("%u",     curInfo->string.id)),        NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d length",            i), mprintf("%u",     curInfo->entryLength),      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d referenced handle", i), mprintf("0x%04X", curInfo->referencedHandle), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d referenced offset", i), mprintf("%u",     curInfo->referencedOffset), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d string ID",         i), mprintf("%u",     curInfo->string.id),        DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -6456,11 +6456,11 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
 
 
 
-                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d value", i), valueString), NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d value", i), valueString, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
                     }
                     else
                     {
-                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d value", i), "N/A"), NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d value", i), "N/A", DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
                     }
                 }
 
@@ -6501,7 +6501,7 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
 
 
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("String #%u", stringId.id), begin), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("String #%u", stringId.id), begin, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 
@@ -6643,16 +6643,16 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevice
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(DmiEntryType::ONBOARD_DEVICES, entry->header.handle, deviceManagerImageFromDmiEntry(entry, entryName), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",            strdup(enumToFullString(entry->header.type))),                                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle)),                                          NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Reference designation", referenceDesignation),                                                             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type",           strdup(enumToFullString((DmiOnboardDevicesExtendedDeviceType)entry->deviceType))), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",               entry->enabled ? "Yes" : "No"),                                                    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type instance",  mprintf("%u", entry->deviceTypeInstance)),                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number",  mprintf("%u", entry->segmentGroupNumber)),                                         NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",            mprintf("%u", entry->busNumber)),                                                  NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",       mprintf("%u", entry->functionNumber)),                                             NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",         mprintf("%u", entry->deviceNumber)),                                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",            strdup(enumToFullString(entry->header.type)),                                     DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                mprintf("0x%04X", entry->header.handle),                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Reference designation", referenceDesignation,                                                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type",           strdup(enumToFullString((DmiOnboardDevicesExtendedDeviceType)entry->deviceType)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",               entry->enabled ? "Yes" : "No",                                                    DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device type instance",  mprintf("%u", entry->deviceTypeInstance),                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment group number",  mprintf("%u", entry->segmentGroupNumber),                                         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",            mprintf("%u", entry->busNumber),                                                  DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",       mprintf("%u", entry->functionNumber),                                             DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",         mprintf("%u", entry->deviceNumber),                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }

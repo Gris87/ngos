@@ -16,7 +16,7 @@ public:
     DeviceManagerEntry(DeviceManagerImage image, const char8 *name); // TEST: NO
     virtual ~DeviceManagerEntry(); // TEST: NO
 
-    NgosStatus addRecord(const char8 *name, const char8 *value); // TEST: NO
+    NgosStatus addRecord(const char8 *name, const char8 *value, DeviceManagerMode mode); // TEST: NO
     const ArrayList<DeviceManagerEntryRecord *>& getRecords(); // TEST: NO
 
     NgosStatus setImage(DeviceManagerImage image); // TEST: NO

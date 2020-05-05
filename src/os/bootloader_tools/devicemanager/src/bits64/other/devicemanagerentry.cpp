@@ -27,16 +27,17 @@ DeviceManagerEntry::~DeviceManagerEntry()
     }
 }
 
-NgosStatus DeviceManagerEntry::addRecord(const char8 *name, const char8 *value)
+NgosStatus DeviceManagerEntry::addRecord(const char8 *name, const char8 *value, DeviceManagerMode mode)
 {
-    UEFI_LT((" | name = 0x%p, value = 0x%p", name, value));
+    UEFI_LT((" | name = 0x%p, value = 0x%p, mode = %u", name, value, mode));
 
-    UEFI_ASSERT(name,  "name is null",  NgosStatus::ASSERTION);
-    UEFI_ASSERT(value, "value is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(name,                              "name is null",    NgosStatus::ASSERTION);
+    UEFI_ASSERT(value,                             "value is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(mode < DeviceManagerMode::MAXIMUM, "mode is invalid", NgosStatus::ASSERTION);
 
 
 
-    DeviceManagerEntryRecord *record = new DeviceManagerEntryRecord(name, value);
+    DeviceManagerEntryRecord *record = new DeviceManagerEntryRecord(name, value, mode);
 
     UEFI_TEST_ASSERT(record, NgosStatus::ASSERTION);
 
