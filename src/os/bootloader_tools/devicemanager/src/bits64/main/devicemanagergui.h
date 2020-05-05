@@ -28,7 +28,6 @@ public:
 private:
     static NgosStatus fillDevicesTree(); // TEST: NO
     static NgosStatus fillDevicesTreeForDmi(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
-    static NgosStatus addDeviceInfoEntry(const char8 *name, const char8 *value); // TEST: NO
     static NgosStatus fillDeviceInfoTableWidget(DeviceManagerEntry *entry); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
@@ -59,7 +58,6 @@ private:
     static u16                sWaitEventsCount;
     static uefi_event        *sWaitEvents;
     static DeviceManagerMode  sMode;
-    static RgbaPixel          sBlackColor;
     static Image*             sImages[(u64)DeviceManagerImage::MAXIMUM];
     static Image*             sModeImages[(u64)DeviceManagerMode::MAXIMUM];
     static const char8*       sImagesPath[(u64)DeviceManagerImage::MAXIMUM];

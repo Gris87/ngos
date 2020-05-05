@@ -44,6 +44,11 @@
 #define COLUMN_NAME  0
 #define COLUMN_VALUE 1
 
+#define BLACK_COLOR     0xFF000000
+#define BASIC_COLOR     0xFF000000
+#define EXPERT_COLOR    0xFFCDDB51
+#define TECHNICAL_COLOR 0xFF96A03B
+
 
 
 Button            *DeviceManagerGUI::sRebootButton;
@@ -54,7 +59,6 @@ Button            *DeviceManagerGUI::sModeButton;
 u16                DeviceManagerGUI::sWaitEventsCount;
 uefi_event        *DeviceManagerGUI::sWaitEvents;
 DeviceManagerMode  DeviceManagerGUI::sMode;
-RgbaPixel          DeviceManagerGUI::sBlackColor(0xFF000000);
 Image*             DeviceManagerGUI::sImages[(u64)DeviceManagerImage::MAXIMUM];
 Image*             DeviceManagerGUI::sModeImages[(u64)DeviceManagerMode::MAXIMUM];
 
@@ -268,7 +272,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(addDeviceInfoEntry("", ""), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowCount(1), NgosStatus::ASSERTION);
 
 
 
@@ -359,8 +363,8 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
     TreeNodeWidget *rootNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::SYSTEM), "System", sDevicesTreeWidget);
 
-    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(RgbaPixel(BLACK_COLOR)), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),              NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(fillDevicesTreeForDmi(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
 
@@ -377,9 +381,13 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
 
 
+    RgbaPixel blackColor = RgbaPixel(BLACK_COLOR);
+
+
+
     TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::SYSTEM), "DMI", sDevicesTreeWidget);
 
-    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(sBlackColor),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(blackColor),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->getRootNodeWidget()->addChildNode(dmiNodeWidget), NgosStatus::ASSERTION);
 
 
@@ -402,8 +410,8 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
         {
             TreeNodeWidget *groupNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(deviceManagerImageFromDmiEntryType(entry->getType())), enumToHumanString(entry->getType()), sDevicesTreeWidget);
 
-            UEFI_ASSERT_EXECUTION(groupNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(groupNodeWidget),          NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(groupNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(groupNodeWidget),         NgosStatus::ASSERTION);
 
             parentNodeWidget = groupNodeWidget;
 
@@ -417,9 +425,9 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
             {
                 TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), entry->getName(), sDevicesTreeWidget);
 
-                UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                      NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(entryNodeWidget),          NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                     NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(entryNodeWidget),         NgosStatus::ASSERTION);
 
 
 
@@ -433,45 +441,14 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
         TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(entry->getImage()), entry->getName(), sDevicesTreeWidget);
 
-        UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(sBlackColor), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(entryNodeWidget),          NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(parentNodeWidget->addChildNode(entryNodeWidget),         NgosStatus::ASSERTION);
     }
 
 
 
     UEFI_ASSERT_EXECUTION(dmiNodeWidget->setExpanded(true),  NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DeviceManagerGUI::addDeviceInfoEntry(const char8 *name, const char8 *value)
-{
-    UEFI_LT((" | name = 0x%p, value = 0x%p", name, value));
-
-    UEFI_ASSERT(name,  "name is null",  NgosStatus::ASSERTION);
-    UEFI_ASSERT(value, "value is null", NgosStatus::ASSERTION);
-
-
-
-    u64 row = sDeviceInfoTableWidget->getRowCount();
-
-    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
-
-
-
-    LabelWidget *nameLabelWidget = new LabelWidget(name, sDeviceInfoTableWidget);
-
-    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(sBlackColor),                                       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),     NgosStatus::ASSERTION);
-
-    LabelWidget *valueLabelWidget = new LabelWidget(value, sDeviceInfoTableWidget);
-
-    UEFI_ASSERT_EXECUTION(valueLabelWidget->setColor(sBlackColor),                                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_VALUE, valueLabelWidget), NgosStatus::ASSERTION);
 
 
 
@@ -494,16 +471,89 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
     {
         const ArrayList<DeviceManagerEntryRecord *> &records = entry->getRecords();
 
-        for (i64 i = 0; i < (i64)records.getSize(); ++i)
-        {
-            DeviceManagerEntryRecord *record = records.at(i);
 
-            UEFI_ASSERT_EXECUTION(addDeviceInfoEntry(record->getName(), record->getValue()), NgosStatus::ASSERTION);
+
+        // Calculate amount of rows
+        {
+            u64 count = 0;
+
+            for (i64 i = 0; i < (i64)records.getSize(); ++i)
+            {
+                DeviceManagerEntryRecord *record = records.at(i);
+
+                if (sMode >= record->getMode())
+                {
+                    ++count;
+                }
+            }
+
+            UEFI_TEST_ASSERT(count > 0, NgosStatus::ASSERTION);
+
+
+
+            UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowCount(count), NgosStatus::ASSERTION);
+        }
+
+
+
+        // Fill table
+        {
+            u64 row = 0;
+
+            for (i64 i = 0; i < (i64)records.getSize(); ++i)
+            {
+                DeviceManagerEntryRecord *record = records.at(i);
+
+                if (sMode >= record->getMode())
+                {
+                    RgbaPixel color;
+
+                    switch (sMode)
+                    {
+                        case DeviceManagerMode::BASIC:     color = RgbaPixel(BASIC_COLOR);     break;
+                        case DeviceManagerMode::EXPERT:    color = RgbaPixel(EXPERT_COLOR);    break;
+                        case DeviceManagerMode::TECHNICAL: color = RgbaPixel(TECHNICAL_COLOR); break;
+
+                        case DeviceManagerMode::MAXIMUM:
+                        {
+                            UEFI_LF(("Unexpected mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+
+                            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                        }
+                        break;
+
+                        default:
+                        {
+                            UEFI_LF(("Unknown mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+
+                            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+                        }
+                        break;
+                    }
+
+
+
+                    LabelWidget *nameLabelWidget = new LabelWidget(record->getName(), sDeviceInfoTableWidget);
+
+                    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(color),                                             NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),     NgosStatus::ASSERTION);
+
+                    LabelWidget *valueLabelWidget = new LabelWidget(record->getValue(), sDeviceInfoTableWidget);
+
+                    UEFI_ASSERT_EXECUTION(valueLabelWidget->setColor(color),                                          NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setCellWidget(row, COLUMN_VALUE, valueLabelWidget), NgosStatus::ASSERTION);
+
+
+
+                    ++row;
+                }
+            }
         }
     }
     else
     {
-        UEFI_ASSERT_EXECUTION(addDeviceInfoEntry("", ""), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowCount(1), NgosStatus::ASSERTION);
     }
 
 
