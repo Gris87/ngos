@@ -508,7 +508,7 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
                 {
                     RgbaPixel color;
 
-                    switch (sMode)
+                    switch (record->getMode())
                     {
                         case DeviceManagerMode::BASIC:     color = RgbaPixel(BASIC_COLOR);     break;
                         case DeviceManagerMode::EXPERT:    color = RgbaPixel(EXPERT_COLOR);    break;
@@ -516,7 +516,7 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
 
                         case DeviceManagerMode::MAXIMUM:
                         {
-                            UEFI_LF(("Unexpected mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+                            UEFI_LF(("Unexpected mode %s, %s:%u", enumToFullString(record->getMode()), __FILE__, __LINE__));
 
                             return NgosStatus::UNEXPECTED_BEHAVIOUR;
                         }
@@ -524,7 +524,7 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
 
                         default:
                         {
-                            UEFI_LF(("Unknown mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+                            UEFI_LF(("Unknown mode %s, %s:%u", enumToFullString(record->getMode()), __FILE__, __LINE__));
 
                             return NgosStatus::UNEXPECTED_BEHAVIOUR;
                         }
