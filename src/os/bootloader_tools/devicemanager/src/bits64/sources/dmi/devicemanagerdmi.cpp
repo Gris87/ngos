@@ -7,9 +7,9 @@
 #include <uuid/utils.h>
 
 
-#define ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, name, flagsVar, format, flagType) \
+#define ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, name, flagsVar, format, flagType, mode) \
     { \
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::BASIC), NgosStatus::ASSERTION); \
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
         \
         for (i64 i = 0; i < (i64)(sizeof(flagsVar) * 8); ++i) \
         { \
@@ -17,7 +17,7 @@
             \
             if (flagsVar.flags & flag) \
             { \
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString((flagType)flag)), "Yes", DeviceManagerMode::BASIC), NgosStatus::ASSERTION); \
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString((flagType)flag)), "Yes", mode), NgosStatus::ASSERTION); \
             } \
         } \
     }
@@ -389,18 +389,18 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type)),         DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle),              DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",                   vendor,                                               DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",                  biosVersion,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address segment", mprintf("0x%04X", entry->biosStartingAddressSegment), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Release date",             biosReleaseDate,                                      DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 biosRomSize,                                          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 mprintf("0x%02X", entry->biosRomSize.value),          DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",               strdup(enumToFullString(entry->header.type)),         DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                   mprintf("0x%04X", entry->header.handle),              DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",                   vendor,                                               DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Version",                  biosVersion,                                          DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Starting address segment", mprintf("0x%04X", entry->biosStartingAddressSegment), DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Release date",             biosReleaseDate,                                      DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 biosRomSize,                                          DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ROM size",                 mprintf("0x%02X", entry->biosRomSize.value),          DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entry->biosCharacteristics, "0x%016lX", DmiBiosCharacteristicsFlag);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entry->biosCharacteristics, "0x%016lX", DmiBiosCharacteristicsFlag, DeviceManagerMode::BASIC);
 
 
 
@@ -408,7 +408,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
         {
             if (entryV21)
             {
-                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics (BIOS reserved)", entryV21->biosCharacteristicsExtensionBiosReserved, "0x%02X", DmiBiosCharacteristicsBiosReservedFlag);
+                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics (BIOS reserved)", entryV21->biosCharacteristicsExtensionBiosReserved, "0x%02X", DmiBiosCharacteristicsBiosReservedFlag, DeviceManagerMode::BASIC);
             }
             else
             {
@@ -422,7 +422,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
         {
             if (entryV23)
             {
-                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics (System reserved)", entryV23->biosCharacteristicsExtensionSystemReserved, "0x%02X", DmiBiosCharacteristicsSystemReservedFlag);
+                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics (System reserved)", entryV23->biosCharacteristicsExtensionSystemReserved, "0x%02X", DmiBiosCharacteristicsSystemReservedFlag, DeviceManagerMode::BASIC);
             }
             else
             {
@@ -845,7 +845,7 @@ NgosStatus DeviceManagerDMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Features", entry->featureFlags, "0x%04X", DmiBaseboardFeatureFlag);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Features", entry->featureFlags, "0x%04X", DmiBaseboardFeatureFlag, DeviceManagerMode::BASIC);
 
 
 
@@ -1809,14 +1809,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
-        // Add records for Features
-        {
-            // TODO: Uncomment when TECHNICAL mode implemented
-            // Commented to avoid too many records
-            // ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Features", entry->processorId.featureFlags, "0x%08X", DmiProcessorFeatureFlag);
-            // Use record below instead:
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Features", mprintf("0x%08X", entry->processorId.featureFlags.flags), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
-        }
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Features", entry->processorId.featureFlags, "0x%08X", DmiProcessorFeatureFlag, DeviceManagerMode::TECHNICAL);
 
 
 
@@ -1830,7 +1823,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             {
                 case DmiProcessorVoltageModeType::LEGACY_MODE:
                 {
-                    ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Voltage", entry->voltage, "0x%02X", DmiProcessorVoltageFlag);
+                    ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Voltage", entry->voltage, "0x%02X", DmiProcessorVoltageFlag, DeviceManagerMode::BASIC);
                 }
                 break;
 
@@ -1877,7 +1870,7 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         {
             if (entryV25)
             {
-                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entryV25->processorCharacteristics, "0x%04X", DmiProcessorCharacteristicsFlag);
+                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entryV25->processorCharacteristics, "0x%04X", DmiProcessorCharacteristicsFlag, DeviceManagerMode::BASIC);
             }
             else
             {
@@ -2177,8 +2170,8 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Supported SRAM type", entry->supportedSramType, "0x%04X", DmiCacheSramTypeFlag);
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Current SRAM type",   entry->currentSramType,   "0x%04X", DmiCacheSramTypeFlag);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Supported SRAM type", entry->supportedSramType, "0x%04X", DmiCacheSramTypeFlag, DeviceManagerMode::BASIC);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Current SRAM type",   entry->currentSramType,   "0x%04X", DmiCacheSramTypeFlag, DeviceManagerMode::BASIC);
 
 
 
@@ -2542,7 +2535,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entry->slotCharacteristics, "0x%04X", DmiSystemSlotsCharacteristicsFlag);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entry->slotCharacteristics, "0x%04X", DmiSystemSlotsCharacteristicsFlag, DeviceManagerMode::BASIC);
 
 
 
@@ -2965,7 +2958,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Flags", entry->flags, "0x%02X", DmiBiosLanguageFlag);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Flags", entry->flags, "0x%02X", DmiBiosLanguageFlag, DeviceManagerMode::BASIC);
 
 
 
@@ -3992,7 +3985,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Type detail", entry->typeDetail, "0x%04X", DmiMemoryDeviceTypeDetailFlag);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Type detail", entry->typeDetail, "0x%04X", DmiMemoryDeviceTypeDetailFlag, DeviceManagerMode::BASIC);
 
 
 
@@ -4017,7 +4010,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
         {
             if (entryV32)
             {
-                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Memory operating mode capability", entryV32->memoryOperatingModeCapability, "0x%04X", DmiMemoryDeviceOperatingModeCapabilityFlag);
+                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Memory operating mode capability", entryV32->memoryOperatingModeCapability, "0x%04X", DmiMemoryDeviceOperatingModeCapabilityFlag, DeviceManagerMode::BASIC);
             }
             else
             {
