@@ -84,10 +84,7 @@ NgosStatus Image::fill(const RgbaPixel &color)
 
         for (i64 i = 0; i < resolution; ++i)
         {
-            buffer[i].red   = color.red;
-            buffer[i].green = color.green;
-            buffer[i].blue  = color.blue;
-            buffer[i].alpha = color.alpha;
+            buffer[i].value32 = color.value32;
         }
     }
     else
@@ -185,6 +182,15 @@ bool Image::isRgba() const
     return mBytesPerPixel == sizeof(RgbaPixel);
 }
 
+bool Image::isRgb() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mBytesPerPixel == sizeof(RgbPixel);
+}
+
 bool Image::isOpaque() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
@@ -225,7 +231,7 @@ RgbPixel* Image::getRgbBuffer() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(!isRgba(), "Image is RGBA", 0);
+    COMMON_ASSERT(isRgb(), "Image is not RGB", 0);
 
 
 
@@ -236,7 +242,7 @@ RgbaPixel* Image::getRgbaBuffer() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(isRgba(), "Image is RGB", 0);
+    COMMON_ASSERT(isRgba(), "Image is not RGBA", 0);
 
 
 

@@ -89,9 +89,9 @@ NgosStatus Graphics::loadImageFromAssets(const char8 *path, Image **image)
     return NgosStatus::OK;
 }
 
-NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
+NgosStatus Graphics::makeOpaqueImage(Image *image, bool hasAlpha, Image **res)
 {
-    COMMON_LT((" | image = 0x%p, res = 0x%p", image, res));
+    COMMON_LT((" | image = 0x%p, hasAlpha = %u, res = 0x%p", image, hasAlpha, res));
 
     COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(res,   "res is null",   NgosStatus::ASSERTION);
@@ -99,30 +99,53 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, Image **res)
 
 
     if (
-        !image->isRgba()
-        ||
         !image->isOpaque()
+        ||
+        image->isRgba() != hasAlpha
        )
     {
-        i64    resolution    = image->getWidth() * image->getHeight();
-        u8     bytesPerPixel = image->getBytesPerPixel();
-        Image *newImage      = new Image(image->getWidth(), image->getHeight(), false, true);
+        Image *newImage = new Image(image->getWidth(), image->getHeight(), hasAlpha, true);
 
 
 
-        u8       *data  = image->getBuffer();
-        RgbPixel *pixel = newImage->getRgbBuffer();
+        i64  resolution    = image->getWidth() * image->getHeight();
+        u8   bytesPerPixel = image->getBytesPerPixel();
+        u8  *data          = image->getBuffer();
 
-        for (i64 i = 0; i < resolution; ++i)
+
+
+        if (hasAlpha)
         {
-            RgbPixel *originalPixel = (RgbPixel *)data;
+            RgbaPixel *pixel = newImage->getRgbaBuffer();
 
-            pixel->red   = originalPixel->red;
-            pixel->green = originalPixel->green;
-            pixel->blue  = originalPixel->blue;
+            for (i64 i = 0; i < resolution; ++i)
+            {
+                RgbPixel *originalPixel = (RgbPixel *)data;
 
-            data += bytesPerPixel;
-            ++pixel;
+                pixel->red   = originalPixel->red;
+                pixel->green = originalPixel->green;
+                pixel->blue  = originalPixel->blue;
+                pixel->alpha = 0xFF;
+
+                data += bytesPerPixel;
+                ++pixel;
+            }
+        }
+        else
+        {
+            RgbPixel *pixel = newImage->getRgbBuffer();
+
+            for (i64 i = 0; i < resolution; ++i)
+            {
+                RgbPixel *originalPixel = (RgbPixel *)data;
+
+                pixel->red   = originalPixel->red;
+                pixel->green = originalPixel->green;
+                pixel->blue  = originalPixel->blue;
+
+                data += bytesPerPixel;
+                ++pixel;
+            }
         }
 
 

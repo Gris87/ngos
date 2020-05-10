@@ -30,6 +30,7 @@ public:
     u16 getHeight() const;
     u8 getBytesPerPixel() const;
     bool isRgba() const;
+    bool isRgb() const;
     bool isOpaque() const;
     u16 getStride() const;
     u64 getBufferSize() const;

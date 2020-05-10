@@ -222,7 +222,7 @@ NgosStatus ScreenWidget::invalidate()
 
     Image *opaqueImage;
 
-    if (Graphics::makeOpaqueImage(mOwnResultImage, &opaqueImage) == NgosStatus::OK)
+    if (Graphics::makeOpaqueImage(mOwnResultImage, true, &opaqueImage) == NgosStatus::OK)
     {
         delete mOwnResultImage;
         mOwnResultImage = opaqueImage;
