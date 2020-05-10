@@ -214,20 +214,18 @@ NgosStatus ScreenWidget::invalidate()
         delete mOwnResultImage;
     }
 
+
+
     COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mBackgroundImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
 
-    if (
-        !mOwnResultImage->isRgba()
-        ||
-        !mOwnResultImage->isOpaque()
-       )
+
+
+    Image *opaqueImage;
+
+    if (Graphics::makeOpaqueImage(mOwnResultImage, &opaqueImage) == NgosStatus::OK)
     {
-        Image *newImage;
-
-        COMMON_ASSERT_EXECUTION(Graphics::makeOpaqueImage(mOwnResultImage, &newImage), NgosStatus::ASSERTION);
-
         delete mOwnResultImage;
-        mOwnResultImage = newImage;
+        mOwnResultImage = opaqueImage;
     }
 
 
