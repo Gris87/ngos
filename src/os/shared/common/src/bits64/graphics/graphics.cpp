@@ -358,10 +358,10 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
                         u8 notAlpha = ~alpha;               // ~alpha == (0xFF - alpha)
 
                         // Ignore CppAlignmentVerifier [BEGIN]
-                        destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red   * alpha) / 0xFF;
-                        destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green * alpha) / 0xFF;
-                        destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue  * alpha) / 0xFF;
-                        destinationPixel->alpha = destinationPixel->alpha  + (~destinationPixel->alpha)    * alpha  / 0xFF; // ~destinationPixel->alpha == (0xFF - destinationPixel->alpha)
+                        destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red    * alpha) / 0xFF;
+                        destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green  * alpha) / 0xFF;
+                        destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue   * alpha) / 0xFF;
+                        destinationPixel->alpha = destinationPixel->alpha  + (u8)(~destinationPixel->alpha) * alpha  / 0xFF; // (u8)(~destinationPixel->alpha) == (0xFF - destinationPixel->alpha)
                         // Ignore CppAlignmentVerifier [END]
                     }
                 }
