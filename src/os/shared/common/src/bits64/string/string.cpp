@@ -898,6 +898,8 @@ const char8* strstri(const char8 *str1, const char8 *str2)
         return str1;
     }
 
+    c2 = toLower(c2);
+
 
 
     do
@@ -914,7 +916,6 @@ const char8* strstri(const char8 *str1, const char8 *str2)
         if (c1 != c2)
         {
             c1 = toLower(c1);
-            c2 = toLower(c2);
         }
 
 
@@ -991,6 +992,8 @@ const char16* strstri(const char16 *str1, const char16 *str2)
         return str1;
     }
 
+    c2 = toLower(c2);
+
 
 
     do
@@ -1007,7 +1010,6 @@ const char16* strstri(const char16 *str1, const char16 *str2)
         if (c1 != c2)
         {
             c1 = toLower(c1);
-            c2 = toLower(c2);
         }
 
 
