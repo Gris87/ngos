@@ -481,7 +481,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiOnboardDevicesExtend
 
 
 
-    return DeviceManagerImage::SYSTEM_SLOT_OTHER;
+    return DeviceManagerImage::ONBOARD_OTHER;
 }
 
 
