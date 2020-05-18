@@ -18,13 +18,13 @@ typedef u16 dmi_cache_sram_type_flags;
 enum class DmiCacheSramTypeFlag: dmi_cache_sram_type_flags
 {
     NONE           = 0,
-    OTHER          = (1ULL << 1),
-    UNKNOWN        = (1ULL << 2),
-    NON_BURST      = (1ULL << 3),
-    BURST          = (1ULL << 4),
-    PIPELINE_BURST = (1ULL << 5),
-    SYNCHRONOUS    = (1ULL << 6),
-    ASYNCHRONOUS   = (1ULL << 7)
+    OTHER          = (1ULL << 0),
+    UNKNOWN        = (1ULL << 1),
+    NON_BURST      = (1ULL << 2),
+    BURST          = (1ULL << 3),
+    PIPELINE_BURST = (1ULL << 4),
+    SYNCHRONOUS    = (1ULL << 5),
+    ASYNCHRONOUS   = (1ULL << 6)
 };
 
 DEFINE_FLAGS(DmiCacheSramTypeFlags, dmi_cache_sram_type_flags); // TEST: NO

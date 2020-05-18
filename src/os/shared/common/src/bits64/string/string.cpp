@@ -54,13 +54,20 @@ char8* strcpy(char8 *str1, const char8 *str2)
 
     char8 *cur = str1;
 
-    while (*str2) // *str2 != 0
+    do
     {
-        *cur = *str2;
+        char8 ch = *str2;
+
+        if (ch == 0)
+        {
+            break;
+        }
+
+        *cur = ch;
 
         ++cur;
         ++str2;
-    }
+    } while(true);
 
     *cur = 0;
 
@@ -80,13 +87,20 @@ char16* strcpy(char16 *str1, const char16 *str2)
 
     char16 *cur = str1;
 
-    while (*str2) // *str2 != 0
+    do
     {
-        *cur = *str2;
+        char16 ch = *str2;
+
+        if (ch == 0)
+        {
+            break;
+        }
+
+        *cur = ch;
 
         ++cur;
         ++str2;
-    }
+    } while(true);
 
     *cur = 0;
 
@@ -144,20 +158,27 @@ char8* strcat(char8 *str1, const char8 *str2)
 
     char8 *cur = str1;
 
-    while (*cur) // *cur != 0
+    while (*cur != 0)
     {
         ++cur;
     }
 
 
 
-    while (*str2) // *str2 != 0
+    do
     {
-        *cur = *str2;
+        char8 ch = *str2;
+
+        if (ch == 0)
+        {
+            break;
+        }
+
+        *cur = ch;
 
         ++cur;
         ++str2;
-    }
+    } while(true);
 
     *cur = 0;
 
@@ -177,20 +198,27 @@ char16* strcat(char16 *str1, const char16 *str2)
 
     char16 *cur = str1;
 
-    while (*cur) // *cur != 0
+    while (*cur != 0)
     {
         ++cur;
     }
 
 
 
-    while (*str2) // *str2 != 0
+    do
     {
-        *cur = *str2;
+        char16 ch = *str2;
+
+        if (ch == 0)
+        {
+            break;
+        }
+
+        *cur = ch;
 
         ++cur;
         ++str2;
-    }
+    } while(true);
 
     *cur = 0;
 
@@ -211,13 +239,20 @@ char8* strapp(char8 *str1, const char8 *str2)
 
     char8 *cur = str1;
 
-    while (*str2) // *str2 != 0
+    do
     {
-        *cur = *str2;
+        char8 ch = *str2;
+
+        if (ch == 0)
+        {
+            break;
+        }
+
+        *cur = ch;
 
         ++cur;
         ++str2;
-    }
+    } while(true);
 
     *cur = 0;
 
@@ -238,13 +273,20 @@ char16* strapp(char16 *str1, const char16 *str2)
 
     char16 *cur = str1;
 
-    while (*str2) // *str2 != 0
+    do
     {
-        *cur = *str2;
+        char16 ch = *str2;
+
+        if (ch == 0)
+        {
+            break;
+        }
+
+        *cur = ch;
 
         ++cur;
         ++str2;
-    }
+    } while(true);
 
     *cur = 0;
 
@@ -263,7 +305,7 @@ i64 strlen(const char8 *str)
 
     const char8 *str2 = str;
 
-    while (*str2) // *str2 != 0
+    while (*str2 != 0)
     {
         ++str2;
     }
@@ -281,7 +323,7 @@ i64 strlen(const char16 *str)
 
     const char16 *str2 = str;
 
-    while (*str2) // *str2 != 0
+    while (*str2 != 0)
     {
         ++str2;
     }
@@ -299,7 +341,7 @@ i64 strnlen(const char8 *str, i64 maxlen)
 
     const char8 *str2 = str;
 
-    while (*str2 && maxlen) // *str2 != 0 && maxlen != 0
+    while (*str2 != 0 && maxlen != 0)
     {
         ++str2;
         --maxlen;
@@ -318,7 +360,7 @@ i64 strnlen(const char16 *str, i64 maxlen)
 
     const char16 *str2 = str;
 
-    while (*str2 && maxlen) // *str2 != 0 && maxlen != 0
+    while (*str2 != 0 && maxlen != 0)
     {
         ++str2;
         --maxlen;
@@ -345,15 +387,15 @@ i8 strcmp(const char8 *str1, const char8 *str2)
 
     do
     {
-        u8 c1 = *str1;
-        u8 c2 = *str2;
+        char8 c1 = *str1;
+        char8 c2 = *str2;
 
         if (c1 != c2)
         {
             return c1 < c2 ? -1 : 1;
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -361,6 +403,8 @@ i8 strcmp(const char8 *str1, const char8 *str2)
         ++str1;
         ++str2;
     } while(true);
+
+
 
     return 0;
 }
@@ -383,15 +427,15 @@ i8 strcmp(const char16 *str1, const char16 *str2)
 
     do
     {
-        u16 c1 = *str1;
-        u16 c2 = *str2;
+        char16 c1 = *str1;
+        char16 c2 = *str2;
 
         if (c1 != c2)
         {
             return c1 < c2 ? -1 : 1;
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -399,6 +443,8 @@ i8 strcmp(const char16 *str1, const char16 *str2)
         ++str1;
         ++str2;
     } while(true);
+
+
 
     return 0;
 }
@@ -421,15 +467,21 @@ i8 strcmpi(const char8 *str1, const char8 *str2)
 
     do
     {
-        u8 c1 = toLower(*str1);
-        u8 c2 = toLower(*str2);
+        char8 c1 = *str1;
+        char8 c2 = *str2;
 
         if (c1 != c2)
         {
-            return c1 < c2 ? -1 : 1;
+            c1 = toLower(c1);
+            c2 = toLower(c2);
+
+            if (c1 != c2)
+            {
+                return c1 < c2 ? -1 : 1;
+            }
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -437,6 +489,8 @@ i8 strcmpi(const char8 *str1, const char8 *str2)
         ++str1;
         ++str2;
     } while(true);
+
+
 
     return 0;
 }
@@ -459,15 +513,21 @@ i8 strcmpi(const char16 *str1, const char16 *str2)
 
     do
     {
-        u16 c1 = toLower(*str1);
-        u16 c2 = toLower(*str2);
+        char16 c1 = *str1;
+        char16 c2 = *str2;
 
         if (c1 != c2)
         {
-            return c1 < c2 ? -1 : 1;
+            c1 = toLower(c1);
+            c2 = toLower(c2);
+
+            if (c1 != c2)
+            {
+                return c1 < c2 ? -1 : 1;
+            }
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -475,6 +535,8 @@ i8 strcmpi(const char16 *str1, const char16 *str2)
         ++str1;
         ++str2;
     } while(true);
+
+
 
     return 0;
 }
@@ -495,17 +557,17 @@ i8 strncmp(const char8 *str1, const char8 *str2, i64 length)
 
 
 
-    while (length) // length != 0
+    while (length != 0)
     {
-        u8 c1 = *str1;
-        u8 c2 = *str2;
+        char8 c1 = *str1;
+        char8 c2 = *str2;
 
         if (c1 != c2)
         {
             return c1 < c2 ? -1 : 1;
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -514,6 +576,8 @@ i8 strncmp(const char8 *str1, const char8 *str2, i64 length)
         ++str2;
         --length;
     }
+
+
 
     return 0;
 }
@@ -534,17 +598,17 @@ i8 strncmp(const char16 *str1, const char16 *str2, i64 length)
 
 
 
-    while (length) // length != 0
+    while (length != 0)
     {
-        u16 c1 = *str1;
-        u16 c2 = *str2;
+        char16 c1 = *str1;
+        char16 c2 = *str2;
 
         if (c1 != c2)
         {
             return c1 < c2 ? -1 : 1;
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -553,6 +617,8 @@ i8 strncmp(const char16 *str1, const char16 *str2, i64 length)
         ++str2;
         --length;
     }
+
+
 
     return 0;
 }
@@ -573,17 +639,23 @@ i8 strncmpi(const char8 *str1, const char8 *str2, i64 length)
 
 
 
-    while (length) // length != 0
+    while (length != 0)
     {
-        u8 c1 = toLower(*str1);
-        u8 c2 = toLower(*str2);
+        char8 c1 = *str1;
+        char8 c2 = *str2;
 
         if (c1 != c2)
         {
-            return c1 < c2 ? -1 : 1;
+            c1 = toLower(c1);
+            c2 = toLower(c2);
+
+            if (c1 != c2)
+            {
+                return c1 < c2 ? -1 : 1;
+            }
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -592,6 +664,8 @@ i8 strncmpi(const char8 *str1, const char8 *str2, i64 length)
         ++str2;
         --length;
     }
+
+
 
     return 0;
 }
@@ -612,17 +686,23 @@ i8 strncmpi(const char16 *str1, const char16 *str2, i64 length)
 
 
 
-    while (length) // length != 0
+    while (length != 0)
     {
-        u16 c1 = toLower(*str1);
-        u16 c2 = toLower(*str2);
+        char16 c1 = *str1;
+        char16 c2 = *str2;
 
         if (c1 != c2)
         {
-            return c1 < c2 ? -1 : 1;
+            c1 = toLower(c1);
+            c2 = toLower(c2);
+
+            if (c1 != c2)
+            {
+                return c1 < c2 ? -1 : 1;
+            }
         }
 
-        if (!c1) // c1 == 0
+        if (c1 == 0)
         {
             break;
         }
@@ -632,15 +712,361 @@ i8 strncmpi(const char16 *str1, const char16 *str2, i64 length)
         --length;
     }
 
+
+
     return 0;
+}
+
+const char8* strstr(const char8 *str1, const char8 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
+
+
+
+    if (str1 == str2)
+    {
+        return str1;
+    }
+
+
+
+    char8 c2 = *str2;
+
+    if (c2 == 0)
+    {
+        return str1;
+    }
+
+
+
+    do
+    {
+        char8 c1 = *str1;
+
+        if (c1 == 0)
+        {
+            return nullptr;
+        }
+
+
+
+        if (c1 == c2)
+        {
+            const char8 *cur1 = &str1[1];
+            const char8 *cur2 = &str2[1];
+
+            do
+            {
+                char8 ch2 = *cur2;
+
+                if (ch2 == 0)
+                {
+                    return str1;
+                }
+
+
+
+                char8 ch1 = *cur1;
+
+                if (ch1 == 0)
+                {
+                    return nullptr;
+                }
+
+
+
+                if (ch1 != ch2)
+                {
+                    break;
+                }
+
+
+
+                ++cur1;
+                ++cur2;
+            } while(true);
+        }
+
+
+
+        ++str1;
+    } while(true);
+}
+
+const char16* strstr(const char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
+
+
+
+    if (str1 == str2)
+    {
+        return str1;
+    }
+
+
+
+    char16 c2 = *str2;
+
+    if (c2 == 0)
+    {
+        return str1;
+    }
+
+
+
+    do
+    {
+        char16 c1 = *str1;
+
+        if (c1 == 0)
+        {
+            return nullptr;
+        }
+
+
+
+        if (c1 == c2)
+        {
+            const char16 *cur1 = &str1[1];
+            const char16 *cur2 = &str2[1];
+
+            do
+            {
+                char16 ch2 = *cur2;
+
+                if (ch2 == 0)
+                {
+                    return str1;
+                }
+
+
+
+                char16 ch1 = *cur1;
+
+                if (ch1 == 0)
+                {
+                    return nullptr;
+                }
+
+
+
+                if (ch1 != ch2)
+                {
+                    break;
+                }
+
+
+
+                ++cur1;
+                ++cur2;
+            } while(true);
+        }
+
+
+
+        ++str1;
+    } while(true);
+}
+
+const char8* strstri(const char8 *str1, const char8 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
+
+
+
+    if (str1 == str2)
+    {
+        return str1;
+    }
+
+
+
+    char8 c2 = *str2;
+
+    if (c2 == 0)
+    {
+        return str1;
+    }
+
+
+
+    do
+    {
+        char8 c1 = *str1;
+
+        if (c1 == 0)
+        {
+            return nullptr;
+        }
+
+
+
+        if (c1 != c2)
+        {
+            c1 = toLower(c1);
+            c2 = toLower(c2);
+        }
+
+
+
+        if (c1 == c2)
+        {
+            const char8 *cur1 = &str1[1];
+            const char8 *cur2 = &str2[1];
+
+            do
+            {
+                char8 ch2 = *cur2;
+
+                if (ch2 == 0)
+                {
+                    return str1;
+                }
+
+
+
+                char8 ch1 = *cur1;
+
+                if (ch1 == 0)
+                {
+                    return nullptr;
+                }
+
+
+
+                if (ch1 != ch2)
+                {
+                    ch1 = toLower(ch1);
+                    ch2 = toLower(ch2);
+                }
+
+                if (ch1 != ch2)
+                {
+                    break;
+                }
+
+
+
+                ++cur1;
+                ++cur2;
+            } while(true);
+        }
+
+
+
+        ++str1;
+    } while(true);
+}
+
+const char16* strstri(const char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
+
+
+
+    if (str1 == str2)
+    {
+        return str1;
+    }
+
+
+
+    char16 c2 = *str2;
+
+    if (c2 == 0)
+    {
+        return str1;
+    }
+
+
+
+    do
+    {
+        char16 c1 = *str1;
+
+        if (c1 == 0)
+        {
+            return nullptr;
+        }
+
+
+
+        if (c1 != c2)
+        {
+            c1 = toLower(c1);
+            c2 = toLower(c2);
+        }
+
+
+
+        if (c1 == c2)
+        {
+            const char16 *cur1 = &str1[1];
+            const char16 *cur2 = &str2[1];
+
+            do
+            {
+                char16 ch2 = *cur2;
+
+                if (ch2 == 0)
+                {
+                    return str1;
+                }
+
+
+
+                char16 ch1 = *cur1;
+
+                if (ch1 == 0)
+                {
+                    return nullptr;
+                }
+
+
+
+                if (ch1 != ch2)
+                {
+                    ch1 = toLower(ch1);
+                    ch2 = toLower(ch2);
+                }
+
+                if (ch1 != ch2)
+                {
+                    break;
+                }
+
+
+
+                ++cur1;
+                ++cur2;
+            } while(true);
+        }
+
+
+
+        ++str1;
+    } while(true);
 }
 
 bool strend(const char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
 
 
 
@@ -688,8 +1114,8 @@ bool strend(const char16 *str1, const char16 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
 
 
 
@@ -737,8 +1163,8 @@ bool strendi(const char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
 
 
 
@@ -766,7 +1192,14 @@ bool strendi(const char8 *str1, const char8 *str2)
 
         while (len2 > 0)
         {
-            if (toLower(*str1) != toLower(*str2))
+            char8 ch1 = *str1;
+            char8 ch2 = *str2;
+
+            if (
+                ch1 != ch2
+                &&
+                toLower(ch1) != toLower(ch2)
+               )
             {
                 return false;
             }
@@ -786,8 +1219,8 @@ bool strendi(const char16 *str1, const char16 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
 
 
 
@@ -815,7 +1248,14 @@ bool strendi(const char16 *str1, const char16 *str2)
 
         while (len2 > 0)
         {
-            if (toLower(*str1) != toLower(*str2))
+            char16 ch1 = *str1;
+            char16 ch2 = *str2;
+
+            if (
+                ch1 != ch2
+                &&
+                toLower(ch1) != toLower(ch2)
+               )
             {
                 return false;
             }

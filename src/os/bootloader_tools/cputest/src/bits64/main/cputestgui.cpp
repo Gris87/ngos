@@ -179,8 +179,8 @@
 #define SCORE_PER_100_MHZ                   200
 #define SCORE_L1_DATA_CACHE_PER_1_KB        2
 #define SCORE_L1_INSTRUCTION_CACHE_PER_1_KB 2
-#define SCORE_L2_CACHE_PER_1_MB             20
-#define SCORE_L3_CACHE_PER_1_MB             20
+#define SCORE_L2_CACHE_PER_1_MB             200
+#define SCORE_L3_CACHE_PER_1_MB             40
 
 
 
