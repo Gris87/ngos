@@ -315,93 +315,151 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
     if (opaque)
     {
-        if (sourceBytesPerPixel == destinationBytesPerPixel)
+        // Insert source image to destination image without alpha blending
         {
-            for (i64 i = top; i < bottom; ++i)
+            if (sourceBytesPerPixel == destinationBytesPerPixel)
             {
-                u8 *sourcePixel      = GET_PIXEL_ADDRESS(sourceData,                  left,             i, sourceStride,      sourceBytesPerPixel);
-                u8 *destinationPixel = GET_PIXEL_ADDRESS(destinationData, positionX + left, positionY + i, destinationStride, destinationBytesPerPixel);
-
-                memcpy(destinationPixel, sourcePixel, (right - left) * sourceBytesPerPixel);
-            }
-        }
-        else
-        {
-            for (i64 i = top; i < bottom; ++i)
-            {
-                for (i64 j = left; j < right; ++j)
+                // If both images are RGB or RGBA then just copy as is
                 {
-                    RgbPixel *sourcePixel      = (RgbPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
-                    RgbPixel *destinationPixel = (RgbPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
+                    for (i64 i = top; i < bottom; ++i)
+                    {
+                        u8 *sourcePixel      = GET_PIXEL_ADDRESS(sourceData,                  left,             i, sourceStride,      sourceBytesPerPixel);
+                        u8 *destinationPixel = GET_PIXEL_ADDRESS(destinationData, positionX + left, positionY + i, destinationStride, destinationBytesPerPixel);
 
-                    destinationPixel->red   = sourcePixel->red;
-                    destinationPixel->green = sourcePixel->green;
-                    destinationPixel->blue  = sourcePixel->blue;
+                        memcpy(destinationPixel, sourcePixel, (right - left) * sourceBytesPerPixel);
+                    }
+                }
+            }
+            else
+            {
+                // Types of images are different
+                {
+                    if (destinationBytesPerPixel == sizeof(RgbaPixel))
+                    {
+                        // Destination image is RGBA then source image should be RGB. Copy source image to destination and set alpha to 0xFF
+                        {
+                            COMMON_TEST_ASSERT(sourceBytesPerPixel == sizeof(RgbPixel), NgosStatus::ASSERTION);
+
+                            for (i64 i = top; i < bottom; ++i)
+                            {
+                                for (i64 j = left; j < right; ++j)
+                                {
+                                    RgbPixel  *sourcePixel      = (RgbPixel  *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
+                                    RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
+
+                                    destinationPixel->red   = sourcePixel->red;
+                                    destinationPixel->green = sourcePixel->green;
+                                    destinationPixel->blue  = sourcePixel->blue;
+                                    destinationPixel->alpha = 0xFF;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Destination image is RGB then source image should be RGBA. Copy source image to destination without taking alpha into account
+                        {
+                            COMMON_TEST_ASSERT(sourceBytesPerPixel == sizeof(RgbaPixel), NgosStatus::ASSERTION);
+
+                            for (i64 i = top; i < bottom; ++i)
+                            {
+                                for (i64 j = left; j < right; ++j)
+                                {
+                                    RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
+                                    RgbPixel  *destinationPixel = (RgbPixel  *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
+
+                                    destinationPixel->red   = sourcePixel->red;
+                                    destinationPixel->green = sourcePixel->green;
+                                    destinationPixel->blue  = sourcePixel->blue;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
     else
     {
-        if (sourceBytesPerPixel == sizeof(RgbaPixel))
+        // Insert source image to destination image with alpha blending or without it. Need to check source image type
         {
-            if (destinationBytesPerPixel == sizeof(RgbaPixel))
+            if (sourceBytesPerPixel == sizeof(RgbaPixel))
             {
-                for (i64 i = top; i < bottom; ++i)
+                // Insert source image to destination image with alpha blending
                 {
-                    for (i64 j = left; j < right; ++j)
+                    if (destinationBytesPerPixel == sizeof(RgbaPixel))
                     {
-                        RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
-                        RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
+                        // Both images are RGBA. Composite images with two alpha channels
+                        {
+                            for (i64 i = top; i < bottom; ++i)
+                            {
+                                for (i64 j = left; j < right; ++j)
+                                {
+                                    RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
+                                    RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
 
-                        u8 alpha    = sourcePixel->alpha;
-                        u8 notAlpha = ~alpha;               // ~alpha == (0xFF - alpha)
+                                    u8 srcAlpha = sourcePixel->alpha;
+                                    u8 dstAlpha = destinationPixel->alpha;
+                                    u8 notAlpha = ~srcAlpha;                                // ~srcAlpha == (0xFF - srcAlpha)
+                                    u8 outAlpha = srcAlpha + (dstAlpha * notAlpha) / 0xFF;
 
-                        // Ignore CppAlignmentVerifier [BEGIN]
-                        destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red    * alpha) / 0xFF;
-                        destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green  * alpha) / 0xFF;
-                        destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue   * alpha) / 0xFF;
-                        destinationPixel->alpha = destinationPixel->alpha  + (u8)(~destinationPixel->alpha) * alpha  / 0xFF; // (u8)(~destinationPixel->alpha) == (0xFF - destinationPixel->alpha)
-                        // Ignore CppAlignmentVerifier [END]
+                                    if (outAlpha != 0)
+                                    {
+                                        destinationPixel->red   = ((sourcePixel->red   * srcAlpha) + (destinationPixel->red   * dstAlpha * notAlpha) / 0xFF) / outAlpha;
+                                        destinationPixel->green = ((sourcePixel->green * srcAlpha) + (destinationPixel->green * dstAlpha * notAlpha) / 0xFF) / outAlpha;
+                                        destinationPixel->blue  = ((sourcePixel->blue  * srcAlpha) + (destinationPixel->blue  * dstAlpha * notAlpha) / 0xFF) / outAlpha;
+                                        destinationPixel->alpha = outAlpha;
+                                    }
+                                    else
+                                    {
+                                        destinationPixel->value32 = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Source image is RGBA and destination image is RGB. Composite images without destination alpha channel
+                        {
+                            for (i64 i = top; i < bottom; ++i)
+                            {
+                                for (i64 j = left; j < right; ++j)
+                                {
+                                    RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
+                                    RgbPixel  *destinationPixel = (RgbPixel  *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
+
+                                    u8 alpha    = sourcePixel->alpha;
+                                    u8 notAlpha = ~alpha;               // ~alpha == (0xFF - alpha)
+
+                                    destinationPixel->red   = ((sourcePixel->red   * alpha) + (destinationPixel->red   * notAlpha)) / 0xFF;
+                                    destinationPixel->green = ((sourcePixel->green * alpha) + (destinationPixel->green * notAlpha)) / 0xFF;
+                                    destinationPixel->blue  = ((sourcePixel->blue  * alpha) + (destinationPixel->blue  * notAlpha)) / 0xFF;
+                                }
+                            }
+                        }
                     }
                 }
             }
             else
             {
-                for (i64 i = top; i < bottom; ++i)
+                // Source image is RGB and destination image is non-opaque RGBA image. Copy source image to destination and set alpha to 0xFF
                 {
-                    for (i64 j = left; j < right; ++j)
+                    COMMON_TEST_ASSERT(destinationBytesPerPixel == sizeof(RgbaPixel), NgosStatus::ASSERTION);
+
+                    for (i64 i = top; i < bottom; ++i)
                     {
-                        RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
-                        RgbPixel  *destinationPixel = (RgbPixel  *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
+                        for (i64 j = left; j < right; ++j)
+                        {
+                            RgbPixel  *sourcePixel      = (RgbPixel  *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
+                            RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
 
-                        u8 alpha    = sourcePixel->alpha;
-                        u8 notAlpha = ~alpha;               // ~alpha == (0xFF - alpha)
-
-                        destinationPixel->red   = (destinationPixel->red   * notAlpha + sourcePixel->red   * alpha) / 0xFF;
-                        destinationPixel->green = (destinationPixel->green * notAlpha + sourcePixel->green * alpha) / 0xFF;
-                        destinationPixel->blue  = (destinationPixel->blue  * notAlpha + sourcePixel->blue  * alpha) / 0xFF;
+                            destinationPixel->red   = sourcePixel->red;
+                            destinationPixel->green = sourcePixel->green;
+                            destinationPixel->blue  = sourcePixel->blue;
+                            destinationPixel->alpha = 0xFF;
+                        }
                     }
-                }
-            }
-        }
-        else
-        {
-            COMMON_TEST_ASSERT(destinationBytesPerPixel == sizeof(RgbaPixel), NgosStatus::ASSERTION);
-
-
-
-            for (i64 i = top; i < bottom; ++i)
-            {
-                for (i64 j = left; j < right; ++j)
-                {
-                    RgbPixel  *sourcePixel      = (RgbPixel  *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
-                    RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
-
-                    destinationPixel->red   = sourcePixel->red;
-                    destinationPixel->green = sourcePixel->green;
-                    destinationPixel->blue  = sourcePixel->blue;
-                    destinationPixel->alpha = 0xFF;
                 }
             }
         }
