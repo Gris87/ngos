@@ -22,6 +22,16 @@
 #define DAYS_IN_NOVEMBER  30
 #define DAYS_IN_DECEMBER  31
 
+#define TOTAL_DAYS 365
+
+#define NUMBER_OF_LEAP_YEARS_FROM_0_TO_1970 477
+
+
+
+#if TOTAL_DAYS != DAYS_IN_JANUARY + DAYS_IN_FEBRUARY + DAYS_IN_MARCH + DAYS_IN_APRIL + DAYS_IN_MAY + DAYS_IN_JUNE + DAYS_IN_JULY + DAYS_IN_AUGUST + DAYS_IN_SEPTEMBER + DAYS_IN_OCTOBER + DAYS_IN_NOVEMBER + DAYS_IN_DECEMBER
+#error TOTAL_DAYS invalid
+#endif
+
 
 
 u8 Time::sDaysInMonth[12] =
@@ -87,12 +97,14 @@ i64 Time::timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 
 {
     COMMON_LT((" | year = %d, month = %u, day = %u, hour = %u, minute = %u, second = %u, nanosecond = %u", year, month, day, hour, minute, second, nanosecond));
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     COMMON_ASSERT(month >= 1 && month      <= 12,                       "month is invalid",      0);
     COMMON_ASSERT(day   >= 1 && day        <= daysInMonth(year, month), "day is invalid",        0);
     COMMON_ASSERT(              hour       <= 23,                       "hour is invalid",       0);
     COMMON_ASSERT(              minute     <= 59,                       "minute is invalid",     0);
     COMMON_ASSERT(              second     <= 59,                       "second is invalid",     0);
     COMMON_ASSERT(              nanosecond <= 999999999,                "nanosecond is invalid", 0);
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -107,7 +119,7 @@ i64 Time::timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 
         i64 amountOfYearsDiv100 = yearBefore / 100;
         i64 amountOfYearsDiv400 = yearBefore / 400;
 
-        amountOfLeapYears = amountOfYearsDiv4 - amountOfYearsDiv100 + amountOfYearsDiv400 - 477; // 477 = amount of leap years from 0 to 1970
+        amountOfLeapYears = amountOfYearsDiv4 - amountOfYearsDiv100 + amountOfYearsDiv400 - NUMBER_OF_LEAP_YEARS_FROM_0_TO_1970;
     }
     else
     {
@@ -115,12 +127,12 @@ i64 Time::timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 
         i64 amountOfYearsDiv100 = year / 100;
         i64 amountOfYearsDiv400 = year / 400;
 
-        amountOfLeapYears = amountOfYearsDiv4 - amountOfYearsDiv100 + amountOfYearsDiv400 - 477 - 1; // 477 = amount of leap years from 0 to 1970, 1 = special case for year 0
+        amountOfLeapYears = amountOfYearsDiv4 - amountOfYearsDiv100 + amountOfYearsDiv400 - NUMBER_OF_LEAP_YEARS_FROM_0_TO_1970 - 1; // 1 = special case for year 0
     }
 
 
 
-    i64 days = yearsFrom1970 * 365 + amountOfLeapYears;
+    i64 days = yearsFrom1970 * TOTAL_DAYS + amountOfLeapYears;
 
     days += sDaysFromStartOfYear[month - 1];
 

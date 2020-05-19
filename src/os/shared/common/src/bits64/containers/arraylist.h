@@ -388,10 +388,12 @@ NgosStatus ArrayList<T>::quickSort(i64 left, i64 right, element_comparator compa
 {
     COMMON_LT((" | left = %d, right = %d, comparator = 0x%p", left, right, comparator));
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     COMMON_ASSERT(left  < (i64)mSize, "left is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(right < (i64)mSize, "right is invalid",   NgosStatus::ASSERTION);
     COMMON_ASSERT(left  < right,      "left is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(comparator,         "comparator is null", NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
 
 
 

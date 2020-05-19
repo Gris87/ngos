@@ -41,7 +41,7 @@ inline const char8* enumToFullString(DmiMemoryDeviceSizeGranularity granularity)
 
 
 
-    static char8 res[21];
+    static char8 res[19];
 
     sprintf(res, "0x%02X (%s)", granularity, enumToString(granularity));
 

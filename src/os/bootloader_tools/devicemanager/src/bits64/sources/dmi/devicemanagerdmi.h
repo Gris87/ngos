@@ -44,7 +44,7 @@ class DeviceManagerDMI
 public:
     static NgosStatus init(); // TEST: NO
 
-    static const ArrayList<DeviceManagerEntryDMI *>& getEntries(); //TEST: NO
+    static const ArrayList<DeviceManagerEntryDMI *>& getEntries(); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

@@ -9,7 +9,7 @@
 
 
 
-class DeviceManagerEntryDMI : public DeviceManagerEntry
+class DeviceManagerEntryDMI: public DeviceManagerEntry
 {
 public:
     DeviceManagerEntryDMI(DmiEntryType type, u16 handle, DeviceManagerImage image, const char8 *name);

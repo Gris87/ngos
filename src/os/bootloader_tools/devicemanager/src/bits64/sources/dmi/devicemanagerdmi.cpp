@@ -304,11 +304,11 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-    const char8 *systemBiosMajorRelease                     = "N/A";
-    const char8 *systemBiosMinorRelease                     = "N/A";
-    const char8 *embeddedControllerFirmwareMajorRelease     = "N/A";
-    const char8 *embeddedControllerFirmwareMinorRelease     = "N/A";
-    const char8 *extendedBiosRomSize                        = "N/A";
+    const char8 *systemBiosMajorRelease                 = "N/A";
+    const char8 *systemBiosMinorRelease                 = "N/A";
+    const char8 *embeddedControllerFirmwareMajorRelease = "N/A";
+    const char8 *embeddedControllerFirmwareMinorRelease = "N/A";
+    const char8 *extendedBiosRomSize                    = "N/A";
 
     // Get strings base on version
     {
@@ -2998,7 +2998,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entr
 
 
 
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Language #%u", stringId.id), begin,DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Language #%u", stringId.id), begin, DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
 
 

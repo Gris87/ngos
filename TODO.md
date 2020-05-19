@@ -59,8 +59,6 @@ Code verifier:
 - Verify for English chars only in source code
 - Verify that #if, #ifdef, #endif, #define starts from the beginning of line
 - Verify for Validation region
-- Remove verifier for zero
-- Remove verifier for shift
 - Upgrade verifier for trace arguments (Check format with the types)
 
 

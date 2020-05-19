@@ -280,10 +280,10 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     sModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(u64)sMode], nullptr, enumToHumanString(sMode), rootWidget);
 
-    UEFI_ASSERT_EXECUTION(sModeButton->setPosition(screenWidth * MODE_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MODE_BUTTON_POSITION_Y_PERCENT / 100),  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sModeButton->setSize(screenWidth  * MODE_BUTTON_WIDTH_PERCENT  / 100, sRebootButton->getPositionY() - sModeButton->getPositionY()), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sModeButton->setKeyboardEventHandler(onModeButtonKeyboardEvent),                                                                    NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sModeButton->setPressEventHandler(onModeButtonPressed),                                                                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setPosition(screenWidth * MODE_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MODE_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setSize(screenWidth * MODE_BUTTON_WIDTH_PERCENT / 100, sRebootButton->getPositionY() - sModeButton->getPositionY()),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setKeyboardEventHandler(onModeButtonKeyboardEvent),                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setPressEventHandler(onModeButtonPressed),                                                                            NgosStatus::ASSERTION);
 
 
 

@@ -32,5 +32,4 @@ struct DmiProcessorVoltage
 
 
 
-
 #endif // OS_SHARED_COMMON_SRC_BITS64_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H

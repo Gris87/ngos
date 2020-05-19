@@ -53,7 +53,7 @@ inline const char8* enumToFullString(DmiIdentity identity) // TEST: NO
 
 
 
-    static char8 res[37];
+    static char8 res[30];
 
     sprintf(res, "0x%02X (%s)", identity, enumToString(identity));
 

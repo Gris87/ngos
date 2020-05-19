@@ -164,28 +164,28 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         cur = strapp(cur, "aa");
 
         TEST_ASSERT_EQUALS(cur,                &temp[2]);
-        TEST_ASSERT_EQUALS(strcmp(temp, "aa"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aa"),  0);
 
 
 
         cur = strapp(cur, "bbb");
 
         TEST_ASSERT_EQUALS(cur,                   &temp[5]);
-        TEST_ASSERT_EQUALS(strcmp(temp, "aabbb"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbb"),  0);
 
 
 
         cur = strapp(cur, "cc");
 
         TEST_ASSERT_EQUALS(cur,                     &temp[7]);
-        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbcc"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbcc"),  0);
 
 
 
         cur = strapp(cur, "dddd");
 
         TEST_ASSERT_EQUALS(cur,                         &temp[11]);
-        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbccdddd"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, "aabbbccdddd"),  0);
     }
     TEST_CASE_END();
 
@@ -203,28 +203,28 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         cur = strapp(cur, u"aa");
 
         TEST_ASSERT_EQUALS(cur,                 &temp[2]);
-        TEST_ASSERT_EQUALS(strcmp(temp, u"aa"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aa"),  0);
 
 
 
         cur = strapp(cur, u"bbb");
 
         TEST_ASSERT_EQUALS(cur,                    &temp[5]);
-        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbb"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbb"),  0);
 
 
 
         cur = strapp(cur, u"cc");
 
         TEST_ASSERT_EQUALS(cur,                      &temp[7]);
-        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbcc"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbcc"),  0);
 
 
 
         cur = strapp(cur, u"dddd");
 
         TEST_ASSERT_EQUALS(cur,                          &temp[11]);
-        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbccdddd"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp, u"aabbbccdddd"),  0);
     }
     TEST_CASE_END();
 
@@ -439,7 +439,7 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strstr(str, "aa"),      &str[0]);
         TEST_ASSERT_EQUALS(strstr(str, "aab"),     &str[1]);
         TEST_ASSERT_EQUALS(strstr(str, "ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstr(str, "dsfggaa"), nullptr);
+        TEST_ASSERT_EQUALS(strstr(str, "dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstr(str, "bc"),      &str[4]);
     }
     TEST_CASE_END();
@@ -455,7 +455,7 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strstr(str, u"aa"),      &str[0]);
         TEST_ASSERT_EQUALS(strstr(str, u"aab"),     &str[1]);
         TEST_ASSERT_EQUALS(strstr(str, u"ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstr(str, u"dsfggaa"), nullptr);
+        TEST_ASSERT_EQUALS(strstr(str, u"dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstr(str, u"bc"),      &str[4]);
     }
     TEST_CASE_END();
@@ -472,7 +472,7 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strstri(str, "aA"),      &str[0]);
         TEST_ASSERT_EQUALS(strstri(str, "aAb"),     &str[1]);
         TEST_ASSERT_EQUALS(strstri(str, "Ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstri(str, "dsfggaa"), nullptr);
+        TEST_ASSERT_EQUALS(strstri(str, "dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstri(str, "bc"),      &str[4]);
     }
     TEST_CASE_END();
@@ -489,7 +489,7 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
         TEST_ASSERT_EQUALS(strstri(str, u"aA"),      &str[0]);
         TEST_ASSERT_EQUALS(strstri(str, u"aAb"),     &str[1]);
         TEST_ASSERT_EQUALS(strstri(str, u"Ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstri(str, u"dsfggaa"), nullptr);
+        TEST_ASSERT_EQUALS(strstri(str, u"dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstri(str, u"bc"),      &str[4]);
     }
     TEST_CASE_END();

@@ -52,6 +52,7 @@ HEADERS += \
     src/bits64/other/devicemanagerentrydmi.h \
     src/bits64/other/devicemanagerentryrecord.h \
     src/bits64/other/devicemanagerimage.h \
+    src/bits64/other/devicemanagermode.h \
     src/bits64/sources/dmi/devicemanagerdmi.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h

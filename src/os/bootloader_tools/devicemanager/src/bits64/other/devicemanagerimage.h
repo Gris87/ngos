@@ -4,10 +4,10 @@
 
 
 #include <common/src/bits64/dmi/dmientrytype.h>
-#include <common/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h>
 #include <common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h>
 #include <common/src/bits64/dmi/entry/dmiportconnectorentry.h>
 #include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
+#include <common/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
 #include <ngos/linkage.h>
@@ -223,7 +223,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type)
 
 inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *entry, const char8 *name)
 {
-    // UEFI_LT((" | entry = 0x%p, name = 0x%p", type, name)); // Commented to avoid too frequent logs
+    // UEFI_LT((" | entry = 0x%p, name = 0x%p", entry, name)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
     UEFI_ASSERT(name,  "name is null",  DeviceManagerImage::ADDITIONAL);
@@ -300,7 +300,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
 inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *entry, const char8 *name)
 {
-    // UEFI_LT((" | entry = 0x%p, name = 0x%p", type, name)); // Commented to avoid too frequent logs
+    // UEFI_LT((" | entry = 0x%p, name = 0x%p", entry, name)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
     UEFI_ASSERT(name,  "name is null",  DeviceManagerImage::ADDITIONAL);
@@ -442,7 +442,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiOnboardDevice(DmiOnboardDevic
 
 inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiOnboardDevicesExtendedEntry *entry, const char8 *name)
 {
-    // UEFI_LT((" | entry = 0x%p, name = 0x%p", type, name)); // Commented to avoid too frequent logs
+    // UEFI_LT((" | entry = 0x%p, name = 0x%p", entry, name)); // Commented to avoid too frequent logs
 
     UEFI_ASSERT(entry, "entry is null", DeviceManagerImage::ADDITIONAL);
     UEFI_ASSERT(name,  "name is null",  DeviceManagerImage::ADDITIONAL);

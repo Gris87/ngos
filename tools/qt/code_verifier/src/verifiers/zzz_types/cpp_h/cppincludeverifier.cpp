@@ -30,6 +30,8 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
         path.endsWith("src/os/shared/common/src/bits64/log/log.h")
         ||
         path.endsWith("src/os/shared/common/src/bits64/memory/malloc.cpp")
+        ||
+        path.endsWith("src/os/shared/common/src/bits64/time/time.cpp")
        )
     {
         return;

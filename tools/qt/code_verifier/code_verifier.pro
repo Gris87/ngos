@@ -81,7 +81,6 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.cpp \
-    src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.cpp \
@@ -90,7 +89,6 @@ SOURCES += \
     src/verifiers/zzz_types/cpp_h/cppstaticfunctionsverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cppswitchverifier.cpp \
     src/verifiers/zzz_types/cpp_h/cpptypesverifier.cpp \
-    src/verifiers/zzz_types/cpp_h/cppzeroconditionverifier.cpp \
     src/verifiers/zzz_types/h/cpphdefinesverifier.cpp \
     src/verifiers/zzz_types/includes/qtincludesverifier.cpp \
     src/verifiers/zzz_types/php/phpalignmentverifier.cpp \
@@ -148,7 +146,6 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cpppunctuationverifier.h \
     src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.h \
-    src/verifiers/zzz_types/cpp_h/cppshiftverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.h \
     src/verifiers/zzz_types/cpp_h/cppsinglelineifverifier.h \
@@ -157,7 +154,6 @@ HEADERS += \
     src/verifiers/zzz_types/cpp_h/cppstaticfunctionsverifier.h \
     src/verifiers/zzz_types/cpp_h/cppswitchverifier.h \
     src/verifiers/zzz_types/cpp_h/cpptypesverifier.h \
-    src/verifiers/zzz_types/cpp_h/cppzeroconditionverifier.h \
     src/verifiers/zzz_types/h/cpphdefinesverifier.h \
     src/verifiers/zzz_types/includes/qtincludesverifier.h \
     src/verifiers/zzz_types/php/phpalignmentverifier.h \

@@ -47,6 +47,7 @@ SOURCES += \
     $$PWD/src/bits64/gui/widgets/special/rootwidget.cpp \
     $$PWD/src/bits64/gui/widgets/special/screenwidget.cpp \
     $$PWD/src/bits64/gui/widgets/widget.cpp \
+    $$PWD/src/bits64/hex/hex.cpp \
     $$PWD/src/bits64/inflate/inflate.cpp \
     $$PWD/src/bits64/memory/malloc.cpp \
     $$PWD/src/bits64/memory/memory.cpp \
@@ -94,6 +95,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/dmiidentity.h \
     $$PWD/src/bits64/dmi/dmimemorydevice.h \
     $$PWD/src/bits64/dmi/dmistoreduuid.h \
+    $$PWD/src/bits64/dmi/dmistringid.h \
     $$PWD/src/bits64/dmi/entry/dmiadditionalinformationentry.h \
     $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
     $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
@@ -132,6 +134,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibiosextendedromsizeunit.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioslanguageflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibiosromsize.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheassociativity.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheconfiguration.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h \
@@ -152,11 +155,17 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h \
-    $$PWD/src/bits64/dmi/entry/lib/dmigroupassociationsgroup.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmigroupassociationsitem.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceattributes.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceextendedsize.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceformfactor.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicemappedaddressrange.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicesize.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicesizegranularity.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetechnology.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h \
@@ -165,6 +174,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiportablebatterydevicechemistry.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h \
@@ -293,6 +303,7 @@ HEADERS += \
     $$PWD/src/bits64/gui/widgets/special/rootwidget.h \
     $$PWD/src/bits64/gui/widgets/special/screenwidget.h \
     $$PWD/src/bits64/gui/widgets/widget.h \
+    $$PWD/src/bits64/hex/hex.h \
     $$PWD/src/bits64/inflate/inflate.h \
     $$PWD/src/bits64/inflate/inflateblocktype.h \
     $$PWD/src/bits64/inflate/inflatecode.h \

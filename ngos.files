@@ -1057,6 +1057,8 @@ src/os/shared/common/src/bits64/gui/widgets/special/screenwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/special/screenwidget.h
 src/os/shared/common/src/bits64/gui/widgets/widget.cpp
 src/os/shared/common/src/bits64/gui/widgets/widget.h
+src/os/shared/common/src/bits64/hex/hex.cpp
+src/os/shared/common/src/bits64/hex/hex.h
 src/os/shared/common/src/bits64/inflate/inflate.cpp
 src/os/shared/common/src/bits64/inflate/inflate.h
 src/os/shared/common/src/bits64/inflate/inflateblocktype.h
@@ -1647,8 +1649,6 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsemicolonverifier.h
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.cpp
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppshiftverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglecharverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppsinglelineforverifier.cpp
@@ -1665,8 +1665,6 @@ tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppswitchverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppswitchverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpptypesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cpptypesverifier.h
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppzeroconditionverifier.cpp
-tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppzeroconditionverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/h/cpphdefinesverifier.cpp
 tools/qt/code_verifier/src/verifiers/zzz_types/h/cpphdefinesverifier.h
 tools/qt/code_verifier/src/verifiers/zzz_types/includes/qtincludesverifier.cpp
