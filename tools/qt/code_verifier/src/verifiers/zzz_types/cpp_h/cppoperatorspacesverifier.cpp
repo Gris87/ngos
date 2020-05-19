@@ -182,9 +182,9 @@ inline bool validateSignMultiplyCase5(const QChar &chPrev1, const QChar &/*chPre
     //      " *>:"
     //        ^
 
-    return isSpaceOrEmpty(chPrev1)
+    return chNext1 == '>'
             &&
-            chNext1 == '>'
+            isSpaceOrEmpty(chPrev1)
             &&
             (
                 isSpaceOrEmpty(chNext2)
@@ -210,9 +210,9 @@ inline bool validateSignMultiplyCase6(const QChar &chPrev1, const QChar &/*chPre
     //      " *); "
     //        ^
 
-    return isSpaceOrEmpty(chPrev1)
+    return chNext1 == ')'
             &&
-            chNext1 == ')'
+            isSpaceOrEmpty(chPrev1)
             &&
             (
                 chNext2.isLetterOrNumber()
