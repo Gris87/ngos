@@ -207,6 +207,18 @@ TEST_CASES(section0, __shared_common_bits64_graphics_image);
 
 
 
+    TEST_CASE("isRgb()");
+    {
+        Image temp(10, 20, true, true);
+        Image temp2(30, 40, false, true);
+
+        TEST_ASSERT_EQUALS(temp.isRgb(),  false);
+        TEST_ASSERT_EQUALS(temp2.isRgb(), true);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("getStride()");
     {
         Image temp(10, 20, true, true);

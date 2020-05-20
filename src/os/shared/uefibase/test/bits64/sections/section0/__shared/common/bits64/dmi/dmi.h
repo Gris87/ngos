@@ -39,6 +39,28 @@ NgosStatus testCountEntry(DmiEntryHeader *header)
 
 TEST_CASES(section0, __shared_common_bits64_dmi_dmi);
 {
+    TEST_CASE("DMI_VERSION()");
+    {
+        TEST_ASSERT_EQUALS(DMI_VERSION(2,    7),   0x00020700);
+        TEST_ASSERT_EQUALS(DMI_VERSION(3,    1),   0x00030100);
+        TEST_ASSERT_EQUALS(DMI_VERSION(9,    67),  0x00094300);
+        TEST_ASSERT_EQUALS(DMI_VERSION(3202, 927), 0x0C829F00);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DMI_VERSION_3()");
+    {
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(2,    7,   0),   0x00020700);
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(3,    1,   2),   0x00030102);
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(9,    67,  56),  0x00094338);
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(3202, 927, 619), 0x0C829F6B);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("iterateDmiEntries()");
     {
         u8 buf[] =

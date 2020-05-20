@@ -41,8 +41,8 @@
 
 
 
-#define DMI_VERSION(major, minor)        (((major) << 16) + ((minor) << 8))
-#define DMI_VERSION_3(major, minor, doc) (((major) << 16) + ((minor) << 8) + (doc))
+#define DMI_VERSION(major, minor)        (((major) << 16) + ((minor & 0xFF) << 8))
+#define DMI_VERSION_3(major, minor, doc) (((major) << 16) + ((minor & 0xFF) << 8) + (doc & 0xFF))
 
 
 

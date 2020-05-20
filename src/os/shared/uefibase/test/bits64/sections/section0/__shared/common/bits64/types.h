@@ -220,11 +220,13 @@
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/bits64/hex/hex.h>
 #include <common/src/bits64/inflate/inflateblocktype.h>
 #include <common/src/bits64/inflate/inflatecode.h>
 #include <common/src/bits64/inflate/inflatecodetype.h>
 #include <common/src/bits64/inflate/inflatedecoder.h>
 #include <common/src/bits64/serial/serial.h>
+#include <common/src/bits64/time/time.h>
 #include <common/src/bits64/zlib/zlib.h>
 #include <common/src/bits64/zlib/zlibcompressioninfo.h>
 #include <common/src/bits64/zlib/zlibcompressionlevel.h>
@@ -279,6 +281,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSizeUnit),                    1);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageEntry),                          22);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageFlag),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosRomSize),                                1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheAssociativity),                         1);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheConfiguration),                         2);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheEntry),                                 15);
@@ -293,6 +296,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheSramTypeFlag),                          2);
         TEST_ASSERT_EQUALS(sizeof(DmiCacheType),                                  1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElement),                    3);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElementType),                1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElementTypeSelect),          1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisEntry),                               9);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV21),                            13);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV23),                            21);
@@ -320,6 +325,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),              15);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntryV27),           31);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               40);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceAttributes),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          21);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV23),                       27);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV26),                       28);
@@ -327,10 +333,14 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV28),                       40);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV32),                       84);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV33),                       92);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceExtendedSize),                   4);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceFormFactor),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntry),             19);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntryV27),          35);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressRange),             4);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceOperatingModeCapabilityFlag),    2);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceSize),                           2);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceSizeGranularity),                1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTechnology),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceType),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTypeDetailFlag),                 2);
@@ -344,6 +354,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntryV27),                23);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayErrorCorrection),         1);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayLocation),                1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayMaximumCapacity),         4);
         TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayUse),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryDeviceChemistry),             1);
         TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryEntry),                       16);
@@ -367,8 +378,11 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorStatus),                            1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorType),                              1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorUpgrade),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltage),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageFlag),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageModeType),                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(DmiStringId),                                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemBootEntry),                            11);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemBootStatus),                           1);
         TEST_ASSERT_EQUALS(sizeof(DmiSystemConfigurationEntry),                   5);
@@ -404,6 +418,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(GraphicalConsole),                              1);
         TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
         TEST_ASSERT_EQUALS(sizeof(GUI),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(Hex),                                           1);
         TEST_ASSERT_EQUALS(sizeof(HorizontalAlignment),                           1);
         TEST_ASSERT_EQUALS(sizeof(Image),                                         32);
         TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   96);
@@ -475,6 +490,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(TableWidget),                                   240);
         TEST_ASSERT_EQUALS(sizeof(TabPageWidget),                                 88);
         TEST_ASSERT_EQUALS(sizeof(TabWidget),                                     152);
+        TEST_ASSERT_EQUALS(sizeof(Time),                                          1);
         TEST_ASSERT_EQUALS(sizeof(ToolButton),                                    192);
         TEST_ASSERT_EQUALS(sizeof(TreeNodeWidget),                                216);
         TEST_ASSERT_EQUALS(sizeof(TreeWidget),                                    176);
@@ -503,148 +519,6 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionLevel),                          1);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                         1);
         TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                    2);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("DmiOnboardDevicesExtendedEntry");
-    {
-        DmiOnboardDevicesExtendedEntry temp;
-
-
-
-        //  DmiOnboardDevicesExtendedEntry - deviceTypeAndEnabled:
-        // ====================================
-        // |  enabled : 1  |  deviceType : 7  |
-        // ====================================
-
-
-
-        temp.deviceTypeAndEnabled = 0x85;   // ||  1  |  0000101  ||
-
-        TEST_ASSERT_EQUALS(temp.deviceType, 5);
-        TEST_ASSERT_EQUALS(temp.enabled,    1);
-
-
-
-        temp.deviceType = 10;               // ||  1  |  0001010  ||
-
-        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x8A);
-
-
-
-        temp.enabled = 0;                   // ||  0  |  0001010  ||
-
-        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x0A);
-
-
-
-        //  DmiOnboardDevicesExtendedEntry - functionNumberAndDeviceNumber:
-        // =============================================
-        // |  deviceNumber : 5  |  functionNumber : 3  |
-        // =============================================
-
-
-
-        temp.functionNumberAndDeviceNumber = 0x0D;  // ||  00001  |  101  ||
-
-        TEST_ASSERT_EQUALS(temp.functionNumber, 5);
-        TEST_ASSERT_EQUALS(temp.deviceNumber,   1);
-
-
-
-        temp.functionNumber = 2;                    // ||  00001  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x0A);
-
-
-
-        temp.deviceNumber = 9;                      // ||  01001  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("DmiProcessorEntry");
-    {
-        DmiProcessorEntry temp;
-
-
-
-        //  DmiProcessorEntry - processorStatus:
-        // ===============================================================================
-        // |  __reserved2 : 1  |  socketPopulated : 1  |  __reserved : 3  |  status : 3  |
-        // ===============================================================================
-
-
-
-        temp.processorStatus = 0x55;    // ||  0  |  1  |  010  |  101  ||
-
-        TEST_ASSERT_EQUALS(temp.status,          5);
-        TEST_ASSERT_EQUALS(temp.__reserved,      2);
-        TEST_ASSERT_EQUALS(temp.socketPopulated, 1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,     0);
-
-
-
-        temp.status = 2;                // ||  0  |  1  |  010  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.processorStatus, 0x52);
-
-
-
-        temp.__reserved = 1;            // ||  0  |  1  |  001  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.processorStatus, 0x4A);
-
-
-
-        temp.socketPopulated = 0;       // ||  0  |  0  |  001  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.processorStatus, 0x0A);
-
-
-
-        temp.__reserved2 = 1;           // ||  1  |  0  |  001  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.processorStatus, 0x8A);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("DmiSystemSlotsEntryV26");
-    {
-        DmiSystemSlotsEntryV26 temp;
-
-
-
-        //  DmiSystemSlotsEntryV26 - functionNumberAndDeviceNumber:
-        // =============================================
-        // |  deviceNumber : 5  |  functionNumber : 3  |
-        // =============================================
-
-
-
-        temp.functionNumberAndDeviceNumber = 0x0D;  // ||  00001  |  101  ||
-
-        TEST_ASSERT_EQUALS(temp.functionNumber, 5);
-        TEST_ASSERT_EQUALS(temp.deviceNumber,   1);
-
-
-
-        temp.functionNumber = 2;                    // ||  00001  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x0A);
-
-
-
-        temp.deviceNumber = 9;                      // ||  01001  |  010  ||
-
-        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
     }
     TEST_CASE_END();
 
@@ -924,6 +798,66 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
+    TEST_CASE("DmiOnboardDevicesExtendedEntry");
+    {
+        DmiOnboardDevicesExtendedEntry temp;
+
+
+
+        //  DmiOnboardDevicesExtendedEntry - deviceTypeAndEnabled:
+        // ====================================
+        // |  enabled : 1  |  deviceType : 7  |
+        // ====================================
+
+
+
+        temp.deviceTypeAndEnabled = 0x85;   // ||  1  |  0000101  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceType, 5);
+        TEST_ASSERT_EQUALS(temp.enabled,    1);
+
+
+
+        temp.deviceType = 10;               // ||  1  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x8A);
+
+
+
+        temp.enabled = 0;                   // ||  0  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.deviceTypeAndEnabled, 0x0A);
+
+
+
+        //  DmiOnboardDevicesExtendedEntry - functionNumberAndDeviceNumber:
+        // =============================================
+        // |  deviceNumber : 5  |  functionNumber : 3  |
+        // =============================================
+
+
+
+        temp.functionNumberAndDeviceNumber = 0x0D;  // ||  00001  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumber, 5);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,   1);
+
+
+
+        temp.functionNumber = 2;                    // ||  00001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x0A);
+
+
+
+        temp.deviceNumber = 9;                      // ||  01001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("DmiPortableBatteryManufactureDate");
     {
         DmiPortableBatteryManufactureDate temp;
@@ -960,6 +894,54 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.year = 7;          // ||  0000111  |  0111  |  11010  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0EFA);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiProcessorEntry");
+    {
+        DmiProcessorEntry temp;
+
+
+
+        //  DmiProcessorEntry - processorStatus:
+        // ===============================================================================
+        // |  __reserved2 : 1  |  socketPopulated : 1  |  __reserved : 3  |  status : 3  |
+        // ===============================================================================
+
+
+
+        temp.processorStatus = 0x55;    // ||  0  |  1  |  010  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.status,          5);
+        TEST_ASSERT_EQUALS(temp.__reserved,      2);
+        TEST_ASSERT_EQUALS(temp.socketPopulated, 1);
+        TEST_ASSERT_EQUALS(temp.__reserved2,     0);
+
+
+
+        temp.status = 2;                // ||  0  |  1  |  010  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x52);
+
+
+
+        temp.__reserved = 1;            // ||  0  |  1  |  001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x4A);
+
+
+
+        temp.socketPopulated = 0;       // ||  0  |  0  |  001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x0A);
+
+
+
+        temp.__reserved2 = 1;           // ||  1  |  0  |  001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.processorStatus, 0x8A);
     }
     TEST_CASE_END();
 
@@ -1044,6 +1026,49 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
+    TEST_CASE("DmiProcessorVoltage");
+    {
+        DmiProcessorVoltage temp;
+
+
+
+        //  DmiProcessorVoltage - value8:
+        // =========================================
+        // |  modeType : 1  |  flags or value : 7  |
+        // =========================================
+
+
+
+        temp.value8 = 0x6A;     // ||  0  |  1101010  ||
+
+        TEST_ASSERT_EQUALS(temp.modeType, 0);
+        TEST_ASSERT_EQUALS(temp.flags,    106);
+        TEST_ASSERT_EQUALS(temp.value,    106);
+
+
+
+        temp.modeType = 1;      // ||  1  |  1101010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xEA);
+
+
+
+        temp.flags = 5;         // ||  1  |  0000101  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x85);
+        TEST_ASSERT_EQUALS(temp.value,  5);
+
+
+
+        temp.value = 2;         // ||  1  |  0000010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x82);
+        TEST_ASSERT_EQUALS(temp.flags,  2);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("DmiSystemPowerSupplyCharacteristics");
     {
         DmiSystemPowerSupplyCharacteristics temp;
@@ -1108,6 +1133,40 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.__reserved = 1;                // ||  01  |  1000  |  010  |  1000  |  1  |  0  |  1  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6145);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiSystemSlotsEntryV26");
+    {
+        DmiSystemSlotsEntryV26 temp;
+
+
+
+        //  DmiSystemSlotsEntryV26 - functionNumberAndDeviceNumber:
+        // =============================================
+        // |  deviceNumber : 5  |  functionNumber : 3  |
+        // =============================================
+
+
+
+        temp.functionNumberAndDeviceNumber = 0x0D;  // ||  00001  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumber, 5);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,   1);
+
+
+
+        temp.functionNumber = 2;                    // ||  00001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x0A);
+
+
+
+        temp.deviceNumber = 9;                      // ||  01001  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumberAndDeviceNumber, 0x4A);
     }
     TEST_CASE_END();
 

@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/string.h>
 #include <uefibase/test/bits64/testengine.h>
@@ -105,6 +106,42 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
 
         TEST_ASSERT_EQUALS(strcpy(temp, u"dddd"), temp);
         TEST_ASSERT_EQUALS(strcmp(temp, u"dddd"), 0);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strdup()");
+    {
+        char8 *temp1 = strdup("aba");
+        char8 *temp2 = strdup("derit");
+        char8 *temp3 = strdup("fuucc");
+
+        TEST_ASSERT_EQUALS(strcmp(temp1, "aba"),   0);
+        TEST_ASSERT_EQUALS(strcmp(temp2, "derit"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp3, "fuucc"), 0);
+
+        TEST_ASSERT_EQUALS(free(temp1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(temp2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(temp3), NgosStatus::OK);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strdup()");
+    {
+        char16 *temp1 = strdup(u"aba");
+        char16 *temp2 = strdup(u"derit");
+        char16 *temp3 = strdup(u"fuucc");
+
+        TEST_ASSERT_EQUALS(strcmp(temp1, u"aba"),   0);
+        TEST_ASSERT_EQUALS(strcmp(temp2, u"derit"), 0);
+        TEST_ASSERT_EQUALS(strcmp(temp3, u"fuucc"), 0);
+
+        TEST_ASSERT_EQUALS(free(temp1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(temp2), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(free(temp3), NgosStatus::OK);
     }
     TEST_CASE_END();
 
