@@ -41,31 +41,32 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool
 
 
 
-    char8 *cur = buffer;
+    u16 *cur = (u16 *)buffer;
 
     for (i64 i = 0; i < size; ++i)
     {
-        *((u16 *)cur) = sHexChars[*data];
+        u8 ch = *data;
+
+        *cur = sHexChars[ch];
 
         ++data;
-        cur += 2;
+        ++cur;
     }
 
 
 
     if (needEllipsis)
     {
-        cur[0] = '.';
-        cur[1] = '.';
-        cur[2] = '.';
-        cur[3] = 0;
+        u32 *terminator = (u32 *)cur;
+
+        *terminator = 0x002E2E2E; // "..."
     }
     else
     {
-        cur[0] = 0;
+        char8 *terminator = (char8 *)cur;
+
+        *terminator = 0;
     }
-
-
 
 
 

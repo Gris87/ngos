@@ -88,6 +88,54 @@ TEST_CASES(section0, __shared_common_bits64_hex_hex);
         TEST_ASSERT_EQUALS(free(temp5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(free(temp6), NgosStatus::OK);
         TEST_ASSERT_EQUALS(free(temp7), NgosStatus::OK);
+
+
+
+        char8 temp[21];
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes1, 10, temp, 21, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "005DBA1774D12E8BE845"),      0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes1, 10, temp, 12, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "005DBA17..."),               0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes1, 10, temp, 11, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "005DBA..."),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes1, 10, temp, 10, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "005DBA..."),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes1, 10, temp, 12, false), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "005DBA1774"),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes1, 10, temp, 11, false), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "005DBA1774"),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes1, 10, temp, 10, false), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "005DBA17"),                   0);
+
+
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes2, 10, temp, 21, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "1970C71E75CC237AD128"),      0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes2, 10, temp, 12, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "1970C71E..."),               0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes2, 10, temp, 11, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "1970C7..."),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes2, 10, temp, 10, true), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "1970C7..."),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes2, 10, temp, 12, false), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "1970C71E75"),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes2, 10, temp, 11, false), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "1970C71E75"),                 0);
+
+        TEST_ASSERT_EQUALS(Hex::toString(bytes2, 10, temp, 10, false), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(strcmp(temp, "1970C71E"),                   0);
     }
     TEST_CASE_END();
 }

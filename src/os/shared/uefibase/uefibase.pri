@@ -256,6 +256,7 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/rgbapixel.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/graphics/stretchrange.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/gui/widgets/widget.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/hex/hex.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/random/random.h \
