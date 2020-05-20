@@ -23,59 +23,59 @@ TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicachesize2);
 
 
 
-        temp.granularity = 0;
         temp.value       = 1;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
-        TEST_ASSERT_EQUALS(temp.size(), 1024);
+        TEST_ASSERT_EQUALS(temp.size(), KB);
 
 
 
-        temp.granularity = 0;
         temp.value       = 64;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
-        TEST_ASSERT_EQUALS(temp.size(), 65536);
+        TEST_ASSERT_EQUALS(temp.size(), 64 * KB);
 
 
 
-        temp.granularity = 0;
         temp.value       = 32767;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
-        TEST_ASSERT_EQUALS(temp.size(), 33553408);
+        TEST_ASSERT_EQUALS(temp.size(), 32767 * KB);
 
 
 
-        temp.granularity = 0;
         temp.value       = 2147483647;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
-        TEST_ASSERT_EQUALS(temp.size(), 2199023254528);
+        TEST_ASSERT_EQUALS(temp.size(), 2147483647 * KB);
 
 
 
-        temp.granularity = 1;
         temp.value       = 1;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
-        TEST_ASSERT_EQUALS(temp.size(), 65536);
+        TEST_ASSERT_EQUALS(temp.size(), 64 * KB);
 
 
 
-        temp.granularity = 1;
         temp.value       = 64;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
-        TEST_ASSERT_EQUALS(temp.size(), 4194304);
+        TEST_ASSERT_EQUALS(temp.size(), 64 * 64 * KB);
 
 
 
-        temp.granularity = 1;
         temp.value       = 32767;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
-        TEST_ASSERT_EQUALS(temp.size(), 2147418112);
+        TEST_ASSERT_EQUALS(temp.size(), 32767 * 64 * KB);
 
 
 
-        temp.granularity = 1;
         temp.value       = 2147483647;
+        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
-        TEST_ASSERT_EQUALS(temp.size(), 140737488289792);
+        TEST_ASSERT_EQUALS(temp.size(), 2147483647ULL * 64 * KB);
     }
     TEST_CASE_END();
 }

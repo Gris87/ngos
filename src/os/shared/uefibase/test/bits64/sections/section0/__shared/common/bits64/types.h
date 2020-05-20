@@ -764,6 +764,40 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
+    TEST_CASE("DmiMemoryDeviceSize");
+    {
+        DmiMemoryDeviceSize temp;
+
+
+
+        //  DmiMemoryDeviceSize - value16:
+        // ====================================
+        // |  granularity : 1  |  value : 15  |
+        // ====================================
+
+
+
+        temp.value16 = 0x8005;  // ||  1  |  000000000000101  ||
+
+        TEST_ASSERT_EQUALS(temp.value,        5);
+        TEST_ASSERT_EQUALS(temp.granularity,  1);
+
+
+
+        temp.value = 8;         // ||  1  |  000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x8008);
+
+
+
+        temp.granularity = 0;   // ||  0  |  000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x0008);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("DmiOnboardDevicesDevice");
     {
         DmiOnboardDevicesDevice temp;
