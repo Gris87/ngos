@@ -1,6 +1,7 @@
 #include "devicemanagerdmi.h"
 
 #include <common/src/bits64/dmi/dmi.h>
+#include <common/src/bits64/hex/hex.h>
 #include <common/src/bits64/string/utils.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
@@ -6395,60 +6396,11 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
                 {
                     u8 valueSize = curInfo->entryLength - sizeof(DmiAdditionalInformation);
 
-                    if (valueSize > 0) // TODO: Move to function
+                    if (valueSize > 0)
                     {
-                        const char8 *digits = "0123456789ABCDEF";
+                        char8 *valueString;
 
-
-
-                        bool cutted = false;
-                        u16  bufferSize;
-
-                        if (valueSize > VALUE_MAXIMUM_LENGTH / 2)
-                        {
-                            valueSize  = VALUE_MAXIMUM_LENGTH / 2;
-                            cutted     = true;
-                            bufferSize = VALUE_MAXIMUM_LENGTH + 3 + 1; // 3 == "...", 1 = zero at the end
-                        }
-                        else
-                        {
-                            bufferSize = valueSize * 2 + 1; // 1 = zero at the end
-                        }
-
-
-
-                        char8 *valueString = (char8 *)malloc(bufferSize);
-                        UEFI_TEST_ASSERT(valueString, NgosStatus::ASSERTION);
-
-                        char8 *cur = valueString;
-
-
-
-                        for (i64 j = 0; j < valueSize; ++j)
-                        {
-                            u8 valueByte = curInfo->value[j];
-
-                            cur[0] = digits[valueByte >> 4];
-                            cur[1] = digits[valueByte & 0x0F];
-
-                            cur += 2;
-                        }
-
-
-
-                        if (cutted)
-                        {
-                            cur[0] = '.';
-                            cur[1] = '.';
-                            cur[2] = '.';
-                            cur[3] = 0;
-                        }
-                        else
-                        {
-                            *cur = 0;
-                        }
-
-
+                        UEFI_ASSERT_EXECUTION(Hex::toString(curInfo->value, valueSize, &valueString, VALUE_MAXIMUM_LENGTH + 1, true), NgosStatus::ASSERTION);
 
                         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d value", i), valueString, DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
                     }

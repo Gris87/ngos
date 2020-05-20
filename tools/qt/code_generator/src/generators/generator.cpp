@@ -139,10 +139,17 @@ bool Generator::save(const QString &path, const QByteArray &bytes)
 
     QFile file(path);
 
-    if (file.open(QIODevice::ReadOnly))
+    if (
+        file.exists()
+        &&
+        file.size() == bytes.size()
+       )
     {
-        oldBytes = file.readAll();
-        file.close();
+        if (file.open(QIODevice::ReadOnly))
+        {
+            oldBytes = file.readAll();
+            file.close();
+        }
     }
 
 

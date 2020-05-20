@@ -49,6 +49,7 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/rgbapixel.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/graphics/stretchrange.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/gui/widgets/widget.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/hex/hex.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/memory/memory.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/random/random.h>
@@ -120,6 +121,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_graphics_rgbapixel);
     CALL_TEST_CASES(section0, __shared_common_bits64_graphics_stretchrange);
     CALL_TEST_CASES(section0, __shared_common_bits64_gui_widgets_widget);
+    CALL_TEST_CASES(section0, __shared_common_bits64_hex_hex);
     CALL_TEST_CASES(section0, __shared_common_bits64_memory_memory);
     CALL_TEST_CASES(section0, __shared_common_bits64_printf_printf);
     CALL_TEST_CASES(section0, __shared_common_bits64_random_random);

@@ -47,6 +47,7 @@ SOURCES += \
     $$PWD/src/bits64/gui/widgets/special/rootwidget.cpp \
     $$PWD/src/bits64/gui/widgets/special/screenwidget.cpp \
     $$PWD/src/bits64/gui/widgets/widget.cpp \
+    $$PWD/src/bits64/hex/generated/hexchars.cpp \
     $$PWD/src/bits64/hex/hex.cpp \
     $$PWD/src/bits64/inflate/inflate.cpp \
     $$PWD/src/bits64/memory/malloc.cpp \
