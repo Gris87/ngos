@@ -48,7 +48,7 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
     process.start("gcc", QStringList() << "-c" << asmPath << "-o" << tempFile1Path);
     process.waitForFinished(-1);
 
-    if (process.exitCode()) // process.exitCode() != 0
+    if (process.exitCode() != 0)
     {
         Console::err(QString("Failed to compile %1:\n%2").arg(asmPath).arg(QString::fromUtf8(process.readAllStandardError())));
 
@@ -60,7 +60,7 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
     process.start("ld", QStringList() << "--oformat" << "binary" << "-T" << path + "/../../../src/os/boot/linker.ld" << tempFile1Path << "-o" << tempFile2Path);
     process.waitForFinished(-1);
 
-    if (process.exitCode()) // process.exitCode() != 0
+    if (process.exitCode() != 0)
     {
         Console::err(QString("Failed to compile %1:\n%2").arg(asmPath).arg(QString::fromUtf8(process.readAllStandardError())));
 

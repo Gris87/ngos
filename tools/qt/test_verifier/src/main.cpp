@@ -206,7 +206,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (messages.length()) // messages.length() > 0
+    if (messages.length() > 0)
     {
         std::sort(messages.begin(), messages.end());
 

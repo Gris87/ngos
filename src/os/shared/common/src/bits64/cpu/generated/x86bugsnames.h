@@ -8,7 +8,7 @@
 
 
 
-extern const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM << 5]; // x86BugsNames declared in x86bugsnames.cpp file // "<< 5" == "* 32"
+extern const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM * 32]; // x86BugsNames declared in x86bugsnames.cpp file
 
 
 

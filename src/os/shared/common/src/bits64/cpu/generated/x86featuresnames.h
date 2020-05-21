@@ -8,7 +8,7 @@
 
 
 
-extern const char8* x86FeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // x86FeaturesNames declared in x86featuresnames.cpp file // "<< 5" == "* 32"
+extern const char8* x86FeaturesNames[(u64)x86FeatureWord::MAXIMUM * 32]; // x86FeaturesNames declared in x86featuresnames.cpp file
 
 
 

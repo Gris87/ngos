@@ -17,7 +17,7 @@
 
 
 
-#define WORD_BIT(wordId, bitId) (((u64)(wordId) << 5) + (bitId)) // "<< 5" == "* 32"
+#define WORD_BIT(wordId, bitId) (((u64)(wordId) * 32) + (bitId))
 
 
 

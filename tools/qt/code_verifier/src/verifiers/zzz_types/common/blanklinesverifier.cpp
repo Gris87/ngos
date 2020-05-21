@@ -38,7 +38,7 @@ void BlankLinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
     if (blockSize != 1)
     {
-        if (!blockSize) // blockSize == 0
+        if (blockSize == 0)
         {
             worker->addError(path, lines.length(), "No blank line at the end");
         }

@@ -983,9 +983,9 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    UEFI_ASSERT_EXECUTION(sTabWidget->setPosition((screenWidth - tabWidgetWidth) >> 1, 0), NgosStatus::ASSERTION); // ">> 1"  == "/ 2"
-    UEFI_ASSERT_EXECUTION(sTabWidget->setSize(tabWidgetWidth, tabWidgetHeight),            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SYSTEM_INFORMATION),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->setPosition((screenWidth - tabWidgetWidth) / 2, 0), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->setSize(tabWidgetWidth, tabWidgetHeight),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SYSTEM_INFORMATION),  NgosStatus::ASSERTION);
 
 
 
@@ -995,8 +995,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth >> 1, screenHeight >> 1), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth / 2, screenHeight / 2), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                NgosStatus::ASSERTION);
 
 
 
@@ -1295,7 +1295,7 @@ NgosStatus CpuTestGUI::fillIssuesTable()
 
 
 
-    if (!sIssuesTableWidget->getRowCount()) // sIssuesTableWidget->getRowCount() == 0
+    if (sIssuesTableWidget->getRowCount() == 0)
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "Everything is OK"), NgosStatus::ASSERTION);
     }
@@ -1365,7 +1365,7 @@ NgosStatus CpuTestGUI::addTestEntry()
 
     if (test->isCompleted())
     {
-        if (test->getScore()) // test->getScore() != 0
+        if (test->getScore() != 0)
         {
             char8 *scoreString = (char8 *)malloc(7);
 
@@ -1405,7 +1405,7 @@ NgosStatus CpuTestGUI::putTestScore()
 
 
 
-    if (test->getScore()) // test->getScore() != 0
+    if (test->getScore() != 0)
     {
         char8 *scoreString = (char8 *)malloc(7);
 
@@ -1663,7 +1663,7 @@ NgosStatus CpuTestGUI::waitForEvent()
 
 
 
-    if (!eventIndex) // eventIndex == 0
+    if (eventIndex == 0)
     {
         return processKeyboardEvent();
     }
@@ -1693,7 +1693,7 @@ NgosStatus CpuTestGUI::terminateAndWaitForApplicationProcessors()
 
 
 
-    if (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
+    if (sNumberOfRunningProcessors > 0)
     {
         if (!sTerminated)
         {
@@ -1908,7 +1908,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-    if (!sNumberOfRunningProcessors) // sNumberOfRunningProcessors == 0
+    if (sNumberOfRunningProcessors == 0)
     {
         UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
@@ -2480,7 +2480,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-            if (!sNumberOfRunningProcessors) // sNumberOfRunningProcessors == 0
+            if (sNumberOfRunningProcessors == 0)
             {
                 for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
                 {
@@ -2516,7 +2516,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                if (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
+                if (sNumberOfRunningProcessors > 0)
                 {
                     UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 

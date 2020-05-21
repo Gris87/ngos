@@ -229,7 +229,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     const ArrayList<OsInfo>& oses    = Bootloader::getOSes();
     u64                      osCount = oses.getSize();
 
-    if (osCount) // osCount > 0
+    if (osCount > 0)
     {
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       osButtonSize, osButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        osButtonSize, osButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
@@ -384,7 +384,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
         if (osCount == 2)
         {
             osButtonPositionX = screenWidth * (OS_REGION_LEFT_PERCENT + OS_REGION_RIGHT_PERCENT - OS_BUTTON_SIZE_PERCENT) / 200 - osButtonSize;
-            osButtonStep      = osButtonSize << 1; // "<< 1" == "* 2"
+            osButtonStep      = osButtonSize * 2;
         }
         else
         {
@@ -580,7 +580,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    if (osCount) // osCount > 0
+    if (osCount > 0)
     {
         UEFI_ASSERT_EXECUTION(focusOsButton(), NgosStatus::ASSERTION);
     }
@@ -593,8 +593,8 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     CursorWidget *cursorWidget = new CursorWidget(sCursorImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getGlobalPositionX() + (GUI::getFocusedWidget()->getWidth() >> 1), GUI::getFocusedWidget()->getGlobalPositionY() + (GUI::getFocusedWidget()->getHeight() >> 1)), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                                                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getGlobalPositionX() + (GUI::getFocusedWidget()->getWidth() / 2), GUI::getFocusedWidget()->getGlobalPositionY() + (GUI::getFocusedWidget()->getHeight() / 2)), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                                                                                    NgosStatus::ASSERTION);
 
 
 
@@ -734,7 +734,7 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
 
     bool locked = false;
 
-    if (sOsButtonLeft) // sOsButtonLeft > 0
+    if (sOsButtonLeft > 0)
     {
         locked = true;
 
@@ -815,7 +815,7 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
 
     if (sOsButtonSelected <= sOsButtonLeft)
     {
-        if (sOsButtonLeft) // sOsButtonLeft > 0
+        if (sOsButtonLeft > 0)
         {
             locked = true;
 
@@ -1022,7 +1022,7 @@ NgosStatus BootloaderGUI::waitForEvent()
 
 
 
-    if (!eventIndex) // eventIndex == 0
+    if (eventIndex == 0)
     {
         return processKeyboardEvent();
     }
@@ -1723,7 +1723,7 @@ NgosStatus BootloaderGUI::onLeftButtonPressed()
 
 
 
-    if (!sOsButtonLeft) // sOsButtonLeft == 0
+    if (sOsButtonLeft == 0)
     {
         UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sRightButton), NgosStatus::ASSERTION);
     }

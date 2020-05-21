@@ -56,7 +56,7 @@ bool memempty(const void *src, i64 length)
     {
         --length;
 
-        if (s[length]) // s[length] != 0
+        if (s[length] != 0)
         {
             return false;
         }

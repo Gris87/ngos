@@ -51,7 +51,7 @@ DocsFileInfo* DocsWorkerThread::popFile()
 
         DocsFileInfo *res = sFiles.constFirst();
 
-        if (!res) // res == 0
+        if (res == nullptr)
         {
             sFilesSemaphore.release();
         }
@@ -66,7 +66,7 @@ DocsFileInfo* DocsWorkerThread::popFile()
 
 void DocsWorkerThread::noMoreFiles()
 {
-    pushFile(0);
+    pushFile(nullptr);
 }
 
 void DocsWorkerThread::addWarning(const QString &path, qint64 line, const QString &warning)
@@ -95,7 +95,7 @@ void DocsWorkerThread::run()
     {
         DocsFileInfo *fileInfo = popFile();
 
-        if (!fileInfo) // fileInfo == 0
+        if (fileInfo == nullptr)
         {
             break;
         }

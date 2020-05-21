@@ -11,7 +11,7 @@
 
 
 
-#define CONST_BIT_ADDRESS(address, bit) (u8 *)((u64)(address) + ((bit) >> 3))  // ">> 3" == "/ 8"
+#define CONST_BIT_ADDRESS(address, bit) (u8 *)((u64)(address) + ((bit) / 8))
 #define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))
 
 
@@ -177,7 +177,7 @@ public:
 
     static inline u8 findFirstBit16(u16 value)
     {
-        if (!value) // value == 0
+        if (value == 0)
         {
             return 0;
         }
@@ -201,7 +201,7 @@ public:
 
     static inline u8 findFirstBit32(u32 value)
     {
-        if (!value) // value == 0
+        if (value == 0)
         {
             return 0;
         }
@@ -225,7 +225,7 @@ public:
 
     static inline u8 findFirstBit64(u64 value)
     {
-        if (!value) // value == 0
+        if (value == 0)
         {
             return 0;
         }
@@ -321,7 +321,7 @@ public:
 
     static inline u8 findLastBit16(u16 value)
     {
-        if (!value) // value == 0
+        if (value == 0)
         {
             return 0;
         }
@@ -345,7 +345,7 @@ public:
 
     static inline u8 findLastBit32(u32 value)
     {
-        if (!value) // value == 0
+        if (value == 0)
         {
             return 0;
         }
@@ -369,7 +369,7 @@ public:
 
     static inline u8 findLastBit64(u64 value)
     {
-        if (!value) // value == 0
+        if (value == 0)
         {
             return 0;
         }

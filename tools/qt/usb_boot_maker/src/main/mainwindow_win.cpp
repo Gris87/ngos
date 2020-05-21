@@ -24,7 +24,7 @@
 #define ZERO_SIZE          0
 #define MEMBER_INDEX_FIRST 0
 
-#define MIN_DISK_SIZE (8 << 20) // "<< 20" == "* 1024 * 1024"
+#define MIN_DISK_SIZE (8* 1024 * 1024)
 
 #define USB_CARD_READER_INDEX 1
 #define UASPSTOR_INDEX        4
@@ -1219,7 +1219,7 @@ void getDiskLetters(DWORD diskNumber, char *letters)
 
 QString diskLettersHumanReadable(DWORD diskNumber, char *letters)
 {
-    if (!letters[0]) // letters[0] == 0
+    if (letters[0] == 0)
     {
         return "Disk " + QString::number(diskNumber);
     }
@@ -1243,7 +1243,7 @@ QString diskLettersHumanReadable(DWORD diskNumber, char *letters)
 
 QString getDiskLabel(DWORD diskNumber, char *letters)
 {
-    if (letters[0]) // letters[0] != 0
+    if (letters[0] != 0)
     {
         QString autorunLabel;
 
@@ -1323,7 +1323,7 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
     quint64 diskSize = getDiskSize(diskNumber);
     qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB"; // Ignore CppAlignmentVerifier
 
-    if (!diskSize) // diskSize == 0
+    if (diskSize == 0)
     {
         qCritical() << "Device without media";
 

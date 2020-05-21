@@ -8,7 +8,7 @@
 
 
 
-const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM << 5]; // "<< 5" == "* 32"
+const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM * 32];
 
 
 

@@ -333,7 +333,7 @@ void MainWindow::latestVersionReplyFinished()
 
 
 
-    if (!mReplies.size()) // mReplies.size() == 0
+    if (mReplies.size() == 0)
     {
         switchToState(UsbBootMakerState::GET_FILE_LIST);
     }
@@ -553,7 +553,7 @@ void MainWindow::fileListReplyFinished()
 
 
 
-    if (!mReplies.size()) // mReplies.size() == 0
+    if (mReplies.size() == 0)
     {
         switchToState(UsbBootMakerState::DOWNLOAD);
     }
@@ -649,7 +649,7 @@ void MainWindow::downloadReplyFinished()
 
 
 
-            if (!process.exitCode()) // process.exitCode() == 0
+            if (process.exitCode() == 0)
             {
                 content = process.readAllStandardOutput();
 
@@ -726,7 +726,7 @@ void MainWindow::downloadReplyFinished()
 
 
 
-    if (!mReplies.size()) // mReplies.size() == 0
+    if (mReplies.size() == 0)
     {
         ++mCurrentApplication;
 
@@ -884,7 +884,7 @@ void MainWindow::handleGetFileListState()
 
 
 
-    if (!mLatestVersions.size()) // mLatestVersions.size() == 0
+    if (mLatestVersions.size() == 0)
     {
         switchToInitialState();
 

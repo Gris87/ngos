@@ -286,7 +286,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, Memor
 
     while (left < right)
     {
-        u64 middle = (left + right) >> 1; // ">> 1" == "/ 2"
+        u64 middle = (left + right) / 2;
 
         MemoryMapEntry &entry = table->entries[middle];
 

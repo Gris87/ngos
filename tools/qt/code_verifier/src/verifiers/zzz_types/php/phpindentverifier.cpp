@@ -43,7 +43,7 @@ void PhpIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
                     if (expectedPos < 0)
                     {
-                        if (j % SPACE_INDENT) // j % SPACE_INDENT != 0
+                        if (j % SPACE_INDENT != 0)
                         {
                             worker->addError(path, i, "Invalid indentation");
                         }

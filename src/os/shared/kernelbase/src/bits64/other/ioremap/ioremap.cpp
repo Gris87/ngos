@@ -124,7 +124,7 @@ NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
 
 
 
-    if (!sSlotsAvailable) // sSlotsAvailable == 0
+    if (sSlotsAvailable == 0)
     {
         COMMON_LF(("There is no free slot for fixed mapping"));
 

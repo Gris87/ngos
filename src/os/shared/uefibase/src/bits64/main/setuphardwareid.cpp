@@ -338,9 +338,9 @@ NgosStatus loadHardwareIdFromFile(BootParams *params)
 
 
 
-    if (strcmp(params->hardwareId, "")) // params->hardwareId != ""
+    if (!strequal(params->hardwareId, ""))
     {
-        if (strcmp(params->hardwareId, hardwareId)) // params->hardwareId != hardwareId
+        if (!strequal(params->hardwareId, hardwareId))
         {
             UEFI_ASSERT_EXECUTION(saveHardwareIdToFile(params),  NgosStatus::ASSERTION);
         }
@@ -351,9 +351,9 @@ NgosStatus loadHardwareIdFromFile(BootParams *params)
 
         UEFI_ASSERT_EXECUTION(generateHardwareId(params, &length), NgosStatus::ASSERTION);
 
-        if (strcmp(hardwareId, "")) // hardwareId != ""
+        if (!strequal(hardwareId, ""))
         {
-            if (strncmp(params->hardwareId, hardwareId, length)) // params->hardwareId != hardwareId
+            if (!strnequal(params->hardwareId, hardwareId, length))
             {
                 UEFI_ASSERT_EXECUTION(saveHardwareIdToNvram(params), NgosStatus::ASSERTION);
                 UEFI_ASSERT_EXECUTION(saveHardwareIdToFile(params),  NgosStatus::ASSERTION);

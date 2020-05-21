@@ -45,7 +45,7 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
                 !match.hasMatch()
                )
             {
-                if (ranges.length()) // ranges.length() > 0
+                if (ranges.length() > 0)
                 {
                     for (qint64 j = 1; j < ranges.length(); ++j)
                     {

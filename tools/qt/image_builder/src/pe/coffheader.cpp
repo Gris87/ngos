@@ -41,21 +41,21 @@ bool COFFHeader::verify()
         return false;
     }
 
-    if (timeDateStamp) // timeDateStamp != 0
+    if (timeDateStamp != 0)
     {
         Console::err(QString("Wrong COFF Header timeDateStamp: 0x%1").arg(timeDateStamp, 8, 16, QChar('0')));
 
         return false;
     }
 
-    if (pointerToSymbolTable) // pointerToSymbolTable != 0
+    if (pointerToSymbolTable != 0)
     {
         Console::err(QString("Wrong COFF Header pointerToSymbolTable: 0x%1").arg(pointerToSymbolTable, 8, 16, QChar('0')));
 
         return false;
     }
 
-    if (numberOfSymbols) // numberOfSymbols != 0
+    if (numberOfSymbols != 0)
     {
         Console::err(QString("Wrong COFF Header numberOfSymbols: 0x%1").arg(numberOfSymbols, 8, 16, QChar('0')));
 

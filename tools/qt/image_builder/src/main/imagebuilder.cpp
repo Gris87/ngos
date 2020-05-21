@@ -138,7 +138,7 @@ qint64 ImageBuilder::process()
 
     ElfSectionHeaderTableEntry *bssSection = mConfigureElfObject.getSection(".bss");
 
-    if (bssSection) // bssSection != 0
+    if (bssSection != nullptr)
     {
         if (mTextElfPath == "")
         {

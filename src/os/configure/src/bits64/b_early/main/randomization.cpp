@@ -403,7 +403,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
     {
         EARLY_ASSERT_EXECUTION(findIntersection(params, unavailableMemoryAreas, currentAddress, currentAddress + imageSize, &intersectedMemoryArea), NgosStatus::ASSERTION);
 
-        if (!intersectedMemoryArea.start && !intersectedMemoryArea.end) // intersectedMemoryArea.start == 0 && intersectedMemoryArea.end == 0
+        if (intersectedMemoryArea.start == 0 && intersectedMemoryArea.end == 0)
         {
             EARLY_LVV(("Valid place found at address 0x%p", currentAddress));
 
@@ -426,7 +426,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
     {
         EARLY_ASSERT_EXECUTION(findIntersection(params, unavailableMemoryAreas, currentAddress, currentAddress + imageSize, &intersectedMemoryArea), NgosStatus::ASSERTION);
 
-        if (!intersectedMemoryArea.start && !intersectedMemoryArea.end) // intersectedMemoryArea.start == 0 && intersectedMemoryArea.end == 0
+        if (intersectedMemoryArea.start == 0 && intersectedMemoryArea.end == 0)
         {
             EARLY_LVV(("Valid place found at address 0x%p", currentAddress));
 

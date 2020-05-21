@@ -89,7 +89,7 @@ void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
     tempFile.open();
     QByteArray output = tempFile.readAll().trimmed();
 
-    if (output.length()) // output.length() > 0
+    if (output.length() > 0)
     {
         qDebug() << "";
         qDebug() << output.data();

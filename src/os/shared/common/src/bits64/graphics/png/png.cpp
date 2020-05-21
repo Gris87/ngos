@@ -374,11 +374,11 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
     switch (imageHeader->colorType)
     {
-        case PngColorType::GREYSCALE:           decoder->bitsPerPixel = imageHeader->bitDepth;      break;
-        case PngColorType::RGB:                 decoder->bitsPerPixel = imageHeader->bitDepth * 3;  break;
-        case PngColorType::PALETTE:             decoder->bitsPerPixel = imageHeader->bitDepth;      break;
-        case PngColorType::GREYSCALE_AND_ALPHA: decoder->bitsPerPixel = imageHeader->bitDepth << 1; break; // "<< 1" == "* 2"
-        case PngColorType::RGBA:                decoder->bitsPerPixel = imageHeader->bitDepth << 2; break; // "<< 2" == "* 4"
+        case PngColorType::GREYSCALE:           decoder->bitsPerPixel = imageHeader->bitDepth;     break;
+        case PngColorType::RGB:                 decoder->bitsPerPixel = imageHeader->bitDepth * 3; break;
+        case PngColorType::PALETTE:             decoder->bitsPerPixel = imageHeader->bitDepth;     break;
+        case PngColorType::GREYSCALE_AND_ALPHA: decoder->bitsPerPixel = imageHeader->bitDepth * 2; break;
+        case PngColorType::RGBA:                decoder->bitsPerPixel = imageHeader->bitDepth * 4; break;
 
         default:
         {
@@ -916,7 +916,7 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
     if (
         bitsPerPixel < 8
         &&
-        width * bitsPerPixel != DIV_UP(width * bitsPerPixel, 8) << 3 // "<< 3" == "* 8"
+        width * bitsPerPixel != DIV_UP(width * bitsPerPixel, 8) * 8 // TODO: ALIGN?
        )
     {
         status = unfilter(decoder, decoder->imageDataBuffer, decoder->imageDataBuffer, width, height);
@@ -926,7 +926,7 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
             return status;
         }
 
-        status = removePaddingBits(decoder->imageDataBuffer, decoder->rawImageBuffer, DIV_UP(width * bitsPerPixel, 8) << 3, width * bitsPerPixel, height); // "<< 3" == "* 8"
+        status = removePaddingBits(decoder->imageDataBuffer, decoder->rawImageBuffer, DIV_UP(width * bitsPerPixel, 8) * 8, width * bitsPerPixel, height); // TODO: ALIGN?
     }
     else
     {
@@ -1063,7 +1063,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                     pixel->alpha == 0xFF
                    )
                 {
-                    if (!from) // from == 0
+                    if (from == 0)
                     {
                         from = i;
                     }
@@ -1072,7 +1072,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
                 else
                 {
-                    if (from) // from != 0
+                    if (from != 0)
                     {
                         patch->addStretchRangeX(StretchRange(from - 1, to));
 
@@ -1096,7 +1096,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                     !pixel->blue  // pixel->blue  == 0
                    )
                 {
-                    if (!from) // from == 0
+                    if (from == 0)
                     {
                         from = i;
                     }
@@ -1105,7 +1105,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
                 else
                 {
-                    if (from) // from != 0
+                    if (from != 0)
                     {
                         patch->addStretchRangeX(StretchRange(from - 1, to));
 
@@ -1116,7 +1116,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             }
         }
 
-        if (from) // from != 0
+        if (from != 0)
         {
             patch->addStretchRangeX(StretchRange(from - 1, to));
 
@@ -1142,7 +1142,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                     pixel->alpha == 0xFF
                    )
                 {
-                    if (!from) // from == 0
+                    if (from == 0)
                     {
                         from = i;
                     }
@@ -1151,7 +1151,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
                 else
                 {
-                    if (from) // from != 0
+                    if (from != 0)
                     {
                         patch->addStretchRangeY(StretchRange(from - 1, to));
 
@@ -1175,7 +1175,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                     !pixel->blue  // pixel->blue  == 0
                    )
                 {
-                    if (!from) // from == 0
+                    if (from == 0)
                     {
                         from = i;
                     }
@@ -1184,7 +1184,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
                 else
                 {
-                    if (from) // from != 0
+                    if (from != 0)
                     {
                         patch->addStretchRangeY(StretchRange(from - 1, to));
 
@@ -1195,7 +1195,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             }
         }
 
-        if (from) // from != 0
+        if (from != 0)
         {
             patch->addStretchRangeY(StretchRange(from - 1, to));
         }
@@ -1681,7 +1681,7 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
     {
         u64 newAllocatedSize;
 
-        if (oldAllocatedSize) // oldAllocatedSize != 0
+        if (oldAllocatedSize != 0)
         {
             newAllocatedSize = oldAllocatedSize << 1;
 
@@ -1708,7 +1708,7 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
 
 
 
-        if (oldAllocatedSize) // oldAllocatedSize != 0
+        if (oldAllocatedSize != 0)
         {
             memcpy(buffer, decoder->imageDataBuffer, oldSize);
 

@@ -302,7 +302,7 @@ bool ElfObject::verifyHeader()
 
 
 
-    if (mHeader->flags) // mHeader->flags != 0
+    if (mHeader->flags != 0)
     {
         qDebug() << "ELF flags is invalid";
 
@@ -329,7 +329,7 @@ bool ElfObject::verifyHeader()
 
 
 
-    if (!mHeader->programHeaderTableEntryCount) // mHeader->programHeaderTableEntryCount == 0
+    if (mHeader->programHeaderTableEntryCount == 0)
     {
         qDebug() << "ELF number of program header table entries is invalid";
 
@@ -347,7 +347,7 @@ bool ElfObject::verifyHeader()
 
 
 
-    if (!mHeader->sectionHeaderTableEntryCount) // mHeader->sectionHeaderTableEntryCount == 0
+    if (mHeader->sectionHeaderTableEntryCount == 0)
     {
         qDebug() << "ELF number of section header table entries is invalid";
 

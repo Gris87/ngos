@@ -635,7 +635,7 @@ NgosStatus CPU::setFlag(X86Feature flag)
 {
     COMMON_LT((" | flag = 0x%04X", flag));
 
-    COMMON_ASSERT(((u64)flag >> 5) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -650,7 +650,7 @@ NgosStatus CPU::clearFlag(X86Feature flag)
 {
     COMMON_LT((" | flag = 0x%04X", flag));
 
-    COMMON_ASSERT(((u64)flag >> 5) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -665,7 +665,7 @@ bool CPU::hasFlag(X86Feature flag)
 {
     // COMMON_LT((" | flag = 0x%04X", flag)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(((u64)flag >> 5) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", false); // ">> 5" == "/ 32"
+    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", false);
 
 
 
@@ -676,7 +676,7 @@ NgosStatus CPU::setBug(X86Bug bug)
 {
     COMMON_LT((" | bug = 0x%04X", bug));
 
-    COMMON_ASSERT(((u64)bug >> 5) < (u64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+    COMMON_ASSERT(((u64)bug / 32) < (u64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -691,7 +691,7 @@ NgosStatus CPU::clearBug(X86Bug bug)
 {
     COMMON_LT((" | bug = 0x%04X", bug));
 
-    COMMON_ASSERT(((u64)bug >> 5) < (u64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION); // ">> 5" == "/ 32"
+    COMMON_ASSERT(((u64)bug / 32) < (u64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -706,7 +706,7 @@ bool CPU::hasBug(X86Bug bug)
 {
     COMMON_LT((" | bug = 0x%04X", bug));
 
-    COMMON_ASSERT(((u64)bug >> 5) < (u64)x86BugWord::MAXIMUM, "bug is invalid", false); // ">> 5" == "/ 32"
+    COMMON_ASSERT(((u64)bug / 32) < (u64)x86BugWord::MAXIMUM, "bug is invalid", false);
 
 
 
@@ -878,7 +878,7 @@ NgosStatus CPU::initCpuFeatures()
             {
                 COMMON_LVV(("X86Feature::CLFLUSH supported"));
 
-                sCacheLineFlushSize = ((misc >> 8) & 0xFF) << 3; // "<< 3" == "* 8"
+                sCacheLineFlushSize = ((misc >> 8) & 0xFF) * 8;
                 sCacheAlignment     = sCacheLineFlushSize;
             }
 
@@ -1535,7 +1535,7 @@ NgosStatus CPU::doAmdPostprocessing()
         sNumberOfCores   = (ecx >> 12) & 0x0F;
         sNumberOfThreads = (ecx & 0xFF) + 1;
 
-        if (!sNumberOfCores) // sNumberOfCores == 0
+        if (sNumberOfCores == 0)
         {
             sNumberOfCores = 1;
         }

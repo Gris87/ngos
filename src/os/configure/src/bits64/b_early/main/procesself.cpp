@@ -130,7 +130,8 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
     EARLY_LVVV(("delta = 0x%016lX", delta));
 
-    if (!delta) // delta == 0 // Relocation not needed
+    // If relocation not needed
+    if (delta == 0 )
     {
         return NgosStatus::OK;
     }

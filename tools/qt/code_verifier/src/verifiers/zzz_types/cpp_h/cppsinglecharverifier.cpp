@@ -43,7 +43,7 @@ void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path
                         ++escapeCount;
                     }
 
-                    if (!(escapeCount % 2)) // escapeCount % 2 == 0
+                    if ((escapeCount & 1) == 0)
                     {
                         switch (mode)
                         {

@@ -456,7 +456,7 @@ char16* UEFI::devicePathToString(UefiDevicePath *path)
 
     char16 *res = devicePathToTextProtocol->convertDevicePathToText(path, false, true);
 
-    if (!res) // pathStr == 0
+    if (res == nullptr)
     {
         UEFI_LF(("Failed to allocate pool(0x%p) for string", res));
 
@@ -822,7 +822,7 @@ UefiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
     UefiMemoryDescriptor *memoryDescriptor = 0;
 
     *map->descriptorSize = sizeof(UefiMemoryDescriptor);
-    *map->memoryMapSize  = *map->descriptorSize << 6; // "<< 6" == "* 64"
+    *map->memoryMapSize  = *map->descriptorSize * 64;
     *map->bufferSize     = *map->memoryMapSize;
 
 
@@ -1036,7 +1036,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
         u64 start = memoryDescriptor->physicalStart;
         u64 end   = start + memoryDescriptor->numberOfPages * PAGE_SIZE;
 
-        if (!start) // start == 0
+        if (start == 0)
         {
             UEFI_LVV(("Offset 0 assigned to offset 8 since 0 is a special case for null pointer"));
 
@@ -1094,7 +1094,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-    if (!(*address)) // *address == 0
+    if (*address == 0)
     {
         UEFI_LF(("Failed to find valid memory descriptor"));
 

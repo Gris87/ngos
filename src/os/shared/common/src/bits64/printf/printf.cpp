@@ -140,7 +140,7 @@ char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 
     i64 i = 0;
 
-    if (!value) // value == 0
+    if (value == 0)
     {
         temp[0] = '0';
         ++i;

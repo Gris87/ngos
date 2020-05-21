@@ -128,7 +128,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
 
         if (currentBlockType != blockType)
         {
-            if (currentBlock.length()) // currentBlock.length() > 0
+            if (currentBlock.length() > 0)
             {
                 blocks.append(currentBlock);
                 blockStarts.append(currentBlockStart);
@@ -147,7 +147,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
         }
     }
 
-    if (currentBlock.length()) // currentBlock.length() > 0
+    if (currentBlock.length() > 0)
     {
         blocks.append(currentBlock);
         blockStarts.append(currentBlockStart);

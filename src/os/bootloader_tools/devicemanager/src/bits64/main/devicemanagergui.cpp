@@ -293,8 +293,8 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
-    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth >> 1, screenHeight >> 1), NgosStatus::ASSERTION); // ">> 1" == "/ 2"
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth / 2, screenHeight / 2), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                NgosStatus::ASSERTION);
 
 
 
@@ -627,7 +627,7 @@ NgosStatus DeviceManagerGUI::waitForEvent()
 
 
 
-    if (!eventIndex) // eventIndex == 0
+    if (eventIndex == 0)
     {
         return processKeyboardEvent();
     }

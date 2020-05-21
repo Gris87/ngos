@@ -69,21 +69,21 @@ bool PEOptHeader::verify()
         return false;
     }
 
-    if (sizeOfCode) // sizeOfCode != 0
+    if (sizeOfCode != 0)
     {
         Console::err(QString("Wrong PE Optional Header sizeOfCode: 0x%1").arg(sizeOfCode, 8, 16, QChar('0')));
 
         return false;
     }
 
-    if (sizeOfInitializedData) // sizeOfInitializedData != 0
+    if (sizeOfInitializedData != 0)
     {
         Console::err(QString("Wrong PE Optional Header sizeOfInitializedData: 0x%1").arg(sizeOfInitializedData, 8, 16, QChar('0')));
 
         return false;
     }
 
-    if (sizeOfUninitializedData) // sizeOfUninitializedData != 0
+    if (sizeOfUninitializedData != 0)
     {
         Console::err(QString("Wrong PE Optional Header sizeOfUninitializedData: 0x%1").arg(sizeOfUninitializedData, 8, 16, QChar('0')));
 
@@ -97,14 +97,14 @@ bool PEOptHeader::verify()
         return false;
     }
 
-    if (baseOfCode) // baseOfCode != 0
+    if (baseOfCode != 0)
     {
         Console::err(QString("Wrong PE Optional Header baseOfCode: 0x%1").arg(baseOfCode, 8, 16, QChar('0')));
 
         return false;
     }
 
-    if (imageBase) // imageBase != 0
+    if (imageBase != 0)
     {
         Console::err(QString("Wrong PE Optional Header imageBase: 0x%1").arg(imageBase, 16, 16, QChar('0')));
 
@@ -125,49 +125,49 @@ bool PEOptHeader::verify()
         return false;
     }
 
-    if (majorOSVersion) // majorOSVersion != 0
+    if (majorOSVersion != 0)
     {
         Console::err(QString("Wrong PE Optional Header majorOSVersion: 0x%1").arg(majorOSVersion, 4, 16, QChar('0')));
 
         return false;
     }
 
-    if (minorOSVersion) // minorOSVersion != 0
+    if (minorOSVersion != 0)
     {
         Console::err(QString("Wrong PE Optional Header minorOSVersion: 0x%1").arg(minorOSVersion, 4, 16, QChar('0')));
 
         return false;
     }
 
-    if (majorImageVersion) // majorImageVersion != 0
+    if (majorImageVersion != 0)
     {
         Console::err(QString("Wrong PE Optional Header majorImageVersion: 0x%1").arg(majorImageVersion, 4, 16, QChar('0')));
 
         return false;
     }
 
-    if (minorImageVersion) // minorImageVersion != 0
+    if (minorImageVersion != 0)
     {
         Console::err(QString("Wrong PE Optional Header minorImageVersion: 0x%1").arg(minorImageVersion, 4, 16, QChar('0')));
 
         return false;
     }
 
-    if (majorSubsystemVersion) // majorSubsystemVersion != 0
+    if (majorSubsystemVersion != 0)
     {
         Console::err(QString("Wrong PE Optional Header majorSubsystemVersion: 0x%1").arg(majorSubsystemVersion, 4, 16, QChar('0')));
 
         return false;
     }
 
-    if (minorSubsystemVersion) // minorSubsystemVersion != 0
+    if (minorSubsystemVersion != 0)
     {
         Console::err(QString("Wrong PE Optional Header minorSubsystemVersion: 0x%1").arg(minorSubsystemVersion, 4, 16, QChar('0')));
 
         return false;
     }
 
-    if (win32VersionValue) // win32VersionValue != 0
+    if (win32VersionValue != 0)
     {
         Console::err(QString("Wrong PE Optional Header win32VersionValue: 0x%1").arg(win32VersionValue, 8, 16, QChar('0')));
 
@@ -188,7 +188,7 @@ bool PEOptHeader::verify()
         return false;
     }
 
-    if (checksum) // checksum != 0
+    if (checksum != 0)
     {
         Console::err(QString("Wrong PE Optional Header checksum: 0x%1").arg(checksum, 8, 16, QChar('0')));
 
@@ -201,42 +201,42 @@ bool PEOptHeader::verify()
         return false;
     }
 
-    if (dllCharacteristics) // dllCharacteristics != 0
+    if (dllCharacteristics != 0)
     {
         Console::err(QString("Wrong PE Optional Header dllCharacteristics: 0x%1").arg(dllCharacteristics, 4, 16, QChar('0')));
 
         return false;
     }
 
-    if (sizeOfStackReserve) // sizeOfStackReserve != 0
+    if (sizeOfStackReserve != 0)
     {
         Console::err(QString("Wrong PE Optional Header sizeOfStackReserve: 0x%1").arg(sizeOfStackReserve, 16, 16, QChar('0')));
 
         return false;
     }
 
-    if (sizeOfStackCommit) // sizeOfStackCommit != 0
+    if (sizeOfStackCommit != 0)
     {
         Console::err(QString("Wrong PE Optional Header sizeOfStackCommit: 0x%1").arg(sizeOfStackCommit, 16, 16, QChar('0')));
 
         return false;
     }
 
-    if (sizeOfHeapReserve) // sizeOfHeapReserve != 0
+    if (sizeOfHeapReserve != 0)
     {
         Console::err(QString("Wrong PE Optional Header sizeOfHeapReserve: 0x%1").arg(sizeOfHeapReserve, 16, 16, QChar('0')));
 
         return false;
     }
 
-    if (sizeOfHeapCommit) // sizeOfHeapCommit != 0
+    if (sizeOfHeapCommit != 0)
     {
         Console::err(QString("Wrong PE Optional Header sizeOfHeapCommit: 0x%1").arg(sizeOfHeapCommit, 16, 16, QChar('0')));
 
         return false;
     }
 
-    if (loaderFlags) // loaderFlags != 0
+    if (loaderFlags != 0)
     {
         Console::err(QString("Wrong PE Optional Header loaderFlags: 0x%1").arg(loaderFlags, 8, 16, QChar('0')));
 

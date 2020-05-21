@@ -467,6 +467,70 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
 
 
 
+    TEST_CASE("strequal()");
+    {
+        TEST_ASSERT_EQUALS(strequal("aa", "aa"), true);
+        TEST_ASSERT_EQUALS(strequal("aa", "ab"), false);
+        TEST_ASSERT_EQUALS(strequal("ab", "aa"), false);
+
+        TEST_ASSERT_EQUALS(strequal("abcdef", "abcdef"), true);
+        TEST_ASSERT_EQUALS(strequal("abcdef", "abcdeh"), false);
+        TEST_ASSERT_EQUALS(strequal("abcdeh", "abcdef"), false);
+        TEST_ASSERT_EQUALS(strequal("abc",    "abcdef"), false);
+        TEST_ASSERT_EQUALS(strequal("abcdef", "abc"),    false);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strequal()");
+    {
+        TEST_ASSERT_EQUALS(strequal(u"aa", u"aa"), true);
+        TEST_ASSERT_EQUALS(strequal(u"aa", u"ab"), false);
+        TEST_ASSERT_EQUALS(strequal(u"ab", u"aa"), false);
+
+        TEST_ASSERT_EQUALS(strequal(u"abcdef", u"abcdef"), true);
+        TEST_ASSERT_EQUALS(strequal(u"abcdef", u"abcdeh"), false);
+        TEST_ASSERT_EQUALS(strequal(u"abcdeh", u"abcdef"), false);
+        TEST_ASSERT_EQUALS(strequal(u"abc",    u"abcdef"), false);
+        TEST_ASSERT_EQUALS(strequal(u"abcdef", u"abc"),    false);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strequali()");
+    {
+        TEST_ASSERT_EQUALS(strequali("Aa", "aA"), true);
+        TEST_ASSERT_EQUALS(strequali("aA", "ab"), false);
+        TEST_ASSERT_EQUALS(strequali("ab", "aA"), false);
+
+        TEST_ASSERT_EQUALS(strequali("AbCdEf", "abcdef"), true);
+        TEST_ASSERT_EQUALS(strequali("AbCdEf", "abcdeh"), false);
+        TEST_ASSERT_EQUALS(strequali("abcdeh", "AbCdEf"), false);
+        TEST_ASSERT_EQUALS(strequali("abc",    "AbCdEf"), false);
+        TEST_ASSERT_EQUALS(strequali("AbCdEf", "abc"),    false);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strequali()");
+    {
+        TEST_ASSERT_EQUALS(strequali(u"Aa", u"aA"), true);
+        TEST_ASSERT_EQUALS(strequali(u"aA", u"ab"), false);
+        TEST_ASSERT_EQUALS(strequali(u"ab", u"aA"), false);
+
+        TEST_ASSERT_EQUALS(strequali(u"AbCdEf", u"abcdef"), true);
+        TEST_ASSERT_EQUALS(strequali(u"AbCdEf", u"abcdeh"), false);
+        TEST_ASSERT_EQUALS(strequali(u"abcdeh", u"AbCdEf"), false);
+        TEST_ASSERT_EQUALS(strequali(u"abc",    u"AbCdEf"), false);
+        TEST_ASSERT_EQUALS(strequali(u"AbCdEf", u"abc"),    false);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("strstr()");
     {
         const char8 *str = "aaabbcd";

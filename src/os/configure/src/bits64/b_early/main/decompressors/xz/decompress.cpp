@@ -29,7 +29,7 @@ u64 decodeMultibyteInteger(const u8 *buffer, u64 sizeMax, u64 *num)
 
 
 
-    if (!sizeMax) // sizeMax == 0
+    if (sizeMax == 0)
     {
         return 0;
     }
@@ -47,7 +47,7 @@ u64 decodeMultibyteInteger(const u8 *buffer, u64 sizeMax, u64 *num)
 
     while (buffer[i++] & 0x80)
     {
-        if (i >= sizeMax || !buffer[i]) // buffer[i] == 0x00
+        if (i >= sizeMax || buffer[i] == 0)
         {
             return 0;
         }
@@ -104,7 +104,8 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
     {
         XzBlockHeader *blockHeader = (XzBlockHeader *)currentPointer;
 
-        if (blockHeader->blockHeaderSize) // The first byte overlaps with the Index Indicator field. Non-zero value indicates a Block Header while zero value used for Index Indicator.
+        // The first byte overlaps with the Index Indicator field. Non-zero value indicates a Block Header while zero value used for Index Indicator.
+        if (blockHeader->blockHeaderSize > 0)
         {
             EARLY_LVV(("Processing Block at address 0x%p", blockHeader));
 
@@ -115,7 +116,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            u64 realBlockHeaderSize = (blockHeader->blockHeaderSize + 1) << 2; // "<< 2" == "* 4"
+            u64 realBlockHeaderSize = (blockHeader->blockHeaderSize + 1) * 4;
 
             EARLY_LVVV(("realBlockHeaderSize = %u", realBlockHeaderSize));
 
@@ -400,7 +401,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
                 EARLY_TEST_ASSERT(streamFooter->crc32        == Crc::crc32((u8 *)&streamFooter->backwardSize, sizeof(streamFooter->backwardSize) + sizeof(streamFooter->streamFlags)), NgosStatus::ASSERTION);
-                EARLY_TEST_ASSERT(streamFooter->backwardSize == (indexSize >> 2) - 1,                                                                                                  NgosStatus::ASSERTION); // "<< 2" == "* 4"
+                EARLY_TEST_ASSERT(streamFooter->backwardSize == (indexSize / 4) - 1,                                                                                                   NgosStatus::ASSERTION);
                 EARLY_TEST_ASSERT(streamFooter->streamFlags  == streamHeader->streamFlags,                                                                                             NgosStatus::ASSERTION);
                 EARLY_TEST_ASSERT(streamFooter->signature    == XZ_STREAM_FOOTER_SIGNATURE,                                                                                            NgosStatus::ASSERTION);
             }

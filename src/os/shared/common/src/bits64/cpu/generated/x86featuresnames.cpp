@@ -8,7 +8,7 @@
 
 
 
-const char8* x86FeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // "<< 5" == "* 32"
+const char8* x86FeaturesNames[(u64)x86FeatureWord::MAXIMUM * 32];
 
 
 

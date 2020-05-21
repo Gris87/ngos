@@ -212,7 +212,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, c
 
 
 
-    if (!type->count) // type->count == 0
+    if (type->count == 0)
     {
         COMMON_TEST_ASSERT(type->totalSize == 0, NgosStatus::ASSERTION);
 
@@ -287,7 +287,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, c
 
     while (left < right)
     {
-        u64 middle = (left + right) >> 1; // ">> 1" == "/ 2"
+        u64 middle = (left + right) / 2;
 
         MemoryBlockRegion &region = type->regions[middle];
 

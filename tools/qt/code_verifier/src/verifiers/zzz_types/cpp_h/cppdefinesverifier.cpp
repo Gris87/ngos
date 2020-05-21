@@ -75,7 +75,7 @@ void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
             if (line == "")
             {
-                if (currentBlock.length()) // currentBlock.length() > 0
+                if (currentBlock.length() > 0)
                 {
                     currentBlock.clear();
                 }

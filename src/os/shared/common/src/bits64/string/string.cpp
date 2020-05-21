@@ -717,6 +717,102 @@ i8 strncmpi(const char16 *str1, const char16 *str2, i64 length)
     return 0;
 }
 
+bool strequal(const char8 *str1, const char8 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
+
+
+
+    return strcmp(str1, str2) == 0;
+}
+
+bool strequal(const char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
+
+
+
+    return strcmp(str1, str2) == 0;
+}
+
+bool strequali(const char8 *str1, const char8 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
+
+
+
+    return strcmpi(str1, str2) == 0;
+}
+
+bool strequali(const char16 *str1, const char16 *str2)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
+
+    COMMON_ASSERT(str1, "str1 is null", false);
+    COMMON_ASSERT(str2, "str2 is null", false);
+
+
+
+    return strcmpi(str1, str2) == 0;
+}
+
+bool strnequal(const char8 *str1, const char8 *str2, i64 length)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    return strncmp(str1, str2, length) == 0;
+}
+
+bool strnequal(const char16 *str1, const char16 *str2, i64 length)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    return strncmp(str1, str2, length) == 0;
+}
+
+bool strnequali(const char8 *str1, const char8 *str2, i64 length)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    return strncmpi(str1, str2, length) == 0;
+}
+
+bool strnequali(const char16 *str1, const char16 *str2, i64 length)
+{
+    COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
+
+    COMMON_ASSERT(str1, "str1 is null", 0);
+    COMMON_ASSERT(str2, "str2 is null", 0);
+
+
+
+    return strncmpi(str1, str2, length) == 0;
+}
+
 const char8* strstr(const char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));

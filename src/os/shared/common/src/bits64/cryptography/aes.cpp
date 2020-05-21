@@ -201,7 +201,7 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
     COMMON_ASSERT_EXECUTION(releaseKey(), NgosStatus::ASSERTION);
 
-    switch (size << 3) // "<< 3" == "* 8"
+    switch (size * 8)
     {
         case 128:
         {
@@ -340,7 +340,7 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 
 
-    i64 blocksCount = inSize >> 4; // ">> 4" == "/ 16"
+    i64 blocksCount = inSize / 16;
 
     for (i64 i = 0; i < blocksCount; ++i)
     {
@@ -397,7 +397,7 @@ NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 
 
-    i64 blocksCount = inSize >> 4; // ">> 4" == "/ 16"
+    i64 blocksCount = inSize / 16;
 
     for (i64 i = 0; i < blocksCount; ++i)
     {

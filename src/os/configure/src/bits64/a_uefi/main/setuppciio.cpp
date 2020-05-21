@@ -135,7 +135,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
 
 
 
-        if (!pci->romImage || !pci->romSize) // pci->romImage == 0 || pci->romSize == 0
+        if (pci->romImage == nullptr || pci->romSize == 0)
         {
             UEFI_LVV(("Skipped protocol(0x%p) without ROM Image for UEFI_PCI_IO_PROTOCOL", pci));
 

@@ -297,7 +297,7 @@ HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Acc
 
 
 
-        if (!i) // i == 0
+        if (i == 0)
         {
             qDebug() << "Waiting for access to disk";
         }
@@ -462,7 +462,7 @@ QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfS
 
 
     LARGE_INTEGER ptr;
-    ptr.QuadPart = startSector << 9; // "<< 9" == "* 512"
+    ptr.QuadPart = startSector * 512;
 
     if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
     {
@@ -473,7 +473,7 @@ QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfS
 
 
 
-    DWORD size = numberOfSectors << 9; // "<< 9" == "* 512"
+    DWORD size = numberOfSectors * 512;
     QByteArray buffer(size, 0);
 
     if (!ReadFile(diskHandle, buffer.data(), size, &size, nullptr))
@@ -495,7 +495,7 @@ qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSect
 
 
     LARGE_INTEGER ptr;
-    ptr.QuadPart = startSector << 9; // "<< 9" == "* 512"
+    ptr.QuadPart = startSector * 512;
 
     if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
     {
@@ -506,7 +506,7 @@ qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSect
 
 
 
-    DWORD size = numberOfSectors << 9; // "<< 9" == "* 512"
+    DWORD size = numberOfSectors * 512;
     Q_ASSERT(buffer.size() == size);
 
     if (!WriteFile(diskHandle, buffer.constData(), size, &size, nullptr))
@@ -673,7 +673,7 @@ void clearGpt(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    qint64 sectorsCount = thread->getSelectedUsb().diskSize >> 9; // ">> 9" == "/ 512"
+    qint64 sectorsCount = thread->getSelectedUsb().diskSize / 512;
 
     for (qint64 i = 0; i < 34 && thread->isWorking(); ++i)
     {
@@ -749,8 +749,8 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
     driveLayout.PartitionCount = 1;
 
     driveLayout.PartitionEntry[0].PartitionStyle           = PARTITION_STYLE_GPT;
-    driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = (1ULL << 20); // 1 MB
-    driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 << 9); // "<< 9" == "* 512" // Last 33 sectors reserved for Secondary GPT header
+    driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = 1 * 1024 * 1024; // 1 MB
+    driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 * 512); // Last 33 sectors reserved for Secondary GPT header
     driveLayout.PartitionEntry[0].PartitionNumber          = 1;
     driveLayout.PartitionEntry[0].RewritePartition         = true;
 
@@ -766,8 +766,8 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
     createDisk.Gpt.MaxPartitionCount = MAX_GPT_PARTITIONS;
 
     driveLayout.Gpt.DiskId                        = createDisk.Gpt.DiskId;
-    driveLayout.Gpt.StartingUsableOffset.QuadPart = 34 << 9;                                              // "<< 9" == "* 512" // First 34 sectors reserved for Protective MBR and Primary GPT header
-    driveLayout.Gpt.UsableLength.QuadPart         = thread->getSelectedUsb().diskSize - ((34 + 33) << 9); // "<< 9" == "* 512" // Last 33 sectors reserved for Secondary GPT header
+    driveLayout.Gpt.StartingUsableOffset.QuadPart = 34 * 512;                                              // First 34 sectors reserved for Protective MBR and Primary GPT header
+    driveLayout.Gpt.UsableLength.QuadPart         = thread->getSelectedUsb().diskSize - ((34 + 33) * 512); // Last 33 sectors reserved for Secondary GPT header
     driveLayout.Gpt.MaxPartitionCount             = MAX_GPT_PARTITIONS;
 
 

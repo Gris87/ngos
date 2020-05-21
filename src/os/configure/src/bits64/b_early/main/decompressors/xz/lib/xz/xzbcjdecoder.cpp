@@ -83,7 +83,7 @@ u64 bcjX86(XzBcjDecoder *decoder, u8 *buffer, u64 size)
         {
             previousMask = (previousMask << (previousPosition - 1)) & 7;
 
-            if (previousMask) // previousMask != 0
+            if (previousMask != 0)
             {
                 byte = buffer[i + 4 - maskToBitNumber[previousMask]];
 
@@ -113,12 +113,12 @@ u64 bcjX86(XzBcjDecoder *decoder, u8 *buffer, u64 size)
             {
                 dest = src - ((u32)i + 5);
 
-                if (!previousMask) // previousMask == 0
+                if (previousMask == 0)
                 {
                     break;
                 }
 
-                j    = maskToBitNumber[previousMask] << 3; // "<< 3" == "* 8"
+                j    = maskToBitNumber[previousMask] * 8;
                 byte = (u8)(dest >> (24 - j));
 
                 if (!bcjX86TestMsByte(byte))

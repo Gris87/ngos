@@ -254,7 +254,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
                 if (line == "")
                 {
-                    if (currentBlock.length()) // currentBlock.length() > 0
+                    if (currentBlock.length() > 0)
                     {
                         blocks.append(currentBlock);
                         blockStarts.append(currentBlockStart);
@@ -385,7 +385,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 }
             }
 
-            if (currentBlock.length()) // currentBlock.length() > 0
+            if (currentBlock.length() > 0)
             {
                 blocks.append(currentBlock);
                 blockStarts.append(currentBlockStart);

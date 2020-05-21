@@ -102,7 +102,7 @@ private:
 
 
 
-    u64 mBits[ROUND_UP(NUMBER_OF_CPUS, 8) >> 3]; // ">> 3" == "/ 8"
+    u64 mBits[ROUND_UP(NUMBER_OF_CPUS, 8) / 8]; // TODO: DIV_UP?
 
     static CpuMask sOnlineCpus;
     static CpuMask sActiveCpus;

@@ -49,7 +49,7 @@ NgosStatus filterLZMA2(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeO
     else
     {
         dictionarySize =   2 | (property & 1);
-        dictionarySize <<= (property >> 1) + 11; // ">> 1" == "/ 2"
+        dictionarySize <<= (property / 2) + 11;
     }
 
     EARLY_LVVV(("dictionarySize = %u", dictionarySize));

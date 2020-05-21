@@ -164,7 +164,7 @@ NgosStatus Bootloader::cleanUpPath(char16 *path)
             path[source] == '\\'
            )
         {
-            if (!dest) // dest == 0
+            if (dest == 0)
             {
                 ++source;
             }
@@ -198,7 +198,7 @@ NgosStatus Bootloader::cleanUpPath(char16 *path)
 
 
 
-    if (!path[0]) // path[0] == 0
+    if (path[0] == 0)
     {
         path[0] = '\\';
         path[1] = 0;

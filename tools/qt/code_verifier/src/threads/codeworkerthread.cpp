@@ -51,7 +51,7 @@ CodeFileInfo* CodeWorkerThread::popFile()
 
         CodeFileInfo *res = sFiles.constFirst();
 
-        if (!res) // res == 0
+        if (res == nullptr)
         {
             sFilesSemaphore.release();
         }
@@ -66,7 +66,7 @@ CodeFileInfo* CodeWorkerThread::popFile()
 
 void CodeWorkerThread::noMoreFiles()
 {
-    pushFile(0);
+    pushFile(nullptr);
 }
 
 void CodeWorkerThread::addWarning(const QString &path, qint64 line, const QString &warning)
@@ -95,7 +95,7 @@ void CodeWorkerThread::run()
     {
         CodeFileInfo *fileInfo = popFile();
 
-        if (!fileInfo) // fileInfo == 0
+        if (fileInfo == nullptr)
         {
             break;
         }

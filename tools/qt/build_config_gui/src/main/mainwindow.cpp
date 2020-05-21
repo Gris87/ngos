@@ -601,7 +601,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
             }
         }
 
-        if (!categoryItem) // categoryItem == 0
+        if (categoryItem == 0)
         {
             categoryItem = new CategoryTreeWidgetItem(topCategory, this);
 
@@ -632,7 +632,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
                 }
             }
 
-            if (!subCategoryItem) // subCategoryItem == 0
+            if (subCategoryItem == 0)
             {
                 subCategoryItem = new CategoryTreeWidgetItem(subCategory, this);
 

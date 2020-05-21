@@ -155,7 +155,7 @@ NgosStatus MD5::update(u8 *data, u64 length)
 
 
 
-    u8 index     = (mCount >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
+    u8 index     = (mCount / 8) % MD5_BLOCK_SIZE;
     u8 firstPart = MD5_BLOCK_SIZE - index;
 
 
@@ -225,8 +225,8 @@ NgosStatus MD5::finish()
 
 
 
-        u8 index         = (mCount >> 3) % MD5_BLOCK_SIZE; // ">> 3" == "/ 8"
-        u8 paddingLength = (index < MD5_BLOCK_SIZE - 8) ? (MD5_BLOCK_SIZE - index - 8) : ((MD5_BLOCK_SIZE << 1) - index - 8); // "<< 1" == "* 2"
+        u8 index         = (mCount / 8) % MD5_BLOCK_SIZE;
+        u8 paddingLength = (index < MD5_BLOCK_SIZE - 8) ? (MD5_BLOCK_SIZE - index - 8) : ((MD5_BLOCK_SIZE * 2) - index - 8);
 
         COMMON_TEST_ASSERT(paddingLength < MD5_BLOCK_SIZE, NgosStatus::ASSERTION);
 

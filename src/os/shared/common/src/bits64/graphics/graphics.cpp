@@ -511,7 +511,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                 {
                     u16 lastX = element->getData().getFrom();
 
-                    if (lastX) // lastX != 0
+                    if (lastX != 0)
                     {
                         startWithStretchX = false;
 
@@ -563,7 +563,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                 {
                     u16 lastY = element->getData().getFrom();
 
-                    if (lastY) // lastY != 0
+                    if (lastY != 0)
                     {
                         startWithStretchY = false;
 

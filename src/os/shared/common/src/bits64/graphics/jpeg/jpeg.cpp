@@ -266,7 +266,7 @@ NgosStatus Jpeg::decodeMarker(JpegDecoder *decoder)
 
         case JpegMarkerType::END_OF_IMAGE:
         {
-            if (decoder->size) // decoder->size != 0
+            if (decoder->size != 0)
             {
                 COMMON_LE(("There is some data found after JpegMarkerType::END_OF_IMAGE marker"));
 
@@ -490,8 +490,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    u8 mcuBlockSizeX = samplingFactorXMax << 3; // "<< 3" == "* 8"
-    u8 mcuBlockSizeY = samplingFactorYMax << 3; // "<< 3" == "* 8"
+    u8 mcuBlockSizeX = samplingFactorXMax * 8;
+    u8 mcuBlockSizeY = samplingFactorYMax * 8;
 
     COMMON_LVVV(("mcuBlockSizeX = %u", mcuBlockSizeX));
     COMMON_LVVV(("mcuBlockSizeY = %u", mcuBlockSizeY));
@@ -513,8 +513,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         // Ignore CppAlignmentVerifier [BEGIN]
         generalComponent->width      = DIV_UP(width  * generalComponent->samplingFactorX, samplingFactorXMax);
         generalComponent->height     = DIV_UP(height * generalComponent->samplingFactorY, samplingFactorYMax);
-        generalComponent->stride     = decoder->mcuBlockCountX * generalComponent->samplingFactorX << 3; // "<< 3" == "* 8"
-        generalComponent->dataBuffer = (u8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY << 3); // "<< 3" == "* 8"
+        generalComponent->stride     = decoder->mcuBlockCountX * generalComponent->samplingFactorX * 8;
+        generalComponent->dataBuffer = (u8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY * 8);
         // Ignore CppAlignmentVerifier [END]
 
 
@@ -645,7 +645,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
             COMMON_LVVV(("numberOfSymbols = %u", numberOfSymbols));
 
-            if (!numberOfSymbols) // numberOfSymbols == 0
+            if (numberOfSymbols == 0)
             {
                 continue;
             }
@@ -775,14 +775,14 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
         if (tablePrecision)
         {
-            if (length < (JPEG_QUANTIZATION_TABLE_SIZE << 1)) // "<< 1" == "* 2"
+            if (length < JPEG_QUANTIZATION_TABLE_SIZE * 2)
             {
                 for (i64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
                 {
                     tableData[i] = 1;
                 }
 
-                count = length >> 1; // ">> 1" == "/ 2"
+                count = length / 2;
             }
             else
             {
@@ -815,7 +815,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-        u8 tableSize = (tablePrecision ? count << 1 : count) + 1; // "<< 1" == "* 2"
+        u8 tableSize = (tablePrecision ? count * 2 : count) + 1;
 
         table  =  (JpegQuantizationTable *)((u64)table + tableSize);
         length -= tableSize - 1;
@@ -823,7 +823,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-    if (length) // length != 0
+    if (length != 0)
     {
         COMMON_LE(("Invalid JpegMarkerType::DEFINE_QUANTIZATION_TABLE marker"));
 
@@ -876,7 +876,7 @@ NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMar
 
     COMMON_LVVV(("restartInterval = %u", restartInterval));
 
-    if (!restartInterval) // restartInterval == 0
+    if (restartInterval == 0)
     {
         COMMON_LE(("Invalid JpegMarkerType::DEFINE_RESTART_INTERVAL marker"));
 
@@ -1082,7 +1082,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
         {
             --blocksBeforeRestart;
 
-            if (!blocksBeforeRestart) // blocksBeforeRestart == 0
+            if (blocksBeforeRestart == 0)
             {
                 blocksBeforeRestart = restartInterval;
 
@@ -1177,7 +1177,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, 
     {
         for (i64 j = 0; j < component->samplingFactorX; ++j)
         {
-            NgosStatus status = decodeMcuBlockSample(decoder, component, component->dataBuffer + (((mcuBlockY * component->samplingFactorY + i) * component->stride + mcuBlockX * component->samplingFactorX + j) << 3)); // "<< 3" == "* 8"
+            NgosStatus status = decodeMcuBlockSample(decoder, component, component->dataBuffer + (((mcuBlockY * component->samplingFactorY + i) * component->stride + mcuBlockX * component->samplingFactorX + j) * 8));
 
             if (status != NgosStatus::OK)
             {
@@ -1256,7 +1256,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-        if (!vlcCode) // vlcCode == 0
+        if (vlcCode == 0)
         {
             break;
         }
@@ -1335,7 +1335,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *v
 
     // COMMON_LVVV(("bits = %u", bits)); // Commented to avoid too frequent logs
 
-    if (!bits) // bits == 0
+    if (bits == 0)
     {
         COMMON_LE(("Zero bits found in VLC"));
 
@@ -1364,7 +1364,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *v
 
     // COMMON_LVVV(("bits = %u", bits)); // Commented to avoid too frequent logs
 
-    if (!bits) // bits == 0
+    if (bits == 0)
     {
         *value = 0;
 
@@ -1694,7 +1694,7 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
 
 
 
-    u8 *out = (u8 *)malloc((component->width * component->height) << 1); // "<< 1" == "* 2"
+    u8 *out = (u8 *)malloc(component->width * component->height * 2);
 
     if (!out)
     {
@@ -1712,7 +1712,7 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
     u16 height = component->height;
     u64 stride = component->stride;
 
-    u16 width2 = width << 1; // "<< 1" == "* 2"
+    u16 width2 = width * 2;
 
 
 
@@ -1765,7 +1765,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
 
 
 
-    u8 *out = (u8 *)malloc((component->width * component->height) << 1); // "<< 1" == "* 2"
+    u8 *out = (u8 *)malloc(component->width * component->height * 2);
 
     if (!out)
     {
@@ -1783,7 +1783,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
     u16 height = component->height;
     u64 stride = component->stride;
 
-    u16 stride2 = stride << 1; // "<< 1" == "* 2"
+    u16 stride2 = stride * 2;
 
 
 
@@ -1842,7 +1842,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 
     while (decoder->bitsAvailable < count)
     {
-        if (!decoder->size) // decoder->size == 0
+        if (decoder->size == 0)
         {
             decoder->bitBuffer     =  (decoder->bitBuffer << 8) | 0xFF;
             decoder->bitsAvailable += 8;
@@ -1864,7 +1864,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 
         if (newByte == 0xFF)
         {
-            if (!decoder->size) // decoder->size == 0
+            if (decoder->size == 0)
             {
                 COMMON_LE(("There are no more bytes to read"));
 

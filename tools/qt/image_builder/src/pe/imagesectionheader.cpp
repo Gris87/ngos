@@ -54,28 +54,28 @@ bool ImageSectionHeader::verify()
             return false;
         }
 
-        if (pointerToRelocations) // pointerToRelocations != 0
+        if (pointerToRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (pointerToLinenumbers) // pointerToLinenumbers != 0
+        if (pointerToLinenumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfRelocations) // numberOfRelocations != 0
+        if (numberOfRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfLineNumbers) // numberOfLineNumbers != 0
+        if (numberOfLineNumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
 
@@ -125,28 +125,28 @@ bool ImageSectionHeader::verify()
             return false;
         }
 
-        if (pointerToRelocations) // pointerToRelocations != 0
+        if (pointerToRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (pointerToLinenumbers) // pointerToLinenumbers != 0
+        if (pointerToLinenumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfRelocations) // numberOfRelocations != 0
+        if (numberOfRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfLineNumbers) // numberOfLineNumbers != 0
+        if (numberOfLineNumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
 
@@ -196,28 +196,28 @@ bool ImageSectionHeader::verify()
             return false;
         }
 
-        if (pointerToRelocations) // pointerToRelocations != 0
+        if (pointerToRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (pointerToLinenumbers) // pointerToLinenumbers != 0
+        if (pointerToLinenumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfRelocations) // numberOfRelocations != 0
+        if (numberOfRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfLineNumbers) // numberOfLineNumbers != 0
+        if (numberOfLineNumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
 
@@ -267,28 +267,28 @@ bool ImageSectionHeader::verify()
             return false;
         }
 
-        if (pointerToRelocations) // pointerToRelocations != 0
+        if (pointerToRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (pointerToLinenumbers) // pointerToLinenumbers != 0
+        if (pointerToLinenumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfRelocations) // numberOfRelocations != 0
+        if (numberOfRelocations != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
 
             return false;
         }
 
-        if (numberOfLineNumbers) // numberOfLineNumbers != 0
+        if (numberOfLineNumbers != 0)
         {
             Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
 

@@ -231,7 +231,7 @@ NgosStatus ArrayList<T>::setCapacity(u64 capacity)
 
     if (capacity > mCapacity)
     {
-        if (mCapacity) // mCapacity > 0
+        if (mCapacity > 0)
         {
             mValues = (T *)realloc(mValues, mCapacity * sizeof(T), capacity * sizeof(T));
         }
@@ -247,7 +247,7 @@ NgosStatus ArrayList<T>::setCapacity(u64 capacity)
     {
         mCapacity = capacity;
 
-        if (mCapacity) // mCapacity > 0
+        if (mCapacity > 0)
         {
             if (mSize > mCapacity)
             {
@@ -289,7 +289,7 @@ NgosStatus ArrayList<T>::extendCapacity()
 
     if (mSize >= mCapacity)
     {
-        if (mCapacity) // mCapacity > 0
+        if (mCapacity > 0)
         {
             u64 oldSize =   mCapacity * sizeof(T);
             mCapacity   <<= 1;
@@ -335,7 +335,7 @@ NgosStatus ArrayList<T>::quickSort(i64 left, i64 right)
         i64 i = left;
         i64 j = right;
 
-        T pivot = mValues[(left + right) >> 1]; // ">> 1" == "/ 2"
+        T pivot = mValues[(left + right) / 2];
 
 
 
@@ -411,7 +411,7 @@ NgosStatus ArrayList<T>::quickSort(i64 left, i64 right, element_comparator compa
         i64 i = left;
         i64 j = right;
 
-        T pivot = mValues[(left + right) >> 1]; // ">> 1" == "/ 2"
+        T pivot = mValues[(left + right) / 2];
 
 
 

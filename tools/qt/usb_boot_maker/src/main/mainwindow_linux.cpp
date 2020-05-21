@@ -14,7 +14,7 @@
 
 
 
-#define MIN_DISK_SIZE (8 << 20) // "<< 20" == "* 1024 * 1024"
+#define MIN_DISK_SIZE (8* 1024 * 1024)
 
 
 

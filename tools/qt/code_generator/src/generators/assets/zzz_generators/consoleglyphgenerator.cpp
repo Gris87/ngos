@@ -65,7 +65,7 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
 
 
 
-    error = FT_Set_Char_Size(face, 0, FONT_SIZE << 6, 0, 0); // "<< 6" == "* 64"
+    error = FT_Set_Char_Size(face, 0, FONT_SIZE * 64, 0, 0);
 
     if (error)
     {
@@ -76,7 +76,7 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
 
 
 
-    QByteArray offsets((END_INDEX - START_INDEX) << 1, 0); // "<< 1" == "* 2"
+    QByteArray offsets((END_INDEX - START_INDEX) * 2, 0);
 
 
 
@@ -100,7 +100,7 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
             return false;
         }
 
-        *(quint16 *)((quint64)offsets.data() + ((i - START_INDEX) << 1)) = offset; // "<< 1" == "* 2"
+        *(quint16 *)((quint64)offsets.data() + ((i - START_INDEX) * 2)) = offset;
 
 
 
@@ -130,7 +130,7 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
 
 
 
-        glyphDataStream << (quint8)(slot->advance.x >> 6); // ">> 6" == "/ 64"
+        glyphDataStream << (quint8)(slot->advance.x / 64);
         glyphDataStream << (qint8)slot->bitmap_left;
         glyphDataStream << (qint8)slot->bitmap_top;
         glyphDataStream << (quint8)slot->bitmap.width;

@@ -119,7 +119,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         --max;
     }
 
-    if (!max) // max == 0
+    if (max == 0)
     {
         COMMON_LF(("Symbols to code not found"));
 
@@ -214,7 +214,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     for (i64 i = 0; i < numberOfCodes; ++i)
     {
-        if (lengthBuffer[i]) // lengthBuffer[i] != 0
+        if (lengthBuffer[i] != 0)
         {
             u16 &offset = offsets[lengthBuffer[i]];
 
@@ -354,7 +354,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-        if (incr) // incr != 0
+        if (incr != 0)
         {
             huff &= incr - 1;
             huff += incr;
@@ -373,7 +373,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
         --count[len];
 
-        if (!count[len]) // count[len] == 0
+        if (count[len] == 0)
         {
             if (len == max)
             {
@@ -389,7 +389,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         if (len > root && (huff & mask) != low)
         {
             // if first time, transition to sub-tables
-            if (!drop) // drop == 0
+            if (drop == 0)
             {
                 drop = root;
             }
@@ -476,7 +476,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
             incr >>= 1;
         }
 
-        if (incr) // incr != 0
+        if (incr != 0)
         {
             huff &= incr - 1;
             huff += incr;
@@ -582,7 +582,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
 
-        if (!code.operation) // code.operation == 0
+        if (code.operation == 0)
         {
             decoder->out[decoder->outPosition] = code.value;
             ++decoder->outPosition;
@@ -592,7 +592,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
             u16 length = code.value;
             u8  extra  = code.operation & 15;
 
-            if (extra) // extra != 0
+            if (extra != 0)
             {
                 length += readBits(decoder, extra);
             }
@@ -620,7 +620,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
 
-            if (!(code.operation & 0xF0)) // (code.operation & 0xF0) == 0
+            if ((code.operation & 0xF0) == 0)
             {
                 InflateCode tempCode = code;
 
@@ -667,7 +667,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
             u16 offset = code.value;
             u8  extra2 = code.operation & 15;
 
-            if (extra2) // extra2 != 0
+            if (extra2 != 0)
             {
                 offset += readBits(decoder, extra2);
             }
@@ -737,7 +737,7 @@ NgosStatus decodeNotCompressedBlock(InflateDecoder *decoder)
 
 
 
-    if (length) // length > 0
+    if (length > 0)
     {
         memcpy(decoder->out + decoder->outPosition, decoder->in + decoder->inPosition, length);
 
@@ -905,7 +905,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         else
         if (code.value == 16)
         {
-            if (!currentCodeIndex) // currentCodeIndex == 0
+            if (currentCodeIndex == 0)
             {
                 COMMON_LF(("Invalid bit length repeat"));
 

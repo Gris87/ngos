@@ -68,7 +68,7 @@ NgosStatus LabelWidget::repaint()
 
     u16 targetWidth  = 0;
     u16 targetHeight = CHAR_HEIGHT + BOTTOM_MARGIN;
-    u16 curX         = SIDE_MARGIN << 1; // "<< 1" == "* 2"
+    u16 curX         = SIDE_MARGIN * 2;
 
 
 
@@ -80,7 +80,7 @@ NgosStatus LabelWidget::repaint()
 
         if (ch == '\n')
         {
-            curX         =  SIDE_MARGIN << 1; // "<< 1" == "* 2"
+            curX         =  SIDE_MARGIN *  2;
             targetHeight += CHAR_HEIGHT;
         }
         else
@@ -114,7 +114,7 @@ NgosStatus LabelWidget::repaint()
 
 
 
-    if (targetWidth) // targetWidth > 0
+    if (targetWidth > 0)
     {
         Image *fullImage = new Image(targetWidth, targetHeight, true, false);
         COMMON_ASSERT_EXECUTION(fullImage->clearBuffer(), NgosStatus::ASSERTION);

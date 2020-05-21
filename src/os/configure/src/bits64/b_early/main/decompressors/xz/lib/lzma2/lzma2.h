@@ -108,7 +108,7 @@
 
 // Distance slots that indicate a distance <= 127.
 //
-#define FULL_DISTANCES_BITS (DIST_MODEL_END >> 1)           // ">> 1" == "/ 2"
+#define FULL_DISTANCES_BITS (DIST_MODEL_END / 2)
 #define FULL_DISTANCES      (1ULL << FULL_DISTANCES_BITS)
 
 // For match distances greater than 127, only the highest two bits and the

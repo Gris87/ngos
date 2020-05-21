@@ -219,7 +219,7 @@ NgosStatus FPU::initMxcsrMask()
 
     sMxcsrMask = fxsaveState.mxcsrMask;
 
-    if (!sMxcsrMask) // sMxcsrMask == 0
+    if (sMxcsrMask == 0)
     {
         sMxcsrMask = MXCSR_MASK_DEFAULT;
     }

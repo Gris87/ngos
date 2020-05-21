@@ -234,7 +234,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (warnings.length()) // warnings.length() > 0
+    if (warnings.length() > 0)
     {
         std::sort(warnings.begin(), warnings.end());
 
@@ -261,7 +261,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (errors.length()) // errors.length() > 0
+    if (errors.length() > 0)
     {
         std::sort(errors.begin(), errors.end());
 
@@ -301,7 +301,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (!warnings.length()) // warnings.length() == 0
+    if (warnings.length() == 0)
     {
         Console::out("");
         Console::out("Everything is OK");

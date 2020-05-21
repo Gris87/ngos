@@ -907,7 +907,7 @@ NgosStatus lzmaReset(XzLzma2Decoder *decoder)
 
     for (i64 i = 0; i < (i64)PROBS_TOTAL; ++i)
     {
-        probs[i] = RC_BIT_MODEL_TOTAL >> 1; // ">> 1" == "/ 2"
+        probs[i] = RC_BIT_MODEL_TOTAL / 2;
     }
 
 
@@ -1001,7 +1001,7 @@ NgosStatus lzma2DecodeLzma(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
     u64 bytesAvailable = buffer->inSize - buffer->inPosition;
 
-    if (decoder->temp.size > 0 || !decoder->lzma2.compressed) // decoder->lzma2.compressed == 0
+    if (decoder->temp.size > 0 || decoder->lzma2.compressed == 0)
     {
         u32 temp = 2 * LZMA_IN_REQUIRED - decoder->temp.size;
 
@@ -1202,7 +1202,7 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
                 EARLY_LVVV(("temp = 0x%02X", temp));
 
-                if (!temp) // temp == 0x00
+                if (temp == 0)
                 {
                     return NgosStatus::OK;
                 }
@@ -1337,7 +1337,7 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
                 decoder->lzma2.uncompressed -= dictionaryFlush(&decoder->dictionary, buffer);
 
-                if (!decoder->lzma2.uncompressed) // decoder->lzma2.uncompressed == 0
+                if (decoder->lzma2.uncompressed == 0)
                 {
                     if (
                         decoder->lzma2.compressed > 0
