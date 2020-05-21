@@ -1341,8 +1341,13 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosextendedromsize.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosromsize.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicacheconfiguration.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize2.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydeviceextendedsize.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydevicemappedaddressrange.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydevicesize.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h

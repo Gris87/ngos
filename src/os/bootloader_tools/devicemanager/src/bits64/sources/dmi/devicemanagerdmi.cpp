@@ -4402,7 +4402,7 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
                 UEFI_LVVV(("entryV22->sbdsManufactureDate.month   = %u",             entryV22->sbdsManufactureDate.month));
                 UEFI_LVVV(("entryV22->sbdsManufactureDate.year    = %u",             entryV22->sbdsManufactureDate.year));
                 UEFI_LVVV(("entryV22->sbdsManufactureDate.value16 = 0x%04X",         entryV22->sbdsManufactureDate.value16));
-                UEFI_LVVV(("entryV22->sbdsManufactureDate         = %04u-%02u-%02u", entryV22->sbdsManufactureDate.realYear(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date));
+                UEFI_LVVV(("entryV22->sbdsManufactureDate         = %04u-%02u-%02u", entryV22->sbdsManufactureDate.yearReal(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date));
                 UEFI_LVVV(("entryV22->sbdsDeviceChemistry.id      = %u",             entryV22->sbdsDeviceChemistry.id));
                 UEFI_LVVV(("entryV22->designCapacityMultiplier    = %u",             entryV22->designCapacityMultiplier));
                 UEFI_LVVV(("entryV22->oemSpecific                 = 0x%08X",         entryV22->oemSpecific));
@@ -4570,7 +4570,7 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
         if (entryV22)
         {
             sbdsSerialNumber         = mprintf("%u",             entryV22->sbdsSerialNumber);
-            sbdsManufactureDate      = mprintf("%04u-%02u-%02u", entryV22->sbdsManufactureDate.realYear(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date);
+            sbdsManufactureDate      = mprintf("%04u-%02u-%02u", entryV22->sbdsManufactureDate.yearReal(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date);
             designCapacityMultiplier = mprintf("%u",             entryV22->designCapacityMultiplier);
             oemSpecific              = mprintf("0x%08X",         entryV22->oemSpecific);
         }

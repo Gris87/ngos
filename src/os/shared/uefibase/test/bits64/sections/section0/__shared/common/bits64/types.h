@@ -324,6 +324,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceType),                       1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),              15);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntryV27),           31);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressRange),              4);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               40);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceAttributes),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          21);
@@ -643,8 +644,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
         temp.value16 = 0x8005;  // ||  1  |  000000000000101  ||
 
-        TEST_ASSERT_EQUALS(temp.value,        5);
-        TEST_ASSERT_EQUALS(temp.granularity,  1);
+        TEST_ASSERT_EQUALS(temp.value,       5);
+        TEST_ASSERT_EQUALS(temp.granularity, 1);
 
 
 
@@ -677,20 +678,63 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
         temp.value32 = 0x80000005;  // ||  1  |  0000000000000000000000000000101  ||
 
-        TEST_ASSERT_EQUALS(temp.value,        5);
-        TEST_ASSERT_EQUALS(temp.granularity,  1);
+        TEST_ASSERT_EQUALS(temp.value,       5);
+        TEST_ASSERT_EQUALS(temp.granularity, 1);
 
 
 
-        temp.value = 8;         // ||  1  |  0000000000000000000000000001000  ||
+        temp.value = 8;             // ||  1  |  0000000000000000000000000001000  ||
 
         TEST_ASSERT_EQUALS(temp.value32, 0x80000008);
 
 
 
-        temp.granularity = 0;   // ||  0  |  0000000000000000000000000001000  ||
+        temp.granularity = 0;       // ||  0  |  0000000000000000000000000001000  ||
 
         TEST_ASSERT_EQUALS(temp.value32, 0x00000008);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiChassisContainedElementType");
+    {
+        DmiChassisContainedElementType temp;
+
+
+
+        //  DmiChassisContainedElementType - value8:
+        // ==========================================================
+        // |  typeSelect : 1  |  baseboardtype or dmiEntrytype : 7  |
+        // ==========================================================
+
+
+
+        temp.value8 = 0x6A;         // ||  0  |  1101010  ||
+
+        TEST_ASSERT_EQUALS(temp.typeSelect,    0);
+        TEST_ASSERT_EQUALS(temp.baseboardtype, 106);
+        TEST_ASSERT_EQUALS(temp.dmiEntrytype,  106);
+
+
+
+        temp.typeSelect = 1;        // ||  1  |  1101010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xEA);
+
+
+
+        temp.baseboardtype = 5;     // ||  1  |  0000101  ||
+
+        TEST_ASSERT_EQUALS(temp.value8,       0x85);
+        TEST_ASSERT_EQUALS(temp.dmiEntrytype, 5);
+
+
+
+        temp.dmiEntrytype = 2;      // ||  1  |  0000010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8,        0x82);
+        TEST_ASSERT_EQUALS(temp.baseboardtype, 2);
     }
     TEST_CASE_END();
 
@@ -759,6 +803,74 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.status = 1;                    // ||  001  |  01000  ||
 
         TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x28);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiMemoryDeviceAttributes");
+    {
+        DmiMemoryDeviceAttributes temp;
+
+
+
+        //  DmiMemoryDeviceAttributes - value8:
+        // =================================
+        // |  __reserved : 4  |  rank : 4  |
+        // =================================
+
+
+
+        temp.value8 = 0x95;     // ||  1001  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.rank,       5);
+        TEST_ASSERT_EQUALS(temp.__reserved, 9);
+
+
+
+        temp.rank = 8;          // ||  1001  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x98);
+
+
+
+        temp.__reserved = 0;    // ||  0000  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x08);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiMemoryDeviceExtendedSize");
+    {
+        DmiMemoryDeviceExtendedSize temp;
+
+
+
+        //  DmiMemoryDeviceExtendedSize - value32:
+        // ====================================
+        // |  __reserved : 1  |  value : 31  |
+        // ====================================
+
+
+
+        temp.value32 = 0x80000005;  // ||  1  |  0000000000000000000000000000101  ||
+
+        TEST_ASSERT_EQUALS(temp.value,      5);
+        TEST_ASSERT_EQUALS(temp.__reserved, 1);
+
+
+
+        temp.value = 8;             // ||  1  |  0000000000000000000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x80000008);
+
+
+
+        temp.__reserved = 0;        // ||  0  |  0000000000000000000000000001000  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x00000008);
     }
     TEST_CASE_END();
 

@@ -17,7 +17,7 @@
 
 TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmiportablebatterymanufacturedate);
 {
-    TEST_CASE("realYear()");
+    TEST_CASE("yearReal()");
     {
         DmiPortableBatteryManufactureDate temp;
 
@@ -25,31 +25,31 @@ TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmiportablebatterymanu
 
         temp.year = 0;
 
-        TEST_ASSERT_EQUALS(temp.realYear(), 1980);
+        TEST_ASSERT_EQUALS(temp.yearReal(), 1980);
 
 
 
         temp.year = 1;
 
-        TEST_ASSERT_EQUALS(temp.realYear(), 1981);
+        TEST_ASSERT_EQUALS(temp.yearReal(), 1981);
 
 
 
         temp.year = 32;
 
-        TEST_ASSERT_EQUALS(temp.realYear(), 2012);
+        TEST_ASSERT_EQUALS(temp.yearReal(), 2012);
 
 
 
         temp.year = 40;
 
-        TEST_ASSERT_EQUALS(temp.realYear(), 2020);
+        TEST_ASSERT_EQUALS(temp.yearReal(), 2020);
 
 
 
         temp.year = 127;
 
-        TEST_ASSERT_EQUALS(temp.realYear(), 2107);
+        TEST_ASSERT_EQUALS(temp.yearReal(), 2107);
     }
     TEST_CASE_END();
 }

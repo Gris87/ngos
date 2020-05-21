@@ -26,8 +26,13 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosromsize.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicacheconfiguration.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize2.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydeviceextendedsize.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydevicemappedaddressrange.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydevicesize.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h>
@@ -100,8 +105,13 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_dmi);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmibiosextendedromsize);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmibiosromsize);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicacheconfiguration);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicachesize);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicachesize2);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmimemoryarraymappedaddressrange);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmimemorydeviceextendedsize);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmimemorydevicemappedaddressrange);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmimemorydevicesize);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmiphysicalmemoryarraymaximumcapacity);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmiportablebatterymanufacturedate);

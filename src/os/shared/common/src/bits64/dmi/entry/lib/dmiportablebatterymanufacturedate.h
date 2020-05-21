@@ -10,7 +10,7 @@
 
 struct DmiPortableBatteryManufactureDate
 {
-    u16 realYear()
+    u16 yearReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 

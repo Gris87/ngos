@@ -25,7 +25,7 @@ struct DmiMemoryDeviceExtendedSize
     {
         struct
         {
-            u32 value:      15;
+            u32 value:      31;
             u32 __reserved: 1;
         };
 

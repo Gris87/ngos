@@ -140,8 +140,13 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosextendedromsize.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosromsize.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicacheconfiguration.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicachesize2.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydeviceextendedsize.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydevicemappedaddressrange.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmimemorydevicesize.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmiportablebatterymanufacturedate.h \
