@@ -139,6 +139,8 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/dmistringid.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/dmichassisentry.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosextendedromsize.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosromsize.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicacheconfiguration.h \

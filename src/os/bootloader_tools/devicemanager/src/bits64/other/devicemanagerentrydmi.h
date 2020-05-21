@@ -12,8 +12,8 @@
 class DeviceManagerEntryDMI: public DeviceManagerEntry
 {
 public:
-    DeviceManagerEntryDMI(DmiEntryType type, u16 handle, DeviceManagerImage image, const char8 *name);
-    ~DeviceManagerEntryDMI();
+    DeviceManagerEntryDMI(DmiEntryType type, u16 handle, DeviceManagerImage image, const char8 *name); // TEST: NO
+    ~DeviceManagerEntryDMI(); // TEST: NO
 
     bool operator<(const DeviceManagerEntryDMI &another) const; // TEST: NO
 

@@ -306,7 +306,20 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
 
                     for (qint64 j = i + 1; j < lines.length(); ++j)
                     {
-                        QRegularExpressionMatch match2 = mBitsDefinitionRegExp.match(lines.at(j));
+                        QString anotherLine = lines.at(j);
+
+                        if (
+                            anotherLine == "};"
+                            ||
+                            anotherLine == "} __attribute__((packed));"
+                           )
+                        {
+                            break;
+                        }
+
+
+
+                        QRegularExpressionMatch match2 = mBitsDefinitionRegExp.match(anotherLine);
 
                         if (match2.hasMatch())
                         {

@@ -25,6 +25,8 @@
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/dmistringid.h>
+#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/dmichassisentry.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosromsize.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicacheconfiguration.h>
@@ -104,6 +106,8 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, __shared_common_bits64_cpu_cpu);
     CALL_TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_dmi);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_dmistringid);
+    CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_dmichassisentry);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmibiosextendedromsize);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmibiosromsize);
     CALL_TEST_CASES(section0, __shared_common_bits64_dmi_entry_lib_dmicacheconfiguration);

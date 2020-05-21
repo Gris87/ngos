@@ -740,6 +740,40 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
+    TEST_CASE("DmiChassisEntry");
+    {
+        DmiChassisEntry temp;
+
+
+
+        //  DmiChassisEntry - typeAndLocked:
+        // =============================
+        // |  locked : 1  |  type : 7  |
+        // =============================
+
+
+
+        temp.typeAndLocked = 0x85;  // ||  1  |  0000101  ||
+
+        TEST_ASSERT_EQUALS(temp.type,   5);
+        TEST_ASSERT_EQUALS(temp.locked, 1);
+
+
+
+        temp.type = 10;             // ||  1  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.typeAndLocked, 0x8A);
+
+
+
+        temp.locked = 0;            // ||  0  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.typeAndLocked, 0x0A);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("DmiCoolingDeviceEntry");
     {
         DmiCoolingDeviceEntry temp;

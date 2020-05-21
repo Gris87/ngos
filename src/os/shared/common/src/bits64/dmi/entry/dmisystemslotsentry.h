@@ -24,7 +24,6 @@ struct DmiSystemSlotsEntry
     DmiSystemSlotsLength               slotLength;
     u16                                slotID;
     DmiSystemSlotsCharacteristicsFlags slotCharacteristics;
-
 } __attribute__((packed));
 
 

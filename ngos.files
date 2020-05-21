@@ -1340,6 +1340,8 @@ src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cont
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/dmistringid.h
+src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/dmichassisentry.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosextendedromsize.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmibiosromsize.h
 src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/dmi/entry/lib/dmicacheconfiguration.h

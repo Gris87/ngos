@@ -147,7 +147,7 @@ inline const char8* enumToFullString(DeviceManagerImage image) // TEST: NO
 
 
 
-inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type)
+inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type) // TEST: NO
 {
     // UEFI_LT((" | type = %u", type)); // Commented to avoid too frequent logs
 
@@ -221,7 +221,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type)
 
 
 
-inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *entry, const char8 *name)
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *entry, const char8 *name) // TEST: NO
 {
     // UEFI_LT((" | entry = 0x%p, name = 0x%p", entry, name)); // Commented to avoid too frequent logs
 
@@ -298,7 +298,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiPortConnectorEntry *
 
 
 
-inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *entry, const char8 *name)
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *entry, const char8 *name) // TEST: NO
 {
     // UEFI_LT((" | entry = 0x%p, name = 0x%p", entry, name)); // Commented to avoid too frequent logs
 
@@ -399,7 +399,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiSystemSlotsEntry *en
 
 
 
-inline DeviceManagerImage deviceManagerImageFromDmiOnboardDevice(DmiOnboardDevicesDevice *device)
+inline DeviceManagerImage deviceManagerImageFromDmiOnboardDevice(DmiOnboardDevicesDevice *device) // TEST: NO
 {
     // UEFI_LT((" | device = 0x%p", device)); // Commented to avoid too frequent logs
 
@@ -440,7 +440,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiOnboardDevice(DmiOnboardDevic
 
 
 
-inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiOnboardDevicesExtendedEntry *entry, const char8 *name)
+inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiOnboardDevicesExtendedEntry *entry, const char8 *name) // TEST: NO
 {
     // UEFI_LT((" | entry = 0x%p, name = 0x%p", entry, name)); // Commented to avoid too frequent logs
 
