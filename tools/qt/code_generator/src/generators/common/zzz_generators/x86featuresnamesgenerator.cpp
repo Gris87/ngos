@@ -59,7 +59,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    lines.append("const char8* x86FeaturesNames[(u64)x86FeatureWord::MAXIMUM << 5]; // \"<< 5\" == \"* 32\"");
+    lines.append("const char8* x86FeaturesNames[(u64)x86FeatureWord::MAXIMUM * 32];");
     addThreeBlankLines(lines);
 
 

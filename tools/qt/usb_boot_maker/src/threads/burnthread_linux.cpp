@@ -13,9 +13,7 @@
 #include <QRegularExpression>
 #include <QTemporaryFile>
 
-
-
-#define MBR_RESERVED 0x01B8
+#include "src/other/defines.h"
 
 
 
@@ -214,7 +212,7 @@ void writeProtectiveMbr(BurnThread *thread, QProcess *suProcess)
 
 
 
-    if (originalBuffer.size() == 512)
+    if (originalBuffer.size() == SECTOR_SIZE)
     {
         QFile file(":/assets/binaries/protective_mbr.bin");
 
@@ -233,8 +231,8 @@ void writeProtectiveMbr(BurnThread *thread, QProcess *suProcess)
 
 
 
-        buffer.replace(MBR_RESERVED, 512 - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));
-        buffer.replace(510, 2, "\x55\xAA");
+        buffer.replace(MBR_RESERVED, SECTOR_SIZE - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));
+        buffer.replace(SECTOR_SIZE - 2, 2, "\x55\xAA");
 
 
 

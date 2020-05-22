@@ -93,6 +93,7 @@ SOURCES += \
 HEADERS += \
     src/main/aboutdialog.h \
     src/main/mainwindow.h \
+    src/other/defines.h \
     src/other/fileinfo.h \
     src/other/usbbootmakerstate.h \
     src/other/usbdeviceinfo.h \

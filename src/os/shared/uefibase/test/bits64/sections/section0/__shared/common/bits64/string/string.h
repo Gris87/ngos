@@ -531,6 +531,90 @@ TEST_CASES(section0, __shared_common_bits64_string_string);
 
 
 
+    TEST_CASE("strnequal()");
+    {
+        TEST_ASSERT_EQUALS(strnequal("aa", "aa", -1), true);
+        TEST_ASSERT_EQUALS(strnequal("aa", "ab", -1), false);
+        TEST_ASSERT_EQUALS(strnequal("ab", "aa", -1), false);
+
+        TEST_ASSERT_EQUALS(strnequal("abcdef", "abcdef", -1), true);
+        TEST_ASSERT_EQUALS(strnequal("abcdef", "abcdeh", -1), false);
+        TEST_ASSERT_EQUALS(strnequal("abcdeh", "abcdef", -1), false);
+        TEST_ASSERT_EQUALS(strnequal("abc",    "abcdef", -1), false);
+        TEST_ASSERT_EQUALS(strnequal("abcdef", "abc",    -1), false);
+
+        TEST_ASSERT_EQUALS(strnequal("abcdef", "abc",  3), true);
+        TEST_ASSERT_EQUALS(strnequal("abcdef", "abcf", 3), true);
+        TEST_ASSERT_EQUALS(strnequal("abcdef", "abd",  3), false);
+        TEST_ASSERT_EQUALS(strnequal("abcdef", "abb",  3), false);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strnequal()");
+    {
+        TEST_ASSERT_EQUALS(strnequal(u"aa", u"aa", -1), true);
+        TEST_ASSERT_EQUALS(strnequal(u"aa", u"ab", -1), false);
+        TEST_ASSERT_EQUALS(strnequal(u"ab", u"aa", -1), false);
+
+        TEST_ASSERT_EQUALS(strnequal(u"abcdef", u"abcdef", -1), true);
+        TEST_ASSERT_EQUALS(strnequal(u"abcdef", u"abcdeh", -1), false);
+        TEST_ASSERT_EQUALS(strnequal(u"abcdeh", u"abcdef", -1), false);
+        TEST_ASSERT_EQUALS(strnequal(u"abc",    u"abcdef", -1), false);
+        TEST_ASSERT_EQUALS(strnequal(u"abcdef", u"abc",    -1), false);
+
+        TEST_ASSERT_EQUALS(strnequal(u"abcdef", u"abc",  3), true);
+        TEST_ASSERT_EQUALS(strnequal(u"abcdef", u"abcf", 3), true);
+        TEST_ASSERT_EQUALS(strnequal(u"abcdef", u"abd",  3), false);
+        TEST_ASSERT_EQUALS(strnequal(u"abcdef", u"abb",  3), false);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strnequali()");
+    {
+        TEST_ASSERT_EQUALS(strnequali("Aa", "aA", -1), true);
+        TEST_ASSERT_EQUALS(strnequali("aA", "ab", -1), false);
+        TEST_ASSERT_EQUALS(strnequali("ab", "aA", -1), false);
+
+        TEST_ASSERT_EQUALS(strnequali("AbCdEf", "abcdef", -1), true);
+        TEST_ASSERT_EQUALS(strnequali("AbCdEf", "abcdeh", -1), false);
+        TEST_ASSERT_EQUALS(strnequali("abcdeh", "AbCdEf", -1), false);
+        TEST_ASSERT_EQUALS(strnequali("abc",    "AbCdEf", -1), false);
+        TEST_ASSERT_EQUALS(strnequali("AbCdEf", "abc",    -1), false);
+
+        TEST_ASSERT_EQUALS(strnequali("AbCdEf", "abc",  3), true);
+        TEST_ASSERT_EQUALS(strnequali("AbCdEf", "abcf", 3), true);
+        TEST_ASSERT_EQUALS(strnequali("AbCdEf", "abd",  3), false);
+        TEST_ASSERT_EQUALS(strnequali("AbCdEf", "abb",  3), false);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("strnequali()");
+    {
+        TEST_ASSERT_EQUALS(strnequali(u"Aa", u"aA", -1), true);
+        TEST_ASSERT_EQUALS(strnequali(u"aA", u"ab", -1), false);
+        TEST_ASSERT_EQUALS(strnequali(u"ab", u"aA", -1), false);
+
+        TEST_ASSERT_EQUALS(strnequali(u"AbCdEf", u"abcdef", -1), true);
+        TEST_ASSERT_EQUALS(strnequali(u"AbCdEf", u"abcdeh", -1), false);
+        TEST_ASSERT_EQUALS(strnequali(u"abcdeh", u"AbCdEf", -1), false);
+        TEST_ASSERT_EQUALS(strnequali(u"abc",    u"AbCdEf", -1), false);
+        TEST_ASSERT_EQUALS(strnequali(u"AbCdEf", u"abc",    -1), false);
+
+        TEST_ASSERT_EQUALS(strnequali(u"AbCdEf", u"abc",  3), true);
+        TEST_ASSERT_EQUALS(strnequali(u"AbCdEf", u"abcf", 3), true);
+        TEST_ASSERT_EQUALS(strnequali(u"AbCdEf", u"abd",  3), false);
+        TEST_ASSERT_EQUALS(strnequali(u"abcdeg", u"abb",  3), false);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("strstr()");
     {
         const char8 *str = "aaabbcd";

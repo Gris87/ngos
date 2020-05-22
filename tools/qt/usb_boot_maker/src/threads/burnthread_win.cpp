@@ -11,6 +11,8 @@
 #include <QFile>
 #include <Windows.h>
 
+#include "src/other/defines.h"
+
 
 
 #define ZERO_SIZE 0
@@ -20,11 +22,6 @@
 
 #define WRITE_RETRIES 100
 #define WRITE_TIMEOUT 100
-
-#define MAX_GPT_PARTITIONS   128
-#define DEFAULT_CLUSTER_SIZE 4096
-
-#define MBR_RESERVED 0x01B8
 
 
 
@@ -462,7 +459,7 @@ QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfS
 
 
     LARGE_INTEGER ptr;
-    ptr.QuadPart = startSector * 512;
+    ptr.QuadPart = startSector * SECTOR_SIZE;
 
     if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
     {
@@ -473,7 +470,7 @@ QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfS
 
 
 
-    DWORD size = numberOfSectors * 512;
+    DWORD size = numberOfSectors * SECTOR_SIZE;
     QByteArray buffer(size, 0);
 
     if (!ReadFile(diskHandle, buffer.data(), size, &size, nullptr))
@@ -495,7 +492,7 @@ qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSect
 
 
     LARGE_INTEGER ptr;
-    ptr.QuadPart = startSector * 512;
+    ptr.QuadPart = startSector * SECTOR_SIZE;
 
     if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
     {
@@ -506,7 +503,7 @@ qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSect
 
 
 
-    DWORD size = numberOfSectors * 512;
+    DWORD size = numberOfSectors * SECTOR_SIZE;
     Q_ASSERT(buffer.size() == size);
 
     if (!WriteFile(diskHandle, buffer.constData(), size, &size, nullptr))
@@ -667,19 +664,19 @@ void clearGpt(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    QByteArray buffer(512, 0);
+    QByteArray buffer(SECTOR_SIZE, 0);
 
     thread->addLog(QCoreApplication::translate("BurnThread", "Clearing GPT"));
 
 
 
-    qint64 sectorsCount = thread->getSelectedUsb().diskSize / 512;
+    qint64 sectorsCount = thread->getSelectedUsb().diskSize / SECTOR_SIZE;
 
     for (qint64 i = 0; i < 34 && thread->isWorking(); ++i)
     {
         for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)
         {
-            if (writeSectors(diskHandle, i, 1, buffer) == 512)
+            if (writeSectors(diskHandle, i, 1, buffer) == SECTOR_SIZE)
             {
                 break;
             }
@@ -694,7 +691,7 @@ void clearGpt(BurnThread *thread, HANDLE diskHandle)
     {
         for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)
         {
-            if (writeSectors(diskHandle, i, 1, buffer) == 512)
+            if (writeSectors(diskHandle, i, 1, buffer) == SECTOR_SIZE)
             {
                 break;
             }
@@ -750,7 +747,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
     driveLayout.PartitionEntry[0].PartitionStyle           = PARTITION_STYLE_GPT;
     driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = 1 * 1024 * 1024; // 1 MB
-    driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 * 512); // Last 33 sectors reserved for Secondary GPT header
+    driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 * SECTOR_SIZE); // Last 33 sectors reserved for Secondary GPT header
     driveLayout.PartitionEntry[0].PartitionNumber          = 1;
     driveLayout.PartitionEntry[0].RewritePartition         = true;
 
@@ -766,8 +763,8 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
     createDisk.Gpt.MaxPartitionCount = MAX_GPT_PARTITIONS;
 
     driveLayout.Gpt.DiskId                        = createDisk.Gpt.DiskId;
-    driveLayout.Gpt.StartingUsableOffset.QuadPart = 34 * 512;                                              // First 34 sectors reserved for Protective MBR and Primary GPT header
-    driveLayout.Gpt.UsableLength.QuadPart         = thread->getSelectedUsb().diskSize - ((34 + 33) * 512); // Last 33 sectors reserved for Secondary GPT header
+    driveLayout.Gpt.StartingUsableOffset.QuadPart = 34 * SECTOR_SIZE;                                              // First 34 sectors reserved for Protective MBR and Primary GPT header
+    driveLayout.Gpt.UsableLength.QuadPart         = thread->getSelectedUsb().diskSize - ((34 + 33) * SECTOR_SIZE); // Last 33 sectors reserved for Secondary GPT header
     driveLayout.Gpt.MaxPartitionCount             = MAX_GPT_PARTITIONS;
 
 
@@ -954,7 +951,7 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
     {
         originalBuffer = readSectors(diskHandle, 0, 1);
 
-        if (originalBuffer.size() == 512)
+        if (originalBuffer.size() == SECTOR_SIZE)
         {
             break;
         }
@@ -966,7 +963,7 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    if (originalBuffer.size() == 512)
+    if (originalBuffer.size() == SECTOR_SIZE)
     {
         QFile file(":/assets/binaries/protective_mbr.bin");
 
@@ -985,14 +982,14 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
 
 
 
-        buffer.replace(MBR_RESERVED, 512 - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));
-        buffer.replace(510, 2, "\x55\xAA");
+        buffer.replace(MBR_RESERVED, SECTOR_SIZE - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));
+        buffer.replace(SECTOR_SIZE - 2, 2, "\x55\xAA");
 
 
 
         for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
         {
-            if (writeSectors(diskHandle, 0, 1, buffer) == 512)
+            if (writeSectors(diskHandle, 0, 1, buffer) == SECTOR_SIZE)
             {
                 break;
             }

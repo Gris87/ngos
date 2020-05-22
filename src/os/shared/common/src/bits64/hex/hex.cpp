@@ -55,17 +55,18 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool
 
 
 
+    char8 *terminator = (char8 *)cur;
+
     if (needEllipsis)
     {
-        u32 *terminator = (u32 *)cur;
-
-        *terminator = 0x002E2E2E; // "..."
+        terminator[0] = '.';
+        terminator[1] = '.';
+        terminator[2] = '.';
+        terminator[3] = 0;
     }
     else
     {
-        char8 *terminator = (char8 *)cur;
-
-        *terminator = 0;
+        terminator[0] = 0;
     }
 
 

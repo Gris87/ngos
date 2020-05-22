@@ -12,9 +12,7 @@
 #include <QSettings>
 #include <QtMath>
 
-
-
-#define MIN_DISK_SIZE (8* 1024 * 1024)
+#include "src/other/defines.h"
 
 
 
