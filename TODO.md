@@ -24,6 +24,7 @@ NGOS:
 - ASSERTS for QEMU only for variated checks
 - Split validation regions to output/check region
 - Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"
+- Use com.ngos.app in source structure
 
 - Complete with interruptions
 - Implement boot screen for kernel

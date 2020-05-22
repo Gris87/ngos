@@ -22,59 +22,59 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/threads/burnthread_linux.cpp" line="128"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="635"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1142"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="126"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="632"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1139"/>
         <source>Unmounting disk volume %1</source>
         <translation>Отключение тома диска %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_linux.cpp" line="142"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="651"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="140"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="648"/>
         <source>There is no any mounted disk volume</source>
         <translation>Не подключен ни один том диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="719"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="716"/>
         <source>Initializing disk</source>
         <translation>Инициализация диска</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_linux.cpp" line="167"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="742"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="165"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="739"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Создание раздела GPT для UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="897"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="894"/>
         <source>Disk formatting failed</source>
         <translation>Не удалось отформатировать диск</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_linux.cpp" line="181"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="911"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="179"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="908"/>
         <source>Formatting partition to FAT32</source>
         <translation>Форматирование раздела в FAT32</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_linux.cpp" line="195"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="947"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="193"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="944"/>
         <source>Writing protective MBR</source>
         <translation>Создание записи MBR для GPT</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1103"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1100"/>
         <source>Disk already mounted to %1</source>
         <translation>Диск уже подключен к %1</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1114"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1111"/>
         <source>Failed to mount disk</source>
         <translation>Не удалось подключить диск</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_linux.cpp" line="305"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="1129"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="303"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="1126"/>
         <source>Mounting disk volume %1</source>
         <translation>Подключение тома диска %1</translation>
     </message>
@@ -106,8 +106,8 @@
         <translation>Создание файла autorun.inf</translation>
     </message>
     <message>
-        <location filename="../../src/threads/burnthread_linux.cpp" line="153"/>
-        <location filename="../../src/threads/burnthread_win.cpp" line="672"/>
+        <location filename="../../src/threads/burnthread_linux.cpp" line="151"/>
+        <location filename="../../src/threads/burnthread_win.cpp" line="669"/>
         <source>Clearing GPT</source>
         <translation>Очистка GPT</translation>
     </message>
