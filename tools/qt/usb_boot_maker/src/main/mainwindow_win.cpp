@@ -24,7 +24,7 @@
 #define ZERO_SIZE          0
 #define MEMBER_INDEX_FIRST 0
 
-#define MIN_DISK_SIZE (8* 1024 * 1024)
+#define MIN_DISK_SIZE (8 * 1024 * 1024)
 
 #define USB_CARD_READER_INDEX 1
 #define UASPSTOR_INDEX        4

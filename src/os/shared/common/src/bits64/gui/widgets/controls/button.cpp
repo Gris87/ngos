@@ -298,10 +298,10 @@ NgosStatus Button::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(mImageWidget->lockUpdates(),                                                                                                  NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mImageWidget->setPosition(paddingLeft + ((allowedWidth - imageWidth) / 2), paddingTop + ((allowedHeight - imageHeight) / 2)), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mImageWidget->setSize(imageWidth, imageHeight),                                                                               NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mImageWidget->unlockUpdates(),                                                                                                NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mImageWidget->lockUpdates(),                                                                                              NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mImageWidget->setPosition(paddingLeft + (allowedWidth - imageWidth) / 2, paddingTop + (allowedHeight - imageHeight) / 2), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mImageWidget->setSize(imageWidth, imageHeight),                                                                           NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(mImageWidget->unlockUpdates(),                                                                                            NgosStatus::ASSERTION);
 
     if (mBadgeWidget)
     {

@@ -80,7 +80,7 @@ NgosStatus LabelWidget::repaint()
 
         if (ch == '\n')
         {
-            curX         =  SIDE_MARGIN *  2;
+            curX         =  SIDE_MARGIN * 2;
             targetHeight += CHAR_HEIGHT;
         }
         else
