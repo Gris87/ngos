@@ -73,7 +73,9 @@ HEADERS += \
     $$PWD/src/bits64/console/lib/glyphdata.h \
     $$PWD/src/bits64/containers/arraylist.h \
     $$PWD/src/bits64/containers/lib/listelement.h \
+    $$PWD/src/bits64/containers/lib/mapelement.h \
     $$PWD/src/bits64/containers/list.h \
+    $$PWD/src/bits64/containers/map.h \
     $$PWD/src/bits64/cpu/cpu.h \
     $$PWD/src/bits64/cpu/cpufamily.h \
     $$PWD/src/bits64/cpu/cpuvendor.h \

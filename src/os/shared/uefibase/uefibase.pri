@@ -135,7 +135,9 @@ HEADERS += \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/checksum/md5.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/containers/arraylist.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/containers/lib/listelement.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/containers/lib/mapelement.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/containers/list.h \
+    $$PWD/test/bits64/sections/section0/__shared/common/bits64/containers/map.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/cpu/cpu.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/cryptography/aes.h \
     $$PWD/test/bits64/sections/section0/__shared/common/bits64/dmi/dmi.h \
