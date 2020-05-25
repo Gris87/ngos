@@ -189,10 +189,10 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
                 }
                 else
                 {
-                    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                           NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mSelectedTreeNodeWidget->getChildrenNodes().at(0)), NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                       NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                         NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                             NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mSelectedTreeNodeWidget->getChildrenNodes().first()), NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                         NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                           NgosStatus::ASSERTION);
                 }
             }
 
@@ -252,10 +252,10 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
             {
                 if (mSelectedTreeNodeWidget->isExpanded())
                 {
-                    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                           NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mSelectedTreeNodeWidget->getChildrenNodes().at(0)), NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                       NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                         NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                             NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(mSelectedTreeNodeWidget->getChildrenNodes().first()), NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(scrollToSelectedNode(),                                                         NgosStatus::ASSERTION);
+                    COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(),                                                           NgosStatus::ASSERTION);
                 }
                 else
                 {
@@ -530,7 +530,7 @@ NgosStatus TreeWidget::pageDown()
         {
             if (selectedTreeNodeWidget->isExpanded())
             {
-                selectedTreeNodeWidget = selectedTreeNodeWidget->getChildrenNodes().at(0);
+                selectedTreeNodeWidget = selectedTreeNodeWidget->getChildrenNodes().first();
             }
             else
             {

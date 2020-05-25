@@ -39,6 +39,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
         TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
 
+
+
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       1);
         TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
@@ -48,6 +50,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
         TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       2);
@@ -59,6 +63,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       3);
@@ -72,6 +78,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
 
+
+
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       4);
         TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
@@ -84,6 +92,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
         TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp.mCapacity,   8);
         TEST_ASSERT_EQUALS(temp.mSize,       5);
@@ -111,6 +121,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
         TEST_ASSERT_EQUALS(temp.prepend(1), NgosStatus::OK);
 
+
+
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       1);
         TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
@@ -120,6 +132,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
         TEST_ASSERT_EQUALS(temp.prepend(7), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       2);
@@ -131,6 +145,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
         TEST_ASSERT_EQUALS(temp.prepend(9), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       3);
@@ -144,6 +160,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
         TEST_ASSERT_EQUALS(temp.prepend(5), NgosStatus::OK);
 
+
+
         TEST_ASSERT_EQUALS(temp.mCapacity,   4);
         TEST_ASSERT_EQUALS(temp.mSize,       4);
         TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
@@ -156,6 +174,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
         TEST_ASSERT_EQUALS(temp.prepend(3), NgosStatus::OK);
+
+
 
         TEST_ASSERT_EQUALS(temp.mCapacity,   8);
         TEST_ASSERT_EQUALS(temp.mSize,       5);
@@ -171,6 +191,211 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
 
+    TEST_CASE("insert()");
+    {
+        ArrayList<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.mCapacity, 0);
+        TEST_ASSERT_EQUALS(temp.mSize,     0);
+        TEST_ASSERT_EQUALS(temp.mValues,   nullptr);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(0, 1), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   4);
+        TEST_ASSERT_EQUALS(temp.mSize,       1);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(1, 7), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   4);
+        TEST_ASSERT_EQUALS(temp.mSize,       2);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(0, 9), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   4);
+        TEST_ASSERT_EQUALS(temp.mSize,       3);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(1, 5), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   4);
+        TEST_ASSERT_EQUALS(temp.mSize,       4);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(3, 3), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       5);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("removeAt()");
+    {
+        ArrayList<u8> temp;
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       5);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.removeAt(5), NgosStatus::NO_EFFECT);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       5);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+
+
+
+        // TODO: Need to do when changed to i64
+        /*
+        TEST_ASSERT_EQUALS(temp.removeAt(-1), NgosStatus::NO_EFFECT);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       5);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+        */
+
+
+
+        TEST_ASSERT_EQUALS(temp.removeAt(3), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       4);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.removeAt(0), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       3);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.removeAt(2), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       2);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 3);
+
+
+
+        TEST_ASSERT_EQUALS(temp.removeAt(0), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       1);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 3);
+
+
+
+        TEST_ASSERT_EQUALS(temp.removeAt(0), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.mCapacity, 0);
+        TEST_ASSERT_EQUALS(temp.mSize,     0);
+        TEST_ASSERT_EQUALS(temp.mValues,   nullptr);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("clear()");
     {
         ArrayList<u8> temp;
@@ -181,9 +406,11 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mValues,   nullptr);
-        TEST_ASSERT_EQUALS(temp.mSize,         5);
-        TEST_ASSERT_EQUALS(temp.mCapacity,     8);
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       5);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
 
 
 
@@ -191,9 +418,9 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
 
-        TEST_ASSERT_EQUALS(temp.mValues,   nullptr);
-        TEST_ASSERT_EQUALS(temp.mSize,     0);
         TEST_ASSERT_EQUALS(temp.mCapacity, 0);
+        TEST_ASSERT_EQUALS(temp.mSize,     0);
+        TEST_ASSERT_EQUALS(temp.mValues,   nullptr);
     }
     TEST_CASE_END();
 
@@ -245,6 +472,122 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.mValues[2], 5);
         TEST_ASSERT_EQUALS(temp.mValues[3], 3);
         TEST_ASSERT_EQUALS(temp.mValues[4], 1);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("first()");
+    {
+        ArrayList<u8> temp;
+
+
+
+        TEST_ASSERT_EQUALS(temp.prepend(5), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.first(), 5);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+
+
+
+        TEST_ASSERT_EQUALS(temp.prepend(9), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.first(), 9);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 5);
+
+
+
+        TEST_ASSERT_EQUALS(temp.prepend(3), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.first(), 3);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 5);
+
+
+
+        TEST_ASSERT_EQUALS(temp.prepend(1), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.first(), 1);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 5);
+
+
+
+        TEST_ASSERT_EQUALS(temp.prepend(7), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.first(), 7);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 7);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 5);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("last()");
+    {
+        ArrayList<u8> temp;
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.last(), 5);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.last(), 9);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.last(), 3);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.last(), 1);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.last(), 7);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
     }
     TEST_CASE_END();
 

@@ -15,6 +15,7 @@
 #include <common/src/bits64/console/lib/glyphdata.h>
 #include <common/src/bits64/containers/arraylist.h>
 #include <common/src/bits64/containers/list.h>
+#include <common/src/bits64/containers/map.h>
 #include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/cpu/cpufamily.h>
 #include <common/src/bits64/cpu/cpuvendor.h>
@@ -448,6 +449,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(LabelWidget),                                   112);
         TEST_ASSERT_EQUALS(sizeof(ListElement<u8>),                               24);
         TEST_ASSERT_EQUALS(sizeof(List<u8>),                                      16);
+        TEST_ASSERT_EQUALS(sizeof(Map<u8, u32>),                                  24);
+        TEST_ASSERT_EQUALS(sizeof(MapElement<u8, u32>),                           8);
         TEST_ASSERT_EQUALS(sizeof(MD5),                                           96);
         TEST_ASSERT_EQUALS(sizeof(Md5Hash),                                       16);
         TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);

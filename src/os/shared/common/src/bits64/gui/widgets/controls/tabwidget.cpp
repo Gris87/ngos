@@ -82,7 +82,7 @@ NgosStatus TabWidget::invalidate()
 
     if (mTabButtons.getSize() > 0)
     {
-        u64 tabButtonHeight = mTabButtons.at(0)->getHeight();
+        u64 tabButtonHeight = mTabButtons.first()->getHeight();
 
         COMMON_TEST_ASSERT(tabButtonHeight < mHeight, NgosStatus::ASSERTION);
 
@@ -211,7 +211,7 @@ NgosStatus TabWidget::setSize(u64 width, u64 height)
         u16 paddingRight;
         u16 paddingBottom;
 
-        paddingTop = mTabButtons.at(0)->getHeight();
+        paddingTop = mTabButtons.first()->getHeight();
 
         if (patch)
         {

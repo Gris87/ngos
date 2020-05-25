@@ -643,8 +643,8 @@ NgosStatus BootloaderGUI::cleanUp()
 
     if (sOsButtons.getSize() > 0)
     {
-        UEFI_ASSERT_EXECUTION(sOsButtons.at(0)->setPredefined(false), NgosStatus::ASSERTION); // It will force to release memory for resized images
-        UEFI_ASSERT_EXECUTION(sOsButtons.clear(),                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sOsButtons.first()->setPredefined(false), NgosStatus::ASSERTION); // It will force to release memory for resized images
+        UEFI_ASSERT_EXECUTION(sOsButtons.clear(),                       NgosStatus::ASSERTION);
     }
 
     if (sLeftButton)

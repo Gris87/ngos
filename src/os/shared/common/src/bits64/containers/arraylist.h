@@ -24,12 +24,16 @@ public:
 
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
+    NgosStatus insert(u64 index, const T &value);
+    NgosStatus removeAt(u64 index);
 
     NgosStatus clear();
 
     NgosStatus sort();
     NgosStatus sort(element_comparator comparator);
 
+    const T& first() const;
+    const T& last() const;
     const T& at(u64 index) const;
     T& operator[](u64 index);
 
@@ -119,6 +123,80 @@ NgosStatus ArrayList<T>::prepend(const T &value)
 }
 
 template<typename T>
+NgosStatus ArrayList<T>::insert(u64 index, const T &value)
+{
+    // COMMON_LT((" | index = %u, value = ...", index)); // Commented to avoid too frequent logs
+
+
+
+    if (index >= mSize)
+    {
+        return append(value);
+    }
+
+    if (index <= 0)
+    {
+        return prepend(value);
+    }
+
+
+
+    COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
+
+    for (i64 i = mSize; i > (i64)index; --i)
+    {
+        mValues[i] = mValues[i - 1];
+    }
+
+    mValues[index] = value;
+
+    ++mSize;
+
+
+
+    return NgosStatus::OK;
+}
+
+template<typename T>
+NgosStatus ArrayList<T>::removeAt(u64 index)
+{
+    // COMMON_LT((" | index = %u", index)); // Commented to avoid too frequent logs
+
+
+
+    if (
+        index >= 0
+        &&
+        index < mSize
+       )
+    {
+        if (mSize == 1)
+        {
+            COMMON_ASSERT_EXECUTION(clear(), NgosStatus::ASSERTION);
+
+            return NgosStatus::OK;
+        }
+
+
+
+        for (i64 i = index + 1; i < (i64)mSize; ++i)
+        {
+            mValues[i - 1] = mValues[i];
+        }
+
+        --mSize;
+
+
+
+        return NgosStatus::OK;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+template<typename T>
 NgosStatus ArrayList<T>::clear()
 {
     COMMON_LT((""));
@@ -176,6 +254,30 @@ NgosStatus ArrayList<T>::sort(element_comparator comparator)
 
 
     return quickSort(0, mSize - 1, comparator);
+}
+
+template<typename T>
+const T& ArrayList<T>::first() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+    COMMON_ASSERT(!isEmpty(), "list is empty", mValues[0]);
+
+
+
+    return mValues[0];
+}
+
+template<typename T>
+const T& ArrayList<T>::last() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+    COMMON_ASSERT(!isEmpty(), "list is empty", mValues[0]);
+
+
+
+    return mValues[mSize - 1];
 }
 
 template<typename T>
