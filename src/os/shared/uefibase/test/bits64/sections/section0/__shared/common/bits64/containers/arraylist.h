@@ -268,6 +268,44 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.mValues[2], 1);
         TEST_ASSERT_EQUALS(temp.mValues[3], 3);
         TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(88, 8), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       6);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 7);
+        TEST_ASSERT_EQUALS(temp.mValues[5], 8);
+
+
+
+        // TODO: Need to do when changed to i64
+        /*
+        TEST_ASSERT_EQUALS(temp.insert(-1, 0), NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+        TEST_ASSERT_EQUALS(temp.mSize,       7);
+        TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+
+        TEST_ASSERT_EQUALS(temp.mValues[0], 0);
+        TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+        TEST_ASSERT_EQUALS(temp.mValues[2], 5);
+        TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+        TEST_ASSERT_EQUALS(temp.mValues[4], 3);
+        TEST_ASSERT_EQUALS(temp.mValues[5], 7);
+        TEST_ASSERT_EQUALS(temp.mValues[6], 8);
+        */
     }
     TEST_CASE_END();
 
@@ -313,8 +351,6 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
 
-        // TODO: Need to do when changed to i64
-        /*
         TEST_ASSERT_EQUALS(temp.removeAt(-1), NgosStatus::NO_EFFECT);
 
 
@@ -328,7 +364,6 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
         TEST_ASSERT_EQUALS(temp.mValues[2], 3);
         TEST_ASSERT_EQUALS(temp.mValues[3], 1);
         TEST_ASSERT_EQUALS(temp.mValues[4], 7);
-        */
 
 
 

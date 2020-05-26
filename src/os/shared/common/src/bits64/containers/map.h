@@ -25,6 +25,7 @@ public:
     bool contains(const Key &key) const;
     const Value& value(const Key &key, const Value &defaultValue) const;
 
+    u64 getSize() const;
     bool isEmpty() const;
 
     const ArrayList<MapElement<Key, Value>>& getPairs() const;
@@ -63,18 +64,55 @@ NgosStatus Map<Key, Value>::insert(const Key &key, const Value &value)
 
 
 
-    if (
-        mPairs.isEmpty()
-        ||
-        key > mPairs.last().getKey()
-       )
+    // Special cases to improve performance
     {
-        return mPairs.append(MapElement(key, value));
-    }
+        // If there is no any pair then simply insert first one
+        {
+            if (mPairs.isEmpty())
+            {
+                return mPairs.append(MapElement(key, value));
+            }
+        }
 
-    if (key < mPairs.first().getKey())
-    {
-        return mPairs.prepend(MapElement(key, value));
+
+
+        // Compare key with the last key
+        {
+            const MapElement<Key, Value> &lastElement = mPairs.last();
+            const Key                    &lastKey     = lastElement.getKey();
+
+            if (key > lastKey)
+            {
+                return mPairs.append(MapElement(key, value));
+            }
+
+            if (key == lastKey)
+            {
+                COMMON_ASSERT_EXECUTION(mPairs[mPairs.getSize() - 1].setValue(value), NgosStatus::ASSERTION);
+
+                return NgosStatus::OK;
+            }
+        }
+
+
+
+        // Compare key with the first key
+        {
+            const MapElement<Key, Value> &firstElement = mPairs.first();
+            const Key                    &firstKey     = firstElement.getKey();
+
+            if (key < firstKey)
+            {
+                return mPairs.prepend(MapElement(key, value));
+            }
+
+            if (key == firstKey)
+            {
+                COMMON_ASSERT_EXECUTION(mPairs[0].setValue(value), NgosStatus::ASSERTION);
+
+                return NgosStatus::OK;
+            }
+        }
     }
 
 
@@ -82,17 +120,20 @@ NgosStatus Map<Key, Value>::insert(const Key &key, const Value &value)
     u64 left  = 0;
     u64 right = mPairs.getSize();
 
-    while (left < right)
+    // Binary search for the element or for position for insertion
     {
-        u64 middle = (left + right) / 2;
+        while (left < right)
+        {
+            u64 middle = (left + right) / 2;
 
-        if (key <= mPairs.at(middle).getKey())
-        {
-            right = middle;
-        }
-        else
-        {
-            left = middle + 1;
+            if (key <= mPairs.at(middle).getKey())
+            {
+                right = middle;
+            }
+            else
+            {
+                left = middle + 1;
+            }
         }
     }
 
@@ -106,15 +147,18 @@ NgosStatus Map<Key, Value>::insert(const Key &key, const Value &value)
 
 
 
-    MapElement<Key, Value> &element = mPairs[left];
+    // Check for the element at found position and update its value or insert new element
+    {
+        MapElement<Key, Value> &element = mPairs[left];
 
-    if (element.getKey() == key)
-    {
-        COMMON_ASSERT_EXECUTION(element.setValue(value), NgosStatus::ASSERTION);
-    }
-    else
-    {
-        COMMON_ASSERT_EXECUTION(mPairs.insert(left, MapElement(key, value)), NgosStatus::ASSERTION);
+        if (element.getKey() == key)
+        {
+            COMMON_ASSERT_EXECUTION(element.setValue(value), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            COMMON_ASSERT_EXECUTION(mPairs.insert(left, MapElement(key, value)), NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -129,15 +173,55 @@ NgosStatus Map<Key, Value>::remove(const Key &key)
 
 
 
-    if (
-        mPairs.isEmpty()
-        ||
-        key < mPairs.first().getKey()
-        ||
-        key > mPairs.last().getKey()
-       )
+    // Special cases to improve performance
     {
-        return NgosStatus::NOT_FOUND;
+        // If there is no any pair then there is no required entry
+        {
+            if (mPairs.isEmpty())
+            {
+                return NgosStatus::NOT_FOUND;
+            }
+        }
+
+
+
+        // Compare key with the last key
+        {
+            const MapElement<Key, Value> &lastElement = mPairs.last();
+            const Key                    &lastKey     = lastElement.getKey();
+
+            if (key > lastKey)
+            {
+                return NgosStatus::NOT_FOUND;
+            }
+
+            if (key == lastKey)
+            {
+                COMMON_ASSERT_EXECUTION(mPairs.removeAt(mPairs.getSize() - 1), NgosStatus::ASSERTION);
+
+                return NgosStatus::OK;
+            }
+        }
+
+
+
+        // Compare key with the first key
+        {
+            const MapElement<Key, Value> &firstElement = mPairs.first();
+            const Key                    &firstKey     = firstElement.getKey();
+
+            if (key < firstKey)
+            {
+                return NgosStatus::NOT_FOUND;
+            }
+
+            if (key == firstKey)
+            {
+                COMMON_ASSERT_EXECUTION(mPairs.removeAt(0), NgosStatus::ASSERTION);
+
+                return NgosStatus::OK;
+            }
+        }
     }
 
 
@@ -145,17 +229,20 @@ NgosStatus Map<Key, Value>::remove(const Key &key)
     u64 left  = 0;
     u64 right = mPairs.getSize();
 
-    while (left < right)
+    // Binary search for the element
     {
-        u64 middle = (left + right) / 2;
+        while (left < right)
+        {
+            u64 middle = (left + right) / 2;
 
-        if (key <= mPairs.at(middle).getKey())
-        {
-            right = middle;
-        }
-        else
-        {
-            left = middle + 1;
+            if (key <= mPairs.at(middle).getKey())
+            {
+                right = middle;
+            }
+            else
+            {
+                left = middle + 1;
+            }
         }
     }
 
@@ -169,11 +256,14 @@ NgosStatus Map<Key, Value>::remove(const Key &key)
 
 
 
-    if (mPairs.at(left).getKey() == key)
+    // If found element is the required element then remove it
     {
-        COMMON_ASSERT_EXECUTION(mPairs.removeAt(left), NgosStatus::ASSERTION);
+        if (mPairs.at(left).getKey() == key)
+        {
+            COMMON_ASSERT_EXECUTION(mPairs.removeAt(left), NgosStatus::ASSERTION);
 
-        return NgosStatus::OK;
+            return NgosStatus::OK;
+        }
     }
 
 
@@ -202,15 +292,51 @@ bool Map<Key, Value>::contains(const Key &key) const
 
 
 
-    if (
-        mPairs.isEmpty()
-        ||
-        key < mPairs.first().getKey()
-        ||
-        key > mPairs.last().getKey()
-       )
+    // Special cases to improve performance
     {
-        return false;
+        // If there is no any pair then there is no required entry
+        {
+            if (mPairs.isEmpty())
+            {
+                return false;
+            }
+        }
+
+
+
+        // Compare key with the last key
+        {
+            const MapElement<Key, Value> &lastElement = mPairs.last();
+            const Key                    &lastKey     = lastElement.getKey();
+
+            if (key > lastKey)
+            {
+                return false;
+            }
+
+            if (key == lastKey)
+            {
+                return true;
+            }
+        }
+
+
+
+        // Compare key with the first key
+        {
+            const MapElement<Key, Value> &firstElement = mPairs.first();
+            const Key                    &firstKey     = firstElement.getKey();
+
+            if (key < firstKey)
+            {
+                return false;
+            }
+
+            if (key == firstKey)
+            {
+                return true;
+            }
+        }
     }
 
 
@@ -218,17 +344,20 @@ bool Map<Key, Value>::contains(const Key &key) const
     u64 left  = 0;
     u64 right = mPairs.getSize();
 
-    while (left < right)
+    // Binary search for the element
     {
-        u64 middle = (left + right) / 2;
+        while (left < right)
+        {
+            u64 middle = (left + right) / 2;
 
-        if (key <= mPairs.at(middle).getKey())
-        {
-            right = middle;
-        }
-        else
-        {
-            left = middle + 1;
+            if (key <= mPairs.at(middle).getKey())
+            {
+                right = middle;
+            }
+            else
+            {
+                left = middle + 1;
+            }
         }
     }
 
@@ -252,15 +381,51 @@ const Value& Map<Key, Value>::value(const Key &key, const Value &defaultValue) c
 
 
 
-    if (
-        mPairs.isEmpty()
-        ||
-        key < mPairs.first().getKey()
-        ||
-        key > mPairs.last().getKey()
-       )
+    // Special cases to improve performance
     {
-        return defaultValue;
+        // If there is no any pair then there is no required entry
+        {
+            if (mPairs.isEmpty())
+            {
+                return defaultValue;
+            }
+        }
+
+
+
+        // Compare key with the last key
+        {
+            const MapElement<Key, Value> &lastElement = mPairs.last();
+            const Key                    &lastKey     = lastElement.getKey();
+
+            if (key > lastKey)
+            {
+                return defaultValue;
+            }
+
+            if (key == lastKey)
+            {
+                return lastElement.getValue();
+            }
+        }
+
+
+
+        // Compare key with the first key
+        {
+            const MapElement<Key, Value> &firstElement = mPairs.first();
+            const Key                    &firstKey     = firstElement.getKey();
+
+            if (key < firstKey)
+            {
+                return defaultValue;
+            }
+
+            if (key == firstKey)
+            {
+                return firstElement.getValue();
+            }
+        }
     }
 
 
@@ -268,17 +433,20 @@ const Value& Map<Key, Value>::value(const Key &key, const Value &defaultValue) c
     u64 left  = 0;
     u64 right = mPairs.getSize();
 
-    while (left < right)
+    // Binary search for the element
     {
-        u64 middle = (left + right) / 2;
+        while (left < right)
+        {
+            u64 middle = (left + right) / 2;
 
-        if (key <= mPairs.at(middle).getKey())
-        {
-            right = middle;
-        }
-        else
-        {
-            left = middle + 1;
+            if (key <= mPairs.at(middle).getKey())
+            {
+                right = middle;
+            }
+            else
+            {
+                left = middle + 1;
+            }
         }
     }
 
@@ -292,16 +460,29 @@ const Value& Map<Key, Value>::value(const Key &key, const Value &defaultValue) c
 
 
 
-    const MapElement<Key, Value> &element = mPairs.at(left);
-
-    if (element.getKey() == key)
+    // If found element is the required element then return its value
     {
-        return element.getValue();
+        const MapElement<Key, Value> &element = mPairs.at(left);
+
+        if (element.getKey() == key)
+        {
+            return element.getValue();
+        }
     }
 
 
 
     return defaultValue;
+}
+
+template <typename Key, typename Value>
+u64 Map<Key, Value>::getSize() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mPairs.getSize();
 }
 
 template <typename Key, typename Value>

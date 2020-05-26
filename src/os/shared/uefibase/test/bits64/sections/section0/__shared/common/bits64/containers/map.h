@@ -421,6 +421,8 @@ TEST_CASES(section0, __shared_common_bits64_containers_map);
         TEST_ASSERT_EQUALS(temp.contains(4),  true);
         TEST_ASSERT_EQUALS(temp.contains(3),  true);
         TEST_ASSERT_EQUALS(temp.contains(9),  true);
+        TEST_ASSERT_EQUALS(temp.contains(5),  true);
+        TEST_ASSERT_EQUALS(temp.contains(7),  true);
     }
     TEST_CASE_END();
 
@@ -462,6 +464,90 @@ TEST_CASES(section0, __shared_common_bits64_containers_map);
         TEST_ASSERT_EQUALS(temp.value(4,  0), 456);
         TEST_ASSERT_EQUALS(temp.value(3,  0), 123);
         TEST_ASSERT_EQUALS(temp.value(9,  0), 789);
+        TEST_ASSERT_EQUALS(temp.value(5,  0), 1000);
+        TEST_ASSERT_EQUALS(temp.value(7,  0), 888);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getSize()");
+    {
+        Map<u8, u32> temp;
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 0);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(5, 1000), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(3, 123), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 2);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(3, 9794), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 2);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(7, 9794), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 3);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(4, 9794), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 4);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(5, 12345), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 4);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(9, 9794), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 5);
+
+
+
+        TEST_ASSERT_EQUALS(temp.remove(9), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 4);
+
+
+
+        TEST_ASSERT_EQUALS(temp.remove(3), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 3);
+
+
+
+        TEST_ASSERT_EQUALS(temp.remove(5), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 2);
+
+
+
+        TEST_ASSERT_EQUALS(temp.remove(4), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.remove(7), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.getSize(), 0);
     }
     TEST_CASE_END();
 
@@ -506,6 +592,38 @@ TEST_CASES(section0, __shared_common_bits64_containers_map);
 
 
         TEST_ASSERT_EQUALS(temp.isEmpty(), true);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("getPairs()");
+    {
+        Map<u8, u32> temp;
+
+        TEST_ASSERT_EQUALS(temp.getPairs().getSize(), 0);
+
+
+
+        TEST_ASSERT_EQUALS(temp.insert(5, 1000), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.insert(3, 123),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.insert(9, 789),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.insert(7, 888),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(temp.insert(4, 456),  NgosStatus::OK);
+
+
+
+        TEST_ASSERT_EQUALS(temp.getPairs().getSize(),        5);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(0).getKey(),   3);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(0).getValue(), 123);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(1).getKey(),   4);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(1).getValue(), 456);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(2).getKey(),   5);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(2).getValue(), 1000);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(3).getKey(),   7);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(3).getValue(), 888);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(4).getKey(),   9);
+        TEST_ASSERT_EQUALS(temp.getPairs().at(4).getValue(), 789);
     }
     TEST_CASE_END();
 }
