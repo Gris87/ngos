@@ -16,14 +16,14 @@ struct DmiChassisContainedElementType
         // DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE
         struct
         {
-            u8 baseboardtype: 7; // TODO: Use enum DmiBaseboardType
+            u8 baseboardType: 7; // TODO: Use enum DmiBaseboardType
             u8 typeSelect:    1; // TODO: Use enum DmiChassisContainedElementTypeSelect
         };
 
         // DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE
         struct
         {
-            u8 dmiEntrytype: 7; // TODO: Use enum DmiEntryType
+            u8 dmiEntryType: 7; // TODO: Use enum DmiEntryType
             u8 __pad:        1; // Ignore this field. The same as typeSelect
         };
 

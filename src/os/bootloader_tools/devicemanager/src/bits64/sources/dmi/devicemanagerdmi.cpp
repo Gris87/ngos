@@ -1218,8 +1218,8 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
                     switch ((DmiChassisContainedElementTypeSelect)containedElement->type.typeSelect)
                     {
-                        case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiBaseboardType)containedElement->type.baseboardtype)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION); break;
-                        case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiEntryType)containedElement->type.dmiEntrytype)),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION); break;
+                        case DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiBaseboardType)containedElement->type.baseboardType)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION); break;
+                        case DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE: UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained element #%d type"), strdup(enumToFullString((DmiEntryType)containedElement->type.dmiEntryType)),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION); break;
 
                         default:
                         {

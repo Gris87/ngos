@@ -3,6 +3,8 @@
 
 
 
+#include <common/src/bits64/containers/arraylist.h>
+#include <common/src/bits64/containers/map.h>
 #include <common/src/bits64/dmi/dmientryheader.h>
 #include <common/src/bits64/dmi/dmiidentity.h>
 #include <common/src/bits64/dmi/dmimemorydevice.h>
@@ -20,6 +22,7 @@
 #include <common/src/bits64/dmi/entry/dmimanagementdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h>
 #include <common/src/bits64/dmi/entry/dmimemoryarraymappedaddressentry.h>
+#include <common/src/bits64/dmi/entry/dmimemorydeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmimemorydevicemappedaddressentry.h>
 #include <common/src/bits64/dmi/entry/dmioemstringsentry.h>
 #include <common/src/bits64/dmi/entry/dmionboarddevicesentry.h>
@@ -86,6 +89,7 @@ private:
     static NgosStatus saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry); // TEST: NO
     static NgosStatus saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry); // TEST: NO
     static NgosStatus saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry); // TEST: NO
+    static NgosStatus saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry); // TEST: NO
@@ -100,22 +104,22 @@ private:
     static NgosStatus saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry); // TEST: NO
     static NgosStatus saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry *entry); // TEST: NO
     static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO
-    static NgosStatus storeDmiMemoryDevices(u8 *buf); // TEST: NO
-    static NgosStatus countDmiMemoryDevices(DmiEntryHeader *header); // TEST: NO
-    static NgosStatus saveDmiMemoryDeviceEntry(DmiEntryHeader *header); // TEST: NO
+    static NgosStatus initMemoryDevices(); // TEST: NO
     static NgosStatus saveIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
     static NgosStatus saveUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
     static NgosStatus getString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
-    static u32              sVersion;
-    static u16              sNumberOfSmbiosStructures;
-    static u64              sStructureTableAddress;
-    static u32              sStructureTableLength;
-    static u64              sNumberOfMemoryDevices;
-    static DmiMemoryDevice *sMemoryDevices;
-    static const char8*     sIdentities[(u64)DmiIdentity::MAXIMUM];
-    static Uuid*            sUuids[(u64)DmiStoredUuid::MAXIMUM];
+    static u32                                            sVersion;
+    static u16                                            sNumberOfSmbiosStructures;
+    static u64                                            sStructureTableAddress;
+    static u32                                            sStructureTableLength;
+    static u16                                            sSystemPhysicalMemoryArrayHandle;
+    static ArrayList<DmiMemoryDeviceEntry *>              sMemoryDeviceEntries;
+    static ArrayList<DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
+    static ArrayList<DmiMemoryDevice>                     sMemoryDevices;
+    static const char8*                                   sIdentities[(u64)DmiIdentity::MAXIMUM];
+    static Uuid*                                          sUuids[(u64)DmiStoredUuid::MAXIMUM];
 };
 
 

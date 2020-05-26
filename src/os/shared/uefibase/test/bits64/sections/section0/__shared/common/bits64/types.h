@@ -708,7 +708,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
         //  DmiChassisContainedElementType - value8:
         // ==========================================================
-        // |  typeSelect : 1  |  baseboardtype or dmiEntrytype : 7  |
+        // |  typeSelect : 1  |  baseboardType or dmiEntryType : 7  |
         // ==========================================================
 
 
@@ -716,8 +716,8 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.value8 = 0x6A;         // ||  0  |  1101010  ||
 
         TEST_ASSERT_EQUALS(temp.typeSelect,    0);
-        TEST_ASSERT_EQUALS(temp.baseboardtype, 106);
-        TEST_ASSERT_EQUALS(temp.dmiEntrytype,  106);
+        TEST_ASSERT_EQUALS(temp.baseboardType, 106);
+        TEST_ASSERT_EQUALS(temp.dmiEntryType,  106);
 
 
 
@@ -727,17 +727,17 @@ TEST_CASES(section0, __shared_common_bits64_types);
 
 
 
-        temp.baseboardtype = 5;     // ||  1  |  0000101  ||
+        temp.baseboardType = 5;     // ||  1  |  0000101  ||
 
         TEST_ASSERT_EQUALS(temp.value8,       0x85);
-        TEST_ASSERT_EQUALS(temp.dmiEntrytype, 5);
+        TEST_ASSERT_EQUALS(temp.dmiEntryType, 5);
 
 
 
-        temp.dmiEntrytype = 2;      // ||  1  |  0000010  ||
+        temp.dmiEntryType = 2;      // ||  1  |  0000010  ||
 
         TEST_ASSERT_EQUALS(temp.value8,        0x82);
-        TEST_ASSERT_EQUALS(temp.baseboardtype, 2);
+        TEST_ASSERT_EQUALS(temp.baseboardType, 2);
     }
     TEST_CASE_END();
 
