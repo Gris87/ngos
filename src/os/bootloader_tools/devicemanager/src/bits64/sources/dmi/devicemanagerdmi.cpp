@@ -128,10 +128,10 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-    DmiBiosEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiBiosEntryV21 *)entry : nullptr;
-    DmiBiosEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiBiosEntryV23 *)entry : nullptr;
-    DmiBiosEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) ? (DmiBiosEntryV24 *)entry : nullptr;
-    DmiBiosEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) ? (DmiBiosEntryV31 *)entry : nullptr;
+    DmiBiosEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiBiosEntryV21) ? (DmiBiosEntryV21 *)entry : nullptr;
+    DmiBiosEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiBiosEntryV23) ? (DmiBiosEntryV23 *)entry : nullptr;
+    DmiBiosEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiBiosEntryV24) ? (DmiBiosEntryV24 *)entry : nullptr;
+    DmiBiosEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) && entry->header.length >= sizeof(DmiBiosEntryV31) ? (DmiBiosEntryV31 *)entry : nullptr;
 
 
 
@@ -456,8 +456,8 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
-    DmiSystemEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiSystemEntryV21 *)entry : nullptr;
-    DmiSystemEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) ? (DmiSystemEntryV24 *)entry : nullptr;
+    DmiSystemEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiSystemEntryV21) ? (DmiSystemEntryV21 *)entry : nullptr;
+    DmiSystemEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiSystemEntryV24) ? (DmiSystemEntryV24 *)entry : nullptr;
 
 
 
@@ -884,9 +884,9 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-    DmiChassisEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiChassisEntryV21 *)entry                                                                    : nullptr;
-    DmiChassisEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiChassisEntryV23 *)entry                                                                    : nullptr;
-    DmiChassisEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiChassisEntryV27 *)DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, entryV23->containedElementCount) : nullptr;
+    DmiChassisEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1)                        && entry->header.length >= sizeof(DmiChassisEntryV21)                                                                                                         ? (DmiChassisEntryV21 *)entry                                                                    : nullptr;
+    DmiChassisEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3)                        && entry->header.length >= sizeof(DmiChassisEntryV23)                                                                                                         ? (DmiChassisEntryV23 *)entry                                                                    : nullptr;
+    DmiChassisEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entryV23 != nullptr && entry->header.length >= sizeof(DmiChassisEntryV23) + entryV23->containedElementCount * entryV23->containedElementRecordLength + sizeof(DmiChassisEntryV27) ? (DmiChassisEntryV27 *)DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, entryV23->containedElementCount) : nullptr;
 
 
 
@@ -1256,11 +1256,11 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
-    DmiProcessorEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiProcessorEntryV21 *)entry : nullptr;
-    DmiProcessorEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiProcessorEntryV23 *)entry : nullptr;
-    DmiProcessorEntryV25 *entryV25 = DMI::getVersion() >= DMI_VERSION(2, 5) ? (DmiProcessorEntryV25 *)entry : nullptr;
-    DmiProcessorEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiProcessorEntryV26 *)entry : nullptr;
-    DmiProcessorEntryV30 *entryV30 = DMI::getVersion() >= DMI_VERSION(3, 0) ? (DmiProcessorEntryV30 *)entry : nullptr;
+    DmiProcessorEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiProcessorEntryV21) ? (DmiProcessorEntryV21 *)entry : nullptr;
+    DmiProcessorEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiProcessorEntryV23) ? (DmiProcessorEntryV23 *)entry : nullptr;
+    DmiProcessorEntryV25 *entryV25 = DMI::getVersion() >= DMI_VERSION(2, 5) && entry->header.length >= sizeof(DmiProcessorEntryV25) ? (DmiProcessorEntryV25 *)entry : nullptr;
+    DmiProcessorEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiProcessorEntryV26) ? (DmiProcessorEntryV26 *)entry : nullptr;
+    DmiProcessorEntryV30 *entryV30 = DMI::getVersion() >= DMI_VERSION(3, 0) && entry->header.length >= sizeof(DmiProcessorEntryV30) ? (DmiProcessorEntryV30 *)entry : nullptr;
 
 
 
@@ -1903,8 +1903,8 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-    DmiCacheEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiCacheEntryV21 *)entry : nullptr;
-    DmiCacheEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) ? (DmiCacheEntryV31 *)entry : nullptr;
+    DmiCacheEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiCacheEntryV21) ? (DmiCacheEntryV21 *)entry : nullptr;
+    DmiCacheEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) && entry->header.length >= sizeof(DmiCacheEntryV31) ? (DmiCacheEntryV31 *)entry : nullptr;
 
 
 
@@ -2330,8 +2330,8 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
 
 
-    DmiSystemSlotsEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiSystemSlotsEntryV26 *)entry : nullptr;
-    DmiSystemSlotsEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) ? (DmiSystemSlotsEntryV32 *)entry : nullptr;
+    DmiSystemSlotsEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiSystemSlotsEntryV26) ? (DmiSystemSlotsEntryV26 *)entry : nullptr;
+    DmiSystemSlotsEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiSystemSlotsEntryV32) ? (DmiSystemSlotsEntryV32 *)entry : nullptr;
 
 
 
@@ -3178,7 +3178,7 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
 
 
 
-    DmiPhysicalMemoryArrayEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiPhysicalMemoryArrayEntryV27 *)entry : nullptr;
+    DmiPhysicalMemoryArrayEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27) ? (DmiPhysicalMemoryArrayEntryV27 *)entry : nullptr;
 
 
 
@@ -3317,12 +3317,12 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
 
 
-    DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiMemoryDeviceEntryV23 *)entry : nullptr;
-    DmiMemoryDeviceEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiMemoryDeviceEntryV26 *)entry : nullptr;
-    DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryDeviceEntryV27 *)entry : nullptr;
-    DmiMemoryDeviceEntryV28 *entryV28 = DMI::getVersion() >= DMI_VERSION(2, 8) ? (DmiMemoryDeviceEntryV28 *)entry : nullptr;
-    DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) ? (DmiMemoryDeviceEntryV32 *)entry : nullptr;
-    DmiMemoryDeviceEntryV33 *entryV33 = DMI::getVersion() >= DMI_VERSION(3, 3) ? (DmiMemoryDeviceEntryV33 *)entry : nullptr;
+    DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV23) ? (DmiMemoryDeviceEntryV23 *)entry : nullptr;
+    DmiMemoryDeviceEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV26) ? (DmiMemoryDeviceEntryV26 *)entry : nullptr;
+    DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV27) ? (DmiMemoryDeviceEntryV27 *)entry : nullptr;
+    DmiMemoryDeviceEntryV28 *entryV28 = DMI::getVersion() >= DMI_VERSION(2, 8) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV28) ? (DmiMemoryDeviceEntryV28 *)entry : nullptr;
+    DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV32) ? (DmiMemoryDeviceEntryV32 *)entry : nullptr;
+    DmiMemoryDeviceEntryV33 *entryV33 = DMI::getVersion() >= DMI_VERSION(3, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV33) ? (DmiMemoryDeviceEntryV33 *)entry : nullptr;
 
 
 
@@ -4050,7 +4050,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
 
 
 
-    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryArrayMappedAddressEntryV27 *)entry : nullptr;
+    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27) ? (DmiMemoryArrayMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -4181,7 +4181,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
 
 
 
-    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryDeviceMappedAddressEntryV27 *)entry : nullptr;
+    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27) ? (DmiMemoryDeviceMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -4376,7 +4376,7 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
 
 
 
-    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) ? (DmiPortableBatteryEntryV22 *)entry : nullptr;
+    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) && entry->header.length >= sizeof(DmiPortableBatteryEntryV22) ? (DmiPortableBatteryEntryV22 *)entry : nullptr;
 
 
 
@@ -4906,7 +4906,7 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
 
 
 
-    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiCoolingDeviceEntryV27 *)entry : nullptr;
+    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiCoolingDeviceEntryV27) ? (DmiCoolingDeviceEntryV27 *)entry : nullptr;
 
 
 

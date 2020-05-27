@@ -17,16 +17,16 @@
 
 
 
-u32                                            DMI::sVersion;
-u16                                            DMI::sNumberOfSmbiosStructures;
-u64                                            DMI::sStructureTableAddress;
-u32                                            DMI::sStructureTableLength;
-u16                                            DMI::sSystemPhysicalMemoryArrayHandle;
-ArrayList<DmiMemoryDeviceEntry *>              DMI::sMemoryDeviceEntries;
-ArrayList<DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
-ArrayList<DmiMemoryDevice>                     DMI::sMemoryDevices;
-const char8*                                   DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
-Uuid*                                          DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
+u32                                           DMI::sVersion;
+u16                                           DMI::sNumberOfSmbiosStructures;
+u64                                           DMI::sStructureTableAddress;
+u32                                           DMI::sStructureTableLength;
+u16                                           DMI::sSystemPhysicalMemoryArrayHandle;
+ArrayList<DmiMemoryDeviceEntry *>             DMI::sMemoryDeviceEntries;
+Map<u16, DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
+ArrayList<DmiMemoryDevice>                    DMI::sMemoryDevices;
+const char8*                                  DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
+Uuid*                                         DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
 
 
 
@@ -78,13 +78,13 @@ NgosStatus DMI::init()
 
 #ifdef UEFI_APPLICATION // Defined in Makefile
     COMMON_ASSERT_EXECUTION(iterateDmiEntries((u8 *)sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(initMemoryDevices(),                                             NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                         NgosStatus::ASSERTION);
 #else
     u8 *buf;
 
     COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(sStructureTableAddress, sStructureTableLength, (void **)&buf), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, decodeDmiEntry),                                                 NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(initMemoryDevices(),                                                                    NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                                                NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)buf, sStructureTableLength),                           NgosStatus::ASSERTION);
 #endif
 
@@ -113,7 +113,9 @@ NgosStatus DMI::init()
 
             for (i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
             {
-                COMMON_LVVV(("#%-3d: 0x%p", i, sMemoryDeviceEntries.at(i)));
+                DmiMemoryDeviceEntry *device = sMemoryDeviceEntries.at(i);
+
+                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X", i, device, device->header.handle));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -128,9 +130,13 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDeviceMappedAddressEntries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++i)
+            const ArrayList<MapElement<u16, DmiMemoryDeviceMappedAddressEntry *>> &pairs = sMemoryDeviceMappedAddressEntries.getPairs();
+
+            for (i64 i = 0; i < (i64)pairs.getSize(); ++i)
             {
-                COMMON_LVVV(("#%-3d: 0x%p", i, sMemoryDeviceMappedAddressEntries.at(i)));
+                const MapElement<u16, DmiMemoryDeviceMappedAddressEntry *> &pair = pairs.at(i);
+
+                COMMON_LVVV(("#%-3d: 0x%04X -> 0x%p", i, pair.getKey(), pair.getValue()));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -199,36 +205,41 @@ NgosStatus DMI::init()
 
 
 
-        // COMMON_TEST_ASSERT(sVersion                  == 0x00020800,              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 9,                       NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sStructureTableAddress       != 0,                       NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sStructureTableLength     == 395,                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sNumberOfMemoryDevices    == 1,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].handle  == 0x1100,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].device  != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].bank    == 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices[0].size    == 1073741824,              NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM    == 7,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[0]               != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[1]               != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[2]               != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[3]               != 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[4]               != 0,                       NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sIdentities[5]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[6]            != 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM  == 1,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sUuids[0]                    != 0,                       NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sUuids[0]->data1          == 0x9FAE0773,              NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data2          == 0xF53F,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data3          == 0x4A15,                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data4          == 0x8A,                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data5          == 0x11,                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]       == 0xED,                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]       == 0x76,                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]       == 0xA1,                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]       == 0x0F,                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]       == 0x4E,                    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]       == 0x5B,                    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVersion                                    == 0x00020800, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures                   == 9,          NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT(sStructureTableAddress                         != 0,          NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                  != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices.getSize()                    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).size                   == GB,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).deviceLocator          != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).manufacturer           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).serialNumber           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).partNumber             != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM                      == 7,          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[0]                                 != nullptr,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[1]                                 != nullptr,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[2]                                 != nullptr,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[3]                                 != nullptr,    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sIdentities[4]                                 != nullptr,    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sIdentities[5]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sIdentities[6]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
+        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM                    == 1,          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sUuids[0]                                      != nullptr,    NgosStatus::ASSERTION);
+        // COMMON_TEST_ASSERT(sUuids[0]->data1                            == 0x9FAE0773, NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data2                            == 0xF53F,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data3                            == 0x4A15,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data4                            == 0x8A,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data5                            == 0x11,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]                         == 0xED,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]                         == 0x76,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]                         == 0xA1,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]                         == 0x0F,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]                         == 0x4E,       NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]                         == 0x5B,       NgosStatus::ASSERTION); // Commented due to value variation
     }
 
 
@@ -249,7 +260,7 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
     u8  *cur = buf;
 
     while (
-           !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
+           sNumberOfSmbiosStructures == 0
            ||
            i < sNumberOfSmbiosStructures
           )
@@ -269,28 +280,34 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
         cur += dmiEntryHeader->length;
 
         // We are getting total DMI entry size until we met 2 zeros in buffer that let us avoid issues on decoding
-        while (
-               cur[0]
-               ||
-               cur[1]
-              )
+        do
         {
+            if (
+                cur[0] == 0
+                &&
+                cur[1] == 0
+               )
+            {
+                break;
+            }
+
             ++cur;
-        }
-
-        COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
-
-
+        } while(true);
 
         cur += 2;
         ++i;
 
 
 
+        COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
+
+
+
+
         // Starting from SMBIOS 3 there is no information about amount of entries.
         // Therefore we should stop iterating when we met entry with the special DmiEntryType::END_OF_TABLE type
         if (
-            !sNumberOfSmbiosStructures // sNumberOfSmbiosStructures == 0
+            sNumberOfSmbiosStructures == 0
             &&
             dmiEntryHeader->type == DmiEntryType::END_OF_TABLE
            )
@@ -299,8 +316,8 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
         }
     }
 
-    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || cur == buf + sStructureTableLength, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(!sNumberOfSmbiosStructures || i   == sNumberOfSmbiosStructures,   NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 0 || cur == buf + sStructureTableLength, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 0 || i   == sNumberOfSmbiosStructures,   NgosStatus::ASSERTION);
 
 
 
@@ -510,10 +527,10 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-    DmiBiosEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiBiosEntryV21 *)entry : nullptr;
-    DmiBiosEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiBiosEntryV23 *)entry : nullptr;
-    DmiBiosEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) ? (DmiBiosEntryV24 *)entry : nullptr;
-    DmiBiosEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) ? (DmiBiosEntryV31 *)entry : nullptr;
+    DmiBiosEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiBiosEntryV21) ? (DmiBiosEntryV21 *)entry : nullptr;
+    DmiBiosEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiBiosEntryV23) ? (DmiBiosEntryV23 *)entry : nullptr;
+    DmiBiosEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiBiosEntryV24) ? (DmiBiosEntryV24 *)entry : nullptr;
+    DmiBiosEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) && entry->header.length >= sizeof(DmiBiosEntryV31) ? (DmiBiosEntryV31 *)entry : nullptr;
 
 
 
@@ -694,8 +711,8 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
 
 
-    DmiSystemEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiSystemEntryV21 *)entry : nullptr;
-    DmiSystemEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) ? (DmiSystemEntryV24 *)entry : nullptr;
+    DmiSystemEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiSystemEntryV21) ? (DmiSystemEntryV21 *)entry : nullptr;
+    DmiSystemEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiSystemEntryV24) ? (DmiSystemEntryV24 *)entry : nullptr;
 
 
 
@@ -762,13 +779,6 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
             }
         }
-    }
-
-
-
-    if (entryV21)
-    {
-        COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, &entryV21->uuid), NgosStatus::ASSERTION);
     }
 
 
@@ -870,6 +880,13 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
             COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
+    }
+
+
+
+    if (entryV21)
+    {
+        COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, &entryV21->uuid), NgosStatus::ASSERTION);
     }
 
 
@@ -1041,9 +1058,9 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-    DmiChassisEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiChassisEntryV21 *)entry                                                                    : nullptr;
-    DmiChassisEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiChassisEntryV23 *)entry                                                                    : nullptr;
-    DmiChassisEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiChassisEntryV27 *)DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, entryV23->containedElementCount) : nullptr;
+    DmiChassisEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1)                        && entry->header.length >= sizeof(DmiChassisEntryV21)                                                                                                         ? (DmiChassisEntryV21 *)entry                                                                    : nullptr;
+    DmiChassisEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3)                        && entry->header.length >= sizeof(DmiChassisEntryV23)                                                                                                         ? (DmiChassisEntryV23 *)entry                                                                    : nullptr;
+    DmiChassisEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entryV23 != nullptr && entry->header.length >= sizeof(DmiChassisEntryV23) + entryV23->containedElementCount * entryV23->containedElementRecordLength + sizeof(DmiChassisEntryV27) ? (DmiChassisEntryV27 *)DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, entryV23->containedElementCount) : nullptr;
 
 
 
@@ -1281,11 +1298,11 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 
 
 
-    DmiProcessorEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiProcessorEntryV21 *)entry : nullptr;
-    DmiProcessorEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiProcessorEntryV23 *)entry : nullptr;
-    DmiProcessorEntryV25 *entryV25 = DMI::getVersion() >= DMI_VERSION(2, 5) ? (DmiProcessorEntryV25 *)entry : nullptr;
-    DmiProcessorEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiProcessorEntryV26 *)entry : nullptr;
-    DmiProcessorEntryV30 *entryV30 = DMI::getVersion() >= DMI_VERSION(3, 0) ? (DmiProcessorEntryV30 *)entry : nullptr;
+    DmiProcessorEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiProcessorEntryV21) ? (DmiProcessorEntryV21 *)entry : nullptr;
+    DmiProcessorEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiProcessorEntryV23) ? (DmiProcessorEntryV23 *)entry : nullptr;
+    DmiProcessorEntryV25 *entryV25 = DMI::getVersion() >= DMI_VERSION(2, 5) && entry->header.length >= sizeof(DmiProcessorEntryV25) ? (DmiProcessorEntryV25 *)entry : nullptr;
+    DmiProcessorEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiProcessorEntryV26) ? (DmiProcessorEntryV26 *)entry : nullptr;
+    DmiProcessorEntryV30 *entryV30 = DMI::getVersion() >= DMI_VERSION(3, 0) && entry->header.length >= sizeof(DmiProcessorEntryV30) ? (DmiProcessorEntryV30 *)entry : nullptr;
 
 
 
@@ -1595,8 +1612,8 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-    DmiCacheEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) ? (DmiCacheEntryV21 *)entry : nullptr;
-    DmiCacheEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) ? (DmiCacheEntryV31 *)entry : nullptr;
+    DmiCacheEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiCacheEntryV21) ? (DmiCacheEntryV21 *)entry : nullptr;
+    DmiCacheEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) && entry->header.length >= sizeof(DmiCacheEntryV31) ? (DmiCacheEntryV31 *)entry : nullptr;
 
 
 
@@ -1859,8 +1876,8 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
 
 
-    DmiSystemSlotsEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiSystemSlotsEntryV26 *)entry : nullptr;
-    DmiSystemSlotsEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) ? (DmiSystemSlotsEntryV32 *)entry : nullptr;
+    DmiSystemSlotsEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiSystemSlotsEntryV26) ? (DmiSystemSlotsEntryV26 *)entry : nullptr;
+    DmiSystemSlotsEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiSystemSlotsEntryV32) ? (DmiSystemSlotsEntryV32 *)entry : nullptr;
 
 
 
@@ -2478,7 +2495,7 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
 
 
-    DmiPhysicalMemoryArrayEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiPhysicalMemoryArrayEntryV27 *)entry : nullptr;
+    DmiPhysicalMemoryArrayEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27) ? (DmiPhysicalMemoryArrayEntryV27 *)entry : nullptr;
 
 
 
@@ -2554,12 +2571,12 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
 
 
 
-    DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) ? (DmiMemoryDeviceEntryV23 *)entry : nullptr;
-    DmiMemoryDeviceEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) ? (DmiMemoryDeviceEntryV26 *)entry : nullptr;
-    DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryDeviceEntryV27 *)entry : nullptr;
-    DmiMemoryDeviceEntryV28 *entryV28 = DMI::getVersion() >= DMI_VERSION(2, 8) ? (DmiMemoryDeviceEntryV28 *)entry : nullptr;
-    DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) ? (DmiMemoryDeviceEntryV32 *)entry : nullptr;
-    DmiMemoryDeviceEntryV33 *entryV33 = DMI::getVersion() >= DMI_VERSION(3, 3) ? (DmiMemoryDeviceEntryV33 *)entry : nullptr;
+    DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV23) ? (DmiMemoryDeviceEntryV23 *)entry : nullptr;
+    DmiMemoryDeviceEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV26) ? (DmiMemoryDeviceEntryV26 *)entry : nullptr;
+    DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV27) ? (DmiMemoryDeviceEntryV27 *)entry : nullptr;
+    DmiMemoryDeviceEntryV28 *entryV28 = DMI::getVersion() >= DMI_VERSION(2, 8) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV28) ? (DmiMemoryDeviceEntryV28 *)entry : nullptr;
+    DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV32) ? (DmiMemoryDeviceEntryV32 *)entry : nullptr;
+    DmiMemoryDeviceEntryV33 *entryV33 = DMI::getVersion() >= DMI_VERSION(3, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV33) ? (DmiMemoryDeviceEntryV33 *)entry : nullptr;
 
 
 
@@ -2865,7 +2882,7 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
 
 
-    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryArrayMappedAddressEntryV27 *)entry : nullptr;
+    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27) ? (DmiMemoryArrayMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -2928,7 +2945,7 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
 
 
-    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiMemoryDeviceMappedAddressEntryV27 *)entry : nullptr;
+    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27) ? (DmiMemoryDeviceMappedAddressEntryV27 *)entry : nullptr;
 
 
 
@@ -2986,7 +3003,9 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
 
 
-    COMMON_ASSERT_EXECUTION(sMemoryDeviceMappedAddressEntries.append(entry), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(!sMemoryDeviceMappedAddressEntries.contains(entry->memoryDeviceHandle), NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(sMemoryDeviceMappedAddressEntries.insert(entry->memoryDeviceHandle, entry), NgosStatus::ASSERTION);
 
 
 
@@ -3001,7 +3020,7 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
 
 
 
-    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) ? (DmiPortableBatteryEntryV22 *)entry : nullptr;
+    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) && entry->header.length >= sizeof(DmiPortableBatteryEntryV22) ? (DmiPortableBatteryEntryV22 *)entry : nullptr;
 
 
 
@@ -3291,7 +3310,7 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
 
 
-    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) ? (DmiCoolingDeviceEntryV27 *)entry : nullptr;
+    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiCoolingDeviceEntryV27) ? (DmiCoolingDeviceEntryV27 *)entry : nullptr;
 
 
 
@@ -4247,7 +4266,7 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::initMemoryDevices()
+NgosStatus DMI::storeDmiMemoryDevices()
 {
     COMMON_LT((""));
 
@@ -4280,8 +4299,8 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, Uuid *uuid)
 
 
 
-    COMMON_TEST_ASSERT(sUuids[(u64)id] == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sizeof(Uuid) == 16,   NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sUuids[(u64)id] == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sizeof(Uuid)    == 16,      NgosStatus::ASSERTION);
 
 
 
