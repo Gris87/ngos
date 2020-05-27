@@ -19,7 +19,7 @@
 
 
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
-#define CURSOR_SIZE_PERCENT        1
+#define CURSOR_SIZE                20
 
 
 
@@ -79,7 +79,6 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
 
 
     u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
-    u64 cursorSize       = screenWidth  * CURSOR_SIZE_PERCENT        / 100;
 
 
 
@@ -130,7 +129,7 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
     CursorWidget *cursorWidget = new CursorWidget(cursorImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(screenWidth / 2, screenHeight / 2), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(CURSOR_SIZE, CURSOR_SIZE),              NgosStatus::ASSERTION);
 
 
 

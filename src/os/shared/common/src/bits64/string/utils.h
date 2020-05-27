@@ -8,14 +8,22 @@
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/generated/bytesdecimals.h>
 #include <common/src/bits64/string/generated/numberdecimals.h>
+#include <common/src/bits64/string/string.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
 
 
 
-inline const char8* bytesToString(u64 bytes)
+inline NgosStatus bytesToString(u64 bytes, char8 *buffer, i64 size)
 {
     // COMMON_LT((" | bytes = %u", bytes)); // Commented to avoid bad looking logs
+
+    COMMON_ASSERT(buffer,     "buffer is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size >= 11, "size is too small", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(size);
 
 
 
@@ -32,8 +40,8 @@ inline const char8* bytesToString(u64 bytes)
 
 
 
-    COMMON_TEST_ASSERT(level <= 6,    nullptr);
-    COMMON_TEST_ASSERT(tail  <  1024, nullptr);
+    COMMON_TEST_ASSERT(level <= 6,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(tail  <  1024, NgosStatus::ASSERTION);
 
 
 
@@ -42,34 +50,46 @@ inline const char8* bytesToString(u64 bytes)
         tail = 0;
         ++bytes;
 
-        if (bytes >= 1024)
+        if (bytes == 1024)
         {
-            bytes >>= 10;
+            bytes = 1;
             ++level;
         }
     }
 
 
 
-    static char8 res[11];
-    i64          length;
-
-    AVOID_UNUSED(length);
+    i64 length;
 
     switch (level)
     {
-        case 0: length = sprintf(res, "%u B",      bytes);                      break;
-        case 1: length = sprintf(res, "%u%.3s KB", bytes, bytesDecimals[tail]); break;
-        case 2: length = sprintf(res, "%u%.3s MB", bytes, bytesDecimals[tail]); break;
-        case 3: length = sprintf(res, "%u%.3s GB", bytes, bytesDecimals[tail]); break;
-        case 4: length = sprintf(res, "%u%.3s TB", bytes, bytesDecimals[tail]); break;
-        case 5: length = sprintf(res, "%u%.3s PB", bytes, bytesDecimals[tail]); break;
-        case 6: length = sprintf(res, "%u%.3s EB", bytes, bytesDecimals[tail]); break;
+        case 0: length = sprintf(buffer, "%u B",      bytes);                      break;
+        case 1: length = sprintf(buffer, "%u%.3s KB", bytes, bytesDecimals[tail]); break;
+        case 2: length = sprintf(buffer, "%u%.3s MB", bytes, bytesDecimals[tail]); break;
+        case 3: length = sprintf(buffer, "%u%.3s GB", bytes, bytesDecimals[tail]); break;
+        case 4: length = sprintf(buffer, "%u%.3s TB", bytes, bytesDecimals[tail]); break;
+        case 5: length = sprintf(buffer, "%u%.3s PB", bytes, bytesDecimals[tail]); break;
+        case 6: length = sprintf(buffer, "%u%.3s EB", bytes, bytesDecimals[tail]); break;
 
-        default: return "UNKNOWN";
+        default: strcpy(buffer, "UNKNOWN"); length = 7; break;
     }
 
-    COMMON_TEST_ASSERT(length < (i64)sizeof(res), nullptr);
+    COMMON_TEST_ASSERT(length < size, NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+inline const char8* bytesToString(u64 bytes)
+{
+    // COMMON_LT((" | bytes = %u", bytes)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[11];
+
+    COMMON_ASSERT_EXECUTION(bytesToString(bytes, res, sizeof(res)), nullptr);
 
 
 
@@ -105,9 +125,9 @@ inline const char8* hertzToString(u64 hertz)
         tail = 0;
         ++hertz;
 
-        if (hertz >= 1000)
+        if (hertz == 1000)
         {
-            hertz /= 1000;
+            hertz = 1;
             ++level;
         }
     }
@@ -154,7 +174,7 @@ inline const char8* stringToString(const char8 *str)
 
 
 
-    return str ? str : "null";
+    return str != nullptr ? str : "null";
 }
 
 

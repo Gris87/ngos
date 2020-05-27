@@ -326,7 +326,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),              15);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntryV27),           31);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressRange),              4);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               40);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               56);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceAttributes),                     1);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          21);
         TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV23),                       27);

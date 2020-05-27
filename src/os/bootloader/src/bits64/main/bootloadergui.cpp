@@ -65,7 +65,7 @@
 #define TOOL_BUTTON_WIDTH_PERCENT  26
 #define TOOL_BUTTON_HEIGHT_PERCENT 10
 #define SYSTEM_BUTTON_SIZE_PERCENT 5
-#define CURSOR_SIZE_PERCENT        1
+#define CURSOR_SIZE                20
 
 #define TIMEOUT_TIME 9
 
@@ -164,7 +164,6 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     u64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
     u64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
     u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
-    u64 cursorSize       = screenWidth  * CURSOR_SIZE_PERCENT        / 100;
 
 
 
@@ -594,7 +593,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
     CursorWidget *cursorWidget = new CursorWidget(sCursorImage, rootWidget);
 
     UEFI_ASSERT_EXECUTION(cursorWidget->setPosition(GUI::getFocusedWidget()->getGlobalPositionX() + (GUI::getFocusedWidget()->getWidth() / 2), GUI::getFocusedWidget()->getGlobalPositionY() + (GUI::getFocusedWidget()->getHeight() / 2)), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(cursorSize, cursorSize),                                                                                                                                                                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(cursorWidget->setSize(CURSOR_SIZE, CURSOR_SIZE),                                                                                                                                                                  NgosStatus::ASSERTION);
 
 
 

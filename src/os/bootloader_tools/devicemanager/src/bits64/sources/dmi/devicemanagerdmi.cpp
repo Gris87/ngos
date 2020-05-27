@@ -2003,7 +2003,6 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
-    const char8 *entryName         = nullptr;
     const char8 *socketDesignation = "N/A";
 
     // Get strings
@@ -2033,7 +2032,6 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
                     if (stringId == entry->socketDesignation)
                     {
                         socketDesignation = begin;
-                        entryName         = socketDesignation;
                     }
 
 
@@ -2055,13 +2053,6 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         {
             UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
             UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-
-
-
-        if (!entryName)
-        {
-            entryName = enumToHumanString(entry->header.type);
         }
     }
 
@@ -2155,7 +2146,7 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
     // Add Device Manager entry
     {
-        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), mprintf("Cache L%u", entry->cacheConfiguration.levelReal()));
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type)),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
@@ -4143,7 +4134,15 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
                 end   = entry->endingAddress.address(1);
             }
 
-            range  = mprintf("%s - %s", strdup(bytesToString(start)), strdup(bytesToString(end)));
+
+
+            char8 startBuffer[11];
+            char8 endBuffer[11];
+
+            UEFI_ASSERT_EXECUTION(bytesToString(start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(bytesToString(end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
+
+            range  = mprintf("%s - %s", startBuffer, endBuffer);
             range2 = mprintf("0x%016lX - 0x%016lX", start, end);
         }
     }
@@ -4283,7 +4282,15 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
                 end   = entry->endingAddress.address(1);
             }
 
-            range  = mprintf("%s - %s", strdup(bytesToString(start)), strdup(bytesToString(end)));
+
+
+            char8 startBuffer[11];
+            char8 endBuffer[11];
+
+            UEFI_ASSERT_EXECUTION(bytesToString(start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(bytesToString(end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
+
+            range  = mprintf("%s - %s", startBuffer, endBuffer);
             range2 = mprintf("0x%016lX - 0x%016lX", start, end);
         }
 

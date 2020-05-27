@@ -10,6 +10,8 @@
 struct DmiMemoryDevice
 {
     u64          size;
+    u64          start;
+    u64          end;
     const char8 *deviceLocator;
     const char8 *manufacturer;
     const char8 *serialNumber;

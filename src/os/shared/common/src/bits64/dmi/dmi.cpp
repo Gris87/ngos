@@ -115,7 +115,7 @@ NgosStatus DMI::init()
             {
                 DmiMemoryDeviceEntry *device = sMemoryDeviceEntries.at(i);
 
-                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X", i, device, device->header.handle));
+                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X | 0x%04X", i, device, device->header.handle, device->memoryArrayHandle));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -155,7 +155,17 @@ NgosStatus DMI::init()
             {
                 const DmiMemoryDevice &device = sMemoryDevices.at(i);
 
-                COMMON_LVVV(("#%-3d: %-5s | %s | %s | %s | %s", i, bytesToString(device.size), stringToString(device.deviceLocator), stringToString(device.manufacturer), stringToString(device.serialNumber), stringToString(device.partNumber)));
+
+
+                char8 startBuffer[11];
+                char8 endBuffer[11];
+
+                COMMON_ASSERT_EXECUTION(bytesToString(device.start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(bytesToString(device.end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
+
+
+
+                COMMON_LVVV(("#%-3d: %-5s | %5s - %-5s | %s | %s | %s | %s", i, bytesToString(device.size), startBuffer, endBuffer, stringToString(device.deviceLocator), stringToString(device.manufacturer), stringToString(device.serialNumber), stringToString(device.partNumber)));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -4269,6 +4279,225 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
 NgosStatus DMI::storeDmiMemoryDevices()
 {
     COMMON_LT((""));
+
+
+
+    u64 position = 0;
+
+
+
+    for (i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
+    {
+        DmiMemoryDeviceEntry *entry = sMemoryDeviceEntries.at(i);
+
+        DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV23) ? (DmiMemoryDeviceEntryV23 *)entry : nullptr;
+        DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV27) ? (DmiMemoryDeviceEntryV27 *)entry : nullptr;
+        DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV32) ? (DmiMemoryDeviceEntryV32 *)entry : nullptr;
+
+
+
+        if (entry->memoryArrayHandle == sSystemPhysicalMemoryArrayHandle)
+        {
+            DmiMemoryDevice device;
+
+
+
+            // Init memory device
+            {
+                // Set size
+                {
+                    if (entry->size.value16 == DMI_MEMORY_DEVICE_SIZE_NOT_INSTALLED)
+                    {
+                        device.size = 0;
+                    }
+                    else
+                    if (entry->size.value16 == DMI_MEMORY_DEVICE_SIZE_UNKNOWN)
+                    {
+                        device.size = 0xFFFFFFFFFFFFFFFF;
+                    }
+                    else
+                    if (
+                        entry->size.value16 == DMI_MEMORY_DEVICE_SIZE_NEED_TO_EXTEND
+                        &&
+                        entryV27
+                       )
+                    {
+                        device.size = entryV27->extendedSize.size();
+                    }
+                    else
+                    {
+                        device.size = entry->size.size();
+                    }
+                }
+
+
+
+                // Set range
+                {
+                    DmiMemoryDeviceMappedAddressEntry *deviceMappedAddress = sMemoryDeviceMappedAddressEntries.value(entry->header.handle, nullptr);
+
+                    if (deviceMappedAddress)
+                    {
+                        DmiMemoryDeviceMappedAddressEntryV27 *deviceMappedAddressV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && deviceMappedAddress->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27) ? (DmiMemoryDeviceMappedAddressEntryV27 *)deviceMappedAddress : nullptr;
+
+                        if (
+                            deviceMappedAddress->startingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
+                            &&
+                            deviceMappedAddress->endingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
+                            &&
+                            deviceMappedAddressV27
+                           )
+                        {
+                            device.start = deviceMappedAddressV27->extendedStartingAddress;
+                            device.end   = deviceMappedAddressV27->extendedEndingAddress;
+                        }
+                        else
+                        {
+                            device.start = deviceMappedAddress->startingAddress.address();
+                            device.end   = deviceMappedAddress->endingAddress.address(1);
+                        }
+                    }
+                    else
+                    {
+                        if (!sMemoryDeviceMappedAddressEntries.isEmpty())
+                        {
+                            device.start = 0;
+                            device.end   = 0;
+                        }
+                        else
+                        {
+                            device.start =  position;
+                            position     += device.size;
+                            device.end   =  position;
+                        }
+                    }
+                }
+
+
+
+                device.deviceLocator = nullptr;
+                device.manufacturer  = nullptr;
+                device.serialNumber  = nullptr;
+                device.partNumber    = nullptr;
+            }
+
+
+
+            // Get strings
+            {
+                DmiStringId manufacturerStringId;
+                DmiStringId serialNumberStringId;
+                DmiStringId assetTagStringId;
+                DmiStringId partNumberStringId;
+                DmiStringId firmwareVersionStringId;
+
+                if (entryV23)
+                {
+                    manufacturerStringId = entryV23->manufacturer;
+                    serialNumberStringId = entryV23->serialNumber;
+                    assetTagStringId     = entryV23->assetTag;
+                    partNumberStringId   = entryV23->partNumber;
+
+                    if (entryV32)
+                    {
+                        firmwareVersionStringId = entryV32->firmwareVersion;
+                    }
+                }
+
+
+
+                if (
+                    entry->deviceLocator.id
+                    ||
+                    entry->bankLocator.id
+                    ||
+                    manufacturerStringId.id
+                    ||
+                    serialNumberStringId.id
+                    ||
+                    assetTagStringId.id
+                    ||
+                    partNumberStringId.id
+                    ||
+                    firmwareVersionStringId.id
+                   )
+                {
+                    char8 *cur   = (char8 *)entry + entry->header.length;
+                    char8 *begin = cur;
+
+                    AVOID_UNUSED(begin);
+
+                    COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+                    DmiStringId stringId;
+
+                    do
+                    {
+                        if (cur[0] == 0)
+                        {
+                            ++stringId;
+                            COMMON_LVVV(("String #%u: %s", stringId.id, begin));
+
+
+
+                            if (stringId == entry->deviceLocator)
+                            {
+                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.deviceLocator), NgosStatus::ASSERTION);
+                            }
+                            else
+                            if (stringId == manufacturerStringId)
+                            {
+                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.manufacturer), NgosStatus::ASSERTION);
+                            }
+                            else
+                            if (stringId == serialNumberStringId)
+                            {
+                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.serialNumber), NgosStatus::ASSERTION);
+                            }
+                            else
+                            if (stringId == partNumberStringId)
+                            {
+                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.partNumber), NgosStatus::ASSERTION);
+                            }
+
+
+
+                            if (cur[1] == 0)
+                            {
+                                break;
+                            }
+
+                            begin = cur + 1;
+                        }
+
+
+
+                        ++cur;
+                    } while(true);
+                }
+                else
+                {
+                    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                }
+            }
+
+
+
+            COMMON_ASSERT_EXECUTION(sMemoryDevices.append(device), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    if (sMemoryDevices.isEmpty())
+    {
+        COMMON_LC(("Failed to get information about memory devices"));
+
+        return NgosStatus::NOT_FOUND;
+    }
 
 
 
