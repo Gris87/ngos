@@ -1,6 +1,5 @@
 #include "devicemanagergui.h"
 
-#include <common/src/bits64/console/graphicalconsole.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>

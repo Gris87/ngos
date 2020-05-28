@@ -123,7 +123,7 @@
 #define ISSUES_TABLEWIDGET_POSITION_Y_PERCENT 1
 #define ISSUES_TABLEWIDGET_WIDTH_PERCENT      98
 #define ISSUES_TABLEWIDGET_HEIGHT_PERCENT     98
-#define ISSUES_TABLEWIDGET_ROW_HEIGHT_PERCENT 6
+#define ISSUES_TABLEWIDGET_ROW_HEIGHT         27
 
 #define ISSUES_COLUMN_ICON_WIDTH_PERCENT        4
 #define ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT 96
@@ -142,7 +142,7 @@
 #define TEST_TABLEWIDGET_POSITION_Y_PERCENT 10
 #define TEST_TABLEWIDGET_WIDTH_PERCENT      98
 #define TEST_TABLEWIDGET_HEIGHT_PERCENT     89
-#define TEST_TABLEWIDGET_ROW_HEIGHT_PERCENT 6
+#define TEST_TABLEWIDGET_ROW_HEIGHT         27
 
 #define TEST_COLUMN_NAME_WIDTH_PERCENT  80
 #define TEST_COLUMN_SCORE_WIDTH_PERCENT 20
@@ -156,7 +156,7 @@
 #define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 10
 #define SUMMARY_TABLEWIDGET_WIDTH_PERCENT      98
 #define SUMMARY_TABLEWIDGET_HEIGHT_PERCENT     89
-#define SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT 6
+#define SUMMARY_TABLEWIDGET_ROW_HEIGHT         27
 
 #define SUMMARY_COLUMN_NAME_WIDTH_PERCENT  80
 #define SUMMARY_COLUMN_SCORE_WIDTH_PERCENT 20
@@ -786,8 +786,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setPosition(tabPageWidth * ISSUES_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * ISSUES_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setSize(issuesTableWidth, issuesTableHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setKeyboardEventHandler(onIssuesTableWidgetKeyboardEvent),                                                                            NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowHeight(tabPageHeight * ISSUES_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowHeight(ISSUES_TABLEWIDGET_ROW_HEIGHT),                                                                                          NgosStatus::ASSERTION);
 
 
 
@@ -851,8 +850,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setPosition(tabPageWidth * TEST_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * TEST_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setSize(testTableWidth, testTableHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setKeyboardEventHandler(onTestTableWidgetKeyboardEvent),                                                                          NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sTestTableWidget->setRowHeight(tabPageHeight * TEST_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestTableWidget->setRowHeight(TEST_TABLEWIDGET_ROW_HEIGHT),                                                                                        NgosStatus::ASSERTION);
 
 
 
@@ -886,8 +884,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setPosition(tabPageWidth * SUMMARY_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setSize(summaryTableWidth, summaryTableHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setKeyboardEventHandler(onSummaryTableWidgetKeyboardEvent),                                                                             NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(tabPageHeight * SUMMARY_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(SUMMARY_TABLEWIDGET_ROW_HEIGHT),                                                                                           NgosStatus::ASSERTION);
 
 
 
