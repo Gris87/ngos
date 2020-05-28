@@ -46,7 +46,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
         mImageWidget = new ImageWidget(image, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
 
@@ -94,7 +94,7 @@ TreeNodeWidget::TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pre
         mImageWidget = new ImageWidget(image, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
 

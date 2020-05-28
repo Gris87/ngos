@@ -46,7 +46,7 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
         mBadgeWidget = new ImageWidget(badgeImage, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
     }
@@ -95,7 +95,7 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
         mBadgeWidget = new ImageWidget(badgeImage, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
     }

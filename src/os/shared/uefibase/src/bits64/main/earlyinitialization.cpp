@@ -115,7 +115,7 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
-        if (wantedCpuFlag && *wantedCpuFlag)
+        if (wantedCpuFlag != nullptr && wantedCpuFlag[0] != 0)
         {
             UEFI_LF(("CPU flag \"%s\" is not supported\n", wantedCpuFlag));
         }

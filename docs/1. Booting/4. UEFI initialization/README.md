@@ -127,7 +127,7 @@ Please refer to [How to debug chapter](../../0.%20Intro/5.%20How%20to%20debug/RE
 
         UEFI_LF(("CPU flags:             %s\n", buffer));
 
-        if (wantedCpuFlag && *wantedCpuFlag)
+        if (wantedCpuFlag != nullptr && wantedCpuFlag[0] != 0)
         {
             UEFI_LF(("CPU flag \"%s\" is not supported\n", wantedCpuFlag));
         }

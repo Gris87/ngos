@@ -40,7 +40,7 @@ ToolButton::ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImag
         mBadgeWidget = new ImageWidget(badgeImage, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
     }
@@ -81,7 +81,7 @@ ToolButton::ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImag
         mBadgeWidget = new ImageWidget(badgeImage, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
     }

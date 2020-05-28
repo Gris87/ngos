@@ -712,18 +712,23 @@ UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, Guid *protocol, v
 {
     UEFI_LT((" | searchType = %d, protocol = 0x%p, searchKey = 0x%p, bufferSize = 0x%p, buffer = 0x%p", searchType, protocol, searchKey, bufferSize, buffer));
 
-    UEFI_ASSERT((searchType == UefiLocateSearchType::BY_PROTOCOL
-                &&
-                protocol)
+    UEFI_ASSERT(
+                (
+                    searchType == UefiLocateSearchType::BY_PROTOCOL
+                    &&
+                    protocol != nullptr
+                )
                 ||
-                (searchType == UefiLocateSearchType::BY_REGISTER_NOTIFY
-                &&
-                searchKey)
+                (
+                    searchType == UefiLocateSearchType::BY_REGISTER_NOTIFY
+                    &&
+                    searchKey != nullptr
+                )
                 ||
-                searchType == UefiLocateSearchType::ALL_HANDLES, "Invalid arguments",  UefiStatus::ABORTED);
+                searchType == UefiLocateSearchType::ALL_HANDLES, "Invalid arguments", UefiStatus::ABORTED);
 
-    UEFI_ASSERT(bufferSize,                                     "bufferSize is null", UefiStatus::ABORTED);
-    UEFI_ASSERT(buffer || (bufferSize && *bufferSize == 0),     "buffer is null",     UefiStatus::ABORTED);
+    UEFI_ASSERT(bufferSize != nullptr, "bufferSize is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(buffer != nullptr,     "buffer is null",     UefiStatus::ABORTED);
 
 
 

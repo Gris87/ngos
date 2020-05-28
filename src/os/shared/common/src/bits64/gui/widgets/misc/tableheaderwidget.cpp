@@ -19,7 +19,7 @@ TableHeaderWidget::TableHeaderWidget(Image *image, const char8 *text, Widget *pa
 
 
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
     }

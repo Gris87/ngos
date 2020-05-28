@@ -62,7 +62,7 @@ TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage,
         mBadgeWidget = new ImageWidget(badgeImage, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
     }
@@ -132,7 +132,7 @@ TabButton::TabButton(Image *normalImage, Image *hoverImage, Image *pressedImage,
         mBadgeWidget = new ImageWidget(badgeImage, this);
     }
 
-    if (text && *text)
+    if (text != nullptr && text[0] != 0)
     {
         mLabelWidget = new LabelWidget(text, this);
     }
