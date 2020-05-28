@@ -727,8 +727,8 @@ UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, Guid *protocol, v
                 ||
                 searchType == UefiLocateSearchType::ALL_HANDLES, "Invalid arguments", UefiStatus::ABORTED);
 
-    UEFI_ASSERT(bufferSize != nullptr, "bufferSize is null", UefiStatus::ABORTED);
-    UEFI_ASSERT(buffer != nullptr,     "buffer is null",     UefiStatus::ABORTED);
+    UEFI_ASSERT(bufferSize != nullptr,                 "bufferSize is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(buffer != nullptr || *bufferSize == 0, "buffer is null",     UefiStatus::ABORTED);
 
 
 

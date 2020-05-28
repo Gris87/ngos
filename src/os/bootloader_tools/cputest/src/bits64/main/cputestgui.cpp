@@ -526,18 +526,15 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *cpuModelName = mprintf(cpuModelName, "CPU Model: %.48s", CPU::getModelName());
-
     UEFI_TEST_ASSERT(sizeof(CPU::sModelName) == 48, NgosStatus::ASSERTION);
 
-
-
-    char8 *cpuCores    = mprintf("Cores: %-3u",            CPU::getNumberOfCores());
-    char8 *cpuThreads  = mprintf("Threads: %-3u",          CPU::getNumberOfThreads());
-    char8 *cpuFamily   = mprintf("Family:   0x%02X      ", CPU::getFamily());
-    char8 *cpuModel    = mprintf("Model:    0x%02X      ", CPU::getModel());
-    char8 *cpuStepping = mprintf("Stepping: 0x%02X      ", CPU::getStepping());
-    char8 *cpuRevision = mprintf("Revision: 0x%08X",       CPU::getMicrocodeRevision());
+    char8 *cpuModelName = mprintf("CPU Model: %.48s",       CPU::getModelName());
+    char8 *cpuCores     = mprintf("Cores: %-3u",            CPU::getNumberOfCores());
+    char8 *cpuThreads   = mprintf("Threads: %-3u",          CPU::getNumberOfThreads());
+    char8 *cpuFamily    = mprintf("Family:   0x%02X      ", CPU::getFamily());
+    char8 *cpuModel     = mprintf("Model:    0x%02X      ", CPU::getModel());
+    char8 *cpuStepping  = mprintf("Stepping: 0x%02X      ", CPU::getStepping());
+    char8 *cpuRevision  = mprintf("Revision: 0x%08X",       CPU::getMicrocodeRevision());
 
 
 
