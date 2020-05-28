@@ -115,6 +115,7 @@ private:
     static u64                                           sStructureTableAddress;
     static u32                                           sStructureTableLength;
     static u16                                           sSystemPhysicalMemoryArrayHandle;
+    static u64                                           sSystemPhysicalMemoryArrayCapacity;
     static ArrayList<DmiMemoryDeviceEntry *>             sMemoryDeviceEntries;
     static Map<u16, DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
     static ArrayList<DmiMemoryDevice>                    sMemoryDevices;

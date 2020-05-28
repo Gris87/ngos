@@ -1,5 +1,6 @@
 #include "devicemanagergui.h"
 
+#include <common/src/bits64/console/graphicalconsole.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
@@ -23,13 +24,13 @@
 #define DEVICES_TREEWIDGET_POSITION_Y_PERCENT 1
 #define DEVICES_TREEWIDGET_WIDTH_PERCENT      29
 #define DEVICES_TREEWIDGET_HEIGHT_PERCENT     68
-#define DEVICES_TREEWIDGET_ROW_HEIGHT_PERCENT 2
+#define DEVICES_TREEWIDGET_ROW_HEIGHT         21
 
 #define DEVICE_INFO_TABLEWIDGET_POSITION_X_PERCENT 31
 #define DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT 1
 #define DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT      68
 #define DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT     68
-#define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT 2.5
+#define DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT         27
 
 #define MODE_BUTTON_POSITION_X_PERCENT 90
 #define MODE_BUTTON_POSITION_Y_PERCENT 70
@@ -38,8 +39,8 @@
 #define DEVICE_INFO_COLUMN_NAME_WIDTH_PERCENT  60
 #define DEVICE_INFO_COLUMN_VALUE_WIDTH_PERCENT 40
 
-#define SYSTEM_BUTTON_SIZE_PERCENT 5
-#define CURSOR_SIZE                20
+#define SYSTEM_BUTTON_RESERVED_PROPORTION 0.7
+#define CURSOR_SIZE                       20
 
 #define COLUMN_NAME  0
 #define COLUMN_VALUE 1
@@ -184,10 +185,6 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    u64 systemButtonSize = screenWidth * SYSTEM_BUTTON_SIZE_PERCENT / 100;
-
-
-
     RootWidget *rootWidget = new RootWidget();
 
     UEFI_ASSERT_EXECUTION(rootWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
@@ -199,6 +196,18 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(screenWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(screenWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);
+
+
+
+    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+
+    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+
+    if (systemButtonSize > allowedWidthForSystemButtons)
+    {
+        systemButtonSize = allowedWidthForSystemButtons;
+    }
 
 
 
@@ -240,8 +249,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setPosition(screenWidth * DEVICES_TREEWIDGET_POSITION_X_PERCENT / 100, screenHeight * DEVICES_TREEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setSize(devicesTreeWidth, devicesTreeHeight),                                                                                       NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setKeyboardEventHandler(onDevicesTreeWidgetKeyboardEvent),                                                                          NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRowHeight(screenHeight * DEVICES_TREEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRowHeight(DEVICES_TREEWIDGET_ROW_HEIGHT),                                                                                        NgosStatus::ASSERTION);
 
 
 
@@ -256,8 +264,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setPosition(screenWidth * DEVICE_INFO_TABLEWIDGET_POSITION_X_PERCENT / 100, screenHeight * DEVICE_INFO_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setSize(deviceInfoTableWidth, deviceInfoTableHeight),                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setKeyboardEventHandler(onDeviceInfoTableWidgetKeyboardEvent),                                                                                NgosStatus::ASSERTION);
-
-    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowHeight(screenHeight * DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDeviceInfoTableWidget->setRowHeight(DEVICE_INFO_TABLEWIDGET_ROW_HEIGHT),                                                                                             NgosStatus::ASSERTION);
 
 
 

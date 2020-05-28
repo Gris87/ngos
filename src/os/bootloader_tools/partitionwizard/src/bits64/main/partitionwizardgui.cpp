@@ -18,8 +18,8 @@
 
 
 
-#define SYSTEM_BUTTON_SIZE_PERCENT 5
-#define CURSOR_SIZE                20
+#define SYSTEM_BUTTON_RESERVED_PROPORTION 0.7
+#define CURSOR_SIZE                       20
 
 
 
@@ -78,10 +78,6 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
 
 
 
-    u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
-
-
-
     RootWidget *rootWidget = new RootWidget();
 
     UEFI_ASSERT_EXECUTION(rootWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
@@ -93,6 +89,18 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(screenWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(screenWidget->setSize(screenWidth, screenHeight), NgosStatus::ASSERTION);
+
+
+
+    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+
+    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+
+    if (systemButtonSize > allowedWidthForSystemButtons)
+    {
+        systemButtonSize = allowedWidthForSystemButtons;
+    }
 
 
 

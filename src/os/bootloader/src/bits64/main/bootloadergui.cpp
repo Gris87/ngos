@@ -60,12 +60,12 @@
 #define PARTITION_WIZARD_BUTTON_POSITION_X_PERCENT 64
 #define PARTITION_WIZARD_BUTTON_POSITION_Y_PERCENT 59
 
-#define OS_BUTTON_SIZE_PERCENT     20
-#define ARROW_BUTTON_SIZE_PERCENT  6
-#define TOOL_BUTTON_WIDTH_PERCENT  26
-#define TOOL_BUTTON_HEIGHT_PERCENT 10
-#define SYSTEM_BUTTON_SIZE_PERCENT 5
-#define CURSOR_SIZE                20
+#define OS_BUTTON_SIZE_PERCENT            20
+#define ARROW_BUTTON_SIZE_PERCENT         6
+#define TOOL_BUTTON_WIDTH_PERCENT         26
+#define TOOL_BUTTON_HEIGHT_PERCENT        10
+#define SYSTEM_BUTTON_RESERVED_PROPORTION 0.7
+#define CURSOR_SIZE                       20
 
 #define TIMEOUT_TIME 9
 
@@ -160,13 +160,6 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    u64 osButtonSize     = screenWidth  * OS_BUTTON_SIZE_PERCENT     / 100;
-    u64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
-    u64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
-    u64 systemButtonSize = screenWidth  * SYSTEM_BUTTON_SIZE_PERCENT / 100;
-
-
-
     RootWidget *rootWidget = new RootWidget();
 
     UEFI_ASSERT_EXECUTION(rootWidget->setPosition(0, 0),                  NgosStatus::ASSERTION);
@@ -196,6 +189,18 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(infoLabel->setPosition(screenWidth * INFO_TEXT_POSITION_X_PERCENT / 100, screenHeight * INFO_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(infoLabel->setSize(screenWidth     * INFO_TEXT_WIDTH_PERCENT      / 100, screenHeight * INFO_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+
+    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+
+    if (systemButtonSize > allowedWidthForSystemButtons)
+    {
+        systemButtonSize = allowedWidthForSystemButtons;
+    }
 
 
 
@@ -230,6 +235,10 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     if (osCount > 0)
     {
+        u64 osButtonSize = screenWidth * OS_BUTTON_SIZE_PERCENT / 100;
+
+
+
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonNormalImage,       osButtonSize, osButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonHoverImage,        osButtonSize, osButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(sButtonPressedImage,      osButtonSize, osButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
@@ -514,6 +523,11 @@ NgosStatus BootloaderGUI::init(BootParams *params)
         UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setPosition(timeoutPanelWidth * TIMEOUT_TEXT_POSITION_X_PERCENT / 100, timeoutPanelHeight * TIMEOUT_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setSize(timeoutPanelWidth     * TIMEOUT_TEXT_WIDTH_PERCENT      / 100, timeoutPanelHeight * TIMEOUT_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     }
+
+
+
+    u64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
+    u64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
 
 
 

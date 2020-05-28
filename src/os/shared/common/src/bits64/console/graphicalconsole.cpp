@@ -19,12 +19,6 @@
 #define SIDE_MARGIN   1
 #define BOTTOM_MARGIN 5
 
-#define CONSOLE_POSITION_X_PERCENT 10
-#define CONSOLE_POSITION_Y_PERCENT 70
-
-#define CONSOLE_WIDTH_PERCENT  80
-#define CONSOLE_HEIGHT_PERCENT 30
-
 
 
 ConsoleWidget *GraphicalConsole::sConsoleWidget;
@@ -53,10 +47,10 @@ NgosStatus GraphicalConsole::init()
         u64           screenWidth  = screenWidget->getWidth();
         u64           screenHeight = screenWidget->getHeight();
 
-        i64 consolePositionX = screenWidth  * CONSOLE_POSITION_X_PERCENT / 100;
-        i64 consolePositionY = screenHeight * CONSOLE_POSITION_Y_PERCENT / 100;
-        u64 consoleWidth     = screenWidth  * CONSOLE_WIDTH_PERCENT      / 100;
-        u64 consoleHeight    = screenHeight * CONSOLE_HEIGHT_PERCENT     / 100;
+        i64 consolePositionX = screenWidth  * GRAPHICAL_CONSOLE_POSITION_X_PERCENT / 100;
+        i64 consolePositionY = screenHeight * GRAPHICAL_CONSOLE_POSITION_Y_PERCENT / 100;
+        u64 consoleWidth     = screenWidth  * GRAPHICAL_CONSOLE_WIDTH_PERCENT      / 100;
+        u64 consoleHeight    = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT     / 100;
 
 
 

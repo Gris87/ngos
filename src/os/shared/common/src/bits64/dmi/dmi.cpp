@@ -22,6 +22,7 @@ u16                                           DMI::sNumberOfSmbiosStructures;
 u64                                           DMI::sStructureTableAddress;
 u32                                           DMI::sStructureTableLength;
 u16                                           DMI::sSystemPhysicalMemoryArrayHandle;
+u64                                           DMI::sSystemPhysicalMemoryArrayCapacity;
 ArrayList<DmiMemoryDeviceEntry *>             DMI::sMemoryDeviceEntries;
 Map<u16, DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
 ArrayList<DmiMemoryDevice>                    DMI::sMemoryDevices;
@@ -97,11 +98,13 @@ NgosStatus DMI::init()
 
     // Validation
     {
-        COMMON_LVVV(("sVersion                         = 0x%08X", sVersion));
-        COMMON_LVVV(("sNumberOfSmbiosStructures        = %u",     sNumberOfSmbiosStructures));
-        COMMON_LVVV(("sStructureTableAddress           = 0x%p",   sStructureTableAddress));
-        COMMON_LVVV(("sStructureTableLength            = %u",     sStructureTableLength));
-        COMMON_LVVV(("sSystemPhysicalMemoryArrayHandle = 0x%04X", sSystemPhysicalMemoryArrayHandle));
+        COMMON_LVVV(("sVersion                           = 0x%08X", sVersion));
+        COMMON_LVVV(("sNumberOfSmbiosStructures          = %u",     sNumberOfSmbiosStructures));
+        COMMON_LVVV(("sStructureTableAddress             = 0x%p",   sStructureTableAddress));
+        COMMON_LVVV(("sStructureTableLength              = %u",     sStructureTableLength));
+        COMMON_LVVV(("sSystemPhysicalMemoryArrayHandle   = 0x%04X", sSystemPhysicalMemoryArrayHandle));
+        COMMON_LVVV(("sSystemPhysicalMemoryArrayCapacity = %s",     bytesToString(sSystemPhysicalMemoryArrayCapacity)));
+
 
 
 
@@ -165,7 +168,7 @@ NgosStatus DMI::init()
 
 
 
-                COMMON_LVVV(("#%-3d: %-5s | %5s - %-5s | %s | %s | %s | %s", i, bytesToString(device.size), startBuffer, endBuffer, stringToString(device.deviceLocator), stringToString(device.manufacturer), stringToString(device.serialNumber), stringToString(device.partNumber)));
+                COMMON_LVVV(("#%-3d: %s | %s | %u MHz | %-5s | %5s - %-5s | %s | %s | %s | %s", i, enumToFullString(device.formFactor), enumToFullString(device.memoryType), device.speed, bytesToString(device.size), startBuffer, endBuffer, stringToString(device.deviceLocator), stringToString(device.manufacturer), stringToString(device.serialNumber), stringToString(device.partNumber)));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -220,6 +223,7 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sStructureTableAddress                         != 0,          NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayCapacity          == GB,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                  != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION); // Commented due to value variation
@@ -2560,12 +2564,33 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
     if (entry->use == DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY)
     {
-        if (sSystemPhysicalMemoryArrayHandle != 0)
+        // Set sSystemPhysicalMemoryArrayHandle
         {
-            COMMON_LW(("Found 2 or more PHYSICAL_MEMORY_ARRAY entries with SYSTEM_MEMORY use"));
+            if (sSystemPhysicalMemoryArrayHandle != 0)
+            {
+                COMMON_LW(("Found 2 or more PHYSICAL_MEMORY_ARRAY entries with SYSTEM_MEMORY use"));
+            }
+
+            sSystemPhysicalMemoryArrayHandle = entry->header.handle;
         }
 
-        sSystemPhysicalMemoryArrayHandle = entry->header.handle;
+
+
+        // Set sSystemPhysicalMemoryArrayCapacity
+        {
+            if (
+                entry->maximumCapacity.value == DMI_PHYSICAL_MEMORY_ARRAY_MAXIMUM_CAPACITY_NEED_TO_EXTEND
+                &&
+                entryV27
+               )
+            {
+                sSystemPhysicalMemoryArrayCapacity = entryV27->extendedMaximumCapacity;
+            }
+            else
+            {
+                sSystemPhysicalMemoryArrayCapacity = entry->maximumCapacity.size();
+            }
+        }
     }
 
 
@@ -4293,6 +4318,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
         DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV23) ? (DmiMemoryDeviceEntryV23 *)entry : nullptr;
         DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV27) ? (DmiMemoryDeviceEntryV27 *)entry : nullptr;
         DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV32) ? (DmiMemoryDeviceEntryV32 *)entry : nullptr;
+        DmiMemoryDeviceEntryV33 *entryV33 = DMI::getVersion() >= DMI_VERSION(3, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV33) ? (DmiMemoryDeviceEntryV33 *)entry : nullptr;
 
 
 
@@ -4304,6 +4330,41 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
             // Init memory device
             {
+                device.formFactor = entry->formFactor;
+                device.memoryType = entry->memoryType;
+
+
+
+                // Set speed
+                {
+                    if (entryV23)
+                    {
+                        if (entryV23->speed == DMI_MEMORY_DEVICE_SPEED_UNKNOWN)
+                        {
+                            device.speed = 0;
+                        }
+                        else
+                        if (
+                            entryV23->speed == DMI_MEMORY_DEVICE_SPEED_NEED_TO_EXTEND
+                            &&
+                            entryV33
+                           )
+                        {
+                            device.speed = entryV33->extendedSpeed;
+                        }
+                        else
+                        {
+                            device.speed = entryV23->speed;
+                        }
+                    }
+                    else
+                    {
+                        device.speed = 0;
+                    }
+                }
+
+
+
                 // Set size
                 {
                     if (entry->size.value16 == DMI_MEMORY_DEVICE_SIZE_NOT_INSTALLED)
