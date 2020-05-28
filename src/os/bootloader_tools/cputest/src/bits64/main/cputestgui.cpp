@@ -526,55 +526,18 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *cpuModelName = (char8 *)malloc(60);
-
-    i64 cpuModelNameLength = sprintf(cpuModelName, "CPU Model: %.48s", CPU::getModelName());
-    AVOID_UNUSED(cpuModelNameLength);
+    char8 *cpuModelName = mprintf(cpuModelName, "CPU Model: %.48s", CPU::getModelName());
 
     UEFI_TEST_ASSERT(sizeof(CPU::sModelName) == 48, NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(cpuModelNameLength < 60,       NgosStatus::ASSERTION);
 
 
 
-    char8 *cpuCores = (char8 *)malloc(18);
-
-    i64 cpuCoresLength = sprintf(cpuCores, "Cores: %-3u", CPU::getNumberOfCores());
-    AVOID_UNUSED(cpuCoresLength);
-
-    UEFI_TEST_ASSERT(cpuCoresLength < 18, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuThreads = (char8 *)malloc(20);
-
-    i64 cpuThreadsLength = sprintf(cpuThreads, "Threads: %-3u", CPU::getNumberOfThreads());
-    AVOID_UNUSED(cpuThreadsLength);
-
-    UEFI_TEST_ASSERT(cpuThreadsLength < 20, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuFamily = (char8 *)malloc(21);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuFamily, "Family:   0x%02X      ", CPU::getFamily()), i64, 20, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuModel = (char8 *)malloc(21);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuModel, "Model:    0x%02X      ", CPU::getModel()), i64, 20, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuStepping = (char8 *)malloc(21);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuStepping, "Stepping: 0x%02X      ", CPU::getStepping()), i64, 20, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuRevision = (char8 *)malloc(21);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuRevision, "Revision: 0x%08X", CPU::getMicrocodeRevision()), i64, 20, NgosStatus::ASSERTION);
+    char8 *cpuCores    = mprintf("Cores: %-3u",            CPU::getNumberOfCores());
+    char8 *cpuThreads  = mprintf("Threads: %-3u",          CPU::getNumberOfThreads());
+    char8 *cpuFamily   = mprintf("Family:   0x%02X      ", CPU::getFamily());
+    char8 *cpuModel    = mprintf("Model:    0x%02X      ", CPU::getModel());
+    char8 *cpuStepping = mprintf("Stepping: 0x%02X      ", CPU::getStepping());
+    char8 *cpuRevision = mprintf("Revision: 0x%08X",       CPU::getMicrocodeRevision());
 
 
 
@@ -681,9 +644,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *cpuSpeed = (char8 *)malloc(24);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuSpeed, "CPU Speed    %-10s", hertzToString(CpuTest::getCpuSpeed())), i64, 23, NgosStatus::ASSERTION);
+    char8 *cpuSpeed = mprintf("CPU Speed    %-10s", hertzToString(CpuTest::getCpuSpeed()));
 
 
 
@@ -711,27 +672,10 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *cpuL1DataCache = (char8 *)malloc(33);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuL1DataCache, "L1 Data  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size), CpuTest::getLevel1DataCache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuL1InstructionCache = (char8 *)malloc(33);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuL1InstructionCache, "L1 Inst. %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuLevel2Cache = (char8 *)malloc(33);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel2Cache, "Level 2  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size), CpuTest::getLevel2Cache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
-
-
-
-    char8 *cpuLevel3Cache = (char8 *)malloc(33);
-
-    UEFI_ASSERT_EXECUTION(sprintf(cpuLevel3Cache, "Level 3    %-10s     %2u-way", bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays), i64, 32, NgosStatus::ASSERTION);
+    char8 *cpuL1DataCache        = mprintf("L1 Data  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size),        CpuTest::getLevel1DataCache().numberOfWays);
+    char8 *cpuL1InstructionCache = mprintf("L1 Inst. %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
+    char8 *cpuLevel2Cache        = mprintf("Level 2  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size),            CpuTest::getLevel2Cache().numberOfWays);
+    char8 *cpuLevel3Cache        = mprintf("Level 3    %-10s     %2u-way",                          bytesToString(CpuTest::getLevel3Cache().size),            CpuTest::getLevel3Cache().numberOfWays);
 
 
 
@@ -898,57 +842,12 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *summaryCpuThreads = (char8 *)malloc(23);
-
-    i64 summaryCpuThreadsLength = sprintf(summaryCpuThreads, "Number of threads: %u", CPU::getNumberOfThreads());
-    AVOID_UNUSED(summaryCpuThreadsLength);
-
-    UEFI_TEST_ASSERT(summaryCpuThreadsLength < 23, NgosStatus::ASSERTION);
-
-
-
-    char8 *summaryCpuSpeed = (char8 *)malloc(22);
-
-    i64 summaryCpuSpeedLength = sprintf(summaryCpuSpeed, "CPU Speed: %s", hertzToString(CpuTest::getCpuSpeed()));
-    AVOID_UNUSED(summaryCpuSpeedLength);
-
-    UEFI_TEST_ASSERT(summaryCpuSpeedLength < 22, NgosStatus::ASSERTION);
-
-
-
-    char8 *summaryCpuL1DataCache = (char8 *)malloc(39);
-
-    i64 summaryCpuL1DataCacheLength = sprintf(summaryCpuL1DataCache, "L1 Data Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size), CpuTest::getLevel1DataCache().numberOfWays);
-    AVOID_UNUSED(summaryCpuL1DataCacheLength);
-
-    UEFI_TEST_ASSERT(summaryCpuL1DataCacheLength < 39, NgosStatus::ASSERTION);
-
-
-
-    char8 *summaryCpuL1InstructionCache = (char8 *)malloc(46);
-
-    i64 summaryCpuL1InstructionCacheLength = sprintf(summaryCpuL1InstructionCache, "L1 Instruction Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
-    AVOID_UNUSED(summaryCpuL1InstructionCacheLength);
-
-    UEFI_TEST_ASSERT(summaryCpuL1InstructionCacheLength < 46, NgosStatus::ASSERTION);
-
-
-
-    char8 *summaryCpuL2Cache = (char8 *)malloc(39);
-
-    i64 summaryCpuL2CacheLength = sprintf(summaryCpuL2Cache, "Level 2 Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size), CpuTest::getLevel2Cache().numberOfWays);
-    AVOID_UNUSED(summaryCpuL2CacheLength);
-
-    UEFI_TEST_ASSERT(summaryCpuL2CacheLength < 39, NgosStatus::ASSERTION);
-
-
-
-    char8 *summaryCpuL3Cache = (char8 *)malloc(33);
-
-    i64 summaryCpuL3CacheLength = sprintf(summaryCpuL3Cache, "Level 3 Cache: %s %u-way", bytesToString(CpuTest::getLevel3Cache().size), CpuTest::getLevel3Cache().numberOfWays);
-    AVOID_UNUSED(summaryCpuL3CacheLength);
-
-    UEFI_TEST_ASSERT(summaryCpuL3CacheLength < 33, NgosStatus::ASSERTION);
+    char8 *summaryCpuThreads            = mprintf("Number of threads: %u",                CPU::getNumberOfThreads());
+    char8 *summaryCpuSpeed              = mprintf("CPU Speed: %s",                        hertzToString(CpuTest::getCpuSpeed()));
+    char8 *summaryCpuL1DataCache        = mprintf("L1 Data Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size),        CpuTest::getLevel1DataCache().numberOfWays);
+    char8 *summaryCpuL1InstructionCache = mprintf("L1 Instruction Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
+    char8 *summaryCpuL2Cache            = mprintf("Level 2 Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size),            CpuTest::getLevel2Cache().numberOfWays);
+    char8 *summaryCpuL3Cache            = mprintf("Level 3 Cache: %s %u-way",                                      bytesToString(CpuTest::getLevel3Cache().size),            CpuTest::getLevel3Cache().numberOfWays);
 
 
 
@@ -1057,11 +956,12 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPosition
 
 
 
-    const char8 *flagText     = x86FeaturesNames[(u64)flag];
-    char8       *flagTextFull = (char8 *)malloc(11);
+    const char8 *flagText = x86FeaturesNames[(u64)flag];
+    UEFI_TEST_ASSERT(flagText != nullptr && flagText[0] != 0, NgosStatus::ASSERTION);
 
-    UEFI_TEST_ASSERT(flagText && *flagText, NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sprintf(flagTextFull, "%-10s", flagText), i64, 10, NgosStatus::ASSERTION);
+
+
+    char8 *flagTextFull = mprintf("%-10s", flagText);
 
 
 
@@ -1371,16 +1271,7 @@ NgosStatus CpuTestGUI::addTestEntry()
     {
         if (test->getScore() != 0)
         {
-            char8 *scoreString = (char8 *)malloc(7);
-
-            i64 scoreLength = sprintf(scoreString, "%u", test->getScore());
-            AVOID_UNUSED(scoreLength);
-
-            UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
-
-
-
-            UEFI_ASSERT_EXECUTION(addTestEntry(test->getName(), scoreString), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(addTestEntry(test->getName(), mprintf("%u", test->getScore())), NgosStatus::ASSERTION);
         }
         else
         {
@@ -1411,16 +1302,7 @@ NgosStatus CpuTestGUI::putTestScore()
 
     if (test->getScore() != 0)
     {
-        char8 *scoreString = (char8 *)malloc(7);
-
-        i64 scoreLength = sprintf(scoreString, "%u", test->getScore());
-        AVOID_UNUSED(scoreLength);
-
-        UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
-
-
-
-        ((LabelWidget *)sTestTableWidget->getCellWidget(sTestTableWidget->getRowCount() - 1, COLUMN_SCORE))->setText(scoreString);
+        ((LabelWidget *)sTestTableWidget->getCellWidget(sTestTableWidget->getRowCount() - 1, COLUMN_SCORE))->setText(mprintf("%u", test->getScore()));
     }
     else
     {
@@ -1449,12 +1331,7 @@ NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
 
 
 
-    char8 *scoreString = (char8 *)malloc(7);
-
-    i64 scoreLength = sprintf(scoreString, "%u", score);
-    AVOID_UNUSED(scoreLength);
-
-    UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
+    char8 *scoreString = mprintf("%u", score);
 
 
 
@@ -1493,20 +1370,9 @@ NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, u64 score)
     if (CPU::hasFlag(flag))
     {
         const char8 *flagText = x86FeaturesNames[(u64)flag];
-        UEFI_TEST_ASSERT(flagText && *flagText, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(flagText != nullptr && flagText[0] != 0, NgosStatus::ASSERTION);
 
-
-
-        char8 *flagTextFull = (char8 *)malloc(28);
-
-        i64 flagTextLength = sprintf(flagTextFull, "Support feature: %s", flagText);
-        AVOID_UNUSED(flagTextLength);
-
-        UEFI_TEST_ASSERT(flagTextLength < 28, NgosStatus::ASSERTION);
-
-
-
-        UEFI_ASSERT_EXECUTION(addSummaryEntry(flagTextFull, score), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addSummaryEntry(mprintf("Support feature: %s", flagText), score), NgosStatus::ASSERTION);
     }
 
 

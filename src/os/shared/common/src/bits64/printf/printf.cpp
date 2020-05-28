@@ -664,20 +664,20 @@ char8* vmprintf(const char8 *format, va_list args)
 {
     // COMMON_LT((" | format = 0x%p, args = ...", format)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(format, "format is null", 0);
+    COMMON_ASSERT(format, "format is null", nullptr);
 
 
 
     i64 len = vsprintf(printfBuffer, format, args);
 
-    COMMON_TEST_ASSERT(len < (i64)sizeof(printfBuffer), 0);
+    COMMON_TEST_ASSERT(len < (i64)sizeof(printfBuffer), nullptr);
 
 
 
     u64 size = (len + 1) * sizeof(char8);
 
     char8 *res = (char8 *)malloc(size);
-    COMMON_TEST_ASSERT(res, 0);
+    COMMON_TEST_ASSERT(res, nullptr);
 
     memcpy(res, printfBuffer, size);
 
@@ -690,7 +690,7 @@ char8* mprintf(const char8 *format, ...)
 {
     // COMMON_LT((" | format = 0x%p", format)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(format, "format is null", 0);
+    COMMON_ASSERT(format, "format is null", nullptr);
 
 
 
