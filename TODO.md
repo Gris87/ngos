@@ -25,7 +25,7 @@ NGOS:
 - Split validation regions to output/check region
 - Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"
 - Use com.ngos.app in source structure
-- Include all assertins under regions
+- Include all assertions under regions
 
 - Complete with interruptions
 - Implement boot screen for kernel
