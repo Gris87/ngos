@@ -1794,8 +1794,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path, 
 
 
 
-    RgbaPixel blackPixel;
-    memzero(&blackPixel, sizeof(blackPixel));
+    RgbaPixel blackPixel(0x00000000);
 
 
 

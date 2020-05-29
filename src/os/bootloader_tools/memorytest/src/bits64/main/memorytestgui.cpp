@@ -1,8 +1,10 @@
 #include "memorytestgui.h"
 
+#include <common/src/bits64/dmi/dmi.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/panelwidget.h>
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
 #include <common/src/bits64/memory/memory.h>
@@ -25,6 +27,49 @@
 
 #define TAB_PAGE_PROPORTION 2
 
+#define SUMMARY_MEMORY_INFO_POSITION_X_PERCENT 1
+#define SUMMARY_MEMORY_INFO_POSITION_Y_PERCENT 2
+#define SUMMARY_MEMORY_INFO_WIDTH_PERCENT      98
+#define SUMMARY_MEMORY_INFO_HEIGHT_PERCENT     13
+
+#define TOTAL_MEMORY_CAPACITY_POSITION_X_PERCENT 1
+#define TOTAL_MEMORY_CAPACITY_POSITION_Y_PERCENT 2
+#define TOTAL_MEMORY_CAPACITY_WIDTH_PERCENT      98
+#define TOTAL_MEMORY_CAPACITY_HEIGHT_PERCENT     32
+
+#define MAXIMUM_MEMORY_CAPACITY_POSITION_X_PERCENT 1
+#define MAXIMUM_MEMORY_CAPACITY_POSITION_Y_PERCENT 34
+#define MAXIMUM_MEMORY_CAPACITY_WIDTH_PERCENT      98
+#define MAXIMUM_MEMORY_CAPACITY_HEIGHT_PERCENT     32
+
+#define NUMBER_OF_MEMORY_DEVICES_POSITION_X_PERCENT 1
+#define NUMBER_OF_MEMORY_DEVICES_POSITION_Y_PERCENT 66
+#define NUMBER_OF_MEMORY_DEVICES_WIDTH_PERCENT      98
+#define NUMBER_OF_MEMORY_DEVICES_HEIGHT_PERCENT     32
+
+#define ISSUES_TABLEWIDGET_POSITION_X_PERCENT 1
+#define ISSUES_TABLEWIDGET_POSITION_Y_PERCENT 1
+#define ISSUES_TABLEWIDGET_WIDTH_PERCENT      98
+#define ISSUES_TABLEWIDGET_HEIGHT_PERCENT     98
+#define ISSUES_TABLEWIDGET_ROW_HEIGHT         27
+
+#define ISSUES_COLUMN_ICON_WIDTH_PERCENT        4
+#define ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT 96
+
+#define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
+#define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
+#define SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      19
+#define SUMMARY_TOTAL_TEXT_HEIGHT_PERCENT     8
+
+#define SUMMARY_TABLEWIDGET_POSITION_X_PERCENT 1
+#define SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT 10
+#define SUMMARY_TABLEWIDGET_WIDTH_PERCENT      98
+#define SUMMARY_TABLEWIDGET_HEIGHT_PERCENT     89
+#define SUMMARY_TABLEWIDGET_ROW_HEIGHT         27
+
+#define SUMMARY_COLUMN_NAME_WIDTH_PERCENT  80
+#define SUMMARY_COLUMN_SCORE_WIDTH_PERCENT 20
+
 #define SYSTEM_BUTTON_RESERVED_PROPORTION 0.7
 #define CURSOR_SIZE                       20
 
@@ -33,21 +78,40 @@
 #define TABWIDGET_PAGE_TEST               2
 #define TABWIDGET_PAGE_SUMMARY            3
 
+#define COLUMN_NAME  0
+#define COLUMN_SCORE 1
+
+#define COLUMN_ICON        0
+#define COLUMN_DESCRIPTION 1
+
+#define SCORE_PER_1GB_RAM 125
+#define SCORE_PER_100_MHZ 40
+
+#define BLACK_COLOR 0xFF000000
 
 
-Button     *MemoryTestGUI::sRebootButton;
-Button     *MemoryTestGUI::sShutdownButton;
-TabWidget  *MemoryTestGUI::sTabWidget;
-TabButton  *MemoryTestGUI::sSystemInformationTabButton;
-TabButton  *MemoryTestGUI::sIssuesTabButton;
-TabButton  *MemoryTestGUI::sTestTabButton;
-TabButton  *MemoryTestGUI::sSummaryTabButton;
-Image      *MemoryTestGUI::sWarningImage;
-Image      *MemoryTestGUI::sCriticalImage;
-Image      *MemoryTestGUI::sStartImage;
-Image      *MemoryTestGUI::sStopImage;
-u16         MemoryTestGUI::sWaitEventsCount;
-uefi_event *MemoryTestGUI::sWaitEvents;
+
+Button                 *MemoryTestGUI::sRebootButton;
+Button                 *MemoryTestGUI::sShutdownButton;
+TabWidget              *MemoryTestGUI::sTabWidget;
+TabButton              *MemoryTestGUI::sSystemInformationTabButton;
+TabButton              *MemoryTestGUI::sIssuesTabButton;
+TabButton              *MemoryTestGUI::sTestTabButton;
+TabButton              *MemoryTestGUI::sSummaryTabButton;
+Image                  *MemoryTestGUI::sWarningImage;
+Image                  *MemoryTestGUI::sCriticalImage;
+TableWidget            *MemoryTestGUI::sIssuesTableWidget;
+Image                  *MemoryTestGUI::sStartImage;
+Image                  *MemoryTestGUI::sStopImage;
+LabelWidget            *MemoryTestGUI::sSummaryTotalLabelWidget;
+TableWidget            *MemoryTestGUI::sSummaryTableWidget;
+u64                     MemoryTestGUI::sSummaryTotal;
+UefiMpServicesProtocol *MemoryTestGUI::sMpServices;
+u16                     MemoryTestGUI::sWaitEventsCount;
+uefi_event             *MemoryTestGUI::sWaitEvents;
+u16                     MemoryTestGUI::sFirstProcessorEventIndex;
+u64                     MemoryTestGUI::sNumberOfRunningProcessors;
+bool                    MemoryTestGUI::sTerminated;
 
 
 
@@ -99,6 +163,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     Image *issuesImage;
     Image *testImage;
     Image *summaryImage;
+    Image *infoPanelImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -128,6 +193,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/issues.png",                      &issuesImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/test.png",                        &testImage),                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/summary.png",                     &summaryImage),                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/info_panel.9.png",                &infoPanelImage),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_header.9.png",              &tableHeaderImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
@@ -290,9 +356,76 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
+    char8 *totalMemoryCapacity            = mprintf("Total memory capacity: %s",                   bytesToString(DMI::getTotalAmountOfMemory()));
+    char8 *maximumMemoryCapacity          = mprintf("Maximum memory capacity: %s",                 bytesToString(DMI::getSystemPhysicalMemoryArrayCapacity()));
+    char8 *numberOfInstalledMemoryDevices = mprintf("Number of installed memory devices: %u / %u", DMI::getNumberOfInstalledMemoryDevices(), DMI::getMemoryDevices().getSize());
+
+
+
+    u64 summaryMemoryInfoWidth  = tabPageWidth  * SUMMARY_MEMORY_INFO_WIDTH_PERCENT  / 100;
+    u64 summaryMemoryInfoHeight = tabPageHeight * SUMMARY_MEMORY_INFO_HEIGHT_PERCENT / 100;
+
+
+
+    PanelWidget *summaryMemoryInfoPanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(summaryMemoryInfoPanelWidget->setPosition(tabPageWidth * SUMMARY_MEMORY_INFO_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_MEMORY_INFO_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(summaryMemoryInfoPanelWidget->setSize(summaryMemoryInfoWidth, summaryMemoryInfoHeight),                                                                               NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *totalMemoryCapacityLabelWidget = new LabelWidget(totalMemoryCapacity, summaryMemoryInfoPanelWidget);
+
+    UEFI_ASSERT_EXECUTION(totalMemoryCapacityLabelWidget->setPosition(summaryMemoryInfoWidth * TOTAL_MEMORY_CAPACITY_POSITION_X_PERCENT / 100, summaryMemoryInfoHeight * TOTAL_MEMORY_CAPACITY_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(totalMemoryCapacityLabelWidget->setSize(summaryMemoryInfoWidth     * TOTAL_MEMORY_CAPACITY_WIDTH_PERCENT      / 100, summaryMemoryInfoHeight * TOTAL_MEMORY_CAPACITY_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *maximumMemoryCapacityLabelWidget = new LabelWidget(maximumMemoryCapacity, summaryMemoryInfoPanelWidget);
+
+    UEFI_ASSERT_EXECUTION(maximumMemoryCapacityLabelWidget->setPosition(summaryMemoryInfoWidth * MAXIMUM_MEMORY_CAPACITY_POSITION_X_PERCENT / 100, summaryMemoryInfoHeight * MAXIMUM_MEMORY_CAPACITY_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(maximumMemoryCapacityLabelWidget->setSize(summaryMemoryInfoWidth     * MAXIMUM_MEMORY_CAPACITY_WIDTH_PERCENT      / 100, summaryMemoryInfoHeight * MAXIMUM_MEMORY_CAPACITY_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *numberOfInstalledMemoryDevicesLabelWidget = new LabelWidget(numberOfInstalledMemoryDevices, summaryMemoryInfoPanelWidget);
+
+    UEFI_ASSERT_EXECUTION(numberOfInstalledMemoryDevicesLabelWidget->setPosition(summaryMemoryInfoWidth * NUMBER_OF_MEMORY_DEVICES_POSITION_X_PERCENT / 100, summaryMemoryInfoHeight * NUMBER_OF_MEMORY_DEVICES_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(numberOfInstalledMemoryDevicesLabelWidget->setSize(summaryMemoryInfoWidth     * NUMBER_OF_MEMORY_DEVICES_WIDTH_PERCENT      / 100, summaryMemoryInfoHeight * NUMBER_OF_MEMORY_DEVICES_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
     TabPageWidget *issuesTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(issuesTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    u64 issuesTableWidth  = tabPageWidth  * ISSUES_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    u64 issuesTableHeight = tabPageHeight * ISSUES_TABLEWIDGET_HEIGHT_PERCENT / 100;
+
+
+
+    sIssuesTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, issuesTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setPosition(tabPageWidth * ISSUES_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * ISSUES_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setSize(issuesTableWidth, issuesTableHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setKeyboardEventHandler(onIssuesTableWidgetKeyboardEvent),                                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowHeight(ISSUES_TABLEWIDGET_ROW_HEIGHT),                                                                                          NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_ICON,        issuesTableWidth * ISSUES_COLUMN_ICON_WIDTH_PERCENT        / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_DESCRIPTION, issuesTableWidth * ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_ICON,        ""),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_DESCRIPTION, "Description"), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(fillIssuesTable(), NgosStatus::ASSERTION);
 
 
 
@@ -305,6 +438,50 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     TabPageWidget *summaryTabPageWidget = new TabPageWidget(sTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTabWidget->addTabPage(summaryTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    u64 summaryTableWidth  = tabPageWidth  * SUMMARY_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    u64 summaryTableHeight = tabPageHeight * SUMMARY_TABLEWIDGET_HEIGHT_PERCENT / 100;
+
+
+
+    sSummaryTableWidget = new TableWidget(tableBackgroundImage, tableHeaderImage, summaryTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setPosition(tabPageWidth * SUMMARY_TABLEWIDGET_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_TABLEWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setSize(summaryTableWidth, summaryTableHeight),                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setKeyboardEventHandler(onSummaryTableWidgetKeyboardEvent),                                                                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowHeight(SUMMARY_TABLEWIDGET_ROW_HEIGHT),                                                                                           NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(COLUMN_NAME,  summaryTableWidth * SUMMARY_COLUMN_NAME_WIDTH_PERCENT  / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setColumnWidth(COLUMN_SCORE, summaryTableWidth * SUMMARY_COLUMN_SCORE_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(COLUMN_NAME,  "Name"),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setHeaderText(COLUMN_SCORE, "Score"), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(fillSummaryTable(), NgosStatus::ASSERTION);
+
+
+
+    char8 *summaryTotalText = (char8 *)malloc(14);
+
+    i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal);
+    AVOID_UNUSED(summaryTotalTextLength);
+
+    UEFI_TEST_ASSERT(summaryTotalTextLength < 14, NgosStatus::ASSERTION);
+
+
+
+    sSummaryTotalLabelWidget = new LabelWidget(summaryTotalText, summaryTabPageWidget);
+
+    UEFI_ASSERT_EXECUTION(sSummaryTotalLabelWidget->setPosition(tabPageWidth * SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT / 100, tabPageHeight * SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTotalLabelWidget->setSize(tabPageWidth     * SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      / 100, tabPageHeight * SUMMARY_TOTAL_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
 
 
@@ -332,6 +509,19 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
+    Guid mpServicesProtocol = UEFI_MP_SERVICES_PROTOCOL_GUID;
+
+    if (UEFI::locateProtocol(&mpServicesProtocol, nullptr, (void **)&sMpServices) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Found UEFI_MP_SERVICES_PROTOCOL at 0x%p", sMpServices));
+    }
+    else
+    {
+        UEFI_LW(("UEFI_MP_SERVICES_PROTOCOL not found")); // TODO: Try to do in single thread
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -353,6 +543,122 @@ NgosStatus MemoryTestGUI::exec()
     return NgosStatus::OK;
 }
 
+NgosStatus MemoryTestGUI::addIssueEntry(Image *icon, const char8 *description)
+{
+    UEFI_LT((" | icon = 0x%p, description = 0x%p", icon, description));
+
+    UEFI_ASSERT(description, "description is null", NgosStatus::ASSERTION);
+
+
+
+    u64 row = sIssuesTableWidget->getRowCount();
+
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
+
+
+
+    if (icon)
+    {
+        ImageWidget *iconImageWidget = new ImageWidget(icon, sIssuesTableWidget);
+
+        UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_ICON, iconImageWidget), NgosStatus::ASSERTION);
+    }
+
+    LabelWidget *descriptionLabelWidget = new LabelWidget(description, sIssuesTableWidget);
+
+    UEFI_ASSERT_EXECUTION(descriptionLabelWidget->setColor(RgbaPixel(BLACK_COLOR)),                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_DESCRIPTION, descriptionLabelWidget), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::fillIssuesTable()
+{
+    UEFI_LT((""));
+
+
+
+    if (DMI::getTotalAmountOfMemory() < 16 * GB)
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "Memory capacity is less than 16 GB"), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (sIssuesTableWidget->getRowCount() == 0)
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "Everything is OK"), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, ""),                                        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "We recommend DDR4-2666 MHz memory cards"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "with total size 16GB or more"),            NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::addSummaryEntry(const char8 *name, u64 score)
+{
+    UEFI_LT((" | name = 0x%p, score = %u", name, score));
+
+    UEFI_ASSERT(name, "name is null", NgosStatus::ASSERTION);
+
+
+
+    RgbaPixel blackColor(BLACK_COLOR);
+
+
+
+    u64 row = sSummaryTableWidget->getRowCount();
+
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
+
+
+
+    LabelWidget *nameLabelWidget = new LabelWidget(name, sSummaryTableWidget);
+
+    UEFI_ASSERT_EXECUTION(nameLabelWidget->setColor(blackColor),                                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),        NgosStatus::ASSERTION);
+
+    LabelWidget *scoreLabelWidget = new LabelWidget(mprintf("%u", score), sSummaryTableWidget);
+
+    UEFI_ASSERT_EXECUTION(scoreLabelWidget->setColor(blackColor),                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_SCORE, scoreLabelWidget), NgosStatus::ASSERTION);
+
+
+
+    sSummaryTotal += score;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::fillSummaryTable()
+{
+    UEFI_LT((""));
+
+
+
+    char8 *totalMemoryCapacity = mprintf("Total memory capacity: %s", bytesToString(DMI::getTotalAmountOfMemory()));
+
+
+
+    UEFI_ASSERT_EXECUTION(addSummaryEntry("Previous test results", 0),                                                      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(totalMemoryCapacity,     DMI::getTotalAmountOfMemory() * SCORE_PER_1GB_RAM / GB), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus MemoryTestGUI::focusTabFirstWidget()
 {
     UEFI_LT((""));
@@ -362,9 +668,9 @@ NgosStatus MemoryTestGUI::focusTabFirstWidget()
     switch (sTabWidget->getCurrentPage())
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sRebootButton);
-        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sRebootButton);
+        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
         case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sRebootButton);
-        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sRebootButton);
+        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
         {
@@ -389,9 +695,9 @@ NgosStatus MemoryTestGUI::focusTabLastWidget()
     switch (sTabWidget->getCurrentPage())
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sSystemInformationTabButton);
-        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTabButton);
+        case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
         case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestTabButton);
-        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTabButton);
+        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
         {
@@ -413,8 +719,37 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
-    u64 size         = sWaitEventsCount * sizeof(uefi_event);
+    sWaitEventsCount          = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
+    sFirstProcessorEventIndex = sWaitEventsCount;
+
+
+
+    if (sMpServices)
+    {
+        u64 numberOfProcessors;
+        u64 numberOfEnabledProcessors;
+
+        UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+        // Validation
+        {
+            UEFI_LVVV(("numberOfProcessors        = %u", numberOfProcessors));
+            UEFI_LVVV(("numberOfEnabledProcessors = %u", numberOfEnabledProcessors));
+
+            // UEFI_TEST_ASSERT(numberOfProcessors        == 4, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(numberOfEnabledProcessors == 4, NgosStatus::ASSERTION); // Commented due to value variation
+        }
+
+
+
+        sWaitEventsCount += numberOfProcessors;
+    }
+
+
+
+    u64 size = sWaitEventsCount * sizeof(uefi_event);
 
 
 
@@ -452,6 +787,14 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
+    for (i64 i = eventId; i < sWaitEventsCount; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -483,7 +826,51 @@ NgosStatus MemoryTestGUI::waitForEvent()
 
 
 
+    if (eventIndex >= sFirstProcessorEventIndex)
+    {
+        return processApplicationProcessorEvent(eventIndex - sFirstProcessorEventIndex);
+    }
+
+
+
     return processAbsolutePointerEvent(UefiPointerDevices::getAbsolutePointer(eventIndex - UefiPointerDevices::getSimplePointersCount() - 1));
+}
+
+NgosStatus MemoryTestGUI::terminateAndWaitForApplicationProcessors()
+{
+    UEFI_LT((""));
+
+
+
+    if (sNumberOfRunningProcessors > 0)
+    {
+        if (!sTerminated)
+        {
+            sTerminated = true;
+        }
+
+
+
+        while (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
+        {
+            u64 eventIndex;
+
+            UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+            UEFI_LVVV(("eventIndex = %u", eventIndex));
+
+
+
+            if (eventIndex >= sFirstProcessorEventIndex)
+            {
+                UEFI_ASSERT_EXECUTION(processApplicationProcessorEvent(eventIndex - sFirstProcessorEventIndex), NgosStatus::ASSERTION);
+            }
+        }
+    }
+
+
+
+    return NgosStatus::OK;
 }
 
 NgosStatus MemoryTestGUI::processKeyboardEvent()
@@ -575,6 +962,34 @@ NgosStatus MemoryTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtoco
 
 
         UEFI_ASSERT_EXECUTION(GUI::processAbsolutePointerState(pointer, &state), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
+{
+    UEFI_LT((" | processorId = %u", processorId));
+
+
+
+    AVOID_UNUSED(processorId); // TODO: Need to remove
+
+
+
+    UEFI_LV(("Application processor %u finished", processorId));
+
+
+
+    if (!sTerminated)
+    {
+        --sNumberOfRunningProcessors;
+    }
+    else
+    {
+        --sNumberOfRunningProcessors;
     }
 
 
@@ -799,12 +1214,85 @@ NgosStatus MemoryTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &ke
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:   return sIssuesTableWidget->getSelectedRow() == 0                                     ? GUI::setFocusedWidget(sIssuesTabButton) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sIssuesTableWidget->getSelectedRow() == sIssuesTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton)    : NgosStatus::NO_EFFECT;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus MemoryTestGUI::onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:   return sSummaryTableWidget->getSelectedRow() == 0                                      ? GUI::setFocusedWidget(sSummaryTabButton) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sSummaryTableWidget->getSelectedRow() == sSummaryTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton)     : NgosStatus::NO_EFFECT;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
 NgosStatus MemoryTestGUI::onRebootButtonPressed()
 {
     UEFI_LT((""));
 
 
 
+    UEFI_ASSERT_EXECUTION(terminateAndWaitForApplicationProcessors(),                                                               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::COLD, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
@@ -818,6 +1306,7 @@ NgosStatus MemoryTestGUI::onShutdownButtonPressed()
 
 
 
+    UEFI_ASSERT_EXECUTION(terminateAndWaitForApplicationProcessors(),                                                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(UEFI::resetSystem(UefiResetType::SHUTDOWN, UefiStatus::SUCCESS, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 

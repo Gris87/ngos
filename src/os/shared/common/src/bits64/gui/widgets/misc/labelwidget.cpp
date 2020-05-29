@@ -18,7 +18,7 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     : Widget(parent)
     , mText(text)
     , mGlyphOffsets(nullptr)
-    , mColor()
+    , mColor(0xFFFFFFFF)
     , mHorizontalAlignment(HorizontalAlignment::CENTER)
     , mVerticalAlignment(VerticalAlignment::MIDDLE)
 {
@@ -33,13 +33,6 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     COMMON_TEST_ASSERT(asset);
 
     mGlyphOffsets = (u16 *)asset->content;
-
-
-
-    mColor.red   = 0xFF;
-    mColor.green = 0xFF;
-    mColor.blue  = 0xFF;
-    mColor.alpha = 0xFF;
 }
 
 LabelWidget::~LabelWidget()

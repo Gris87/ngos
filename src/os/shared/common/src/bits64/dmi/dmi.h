@@ -61,9 +61,11 @@ public:
     static NgosStatus iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry);
 
     static u32 getVersion(); // TEST: NO
-
     static u64 getStructureTableAddress(); // TEST: NO
-
+    static u64 getSystemPhysicalMemoryArrayCapacity(); // TEST: NO
+    static u64 getNumberOfInstalledMemoryDevices(); // TEST: NO
+    static u64 getTotalAmountOfMemory(); // TEST: NO
+    static const ArrayList<DmiMemoryDevice>& getMemoryDevices(); // TEST: NO
     static const char8* getIdentity(DmiIdentity id); // TEST: NO
     static Uuid* getUuid(DmiStoredUuid id); // TEST: NO
 
@@ -105,9 +107,9 @@ private:
     static NgosStatus saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry *entry); // TEST: NO
     static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO
     static NgosStatus storeDmiMemoryDevices(); // TEST: NO
-    static NgosStatus saveIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
-    static NgosStatus saveUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
-    static NgosStatus getString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
+    static NgosStatus storeIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
+    static NgosStatus storeUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
+    static NgosStatus storeString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
     static u32                                           sVersion;
@@ -116,6 +118,8 @@ private:
     static u32                                           sStructureTableLength;
     static u16                                           sSystemPhysicalMemoryArrayHandle;
     static u64                                           sSystemPhysicalMemoryArrayCapacity;
+    static u64                                           sNumberOfInstalledMemoryDevices;
+    static u64                                           sTotalAmountOfMemory;
     static ArrayList<DmiMemoryDeviceEntry *>             sMemoryDeviceEntries;
     static Map<u16, DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
     static ArrayList<DmiMemoryDevice>                    sMemoryDevices;

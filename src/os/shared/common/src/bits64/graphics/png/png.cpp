@@ -1053,15 +1053,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[i];
 
-                if (
-                    !pixel->red   // pixel->red   == 0
-                    &&
-                    !pixel->green // pixel->green == 0
-                    &&
-                    !pixel->blue  // pixel->blue  == 0
-                    &&
-                    pixel->alpha == 0xFF
-                   )
+                if (pixel->value32 == 0xFF000000)
                 {
                     if (from == 0)
                     {
@@ -1089,11 +1081,11 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 RgbPixel *pixel = &image->getRgbBuffer()[i];
 
                 if (
-                    !pixel->red   // pixel->red   == 0
+                    pixel->red   == 0
                     &&
-                    !pixel->green // pixel->green == 0
+                    pixel->green == 0
                     &&
-                    !pixel->blue  // pixel->blue  == 0
+                    pixel->blue  == 0
                    )
                 {
                     if (from == 0)
@@ -1132,15 +1124,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[i * image->getWidth()];
 
-                if (
-                    !pixel->red   // pixel->red   == 0
-                    &&
-                    !pixel->green // pixel->green == 0
-                    &&
-                    !pixel->blue  // pixel->blue  == 0
-                    &&
-                    pixel->alpha == 0xFF
-                   )
+                if (pixel->value32 == 0xFF000000)
                 {
                     if (from == 0)
                     {
@@ -1168,11 +1152,11 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 RgbPixel *pixel = &image->getRgbBuffer()[i * image->getWidth()];
 
                 if (
-                    !pixel->red   // pixel->red   == 0
+                    pixel->red   == 0
                     &&
-                    !pixel->green // pixel->green == 0
+                    pixel->green == 0
                     &&
-                    !pixel->blue  // pixel->blue  == 0
+                    pixel->blue  == 0
                    )
                 {
                     if (from == 0)
@@ -1210,15 +1194,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
 
-                if (
-                    !pixel->red   // pixel->red   == 0
-                    &&
-                    !pixel->green // pixel->green == 0
-                    &&
-                    !pixel->blue  // pixel->blue  == 0
-                    &&
-                    pixel->alpha == 0xFF
-                   )
+                if (pixel->value32 == 0xFF000000)
                 {
                     patch->setPaddingLeft(i - 1);
 
@@ -1230,15 +1206,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
 
-                if (
-                    !pixel->red   // pixel->red   == 0
-                    &&
-                    !pixel->green // pixel->green == 0
-                    &&
-                    !pixel->blue  // pixel->blue  == 0
-                    &&
-                    pixel->alpha == 0xFF
-                   )
+                if (pixel->value32 == 0xFF000000)
                 {
                     patch->setPaddingRight(image->getWidth() - i - 2);
 
@@ -1250,15 +1218,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
 
-                if (
-                    !pixel->red   // pixel->red   == 0
-                    &&
-                    !pixel->green // pixel->green == 0
-                    &&
-                    !pixel->blue  // pixel->blue  == 0
-                    &&
-                    pixel->alpha == 0xFF
-                   )
+                if (pixel->value32 == 0xFF000000)
                 {
                     patch->setPaddingTop(i - 1);
 
@@ -1270,15 +1230,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
 
-                if (
-                    !pixel->red   // pixel->red   == 0
-                    &&
-                    !pixel->green // pixel->green == 0
-                    &&
-                    !pixel->blue  // pixel->blue  == 0
-                    &&
-                    pixel->alpha == 0xFF
-                   )
+                if (pixel->value32 == 0xFF000000)
                 {
                     patch->setPaddingBottom(image->getHeight() - i - 2);
 
@@ -1293,11 +1245,11 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
 
                 if (
-                    !pixel->red   // pixel->red   == 0
+                    pixel->red   == 0
                     &&
-                    !pixel->green // pixel->green == 0
+                    pixel->green == 0
                     &&
-                    !pixel->blue  // pixel->blue  == 0
+                    pixel->blue  == 0
                    )
                 {
                     patch->setPaddingLeft(i - 1);
@@ -1311,11 +1263,11 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
 
                 if (
-                    !pixel->red   // pixel->red   == 0
+                    pixel->red   == 0
                     &&
-                    !pixel->green // pixel->green == 0
+                    pixel->green == 0
                     &&
-                    !pixel->blue  // pixel->blue  == 0
+                    pixel->blue  == 0
                    )
                 {
                     patch->setPaddingRight(image->getWidth() - i - 2);
@@ -1329,11 +1281,11 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
 
                 if (
-                    !pixel->red   // pixel->red   == 0
+                    pixel->red   == 0
                     &&
-                    !pixel->green // pixel->green == 0
+                    pixel->green == 0
                     &&
-                    !pixel->blue  // pixel->blue  == 0
+                    pixel->blue  == 0
                    )
                 {
                     patch->setPaddingTop(i - 1);
@@ -1347,11 +1299,11 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
 
                 if (
-                    !pixel->red   // pixel->red   == 0
+                    pixel->red   == 0
                     &&
-                    !pixel->green // pixel->green == 0
+                    pixel->green == 0
                     &&
-                    !pixel->blue  // pixel->blue  == 0
+                    pixel->blue  == 0
                    )
                 {
                     patch->setPaddingBottom(image->getHeight() - i - 2);

@@ -386,7 +386,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
 
 
-    RgbaPixel blackColor = RgbaPixel(BLACK_COLOR);
+    RgbaPixel blackColor(BLACK_COLOR);
 
 
 
@@ -515,9 +515,9 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
 
                     switch (record->getMode())
                     {
-                        case DeviceManagerMode::BASIC:     color = RgbaPixel(BASIC_COLOR);     break;
-                        case DeviceManagerMode::EXPERT:    color = RgbaPixel(EXPERT_COLOR);    break;
-                        case DeviceManagerMode::TECHNICAL: color = RgbaPixel(TECHNICAL_COLOR); break;
+                        case DeviceManagerMode::BASIC:     color.value32 = BASIC_COLOR;     break;
+                        case DeviceManagerMode::EXPERT:    color.value32 = EXPERT_COLOR;    break;
+                        case DeviceManagerMode::TECHNICAL: color.value32 = TECHNICAL_COLOR; break;
 
                         case DeviceManagerMode::MAXIMUM:
                         {

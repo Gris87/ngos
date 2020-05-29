@@ -17,7 +17,7 @@ struct RgbaPixel
 
 
 
-        value32 = 0;
+        value32 = 0x00000000;
     }
 
     RgbaPixel(u8 r, u8 g, u8 b, u8 a)

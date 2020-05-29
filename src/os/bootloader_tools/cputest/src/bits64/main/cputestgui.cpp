@@ -8,6 +8,7 @@
 #include <common/src/bits64/gui/widgets/misc/panelwidget.h>
 #include <common/src/bits64/gui/widgets/special/rootwidget.h>
 #include <common/src/bits64/gui/widgets/special/screenwidget.h>
+#include <common/src/bits64/memory/malloc.h>
 #include <common/src/bits64/memory/memory.h>
 #include <common/src/bits64/string/utils.h>
 #include <macro/constants.h>
@@ -181,6 +182,12 @@
 #define SCORE_L1_INSTRUCTION_CACHE_PER_1_KB 2
 #define SCORE_L2_CACHE_PER_1_MB             200
 #define SCORE_L3_CACHE_PER_1_MB             40
+
+#define BLACK_COLOR                   0xFF000000
+#define FEATURE_ENABLED_TEXT_COLOR    0xFF009B00
+#define FEATURE_ENABLED_SHADOW_COLOR  0xDD466046
+#define FEATURE_DISABLED_TEXT_COLOR   0xFF333333
+#define FEATURE_DISABLED_SHADOW_COLOR 0xDD606060
 
 
 
@@ -541,6 +548,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     u64 cpuInfoWidth  = tabPageWidth - cpuImageSize;
     u64 cpuInfoHeight = cpuImageSize;
 
+
+
     PanelWidget *cpuInfoPanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
 
     UEFI_ASSERT_EXECUTION(cpuInfoPanelWidget->setPosition(cpuImageSize, 0),         NgosStatus::ASSERTION);
@@ -839,31 +848,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *summaryCpuThreads            = mprintf("Number of threads: %u",                CPU::getNumberOfThreads());
-    char8 *summaryCpuSpeed              = mprintf("CPU Speed: %s",                        hertzToString(CpuTest::getCpuSpeed()));
-    char8 *summaryCpuL1DataCache        = mprintf("L1 Data Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size),        CpuTest::getLevel1DataCache().numberOfWays);
-    char8 *summaryCpuL1InstructionCache = mprintf("L1 Instruction Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
-    char8 *summaryCpuL2Cache            = mprintf("Level 2 Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size),            CpuTest::getLevel2Cache().numberOfWays);
-    char8 *summaryCpuL3Cache            = mprintf("Level 3 Cache: %s %u-way",                                      bytesToString(CpuTest::getLevel3Cache().size),            CpuTest::getLevel3Cache().numberOfWays);
-
-
-
-    UEFI_ASSERT_EXECUTION(addSummaryEntry("Previous test results",      0),                                                                                                                   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuThreads,            CPU::getNumberOfThreads() * SCORE_PER_THREAD),                                                                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuSpeed,              (CpuTest::getCpuSpeed() / 100000000) * SCORE_PER_100_MHZ),                                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1DataCache,        CPU::getNumberOfCores() * (u64)CpuTest::getLevel1DataCache().size * SCORE_L1_DATA_CACHE_PER_1_KB / KB),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1InstructionCache, CPU::getNumberOfCores() * (u64)CpuTest::getLevel1InstructionCache().size * SCORE_L1_INSTRUCTION_CACHE_PER_1_KB / KB), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL2Cache,            CPU::getNumberOfCores() * (u64)CpuTest::getLevel2Cache().size * SCORE_L2_CACHE_PER_1_MB / MB),                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL3Cache,            (u64)CpuTest::getLevel3Cache().size * SCORE_L3_CACHE_PER_1_MB / MB),                                                  NgosStatus::ASSERTION);
-
-
-
-    UEFI_TEST_ASSERT(flagsCount == ARRAY_COUNT(testedFeaturesScores), NgosStatus::ASSERTION);
-
-    for (i64 i = 0; i < flagsCount; ++i)
-    {
-        UEFI_ASSERT_EXECUTION(addSummaryFeature(testedFeatures[i], testedFeaturesScores[i]), NgosStatus::ASSERTION);
-    }
+    UEFI_ASSERT_EXECUTION(fillSummaryTable(), NgosStatus::ASSERTION);
 
 
 
@@ -969,48 +954,34 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPosition
 
 
 
+    LabelWidget *featureShadowLabelWidget = new LabelWidget(flagTextFull, featurePanelWidget);
+
+    UEFI_ASSERT_EXECUTION(featureShadowLabelWidget->setPosition(featurePanelWidth * FEATURE_TEXT_POSITION_X_PERCENT / 100, featurePanelHeight * FEATURE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureShadowLabelWidget->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT      / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
     LabelWidget *featureTextLabelWidget = new LabelWidget(flagTextFull, featurePanelWidget);
 
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setPosition(featurePanelWidth * FEATURE_TEXT_POSITION_X_PERCENT / 100, featurePanelHeight * FEATURE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT      / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
-
-    LabelWidget *featureTextLabelWidget2 = new LabelWidget(flagTextFull, featurePanelWidget);
-
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setPosition(featurePanelWidth * (FEATURE_TEXT_POSITION_X_PERCENT - 1) / 100, featurePanelHeight * (FEATURE_TEXT_POSITION_Y_PERCENT - 2) / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT            / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT           / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setPosition(featurePanelWidth * (FEATURE_TEXT_POSITION_X_PERCENT - 1) / 100, featurePanelHeight * (FEATURE_TEXT_POSITION_Y_PERCENT - 2) / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT            / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT           / 100), NgosStatus::ASSERTION);
 
 
 
-    RgbaPixel color;
-    RgbaPixel color2;
+    RgbaPixel shadowColor;
+    RgbaPixel textColor;
 
     if (CPU::hasFlag(flag))
     {
-        color.red   = 0x46;
-        color.green = 0x60;
-        color.blue  = 0x46;
-        color.alpha = 0xDD;
-
-        color2.red   = 0x00;
-        color2.green = 0x9B;
-        color2.blue  = 0x00;
-        color2.alpha = 0xFF;
+        shadowColor.value32 = FEATURE_ENABLED_SHADOW_COLOR;
+        textColor.value32   = FEATURE_ENABLED_TEXT_COLOR;
     }
     else
     {
-        color.red   = 0x60;
-        color.green = 0x60;
-        color.blue  = 0x60;
-        color.alpha = 0xDD;
-
-        color2.red   = 0x33;
-        color2.green = 0x33;
-        color2.blue  = 0x33;
-        color2.alpha = 0xFF;
+        shadowColor.value32 = FEATURE_DISABLED_SHADOW_COLOR;
+        textColor.value32   = FEATURE_DISABLED_TEXT_COLOR;
     }
 
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setColor(color),   NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget2->setColor(color2), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureShadowLabelWidget->setColor(shadowColor), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setColor(textColor),     NgosStatus::ASSERTION);
 
 
 
@@ -1022,15 +993,6 @@ NgosStatus CpuTestGUI::addIssueEntry(Image *icon, const char8 *description)
     UEFI_LT((" | icon = 0x%p, description = 0x%p", icon, description));
 
     UEFI_ASSERT(description, "description is null", NgosStatus::ASSERTION);
-
-
-
-    RgbaPixel blackColor;
-
-    blackColor.red   = 0;
-    blackColor.green = 0;
-    blackColor.blue  = 0;
-    blackColor.alpha = 0xFF;
 
 
 
@@ -1049,7 +1011,7 @@ NgosStatus CpuTestGUI::addIssueEntry(Image *icon, const char8 *description)
 
     LabelWidget *descriptionLabelWidget = new LabelWidget(description, sIssuesTableWidget);
 
-    UEFI_ASSERT_EXECUTION(descriptionLabelWidget->setColor(blackColor),                                       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(descriptionLabelWidget->setColor(RgbaPixel(BLACK_COLOR)),                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setCellWidget(row, COLUMN_DESCRIPTION, descriptionLabelWidget), NgosStatus::ASSERTION);
 
 
@@ -1221,12 +1183,7 @@ NgosStatus CpuTestGUI::addTestEntry(const char8 *name, const char8 *score)
 
 
 
-    RgbaPixel blackColor;
-
-    blackColor.red   = 0;
-    blackColor.green = 0;
-    blackColor.blue  = 0;
-    blackColor.alpha = 0xFF;
+    RgbaPixel blackColor(BLACK_COLOR);
 
 
 
@@ -1319,16 +1276,7 @@ NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
 
 
 
-    RgbaPixel blackColor;
-
-    blackColor.red   = 0;
-    blackColor.green = 0;
-    blackColor.blue  = 0;
-    blackColor.alpha = 0xFF;
-
-
-
-    char8 *scoreString = mprintf("%u", score);
+    RgbaPixel blackColor(BLACK_COLOR);
 
 
 
@@ -1344,7 +1292,7 @@ NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
     UEFI_ASSERT_EXECUTION(nameLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_NAME, nameLabelWidget),        NgosStatus::ASSERTION);
 
-    LabelWidget *scoreLabelWidget = new LabelWidget(scoreString, sSummaryTableWidget);
+    LabelWidget *scoreLabelWidget = new LabelWidget(mprintf("%u", score), sSummaryTableWidget);
 
     UEFI_ASSERT_EXECUTION(scoreLabelWidget->setColor(blackColor),                                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setCellWidget(row, COLUMN_SCORE, scoreLabelWidget), NgosStatus::ASSERTION);
@@ -1370,6 +1318,46 @@ NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, u64 score)
         UEFI_TEST_ASSERT(flagText != nullptr && flagText[0] != 0, NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(addSummaryEntry(mprintf("Support feature: %s", flagText), score), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus CpuTestGUI::fillSummaryTable()
+{
+    UEFI_LT((""));
+
+
+
+    char8 *summaryCpuThreads            = mprintf("Number of threads: %u",                CPU::getNumberOfThreads());
+    char8 *summaryCpuSpeed              = mprintf("CPU Speed: %s",                        hertzToString(CpuTest::getCpuSpeed()));
+    char8 *summaryCpuL1DataCache        = mprintf("L1 Data Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size),        CpuTest::getLevel1DataCache().numberOfWays);
+    char8 *summaryCpuL1InstructionCache = mprintf("L1 Instruction Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
+    char8 *summaryCpuL2Cache            = mprintf("Level 2 Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size),            CpuTest::getLevel2Cache().numberOfWays);
+    char8 *summaryCpuL3Cache            = mprintf("Level 3 Cache: %s %u-way",                                      bytesToString(CpuTest::getLevel3Cache().size),            CpuTest::getLevel3Cache().numberOfWays);
+
+
+
+    UEFI_ASSERT_EXECUTION(addSummaryEntry("Previous test results",      0),                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuThreads,            CPU::getNumberOfThreads() * SCORE_PER_THREAD),                                                                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuSpeed,              (CpuTest::getCpuSpeed() / 100000000) * SCORE_PER_100_MHZ),                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1DataCache,        CPU::getNumberOfCores() * (u64)CpuTest::getLevel1DataCache().size * SCORE_L1_DATA_CACHE_PER_1_KB / KB),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1InstructionCache, CPU::getNumberOfCores() * (u64)CpuTest::getLevel1InstructionCache().size * SCORE_L1_INSTRUCTION_CACHE_PER_1_KB / KB), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL2Cache,            CPU::getNumberOfCores() * (u64)CpuTest::getLevel2Cache().size * SCORE_L2_CACHE_PER_1_MB / MB),                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL3Cache,            (u64)CpuTest::getLevel3Cache().size * SCORE_L3_CACHE_PER_1_MB / MB),                                                  NgosStatus::ASSERTION);
+
+
+
+    i64 flagsCount = ARRAY_COUNT(testedFeatures);
+    UEFI_LVVV(("flagsCount = %d", flagsCount));
+
+    UEFI_TEST_ASSERT(flagsCount == ARRAY_COUNT(testedFeaturesScores), NgosStatus::ASSERTION);
+
+    for (i64 i = 0; i < flagsCount; ++i)
+    {
+        UEFI_ASSERT_EXECUTION(addSummaryFeature(testedFeatures[i], testedFeaturesScores[i]), NgosStatus::ASSERTION);
     }
 
 
@@ -1826,16 +1814,10 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
             LabelWidget *previousTestLabelWidget = (LabelWidget *)sSummaryTableWidget->getCellWidget(0, COLUMN_SCORE);
 
-            char8 *scoreString = (char8 *)previousTestLabelWidget->getText();
-
-            i64 scoreLength = sprintf(scoreString, "%u", testTotal);
-            AVOID_UNUSED(scoreLength);
-
-            UEFI_TEST_ASSERT(scoreLength < 7, NgosStatus::ASSERTION);
 
 
-
-            UEFI_ASSERT_EXECUTION(previousTestLabelWidget->setText(scoreString), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(free((void *)previousTestLabelWidget->getText()),           NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(previousTestLabelWidget->setText(mprintf("%u", testTotal)), NgosStatus::ASSERTION);
         }
     }
 

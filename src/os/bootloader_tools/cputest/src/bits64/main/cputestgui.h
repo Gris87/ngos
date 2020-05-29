@@ -42,6 +42,7 @@ private:
     static NgosStatus putTestScore(); // TEST: NO
     static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO
     static NgosStatus addSummaryFeature(X86Feature flag, u64 score); // TEST: NO
+    static NgosStatus fillSummaryTable(); // TEST: NO
 
     static NgosStatus focusTabFirstWidget(); // TEST: NO
     static NgosStatus focusTabLastWidget(); // TEST: NO

@@ -23,6 +23,8 @@ u64                                           DMI::sStructureTableAddress;
 u32                                           DMI::sStructureTableLength;
 u16                                           DMI::sSystemPhysicalMemoryArrayHandle;
 u64                                           DMI::sSystemPhysicalMemoryArrayCapacity;
+u64                                           DMI::sNumberOfInstalledMemoryDevices;
+u64                                           DMI::sTotalAmountOfMemory;
 ArrayList<DmiMemoryDeviceEntry *>             DMI::sMemoryDeviceEntries;
 Map<u16, DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
 ArrayList<DmiMemoryDevice>                    DMI::sMemoryDevices;
@@ -104,6 +106,8 @@ NgosStatus DMI::init()
         COMMON_LVVV(("sStructureTableLength              = %u",     sStructureTableLength));
         COMMON_LVVV(("sSystemPhysicalMemoryArrayHandle   = 0x%04X", sSystemPhysicalMemoryArrayHandle));
         COMMON_LVVV(("sSystemPhysicalMemoryArrayCapacity = %s",     bytesToString(sSystemPhysicalMemoryArrayCapacity)));
+        COMMON_LVVV(("sNumberOfInstalledMemoryDevices    = %u",     sNumberOfInstalledMemoryDevices));
+        COMMON_LVVV(("sTotalAmountOfMemory               = %s",     bytesToString(sTotalAmountOfMemory)));
 
 
 
@@ -223,6 +227,8 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayCapacity          == GB,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfInstalledMemoryDevices             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sTotalAmountOfMemory                        == GB,         NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                  != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION); // Commented due to value variation
@@ -353,6 +359,42 @@ u64 DMI::getStructureTableAddress()
 
 
     return sStructureTableAddress;
+}
+
+u64 DMI::getSystemPhysicalMemoryArrayCapacity()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sSystemPhysicalMemoryArrayCapacity;
+}
+
+u64 DMI::getNumberOfInstalledMemoryDevices()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sNumberOfInstalledMemoryDevices;
+}
+
+u64 DMI::getTotalAmountOfMemory()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sTotalAmountOfMemory;
+}
+
+const ArrayList<DmiMemoryDevice>& DMI::getMemoryDevices()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sMemoryDevices;
 }
 
 const char8* DMI::getIdentity(DmiIdentity id)
@@ -676,17 +718,17 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
                     if (stringId == entry->vendor)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
                     if (stringId == entry->biosVersion)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
                     if (stringId == entry->biosReleaseDate)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
 
 
@@ -845,12 +887,12 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
                     if (stringId == entry->manufacturer)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
                     if (stringId == entry->productName)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
                     if (stringId == entry->version)
@@ -899,7 +941,7 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 
     if (entryV21)
     {
-        COMMON_ASSERT_EXECUTION(saveUuid(DmiStoredUuid::SYSTEM_UUID, &entryV21->uuid), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(storeUuid(DmiStoredUuid::SYSTEM_UUID, &entryV21->uuid), NgosStatus::ASSERTION);
     }
 
 
@@ -1008,12 +1050,12 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
                     if (stringId == entry->manufacturer)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BASEBOARD_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
                     if (stringId == entry->product)
                     {
-                        COMMON_ASSERT_EXECUTION(saveIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BASEBOARD_PRODUCT, begin, cur - begin + 1), NgosStatus::ASSERTION);
                     }
                     else
                     if (stringId == entry->version)
@@ -4329,7 +4371,6 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
             // Init memory device
             {
-                device.formFactor = entry->formFactor;
                 device.memoryType = entry->memoryType;
 
 
@@ -4387,6 +4428,17 @@ NgosStatus DMI::storeDmiMemoryDevices()
                     else
                     {
                         device.size = entry->size.size();
+                    }
+
+
+
+                    if (
+                        device.size != 0
+                        &&
+                        device.size != 0xFFFFFFFFFFFFFFFF
+                       )
+                    {
+                        sTotalAmountOfMemory += device.size;
                     }
                 }
 
@@ -4504,22 +4556,22 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
                             if (stringId == entry->deviceLocator)
                             {
-                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.deviceLocator), NgosStatus::ASSERTION);
+                                COMMON_ASSERT_EXECUTION(storeString(begin, cur - begin + 1, &device.deviceLocator), NgosStatus::ASSERTION);
                             }
                             else
                             if (stringId == manufacturerStringId)
                             {
-                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.manufacturer), NgosStatus::ASSERTION);
+                                COMMON_ASSERT_EXECUTION(storeString(begin, cur - begin + 1, &device.manufacturer), NgosStatus::ASSERTION);
                             }
                             else
                             if (stringId == serialNumberStringId)
                             {
-                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.serialNumber), NgosStatus::ASSERTION);
+                                COMMON_ASSERT_EXECUTION(storeString(begin, cur - begin + 1, &device.serialNumber), NgosStatus::ASSERTION);
                             }
                             else
                             if (stringId == partNumberStringId)
                             {
-                                COMMON_ASSERT_EXECUTION(getString(begin, cur - begin + 1, &device.partNumber), NgosStatus::ASSERTION);
+                                COMMON_ASSERT_EXECUTION(storeString(begin, cur - begin + 1, &device.partNumber), NgosStatus::ASSERTION);
                             }
 
 
@@ -4546,7 +4598,16 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
 
 
-            COMMON_ASSERT_EXECUTION(sMemoryDevices.append(device), NgosStatus::ASSERTION);
+            if (device.size != 0)
+            {
+                COMMON_ASSERT_EXECUTION(sMemoryDevices.insert(sNumberOfInstalledMemoryDevices, device), NgosStatus::ASSERTION);
+
+                ++sNumberOfInstalledMemoryDevices;
+            }
+            else
+            {
+                COMMON_ASSERT_EXECUTION(sMemoryDevices.append(device), NgosStatus::ASSERTION);
+            }
         }
     }
 
@@ -4564,7 +4625,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::saveIdentity(DmiIdentity id, const char8 *address, u64 size)
+NgosStatus DMI::storeIdentity(DmiIdentity id, const char8 *address, u64 size)
 {
     COMMON_LT((" | id = %u, address = 0x%p, size = %u", id, address, size));
 
@@ -4575,14 +4636,14 @@ NgosStatus DMI::saveIdentity(DmiIdentity id, const char8 *address, u64 size)
 
     COMMON_TEST_ASSERT(sIdentities[(u64)id] == nullptr, NgosStatus::ASSERTION);
 
-    COMMON_ASSERT_EXECUTION(getString(address, size, &sIdentities[(u64)id]), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(storeString(address, size, &sIdentities[(u64)id]), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::saveUuid(DmiStoredUuid id, Uuid *uuid)
+NgosStatus DMI::storeUuid(DmiStoredUuid id, Uuid *uuid)
 { // Ignore CppNgosTraceVerifier
     COMMON_LT((" | id = %u, uuid = %s", id, uuidToString(uuid)));
 
@@ -4610,7 +4671,7 @@ NgosStatus DMI::saveUuid(DmiStoredUuid id, Uuid *uuid)
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::getString(const char8 *address, u64 size, const char8 **destination)
+NgosStatus DMI::storeString(const char8 *address, u64 size, const char8 **destination)
 {
     COMMON_LT((" | address = 0x%p, size = %u, destination = 0x%p", address, size, destination));
 
