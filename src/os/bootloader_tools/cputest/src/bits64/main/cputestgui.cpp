@@ -126,8 +126,7 @@
 #define ISSUES_TABLEWIDGET_HEIGHT_PERCENT     98
 #define ISSUES_TABLEWIDGET_ROW_HEIGHT         27
 
-#define ISSUES_COLUMN_ICON_WIDTH_PERCENT        4
-#define ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT 96
+#define ISSUES_COLUMN_ICON_WIDTH 27
 
 #define START_BUTTON_POSITION_X_PERCENT 1
 #define START_BUTTON_POSITION_Y_PERCENT 0
@@ -742,8 +741,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_ICON,        issuesTableWidth * ISSUES_COLUMN_ICON_WIDTH_PERCENT        / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_DESCRIPTION, issuesTableWidth * ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_ICON,        ISSUES_COLUMN_ICON_WIDTH),                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_DESCRIPTION, issuesTableWidth - ISSUES_COLUMN_ICON_WIDTH), NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_ICON,        ""),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_DESCRIPTION, "Description"), NgosStatus::ASSERTION);
@@ -1559,7 +1558,7 @@ NgosStatus CpuTestGUI::terminateAndWaitForApplicationProcessors()
 
 
 
-        while (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
+        while (sNumberOfRunningProcessors > 0)
         {
             u64 eventIndex;
 

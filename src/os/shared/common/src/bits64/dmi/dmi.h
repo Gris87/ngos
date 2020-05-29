@@ -63,8 +63,8 @@ public:
     static u32 getVersion(); // TEST: NO
     static u64 getStructureTableAddress(); // TEST: NO
     static u64 getSystemPhysicalMemoryArrayCapacity(); // TEST: NO
-    static u64 getNumberOfInstalledMemoryDevices(); // TEST: NO
     static u64 getTotalAmountOfMemory(); // TEST: NO
+    static u64 getNumberOfInstalledMemoryDevices(); // TEST: NO
     static const ArrayList<DmiMemoryDevice>& getMemoryDevices(); // TEST: NO
     static const char8* getIdentity(DmiIdentity id); // TEST: NO
     static Uuid* getUuid(DmiStoredUuid id); // TEST: NO
@@ -118,8 +118,8 @@ private:
     static u32                                           sStructureTableLength;
     static u16                                           sSystemPhysicalMemoryArrayHandle;
     static u64                                           sSystemPhysicalMemoryArrayCapacity;
-    static u64                                           sNumberOfInstalledMemoryDevices;
     static u64                                           sTotalAmountOfMemory;
+    static u64                                           sNumberOfInstalledMemoryDevices;
     static ArrayList<DmiMemoryDeviceEntry *>             sMemoryDeviceEntries;
     static Map<u16, DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
     static ArrayList<DmiMemoryDevice>                    sMemoryDevices;

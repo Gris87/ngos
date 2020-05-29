@@ -64,7 +64,7 @@ inline NgosStatus rdrand(u64 *value)
 
 
 
-    while (retry) // retry > 0
+    while (retry > 0)
     {
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(

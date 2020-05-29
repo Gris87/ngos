@@ -8,6 +8,10 @@
 
 
 
+#define MEMORY_DEVICE_SIZE_UNKNOWN 0xFFFFFFFFFFFFFFFF
+
+
+
 struct DmiMemoryDevice
 {
     DmiMemoryDeviceType  memoryType;

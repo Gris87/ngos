@@ -53,8 +53,7 @@
 #define ISSUES_TABLEWIDGET_HEIGHT_PERCENT     98
 #define ISSUES_TABLEWIDGET_ROW_HEIGHT         27
 
-#define ISSUES_COLUMN_ICON_WIDTH_PERCENT        4
-#define ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT 96
+#define ISSUES_COLUMN_ICON_WIDTH 27
 
 #define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
 #define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
@@ -417,8 +416,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnCount(2), NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_ICON,        issuesTableWidth * ISSUES_COLUMN_ICON_WIDTH_PERCENT        / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_DESCRIPTION, issuesTableWidth * ISSUES_COLUMN_DESCRIPTION_WIDTH_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_ICON,        ISSUES_COLUMN_ICON_WIDTH),                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setColumnWidth(COLUMN_DESCRIPTION, issuesTableWidth - ISSUES_COLUMN_ICON_WIDTH), NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_ICON,        ""),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setHeaderText(COLUMN_DESCRIPTION, "Description"), NgosStatus::ASSERTION);
@@ -585,6 +584,102 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
         UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "Memory capacity is less than 16 GB"), NgosStatus::ASSERTION);
     }
 
+    if (DMI::getTotalAmountOfMemory() < GB)
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "Memory capacity is too small"), NgosStatus::ASSERTION);
+    }
+
+    if (DMI::getTotalAmountOfMemory() > DMI::getSystemPhysicalMemoryArrayCapacity())
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "Memory capacity is exceed maximum memory capacity"), NgosStatus::ASSERTION);
+    }
+
+
+
+    u32  minimumSpeed   = 0xFFFFFFFF;
+    bool differentSpeed = false;
+
+
+
+    const ArrayList<DmiMemoryDevice> &memoryDevices = DMI::getMemoryDevices();
+
+    for (i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+    {
+        const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
+
+
+
+        if (memoryDevice.memoryType != DmiMemoryDeviceType::DDR4)
+        {
+            UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "Memory device type is not DDR4"), NgosStatus::ASSERTION);
+        }
+
+
+
+        if (memoryDevice.speed > 0)
+        {
+            if (memoryDevice.speed < minimumSpeed)
+            {
+                if (minimumSpeed != 0xFFFFFFFF)
+                {
+                    differentSpeed = true;
+                }
+
+                minimumSpeed = memoryDevice.speed;
+            }
+            else
+            if (memoryDevice.speed != minimumSpeed)
+            {
+                differentSpeed = true;
+            }
+        }
+        else
+        {
+            UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "Memory device speed is unknown"), NgosStatus::ASSERTION);
+        }
+
+
+
+        if (memoryDevice.size == MEMORY_DEVICE_SIZE_UNKNOWN)
+        {
+            UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "Size of memory device is unknown"), NgosStatus::ASSERTION);
+        }
+
+
+
+        if (
+            memoryDevice.manufacturer == nullptr
+            &&
+            memoryDevice.partNumber == nullptr
+           )
+        {
+            UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "Memory device without vendor information"), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    if (minimumSpeed < 2666)
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "Memory device speed is less than 2666 MHz"), NgosStatus::ASSERTION);
+    }
+
+    if (differentSpeed)
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "Memory devices has different speed"), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (DMI::getNumberOfInstalledMemoryDevices() > 1)
+    {
+        // TODO: Implement
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "It's better to have 2 identical memory cards"), NgosStatus::ASSERTION);
+    }
+
 
 
     if (sIssuesTableWidget->getRowCount() == 0)
@@ -593,9 +688,9 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
     }
     else
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, ""),                                        NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "We recommend DDR4-2666 MHz memory cards"), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "with total size 16GB or more"),            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, ""),                                                               NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "We recommend to install 2 identical DDR4-2666 MHz memory cards"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(nullptr, "with total size 16GB or more"),                                   NgosStatus::ASSERTION);
     }
 
 
@@ -851,7 +946,7 @@ NgosStatus MemoryTestGUI::terminateAndWaitForApplicationProcessors()
 
 
 
-        while (sNumberOfRunningProcessors) // sNumberOfRunningProcessors > 0
+        while (sNumberOfRunningProcessors > 0)
         {
             u64 eventIndex;
 

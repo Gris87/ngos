@@ -23,8 +23,8 @@ u64                                           DMI::sStructureTableAddress;
 u32                                           DMI::sStructureTableLength;
 u16                                           DMI::sSystemPhysicalMemoryArrayHandle;
 u64                                           DMI::sSystemPhysicalMemoryArrayCapacity;
-u64                                           DMI::sNumberOfInstalledMemoryDevices;
 u64                                           DMI::sTotalAmountOfMemory;
+u64                                           DMI::sNumberOfInstalledMemoryDevices;
 ArrayList<DmiMemoryDeviceEntry *>             DMI::sMemoryDeviceEntries;
 Map<u16, DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
 ArrayList<DmiMemoryDevice>                    DMI::sMemoryDevices;
@@ -106,8 +106,8 @@ NgosStatus DMI::init()
         COMMON_LVVV(("sStructureTableLength              = %u",     sStructureTableLength));
         COMMON_LVVV(("sSystemPhysicalMemoryArrayHandle   = 0x%04X", sSystemPhysicalMemoryArrayHandle));
         COMMON_LVVV(("sSystemPhysicalMemoryArrayCapacity = %s",     bytesToString(sSystemPhysicalMemoryArrayCapacity)));
-        COMMON_LVVV(("sNumberOfInstalledMemoryDevices    = %u",     sNumberOfInstalledMemoryDevices));
         COMMON_LVVV(("sTotalAmountOfMemory               = %s",     bytesToString(sTotalAmountOfMemory)));
+        COMMON_LVVV(("sNumberOfInstalledMemoryDevices    = %u",     sNumberOfInstalledMemoryDevices));
 
 
 
@@ -227,8 +227,8 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayCapacity          == GB,         NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sNumberOfInstalledMemoryDevices             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sTotalAmountOfMemory                        == GB,         NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sNumberOfInstalledMemoryDevices             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                  != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION); // Commented due to value variation
@@ -370,15 +370,6 @@ u64 DMI::getSystemPhysicalMemoryArrayCapacity()
     return sSystemPhysicalMemoryArrayCapacity;
 }
 
-u64 DMI::getNumberOfInstalledMemoryDevices()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sNumberOfInstalledMemoryDevices;
-}
-
 u64 DMI::getTotalAmountOfMemory()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
@@ -386,6 +377,15 @@ u64 DMI::getTotalAmountOfMemory()
 
 
     return sTotalAmountOfMemory;
+}
+
+u64 DMI::getNumberOfInstalledMemoryDevices()
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return sNumberOfInstalledMemoryDevices;
 }
 
 const ArrayList<DmiMemoryDevice>& DMI::getMemoryDevices()
@@ -4414,7 +4414,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
                     else
                     if (entry->size.value16 == DMI_MEMORY_DEVICE_SIZE_UNKNOWN)
                     {
-                        device.size = 0xFFFFFFFFFFFFFFFF;
+                        device.size = MEMORY_DEVICE_SIZE_UNKNOWN;
                     }
                     else
                     if (
@@ -4435,7 +4435,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
                     if (
                         device.size != 0
                         &&
-                        device.size != 0xFFFFFFFFFFFFFFFF
+                        device.size != MEMORY_DEVICE_SIZE_UNKNOWN
                        )
                     {
                         sTotalAmountOfMemory += device.size;
@@ -4478,9 +4478,21 @@ NgosStatus DMI::storeDmiMemoryDevices()
                         }
                         else
                         {
-                            device.start =  position;
-                            position     += device.size;
-                            device.end   =  position;
+                            if (
+                                device.size != 0
+                                &&
+                                device.size != MEMORY_DEVICE_SIZE_UNKNOWN
+                               )
+                            {
+                                device.start =  position;
+                                position     += device.size;
+                                device.end   =  position;
+                            }
+                            else
+                            {
+                                device.start = 0;
+                                device.end   = 0;
+                            }
                         }
                     }
                 }

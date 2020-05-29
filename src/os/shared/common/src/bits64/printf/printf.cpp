@@ -157,7 +157,7 @@ char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
             value = (u64)value >> 4;
         }
 
-        while (value) // value != 0
+        while (value != 0)
         {
             index = value % base;
             value = value / base;

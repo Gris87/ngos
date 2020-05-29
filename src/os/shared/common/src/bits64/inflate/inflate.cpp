@@ -114,7 +114,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     u8 max = MAX_BITS;
 
-    while (max >= 1 && !count[max]) // count[max] == 0
+    while (max >= 1 && count[max] == 0)
     {
         --max;
     }
@@ -130,7 +130,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     u8 min = 1;
 
-    while (min < MAX_BITS && !count[min]) // count[max] == 0
+    while (min < MAX_BITS && count[min] == 0)
     {
         ++min;
     }
@@ -340,7 +340,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
             fill -= incr;
 
             next[(huff >> drop) + fill] = currentCode;
-        } while(fill); // fill != 0
+        } while(fill != 0);
 
 
 
@@ -445,7 +445,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
     currentCode.bits      = len - drop;
     currentCode.value     = 0;
 
-    while (huff) // huff != 0
+    while (huff != 0)
     {
         // when done with sub-table, drop back to root table
         if (
@@ -696,7 +696,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
                     decoder->outPosition += copyCount;
                     length               -= copyCount;
-                } while(length); // length != 0
+                } while(length != 0);
             }
         }
     } while(true);
