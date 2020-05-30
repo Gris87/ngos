@@ -2003,6 +2003,7 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
 
 
+    const char8 *entryName         = mprintf("L%u Cache", entry->cacheConfiguration.levelReal());
     const char8 *socketDesignation = "N/A";
 
     // Get strings
@@ -2146,7 +2147,7 @@ NgosStatus DeviceManagerDMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
     // Add Device Manager entry
     {
-        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), mprintf("Cache L%u", entry->cacheConfiguration.levelReal()));
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type)),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
