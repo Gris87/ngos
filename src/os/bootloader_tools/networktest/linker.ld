@@ -8,17 +8,17 @@ SECTIONS
 
 
 
-    .networktest_code : { *(.networktest_code) }
-    .asm_code         : { *(.asm_code) }
-    .text             : { *(.text*) }
-    .rodata           : { *(.rodata*) }
-    .data             : { *(.data*) }
+    .entry_point : { *(.entry_point) }
+    .asm_code    : { *(.asm_code) }
+    .text        : { *(.text*) }
+    .rodata      : { *(.rodata*) }
+    .data        : { *(.data*) }
 
-    .gdt              : { *(.gdt) }
+    .gdt         : { *(.gdt) }
 
 
 
-    .ctors            : {
+    .ctors       : {
         _ctors_begin = .;
         *(.ctors)
         _ctors_end = .;
@@ -28,18 +28,18 @@ SECTIONS
 
     . = ALIGN(8);
     _rela_begin = .;
-    .rela.dyn         : { *(.rela.dyn) }
+    .rela.dyn    : { *(.rela.dyn) }
     _rela_end = .;
 
 
 
-    .assets           : {
+    .assets      : {
         _assets_begin = .;
         *(.assets)
         _assets_end = .;
     }
 
-    .noinit           : {
+    .noinit      : {
         *(.noinit)
         *(.bss*)
     }
@@ -48,7 +48,7 @@ SECTIONS
 
     . = ALIGN(64);
 
-    .align        :       {
+    .align       : {
         . += 63;
         BYTE(0x00);
     }
@@ -57,10 +57,10 @@ SECTIONS
 
 
 
-    /DISCARD/         : { *(.dynamic) }
-    /DISCARD/         : { *(.dynsym) }
-    /DISCARD/         : { *(.dynstr) }
-    /DISCARD/         : { *(.hash) }
+    /DISCARD/    : { *(.dynamic) }
+    /DISCARD/    : { *(.dynsym) }
+    /DISCARD/    : { *(.dynstr) }
+    /DISCARD/    : { *(.hash) }
 
 
 

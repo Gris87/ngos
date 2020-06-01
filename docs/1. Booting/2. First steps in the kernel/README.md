@@ -26,33 +26,61 @@ SECTIONS
 {
     . = 0;
 
-    .configure_code : { *(.configure_code) }
-    .asm_code       : { *(.asm_code) }
-    .text           : { *(.text*) }
-    .rodata         : { *(.rodata*) }
-    .data           : { *(.data*) }
 
-    .gdt            : { *(.gdt) }
 
-    .assets         : {
+    .entry_point : { *(.entry_point) }
+    .asm_code    : { *(.asm_code) }
+    .text        : { *(.text*) }
+    .rodata      : { *(.rodata*) }
+    .data        : { *(.data*) }
+
+    .gdt         : { *(.gdt) }
+
+
+
+    .ctors       : {
+        _ctors_begin = .;
+        *(.ctors)
+        _ctors_end = .;
+    }
+
+
+
+    . = ALIGN(8);
+    _rela_begin = .;
+    .rela.dyn    : { *(.rela.dyn) }
+    _rela_end = .;
+
+
+
+    .assets      : {
         _assets_begin = .;
         *(.assets)
         _assets_end = .;
     }
 
-    .noinit         : {
+    .noinit      : {
         *(.noinit)
         *(.bss*)
+    }
+
+
+
+    . = ALIGN(64);
+
+    .align       : {
+        . += 63;
+        BYTE(0x00);
     }
 
     _end = .;
 
 
 
-    /DISCARD/       : { *(.dynamic) }
-    /DISCARD/       : { *(.dynsym) }
-    /DISCARD/       : { *(.dynstr) }
-    /DISCARD/       : { *(.hash) }
+    /DISCARD/    : { *(.dynamic) }
+    /DISCARD/    : { *(.dynsym) }
+    /DISCARD/    : { *(.dynstr) }
+    /DISCARD/    : { *(.hash) }
 
 
 
@@ -61,7 +89,7 @@ SECTIONS
 ```
 
 We have the list of sections below:
-* .configure_code - located at zero offset. This section contains the first kernel instructions.
+* .entry_point - located at zero offset. This section contains the first kernel instructions.
 * .asm_code - section for code written in Assembler.
 * .text - section for C++ code.
 * .rodata - section with string constants.
@@ -74,9 +102,9 @@ Please note that there is no .bss section. We are using .noinit section instead.
 The reason for doing this is the following. Usually .bss section located at the end of the image, but not even really present in file.<br/>
 It just allocating the required amount of bytes on loading. Since we have included Kernel part or Installer part right after Configure part it may cause overlapping between .bss and included image.
 
-The initial kernel code is located in .configure_code section.
+The initial kernel code is located in .entry_point section.
 
-If you search for .configure_code section you will find that it is only declared at [src/os/configure/asm/arch/x86_64/main.S](../../../src/os/configure/asm/arch/x86_64/main.S) file.<br/>
+If you search for .entry_point section you will find that it is only declared at [src/os/configure/asm/arch/x86_64/main.S](../../../src/os/configure/asm/arch/x86_64/main.S) file.<br/>
 Let's check this [file](../../../src/os/configure/asm/arch/x86_64/main.S).
 
 ### Jumping to C++ code

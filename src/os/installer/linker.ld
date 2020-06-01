@@ -8,7 +8,7 @@ SECTIONS
 
 
 
-    .kernel_code : AT(0) { *(.kernel_code) }
+    .entry_point : AT(0) { *(.entry_point) }
     .asm_code    :       { *(.asm_code) }
     .text        :       { *(.text*) }
     .rodata      :       { *(.rodata*) }
@@ -51,7 +51,7 @@ SECTIONS
 
     . = ALIGN(64);
 
-    .align        :       {
+    .align       :       {
         . += 63;
         BYTE(0x00);
     }

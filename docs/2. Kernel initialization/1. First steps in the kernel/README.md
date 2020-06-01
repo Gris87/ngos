@@ -35,18 +35,22 @@ SECTIONS
 {
     . = 0xFFFFFFFF80000000;
 
-    .kernel_code : AT(0) { *(.kernel_code) }
+
+
+    .entry_point : AT(0) { *(.entry_point) }
     .asm_code    :       { *(.asm_code) }
     .text        :       { *(.text*) }
     .rodata      :       { *(.rodata*) }
     .data        :       { *(.data*) }
 
+    .gdt         :       { *(.gdt) }
+    .idt         :       { *(.idt) }
+
     . = ALIGN((1 << 12));
     .pagetable   :       { *(.pagetable) }
     . = ALIGN((1 << 12));
 
-    .gdt         :       { *(.gdt) }
-    .idt         :       { *(.idt) }
+    .rela.dyn    :       { *(.rela.dyn) }
 
     .assets      :       {
         _assets_begin = .;
@@ -72,6 +76,15 @@ SECTIONS
         _brk_end = .;
     }
 
+
+
+    . = ALIGN(64);
+
+    .align       :       {
+        . += 63;
+        BYTE(0x00);
+    }
+
     _end = .;
 
 
@@ -88,14 +101,14 @@ SECTIONS
 ```
 
 We have the list of sections below:
-* .kernel_code - located at zero offset. This section contains the first kernel instructions.
+* .entry_point - located at zero offset. This section contains the first kernel instructions.
 * .asm_code - section for code written in Assembler.
 * .text - section for C++ code.
 * .rodata - section with string constants.
 * .data - another data if exists.
-* .pagetable - section with page table that we gonna use as soon as we come to the Kernel part image. This section should be aligned by page size.
 * .gdt - Global Descriptor Table.
 * .idt - Interrupt Descriptor Table.
+* .pagetable - section with page table that we gonna use as soon as we come to the Kernel part image. This section should be aligned by page size.
 * .assets - section with content of files located in [src/os/kernel/assets](../../../src/os/kernel/assets) folder.
 * .stack - section with the stack.
 * .bss - zero filled section for uninitialized data.
@@ -103,9 +116,9 @@ We have the list of sections below:
 You can also see that kernel image suppose to be loaded at virtual address 0xFFFFFFFF80000000.<br/>
 We will go to virtual address space as soon as possible at the very beginning.
 
-The initial kernel code is located in .kernel_code section.
+The initial kernel code is located in .entry_point section.
 
-If you search for .kernel_code section you will find that it is only declared at [src/os/shared/kernelbase/asm/arch/x86_64/main.S](../../../src/os/shared/kernelbase/asm/arch/x86_64/main.S) file.<br/>
+If you search for .entry_point section you will find that it is only declared at [src/os/shared/kernelbase/asm/arch/x86_64/main.S](../../../src/os/shared/kernelbase/asm/arch/x86_64/main.S) file.<br/>
 Let's check this [file](../../../src/os/shared/kernelbase/asm/arch/x86_64/main.S).
 
 ### Entry point

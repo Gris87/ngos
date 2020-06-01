@@ -1,5 +1,5 @@
 .code64                                                                         # Generate code in 64 bits mode
-.section ".networktest_code", "ax"                                              # networktest_code section (a - allocatable, x - executable)
+.section ".entry_point", "ax"                                                   # entry_point section (a - allocatable, x - executable)
                                                                                 #
 .globl  _start                                                                  # Make _start visible for linker
 _start:                                                                         # Global pointer to the entry point in order to make linker silent
