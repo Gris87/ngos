@@ -171,7 +171,7 @@ NgosStatus DMI::init()
 
 
 
-                COMMON_LVVV(("#%-3d: %s | %s | %u MHz | %-5s | %5s - %-5s | %s | %s | %s | %s", i, enumToFullString(device.formFactor), enumToFullString(device.memoryType), device.speed, bytesToString(device.size), startBuffer, endBuffer, stringToString(device.deviceLocator), stringToString(device.manufacturer), stringToString(device.serialNumber), stringToString(device.partNumber)));
+                COMMON_LVVV(("#%-3d: %s | %u MHz | %-5s | %5s - %-5s | %s | %s | %s | %s", i, enumToFullString(device.memoryType), device.speed, bytesToString(device.size), startBuffer, endBuffer, stringToString(device.deviceLocator), stringToString(device.manufacturer), stringToString(device.serialNumber), stringToString(device.partNumber)));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -798,8 +798,8 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         // Check variables
         {
             COMMON_TEST_ASSERT(entry->manufacturer.id    == 1, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->productName.id     == 2, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->version.id         == 3, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->productName.id  == 2, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->version.id      == 3, NgosStatus::ASSERTION); // Commented due to value variation
             // COMMON_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
 
             if (entryV21)
@@ -2731,19 +2731,19 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->memoryArrayHandle         == 0x1000,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->totalWidth                == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->dataWidth                 == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->size.value                == 1024,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->size.granularity          == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->size.value16              == 0x0400,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->formFactor                == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION); // Commented due to value variation
-            COMMON_TEST_ASSERT(entry->deviceSet                    == 0,                                           NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->bankLocator.id            == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryType                == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->typeDetail                == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->totalWidth                   == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->dataWidth                    == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->size.value                   == 1024,                                        NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->size.granularity             == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->size.value16                 == 0x0400,                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION); // Commented due to value variation
+            COMMON_TEST_ASSERT(entry->deviceSet                       == 0,                                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->bankLocator.id               == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->typeDetail                   == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION); // Commented due to value variation
 
             if (entryV23)
             {

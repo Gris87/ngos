@@ -488,8 +488,8 @@ NgosStatus DeviceManagerDMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         // Check variables
         {
             UEFI_TEST_ASSERT(entry->manufacturer.id    == 1, NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->productName.id     == 2, NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->version.id         == 3, NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->productName.id  == 2, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->version.id      == 3, NgosStatus::ASSERTION); // Commented due to value variation
             // UEFI_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
 
             if (entryV21)
