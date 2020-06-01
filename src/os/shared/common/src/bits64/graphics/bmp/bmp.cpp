@@ -216,7 +216,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
                     ++pixel;
                 }
 
-                if (width & 0x01)
+                if (width % 2 == 1)
                 {
                     byteValue = *imageByte;
                     ++imageByte;

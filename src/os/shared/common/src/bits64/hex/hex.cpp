@@ -102,7 +102,7 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 **buffer, i64 maxBufferSize, 
         {
             bufferSize = maxBufferSize;
 
-            if ((bufferSize & 0x01) == 0)
+            if (bufferSize % 2 == 0)
             {
                 --bufferSize;
             }

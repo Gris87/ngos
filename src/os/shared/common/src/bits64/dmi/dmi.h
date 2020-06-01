@@ -4,7 +4,6 @@
 
 
 #include <common/src/bits64/containers/arraylist.h>
-#include <common/src/bits64/containers/map.h>
 #include <common/src/bits64/dmi/dmientryheader.h>
 #include <common/src/bits64/dmi/dmiidentity.h>
 #include <common/src/bits64/dmi/dmimemorydevice.h>
@@ -112,19 +111,19 @@ private:
     static NgosStatus storeString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
     static u8 checksum(u8 *address, u64 size, u8 checksumValue);
 
-    static u32                                           sVersion;
-    static u16                                           sNumberOfSmbiosStructures;
-    static u64                                           sStructureTableAddress;
-    static u32                                           sStructureTableLength;
-    static u16                                           sSystemPhysicalMemoryArrayHandle;
-    static u64                                           sSystemPhysicalMemoryArrayCapacity;
-    static u64                                           sTotalAmountOfMemory;
-    static u64                                           sNumberOfInstalledMemoryDevices;
-    static ArrayList<DmiMemoryDeviceEntry *>             sMemoryDeviceEntries;
-    static Map<u16, DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
-    static ArrayList<DmiMemoryDevice>                    sMemoryDevices;
-    static const char8*                                  sIdentities[(u64)DmiIdentity::MAXIMUM];
-    static Uuid*                                         sUuids[(u64)DmiStoredUuid::MAXIMUM];
+    static u32                                            sVersion;
+    static u16                                            sNumberOfSmbiosStructures;
+    static u64                                            sStructureTableAddress;
+    static u32                                            sStructureTableLength;
+    static u16                                            sSystemPhysicalMemoryArrayHandle;
+    static u64                                            sSystemPhysicalMemoryArrayCapacity;
+    static u64                                            sTotalAmountOfMemory;
+    static u64                                            sNumberOfInstalledMemoryDevices;
+    static ArrayList<DmiMemoryDeviceEntry *>              sMemoryDeviceEntries;
+    static ArrayList<DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
+    static ArrayList<DmiMemoryDevice>                     sMemoryDevices;
+    static const char8*                                   sIdentities[(u64)DmiIdentity::MAXIMUM];
+    static Uuid*                                          sUuids[(u64)DmiStoredUuid::MAXIMUM];
 };
 
 

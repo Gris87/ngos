@@ -673,11 +673,47 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
 
     if (DMI::getNumberOfInstalledMemoryDevices() > 1)
     {
-        // TODO: Implement
+        bool identical = true;
+
+
+
+        const DmiMemoryDevice &firstMemoryDevice = memoryDevices.first();
+
+        for (i64 i = 1; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+        {
+            const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
+
+            if (
+                memoryDevice.memoryType != firstMemoryDevice.memoryType
+                &&
+                memoryDevice.speed != firstMemoryDevice.speed
+                &&
+                memoryDevice.size != firstMemoryDevice.size
+               )
+            {
+                identical = false;
+
+                break;
+            }
+        }
+
+
+
+        if (identical)
+        {
+            if (DMI::getNumberOfInstalledMemoryDevices() % 2 == 1)
+            {
+                UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "It's better to install one more memory card"), NgosStatus::ASSERTION);
+            }
+        }
+        else
+        {
+            UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "Memory cards should be identical"), NgosStatus::ASSERTION);
+        }
     }
     else
     {
-        UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "It's better to have 2 identical memory cards"), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "It's better to have 2 or more identical memory cards"), NgosStatus::ASSERTION);
     }
 
 

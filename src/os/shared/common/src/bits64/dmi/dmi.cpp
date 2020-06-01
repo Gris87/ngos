@@ -17,19 +17,19 @@
 
 
 
-u32                                           DMI::sVersion;
-u16                                           DMI::sNumberOfSmbiosStructures;
-u64                                           DMI::sStructureTableAddress;
-u32                                           DMI::sStructureTableLength;
-u16                                           DMI::sSystemPhysicalMemoryArrayHandle;
-u64                                           DMI::sSystemPhysicalMemoryArrayCapacity;
-u64                                           DMI::sTotalAmountOfMemory;
-u64                                           DMI::sNumberOfInstalledMemoryDevices;
-ArrayList<DmiMemoryDeviceEntry *>             DMI::sMemoryDeviceEntries;
-Map<u16, DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
-ArrayList<DmiMemoryDevice>                    DMI::sMemoryDevices;
-const char8*                                  DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
-Uuid*                                         DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
+u32                                            DMI::sVersion;
+u16                                            DMI::sNumberOfSmbiosStructures;
+u64                                            DMI::sStructureTableAddress;
+u32                                            DMI::sStructureTableLength;
+u16                                            DMI::sSystemPhysicalMemoryArrayHandle;
+u64                                            DMI::sSystemPhysicalMemoryArrayCapacity;
+u64                                            DMI::sTotalAmountOfMemory;
+u64                                            DMI::sNumberOfInstalledMemoryDevices;
+ArrayList<DmiMemoryDeviceEntry *>              DMI::sMemoryDeviceEntries;
+ArrayList<DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
+ArrayList<DmiMemoryDevice>                     DMI::sMemoryDevices;
+const char8*                                   DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
+Uuid*                                          DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
 
 
 
@@ -136,13 +136,11 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDeviceMappedAddressEntries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            const ArrayList<MapElement<u16, DmiMemoryDeviceMappedAddressEntry *>> &pairs = sMemoryDeviceMappedAddressEntries.getPairs();
-
-            for (i64 i = 0; i < (i64)pairs.getSize(); ++i)
+            for (i64 i = 0; i < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++i)
             {
-                const MapElement<u16, DmiMemoryDeviceMappedAddressEntry *> &pair = pairs.at(i);
+                DmiMemoryDeviceMappedAddressEntry *device = sMemoryDeviceMappedAddressEntries.at(i);
 
-                COMMON_LVVV(("#%-3d: 0x%04X -> 0x%p", i, pair.getKey(), pair.getValue()));
+                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X | 0x%04X", i, device, device->header.handle, device->memoryDeviceHandle));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -3079,9 +3077,7 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
 
 
-    COMMON_TEST_ASSERT(!sMemoryDeviceMappedAddressEntries.contains(entry->memoryDeviceHandle), NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(sMemoryDeviceMappedAddressEntries.insert(entry->memoryDeviceHandle, entry), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(sMemoryDeviceMappedAddressEntries.append(entry), NgosStatus::ASSERTION);
 
 
 
@@ -4446,31 +4442,67 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
                 // Set range
                 {
-                    DmiMemoryDeviceMappedAddressEntry *deviceMappedAddress = sMemoryDeviceMappedAddressEntries.value(entry->header.handle, nullptr);
+                    u64 start = 0xFFFFFFFFFFFFFFFF;
+                    u64 end   = 0;
 
-                    if (deviceMappedAddress)
+                    for (i64 j = 0; j < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++j)
                     {
-                        DmiMemoryDeviceMappedAddressEntryV27 *deviceMappedAddressV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && deviceMappedAddress->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27) ? (DmiMemoryDeviceMappedAddressEntryV27 *)deviceMappedAddress : nullptr;
+                        DmiMemoryDeviceMappedAddressEntry *deviceMappedAddress = sMemoryDeviceMappedAddressEntries.at(j);
 
-                        if (
-                            deviceMappedAddress->startingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
-                            &&
-                            deviceMappedAddress->endingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
-                            &&
-                            deviceMappedAddressV27
-                           )
+                        if (deviceMappedAddress->memoryDeviceHandle == entry->header.handle)
                         {
-                            device.start = deviceMappedAddressV27->extendedStartingAddress;
-                            device.end   = deviceMappedAddressV27->extendedEndingAddress;
+                            DmiMemoryDeviceMappedAddressEntryV27 *deviceMappedAddressV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && deviceMappedAddress->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27) ? (DmiMemoryDeviceMappedAddressEntryV27 *)deviceMappedAddress : nullptr;
+
+
+
+                            u64 newStart;
+                            u64 newEnd;
+
+                            if (
+                                deviceMappedAddress->startingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
+                                &&
+                                deviceMappedAddress->endingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND
+                                &&
+                                deviceMappedAddressV27
+                               )
+                            {
+                                newStart = deviceMappedAddressV27->extendedStartingAddress;
+                                newEnd   = deviceMappedAddressV27->extendedEndingAddress;
+                            }
+                            else
+                            {
+                                newStart = deviceMappedAddress->startingAddress.address();
+                                newEnd   = deviceMappedAddress->endingAddress.address(1);
+                            }
+
+
+
+                            if (newStart < start)
+                            {
+                                start = newStart;
+                            }
+
+                            if (newEnd > end)
+                            {
+                                end = newEnd;
+                            }
                         }
-                        else
-                        {
-                            device.start = deviceMappedAddress->startingAddress.address();
-                            device.end   = deviceMappedAddress->endingAddress.address(1);
-                        }
+                    }
+
+
+
+                    if (end != 0)
+                    {
+                        COMMON_TEST_ASSERT(start != 0xFFFFFFFFFFFFFFFF, NgosStatus::ASSERTION);
+                        COMMON_TEST_ASSERT(start < end,                 NgosStatus::ASSERTION);
+
+                        device.start = start;
+                        device.end   = end;
                     }
                     else
                     {
+                        COMMON_TEST_ASSERT(start == 0xFFFFFFFFFFFFFFFF, NgosStatus::ASSERTION);
+
                         if (!sMemoryDeviceMappedAddressEntries.isEmpty())
                         {
                             device.start = 0;
