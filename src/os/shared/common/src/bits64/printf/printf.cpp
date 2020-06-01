@@ -668,9 +668,13 @@ char8* vmprintf(const char8 *format, va_list args)
 
 
 
-    i64 len = vsprintf(printfBuffer, format, args);
+    char8 buffer[1024];
 
-    COMMON_TEST_ASSERT(len < (i64)sizeof(printfBuffer), nullptr);
+
+
+    i64 len = vsprintf(buffer, format, args);
+
+    COMMON_TEST_ASSERT(len < (i64)sizeof(buffer), nullptr);
 
 
 
@@ -679,7 +683,7 @@ char8* vmprintf(const char8 *format, va_list args)
     char8 *res = (char8 *)malloc(size);
     COMMON_TEST_ASSERT(res, nullptr);
 
-    memcpy(res, printfBuffer, size);
+    memcpy(res, buffer, size);
 
 
 
