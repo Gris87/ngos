@@ -309,6 +309,8 @@ src/os/bootloader_tools/devicemanager/assets/images/baseboard.png
 src/os/bootloader_tools/devicemanager/assets/images/basic.png
 src/os/bootloader_tools/devicemanager/assets/images/bios.png
 src/os/bootloader_tools/devicemanager/assets/images/bios_language.png
+src/os/bootloader_tools/devicemanager/assets/images/bits32_memory_error.png
+src/os/bootloader_tools/devicemanager/assets/images/bits64_memory_error.png
 src/os/bootloader_tools/devicemanager/assets/images/button_focused.9.png
 src/os/bootloader_tools/devicemanager/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/devicemanager/assets/images/button_hover.9.png
@@ -324,6 +326,7 @@ src/os/bootloader_tools/devicemanager/assets/images/electrical_current_probe.png
 src/os/bootloader_tools/devicemanager/assets/images/expanded.png
 src/os/bootloader_tools/devicemanager/assets/images/expert.png
 src/os/bootloader_tools/devicemanager/assets/images/group_associations.png
+src/os/bootloader_tools/devicemanager/assets/images/inactive.png
 src/os/bootloader_tools/devicemanager/assets/images/management_device.png
 src/os/bootloader_tools/devicemanager/assets/images/management_device_component.png
 src/os/bootloader_tools/devicemanager/assets/images/management_device_threshold_data.png
