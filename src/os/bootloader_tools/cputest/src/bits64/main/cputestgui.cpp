@@ -534,6 +534,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_TEST_ASSERT(sizeof(CPU::sModelName) == 48, NgosStatus::ASSERTION);
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     char8 *cpuModelName = mprintf("CPU Model: %.48s",       CPU::getModelName());
     char8 *cpuCores     = mprintf("Cores: %-3u",            CPU::getNumberOfCores());
     char8 *cpuThreads   = mprintf("Threads: %-3u",          CPU::getNumberOfThreads());
@@ -541,6 +542,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     char8 *cpuModel     = mprintf("Model:    0x%02X      ", CPU::getModel());
     char8 *cpuStepping  = mprintf("Stepping: 0x%02X      ", CPU::getStepping());
     char8 *cpuRevision  = mprintf("Revision: 0x%08X",       CPU::getMicrocodeRevision());
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -677,10 +679,12 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     char8 *cpuL1DataCache        = mprintf("L1 Data  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size),        CpuTest::getLevel1DataCache().numberOfWays);
     char8 *cpuL1InstructionCache = mprintf("L1 Inst. %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
     char8 *cpuLevel2Cache        = mprintf("Level 2  %3u x %-10s %2u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size),            CpuTest::getLevel2Cache().numberOfWays);
     char8 *cpuLevel3Cache        = mprintf("Level 3    %-10s     %2u-way",                          bytesToString(CpuTest::getLevel3Cache().size),            CpuTest::getLevel3Cache().numberOfWays);
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -1330,12 +1334,14 @@ NgosStatus CpuTestGUI::fillSummaryTable()
 
 
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     char8 *summaryCpuThreads            = mprintf("Number of threads: %u",                CPU::getNumberOfThreads());
     char8 *summaryCpuSpeed              = mprintf("CPU Speed: %s",                        hertzToString(CpuTest::getCpuSpeed()));
     char8 *summaryCpuL1DataCache        = mprintf("L1 Data Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1DataCache().size),        CpuTest::getLevel1DataCache().numberOfWays);
     char8 *summaryCpuL1InstructionCache = mprintf("L1 Instruction Cache: %u x %s %u-way", CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel1InstructionCache().size), CpuTest::getLevel1InstructionCache().numberOfWays);
     char8 *summaryCpuL2Cache            = mprintf("Level 2 Cache: %u x %s %u-way",        CPU::getNumberOfCores(), bytesToString(CpuTest::getLevel2Cache().size),            CpuTest::getLevel2Cache().numberOfWays);
     char8 *summaryCpuL3Cache            = mprintf("Level 3 Cache: %s %u-way",                                      bytesToString(CpuTest::getLevel3Cache().size),            CpuTest::getLevel3Cache().numberOfWays);
+    // Ignore CppAlignmentVerifier [END]
 
 
 

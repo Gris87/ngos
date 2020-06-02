@@ -23,11 +23,14 @@ enum class DeviceManagerImage: u8
     BASEBOARD,
     BIOS,
     BIOS_LANGUAGE,
+    BITS32_MEMORY_ERROR,
+    BITS64_MEMORY_ERROR,
     CACHE,
     CHASSIS,
     COOLING_DEVICE,
     ELECTRICAL_CURRENT_PROBE,
     GROUP_ASSOCIATIONS,
+    INACTIVE,
     MANAGEMENT_DEVICE,
     MANAGEMENT_DEVICE_COMPONENT,
     MANAGEMENT_DEVICE_THRESHOLD_DATA,
@@ -82,6 +85,8 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::BASEBOARD:                        return "BASEBOARD";
         case DeviceManagerImage::BIOS:                             return "BIOS";
         case DeviceManagerImage::BIOS_LANGUAGE:                    return "BIOS_LANGUAGE";
+        case DeviceManagerImage::BITS32_MEMORY_ERROR:              return "BITS32_MEMORY_ERROR";
+        case DeviceManagerImage::BITS64_MEMORY_ERROR:              return "BITS64_MEMORY_ERROR";
         case DeviceManagerImage::CACHE:                            return "CACHE";
         case DeviceManagerImage::CHASSIS:                          return "CHASSIS";
         case DeviceManagerImage::COOLING_DEVICE:                   return "COOLING_DEVICE";
@@ -172,6 +177,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type) 
         case DmiEntryType::GROUP_ASSOCIATIONS:               return DeviceManagerImage::GROUP_ASSOCIATIONS;
         case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            return DeviceManagerImage::PHYSICAL_MEMORY_ARRAY;
         case DmiEntryType::MEMORY_DEVICE:                    return DeviceManagerImage::MEMORY_DEVICE;
+        case DmiEntryType::BITS32_MEMORY_ERROR:              return DeviceManagerImage::BITS32_MEMORY_ERROR;
         case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      return DeviceManagerImage::MEMORY_ARRAY_MAPPED_ADDRESS;
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     return DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS;
         case DmiEntryType::PORTABLE_BATTERY:                 return DeviceManagerImage::PORTABLE_BATTERY;
@@ -180,27 +186,26 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type) 
         case DmiEntryType::TEMPERATURE_PROBE:                return DeviceManagerImage::TEMPERATURE_PROBE;
         case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         return DeviceManagerImage::ELECTRICAL_CURRENT_PROBE;
         case DmiEntryType::SYSTEM_BOOT:                      return DeviceManagerImage::SYSTEM_BOOT;
+        case DmiEntryType::BITS64_MEMORY_ERROR:              return DeviceManagerImage::BITS64_MEMORY_ERROR;
         case DmiEntryType::MANAGEMENT_DEVICE:                return DeviceManagerImage::MANAGEMENT_DEVICE;
         case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      return DeviceManagerImage::MANAGEMENT_DEVICE_COMPONENT;
         case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA: return DeviceManagerImage::MANAGEMENT_DEVICE_THRESHOLD_DATA;
         case DmiEntryType::SYSTEM_POWER_SUPPLY:              return DeviceManagerImage::SYSTEM_POWER_SUPPLY;
         case DmiEntryType::ADDITIONAL:                       return DeviceManagerImage::ADDITIONAL;
         case DmiEntryType::ONBOARD_DEVICES_EXTENDED:         return DeviceManagerImage::ONBOARD_DEVICES;
+        case DmiEntryType::INACTIVE:                         return DeviceManagerImage::INACTIVE;
 
         case DmiEntryType::SYSTEM_EVENT_LOG:
-        case DmiEntryType::BITS32_MEMORY_ERROR:
         case DmiEntryType::BUILTIN_POINTING_DEVICE:
         case DmiEntryType::SYSTEM_RESET:
         case DmiEntryType::HARDWARE_SECURITY:
         case DmiEntryType::SYSTEM_POWER_CONTROLS:
         case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:
         case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:
-        case DmiEntryType::BITS64_MEMORY_ERROR:
         case DmiEntryType::MEMORY_CHANNEL:
         case DmiEntryType::IPMI_DEVICE:
         case DmiEntryType::MANAGEMENT_CONTROLLER_HOST_INTERFACE:
         case DmiEntryType::TPM_DEVICE:
-        case DmiEntryType::INACTIVE:
         case DmiEntryType::END_OF_TABLE:
         {
             UEFI_LF(("Unexpected DMI entry type %s, %s:%u", enumToFullString(type), __FILE__, __LINE__));

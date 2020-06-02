@@ -826,11 +826,14 @@ src/os/shared/common/src/bits64/dmi/entry/dmiadditionalinformationentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibaseboardentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibiosentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmibioslanguageentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmibits32memoryerrorinformationentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmibits64memoryerrorinformationentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmicacheentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmichassisentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmicoolingdeviceentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmigroupassociationsentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmiinactiveentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimanagementdeviceentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h
@@ -861,6 +864,12 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosextendedromsizeunit.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibioslanguageflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmibiosromsize.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibits32memoryerrorinformationerrorgranularity.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibits32memoryerrorinformationerroroperation.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibits32memoryerrorinformationerrortype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibits64memoryerrorinformationerrorgranularity.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibits64memoryerrorinformationerroroperation.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmibits64memoryerrorinformationerrortype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheassociativity.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheconfiguration.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h

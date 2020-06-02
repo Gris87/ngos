@@ -93,6 +93,7 @@ NgosStatus DeviceManagerDMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::GROUP_ASSOCIATIONS:               UEFI_ASSERT_EXECUTION(saveDmiGroupAssociationsEntry((DmiGroupAssociationsEntry *)header),                         NgosStatus::ASSERTION); break;
         case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            UEFI_ASSERT_EXECUTION(saveDmiPhysicalMemoryArrayEntry((DmiPhysicalMemoryArrayEntry *)header),                     NgosStatus::ASSERTION); break;
         case DmiEntryType::MEMORY_DEVICE:                    UEFI_ASSERT_EXECUTION(saveDmiMemoryDeviceEntry((DmiMemoryDeviceEntry *)header),                                   NgosStatus::ASSERTION); break;
+        case DmiEntryType::BITS32_MEMORY_ERROR:              UEFI_ASSERT_EXECUTION(saveDmiBits32MemoryErrorInformationEntry((DmiBits32MemoryErrorInformationEntry *)header),   NgosStatus::ASSERTION); break;
         case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      UEFI_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header),           NgosStatus::ASSERTION); break;
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     UEFI_ASSERT_EXECUTION(saveDmiMemoryDeviceMappedAddressEntry((DmiMemoryDeviceMappedAddressEntry *)header),         NgosStatus::ASSERTION); break;
         case DmiEntryType::PORTABLE_BATTERY:                 UEFI_ASSERT_EXECUTION(saveDmiPortableBatteryEntry((DmiPortableBatteryEntry *)header),                             NgosStatus::ASSERTION); break;
@@ -101,12 +102,14 @@ NgosStatus DeviceManagerDMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::TEMPERATURE_PROBE:                UEFI_ASSERT_EXECUTION(saveDmiTemperatureProbeEntry((DmiTemperatureProbeEntry *)header),                           NgosStatus::ASSERTION); break;
         case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         UEFI_ASSERT_EXECUTION(saveDmiElectricalCurrentProbeEntry((DmiElectricalCurrentProbeEntry *)header),               NgosStatus::ASSERTION); break;
         case DmiEntryType::SYSTEM_BOOT:                      UEFI_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                                       NgosStatus::ASSERTION); break;
+        case DmiEntryType::BITS64_MEMORY_ERROR:              UEFI_ASSERT_EXECUTION(saveDmiBits64MemoryErrorInformationEntry((DmiBits64MemoryErrorInformationEntry *)header),   NgosStatus::ASSERTION); break;
         case DmiEntryType::MANAGEMENT_DEVICE:                UEFI_ASSERT_EXECUTION(saveDmiManagementDeviceEntry((DmiManagementDeviceEntry *)header),                           NgosStatus::ASSERTION); break;
         case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      UEFI_ASSERT_EXECUTION(saveDmiManagementDeviceComponentEntry((DmiManagementDeviceComponentEntry *)header),         NgosStatus::ASSERTION); break;
         case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA: UEFI_ASSERT_EXECUTION(saveDmiManagementDeviceThresholdDataEntry((DmiManagementDeviceThresholdDataEntry *)header), NgosStatus::ASSERTION); break;
         case DmiEntryType::SYSTEM_POWER_SUPPLY:              UEFI_ASSERT_EXECUTION(saveDmiSystemPowerSupplyEntry((DmiSystemPowerSupplyEntry *)header),                         NgosStatus::ASSERTION); break;
         case DmiEntryType::ADDITIONAL:                       UEFI_ASSERT_EXECUTION(saveDmiAdditionalInformationEntry((DmiAdditionalInformationEntry *)header),                 NgosStatus::ASSERTION); break;
         case DmiEntryType::ONBOARD_DEVICES_EXTENDED:         UEFI_ASSERT_EXECUTION(saveDmiOnboardDevicesExtendedEntry((DmiOnboardDevicesExtendedEntry *)header),               NgosStatus::ASSERTION); break;
+        case DmiEntryType::INACTIVE:                         UEFI_ASSERT_EXECUTION(saveDmiInactiveEntry((DmiInactiveEntry *)header),                                           NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -4034,6 +4037,140 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
     return NgosStatus::OK;
 }
 
+NgosStatus DeviceManagerDMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInformationEntry *entry)
+{
+    UEFI_LT((" | entry = 0x%p", entry));
+
+    UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
+
+
+
+    // Validation
+    {
+        // Output variables
+        {
+            UEFI_LVVV(("entry->errorType               = %s",     enumToFullString(entry->errorType)));
+            UEFI_LVVV(("entry->errorGranularity        = %s",     enumToFullString(entry->errorGranularity)));
+            UEFI_LVVV(("entry->errorOperation          = %s",     enumToFullString(entry->errorOperation)));
+            UEFI_LVVV(("entry->vendorSyndrome          = 0x%08X", entry->vendorSyndrome));
+            UEFI_LVVV(("entry->memoryArrayErrorAddress = 0x%08X", entry->memoryArrayErrorAddress));
+            UEFI_LVVV(("entry->deviceErrorAddress      = 0x%08X", entry->deviceErrorAddress));
+            UEFI_LVVV(("entry->errorResolution         = 0x%08X", entry->errorResolution));
+        }
+
+
+
+        // Check variables
+        {
+            // UEFI_TEST_ASSERT(entry->errorType               == DmiBits32MemoryErrorInformationErrorType::OK,           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorGranularity        == DmiBits32MemoryErrorInformationErrorGranularity::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorOperation          == DmiBits32MemoryErrorInformationErrorOperation::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->vendorSyndrome          == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->deviceErrorAddress      == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorResolution         == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBits32MemoryErrorInformationEntry), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+
+
+
+    const char8 *vendorSyndrome;
+    const char8 *memoryArrayErrorAddress;
+    const char8 *deviceErrorAddress;
+    const char8 *errorResolution;
+
+    // Get other strings
+    {
+        // Get string for Vendor syndrome
+        {
+            if (entry->vendorSyndrome == DMI_BITS32_MEMORY_ERROR_INFORMATION_VENDOR_SYNDROME_UNKNOWN)
+            {
+                vendorSyndrome = "Unknown";
+            }
+            else
+            {
+                vendorSyndrome = mprintf("0x%08X", entry->vendorSyndrome);
+            }
+        }
+
+
+
+        // Get string for Memory array error address
+        {
+            if (entry->memoryArrayErrorAddress == DMI_BITS32_MEMORY_ERROR_INFORMATION_MEMORY_ARRAY_ERROR_ADDRESS_UNKNOWN)
+            {
+                memoryArrayErrorAddress = "Unknown";
+            }
+            else
+            {
+                memoryArrayErrorAddress = mprintf("0x%08X", entry->memoryArrayErrorAddress);
+            }
+        }
+
+
+
+        // Get string for Device error address
+        {
+            if (entry->deviceErrorAddress == DMI_BITS32_MEMORY_ERROR_INFORMATION_DEVICE_ERROR_ADDRESS_UNKNOWN)
+            {
+                deviceErrorAddress = "Unknown";
+            }
+            else
+            {
+                deviceErrorAddress = mprintf("0x%08X", entry->deviceErrorAddress);
+            }
+        }
+
+
+
+        // Get string for Error resolution
+        {
+            if (entry->errorResolution == DMI_BITS32_MEMORY_ERROR_INFORMATION_ERROR_RESOLUTION_UNKNOWN)
+            {
+                errorResolution = "Unknown";
+            }
+            else
+            {
+                errorResolution = mprintf("0x%08X", entry->errorResolution);
+            }
+        }
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                 strdup(enumToFullString(entry->header.type)),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                     mprintf("0x%04X", entry->header.handle),           DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error type",                 strdup(enumToFullString(entry->errorType)),        DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error granularity",          strdup(enumToFullString(entry->errorGranularity)), DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error operation",            strdup(enumToFullString(entry->errorOperation)),   DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor syndrome",            vendorSyndrome,                                    DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array error address", memoryArrayErrorAddress,                           DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device error address",       deviceErrorAddress,                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error resolution",           errorResolution,                                   DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry)
 {
     UEFI_LT((" | entry = 0x%p", entry));
@@ -5619,6 +5756,140 @@ NgosStatus DeviceManagerDMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
     return NgosStatus::OK;
 }
 
+NgosStatus DeviceManagerDMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInformationEntry *entry)
+{
+    UEFI_LT((" | entry = 0x%p", entry));
+
+    UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
+
+
+
+    // Validation
+    {
+        // Output variables
+        {
+            UEFI_LVVV(("entry->errorType               = %s",       enumToFullString(entry->errorType)));
+            UEFI_LVVV(("entry->errorGranularity        = %s",       enumToFullString(entry->errorGranularity)));
+            UEFI_LVVV(("entry->errorOperation          = %s",       enumToFullString(entry->errorOperation)));
+            UEFI_LVVV(("entry->vendorSyndrome          = 0x%08X",   entry->vendorSyndrome));
+            UEFI_LVVV(("entry->memoryArrayErrorAddress = 0x%016lX", entry->memoryArrayErrorAddress));
+            UEFI_LVVV(("entry->deviceErrorAddress      = 0x%016lX", entry->deviceErrorAddress));
+            UEFI_LVVV(("entry->errorResolution         = 0x%08X",   entry->errorResolution));
+        }
+
+
+
+        // Check variables
+        {
+            // UEFI_TEST_ASSERT(entry->errorType               == DmiBits64MemoryErrorInformationErrorType::OK,           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorGranularity        == DmiBits64MemoryErrorInformationErrorGranularity::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorOperation          == DmiBits64MemoryErrorInformationErrorOperation::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->vendorSyndrome          == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x0000000000000000,                                     NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->deviceErrorAddress      == 0x0000000000000000,                                     NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorResolution         == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBits64MemoryErrorInformationEntry), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+
+
+
+    const char8 *vendorSyndrome;
+    const char8 *memoryArrayErrorAddress;
+    const char8 *deviceErrorAddress;
+    const char8 *errorResolution;
+
+    // Get other strings
+    {
+        // Get string for Vendor syndrome
+        {
+            if (entry->vendorSyndrome == DMI_BITS64_MEMORY_ERROR_INFORMATION_VENDOR_SYNDROME_UNKNOWN)
+            {
+                vendorSyndrome = "Unknown";
+            }
+            else
+            {
+                vendorSyndrome = mprintf("0x%08X", entry->vendorSyndrome);
+            }
+        }
+
+
+
+        // Get string for Memory array error address
+        {
+            if (entry->memoryArrayErrorAddress == DMI_BITS64_MEMORY_ERROR_INFORMATION_MEMORY_ARRAY_ERROR_ADDRESS_UNKNOWN)
+            {
+                memoryArrayErrorAddress = "Unknown";
+            }
+            else
+            {
+                memoryArrayErrorAddress = mprintf("0x%016lX", entry->memoryArrayErrorAddress);
+            }
+        }
+
+
+
+        // Get string for Device error address
+        {
+            if (entry->deviceErrorAddress == DMI_BITS64_MEMORY_ERROR_INFORMATION_DEVICE_ERROR_ADDRESS_UNKNOWN)
+            {
+                deviceErrorAddress = "Unknown";
+            }
+            else
+            {
+                deviceErrorAddress = mprintf("0x%016lX", entry->deviceErrorAddress);
+            }
+        }
+
+
+
+        // Get string for Error resolution
+        {
+            if (entry->errorResolution == DMI_BITS64_MEMORY_ERROR_INFORMATION_ERROR_RESOLUTION_UNKNOWN)
+            {
+                errorResolution = "Unknown";
+            }
+            else
+            {
+                errorResolution = mprintf("0x%08X", entry->errorResolution);
+            }
+        }
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                 strdup(enumToFullString(entry->header.type)),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                     mprintf("0x%04X", entry->header.handle),           DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error type",                 strdup(enumToFullString(entry->errorType)),        DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error granularity",          strdup(enumToFullString(entry->errorGranularity)), DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error operation",            strdup(enumToFullString(entry->errorOperation)),   DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor syndrome",            vendorSyndrome,                                    DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory array error address", memoryArrayErrorAddress,                           DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device error address",       deviceErrorAddress,                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error resolution",           errorResolution,                                   DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus DeviceManagerDMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
 {
     UEFI_LT((" | entry = 0x%p", entry));
@@ -6607,6 +6878,56 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevice
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus number",            mprintf("%u", entry->busNumber),                                                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function number",       mprintf("%u", entry->functionNumber),                                             DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device number",         mprintf("%u", entry->deviceNumber),                                               DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerDMI::saveDmiInactiveEntry(DmiInactiveEntry *entry)
+{
+    UEFI_LT((" | entry = 0x%p", entry));
+
+    UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
+
+
+
+    // Validation
+    {
+        // Output variables
+        {
+            // Nothing
+        }
+
+
+
+        // Check variables
+        {
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiInactiveEntry), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("No data",    "",                                           DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }

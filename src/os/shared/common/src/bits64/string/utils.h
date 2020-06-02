@@ -16,7 +16,7 @@
 
 inline NgosStatus bytesToString(u64 bytes, char8 *buffer, i64 size)
 {
-    // COMMON_LT((" | bytes = %u", bytes)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | bytes = %u, buffer = 0x%p, size = %d", bytes, buffer, size)); // Commented to avoid bad looking logs
 
     COMMON_ASSERT(buffer,     "buffer is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(size >= 11, "size is too small", NgosStatus::ASSERTION);

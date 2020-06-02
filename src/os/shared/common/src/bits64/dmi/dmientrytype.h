@@ -164,7 +164,7 @@ inline const char8* enumToHumanString(DmiEntryType type) // TEST: NO
         case DmiEntryType::SYSTEM_EVENT_LOG:                     return "System event log";
         case DmiEntryType::PHYSICAL_MEMORY_ARRAY:                return "Physical memory array";
         case DmiEntryType::MEMORY_DEVICE:                        return "Memory device";
-        case DmiEntryType::BITS32_MEMORY_ERROR:                  return "Bits32 memory error";
+        case DmiEntryType::BITS32_MEMORY_ERROR:                  return "32-bit memory error";
         case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:          return "Memory array mapped address";
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:         return "Memory device mapped address";
         case DmiEntryType::BUILTIN_POINTING_DEVICE:              return "Built-in pointing device";
@@ -179,7 +179,7 @@ inline const char8* enumToHumanString(DmiEntryType type) // TEST: NO
         case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:            return "Out of band remote access";
         case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:  return "Boot integrity services entry point";
         case DmiEntryType::SYSTEM_BOOT:                          return "System boot";
-        case DmiEntryType::BITS64_MEMORY_ERROR:                  return "Bits64 memory error";
+        case DmiEntryType::BITS64_MEMORY_ERROR:                  return "64-bit memory error";
         case DmiEntryType::MANAGEMENT_DEVICE:                    return "Management device";
         case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:          return "Management device component";
         case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA:     return "Management device threshold data";

@@ -9,11 +9,14 @@
 #include <common/src/bits64/dmi/entry/dmibaseboardentry.h>
 #include <common/src/bits64/dmi/entry/dmibiosentry.h>
 #include <common/src/bits64/dmi/entry/dmibioslanguageentry.h>
+#include <common/src/bits64/dmi/entry/dmibits32memoryerrorinformationentry.h>
+#include <common/src/bits64/dmi/entry/dmibits64memoryerrorinformationentry.h>
 #include <common/src/bits64/dmi/entry/dmicacheentry.h>
 #include <common/src/bits64/dmi/entry/dmichassisentry.h>
 #include <common/src/bits64/dmi/entry/dmicoolingdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h>
 #include <common/src/bits64/dmi/entry/dmigroupassociationsentry.h>
+#include <common/src/bits64/dmi/entry/dmiinactiveentry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h>
@@ -67,6 +70,7 @@ private:
     static NgosStatus saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry); // TEST: NO
     static NgosStatus saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry); // TEST: NO
+    static NgosStatus saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInformationEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry); // TEST: NO
@@ -75,12 +79,14 @@ private:
     static NgosStatus saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry); // TEST: NO
     static NgosStatus saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemBootEntry(DmiSystemBootEntry *entry); // TEST: NO
+    static NgosStatus saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInformationEntry *entry); // TEST: NO
     static NgosStatus saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiManagementDeviceComponentEntry(DmiManagementDeviceComponentEntry *entry); // TEST: NO
     static NgosStatus saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThresholdDataEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry); // TEST: NO
     static NgosStatus saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry *entry); // TEST: NO
     static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO
+    static NgosStatus saveDmiInactiveEntry(DmiInactiveEntry *entry); // TEST: NO
 
     static ArrayList<DeviceManagerEntryDMI *> sEntries;
 };

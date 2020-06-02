@@ -103,11 +103,14 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmibaseboardentry.h \
     $$PWD/src/bits64/dmi/entry/dmibiosentry.h \
     $$PWD/src/bits64/dmi/entry/dmibioslanguageentry.h \
+    $$PWD/src/bits64/dmi/entry/dmibits32memoryerrorinformationentry.h \
+    $$PWD/src/bits64/dmi/entry/dmibits64memoryerrorinformationentry.h \
     $$PWD/src/bits64/dmi/entry/dmicacheentry.h \
     $$PWD/src/bits64/dmi/entry/dmichassisentry.h \
     $$PWD/src/bits64/dmi/entry/dmicoolingdeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h \
     $$PWD/src/bits64/dmi/entry/dmigroupassociationsentry.h \
+    $$PWD/src/bits64/dmi/entry/dmiinactiveentry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdevicethresholddataentry.h \
@@ -138,6 +141,12 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmibiosextendedromsizeunit.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibioslanguageflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmibiosromsize.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibits32memoryerrorinformationerrorgranularity.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibits32memoryerrorinformationerroroperation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibits32memoryerrorinformationerrortype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibits64memoryerrorinformationerrorgranularity.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibits64memoryerrorinformationerroroperation.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmibits64memoryerrorinformationerrortype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheassociativity.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheconfiguration.h \
     $$PWD/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h \

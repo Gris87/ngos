@@ -70,6 +70,8 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/baseboard.png",                         // DeviceManagerImage::BASEBOARD
     "images/bios.png",                              // DeviceManagerImage::BIOS
     "images/bios_language.png",                     // DeviceManagerImage::BIOS_LANGUAGE
+    "images/bits32_memory_error.png",               // DeviceManagerImage::BITS32_MEMORY_ERROR
+    "images/bits64_memory_error.png",               // DeviceManagerImage::BITS64_MEMORY_ERROR
     "images/cache.png",                             // DeviceManagerImage::CACHE
     "images/chassis.png",                           // DeviceManagerImage::CHASSIS
     "images/cooling_device.png",                    // DeviceManagerImage::COOLING_DEVICE
