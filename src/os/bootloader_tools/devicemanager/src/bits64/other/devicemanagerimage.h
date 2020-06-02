@@ -92,6 +92,7 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::COOLING_DEVICE:                   return "COOLING_DEVICE";
         case DeviceManagerImage::ELECTRICAL_CURRENT_PROBE:         return "ELECTRICAL_CURRENT_PROBE";
         case DeviceManagerImage::GROUP_ASSOCIATIONS:               return "GROUP_ASSOCIATIONS";
+        case DeviceManagerImage::INACTIVE:                         return "INACTIVE";
         case DeviceManagerImage::MANAGEMENT_DEVICE:                return "MANAGEMENT_DEVICE";
         case DeviceManagerImage::MANAGEMENT_DEVICE_COMPONENT:      return "MANAGEMENT_DEVICE_COMPONENT";
         case DeviceManagerImage::MANAGEMENT_DEVICE_THRESHOLD_DATA: return "MANAGEMENT_DEVICE_THRESHOLD_DATA";
