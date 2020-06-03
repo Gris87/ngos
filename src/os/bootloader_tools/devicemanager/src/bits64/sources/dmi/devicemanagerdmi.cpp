@@ -98,6 +98,7 @@ NgosStatus DeviceManagerDMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     UEFI_ASSERT_EXECUTION(saveDmiMemoryDeviceMappedAddressEntry((DmiMemoryDeviceMappedAddressEntry *)header),         NgosStatus::ASSERTION); break;
         case DmiEntryType::PORTABLE_BATTERY:                 UEFI_ASSERT_EXECUTION(saveDmiPortableBatteryEntry((DmiPortableBatteryEntry *)header),                             NgosStatus::ASSERTION); break;
         case DmiEntryType::SYSTEM_RESET:                     UEFI_ASSERT_EXECUTION(saveDmiSystemResetEntry((DmiSystemResetEntry *)header),                                     NgosStatus::ASSERTION); break;
+        case DmiEntryType::HARDWARE_SECURITY:                UEFI_ASSERT_EXECUTION(saveDmiHardwareSecurityEntry((DmiHardwareSecurityEntry *)header),                           NgosStatus::ASSERTION); break;
         case DmiEntryType::VOLTAGE_PROBE:                    UEFI_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
         case DmiEntryType::COOLING_DEVICE:                   UEFI_ASSERT_EXECUTION(saveDmiCoolingDeviceEntry((DmiCoolingDeviceEntry *)header),                                 NgosStatus::ASSERTION); break;
         case DmiEntryType::TEMPERATURE_PROBE:                UEFI_ASSERT_EXECUTION(saveDmiTemperatureProbeEntry((DmiTemperatureProbeEntry *)header),                           NgosStatus::ASSERTION); break;
@@ -4945,6 +4946,69 @@ NgosStatus DeviceManagerDMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Reset limit",          resetLimit,                                                                                DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Timer interval",       timerInterval,                                                                             DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Timeout",              timeout,                                                                                   DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerDMI::saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry)
+{
+    UEFI_LT((" | entry = 0x%p", entry));
+
+    UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
+
+
+
+    // Validation
+    {
+        // Output variables
+        {
+            UEFI_LVVV(("entry->settings.frontPanelResetStatus       = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.frontPanelResetStatus)));
+            UEFI_LVVV(("entry->settings.administratorPasswordStatus = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.administratorPasswordStatus)));
+            UEFI_LVVV(("entry->settings.keyboardPasswordStatus      = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.keyboardPasswordStatus)));
+            UEFI_LVVV(("entry->settings.powerOnPasswordStatus       = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.powerOnPasswordStatus)));
+            UEFI_LVVV(("entry->settings.value8                      = 0x%02X", entry->settings.value8));
+        }
+
+
+
+        // Check variables
+        {
+            // UEFI_TEST_ASSERT(entry->settings.frontPanelResetStatus       == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->settings.administratorPasswordStatus == DmiHardwareSecurityStatus::ENABLED,  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->settings.keyboardPasswordStatus      == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->settings.powerOnPasswordStatus       == DmiHardwareSecurityStatus::DISABLED, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->settings.value8                      == 0x37,                                NgosStatus::ASSERTION); // Commented due to value variation
+
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiHardwareSecurityEntry), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",                    strdup(enumToFullString(entry->header.type)),                                                     DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",                        mprintf("0x%04X", entry->header.handle),                                                          DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Front panel reset status",      strdup(enumToFullString((DmiHardwareSecurityStatus)entry->settings.frontPanelResetStatus)),       DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Administrator password status", strdup(enumToFullString((DmiHardwareSecurityStatus)entry->settings.administratorPasswordStatus)), DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Keyboard password status",      strdup(enumToFullString((DmiHardwareSecurityStatus)entry->settings.keyboardPasswordStatus)),      DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Power-on password status",      strdup(enumToFullString((DmiHardwareSecurityStatus)entry->settings.powerOnPasswordStatus)),       DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }

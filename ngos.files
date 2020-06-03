@@ -839,6 +839,7 @@ src/os/shared/common/src/bits64/dmi/entry/dmichassisentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmicoolingdeviceentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmigroupassociationsentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmihardwaresecurityentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiinactiveentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h
 src/os/shared/common/src/bits64/dmi/entry/dmimanagementdeviceentry.h
@@ -899,6 +900,8 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmigroupassociationsitem.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmihardwaresecuritysettings.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmihardwaresecuritystatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h

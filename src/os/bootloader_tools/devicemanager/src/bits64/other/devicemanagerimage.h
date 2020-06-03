@@ -30,6 +30,7 @@ enum class DeviceManagerImage: u8
     COOLING_DEVICE,
     ELECTRICAL_CURRENT_PROBE,
     GROUP_ASSOCIATIONS,
+    HARDWARE_SECURITY,
     INACTIVE,
     MANAGEMENT_DEVICE,
     MANAGEMENT_DEVICE_COMPONENT,
@@ -94,6 +95,7 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::COOLING_DEVICE:                   return "COOLING_DEVICE";
         case DeviceManagerImage::ELECTRICAL_CURRENT_PROBE:         return "ELECTRICAL_CURRENT_PROBE";
         case DeviceManagerImage::GROUP_ASSOCIATIONS:               return "GROUP_ASSOCIATIONS";
+        case DeviceManagerImage::HARDWARE_SECURITY:                return "HARDWARE_SECURITY";
         case DeviceManagerImage::INACTIVE:                         return "INACTIVE";
         case DeviceManagerImage::MANAGEMENT_DEVICE:                return "MANAGEMENT_DEVICE";
         case DeviceManagerImage::MANAGEMENT_DEVICE_COMPONENT:      return "MANAGEMENT_DEVICE_COMPONENT";
@@ -187,6 +189,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type) 
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     return DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS;
         case DmiEntryType::PORTABLE_BATTERY:                 return DeviceManagerImage::PORTABLE_BATTERY;
         case DmiEntryType::SYSTEM_RESET:                     return DeviceManagerImage::SYSTEM_RESET;
+        case DmiEntryType::HARDWARE_SECURITY:                return DeviceManagerImage::HARDWARE_SECURITY;
         case DmiEntryType::VOLTAGE_PROBE:                    return DeviceManagerImage::VOLTAGE_PROBE;
         case DmiEntryType::COOLING_DEVICE:                   return DeviceManagerImage::COOLING_DEVICE;
         case DmiEntryType::TEMPERATURE_PROBE:                return DeviceManagerImage::TEMPERATURE_PROBE;
@@ -204,7 +207,6 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type) 
 
         case DmiEntryType::SYSTEM_EVENT_LOG:
         case DmiEntryType::BUILTIN_POINTING_DEVICE:
-        case DmiEntryType::HARDWARE_SECURITY:
         case DmiEntryType::SYSTEM_POWER_CONTROLS:
         case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:
         case DmiEntryType::MEMORY_CHANNEL:

@@ -77,6 +77,7 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/cooling_device.png",                    // DeviceManagerImage::COOLING_DEVICE
     "images/electrical_current_probe.png",          // DeviceManagerImage::ELECTRICAL_CURRENT_PROBE
     "images/group_associations.png",                // DeviceManagerImage::GROUP_ASSOCIATIONS
+    "images/hardware_security.png",                 // DeviceManagerImage::HARDWARE_SECURITY
     "images/inactive.png",                          // DeviceManagerImage::INACTIVE
     "images/management_device.png",                 // DeviceManagerImage::MANAGEMENT_DEVICE
     "images/management_device_component.png",       // DeviceManagerImage::MANAGEMENT_DEVICE_COMPONENT

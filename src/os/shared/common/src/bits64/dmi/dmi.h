@@ -19,6 +19,7 @@
 #include <common/src/bits64/dmi/entry/dmicoolingdeviceentry.h>
 #include <common/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h>
 #include <common/src/bits64/dmi/entry/dmigroupassociationsentry.h>
+#include <common/src/bits64/dmi/entry/dmihardwaresecurityentry.h>
 #include <common/src/bits64/dmi/entry/dmiinactiveentry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h>
 #include <common/src/bits64/dmi/entry/dmimanagementdeviceentry.h>
@@ -101,6 +102,7 @@ private:
     static NgosStatus saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry); // TEST: NO
     static NgosStatus saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemResetEntry(DmiSystemResetEntry *entry); // TEST: NO
+    static NgosStatus saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry); // TEST: NO
     static NgosStatus saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry); // TEST: NO
     static NgosStatus saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry); // TEST: NO

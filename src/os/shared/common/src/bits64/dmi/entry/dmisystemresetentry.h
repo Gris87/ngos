@@ -4,7 +4,6 @@
 
 
 #include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/dmistringid.h>
 #include <common/src/bits64/dmi/entry/lib/dmisystemresetcapabilities.h>
 
 

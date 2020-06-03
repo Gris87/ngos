@@ -110,6 +110,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmicoolingdeviceentry.h \
     $$PWD/src/bits64/dmi/entry/dmielectricalcurrentprobeentry.h \
     $$PWD/src/bits64/dmi/entry/dmigroupassociationsentry.h \
+    $$PWD/src/bits64/dmi/entry/dmihardwaresecurityentry.h \
     $$PWD/src/bits64/dmi/entry/dmiinactiveentry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdevicecomponententry.h \
     $$PWD/src/bits64/dmi/entry/dmimanagementdeviceentry.h \
@@ -170,6 +171,8 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobelocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmielectricalcurrentprobestatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmigroupassociationsitem.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmihardwaresecuritysettings.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmihardwaresecuritystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimanagementdeviceaddresstype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimanagementdevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmimemoryarraymappedaddressrange.h \
