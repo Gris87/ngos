@@ -17,9 +17,9 @@ typedef u8 dmi_out_of_band_remote_access_connection_flags;
 
 enum class DmiOutOfBandRemoteAccessConnectionFlag: dmi_out_of_band_remote_access_connection_flags
 {
-    NONE                               = 0,
-    INBOUND                            = (1ULL << 0),
-    OUTBOUND                           = (1ULL << 1)
+    NONE     = 0,
+    INBOUND  = (1ULL << 0),
+    OUTBOUND = (1ULL << 1)
 };
 
 DEFINE_FLAGS(DmiOutOfBandRemoteAccessConnectionFlags, dmi_out_of_band_remote_access_connection_flags); // TEST: NO

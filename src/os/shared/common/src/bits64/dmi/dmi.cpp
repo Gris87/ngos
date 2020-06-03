@@ -3813,7 +3813,6 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
     return NgosStatus::OK;
 }
 
-
 NgosStatus DMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
