@@ -326,6 +326,7 @@ src/os/bootloader_tools/devicemanager/assets/images/electrical_current_probe.png
 src/os/bootloader_tools/devicemanager/assets/images/expanded.png
 src/os/bootloader_tools/devicemanager/assets/images/expert.png
 src/os/bootloader_tools/devicemanager/assets/images/group_associations.png
+src/os/bootloader_tools/devicemanager/assets/images/hardware_security.png
 src/os/bootloader_tools/devicemanager/assets/images/inactive.png
 src/os/bootloader_tools/devicemanager/assets/images/management_device.png
 src/os/bootloader_tools/devicemanager/assets/images/management_device_component.png
