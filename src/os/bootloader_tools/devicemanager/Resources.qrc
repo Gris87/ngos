@@ -41,6 +41,7 @@
         <file>assets/images/onboard_sata.png</file>
         <file>assets/images/onboard_sound.png</file>
         <file>assets/images/onboard_video.png</file>
+        <file>assets/images/out_of_band_remote_access.png</file>
         <file>assets/images/physical_memory_array.png</file>
         <file>assets/images/port_audio.png</file>
         <file>assets/images/port_connector.png</file>
@@ -59,6 +60,7 @@
         <file>assets/images/system_boot.png</file>
         <file>assets/images/system_configuration.png</file>
         <file>assets/images/system_power_supply.png</file>
+        <file>assets/images/system_reset.png</file>
         <file>assets/images/system_slot_other.png</file>
         <file>assets/images/system_slot_pci.png</file>
         <file>assets/images/system_slot_pci_express.png</file>

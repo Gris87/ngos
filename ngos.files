@@ -342,6 +342,7 @@ src/os/bootloader_tools/devicemanager/assets/images/onboard_other.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_sata.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_sound.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_video.png
+src/os/bootloader_tools/devicemanager/assets/images/out_of_band_remote_access.png
 src/os/bootloader_tools/devicemanager/assets/images/physical_memory_array.png
 src/os/bootloader_tools/devicemanager/assets/images/port_audio.png
 src/os/bootloader_tools/devicemanager/assets/images/port_connector.png
@@ -360,6 +361,7 @@ src/os/bootloader_tools/devicemanager/assets/images/system.png
 src/os/bootloader_tools/devicemanager/assets/images/system_boot.png
 src/os/bootloader_tools/devicemanager/assets/images/system_configuration.png
 src/os/bootloader_tools/devicemanager/assets/images/system_power_supply.png
+src/os/bootloader_tools/devicemanager/assets/images/system_reset.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slot_other.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slot_pci.png
 src/os/bootloader_tools/devicemanager/assets/images/system_slot_pci_express.png
