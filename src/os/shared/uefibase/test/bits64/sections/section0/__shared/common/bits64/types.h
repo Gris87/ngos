@@ -245,284 +245,301 @@ TEST_CASES(section0, __shared_common_bits64_types);
 {
     TEST_CASE("Size of structures");
     {
-        TEST_ASSERT_EQUALS(sizeof(Adler),                                         1);
-        TEST_ASSERT_EQUALS(sizeof(AES),                                           64);
-        TEST_ASSERT_EQUALS(sizeof(AmdCpuModel),                                   1);
-        TEST_ASSERT_EQUALS(sizeof(ArrayList<u8>),                                 24);
-        TEST_ASSERT_EQUALS(sizeof(AssetEntry),                                    24);
-        TEST_ASSERT_EQUALS(sizeof(Assets),                                        1);
-        TEST_ASSERT_EQUALS(sizeof(Bmp),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(BmpColorMap),                                   4);
-        TEST_ASSERT_EQUALS(sizeof(BmpCompressionMethod),                          4);
-        TEST_ASSERT_EQUALS(sizeof(BmpHeader),                                     14);
-        TEST_ASSERT_EQUALS(sizeof(BmpInformationHeader),                          40);
-        TEST_ASSERT_EQUALS(sizeof(Button),                                        224);
-        TEST_ASSERT_EQUALS(sizeof(Console),                                       1);
-        TEST_ASSERT_EQUALS(sizeof(ConsoleWidget),                                 96);
-        TEST_ASSERT_EQUALS(sizeof(CPU),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(CpuFamily),                                     2);
-        TEST_ASSERT_EQUALS(sizeof(CpuVendor),                                     1);
-        TEST_ASSERT_EQUALS(sizeof(Crc),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                  96);
-        TEST_ASSERT_EQUALS(sizeof(DMI),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiAdditionalInformation),                      5);
-        TEST_ASSERT_EQUALS(sizeof(DmiAdditionalInformationEntry),                 5);
-        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardEntry),                             15);
-        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardFeatureFlag),                       1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardType),                              1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsBiosReservedFlag),        1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsFlag),                    8);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsSystemReservedFlag),      1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                  18);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV21),                               19);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV23),                               20);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV24),                               24);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV31),                               26);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSize),                        2);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSizeUnit),                    1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageEntry),                          22);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageFlag),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosRomSize),                                1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheAssociativity),                         1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheConfiguration),                         2);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntry),                                 15);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntryV21),                              19);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntryV31),                              27);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheErrorCorrectionType),                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheLocation),                              1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheOperationalMode),                       1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheSize),                                  2);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheSize2),                                 4);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheSizeGranularity),                       1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheSramTypeFlag),                          2);
-        TEST_ASSERT_EQUALS(sizeof(DmiCacheType),                                  1);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElement),                    3);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElementType),                1);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElementTypeSelect),          1);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntry),                               9);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV21),                            13);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV23),                            21);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV27),                            1);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisSecurityStatus),                      1);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisState),                               1);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisType),                                1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntry),                         14);
-        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntryV27),                      15);
-        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceStatus),                        1);
-        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceType),                          1);
-        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeEntry),                22);
-        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeLocation),             1);
-        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeStatus),               1);
-        TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),                                4);
-        TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                  1);
-        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsEntry),                     5);
-        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsItem),                      3);
-        TEST_ASSERT_EQUALS(sizeof(DmiIdentity),                                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceAddressType),                1);
-        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceComponentEntry),             11);
-        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceEntry),                      11);
-        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceThresholdDataEntry),         16);
-        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceType),                       1);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),              15);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntryV27),           31);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressRange),              4);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                               64);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceAttributes),                     1);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                          21);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV23),                       27);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV26),                       28);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV27),                       34);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV28),                       40);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV32),                       84);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV33),                       92);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceExtendedSize),                   4);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceFormFactor),                     1);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntry),             19);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntryV27),          35);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressRange),             4);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceOperatingModeCapabilityFlag),    2);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceSize),                           2);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceSizeGranularity),                1);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTechnology),                     1);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceType),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTypeDetailFlag),                 2);
-        TEST_ASSERT_EQUALS(sizeof(DmiOemStringsEntry),                            5);
-        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesDevice),                       2);
-        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesDeviceType),                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesEntry),                        4);
-        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedDeviceType),           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedEntry),                11);
-        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntry),                   15);
-        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntryV27),                23);
-        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayErrorCorrection),         1);
-        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayLocation),                1);
-        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayMaximumCapacity),         4);
-        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayUse),                     1);
-        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryDeviceChemistry),             1);
-        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryEntry),                       16);
-        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryEntryV22),                    26);
-        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryManufactureDate),             2);
-        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorEntry),                         9);
-        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorPortType),                      1);
-        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorType),                          1);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorCharacteristicsFlag),               2);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntry),                             26);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV21),                          32);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV23),                          35);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV25),                          40);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV26),                          42);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV30),                          48);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily),                            1);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily2),                           2);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFeatureFlag),                       4);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorId),                                8);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorSignature),                         4);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorStatus),                            1);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorType),                              1);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorUpgrade),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltage),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageFlag),                       1);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageModeType),                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),                                 1);
-        TEST_ASSERT_EQUALS(sizeof(DmiStringId),                                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemBootEntry),                            11);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemBootStatus),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemConfigurationEntry),                   5);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntry),                                8);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntryV21),                             25);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntryV24),                             27);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyCharacteristics),           2);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyEntry),                     22);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyInputVoltageRangeSwitch),   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyStatus),                    1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyType),                      1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsCharacteristicsFlag),             2);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsDataBusWidth),                    1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntry),                           13);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntryV26),                        17);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntryV32),                        19);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsLength),                          1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsPeerGroup),                       5);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsType),                            1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsUsage),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiSystemWakeUpType),                           1);
-        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeEntry),                      22);
-        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeLocation),                   1);
-        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeStatus),                     1);
-        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeEntry),                          22);
-        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeLocation),                       1);
-        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeStatus),                         1);
-        TEST_ASSERT_EQUALS(sizeof(FPU),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(FpuState),                                      4096);
-        TEST_ASSERT_EQUALS(sizeof(FSaveState),                                    112);
-        TEST_ASSERT_EQUALS(sizeof(FXSaveState),                                   512);
-        TEST_ASSERT_EQUALS(sizeof(GlyphData),                                     5);
-        TEST_ASSERT_EQUALS(sizeof(GraphicalConsole),                              1);
-        TEST_ASSERT_EQUALS(sizeof(Graphics),                                      1);
-        TEST_ASSERT_EQUALS(sizeof(GUI),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(Hex),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(HorizontalAlignment),                           1);
-        TEST_ASSERT_EQUALS(sizeof(Image),                                         32);
-        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                   96);
-        TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                              1);
-        TEST_ASSERT_EQUALS(sizeof(InflateCode),                                   4);
-        TEST_ASSERT_EQUALS(sizeof(InflateCodeType),                               1);
-        TEST_ASSERT_EQUALS(sizeof(InflateDecoder),                                40);
-        TEST_ASSERT_EQUALS(sizeof(IntelCpuModel),                                 1);
-        TEST_ASSERT_EQUALS(sizeof(Jpeg),                                          1);
-        TEST_ASSERT_EQUALS(sizeof(JpegComponent),                                 56);
-        TEST_ASSERT_EQUALS(sizeof(JpegComponentId),                               1);
-        TEST_ASSERT_EQUALS(sizeof(JpegDecoder),                                   808);
-        TEST_ASSERT_EQUALS(sizeof(JpegDefineHuffmanTableMarker),                  4);
-        TEST_ASSERT_EQUALS(sizeof(JpegDefineQuantizationTableMarker),             4);
-        TEST_ASSERT_EQUALS(sizeof(JpegDefineRestartIntervalMarker),               6);
-        TEST_ASSERT_EQUALS(sizeof(JpegHuffmanTable),                              17);
-        TEST_ASSERT_EQUALS(sizeof(JpegHuffmanTableType),                          1);
-        TEST_ASSERT_EQUALS(sizeof(JpegMarkerHeader),                              4);
-        TEST_ASSERT_EQUALS(sizeof(JpegMarkerType),                                1);
-        TEST_ASSERT_EQUALS(sizeof(JpegQuantizationTable),                         1);
-        TEST_ASSERT_EQUALS(sizeof(JpegStartOfFrameComponent),                     3);
-        TEST_ASSERT_EQUALS(sizeof(JpegStartOfFrameMarker),                        10);
-        TEST_ASSERT_EQUALS(sizeof(JpegStartOfScanComponent),                      2);
-        TEST_ASSERT_EQUALS(sizeof(JpegStartOfScanMarker),                         5);
-        TEST_ASSERT_EQUALS(sizeof(JpegVlcCode),                                   2);
-        TEST_ASSERT_EQUALS(sizeof(LabelWidget),                                   112);
-        TEST_ASSERT_EQUALS(sizeof(ListElement<u8>),                               24);
-        TEST_ASSERT_EQUALS(sizeof(List<u8>),                                      16);
-        TEST_ASSERT_EQUALS(sizeof(Map<u8, u32>),                                  24);
-        TEST_ASSERT_EQUALS(sizeof(MapElement<u8, u32>),                           8);
-        TEST_ASSERT_EQUALS(sizeof(MD5),                                           96);
-        TEST_ASSERT_EQUALS(sizeof(Md5Hash),                                       16);
-        TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                              16);
-        TEST_ASSERT_EQUALS(sizeof(MSR),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(NinePatch),                                     40);
-        TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                   104);
-        TEST_ASSERT_EQUALS(sizeof(Png),                                           1);
-        TEST_ASSERT_EQUALS(sizeof(PngChunk),                                      8);
-        TEST_ASSERT_EQUALS(sizeof(PngChunkType),                                  4);
-        TEST_ASSERT_EQUALS(sizeof(PngColorType),                                  1);
-        TEST_ASSERT_EQUALS(sizeof(PngCompressionMethod),                          1);
-        TEST_ASSERT_EQUALS(sizeof(PngDecoder),                                    112);
-        TEST_ASSERT_EQUALS(sizeof(PngEmbeddedIccProfile),                         80);
-        TEST_ASSERT_EQUALS(sizeof(PngFilterMethod),                               1);
-        TEST_ASSERT_EQUALS(sizeof(PngFilterType),                                 1);
-        TEST_ASSERT_EQUALS(sizeof(PngHeader),                                     16);
-        TEST_ASSERT_EQUALS(sizeof(PngImageGamma),                                 4);
-        TEST_ASSERT_EQUALS(sizeof(PngImageHeader),                                13);
-        TEST_ASSERT_EQUALS(sizeof(PngImageLastModificationTime),                  7);
-        TEST_ASSERT_EQUALS(sizeof(PngInterlaceMethod),                            1);
-        TEST_ASSERT_EQUALS(sizeof(PngPhysicalPixelDimensions),                    9);
-        TEST_ASSERT_EQUALS(sizeof(PngPrimaryChromaticities),                      32);
-        TEST_ASSERT_EQUALS(sizeof(PngRenderingIntent),                            1);
-        TEST_ASSERT_EQUALS(sizeof(PngSignificantBits),                            4);
-        TEST_ASSERT_EQUALS(sizeof(PngStandardRgbColorSpace),                      1);
-        TEST_ASSERT_EQUALS(sizeof(PngUnitSpecifier),                              1);
-        TEST_ASSERT_EQUALS(sizeof(PressEventHandler),                             8);
-        TEST_ASSERT_EQUALS(sizeof(Register128Bit),                                16);
-        TEST_ASSERT_EQUALS(sizeof(Register256Bit),                                32);
-        TEST_ASSERT_EQUALS(sizeof(Register512Bit),                                64);
-        TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                     4);
-        TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                      3);
-        TEST_ASSERT_EQUALS(sizeof(RootWidget),                                    104);
-        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                  144);
-        TEST_ASSERT_EQUALS(sizeof(Serial),                                        1);
-        TEST_ASSERT_EQUALS(sizeof(StretchRange),                                  4);
-        TEST_ASSERT_EQUALS(sizeof(TabButton),                                     304);
-        TEST_ASSERT_EQUALS(sizeof(TableCellWidget),                               88);
-        TEST_ASSERT_EQUALS(sizeof(TableHeaderWidget),                             104);
-        TEST_ASSERT_EQUALS(sizeof(TableRowWidget),                                120);
-        TEST_ASSERT_EQUALS(sizeof(TableWidget),                                   240);
-        TEST_ASSERT_EQUALS(sizeof(TabPageWidget),                                 88);
-        TEST_ASSERT_EQUALS(sizeof(TabWidget),                                     152);
-        TEST_ASSERT_EQUALS(sizeof(Time),                                          1);
-        TEST_ASSERT_EQUALS(sizeof(ToolButton),                                    192);
-        TEST_ASSERT_EQUALS(sizeof(TreeNodeWidget),                                216);
-        TEST_ASSERT_EQUALS(sizeof(TreeWidget),                                    176);
-        TEST_ASSERT_EQUALS(sizeof(VerticalAlignment),                             1);
-        TEST_ASSERT_EQUALS(sizeof(Widget),                                        88);
-        TEST_ASSERT_EQUALS(sizeof(WidgetState),                                   1);
-        TEST_ASSERT_EQUALS(sizeof(WrapperWidget),                                 88);
-        TEST_ASSERT_EQUALS(sizeof(X86Bug),                                        2);
-        TEST_ASSERT_EQUALS(sizeof(x86BugWord),                                    1);
-        TEST_ASSERT_EQUALS(sizeof(X86Feature),                                    2);
-        TEST_ASSERT_EQUALS(sizeof(x86FeatureWord),                                1);
-        TEST_ASSERT_EQUALS(sizeof(XFeature),                                      1);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512OpmaskState),                     64);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom0To15State),               512);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom16To31State),              1024);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureAvxState),                              256);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureFlag),                                  4);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureMpxBoundConfigAndStatusRegistersState), 64);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureMpxBoundRegistersState),                64);
-        TEST_ASSERT_EQUALS(sizeof(XFeaturePkruState),                             8);
-        TEST_ASSERT_EQUALS(sizeof(XFeatureTypeFlag),                              8);
-        TEST_ASSERT_EQUALS(sizeof(XSaveState),                                    576);
-        TEST_ASSERT_EQUALS(sizeof(XStateHeader),                                  64);
-        TEST_ASSERT_EQUALS(sizeof(ZLib),                                          1);
-        TEST_ASSERT_EQUALS(sizeof(ZLibCompressionInfo),                           1);
-        TEST_ASSERT_EQUALS(sizeof(ZLibCompressionLevel),                          1);
-        TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                         1);
-        TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                    2);
+        TEST_ASSERT_EQUALS(sizeof(Adler),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(AES),                                             64);
+        TEST_ASSERT_EQUALS(sizeof(AmdCpuModel),                                     1);
+        TEST_ASSERT_EQUALS(sizeof(ArrayList<u8>),                                   24);
+        TEST_ASSERT_EQUALS(sizeof(AssetEntry),                                      24);
+        TEST_ASSERT_EQUALS(sizeof(Assets),                                          1);
+        TEST_ASSERT_EQUALS(sizeof(Bmp),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(BmpColorMap),                                     4);
+        TEST_ASSERT_EQUALS(sizeof(BmpCompressionMethod),                            4);
+        TEST_ASSERT_EQUALS(sizeof(BmpHeader),                                       14);
+        TEST_ASSERT_EQUALS(sizeof(BmpInformationHeader),                            40);
+        TEST_ASSERT_EQUALS(sizeof(Button),                                          224);
+        TEST_ASSERT_EQUALS(sizeof(Console),                                         1);
+        TEST_ASSERT_EQUALS(sizeof(ConsoleWidget),                                   96);
+        TEST_ASSERT_EQUALS(sizeof(CPU),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(CpuFamily),                                       2);
+        TEST_ASSERT_EQUALS(sizeof(CpuVendor),                                       1);
+        TEST_ASSERT_EQUALS(sizeof(Crc),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(CursorWidget),                                    96);
+        TEST_ASSERT_EQUALS(sizeof(DMI),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiAdditionalInformation),                        5);
+        TEST_ASSERT_EQUALS(sizeof(DmiAdditionalInformationEntry),                   5);
+        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardEntry),                               15);
+        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardFeatureFlag),                         1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBaseboardType),                                1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsBiosReservedFlag),          1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsFlag),                      8);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosCharacteristicsSystemReservedFlag),        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntry),                                    18);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV21),                                 19);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV23),                                 20);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV24),                                 24);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV31),                                 26);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSize),                          2);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSizeUnit),                      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageEntry),                            22);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageFlag),                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosRomSize),                                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits32MemoryErrorInformationEntry),            23);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits32MemoryErrorInformationErrorGranularity), 1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits32MemoryErrorInformationErrorOperation),   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits32MemoryErrorInformationErrorType),        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits64MemoryErrorInformationEntry),            31);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits64MemoryErrorInformationErrorGranularity), 1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits64MemoryErrorInformationErrorOperation),   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBits64MemoryErrorInformationErrorType),        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheAssociativity),                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheConfiguration),                           2);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntry),                                   15);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntryV21),                                19);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheEntryV31),                                27);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheErrorCorrectionType),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheLocation),                                1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheOperationalMode),                         1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSize),                                    2);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSize2),                                   4);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSizeGranularity),                         1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheSramTypeFlag),                            2);
+        TEST_ASSERT_EQUALS(sizeof(DmiCacheType),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElement),                      3);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElementType),                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisContainedElementTypeSelect),            1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntry),                                 9);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV21),                              13);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV23),                              21);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisEntryV27),                              1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisSecurityStatus),                        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisState),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisType),                                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntry),                           14);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntryV27),                        15);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceStatus),                          1);
+        TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceType),                            1);
+        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeEntry),                  22);
+        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeLocation),               1);
+        TEST_ASSERT_EQUALS(sizeof(DmiElectricalCurrentProbeStatus),                 1);
+        TEST_ASSERT_EQUALS(sizeof(DmiEntryHeader),                                  4);
+        TEST_ASSERT_EQUALS(sizeof(DmiEntryType),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsEntry),                       5);
+        TEST_ASSERT_EQUALS(sizeof(DmiGroupAssociationsItem),                        3);
+        TEST_ASSERT_EQUALS(sizeof(DmiHardwareSecurityEntry),                        5);
+        TEST_ASSERT_EQUALS(sizeof(DmiHardwareSecuritySettings),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiHardwareSecurityStatus),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiIdentity),                                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiInactiveEntry),                                4);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceAddressType),                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceComponentEntry),               11);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceEntry),                        11);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceThresholdDataEntry),           16);
+        TEST_ASSERT_EQUALS(sizeof(DmiManagementDeviceType),                         1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntry),                15);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressEntryV27),             31);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryArrayMappedAddressRange),                4);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDevice),                                 64);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceAttributes),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntry),                            21);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV23),                         27);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV26),                         28);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV27),                         34);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV28),                         40);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV32),                         84);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceEntryV33),                         92);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceExtendedSize),                     4);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceFormFactor),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntry),               19);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressEntryV27),            35);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceMappedAddressRange),               4);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceOperatingModeCapabilityFlag),      2);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceSize),                             2);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceSizeGranularity),                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTechnology),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceType),                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiMemoryDeviceTypeDetailFlag),                   2);
+        TEST_ASSERT_EQUALS(sizeof(DmiOemStringsEntry),                              5);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesDevice),                         2);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesDeviceType),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesEntry),                          4);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedDeviceType),             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiOnboardDevicesExtendedEntry),                  11);
+        TEST_ASSERT_EQUALS(sizeof(DmiOutOfBandRemoteAccessConnectionFlag),          1);
+        TEST_ASSERT_EQUALS(sizeof(DmiOutOfBandRemoteAccessEntry),                   6);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntry),                     15);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayEntryV27),                  23);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayErrorCorrection),           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayLocation),                  1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayMaximumCapacity),           4);
+        TEST_ASSERT_EQUALS(sizeof(DmiPhysicalMemoryArrayUse),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryDeviceChemistry),               1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryEntry),                         16);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryEntryV22),                      26);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortableBatteryManufactureDate),               2);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorEntry),                           9);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorPortType),                        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiPortConnectorType),                            1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorCharacteristicsFlag),                 2);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntry),                               26);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV21),                            32);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV23),                            35);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV25),                            40);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV26),                            42);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorEntryV30),                            48);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily),                              1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily2),                             2);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorFeatureFlag),                         4);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorId),                                  8);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorSignature),                           4);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorStatus),                              1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorType),                                1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorUpgrade),                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltage),                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageFlag),                         1);
+        TEST_ASSERT_EQUALS(sizeof(DmiProcessorVoltageModeType),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiStoredUuid),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(DmiStringId),                                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemBootEntry),                              11);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemBootStatus),                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemConfigurationEntry),                     5);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntry),                                  8);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntryV21),                               25);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemEntryV24),                               27);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyCharacteristics),             2);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyEntry),                       22);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyInputVoltageRangeSwitch),     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyStatus),                      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemPowerSupplyType),                        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemResetBootOption),                        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemResetCapabilities),                      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemResetEntry),                             13);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsCharacteristicsFlag),               2);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsDataBusWidth),                      1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntry),                             13);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntryV26),                          17);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsEntryV32),                          19);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsLength),                            1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsPeerGroup),                         5);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsType),                              1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemSlotsUsage),                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiSystemWakeUpType),                             1);
+        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeEntry),                        22);
+        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeLocation),                     1);
+        TEST_ASSERT_EQUALS(sizeof(DmiTemperatureProbeStatus),                       1);
+        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeEntry),                            22);
+        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeLocation),                         1);
+        TEST_ASSERT_EQUALS(sizeof(DmiVoltageProbeStatus),                           1);
+        TEST_ASSERT_EQUALS(sizeof(FPU),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(FpuState),                                        4096);
+        TEST_ASSERT_EQUALS(sizeof(FSaveState),                                      112);
+        TEST_ASSERT_EQUALS(sizeof(FXSaveState),                                     512);
+        TEST_ASSERT_EQUALS(sizeof(GlyphData),                                       5);
+        TEST_ASSERT_EQUALS(sizeof(GraphicalConsole),                                1);
+        TEST_ASSERT_EQUALS(sizeof(Graphics),                                        1);
+        TEST_ASSERT_EQUALS(sizeof(GUI),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(Hex),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(HorizontalAlignment),                             1);
+        TEST_ASSERT_EQUALS(sizeof(Image),                                           32);
+        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                     96);
+        TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                                1);
+        TEST_ASSERT_EQUALS(sizeof(InflateCode),                                     4);
+        TEST_ASSERT_EQUALS(sizeof(InflateCodeType),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(InflateDecoder),                                  40);
+        TEST_ASSERT_EQUALS(sizeof(IntelCpuModel),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(Jpeg),                                            1);
+        TEST_ASSERT_EQUALS(sizeof(JpegComponent),                                   56);
+        TEST_ASSERT_EQUALS(sizeof(JpegComponentId),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(JpegDecoder),                                     808);
+        TEST_ASSERT_EQUALS(sizeof(JpegDefineHuffmanTableMarker),                    4);
+        TEST_ASSERT_EQUALS(sizeof(JpegDefineQuantizationTableMarker),               4);
+        TEST_ASSERT_EQUALS(sizeof(JpegDefineRestartIntervalMarker),                 6);
+        TEST_ASSERT_EQUALS(sizeof(JpegHuffmanTable),                                17);
+        TEST_ASSERT_EQUALS(sizeof(JpegHuffmanTableType),                            1);
+        TEST_ASSERT_EQUALS(sizeof(JpegMarkerHeader),                                4);
+        TEST_ASSERT_EQUALS(sizeof(JpegMarkerType),                                  1);
+        TEST_ASSERT_EQUALS(sizeof(JpegQuantizationTable),                           1);
+        TEST_ASSERT_EQUALS(sizeof(JpegStartOfFrameComponent),                       3);
+        TEST_ASSERT_EQUALS(sizeof(JpegStartOfFrameMarker),                          10);
+        TEST_ASSERT_EQUALS(sizeof(JpegStartOfScanComponent),                        2);
+        TEST_ASSERT_EQUALS(sizeof(JpegStartOfScanMarker),                           5);
+        TEST_ASSERT_EQUALS(sizeof(JpegVlcCode),                                     2);
+        TEST_ASSERT_EQUALS(sizeof(LabelWidget),                                     112);
+        TEST_ASSERT_EQUALS(sizeof(ListElement<u8>),                                 24);
+        TEST_ASSERT_EQUALS(sizeof(List<u8>),                                        16);
+        TEST_ASSERT_EQUALS(sizeof(MapElement<u8, u32>),                             8);
+        TEST_ASSERT_EQUALS(sizeof(Map<u8, u32>),                                    24);
+        TEST_ASSERT_EQUALS(sizeof(MD5),                                             96);
+        TEST_ASSERT_EQUALS(sizeof(Md5Hash),                                         16);
+        TEST_ASSERT_EQUALS(sizeof(MpxBoundRegister),                                16);
+        TEST_ASSERT_EQUALS(sizeof(MSR),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
+        TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
+        TEST_ASSERT_EQUALS(sizeof(Png),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(PngChunk),                                        8);
+        TEST_ASSERT_EQUALS(sizeof(PngChunkType),                                    4);
+        TEST_ASSERT_EQUALS(sizeof(PngColorType),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PngCompressionMethod),                            1);
+        TEST_ASSERT_EQUALS(sizeof(PngDecoder),                                      112);
+        TEST_ASSERT_EQUALS(sizeof(PngEmbeddedIccProfile),                           80);
+        TEST_ASSERT_EQUALS(sizeof(PngFilterMethod),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(PngFilterType),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PngHeader),                                       16);
+        TEST_ASSERT_EQUALS(sizeof(PngImageGamma),                                   4);
+        TEST_ASSERT_EQUALS(sizeof(PngImageHeader),                                  13);
+        TEST_ASSERT_EQUALS(sizeof(PngImageLastModificationTime),                    7);
+        TEST_ASSERT_EQUALS(sizeof(PngInterlaceMethod),                              1);
+        TEST_ASSERT_EQUALS(sizeof(PngPhysicalPixelDimensions),                      9);
+        TEST_ASSERT_EQUALS(sizeof(PngPrimaryChromaticities),                        32);
+        TEST_ASSERT_EQUALS(sizeof(PngRenderingIntent),                              1);
+        TEST_ASSERT_EQUALS(sizeof(PngSignificantBits),                              4);
+        TEST_ASSERT_EQUALS(sizeof(PngStandardRgbColorSpace),                        1);
+        TEST_ASSERT_EQUALS(sizeof(PngUnitSpecifier),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PressEventHandler),                               8);
+        TEST_ASSERT_EQUALS(sizeof(Register128Bit),                                  16);
+        TEST_ASSERT_EQUALS(sizeof(Register256Bit),                                  32);
+        TEST_ASSERT_EQUALS(sizeof(Register512Bit),                                  64);
+        TEST_ASSERT_EQUALS(sizeof(RgbaPixel),                                       4);
+        TEST_ASSERT_EQUALS(sizeof(RgbPixel),                                        3);
+        TEST_ASSERT_EQUALS(sizeof(RootWidget),                                      104);
+        TEST_ASSERT_EQUALS(sizeof(ScreenWidget),                                    144);
+        TEST_ASSERT_EQUALS(sizeof(Serial),                                          1);
+        TEST_ASSERT_EQUALS(sizeof(StretchRange),                                    4);
+        TEST_ASSERT_EQUALS(sizeof(TabButton),                                       304);
+        TEST_ASSERT_EQUALS(sizeof(TableCellWidget),                                 88);
+        TEST_ASSERT_EQUALS(sizeof(TableHeaderWidget),                               104);
+        TEST_ASSERT_EQUALS(sizeof(TableRowWidget),                                  120);
+        TEST_ASSERT_EQUALS(sizeof(TableWidget),                                     240);
+        TEST_ASSERT_EQUALS(sizeof(TabPageWidget),                                   88);
+        TEST_ASSERT_EQUALS(sizeof(TabWidget),                                       152);
+        TEST_ASSERT_EQUALS(sizeof(Time),                                            1);
+        TEST_ASSERT_EQUALS(sizeof(ToolButton),                                      192);
+        TEST_ASSERT_EQUALS(sizeof(TreeNodeWidget),                                  216);
+        TEST_ASSERT_EQUALS(sizeof(TreeWidget),                                      176);
+        TEST_ASSERT_EQUALS(sizeof(VerticalAlignment),                               1);
+        TEST_ASSERT_EQUALS(sizeof(Widget),                                          88);
+        TEST_ASSERT_EQUALS(sizeof(WidgetState),                                     1);
+        TEST_ASSERT_EQUALS(sizeof(WrapperWidget),                                   88);
+        TEST_ASSERT_EQUALS(sizeof(X86Bug),                                          2);
+        TEST_ASSERT_EQUALS(sizeof(x86BugWord),                                      1);
+        TEST_ASSERT_EQUALS(sizeof(X86Feature),                                      2);
+        TEST_ASSERT_EQUALS(sizeof(x86FeatureWord),                                  1);
+        TEST_ASSERT_EQUALS(sizeof(XFeature),                                        1);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512OpmaskState),                       64);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom0To15State),                 512);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvx512ZmmFrom16To31State),                1024);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureAvxState),                                256);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureFlag),                                    4);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureMpxBoundConfigAndStatusRegistersState),   64);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureMpxBoundRegistersState),                  64);
+        TEST_ASSERT_EQUALS(sizeof(XFeaturePkruState),                               8);
+        TEST_ASSERT_EQUALS(sizeof(XFeatureTypeFlag),                                8);
+        TEST_ASSERT_EQUALS(sizeof(XSaveState),                                      576);
+        TEST_ASSERT_EQUALS(sizeof(XStateHeader),                                    64);
+        TEST_ASSERT_EQUALS(sizeof(ZLib),                                            1);
+        TEST_ASSERT_EQUALS(sizeof(ZLibCompressionInfo),                             1);
+        TEST_ASSERT_EQUALS(sizeof(ZLibCompressionLevel),                            1);
+        TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                           1);
+        TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                      2);
     }
     TEST_CASE_END();
 
@@ -840,6 +857,54 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.status = 1;                    // ||  001  |  01000  ||
 
         TEST_ASSERT_EQUALS(temp.locationAndStatus, 0x28);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiHardwareSecuritySettings");
+    {
+        DmiHardwareSecuritySettings temp;
+
+
+
+        //  DmiHardwareSecuritySettings - value8:
+        // ================================================================================================================================
+        // |  powerOnPasswordStatus : 2  |  keyboardPasswordStatus : 2  |  administratorPasswordStatus : 2  |  frontPanelResetStatus : 2  |
+        // ================================================================================================================================
+
+
+
+        temp.value8 = 0x1B;                     // ||  00  |  01  |  10  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.frontPanelResetStatus,       3);
+        TEST_ASSERT_EQUALS(temp.administratorPasswordStatus, 2);
+        TEST_ASSERT_EQUALS(temp.keyboardPasswordStatus,      1);
+        TEST_ASSERT_EQUALS(temp.powerOnPasswordStatus,       0);
+
+
+
+        temp.frontPanelResetStatus = 2;         // ||  00  |  01  |  10  |  10  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x1A);
+
+
+
+        temp.administratorPasswordStatus = 1;   // ||  00  |  01  |  01  |  10  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x16);
+
+
+
+        temp.keyboardPasswordStatus = 0;        // ||  00  |  00  |  01  |  10  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x06);
+
+
+
+        temp.powerOnPasswordStatus = 1;         // ||  01  |  00  |  01  |  10  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x46);
     }
     TEST_CASE_END();
 
@@ -1316,6 +1381,61 @@ TEST_CASES(section0, __shared_common_bits64_types);
         temp.__reserved = 1;                // ||  01  |  1000  |  010  |  1000  |  1  |  0  |  1  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6145);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("DmiSystemResetCapabilities");
+    {
+        DmiSystemResetCapabilities temp;
+
+
+
+        //  DmiSystemResetCapabilities - value8:
+        // =========================================================================================================
+        // |  __reserved : 2  |  watchdogEnabled : 1  |  bootOptionOnLimit : 2  |  bootOption : 2  |  enabled : 1  |
+        // =========================================================================================================
+
+
+
+        temp.value8 = 0x5D;             // ||  01  |  0  |  11  |  10  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.enabled,           1);
+        TEST_ASSERT_EQUALS(temp.bootOption,        2);
+        TEST_ASSERT_EQUALS(temp.bootOptionOnLimit, 3);
+        TEST_ASSERT_EQUALS(temp.watchdogEnabled,   0);
+        TEST_ASSERT_EQUALS(temp.__reserved,        1);
+
+
+
+        temp.enabled = 0;               // ||  01  |  0  |  11  |  10  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x5C);
+
+
+
+        temp.bootOption = 1;            // ||  01  |  0  |  11  |  01  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x5A);
+
+
+
+        temp.bootOptionOnLimit = 0;     // ||  01  |  0  |  00  |  01  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x42);
+
+
+
+        temp.watchdogEnabled = 1;       // ||  01  |  1  |  00  |  01  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x62);
+
+
+
+        temp.__reserved = 3;            // ||  11  |  1  |  00  |  01  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xE2);
     }
     TEST_CASE_END();
 
