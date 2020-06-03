@@ -846,6 +846,7 @@ src/os/shared/common/src/bits64/dmi/entry/dmimemorydevicemappedaddressentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmioemstringsentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmionboarddevicesentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmioutofbandremoteaccessentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiportablebatteryentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmiportconnectorentry.h
@@ -854,6 +855,7 @@ src/os/shared/common/src/bits64/dmi/entry/dmisystembootentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystemconfigurationentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystementry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystempowersupplyentry.h
+src/os/shared/common/src/bits64/dmi/entry/dmisystemresetentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmisystemslotsentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmitemperatureprobeentry.h
 src/os/shared/common/src/bits64/dmi/entry/dmivoltageprobeentry.h
@@ -910,6 +912,7 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmimemorydevicetypedetailflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmioutofbandremoteaccessconnectionflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h
@@ -935,6 +938,8 @@ src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplycharacteristic
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplystatus.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystempowersupplytype.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemresetbootoption.h
+src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemresetcapabilities.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h
 src/os/shared/common/src/bits64/dmi/entry/lib/dmisystemslotslength.h

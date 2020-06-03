@@ -93,6 +93,7 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/onboard_sata.png",                      // DeviceManagerImage::ONBOARD_SATA
     "images/onboard_sound.png",                     // DeviceManagerImage::ONBOARD_SOUND
     "images/onboard_video.png",                     // DeviceManagerImage::ONBOARD_VIDEO
+    "images/out_of_band_remote_access.png",         // DeviceManagerImage::OUT_OF_BAND_REMOTE_ACCESS
     "images/physical_memory_array.png",             // DeviceManagerImage::PHYSICAL_MEMORY_ARRAY
     "images/port_audio.png",                        // DeviceManagerImage::PORT_AUDIO
     "images/port_connector.png",                    // DeviceManagerImage::PORT_CONNECTOR
@@ -109,6 +110,7 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/system_boot.png",                       // DeviceManagerImage::SYSTEM_BOOT
     "images/system_configuration.png",              // DeviceManagerImage::SYSTEM_CONFIGURATION
     "images/system_power_supply.png",               // DeviceManagerImage::SYSTEM_POWER_SUPPLY
+    "images/system_reset.png",                      // DeviceManagerImage::SYSTEM_RESET
     "images/system_slot_other.png",                 // DeviceManagerImage::SYSTEM_SLOT_OTHER
     "images/system_slot_pci.png",                   // DeviceManagerImage::SYSTEM_SLOT_PCI
     "images/system_slot_pci_express.png",           // DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS

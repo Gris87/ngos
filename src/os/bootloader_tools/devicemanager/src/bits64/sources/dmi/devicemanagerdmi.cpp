@@ -97,10 +97,12 @@ NgosStatus DeviceManagerDMI::decodeDmiEntry(DmiEntryHeader *header)
         case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      UEFI_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header),           NgosStatus::ASSERTION); break;
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     UEFI_ASSERT_EXECUTION(saveDmiMemoryDeviceMappedAddressEntry((DmiMemoryDeviceMappedAddressEntry *)header),         NgosStatus::ASSERTION); break;
         case DmiEntryType::PORTABLE_BATTERY:                 UEFI_ASSERT_EXECUTION(saveDmiPortableBatteryEntry((DmiPortableBatteryEntry *)header),                             NgosStatus::ASSERTION); break;
+        case DmiEntryType::SYSTEM_RESET:                     UEFI_ASSERT_EXECUTION(saveDmiSystemResetEntry((DmiSystemResetEntry *)header),                                     NgosStatus::ASSERTION); break;
         case DmiEntryType::VOLTAGE_PROBE:                    UEFI_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
         case DmiEntryType::COOLING_DEVICE:                   UEFI_ASSERT_EXECUTION(saveDmiCoolingDeviceEntry((DmiCoolingDeviceEntry *)header),                                 NgosStatus::ASSERTION); break;
         case DmiEntryType::TEMPERATURE_PROBE:                UEFI_ASSERT_EXECUTION(saveDmiTemperatureProbeEntry((DmiTemperatureProbeEntry *)header),                           NgosStatus::ASSERTION); break;
         case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         UEFI_ASSERT_EXECUTION(saveDmiElectricalCurrentProbeEntry((DmiElectricalCurrentProbeEntry *)header),               NgosStatus::ASSERTION); break;
+        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:        UEFI_ASSERT_EXECUTION(saveDmiOutOfBandRemoteAccessEntry((DmiOutOfBandRemoteAccessEntry *)header),                 NgosStatus::ASSERTION); break;
         case DmiEntryType::SYSTEM_BOOT:                      UEFI_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                                       NgosStatus::ASSERTION); break;
         case DmiEntryType::BITS64_MEMORY_ERROR:              UEFI_ASSERT_EXECUTION(saveDmiBits64MemoryErrorInformationEntry((DmiBits64MemoryErrorInformationEntry *)header),   NgosStatus::ASSERTION); break;
         case DmiEntryType::MANAGEMENT_DEVICE:                UEFI_ASSERT_EXECUTION(saveDmiManagementDeviceEntry((DmiManagementDeviceEntry *)header),                           NgosStatus::ASSERTION); break;
@@ -3396,19 +3398,19 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entr
 
         // Check variables
         {
-            // UEFI_TEST_ASSERT(entry->memoryArrayHandle         == 0x1000,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            UEFI_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION);
-            // UEFI_TEST_ASSERT(entry->totalWidth                == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->dataWidth                 == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->size.value                == 1024,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->size.granularity          == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->size.value16              == 0x0400,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->formFactor                == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION); // Commented due to value variation
-            UEFI_TEST_ASSERT(entry->deviceSet                    == 0,                                           NgosStatus::ASSERTION);
-            UEFI_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION);
-            // UEFI_TEST_ASSERT(entry->bankLocator.id            == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->memoryType                == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->typeDetail                == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->totalWidth                   == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->dataWidth                    == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->size.value                   == 1024,                                        NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->size.granularity             == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->size.value16                 == 0x0400,                                      NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->deviceSet                       == 0,                                           NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->bankLocator.id               == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->typeDetail                   == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION); // Commented due to value variation
 
             if (entryV23)
             {
@@ -4813,6 +4815,145 @@ NgosStatus DeviceManagerDMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry
     return NgosStatus::OK;
 }
 
+NgosStatus DeviceManagerDMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
+{
+    UEFI_LT((" | entry = 0x%p", entry));
+
+    UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(entry);
+
+
+
+    // Validation
+    {
+        // Output variables
+        {
+            UEFI_LVVV(("entry->capabilities.enabled           = %s",     boolToString(entry->capabilities.enabled)));
+            UEFI_LVVV(("entry->capabilities.bootOption        = %s",     enumToFullString((DmiSystemResetBootOption)entry->capabilities.bootOption)));
+            UEFI_LVVV(("entry->capabilities.bootOptionOnLimit = %s",     enumToFullString((DmiSystemResetBootOption)entry->capabilities.bootOptionOnLimit)));
+            UEFI_LVVV(("entry->capabilities.watchdogEnabled   = %s",     boolToString(entry->capabilities.watchdogEnabled)));
+            UEFI_LVVV(("entry->capabilities.value8            = 0x%02X", entry->capabilities.value8));
+            UEFI_LVVV(("entry->resetCount                     = %u",     entry->resetCount));
+            UEFI_LVVV(("entry->resetLimit                     = %u",     entry->resetLimit));
+            UEFI_LVVV(("entry->timerInterval                  = %u",     entry->timerInterval));
+            UEFI_LVVV(("entry->timeout                        = %u",     entry->timeout));
+        }
+
+
+
+        // Check variables
+        {
+            // UEFI_TEST_ASSERT(entry->capabilities.enabled           == 1,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.bootOption        == DmiSystemResetBootOption::OPERATION_SYSTEM, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.bootOptionOnLimit == DmiSystemResetBootOption::OPERATION_SYSTEM, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.watchdogEnabled   == 1,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.value8            == 0x00,                                       NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->resetCount                     == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->resetLimit                     == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->timerInterval                  == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->timeout                        == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
+
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemResetEntry), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+
+
+
+    const char8 *resetCount;
+    const char8 *resetLimit;
+    const char8 *timerInterval;
+    const char8 *timeout;
+
+    // Get other strings
+    {
+        // Get string for Reset count
+        {
+            if (entry->resetCount == DMI_SYSTEM_RESET_RESET_COUNT_UNKNOWN)
+            {
+                resetCount = "Unknown";
+            }
+            else
+            {
+                resetCount = mprintf("%u", entry->resetCount);
+            }
+        }
+
+
+
+        // Get string for Reset limit
+        {
+            if (entry->resetLimit == DMI_SYSTEM_RESET_RESET_LIMIT_UNKNOWN)
+            {
+                resetLimit = "Unknown";
+            }
+            else
+            {
+                resetLimit = mprintf("%u", entry->resetLimit);
+            }
+        }
+
+
+
+        // Get string for Timer interval
+        {
+            if (entry->timerInterval == DMI_SYSTEM_RESET_TIMER_INTERVAL_UNKNOWN)
+            {
+                timerInterval = "Unknown";
+            }
+            else
+            {
+                timerInterval = mprintf("%u minute(s)", entry->timerInterval);
+            }
+        }
+
+
+
+        // Get string for Timeout
+        {
+            if (entry->timeout == DMI_SYSTEM_RESET_TIMEOUT_UNKNOWN)
+            {
+                timeout = "Unknown";
+            }
+            else
+            {
+                timeout = mprintf("%u minute(s)", entry->timeout);
+            }
+        }
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",           strdup(enumToFullString(entry->header.type)),                                              DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",               mprintf("0x%04X", entry->header.handle),                                                   DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Enabled",              entry->capabilities.enabled ? "Yes" : "No",                                                DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot option",          strdup(enumToFullString((DmiSystemResetBootOption)entry->capabilities.bootOption)),        DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Boot option on limit", strdup(enumToFullString((DmiSystemResetBootOption)entry->capabilities.bootOptionOnLimit)), DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Watchdog enabled",     entry->capabilities.watchdogEnabled ? "Yes" : "No",                                        DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Reset count",          resetCount,                                                                                DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Reset limit",          resetLimit,                                                                                DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Timer interval",       timerInterval,                                                                             DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Timeout",              timeout,                                                                                   DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus DeviceManagerDMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 {
     UEFI_LT((" | entry = 0x%p", entry));
@@ -5695,6 +5836,112 @@ NgosStatus DeviceManagerDMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCur
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Accuracy",      accuracy,                                                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("OEM defined",   mprintf("0x%08X", entry->oemDefined),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Nominal value", nominalValue,                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerDMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry *entry)
+{
+    UEFI_LT((" | entry = 0x%p", entry));
+
+    UEFI_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        // Output variables
+        {
+            UEFI_LVVV(("entry->manufacturerName.id = %u", entry->manufacturerName.id));
+            UEFI_LVVV(("entry->connections         = %s", flagsToFullString(entry->connections)));
+        }
+
+
+
+        // Check variables
+        {
+            UEFI_TEST_ASSERT(entry->manufacturerName.id == 1,                                                                                                        NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->connections      == FLAGS(DmiOutOfBandRemoteAccessConnectionFlag::INBOUND, DmiOutOfBandRemoteAccessConnectionFlag::OUTBOUND), NgosStatus::ASSERTION); // Commented due to value variation
+
+            UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiOutOfBandRemoteAccessEntry), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    const char8 *manufacturerName = "N/A";
+
+    // Get strings
+    {
+        if (entry->manufacturerName.id)
+        {
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
+
+            AVOID_UNUSED(begin);
+
+            UEFI_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
+            do
+            {
+                if (cur[0] == 0)
+                {
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId.id, begin));
+
+
+
+                    if (stringId == entry->manufacturerName)
+                    {
+                        manufacturerName = begin;
+                    }
+
+
+
+                    if (cur[1] == 0)
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
+                }
+
+
+
+                ++cur;
+            } while(true);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    // Add Device Manager entry
+    {
+        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",        strdup(enumToFullString(entry->header.type)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",            mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer name", manufacturerName,                             DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Connections", entry->connections, "0x%02X", DmiOutOfBandRemoteAccessConnectionFlag, DeviceManagerMode::BASIC);
+
+
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
     }
@@ -6916,20 +7163,64 @@ NgosStatus DeviceManagerDMI::saveDmiInactiveEntry(DmiInactiveEntry *entry)
 
 
 
-    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
+    DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
 
     // Add Device Manager entry
     {
-        DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), enumToHumanString(entry->header.type));
-
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type", strdup(enumToFullString(entry->header.type)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",     mprintf("0x%04X", entry->header.handle),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("No data",    "",                                           DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    // Get strings
+    {
+        if (
+            ((u8 *)entry)[entry->header.length]     != 0
+            ||
+            ((u8 *)entry)[entry->header.length + 1] != 0
+           )
+        {
+            char8 *cur   = (char8 *)entry + entry->header.length;
+            char8 *begin = cur;
+
+            AVOID_UNUSED(begin);
+
+            UEFI_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
+
+
+
+            DmiStringId stringId;
+
+            do
+            {
+                if (cur[0] == 0)
+                {
+                    ++stringId;
+                    UEFI_LVVV(("String #%u: %s", stringId.id, begin));
+
+
+
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("String #%u", stringId.id), begin, DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+
+                    if (cur[1] == 0)
+                    {
+                        break;
+                    }
+
+                    begin = cur + 1;
+                }
+
+
+
+                ++cur;
+            } while(true);
+        }
     }
 
 

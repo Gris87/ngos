@@ -120,6 +120,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmioemstringsentry.h \
     $$PWD/src/bits64/dmi/entry/dmionboarddevicesentry.h \
     $$PWD/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h \
+    $$PWD/src/bits64/dmi/entry/dmioutofbandremoteaccessentry.h \
     $$PWD/src/bits64/dmi/entry/dmiphysicalmemoryarrayentry.h \
     $$PWD/src/bits64/dmi/entry/dmiportablebatteryentry.h \
     $$PWD/src/bits64/dmi/entry/dmiportconnectorentry.h \
@@ -128,6 +129,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/dmisystemconfigurationentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystementry.h \
     $$PWD/src/bits64/dmi/entry/dmisystempowersupplyentry.h \
+    $$PWD/src/bits64/dmi/entry/dmisystemresetentry.h \
     $$PWD/src/bits64/dmi/entry/dmisystemslotsentry.h \
     $$PWD/src/bits64/dmi/entry/dmitemperatureprobeentry.h \
     $$PWD/src/bits64/dmi/entry/dmivoltageprobeentry.h \
@@ -184,6 +186,7 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h \
     $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesdevicetype.h \
     $$PWD/src/bits64/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmioutofbandremoteaccessconnectionflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
     $$PWD/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h \
@@ -209,6 +212,8 @@ HEADERS += \
     $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplystatus.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystempowersupplytype.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemresetbootoption.h \
+    $$PWD/src/bits64/dmi/entry/lib/dmisystemresetcapabilities.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h \
     $$PWD/src/bits64/dmi/entry/lib/dmisystemslotslength.h \

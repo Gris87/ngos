@@ -46,6 +46,7 @@ enum class DeviceManagerImage: u8
     ONBOARD_SATA,
     ONBOARD_SOUND,
     ONBOARD_VIDEO,
+    OUT_OF_BAND_REMOTE_ACCESS,
     PHYSICAL_MEMORY_ARRAY,
     PORT_AUDIO,
     PORT_CONNECTOR,
@@ -62,6 +63,7 @@ enum class DeviceManagerImage: u8
     SYSTEM_BOOT,
     SYSTEM_CONFIGURATION,
     SYSTEM_POWER_SUPPLY,
+    SYSTEM_RESET,
     SYSTEM_SLOT_OTHER,
     SYSTEM_SLOT_PCI,
     SYSTEM_SLOT_PCI_EXPRESS,
@@ -108,6 +110,7 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::ONBOARD_SATA:                     return "ONBOARD_SATA";
         case DeviceManagerImage::ONBOARD_SOUND:                    return "ONBOARD_SOUND";
         case DeviceManagerImage::ONBOARD_VIDEO:                    return "ONBOARD_VIDEO";
+        case DeviceManagerImage::OUT_OF_BAND_REMOTE_ACCESS:        return "OUT_OF_BAND_REMOTE_ACCESS";
         case DeviceManagerImage::PHYSICAL_MEMORY_ARRAY:            return "PHYSICAL_MEMORY_ARRAY";
         case DeviceManagerImage::PORT_AUDIO:                       return "PORT_AUDIO";
         case DeviceManagerImage::PORT_CONNECTOR:                   return "PORT_CONNECTOR";
@@ -124,6 +127,7 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::SYSTEM_BOOT:                      return "SYSTEM_BOOT";
         case DeviceManagerImage::SYSTEM_CONFIGURATION:             return "SYSTEM_CONFIGURATION";
         case DeviceManagerImage::SYSTEM_POWER_SUPPLY:              return "SYSTEM_POWER_SUPPLY";
+        case DeviceManagerImage::SYSTEM_RESET:                     return "SYSTEM_RESET";
         case DeviceManagerImage::SYSTEM_SLOT_OTHER:                return "SYSTEM_SLOT_OTHER";
         case DeviceManagerImage::SYSTEM_SLOT_PCI:                  return "SYSTEM_SLOT_PCI";
         case DeviceManagerImage::SYSTEM_SLOT_PCI_EXPRESS:          return "SYSTEM_SLOT_PCI_EXPRESS";
@@ -182,10 +186,12 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type) 
         case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      return DeviceManagerImage::MEMORY_ARRAY_MAPPED_ADDRESS;
         case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     return DeviceManagerImage::MEMORY_DEVICE_MAPPED_ADDRESS;
         case DmiEntryType::PORTABLE_BATTERY:                 return DeviceManagerImage::PORTABLE_BATTERY;
+        case DmiEntryType::SYSTEM_RESET:                     return DeviceManagerImage::SYSTEM_RESET;
         case DmiEntryType::VOLTAGE_PROBE:                    return DeviceManagerImage::VOLTAGE_PROBE;
         case DmiEntryType::COOLING_DEVICE:                   return DeviceManagerImage::COOLING_DEVICE;
         case DmiEntryType::TEMPERATURE_PROBE:                return DeviceManagerImage::TEMPERATURE_PROBE;
         case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         return DeviceManagerImage::ELECTRICAL_CURRENT_PROBE;
+        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:        return DeviceManagerImage::OUT_OF_BAND_REMOTE_ACCESS;
         case DmiEntryType::SYSTEM_BOOT:                      return DeviceManagerImage::SYSTEM_BOOT;
         case DmiEntryType::BITS64_MEMORY_ERROR:              return DeviceManagerImage::BITS64_MEMORY_ERROR;
         case DmiEntryType::MANAGEMENT_DEVICE:                return DeviceManagerImage::MANAGEMENT_DEVICE;
@@ -198,10 +204,8 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntryType(DmiEntryType type) 
 
         case DmiEntryType::SYSTEM_EVENT_LOG:
         case DmiEntryType::BUILTIN_POINTING_DEVICE:
-        case DmiEntryType::SYSTEM_RESET:
         case DmiEntryType::HARDWARE_SECURITY:
         case DmiEntryType::SYSTEM_POWER_CONTROLS:
-        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:
         case DmiEntryType::BOOT_INTEGRITY_SERVICES_ENTRY_POINT:
         case DmiEntryType::MEMORY_CHANNEL:
         case DmiEntryType::IPMI_DEVICE:
