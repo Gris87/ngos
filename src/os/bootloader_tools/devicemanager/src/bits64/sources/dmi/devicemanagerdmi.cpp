@@ -4068,13 +4068,13 @@ NgosStatus DeviceManagerDMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32M
 
         // Check variables
         {
-            // UEFI_TEST_ASSERT(entry->errorType               == DmiBits32MemoryErrorInformationErrorType::OK,           NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->errorGranularity        == DmiBits32MemoryErrorInformationErrorGranularity::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->errorOperation          == DmiBits32MemoryErrorInformationErrorOperation::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->vendorSyndrome          == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->deviceErrorAddress      == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->errorResolution         == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorType               == DmiBits32MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorGranularity        == DmiBits32MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorOperation          == DmiBits32MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->deviceErrorAddress      == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
 
             UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBits32MemoryErrorInformationEntry), NgosStatus::ASSERTION);
         }
@@ -4846,15 +4846,15 @@ NgosStatus DeviceManagerDMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
 
         // Check variables
         {
-            // UEFI_TEST_ASSERT(entry->capabilities.enabled           == 1,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->capabilities.bootOption        == DmiSystemResetBootOption::OPERATION_SYSTEM, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->capabilities.bootOptionOnLimit == DmiSystemResetBootOption::OPERATION_SYSTEM, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->capabilities.watchdogEnabled   == 1,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->capabilities.value8            == 0x00,                                       NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->resetCount                     == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->resetLimit                     == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->timerInterval                  == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->timeout                        == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.enabled           == 1,                                       NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.bootOption        == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.bootOptionOnLimit == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.watchdogEnabled   == 1,                                       NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->capabilities.value8            == 0x3F,                                    NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->resetCount                     == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->resetLimit                     == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->timerInterval                  == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->timeout                        == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
 
             UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemResetEntry), NgosStatus::ASSERTION);
         }
@@ -5865,8 +5865,8 @@ NgosStatus DeviceManagerDMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemot
 
         // Check variables
         {
-            UEFI_TEST_ASSERT(entry->manufacturerName.id == 1,                                                                                                        NgosStatus::ASSERTION);
-            // UEFI_TEST_ASSERT(entry->connections      == FLAGS(DmiOutOfBandRemoteAccessConnectionFlag::INBOUND, DmiOutOfBandRemoteAccessConnectionFlag::OUTBOUND), NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->manufacturerName.id == 1,                                                      NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(entry->connections         == FLAGS(DmiOutOfBandRemoteAccessConnectionFlag::INBOUND), NgosStatus::ASSERTION);
 
             UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiOutOfBandRemoteAccessEntry), NgosStatus::ASSERTION);
         }
@@ -6032,13 +6032,13 @@ NgosStatus DeviceManagerDMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64M
 
         // Check variables
         {
-            // UEFI_TEST_ASSERT(entry->errorType               == DmiBits64MemoryErrorInformationErrorType::OK,           NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->errorGranularity        == DmiBits64MemoryErrorInformationErrorGranularity::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->errorOperation          == DmiBits64MemoryErrorInformationErrorOperation::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->vendorSyndrome          == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x0000000000000000,                                     NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->deviceErrorAddress      == 0x0000000000000000,                                     NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->errorResolution         == 0x00000000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorType               == DmiBits64MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorGranularity        == DmiBits64MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorOperation          == DmiBits64MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x8000000000000000,                                       NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->deviceErrorAddress      == 0x8000000000000000,                                       NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
 
             UEFI_TEST_ASSERT(entry->header.length >= sizeof(DmiBits64MemoryErrorInformationEntry), NgosStatus::ASSERTION);
         }
