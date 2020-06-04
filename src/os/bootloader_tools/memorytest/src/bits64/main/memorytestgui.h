@@ -5,6 +5,7 @@
 
 #include <bootparams/bootparams.h>
 #include <common/src/bits64/containers/arraylist.h>
+#include <common/src/bits64/dmi/dmimemorydevice.h>
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
@@ -31,6 +32,7 @@ public:
     }
 
 private:
+    static NgosStatus addMemoryInfoPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryInfoPanelImage, Image *memoryInfoPanelResizedImage, TabPageWidget *tabPageWidget, const DmiMemoryDevice &memoryDevice); // TEST: NO
     static NgosStatus addIssueEntry(Image *icon, const char8 *description); // TEST: NO
     static NgosStatus fillIssuesTable(); // TEST: NO
     static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO

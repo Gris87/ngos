@@ -1744,11 +1744,11 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
                 entryV26
                )
             {
-                processorFamily = strdup(enumToString(entryV26->processorFamily2));
+                processorFamily = enumToString(entryV26->processorFamily2);
             }
             else
             {
-                processorFamily = strdup(enumToString(entry->processorFamily));
+                processorFamily = enumToString(entry->processorFamily);
             }
         }
 

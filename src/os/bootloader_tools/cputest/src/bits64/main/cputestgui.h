@@ -34,7 +34,7 @@ public:
     }
 
 private:
-    static NgosStatus addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
+    static NgosStatus addFeaturePanel(X86Feature flag, u64 posX, u64 posY, u64 width, u64 height, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
     static NgosStatus addIssueEntry(Image *icon, const char8 *description); // TEST: NO
     static NgosStatus fillIssuesTable(); // TEST: NO
     static NgosStatus addTestEntry(const char8 *name, const char8 *score); // TEST: NO

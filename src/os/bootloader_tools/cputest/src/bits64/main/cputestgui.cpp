@@ -929,12 +929,12 @@ NgosStatus CpuTestGUI::exec()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPositionX, u64 featurePanelPositionY, u64 featurePanelWidth, u64 featurePanelHeight, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget)
+NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 posX, u64 posY, u64 width, u64 height, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget)
 {
-    UEFI_LT((" | flag = %u, featurePanelPositionX = %u, featurePanelPositionY = %u, featurePanelWidth = %u, featurePanelHeight = %u, featurePanelImage = 0x%p, featurePanelResizedImage = 0x%p, tabPageWidget = 0x%p", flag, featurePanelPositionX, featurePanelPositionY, featurePanelWidth, featurePanelHeight, featurePanelImage, featurePanelResizedImage, tabPageWidget));
+    UEFI_LT((" | flag = %u, posX = %u, posY = %u, width = %u, height = %u, featurePanelImage = 0x%p, featurePanelResizedImage = 0x%p, tabPageWidget = 0x%p", flag, posX, posY, width, height, featurePanelImage, featurePanelResizedImage, tabPageWidget));
 
-    UEFI_ASSERT(featurePanelWidth > 0,    "featurePanelWidth is zero",        NgosStatus::ASSERTION);
-    UEFI_ASSERT(featurePanelHeight > 0,   "featurePanelHeight is zero",       NgosStatus::ASSERTION);
+    UEFI_ASSERT(width > 0,                "width is zero",                    NgosStatus::ASSERTION);
+    UEFI_ASSERT(height > 0,               "height is zero",                   NgosStatus::ASSERTION);
     UEFI_ASSERT(featurePanelImage,        "featurePanelImage is null",        NgosStatus::ASSERTION);
     UEFI_ASSERT(featurePanelResizedImage, "featurePanelResizedImage is null", NgosStatus::ASSERTION);
     UEFI_ASSERT(tabPageWidget,            "tabPageWidget is null",            NgosStatus::ASSERTION);
@@ -952,20 +952,20 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 featurePanelPosition
 
     PanelWidget *featurePanelWidget = new PanelWidget(featurePanelImage, featurePanelResizedImage, tabPageWidget);
 
-    UEFI_ASSERT_EXECUTION(featurePanelWidget->setPosition(featurePanelPositionX, featurePanelPositionY), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(featurePanelWidget->setSize(featurePanelWidth, featurePanelHeight),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featurePanelWidget->setPosition(posX, posY), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featurePanelWidget->setSize(width, height),  NgosStatus::ASSERTION);
 
 
 
     LabelWidget *featureShadowLabelWidget = new LabelWidget(flagTextFull, featurePanelWidget);
 
-    UEFI_ASSERT_EXECUTION(featureShadowLabelWidget->setPosition(featurePanelWidth * FEATURE_TEXT_POSITION_X_PERCENT / 100, featurePanelHeight * FEATURE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(featureShadowLabelWidget->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT      / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureShadowLabelWidget->setPosition(width * FEATURE_TEXT_POSITION_X_PERCENT / 100, height * FEATURE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureShadowLabelWidget->setSize(width     * FEATURE_TEXT_WIDTH_PERCENT      / 100, height * FEATURE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
 
     LabelWidget *featureTextLabelWidget = new LabelWidget(flagTextFull, featurePanelWidget);
 
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setPosition(featurePanelWidth * (FEATURE_TEXT_POSITION_X_PERCENT - 1) / 100, featurePanelHeight * (FEATURE_TEXT_POSITION_Y_PERCENT - 2) / 100), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setSize(featurePanelWidth     * FEATURE_TEXT_WIDTH_PERCENT            / 100, featurePanelHeight * FEATURE_TEXT_HEIGHT_PERCENT           / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setPosition(width * (FEATURE_TEXT_POSITION_X_PERCENT - 1) / 100, height * (FEATURE_TEXT_POSITION_Y_PERCENT - 2) / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(featureTextLabelWidget->setSize(width     * FEATURE_TEXT_WIDTH_PERCENT            / 100, height * FEATURE_TEXT_HEIGHT_PERCENT           / 100), NgosStatus::ASSERTION);
 
 
 
