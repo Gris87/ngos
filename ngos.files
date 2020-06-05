@@ -449,6 +449,8 @@ src/os/bootloader_tools/memorytest/.gitignore
 src/os/bootloader_tools/memorytest/asm/arch/x86_64/main.S
 src/os/bootloader_tools/memorytest/assets/glyphs/console.bin
 src/os/bootloader_tools/memorytest/assets/glyphs/gui.bin
+src/os/bootloader_tools/memorytest/assets/images/arrow_left.png
+src/os/bootloader_tools/memorytest/assets/images/arrow_right.png
 src/os/bootloader_tools/memorytest/assets/images/background.jpg
 src/os/bootloader_tools/memorytest/assets/images/button_focused.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_focused_hover.9.png
