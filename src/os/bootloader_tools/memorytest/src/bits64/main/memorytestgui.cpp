@@ -57,9 +57,9 @@
 #define MEMORY_INFO_REGION_OVERRIDE_WIDTH_PERCENT      90
 #define MEMORY_INFO_REGION_OVERRIDE_HEIGHT_PERCENT     85
 
-#define LEFT_BUTTON_POSITION_X_PERCENT  1
-#define RIGHT_BUTTON_POSITION_X_PERCENT 96
-#define ARROW_BUTTON_SIZE_PERCENT       3
+#define MEMORY_INFO_LEFT_BUTTON_POSITION_X_PERCENT  0
+#define MEMORY_INFO_RIGHT_BUTTON_POSITION_X_PERCENT 95
+#define MEMORY_INFO_ARROW_BUTTON_SIZE_PERCENT       5
 
 #define MEMORY_INFO_IMAGE_POSITION_X_PERCENT 1
 #define MEMORY_INFO_IMAGE_POSITION_Y_PERCENT 1
@@ -149,27 +149,31 @@
 
 
 
-Button                 *MemoryTestGUI::sRebootButton;
-Button                 *MemoryTestGUI::sShutdownButton;
-TabWidget              *MemoryTestGUI::sTabWidget;
-TabButton              *MemoryTestGUI::sSystemInformationTabButton;
-TabButton              *MemoryTestGUI::sIssuesTabButton;
-TabButton              *MemoryTestGUI::sTestTabButton;
-TabButton              *MemoryTestGUI::sSummaryTabButton;
-Image                  *MemoryTestGUI::sWarningImage;
-Image                  *MemoryTestGUI::sCriticalImage;
-TableWidget            *MemoryTestGUI::sIssuesTableWidget;
-Image                  *MemoryTestGUI::sStartImage;
-Image                  *MemoryTestGUI::sStopImage;
-LabelWidget            *MemoryTestGUI::sSummaryTotalLabelWidget;
-TableWidget            *MemoryTestGUI::sSummaryTableWidget;
-u64                     MemoryTestGUI::sSummaryTotal;
-UefiMpServicesProtocol *MemoryTestGUI::sMpServices;
-u16                     MemoryTestGUI::sWaitEventsCount;
-uefi_event             *MemoryTestGUI::sWaitEvents;
-u16                     MemoryTestGUI::sFirstProcessorEventIndex;
-u64                     MemoryTestGUI::sNumberOfRunningProcessors;
-bool                    MemoryTestGUI::sTerminated;
+Button                                *MemoryTestGUI::sRebootButton;
+Button                                *MemoryTestGUI::sShutdownButton;
+TabWidget                             *MemoryTestGUI::sTabWidget;
+TabButton                             *MemoryTestGUI::sSystemInformationTabButton;
+TabButton                             *MemoryTestGUI::sIssuesTabButton;
+TabButton                             *MemoryTestGUI::sTestTabButton;
+TabButton                             *MemoryTestGUI::sSummaryTabButton;
+ArrayList<ArrayList<PanelWidget *> *>  MemoryTestGUI::sInfoPages;
+u64                                    MemoryTestGUI::sInfoCurrentPage;
+Button                                *MemoryTestGUI::sInfoLeftButton;
+Button                                *MemoryTestGUI::sInfoRightButton;
+Image                                 *MemoryTestGUI::sWarningImage;
+Image                                 *MemoryTestGUI::sCriticalImage;
+TableWidget                           *MemoryTestGUI::sIssuesTableWidget;
+Image                                 *MemoryTestGUI::sStartImage;
+Image                                 *MemoryTestGUI::sStopImage;
+LabelWidget                           *MemoryTestGUI::sSummaryTotalLabelWidget;
+TableWidget                           *MemoryTestGUI::sSummaryTableWidget;
+u64                                    MemoryTestGUI::sSummaryTotal;
+UefiMpServicesProtocol                *MemoryTestGUI::sMpServices;
+u16                                    MemoryTestGUI::sWaitEventsCount;
+uefi_event                            *MemoryTestGUI::sWaitEvents;
+u16                                    MemoryTestGUI::sFirstProcessorEventIndex;
+u64                                    MemoryTestGUI::sNumberOfRunningProcessors;
+bool                                   MemoryTestGUI::sTerminated;
 
 
 
@@ -228,6 +232,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     Image *memoryDeviceResizedImage;
     Image *memoryDeviceDisabledImage;
     Image *memoryDeviceDisabledResizedImage;
+    Image *arrowLeftImage = nullptr;
+    Image *arrowRightImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -523,9 +529,44 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        if (memoryDevices.getSize() > 4)
+        if (sInfoPages.getSize() > 1)
         {
-            // TODO: Implement
+            if (arrowLeftImage == nullptr)
+            {
+                UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/arrow_left.png",  &arrowLeftImage),  NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/arrow_right.png", &arrowRightImage), NgosStatus::ASSERTION);
+            }
+
+
+
+            u64 arrowButtonSize = tabPageWidth * MEMORY_INFO_ARROW_BUTTON_SIZE_PERCENT / 100;
+
+
+
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       arrowButtonSize, arrowButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        arrowButtonSize, arrowButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      arrowButtonSize, arrowButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      arrowButtonSize, arrowButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, arrowButtonSize, arrowButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+
+
+
+            sInfoLeftButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowLeftImage, nullptr, "", systemInformationTabPageWidget);
+
+            UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(false),                                                                                                                                        NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sInfoLeftButton->setPosition(tabPageWidth * MEMORY_INFO_LEFT_BUTTON_POSITION_X_PERCENT / 100, memoryInfoRegionPositionY + (memoryInfoRegionHeight - arrowButtonSize) / 2), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sInfoLeftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                                NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sInfoLeftButton->setKeyboardEventHandler(onInfoLeftButtonKeyboardEvent),                                                                                                   NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sInfoLeftButton->setPressEventHandler(onInfoLeftButtonPressed),                                                                                                            NgosStatus::ASSERTION);
+
+
+
+            sInfoRightButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowRightImage, nullptr, "", systemInformationTabPageWidget);
+
+            UEFI_ASSERT_EXECUTION(sInfoRightButton->setPosition(tabPageWidth * MEMORY_INFO_RIGHT_BUTTON_POSITION_X_PERCENT / 100, memoryInfoRegionPositionY + (memoryInfoRegionHeight - arrowButtonSize) / 2), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sInfoRightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                                 NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sInfoRightButton->setKeyboardEventHandler(onInfoRightButtonKeyboardEvent),                                                                                                   NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sInfoRightButton->setPressEventHandler(onInfoRightButtonPressed),                                                                                                            NgosStatus::ASSERTION);
         }
     }
     else
@@ -856,6 +897,38 @@ NgosStatus MemoryTestGUI::addMemoryInfoPanel(u64 pageIndex, u64 posX, u64 posY, 
 
 
 
+    // Add memoryInfoPanelWidget to last page
+    {
+        ArrayList<PanelWidget *> *page;
+
+        if (pageIndex >= sInfoPages.getSize())
+        {
+            UEFI_TEST_ASSERT(pageIndex == sInfoPages.getSize(), NgosStatus::ASSERTION);
+
+
+
+            page = new ArrayList<PanelWidget *>();
+
+            UEFI_ASSERT_EXECUTION(sInfoPages.append(page), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(pageIndex == sInfoPages.getSize() - 1, NgosStatus::ASSERTION);
+
+
+
+            page = sInfoPages.last();
+        }
+
+
+
+        UEFI_ASSERT_EXECUTION(page->append(memoryInfoPanelWidget), NgosStatus::ASSERTION);
+
+        UEFI_TEST_ASSERT(page->getSize() <= 4, NgosStatus::ASSERTION);
+    }
+
+
+
     return NgosStatus::OK;
 }
 
@@ -1147,7 +1220,7 @@ NgosStatus MemoryTestGUI::focusTabFirstWidget()
 
     switch (sTabWidget->getCurrentPage())
     {
-        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sRebootButton);
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sRebootButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
         case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sRebootButton);
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
@@ -1174,7 +1247,7 @@ NgosStatus MemoryTestGUI::focusTabLastWidget()
 
     switch (sTabWidget->getCurrentPage())
     {
-        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sSystemInformationTabButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
         case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestTabButton);
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
@@ -1694,6 +1767,112 @@ NgosStatus MemoryTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &ke
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus MemoryTestGUI::onInfoLeftButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::LEFT: return onInfoLeftButtonPressed();
+
+        case UefiInputKeyScanCode::RIGHT:
+        {
+            if (sInfoCurrentPage < sInfoPages.getSize() - 1)
+            {
+                if (sInfoCurrentPage < sInfoPages.getSize() - 2)
+                {
+                    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoRightButton), NgosStatus::ASSERTION);
+                }
+
+                return onInfoRightButtonPressed();
+            }
+
+            return NgosStatus::NO_EFFECT;
+        }
+        break;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sInfoRightButton->isVisible() ? sInfoRightButton : sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus MemoryTestGUI::onInfoRightButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sSystemInformationTabButton);
+        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::RIGHT: return onInfoRightButtonPressed();
+
+        case UefiInputKeyScanCode::LEFT:
+        {
+            if (sInfoCurrentPage > 0)
+            {
+                if (sInfoCurrentPage > 1)
+                {
+                    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoLeftButton), NgosStatus::ASSERTION);
+                }
+
+                return onInfoLeftButtonPressed();
+            }
+
+            return NgosStatus::NO_EFFECT;
+        }
+        break;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
 NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
@@ -1840,6 +2019,112 @@ NgosStatus MemoryTestGUI::onSummaryTabButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(sTabWidget->setCurrentPage(TABWIDGET_PAGE_SUMMARY), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_TEST_ASSERT(sInfoCurrentPage > 0, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
+    }
+
+
+
+    --sInfoCurrentPage;
+
+
+
+    page = sInfoPages.at(sInfoCurrentPage);
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(true), NgosStatus::ASSERTION);
+
+    if (sInfoCurrentPage <= 0)
+    {
+        UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(false),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoRightButton), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_TEST_ASSERT(sInfoCurrentPage < sInfoPages.getSize() - 1, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
+    }
+
+
+
+    ++sInfoCurrentPage;
+
+
+
+    page = sInfoPages.at(sInfoCurrentPage);
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(true), NgosStatus::ASSERTION);
+
+    if (sInfoCurrentPage >= sInfoPages.getSize() - 1)
+    {
+        UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(false),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoLeftButton), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
 
 

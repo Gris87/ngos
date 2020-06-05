@@ -9,6 +9,7 @@
 #include <common/src/bits64/gui/widgets/controls/button.h>
 #include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
+#include <common/src/bits64/gui/widgets/misc/panelwidget.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefimpservicesprotocol.h>
@@ -55,6 +56,8 @@ private:
     static NgosStatus onIssuesTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onInfoLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onInfoRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
@@ -64,28 +67,34 @@ private:
     static NgosStatus onIssuesTabButtonPressed(); // TEST: NO
     static NgosStatus onTestTabButtonPressed(); // TEST: NO
     static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
+    static NgosStatus onInfoLeftButtonPressed(); // TEST: NO
+    static NgosStatus onInfoRightButtonPressed(); // TEST: NO
 
-    static Button                 *sRebootButton;
-    static Button                 *sShutdownButton;
-    static TabWidget              *sTabWidget;
-    static TabButton              *sSystemInformationTabButton;
-    static TabButton              *sIssuesTabButton;
-    static TabButton              *sTestTabButton;
-    static TabButton              *sSummaryTabButton;
-    static Image                  *sWarningImage;
-    static Image                  *sCriticalImage;
-    static TableWidget            *sIssuesTableWidget;
-    static Image                  *sStartImage;
-    static Image                  *sStopImage;
-    static LabelWidget            *sSummaryTotalLabelWidget;
-    static TableWidget            *sSummaryTableWidget;
-    static u64                     sSummaryTotal;
-    static UefiMpServicesProtocol *sMpServices;
-    static u16                     sWaitEventsCount;
-    static uefi_event             *sWaitEvents;
-    static u16                     sFirstProcessorEventIndex;
-    static u64                     sNumberOfRunningProcessors;
-    static bool                    sTerminated;
+    static Button                                *sRebootButton;
+    static Button                                *sShutdownButton;
+    static TabWidget                             *sTabWidget;
+    static TabButton                             *sSystemInformationTabButton;
+    static TabButton                             *sIssuesTabButton;
+    static TabButton                             *sTestTabButton;
+    static TabButton                             *sSummaryTabButton;
+    static ArrayList<ArrayList<PanelWidget *> *>  sInfoPages;
+    static u64                                    sInfoCurrentPage;
+    static Button                                *sInfoLeftButton;
+    static Button                                *sInfoRightButton;
+    static Image                                 *sWarningImage;
+    static Image                                 *sCriticalImage;
+    static TableWidget                           *sIssuesTableWidget;
+    static Image                                 *sStartImage;
+    static Image                                 *sStopImage;
+    static LabelWidget                           *sSummaryTotalLabelWidget;
+    static TableWidget                           *sSummaryTableWidget;
+    static u64                                    sSummaryTotal;
+    static UefiMpServicesProtocol                *sMpServices;
+    static u16                                    sWaitEventsCount;
+    static uefi_event                            *sWaitEvents;
+    static u16                                    sFirstProcessorEventIndex;
+    static u64                                    sNumberOfRunningProcessors;
+    static bool                                   sTerminated;
 };
 
 

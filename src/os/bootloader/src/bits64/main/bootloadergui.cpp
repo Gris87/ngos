@@ -362,20 +362,20 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
             sLeftButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowLeftImage, nullptr, "", rootWidget);
 
-            UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(false),                                                                                                                                NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sLeftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sLeftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                        NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sLeftButton->setKeyboardEventHandler(onLeftButtonKeyboardEvent),                                                                                               NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sLeftButton->setPressEventHandler(onLeftButtonPressed),                                                                                                        NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sLeftButton->setVisible(false),                                                                                                                             NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sLeftButton->setPosition(screenWidth * LEFT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - arrowButtonSize / 2), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sLeftButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sLeftButton->setKeyboardEventHandler(onLeftButtonKeyboardEvent),                                                                                            NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sLeftButton->setPressEventHandler(onLeftButtonPressed),                                                                                                     NgosStatus::ASSERTION);
 
 
 
             sRightButton = new Button(sButtonNormalImage, sButtonHoverImage, sButtonPressedImage, sButtonFocusedImage, sButtonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, arrowRightImage, nullptr, "", rootWidget);
 
-            UEFI_ASSERT_EXECUTION(sRightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (arrowButtonSize >> 1)), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sRightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                         NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sRightButton->setKeyboardEventHandler(onRightButtonKeyboardEvent),                                                                                               NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(sRightButton->setPressEventHandler(onRightButtonPressed),                                                                                                        NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sRightButton->setPosition(screenWidth * RIGHT_BUTTON_POSITION_X_PERCENT / 100, screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - arrowButtonSize / 2), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sRightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                      NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sRightButton->setKeyboardEventHandler(onRightButtonKeyboardEvent),                                                                                            NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sRightButton->setPressEventHandler(onRightButtonPressed),                                                                                                     NgosStatus::ASSERTION);
         }
 
 
