@@ -9,11 +9,26 @@
 ImageWidget::ImageWidget(Image *image, Widget *parent)
     : Widget(parent)
     , mImage(image)
+    , mResizedImage(nullptr)
+    , mPredefined(false)
 {
     COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
 
     COMMON_ASSERT(image,  "image is null");
     COMMON_ASSERT(parent, "parent is null");
+}
+
+ImageWidget::ImageWidget(Image *image, Image *resizedImage, Widget *parent)
+    : Widget(parent)
+    , mImage(image)
+    , mResizedImage(resizedImage)
+    , mPredefined(true)
+{
+    COMMON_LT((" | image = 0x%p, resizedImage = 0x%p, parent = 0x%p", image, resizedImage, parent));
+
+    COMMON_ASSERT(image,        "image is null");
+    COMMON_ASSERT(resizedImage, "resizedImage is null");
+    COMMON_ASSERT(parent,       "parent is null");
 }
 
 ImageWidget::~ImageWidget()
@@ -22,9 +37,12 @@ ImageWidget::~ImageWidget()
 
 
 
-    if (mResultImage)
+    if (!mPredefined)
     {
-        delete mResultImage;
+        if (mResizedImage)
+        {
+            delete mResizedImage;
+        }
     }
 }
 
@@ -34,12 +52,17 @@ NgosStatus ImageWidget::invalidate()
 
 
 
-    if (mOwnResultImage)
+    if (!mPredefined)
     {
-        delete mOwnResultImage;
+        if (mResizedImage)
+        {
+            delete mResizedImage;
+        }
+
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
     }
 
-    COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
+    mOwnResultImage = mResizedImage;
 
 
 
@@ -69,6 +92,10 @@ NgosStatus ImageWidget::setImage(Image *image)
     COMMON_LT((" | image = %u", image));
 
     COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(!mPredefined, NgosStatus::ASSERTION);
 
 
 
