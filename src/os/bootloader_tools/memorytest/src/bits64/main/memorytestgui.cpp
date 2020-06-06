@@ -1308,7 +1308,7 @@ NgosStatus MemoryTestGUI::showFirstInfoPage()
     UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(true), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(false), NgosStatus::ASSERTION);
 
-    if (GUI::getFocusedWidget() == sInfoLeftButton)
+    if (sInfoLeftButton->isFocused())
     {
         UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoRightButton), NgosStatus::ASSERTION);
     }
@@ -1364,7 +1364,7 @@ NgosStatus MemoryTestGUI::showLastInfoPage()
     UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(true),   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(false), NgosStatus::ASSERTION);
 
-    if (GUI::getFocusedWidget() == sInfoRightButton)
+    if (sInfoRightButton->isFocused())
     {
         UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoLeftButton), NgosStatus::ASSERTION);
     }
@@ -2255,7 +2255,7 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
     {
         UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(false), NgosStatus::ASSERTION);
 
-        if (GUI::getFocusedWidget() == sInfoLeftButton)
+        if (sInfoLeftButton->isFocused())
         {
             UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoRightButton), NgosStatus::ASSERTION);
         }
@@ -2312,7 +2312,7 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
     {
         UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(false), NgosStatus::ASSERTION);
 
-        if (GUI::getFocusedWidget() == sInfoRightButton)
+        if (sInfoRightButton->isFocused())
         {
             UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoLeftButton), NgosStatus::ASSERTION);
         }
