@@ -42,6 +42,9 @@ private:
     static NgosStatus focusTabFirstWidget(); // TEST: NO
     static NgosStatus focusTabLastWidget(); // TEST: NO
 
+    static NgosStatus showFirstInfoPage(); // TEST: NO
+    static NgosStatus showLastInfoPage(); // TEST: NO
+
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
     static NgosStatus terminateAndWaitForApplicationProcessors(); // TEST: NO
@@ -60,6 +63,7 @@ private:
     static NgosStatus onInfoRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
     static NgosStatus onRebootButtonPressed(); // TEST: NO
     static NgosStatus onShutdownButtonPressed(); // TEST: NO

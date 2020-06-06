@@ -1266,6 +1266,118 @@ NgosStatus MemoryTestGUI::focusTabLastWidget()
     return NgosStatus::OK;
 }
 
+NgosStatus MemoryTestGUI::showFirstInfoPage()
+{
+    UEFI_LT((""));
+
+
+
+    if (sInfoCurrentPage <= 0)
+    {
+        return NgosStatus::NO_EFFECT;
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
+    }
+
+
+
+    sInfoCurrentPage = 0;
+
+
+
+    page = sInfoPages.first();
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(true), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(false), NgosStatus::ASSERTION);
+
+    if (GUI::getFocusedWidget() == sInfoLeftButton)
+    {
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoRightButton), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::showLastInfoPage()
+{
+    UEFI_LT((""));
+
+
+
+    if (sInfoCurrentPage >= sInfoPages.getSize() - 1)
+    {
+        return NgosStatus::NO_EFFECT;
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
+    }
+
+
+
+    sInfoCurrentPage = sInfoPages.getSize() - 1;
+
+
+
+    page = sInfoPages.last();
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(true),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(false), NgosStatus::ASSERTION);
+
+    if (GUI::getFocusedWidget() == sInfoRightButton)
+    {
+        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoLeftButton), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus MemoryTestGUI::generateWaitEventList()
 {
     UEFI_LT((""));
@@ -1454,7 +1566,12 @@ NgosStatus MemoryTestGUI::processKeyboardEvent()
 
         if (status == NgosStatus::NO_EFFECT)
         {
-            status = GUI::processKeyboardEvent(key);
+            status = onKeyboardEvent(key);
+
+            if (status == NgosStatus::NO_EFFECT)
+            {
+                status = GUI::processKeyboardEvent(key);
+            }
         }
     }
 
@@ -1781,7 +1898,7 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonKeyboardEvent(const UefiInputKey &key)
 
         case UefiInputKeyScanCode::RIGHT:
         {
-            if (sInfoCurrentPage < sInfoPages.getSize() - 1)
+            if (sInfoRightButton->isVisible())
             {
                 if (sInfoCurrentPage < sInfoPages.getSize() - 2)
                 {
@@ -1834,7 +1951,7 @@ NgosStatus MemoryTestGUI::onInfoRightButtonKeyboardEvent(const UefiInputKey &key
 
         case UefiInputKeyScanCode::LEFT:
         {
-            if (sInfoCurrentPage > 0)
+            if (sInfoLeftButton->isVisible())
             {
                 if (sInfoCurrentPage > 1)
                 {
@@ -1936,6 +2053,77 @@ NgosStatus MemoryTestGUI::onSummaryTableWidgetKeyboardEvent(const UefiInputKey &
         default:
         {
             // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus MemoryTestGUI::onKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (sTabWidget->getCurrentPage())
+    {
+        case TABWIDGET_PAGE_SYSTEM_INFORMATION:
+        {
+            if (sInfoPages.getSize() > 1)
+            {
+                switch (key.scanCode)
+                {
+                    case UefiInputKeyScanCode::HOME: return showFirstInfoPage();
+                    case UefiInputKeyScanCode::END:  return showLastInfoPage();
+
+                    case UefiInputKeyScanCode::PAGE_UP:
+                    {
+                        if (sInfoLeftButton->isVisible())
+                        {
+                            return onInfoLeftButtonPressed();
+                        }
+
+                        return NgosStatus::NO_EFFECT;
+                    }
+                    break;
+
+                    case UefiInputKeyScanCode::PAGE_DOWN:
+                    {
+                        if (sInfoRightButton->isVisible())
+                        {
+                            return onInfoRightButtonPressed();
+                        }
+
+                        return NgosStatus::NO_EFFECT;
+                    }
+                    break;
+
+                    default:
+                    {
+                        // Nothing
+                    }
+                    break;
+                }
+            }
+        }
+        break;
+
+        case TABWIDGET_PAGE_ISSUES:
+        case TABWIDGET_PAGE_TEST:
+        case TABWIDGET_PAGE_SUMMARY:
+        {
+            // Nothing
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTabWidget->getCurrentPage(), __FILE__, __LINE__));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
         break;
     }
@@ -2065,8 +2253,12 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
 
     if (sInfoCurrentPage <= 0)
     {
-        UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(false),      NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoRightButton), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sInfoLeftButton->setVisible(false), NgosStatus::ASSERTION);
+
+        if (GUI::getFocusedWidget() == sInfoLeftButton)
+        {
+            UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoRightButton), NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -2118,8 +2310,12 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
 
     if (sInfoCurrentPage >= sInfoPages.getSize() - 1)
     {
-        UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(false),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoLeftButton), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sInfoRightButton->setVisible(false), NgosStatus::ASSERTION);
+
+        if (GUI::getFocusedWidget() == sInfoRightButton)
+        {
+            UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sInfoLeftButton), NgosStatus::ASSERTION);
+        }
     }
 
 
