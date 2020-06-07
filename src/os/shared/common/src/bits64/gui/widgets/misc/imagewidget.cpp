@@ -129,3 +129,48 @@ Image* ImageWidget::getImage() const
 
     return mImage;
 }
+
+NgosStatus ImageWidget::setResizedImage(Image *image)
+{
+    COMMON_LT((" | image = %u", image));
+
+    COMMON_ASSERT(image, "image is null", NgosStatus::ASSERTION);
+
+
+
+    COMMON_TEST_ASSERT(mPredefined, NgosStatus::ASSERTION);
+
+
+
+    mResizedImage = image;
+
+    if (
+        mWidth // mWidth > 0
+        &&
+        mHeight // mHeight > 0
+       )
+    {
+        COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+
+        if (isVisible())
+        {
+            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+Image* ImageWidget::getResizedImage() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+    COMMON_TEST_ASSERT(mPredefined, nullptr);
+
+
+
+    return mResizedImage;
+}

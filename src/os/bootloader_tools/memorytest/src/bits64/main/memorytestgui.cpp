@@ -55,11 +55,14 @@
 #define MEMORY_INFO_REGION_OVERRIDE_POSITION_X_PERCENT 5
 #define MEMORY_INFO_REGION_OVERRIDE_POSITION_Y_PERCENT 15
 #define MEMORY_INFO_REGION_OVERRIDE_WIDTH_PERCENT      90
-#define MEMORY_INFO_REGION_OVERRIDE_HEIGHT_PERCENT     85
+#define MEMORY_INFO_REGION_OVERRIDE_HEIGHT_PERCENT     83
 
 #define MEMORY_INFO_LEFT_BUTTON_POSITION_X_PERCENT  0
 #define MEMORY_INFO_RIGHT_BUTTON_POSITION_X_PERCENT 95
 #define MEMORY_INFO_ARROW_BUTTON_SIZE_PERCENT       5
+
+#define MEMORY_INFO_PAGE_INDICATOR_POSITION_Y_PERCENT 98
+#define MEMORY_INFO_PAGE_INDICATOR_SIZE_PERCENT       2
 
 #define MEMORY_INFO_IMAGE_POSITION_X_PERCENT 1
 #define MEMORY_INFO_IMAGE_POSITION_Y_PERCENT 1
@@ -157,6 +160,9 @@ TabButton                             *MemoryTestGUI::sIssuesTabButton;
 TabButton                             *MemoryTestGUI::sTestTabButton;
 TabButton                             *MemoryTestGUI::sSummaryTabButton;
 ArrayList<ArrayList<PanelWidget *> *>  MemoryTestGUI::sInfoPages;
+ArrayList<ImageWidget *>               MemoryTestGUI::sInfoPageIndicators;
+Image                                 *MemoryTestGUI::sInfoPageIndicatorResizedImage;
+Image                                 *MemoryTestGUI::sInfoPageIndicatorSelectedResizedImage;
 u64                                    MemoryTestGUI::sInfoCurrentPage;
 Button                                *MemoryTestGUI::sInfoLeftButton;
 Button                                *MemoryTestGUI::sInfoRightButton;
@@ -232,8 +238,10 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     Image *memoryDeviceResizedImage;
     Image *memoryDeviceDisabledImage;
     Image *memoryDeviceDisabledResizedImage;
-    Image *arrowLeftImage = nullptr;
+    Image *arrowLeftImage;
     Image *arrowRightImage;
+    Image *pageIndicatorImage;
+    Image *pageIndicatorSelectedImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -531,23 +539,25 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
         if (sInfoPages.getSize() > 1)
         {
-            if (arrowLeftImage == nullptr)
-            {
-                UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/arrow_left.png",  &arrowLeftImage),  NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/arrow_right.png", &arrowRightImage), NgosStatus::ASSERTION);
-            }
+            UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/arrow_left.png",              &arrowLeftImage),             NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/arrow_right.png",             &arrowRightImage),            NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/page_indicator.png",          &pageIndicatorImage),         NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/page_indicator_selected.png", &pageIndicatorSelectedImage), NgosStatus::ASSERTION);
 
 
 
-            u64 arrowButtonSize = tabPageWidth * MEMORY_INFO_ARROW_BUTTON_SIZE_PERCENT / 100;
+            u64 arrowButtonSize   = tabPageWidth  * MEMORY_INFO_ARROW_BUTTON_SIZE_PERCENT   / 100;
+            u64 pageIndicatorSize = tabPageHeight * MEMORY_INFO_PAGE_INDICATOR_SIZE_PERCENT / 100;
 
 
 
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       arrowButtonSize, arrowButtonSize, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        arrowButtonSize, arrowButtonSize, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      arrowButtonSize, arrowButtonSize, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      arrowButtonSize, arrowButtonSize, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, arrowButtonSize, arrowButtonSize, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,          arrowButtonSize,   arrowButtonSize,   &buttonNormalResizedImage),               NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,           arrowButtonSize,   arrowButtonSize,   &buttonHoverResizedImage),                NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,         arrowButtonSize,   arrowButtonSize,   &buttonPressedResizedImage),              NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,         arrowButtonSize,   arrowButtonSize,   &buttonFocusedResizedImage),              NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage,    arrowButtonSize,   arrowButtonSize,   &buttonFocusedHoverResizedImage),         NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(pageIndicatorImage,         pageIndicatorSize, pageIndicatorSize, &sInfoPageIndicatorResizedImage),         NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(Graphics::resizeImage(pageIndicatorSelectedImage, pageIndicatorSize, pageIndicatorSize, &sInfoPageIndicatorSelectedResizedImage), NgosStatus::ASSERTION);
 
 
 
@@ -567,6 +577,34 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
             UEFI_ASSERT_EXECUTION(sInfoRightButton->setSize(arrowButtonSize, arrowButtonSize),                                                                                                                 NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sInfoRightButton->setKeyboardEventHandler(onInfoRightButtonKeyboardEvent),                                                                                                   NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(sInfoRightButton->setPressEventHandler(onInfoRightButtonPressed),                                                                                                            NgosStatus::ASSERTION);
+
+
+
+            u64 pageIndicatorPosX = (tabPageWidth - pageIndicatorSize * sInfoPages.getSize()) / 2;
+            u64 pageIndicatorPosY = tabPageHeight * MEMORY_INFO_PAGE_INDICATOR_POSITION_Y_PERCENT / 100;
+
+
+
+            for (i64 i = 0; i < (i64)sInfoPages.getSize(); ++i)
+            {
+                ImageWidget *pageIndicatorImageWidget;
+
+                if (i == 0)
+                {
+                    pageIndicatorImageWidget = new ImageWidget(pageIndicatorSelectedImage, sInfoPageIndicatorSelectedResizedImage, systemInformationTabPageWidget);
+                }
+                else
+                {
+                    pageIndicatorImageWidget = new ImageWidget(pageIndicatorImage, sInfoPageIndicatorResizedImage, systemInformationTabPageWidget);
+                }
+
+                UEFI_ASSERT_EXECUTION(pageIndicatorImageWidget->setPosition(pageIndicatorPosX + i * pageIndicatorSize, pageIndicatorPosY), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(pageIndicatorImageWidget->setSize(pageIndicatorSize, pageIndicatorSize),                             NgosStatus::ASSERTION);
+
+
+
+                UEFI_ASSERT_EXECUTION(sInfoPageIndicators.append(pageIndicatorImageWidget), NgosStatus::ASSERTION);
+            }
         }
     }
     else
@@ -1290,6 +1328,8 @@ NgosStatus MemoryTestGUI::showFirstInfoPage()
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
 
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.at(sInfoCurrentPage)->setResizedImage(sInfoPageIndicatorResizedImage), NgosStatus::ASSERTION);
+
 
 
     sInfoCurrentPage = 0;
@@ -1302,6 +1342,8 @@ NgosStatus MemoryTestGUI::showFirstInfoPage()
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
+
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.first()->setResizedImage(sInfoPageIndicatorSelectedResizedImage), NgosStatus::ASSERTION);
 
 
 
@@ -1346,6 +1388,8 @@ NgosStatus MemoryTestGUI::showLastInfoPage()
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
 
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.at(sInfoCurrentPage)->setResizedImage(sInfoPageIndicatorResizedImage), NgosStatus::ASSERTION);
+
 
 
     sInfoCurrentPage = sInfoPages.getSize() - 1;
@@ -1358,6 +1402,8 @@ NgosStatus MemoryTestGUI::showLastInfoPage()
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
+
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.last()->setResizedImage(sInfoPageIndicatorSelectedResizedImage), NgosStatus::ASSERTION);
 
 
 
@@ -2234,6 +2280,8 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
 
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.at(sInfoCurrentPage)->setResizedImage(sInfoPageIndicatorResizedImage), NgosStatus::ASSERTION);
+
 
 
     --sInfoCurrentPage;
@@ -2246,6 +2294,8 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
+
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.at(sInfoCurrentPage)->setResizedImage(sInfoPageIndicatorSelectedResizedImage), NgosStatus::ASSERTION);
 
 
 
@@ -2291,6 +2341,8 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
 
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.at(sInfoCurrentPage)->setResizedImage(sInfoPageIndicatorResizedImage), NgosStatus::ASSERTION);
+
 
 
     ++sInfoCurrentPage;
@@ -2303,6 +2355,8 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
+
+    UEFI_ASSERT_EXECUTION(sInfoPageIndicators.at(sInfoCurrentPage)->setResizedImage(sInfoPageIndicatorSelectedResizedImage), NgosStatus::ASSERTION);
 
 
 

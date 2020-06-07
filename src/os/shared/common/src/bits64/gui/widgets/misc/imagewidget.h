@@ -20,6 +20,9 @@ public:
     NgosStatus setImage(Image *image); // TEST: NO
     Image* getImage() const; // TEST: NO
 
+    NgosStatus setResizedImage(Image *image); // TEST: NO
+    Image* getResizedImage() const; // TEST: NO
+
 private:
     Image *mImage;
     Image *mResizedImage;

@@ -82,6 +82,9 @@ private:
     static TabButton                             *sTestTabButton;
     static TabButton                             *sSummaryTabButton;
     static ArrayList<ArrayList<PanelWidget *> *>  sInfoPages;
+    static ArrayList<ImageWidget *>               sInfoPageIndicators;
+    static Image                                 *sInfoPageIndicatorResizedImage;
+    static Image                                 *sInfoPageIndicatorSelectedResizedImage;
     static u64                                    sInfoCurrentPage;
     static Button                                *sInfoLeftButton;
     static Button                                *sInfoRightButton;
