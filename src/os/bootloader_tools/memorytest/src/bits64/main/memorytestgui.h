@@ -36,6 +36,7 @@ private:
     static NgosStatus addMemoryInfoPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryInfoPanelImage, Image *memoryInfoPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *memoryDeviceDisabledImage, Image *memoryDeviceDisabledResizedImage, TabPageWidget *tabPageWidget, const DmiMemoryDevice &memoryDevice); // TEST: NO
     static NgosStatus addIssueEntry(Image *icon, const char8 *description); // TEST: NO
     static NgosStatus fillIssuesTable(); // TEST: NO
+    static NgosStatus addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, const DmiMemoryDevice &memoryDevice); // TEST: NO
     static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO
     static NgosStatus fillSummaryTable(); // TEST: NO
 
@@ -44,6 +45,8 @@ private:
 
     static NgosStatus showFirstInfoPage(); // TEST: NO
     static NgosStatus showLastInfoPage(); // TEST: NO
+    static NgosStatus showFirstTestPage(); // TEST: NO
+    static NgosStatus showLastTestPage(); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
@@ -62,6 +65,8 @@ private:
     static NgosStatus onInfoLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onInfoRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onTestLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onTestRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
@@ -73,6 +78,8 @@ private:
     static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
     static NgosStatus onInfoLeftButtonPressed(); // TEST: NO
     static NgosStatus onInfoRightButtonPressed(); // TEST: NO
+    static NgosStatus onTestLeftButtonPressed(); // TEST: NO
+    static NgosStatus onTestRightButtonPressed(); // TEST: NO
 
     static Button                                *sRebootButton;
     static Button                                *sShutdownButton;
@@ -91,8 +98,17 @@ private:
     static Image                                 *sWarningImage;
     static Image                                 *sCriticalImage;
     static TableWidget                           *sIssuesTableWidget;
+    static WrapperWidget                         *sTestSettingsWrapperWidget;
+    static WrapperWidget                         *sTestRunningWrapperWidget;
     static Image                                 *sStartImage;
     static Image                                 *sStopImage;
+    static ArrayList<ArrayList<PanelWidget *> *>  sTestPages;
+    static ArrayList<ImageWidget *>               sTestPageIndicators;
+    static Image                                 *sTestPageIndicatorResizedImage;
+    static Image                                 *sTestPageIndicatorSelectedResizedImage;
+    static u64                                    sTestCurrentPage;
+    static Button                                *sTestLeftButton;
+    static Button                                *sTestRightButton;
     static LabelWidget                           *sSummaryTotalLabelWidget;
     static TableWidget                           *sSummaryTableWidget;
     static u64                                    sSummaryTotal;
