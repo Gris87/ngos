@@ -13,11 +13,11 @@
         <file>assets/images/console.9.png</file>
         <file>assets/images/critical.png</file>
         <file>assets/images/cursor.png</file>
-        <file>assets/images/info_panel.9.png</file>
         <file>assets/images/issues.png</file>
         <file>assets/images/memory_device.png</file>
         <file>assets/images/memory_device_disabled.png</file>
         <file>assets/images/memory_info_panel.9.png</file>
+        <file>assets/images/memory_test_panel.9.png</file>
         <file>assets/images/page_indicator.png</file>
         <file>assets/images/page_indicator_selected.png</file>
         <file>assets/images/reboot.png</file>
@@ -30,6 +30,8 @@
         <file>assets/images/start.png</file>
         <file>assets/images/stop.png</file>
         <file>assets/images/summary.png</file>
+        <file>assets/images/summary_info_panel.9.png</file>
+        <file>assets/images/summary_test_panel.9.png</file>
         <file>assets/images/system_information.png</file>
         <file>assets/images/tab_focused.9.png</file>
         <file>assets/images/tab_focused_hover.9.png</file>
