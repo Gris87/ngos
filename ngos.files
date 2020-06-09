@@ -460,6 +460,7 @@ src/os/bootloader_tools/memorytest/assets/images/button_pressed.9.png
 src/os/bootloader_tools/memorytest/assets/images/console.9.png
 src/os/bootloader_tools/memorytest/assets/images/critical.png
 src/os/bootloader_tools/memorytest/assets/images/cursor.png
+src/os/bootloader_tools/memorytest/assets/images/full_test.png
 src/os/bootloader_tools/memorytest/assets/images/issues.png
 src/os/bootloader_tools/memorytest/assets/images/memory_device.png
 src/os/bootloader_tools/memorytest/assets/images/memory_device_disabled.png
@@ -467,6 +468,7 @@ src/os/bootloader_tools/memorytest/assets/images/memory_info_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/memory_test_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/page_indicator.png
 src/os/bootloader_tools/memorytest/assets/images/page_indicator_selected.png
+src/os/bootloader_tools/memorytest/assets/images/quick_test.png
 src/os/bootloader_tools/memorytest/assets/images/reboot.png
 src/os/bootloader_tools/memorytest/assets/images/selectedtab_focused.9.png
 src/os/bootloader_tools/memorytest/assets/images/selectedtab_focused_hover.9.png

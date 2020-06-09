@@ -13,6 +13,7 @@
         <file>assets/images/console.9.png</file>
         <file>assets/images/critical.png</file>
         <file>assets/images/cursor.png</file>
+        <file>assets/images/full_test.png</file>
         <file>assets/images/issues.png</file>
         <file>assets/images/memory_device.png</file>
         <file>assets/images/memory_device_disabled.png</file>
@@ -20,6 +21,7 @@
         <file>assets/images/memory_test_panel.9.png</file>
         <file>assets/images/page_indicator.png</file>
         <file>assets/images/page_indicator_selected.png</file>
+        <file>assets/images/quick_test.png</file>
         <file>assets/images/reboot.png</file>
         <file>assets/images/selectedtab_focused.9.png</file>
         <file>assets/images/selectedtab_focused_hover.9.png</file>
