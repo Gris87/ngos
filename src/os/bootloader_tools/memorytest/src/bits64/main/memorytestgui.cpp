@@ -167,6 +167,11 @@
 #define MEMORY_TEST_SIZE_WIDTH_PERCENT      97
 #define MEMORY_TEST_SIZE_HEIGHT_PERCENT     14
 
+#define MEMORY_TEST_START_BUTTON_POSITION_X_PERCENT 2
+#define MEMORY_TEST_START_BUTTON_POSITION_Y_PERCENT 71
+#define MEMORY_TEST_START_BUTTON_WIDTH_PERCENT      97
+#define MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT     28
+
 #define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
 #define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
 #define SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      19
@@ -222,9 +227,8 @@ Image                                 *MemoryTestGUI::sCriticalImage;
 TableWidget                           *MemoryTestGUI::sIssuesTableWidget;
 WrapperWidget                         *MemoryTestGUI::sTestSettingsWrapperWidget;
 WrapperWidget                         *MemoryTestGUI::sTestRunningWrapperWidget;
-Image                                 *MemoryTestGUI::sStartImage;
-Image                                 *MemoryTestGUI::sStopImage;
 ArrayList<ArrayList<PanelWidget *> *>  MemoryTestGUI::sTestPages;
+ArrayList<ArrayList<Button *> *>       MemoryTestGUI::sTestButtonPages;
 ArrayList<ImageWidget *>               MemoryTestGUI::sTestPageIndicators;
 Image                                 *MemoryTestGUI::sTestPageIndicatorResizedImage;
 Image                                 *MemoryTestGUI::sTestPageIndicatorSelectedResizedImage;
@@ -305,6 +309,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     Image *arrowRightImage;
     Image *pageIndicatorImage;
     Image *pageIndicatorSelectedImage;
+    Image *startImage;
+    Image *stopImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -339,6 +345,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/summary_test_panel.9.png",        &summaryTestPanelImage),        NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/memory_test_panel.9.png",         &memoryTestPanelImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/memory_device.png",               &memoryDeviceImage),            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/start.png",                       &startImage),                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &stopImage),                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_header.9.png",              &tableHeaderImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
@@ -346,8 +354,6 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                      &cursorImage),                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/warning.png",                     &sWarningImage),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/critical.png",                    &sCriticalImage),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/start.png",                       &sStartImage),                  NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &sStopImage),                   NgosStatus::ASSERTION);
 
 
 
@@ -674,13 +680,15 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     }
     else
     {
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryInfoPanelImage, memoryInfoRegionWidth, memoryInfoPanelHeight, &memoryInfoPanelResizedImage), NgosStatus::ASSERTION);
+        u64 memoryInfoPanelWidth = memoryInfoRegionWidth;
+
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryInfoPanelImage, memoryInfoPanelWidth, memoryInfoPanelHeight, &memoryInfoPanelResizedImage), NgosStatus::ASSERTION);
 
 
 
         for (i64 i = 0; i < (i64)memoryDevices.getSize(); ++i)
         {
-            UEFI_ASSERT_EXECUTION(addMemoryInfoPanel(0, memoryInfoRegionPositionX, memoryInfoRegionPositionY + i * memoryInfoPanelHeight, memoryInfoRegionWidth, memoryInfoPanelHeight, memoryInfoPanelImage, memoryInfoPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDeviceDisabledImage, memoryDeviceDisabledResizedImage, systemInformationTabPageWidget, memoryDevices.at(i)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(addMemoryInfoPanel(0, memoryInfoRegionPositionX, memoryInfoRegionPositionY + i * memoryInfoPanelHeight, memoryInfoPanelWidth, memoryInfoPanelHeight, memoryInfoPanelImage, memoryInfoPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDeviceDisabledImage, memoryDeviceDisabledResizedImage, systemInformationTabPageWidget, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
     }
 
@@ -778,15 +786,22 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     if (DMI::getNumberOfInstalledMemoryDevices() > 2)
     {
-        u64 memoryTestPanelWidth = memoryTestRegionWidth / 2;
+        u64 memoryTestPanelWidth        = memoryTestRegionWidth / 2;
+        u64 memoryTestStartButtonWidth  = (memoryTestPanelWidth - memoryTestImageSize) * MEMORY_TEST_START_BUTTON_WIDTH_PERCENT / 100;
+        u64 memoryTestStartButtonHeight = memoryTestPanelHeight * MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT / 100;
 
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryTestPanelImage, memoryTestPanelWidth, memoryTestPanelHeight, &memoryTestPanelResizedImage), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryTestPanelImage,    memoryTestPanelWidth,       memoryTestPanelHeight,       &memoryTestPanelResizedImage),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
 
 
 
         for (i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
-            UEFI_ASSERT_EXECUTION(addMemoryTestPanel(i / 4, memoryTestRegionPositionX + (i % 2) * memoryTestPanelWidth, memoryTestRegionPositionY + ((i >> 1) % 2) * memoryTestPanelHeight, memoryTestPanelWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDevices.at(i)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(addMemoryTestPanel(i / 4, memoryTestRegionPositionX + (i % 2) * memoryTestPanelWidth, memoryTestRegionPositionY + ((i >> 1) % 2) * memoryTestPanelHeight, memoryTestPanelWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
 
 
@@ -856,13 +871,22 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     }
     else
     {
-        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryTestPanelImage, memoryTestRegionWidth, memoryTestPanelHeight, &memoryTestPanelResizedImage), NgosStatus::ASSERTION);
+        u64 memoryTestPanelWidth        = memoryTestRegionWidth;
+        u64 memoryTestStartButtonWidth  = (memoryTestPanelWidth - memoryTestImageSize) * MEMORY_TEST_START_BUTTON_WIDTH_PERCENT / 100;
+        u64 memoryTestStartButtonHeight = memoryTestPanelHeight * MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT / 100;
+
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryTestPanelImage,    memoryTestPanelWidth,       memoryTestPanelHeight,       &memoryTestPanelResizedImage),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonNormalImage,       memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonNormalResizedImage),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonHoverImage,        memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonHoverResizedImage),        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonPressedImage,      memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonPressedResizedImage),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedImage,      memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonFocusedResizedImage),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(Graphics::resizeImage(buttonFocusedHoverImage, memoryTestStartButtonWidth, memoryTestStartButtonHeight, &buttonFocusedHoverResizedImage), NgosStatus::ASSERTION);
 
 
 
         for (i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
-            UEFI_ASSERT_EXECUTION(addMemoryTestPanel(0, memoryTestRegionPositionX, memoryTestRegionPositionY + i * memoryTestPanelHeight, memoryTestRegionWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDevices.at(i)), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(addMemoryTestPanel(0, memoryTestRegionPositionX, memoryTestRegionPositionY + i * memoryTestPanelHeight, memoryTestPanelWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
     }
 
@@ -1377,16 +1401,27 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, const DmiMemoryDevice &memoryDevice)
+NgosStatus MemoryTestGUI::addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *buttonNormalImage, Image *buttonHoverImage, Image *buttonPressedImage, Image *buttonFocusedImage, Image *buttonFocusedHoverImage, Image *buttonNormalResizedImage, Image *buttonHoverResizedImage, Image *buttonPressedResizedImage, Image *buttonFocusedResizedImage, Image *buttonFocusedHoverResizedImage, Image *startImage, const DmiMemoryDevice &memoryDevice)
 {
-    UEFI_LT((" | pageIndex = %u, posX = %u, posY = %u, width = %u, height = %u, memoryTestPanelImage = 0x%p, memoryTestPanelResizedImage = 0x%p, memoryDeviceImage = 0x%p, memoryDeviceResizedImage = 0x%p, memoryDevice = ...", pageIndex, posX, posY, width, height, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage));
+    UEFI_LT((" | pageIndex = %u, posX = %u, posY = %u, width = %u, height = %u, memoryTestPanelImage = 0x%p, memoryTestPanelResizedImage = 0x%p, memoryDeviceImage = 0x%p, memoryDeviceResizedImage = 0x%p, buttonNormalImage = 0x%p, buttonHoverImage = 0x%p, buttonPressedImage = 0x%p, buttonFocusedImage = 0x%p, buttonFocusedHoverImage = 0x%p, buttonNormalResizedImage = 0x%p, buttonHoverResizedImage = 0x%p, buttonPressedResizedImage = 0x%p, buttonFocusedResizedImage = 0x%p, buttonFocusedHoverResizedImage = 0x%p, startImage = 0x%p, memoryDevice = ...", pageIndex, posX, posY, width, height, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage));
 
-    UEFI_ASSERT(width > 0,                   "width is zero",                       NgosStatus::ASSERTION);
-    UEFI_ASSERT(height > 0,                  "height is zero",                      NgosStatus::ASSERTION);
-    UEFI_ASSERT(memoryTestPanelImage,        "memoryTestPanelImage is null",        NgosStatus::ASSERTION);
-    UEFI_ASSERT(memoryTestPanelResizedImage, "memoryTestPanelResizedImage is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(memoryDeviceImage,           "memoryDeviceImage is null",           NgosStatus::ASSERTION);
-    UEFI_ASSERT(memoryDeviceResizedImage,    "memoryDeviceResizedImage is null",    NgosStatus::ASSERTION);
+    UEFI_ASSERT(width > 0,                      "width is zero",                          NgosStatus::ASSERTION);
+    UEFI_ASSERT(height > 0,                     "height is zero",                         NgosStatus::ASSERTION);
+    UEFI_ASSERT(memoryTestPanelImage,           "memoryTestPanelImage is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(memoryTestPanelResizedImage,    "memoryTestPanelResizedImage is null",    NgosStatus::ASSERTION);
+    UEFI_ASSERT(memoryDeviceImage,              "memoryDeviceImage is null",              NgosStatus::ASSERTION);
+    UEFI_ASSERT(memoryDeviceResizedImage,       "memoryDeviceResizedImage is null",       NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonNormalImage,              "buttonNormalImage is null",              NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonHoverImage,               "buttonHoverImage is null",               NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonPressedImage,             "buttonPressedImage is null",             NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonFocusedImage,             "buttonFocusedImage is null",             NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonFocusedHoverImage,        "buttonFocusedHoverImage is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonNormalResizedImage,       "buttonNormalResizedImage is null",       NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonHoverResizedImage,        "buttonHoverResizedImage is null",        NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonPressedResizedImage,      "buttonPressedResizedImage is null",      NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonFocusedResizedImage,      "buttonFocusedResizedImage is null",      NgosStatus::ASSERTION);
+    UEFI_ASSERT(buttonFocusedHoverResizedImage, "buttonFocusedHoverResizedImage is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(startImage,                     "startImage is null",                     NgosStatus::ASSERTION);
 
 
 
@@ -1410,6 +1445,8 @@ NgosStatus MemoryTestGUI::addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, 
     UEFI_TEST_ASSERT(memoryDevice.size != 0, NgosStatus::ASSERTION);
 
 
+
+    Button *memoryTestStartButton;
 
     // Add widgets in memoryTestPanelWidget
     {
@@ -1481,6 +1518,15 @@ NgosStatus MemoryTestGUI::addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, 
         UEFI_ASSERT_EXECUTION(memorySizeLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                                 NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(memorySizeLabelWidget->setPosition(memoryImageSize + allowedWidth * MEMORY_TEST_SIZE_POSITION_X_PERCENT / 100, height * MEMORY_TEST_SIZE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(memorySizeLabelWidget->setSize(allowedWidth                       * MEMORY_TEST_SIZE_WIDTH_PERCENT      / 100, height * MEMORY_TEST_SIZE_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+
+
+
+        memoryTestStartButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, nullptr, "Start test", memoryTestPanelWidget);
+
+        UEFI_ASSERT_EXECUTION(memoryTestStartButton->setPosition(memoryImageSize + allowedWidth * MEMORY_TEST_START_BUTTON_POSITION_X_PERCENT / 100, height * MEMORY_TEST_START_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(memoryTestStartButton->setSize(allowedWidth                       * MEMORY_TEST_START_BUTTON_WIDTH_PERCENT      / 100, height * MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(memoryTestStartButton->setKeyboardEventHandler(onTestStartButtonKeyboardEvent),                                                                                                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(memoryTestStartButton->setPressEventHandler(onTestStartButtonPressed),                                                                                                              NgosStatus::ASSERTION);
     }
 
 
@@ -1511,6 +1557,38 @@ NgosStatus MemoryTestGUI::addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, 
 
 
         UEFI_ASSERT_EXECUTION(page->append(memoryTestPanelWidget), NgosStatus::ASSERTION);
+
+        UEFI_TEST_ASSERT(page->getSize() <= 4, NgosStatus::ASSERTION);
+    }
+
+
+
+    // Add memoryTestStartButton to last page
+    {
+        ArrayList<Button *> *page;
+
+        if (pageIndex >= sTestButtonPages.getSize())
+        {
+            UEFI_TEST_ASSERT(pageIndex == sTestButtonPages.getSize(), NgosStatus::ASSERTION);
+
+
+
+            page = new ArrayList<Button *>();
+
+            UEFI_ASSERT_EXECUTION(sTestButtonPages.append(page), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            UEFI_TEST_ASSERT(pageIndex == sTestButtonPages.getSize() - 1, NgosStatus::ASSERTION);
+
+
+
+            page = sTestButtonPages.last();
+        }
+
+
+
+        UEFI_ASSERT_EXECUTION(page->append(memoryTestStartButton), NgosStatus::ASSERTION);
 
         UEFI_TEST_ASSERT(page->getSize() <= 4, NgosStatus::ASSERTION);
     }
@@ -1618,7 +1696,7 @@ NgosStatus MemoryTestGUI::focusTabFirstWidget()
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sRebootButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
-        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sRebootButton);
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->first() : (Widget *)sRebootButton);
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
@@ -1645,7 +1723,7 @@ NgosStatus MemoryTestGUI::focusTabLastWidget()
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sSystemInformationTabButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
-        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestTabButton);
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->last() : (Widget *)sTestTabButton);
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
@@ -2620,6 +2698,165 @@ NgosStatus MemoryTestGUI::onTestRightButtonKeyboardEvent(const UefiInputKey &key
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus MemoryTestGUI::onTestStartButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    Widget              *focusedWidget = GUI::getFocusedWidget();
+    ArrayList<Button *> *page          = sTestButtonPages.at(sTestCurrentPage);
+    i64                  index         = -1;
+
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
+    {
+        if (page->at(i) == focusedWidget)
+        {
+            index = i;
+
+            break;
+        }
+    }
+
+    UEFI_TEST_ASSERT(index >= 0 && index < 4, NgosStatus::ASSERTION);
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:
+        {
+            if (index >= 2)
+            {
+                return GUI::setFocusedWidget(page->at(index - 2));
+            }
+
+            return GUI::setFocusedWidget(sTestTabButton);
+        }
+        break;
+
+        case UefiInputKeyScanCode::DOWN:
+        {
+            if (index < 2)
+            {
+                if (page->getSize() == 3)
+                {
+                    return GUI::setFocusedWidget(page->at(2));
+                }
+                else
+                {
+                    if (index + 2 < (i64)page->getSize())
+                    {
+                        return GUI::setFocusedWidget(page->at(index + 2));
+                    }
+                }
+            }
+
+            return GUI::setFocusedWidget(sRebootButton);
+        }
+        break;
+
+        case UefiInputKeyScanCode::LEFT:
+        {
+            if (
+                index == 0
+                ||
+                index == 2
+               )
+            {
+                if (sTestLeftButton && sTestLeftButton->isVisible())
+                {
+                    UEFI_ASSERT_EXECUTION(onTestLeftButtonPressed(), NgosStatus::ASSERTION);
+
+                    return GUI::setFocusedWidget(sTestButtonPages.at(sTestCurrentPage)->at(index + 1));
+                }
+
+                return NgosStatus::NO_EFFECT;
+            }
+            else
+            {
+                return GUI::setFocusedWidget(page->at(index - 1));
+            }
+        }
+        break;
+
+        case UefiInputKeyScanCode::RIGHT:
+        {
+            if (
+                index == 1
+                ||
+                index == 3
+               )
+            {
+                if (sTestRightButton && sTestRightButton->isVisible())
+                {
+                    UEFI_ASSERT_EXECUTION(onTestRightButtonPressed(), NgosStatus::ASSERTION);
+
+                    page = sTestButtonPages.at(sTestCurrentPage);
+
+                    if (index - 1 < (i64)page->getSize())
+                    {
+                        return GUI::setFocusedWidget(page->at(index - 1));
+                    }
+
+                    return GUI::setFocusedWidget(page->first());
+                }
+
+                return NgosStatus::NO_EFFECT;
+            }
+            else
+            {
+                if (index + 1 < (i64)page->getSize())
+                {
+                    return GUI::setFocusedWidget(page->at(index + 1));
+                }
+
+                return NgosStatus::NO_EFFECT;
+            }
+        }
+        break;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB:
+        {
+            if (index + 1 < (i64)page->getSize())
+            {
+                return GUI::setFocusedWidget(page->at(index + 1));
+            }
+
+            if (sTestRightButton && sTestRightButton->isVisible())
+            {
+                UEFI_ASSERT_EXECUTION(onTestRightButtonPressed(), NgosStatus::ASSERTION);
+
+                return GUI::setFocusedWidget(sTestButtonPages.at(sTestCurrentPage)->first());
+            }
+
+            return GUI::setFocusedWidget(sRebootButton);
+        }
+        break;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
 NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
@@ -3117,6 +3354,28 @@ NgosStatus MemoryTestGUI::onTestRightButtonPressed()
             UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sTestLeftButton), NgosStatus::ASSERTION);
         }
     }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::onTestStartButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(false), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(true),   NgosStatus::ASSERTION);
 
 
 

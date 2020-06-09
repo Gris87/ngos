@@ -36,7 +36,7 @@ private:
     static NgosStatus addMemoryInfoPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryInfoPanelImage, Image *memoryInfoPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *memoryDeviceDisabledImage, Image *memoryDeviceDisabledResizedImage, TabPageWidget *tabPageWidget, const DmiMemoryDevice &memoryDevice); // TEST: NO
     static NgosStatus addIssueEntry(Image *icon, const char8 *description); // TEST: NO
     static NgosStatus fillIssuesTable(); // TEST: NO
-    static NgosStatus addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, const DmiMemoryDevice &memoryDevice); // TEST: NO
+    static NgosStatus addMemoryTestPanel(u64 pageIndex, u64 posX, u64 posY, u64 width, u64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *buttonNormalImage, Image *buttonHoverImage, Image *buttonPressedImage, Image *buttonFocusedImage, Image *buttonFocusedHoverImage, Image *buttonNormalResizedImage, Image *buttonHoverResizedImage, Image *buttonPressedResizedImage, Image *buttonFocusedResizedImage, Image *buttonFocusedHoverResizedImage, Image *startImage, const DmiMemoryDevice &memoryDevice); // TEST: NO
     static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO
     static NgosStatus fillSummaryTable(); // TEST: NO
 
@@ -67,6 +67,7 @@ private:
     static NgosStatus onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onTestStartButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
@@ -80,6 +81,7 @@ private:
     static NgosStatus onInfoRightButtonPressed(); // TEST: NO
     static NgosStatus onTestLeftButtonPressed(); // TEST: NO
     static NgosStatus onTestRightButtonPressed(); // TEST: NO
+    static NgosStatus onTestStartButtonPressed(); // TEST: NO
 
     static Button                                *sRebootButton;
     static Button                                *sShutdownButton;
@@ -100,9 +102,8 @@ private:
     static TableWidget                           *sIssuesTableWidget;
     static WrapperWidget                         *sTestSettingsWrapperWidget;
     static WrapperWidget                         *sTestRunningWrapperWidget;
-    static Image                                 *sStartImage;
-    static Image                                 *sStopImage;
     static ArrayList<ArrayList<PanelWidget *> *>  sTestPages;
+    static ArrayList<ArrayList<Button *> *>       sTestButtonPages;
     static ArrayList<ImageWidget *>               sTestPageIndicators;
     static Image                                 *sTestPageIndicatorResizedImage;
     static Image                                 *sTestPageIndicatorSelectedResizedImage;
