@@ -547,9 +547,9 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
             &&
             isUpdatesEnabled()
             &&
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             i64 oldPositionX = mPositionX;
@@ -693,9 +693,9 @@ NgosStatus Widget::setVisible(bool visible)
         mVisible = visible;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);

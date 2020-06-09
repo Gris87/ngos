@@ -274,6 +274,29 @@ NgosStatus TabButton::invalidate()
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mSelectedFocusedImage,      mWidth, mHeight, &mSelectedFocusedResizedImage),      NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mSelectedFocusedHoverImage, mWidth, mHeight, &mSelectedFocusedHoverResizedImage), NgosStatus::ASSERTION);
     }
+    else
+    {
+        COMMON_TEST_ASSERT(mNormalResizedImage->getWidth()                == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mNormalResizedImage->getHeight()               == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mHoverResizedImage->getWidth()                 == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mHoverResizedImage->getHeight()                == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mPressedResizedImage->getWidth()               == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mPressedResizedImage->getHeight()              == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedResizedImage->getWidth()               == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedResizedImage->getHeight()              == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedHoverResizedImage->getWidth()          == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedHoverResizedImage->getHeight()         == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedNormalResizedImage->getWidth()        == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedNormalResizedImage->getHeight()       == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedHoverResizedImage->getWidth()         == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedHoverResizedImage->getHeight()        == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedPressedResizedImage->getWidth()       == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedPressedResizedImage->getHeight()      == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedFocusedResizedImage->getWidth()       == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedFocusedResizedImage->getHeight()      == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedFocusedHoverResizedImage->getWidth()  == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mSelectedFocusedHoverResizedImage->getHeight() == mHeight, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -523,9 +546,9 @@ NgosStatus TabButton::setState(WidgetState state)
         mState = state;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
@@ -562,9 +585,9 @@ NgosStatus TabButton::setSelected(bool selected)
         mSelected = selected;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);

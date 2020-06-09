@@ -101,6 +101,56 @@ Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image
     }
 }
 
+Button::Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, Image *contentResizedImage, Image *badgeImage, const char8 *text, Widget *parent)
+    : Widget(parent)
+    , mNormalImage(normalImage)
+    , mHoverImage(hoverImage)
+    , mPressedImage(pressedImage)
+    , mFocusedImage(focusedImage)
+    , mFocusedHoverImage(focusedHoverImage)
+    , mNormalResizedImage(normalResizedImage)
+    , mHoverResizedImage(hoverResizedImage)
+    , mPressedResizedImage(pressedResizedImage)
+    , mFocusedResizedImage(focusedResizedImage)
+    , mFocusedHoverResizedImage(focusedHoverResizedImage)
+    , mImageWidget(new ImageWidget(contentImage, contentResizedImage, this))
+    , mBadgeWidget(nullptr)
+    , mLabelWidget(nullptr)
+    , mState(WidgetState::NORMAL)
+    , mPredefined(true)
+    , mKeyboardEventHandler(nullptr)
+    , mPressEventHandler(nullptr)
+    , mPressEventHandlerObject(nullptr)
+{
+    COMMON_LT((" | normalImage = 0x%p, hoverImage = 0x%p, pressedImage = 0x%p, focusedImage = 0x%p, focusedHoverImage = 0x%p, normalResizedImage = 0x%p, hoverResizedImage = 0x%p, pressedResizedImage = 0x%p, focusedResizedImage = 0x%p, focusedHoverResizedImage = 0x%p, contentImage = 0x%p, contentResizedImage = 0x%p, badgeImage = 0x%p, text = 0x%p, parent = 0x%p", normalImage, hoverImage, pressedImage, focusedImage, focusedHoverImage, normalResizedImage, hoverResizedImage, pressedResizedImage, focusedResizedImage, focusedHoverResizedImage, contentImage, contentResizedImage, badgeImage, text, parent));
+
+    COMMON_ASSERT(normalImage,              "normalImage is null");
+    COMMON_ASSERT(hoverImage,               "hoverImage is null");
+    COMMON_ASSERT(pressedImage,             "pressedImage is null");
+    COMMON_ASSERT(focusedImage,             "focusedImage is null");
+    COMMON_ASSERT(focusedHoverImage,        "focusedHoverImage is null");
+    COMMON_ASSERT(normalResizedImage,       "normalResizedImage is null");
+    COMMON_ASSERT(hoverResizedImage,        "hoverResizedImage is null");
+    COMMON_ASSERT(pressedResizedImage,      "pressedResizedImage is null");
+    COMMON_ASSERT(focusedResizedImage,      "focusedResizedImage is null");
+    COMMON_ASSERT(focusedHoverResizedImage, "focusedHoverResizedImage is null");
+    COMMON_ASSERT(contentImage,             "contentImage is null");
+    COMMON_ASSERT(contentResizedImage,      "contentResizedImage is null");
+    COMMON_ASSERT(parent,                   "parent is null");
+
+
+
+    if (badgeImage)
+    {
+        mBadgeWidget = new ImageWidget(badgeImage, this);
+    }
+
+    if (text != nullptr && text[0] != 0)
+    {
+        mLabelWidget = new LabelWidget(text, this);
+    }
+}
+
 Button::~Button()
 {
     COMMON_LT((""));
@@ -181,6 +231,19 @@ NgosStatus Button::invalidate()
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPressedImage,      mWidth, mHeight, &mPressedResizedImage),      NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedImage,      mWidth, mHeight, &mFocusedResizedImage),      NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mFocusedHoverImage, mWidth, mHeight, &mFocusedHoverResizedImage), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        COMMON_TEST_ASSERT(mNormalResizedImage->getWidth()        == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mNormalResizedImage->getHeight()       == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mHoverResizedImage->getWidth()         == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mHoverResizedImage->getHeight()        == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mPressedResizedImage->getWidth()       == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mPressedResizedImage->getHeight()      == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedResizedImage->getWidth()       == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedResizedImage->getHeight()      == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedHoverResizedImage->getWidth()  == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mFocusedHoverResizedImage->getHeight() == mHeight, NgosStatus::ASSERTION);
     }
 
 
@@ -440,9 +503,9 @@ NgosStatus Button::setState(WidgetState state)
         mState = state;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);

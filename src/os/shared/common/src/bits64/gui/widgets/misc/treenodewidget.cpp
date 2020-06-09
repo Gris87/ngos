@@ -326,9 +326,9 @@ NgosStatus TreeNodeWidget::setState(WidgetState state)
         mState = state;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);

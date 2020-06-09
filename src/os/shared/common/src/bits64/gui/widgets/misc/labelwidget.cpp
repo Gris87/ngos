@@ -266,9 +266,9 @@ NgosStatus LabelWidget::setText(const char8 *text)
     mText = text;
 
     if (
-        mWidth // mWidth > 0
+        mWidth > 0
         &&
-        mHeight // mHeight > 0
+        mHeight > 0
        )
     {
         COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
@@ -302,9 +302,9 @@ NgosStatus LabelWidget::setColor(const RgbaPixel &color)
     mColor = color;
 
     if (
-        mWidth // mWidth > 0
+        mWidth > 0
         &&
-        mHeight // mHeight > 0
+        mHeight > 0
        )
     {
         COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
@@ -340,9 +340,9 @@ NgosStatus LabelWidget::setHorizontalAlignment(HorizontalAlignment alignment)
         mHorizontalAlignment = alignment;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
@@ -379,9 +379,9 @@ NgosStatus LabelWidget::setVerticalAlignment(VerticalAlignment alignment)
         mVerticalAlignment = alignment;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);

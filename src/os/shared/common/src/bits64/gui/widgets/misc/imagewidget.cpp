@@ -9,7 +9,6 @@
 ImageWidget::ImageWidget(Image *image, Widget *parent)
     : Widget(parent)
     , mImage(image)
-    , mResizedImage(nullptr)
     , mPredefined(false)
 {
     COMMON_LT((" | image = 0x%p, parent = 0x%p", image, parent));
@@ -21,7 +20,6 @@ ImageWidget::ImageWidget(Image *image, Widget *parent)
 ImageWidget::ImageWidget(Image *image, Image *resizedImage, Widget *parent)
     : Widget(parent)
     , mImage(image)
-    , mResizedImage(resizedImage)
     , mPredefined(true)
 {
     COMMON_LT((" | image = 0x%p, resizedImage = 0x%p, parent = 0x%p", image, resizedImage, parent));
@@ -29,6 +27,10 @@ ImageWidget::ImageWidget(Image *image, Image *resizedImage, Widget *parent)
     COMMON_ASSERT(image,        "image is null");
     COMMON_ASSERT(resizedImage, "resizedImage is null");
     COMMON_ASSERT(parent,       "parent is null");
+
+
+
+    mOwnResultImage = resizedImage;
 }
 
 ImageWidget::~ImageWidget()
@@ -39,9 +41,9 @@ ImageWidget::~ImageWidget()
 
     if (!mPredefined)
     {
-        if (mResizedImage)
+        if (mOwnResultImage)
         {
-            delete mResizedImage;
+            delete mOwnResultImage;
         }
     }
 }
@@ -54,15 +56,18 @@ NgosStatus ImageWidget::invalidate()
 
     if (!mPredefined)
     {
-        if (mResizedImage)
+        if (mOwnResultImage)
         {
-            delete mResizedImage;
+            delete mOwnResultImage;
         }
 
-        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mResizedImage), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
     }
-
-    mOwnResultImage = mResizedImage;
+    else
+    {
+        COMMON_TEST_ASSERT(mOwnResultImage->getWidth()  == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mOwnResultImage->getHeight() == mHeight, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -102,9 +107,9 @@ NgosStatus ImageWidget::setImage(Image *image)
     mImage = image;
 
     if (
-        mWidth // mWidth > 0
+        mWidth > 0
         &&
-        mHeight // mHeight > 0
+        mHeight > 0
        )
     {
         COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
@@ -142,12 +147,12 @@ NgosStatus ImageWidget::setResizedImage(Image *image)
 
 
 
-    mResizedImage = image;
+    mOwnResultImage = image;
 
     if (
-        mWidth // mWidth > 0
+        mWidth > 0
         &&
-        mHeight // mHeight > 0
+        mHeight > 0
        )
     {
         COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
@@ -162,15 +167,4 @@ NgosStatus ImageWidget::setResizedImage(Image *image)
 
 
     return NgosStatus::OK;
-}
-
-Image* ImageWidget::getResizedImage() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-    COMMON_TEST_ASSERT(mPredefined, nullptr);
-
-
-
-    return mResizedImage;
 }

@@ -440,7 +440,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(Hex),                                             1);
         TEST_ASSERT_EQUALS(sizeof(HorizontalAlignment),                             1);
         TEST_ASSERT_EQUALS(sizeof(Image),                                           32);
-        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                     112);
+        TEST_ASSERT_EQUALS(sizeof(ImageWidget),                                     104);
         TEST_ASSERT_EQUALS(sizeof(InflateBlockType),                                1);
         TEST_ASSERT_EQUALS(sizeof(InflateCode),                                     4);
         TEST_ASSERT_EQUALS(sizeof(InflateCodeType),                                 1);

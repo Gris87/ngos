@@ -68,6 +68,11 @@ NgosStatus PanelWidget::invalidate()
 
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPanelImage, mWidth, mHeight, &mOwnResultImage), NgosStatus::ASSERTION);
     }
+    else
+    {
+        COMMON_TEST_ASSERT(mOwnResultImage->getWidth()  == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mOwnResultImage->getHeight() == mHeight, NgosStatus::ASSERTION);
+    }
 
 
 

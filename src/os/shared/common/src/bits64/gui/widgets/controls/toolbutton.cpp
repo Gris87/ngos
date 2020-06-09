@@ -146,6 +146,15 @@ NgosStatus ToolButton::invalidate()
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mHoverImage,   mWidth, mHeight, &mHoverResizedImage),   NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(Graphics::resizeImage(mPressedImage, mWidth, mHeight, &mPressedResizedImage), NgosStatus::ASSERTION);
     }
+    else
+    {
+        COMMON_TEST_ASSERT(mNormalResizedImage->getWidth()   == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mNormalResizedImage->getHeight()  == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mHoverResizedImage->getWidth()    == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mHoverResizedImage->getHeight()   == mHeight, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mPressedResizedImage->getWidth()  == mWidth,  NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(mPressedResizedImage->getHeight() == mHeight, NgosStatus::ASSERTION);
+    }
 
 
 
@@ -393,9 +402,9 @@ NgosStatus ToolButton::setState(WidgetState state)
         mState = state;
 
         if (
-            mWidth // mWidth > 0
+            mWidth > 0
             &&
-            mHeight // mHeight > 0
+            mHeight > 0
            )
         {
             COMMON_ASSERT_EXECUTION(repaint(), NgosStatus::ASSERTION);
