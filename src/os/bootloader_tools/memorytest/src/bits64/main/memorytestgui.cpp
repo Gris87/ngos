@@ -186,6 +186,10 @@
 #define MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT     28
 #define MEMORY_TEST_START_BUTTON_WIDTH_PROPORTION   4
 
+#define TEST_STOP_BUTTON_POSITION_X_PERCENT 95
+#define TEST_STOP_BUTTON_POSITION_Y_PERCENT 0
+#define TEST_STOP_BUTTON_SIZE_PERCENT       5
+
 #define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
 #define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
 #define SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      19
@@ -252,6 +256,8 @@ u64                                    MemoryTestGUI::sTestCurrentPage;
 Button                                *MemoryTestGUI::sTestLeftButton;
 Button                                *MemoryTestGUI::sTestRightButton;
 WrapperWidget                         *MemoryTestGUI::sTestRunningWrapperWidget;
+Button                                *MemoryTestGUI::sTestStopButton;
+Widget                                *MemoryTestGUI::sLastFocusedWidget;
 LabelWidget                           *MemoryTestGUI::sSummaryTotalLabelWidget;
 TableWidget                           *MemoryTestGUI::sSummaryTableWidget;
 u64                                    MemoryTestGUI::sSummaryTotal;
@@ -996,6 +1002,19 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(false),                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setPosition(0, 0),                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setSize(tabPageWidth, tabPageHeight), NgosStatus::ASSERTION);
+
+
+
+    u64 testStopButtonSize = tabPageWidth * TEST_STOP_BUTTON_SIZE_PERCENT / 100;
+
+
+
+    sTestStopButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, stopImage, nullptr, "", sTestRunningWrapperWidget);
+
+    UEFI_ASSERT_EXECUTION(sTestStopButton->setPosition(tabPageWidth * TEST_STOP_BUTTON_POSITION_X_PERCENT / 100, tabPageHeight * TEST_STOP_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestStopButton->setSize(testStopButtonSize, testStopButtonSize),                                                                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestStopButton->setKeyboardEventHandler(onTestStopButtonKeyboardEvent),                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestStopButton->setPressEventHandler(onTestStopButtonPressed),                                                                                    NgosStatus::ASSERTION);
 
 
 
@@ -1878,7 +1897,7 @@ NgosStatus MemoryTestGUI::focusTabFirstWidget()
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sRebootButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
-        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestModeButton);
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestRunningWrapperWidget->isVisible() ? (Widget *)sTestStopButton : (Widget *)sTestModeButton);
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
@@ -1905,7 +1924,7 @@ NgosStatus MemoryTestGUI::focusTabLastWidget()
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sSystemInformationTabButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
-        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->last() : (Widget *)sTestTabButton);
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestRunningWrapperWidget->isVisible() ? (Widget *)sTestStopButton : (sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->last() : (Widget *)sTestTabButton));
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
@@ -2174,6 +2193,34 @@ NgosStatus MemoryTestGUI::showLastTestPage()
     {
         UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sTestLeftButton), NgosStatus::ASSERTION);
     }
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::startTest(i64 id)
+{
+    UEFI_LT((" | id = %d", id));
+
+    UEFI_ASSERT(id >= -1, "id is invalid", NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(false), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(true),   NgosStatus::ASSERTION);
+
+    sLastFocusedWidget = GUI::getFocusedWidget();
+
+    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sTestStopButton), NgosStatus::ASSERTION);
 
 
 
@@ -3212,6 +3259,42 @@ NgosStatus MemoryTestGUI::onTestStartButtonKeyboardEvent(const UefiInputKey &key
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus MemoryTestGUI::onTestStopButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sTestTabButton);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
 NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
@@ -3634,16 +3717,7 @@ NgosStatus MemoryTestGUI::onTestAllButtonPressed()
 
 
 
-    UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(false), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(true),   NgosStatus::ASSERTION);
-
-
-
-    UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(startTest(-1), NgosStatus::ASSERTION);
 
 
 
@@ -3800,12 +3874,33 @@ NgosStatus MemoryTestGUI::onTestStartButtonPressed()
 
 
 
+    i64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
+
+    UEFI_TEST_ASSERT(index >= 0 && index < 4, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(startTest(sTestCurrentPage * 4 + index), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::onTestStopButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
     UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
 
 
-    UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(false), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(true),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(false), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(true), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sLastFocusedWidget), NgosStatus::ASSERTION);
 
 
 

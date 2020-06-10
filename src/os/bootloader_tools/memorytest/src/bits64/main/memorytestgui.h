@@ -50,6 +50,8 @@ private:
     static NgosStatus showFirstTestPage(); // TEST: NO
     static NgosStatus showLastTestPage(); // TEST: NO
 
+    static NgosStatus startTest(i64 id); // TEST: NO
+
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
     static NgosStatus terminateAndWaitForApplicationProcessors(); // TEST: NO
@@ -72,6 +74,7 @@ private:
     static NgosStatus onTestLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestStartButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onTestStopButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
@@ -88,6 +91,7 @@ private:
     static NgosStatus onTestLeftButtonPressed(); // TEST: NO
     static NgosStatus onTestRightButtonPressed(); // TEST: NO
     static NgosStatus onTestStartButtonPressed(); // TEST: NO
+    static NgosStatus onTestStopButtonPressed(); // TEST: NO
 
     static Button                                *sRebootButton;
     static Button                                *sShutdownButton;
@@ -118,6 +122,8 @@ private:
     static Button                                *sTestLeftButton;
     static Button                                *sTestRightButton;
     static WrapperWidget                         *sTestRunningWrapperWidget;
+    static Button                                *sTestStopButton;
+    static Widget                                *sLastFocusedWidget;
     static LabelWidget                           *sSummaryTotalLabelWidget;
     static TableWidget                           *sSummaryTableWidget;
     static u64                                    sSummaryTotal;
