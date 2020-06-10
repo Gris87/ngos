@@ -501,6 +501,7 @@ src/os/bootloader_tools/memorytest/src/bits64/main/memorytest.cpp
 src/os/bootloader_tools/memorytest/src/bits64/main/memorytest.h
 src/os/bootloader_tools/memorytest/src/bits64/main/memorytestgui.cpp
 src/os/bootloader_tools/memorytest/src/bits64/main/memorytestgui.h
+src/os/bootloader_tools/memorytest/src/bits64/other/memorytestmode.h
 src/os/bootloader_tools/memorytest/src/main.cpp
 src/os/bootloader_tools/memorytest/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader_tools/memorytest/test/bits64/sections/section1/testcase.h

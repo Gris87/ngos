@@ -15,6 +15,8 @@
 #include <uefi/uefimpservicesprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
+#include "src/bits64/other/memorytestmode.h"
+
 
 
 class MemoryTestGUI
@@ -65,6 +67,8 @@ private:
     static NgosStatus onInfoLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onInfoRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onTestModeButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onTestAllButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestLeftButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestStartButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
@@ -79,6 +83,8 @@ private:
     static NgosStatus onSummaryTabButtonPressed(); // TEST: NO
     static NgosStatus onInfoLeftButtonPressed(); // TEST: NO
     static NgosStatus onInfoRightButtonPressed(); // TEST: NO
+    static NgosStatus onTestModeButtonPressed(); // TEST: NO
+    static NgosStatus onTestAllButtonPressed(); // TEST: NO
     static NgosStatus onTestLeftButtonPressed(); // TEST: NO
     static NgosStatus onTestRightButtonPressed(); // TEST: NO
     static NgosStatus onTestStartButtonPressed(); // TEST: NO
@@ -102,6 +108,8 @@ private:
     static TableWidget                           *sIssuesTableWidget;
     static WrapperWidget                         *sTestSettingsWrapperWidget;
     static WrapperWidget                         *sTestRunningWrapperWidget;
+    static Button                                *sTestModeButton;
+    static Button                                *sTestAllButton;
     static ArrayList<ArrayList<PanelWidget *> *>  sTestPages;
     static ArrayList<ArrayList<Button *> *>       sTestButtonPages;
     static ArrayList<ImageWidget *>               sTestPageIndicators;
@@ -119,6 +127,9 @@ private:
     static u16                                    sFirstProcessorEventIndex;
     static u64                                    sNumberOfRunningProcessors;
     static bool                                   sTerminated;
+    static MemoryTestMode                         sMode;
+    static Image*                                 sModeImages[(u64)MemoryTestMode::MAXIMUM];
+    static const char8*                           sModeImagesPath[(u64)MemoryTestMode::MAXIMUM];
 };
 
 

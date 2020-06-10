@@ -479,6 +479,21 @@ NgosStatus Button::setText(const char8 *text)
     return NgosStatus::OK;
 }
 
+NgosStatus Button::setColor(const RgbaPixel &color)
+{
+    COMMON_LT((" | color = ..."));
+
+
+
+    COMMON_TEST_ASSERT(mLabelWidget != nullptr, NgosStatus::ASSERTION);
+
+    COMMON_ASSERT_EXECUTION(mLabelWidget->setColor(color), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus Button::setPredefined(bool predefined)
 {
     COMMON_LT((" | predefined = %u", predefined));

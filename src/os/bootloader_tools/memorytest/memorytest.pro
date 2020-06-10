@@ -44,5 +44,6 @@ SOURCES += \
 HEADERS += \
     src/bits64/main/memorytest.h \
     src/bits64/main/memorytestgui.h \
+    src/bits64/other/memorytestmode.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h
