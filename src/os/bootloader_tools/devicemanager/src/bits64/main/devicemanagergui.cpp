@@ -852,8 +852,8 @@ NgosStatus DeviceManagerGUI::onDeviceInfoTableWidgetKeyboardEvent(const UefiInpu
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sDevicesTreeWidget);
         case UefiInputKeyScanCode::DOWN: return sDeviceInfoTableWidget->getSelectedRow() == sDeviceInfoTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sModeButton) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sDevicesTreeWidget);
 
         default:
         {

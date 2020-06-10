@@ -2443,8 +2443,8 @@ NgosStatus MemoryTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiIn
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sIssuesTabButton);
 
         default:
         {
@@ -2479,9 +2479,9 @@ NgosStatus MemoryTestGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &key
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -2516,9 +2516,9 @@ NgosStatus MemoryTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sSummaryTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -2553,8 +2553,8 @@ NgosStatus MemoryTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &ke
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestTabButton);
         case UefiInputKeyScanCode::DOWN: return focusTabFirstWidget();
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestTabButton);
 
         default:
         {
@@ -2644,7 +2644,6 @@ NgosStatus MemoryTestGUI::onInfoRightButtonKeyboardEvent(const UefiInputKey &key
     {
         case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sSystemInformationTabButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::RIGHT: return onInfoRightButtonPressed();
 
         case UefiInputKeyScanCode::LEFT:
         {
@@ -2661,6 +2660,8 @@ NgosStatus MemoryTestGUI::onInfoRightButtonKeyboardEvent(const UefiInputKey &key
             return NgosStatus::NO_EFFECT;
         }
         break;
+
+        case UefiInputKeyScanCode::RIGHT: return onInfoRightButtonPressed();
 
         default:
         {
@@ -2863,8 +2864,7 @@ NgosStatus MemoryTestGUI::onTestRightButtonKeyboardEvent(const UefiInputKey &key
         }
         break;
 
-        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sRebootButton);
-        case UefiInputKeyScanCode::RIGHT: return onTestRightButtonPressed();
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sRebootButton);
 
         case UefiInputKeyScanCode::LEFT:
         {
@@ -2881,6 +2881,8 @@ NgosStatus MemoryTestGUI::onTestRightButtonKeyboardEvent(const UefiInputKey &key
             return NgosStatus::NO_EFFECT;
         }
         break;
+
+        case UefiInputKeyScanCode::RIGHT: return onTestRightButtonPressed();
 
         default:
         {

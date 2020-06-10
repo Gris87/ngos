@@ -661,8 +661,8 @@ NgosStatus HddTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInput
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sIssuesTabButton);
 
         default:
         {
@@ -697,9 +697,9 @@ NgosStatus HddTestGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -734,9 +734,9 @@ NgosStatus HddTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sSummaryTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -771,8 +771,8 @@ NgosStatus HddTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestTabButton);
         case UefiInputKeyScanCode::DOWN: return focusTabFirstWidget();
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestTabButton);
 
         default:
         {

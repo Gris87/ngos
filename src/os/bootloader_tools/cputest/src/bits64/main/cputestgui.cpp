@@ -1910,8 +1910,8 @@ NgosStatus CpuTestGUI::onSystemInformationTabButtonKeyboardEvent(const UefiInput
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sIssuesTabButton);
 
         default:
         {
@@ -1946,9 +1946,9 @@ NgosStatus CpuTestGUI::onIssuesTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sSystemInformationTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -1983,9 +1983,9 @@ NgosStatus CpuTestGUI::onTestTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
         case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sIssuesTabButton);
         case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sSummaryTabButton);
-        case UefiInputKeyScanCode::DOWN:  return focusTabFirstWidget();
 
         default:
         {
@@ -2020,8 +2020,8 @@ NgosStatus CpuTestGUI::onSummaryTabButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestTabButton);
         case UefiInputKeyScanCode::DOWN: return focusTabFirstWidget();
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestTabButton);
 
         default:
         {

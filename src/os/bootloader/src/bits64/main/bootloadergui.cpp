@@ -1319,9 +1319,9 @@ NgosStatus BootloaderGUI::onOsButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
+        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sCpuTestButton);
         case UefiInputKeyScanCode::LEFT:  return focusPreviousOsButton();
         case UefiInputKeyScanCode::RIGHT: return focusNextOsButton();
-        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1356,8 +1356,8 @@ NgosStatus BootloaderGUI::onLeftButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return focusOsButtonLeft();
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sDeviceManagerButton);
+        case UefiInputKeyScanCode::RIGHT: return focusOsButtonLeft();
 
         default:
         {
@@ -1392,8 +1392,8 @@ NgosStatus BootloaderGUI::onRightButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return focusOsButtonRight();
         case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sMemoryTestButton);
+        case UefiInputKeyScanCode::LEFT: return focusOsButtonRight();
 
         default:
         {
@@ -1428,9 +1428,9 @@ NgosStatus BootloaderGUI::onDeviceManagerButtonKeyboardEvent(const UefiInputKey 
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sCpuTestButton);
         case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : NgosStatus::NO_EFFECT;
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sNetworkTestButton);
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1465,10 +1465,10 @@ NgosStatus BootloaderGUI::onCpuTestButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sDeviceManagerButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sMemoryTestButton);
         case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : NgosStatus::NO_EFFECT;
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sHddTestButton);
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sDeviceManagerButton);
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sMemoryTestButton);
 
         default:
         {
@@ -1503,9 +1503,9 @@ NgosStatus BootloaderGUI::onMemoryTestButtonKeyboardEvent(const UefiInputKey &ke
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sCpuTestButton);
         case UefiInputKeyScanCode::UP:    return sOsButtonRight > 0 ? focusOsButton() : NgosStatus::NO_EFFECT;
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sPartitionWizardButton);
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sCpuTestButton);
 
         default:
         {
@@ -1540,9 +1540,9 @@ NgosStatus BootloaderGUI::onNetworkTestButtonKeyboardEvent(const UefiInputKey &k
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sHddTestButton);
         case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sDeviceManagerButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sHddTestButton);
 
         default:
         {
@@ -1577,10 +1577,10 @@ NgosStatus BootloaderGUI::onHddTestButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sNetworkTestButton);
-        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sPartitionWizardButton);
         case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sCpuTestButton);
         case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::LEFT:  return GUI::setFocusedWidget(sNetworkTestButton);
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sPartitionWizardButton);
 
         default:
         {
@@ -1615,9 +1615,9 @@ NgosStatus BootloaderGUI::onPartitionWizardButtonKeyboardEvent(const UefiInputKe
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sHddTestButton);
         case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sMemoryTestButton);
         case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sHddTestButton);
 
         default:
         {
