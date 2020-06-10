@@ -1819,8 +1819,6 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
             LabelWidget *previousTestLabelWidget = (LabelWidget *)sSummaryTableWidget->getCellWidget(0, COLUMN_SCORE);
 
-
-
             UEFI_ASSERT_EXECUTION(free((void *)previousTestLabelWidget->getText()),           NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(previousTestLabelWidget->setText(mprintf("%u", testTotal)), NgosStatus::ASSERTION);
         }

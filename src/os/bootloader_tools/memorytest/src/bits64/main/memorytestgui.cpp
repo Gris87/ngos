@@ -190,6 +190,41 @@
 #define TEST_STOP_BUTTON_POSITION_Y_PERCENT 0
 #define TEST_STOP_BUTTON_SIZE_PERCENT       5
 
+#define TESTING_SIZE_POSITION_X_PERCENT 1
+#define TESTING_SIZE_POSITION_Y_PERCENT 1
+#define TESTING_SIZE_WIDTH_PERCENT      39
+#define TESTING_SIZE_HEIGHT_PERCENT     10
+
+#define TESTING_RANGE_POSITION_X_PERCENT 1
+#define TESTING_RANGE_POSITION_Y_PERCENT 11
+#define TESTING_RANGE_WIDTH_PERCENT      39
+#define TESTING_RANGE_HEIGHT_PERCENT     10
+
+#define TESTING_MODE_POSITION_X_PERCENT 1
+#define TESTING_MODE_POSITION_Y_PERCENT 21
+#define TESTING_MODE_WIDTH_PERCENT      39
+#define TESTING_MODE_HEIGHT_PERCENT     10
+
+#define TESTING_DEVICE_LOCATOR_POSITION_X_PERCENT 40
+#define TESTING_DEVICE_LOCATOR_POSITION_Y_PERCENT 1
+#define TESTING_DEVICE_LOCATOR_WIDTH_PERCENT      50
+#define TESTING_DEVICE_LOCATOR_HEIGHT_PERCENT     10
+
+#define TESTING_MANUFACTURER_POSITION_X_PERCENT 40
+#define TESTING_MANUFACTURER_POSITION_Y_PERCENT 11
+#define TESTING_MANUFACTURER_WIDTH_PERCENT      50
+#define TESTING_MANUFACTURER_HEIGHT_PERCENT     10
+
+#define TESTING_SERIAL_NUMBER_POSITION_X_PERCENT 40
+#define TESTING_SERIAL_NUMBER_POSITION_Y_PERCENT 21
+#define TESTING_SERIAL_NUMBER_WIDTH_PERCENT      50
+#define TESTING_SERIAL_NUMBER_HEIGHT_PERCENT     10
+
+#define TESTING_PART_NUMBER_POSITION_X_PERCENT 40
+#define TESTING_PART_NUMBER_POSITION_Y_PERCENT 31
+#define TESTING_PART_NUMBER_WIDTH_PERCENT      50
+#define TESTING_PART_NUMBER_HEIGHT_PERCENT     10
+
 #define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
 #define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
 #define SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      19
@@ -258,6 +293,13 @@ Button                                *MemoryTestGUI::sTestRightButton;
 WrapperWidget                         *MemoryTestGUI::sTestRunningWrapperWidget;
 Button                                *MemoryTestGUI::sTestStopButton;
 Widget                                *MemoryTestGUI::sLastFocusedWidget;
+LabelWidget                           *MemoryTestGUI::sTestingSizeLabelWidget;
+LabelWidget                           *MemoryTestGUI::sTestingRangeLabelWidget;
+LabelWidget                           *MemoryTestGUI::sTestingModeLabelWidget;
+LabelWidget                           *MemoryTestGUI::sTestingDeviceLocatorLabelWidget;
+LabelWidget                           *MemoryTestGUI::sTestingManufacturerLabelWidget;
+LabelWidget                           *MemoryTestGUI::sTestingSerialNumberLabelWidget;
+LabelWidget                           *MemoryTestGUI::sTestingPartNumberLabelWidget;
 LabelWidget                           *MemoryTestGUI::sSummaryTotalLabelWidget;
 TableWidget                           *MemoryTestGUI::sSummaryTableWidget;
 u64                                    MemoryTestGUI::sSummaryTotal;
@@ -1015,6 +1057,76 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sTestStopButton->setSize(testStopButtonSize, testStopButtonSize),                                                                                  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestStopButton->setKeyboardEventHandler(onTestStopButtonKeyboardEvent),                                                                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestStopButton->setPressEventHandler(onTestStopButtonPressed),                                                                                    NgosStatus::ASSERTION);
+
+
+
+    sTestingSizeLabelWidget = new LabelWidget(strdup(""), sTestRunningWrapperWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sTestingSizeLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingSizeLabelWidget->setPosition(tabPageWidth * TESTING_SIZE_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_SIZE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingSizeLabelWidget->setSize(tabPageWidth     * TESTING_SIZE_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_SIZE_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    sTestingRangeLabelWidget = new LabelWidget(strdup(""), sTestRunningWrapperWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sTestingRangeLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingRangeLabelWidget->setPosition(tabPageWidth * TESTING_RANGE_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_RANGE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingRangeLabelWidget->setSize(tabPageWidth     * TESTING_RANGE_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_RANGE_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    sTestingModeLabelWidget = new LabelWidget(strdup(""), sTestRunningWrapperWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sTestingModeLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingModeLabelWidget->setPosition(tabPageWidth * TESTING_MODE_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_MODE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingModeLabelWidget->setSize(tabPageWidth     * TESTING_MODE_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_MODE_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    sTestingDeviceLocatorLabelWidget = new LabelWidget(strdup(""), sTestRunningWrapperWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sTestingDeviceLocatorLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingDeviceLocatorLabelWidget->setPosition(tabPageWidth * TESTING_DEVICE_LOCATOR_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_DEVICE_LOCATOR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingDeviceLocatorLabelWidget->setSize(tabPageWidth     * TESTING_DEVICE_LOCATOR_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_DEVICE_LOCATOR_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    sTestingManufacturerLabelWidget = new LabelWidget(strdup(""), sTestRunningWrapperWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sTestingManufacturerLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingManufacturerLabelWidget->setPosition(tabPageWidth * TESTING_MANUFACTURER_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_MANUFACTURER_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingManufacturerLabelWidget->setSize(tabPageWidth     * TESTING_MANUFACTURER_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_MANUFACTURER_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    sTestingSerialNumberLabelWidget = new LabelWidget(strdup(""), sTestRunningWrapperWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sTestingSerialNumberLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingSerialNumberLabelWidget->setPosition(tabPageWidth * TESTING_SERIAL_NUMBER_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_SERIAL_NUMBER_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingSerialNumberLabelWidget->setSize(tabPageWidth     * TESTING_SERIAL_NUMBER_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_SERIAL_NUMBER_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    sTestingPartNumberLabelWidget = new LabelWidget(strdup(""), sTestRunningWrapperWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                            NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setPosition(tabPageWidth * TESTING_PART_NUMBER_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_PART_NUMBER_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setSize(tabPageWidth     * TESTING_PART_NUMBER_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_PART_NUMBER_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -2216,11 +2328,74 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
     UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(false), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(true),   NgosStatus::ASSERTION);
 
     sLastFocusedWidget = GUI::getFocusedWidget();
-
     UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sTestStopButton), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(free((void *)sTestingSizeLabelWidget->getText()),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(free((void *)sTestingRangeLabelWidget->getText()), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(free((void *)sTestingModeLabelWidget->getText()),  NgosStatus::ASSERTION);
+
+    if (id >= 0)
+    {
+        UEFI_ASSERT_EXECUTION(sTestingDeviceLocatorLabelWidget->setVisible(true), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingManufacturerLabelWidget->setVisible(true),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingSerialNumberLabelWidget->setVisible(true),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setVisible(true),    NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(free((void *)sTestingDeviceLocatorLabelWidget->getText()), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(free((void *)sTestingManufacturerLabelWidget->getText()),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(free((void *)sTestingSerialNumberLabelWidget->getText()),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(free((void *)sTestingPartNumberLabelWidget->getText()),    NgosStatus::ASSERTION);
+
+
+
+        const DmiMemoryDevice &memoryDevice = DMI::getMemoryDevices().at(id);
+
+
+
+        char8 startBuffer[11];
+        char8 endBuffer[11];
+
+        UEFI_ASSERT_EXECUTION(bytesToString(memoryDevice.start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(bytesToString(memoryDevice.end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(sTestingSizeLabelWidget->setText( mprintf("Size:      %s",      bytesToString(memoryDevice.size))), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingRangeLabelWidget->setText(mprintf("Range:     %s - %s", startBuffer, endBuffer)),           NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingModeLabelWidget->setText( mprintf("Test mode: %s",      enumToHumanString(sMode))),         NgosStatus::ASSERTION);
+
+        UEFI_ASSERT_EXECUTION(sTestingDeviceLocatorLabelWidget->setText(mprintf("Location:     %s", memoryDevice.deviceLocator != nullptr ? memoryDevice.deviceLocator : "---")), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingManufacturerLabelWidget->setText( mprintf("Manufacturer: %s", memoryDevice.manufacturer  != nullptr ? memoryDevice.manufacturer  : "---")), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingSerialNumberLabelWidget->setText( mprintf("S/N:          %s", memoryDevice.serialNumber  != nullptr ? memoryDevice.serialNumber  : "---")), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setText(   mprintf("Part number:  %s", memoryDevice.partNumber    != nullptr ? memoryDevice.partNumber    : "---")), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(sTestingDeviceLocatorLabelWidget->setVisible(false), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingManufacturerLabelWidget->setVisible(false),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingSerialNumberLabelWidget->setVisible(false),  NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setVisible(false),    NgosStatus::ASSERTION);
+
+
+
+        char8 bytesBuffer[11];
+
+        UEFI_ASSERT_EXECUTION(bytesToString(DMI::getTotalAmountOfMemory(), bytesBuffer, sizeof(bytesBuffer)), NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(sTestingSizeLabelWidget->setText( mprintf("Size:      %s",       bytesBuffer)),              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingRangeLabelWidget->setText(mprintf("Range:     0 B - %s", bytesBuffer)),              NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sTestingModeLabelWidget->setText( mprintf("Test mode: %s",       enumToHumanString(sMode))), NgosStatus::ASSERTION);
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(true), NgosStatus::ASSERTION);
 
 
 
@@ -3898,9 +4073,10 @@ NgosStatus MemoryTestGUI::onTestStopButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(false), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(true), NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(GUI::setFocusedWidget(sLastFocusedWidget), NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sTestSettingsWrapperWidget->setVisible(true), NgosStatus::ASSERTION);
 
 
 

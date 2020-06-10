@@ -124,6 +124,13 @@ private:
     static WrapperWidget                         *sTestRunningWrapperWidget;
     static Button                                *sTestStopButton;
     static Widget                                *sLastFocusedWidget;
+    static LabelWidget                           *sTestingSizeLabelWidget;
+    static LabelWidget                           *sTestingRangeLabelWidget;
+    static LabelWidget                           *sTestingModeLabelWidget;
+    static LabelWidget                           *sTestingDeviceLocatorLabelWidget;
+    static LabelWidget                           *sTestingManufacturerLabelWidget;
+    static LabelWidget                           *sTestingSerialNumberLabelWidget;
+    static LabelWidget                           *sTestingPartNumberLabelWidget;
     static LabelWidget                           *sSummaryTotalLabelWidget;
     static TableWidget                           *sSummaryTableWidget;
     static u64                                    sSummaryTotal;
