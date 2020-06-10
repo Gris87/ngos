@@ -8,6 +8,7 @@
 
 #include "src/bits64/main/memorytest.h"
 #include "src/bits64/main/memorytestgui.h"
+#include "src/bits64/other/memorytestmode.h"
 
 
 
@@ -19,8 +20,9 @@ TEST_CASES(section1, bits64_types);
 {
     TEST_CASE("Size of structures");
     {
-        TEST_ASSERT_EQUALS(sizeof(MemoryTest),    1);
-        TEST_ASSERT_EQUALS(sizeof(MemoryTestGUI), 1);
+        TEST_ASSERT_EQUALS(sizeof(MemoryTest),     1);
+        TEST_ASSERT_EQUALS(sizeof(MemoryTestMode), 1);
+        TEST_ASSERT_EQUALS(sizeof(MemoryTestGUI),  1);
     }
     TEST_CASE_END();
 }

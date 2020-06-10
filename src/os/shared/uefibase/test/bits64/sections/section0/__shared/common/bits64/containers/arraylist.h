@@ -510,6 +510,63 @@ TEST_CASES(section0, __shared_common_bits64_containers_arraylist);
 
 
 
+    TEST_CASE("indexOf()");
+    {
+        ArrayList<u8> temp;
+
+
+
+        TEST_ASSERT_EQUALS(temp.indexOf(5), -1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.indexOf(5), 0);
+        TEST_ASSERT_EQUALS(temp.indexOf(7), -1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.indexOf(5), 0);
+        TEST_ASSERT_EQUALS(temp.indexOf(3), 1);
+        TEST_ASSERT_EQUALS(temp.indexOf(7), -1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.indexOf(5), 0);
+        TEST_ASSERT_EQUALS(temp.indexOf(3), 1);
+        TEST_ASSERT_EQUALS(temp.indexOf(7), 2);
+        TEST_ASSERT_EQUALS(temp.indexOf(9), -1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.indexOf(5), 0);
+        TEST_ASSERT_EQUALS(temp.indexOf(3), 1);
+        TEST_ASSERT_EQUALS(temp.indexOf(7), 2);
+        TEST_ASSERT_EQUALS(temp.indexOf(9), 3);
+        TEST_ASSERT_EQUALS(temp.indexOf(1), -1);
+
+
+
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
+
+        TEST_ASSERT_EQUALS(temp.indexOf(5), 0);
+        TEST_ASSERT_EQUALS(temp.indexOf(3), 1);
+        TEST_ASSERT_EQUALS(temp.indexOf(7), 2);
+        TEST_ASSERT_EQUALS(temp.indexOf(9), 3);
+        TEST_ASSERT_EQUALS(temp.indexOf(1), 4);
+        TEST_ASSERT_EQUALS(temp.indexOf(8), -1);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("first()");
     {
         ArrayList<u8> temp;

@@ -32,6 +32,8 @@ public:
     NgosStatus sort();
     NgosStatus sort(element_comparator comparator);
 
+    i64 indexOf(const T &value);
+
     const T& first() const;
     const T& last() const;
     const T& at(u64 index) const;
@@ -254,6 +256,26 @@ NgosStatus ArrayList<T>::sort(element_comparator comparator)
 
 
     return quickSort(0, mSize - 1, comparator);
+}
+
+template<typename T>
+i64 ArrayList<T>::indexOf(const T &value)
+{
+    COMMON_LT((" | value = ..."));
+
+
+
+    for (i64 i = 0; i < (i64)mSize; ++i)
+    {
+        if (mValues[i] == value)
+        {
+            return i;
+        }
+    }
+
+
+
+    return -1;
 }
 
 template<typename T>
