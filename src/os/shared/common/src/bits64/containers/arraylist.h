@@ -32,7 +32,7 @@ public:
     NgosStatus sort();
     NgosStatus sort(element_comparator comparator);
 
-    i64 indexOf(const T &value);
+    i64 indexOf(const T &value) const;
 
     const T& first() const;
     const T& last() const;
@@ -259,7 +259,7 @@ NgosStatus ArrayList<T>::sort(element_comparator comparator)
 }
 
 template<typename T>
-i64 ArrayList<T>::indexOf(const T &value)
+i64 ArrayList<T>::indexOf(const T &value) const
 {
     COMMON_LT((" | value = ..."));
 
