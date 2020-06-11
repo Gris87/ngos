@@ -2036,7 +2036,7 @@ NgosStatus MemoryTestGUI::focusTabLastWidget()
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sSystemInformationTabButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
-        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestRunningWrapperWidget->isVisible() ? (Widget *)sTestStopButton : (sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->last() : (Widget *)sTestTabButton));
+        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestRunningWrapperWidget->isVisible() ? (Widget *)sTestStopButton : (sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->last() : (Widget *)sTestModeButton));
         case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
