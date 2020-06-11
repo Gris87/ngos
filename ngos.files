@@ -457,11 +457,13 @@ src/os/bootloader_tools/memorytest/assets/images/button_focused_hover.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_hover.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_normal.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_pressed.9.png
+src/os/bootloader_tools/memorytest/assets/images/chart.png
 src/os/bootloader_tools/memorytest/assets/images/console.9.png
 src/os/bootloader_tools/memorytest/assets/images/critical.png
 src/os/bootloader_tools/memorytest/assets/images/cursor.png
 src/os/bootloader_tools/memorytest/assets/images/full_test.png
 src/os/bootloader_tools/memorytest/assets/images/issues.png
+src/os/bootloader_tools/memorytest/assets/images/list.png
 src/os/bootloader_tools/memorytest/assets/images/memory_device.png
 src/os/bootloader_tools/memorytest/assets/images/memory_device_disabled.png
 src/os/bootloader_tools/memorytest/assets/images/memory_info_panel.9.png
@@ -491,6 +493,7 @@ src/os/bootloader_tools/memorytest/assets/images/table_background.9.png
 src/os/bootloader_tools/memorytest/assets/images/table_header.9.png
 src/os/bootloader_tools/memorytest/assets/images/tabwidget_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/test.png
+src/os/bootloader_tools/memorytest/assets/images/test_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/warning.png
 src/os/bootloader_tools/memorytest/Image structure.png
 src/os/bootloader_tools/memorytest/linker.ld
