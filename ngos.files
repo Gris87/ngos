@@ -470,8 +470,8 @@ src/os/bootloader_tools/memorytest/assets/images/memory_info_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/memory_test_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/page_indicator.png
 src/os/bootloader_tools/memorytest/assets/images/page_indicator_selected.png
-src/os/bootloader_tools/memorytest/assets/images/progressbar_background.png
-src/os/bootloader_tools/memorytest/assets/images/progressbar_indicator.png
+src/os/bootloader_tools/memorytest/assets/images/progressbar_background.9.png
+src/os/bootloader_tools/memorytest/assets/images/progressbar_indicator.9.png
 src/os/bootloader_tools/memorytest/assets/images/quick_test.png
 src/os/bootloader_tools/memorytest/assets/images/reboot.png
 src/os/bootloader_tools/memorytest/assets/images/selectedtab_focused.9.png
