@@ -20,10 +20,10 @@
 
 #define TABWIDGET_HEIGHT_PERCENT 70
 
-#define TAB_BUTTON_WIDTH_PERCENT  20
-#define TAB_BUTTON_HEIGHT_PERCENT 6
+#define TAB_BUTTON_WIDTH_PERCENT  15
+#define TAB_BUTTON_HEIGHT_PERCENT 11
 
-#define TAB_PAGE_PROPORTION 2
+#define TAB_PAGE_PROPORTION 2.8
 
 #define SYSTEM_BUTTON_RESERVED_PROPORTION 0.7
 #define CURSOR_SIZE                       20
@@ -199,10 +199,9 @@ NgosStatus HddTestGUI::init(BootParams *params)
 
 
 
-    u64 tabWidgetHeight = screenHeight * TABWIDGET_HEIGHT_PERCENT  / 100;
-    u64 tabButtonHeight = screenWidth  * TAB_BUTTON_HEIGHT_PERCENT / 100;
-
-    u64 tabPageHeight = tabWidgetHeight - tabButtonHeight;
+    u64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
+    u64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
+    u64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
 
 
 
@@ -210,10 +209,9 @@ NgosStatus HddTestGUI::init(BootParams *params)
 
     if (tabPageWidth > screenWidth)
     {
-        tabPageWidth = screenWidth;
-
+        tabPageWidth    = screenWidth;
         tabPageHeight   = tabPageWidth / TAB_PAGE_PROPORTION;
-        tabWidgetHeight = tabButtonHeight + tabPageHeight;
+        tabWidgetHeight = tabPageHeight + tabButtonHeight;
     }
 
 

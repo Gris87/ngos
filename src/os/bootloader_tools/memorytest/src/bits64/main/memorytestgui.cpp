@@ -22,10 +22,10 @@
 
 #define TABWIDGET_HEIGHT_PERCENT 70
 
-#define TAB_BUTTON_WIDTH_PERCENT  20
-#define TAB_BUTTON_HEIGHT_PERCENT 6
+#define TAB_BUTTON_WIDTH_PERCENT  15
+#define TAB_BUTTON_HEIGHT_PERCENT 11
 
-#define TAB_PAGE_PROPORTION 2
+#define TAB_PAGE_PROPORTION 2.8
 
 #define SUMMARY_MEMORY_INFO_POSITION_X_PERCENT 1
 #define SUMMARY_MEMORY_INFO_POSITION_Y_PERCENT 2
@@ -186,9 +186,9 @@
 #define MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT     28
 #define MEMORY_TEST_START_BUTTON_WIDTH_PROPORTION   4
 
-#define TEST_STOP_BUTTON_POSITION_X_PERCENT 95
+#define TEST_STOP_BUTTON_POSITION_X_PERCENT 97
 #define TEST_STOP_BUTTON_POSITION_Y_PERCENT 0
-#define TEST_STOP_BUTTON_SIZE_PERCENT       5
+#define TEST_STOP_BUTTON_SIZE_PERCENT       3
 
 #define TESTING_SIZE_POSITION_X_PERCENT 1
 #define TESTING_SIZE_POSITION_Y_PERCENT 1
@@ -522,10 +522,9 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    u64 tabWidgetHeight = screenHeight * TABWIDGET_HEIGHT_PERCENT  / 100;
-    u64 tabButtonHeight = screenWidth  * TAB_BUTTON_HEIGHT_PERCENT / 100;
-
-    u64 tabPageHeight = tabWidgetHeight - tabButtonHeight;
+    u64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
+    u64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
+    u64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
 
 
 
@@ -533,10 +532,9 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     if (tabPageWidth > screenWidth)
     {
-        tabPageWidth = screenWidth;
-
+        tabPageWidth    = screenWidth;
         tabPageHeight   = tabPageWidth / TAB_PAGE_PROPORTION;
-        tabWidgetHeight = tabButtonHeight + tabPageHeight;
+        tabWidgetHeight = tabPageHeight + tabButtonHeight;
     }
 
 

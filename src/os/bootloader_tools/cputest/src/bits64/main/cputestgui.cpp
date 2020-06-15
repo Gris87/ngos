@@ -26,10 +26,10 @@
 
 #define TABWIDGET_HEIGHT_PERCENT 70
 
-#define TAB_BUTTON_WIDTH_PERCENT  20
-#define TAB_BUTTON_HEIGHT_PERCENT 6
+#define TAB_BUTTON_WIDTH_PERCENT  15
+#define TAB_BUTTON_HEIGHT_PERCENT 11
 
-#define TAB_PAGE_PROPORTION 2
+#define TAB_PAGE_PROPORTION 2.8
 
 #define CPU_IMAGE_POSITION_X_PERCENT 0
 #define CPU_IMAGE_POSITION_Y_PERCENT 0
@@ -430,10 +430,9 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 tabWidgetHeight = screenHeight * TABWIDGET_HEIGHT_PERCENT  / 100;
-    u64 tabButtonHeight = screenWidth  * TAB_BUTTON_HEIGHT_PERCENT / 100;
-
-    u64 tabPageHeight = tabWidgetHeight - tabButtonHeight;
+    u64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
+    u64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
+    u64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
 
 
 
@@ -441,10 +440,9 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     if (tabPageWidth > screenWidth)
     {
-        tabPageWidth = screenWidth;
-
+        tabPageWidth    = screenWidth;
         tabPageHeight   = tabPageWidth / TAB_PAGE_PROPORTION;
-        tabWidgetHeight = tabButtonHeight + tabPageHeight;
+        tabWidgetHeight = tabPageHeight + tabButtonHeight;
     }
 
 
