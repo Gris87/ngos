@@ -1082,6 +1082,8 @@ src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/labelwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/panelwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/panelwidget.h
+src/os/shared/common/src/bits64/gui/widgets/misc/progressbarwidget.cpp
+src/os/shared/common/src/bits64/gui/widgets/misc/progressbarwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/tablecellwidget.cpp
 src/os/shared/common/src/bits64/gui/widgets/misc/tablecellwidget.h
 src/os/shared/common/src/bits64/gui/widgets/misc/tableheaderwidget.cpp

@@ -38,6 +38,7 @@ SOURCES += \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/labelwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/panelwidget.cpp \
+    $$PWD/src/bits64/gui/widgets/misc/progressbarwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/tablecellwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/tableheaderwidget.cpp \
     $$PWD/src/bits64/gui/widgets/misc/tablerowwidget.cpp \
@@ -314,6 +315,7 @@ HEADERS += \
     $$PWD/src/bits64/gui/widgets/misc/imagewidget.h \
     $$PWD/src/bits64/gui/widgets/misc/labelwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/panelwidget.h \
+    $$PWD/src/bits64/gui/widgets/misc/progressbarwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/tablecellwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/tableheaderwidget.h \
     $$PWD/src/bits64/gui/widgets/misc/tablerowwidget.h \

@@ -238,6 +238,16 @@
 #define TESTING_TAB_BUTTON_WIDTH_PERCENT  8
 #define TESTING_TAB_BUTTON_HEIGHT_PERCENT 18
 
+#define SEQUENTIAL_READ_PROGRESSBAR_POSITION_X_PERCENT 0
+#define SEQUENTIAL_READ_PROGRESSBAR_POSITION_Y_PERCENT 0
+#define SEQUENTIAL_READ_PROGRESSBAR_WIDTH_PERCENT      100
+#define SEQUENTIAL_READ_PROGRESSBAR_HEIGHT_PERCENT     10
+
+#define SEQUENTIAL_WRITE_PROGRESSBAR_POSITION_X_PERCENT 0
+#define SEQUENTIAL_WRITE_PROGRESSBAR_POSITION_Y_PERCENT 10
+#define SEQUENTIAL_WRITE_PROGRESSBAR_WIDTH_PERCENT      100
+#define SEQUENTIAL_WRITE_PROGRESSBAR_HEIGHT_PERCENT     10
+
 #define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
 #define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
 #define SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      19
@@ -319,6 +329,8 @@ LabelWidget                           *MemoryTestGUI::sTestingPartNumberLabelWid
 TabWidget                             *MemoryTestGUI::sTestingTabWidget;
 TabButton                             *MemoryTestGUI::sListTabButton;
 TabButton                             *MemoryTestGUI::sChartTabButton;
+ProgressBarWidget                     *MemoryTestGUI::sSequentialReadProgressBarWidget;
+ProgressBarWidget                     *MemoryTestGUI::sSequentialWriteProgressBarWidget;
 LabelWidget                           *MemoryTestGUI::sSummaryTotalLabelWidget;
 TableWidget                           *MemoryTestGUI::sSummaryTableWidget;
 u64                                    MemoryTestGUI::sSummaryTotal;
@@ -409,6 +421,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     Image *testPanelImage;
     Image *listImage;
     Image *chartImage;
+    Image *progressbarBackgroundImage;
+    Image *progressbarIndicatorImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -448,6 +462,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/test_panel.9.png",                &testPanelImage),               NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/list.png",                        &listImage),                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/chart.png",                       &chartImage),                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/progressbar_background.9.png",    &progressbarBackgroundImage),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/progressbar_indicator.9.png",     &progressbarIndicatorImage),    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_header.9.png",              &tableHeaderImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
@@ -1224,6 +1240,24 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     TabPageWidget *listTabPageWidget = new TabPageWidget(sTestingTabWidget);
 
     UEFI_ASSERT_EXECUTION(sTestingTabWidget->addTabPage(listTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    sSequentialReadProgressBarWidget = new ProgressBarWidget(progressbarBackgroundImage, progressbarIndicatorImage, listTabPageWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sSequentialReadProgressBarWidget->setPosition(testingTabPageWidth * SEQUENTIAL_READ_PROGRESSBAR_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_READ_PROGRESSBAR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialReadProgressBarWidget->setSize(testingTabPageWidth     * SEQUENTIAL_READ_PROGRESSBAR_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_READ_PROGRESSBAR_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
+
+
+
+    sSequentialWriteProgressBarWidget = new ProgressBarWidget(progressbarBackgroundImage, progressbarIndicatorImage, listTabPageWidget);
+
+    // Ignore CppAlignmentVerifier [BEGIN]
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setPosition(testingTabPageWidth * SEQUENTIAL_WRITE_PROGRESSBAR_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_WRITE_PROGRESSBAR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setSize(testingTabPageWidth     * SEQUENTIAL_WRITE_PROGRESSBAR_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_WRITE_PROGRESSBAR_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
 
 
 

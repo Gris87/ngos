@@ -10,6 +10,7 @@
 #include <common/src/bits64/gui/widgets/controls/tablewidget.h>
 #include <common/src/bits64/gui/widgets/controls/tabwidget.h>
 #include <common/src/bits64/gui/widgets/misc/panelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/progressbarwidget.h>
 #include <ngos/status.h>
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefimpservicesprotocol.h>
@@ -141,6 +142,8 @@ private:
     static TabWidget                             *sTestingTabWidget;
     static TabButton                             *sListTabButton;
     static TabButton                             *sChartTabButton;
+    static ProgressBarWidget                     *sSequentialReadProgressBarWidget;
+    static ProgressBarWidget                     *sSequentialWriteProgressBarWidget;
     static LabelWidget                           *sSummaryTotalLabelWidget;
     static TableWidget                           *sSummaryTableWidget;
     static u64                                    sSummaryTotal;
