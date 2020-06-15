@@ -225,6 +225,19 @@
 #define TESTING_PART_NUMBER_WIDTH_PERCENT      50
 #define TESTING_PART_NUMBER_HEIGHT_PERCENT     5
 
+#define TESTING_PANEL_POSITION_X_PERCENT 0
+#define TESTING_PANEL_POSITION_Y_PERCENT 21
+#define TESTING_PANEL_WIDTH_PERCENT      100
+#define TESTING_PANEL_HEIGHT_PERCENT     79
+
+#define TESTING_TABWIDGET_POSITION_X_PERCENT 0
+#define TESTING_TABWIDGET_POSITION_Y_PERCENT 0
+#define TESTING_TABWIDGET_WIDTH_PERCENT      100
+#define TESTING_TABWIDGET_HEIGHT_PERCENT     100
+
+#define TESTING_TAB_BUTTON_WIDTH_PERCENT  8
+#define TESTING_TAB_BUTTON_HEIGHT_PERCENT 18
+
 #define SUMMARY_TOTAL_TEXT_POSITION_X_PERCENT 80
 #define SUMMARY_TOTAL_TEXT_POSITION_Y_PERCENT 1
 #define SUMMARY_TOTAL_TEXT_WIDTH_PERCENT      19
@@ -246,6 +259,9 @@
 #define TABWIDGET_PAGE_ISSUES             1
 #define TABWIDGET_PAGE_TEST               2
 #define TABWIDGET_PAGE_SUMMARY            3
+
+#define TESTING_TABWIDGET_PAGE_LIST  0
+#define TESTING_TABWIDGET_PAGE_CHART 1
 
 #define COLUMN_NAME  0
 #define COLUMN_SCORE 1
@@ -300,6 +316,9 @@ LabelWidget                           *MemoryTestGUI::sTestingDeviceLocatorLabel
 LabelWidget                           *MemoryTestGUI::sTestingManufacturerLabelWidget;
 LabelWidget                           *MemoryTestGUI::sTestingSerialNumberLabelWidget;
 LabelWidget                           *MemoryTestGUI::sTestingPartNumberLabelWidget;
+TabWidget                             *MemoryTestGUI::sTestingTabWidget;
+TabButton                             *MemoryTestGUI::sListTabButton;
+TabButton                             *MemoryTestGUI::sChartTabButton;
 LabelWidget                           *MemoryTestGUI::sSummaryTotalLabelWidget;
 TableWidget                           *MemoryTestGUI::sSummaryTableWidget;
 u64                                    MemoryTestGUI::sSummaryTotal;
@@ -387,6 +406,9 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     Image *startImage;
     Image *stopImage;
     Image *startResizedImage;
+    Image *testPanelImage;
+    Image *listImage;
+    Image *chartImage;
     Image *tableBackgroundImage;
     Image *tableHeaderImage;
     Image *rebootImage;
@@ -423,6 +445,9 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/memory_device.png",               &memoryDeviceImage),            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/start.png",                       &startImage),                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &stopImage),                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/test_panel.9.png",                &testPanelImage),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/list.png",                        &listImage),                    NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/chart.png",                       &chartImage),                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_background.9.png",          &tableBackgroundImage),         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/table_header.9.png",              &tableHeaderImage),             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/reboot.png",                      &rebootImage),                  NgosStatus::ASSERTION);
@@ -911,7 +936,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     if (patch)
     {
-        memoryTestStartImageSize = memoryTestStartImageSize - patch->getPaddingTop() - patch->getPaddingBottom();
+        memoryTestStartImageSize -= patch->getPaddingTop() + patch->getPaddingBottom();
     }
 
 
@@ -1127,6 +1152,92 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setPosition(tabPageWidth * TESTING_PART_NUMBER_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_PART_NUMBER_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setSize(tabPageWidth     * TESTING_PART_NUMBER_WIDTH_PERCENT      / 100, tabPageHeight * TESTING_PART_NUMBER_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
+
+
+
+    u64 testPanelWidth  = tabPageWidth  * TESTING_PANEL_WIDTH_PERCENT  / 100;
+    u64 testPanelHeight = tabPageHeight * TESTING_PANEL_HEIGHT_PERCENT / 100;
+
+
+
+    PanelWidget *testPanelWidget = new PanelWidget(testPanelImage, sTestRunningWrapperWidget);
+
+    UEFI_ASSERT_EXECUTION(testPanelWidget->setPosition(tabPageWidth * TESTING_PANEL_POSITION_X_PERCENT / 100, tabPageHeight * TESTING_PANEL_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(testPanelWidget->setSize(testPanelWidth, testPanelHeight),                                                                                   NgosStatus::ASSERTION);
+
+
+
+    u64 testingTabWidgetWidth  = testPanelWidth  * TESTING_TABWIDGET_WIDTH_PERCENT  / 100;
+    u64 testingTabWidgetHeight = testPanelHeight * TESTING_TABWIDGET_HEIGHT_PERCENT / 100;
+
+    tabButtonWidth  = testingTabWidgetWidth  * TESTING_TAB_BUTTON_WIDTH_PERCENT  / 100;
+    tabButtonHeight = testingTabWidgetHeight * TESTING_TAB_BUTTON_HEIGHT_PERCENT / 100;
+
+    u64 testingTabPageWidth  = testingTabWidgetWidth;
+    u64 testingTabPageHeight = testingTabWidgetHeight - tabButtonHeight;
+
+
+
+    patch = tabWidgetPanelImage->getNinePatch();
+
+    if (patch)
+    {
+        testingTabPageWidth  -= patch->getPaddingLeft() + patch->getPaddingRight();
+        testingTabPageHeight -= patch->getPaddingTop()  + patch->getPaddingBottom();
+    }
+
+
+
+    sTestingTabWidget = new TabWidget(tabWidgetPanelImage, testPanelWidget);
+
+
+
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(tabNormalImage,               tabButtonWidth, tabButtonHeight, &tabNormalResizedImage),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(tabHoverImage,                tabButtonWidth, tabButtonHeight, &tabHoverResizedImage),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(tabPressedImage,              tabButtonWidth, tabButtonHeight, &tabPressedResizedImage),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(tabFocusedImage,              tabButtonWidth, tabButtonHeight, &tabFocusedResizedImage),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(tabFocusedHoverImage,         tabButtonWidth, tabButtonHeight, &tabFocusedHoverResizedImage),         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(selectedTabNormalImage,       tabButtonWidth, tabButtonHeight, &selectedTabNormalResizedImage),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(selectedTabHoverImage,        tabButtonWidth, tabButtonHeight, &selectedTabHoverResizedImage),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(selectedTabPressedImage,      tabButtonWidth, tabButtonHeight, &selectedTabPressedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(selectedTabFocusedImage,      tabButtonWidth, tabButtonHeight, &selectedTabFocusedResizedImage),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(Graphics::resizeImage(selectedTabFocusedHoverImage, tabButtonWidth, tabButtonHeight, &selectedTabFocusedHoverResizedImage), NgosStatus::ASSERTION);
+
+
+
+    sListTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, listImage, nullptr, "", sTestingTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sListTabButton->setSize(tabButtonWidth, tabButtonHeight),              NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sListTabButton->setKeyboardEventHandler(onListTabButtonKeyboardEvent), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sListTabButton->setPressEventHandler(onListTabButtonPressed),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->addTabButton(sListTabButton),                       NgosStatus::ASSERTION);
+
+
+
+    sChartTabButton = new TabButton(tabNormalImage, tabHoverImage, tabPressedImage, tabFocusedImage, tabFocusedHoverImage, selectedTabNormalImage, selectedTabHoverImage, selectedTabPressedImage, selectedTabFocusedImage, selectedTabFocusedHoverImage, tabNormalResizedImage, tabHoverResizedImage, tabPressedResizedImage, tabFocusedResizedImage, tabFocusedHoverResizedImage, selectedTabNormalResizedImage, selectedTabHoverResizedImage, selectedTabPressedResizedImage, selectedTabFocusedResizedImage, selectedTabFocusedHoverResizedImage, chartImage, nullptr, "", sTestingTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sChartTabButton->setSize(tabButtonWidth, tabButtonHeight),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sChartTabButton->setKeyboardEventHandler(onChartTabButtonKeyboardEvent), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sChartTabButton->setPressEventHandler(onChartTabButtonPressed),          NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->addTabButton(sChartTabButton),                        NgosStatus::ASSERTION);
+
+
+
+    TabPageWidget *listTabPageWidget = new TabPageWidget(sTestingTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->addTabPage(listTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    TabPageWidget *chartTabPageWidget = new TabPageWidget(sTestingTabWidget);
+
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->addTabPage(chartTabPageWidget), NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->setPosition(testPanelWidth * TESTING_TABWIDGET_POSITION_X_PERCENT / 100, testPanelHeight * TESTING_TABWIDGET_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->setSize(testingTabWidgetWidth, testingTabWidgetHeight),                                                                                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->setCurrentPage(TESTING_TABWIDGET_PAGE_LIST),                                                                                            NgosStatus::ASSERTION);
 
 
 
@@ -2036,12 +2147,102 @@ NgosStatus MemoryTestGUI::focusTabLastWidget()
     {
         case TABWIDGET_PAGE_SYSTEM_INFORMATION: return GUI::setFocusedWidget(sInfoLeftButton != nullptr ? (sInfoLeftButton->isVisible() ? (Widget *)sInfoLeftButton : (Widget *)sInfoRightButton) : (Widget *)sSystemInformationTabButton);
         case TABWIDGET_PAGE_ISSUES:             return GUI::setFocusedWidget(sIssuesTableWidget);
-        case TABWIDGET_PAGE_TEST:               return GUI::setFocusedWidget(sTestRunningWrapperWidget->isVisible() ? (Widget *)sTestStopButton : (sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->last() : (Widget *)sTestModeButton));
-        case TABWIDGET_PAGE_SUMMARY:            return GUI::setFocusedWidget(sSummaryTableWidget);
+        case TABWIDGET_PAGE_TEST:
+        {
+            if (sTestRunningWrapperWidget->isVisible())
+            {
+                return focusTestingTabLastWidget();
+            }
+
+            if (!sTestButtonPages.isEmpty())
+            {
+                return GUI::setFocusedWidget(sTestButtonPages.at(sTestCurrentPage)->last());
+            }
+
+            return GUI::setFocusedWidget(sTestModeButton);
+        }
+        break;
+
+        case TABWIDGET_PAGE_SUMMARY: return GUI::setFocusedWidget(sSummaryTableWidget);
 
         default:
         {
             UEFI_LF(("Unknown tab page: %d, %s:%u", sTabWidget->getCurrentPage(), __FILE__, __LINE__));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::focusTestingTabFirstWidget()
+{
+    UEFI_LT((""));
+
+
+
+    switch (sTestingTabWidget->getCurrentPage())
+    {
+        case TESTING_TABWIDGET_PAGE_LIST:  return GUI::setFocusedWidget(sRebootButton);
+        case TESTING_TABWIDGET_PAGE_CHART: return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTestingTabWidget->getCurrentPage(), __FILE__, __LINE__));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::focusTestingTabLastWidget()
+{
+    UEFI_LT((""));
+
+
+
+    switch (sTestingTabWidget->getCurrentPage())
+    {
+        case TESTING_TABWIDGET_PAGE_LIST:  return GUI::setFocusedWidget(sListTabButton);
+        case TESTING_TABWIDGET_PAGE_CHART: return GUI::setFocusedWidget(sChartTabButton);
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTestingTabWidget->getCurrentPage(), __FILE__, __LINE__));
+
+            return NgosStatus::UNEXPECTED_BEHAVIOUR;
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::focusTestingTab()
+{
+    UEFI_LT((""));
+
+
+
+    switch (sTestingTabWidget->getCurrentPage())
+    {
+        case TESTING_TABWIDGET_PAGE_LIST:  return GUI::setFocusedWidget(sListTabButton);
+        case TESTING_TABWIDGET_PAGE_CHART: return GUI::setFocusedWidget(sChartTabButton);
+
+        default:
+        {
+            UEFI_LF(("Unknown tab page: %d, %s:%u", sTestingTabWidget->getCurrentPage(), __FILE__, __LINE__));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -3019,6 +3220,42 @@ NgosStatus MemoryTestGUI::onInfoRightButtonKeyboardEvent(const UefiInputKey &key
     return NgosStatus::NO_EFFECT;
 }
 
+NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:   return sIssuesTableWidget->getSelectedRow() == 0                                     ? GUI::setFocusedWidget(sIssuesTabButton) : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::DOWN: return sIssuesTableWidget->getSelectedRow() == sIssuesTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton)    : NgosStatus::NO_EFFECT;
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
 NgosStatus MemoryTestGUI::onTestModeButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
@@ -3443,7 +3680,7 @@ NgosStatus MemoryTestGUI::onTestStopButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sRebootButton);
+        case UefiInputKeyScanCode::DOWN: return focusTestingTab();
 
         default:
         {
@@ -3456,7 +3693,7 @@ NgosStatus MemoryTestGUI::onTestStopButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.unicodeChar)
     {
-        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sListTabButton);
 
         default:
         {
@@ -3470,7 +3707,7 @@ NgosStatus MemoryTestGUI::onTestStopButtonKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &key)
+NgosStatus MemoryTestGUI::onListTabButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -3478,8 +3715,9 @@ NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &k
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP:   return sIssuesTableWidget->getSelectedRow() == 0                                     ? GUI::setFocusedWidget(sIssuesTabButton) : NgosStatus::NO_EFFECT;
-        case UefiInputKeyScanCode::DOWN: return sIssuesTableWidget->getSelectedRow() == sIssuesTableWidget->getRowCount() - 1 ? GUI::setFocusedWidget(sRebootButton)    : NgosStatus::NO_EFFECT;
+        case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sTestStopButton);
+        case UefiInputKeyScanCode::DOWN:  return focusTestingTabFirstWidget();
+        case UefiInputKeyScanCode::RIGHT: return GUI::setFocusedWidget(sChartTabButton);
 
         default:
         {
@@ -3492,7 +3730,44 @@ NgosStatus MemoryTestGUI::onIssuesTableWidgetKeyboardEvent(const UefiInputKey &k
 
     switch (key.unicodeChar)
     {
-        case KEY_TAB: return GUI::setFocusedWidget(sRebootButton);
+        case KEY_TAB: return GUI::setFocusedWidget(sChartTabButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::NO_EFFECT;
+}
+
+NgosStatus MemoryTestGUI::onChartTabButtonKeyboardEvent(const UefiInputKey &key)
+{
+    UEFI_LT((" | key = ..."));
+
+
+
+    switch (key.scanCode)
+    {
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sTestStopButton);
+        case UefiInputKeyScanCode::DOWN: return focusTestingTabFirstWidget();
+        case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sListTabButton);
+
+        default:
+        {
+            // Nothing
+        }
+        break;
+    }
+
+
+
+    switch (key.unicodeChar)
+    {
+        case KEY_TAB: return focusTestingTabFirstWidget();
 
         default:
         {
@@ -4081,6 +4356,32 @@ NgosStatus MemoryTestGUI::onTestStopButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::onListTabButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->setCurrentPage(TESTING_TABWIDGET_PAGE_LIST), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::onChartTabButtonPressed()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_ASSERT_EXECUTION(sTestingTabWidget->setCurrentPage(TESTING_TABWIDGET_PAGE_CHART), NgosStatus::ASSERTION);
 
 
 

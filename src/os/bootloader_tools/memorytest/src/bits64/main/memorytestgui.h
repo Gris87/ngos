@@ -44,6 +44,9 @@ private:
 
     static NgosStatus focusTabFirstWidget(); // TEST: NO
     static NgosStatus focusTabLastWidget(); // TEST: NO
+    static NgosStatus focusTestingTabFirstWidget(); // TEST: NO
+    static NgosStatus focusTestingTabLastWidget(); // TEST: NO
+    static NgosStatus focusTestingTab(); // TEST: NO
 
     static NgosStatus showFirstInfoPage(); // TEST: NO
     static NgosStatus showLastInfoPage(); // TEST: NO
@@ -75,6 +78,8 @@ private:
     static NgosStatus onTestRightButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestStartButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onTestStopButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onListTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
+    static NgosStatus onChartTabButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onSummaryTableWidgetKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
 
@@ -92,6 +97,8 @@ private:
     static NgosStatus onTestRightButtonPressed(); // TEST: NO
     static NgosStatus onTestStartButtonPressed(); // TEST: NO
     static NgosStatus onTestStopButtonPressed(); // TEST: NO
+    static NgosStatus onListTabButtonPressed(); // TEST: NO
+    static NgosStatus onChartTabButtonPressed(); // TEST: NO
 
     static Button                                *sRebootButton;
     static Button                                *sShutdownButton;
@@ -131,6 +138,9 @@ private:
     static LabelWidget                           *sTestingManufacturerLabelWidget;
     static LabelWidget                           *sTestingSerialNumberLabelWidget;
     static LabelWidget                           *sTestingPartNumberLabelWidget;
+    static TabWidget                             *sTestingTabWidget;
+    static TabButton                             *sListTabButton;
+    static TabButton                             *sChartTabButton;
     static LabelWidget                           *sSummaryTotalLabelWidget;
     static TableWidget                           *sSummaryTableWidget;
     static u64                                    sSummaryTotal;
