@@ -2566,6 +2566,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
+        // Ignore CppAlignmentVerifier [BEGIN]
         UEFI_ASSERT_EXECUTION(sTestingSizeLabelWidget->setText( mprintf("Size:      %s",      bytesToString(memoryDevice.size))), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(sTestingRangeLabelWidget->setText(mprintf("Range:     %s - %s", startBuffer, endBuffer)),           NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(sTestingModeLabelWidget->setText( mprintf("Test mode: %s",      enumToHumanString(sMode))),         NgosStatus::ASSERTION);
@@ -2574,6 +2575,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
         UEFI_ASSERT_EXECUTION(sTestingManufacturerLabelWidget->setText( mprintf("Manufacturer: %s", memoryDevice.manufacturer  != nullptr ? memoryDevice.manufacturer  : "---")), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(sTestingSerialNumberLabelWidget->setText( mprintf("S/N:          %s", memoryDevice.serialNumber  != nullptr ? memoryDevice.serialNumber  : "---")), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setText(   mprintf("Part number:  %s", memoryDevice.partNumber    != nullptr ? memoryDevice.partNumber    : "---")), NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [END]
     }
     else
     {
@@ -3265,8 +3267,9 @@ NgosStatus MemoryTestGUI::onTestModeButtonKeyboardEvent(const UefiInputKey &key)
 
     switch (key.scanCode)
     {
-        case UefiInputKeyScanCode::UP:    return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN:  return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->first() : (Widget *)sRebootButton);
+        case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sTestTabButton);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->first() : (Widget *)sRebootButton);
+
         case UefiInputKeyScanCode::RIGHT:
         {
             if (sTestAllButton != nullptr)

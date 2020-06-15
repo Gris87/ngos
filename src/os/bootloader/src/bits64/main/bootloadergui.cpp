@@ -266,6 +266,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                     case OsType::WINDOWS_10: pathToImage = "images/os_windows.png"; break;
                     case OsType::UBUNTU_19:  pathToImage = "images/os_ubuntu.png";  break;
                     case OsType::CENTOS_8:   pathToImage = "images/os_centos.png";  break;
+
                     case OsType::MAXIMUM:
                     {
                         UEFI_LF(("Unexpected OS type: %s, %s:%u", enumToFullString(os.type), __FILE__, __LINE__));

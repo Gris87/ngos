@@ -290,7 +290,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
 
-                    QString nextLine = i < lines.length() - 1 ? lines.at(i + 1) : "";
+                    QString nextLine = i + 1 < lines.length() ? lines.at(i + 1) : "";
 
                     if (nextLine == "")
                     {

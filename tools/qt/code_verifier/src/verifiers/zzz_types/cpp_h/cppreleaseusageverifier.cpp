@@ -40,7 +40,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
              &&
              (
               (
-               i < lines.length() - 1
+               i + 1 < lines.length()
                &&
                lines.at(i + 1).startsWith("#define")
                &&
@@ -48,7 +48,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
               )
               ||
               (
-               i < lines.length() - 2
+               i + 2 < lines.length()
                &&
                lines.at(i + 1).contains("_LD((\"")
                &&

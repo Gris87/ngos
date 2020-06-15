@@ -45,7 +45,7 @@ void MdNewLineVerifier::verify(DocsWorkerThread *worker, const QString &path, co
              !lineTrimmed.endsWith('>')
             )
             &&
-            i < lines.length() - 1
+            i + 1 < lines.length()
             &&
             lines.at(i + 1) != ""
             &&

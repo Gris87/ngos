@@ -29,7 +29,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                 QString spaces = line.left(line.indexOf("switch ("));
 
                 if (
-                    i < lines.length() - 1
+                    i + 1 < lines.length()
                     &&
                     lines.at(i + 1) == spaces + '{'
                    )
@@ -72,7 +72,19 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                             {
                                 if (switchLineTrimmed.startsWith("default:"))
                                 {
+                                    if (defaultCaseFound)
+                                    {
+                                        worker->addError(path, j, "Two default cases");
+                                    }
+
                                     defaultCaseFound = true;
+                                }
+                                else
+                                {
+                                    if (defaultCaseFound)
+                                    {
+                                        worker->addError(path, j, "default case should be last");
+                                    }
                                 }
 
 
@@ -89,7 +101,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     }
 
                                     if (
-                                        index < switchLineTrimmed.length() - 1
+                                        index + 1 < switchLineTrimmed.length()
                                         &&
                                         switchLineTrimmed.at(index + 1) == '\''
                                        )
@@ -100,7 +112,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     }
 
                                     if (
-                                        index >= switchLineTrimmed.length() - 1
+                                        index + 1 >= switchLineTrimmed.length()
                                         ||
                                         switchLineTrimmed.at(index + 1) != ':'
                                        )
@@ -124,11 +136,26 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     QString switchSpaces = switchLine.left(switchLine.indexOf(switchLineTrimmed));
 
                                     if (
-                                        j <= endLine - 1
+                                        j + 1 <= endLine
                                         &&
                                         lines.at(j + 1) == switchSpaces + '{'
                                        )
                                     {
+                                        if (
+                                            j > startLine
+                                            &&
+                                            (
+                                             lines.at(j - 1).contains("break;")
+                                             ||
+                                             lines.at(j - 1).contains("return ")
+                                            )
+                                           )
+                                        {
+                                            worker->addError(path, j, "Blank line missed between cases");
+                                        }
+
+
+
                                         while (j <= endLine && lines.at(j) != switchSpaces + '}')
                                         {
                                             ++j;
@@ -137,14 +164,14 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                         if (j <= endLine)
                                         {
                                             if (
-                                                j <= endLine - 1
+                                                j + 1 <= endLine
                                                 &&
                                                 lines.at(j + 1) == switchSpaces + "break;"
                                                )
                                             {
                                                 ++j;
 
-                                                if (j <= endLine - 1)
+                                                if (j + 1 <= endLine)
                                                 {
                                                     if (lines.at(j + 1).trimmed() == "")
                                                     {
@@ -169,7 +196,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     else
                                     {
                                         if (
-                                            j > endLine - 1
+                                            j + 1 > endLine
                                             ||
                                             !lines.at(j + 1).startsWith(switchSpaces + "case ")
                                            )
@@ -184,7 +211,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                 if (
                                     switchLineTrimmed != ""
                                     ||
-                                    j == startLine
+                                    j <= startLine
                                     ||
                                     (
                                      !lines.at(j - 1).contains("break;")
