@@ -188,6 +188,9 @@
 #define FEATURE_DISABLED_TEXT_COLOR   0xFF333333
 #define FEATURE_DISABLED_SHADOW_COLOR 0xDD606060
 
+#define TEST_TOTAL_TEXT_LENGTH    14
+#define SUMMARY_TOTAL_TEXT_LENGTH 14
+
 
 
 Button                 *CpuTestGUI::sRebootButton;
@@ -772,12 +775,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *testTotalText = (char8 *)malloc(14);
+    char8 *testTotalText = (char8 *)malloc(TEST_TOTAL_TEXT_LENGTH);
+    UEFI_TEST_ASSERT(testTotalText != nullptr, NgosStatus::ASSERTION);
 
     i64 testTotalTextLength = sprintf(testTotalText, "Total: 0");
     AVOID_UNUSED(testTotalTextLength);
 
-    UEFI_TEST_ASSERT(testTotalTextLength < 14, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(testTotalTextLength < TEST_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
@@ -853,12 +857,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    char8 *summaryTotalText = (char8 *)malloc(14);
+    char8 *summaryTotalText = (char8 *)malloc(SUMMARY_TOTAL_TEXT_LENGTH);
+    UEFI_TEST_ASSERT(summaryTotalText != nullptr, NgosStatus::ASSERTION);
 
     i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal);
     AVOID_UNUSED(summaryTotalTextLength);
 
-    UEFI_TEST_ASSERT(summaryTotalTextLength < 14, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(summaryTotalTextLength < SUMMARY_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
@@ -1793,7 +1798,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
             i64 testTotalTextLength = sprintf(testTotalText, "Total: %u", testTotal);
             AVOID_UNUSED(testTotalTextLength);
 
-            UEFI_TEST_ASSERT(testTotalTextLength < 14, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(testTotalTextLength < TEST_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
@@ -1807,7 +1812,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
             i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal + testTotal);
             AVOID_UNUSED(summaryTotalTextLength);
 
-            UEFI_TEST_ASSERT(summaryTotalTextLength < 14, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(summaryTotalTextLength < SUMMARY_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 

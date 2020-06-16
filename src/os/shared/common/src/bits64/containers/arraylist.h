@@ -364,6 +364,8 @@ NgosStatus ArrayList<T>::setCapacity(u64 capacity)
             mValues = (T *)malloc(capacity * sizeof(T));
         }
 
+        COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
+
         mCapacity = capacity;
     }
     else
@@ -426,6 +428,7 @@ NgosStatus ArrayList<T>::extendCapacity()
             mCapacity = ARRAY_LIST_DEFAULT_CAPACITY;
 
             mValues = (T *)malloc(mCapacity * sizeof(T));
+            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
     }
 

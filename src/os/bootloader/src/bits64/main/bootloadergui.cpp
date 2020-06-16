@@ -69,6 +69,8 @@
 
 #define TIMEOUT_TIME 9
 
+#define TIMEOUT_TEXT_LENGTH 28
+
 
 
 Image               *BootloaderGUI::sBackgroundImage;
@@ -501,9 +503,10 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
         sTimeoutTick = TIMEOUT_TIME;
 
-        char8 *timeoutText = (char8 *)malloc(28);
+        char8 *timeoutText = (char8 *)malloc(TIMEOUT_TEXT_LENGTH);
+        UEFI_TEST_ASSERT(timeoutText != nullptr, NgosStatus::ASSERTION);
 
-        UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, 27, NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, TIMEOUT_TEXT_LENGTH - 1, NgosStatus::ASSERTION);
 
 
 
@@ -1197,11 +1200,11 @@ NgosStatus BootloaderGUI::processTimerEvent()
 
         if (sTimeoutTick > 1)
         {
-            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, 27, NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, TIMEOUT_TEXT_LENGTH - 1, NgosStatus::ASSERTION);
         }
         else
         {
-            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in 1 second"), i64, 26, NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in 1 second"), i64, TIMEOUT_TEXT_LENGTH - 2, NgosStatus::ASSERTION);
         }
 
         UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setText(timeoutText), NgosStatus::ASSERTION);

@@ -20,10 +20,16 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
+    NgosStatus setColor(const RgbaPixel &color); // TEST: NO
+
 private:
     PanelWidget *mPanelWidget;
     ImageWidget *mIndicatorImageWidget;
     LabelWidget *mLabelWidget;
+    i64          mMinimumValue;
+    i64          mMaximumValue;
+    i64          mValue;
+    char8        mPercentBuffer[6];
 };
 
 

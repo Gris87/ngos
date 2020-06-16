@@ -211,6 +211,9 @@ NgosStatus AES::setKey(u8 *key, u8 size)
             mEncodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
             mDecodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
+            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
+
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
 
@@ -226,6 +229,9 @@ NgosStatus AES::setKey(u8 *key, u8 size)
             mEncodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
             mDecodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
+            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
+
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
 
@@ -240,6 +246,9 @@ NgosStatus AES::setKey(u8 *key, u8 size)
 
             mEncodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
             mDecodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
+
+            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
 
             mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
             mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster

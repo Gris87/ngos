@@ -112,7 +112,7 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 **buffer, i64 maxBufferSize, 
 
 
     *buffer = (char8 *)malloc(bufferSize);
-    COMMON_TEST_ASSERT(*buffer, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(*buffer != nullptr, NgosStatus::ASSERTION);
 
 
 

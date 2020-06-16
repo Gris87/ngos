@@ -113,3 +113,12 @@ NgosStatus PanelWidget::repaint()
 
     return NgosStatus::OK;
 }
+
+Image* PanelWidget::getPanelImage() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mPanelImage;
+}

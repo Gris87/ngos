@@ -465,8 +465,8 @@ NgosStatus Button::setText(const char8 *text)
 {
     COMMON_LT((" | text = 0x%p", text));
 
-    COMMON_ASSERT(text,  "text is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(*text, "text is empty", NgosStatus::ASSERTION);
+    COMMON_ASSERT(text    != nullptr, "text is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(text[0] != 0,       "text is empty", NgosStatus::ASSERTION);
 
 
 

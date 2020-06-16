@@ -120,6 +120,7 @@ char8* strdup(const char8 *str)
     u64 size = (strlen(str) + 1) * sizeof(char8);
 
     char8 *res = (char8 *)malloc(size);
+    COMMON_TEST_ASSERT(res != nullptr, nullptr);
 
     memcpy(res, str, size);
 
@@ -139,6 +140,7 @@ char16* strdup(const char16 *str)
     u64 size = (strlen(str) + 1) * sizeof(char16);
 
     char16 *res = (char16 *)malloc(size);
+    COMMON_TEST_ASSERT(res != nullptr, nullptr);
 
     memcpy(res, str, size);
 
