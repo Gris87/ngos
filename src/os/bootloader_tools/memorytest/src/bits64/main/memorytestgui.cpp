@@ -240,22 +240,22 @@
 
 #define SEQUENTIAL_READ_TEXT_POSITION_X_PERCENT 0
 #define SEQUENTIAL_READ_TEXT_POSITION_Y_PERCENT 0
-#define SEQUENTIAL_READ_TEXT_WIDTH_PERCENT      25
+#define SEQUENTIAL_READ_TEXT_WIDTH_PERCENT      34
 #define SEQUENTIAL_READ_TEXT_HEIGHT_PERCENT     10
 
-#define SEQUENTIAL_READ_AVERAGE_POSITION_X_PERCENT 30
+#define SEQUENTIAL_READ_AVERAGE_POSITION_X_PERCENT 35
 #define SEQUENTIAL_READ_AVERAGE_POSITION_Y_PERCENT 0
-#define SEQUENTIAL_READ_AVERAGE_WIDTH_PERCENT      15
+#define SEQUENTIAL_READ_AVERAGE_WIDTH_PERCENT      19
 #define SEQUENTIAL_READ_AVERAGE_HEIGHT_PERCENT     10
 
-#define SEQUENTIAL_READ_MAXIMUM_POSITION_X_PERCENT 50
+#define SEQUENTIAL_READ_MAXIMUM_POSITION_X_PERCENT 55
 #define SEQUENTIAL_READ_MAXIMUM_POSITION_Y_PERCENT 0
-#define SEQUENTIAL_READ_MAXIMUM_WIDTH_PERCENT      15
+#define SEQUENTIAL_READ_MAXIMUM_WIDTH_PERCENT      19
 #define SEQUENTIAL_READ_MAXIMUM_HEIGHT_PERCENT     10
 
-#define SEQUENTIAL_READ_PROGRESS_POSITION_X_PERCENT 70
+#define SEQUENTIAL_READ_PROGRESS_POSITION_X_PERCENT 75
 #define SEQUENTIAL_READ_PROGRESS_POSITION_Y_PERCENT 0
-#define SEQUENTIAL_READ_PROGRESS_WIDTH_PERCENT      30
+#define SEQUENTIAL_READ_PROGRESS_WIDTH_PERCENT      25
 #define SEQUENTIAL_READ_PROGRESS_HEIGHT_PERCENT     10
 
 #define SEQUENTIAL_READ_PROGRESSBAR_POSITION_X_PERCENT 0
@@ -265,22 +265,22 @@
 
 #define SEQUENTIAL_WRITE_TEXT_POSITION_X_PERCENT 0
 #define SEQUENTIAL_WRITE_TEXT_POSITION_Y_PERCENT 25
-#define SEQUENTIAL_WRITE_TEXT_WIDTH_PERCENT      25
+#define SEQUENTIAL_WRITE_TEXT_WIDTH_PERCENT      34
 #define SEQUENTIAL_WRITE_TEXT_HEIGHT_PERCENT     10
 
-#define SEQUENTIAL_WRITE_AVERAGE_POSITION_X_PERCENT 30
+#define SEQUENTIAL_WRITE_AVERAGE_POSITION_X_PERCENT 35
 #define SEQUENTIAL_WRITE_AVERAGE_POSITION_Y_PERCENT 25
-#define SEQUENTIAL_WRITE_AVERAGE_WIDTH_PERCENT      15
+#define SEQUENTIAL_WRITE_AVERAGE_WIDTH_PERCENT      19
 #define SEQUENTIAL_WRITE_AVERAGE_HEIGHT_PERCENT     10
 
-#define SEQUENTIAL_WRITE_MAXIMUM_POSITION_X_PERCENT 50
+#define SEQUENTIAL_WRITE_MAXIMUM_POSITION_X_PERCENT 55
 #define SEQUENTIAL_WRITE_MAXIMUM_POSITION_Y_PERCENT 25
-#define SEQUENTIAL_WRITE_MAXIMUM_WIDTH_PERCENT      15
+#define SEQUENTIAL_WRITE_MAXIMUM_WIDTH_PERCENT      19
 #define SEQUENTIAL_WRITE_MAXIMUM_HEIGHT_PERCENT     10
 
-#define SEQUENTIAL_WRITE_PROGRESS_POSITION_X_PERCENT 70
+#define SEQUENTIAL_WRITE_PROGRESS_POSITION_X_PERCENT 75
 #define SEQUENTIAL_WRITE_PROGRESS_POSITION_Y_PERCENT 25
-#define SEQUENTIAL_WRITE_PROGRESS_WIDTH_PERCENT      30
+#define SEQUENTIAL_WRITE_PROGRESS_WIDTH_PERCENT      25
 #define SEQUENTIAL_WRITE_PROGRESS_HEIGHT_PERCENT     10
 
 #define SEQUENTIAL_WRITE_PROGRESSBAR_POSITION_X_PERCENT 0
@@ -290,22 +290,22 @@
 
 #define RANDOM_READ_TEXT_POSITION_X_PERCENT 0
 #define RANDOM_READ_TEXT_POSITION_Y_PERCENT 50
-#define RANDOM_READ_TEXT_WIDTH_PERCENT      25
+#define RANDOM_READ_TEXT_WIDTH_PERCENT      34
 #define RANDOM_READ_TEXT_HEIGHT_PERCENT     10
 
-#define RANDOM_READ_AVERAGE_POSITION_X_PERCENT 30
+#define RANDOM_READ_AVERAGE_POSITION_X_PERCENT 35
 #define RANDOM_READ_AVERAGE_POSITION_Y_PERCENT 50
-#define RANDOM_READ_AVERAGE_WIDTH_PERCENT      15
+#define RANDOM_READ_AVERAGE_WIDTH_PERCENT      19
 #define RANDOM_READ_AVERAGE_HEIGHT_PERCENT     10
 
-#define RANDOM_READ_MAXIMUM_POSITION_X_PERCENT 50
+#define RANDOM_READ_MAXIMUM_POSITION_X_PERCENT 55
 #define RANDOM_READ_MAXIMUM_POSITION_Y_PERCENT 50
-#define RANDOM_READ_MAXIMUM_WIDTH_PERCENT      15
+#define RANDOM_READ_MAXIMUM_WIDTH_PERCENT      19
 #define RANDOM_READ_MAXIMUM_HEIGHT_PERCENT     10
 
-#define RANDOM_READ_PROGRESS_POSITION_X_PERCENT 70
+#define RANDOM_READ_PROGRESS_POSITION_X_PERCENT 75
 #define RANDOM_READ_PROGRESS_POSITION_Y_PERCENT 50
-#define RANDOM_READ_PROGRESS_WIDTH_PERCENT      30
+#define RANDOM_READ_PROGRESS_WIDTH_PERCENT      25
 #define RANDOM_READ_PROGRESS_HEIGHT_PERCENT     10
 
 #define RANDOM_READ_PROGRESSBAR_POSITION_X_PERCENT 0
@@ -315,22 +315,22 @@
 
 #define RANDOM_WRITE_TEXT_POSITION_X_PERCENT 0
 #define RANDOM_WRITE_TEXT_POSITION_Y_PERCENT 75
-#define RANDOM_WRITE_TEXT_WIDTH_PERCENT      25
+#define RANDOM_WRITE_TEXT_WIDTH_PERCENT      34
 #define RANDOM_WRITE_TEXT_HEIGHT_PERCENT     10
 
-#define RANDOM_WRITE_AVERAGE_POSITION_X_PERCENT 30
+#define RANDOM_WRITE_AVERAGE_POSITION_X_PERCENT 35
 #define RANDOM_WRITE_AVERAGE_POSITION_Y_PERCENT 75
-#define RANDOM_WRITE_AVERAGE_WIDTH_PERCENT      15
+#define RANDOM_WRITE_AVERAGE_WIDTH_PERCENT      19
 #define RANDOM_WRITE_AVERAGE_HEIGHT_PERCENT     10
 
-#define RANDOM_WRITE_MAXIMUM_POSITION_X_PERCENT 50
+#define RANDOM_WRITE_MAXIMUM_POSITION_X_PERCENT 55
 #define RANDOM_WRITE_MAXIMUM_POSITION_Y_PERCENT 75
-#define RANDOM_WRITE_MAXIMUM_WIDTH_PERCENT      15
+#define RANDOM_WRITE_MAXIMUM_WIDTH_PERCENT      19
 #define RANDOM_WRITE_MAXIMUM_HEIGHT_PERCENT     10
 
-#define RANDOM_WRITE_PROGRESS_POSITION_X_PERCENT 70
+#define RANDOM_WRITE_PROGRESS_POSITION_X_PERCENT 75
 #define RANDOM_WRITE_PROGRESS_POSITION_Y_PERCENT 75
-#define RANDOM_WRITE_PROGRESS_WIDTH_PERCENT      30
+#define RANDOM_WRITE_PROGRESS_WIDTH_PERCENT      25
 #define RANDOM_WRITE_PROGRESS_HEIGHT_PERCENT     10
 
 #define RANDOM_WRITE_PROGRESSBAR_POSITION_X_PERCENT 0
@@ -1397,6 +1397,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     UEFI_ASSERT_EXECUTION(sequentialReadLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sequentialReadLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                                            NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sequentialReadLabelWidget->setPosition(testingTabPageWidth * SEQUENTIAL_READ_TEXT_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_READ_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sequentialReadLabelWidget->setSize(testingTabPageWidth     * SEQUENTIAL_READ_TEXT_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_READ_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1406,7 +1407,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sSequentialReadAverageLabelWidget = new LabelWidget(sequentialReadAverageText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sSequentialReadAverageLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialReadAverageLabelWidget->setColor(blackColor),                                                                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialReadAverageLabelWidget->setPosition(testingTabPageWidth * SEQUENTIAL_READ_AVERAGE_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_READ_AVERAGE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialReadAverageLabelWidget->setSize(testingTabPageWidth     * SEQUENTIAL_READ_AVERAGE_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_READ_AVERAGE_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1427,6 +1428,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     UEFI_ASSERT_EXECUTION(sSequentialReadProgressLabelWidget->setColor(blackColor),                                                                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialReadProgressLabelWidget->setHorizontalAlignment(HorizontalAlignment::RIGHT_JUSTIFIED),                                                                                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialReadProgressLabelWidget->setPosition(testingTabPageWidth * SEQUENTIAL_READ_PROGRESS_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_READ_PROGRESS_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialReadProgressLabelWidget->setSize(testingTabPageWidth     * SEQUENTIAL_READ_PROGRESS_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_READ_PROGRESS_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1446,7 +1448,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     LabelWidget *sequentialWriteLabelWidget = new LabelWidget("Sequential write 1 MB block", listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sequentialWriteLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sequentialWriteLabelWidget->setColor(blackColor),                                                                                                                                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sequentialWriteLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                                              NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sequentialWriteLabelWidget->setPosition(testingTabPageWidth * SEQUENTIAL_WRITE_TEXT_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_WRITE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sequentialWriteLabelWidget->setSize(testingTabPageWidth     * SEQUENTIAL_WRITE_TEXT_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_WRITE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1456,7 +1459,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sSequentialWriteAverageLabelWidget = new LabelWidget(sequentialWriteAverageText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sSequentialWriteAverageLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteAverageLabelWidget->setColor(blackColor),                                                                                                                                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteAverageLabelWidget->setPosition(testingTabPageWidth * SEQUENTIAL_WRITE_AVERAGE_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_WRITE_AVERAGE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteAverageLabelWidget->setSize(testingTabPageWidth     * SEQUENTIAL_WRITE_AVERAGE_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_WRITE_AVERAGE_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1466,7 +1469,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sSequentialWriteMaximumLabelWidget = new LabelWidget(sequentialWriteMaximumText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sSequentialWriteMaximumLabelWidget->setColor(blackColor),                                                                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteMaximumLabelWidget->setColor(blackColor),                                                                                                                                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteMaximumLabelWidget->setPosition(testingTabPageWidth * SEQUENTIAL_WRITE_MAXIMUM_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_WRITE_MAXIMUM_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteMaximumLabelWidget->setSize(testingTabPageWidth     * SEQUENTIAL_WRITE_MAXIMUM_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_WRITE_MAXIMUM_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1476,7 +1479,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sSequentialWriteProgressLabelWidget = new LabelWidget(sequentialWriteProgressText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressLabelWidget->setColor(blackColor),                                                                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressLabelWidget->setColor(blackColor),                                                                                                                                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressLabelWidget->setHorizontalAlignment(HorizontalAlignment::RIGHT_JUSTIFIED),                                                                                                     NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteProgressLabelWidget->setPosition(testingTabPageWidth * SEQUENTIAL_WRITE_PROGRESS_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_WRITE_PROGRESS_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteProgressLabelWidget->setSize(testingTabPageWidth     * SEQUENTIAL_WRITE_PROGRESS_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_WRITE_PROGRESS_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1486,7 +1490,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sSequentialWriteProgressBarWidget = new ProgressBarWidget(progressbarBackgroundImage, progressbarIndicatorImage, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setColor(blackColor),                                                                                                                                                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setColor(blackColor),                                                                                                                                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setPosition(testingTabPageWidth * SEQUENTIAL_WRITE_PROGRESSBAR_POSITION_X_PERCENT / 100, testingTabPageHeight * SEQUENTIAL_WRITE_PROGRESSBAR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setSize(testingTabPageWidth     * SEQUENTIAL_WRITE_PROGRESSBAR_WIDTH_PERCENT      / 100, testingTabPageHeight * SEQUENTIAL_WRITE_PROGRESSBAR_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1496,7 +1500,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     LabelWidget *randomReadLabelWidget = new LabelWidget("Random read 1 MB block", listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(randomReadLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(randomReadLabelWidget->setColor(blackColor),                                                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(randomReadLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                                    NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(randomReadLabelWidget->setPosition(testingTabPageWidth * RANDOM_READ_TEXT_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_READ_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(randomReadLabelWidget->setSize(testingTabPageWidth     * RANDOM_READ_TEXT_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_READ_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1506,7 +1511,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sRandomReadAverageLabelWidget = new LabelWidget(randomReadAverageText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sRandomReadAverageLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadAverageLabelWidget->setColor(blackColor),                                                                                                                                 NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadAverageLabelWidget->setPosition(testingTabPageWidth * RANDOM_READ_AVERAGE_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_READ_AVERAGE_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadAverageLabelWidget->setSize(testingTabPageWidth     * RANDOM_READ_AVERAGE_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_READ_AVERAGE_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1516,7 +1521,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sRandomReadMaximumLabelWidget = new LabelWidget(randomReadMaximumText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sRandomReadMaximumLabelWidget->setColor(blackColor),                                                                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadMaximumLabelWidget->setColor(blackColor),                                                                                                                                 NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadMaximumLabelWidget->setPosition(testingTabPageWidth * RANDOM_READ_MAXIMUM_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_READ_MAXIMUM_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadMaximumLabelWidget->setSize(testingTabPageWidth     * RANDOM_READ_MAXIMUM_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_READ_MAXIMUM_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1526,7 +1531,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sRandomReadProgressLabelWidget = new LabelWidget(randomReadProgressText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sRandomReadProgressLabelWidget->setColor(blackColor),                                                                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadProgressLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadProgressLabelWidget->setHorizontalAlignment(HorizontalAlignment::RIGHT_JUSTIFIED),                                                                                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadProgressLabelWidget->setPosition(testingTabPageWidth * RANDOM_READ_PROGRESS_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_READ_PROGRESS_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadProgressLabelWidget->setSize(testingTabPageWidth     * RANDOM_READ_PROGRESS_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_READ_PROGRESS_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1536,7 +1542,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sRandomReadProgressBarWidget = new ProgressBarWidget(progressbarBackgroundImage, progressbarIndicatorImage, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sRandomReadProgressBarWidget->setColor(blackColor),                                                                                                                                                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadProgressBarWidget->setColor(blackColor),                                                                                                                                         NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadProgressBarWidget->setPosition(testingTabPageWidth * RANDOM_READ_PROGRESSBAR_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_READ_PROGRESSBAR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomReadProgressBarWidget->setSize(testingTabPageWidth     * RANDOM_READ_PROGRESSBAR_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_READ_PROGRESSBAR_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1546,7 +1552,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     LabelWidget *randomWriteLabelWidget = new LabelWidget("Random write 1 MB block", listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(randomWriteLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(randomWriteLabelWidget->setColor(blackColor),                                                                                                                             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(randomWriteLabelWidget->setHorizontalAlignment(HorizontalAlignment::LEFT_JUSTIFIED),                                                                                      NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(randomWriteLabelWidget->setPosition(testingTabPageWidth * RANDOM_WRITE_TEXT_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_WRITE_TEXT_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(randomWriteLabelWidget->setSize(testingTabPageWidth     * RANDOM_WRITE_TEXT_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_WRITE_TEXT_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1566,7 +1573,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sRandomWriteMaximumLabelWidget = new LabelWidget(randomWriteMaximumText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sRandomWriteMaximumLabelWidget->setColor(blackColor),                                                                                                                                         NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteMaximumLabelWidget->setColor(blackColor),                                                                                                                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomWriteMaximumLabelWidget->setPosition(testingTabPageWidth * RANDOM_WRITE_MAXIMUM_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_WRITE_MAXIMUM_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomWriteMaximumLabelWidget->setSize(testingTabPageWidth     * RANDOM_WRITE_MAXIMUM_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_WRITE_MAXIMUM_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1576,7 +1583,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sRandomWriteProgressLabelWidget = new LabelWidget(randomWriteProgressText, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sRandomWriteProgressLabelWidget->setColor(blackColor),                                                                                                                                           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteProgressLabelWidget->setColor(blackColor),                                                                                                                                     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteProgressLabelWidget->setHorizontalAlignment(HorizontalAlignment::RIGHT_JUSTIFIED),                                                                                             NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomWriteProgressLabelWidget->setPosition(testingTabPageWidth * RANDOM_WRITE_PROGRESS_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_WRITE_PROGRESS_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomWriteProgressLabelWidget->setSize(testingTabPageWidth     * RANDOM_WRITE_PROGRESS_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_WRITE_PROGRESS_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
@@ -1586,7 +1594,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     sRandomWriteProgressBarWidget = new ProgressBarWidget(progressbarBackgroundImage, progressbarIndicatorImage, listTabPageWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    UEFI_ASSERT_EXECUTION(sRandomWriteProgressBarWidget->setColor(blackColor),                                                                                                                                                 NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteProgressBarWidget->setColor(blackColor),                                                                                                                                           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomWriteProgressBarWidget->setPosition(testingTabPageWidth * RANDOM_WRITE_PROGRESSBAR_POSITION_X_PERCENT / 100, testingTabPageHeight * RANDOM_WRITE_PROGRESSBAR_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sRandomWriteProgressBarWidget->setSize(testingTabPageWidth     * RANDOM_WRITE_PROGRESSBAR_WIDTH_PERCENT      / 100, testingTabPageHeight * RANDOM_WRITE_PROGRESSBAR_HEIGHT_PERCENT     / 100), NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
