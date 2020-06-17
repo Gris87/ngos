@@ -376,10 +376,12 @@
 #define BLACK_COLOR    0xFF000000
 #define DISABLED_COLOR 0xFFB2B2B2
 
-#define AVERAGE_TEXT_LENGTH       14
-#define MAXIMUM_TEXT_LENGTH       14
-#define PROGRESS_TEXT_LENGTH      14
+#define AVERAGE_TEXT_LENGTH       18
+#define MAXIMUM_TEXT_LENGTH       18
+#define PROGRESS_TEXT_LENGTH      24
 #define SUMMARY_TOTAL_TEXT_LENGTH 14
+
+#define QUICK_TEST_SIZE (32 * MB)
 
 
 
@@ -2909,6 +2911,10 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
+    i64 testSize;
+
+
+
     UEFI_ASSERT_EXECUTION(free((void *)sTestingSizeLabelWidget->getText()),  NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(free((void *)sTestingRangeLabelWidget->getText()), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(free((void *)sTestingModeLabelWidget->getText()),  NgosStatus::ASSERTION);
@@ -2928,6 +2934,29 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
         const DmiMemoryDevice &memoryDevice = DMI::getMemoryDevices().at(id);
+
+
+
+        switch (sMode)
+        {
+            case MemoryTestMode::QUICK_TEST: testSize = memoryDevice.size > QUICK_TEST_SIZE ? QUICK_TEST_SIZE : memoryDevice.size; break;
+            case MemoryTestMode::FULL_TEST:  testSize = memoryDevice.size;                                                         break;
+            case MemoryTestMode::MAXIMUM:
+            {
+                UEFI_LF(("Unexpected test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                UEFI_LF(("Unknown test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+        }
 
 
 
@@ -2958,6 +2987,28 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
         UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setVisible(false),    NgosStatus::ASSERTION);
 
 
+        switch (sMode)
+        {
+            case MemoryTestMode::QUICK_TEST: testSize = DMI::getTotalAmountOfMemory() > QUICK_TEST_SIZE ? QUICK_TEST_SIZE : DMI::getTotalAmountOfMemory(); break;
+            case MemoryTestMode::FULL_TEST:  testSize = DMI::getTotalAmountOfMemory();                                                                     break;
+            case MemoryTestMode::MAXIMUM:
+            {
+                UEFI_LF(("Unexpected test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+
+            default:
+            {
+                UEFI_LF(("Unknown test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
+
+                return NgosStatus::UNEXPECTED_BEHAVIOUR;
+            }
+            break;
+        }
+
+
 
         char8 bytesBuffer[11];
 
@@ -2969,6 +3020,75 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
         UEFI_ASSERT_EXECUTION(sTestingRangeLabelWidget->setText(mprintf("Range:     0 B - %s", bytesBuffer)),              NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(sTestingModeLabelWidget->setText( mprintf("Test mode: %s",       enumToHumanString(sMode))), NgosStatus::ASSERTION);
     }
+
+
+
+    UEFI_ASSERT_EXECUTION(sSequentialReadProgressBarWidget->setValue(0),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setValue(0), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadProgressBarWidget->setValue(0),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteProgressBarWidget->setValue(0),     NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sSequentialReadProgressBarWidget->setMaximumValue(testSize),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setMaximumValue(testSize), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadProgressBarWidget->setMaximumValue(testSize),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteProgressBarWidget->setMaximumValue(testSize),     NgosStatus::ASSERTION);
+
+    UEFI_ASSERT_EXECUTION(sSequentialReadProgressBarWidget->setVisible(true),  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressBarWidget->setVisible(true), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadProgressBarWidget->setVisible(true),      NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteProgressBarWidget->setVisible(true),     NgosStatus::ASSERTION);
+
+
+
+    char8 *sequentialReadAverageText   = (char8 *)sSequentialReadAverageLabelWidget->getText();
+    char8 *sequentialReadMaximumText   = (char8 *)sSequentialReadMaximumLabelWidget->getText();
+    char8 *sequentialReadProgressText  = (char8 *)sSequentialReadProgressLabelWidget->getText();
+    char8 *sequentialWriteAverageText  = (char8 *)sSequentialWriteAverageLabelWidget->getText();
+    char8 *sequentialWriteMaximumText  = (char8 *)sSequentialWriteMaximumLabelWidget->getText();
+    char8 *sequentialWriteProgressText = (char8 *)sSequentialWriteProgressLabelWidget->getText();
+    char8 *randomReadAverageText       = (char8 *)sRandomReadAverageLabelWidget->getText();
+    char8 *randomReadMaximumText       = (char8 *)sRandomReadMaximumLabelWidget->getText();
+    char8 *randomReadProgressText      = (char8 *)sRandomReadProgressLabelWidget->getText();
+    char8 *randomWriteAverageText      = (char8 *)sRandomWriteAverageLabelWidget->getText();
+    char8 *randomWriteMaximumText      = (char8 *)sRandomWriteMaximumLabelWidget->getText();
+    char8 *randomWriteProgressText     = (char8 *)sRandomWriteProgressLabelWidget->getText();
+
+
+
+    sequentialReadAverageText[0]   = 0;
+    sequentialReadMaximumText[0]   = 0;
+    sequentialWriteAverageText[0]  = 0;
+    sequentialWriteMaximumText[0]  = 0;
+    randomReadAverageText[0]       = 0;
+    randomReadMaximumText[0]       = 0;
+    randomWriteAverageText[0]      = 0;
+    randomWriteMaximumText[0]      = 0;
+
+
+
+    i64 progressTextLength = sprintf(sequentialReadProgressText, "0 B / %s", bytesToString(testSize));
+
+    COMMON_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
+
+
+    memcpy(sequentialWriteProgressText, sequentialReadProgressText, (progressTextLength + 1) * sizeof(char8));
+    memcpy(randomReadProgressText,      sequentialReadProgressText, (progressTextLength + 1) * sizeof(char8));
+    memcpy(randomWriteProgressText,     sequentialReadProgressText, (progressTextLength + 1) * sizeof(char8));
+
+
+
+    UEFI_ASSERT_EXECUTION(sSequentialReadAverageLabelWidget->setText(sequentialReadAverageText),     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialReadMaximumLabelWidget->setText(sequentialReadMaximumText),     NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialReadProgressLabelWidget->setText(sequentialReadProgressText),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteAverageLabelWidget->setText(sequentialWriteAverageText),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteMaximumLabelWidget->setText(sequentialWriteMaximumText),   NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sSequentialWriteProgressLabelWidget->setText(sequentialWriteProgressText), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadAverageLabelWidget->setText(randomReadAverageText),             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadMaximumLabelWidget->setText(randomReadMaximumText),             NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomReadProgressLabelWidget->setText(randomReadProgressText),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteAverageLabelWidget->setText(randomWriteAverageText),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteMaximumLabelWidget->setText(randomWriteMaximumText),           NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sRandomWriteProgressLabelWidget->setText(randomWriteProgressText),         NgosStatus::ASSERTION);
 
 
 
