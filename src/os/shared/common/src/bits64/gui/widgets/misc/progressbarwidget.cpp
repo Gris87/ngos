@@ -7,6 +7,10 @@
 
 
 
+#define PERCENT_TEXT_PROPORTION 3
+
+
+
 ProgressBarWidget::ProgressBarWidget(Image *backgroundImage, Image *indicatorImage, Widget *parent)
     : Widget(parent)
     , mPanelWidget(nullptr)
@@ -15,7 +19,9 @@ ProgressBarWidget::ProgressBarWidget(Image *backgroundImage, Image *indicatorIma
     , mMinimumValue(0)
     , mMaximumValue(100)
     , mValue(0)
-    , mPercentBuffer()
+    , mProgressWidth(0)
+    , mPercents(0xFF)
+    , mPercentsBuffer()
 {
     COMMON_LT((" | backgroundImage = 0x%p, indicatorImage = 0x%p, parent = 0x%p", backgroundImage, indicatorImage, parent));
 
@@ -27,7 +33,7 @@ ProgressBarWidget::ProgressBarWidget(Image *backgroundImage, Image *indicatorIma
 
     mPanelWidget          = new PanelWidget(backgroundImage, this);
     mIndicatorImageWidget = new ImageWidget(indicatorImage,  mPanelWidget);
-    mLabelWidget          = new LabelWidget(mPercentBuffer,  this);
+    mLabelWidget          = new LabelWidget(mPercentsBuffer, this);
 }
 
 ProgressBarWidget::~ProgressBarWidget()
@@ -121,31 +127,165 @@ NgosStatus ProgressBarWidget::repaint()
 
 
 
-    COMMON_ASSERT_EXECUTION(mPanelWidget->lockUpdates(), NgosStatus::ASSERTION);
+    u64 percentTextWidth = mHeight * PERCENT_TEXT_PROPORTION;
+
+    if (allowedWidth > percentTextWidth)
+    {
+        mProgressWidth = allowedWidth - percentTextWidth;
 
 
 
-    COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->lockUpdates(),                        NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->setPosition(paddingLeft, paddingTop), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->setSize(allowedWidth, allowedHeight), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->unlockUpdates(),                      NgosStatus::ASSERTION);
+        i64 progressWidth;
+        u8  percents;
+
+        if (mMinimumValue < mMaximumValue)
+        {
+            progressWidth = mProgressWidth * (mValue - mMinimumValue) / (mMaximumValue - mMinimumValue);
+            percents      = 100            * (mValue - mMinimumValue) / (mMaximumValue - mMinimumValue);
+
+            if (progressWidth <= 0)
+            {
+                progressWidth = 1;
+                percents      = 0;
+            }
+            else
+            if (progressWidth > mProgressWidth)
+            {
+                progressWidth = mProgressWidth;
+                percents      = 100;
+            }
+        }
+        else
+        {
+            progressWidth = 1;
+            percents      = 0;
+        }
 
 
 
-    COMMON_ASSERT_EXECUTION(mPanelWidget->setPosition(0, 0),        NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mPanelWidget->setSize(mWidth, mHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mPanelWidget->lockUpdates(), NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(mPanelWidget->unlockUpdates(), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->lockUpdates(),                         NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->setPosition(paddingLeft, paddingTop),  NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->setSize(progressWidth, allowedHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->unlockUpdates(),                       NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(mLabelWidget->lockUpdates(),            NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mLabelWidget->setText("100 %"),         NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mLabelWidget->setPosition(0, 0),        NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mLabelWidget->setSize(mWidth, mHeight), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(mLabelWidget->unlockUpdates(),          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mPanelWidget->setPosition(0, 0),                           NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mPanelWidget->setSize(mWidth - percentTextWidth, mHeight), NgosStatus::ASSERTION);
+
+
+
+        COMMON_ASSERT_EXECUTION(mPanelWidget->unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        if (mPercents != percents)
+        {
+            mPercents = percents;
+
+            i64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
+            AVOID_UNUSED(percentsLength);
+
+            COMMON_TEST_ASSERT(percentsLength < (i64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(mLabelWidget->setText(mPercentsBuffer), NgosStatus::ASSERTION);
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setPosition(mWidth - percentTextWidth, 0), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setSize(percentTextWidth, mHeight),        NgosStatus::ASSERTION);
+
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->unlockUpdates(), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        mProgressWidth = allowedWidth;
+
+
+
+        i64 progressWidth;
+        u8  percents;
+
+        if (mMinimumValue < mMaximumValue)
+        {
+            progressWidth = mProgressWidth * (mValue - mMinimumValue) / (mMaximumValue - mMinimumValue);
+            percents      = 100            * (mValue - mMinimumValue) / (mMaximumValue - mMinimumValue);
+
+            if (progressWidth <= 0)
+            {
+                progressWidth = 1;
+                percents      = 0;
+            }
+            else
+            if (progressWidth > mProgressWidth)
+            {
+                progressWidth = mProgressWidth;
+                percents      = 100;
+            }
+        }
+        else
+        {
+            progressWidth = 1;
+            percents      = 0;
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(mPanelWidget->lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->lockUpdates(),                         NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->setPosition(paddingLeft, paddingTop),  NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->setSize(progressWidth, allowedHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->unlockUpdates(),                       NgosStatus::ASSERTION);
+
+
+
+        COMMON_ASSERT_EXECUTION(mPanelWidget->setPosition(0, 0),        NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mPanelWidget->setSize(mWidth, mHeight), NgosStatus::ASSERTION);
+
+
+
+        COMMON_ASSERT_EXECUTION(mPanelWidget->unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+        if (mPercents != percents)
+        {
+            mPercents = percents;
+
+            i64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
+            AVOID_UNUSED(percentsLength);
+
+            COMMON_TEST_ASSERT(percentsLength < (i64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(mLabelWidget->setText(mPercentsBuffer), NgosStatus::ASSERTION);
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setPosition(paddingLeft, paddingTop), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mLabelWidget->setSize(allowedWidth, allowedHeight), NgosStatus::ASSERTION);
+
+
+
+        COMMON_ASSERT_EXECUTION(mLabelWidget->unlockUpdates(), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -178,6 +318,146 @@ NgosStatus ProgressBarWidget::setColor(const RgbaPixel &color)
     COMMON_TEST_ASSERT(mLabelWidget != nullptr, NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(mLabelWidget->setColor(color), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus ProgressBarWidget::setMinimumValue(i64 minimumValue)
+{
+    COMMON_LT((" | minimumValue = %d", minimumValue));
+
+
+
+    if (mMinimumValue != minimumValue)
+    {
+        mMinimumValue = minimumValue;
+
+        COMMON_ASSERT_EXECUTION(updatePercents(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+i64 ProgressBarWidget::getMinimumValue() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mMinimumValue;
+}
+
+NgosStatus ProgressBarWidget::setMaximumValue(i64 maximumValue)
+{
+    COMMON_LT((" | maximumValue = %d", maximumValue));
+
+
+
+    if (mMaximumValue != maximumValue)
+    {
+        mMaximumValue = maximumValue;
+
+        COMMON_ASSERT_EXECUTION(updatePercents(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+i64 ProgressBarWidget::getMaximumValue() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mMaximumValue;
+}
+
+NgosStatus ProgressBarWidget::setValue(i64 value)
+{
+    COMMON_LT((" | value = %d", value));
+
+
+
+    if (mValue != value)
+    {
+        mValue = value;
+
+        COMMON_ASSERT_EXECUTION(updatePercents(), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+i64 ProgressBarWidget::getValue() const
+{
+    // COMMON_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mValue;
+}
+
+NgosStatus ProgressBarWidget::updatePercents()
+{
+    COMMON_LT((""));
+
+
+
+    if (mProgressWidth > 0)
+    {
+        i64 progressWidth;
+        u8  percents;
+
+        if (mMinimumValue < mMaximumValue)
+        {
+            progressWidth = mProgressWidth * (mValue - mMinimumValue) / (mMaximumValue - mMinimumValue);
+            percents      = 100            * (mValue - mMinimumValue) / (mMaximumValue - mMinimumValue);
+
+            if (progressWidth <= 0)
+            {
+                progressWidth = 1;
+                percents      = 0;
+            }
+            else
+            if (progressWidth > mProgressWidth)
+            {
+                progressWidth = mProgressWidth;
+                percents      = 100;
+            }
+        }
+        else
+        {
+            progressWidth = 1;
+            percents      = 0;
+        }
+
+
+
+        COMMON_ASSERT_EXECUTION(mIndicatorImageWidget->setSize(progressWidth, mIndicatorImageWidget->getHeight()), NgosStatus::ASSERTION);
+
+
+
+        if (mPercents != percents)
+        {
+            mPercents = percents;
+
+            i64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
+            AVOID_UNUSED(percentsLength);
+
+            COMMON_TEST_ASSERT(percentsLength < (i64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
+
+            COMMON_ASSERT_EXECUTION(mLabelWidget->setText(mPercentsBuffer), NgosStatus::ASSERTION);
+        }
+
+    }
 
 
 

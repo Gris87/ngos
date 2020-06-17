@@ -22,14 +22,27 @@ public:
 
     NgosStatus setColor(const RgbaPixel &color); // TEST: NO
 
+    NgosStatus setMinimumValue(i64 minimumValue); // TEST: NO
+    i64 getMinimumValue() const; // TEST: NO
+
+    NgosStatus setMaximumValue(i64 maximumValue); // TEST: NO
+    i64 getMaximumValue() const; // TEST: NO
+
+    NgosStatus setValue(i64 value); // TEST: NO
+    i64 getValue() const; // TEST: NO
+
 private:
+    NgosStatus updatePercents(); // TEST: NO
+
     PanelWidget *mPanelWidget;
     ImageWidget *mIndicatorImageWidget;
     LabelWidget *mLabelWidget;
     i64          mMinimumValue;
     i64          mMaximumValue;
     i64          mValue;
-    char8        mPercentBuffer[6];
+    i64          mProgressWidth;
+    u8           mPercents;
+    char8        mPercentsBuffer[6];
 };
 
 
