@@ -20,17 +20,17 @@ public:
 
     const char8* getName() const; // TEST: NO
 
+    uefi_ap_procedure getProcedure() const; // TEST: NO
+
     NgosStatus setScore(u64 score); // TEST: NO
     u64 getScore() const; // TEST: NO
-
-    uefi_ap_procedure getProcedure() const; // TEST: NO
 
     bool isCompleted() const; // TEST: NO
 
 private:
     const char8       *mName;
-    u64                mScore;
     uefi_ap_procedure  mProcedure;
+    u64                mScore;
     bool               mCompleted;
 };
 

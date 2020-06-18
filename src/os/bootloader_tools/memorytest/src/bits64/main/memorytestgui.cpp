@@ -649,9 +649,11 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     u64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
     u64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
     u64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
+    // Ignore CppAlignmentVerifier [END]
 
 
 
@@ -2941,6 +2943,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
         {
             case MemoryTestMode::QUICK_TEST: testSize = memoryDevice.size > QUICK_TEST_SIZE ? QUICK_TEST_SIZE : memoryDevice.size; break;
             case MemoryTestMode::FULL_TEST:  testSize = memoryDevice.size;                                                         break;
+
             case MemoryTestMode::MAXIMUM:
             {
                 UEFI_LF(("Unexpected test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
@@ -2987,10 +2990,12 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
         UEFI_ASSERT_EXECUTION(sTestingPartNumberLabelWidget->setVisible(false),    NgosStatus::ASSERTION);
 
 
+
         switch (sMode)
         {
             case MemoryTestMode::QUICK_TEST: testSize = DMI::getTotalAmountOfMemory() > QUICK_TEST_SIZE ? QUICK_TEST_SIZE : DMI::getTotalAmountOfMemory(); break;
             case MemoryTestMode::FULL_TEST:  testSize = DMI::getTotalAmountOfMemory();                                                                     break;
+
             case MemoryTestMode::MAXIMUM:
             {
                 UEFI_LF(("Unexpected test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
@@ -3055,20 +3060,21 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
-    sequentialReadAverageText[0]   = 0;
-    sequentialReadMaximumText[0]   = 0;
-    sequentialWriteAverageText[0]  = 0;
-    sequentialWriteMaximumText[0]  = 0;
-    randomReadAverageText[0]       = 0;
-    randomReadMaximumText[0]       = 0;
-    randomWriteAverageText[0]      = 0;
-    randomWriteMaximumText[0]      = 0;
+    sequentialReadAverageText[0]  = 0;
+    sequentialReadMaximumText[0]  = 0;
+    sequentialWriteAverageText[0] = 0;
+    sequentialWriteMaximumText[0] = 0;
+    randomReadAverageText[0]      = 0;
+    randomReadMaximumText[0]      = 0;
+    randomWriteAverageText[0]     = 0;
+    randomWriteMaximumText[0]     = 0;
 
 
 
     i64 progressTextLength = sprintf(sequentialReadProgressText, "0 B / %s", bytesToString(testSize));
 
-    COMMON_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
+
 
 
     memcpy(sequentialWriteProgressText, sequentialReadProgressText, (progressTextLength + 1) * sizeof(char8));

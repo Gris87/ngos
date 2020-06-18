@@ -199,9 +199,11 @@ NgosStatus HddTestGUI::init(BootParams *params)
 
 
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     u64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
     u64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
     u64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
+    // Ignore CppAlignmentVerifier [END]
 
 
 

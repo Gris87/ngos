@@ -39,11 +39,22 @@ SOURCES += \
     asm/arch/x86_64/main.S \
     src/bits64/main/memorytest.cpp \
     src/bits64/main/memorytestgui.cpp \
+    src/bits64/tests/testbase.cpp \
+    src/bits64/tests/testrandomread.cpp \
+    src/bits64/tests/testrandomwrite.cpp \
+    src/bits64/tests/testsequentialread.cpp \
+    src/bits64/tests/testsequentialwrite.cpp \
     src/main.cpp
 
 HEADERS += \
     src/bits64/main/memorytest.h \
     src/bits64/main/memorytestgui.h \
     src/bits64/other/memorytestmode.h \
+    src/bits64/other/memorytesttype.h \
+    src/bits64/tests/testbase.h \
+    src/bits64/tests/testrandomread.h \
+    src/bits64/tests/testrandomwrite.h \
+    src/bits64/tests/testsequentialread.h \
+    src/bits64/tests/testsequentialwrite.h \
     test/bits64/sections/section1/bits64/types.h \
     test/bits64/sections/section1/testcase.h

@@ -507,6 +507,17 @@ src/os/bootloader_tools/memorytest/src/bits64/main/memorytest.h
 src/os/bootloader_tools/memorytest/src/bits64/main/memorytestgui.cpp
 src/os/bootloader_tools/memorytest/src/bits64/main/memorytestgui.h
 src/os/bootloader_tools/memorytest/src/bits64/other/memorytestmode.h
+src/os/bootloader_tools/memorytest/src/bits64/other/memorytesttype.h
+src/os/bootloader_tools/memorytest/src/bits64/tests/testbase.cpp
+src/os/bootloader_tools/memorytest/src/bits64/tests/testbase.h
+src/os/bootloader_tools/memorytest/src/bits64/tests/testrandomread.cpp
+src/os/bootloader_tools/memorytest/src/bits64/tests/testrandomread.h
+src/os/bootloader_tools/memorytest/src/bits64/tests/testrandomwrite.cpp
+src/os/bootloader_tools/memorytest/src/bits64/tests/testrandomwrite.h
+src/os/bootloader_tools/memorytest/src/bits64/tests/testsequentialread.cpp
+src/os/bootloader_tools/memorytest/src/bits64/tests/testsequentialread.h
+src/os/bootloader_tools/memorytest/src/bits64/tests/testsequentialwrite.cpp
+src/os/bootloader_tools/memorytest/src/bits64/tests/testsequentialwrite.h
 src/os/bootloader_tools/memorytest/src/main.cpp
 src/os/bootloader_tools/memorytest/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader_tools/memorytest/test/bits64/sections/section1/testcase.h

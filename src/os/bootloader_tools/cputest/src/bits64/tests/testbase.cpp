@@ -11,8 +11,8 @@ TestBase* cpuTests[(u64)TestType::MAXIMUM];
 
 TestBase::TestBase(TestType type, const char8 *name, uefi_ap_procedure procedure)
     : mName(name)
-    , mScore(0)
     , mProcedure(procedure)
+    , mScore(0)
     , mCompleted(false)
 {
     UEFI_LT((" | type = %u, name = 0x%p, procedure = 0x%p", type, name, procedure));
@@ -58,6 +58,15 @@ const char8* TestBase::getName() const
     return mName;
 }
 
+uefi_ap_procedure TestBase::getProcedure() const
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mProcedure;
+}
+
 NgosStatus TestBase::setScore(u64 score)
 {
     // UEFI_LT((" | score = %u", score)); // Commented to avoid bad looking logs
@@ -79,15 +88,6 @@ u64 TestBase::getScore() const
 
 
     return mScore;
-}
-
-uefi_ap_procedure TestBase::getProcedure() const
-{
-    // UEFI_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mProcedure;
 }
 
 bool TestBase::isCompleted() const

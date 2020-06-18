@@ -205,6 +205,7 @@ NgosStatus ProgressBarWidget::repaint()
         COMMON_ASSERT_EXECUTION(mLabelWidget->setSize(percentTextWidth, mHeight),        NgosStatus::ASSERTION);
 
 
+
         COMMON_ASSERT_EXECUTION(mLabelWidget->unlockUpdates(), NgosStatus::ASSERTION);
     }
     else
@@ -456,7 +457,6 @@ NgosStatus ProgressBarWidget::updatePercents()
 
             COMMON_ASSERT_EXECUTION(mLabelWidget->setText(mPercentsBuffer), NgosStatus::ASSERTION);
         }
-
     }
 
 
