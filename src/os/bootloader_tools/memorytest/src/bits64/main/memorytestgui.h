@@ -17,6 +17,7 @@
 #include <uefi/uefisimplepointerprotocol.h>
 
 #include "src/bits64/other/memorytestmode.h"
+#include "src/bits64/other/memorytesttype.h"
 
 
 
@@ -133,6 +134,8 @@ private:
     static Button                                *sTestLeftButton;
     static Button                                *sTestRightButton;
     static WrapperWidget                         *sTestRunningWrapperWidget;
+    static Image                                 *sStopImage;
+    static Image                                 *sCloseImage;
     static Button                                *sTestStopButton;
     static Widget                                *sLastFocusedWidget;
     static LabelWidget                           *sTestingSizeLabelWidget;
@@ -142,6 +145,7 @@ private:
     static LabelWidget                           *sTestingManufacturerLabelWidget;
     static LabelWidget                           *sTestingSerialNumberLabelWidget;
     static LabelWidget                           *sTestingPartNumberLabelWidget;
+    static LabelWidget                           *sTestingTotalLabelWidget;
     static TabWidget                             *sTestingTabWidget;
     static TabButton                             *sListTabButton;
     static TabButton                             *sChartTabButton;
@@ -169,6 +173,7 @@ private:
     static uefi_event                            *sWaitEvents;
     static uefi_event                             sTimerEvent;
     static u16                                    sFirstProcessorEventIndex;
+    static MemoryTestType                         sCurrentTest;
     static u64                                    sNumberOfRunningProcessors;
     static bool                                   sTerminated;
     static MemoryTestMode                         sMode;

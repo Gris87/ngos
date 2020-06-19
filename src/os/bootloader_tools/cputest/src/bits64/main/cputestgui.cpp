@@ -780,10 +780,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     char8 *testTotalText = (char8 *)malloc(TEST_TOTAL_TEXT_LENGTH);
     UEFI_TEST_ASSERT(testTotalText != nullptr, NgosStatus::ASSERTION);
 
-    i64 testTotalTextLength = sprintf(testTotalText, "Total: 0");
-    AVOID_UNUSED(testTotalTextLength);
-
-    UEFI_TEST_ASSERT(testTotalTextLength < TEST_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
+    testTotalText[0] = 0;
 
 
 

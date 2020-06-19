@@ -104,20 +104,23 @@ NgosStatus ImageWidget::setImage(Image *image)
 
 
 
-    mImage = image;
-
-    if (
-        mWidth > 0
-        &&
-        mHeight > 0
-       )
+    if (mImage != image)
     {
-        COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+        mImage = image;
 
-        if (isVisible())
+        if (
+            mWidth > 0
+            &&
+            mHeight > 0
+           )
         {
-            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+
+            if (isVisible())
+            {
+                COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            }
         }
     }
 
@@ -147,20 +150,23 @@ NgosStatus ImageWidget::setResizedImage(Image *image)
 
 
 
-    mOwnResultImage = image;
-
-    if (
-        mWidth > 0
-        &&
-        mHeight > 0
-       )
+    if (mOwnResultImage != image)
     {
-        COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+        mOwnResultImage = image;
 
-        if (isVisible())
+        if (
+            mWidth > 0
+            &&
+            mHeight > 0
+           )
         {
-            COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(invalidate(), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(repaint(),    NgosStatus::ASSERTION);
+
+            if (isVisible())
+            {
+                COMMON_ASSERT_EXECUTION(update(), NgosStatus::ASSERTION);
+            }
         }
     }
 
