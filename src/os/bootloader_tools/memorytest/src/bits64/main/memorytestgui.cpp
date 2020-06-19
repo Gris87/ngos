@@ -3430,7 +3430,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-    AVOID_UNUSED(processorId);
+    AVOID_UNUSED(processorId); // TODO: Need to remove
 
 
 
