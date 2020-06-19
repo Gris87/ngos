@@ -448,6 +448,7 @@ u64                                    MemoryTestGUI::sSummaryTotal;
 UefiMpServicesProtocol                *MemoryTestGUI::sMpServices;
 u16                                    MemoryTestGUI::sWaitEventsCount;
 uefi_event                            *MemoryTestGUI::sWaitEvents;
+uefi_event                             MemoryTestGUI::sTimerEvent;
 u16                                    MemoryTestGUI::sFirstProcessorEventIndex;
 u64                                    MemoryTestGUI::sNumberOfRunningProcessors;
 bool                                   MemoryTestGUI::sTerminated;
@@ -3101,6 +3102,14 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
     UEFI_ASSERT_EXECUTION(sTestRunningWrapperWidget->setVisible(true), NgosStatus::ASSERTION);
 
 
+    sNumberOfRunningProcessors = 1; // TODO: Implement
+
+    if (sNumberOfRunningProcessors > 0)
+    {
+        UEFI_ASSERT_EXECUTION(enableTimerEvent(), NgosStatus::ASSERTION);
+    }
+
+
 
     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
 
@@ -3145,7 +3154,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    u64 size = sWaitEventsCount * sizeof(uefi_event);
+    u64 size = (sWaitEventsCount + 1) * sizeof(uefi_event); // "+ 1" = one more element for timer event
 
 
 
@@ -3222,6 +3231,13 @@ NgosStatus MemoryTestGUI::waitForEvent()
 
 
 
+    if (sWaitEvents[eventIndex] == sTimerEvent)
+    {
+        return processTimerEvent();
+    }
+
+
+
     if (eventIndex >= sFirstProcessorEventIndex)
     {
         return processApplicationProcessorEvent(eventIndex - sFirstProcessorEventIndex);
@@ -3240,10 +3256,9 @@ NgosStatus MemoryTestGUI::terminateAndWaitForApplicationProcessors()
 
     if (sNumberOfRunningProcessors > 0)
     {
-        if (!sTerminated)
-        {
-            sTerminated = true;
-        }
+        UEFI_TEST_ASSERT(sTerminated == false, NgosStatus::ASSERTION);
+
+        sTerminated = true;
 
 
 
@@ -3257,7 +3272,7 @@ NgosStatus MemoryTestGUI::terminateAndWaitForApplicationProcessors()
 
 
 
-            if (eventIndex >= sFirstProcessorEventIndex)
+            if (eventIndex >= sFirstProcessorEventIndex && sWaitEvents[eventIndex] != sTimerEvent)
             {
                 UEFI_ASSERT_EXECUTION(processApplicationProcessorEvent(eventIndex - sFirstProcessorEventIndex), NgosStatus::ASSERTION);
             }
@@ -3392,6 +3407,68 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
     {
         --sNumberOfRunningProcessors;
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::processTimerEvent()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_LF(("Timer tick"));
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::enableTimerEvent()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_TEST_ASSERT(sTimerEvent == nullptr, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, UefiTpl::NONE, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Created timer event(0x%p)", sTimerEvent));
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::setTimer(sTimerEvent, UefiTimerDelay::PERIODIC, UEFI_TIMER_SECOND), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Setup timer(0x%p) completed", sTimerEvent));
+
+
+
+    sWaitEvents[sWaitEventsCount] = sTimerEvent;
+    ++sWaitEventsCount;
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::disableTimerEvent()
+{
+    UEFI_LT((""));
+
+
+
+    UEFI_TEST_ASSERT(sTimerEvent != nullptr, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(UEFI::closeEvent(sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_LVV(("Closed timer event(0x%p)", sTimerEvent));
+
+    sTimerEvent = nullptr;
+    --sWaitEventsCount;
 
 
 
@@ -4847,6 +4924,20 @@ NgosStatus MemoryTestGUI::onTestStopButtonPressed()
 
 
     UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    if (sTimerEvent != nullptr)
+    {
+        UEFI_TEST_ASSERT(sNumberOfRunningProcessors >  0,     NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(sTerminated                == false, NgosStatus::ASSERTION);
+
+        sNumberOfRunningProcessors = 0; // TODO: Remove it
+
+        UEFI_ASSERT_EXECUTION(disableTimerEvent(),                        NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(terminateAndWaitForApplicationProcessors(), NgosStatus::ASSERTION);
+    }
+
 
 
 

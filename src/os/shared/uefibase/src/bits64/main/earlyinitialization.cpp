@@ -30,7 +30,7 @@ NgosStatus waitForGdbDebug()
 
 
     UEFI_LD(("Waiting for gdb debug..."));
-    UEFI_ASSERT_EXECUTION(UEFI::stall(5000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::stall(5000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 5000000 == 5 sec
 
 
 

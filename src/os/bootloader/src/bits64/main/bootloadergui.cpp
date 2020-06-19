@@ -1012,7 +1012,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-        UEFI_ASSERT_EXECUTION(UEFI::setTimer(sTimerEvent, UefiTimerDelay::PERIODIC, 10000000), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION); // 1 * 1000 * 1000 * 10 "* 100ns"
+        UEFI_ASSERT_EXECUTION(UEFI::setTimer(sTimerEvent, UefiTimerDelay::PERIODIC, UEFI_TIMER_SECOND), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Setup timer(0x%p) completed", sTimerEvent));
 
 
@@ -1044,16 +1044,18 @@ NgosStatus BootloaderGUI::waitForEvent()
         return processKeyboardEvent();
     }
 
-    if (sWaitEvents[eventIndex] == sTimerEvent)
-    {
-        return processTimerEvent();
-    }
-
 
 
     if (eventIndex <= UefiPointerDevices::getSimplePointersCount())
     {
         return processSimplePointerEvent(UefiPointerDevices::getSimplePointer(eventIndex - 1));
+    }
+
+
+
+    if (sWaitEvents[eventIndex] == sTimerEvent)
+    {
+        return processTimerEvent();
     }
 
 
@@ -1194,7 +1196,7 @@ NgosStatus BootloaderGUI::processTimerEvent()
 
     --sTimeoutTick;
 
-    if (sTimeoutTick)
+    if (sTimeoutTick > 0)
     {
         char8 *timeoutText = (char8 *)sTimeoutLabelWidget->getText();
 
@@ -1225,14 +1227,14 @@ NgosStatus BootloaderGUI::disableTimerEvent()
 
 
 
-    UEFI_TEST_ASSERT(sTimerEvent, NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(sTimerEvent != nullptr, NgosStatus::ASSERTION);
 
 
 
     UEFI_ASSERT_EXECUTION(UEFI::closeEvent(sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_LVV(("Closed timer event(0x%p)", sTimerEvent));
 
-    sTimerEvent = 0;
+    sTimerEvent = nullptr;
     --sWaitEventsCount;
 
 
