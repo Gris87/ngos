@@ -458,6 +458,7 @@ src/os/bootloader_tools/memorytest/assets/images/button_hover.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_normal.9.png
 src/os/bootloader_tools/memorytest/assets/images/button_pressed.9.png
 src/os/bootloader_tools/memorytest/assets/images/chart.png
+src/os/bootloader_tools/memorytest/assets/images/close.png
 src/os/bootloader_tools/memorytest/assets/images/console.9.png
 src/os/bootloader_tools/memorytest/assets/images/critical.png
 src/os/bootloader_tools/memorytest/assets/images/cursor.png
