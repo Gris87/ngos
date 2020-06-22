@@ -422,6 +422,7 @@ NgosStatus ArrayList<T>::extendCapacity()
             u64 newSize =   mCapacity * sizeof(T);
 
             mValues = (T *)realloc(mValues, oldSize, newSize);
+            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
         else
         {
