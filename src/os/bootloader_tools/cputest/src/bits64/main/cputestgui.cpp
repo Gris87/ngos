@@ -2280,62 +2280,62 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
     if (sMpServices)
     {
-        u64 numberOfProcessors;
-        u64 numberOfEnabledProcessors;
-
-        UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-
-
-
-        // Validation
+        if (sNumberOfRunningProcessors == 0)
         {
-            UEFI_LVVV(("numberOfProcessors        = %u", numberOfProcessors));
-            UEFI_LVVV(("numberOfEnabledProcessors = %u", numberOfEnabledProcessors));
+            u64 numberOfProcessors;
+            u64 numberOfEnabledProcessors;
 
-            // UEFI_TEST_ASSERT(numberOfProcessors        == 4, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(numberOfEnabledProcessors == 4, NgosStatus::ASSERTION); // Commented due to value variation
-        }
+            UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
 
-        if (numberOfProcessors > 1)
-        {
-            // TODO: Test on real hardware
-#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+            // Validation
             {
-                UEFI_LVVV(("Processors:"));
-                UEFI_LVVV(("-------------------------------------"));
+                UEFI_LVVV(("numberOfProcessors        = %u", numberOfProcessors));
+                UEFI_LVVV(("numberOfEnabledProcessors = %u", numberOfEnabledProcessors));
 
-                for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
-                {
-                    UefiProcessorInformation info;
-
-                    UEFI_ASSERT_EXECUTION(sMpServices->getProcessorInfo(sMpServices, i, &info), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-
-
-
-                    UEFI_LVVV(("info[%d].processorId      = %u", i, info.processorId));
-                    UEFI_LVVV(("info[%d].status           = %s", i, flagsToFullString(info.status)));
-                    UEFI_LVVV(("info[%d].location.package = %u", i, info.location.package));
-                    UEFI_LVVV(("info[%d].location.core    = %u", i, info.location.core));
-                    UEFI_LVVV(("info[%d].location.thread  = %u", i, info.location.thread));
-
-
-
-                    if (i < (i64)numberOfProcessors - 1)
-                    {
-                        UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
-                    }
-                }
-
-                UEFI_LVVV(("-------------------------------------"));
+                // UEFI_TEST_ASSERT(numberOfProcessors        == 4, NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(numberOfEnabledProcessors == 4, NgosStatus::ASSERTION); // Commented due to value variation
             }
+
+
+
+            if (numberOfProcessors > 1)
+            {
+                // TODO: Test on real hardware
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+                {
+                    UEFI_LVVV(("Processors:"));
+                    UEFI_LVVV(("-------------------------------------"));
+
+                    for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
+                    {
+                        UefiProcessorInformation info;
+
+                        UEFI_ASSERT_EXECUTION(sMpServices->getProcessorInfo(sMpServices, i, &info), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+                        UEFI_LVVV(("info[%d].processorId      = %u", i, info.processorId));
+                        UEFI_LVVV(("info[%d].status           = %s", i, flagsToFullString(info.status)));
+                        UEFI_LVVV(("info[%d].location.package = %u", i, info.location.package));
+                        UEFI_LVVV(("info[%d].location.core    = %u", i, info.location.core));
+                        UEFI_LVVV(("info[%d].location.thread  = %u", i, info.location.thread));
+
+
+
+                        if (i < (i64)numberOfProcessors - 1)
+                        {
+                            UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
+                        }
+                    }
+
+                    UEFI_LVVV(("-------------------------------------"));
+                }
 #endif
 
 
 
-            if (sNumberOfRunningProcessors == 0)
-            {
                 for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
                 {
                     UEFI_ASSERT_EXECUTION(cpuTests[i]->reset(), NgosStatus::ASSERTION);
@@ -2389,17 +2389,17 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
             }
             else
             {
-                if (!sTerminated)
-                {
-                    sTerminated = true;
-
-                    UEFI_ASSERT_EXECUTION(addTestEntry("Terminated by user", ""), NgosStatus::ASSERTION);
-                }
+                UEFI_LE(("Failed to start task on any application processor since there is only bootstrap processor"));
             }
         }
         else
         {
-            UEFI_LE(("Failed to start task on any application processor since there is only bootstrap processor"));
+            if (!sTerminated)
+            {
+                sTerminated = true;
+
+                UEFI_ASSERT_EXECUTION(addTestEntry("Terminated by user", ""), NgosStatus::ASSERTION);
+            }
         }
     }
     else

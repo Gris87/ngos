@@ -25,6 +25,10 @@
 #define UEFI_TIMER_MILLISECOND (1000 * UEFI_TIMER_MICROSECOND)
 #define UEFI_TIMER_SECOND      (1000 * UEFI_TIMER_MILLISECOND)
 
+#define UEFI_STALL_MICROSECOND 1    // 1 * 1000 ns
+#define UEFI_STALL_MILLISECOND (1000 * UEFI_STALL_MICROSECOND)
+#define UEFI_STALL_SECOND      (1000 * UEFI_STALL_MILLISECOND)
+
 
 
 typedef void (UEFI_API *uefi_event_notify) (uefi_event event, void *context);

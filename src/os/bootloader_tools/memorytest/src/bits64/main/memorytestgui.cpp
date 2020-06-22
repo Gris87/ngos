@@ -2946,6 +2946,8 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
+    u64 start;
+    u64 end;
     i64 testSize;
 
 
@@ -2966,6 +2968,9 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
         const DmiMemoryDevice &memoryDevice = DMI::getMemoryDevices().at(id);
 
 
+
+        start = memoryDevice.start;
+        end   = memoryDevice.end;
 
         switch (sMode)
         {
@@ -2994,8 +2999,8 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
         char8 startBuffer[11];
         char8 endBuffer[11];
 
-        UEFI_ASSERT_EXECUTION(bytesToString(memoryDevice.start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(bytesToString(memoryDevice.end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(bytesToString(start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(bytesToString(end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
 
 
 
@@ -3019,10 +3024,13 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
     }
     else
     {
+        start = 0;
+        end   = DMI::getTotalAmountOfMemory();
+
         switch (sMode)
         {
-            case MemoryTestMode::QUICK_TEST: testSize = MIN(DMI::getTotalAmountOfMemory(), QUICK_TEST_SIZE); break;
-            case MemoryTestMode::FULL_TEST:  testSize = DMI::getTotalAmountOfMemory();                       break;
+            case MemoryTestMode::QUICK_TEST: testSize = MIN(end, QUICK_TEST_SIZE); break;
+            case MemoryTestMode::FULL_TEST:  testSize = end;                       break;
 
             case MemoryTestMode::MAXIMUM:
             {
@@ -3045,7 +3053,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
         char8 bytesBuffer[11];
 
-        UEFI_ASSERT_EXECUTION(bytesToString(DMI::getTotalAmountOfMemory(), bytesBuffer, sizeof(bytesBuffer)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(bytesToString(end, bytesBuffer, sizeof(bytesBuffer)), NgosStatus::ASSERTION);
 
 
 
@@ -3141,11 +3149,117 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
-    sNumberOfRunningProcessors = 1; // TODO: Implement
+    UEFI_TEST_ASSERT(sNumberOfRunningProcessors == 0,       NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(sTimerEvent                == nullptr, NgosStatus::ASSERTION);
 
-    if (sNumberOfRunningProcessors > 0)
+
+
+    if (sMpServices)
     {
-        UEFI_ASSERT_EXECUTION(enableTimerEvent(), NgosStatus::ASSERTION);
+        u64 numberOfProcessors;
+        u64 numberOfEnabledProcessors;
+
+        UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+        // Validation
+        {
+            UEFI_LVVV(("numberOfProcessors        = %u", numberOfProcessors));
+            UEFI_LVVV(("numberOfEnabledProcessors = %u", numberOfEnabledProcessors));
+
+            // UEFI_TEST_ASSERT(numberOfProcessors        == 4, NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(numberOfEnabledProcessors == 4, NgosStatus::ASSERTION); // Commented due to value variation
+        }
+
+
+
+        if (numberOfProcessors > 1)
+        {
+            // TODO: Test on real hardware
+#if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
+            {
+                UEFI_LVVV(("Processors:"));
+                UEFI_LVVV(("-------------------------------------"));
+
+                for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
+                {
+                    UefiProcessorInformation info;
+
+                    UEFI_ASSERT_EXECUTION(sMpServices->getProcessorInfo(sMpServices, i, &info), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+                    UEFI_LVVV(("info[%d].processorId      = %u", i, info.processorId));
+                    UEFI_LVVV(("info[%d].status           = %s", i, flagsToFullString(info.status)));
+                    UEFI_LVVV(("info[%d].location.package = %u", i, info.location.package));
+                    UEFI_LVVV(("info[%d].location.core    = %u", i, info.location.core));
+                    UEFI_LVVV(("info[%d].location.thread  = %u", i, info.location.thread));
+
+
+
+                    if (i < (i64)numberOfProcessors - 1)
+                    {
+                        UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
+                    }
+                }
+
+                UEFI_LVVV(("-------------------------------------"));
+            }
+#endif
+
+
+
+            for (i64 i = 0; i < (i64)MemoryTestType::MAXIMUM; ++i)
+            {
+                UEFI_ASSERT_EXECUTION(memoryTests[i]->reset(start, end, testSize), NgosStatus::ASSERTION);
+            }
+
+
+
+            sCurrentTest = (MemoryTestType)0;
+            sTerminated  = false;
+
+            for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
+            {
+                TestBase *test = memoryTests[(u64)sCurrentTest];
+
+                if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
+                {
+                    UEFI_LV(("Test %s started on processor %d", enumToFullString(sCurrentTest), i));
+
+                    ++sNumberOfRunningProcessors;
+
+
+
+                    sCurrentTest = (MemoryTestType)((u64)sCurrentTest + 1);
+
+                    if (sCurrentTest >= MemoryTestType::MAXIMUM)
+                    {
+                        break;
+                    }
+                }
+            }
+
+
+
+            if (sNumberOfRunningProcessors > 0)
+            {
+                UEFI_ASSERT_EXECUTION(enableTimerEvent(), NgosStatus::ASSERTION);
+            }
+            else
+            {
+                UEFI_LE(("Failed to start task on any processor"));
+            }
+        }
+        else
+        {
+            UEFI_LE(("Failed to start task on any application processor since there is only bootstrap processor"));
+        }
+    }
+    else
+    {
+        UEFI_LE(("UEFI_MP_SERVICES_PROTOCOL not found")); // TODO: Try to do in single thread
     }
 
 
@@ -3430,11 +3544,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-    AVOID_UNUSED(processorId); // TODO: Need to remove
-
-
-
-    UEFI_LV(("Application processor %u finished", processorId));
+    UEFI_LF(("Application processor %u finished", processorId));
 
 
 
@@ -3454,6 +3564,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
         if (!sTerminated)
         {
             UEFI_ASSERT_EXECUTION(sTestStopButton->setContentImage(sCloseImage), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(disableTimerEvent(),                           NgosStatus::ASSERTION);
 
 
 
@@ -5023,8 +5134,6 @@ NgosStatus MemoryTestGUI::onTestStopButtonPressed()
     {
         UEFI_TEST_ASSERT(sNumberOfRunningProcessors >  0,     NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(sTerminated                == false, NgosStatus::ASSERTION);
-
-        sNumberOfRunningProcessors = 0; // TODO: Remove it
 
         UEFI_ASSERT_EXECUTION(disableTimerEvent(),                        NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(terminateAndWaitForApplicationProcessors(), NgosStatus::ASSERTION);
