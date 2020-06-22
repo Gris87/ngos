@@ -358,13 +358,13 @@ NgosStatus ArrayList<T>::setCapacity(u64 capacity)
         if (mCapacity > 0)
         {
             mValues = (T *)realloc(mValues, mCapacity * sizeof(T), capacity * sizeof(T));
+            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
         else
         {
             mValues = (T *)malloc(capacity * sizeof(T));
+            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
-
-        COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
 
         mCapacity = capacity;
     }
