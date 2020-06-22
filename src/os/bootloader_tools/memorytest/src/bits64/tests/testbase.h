@@ -27,7 +27,7 @@ public:
 
     u64 getRegionEnd() const; // TEST: NO
 
-    u64 getTestSize() const; // TEST: NO
+    i64 getTestSize() const; // TEST: NO
 
     bool isCompleted() const; // TEST: NO
 

@@ -105,7 +105,7 @@ u64 TestBase::getRegionEnd() const
     return mRegionEnd;
 }
 
-u64 TestBase::getTestSize() const
+i64 TestBase::getTestSize() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
