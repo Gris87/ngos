@@ -27,7 +27,14 @@ void UEFI_API testSequentialReadProcedure(void *buffer)
 
 
 
-    UEFI_ASSERT_EXECUTION(test->setScore(1));
+    for (i64 i = 0; i < test->getTestSize(); ++i)
+    {
+        UEFI_ASSERT_EXECUTION(test->setProgress(i));
+    }
+
+
+
+    UEFI_ASSERT_EXECUTION(test->setScore(10000));
 }
 
 

@@ -2347,10 +2347,12 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
                 sDisplayedTest = (TestType)0;
                 sTerminated    = false;
 
+
+
+                TestBase *test = cpuTests[0];
+
                 for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
                 {
-                    TestBase *test = cpuTests[(u64)sCurrentTest];
-
                     if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
                     {
                         UEFI_LV(("Test %s started on processor %d", enumToFullString(sCurrentTest), i));
@@ -2365,6 +2367,8 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
                         {
                             break;
                         }
+
+                        test = cpuTests[(u64)sCurrentTest];
                     }
                 }
 

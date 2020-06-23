@@ -536,7 +536,7 @@ NgosStatus CpuTest::initCpuSpeed()
 
 
 
-    sCpuSpeed = ticks * 1000000 / CPU_SPEED_TIMEOUT;
+    sCpuSpeed = ticks * UEFI_STALL_SECOND / CPU_SPEED_TIMEOUT;
 
 
 

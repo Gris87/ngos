@@ -1,5 +1,6 @@
 #include "memorytestgui.h"
 
+#include <asm/instructions.h>
 #include <common/src/bits64/dmi/dmi.h>
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
@@ -3225,12 +3226,16 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
             sCurrentTest = (MemoryTestType)0;
             sTerminated  = false;
 
+
+
+            TestBase *test = memoryTests[0];
+
             for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
             {
-                TestBase *test = memoryTests[(u64)sCurrentTest];
-
                 if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
                 {
+                    UEFI_ASSERT_EXECUTION(test->setStartTsc(rdtsc()), NgosStatus::ASSERTION);
+
                     UEFI_LV(("Test %s started on processor %d", enumToFullString(sCurrentTest), i));
 
                     ++sNumberOfRunningProcessors;
@@ -3247,6 +3252,8 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
                     {
                         break;
                     }
+
+                    test = memoryTests[(u64)sCurrentTest];
                 }
             }
 
@@ -3274,6 +3281,84 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
     UEFI_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus MemoryTestGUI::updateTest(MemoryTestType testType, u64 tsc)
+{
+    UEFI_LT((" | testType = %u, tsc = %u", testType, tsc));
+
+    UEFI_ASSERT(testType < MemoryTestType::MAXIMUM, "testType is invalid", NgosStatus::ASSERTION);
+
+
+
+    TestBase *test = memoryTests[(u64)testType];
+
+    i64 progress = test->getProgress();
+
+
+
+    u64 averageSpeed = progress                                * MemoryTest::getCpuSpeed() / (tsc - test->getStartTsc());
+    u64 speed        = (progress - test->getHandledProgress()) * MemoryTest::getCpuSpeed() / (tsc - test->getIntermediateTsc());
+
+
+
+    char8 *averageText = (char8 *)sAverageLabelWidgets[(u64)testType]->getText();
+
+    i64 averageTextLength = sprintf(averageText, "Avg: %s/s", bytesToString(averageSpeed));
+    UEFI_TEST_ASSERT(averageTextLength < AVERAGE_TEXT_LENGTH, NgosStatus::ASSERTION);
+
+
+
+    UEFI_ASSERT_EXECUTION(sAverageLabelWidgets[(u64)testType]->setText(averageText), NgosStatus::ASSERTION);
+
+
+
+    if (speed > test->getMaximumSpeed())
+    {
+        UEFI_ASSERT_EXECUTION(test->setMaximumSpeed(speed), NgosStatus::ASSERTION);
+
+
+
+        char8 *maximumText = (char8 *)sMaximumLabelWidgets[(u64)testType]->getText();
+
+        i64 maximumTextLength = sprintf(maximumText, "Max: %s/s", bytesToString(speed));
+        UEFI_TEST_ASSERT(maximumTextLength < MAXIMUM_TEXT_LENGTH, NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(sMaximumLabelWidgets[(u64)testType]->setText(maximumText), NgosStatus::ASSERTION);
+    }
+
+
+
+    if (!test->isCompleted())
+    {
+        char8 startBuffer[11];
+        char8 endBuffer[11];
+
+        UEFI_ASSERT_EXECUTION(bytesToString(progress,            startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(bytesToString(test->getTestSize(), endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
+
+
+
+        char8 *progressText = (char8 *)sProgressLabelWidgets[(u64)testType]->getText();
+
+        i64 progressTextLength = sprintf(progressText, "%s / %s", startBuffer, endBuffer);
+        UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(sProgressLabelWidgets[(u64)testType]->setText(progressText), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sProgressBarWidgets[(u64)testType]->setValue(progress),      NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(test->setHandledProgress(progress), NgosStatus::ASSERTION);
+    }
 
 
 
@@ -3571,7 +3656,14 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-        char8 *progressText  = (char8 *)sProgressLabelWidgets[(u64)testType]->getText();
+        if (test->getProgress() != test->getHandledProgress())
+        {
+            UEFI_ASSERT_EXECUTION(updateTest(testType, rdtsc()), NgosStatus::ASSERTION);
+        }
+
+
+
+        char8 *progressText = (char8 *)sProgressLabelWidgets[(u64)testType]->getText();
 
         i64 progressTextLength = sprintf(progressText, "Score: %u", test->getScore());
         UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
@@ -3583,13 +3675,14 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-
         if (sCurrentTest < MemoryTestType::MAXIMUM)
         {
             TestBase *test = memoryTests[(u64)sCurrentTest];
 
             if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
             {
+                UEFI_ASSERT_EXECUTION(test->setStartTsc(rdtsc()), NgosStatus::ASSERTION);
+
                 UEFI_LV(("Test %s started on processor %u", enumToFullString(sCurrentTest), processorId));
 
 
@@ -3684,7 +3777,19 @@ NgosStatus MemoryTestGUI::processTimerEvent()
 
 
 
-    UEFI_LF(("Timer tick"));
+    for (i64 i = 0; i < (i64)sCurrentTest; ++i)
+    {
+        TestBase *test = memoryTests[i];
+
+        if (!test->isCompleted() && test->getProgress() != test->getHandledProgress())
+        {
+            u64 tsc = rdtsc();
+
+            UEFI_ASSERT_EXECUTION(updateTest((MemoryTestType)i, tsc), NgosStatus::ASSERTION);
+
+            UEFI_ASSERT_EXECUTION(test->setIntermediateTsc(tsc), NgosStatus::ASSERTION);
+        }
+    }
 
 
 
