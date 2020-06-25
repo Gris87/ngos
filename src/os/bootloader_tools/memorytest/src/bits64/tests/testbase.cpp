@@ -132,19 +132,6 @@ i64 TestBase::getTestSize() const
     return mTestSize;
 }
 
-NgosStatus TestBase::setProgress(i64 progress)
-{
-    // UEFI_LT((" | progress = %d", progress)); // Commented to avoid bad looking logs
-
-
-
-    mProgress = progress;
-
-
-
-    return NgosStatus::OK;
-}
-
 i64 TestBase::getProgress() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs

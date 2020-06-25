@@ -36,6 +36,8 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
+    asm/arch/x86_64/bits64/tests/readmemoryblock.S \
+    asm/arch/x86_64/bits64/tests/writememoryblock.S \
     asm/arch/x86_64/main.S \
     src/bits64/main/memorytest.cpp \
     src/bits64/main/memorytestgui.cpp \
@@ -51,6 +53,8 @@ HEADERS += \
     src/bits64/main/memorytestgui.h \
     src/bits64/other/memorytestmode.h \
     src/bits64/other/memorytesttype.h \
+    src/bits64/tests/asm_readmemoryblock.h \
+    src/bits64/tests/asm_writememoryblock.h \
     src/bits64/tests/testbase.h \
     src/bits64/tests/testrandomread.h \
     src/bits64/tests/testrandomwrite.h \

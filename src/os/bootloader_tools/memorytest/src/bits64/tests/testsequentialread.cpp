@@ -1,13 +1,19 @@
 #include "testsequentialread.h"
 
+#include <asm/instructions.h>
 #include <common/src/bits64/fpu/fpu.h>
+#include <macro/constants.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
+#include "src/bits64/main/memorytest.h"
 #include "src/bits64/main/memorytestgui.h"
+#include "src/bits64/tests/asm_readmemoryblock.h"
 
 
+
+#define SCORE_PER_SECOND 600
 
 
 
@@ -27,14 +33,24 @@ void UEFI_API testSequentialReadProcedure(void *buffer)
 
 
 
-    for (i64 i = 0; i < test->getTestSize(); ++i)
+    i64 testSize = test->getTestSize();
+
+
+
+    u64 startTime = rdtsc();
+
+    for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
     {
-        UEFI_ASSERT_EXECUTION(test->setProgress(i));
+        test->setProgress(i);
+
+        readMemoryBlock((u8 *)i);
     }
 
+    u64 endTime = rdtsc();
 
 
-    UEFI_ASSERT_EXECUTION(test->setScore(10000));
+
+    UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_SECOND * MemoryTest::getCpuSpeed() / (endTime - startTime) * testSize / GB));
 }
 
 

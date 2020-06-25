@@ -446,6 +446,8 @@ src/os/bootloader_tools/hddtest/src/main.cpp
 src/os/bootloader_tools/hddtest/test/bits64/sections/section1/bits64/types.h
 src/os/bootloader_tools/hddtest/test/bits64/sections/section1/testcase.h
 src/os/bootloader_tools/memorytest/.gitignore
+src/os/bootloader_tools/memorytest/asm/arch/x86_64/bits64/tests/readmemoryblock.S
+src/os/bootloader_tools/memorytest/asm/arch/x86_64/bits64/tests/writememoryblock.S
 src/os/bootloader_tools/memorytest/asm/arch/x86_64/main.S
 src/os/bootloader_tools/memorytest/assets/glyphs/console.bin
 src/os/bootloader_tools/memorytest/assets/glyphs/gui.bin
@@ -509,6 +511,8 @@ src/os/bootloader_tools/memorytest/src/bits64/main/memorytestgui.cpp
 src/os/bootloader_tools/memorytest/src/bits64/main/memorytestgui.h
 src/os/bootloader_tools/memorytest/src/bits64/other/memorytestmode.h
 src/os/bootloader_tools/memorytest/src/bits64/other/memorytesttype.h
+src/os/bootloader_tools/memorytest/src/bits64/tests/asm_readmemoryblock.h
+src/os/bootloader_tools/memorytest/src/bits64/tests/asm_writememoryblock.h
 src/os/bootloader_tools/memorytest/src/bits64/tests/testbase.cpp
 src/os/bootloader_tools/memorytest/src/bits64/tests/testbase.h
 src/os/bootloader_tools/memorytest/src/bits64/tests/testrandomread.cpp

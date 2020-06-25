@@ -12,6 +12,11 @@ class TestRandomWrite: public TestBase
 public:
     TestRandomWrite(); // TEST: NO
     ~TestRandomWrite(); // TEST: NO
+
+    u8* getBuffer() const; // TEST: NO
+
+private:
+    u8 *mBuffer;
 };
 
 

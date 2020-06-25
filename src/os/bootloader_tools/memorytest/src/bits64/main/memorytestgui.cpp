@@ -389,7 +389,7 @@
 #define PROGRESS_TEXT_LENGTH      24
 #define SUMMARY_TOTAL_TEXT_LENGTH 14
 
-#define QUICK_TEST_SIZE (32 * MB)
+#define QUICK_TEST_SIZE (1 * GB)
 
 
 

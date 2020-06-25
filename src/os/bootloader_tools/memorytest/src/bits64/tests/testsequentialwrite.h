@@ -12,6 +12,11 @@ class TestSequentialWrite: public TestBase
 public:
     TestSequentialWrite(); // TEST: NO
     ~TestSequentialWrite(); // TEST: NO
+
+    u8* getBuffer() const; // TEST: NO
+
+private:
+    u8 *mBuffer;
 };
 
 

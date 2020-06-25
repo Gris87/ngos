@@ -166,7 +166,7 @@ void UEFI_API testAvx512FProcedure(void *buffer)
 
 
 
-        UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_SECOND / ((double)(endTime - startTime) / CpuTest::getCpuSpeed())));
+        UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_SECOND * CpuTest::getCpuSpeed() / (endTime - startTime)));
     }
     else
     {

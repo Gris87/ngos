@@ -36,7 +36,19 @@ public:
 
     i64 getTestSize() const; // TEST: NO
 
-    NgosStatus setProgress(i64 progress); // TEST: NO
+    inline NgosStatus setProgress(i64 progress) // TEST: NO
+    {
+        // UEFI_LT((" | progress = %d", progress)); // Commented to avoid bad looking logs
+
+
+
+        mProgress = progress;
+
+
+
+        return NgosStatus::OK;
+    }
+
     i64 getProgress() const; // TEST: NO
 
     NgosStatus setHandledProgress(i64 progress); // TEST: NO
