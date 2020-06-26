@@ -1334,7 +1334,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    sTestingTabWidget = new TabWidget(tabWidgetPanelImage, testPanelWidget);
+    sTestingTabWidget = new TabWidget(tabWidgetPanelImage, testPanelWidget); // TODO: Should be removed for MemoryTest, but can be reused in HddTest
 
 
 

@@ -10,7 +10,7 @@
 #     void readMemoryBlock(u8 *blockBuffer, u8 *address);                       #
 #                                                                               #
 # RDI - blockBuffer, address of temporary block storage                         #
-# RSI - address, address of memory block to write                               #
+# RSI - address, address of memory block to read                                #
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(readMemoryBlock)                                                # readMemoryBlock function
