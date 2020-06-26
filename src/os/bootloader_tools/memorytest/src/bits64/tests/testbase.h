@@ -28,6 +28,9 @@ public:
     NgosStatus setScore(u64 score); // TEST: NO
     u64 getScore() const; // TEST: NO
 
+    NgosStatus setAverageSpeed(u64 speed); // TEST: NO
+    u64 getAverageSpeed() const; // TEST: NO
+
     bool isCompleted() const; // TEST: NO
 
     u64 getRegionStart() const; // TEST: NO
@@ -66,6 +69,7 @@ public:
 private:
     uefi_ap_procedure mProcedure;
     u64               mScore;
+    u64               mAverageSpeed;
     u64               mRegionStart;
     u64               mRegionEnd;
     i64               mTestSize;

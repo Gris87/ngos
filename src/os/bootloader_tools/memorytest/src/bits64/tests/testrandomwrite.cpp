@@ -14,7 +14,7 @@
 
 
 
-#define SCORE_PER_SECOND 600
+#define SCORE_PER_GB_PER_SECOND 500
 
 
 
@@ -77,7 +77,8 @@ void UEFI_API testRandomWriteProcedure(void *buffer)
 
 
 
-    UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_SECOND * MemoryTest::getCpuSpeed() / (endTime - startTime) * testSize / GB));
+    UEFI_ASSERT_EXECUTION(test->setAverageSpeed(testSize * MemoryTest::getCpuSpeed() / (endTime - startTime)));
+    UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_GB_PER_SECOND * test->getAverageSpeed() / GB));
 }
 
 

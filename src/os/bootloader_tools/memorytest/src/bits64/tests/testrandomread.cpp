@@ -14,7 +14,7 @@
 
 
 
-#define SCORE_PER_SECOND 600
+#define SCORE_PER_GB_PER_SECOND 500
 
 
 
@@ -57,7 +57,7 @@ void UEFI_API testRandomReadProcedure(void *buffer)
             );
             // Ignore CppAlignmentVerifier [END]
 
-            readMemoryBlock((u8 *)(regionStart + (rand * TEST_BLOCK_SIZE) % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
+            readMemoryBlock(nullptr, (u8 *)(regionStart + (rand * TEST_BLOCK_SIZE) % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
         }
     }
     else
@@ -68,7 +68,7 @@ void UEFI_API testRandomReadProcedure(void *buffer)
 
             rand = i * 7;
 
-            readMemoryBlock((u8 *)(regionStart + rand % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
+            readMemoryBlock(nullptr, (u8 *)(regionStart + rand % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
         }
     }
 
@@ -76,7 +76,8 @@ void UEFI_API testRandomReadProcedure(void *buffer)
 
 
 
-    UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_SECOND * MemoryTest::getCpuSpeed() / (endTime - startTime) * testSize / GB));
+    UEFI_ASSERT_EXECUTION(test->setAverageSpeed(testSize * MemoryTest::getCpuSpeed() / (endTime - startTime)));
+    UEFI_ASSERT_EXECUTION(test->setScore(SCORE_PER_GB_PER_SECOND * test->getAverageSpeed() / GB));
 }
 
 

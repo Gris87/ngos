@@ -7,13 +7,13 @@
                                                                                 #
 # ============================================================================= # =============================================================================
 # readMemoryBlock declaration:                                                  #
-#     void readMemoryBlock(u8 *address);                                        #
+#     void readMemoryBlock(u8 *blockBuffer, u8 *address);                       #
 #                                                                               #
-# RDI - address, address of memory block to read                                #
+# RDI - blockBuffer, address of temporary block storage                         #
+# RSI - address, address of memory block to write                               #
 # ============================================================================= # =============================================================================
                                                                                 #
 GLOBAL_FUNCTION(readMemoryBlock)                                                # readMemoryBlock function
-    movq    %rdi, %rsi                                                          # Move RDI to RSI
     movq    $131072, %rcx                                                       # Put 131072 to RCX. 131072 * 8 = 1 MB
     rep; lodsq                                                                  # Load 8 byte blocks from RSI to RAX while RCX > 0
                                                                                 #

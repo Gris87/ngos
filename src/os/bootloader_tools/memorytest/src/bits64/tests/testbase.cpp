@@ -12,6 +12,7 @@ TestBase* memoryTests[(u64)MemoryTestType::MAXIMUM];
 TestBase::TestBase(MemoryTestType type, uefi_ap_procedure procedure)
     : mProcedure(procedure)
     , mScore(0)
+    , mAverageSpeed(0)
     , mRegionStart(0)
     , mRegionEnd(0)
     , mTestSize(0)
@@ -51,6 +52,7 @@ NgosStatus TestBase::reset(u64 start, u64 end, i64 testSize)
 
 
     mScore           = 0;
+    mAverageSpeed    = 0;
     mRegionStart     = start;
     mRegionEnd       = end;
     mTestSize        = testSize;
@@ -94,6 +96,28 @@ u64 TestBase::getScore() const
 
 
     return mScore;
+}
+
+NgosStatus TestBase::setAverageSpeed(u64 speed)
+{
+    // UEFI_LT((" | speed = %u", speed)); // Commented to avoid bad looking logs
+
+
+
+    mAverageSpeed = speed;
+
+
+
+    return NgosStatus::OK;
+}
+
+u64 TestBase::getAverageSpeed() const
+{
+    // UEFI_LT(("")); // Commented to avoid too frequent logs
+
+
+
+    return mAverageSpeed;
 }
 
 bool TestBase::isCompleted() const
