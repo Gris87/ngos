@@ -36,13 +36,13 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
-    asm/arch/x86_64/main.S \
-    src/bits64/main/networktest.cpp \
-    src/bits64/main/networktestgui.cpp \
-    src/main.cpp
+    asm/arch/x86_64/com/ngos/bootloader_tools/networktest/main.S \
+    src/com/ngos/bootloader_tools/networktest/main.cpp \
+    src/com/ngos/bootloader_tools/networktest/main/networktest.cpp \
+    src/com/ngos/bootloader_tools/networktest/main/networktestgui.cpp
 
 HEADERS += \
-    src/bits64/main/networktest.h \
-    src/bits64/main/networktestgui.h \
-    test/bits64/sections/section1/bits64/types.h \
-    test/bits64/sections/section1/testcase.h
+    src/com/ngos/bootloader_tools/networktest/main/networktest.h \
+    src/com/ngos/bootloader_tools/networktest/main/networktestgui.h \
+    test/com/ngos/bootloader_tools/networktest/sections/section1/bits64/types.h \
+    test/com/ngos/bootloader_tools/networktest/sections/section1/testcase.h
