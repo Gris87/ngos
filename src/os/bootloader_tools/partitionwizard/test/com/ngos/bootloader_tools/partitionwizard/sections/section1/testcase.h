@@ -1,12 +1,12 @@
-#ifndef PARTITIONWIZARD_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
-#define PARTITIONWIZARD_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
+#ifndef PARTITIONWIZARD_TEST_COM_NGOS_BOOTLOADER_TOOLS_PARTITIONWIZARD_SECTIONS_SECTION1_TESTCASE_H
+#define PARTITIONWIZARD_TEST_COM_NGOS_BOOTLOADER_TOOLS_PARTITIONWIZARD_SECTIONS_SECTION1_TESTCASE_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "test/bits64/sections/section1/bits64/types.h"
+#include "test/com/ngos/bootloader_tools/partitionwizard/sections/section1/com/ngos/bootloader_tools/partitionwizard/types.h"
 
 
 
@@ -22,7 +22,7 @@ NgosStatus startTestSection1()
 
     INIT_TEST_SECTION();
 
-    CALL_TEST_CASES(section1, bits64_types);
+    CALL_TEST_CASES(section1, com_ngos_bootloader_tools_partitionwizard_types);
 
     SUMMARY_TEST_SECTION();
 }
@@ -33,4 +33,4 @@ NgosStatus startTestSection1()
 
 
 
-#endif // PARTITIONWIZARD_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
+#endif // PARTITIONWIZARD_TEST_COM_NGOS_BOOTLOADER_TOOLS_PARTITIONWIZARD_SECTIONS_SECTION1_TESTCASE_H
