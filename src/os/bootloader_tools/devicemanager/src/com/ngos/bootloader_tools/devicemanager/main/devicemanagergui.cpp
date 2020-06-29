@@ -15,7 +15,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/bits64/sources/dmi/devicemanagerdmi.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h"
 
 
 

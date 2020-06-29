@@ -1,19 +1,19 @@
-#ifndef DEVICEMANAGER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
-#define DEVICEMANAGER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#ifndef DEVICEMANAGER_TEST_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_TYPES_H
+#define DEVICEMANAGER_TEST_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/devicemanager.h"
-#include "src/bits64/main/devicemanagergui.h"
-#include "src/bits64/other/devicemanagerentry.h"
-#include "src/bits64/other/devicemanagerentrydmi.h"
-#include "src/bits64/other/devicemanagerentryrecord.h"
-#include "src/bits64/other/devicemanagerimage.h"
-#include "src/bits64/other/devicemanagermode.h"
-#include "src/bits64/sources/dmi/devicemanagerdmi.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/main/devicemanager.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/main/devicemanagergui.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h"
 
 
 
@@ -21,7 +21,7 @@
 
 
 
-TEST_CASES(section1, bits64_types);
+TEST_CASES(section1, com_ngos_bootloader_tools_devicemanager_types);
 {
     TEST_CASE("Size of structures");
     {
@@ -44,4 +44,4 @@ TEST_CASES_END();
 
 
 
-#endif // DEVICEMANAGER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#endif // DEVICEMANAGER_TEST_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_TYPES_H

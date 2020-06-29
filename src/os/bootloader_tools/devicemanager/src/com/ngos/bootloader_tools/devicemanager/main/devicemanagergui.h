@@ -1,5 +1,5 @@
-#ifndef DEVICEMANAGER_SRC_BITS64_MAIN_DEVICEMANAGERGUI_H
-#define DEVICEMANAGER_SRC_BITS64_MAIN_DEVICEMANAGERGUI_H
+#ifndef DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_MAIN_DEVICEMANAGERGUI_H
+#define DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_MAIN_DEVICEMANAGERGUI_H
 
 
 
@@ -13,9 +13,9 @@
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
-#include "src/bits64/other/devicemanagerentry.h"
-#include "src/bits64/other/devicemanagerimage.h"
-#include "src/bits64/other/devicemanagermode.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
 
 
 
@@ -66,4 +66,4 @@ private:
 
 
 
-#endif // DEVICEMANAGER_SRC_BITS64_MAIN_DEVICEMANAGERGUI_H
+#endif // DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_MAIN_DEVICEMANAGERGUI_H

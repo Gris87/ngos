@@ -1,5 +1,5 @@
-#ifndef DEVICEMANAGER_SRC_BITS64_SOURCES_DMI_DEVICEMANAGERDMI_H
-#define DEVICEMANAGER_SRC_BITS64_SOURCES_DMI_DEVICEMANAGERDMI_H
+#ifndef DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SOURCES_DMI_DEVICEMANAGERDMI_H
+#define DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SOURCES_DMI_DEVICEMANAGERDMI_H
 
 
 
@@ -41,7 +41,7 @@
 #include <common/src/bits64/dmi/entry/dmitemperatureprobeentry.h>
 #include <common/src/bits64/dmi/entry/dmivoltageprobeentry.h>
 
-#include "src/bits64/other/devicemanagerentrydmi.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h"
 
 
 
@@ -99,4 +99,4 @@ private:
 
 
 
-#endif // DEVICEMANAGER_SRC_BITS64_SOURCES_DMI_DEVICEMANAGERDMI_H
+#endif // DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SOURCES_DMI_DEVICEMANAGERDMI_H

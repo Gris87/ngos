@@ -1,12 +1,12 @@
-#ifndef DEVICEMANAGER_SRC_BITS64_OTHER_DEVICEMANAGERENTRY_H
-#define DEVICEMANAGER_SRC_BITS64_OTHER_DEVICEMANAGERENTRY_H
+#ifndef DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_OTHER_DEVICEMANAGERENTRY_H
+#define DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_OTHER_DEVICEMANAGERENTRY_H
 
 
 
 #include <common/src/bits64/containers/arraylist.h>
 
-#include "src/bits64/other/devicemanagerentryrecord.h"
-#include "src/bits64/other/devicemanagerimage.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h"
+#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
 
 
 
@@ -37,4 +37,4 @@ private:
 
 
 
-#endif // DEVICEMANAGER_SRC_BITS64_OTHER_DEVICEMANAGERENTRY_H
+#endif // DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_OTHER_DEVICEMANAGERENTRY_H
