@@ -13,4 +13,4 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
-    asm/arch/x86_64/main.S
+    asm/arch/x86_64/com/ngos/boot/main.S

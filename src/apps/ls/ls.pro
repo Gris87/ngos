@@ -9,4 +9,4 @@ TEMPLATE = app
 
 
 SOURCES += \
-    src/main.cpp
+    src/com/ngos/ls/main.cpp

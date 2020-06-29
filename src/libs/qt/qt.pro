@@ -9,7 +9,7 @@ TEMPLATE = lib
 
 
 SOURCES += \
-    src/qt.cpp
+    src/com/ngos/qt/qt.cpp
 
 HEADERS += \
-    src/qt.h
+    src/com/ngos/qt/qt.h
