@@ -36,29 +36,29 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
-    asm/arch/x86_64/bits64/tests/readmemoryblock.S \
-    asm/arch/x86_64/bits64/tests/writememoryblock.S \
-    asm/arch/x86_64/main.S \
-    src/bits64/main/memorytest.cpp \
-    src/bits64/main/memorytestgui.cpp \
-    src/bits64/tests/testbase.cpp \
-    src/bits64/tests/testrandomread.cpp \
-    src/bits64/tests/testrandomwrite.cpp \
-    src/bits64/tests/testsequentialread.cpp \
-    src/bits64/tests/testsequentialwrite.cpp \
-    src/main.cpp
+    asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/tests/readmemoryblock.S \
+    asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/tests/writememoryblock.S \
+    asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/main.S \
+    src/com/ngos/bootloader_tools/memorytest/main/memorytest.cpp \
+    src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.cpp \
+    src/com/ngos/bootloader_tools/memorytest/tests/testbase.cpp \
+    src/com/ngos/bootloader_tools/memorytest/tests/testrandomread.cpp \
+    src/com/ngos/bootloader_tools/memorytest/tests/testrandomwrite.cpp \
+    src/com/ngos/bootloader_tools/memorytest/tests/testsequentialread.cpp \
+    src/com/ngos/bootloader_tools/memorytest/tests/testsequentialwrite.cpp \
+    src/com/ngos/bootloader_tools/memorytest/main.cpp
 
 HEADERS += \
-    src/bits64/main/memorytest.h \
-    src/bits64/main/memorytestgui.h \
-    src/bits64/other/memorytestmode.h \
-    src/bits64/other/memorytesttype.h \
-    src/bits64/tests/asm_readmemoryblock.h \
-    src/bits64/tests/asm_writememoryblock.h \
-    src/bits64/tests/testbase.h \
-    src/bits64/tests/testrandomread.h \
-    src/bits64/tests/testrandomwrite.h \
-    src/bits64/tests/testsequentialread.h \
-    src/bits64/tests/testsequentialwrite.h \
-    test/bits64/sections/section1/bits64/types.h \
-    test/bits64/sections/section1/testcase.h
+    src/com/ngos/bootloader_tools/memorytest/main/memorytest.h \
+    src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h \
+    src/com/ngos/bootloader_tools/memorytest/other/memorytestmode.h \
+    src/com/ngos/bootloader_tools/memorytest/other/memorytesttype.h \
+    src/com/ngos/bootloader_tools/memorytest/tests/asm_readmemoryblock.h \
+    src/com/ngos/bootloader_tools/memorytest/tests/asm_writememoryblock.h \
+    src/com/ngos/bootloader_tools/memorytest/tests/testbase.h \
+    src/com/ngos/bootloader_tools/memorytest/tests/testrandomread.h \
+    src/com/ngos/bootloader_tools/memorytest/tests/testrandomwrite.h \
+    src/com/ngos/bootloader_tools/memorytest/tests/testsequentialread.h \
+    src/com/ngos/bootloader_tools/memorytest/tests/testsequentialwrite.h \
+    test/com/ngos/bootloader_tools/memorytest/sections/section1/com/ngos/bootloader_tools/memorytest/types.h \
+    test/com/ngos/bootloader_tools/memorytest/sections/section1/testcase.h
