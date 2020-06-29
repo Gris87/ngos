@@ -36,18 +36,18 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
-    asm/arch/x86_64/main.S \
-    src/bits64/main/bootloader.cpp \
-    src/bits64/main/bootloadergui.cpp \
-    src/main.cpp
+    asm/arch/x86_64/com/ngos/bootloader/main.S \
+    src/com/ngos/bootloader/main.cpp \
+    src/com/ngos/bootloader/main/bootloader.cpp \
+    src/com/ngos/bootloader/main/bootloadergui.cpp
 
 HEADERS += \
-    src/bits64/main/bootloader.h \
-    src/bits64/main/bootloadergui.h \
-    src/bits64/other/osinfo.h \
-    src/bits64/other/ostype.h \
-    src/bits64/other/volumeinfo.h \
-    src/bits64/other/volumetype.h \
-    test/bits64/sections/section1/bits64/main/bootloader.h \
-    test/bits64/sections/section1/bits64/types.h \
-    test/bits64/sections/section1/testcase.h
+    src/com/ngos/bootloader/main/bootloader.h \
+    src/com/ngos/bootloader/main/bootloadergui.h \
+    src/com/ngos/bootloader/other/osinfo.h \
+    src/com/ngos/bootloader/other/ostype.h \
+    src/com/ngos/bootloader/other/volumeinfo.h \
+    src/com/ngos/bootloader/other/volumetype.h \
+    test/com/ngos/bootloader/sections/section1/com/ngos/bootloader/main/bootloader.h \
+    test/com/ngos/bootloader/sections/section1/com/ngos/bootloader/types.h \
+    test/com/ngos/bootloader/sections/section1/testcase.h
