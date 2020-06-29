@@ -36,23 +36,23 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
-    asm/arch/x86_64/main.S \
-    src/bits64/main/devicemanager.cpp \
-    src/bits64/main/devicemanagergui.cpp \
-    src/bits64/other/devicemanagerentry.cpp \
-    src/bits64/other/devicemanagerentrydmi.cpp \
-    src/bits64/other/devicemanagerentryrecord.cpp \
-    src/bits64/sources/dmi/devicemanagerdmi.cpp \
-    src/main.cpp
+    asm/arch/x86_64/com/ngos/bootloader_tools/devicemanager/main.S \
+    src/com/ngos/bootloader_tools/devicemanager/main.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/main/devicemanager.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/main/devicemanagergui.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.cpp
 
 HEADERS += \
-    src/bits64/main/devicemanager.h \
-    src/bits64/main/devicemanagergui.h \
-    src/bits64/other/devicemanagerentry.h \
-    src/bits64/other/devicemanagerentrydmi.h \
-    src/bits64/other/devicemanagerentryrecord.h \
-    src/bits64/other/devicemanagerimage.h \
-    src/bits64/other/devicemanagermode.h \
-    src/bits64/sources/dmi/devicemanagerdmi.h \
-    test/bits64/sections/section1/bits64/types.h \
-    test/bits64/sections/section1/testcase.h
+    src/com/ngos/bootloader_tools/devicemanager/main/devicemanager.h \
+    src/com/ngos/bootloader_tools/devicemanager/main/devicemanagergui.h \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h \
+    src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h \
+    src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h \
+    test/com/ngos/bootloader_tools/devicemanager/sections/section1/com/ngos/bootloader_tools/devicemanager/types.h \
+    test/com/ngos/bootloader_tools/devicemanager/sections/section1/testcase.h
