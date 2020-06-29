@@ -14,9 +14,9 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/bits64/main/cputest.h"
-#include "src/bits64/main/cputestgui.h"
-#include "test/bits64/sections/section1/testcase.h"
+#include "src/com/ngos/bootloader_tools/cputest/main/cputest.h"
+#include "src/com/ngos/bootloader_tools/cputest/main/cputestgui.h"
+#include "test/com/ngos/bootloader_tools/cputest/sections/section1/testcase.h"
 
 
 

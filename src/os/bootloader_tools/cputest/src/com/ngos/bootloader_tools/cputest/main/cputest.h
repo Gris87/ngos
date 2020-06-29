@@ -1,11 +1,11 @@
-#ifndef CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
-#define CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#ifndef CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_MAIN_CPUTEST_H
+#define CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_MAIN_CPUTEST_H
 
 
 
 #include <ngos/status.h>
 
-#include "src/bits64/other/cacheinfo.h"
+#include "src/com/ngos/bootloader_tools/cputest/other/cacheinfo.h"
 
 
 
@@ -36,4 +36,4 @@ private:
 
 
 
-#endif // CPUTEST_SRC_BITS64_MAIN_CPUTEST_H
+#endif // CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_MAIN_CPUTEST_H

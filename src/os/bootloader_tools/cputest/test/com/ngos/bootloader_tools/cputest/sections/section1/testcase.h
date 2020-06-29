@@ -1,12 +1,12 @@
-#ifndef CPUTEST_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
-#define CPUTEST_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
+#ifndef CPUTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_SECTIONS_SECTION1_TESTCASE_H
+#define CPUTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_SECTIONS_SECTION1_TESTCASE_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "test/bits64/sections/section1/bits64/types.h"
+#include "test/com/ngos/bootloader_tools/cputest/sections/section1/com/ngos/bootloader_tools/cputest/types.h"
 
 
 
@@ -22,7 +22,7 @@ NgosStatus startTestSection1()
 
     INIT_TEST_SECTION();
 
-    CALL_TEST_CASES(section1, bits64_types);
+    CALL_TEST_CASES(section1, com_ngos_bootloader_tools_cputest_types);
 
     SUMMARY_TEST_SECTION();
 }
@@ -33,4 +33,4 @@ NgosStatus startTestSection1()
 
 
 
-#endif // CPUTEST_TEST_BITS64_SECTIONS_SECTION1_TESTCASE_H
+#endif // CPUTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_SECTIONS_SECTION1_TESTCASE_H

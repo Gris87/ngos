@@ -1,5 +1,5 @@
-#ifndef CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
-#define CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
+#ifndef CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_MAIN_CPUTESTGUI_H
+#define CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_MAIN_CPUTESTGUI_H
 
 
 
@@ -14,7 +14,7 @@
 #include <uefi/uefimpservicesprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
-#include "src/bits64/other/testtype.h"
+#include "src/com/ngos/bootloader_tools/cputest/other/testtype.h"
 
 
 
@@ -104,4 +104,4 @@ private:
 
 
 
-#endif // CPUTEST_SRC_BITS64_MAIN_CPUTESTGUI_H
+#endif // CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_MAIN_CPUTESTGUI_H

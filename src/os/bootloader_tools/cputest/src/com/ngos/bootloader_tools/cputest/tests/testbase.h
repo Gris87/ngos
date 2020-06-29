@@ -1,12 +1,12 @@
-#ifndef CPUTEST_SRC_BITS64_TESTS_TESTBASE_H
-#define CPUTEST_SRC_BITS64_TESTS_TESTBASE_H
+#ifndef CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TESTS_TESTBASE_H
+#define CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TESTS_TESTBASE_H
 
 
 
 #include <ngos/status.h>
 #include <uefi/uefimpservicesprotocol.h>
 
-#include "src/bits64/other/testtype.h"
+#include "src/com/ngos/bootloader_tools/cputest/other/testtype.h"
 
 
 
@@ -40,4 +40,4 @@ extern TestBase* cpuTests[(u64)TestType::MAXIMUM]; // cpuTests declared in testb
 
 
 
-#endif // CPUTEST_SRC_BITS64_TESTS_TESTBASE_H
+#endif // CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TESTS_TESTBASE_H

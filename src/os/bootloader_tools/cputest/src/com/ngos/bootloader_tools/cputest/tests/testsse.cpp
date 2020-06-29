@@ -8,8 +8,8 @@
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
-#include "src/bits64/main/cputest.h"
-#include "src/bits64/main/cputestgui.h"
+#include "src/com/ngos/bootloader_tools/cputest/main/cputest.h"
+#include "src/com/ngos/bootloader_tools/cputest/main/cputestgui.h"
 
 
 

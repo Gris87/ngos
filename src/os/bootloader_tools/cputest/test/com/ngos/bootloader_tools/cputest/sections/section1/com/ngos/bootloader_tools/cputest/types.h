@@ -1,35 +1,35 @@
-#ifndef CPUTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
-#define CPUTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#ifndef CPUTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TYPES_H
+#define CPUTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/cputest.h"
-#include "src/bits64/main/cputestgui.h"
-#include "src/bits64/other/cacheinfo.h"
-#include "src/bits64/other/testtype.h"
-#include "src/bits64/tests/testaes.h"
-#include "src/bits64/tests/testavx.h"
-#include "src/bits64/tests/testavx2.h"
-#include "src/bits64/tests/testavx512bw.h"
-#include "src/bits64/tests/testavx512cd.h"
-#include "src/bits64/tests/testavx512dq.h"
-#include "src/bits64/tests/testavx512f.h"
-#include "src/bits64/tests/testavx512vl.h"
-#include "src/bits64/tests/testbase.h"
-#include "src/bits64/tests/testbitwise.h"
-#include "src/bits64/tests/testdouble.h"
-#include "src/bits64/tests/testfloat.h"
-#include "src/bits64/tests/testfma3.h"
-#include "src/bits64/tests/testinteger.h"
-#include "src/bits64/tests/testlogical.h"
-#include "src/bits64/tests/testsse.h"
-#include "src/bits64/tests/testsse2.h"
-#include "src/bits64/tests/testsse3.h"
-#include "src/bits64/tests/testsse41.h"
-#include "src/bits64/tests/testsse42.h"
+#include "src/com/ngos/bootloader_tools/cputest/main/cputest.h"
+#include "src/com/ngos/bootloader_tools/cputest/main/cputestgui.h"
+#include "src/com/ngos/bootloader_tools/cputest/other/cacheinfo.h"
+#include "src/com/ngos/bootloader_tools/cputest/other/testtype.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testaes.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testavx.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testavx2.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testavx512bw.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testavx512cd.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testavx512dq.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testavx512f.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testavx512vl.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testbase.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testbitwise.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testdouble.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testfloat.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testfma3.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testinteger.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testlogical.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testsse.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testsse2.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testsse3.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testsse41.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testsse42.h"
 
 
 
@@ -37,7 +37,7 @@
 
 
 
-TEST_CASES(section1, bits64_types);
+TEST_CASES(section1, com_ngos_bootloader_tools_cputest_types);
 {
     TEST_CASE("Size of structures");
     {
@@ -76,4 +76,4 @@ TEST_CASES_END();
 
 
 
-#endif // CPUTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#endif // CPUTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TYPES_H

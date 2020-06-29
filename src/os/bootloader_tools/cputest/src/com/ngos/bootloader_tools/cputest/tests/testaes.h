@@ -1,9 +1,9 @@
-#ifndef CPUTEST_SRC_BITS64_TESTS_TESTAES_H
-#define CPUTEST_SRC_BITS64_TESTS_TESTAES_H
+#ifndef CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TESTS_TESTAES_H
+#define CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TESTS_TESTAES_H
 
 
 
-#include "src/bits64/tests/testbase.h"
+#include "src/com/ngos/bootloader_tools/cputest/tests/testbase.h"
 
 #include <common/src/bits64/cryptography/aes.h>
 
@@ -23,4 +23,4 @@ private:
 
 
 
-#endif // CPUTEST_SRC_BITS64_TESTS_TESTAES_H
+#endif // CPUTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_CPUTEST_TESTS_TESTAES_H
