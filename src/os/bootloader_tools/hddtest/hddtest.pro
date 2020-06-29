@@ -36,13 +36,13 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
-    asm/arch/x86_64/main.S \
-    src/bits64/main/hddtest.cpp \
-    src/bits64/main/hddtestgui.cpp \
-    src/main.cpp
+    asm/arch/x86_64/com/ngos/bootloader_tools/hddtest/main.S \
+    src/com/ngos/bootloader_tools/hddtest/main.cpp \
+    src/com/ngos/bootloader_tools/hddtest/main/hddtest.cpp \
+    src/com/ngos/bootloader_tools/hddtest/main/hddtestgui.cpp
 
 HEADERS += \
-    src/bits64/main/hddtest.h \
-    src/bits64/main/hddtestgui.h \
-    test/bits64/sections/section1/bits64/types.h \
-    test/bits64/sections/section1/testcase.h
+    src/com/ngos/bootloader_tools/hddtest/main/hddtest.h \
+    src/com/ngos/bootloader_tools/hddtest/main/hddtestgui.h \
+    test/com/ngos/bootloader_tools/hddtest/sections/section1/com/ngos/bootloader_tools/hddtest/types.h \
+    test/com/ngos/bootloader_tools/hddtest/sections/section1/testcase.h
