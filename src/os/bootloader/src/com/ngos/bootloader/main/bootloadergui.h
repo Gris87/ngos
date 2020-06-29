@@ -1,5 +1,5 @@
-#ifndef BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADERGUI_H
-#define BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADERGUI_H
+#ifndef BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADERGUI_H
+#define BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADERGUI_H
 
 
 
@@ -11,8 +11,8 @@
 #include <uefi/uefiabsolutepointerprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
-#include "src/bits64/other/ostype.h"
-#include "src/bits64/other/volumetype.h"
+#include "src/com/ngos/bootloader/other/ostype.h"
+#include "src/com/ngos/bootloader/other/volumetype.h"
 
 
 
@@ -106,4 +106,4 @@ private:
 
 
 
-#endif // BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADERGUI_H
+#endif // BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADERGUI_H

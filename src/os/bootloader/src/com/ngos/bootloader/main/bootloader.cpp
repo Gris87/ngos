@@ -15,7 +15,7 @@
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
-#include "src/bits64/main/bootloadergui.h"
+#include "src/com/ngos/bootloader/main/bootloadergui.h"
 
 
 

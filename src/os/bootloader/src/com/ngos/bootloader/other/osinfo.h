@@ -1,10 +1,10 @@
-#ifndef BOOTLOADER_SRC_BITS64_OTHER_OSINFO_H
-#define BOOTLOADER_SRC_BITS64_OTHER_OSINFO_H
+#ifndef BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_OTHER_OSINFO_H
+#define BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_OTHER_OSINFO_H
 
 
 
-#include "src/bits64/other/ostype.h"
-#include "src/bits64/other/volumeinfo.h"
+#include "src/com/ngos/bootloader/other/ostype.h"
+#include "src/com/ngos/bootloader/other/volumeinfo.h"
 
 
 
@@ -44,4 +44,4 @@ struct OsInfo
 
 
 
-#endif // BOOTLOADER_SRC_BITS64_OTHER_OSINFO_H
+#endif // BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_OTHER_OSINFO_H

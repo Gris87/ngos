@@ -14,9 +14,9 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/bits64/main/bootloader.h"
-#include "src/bits64/main/bootloadergui.h"
-#include "test/bits64/sections/section1/testcase.h"
+#include "src/com/ngos/bootloader/main/bootloader.h"
+#include "src/com/ngos/bootloader/main/bootloadergui.h"
+#include "test/com/ngos/bootloader/sections/section1/testcase.h"
 
 
 

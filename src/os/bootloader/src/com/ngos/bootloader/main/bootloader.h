@@ -1,5 +1,5 @@
-#ifndef BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADER_H
-#define BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADER_H
+#ifndef BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADER_H
+#define BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADER_H
 
 
 
@@ -10,8 +10,8 @@
 #include <uefi/uefidevicepath.h>
 #include <uefi/uefiloadedimageprotocol.h>
 
-#include "src/bits64/other/osinfo.h"
-#include "src/bits64/other/volumeinfo.h"
+#include "src/com/ngos/bootloader/other/osinfo.h"
+#include "src/com/ngos/bootloader/other/volumeinfo.h"
 
 
 
@@ -69,4 +69,4 @@ private:
 
 
 
-#endif // BOOTLOADER_SRC_BITS64_MAIN_BOOTLOADER_H
+#endif // BOOTLOADER_SRC_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADER_H

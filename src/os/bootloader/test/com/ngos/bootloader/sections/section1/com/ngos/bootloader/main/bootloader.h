@@ -1,5 +1,5 @@
-#ifndef BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_MAIN_BOOTLOADER_H
-#define BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_MAIN_BOOTLOADER_H
+#ifndef BOOTLOADER_TEST_COM_NGOS_BOOTLOADER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADER_H
+#define BOOTLOADER_TEST_COM_NGOS_BOOTLOADER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADER_H
 
 
 
@@ -7,7 +7,7 @@
 #include <common/src/bits64/string/string.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/bootloader.h"
+#include "src/com/ngos/bootloader/main/bootloader.h"
 
 
 
@@ -15,7 +15,7 @@
 
 
 
-TEST_CASES(section1, bits64_main_bootloader);
+TEST_CASES(section1, com_ngos_bootloader_main_bootloader);
 {
     TEST_CASE("cleanUpPath()");
     {
@@ -145,4 +145,4 @@ TEST_CASES_END();
 
 
 
-#endif // BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_MAIN_BOOTLOADER_H
+#endif // BOOTLOADER_TEST_COM_NGOS_BOOTLOADER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_MAIN_BOOTLOADER_H

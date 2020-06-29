@@ -1,17 +1,17 @@
-#ifndef BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
-#define BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#ifndef BOOTLOADER_TEST_COM_NGOS_BOOTLOADER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TYPES_H
+#define BOOTLOADER_TEST_COM_NGOS_BOOTLOADER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/bootloader.h"
-#include "src/bits64/main/bootloadergui.h"
-#include "src/bits64/other/osinfo.h"
-#include "src/bits64/other/ostype.h"
-#include "src/bits64/other/volumeinfo.h"
-#include "src/bits64/other/volumetype.h"
+#include "src/com/ngos/bootloader/main/bootloader.h"
+#include "src/com/ngos/bootloader/main/bootloadergui.h"
+#include "src/com/ngos/bootloader/other/osinfo.h"
+#include "src/com/ngos/bootloader/other/ostype.h"
+#include "src/com/ngos/bootloader/other/volumeinfo.h"
+#include "src/com/ngos/bootloader/other/volumetype.h"
 
 
 
@@ -19,7 +19,7 @@
 
 
 
-TEST_CASES(section1, bits64_types);
+TEST_CASES(section1, com_ngos_bootloader_types);
 {
     TEST_CASE("Size of structures");
     {
@@ -40,4 +40,4 @@ TEST_CASES_END();
 
 
 
-#endif // BOOTLOADER_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#endif // BOOTLOADER_TEST_COM_NGOS_BOOTLOADER_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TYPES_H
