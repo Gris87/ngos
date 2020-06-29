@@ -17,8 +17,8 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/bits64/main/memorytest.h"
-#include "src/bits64/tests/testbase.h"
+#include "src/com/ngos/bootloader_tools/memorytest/main/memorytest.h"
+#include "src/com/ngos/bootloader_tools/memorytest/tests/testbase.h"
 
 
 
@@ -437,10 +437,10 @@ LabelWidget                           *MemoryTestGUI::sTestingTotalLabelWidget;
 TabWidget                             *MemoryTestGUI::sTestingTabWidget;
 TabButton                             *MemoryTestGUI::sListTabButton;
 TabButton                             *MemoryTestGUI::sChartTabButton;
-LabelWidget*                           MemoryTestGUI::sAverageLabelWidgets[(u64)MemoryTestType::MAXIMUM];
-LabelWidget*                           MemoryTestGUI::sMaximumLabelWidgets[(u64)MemoryTestType::MAXIMUM];
-LabelWidget*                           MemoryTestGUI::sProgressLabelWidgets[(u64)MemoryTestType::MAXIMUM];
-ProgressBarWidget*                     MemoryTestGUI::sProgressBarWidgets[(u64)MemoryTestType::MAXIMUM];
+LabelWidget*                           MemoryTestGUI::sAverageLabelWidgets[(u64)TestType::MAXIMUM];
+LabelWidget*                           MemoryTestGUI::sMaximumLabelWidgets[(u64)TestType::MAXIMUM];
+LabelWidget*                           MemoryTestGUI::sProgressLabelWidgets[(u64)TestType::MAXIMUM];
+ProgressBarWidget*                     MemoryTestGUI::sProgressBarWidgets[(u64)TestType::MAXIMUM];
 LabelWidget                           *MemoryTestGUI::sSummaryTotalLabelWidget;
 TableWidget                           *MemoryTestGUI::sSummaryTableWidget;
 u64                                    MemoryTestGUI::sSummaryTotal;
@@ -449,19 +449,19 @@ u16                                    MemoryTestGUI::sWaitEventsCount;
 uefi_event                            *MemoryTestGUI::sWaitEvents;
 uefi_event                             MemoryTestGUI::sTimerEvent;
 u16                                    MemoryTestGUI::sFirstProcessorEventIndex;
-MemoryTestType                         MemoryTestGUI::sCurrentTest;
+TestType                               MemoryTestGUI::sCurrentTest;
 u64                                    MemoryTestGUI::sNumberOfRunningProcessors;
 bool                                   MemoryTestGUI::sTerminated;
-MemoryTestType                        *MemoryTestGUI::sProcessorTasks;
-MemoryTestMode                         MemoryTestGUI::sMode;
-Image*                                 MemoryTestGUI::sModeImages[(u64)MemoryTestMode::MAXIMUM];
+TestType                              *MemoryTestGUI::sProcessorTasks;
+TestMode                               MemoryTestGUI::sMode;
+Image*                                 MemoryTestGUI::sModeImages[(u64)TestMode::MAXIMUM];
 
 
 
-const char8* MemoryTestGUI::sModeImagesPath[(u64)MemoryTestMode::MAXIMUM] =
+const char8* MemoryTestGUI::sModeImagesPath[(u64)TestMode::MAXIMUM] =
 {
-    "images/quick_test.png",    // MemoryTestMode::QUICK_TEST
-    "images/full_test.png"      // MemoryTestMode::FULL_TEST
+    "images/quick_test.png",    // TestMode::QUICK_TEST
+    "images/full_test.png"      // TestMode::FULL_TEST
 };
 
 
@@ -585,7 +585,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &sStopImage),                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/close.png",                       &sCloseImage),                  NgosStatus::ASSERTION);
 
-    for (i64 i = 0; i < (i64)MemoryTestMode::MAXIMUM; ++i)
+    for (i64 i = 0; i < (i64)TestMode::MAXIMUM; ++i)
     {
         UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sModeImagesPath[i], &sModeImages[i]), NgosStatus::ASSERTION);
     }
@@ -1002,7 +1002,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    sMode = MemoryTestMode::QUICK_TEST;
+    sMode = TestMode::QUICK_TEST;
 
     sTestModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(u64)sMode], nullptr, enumToHumanString(sMode), summaryMemoryTestPanelWidget);
 
@@ -1632,25 +1632,25 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    sAverageLabelWidgets[(u64)MemoryTestType::SEQUENTIAL_READ]  = sequentialReadAverageLabelWidget;
-    sMaximumLabelWidgets[(u64)MemoryTestType::SEQUENTIAL_READ]  = sequentialReadMaximumLabelWidget;
-    sProgressLabelWidgets[(u64)MemoryTestType::SEQUENTIAL_READ] = sequentialReadProgressLabelWidget;
-    sProgressBarWidgets[(u64)MemoryTestType::SEQUENTIAL_READ]   = sequentialReadProgressBarWidget;
+    sAverageLabelWidgets[(u64)TestType::SEQUENTIAL_READ]  = sequentialReadAverageLabelWidget;
+    sMaximumLabelWidgets[(u64)TestType::SEQUENTIAL_READ]  = sequentialReadMaximumLabelWidget;
+    sProgressLabelWidgets[(u64)TestType::SEQUENTIAL_READ] = sequentialReadProgressLabelWidget;
+    sProgressBarWidgets[(u64)TestType::SEQUENTIAL_READ]   = sequentialReadProgressBarWidget;
 
-    sAverageLabelWidgets[(u64)MemoryTestType::SEQUENTIAL_WRITE]  = sequentialWriteAverageLabelWidget;
-    sMaximumLabelWidgets[(u64)MemoryTestType::SEQUENTIAL_WRITE]  = sequentialWriteMaximumLabelWidget;
-    sProgressLabelWidgets[(u64)MemoryTestType::SEQUENTIAL_WRITE] = sequentialWriteProgressLabelWidget;
-    sProgressBarWidgets[(u64)MemoryTestType::SEQUENTIAL_WRITE]   = sequentialWriteProgressBarWidget;
+    sAverageLabelWidgets[(u64)TestType::SEQUENTIAL_WRITE]  = sequentialWriteAverageLabelWidget;
+    sMaximumLabelWidgets[(u64)TestType::SEQUENTIAL_WRITE]  = sequentialWriteMaximumLabelWidget;
+    sProgressLabelWidgets[(u64)TestType::SEQUENTIAL_WRITE] = sequentialWriteProgressLabelWidget;
+    sProgressBarWidgets[(u64)TestType::SEQUENTIAL_WRITE]   = sequentialWriteProgressBarWidget;
 
-    sAverageLabelWidgets[(u64)MemoryTestType::RANDOM_READ]  = randomReadAverageLabelWidget;
-    sMaximumLabelWidgets[(u64)MemoryTestType::RANDOM_READ]  = randomReadMaximumLabelWidget;
-    sProgressLabelWidgets[(u64)MemoryTestType::RANDOM_READ] = randomReadProgressLabelWidget;
-    sProgressBarWidgets[(u64)MemoryTestType::RANDOM_READ]   = randomReadProgressBarWidget;
+    sAverageLabelWidgets[(u64)TestType::RANDOM_READ]  = randomReadAverageLabelWidget;
+    sMaximumLabelWidgets[(u64)TestType::RANDOM_READ]  = randomReadMaximumLabelWidget;
+    sProgressLabelWidgets[(u64)TestType::RANDOM_READ] = randomReadProgressLabelWidget;
+    sProgressBarWidgets[(u64)TestType::RANDOM_READ]   = randomReadProgressBarWidget;
 
-    sAverageLabelWidgets[(u64)MemoryTestType::RANDOM_WRITE]  = randomWriteAverageLabelWidget;
-    sMaximumLabelWidgets[(u64)MemoryTestType::RANDOM_WRITE]  = randomWriteMaximumLabelWidget;
-    sProgressLabelWidgets[(u64)MemoryTestType::RANDOM_WRITE] = randomWriteProgressLabelWidget;
-    sProgressBarWidgets[(u64)MemoryTestType::RANDOM_WRITE]   = randomWriteProgressBarWidget;
+    sAverageLabelWidgets[(u64)TestType::RANDOM_WRITE]  = randomWriteAverageLabelWidget;
+    sMaximumLabelWidgets[(u64)TestType::RANDOM_WRITE]  = randomWriteMaximumLabelWidget;
+    sProgressLabelWidgets[(u64)TestType::RANDOM_WRITE] = randomWriteProgressLabelWidget;
+    sProgressBarWidgets[(u64)TestType::RANDOM_WRITE]   = randomWriteProgressBarWidget;
 
 
 
@@ -1774,7 +1774,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        sProcessorTasks = (MemoryTestType *)malloc(numberOfProcessors * sizeof(MemoryTestType));
+        sProcessorTasks = (TestType *)malloc(numberOfProcessors * sizeof(TestType));
         UEFI_TEST_ASSERT(sProcessorTasks != nullptr, NgosStatus::ASSERTION);
     }
 
@@ -3020,10 +3020,10 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
         switch (sMode)
         {
-            case MemoryTestMode::QUICK_TEST: testSize = MIN(memoryDevice.size, QUICK_TEST_SIZE); break;
-            case MemoryTestMode::FULL_TEST:  testSize = memoryDevice.size;                       break;
+            case TestMode::QUICK_TEST: testSize = MIN(memoryDevice.size, QUICK_TEST_SIZE); break;
+            case TestMode::FULL_TEST:  testSize = memoryDevice.size;                       break;
 
-            case MemoryTestMode::MAXIMUM:
+            case TestMode::MAXIMUM:
             {
                 UEFI_LF(("Unexpected test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
 
@@ -3075,10 +3075,10 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
         switch (sMode)
         {
-            case MemoryTestMode::QUICK_TEST: testSize = MIN(end, QUICK_TEST_SIZE); break;
-            case MemoryTestMode::FULL_TEST:  testSize = end;                       break;
+            case TestMode::QUICK_TEST: testSize = MIN(end, QUICK_TEST_SIZE); break;
+            case TestMode::FULL_TEST:  testSize = end;                       break;
 
-            case MemoryTestMode::MAXIMUM:
+            case TestMode::MAXIMUM:
             {
                 UEFI_LF(("Unexpected test mode %s, %s:%u", enumToFullString(sMode), __FILE__, __LINE__));
 
@@ -3121,14 +3121,14 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
-    char8 *sequentialReadProgressText  = (char8 *)sProgressLabelWidgets[0]->getText();
+    char8 *sequentialReadProgressText = (char8 *)sProgressLabelWidgets[0]->getText();
 
     i64 progressTextLength = sprintf(sequentialReadProgressText, "0 B / %s", bytesToString(testSize));
     UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
-    for (i64 i = 0; i < (i64)MemoryTestType::MAXIMUM; ++i)
+    for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
     {
         char8 *averageText  = (char8 *)sAverageLabelWidgets[i]->getText();
         char8 *maximumText  = (char8 *)sMaximumLabelWidgets[i]->getText();
@@ -3224,14 +3224,14 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
-            for (i64 i = 0; i < (i64)MemoryTestType::MAXIMUM; ++i)
+            for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
             {
                 UEFI_ASSERT_EXECUTION(memoryTests[i]->reset(start, end, testSize), NgosStatus::ASSERTION);
             }
 
 
 
-            sCurrentTest = (MemoryTestType)0;
+            sCurrentTest = (TestType)0;
             sTerminated  = false;
 
 
@@ -3254,9 +3254,9 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
-                    sCurrentTest = (MemoryTestType)((u64)sCurrentTest + 1);
+                    sCurrentTest = (TestType)((u64)sCurrentTest + 1);
 
-                    if (sCurrentTest >= MemoryTestType::MAXIMUM)
+                    if (sCurrentTest >= TestType::MAXIMUM)
                     {
                         break;
                     }
@@ -3295,11 +3295,11 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::updateTest(MemoryTestType testType, u64 tsc)
+NgosStatus MemoryTestGUI::updateTest(TestType testType, u64 tsc)
 {
     UEFI_LT((" | testType = %u, tsc = %u", testType, tsc));
 
-    UEFI_ASSERT(testType < MemoryTestType::MAXIMUM, "testType is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(testType < TestType::MAXIMUM, "testType is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -3663,9 +3663,9 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
     if (!sTerminated)
     {
-        MemoryTestType testType = sProcessorTasks[processorId];
+        TestType testType = sProcessorTasks[processorId];
 
-        UEFI_TEST_ASSERT(testType < MemoryTestType::MAXIMUM, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(testType < TestType::MAXIMUM, NgosStatus::ASSERTION);
 
 
 
@@ -3694,7 +3694,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-        if (sCurrentTest < MemoryTestType::MAXIMUM)
+        if (sCurrentTest < TestType::MAXIMUM)
         {
             TestBase *test = memoryTests[(u64)sCurrentTest];
 
@@ -3710,7 +3710,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-                sCurrentTest = (MemoryTestType)((u64)sCurrentTest + 1);
+                sCurrentTest = (TestType)((u64)sCurrentTest + 1);
             }
             else
             {
@@ -3744,7 +3744,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(u64 processorId)
 
             u64 testTotal = 0;
 
-            for (i64 i = 0; i < (i64)MemoryTestType::MAXIMUM; ++i)
+            for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
             {
                 testTotal += memoryTests[i]->getScore();
             }
@@ -3804,7 +3804,7 @@ NgosStatus MemoryTestGUI::processTimerEvent()
         {
             u64 tsc = rdtsc();
 
-            UEFI_ASSERT_EXECUTION(updateTest((MemoryTestType)i, tsc), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(updateTest((TestType)i, tsc), NgosStatus::ASSERTION);
 
             UEFI_ASSERT_EXECUTION(test->setIntermediateTsc(tsc), NgosStatus::ASSERTION);
         }
@@ -5105,11 +5105,11 @@ NgosStatus MemoryTestGUI::onTestModeButtonPressed()
 
 
 
-    sMode = (MemoryTestMode)((u64)sMode + 1);
+    sMode = (TestMode)((u64)sMode + 1);
 
-    if ((u64)sMode >= (u64)MemoryTestMode::MAXIMUM)
+    if ((u64)sMode >= (u64)TestMode::MAXIMUM)
     {
-        sMode = MemoryTestMode::QUICK_TEST;
+        sMode = TestMode::QUICK_TEST;
     }
 
 
@@ -5324,7 +5324,6 @@ NgosStatus MemoryTestGUI::onTestStopButtonPressed()
         UEFI_ASSERT_EXECUTION(disableTimerEvent(),                        NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(terminateAndWaitForApplicationProcessors(), NgosStatus::ASSERTION);
     }
-
 
 
 

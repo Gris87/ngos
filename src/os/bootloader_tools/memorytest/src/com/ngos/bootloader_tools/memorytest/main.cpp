@@ -14,9 +14,9 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/bits64/main/memorytest.h"
-#include "src/bits64/main/memorytestgui.h"
-#include "test/bits64/sections/section1/testcase.h"
+#include "src/com/ngos/bootloader_tools/memorytest/main/memorytest.h"
+#include "src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h"
+#include "test/com/ngos/bootloader_tools/memorytest/sections/section1/testcase.h"
 
 
 

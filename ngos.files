@@ -510,8 +510,8 @@ src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/main
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/main/memorytest.h
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.cpp
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h
-src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/other/memorytestmode.h
-src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/other/memorytesttype.h
+src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/other/testmode.h
+src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/other/testtype.h
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/tests/asm_readmemoryblock.h
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/tests/asm_writememoryblock.h
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/tests/testbase.cpp

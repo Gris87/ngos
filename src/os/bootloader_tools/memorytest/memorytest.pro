@@ -36,23 +36,23 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
+    asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/main.S \
     asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/tests/readmemoryblock.S \
     asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/tests/writememoryblock.S \
-    asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/main.S \
+    src/com/ngos/bootloader_tools/memorytest/main.cpp \
     src/com/ngos/bootloader_tools/memorytest/main/memorytest.cpp \
     src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.cpp \
     src/com/ngos/bootloader_tools/memorytest/tests/testbase.cpp \
     src/com/ngos/bootloader_tools/memorytest/tests/testrandomread.cpp \
     src/com/ngos/bootloader_tools/memorytest/tests/testrandomwrite.cpp \
     src/com/ngos/bootloader_tools/memorytest/tests/testsequentialread.cpp \
-    src/com/ngos/bootloader_tools/memorytest/tests/testsequentialwrite.cpp \
-    src/com/ngos/bootloader_tools/memorytest/main.cpp
+    src/com/ngos/bootloader_tools/memorytest/tests/testsequentialwrite.cpp
 
 HEADERS += \
     src/com/ngos/bootloader_tools/memorytest/main/memorytest.h \
     src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h \
-    src/com/ngos/bootloader_tools/memorytest/other/memorytestmode.h \
-    src/com/ngos/bootloader_tools/memorytest/other/memorytesttype.h \
+    src/com/ngos/bootloader_tools/memorytest/other/testmode.h \
+    src/com/ngos/bootloader_tools/memorytest/other/testtype.h \
     src/com/ngos/bootloader_tools/memorytest/tests/asm_readmemoryblock.h \
     src/com/ngos/bootloader_tools/memorytest/tests/asm_writememoryblock.h \
     src/com/ngos/bootloader_tools/memorytest/tests/testbase.h \

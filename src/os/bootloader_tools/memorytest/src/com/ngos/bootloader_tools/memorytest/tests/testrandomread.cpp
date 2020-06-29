@@ -8,9 +8,9 @@
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
-#include "src/bits64/main/memorytest.h"
-#include "src/bits64/main/memorytestgui.h"
-#include "src/bits64/tests/asm_readmemoryblock.h"
+#include "src/com/ngos/bootloader_tools/memorytest/main/memorytest.h"
+#include "src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h"
+#include "src/com/ngos/bootloader_tools/memorytest/tests/asm_readmemoryblock.h"
 
 
 
@@ -83,7 +83,7 @@ void UEFI_API testRandomReadProcedure(void *buffer)
 
 
 TestRandomRead::TestRandomRead()
-    : TestBase(MemoryTestType::RANDOM_READ, testRandomReadProcedure)
+    : TestBase(TestType::RANDOM_READ, testRandomReadProcedure)
 {
     UEFI_LT((""));
 }

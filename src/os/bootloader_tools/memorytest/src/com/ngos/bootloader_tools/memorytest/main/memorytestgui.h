@@ -1,5 +1,5 @@
-#ifndef MEMORYTEST_SRC_BITS64_MAIN_MEMORYTESTGUI_H
-#define MEMORYTEST_SRC_BITS64_MAIN_MEMORYTESTGUI_H
+#ifndef MEMORYTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_MEMORYTEST_MAIN_MEMORYTESTGUI_H
+#define MEMORYTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_MEMORYTEST_MAIN_MEMORYTESTGUI_H
 
 
 
@@ -16,8 +16,8 @@
 #include <uefi/uefimpservicesprotocol.h>
 #include <uefi/uefisimplepointerprotocol.h>
 
-#include "src/bits64/other/memorytestmode.h"
-#include "src/bits64/other/memorytesttype.h"
+#include "src/com/ngos/bootloader_tools/memorytest/other/testmode.h"
+#include "src/com/ngos/bootloader_tools/memorytest/other/testtype.h"
 
 
 
@@ -56,7 +56,7 @@ private:
     static NgosStatus showLastTestPage(); // TEST: NO
 
     static NgosStatus startTest(i64 id); // TEST: NO
-    static NgosStatus updateTest(MemoryTestType testType, u64 tsc); // TEST: NO
+    static NgosStatus updateTest(TestType testType, u64 tsc); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
@@ -150,10 +150,10 @@ private:
     static TabWidget                             *sTestingTabWidget;
     static TabButton                             *sListTabButton;
     static TabButton                             *sChartTabButton;
-    static LabelWidget*                           sAverageLabelWidgets[(u64)MemoryTestType::MAXIMUM];
-    static LabelWidget*                           sMaximumLabelWidgets[(u64)MemoryTestType::MAXIMUM];
-    static LabelWidget*                           sProgressLabelWidgets[(u64)MemoryTestType::MAXIMUM];
-    static ProgressBarWidget*                     sProgressBarWidgets[(u64)MemoryTestType::MAXIMUM];
+    static LabelWidget*                           sAverageLabelWidgets[(u64)TestType::MAXIMUM];
+    static LabelWidget*                           sMaximumLabelWidgets[(u64)TestType::MAXIMUM];
+    static LabelWidget*                           sProgressLabelWidgets[(u64)TestType::MAXIMUM];
+    static ProgressBarWidget*                     sProgressBarWidgets[(u64)TestType::MAXIMUM];
     static LabelWidget                           *sSummaryTotalLabelWidget;
     static TableWidget                           *sSummaryTableWidget;
     static u64                                    sSummaryTotal;
@@ -162,15 +162,15 @@ private:
     static uefi_event                            *sWaitEvents;
     static uefi_event                             sTimerEvent;
     static u16                                    sFirstProcessorEventIndex;
-    static MemoryTestType                         sCurrentTest;
+    static TestType                               sCurrentTest;
     static u64                                    sNumberOfRunningProcessors;
     static bool                                   sTerminated;
-    static MemoryTestType                        *sProcessorTasks;
-    static MemoryTestMode                         sMode;
-    static Image*                                 sModeImages[(u64)MemoryTestMode::MAXIMUM];
-    static const char8*                           sModeImagesPath[(u64)MemoryTestMode::MAXIMUM];
+    static TestType                              *sProcessorTasks;
+    static TestMode                               sMode;
+    static Image*                                 sModeImages[(u64)TestMode::MAXIMUM];
+    static const char8*                           sModeImagesPath[(u64)TestMode::MAXIMUM];
 };
 
 
 
-#endif // MEMORYTEST_SRC_BITS64_MAIN_MEMORYTESTGUI_H
+#endif // MEMORYTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_MEMORYTEST_MAIN_MEMORYTESTGUI_H

@@ -5,11 +5,11 @@
 
 
 
-TestBase* memoryTests[(u64)MemoryTestType::MAXIMUM];
+TestBase* memoryTests[(u64)TestType::MAXIMUM];
 
 
 
-TestBase::TestBase(MemoryTestType type, uefi_ap_procedure procedure)
+TestBase::TestBase(TestType type, uefi_ap_procedure procedure)
     : mProcedure(procedure)
     , mScore(0)
     , mAverageSpeed(0)
@@ -24,8 +24,8 @@ TestBase::TestBase(MemoryTestType type, uefi_ap_procedure procedure)
 {
     UEFI_LT((" | type = %u, procedure = 0x%p", type, procedure));
 
-    UEFI_ASSERT(type      <  MemoryTestType::MAXIMUM, "type is invalid");
-    UEFI_ASSERT(procedure != nullptr,                 "procedure is null");
+    UEFI_ASSERT(type      <  TestType::MAXIMUM, "type is invalid");
+    UEFI_ASSERT(procedure != nullptr,           "procedure is null");
 
 
 
@@ -189,7 +189,7 @@ i64 TestBase::getHandledProgress() const
 
 NgosStatus TestBase::setMaximumSpeed(u64 speed)
 {
-    // UEFI_LT((" | tsc = %u", tsc)); // Commented to avoid bad looking logs
+    // UEFI_LT((" | speed = %u", speed)); // Commented to avoid bad looking logs
 
 
 

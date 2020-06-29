@@ -212,6 +212,7 @@
 #include <common/src/bits64/gui/widgets/misc/imagewidget.h>
 #include <common/src/bits64/gui/widgets/misc/labelwidget.h>
 #include <common/src/bits64/gui/widgets/misc/panelwidget.h>
+#include <common/src/bits64/gui/widgets/misc/progressbarwidget.h>
 #include <common/src/bits64/gui/widgets/misc/tablecellwidget.h>
 #include <common/src/bits64/gui/widgets/misc/tableheaderwidget.h>
 #include <common/src/bits64/gui/widgets/misc/tablerowwidget.h>
@@ -474,6 +475,7 @@ TEST_CASES(section0, __shared_common_bits64_types);
         TEST_ASSERT_EQUALS(sizeof(MSR),                                             1);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
+        TEST_ASSERT_EQUALS(sizeof(ProgressBarWidget),                               152);
         TEST_ASSERT_EQUALS(sizeof(Png),                                             1);
         TEST_ASSERT_EQUALS(sizeof(PngChunk),                                        8);
         TEST_ASSERT_EQUALS(sizeof(PngChunkType),                                    4);

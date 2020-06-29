@@ -7,9 +7,9 @@
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
-#include "src/bits64/main/memorytest.h"
-#include "src/bits64/main/memorytestgui.h"
-#include "src/bits64/tests/asm_writememoryblock.h"
+#include "src/com/ngos/bootloader_tools/memorytest/main/memorytest.h"
+#include "src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h"
+#include "src/com/ngos/bootloader_tools/memorytest/tests/asm_writememoryblock.h"
 
 
 
@@ -58,7 +58,7 @@ void UEFI_API testSequentialWriteProcedure(void *buffer)
 
 
 TestSequentialWrite::TestSequentialWrite()
-    : TestBase(MemoryTestType::SEQUENTIAL_WRITE, testSequentialWriteProcedure)
+    : TestBase(TestType::SEQUENTIAL_WRITE, testSequentialWriteProcedure)
     , mBuffer(nullptr)
 {
     UEFI_LT((""));

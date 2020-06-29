@@ -1,13 +1,13 @@
-#ifndef MEMORYTEST_SRC_BITS64_TESTS_TESTBASE_H
-#define MEMORYTEST_SRC_BITS64_TESTS_TESTBASE_H
+#ifndef MEMORYTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_MEMORYTEST_TESTS_TESTBASE_H
+#define MEMORYTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_MEMORYTEST_TESTS_TESTBASE_H
 
 
 
-#include <ngos/status.h>
 #include <macro/constants.h>
+#include <ngos/status.h>
 #include <uefi/uefimpservicesprotocol.h>
 
-#include "src/bits64/other/memorytesttype.h"
+#include "src/com/ngos/bootloader_tools/memorytest/other/testtype.h"
 
 
 
@@ -18,7 +18,7 @@
 class TestBase
 {
 public:
-    TestBase(MemoryTestType type, uefi_ap_procedure procedure); // TEST: NO
+    TestBase(TestType type, uefi_ap_procedure procedure); // TEST: NO
     ~TestBase(); // TEST: NO
 
     NgosStatus reset(u64 start, u64 end, i64 testSize); // TEST: NO
@@ -82,8 +82,8 @@ private:
 
 
 
-extern TestBase* memoryTests[(u64)MemoryTestType::MAXIMUM]; // memoryTests declared in testbase.cpp file
+extern TestBase* memoryTests[(u64)TestType::MAXIMUM]; // memoryTests declared in testbase.cpp file
 
 
 
-#endif // MEMORYTEST_SRC_BITS64_TESTS_TESTBASE_H
+#endif // MEMORYTEST_SRC_COM_NGOS_BOOTLOADER_TOOLS_MEMORYTEST_TESTS_TESTBASE_H
