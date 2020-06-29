@@ -44,5 +44,5 @@ SOURCES += \
 HEADERS += \
     src/com/ngos/bootloader_tools/networktest/main/networktest.h \
     src/com/ngos/bootloader_tools/networktest/main/networktestgui.h \
-    test/com/ngos/bootloader_tools/networktest/sections/section1/bits64/types.h \
+    test/com/ngos/bootloader_tools/networktest/sections/section1/com/ngos/bootloader_tools/networktest/types.h \
     test/com/ngos/bootloader_tools/networktest/sections/section1/testcase.h

@@ -14,9 +14,9 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/bits64/main/networktest.h"
-#include "src/bits64/main/networktestgui.h"
-#include "test/bits64/sections/section1/testcase.h"
+#include "src/com/ngos/bootloader_tools/networktest/main/networktest.h"
+#include "src/com/ngos/bootloader_tools/networktest/main/networktestgui.h"
+#include "test/com/ngos/bootloader_tools/networktest/sections/section1/testcase.h"
 
 
 
