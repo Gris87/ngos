@@ -36,13 +36,13 @@ QMAKE_LFLAGS += \
 
 
 SOURCES += \
-    asm/arch/x86_64/main.S \
-    src/bits64/main/partitionwizard.cpp \
-    src/bits64/main/partitionwizardgui.cpp \
-    src/main.cpp
+    asm/arch/x86_64/com/ngos/bootloader_tools/partitionwizard/main.S \
+    src/com/ngos/bootloader_tools/partitionwizard/main.cpp \
+    src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.cpp \
+    src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizardgui.cpp
 
 HEADERS += \
-    src/bits64/main/partitionwizard.h \
-    src/bits64/main/partitionwizardgui.h \
-    test/bits64/sections/section1/bits64/types.h \
-    test/bits64/sections/section1/testcase.h
+    src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h \
+    src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizardgui.h \
+    test/com/ngos/bootloader_tools/partitionwizard/sections/section1/com/ngos/bootloader_tools/partitionwizard/types.h \
+    test/com/ngos/bootloader_tools/partitionwizard/sections/section1/testcase.h
