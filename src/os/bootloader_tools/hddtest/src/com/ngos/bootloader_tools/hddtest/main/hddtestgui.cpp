@@ -14,7 +14,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/bits64/main/hddtest.h"
+#include "src/com/ngos/bootloader_tools/hddtest/main/hddtest.h"
 
 
 

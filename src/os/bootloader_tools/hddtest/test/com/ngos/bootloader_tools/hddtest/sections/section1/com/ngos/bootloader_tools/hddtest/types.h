@@ -1,13 +1,13 @@
-#ifndef HDDTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
-#define HDDTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#ifndef HDDTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_HDDTEST_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_HDDTEST_TYPES_H
+#define HDDTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_HDDTEST_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_HDDTEST_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/main/hddtest.h"
-#include "src/bits64/main/hddtestgui.h"
+#include "src/com/ngos/bootloader_tools/hddtest/main/hddtest.h"
+#include "src/com/ngos/bootloader_tools/hddtest/main/hddtestgui.h"
 
 
 
@@ -15,7 +15,7 @@
 
 
 
-TEST_CASES(section1, bits64_types);
+TEST_CASES(section1, com_ngos_bootloader_tools_hddtest_types);
 {
     TEST_CASE("Size of structures");
     {
@@ -32,4 +32,4 @@ TEST_CASES_END();
 
 
 
-#endif // HDDTEST_TEST_BITS64_SECTIONS_SECTION1_BITS64_TYPES_H
+#endif // HDDTEST_TEST_COM_NGOS_BOOTLOADER_TOOLS_HDDTEST_SECTIONS_SECTION1_COM_NGOS_BOOTLOADER_TOOLS_HDDTEST_TYPES_H
