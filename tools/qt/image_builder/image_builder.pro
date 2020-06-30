@@ -38,7 +38,7 @@ UI_DIR      = build/gen
 
 INCLUDEPATH += \
     ../../../include \              # /include
-    ../../../src/os/configure \     # /src/os/configure
+    ../../../src/com/ngos/devtools/image_builder/os/configure \     # /src/com/ngos/devtools/image_builder/os/configure
     ../include                      # /tools/qt/include
 
 
@@ -49,18 +49,18 @@ include(../include/elf/elf.pri)
 
 
 SOURCES += \
-    src/main.cpp \
-    src/main/imagebuilder.cpp \
-    src/pe/coffheader.cpp \
-    src/pe/datadirectory.cpp \
-    src/pe/imagesectionheader.cpp \
-    src/pe/peheader.cpp \
-    src/pe/peoptheader.cpp
+    src/com/ngos/devtools/image_builder/main.cpp \
+    src/com/ngos/devtools/image_builder/main/imagebuilder.cpp \
+    src/com/ngos/devtools/image_builder/pe/coffheader.cpp \
+    src/com/ngos/devtools/image_builder/pe/datadirectory.cpp \
+    src/com/ngos/devtools/image_builder/pe/imagesectionheader.cpp \
+    src/com/ngos/devtools/image_builder/pe/peheader.cpp \
+    src/com/ngos/devtools/image_builder/pe/peoptheader.cpp
 
 HEADERS += \
-    src/main/imagebuilder.h \
-    src/pe/coffheader.h \
-    src/pe/datadirectory.h \
-    src/pe/imagesectionheader.h \
-    src/pe/peheader.h \
-    src/pe/peoptheader.h
+    src/com/ngos/devtools/image_builder/main/imagebuilder.h \
+    src/com/ngos/devtools/image_builder/pe/coffheader.h \
+    src/com/ngos/devtools/image_builder/pe/datadirectory.h \
+    src/com/ngos/devtools/image_builder/pe/imagesectionheader.h \
+    src/com/ngos/devtools/image_builder/pe/peheader.h \
+    src/com/ngos/devtools/image_builder/pe/peoptheader.h

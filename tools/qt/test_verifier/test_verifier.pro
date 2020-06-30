@@ -47,17 +47,17 @@ include(../include/console/console.pri)
 
 
 SOURCES += \
-    src/main.cpp \
-    src/other/testentry.cpp \
-    src/other/testmessageinfo.cpp \
-    src/other/teststructureentry.cpp \
-    src/threads/testverifythread.cpp \
-    src/threads/testworkerthread.cpp
+    src/com/ngos/devtools/test_verifier/main.cpp \
+    src/com/ngos/devtools/test_verifier/other/testentry.cpp \
+    src/com/ngos/devtools/test_verifier/other/testmessageinfo.cpp \
+    src/com/ngos/devtools/test_verifier/other/teststructureentry.cpp \
+    src/com/ngos/devtools/test_verifier/threads/testverifythread.cpp \
+    src/com/ngos/devtools/test_verifier/threads/testworkerthread.cpp
 
 HEADERS += \
-    src/other/testentry.h \
-    src/other/testentrytype.h \
-    src/other/testmessageinfo.h \
-    src/other/teststructureentry.h \
-    src/threads/testverifythread.h \
-    src/threads/testworkerthread.h
+    src/com/ngos/devtools/test_verifier/other/testentry.h \
+    src/com/ngos/devtools/test_verifier/other/testentrytype.h \
+    src/com/ngos/devtools/test_verifier/other/testmessageinfo.h \
+    src/com/ngos/devtools/test_verifier/other/teststructureentry.h \
+    src/com/ngos/devtools/test_verifier/threads/testverifythread.h \
+    src/com/ngos/devtools/test_verifier/threads/testworkerthread.h

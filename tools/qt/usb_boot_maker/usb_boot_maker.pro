@@ -80,32 +80,32 @@ win32 {
 
 
 SOURCES += \
-    src/main.cpp \
-    src/main/aboutdialog.cpp \
-    src/main/mainwindow.cpp \
-    src/main/mainwindow_linux.cpp \
-    src/main/mainwindow_win.cpp \
-    src/threads/burnthread.cpp \
-    src/threads/burnthread_linux.cpp \
-    src/threads/burnthread_win.cpp \
-    src/threads/usbmonitorthread_linux.cpp
+    src/com/ngos/devtools/usb_boot_maker/main.cpp \
+    src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.cpp \
+    src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp \
+    src/com/ngos/devtools/usb_boot_maker/main/mainwindow_linux.cpp \
+    src/com/ngos/devtools/usb_boot_maker/main/mainwindow_win.cpp \
+    src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp \
+    src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp \
+    src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp \
+    src/com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread_linux.cpp
 
 HEADERS += \
-    src/main/aboutdialog.h \
-    src/main/mainwindow.h \
-    src/other/defines.h \
-    src/other/fileinfo.h \
-    src/other/usbbootmakerstate.h \
-    src/other/usbdeviceinfo.h \
-    src/other/usbproperties.h \
-    src/other/usbspeed.h \
-    src/other/versioninfo.h \
-    src/threads/burnthread.h \
-    src/threads/usbmonitorthread.h
+    src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.h \
+    src/com/ngos/devtools/usb_boot_maker/main/mainwindow.h \
+    src/com/ngos/devtools/usb_boot_maker/other/defines.h \
+    src/com/ngos/devtools/usb_boot_maker/other/fileinfo.h \
+    src/com/ngos/devtools/usb_boot_maker/other/usbbootmakerstate.h \
+    src/com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h \
+    src/com/ngos/devtools/usb_boot_maker/other/usbproperties.h \
+    src/com/ngos/devtools/usb_boot_maker/other/usbspeed.h \
+    src/com/ngos/devtools/usb_boot_maker/other/versioninfo.h \
+    src/com/ngos/devtools/usb_boot_maker/threads/burnthread.h \
+    src/com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread.h
 
 FORMS += \
-    src/main/aboutdialog.ui \
-    src/main/mainwindow.ui
+    src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.ui \
+    src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui
 
 TRANSLATIONS += \
     assets/translations/language_en.ts \

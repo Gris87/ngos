@@ -47,10 +47,10 @@ include(../include/console/console.pri)
 
 
 SOURCES += \
-    src/main.cpp \
-    src/main/qmake.cpp \
-    src/threads/searchdependenciesthread.cpp
+    src/com/ngos/devtools/qmake/main.cpp \
+    src/com/ngos/devtools/qmake/main/qmake.cpp \
+    src/com/ngos/devtools/qmake/threads/searchdependenciesthread.cpp
 
 HEADERS += \
-    src/main/qmake.h \
-    src/threads/searchdependenciesthread.h
+    src/com/ngos/devtools/qmake/main/qmake.h \
+    src/com/ngos/devtools/qmake/threads/searchdependenciesthread.h

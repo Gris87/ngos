@@ -48,23 +48,23 @@ include(../include/console/console.pri)
 
 
 SOURCES += \
-    src/main.cpp \
-    src/other/docsfileinfo.cpp \
-    src/other/docsmessageinfo.cpp \
-    src/threads/docsworkerthread.cpp \
-    src/verifiers/basedocsverifier.cpp \
-    src/verifiers/zzz_types/common/linksverifier.cpp \
-    src/verifiers/zzz_types/md/mdnewlineverifier.cpp \
-    src/verifiers/zzz_types/md/mdspellverifier.cpp \
-    src/verifiers/zzz_types/md/mdstructureverifier.cpp
+    src/com/ngos/devtools/docs_verifier/main.cpp \
+    src/com/ngos/devtools/docs_verifier/other/docsfileinfo.cpp \
+    src/com/ngos/devtools/docs_verifier/other/docsmessageinfo.cpp \
+    src/com/ngos/devtools/docs_verifier/threads/docsworkerthread.cpp \
+    src/com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.cpp \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/common/linksverifier.cpp \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdnewlineverifier.cpp \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdspellverifier.cpp \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdstructureverifier.cpp
 
 HEADERS += \
-    src/other/docsfileinfo.h \
-    src/other/docsmessageinfo.h \
-    src/other/docsverificationfiletype.h \
-    src/threads/docsworkerthread.h \
-    src/verifiers/basedocsverifier.h \
-    src/verifiers/zzz_types/common/linksverifier.h \
-    src/verifiers/zzz_types/md/mdnewlineverifier.h \
-    src/verifiers/zzz_types/md/mdspellverifier.h \
-    src/verifiers/zzz_types/md/mdstructureverifier.h
+    src/com/ngos/devtools/docs_verifier/other/docsfileinfo.h \
+    src/com/ngos/devtools/docs_verifier/other/docsmessageinfo.h \
+    src/com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h \
+    src/com/ngos/devtools/docs_verifier/threads/docsworkerthread.h \
+    src/com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/common/linksverifier.h \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdnewlineverifier.h \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdspellverifier.h \
+    src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdstructureverifier.h

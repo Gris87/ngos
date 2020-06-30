@@ -41,8 +41,8 @@ UI_DIR      = build/gen
 INCLUDEPATH += \
     ../../../3rd_party/libs/freetype/include \  # /3rd_party/libs/freetype/include
     ../../../include \                          # /include
-    ../../../src/os/configure \                 # /src/os/configure
-    ../../../src/os/include \                   # /src/os/include
+    ../../../src/com/ngos/devtools/code_generator/os/configure \                 # /src/com/ngos/devtools/code_generator/os/configure
+    ../../../src/com/ngos/devtools/code_generator/os/include \                   # /src/com/ngos/devtools/code_generator/os/include
     ../include                                  # /tools/qt/include
 
 
@@ -57,34 +57,34 @@ include(../include/console/console.pri)
 
 
 SOURCES += \
-    src/generators/assets/assetsgenerator.cpp \
-    src/generators/assets/zzz_generators/consoleglyphgenerator.cpp \
-    src/generators/assets/zzz_generators/guiglyphgenerator.cpp \
-    src/generators/common/commongenerator.cpp \
-    src/generators/common/zzz_generators/bytesdecimalsgenerator.cpp \
-    src/generators/common/zzz_generators/hexcharsgenerator.cpp \
-    src/generators/common/zzz_generators/numberdecimalsgenerator.cpp \
-    src/generators/common/zzz_generators/x86bugsnamesgenerator.cpp \
-    src/generators/common/zzz_generators/x86featuresnamesgenerator.cpp \
-    src/generators/configure/configuregenerator.cpp \
-    src/generators/configure/zzz_generators/asmoffsetsgenerator.cpp \
-    src/generators/generator.cpp \
-    src/generators/usb_boot_maker/usbbootmakergenerator.cpp \
-    src/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.cpp \
-    src/main.cpp
+    src/com/ngos/devtools/code_generator/generators/assets/assetsgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/consoleglyphgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/guiglyphgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/commongenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86featuresnamesgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/configure/configuregenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/configure/zzz_generators/asmoffsetsgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/generator.cpp \
+    src/com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.cpp \
+    src/com/ngos/devtools/code_generator/main.cpp
 
 HEADERS += \
-    src/generators/assets/assetsgenerator.h \
-    src/generators/assets/zzz_generators/consoleglyphgenerator.h \
-    src/generators/assets/zzz_generators/guiglyphgenerator.h \
-    src/generators/common/commongenerator.h \
-    src/generators/common/zzz_generators/bytesdecimalsgenerator.h \
-    src/generators/common/zzz_generators/hexcharsgenerator.h \
-    src/generators/common/zzz_generators/numberdecimalsgenerator.h \
-    src/generators/common/zzz_generators/x86bugsnamesgenerator.h \
-    src/generators/common/zzz_generators/x86featuresnamesgenerator.h \
-    src/generators/configure/configuregenerator.h \
-    src/generators/configure/zzz_generators/asmoffsetsgenerator.h \
-    src/generators/generator.h \
-    src/generators/usb_boot_maker/usbbootmakergenerator.h \
-    src/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h
+    src/com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/consoleglyphgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/guiglyphgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/commongenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86featuresnamesgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/configure/configuregenerator.h \
+    src/com/ngos/devtools/code_generator/generators/configure/zzz_generators/asmoffsetsgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/generator.h \
+    src/com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h \
+    src/com/ngos/devtools/code_generator/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h

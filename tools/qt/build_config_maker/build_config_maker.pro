@@ -46,8 +46,8 @@ include(../include/console/console.pri)
 
 
 SOURCES += \
-    src/main.cpp \
-    src/main/buildconfigmaker.cpp
+    src/com/ngos/devtools/build_config_maker/main.cpp \
+    src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.cpp
 
 HEADERS += \
-    src/main/buildconfigmaker.h
+    src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.h

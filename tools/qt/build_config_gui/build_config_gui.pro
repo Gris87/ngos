@@ -39,37 +39,37 @@ UI_DIR      = build/gen
 
 
 SOURCES += \
-    src/main.cpp \
-    src/main/aboutdialog.cpp \
-    src/main/mainwindow.cpp \
-    src/other/global.cpp \
-    src/widgets/categorytreewidgetitem.cpp \
-    src/widgets/common/trackingcheckbox.cpp \
-    src/widgets/common/trackingcombobox.cpp \
-    src/widgets/common/trackinggroupbox.cpp \
-    src/widgets/common/trackinglineedit.cpp \
-    src/widgets/parameters/booleanparameterwidget.cpp \
-    src/widgets/parameters/comboboxparameterwidget.cpp \
-    src/widgets/parameters/integerpowerof2parameterwidget.cpp \
-    src/widgets/parameters/parameterwidget.cpp \
-    src/widgets/parameters/textparameterwidget.cpp
+    src/com/ngos/devtools/build_config_gui/main.cpp \
+    src/com/ngos/devtools/build_config_gui/main/aboutdialog.cpp \
+    src/com/ngos/devtools/build_config_gui/main/mainwindow.cpp \
+    src/com/ngos/devtools/build_config_gui/other/global.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/categorytreewidgetitem.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackingcheckbox.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackingcombobox.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackinglineedit.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/booleanparameterwidget.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/comboboxparameterwidget.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/integerpowerof2parameterwidget.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.cpp \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/textparameterwidget.cpp
 
 HEADERS += \
-    src/main/aboutdialog.h \
-    src/main/mainwindow.h \
-    src/other/global.h \
-    src/other/optioninfo.h \
-    src/widgets/categorytreewidgetitem.h \
-    src/widgets/common/trackingcheckbox.h \
-    src/widgets/common/trackingcombobox.h \
-    src/widgets/common/trackinggroupbox.h \
-    src/widgets/common/trackinglineedit.h \
-    src/widgets/parameters/booleanparameterwidget.h \
-    src/widgets/parameters/comboboxparameterwidget.h \
-    src/widgets/parameters/integerpowerof2parameterwidget.h \
-    src/widgets/parameters/parameterwidget.h \
-    src/widgets/parameters/textparameterwidget.h
+    src/com/ngos/devtools/build_config_gui/main/aboutdialog.h \
+    src/com/ngos/devtools/build_config_gui/main/mainwindow.h \
+    src/com/ngos/devtools/build_config_gui/other/global.h \
+    src/com/ngos/devtools/build_config_gui/other/optioninfo.h \
+    src/com/ngos/devtools/build_config_gui/widgets/categorytreewidgetitem.h \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackingcheckbox.h \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackingcombobox.h \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h \
+    src/com/ngos/devtools/build_config_gui/widgets/common/trackinglineedit.h \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/booleanparameterwidget.h \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/comboboxparameterwidget.h \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/integerpowerof2parameterwidget.h \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h \
+    src/com/ngos/devtools/build_config_gui/widgets/parameters/textparameterwidget.h
 
 FORMS += \
-    src/main/aboutdialog.ui \
-    src/main/mainwindow.ui
+    src/com/ngos/devtools/build_config_gui/main/aboutdialog.ui \
+    src/com/ngos/devtools/build_config_gui/main/mainwindow.ui
