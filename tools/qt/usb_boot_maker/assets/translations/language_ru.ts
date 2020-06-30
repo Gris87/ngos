@@ -120,42 +120,42 @@
         <translation>Устройство:</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="207"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="180"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="213"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="186"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="224"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="197"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="238"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="211"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="241"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="214"/>
         <source>Exit (Alt+X)</source>
         <translation>Выход (Alt+X)</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="217"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="190"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="253"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="226"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="256"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.ui" line="229"/>
         <source>About (F1)</source>
         <translation>О программе (F1)</translation>
     </message>
