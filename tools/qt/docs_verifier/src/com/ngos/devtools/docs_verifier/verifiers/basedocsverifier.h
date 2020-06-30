@@ -1,12 +1,12 @@
-#ifndef DOCS_VERIFIER_SRC_VERIFIERS_BASEDOCSVERIFIER_H
-#define DOCS_VERIFIER_SRC_VERIFIERS_BASEDOCSVERIFIER_H
+#ifndef DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H
+#define DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H
 
 
 
 #include <QList>
 
-#include "src/other/docsfileinfo.h"
-#include "src/threads/docsworkerthread.h"
+#include "src/com/ngos/devtools/docs_verifier/other/docsfileinfo.h"
+#include "src/com/ngos/devtools/docs_verifier/threads/docsworkerthread.h"
 
 
 
@@ -150,4 +150,4 @@ private:
 
 
 
-#endif // DOCS_VERIFIER_SRC_VERIFIERS_BASEDOCSVERIFIER_H
+#endif // DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H

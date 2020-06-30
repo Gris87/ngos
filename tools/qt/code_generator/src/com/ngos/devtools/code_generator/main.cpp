@@ -3,10 +3,10 @@
 #include <QFile>
 #include <console/console.h>
 
-#include "src/generators/assets/assetsgenerator.h"
-#include "src/generators/common/commongenerator.h"
-#include "src/generators/configure/configuregenerator.h"
-#include "src/generators/usb_boot_maker/usbbootmakergenerator.h"
+#include "src/com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h"
+#include "src/com/ngos/devtools/code_generator/generators/common/commongenerator.h"
+#include "src/com/ngos/devtools/code_generator/generators/configure/configuregenerator.h"
+#include "src/com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h"
 
 
 

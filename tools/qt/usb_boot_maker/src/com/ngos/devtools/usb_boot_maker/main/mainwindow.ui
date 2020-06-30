@@ -83,6 +83,15 @@
            </color>
           </brush>
          </colorrole>
+         <colorrole role="PlaceholderText">
+          <brush brushstyle="NoBrush">
+           <color alpha="128">
+            <red>0</red>
+            <green>192</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
         </active>
         <inactive>
          <colorrole role="Text">
@@ -99,6 +108,15 @@
            <color alpha="255">
             <red>0</red>
             <green>50</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="PlaceholderText">
+          <brush brushstyle="NoBrush">
+           <color alpha="128">
+            <red>0</red>
+            <green>192</green>
             <blue>0</blue>
            </color>
           </brush>
@@ -120,6 +138,15 @@
             <red>170</red>
             <green>85</green>
             <blue>127</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="PlaceholderText">
+          <brush brushstyle="NoBrush">
+           <color alpha="128">
+            <red>0</red>
+            <green>192</green>
+            <blue>0</blue>
            </color>
           </brush>
          </colorrole>
@@ -154,7 +181,7 @@
       <item>
        <widget class="QPushButton" name="startButton">
         <property name="icon">
-         <iconset resource="../../Resources.qrc">
+         <iconset resource="../../../../../../../../../src/os/bootloader_tools/cputest/Resources.qrc">
           <normaloff>:/assets/images/start.png</normaloff>:/assets/images/start.png</iconset>
         </property>
         <property name="default">
@@ -171,8 +198,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>480</width>
-     <height>21</height>
+     <width>800</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -204,7 +231,7 @@
   </widget>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../../Resources.qrc">
+    <iconset resource="../../../../../../../build_config_gui/Resources.qrc">
      <normaloff>:/assets/images/exit.png</normaloff>:/assets/images/exit.png</iconset>
    </property>
    <property name="text">
@@ -219,7 +246,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="../../Resources.qrc">
+    <iconset resource="../../../../../../../build_config_gui/Resources.qrc">
      <normaloff>:/assets/images/about.png</normaloff>:/assets/images/about.png</iconset>
    </property>
    <property name="text">
@@ -235,7 +262,8 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../../Resources.qrc"/>
+  <include location="../../../../../../../../../src/os/bootloader_tools/cputest/Resources.qrc"/>
+  <include location="../../../../../../../build_config_gui/Resources.qrc"/>
  </resources>
  <connections/>
 </ui>

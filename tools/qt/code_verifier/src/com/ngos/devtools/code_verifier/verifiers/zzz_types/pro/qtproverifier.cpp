@@ -5,7 +5,7 @@
 #include <QFileInfo>
 #include <QQueue>
 
-#include "src/other/codeverificationfiletype.h"
+#include "src/com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
 
 
 

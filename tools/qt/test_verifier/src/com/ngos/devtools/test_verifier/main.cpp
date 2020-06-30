@@ -7,8 +7,8 @@
 #include <QQueue>
 #include <console/console.h>
 
-#include "src/threads/testverifythread.h"
-#include "src/threads/testworkerthread.h"
+#include "src/com/ngos/devtools/test_verifier/threads/testverifythread.h"
+#include "src/com/ngos/devtools/test_verifier/threads/testworkerthread.h"
 
 
 

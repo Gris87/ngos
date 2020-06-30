@@ -16,8 +16,8 @@
 #include <SetupAPI.h>
 #include <usbioctl.h>
 
-#include "src/other/defines.h"
-#include "src/other/usbproperties.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/defines.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/usbproperties.h"
 
 
 

@@ -1,11 +1,11 @@
-#ifndef USB_BOOT_MAKER_SRC_THREADS_BURNTHREAD_H
-#define USB_BOOT_MAKER_SRC_THREADS_BURNTHREAD_H
+#ifndef USB_BOOT_MAKER_SRC_COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H
+#define USB_BOOT_MAKER_SRC_COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H
 
 
 
 #include <QThread>
 
-#include "src/other/usbdeviceinfo.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h"
 
 
 
@@ -44,4 +44,4 @@ signals:
 
 
 
-#endif // USB_BOOT_MAKER_SRC_THREADS_BURNTHREAD_H
+#endif // USB_BOOT_MAKER_SRC_COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H

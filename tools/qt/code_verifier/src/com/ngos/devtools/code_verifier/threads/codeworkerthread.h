@@ -1,5 +1,5 @@
-#ifndef CODE_VERIFIER_SRC_THREADS_CODEWORKERTHREAD_H
-#define CODE_VERIFIER_SRC_THREADS_CODEWORKERTHREAD_H
+#ifndef CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H
+#define CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H
 
 
 
@@ -8,8 +8,8 @@
 #include <QMutex>
 #include <QSemaphore>
 
-#include "src/other/codefileinfo.h"
-#include "src/other/codemessageinfo.h"
+#include "src/com/ngos/devtools/code_verifier/other/codefileinfo.h"
+#include "src/com/ngos/devtools/code_verifier/other/codemessageinfo.h"
 
 
 
@@ -47,4 +47,4 @@ private:
 
 
 
-#endif // CODE_VERIFIER_SRC_THREADS_CODEWORKERTHREAD_H
+#endif // CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H

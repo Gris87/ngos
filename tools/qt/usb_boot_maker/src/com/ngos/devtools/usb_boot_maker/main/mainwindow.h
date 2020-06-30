@@ -1,5 +1,5 @@
-#ifndef USB_BOOT_MAKER_SRC_MAIN_MAINWINDOW_H
-#define USB_BOOT_MAKER_SRC_MAIN_MAINWINDOW_H
+#ifndef USB_BOOT_MAKER_SRC_COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H
+#define USB_BOOT_MAKER_SRC_COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H
 
 
 
@@ -12,13 +12,13 @@
 #include <QTimer>
 #include <QTranslator>
 
-#include "src/other/fileinfo.h"
-#include "src/other/usbbootmakerstate.h"
-#include "src/other/usbdeviceinfo.h"
-#include "src/other/usbspeed.h"
-#include "src/other/versioninfo.h"
-#include "src/threads/burnthread.h"
-#include "src/threads/usbmonitorthread.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/fileinfo.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/usbbootmakerstate.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/usbspeed.h"
+#include "src/com/ngos/devtools/usb_boot_maker/other/versioninfo.h"
+#include "src/com/ngos/devtools/usb_boot_maker/threads/burnthread.h"
+#include "src/com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread.h"
 
 
 
@@ -95,4 +95,4 @@ private:
 
 
 
-#endif // USB_BOOT_MAKER_SRC_MAIN_MAINWINDOW_H
+#endif // USB_BOOT_MAKER_SRC_COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H

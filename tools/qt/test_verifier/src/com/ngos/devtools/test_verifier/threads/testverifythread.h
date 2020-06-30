@@ -1,5 +1,5 @@
-#ifndef TEST_VERIFIER_SRC_THREADS_TESTVERIFYTHREAD_H
-#define TEST_VERIFIER_SRC_THREADS_TESTVERIFYTHREAD_H
+#ifndef TEST_VERIFIER_SRC_COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H
+#define TEST_VERIFIER_SRC_COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H
 
 
 
@@ -9,9 +9,9 @@
 #include <QRegularExpression>
 #include <QSemaphore>
 
-#include "src/other/testentry.h"
-#include "src/other/testmessageinfo.h"
-#include "src/other/teststructureentry.h"
+#include "src/com/ngos/devtools/test_verifier/other/testentry.h"
+#include "src/com/ngos/devtools/test_verifier/other/testmessageinfo.h"
+#include "src/com/ngos/devtools/test_verifier/other/teststructureentry.h"
 
 
 
@@ -52,4 +52,4 @@ private:
 
 
 
-#endif // TEST_VERIFIER_SRC_THREADS_TESTVERIFYTHREAD_H
+#endif // TEST_VERIFIER_SRC_COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H

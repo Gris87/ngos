@@ -14,7 +14,7 @@
    <string>About</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../Resources.qrc">
+   <iconset resource="../../../../../../../build_config_gui/Resources.qrc">
     <normaloff>:/assets/images/about.png</normaloff>:/assets/images/about.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -36,7 +36,7 @@
    <item>
     <widget class="QLabel" name="logoLabel">
      <property name="pixmap">
-      <pixmap resource="../../Resources.qrc">:/assets/images/logo.png</pixmap>
+      <pixmap resource="../../../../../../../build_config_gui/Resources.qrc">:/assets/images/logo.png</pixmap>
      </property>
     </widget>
    </item>
@@ -152,7 +152,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../Resources.qrc"/>
+  <include location="../../../../../../../build_config_gui/Resources.qrc"/>
  </resources>
  <connections/>
 </ui>

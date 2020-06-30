@@ -3,7 +3,7 @@
 #include <QString>
 #include <console/console.h>
 
-#include "src/main/qmake.h"
+#include "src/com/ngos/devtools/qmake/main/qmake.h"
 
 
 

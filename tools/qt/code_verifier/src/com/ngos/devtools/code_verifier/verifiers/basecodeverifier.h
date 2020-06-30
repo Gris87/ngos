@@ -1,12 +1,12 @@
-#ifndef CODE_VERIFIER_SRC_VERIFIERS_BASECODEVERIFIER_H
-#define CODE_VERIFIER_SRC_VERIFIERS_BASECODEVERIFIER_H
+#ifndef CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_BASECODEVERIFIER_H
+#define CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_BASECODEVERIFIER_H
 
 
 
 #include <QList>
 
-#include "src/other/codefileinfo.h"
-#include "src/threads/codeworkerthread.h"
+#include "src/com/ngos/devtools/code_verifier/other/codefileinfo.h"
+#include "src/com/ngos/devtools/code_verifier/threads/codeworkerthread.h"
 
 
 
@@ -61,4 +61,4 @@ private:
 
 
 
-#endif // CODE_VERIFIER_SRC_VERIFIERS_BASECODEVERIFIER_H
+#endif // CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_BASECODEVERIFIER_H

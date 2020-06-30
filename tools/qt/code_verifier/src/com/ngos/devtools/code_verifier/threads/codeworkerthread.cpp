@@ -2,7 +2,7 @@
 
 #include <QFile>
 
-#include "src/verifiers/basecodeverifier.h"
+#include "src/com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h"
 
 
 

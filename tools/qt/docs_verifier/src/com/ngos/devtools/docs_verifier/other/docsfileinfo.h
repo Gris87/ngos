@@ -1,11 +1,11 @@
-#ifndef DOCS_VERIFIER_SRC_OTHER_DOCSFILEINFO_H
-#define DOCS_VERIFIER_SRC_OTHER_DOCSFILEINFO_H
+#ifndef DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSFILEINFO_H
+#define DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSFILEINFO_H
 
 
 
 #include <QString>
 
-#include "src/other/docsverificationfiletype.h"
+#include "src/com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h"
 
 
 
@@ -24,4 +24,4 @@ private:
 
 
 
-#endif // DOCS_VERIFIER_SRC_OTHER_DOCSFILEINFO_H
+#endif // DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSFILEINFO_H

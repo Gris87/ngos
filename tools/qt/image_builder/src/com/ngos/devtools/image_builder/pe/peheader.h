@@ -1,13 +1,13 @@
-#ifndef IMAGE_BUILDER_SRC_PE_PEHEADER_H
-#define IMAGE_BUILDER_SRC_PE_PEHEADER_H
+#ifndef IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEHEADER_H
+#define IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEHEADER_H
 
 
 
 #include <Qt>
 
-#include "src/pe/coffheader.h"
-#include "src/pe/imagesectionheader.h"
-#include "src/pe/peoptheader.h"
+#include "src/com/ngos/devtools/image_builder/pe/coffheader.h"
+#include "src/com/ngos/devtools/image_builder/pe/imagesectionheader.h"
+#include "src/com/ngos/devtools/image_builder/pe/peoptheader.h"
 
 
 
@@ -32,4 +32,4 @@ struct PEHeader
 
 
 
-#endif // IMAGE_BUILDER_SRC_PE_PEHEADER_H
+#endif // IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEHEADER_H

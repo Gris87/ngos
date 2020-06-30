@@ -3,7 +3,7 @@
 #include <QString>
 #include <console/console.h>
 
-#include "src/main/imagebuilder.h"
+#include "src/com/ngos/devtools/image_builder/main/imagebuilder.h"
 
 
 

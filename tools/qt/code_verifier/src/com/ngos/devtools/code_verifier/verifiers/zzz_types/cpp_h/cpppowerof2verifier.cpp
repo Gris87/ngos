@@ -1,6 +1,6 @@
 #include "cpppowerof2verifier.h"
 
-#include "src/other/codeverificationfiletype.h"
+#include "src/com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
 
 
 

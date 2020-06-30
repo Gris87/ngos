@@ -2,7 +2,7 @@
 
 #include <console/console.h>
 
-#include "src/pe/peoptheader.h"
+#include "src/com/ngos/devtools/image_builder/pe/peoptheader.h"
 
 
 

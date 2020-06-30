@@ -7,13 +7,13 @@
 #include <QQueue>
 #include <QSettings>
 
-#include "src/main/aboutdialog.h"
-#include "src/other/global.h"
-#include "src/widgets/categorytreewidgetitem.h"
-#include "src/widgets/parameters/booleanparameterwidget.h"
-#include "src/widgets/parameters/comboboxparameterwidget.h"
-#include "src/widgets/parameters/integerpowerof2parameterwidget.h"
-#include "src/widgets/parameters/textparameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/main/aboutdialog.h"
+#include "src/com/ngos/devtools/build_config_gui/other/global.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/categorytreewidgetitem.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/booleanparameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/comboboxparameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/integerpowerof2parameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/textparameterwidget.h"
 
 
 

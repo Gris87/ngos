@@ -1,11 +1,11 @@
-#ifndef CODE_VERIFIER_SRC_OTHER_CODEFILEINFO_H
-#define CODE_VERIFIER_SRC_OTHER_CODEFILEINFO_H
+#ifndef CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H
+#define CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H
 
 
 
 #include <QString>
 
-#include "src/other/codeverificationfiletype.h"
+#include "src/com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
 
 
 
@@ -24,4 +24,4 @@ private:
 
 
 
-#endif // CODE_VERIFIER_SRC_OTHER_CODEFILEINFO_H
+#endif // CODE_VERIFIER_SRC_COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H

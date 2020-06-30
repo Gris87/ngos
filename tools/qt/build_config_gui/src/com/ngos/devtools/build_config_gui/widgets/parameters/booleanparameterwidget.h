@@ -1,11 +1,11 @@
-#ifndef BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_BOOLEANPARAMETERWIDGET_H
-#define BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_BOOLEANPARAMETERWIDGET_H
+#ifndef BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_BOOLEANPARAMETERWIDGET_H
+#define BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_BOOLEANPARAMETERWIDGET_H
 
 
 
-#include "src/widgets/parameters/parameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h"
 
-#include "src/widgets/common/trackingcheckbox.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/common/trackingcheckbox.h"
 
 
 
@@ -34,4 +34,4 @@ private:
 
 
 
-#endif // BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_BOOLEANPARAMETERWIDGET_H
+#endif // BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_BOOLEANPARAMETERWIDGET_H

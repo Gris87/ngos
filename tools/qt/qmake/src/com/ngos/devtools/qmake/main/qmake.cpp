@@ -9,7 +9,7 @@
 #include <buildconfig.h>
 #include <console/console.h>
 
-#include "src/threads/searchdependenciesthread.h"
+#include "src/com/ngos/devtools/qmake/threads/searchdependenciesthread.h"
 
 
 

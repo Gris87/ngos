@@ -1,11 +1,11 @@
-#ifndef BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
-#define BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
+#ifndef BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
+#define BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
 
 
 
-#include "src/widgets/parameters/parameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h"
 
-#include "src/widgets/common/trackinglineedit.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/common/trackinglineedit.h"
 
 
 
@@ -30,4 +30,4 @@ private:
 
 
 
-#endif // BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
+#endif // BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H

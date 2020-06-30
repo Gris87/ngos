@@ -1580,6 +1580,7 @@ tools/qt/build_config_gui/README.md
 tools/qt/build_config_gui/Resources.qrc
 tools/qt/build_config_gui/Resources.rc
 tools/qt/build_config_gui/Screenshot.png
+tools/qt/build_config_gui/src/com/ngos/devtools/Resources.qrc
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/main.cpp
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/main/aboutdialog.cpp
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/main/aboutdialog.h
@@ -1873,6 +1874,7 @@ tools/qt/usb_boot_maker/README.md
 tools/qt/usb_boot_maker/Resources.qrc
 tools/qt/usb_boot_maker/Resources.rc
 tools/qt/usb_boot_maker/Screenshot.png
+tools/qt/usb_boot_maker/src/com/ngos/devtools/Resources.qrc
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/main.cpp
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.cpp
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.h

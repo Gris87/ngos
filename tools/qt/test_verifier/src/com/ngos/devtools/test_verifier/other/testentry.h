@@ -1,11 +1,11 @@
-#ifndef TEST_VERIFIER_SRC_OTHER_TESTENTRY_H
-#define TEST_VERIFIER_SRC_OTHER_TESTENTRY_H
+#ifndef TEST_VERIFIER_SRC_COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H
+#define TEST_VERIFIER_SRC_COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H
 
 
 
 #include <QString>
 
-#include "src/other/testentrytype.h"
+#include "src/com/ngos/devtools/test_verifier/other/testentrytype.h"
 
 
 
@@ -35,4 +35,4 @@ private:
 
 
 
-#endif // TEST_VERIFIER_SRC_OTHER_TESTENTRY_H
+#endif // TEST_VERIFIER_SRC_COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H

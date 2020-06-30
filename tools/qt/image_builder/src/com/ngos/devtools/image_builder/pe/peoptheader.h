@@ -1,11 +1,11 @@
-#ifndef IMAGE_BUILDER_SRC_PE_PEOPTHEADER_H
-#define IMAGE_BUILDER_SRC_PE_PEOPTHEADER_H
+#ifndef IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H
+#define IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H
 
 
 
 #include <Qt>
 
-#include "src/pe/datadirectory.h"
+#include "src/com/ngos/devtools/image_builder/pe/datadirectory.h"
 
 
 
@@ -70,4 +70,4 @@ struct PEOptHeader
 
 
 
-#endif // IMAGE_BUILDER_SRC_PE_PEOPTHEADER_H
+#endif // IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H

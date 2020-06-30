@@ -1,5 +1,5 @@
-#ifndef BUILD_CONFIG_GUI_SRC_MAIN_MAINWINDOW_H
-#define BUILD_CONFIG_GUI_SRC_MAIN_MAINWINDOW_H
+#ifndef BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H
+#define BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H
 
 
 
@@ -9,8 +9,8 @@
 #include <QHash>
 #include <QTreeWidgetItem>
 
-#include "src/other/optioninfo.h"
-#include "src/widgets/parameters/parameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/other/optioninfo.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h"
 
 
 
@@ -59,4 +59,4 @@ private:
 
 
 
-#endif // BUILD_CONFIG_GUI_SRC_MAIN_MAINWINDOW_H
+#endif // BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H

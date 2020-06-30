@@ -7,9 +7,9 @@
 #include <QQueue>
 #include <console/console.h>
 
-#include "src/other/docsverificationfiletype.h"
-#include "src/threads/docsworkerthread.h"
-#include "src/verifiers/basedocsverifier.h"
+#include "src/com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h"
+#include "src/com/ngos/devtools/docs_verifier/threads/docsworkerthread.h"
+#include "src/com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h"
 
 
 

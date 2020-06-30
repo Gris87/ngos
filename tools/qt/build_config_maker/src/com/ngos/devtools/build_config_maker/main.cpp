@@ -3,7 +3,7 @@
 #include <QString>
 #include <console/console.h>
 
-#include "src/main/buildconfigmaker.h"
+#include "src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.h"
 
 
 

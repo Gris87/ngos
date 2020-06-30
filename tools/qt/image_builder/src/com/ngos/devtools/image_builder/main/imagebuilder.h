@@ -1,12 +1,12 @@
-#ifndef IMAGE_BUILDER_SRC_MAIN_IMAGEBUILDER_H
-#define IMAGE_BUILDER_SRC_MAIN_IMAGEBUILDER_H
+#ifndef IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H
+#define IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H
 
 
 
 #include <QString>
 #include <elf/elfobject.h>
 
-#include "src/pe/peheader.h"
+#include "src/com/ngos/devtools/image_builder/pe/peheader.h"
 
 
 
@@ -63,4 +63,4 @@ private:
 
 
 
-#endif // IMAGE_BUILDER_SRC_MAIN_IMAGEBUILDER_H
+#endif // IMAGE_BUILDER_SRC_COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H

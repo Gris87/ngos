@@ -3,7 +3,7 @@
 #include <QDir>
 #include <QProcess>
 
-#include "src/other/docsverificationfiletype.h"
+#include "src/com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h"
 
 
 

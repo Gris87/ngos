@@ -1,6 +1,6 @@
 ﻿#include "cppreleaseusageverifier.h"
 
-#include "src/other/codeverificationfiletype.h"
+#include "src/com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
 
 
 
@@ -15,7 +15,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
     if (
         path.contains("include/buildconfig.h")
         ||
-        path.contains("tools/qt/code_verifier/src/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp")
+        path.contains("tools/qt/code_verifier/src/com/ngos/devtools/code_verifier/verifiers/zzz_types/cpp_h/cppreleaseusageverifier.cpp")
        )
     {
         return;

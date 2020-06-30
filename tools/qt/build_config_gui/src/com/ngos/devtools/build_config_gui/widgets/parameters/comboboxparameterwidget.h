@@ -1,11 +1,11 @@
-#ifndef BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_COMBOBOXPARAMETERWIDGET_H
-#define BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_COMBOBOXPARAMETERWIDGET_H
+#ifndef BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_COMBOBOXPARAMETERWIDGET_H
+#define BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_COMBOBOXPARAMETERWIDGET_H
 
 
 
-#include "src/widgets/parameters/parameterwidget.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h"
 
-#include "src/widgets/common/trackingcombobox.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/common/trackingcombobox.h"
 
 
 
@@ -32,4 +32,4 @@ private:
 
 
 
-#endif // BUILD_CONFIG_GUI_SRC_WIDGETS_PARAMETERS_COMBOBOXPARAMETERWIDGET_H
+#endif // BUILD_CONFIG_GUI_SRC_COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_COMBOBOXPARAMETERWIDGET_H

@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QVBoxLayout>
 
-#include "src/widgets/common/trackinggroupbox.h"
+#include "src/com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h"
 
 
 

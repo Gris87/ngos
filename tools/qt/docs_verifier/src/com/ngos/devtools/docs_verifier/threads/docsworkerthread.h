@@ -1,5 +1,5 @@
-#ifndef DOCS_VERIFIER_SRC_THREADS_DOCSWORKERTHREAD_H
-#define DOCS_VERIFIER_SRC_THREADS_DOCSWORKERTHREAD_H
+#ifndef DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_THREADS_DOCSWORKERTHREAD_H
+#define DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_THREADS_DOCSWORKERTHREAD_H
 
 
 
@@ -8,8 +8,8 @@
 #include <QMutex>
 #include <QSemaphore>
 
-#include "src/other/docsfileinfo.h"
-#include "src/other/docsmessageinfo.h"
+#include "src/com/ngos/devtools/docs_verifier/other/docsfileinfo.h"
+#include "src/com/ngos/devtools/docs_verifier/other/docsmessageinfo.h"
 
 
 
@@ -47,4 +47,4 @@ private:
 
 
 
-#endif // DOCS_VERIFIER_SRC_THREADS_DOCSWORKERTHREAD_H
+#endif // DOCS_VERIFIER_SRC_COM_NGOS_DEVTOOLS_DOCS_VERIFIER_THREADS_DOCSWORKERTHREAD_H
