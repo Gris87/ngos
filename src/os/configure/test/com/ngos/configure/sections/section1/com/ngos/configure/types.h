@@ -1,29 +1,29 @@
-#ifndef CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_BITS64_TYPES_H
-#define CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_BITS64_TYPES_H
+#ifndef CONFIGURE_TEST_COM_NGOS_CONFIGURE_SECTIONS_SECTION1_COM_NGOS_CONFIGURE_TYPES_H
+#define CONFIGURE_TEST_COM_NGOS_CONFIGURE_SECTIONS_SECTION1_COM_NGOS_CONFIGURE_TYPES_H
 
 
 
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzfilter.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
-#include "src/bits64/b_early/other/memoryarea.h"
-#include "src/bits64/b_early/other/pagetable/pageallocationcontext.h"
-#include "src/bits64/b_early/other/unavailablememoryarea.h"
-#include "src/bits64/other/kerneldescriptor.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilter.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
+#include "src/com/ngos/configure/b_early/other/memoryarea.h"
+#include "src/com/ngos/configure/b_early/other/pagetable/pageallocationcontext.h"
+#include "src/com/ngos/configure/b_early/other/unavailablememoryarea.h"
+#include "src/com/ngos/configure/other/kerneldescriptor.h"
 
 
 
@@ -31,7 +31,7 @@
 
 
 
-TEST_CASES(section1, bits64_types);
+TEST_CASES(section1, com_ngos_configure_types);
 {
     TEST_CASE("Size of structures");
     {
@@ -78,4 +78,4 @@ TEST_CASES_END();
 
 
 
-#endif // CONFIGURE_TEST_BITS64_A_UEFI_SECTIONS_SECTION1_BITS64_TYPES_H
+#endif // CONFIGURE_TEST_COM_NGOS_CONFIGURE_SECTIONS_SECTION1_COM_NGOS_CONFIGURE_TYPES_H

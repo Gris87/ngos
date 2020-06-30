@@ -2,8 +2,8 @@
 #include <gdt/segments.h>
 #include <ngos/linkage.h>
 #include <page/macros.h>
-#include "src/bits64/other/asm/generated/asmoffsets.h"
-#include "src/bits64/other/configuredefines.h"
+#include "src/com/ngos/configure/other/asm/generated/asmoffsets.h"
+#include "src/com/ngos/configure/other/configuredefines.h"
                                                                                 #
                                                                                 #
                                                                                 #

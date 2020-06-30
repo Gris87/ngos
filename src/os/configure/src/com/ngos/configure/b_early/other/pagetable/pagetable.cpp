@@ -7,9 +7,9 @@
 #include <ngos/utils.h>
 #include <pagetable/utils.h>
 
-#include "src/bits64/b_early/other/pagetable/asm_switchtofivelevelpaging.h"
-#include "src/bits64/b_early/other/pagetable/pageallocationcontext.h"
-#include "src/bits64/other/configuredefines.h"
+#include "src/com/ngos/configure/b_early/other/pagetable/asm_switchtofivelevelpaging.h"
+#include "src/com/ngos/configure/b_early/other/pagetable/pageallocationcontext.h"
+#include "src/com/ngos/configure/other/configuredefines.h"
 
 
 

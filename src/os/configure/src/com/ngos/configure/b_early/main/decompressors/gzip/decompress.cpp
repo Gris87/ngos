@@ -6,8 +6,8 @@
 #include <common/src/bits64/inflate/inflate.h>
 #include <common/src/bits64/memory/memory.h>
 
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
 
 
 

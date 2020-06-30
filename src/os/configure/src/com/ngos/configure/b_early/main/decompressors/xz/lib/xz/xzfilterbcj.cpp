@@ -4,7 +4,7 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <ngos/linkage.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
 
 
 

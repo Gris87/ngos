@@ -1,11 +1,11 @@
 #include "asmoffsetsgenerator.h"
 
 #include <bootparams/bootparams.h>
-#include <src/bits64/other/kerneldescriptor.h>
+#include <src/com/ngos/configure/other/kerneldescriptor.h>
 
 
 
-#define FILE_PATH "/src/bits64/other/asm/generated/asmoffsets.h"
+#define FILE_PATH "/src/com/ngos/configure/other/asm/generated/asmoffsets.h"
 
 
 

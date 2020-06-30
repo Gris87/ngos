@@ -3,7 +3,7 @@
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
-#include "src/bits64/a_uefi/main/setupmemorymapentries.h"
+#include "src/com/ngos/configure/a_uefi/main/setupmemorymapentries.h"
 
 
 

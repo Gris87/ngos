@@ -7,9 +7,9 @@
 #include <ngos/utils.h>
 #include <pagetable/utils.h>
 
-#include "src/bits64/b_early/other/memoryarea.h"
-#include "src/bits64/b_early/other/pagetable/pagetable.h"
-#include "src/bits64/b_early/other/unavailablememoryarea.h"
+#include "src/com/ngos/configure/b_early/other/memoryarea.h"
+#include "src/com/ngos/configure/b_early/other/pagetable/pagetable.h"
+#include "src/com/ngos/configure/b_early/other/unavailablememoryarea.h"
 
 
 

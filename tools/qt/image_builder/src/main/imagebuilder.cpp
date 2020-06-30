@@ -4,7 +4,7 @@
 #include <QIODevice>
 #include <buildconfig.h>
 #include <console/console.h>
-#include <src/bits64/other/kerneldescriptor.h>
+#include <src/com/ngos/configure/other/kerneldescriptor.h>
 
 
 

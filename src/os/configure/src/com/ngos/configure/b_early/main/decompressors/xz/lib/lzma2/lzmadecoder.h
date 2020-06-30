@@ -1,14 +1,14 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_LZMA2_LZMADECODER_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_LZMA2_LZMADECODER_H
+#ifndef CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_LZMA2_LZMADECODER_H
+#define CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_LZMA2_LZMADECODER_H
 
 
 
 #include <buildconfig.h>
 #include <ngos/types.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmastate.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmastate.h"
 
 
 
@@ -90,4 +90,4 @@ struct LzmaDecoder
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_LZMA2_LZMADECODER_H
+#endif // CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_LZMA2_LZMADECODER_H

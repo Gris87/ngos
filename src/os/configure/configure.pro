@@ -99,5 +99,5 @@ HEADERS += \
     src/com/ngos/configure/other/asm/generated/asmoffsets.h \
     src/com/ngos/configure/other/configuredefines.h \
     src/com/ngos/configure/other/kerneldescriptor.h \
-    test/com/ngos/configure/a_uefi/sections/section1/com/ngos/configure/types.h \
-    test/com/ngos/configure/a_uefi/sections/section1/testcase.h
+    test/com/ngos/configure/sections/section1/com/ngos/configure/types.h \
+    test/com/ngos/configure/sections/section1/testcase.h

@@ -163,7 +163,7 @@ QString BaseCodeVerifier::logPrefixFromPath(const QString &path)
             return "EARLY";
         }
         else
-        if (path.endsWith("/src/os/configure/src/main.cpp"))
+        if (path.endsWith("/src/os/configure/src/com/ngos/configure/main.cpp"))
         {
             return "UEFI";
         }

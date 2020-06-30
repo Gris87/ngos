@@ -1,15 +1,15 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERHEADER_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERHEADER_H
+#ifndef CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERHEADER_H
+#define CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERHEADER_H
 
 
 
 #include <buildconfig.h>
 #include <ngos/types.h>
 
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipcompressionmethod.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberextraflags.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipmemberflags.h"
-#include "src/bits64/b_early/main/decompressors/gzip/lib/gzipoperatingsystem.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipcompressionmethod.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberextraflags.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberflags.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipoperatingsystem.h"
 
 
 
@@ -37,4 +37,4 @@ struct GzipMemberHeader
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERHEADER_H
+#endif // CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_GZIP_LIB_GZIPMEMBERHEADER_H

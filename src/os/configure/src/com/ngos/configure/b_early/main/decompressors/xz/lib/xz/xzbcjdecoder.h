@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBCJDECODER_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBCJDECODER_H
+#ifndef CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBCJDECODER_H
+#define CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBCJDECODER_H
 
 
 
@@ -7,7 +7,7 @@
 #include <ngos/status.h>
 #include <ngos/types.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
 
 
 
@@ -31,4 +31,4 @@ NgosStatus runXzBcjDecoder(XzBcjDecoder *decoder, XzBuffer *buffer); // TEST: NO
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBCJDECODER_H
+#endif // CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZBCJDECODER_H

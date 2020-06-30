@@ -7,8 +7,8 @@
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 
-#include "src/bits64/other/configuredefines.h"
-#include "src/bits64/other/kerneldescriptor.h"
+#include "src/com/ngos/configure/other/configuredefines.h"
+#include "src/com/ngos/configure/other/kerneldescriptor.h"
 
 
 

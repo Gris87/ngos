@@ -1,5 +1,5 @@
-#ifndef CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZLZMA2DECODER_H
-#define CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZLZMA2DECODER_H
+#ifndef CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZLZMA2DECODER_H
+#define CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZLZMA2DECODER_H
 
 
 
@@ -7,12 +7,12 @@
 #include <ngos/status.h>
 #include <ngos/types.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
 
 
 
@@ -54,4 +54,4 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *s, XzBuffer *b); // TEST: NO
 
 
 
-#endif // CONFIGURE_SRC_BITS64_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZLZMA2DECODER_H
+#endif // CONFIGURE_SRC_COM_NGOS_CONFIGURE_B_EARLY_MAIN_DECOMPRESSORS_XZ_LIB_XZ_XZLZMA2DECODER_H

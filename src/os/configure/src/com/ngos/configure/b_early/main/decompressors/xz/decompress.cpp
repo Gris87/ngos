@@ -6,12 +6,12 @@
 #include <common/src/bits64/memory/memory.h>
 #include <ngos/utils.h>
 
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzfilter.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzfilterbcj.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzfilterlzma2.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
-#include "src/bits64/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilter.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilterbcj.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilterlzma2.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
+#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
 
 
 

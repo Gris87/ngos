@@ -12,11 +12,11 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/bits64/a_uefi/main/exitbootservices.h"
-#include "src/bits64/a_uefi/main/setupbootparams.h"
-#include "src/bits64/a_uefi/main/setupkernellocation.h"
-#include "src/bits64/a_uefi/main/setuppciio.h"
-#include "test/bits64/a_uefi/sections/section1/testcase.h"
+#include "src/com/ngos/configure/a_uefi/main/exitbootservices.h"
+#include "src/com/ngos/configure/a_uefi/main/setupbootparams.h"
+#include "src/com/ngos/configure/a_uefi/main/setupkernellocation.h"
+#include "src/com/ngos/configure/a_uefi/main/setuppciio.h"
+#include "test/com/ngos/configure/sections/section1/testcase.h"
 
 
 
