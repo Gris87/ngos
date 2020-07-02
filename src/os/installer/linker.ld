@@ -4,54 +4,51 @@ ENTRY(_start)
 
 SECTIONS
 {
-    . = 0xFFFFFFFF80000000;
+    . = 0;
 
 
 
-    .entry_point : AT(0) { *(.entry_point) }
-    .asm_code    :       { *(.asm_code) }
-    .text        :       { *(.text*) }
-    .rodata      :       { *(.rodata*) }
-    .data        :       { *(.data*) }
+    .entry_point : { *(.entry_point) }
+    .asm_code    : { *(.asm_code) }
+    .text        : { *(.text*) }
+    .rodata      : { *(.rodata*) }
+    .data        : { *(.data*) }
 
-    .gdt         :       { *(.gdt) }
-    .idt         :       { *(.idt) }
+    .gdt         : { *(.gdt) }
 
-    . = ALIGN((1 << 12));
-    .pagetable   :       { *(.pagetable) }
-    . = ALIGN((1 << 12));
 
-    .rela.dyn    :       { *(.rela.dyn) }
 
-    .assets      :       {
+    .ctors       : {
+        _ctors_begin = .;
+        *(.ctors)
+        _ctors_end = .;
+    }
+
+
+
+    . = ALIGN(8);
+    _rela_begin = .;
+    .rela.dyn    : { *(.rela.dyn) }
+    _rela_end = .;
+
+
+
+    .assets      : {
         _assets_begin = .;
         *(.assets)
         _assets_end = .;
     }
 
-    . = ALIGN(64);
-    .stack       :       {
-        *(.stack)
-        _stack_begin = .;
-    }
-
-    .bss         :       {
-        _bss_begin = .;
+    .noinit      : {
+        *(.noinit)
         *(.bss*)
-        _bss_end = .;
-    }
-
-    .brk         :       {
-        _brk_begin = .;
-        . += 64 * 1024;
-        _brk_end = .;
     }
 
 
 
     . = ALIGN(64);
 
-    .align       :       {
+    .align       : {
         . += 63;
         BYTE(0x00);
     }
@@ -67,5 +64,5 @@ SECTIONS
 
 
 
-    . = ASSERT(_start == 0xFFFFFFFF80000000, "Invalid entry point!");
+    . = ASSERT(_start == 0, "Invalid entry point!");
 }

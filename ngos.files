@@ -792,12 +792,31 @@ src/os/include/uefi/uefivariableattributeflags.h
 src/os/include/uuid/utils.h
 src/os/include/uuid/uuid.h
 src/os/installer/.gitignore
+src/os/installer/asm/arch/x86_64/com/ngos/installer/main.S
 src/os/installer/assets/glyphs/console.bin
+src/os/installer/assets/glyphs/gui.bin
+src/os/installer/assets/images/background.jpg
+src/os/installer/assets/images/button_focused.9.png
+src/os/installer/assets/images/button_focused_hover.9.png
+src/os/installer/assets/images/button_hover.9.png
+src/os/installer/assets/images/button_normal.9.png
+src/os/installer/assets/images/button_pressed.9.png
+src/os/installer/assets/images/console.9.png
+src/os/installer/assets/images/cursor.png
+src/os/installer/assets/images/reboot.png
+src/os/installer/assets/images/shutdown.png
 src/os/installer/Image structure.png
 src/os/installer/installer.pro
 src/os/installer/linker.ld
 src/os/installer/README.md
 src/os/installer/Resources.qrc
+src/os/installer/src/com/ngos/installer/main.cpp
+src/os/installer/src/com/ngos/installer/main/installer.cpp
+src/os/installer/src/com/ngos/installer/main/installer.h
+src/os/installer/src/com/ngos/installer/main/installergui.cpp
+src/os/installer/src/com/ngos/installer/main/installergui.h
+src/os/installer/test/com/ngos/installer/sections/section1/com/ngos/installer/types.h
+src/os/installer/test/com/ngos/installer/sections/section1/testcase.h
 src/os/kernel/.gitignore
 src/os/kernel/assets/glyphs/console.bin
 src/os/kernel/Image structure.png

@@ -24,8 +24,8 @@ TARGET_APPS = \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/networktest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/hddtest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/partitionwizard.efi \
-	$(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi \
-	$(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi
+	$(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi
 
 
 
@@ -70,14 +70,14 @@ $(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/partitionwizard.efi: src/os/b
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader_tools/partitionwizard/build/partitionwizard.elf -o $@.unsigned
 	./scripts/sign_uefi_application.sh $@.unsigned $@
 
+$(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi: src/os/boot/build/boot.elf src/os/installer/build/installer.elf tools/qt/image_builder/build/image_builder
+	$(MKDIR) $(@D)
+	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/installer/build/installer.elf -o $@.unsigned
+	./scripts/sign_uefi_application.sh $@.unsigned $@
+
 $(OUTPUT_DIR)/deployment/com.ngos.kernel/kernel.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/kernel/build/kernel.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -k src/os/kernel/build/kernel.elf -o $@.unsigned
-	./scripts/sign_uefi_application.sh $@.unsigned $@
-
-$(OUTPUT_DIR)/deployment/com.ngos.installer/installer.efi: src/os/boot/build/boot.elf src/os/configure/build/configure.elf src/os/installer/build/installer.elf tools/qt/image_builder/build/image_builder
-	$(MKDIR) $(@D)
-	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -c src/os/configure/build/configure.elf -i src/os/installer/build/installer.elf -o $@.unsigned
 	./scripts/sign_uefi_application.sh $@.unsigned $@
 
 
