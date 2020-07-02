@@ -10,11 +10,11 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QTimer>
-#include <common/src/com/ngos/shared/common/Windows.h>
-#include <common/src/com/ngos/shared/common/cfgmgr32.h>
-#include <common/src/com/ngos/shared/common/Dbt.h>
-#include <common/src/com/ngos/shared/common/SetupAPI.h>
-#include <common/src/com/ngos/shared/common/usbioctl.h>
+#include <Windows.h>
+#include <cfgmgr32.h>
+#include <Dbt.h>
+#include <SetupAPI.h>
+#include <usbioctl.h>
 
 #include "src/com/ngos/devtools/usb_boot_maker/other/defines.h"
 #include "src/com/ngos/devtools/usb_boot_maker/other/usbproperties.h"

@@ -9,7 +9,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
-#include <common/src/com/ngos/shared/common/Windows.h>
+#include <Windows.h>
 
 #include "src/com/ngos/devtools/usb_boot_maker/other/defines.h"
 
