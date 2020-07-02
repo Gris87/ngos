@@ -5,26 +5,27 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/fpu/fpu.h>
 #include <common/src/bits64/serial/serial.h>
-#include <kernelbase/src/bits64/a_early/main/disableirq.h>
-#include <kernelbase/src/bits64/a_early/main/reservepciromimages.h>
-#include <kernelbase/src/bits64/a_early/main/setupbootparams.h>
-#include <kernelbase/src/bits64/a_early/main/setupbrk.h>
-#include <kernelbase/src/bits64/a_early/main/setupcr4shadow.h>
-#include <kernelbase/src/bits64/a_early/main/setupdmi.h>
-#include <kernelbase/src/bits64/a_early/main/setupe820tables.h>
-#include <kernelbase/src/bits64/a_early/main/setupfirstcpu.h>
-#include <kernelbase/src/bits64/a_early/main/setuphypervisor.h>
-#include <kernelbase/src/bits64/a_early/main/setupidthandlers.h>
-#include <kernelbase/src/bits64/a_early/main/setupinittask.h>
-#include <kernelbase/src/bits64/a_early/main/setupioremap.h>
-#include <kernelbase/src/bits64/a_early/main/setupmemorymanager.h>
-#include <kernelbase/src/bits64/a_early/main/setupstackcanary.h>
-#include <kernelbase/src/bits64/a_early/main/setupuefimemorymap.h>
-#include <kernelbase/src/bits64/a_early/main/setupuefisystemtable.h>
-#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/testcase.h>
 #include <ngos/linkage.h>
 #include <pagetable/utils.h>
+
+#include <src/com/ngos/kernel/a_early/main/disableirq.h>
+#include <src/com/ngos/kernel/a_early/main/reservepciromimages.h>
+#include <src/com/ngos/kernel/a_early/main/setupbootparams.h>
+#include <src/com/ngos/kernel/a_early/main/setupbrk.h>
+#include <src/com/ngos/kernel/a_early/main/setupcr4shadow.h>
+#include <src/com/ngos/kernel/a_early/main/setupdmi.h>
+#include <src/com/ngos/kernel/a_early/main/setupe820tables.h>
+#include <src/com/ngos/kernel/a_early/main/setupfirstcpu.h>
+#include <src/com/ngos/kernel/a_early/main/setuphypervisor.h>
+#include <src/com/ngos/kernel/a_early/main/setupidthandlers.h>
+#include <src/com/ngos/kernel/a_early/main/setupinittask.h>
+#include <src/com/ngos/kernel/a_early/main/setupioremap.h>
+#include <src/com/ngos/kernel/a_early/main/setupmemorymanager.h>
+#include <src/com/ngos/kernel/a_early/main/setupstackcanary.h>
+#include <src/com/ngos/kernel/a_early/main/setupuefimemorymap.h>
+#include <src/com/ngos/kernel/a_early/main/setupuefisystemtable.h>
+#include <src/com/ngos/kernel/other/bootparams/bootparams.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/testcase.h>
 
 
 

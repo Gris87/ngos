@@ -3,8 +3,9 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
-#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
-#include <kernelbase/src/bits64/other/pagetable/dynamicpagetable.h>
+
+#include <src/com/ngos/kernel/other/bootparams/bootparams.h>
+#include <src/com/ngos/kernel/other/pagetable/dynamicpagetable.h>
 
 
 

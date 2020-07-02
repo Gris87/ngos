@@ -1,11 +1,12 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_E820_E820_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_E820_E820_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_E820_E820_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_E820_E820_H
 
 
 
 #include <buildconfig.h>
-#include <kernelbase/src/bits64/other/e820/e820table.h>
 #include <ngos/status.h>
+
+#include <src/com/ngos/kernel/other/e820/e820table.h>
 
 
 
@@ -33,4 +34,4 @@ private:
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_E820_E820_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_E820_E820_H

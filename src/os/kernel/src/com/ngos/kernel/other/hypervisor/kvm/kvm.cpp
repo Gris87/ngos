@@ -3,7 +3,8 @@
 #include <common/src/bits64/cpu/cpu.h>
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
-#include <kernelbase/src/bits64/other/hypervisor/kvm/clock/kvmclock.h>
+
+#include <src/com/ngos/kernel/other/hypervisor/kvm/clock/kvmclock.h>
 
 
 

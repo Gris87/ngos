@@ -1,35 +1,36 @@
-#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_TYPES_H
-#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_TYPES_H
+#ifndef KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_TYPES_H
+#define KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_TYPES_H
 
 
 
 #include <buildconfig.h>
-#include <kernelbase/src/bits64/other/brk/brk.h>
-#include <kernelbase/src/bits64/other/cpu/cpumask.h>
-#include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplug.h>
-#include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstate.h>
-#include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstep.h>
-#include <kernelbase/src/bits64/other/cpu/percpu.h>
-#include <kernelbase/src/bits64/other/e820/e820.h>
-#include <kernelbase/src/bits64/other/e820/e820table.h>
-#include <kernelbase/src/bits64/other/hypervisor/hypervisor.h>
-#include <kernelbase/src/bits64/other/hypervisor/hypervisortype.h>
-#include <kernelbase/src/bits64/other/hypervisor/kvm/clock/kvmclock.h>
-#include <kernelbase/src/bits64/other/hypervisor/kvm/kvm.h>
-#include <kernelbase/src/bits64/other/hypervisor/kvm/kvmfeature.h>
-#include <kernelbase/src/bits64/other/hypervisor/kvm/kvmfeaturetypeflags.h>
-#include <kernelbase/src/bits64/other/ioremap/fixmap.h>
-#include <kernelbase/src/bits64/other/ioremap/ioremap.h>
-#include <kernelbase/src/bits64/other/irq/irqstack.h>
-#include <kernelbase/src/bits64/other/memorymanager/memoryblock.h>
-#include <kernelbase/src/bits64/other/memorymanager/memoryblockregion.h>
-#include <kernelbase/src/bits64/other/memorymanager/memoryblocktype.h>
-#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
-#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
-#include <kernelbase/src/bits64/other/task/task.h>
-#include <kernelbase/src/bits64/other/task/threadinfo.h>
-#include <kernelbase/src/bits64/other/uefi/uefi.h>
-#include <kernelbase/test/bits64/a_early/testengine.h>
+
+#include <src/com/ngos/kernel/other/brk/brk.h>
+#include <src/com/ngos/kernel/other/cpu/cpumask.h>
+#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplug.h>
+#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplugstate.h>
+#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplugstep.h>
+#include <src/com/ngos/kernel/other/cpu/percpu.h>
+#include <src/com/ngos/kernel/other/e820/e820.h>
+#include <src/com/ngos/kernel/other/e820/e820table.h>
+#include <src/com/ngos/kernel/other/hypervisor/hypervisor.h>
+#include <src/com/ngos/kernel/other/hypervisor/hypervisortype.h>
+#include <src/com/ngos/kernel/other/hypervisor/kvm/clock/kvmclock.h>
+#include <src/com/ngos/kernel/other/hypervisor/kvm/kvm.h>
+#include <src/com/ngos/kernel/other/hypervisor/kvm/kvmfeature.h>
+#include <src/com/ngos/kernel/other/hypervisor/kvm/kvmfeaturetypeflags.h>
+#include <src/com/ngos/kernel/other/ioremap/fixmap.h>
+#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
+#include <src/com/ngos/kernel/other/irq/irqstack.h>
+#include <src/com/ngos/kernel/other/memorymanager/memoryblock.h>
+#include <src/com/ngos/kernel/other/memorymanager/memoryblockregion.h>
+#include <src/com/ngos/kernel/other/memorymanager/memoryblocktype.h>
+#include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <src/com/ngos/kernel/other/pagetable/addressconversion.h>
+#include <src/com/ngos/kernel/other/task/task.h>
+#include <src/com/ngos/kernel/other/task/threadinfo.h>
+#include <src/com/ngos/kernel/other/uefi/uefi.h>
+#include <test/com/ngos/kernel/a_early/testengine.h>
 
 
 
@@ -37,7 +38,7 @@
 
 
 
-TEST_CASES(section2, bits64_types);
+TEST_CASES(section2, com_ngos_kernel_types);
 {
     TEST_CASE("Size of structures");
     {
@@ -80,4 +81,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_TYPES_H
+#endif // KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_TYPES_H

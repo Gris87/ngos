@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_HYPERVISOR_KVM_KVMFEATURETYPEFLAGS_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_HYPERVISOR_KVM_KVMFEATURETYPEFLAGS_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_HYPERVISOR_KVM_KVMFEATURETYPEFLAGS_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_HYPERVISOR_KVM_KVMFEATURETYPEFLAGS_H
 
 
 
@@ -7,10 +7,11 @@
 #include <common/src/bits64/early/earlylog.h>
 #include <common/src/bits64/printf/printf.h>
 #include <common/src/bits64/string/string.h>
-#include <kernelbase/src/bits64/other/hypervisor/kvm/kvmfeature.h>
 #include <ngos/flags.h>
 #include <ngos/linkage.h>
 #include <ngos/types.h>
+
+#include <src/com/ngos/kernel/other/hypervisor/kvm/kvmfeature.h>
 
 
 
@@ -110,4 +111,4 @@ inline const char8* flagsToFullString(const KvmFeatureTypeFlags &flags) // TEST:
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_HYPERVISOR_KVM_KVMFEATURETYPEFLAGS_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_HYPERVISOR_KVM_KVMFEATURETYPEFLAGS_H

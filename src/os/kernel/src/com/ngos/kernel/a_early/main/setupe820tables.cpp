@@ -2,7 +2,8 @@
 
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
-#include <kernelbase/src/bits64/other/e820/e820.h>
+
+#include <src/com/ngos/kernel/other/e820/e820.h>
 
 
 

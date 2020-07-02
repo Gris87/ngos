@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_CPU_CPUMASK_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_CPU_CPUMASK_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_CPU_CPUMASK_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_CPU_CPUMASK_H
 
 
 
@@ -7,10 +7,11 @@
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/string/utils.h>
-#include <kernelbase/src/bits64/other/kerneldefines.h>
 #include <ngos/status.h>
 #include <ngos/types.h>
 #include <ngos/utils.h>
+
+#include <src/com/ngos/kernel/other/kerneldefines.h>
 
 
 
@@ -112,4 +113,4 @@ private:
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_CPU_CPUMASK_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_CPU_CPUMASK_H

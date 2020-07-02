@@ -2,7 +2,8 @@
 
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
-#include <kernelbase/src/bits64/other/hypervisor/hypervisor.h>
+
+#include <src/com/ngos/kernel/other/hypervisor/hypervisor.h>
 
 
 

@@ -1,11 +1,12 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_CPU_HOTPLUG_CPUHOTPLUG_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_CPU_HOTPLUG_CPUHOTPLUG_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_CPU_HOTPLUG_CPUHOTPLUG_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_CPU_HOTPLUG_CPUHOTPLUG_H
 
 
 
-#include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstate.h>
-#include <kernelbase/src/bits64/other/cpu/hotplug/cpuhotplugstep.h>
 #include <ngos/status.h>
+
+#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplugstate.h>
+#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplugstep.h>
 
 
 
@@ -27,4 +28,4 @@ private:
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_CPU_HOTPLUG_CPUHOTPLUG_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_CPU_HOTPLUG_CPUHOTPLUG_H

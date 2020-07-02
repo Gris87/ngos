@@ -1,11 +1,12 @@
 #include <common/src/bits64/assets/assets.h>
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
-#include <kernelbase/src/bits64/other/kerneldefines.h>
-#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
 #include <ngos/linkage.h>
 #include <ngos/utils.h>
 #include <pagetable/utils.h>
+
+#include <src/com/ngos/kernel/other/kerneldefines.h>
+#include <src/com/ngos/kernel/other/pagetable/addressconversion.h>
 
 
 

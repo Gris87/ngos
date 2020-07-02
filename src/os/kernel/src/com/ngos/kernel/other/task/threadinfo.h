@@ -1,10 +1,11 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_THREADINFO_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_THREADINFO_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_THREADINFO_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_THREADINFO_H
 
 
 
-#include <kernelbase/src/bits64/other/task/threadinfoflags.h>
 #include <ngos/types.h>
+
+#include <src/com/ngos/kernel/other/task/threadinfoflags.h>
 
 
 
@@ -15,4 +16,4 @@ struct ThreadInfo
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_THREADINFO_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_THREADINFO_H

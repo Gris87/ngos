@@ -4,10 +4,11 @@
 #include <common/src/bits64/log/log.h>
 #include <common/src/bits64/memory/memory.h>
 #include <guid/utils.h>
-#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
-#include <kernelbase/src/bits64/other/ioremap/ioremap.h>
-#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
 #include <pagetable/utils.h>
+
+#include <src/com/ngos/kernel/other/bootparams/bootparams.h>
+#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
+#include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
 
 
 

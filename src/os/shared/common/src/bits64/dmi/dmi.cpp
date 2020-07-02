@@ -10,9 +10,9 @@
 #ifdef UEFI_APPLICATION // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefi.h>
 #else
-#include <kernelbase/src/bits64/other/brk/brk.h>
-#include <kernelbase/src/bits64/other/ioremap/ioremap.h>
-#include <kernelbase/src/bits64/other/uefi/uefi.h>
+#include <src/com/ngos/kernel/other/brk/brk.h>
+#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
+#include <src/com/ngos/kernel/other/uefi/uefi.h>
 #endif
 
 

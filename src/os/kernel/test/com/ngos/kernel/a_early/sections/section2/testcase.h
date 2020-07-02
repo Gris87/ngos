@@ -1,22 +1,23 @@
-#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_TESTCASE_H
-#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_TESTCASE_H
+#ifndef KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_TESTCASE_H
+#define KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_TESTCASE_H
 
 
 
 #include <buildconfig.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/brk/brk.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/cpu/cpumask.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/e820/e820.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/hypervisor/kvm/kvm.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/ioremap/ioremap.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/ioremap/utils.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/memorymanager/memoryblockregion.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/memorymanager/memorymanager.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/pagetable/addressconversion.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/pagetable/dynamicpagetable.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/other/task/utils.h>
-#include <kernelbase/test/bits64/a_early/sections/section2/bits64/types.h>
-#include <kernelbase/test/bits64/a_early/testengine.h>
+
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/brk/brk.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/cpu/cpumask.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/e820/e820.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/hypervisor/kvm/kvm.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/ioremap/ioremap.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/ioremap/utils.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/memorymanager/memoryblockregion.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/pagetable/addressconversion.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/pagetable/dynamicpagetable.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/task/utils.h>
+#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/types.h>
+#include <test/com/ngos/kernel/a_early/testengine.h>
 
 
 
@@ -32,18 +33,18 @@ NgosStatus startTestSection2()
 
     INIT_TEST_SECTION();
 
-    CALL_TEST_CASES(section2, bits64_other_brk_brk);
-    CALL_TEST_CASES(section2, bits64_other_cpu_cpumask);
-    CALL_TEST_CASES(section2, bits64_other_e820_e820);
-    CALL_TEST_CASES(section2, bits64_other_hypervisor_kvm_kvm);
-    CALL_TEST_CASES(section2, bits64_other_ioremap_ioremap);
-    CALL_TEST_CASES(section2, bits64_other_ioremap_utils);
-    CALL_TEST_CASES(section2, bits64_other_memorymanager_memoryblockregion);
-    CALL_TEST_CASES(section2, bits64_other_memorymanager_memorymanager);
-    CALL_TEST_CASES(section2, bits64_other_pagetable_addressconversion);
-    CALL_TEST_CASES(section2, bits64_other_pagetable_dynamicpagetable);
-    CALL_TEST_CASES(section2, bits64_other_task_utils);
-    CALL_TEST_CASES(section2, bits64_types);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_brk_brk);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_cpu_cpumask);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_e820_e820);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_hypervisor_kvm_kvm);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_ioremap_utils);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_memorymanager_memoryblockregion);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_memorymanager_memorymanager);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_pagetable_addressconversion);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_pagetable_dynamicpagetable);
+    CALL_TEST_CASES(section2, com_ngos_kernel_other_task_utils);
+    CALL_TEST_CASES(section2, com_ngos_kernel_types);
 
     SUMMARY_TEST_SECTION();
 }
@@ -54,4 +55,4 @@ NgosStatus startTestSection2()
 
 
 
-#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_TESTCASE_H
+#endif // KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_TESTCASE_H

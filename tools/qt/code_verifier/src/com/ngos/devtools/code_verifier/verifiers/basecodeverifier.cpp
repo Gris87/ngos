@@ -180,16 +180,8 @@ QString BaseCodeVerifier::logPrefixFromPath(const QString &path)
         {
             return "EARLY";
         }
-    }
-    else
-    if (path.contains("/src/os/shared/kernelbase/"))
-    {
-        if (path.contains("early/"))
-        {
-            return "EARLY";
-        }
         else
-        if (path.endsWith("/src/os/shared/kernelbase/src/main.cpp"))
+        if (path.endsWith("/src/os/kernel/src/com/ngos/kernel/main.cpp"))
         {
             return "EARLY";
         }

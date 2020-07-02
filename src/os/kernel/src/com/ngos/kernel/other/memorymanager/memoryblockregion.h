@@ -1,13 +1,14 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_MEMORYMANAGER_MEMORYBLOCKREGION_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_MEMORYMANAGER_MEMORYBLOCKREGION_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_MEMORYMANAGER_MEMORYBLOCKREGION_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_MEMORYMANAGER_MEMORYBLOCKREGION_H
 
 
 
 #include <common/src/bits64/log/assert.h>
 #include <common/src/bits64/log/log.h>
-#include <kernelbase/src/bits64/other/memorymanager/memoryblockregionflags.h>
-#include <kernelbase/src/bits64/other/memorymanager/memoryblockregionnodeid.h>
 #include <ngos/types.h>
+
+#include <src/com/ngos/kernel/other/memorymanager/memoryblockregionflags.h>
+#include <src/com/ngos/kernel/other/memorymanager/memoryblockregionnodeid.h>
 
 
 
@@ -32,4 +33,4 @@ struct MemoryBlockRegion
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_MEMORYMANAGER_MEMORYBLOCKREGION_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_MEMORYMANAGER_MEMORYBLOCKREGION_H

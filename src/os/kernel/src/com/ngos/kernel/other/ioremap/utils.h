@@ -1,10 +1,11 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_UTILS_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_UTILS_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_IOREMAP_UTILS_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_IOREMAP_UTILS_H
 
 
 
-#include <kernelbase/src/bits64/other/ioremap/macros.h>
 #include <page/macros.h>
+
+#include <src/com/ngos/kernel/other/ioremap/macros.h>
 
 
 
@@ -12,4 +13,4 @@
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_IOREMAP_UTILS_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_IOREMAP_UTILS_H

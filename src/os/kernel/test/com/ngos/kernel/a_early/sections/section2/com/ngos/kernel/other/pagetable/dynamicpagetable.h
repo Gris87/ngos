@@ -1,14 +1,15 @@
-#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
-#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
+#ifndef KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
+#define KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/memory/memory.h>
-#include <kernelbase/src/bits64/other/kerneldefines.h>
-#include <kernelbase/src/bits64/other/pagetable/dynamicpagetable.h>
-#include <kernelbase/test/bits64/a_early/testengine.h>
 #include <pagetable/utils.h>
+
+#include <src/com/ngos/kernel/other/kerneldefines.h>
+#include <src/com/ngos/kernel/other/pagetable/dynamicpagetable.h>
+#include <test/com/ngos/kernel/a_early/testengine.h>
 
 
 
@@ -20,7 +21,7 @@ extern PMD dynamic_pagetable_pages[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD];    
 
 
 
-TEST_CASES(section2, bits64_other_pagetable_dynamicpagetable);
+TEST_CASES(section2, com_ngos_kernel_other_pagetable_dynamicpagetable);
 {
     TEST_CASE("addDynamicIdentityMap()");
     {
@@ -48,4 +49,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_PAGETABLE_DYNAMICPAGETABLE_H
+#endif // KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_OTHER_PAGETABLE_DYNAMICPAGETABLE_H

@@ -1,12 +1,13 @@
-#ifndef OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_MEMORYMANAGER_MEMORYMANAGER_H
-#define OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_MEMORYMANAGER_MEMORYMANAGER_H
+#ifndef KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_OTHER_MEMORYMANAGER_MEMORYMANAGER_H
+#define KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_OTHER_MEMORYMANAGER_MEMORYMANAGER_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/bits64/memory/memory.h>
-#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
-#include <kernelbase/test/bits64/a_early/testengine.h>
+
+#include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <test/com/ngos/kernel/a_early/testengine.h>
 
 
 
@@ -14,7 +15,7 @@
 
 
 
-TEST_CASES(section2, bits64_other_memorymanager_memorymanager);
+TEST_CASES(section2, com_ngos_kernel_other_memorymanager_memorymanager);
 {
     TEST_CASE("init()");
     {
@@ -3275,4 +3276,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_KERNELBASE_TEST_BITS64_A_EARLY_SECTIONS_SECTION2_BITS64_OTHER_MEMORYMANAGER_MEMORYMANAGER_H
+#endif // KERNEL_TEST_COM_NGOS_KERNEL_A_EARLY_SECTIONS_SECTION2_COM_NGOS_KERNEL_OTHER_MEMORYMANAGER_MEMORYMANAGER_H

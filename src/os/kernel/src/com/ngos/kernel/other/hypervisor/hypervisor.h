@@ -1,10 +1,11 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_HYPERVISOR_HYPERVISOR_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_HYPERVISOR_HYPERVISOR_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_HYPERVISOR_HYPERVISOR_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_HYPERVISOR_HYPERVISOR_H
 
 
 
-#include <kernelbase/src/bits64/other/hypervisor/hypervisortype.h>
 #include <ngos/status.h>
+
+#include <src/com/ngos/kernel/other/hypervisor/hypervisortype.h>
 
 
 
@@ -23,4 +24,4 @@ private:
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_HYPERVISOR_HYPERVISOR_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_HYPERVISOR_HYPERVISOR_H

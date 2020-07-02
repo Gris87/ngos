@@ -1,12 +1,13 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_TASK_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_TASK_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_TASK_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_TASK_H
 
 
 
-#include <kernelbase/src/bits64/other/kerneldefines.h>
-#include <kernelbase/src/bits64/other/task/taskstate.h>
-#include <kernelbase/src/bits64/other/task/threadinfo.h>
 #include <ngos/types.h>
+
+#include <src/com/ngos/kernel/other/kerneldefines.h>
+#include <src/com/ngos/kernel/other/task/taskstate.h>
+#include <src/com/ngos/kernel/other/task/threadinfo.h>
 
 
 
@@ -25,4 +26,4 @@ extern u8   initStack[THREAD_SIZE]; // initStack declared in task.cpp file
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_TASK_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_TASK_H

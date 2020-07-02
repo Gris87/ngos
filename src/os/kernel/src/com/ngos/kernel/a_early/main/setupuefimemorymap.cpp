@@ -2,11 +2,12 @@
 
 #include <common/src/bits64/early/earlyassert.h>
 #include <common/src/bits64/early/earlylog.h>
-#include <kernelbase/src/bits64/other/bootparams/bootparams.h>
-#include <kernelbase/src/bits64/other/ioremap/ioremap.h>
-#include <kernelbase/src/bits64/other/memorymanager/memorymanager.h>
-#include <kernelbase/src/bits64/other/pagetable/addressconversion.h>
-#include <kernelbase/src/bits64/other/uefi/uefi.h>
+
+#include <src/com/ngos/kernel/other/bootparams/bootparams.h>
+#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
+#include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <src/com/ngos/kernel/other/pagetable/addressconversion.h>
+#include <src/com/ngos/kernel/other/uefi/uefi.h>
 
 
 

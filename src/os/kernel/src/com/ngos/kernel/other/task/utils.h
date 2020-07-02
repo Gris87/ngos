@@ -1,10 +1,11 @@
-#ifndef OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_UTILS_H
-#define OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_UTILS_H
+#ifndef KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_UTILS_H
+#define KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_UTILS_H
 
 
 
-#include <kernelbase/src/bits64/other/task/task.h>
 #include <ngos/status.h>
+
+#include <src/com/ngos/kernel/other/task/task.h>
 
 
 
@@ -12,4 +13,4 @@ NgosStatus putTaskStackEndMagic(Task *task);
 
 
 
-#endif // OS_SHARED_KERNELBASE_SRC_BITS64_OTHER_TASK_UTILS_H
+#endif // KERNEL_SRC_COM_NGOS_KERNEL_OTHER_TASK_UTILS_H

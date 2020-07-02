@@ -8,8 +8,9 @@
 #include <idt/idtgatetype.h>
 #include <idt/idtregister.h>
 #include <idt/macros.h>
-#include <kernelbase/src/bits64/a_early/main/asm_setupidthandlers.h>
 #include <ngos/linkage.h>
+
+#include <src/com/ngos/kernel/a_early/main/asm_setupidthandlers.h>
 
 
 
