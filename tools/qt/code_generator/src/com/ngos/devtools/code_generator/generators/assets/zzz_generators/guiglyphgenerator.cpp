@@ -176,7 +176,9 @@ bool GuiGlyphGenerator::generate(const QString &path)
             &&
             save(path + "/bootloader_tools/networktest/"     + FILE_PATH, data)
             &&
-            save(path + "/bootloader_tools/partitionwizard/" + FILE_PATH, data);
+            save(path + "/bootloader_tools/partitionwizard/" + FILE_PATH, data)
+            &&
+            save(path + "/installer/"                        + FILE_PATH, data);
 }
 
 

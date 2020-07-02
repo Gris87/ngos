@@ -25,19 +25,16 @@
 
 
 
-ImageBuilder::ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &installerElfPath, const QString &textElfPath, const QString &resultImagePath)
+ImageBuilder::ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &textElfPath, const QString &resultImagePath)
     : mBootElfPath(bootElfPath)
     , mConfigureElfPath(configureElfPath)
     , mKernelElfPath(kernelElfPath)
-    , mInstallerElfPath(installerElfPath)
     , mTextElfPath(textElfPath)
     , mResultImagePath(resultImagePath)
     , mBootElfObject()
     , mConfigureElfObject()
     , mKernelElfObject()
-    , mInstallerElfObject()
     , mKernelElf()
-    , mInstallerElf()
     , mRelocSection(RELOC_SECTION_SIZE, (char)0)
     , mPEHeader(0)
     , mBootStart(-1)
@@ -95,32 +92,6 @@ qint64 ImageBuilder::process()
             }
 
             mKernelElf = file.readAll();
-            file.close();
-        }
-
-
-
-        if (mInstallerElfPath != "")
-        {
-            if (!mInstallerElfObject.read(mInstallerElfPath))
-            {
-                Console::err(QString("Failed to read %1 file").arg(mInstallerElfPath));
-
-                return 6;
-            }
-
-
-
-            QFile file(mInstallerElfPath + COMPRESSED_EXTENSION);
-
-            if (!file.open(QIODevice::ReadOnly))
-            {
-                Console::err(QString("Failed to read %1 file").arg(mInstallerElfPath + COMPRESSED_EXTENSION));
-
-                return 7;
-            }
-
-            mInstallerElf = file.readAll();
             file.close();
         }
     }
@@ -182,19 +153,6 @@ qint64 ImageBuilder::process()
 
             mResultImage.append((char *)&kernelDescriptor, sizeof(kernelDescriptor));
             mResultImage.append(mKernelElf);
-        }
-
-
-
-        if (mInstallerElfPath != "")
-        {
-            KernelDescriptor kernelDescriptor;
-
-            kernelDescriptor.imageSize   = mInstallerElfObject.getFileSize();
-            kernelDescriptor.contentSize = mInstallerElf.size();
-
-            mResultImage.append((char *)&kernelDescriptor, sizeof(kernelDescriptor));
-            mResultImage.append(mInstallerElf);
         }
 
 

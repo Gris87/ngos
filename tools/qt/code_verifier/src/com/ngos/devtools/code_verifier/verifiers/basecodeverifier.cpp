@@ -169,15 +169,12 @@ QString BaseCodeVerifier::logPrefixFromPath(const QString &path)
         }
     }
     else
-    if (path.contains("/src/os/kernel/"))
+    if (path.contains("/src/os/installer/"))
     {
-        if (path.contains("early/"))
-        {
-            return "EARLY";
-        }
+        return "UEFI";
     }
     else
-    if (path.contains("/src/os/installer/"))
+    if (path.contains("/src/os/kernel/"))
     {
         if (path.contains("early/"))
         {

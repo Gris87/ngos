@@ -14,9 +14,9 @@
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 #include <uefibase/test/bits64/sections/section0/testcase.h>
 
-#include "src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h"
-#include "src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizardgui.h"
-#include "test/com/ngos/bootloader_tools/partitionwizard/sections/section1/testcase.h"
+#include "src/com/ngos/installer/main/installer.h"
+#include "src/com/ngos/installer/main/installergui.h"
+#include "test/com/ngos/installer/sections/section1/testcase.h"
 
 
 
@@ -54,7 +54,7 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_LI(("NGOS Bootloader Tool - Partition Wizard starting up"));
+    UEFI_LI(("NGOS installer starting up"));
 
 
 
@@ -124,17 +124,17 @@ UefiStatus uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 k
 
 
 
-    UEFI_ASSERT_EXECUTION(PartitionWizard::init(), UefiStatus::ABORTED);
-    UEFI_LI(("Partition Wizard initialized"));
+    UEFI_ASSERT_EXECUTION(Installer::init(), UefiStatus::ABORTED);
+    UEFI_LI(("Installer initialized"));
 
 
 
-    UEFI_ASSERT_EXECUTION(PartitionWizardGUI::init(&params), UefiStatus::ABORTED);
-    UEFI_LI(("Partition Wizard GUI initialized"));
+    UEFI_ASSERT_EXECUTION(InstallerGUI::init(&params), UefiStatus::ABORTED);
+    UEFI_LI(("Installer GUI initialized"));
 
 
 
-    UEFI_ASSERT_EXECUTION(PartitionWizardGUI::exec(), UefiStatus::ABORTED); // Loop forever
+    UEFI_ASSERT_EXECUTION(InstallerGUI::exec(), UefiStatus::ABORTED); // Loop forever
 
 
 

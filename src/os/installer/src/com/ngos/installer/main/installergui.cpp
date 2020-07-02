@@ -1,4 +1,4 @@
-#include "partitionwizardgui.h"
+#include "installergui.h"
 
 #include <common/src/bits64/graphics/graphics.h>
 #include <common/src/bits64/gui/gui.h>
@@ -14,7 +14,7 @@
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefipointerdevices.h>
 
-#include "src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h"
+#include "src/com/ngos/installer/main/installer.h"
 
 
 
@@ -23,14 +23,14 @@
 
 
 
-Button     *PartitionWizardGUI::sRebootButton;
-Button     *PartitionWizardGUI::sShutdownButton;
-u16         PartitionWizardGUI::sWaitEventsCount;
-uefi_event *PartitionWizardGUI::sWaitEvents;
+Button     *InstallerGUI::sRebootButton;
+Button     *InstallerGUI::sShutdownButton;
+u16         InstallerGUI::sWaitEventsCount;
+uefi_event *InstallerGUI::sWaitEvents;
 
 
 
-NgosStatus PartitionWizardGUI::init(BootParams *params)
+NgosStatus InstallerGUI::init(BootParams *params)
 {
     UEFI_LT((" | params = 0x%p", params));
 
@@ -151,7 +151,7 @@ NgosStatus PartitionWizardGUI::init(BootParams *params)
     return NgosStatus::OK;
 }
 
-NgosStatus PartitionWizardGUI::exec()
+NgosStatus InstallerGUI::exec()
 {
     UEFI_LT((""));
 
@@ -169,7 +169,7 @@ NgosStatus PartitionWizardGUI::exec()
     return NgosStatus::OK;
 }
 
-NgosStatus PartitionWizardGUI::generateWaitEventList()
+NgosStatus InstallerGUI::generateWaitEventList()
 {
     UEFI_LT((""));
 
@@ -217,7 +217,7 @@ NgosStatus PartitionWizardGUI::generateWaitEventList()
     return NgosStatus::OK;
 }
 
-NgosStatus PartitionWizardGUI::waitForEvent()
+NgosStatus InstallerGUI::waitForEvent()
 {
     UEFI_LT((""));
 
@@ -248,7 +248,7 @@ NgosStatus PartitionWizardGUI::waitForEvent()
     return processAbsolutePointerEvent(UefiPointerDevices::getAbsolutePointer(eventIndex - UefiPointerDevices::getSimplePointersCount() - 1));
 }
 
-NgosStatus PartitionWizardGUI::processKeyboardEvent()
+NgosStatus InstallerGUI::processKeyboardEvent()
 {
     UEFI_LT((""));
 
@@ -289,7 +289,7 @@ NgosStatus PartitionWizardGUI::processKeyboardEvent()
     return NgosStatus::OK;
 }
 
-NgosStatus PartitionWizardGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
+NgosStatus InstallerGUI::processSimplePointerEvent(UefiSimplePointerProtocol *pointer)
 {
     UEFI_LT((" | pointer = 0x%p", pointer));
 
@@ -317,7 +317,7 @@ NgosStatus PartitionWizardGUI::processSimplePointerEvent(UefiSimplePointerProtoc
     return NgosStatus::OK;
 }
 
-NgosStatus PartitionWizardGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
+NgosStatus InstallerGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer)
 {
     UEFI_LT((" | pointer = 0x%p", pointer));
 
@@ -344,7 +344,7 @@ NgosStatus PartitionWizardGUI::processAbsolutePointerEvent(UefiAbsolutePointerPr
     return NgosStatus::OK;
 }
 
-NgosStatus PartitionWizardGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus InstallerGUI::onRebootButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -379,7 +379,7 @@ NgosStatus PartitionWizardGUI::onRebootButtonKeyboardEvent(const UefiInputKey &k
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus PartitionWizardGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
+NgosStatus InstallerGUI::onShutdownButtonKeyboardEvent(const UefiInputKey &key)
 {
     UEFI_LT((" | key = ..."));
 
@@ -414,7 +414,7 @@ NgosStatus PartitionWizardGUI::onShutdownButtonKeyboardEvent(const UefiInputKey 
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus PartitionWizardGUI::onRebootButtonPressed()
+NgosStatus InstallerGUI::onRebootButtonPressed()
 {
     UEFI_LT((""));
 
@@ -427,7 +427,7 @@ NgosStatus PartitionWizardGUI::onRebootButtonPressed()
     return NgosStatus::OK;
 }
 
-NgosStatus PartitionWizardGUI::onShutdownButtonPressed()
+NgosStatus InstallerGUI::onShutdownButtonPressed()
 {
     UEFI_LT((""));
 
