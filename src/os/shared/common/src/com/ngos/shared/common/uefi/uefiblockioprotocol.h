@@ -3,9 +3,9 @@
 
 
 
-#include <uefi/macros.h>
-#include <uefi/uefiblockiomedia.h>
-#include <uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiblockiomedia.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

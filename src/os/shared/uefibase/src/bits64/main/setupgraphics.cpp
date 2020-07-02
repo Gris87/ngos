@@ -1,8 +1,8 @@
 #include "setupgraphics.h"
 
-#include <guid/guid.h>
-#include <ngos/linkage.h>
-#include <uefi/uefigraphicsoutputprotocol.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

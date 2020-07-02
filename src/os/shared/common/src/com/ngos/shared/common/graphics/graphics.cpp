@@ -1,21 +1,21 @@
 #include "graphics.h"
 
-#include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/graphics/bmp/bmp.h>
-#include <common/src/bits64/graphics/bmp/lib/bmpheader.h>
-#include <common/src/bits64/graphics/jpeg/jpeg.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegmarkertype.h>
-#include <common/src/bits64/graphics/png/lib/pngheader.h>
-#include <common/src/bits64/graphics/png/png.h>
-#include <common/src/bits64/graphics/rgbapixel.h>
-#include <common/src/bits64/graphics/rgbpixel.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/malloc.h>
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/string/string.h>
-#include <common/src/bits64/string/utils.h>
-#include <ngos/utils.h>
+#include <common/src/com/ngos/shared/common/assets/assets.h>
+#include <common/src/com/ngos/shared/common/graphics/bmp/bmp.h>
+#include <common/src/com/ngos/shared/common/graphics/bmp/lib/bmpheader.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/jpeg.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkertype.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pngheader.h>
+#include <common/src/com/ngos/shared/common/graphics/png/png.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbpixel.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/malloc.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
+#include <common/src/com/ngos/shared/common/string/utils.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
 
 
 

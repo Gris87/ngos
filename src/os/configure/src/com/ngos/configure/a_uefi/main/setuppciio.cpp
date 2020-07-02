@@ -1,8 +1,8 @@
 #include "setuppciio.h"
 
-#include <bootparams/pciromimagewithinfo.h>
-#include <common/src/bits64/memory/memory.h>
-#include <uefi/uefipciioprotocol.h>
+#include <common/src/com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

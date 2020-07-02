@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/bits64/dmi/entry/lib/dmisystemresetbootoption.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemresetbootoption.h>
 
 
 

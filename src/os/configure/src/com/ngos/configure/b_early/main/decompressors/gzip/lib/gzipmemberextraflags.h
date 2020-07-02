@@ -4,13 +4,13 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <common/src/bits64/printf/printf.h>
-#include <common/src/bits64/string/string.h>
-#include <ngos/flags.h>
-#include <ngos/linkage.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
+#include <common/src/com/ngos/shared/common/ngos/flags.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

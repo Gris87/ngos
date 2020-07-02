@@ -5,7 +5,7 @@
 
 #include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
 
-#include <common/src/bits64/dmi/dmientrytype.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientrytype.h>
 
 
 

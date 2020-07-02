@@ -1,15 +1,15 @@
 #include "uefi.h"
 
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/printf/printf.h>
-#include <common/src/bits64/string/string.h>
-#include <guid/utils.h>
-#include <ngos/utils.h>
-#include <page/macros.h>
-#include <uefi/ueficonsolecontrolprotocol.h>
-#include <uefi/uefidevicepathtotextprotocol.h>
-#include <uefi/uefifilepath.h>
-#include <uefi/uefisimplefilesystemprotocol.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
+#include <common/src/com/ngos/shared/common/guid/utils.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <common/src/com/ngos/shared/common/page/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/ueficonsolecontrolprotocol.h>
+#include <common/src/com/ngos/shared/common/uefi/uefidevicepathtotextprotocol.h>
+#include <common/src/com/ngos/shared/common/uefi/uefifilepath.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisimplefilesystemprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

@@ -1,7 +1,7 @@
 #include "setupe820tables.h"
 
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
 
 #include <src/com/ngos/kernel/other/e820/e820.h>
 

@@ -1,12 +1,12 @@
 #include "console.h"
 
-#include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/console/lib/glyphdata.h>
-#include <common/src/bits64/graphics/rgbapixel.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/printf/printf.h>
+#include <common/src/com/ngos/shared/common/assets/assets.h>
+#include <common/src/com/ngos/shared/common/console/lib/glyphdata.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
 
 
@@ -255,7 +255,7 @@ NgosStatus Console::noMorePrint()
 
 
 
-#if not defined(BUILD_TARGET_KERNEL) && not defined(BUILD_TARGET_INSTALLER)
+#ifndef BUILD_TARGET_KERNEL
     if (UEFI::freePool(sDoubleBuffer) == UefiStatus::SUCCESS)
     {
         COMMON_LVV(("Released pool(0x%p) for screen double buffering", sDoubleBuffer));

@@ -3,8 +3,8 @@
 
 
 
-#include <ngos/linkage.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <pagetable/utils.h>
+#include <common/src/com/ngos/shared/common/pagetable/utils.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

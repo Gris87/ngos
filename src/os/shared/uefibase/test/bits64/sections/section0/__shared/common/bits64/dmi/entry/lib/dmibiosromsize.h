@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/dmi/entry/lib/dmibiosromsize.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibiosromsize.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/testengine.h>

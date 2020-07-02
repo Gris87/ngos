@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/bits64/graphics/png/lib/pngcolortype.h>
-#include <common/src/bits64/graphics/png/lib/pngcompressionmethod.h>
-#include <common/src/bits64/graphics/png/lib/pngfiltermethod.h>
-#include <common/src/bits64/graphics/png/lib/pnginterlacemethod.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pngcolortype.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pngcompressionmethod.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pngfiltermethod.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pnginterlacemethod.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

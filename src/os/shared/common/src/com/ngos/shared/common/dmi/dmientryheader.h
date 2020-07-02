@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/dmi/dmientrytype.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientrytype.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

@@ -3,9 +3,9 @@
 
 
 
-#include <bootparams/bootparams.h>
-#include <common/src/bits64/assets/assetentry.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/assets/assetentry.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

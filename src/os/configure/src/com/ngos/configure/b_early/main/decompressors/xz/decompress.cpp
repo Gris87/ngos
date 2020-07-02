@@ -1,10 +1,10 @@
 #include "decompress.h"
 
-#include <common/src/bits64/checksum/crc.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <common/src/bits64/memory/memory.h>
-#include <ngos/utils.h>
+#include <common/src/com/ngos/shared/common/checksum/crc.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
 
 #include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
 #include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilter.h"

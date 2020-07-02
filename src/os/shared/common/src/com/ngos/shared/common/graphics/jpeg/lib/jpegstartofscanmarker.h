@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/graphics/jpeg/lib/jpegmarkerheader.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegstartofscancomponent.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkerheader.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscancomponent.h>
 
 
 

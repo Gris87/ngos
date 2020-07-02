@@ -39,6 +39,7 @@ UI_DIR      = build/gen
 INCLUDEPATH += \
     ../../../include \              # /include
     ../../../src/os/configure \     # /src/os/configure
+    ../../../src/os/shared \        # /src/os/shared
     ../include                      # /tools/qt/include
 
 

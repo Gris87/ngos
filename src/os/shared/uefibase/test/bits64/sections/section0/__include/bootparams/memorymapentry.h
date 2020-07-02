@@ -3,7 +3,7 @@
 
 
 
-#include <bootparams/memorymapentry.h>
+#include <common/src/com/ngos/shared/common/bootparams/memorymapentry.h>
 #include <buildconfig.h>
 #include <uefibase/test/bits64/testengine.h>
 

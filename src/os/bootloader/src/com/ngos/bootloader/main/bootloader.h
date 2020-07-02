@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/bits64/containers/arraylist.h>
-#include <common/src/bits64/containers/list.h>
-#include <common/src/bits64/graphics/image.h>
-#include <ngos/status.h>
-#include <uefi/uefidevicepath.h>
-#include <uefi/uefiloadedimageprotocol.h>
+#include <common/src/com/ngos/shared/common/containers/arraylist.h>
+#include <common/src/com/ngos/shared/common/containers/list.h>
+#include <common/src/com/ngos/shared/common/graphics/image.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/uefi/uefidevicepath.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
 
 #include "src/com/ngos/bootloader/other/osinfo.h"
 #include "src/com/ngos/bootloader/other/volumeinfo.h"

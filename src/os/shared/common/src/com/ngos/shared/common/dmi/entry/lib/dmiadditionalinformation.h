@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/dmi/dmistringid.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

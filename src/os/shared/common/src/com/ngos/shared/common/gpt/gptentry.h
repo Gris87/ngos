@@ -3,8 +3,8 @@
 
 
 
-#include <guid/guid.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

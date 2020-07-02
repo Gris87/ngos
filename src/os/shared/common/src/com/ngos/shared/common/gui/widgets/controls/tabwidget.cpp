@@ -1,9 +1,9 @@
 #include "tabwidget.h"
 
-#include <common/src/bits64/graphics/graphics.h>
-#include <common/src/bits64/gui/gui.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
+#include <common/src/com/ngos/shared/common/graphics/graphics.h>
+#include <common/src/com/ngos/shared/common/gui/gui.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
 
 
 

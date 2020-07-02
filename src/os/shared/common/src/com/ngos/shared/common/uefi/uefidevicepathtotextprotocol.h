@@ -3,9 +3,9 @@
 
 
 
-#include <uefi/macros.h>
-#include <uefi/types.h>
-#include <uefi/uefidevicepath.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefidevicepath.h>
 
 
 

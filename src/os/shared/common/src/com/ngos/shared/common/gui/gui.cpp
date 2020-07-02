@@ -1,9 +1,9 @@
 #include "gui.h"
 
-#include <common/src/bits64/console/console.h>
-#include <common/src/bits64/console/graphicalconsole.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
+#include <common/src/com/ngos/shared/common/console/console.h>
+#include <common/src/com/ngos/shared/common/console/graphicalconsole.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
 
 
 

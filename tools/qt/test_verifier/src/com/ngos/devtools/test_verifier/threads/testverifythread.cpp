@@ -142,16 +142,11 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
 
 
 
-    qint64 index = entry.getPath().lastIndexOf("/src/os/include/");
+    qint64 index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
 
     if (index < 0)
     {
-        index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
-
-        if (index < 0)
-        {
-            index = entry.getPath().lastIndexOf("/include/");
-        }
+        index = entry.getPath().lastIndexOf("/include/");
     }
 
 
@@ -326,16 +321,11 @@ void TestVerifyThread::processTestEntry(const TestEntry &entry)
 
 
 
-    qint64 index = entry.getPath().lastIndexOf("/src/os/include/");
+    qint64 index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
 
     if (index < 0)
     {
-        index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
-
-        if (index < 0)
-        {
-            index = entry.getPath().lastIndexOf("/include/");
-        }
+        index = entry.getPath().lastIndexOf("/include/");
     }
 
 

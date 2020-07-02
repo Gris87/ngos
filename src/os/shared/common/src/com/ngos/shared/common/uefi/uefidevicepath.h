@@ -3,9 +3,9 @@
 
 
 
-#include <ngos/types.h>
-#include <uefi/uefidevicepathsubtype.h>
-#include <uefi/uefidevicepathtype.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefidevicepathsubtype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefidevicepathtype.h>
 
 
 

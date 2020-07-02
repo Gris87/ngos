@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/printf/printf.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

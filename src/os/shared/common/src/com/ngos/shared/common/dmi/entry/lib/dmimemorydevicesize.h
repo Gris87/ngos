@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/bits64/dmi/entry/lib/dmimemorydevicesizegranularity.h>
-#include <common/src/bits64/log/log.h>
-#include <macro/constants.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesizegranularity.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/macro/constants.h>
 
 
 

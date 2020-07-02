@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/bits64/cpu/cpufamily.h>
-#include <common/src/bits64/cpu/cpuvendor.h>
-#include <common/src/bits64/cpu/model/amdcpumodel.h>
-#include <common/src/bits64/cpu/model/intelcpumodel.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/cpu/cpufamily.h>
+#include <common/src/com/ngos/shared/common/cpu/cpuvendor.h>
+#include <common/src/com/ngos/shared/common/cpu/model/amdcpumodel.h>
+#include <common/src/com/ngos/shared/common/cpu/model/intelcpumodel.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

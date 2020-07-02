@@ -22,7 +22,7 @@ bool HexCharsGenerator::generate(const QString &path)
 
 
 
-    lines.append("#include <common/src/bits64/hex/hex.h>");
+    lines.append("#include <common/src/com/ngos/shared/common/hex/hex.h>");
 
     addThreeBlankLines(lines);
 

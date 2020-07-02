@@ -3,7 +3,7 @@
 
 
 
-#include <uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
 
 
 

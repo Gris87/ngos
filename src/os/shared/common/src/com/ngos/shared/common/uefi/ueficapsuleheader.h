@@ -3,7 +3,7 @@
 
 
 
-#include <guid/guid.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
 
 
 

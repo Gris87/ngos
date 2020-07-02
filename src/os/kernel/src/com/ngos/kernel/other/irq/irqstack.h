@@ -3,8 +3,8 @@
 
 
 
-#include <ngos/types.h>
-#include <page/macros.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/page/macros.h>
 
 
 

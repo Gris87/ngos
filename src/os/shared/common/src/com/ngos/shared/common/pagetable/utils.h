@@ -3,10 +3,10 @@
 
 
 
-#include <ngos/types.h>
-#include <pagetable/flags.h>
-#include <pagetable/macros.h>
-#include <pagetable/types.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/pagetable/flags.h>
+#include <common/src/com/ngos/shared/common/pagetable/macros.h>
+#include <common/src/com/ngos/shared/common/pagetable/types.h>
 
 
 

@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/graphics/bmp/lib/bmpcompressionmethod.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/graphics/bmp/lib/bmpcompressionmethod.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

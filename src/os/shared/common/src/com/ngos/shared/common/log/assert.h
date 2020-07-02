@@ -5,15 +5,13 @@
 
 #if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefiassert.h>
-#elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
-#include <common/src/bits64/early/earlyassert.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
-#include <common/src/bits64/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
 #else
 #include <buildconfig.h>
-#include <common/src/bits64/serial/serial.h>
-#include <macro/utils.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/serial/serial.h>
+#include <common/src/com/ngos/shared/common/macro/utils.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 #endif
 
 
@@ -22,8 +20,6 @@
 #if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
 #if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
 #define __COMMON_PRINT_ASSERT(message) __UEFI_PRINT_ASSERT(message)     // TEST: NO
-#elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
-#define __COMMON_PRINT_ASSERT(message) __EARLY_PRINT_ASSERT(message)    // TEST: NO
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
 #define __COMMON_PRINT_ASSERT(message) __EARLY_PRINT_ASSERT(message)    // TEST: NO
 #else

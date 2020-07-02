@@ -1,9 +1,9 @@
 #include "setupkernellocation.h"
 
 #include <buildconfig.h>
-#include <common/src/bits64/memory/memory.h>
-#include <ngos/utils.h>
-#include <uefi/uefiloadedimageprotocol.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

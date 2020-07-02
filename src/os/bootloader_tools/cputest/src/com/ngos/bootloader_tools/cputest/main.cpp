@@ -1,9 +1,9 @@
-#include <bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
 #include <buildconfig.h>
-#include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/serial/serial.h>
-#include <ngos/linkage.h>
-#include <uefi/uefisystemtable.h>
+#include <common/src/com/ngos/shared/common/assets/assets.h>
+#include <common/src/com/ngos/shared/common/serial/serial.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
 #include <uefibase/src/bits64/main/earlyinitialization.h>
 #include <uefibase/src/bits64/main/setupbootparams.h>
 #include <uefibase/src/bits64/main/setupdynamicrelocation.h>

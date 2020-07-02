@@ -1,9 +1,9 @@
 #include "testavx512bw.h"
 
-#include <asm/instructions.h>
-#include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/fpu/fpu.h>
-#include <ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/asm/instructions.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/fpu/fpu.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>

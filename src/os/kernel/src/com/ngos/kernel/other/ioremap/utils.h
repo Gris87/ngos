@@ -3,7 +3,7 @@
 
 
 
-#include <page/macros.h>
+#include <common/src/com/ngos/shared/common/page/macros.h>
 
 #include <src/com/ngos/kernel/other/ioremap/macros.h>
 

@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmadd213pd.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmadd213ps.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/fma3/asm_testfma3vfmsub213pd.h>

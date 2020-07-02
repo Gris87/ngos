@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/checksum/crc.h>
-#include <gpt/gptdata.h>
+#include <common/src/com/ngos/shared/common/checksum/crc.h>
+#include <common/src/com/ngos/shared/common/gpt/gptdata.h>
 
 
 

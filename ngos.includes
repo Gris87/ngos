@@ -19,7 +19,6 @@ src/os/bootloader_tools/memorytest/
 src/os/bootloader_tools/networktest/
 src/os/bootloader_tools/partitionwizard/
 src/os/configure/
-src/os/include/
 src/os/installer/
 src/os/kernel/
 src/os/shared/

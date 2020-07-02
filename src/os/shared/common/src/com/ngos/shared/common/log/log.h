@@ -5,13 +5,11 @@
 
 #if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefilog.h>
-#elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
-#include <common/src/bits64/early/earlylog.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
-#include <common/src/bits64/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
 #else
 #include <buildconfig.h>
-#include <common/src/bits64/serial/serial.h>
+#include <common/src/com/ngos/shared/common/serial/serial.h>
 #endif
 
 
@@ -20,9 +18,6 @@
 #if defined(UEFI_APPLICATION)                                                // Defined in Makefile
 #define __COMMON_PRINT_LOG(level, message) __UEFI_PRINT_LOG(level, message)  // TEST: NO
 #define __COMMON_PRINT_LT(message)         __UEFI_PRINT_LT(message)          // TEST: NO
-#elif defined(BUILD_TARGET_INSTALLER)                                           // Defined in Makefile
-#define __COMMON_PRINT_LOG(level, message) __EARLY_PRINT_LOG(level, message) // TEST: NO
-#define __COMMON_PRINT_LT(message)         __EARLY_PRINT_LT(message)         // TEST: NO
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
 #define __COMMON_PRINT_LOG(level, message) __EARLY_PRINT_LOG(level, message) // TEST: NO
 #define __COMMON_PRINT_LT(message)         __EARLY_PRINT_LT(message)         // TEST: NO

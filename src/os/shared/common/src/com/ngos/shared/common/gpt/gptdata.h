@@ -3,9 +3,9 @@
 
 
 
-#include <gpt/gptentry.h>
-#include <gpt/gptheader.h>
-#include <mbr/mbr.h>
+#include <common/src/com/ngos/shared/common/gpt/gptentry.h>
+#include <common/src/com/ngos/shared/common/gpt/gptheader.h>
+#include <common/src/com/ngos/shared/common/mbr/mbr.h>
 
 
 

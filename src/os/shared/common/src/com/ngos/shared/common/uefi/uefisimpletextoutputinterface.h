@@ -3,11 +3,11 @@
 
 
 
-#include <ngos/types.h>
-#include <uefi/macros.h>
-#include <uefi/types.h>
-#include <uefi/uefisimpletextoutputmode.h>
-#include <uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisimpletextoutputmode.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

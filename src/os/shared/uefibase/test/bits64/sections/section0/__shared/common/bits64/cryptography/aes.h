@@ -4,14 +4,14 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/checksum/adler.h>
-#include <common/src/bits64/checksum/crc.h>
-#include <common/src/bits64/checksum/md5.h>
-#include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/cryptography/aes.h>
-#include <common/src/bits64/memory/malloc.h>
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/string/string.h>
+#include <common/src/com/ngos/shared/common/checksum/adler.h>
+#include <common/src/com/ngos/shared/common/checksum/crc.h>
+#include <common/src/com/ngos/shared/common/checksum/md5.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/cryptography/aes.h>
+#include <common/src/com/ngos/shared/common/memory/malloc.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

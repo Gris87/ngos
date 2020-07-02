@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3addsubpd.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3addsubps.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3haddpd.h>

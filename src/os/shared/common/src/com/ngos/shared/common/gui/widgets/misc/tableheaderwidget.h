@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/bits64/gui/widgets/misc/labelwidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
 
 
 

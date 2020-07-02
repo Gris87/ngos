@@ -3,7 +3,7 @@
 
 
 
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 #include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
 

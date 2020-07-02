@@ -3,7 +3,7 @@
 
 
 
-#include <bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
 
 
 

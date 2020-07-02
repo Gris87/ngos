@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/dmi/entry/lib/dmimemorydevicetype.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetype.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

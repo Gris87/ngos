@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/bits64/containers/arraylist.h>
+#include <common/src/com/ngos/shared/common/containers/arraylist.h>
 
 #include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h"
 #include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"

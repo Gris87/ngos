@@ -1,9 +1,9 @@
 #include "testrandomwrite.h"
 
-#include <asm/instructions.h>
-#include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/fpu/fpu.h>
-#include <macro/constants.h>
+#include <common/src/com/ngos/shared/common/asm/instructions.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/fpu/fpu.h>
+#include <common/src/com/ngos/shared/common/macro/constants.h>
 #include <uefibase/src/bits64/main/setupcr4.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>

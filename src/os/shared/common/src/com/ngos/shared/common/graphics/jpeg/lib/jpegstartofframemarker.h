@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/graphics/jpeg/lib/jpegmarkerheader.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegstartofframecomponent.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkerheader.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframecomponent.h>
 
 
 

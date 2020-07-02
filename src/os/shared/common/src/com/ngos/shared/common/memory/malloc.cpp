@@ -1,9 +1,9 @@
 #include "malloc.h"
 
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/memory.h>
-#include <ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
 
 #if defined(UEFI_APPLICATION)                       // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefi.h>

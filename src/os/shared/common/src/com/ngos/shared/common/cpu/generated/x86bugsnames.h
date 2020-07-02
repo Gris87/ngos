@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/cpu/x86bugword.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/cpu/x86bugword.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

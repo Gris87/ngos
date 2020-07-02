@@ -3,14 +3,14 @@
 
 
 
-#include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/dmistringid.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemslotscharacteristicsflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemslotslength.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemslotspeergroup.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemslotstype.h>
-#include <common/src/bits64/dmi/entry/lib/dmisystemslotsusage.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
+#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotscharacteristicsflags.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotslength.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotspeergroup.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotstype.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotsusage.h>
 
 
 

@@ -1,6 +1,6 @@
 #include "devicemanagerentrydmi.h"
 
-#include <common/src/bits64/string/string.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

@@ -3,10 +3,10 @@
 
 
 
-#include <guid/guid.h>
-#include <ngos/status.h>
-#include <uefi/uefiabsolutepointerprotocol.h>
-#include <uefi/uefisimplepointerprotocol.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
 
 
 

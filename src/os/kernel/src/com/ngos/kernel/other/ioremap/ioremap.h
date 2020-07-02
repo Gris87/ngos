@@ -3,9 +3,9 @@
 
 
 
-#include <ngos/status.h>
-#include <ngos/types.h>
-#include <pagetable/types.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/pagetable/types.h>
 
 #include <src/com/ngos/kernel/other/ioremap/macros.h>
 

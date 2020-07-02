@@ -3,13 +3,13 @@
 
 
 
-#include <common/src/bits64/gui/widgets/misc/cursorwidget.h>
-#include <common/src/bits64/gui/widgets/special/rootwidget.h>
-#include <common/src/bits64/gui/widgets/special/screenwidget.h>
-#include <common/src/bits64/gui/widgets/widget.h>
-#include <ngos/status.h>
-#include <uefi/uefiabsolutepointerprotocol.h>
-#include <uefi/uefisimplepointerstate.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/misc/cursorwidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/special/rootwidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/special/screenwidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisimplepointerstate.h>
 
 
 

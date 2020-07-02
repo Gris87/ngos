@@ -3,13 +3,13 @@
 
 
 
-#include <guid/guid.h>
-#include <uefi/macros.h>
-#include <uefi/types.h>
-#include <uefi/uefifileattributeflags.h>
-#include <uefi/uefifileiotoken.h>
-#include <uefi/uefifilemodeflags.h>
-#include <uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefifileattributeflags.h>
+#include <common/src/com/ngos/shared/common/uefi/uefifileiotoken.h>
+#include <common/src/com/ngos/shared/common/uefi/uefifilemodeflags.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

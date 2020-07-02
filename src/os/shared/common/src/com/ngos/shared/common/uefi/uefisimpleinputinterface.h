@@ -3,9 +3,9 @@
 
 
 
-#include <uefi/macros.h>
-#include <uefi/uefiinputkey.h>
-#include <uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiinputkey.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

@@ -3,8 +3,8 @@
 
 
 
-#include <asm/bitutils.h>
 #include <buildconfig.h>
+#include <common/src/com/ngos/shared/common/asm/bitutils.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

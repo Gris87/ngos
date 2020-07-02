@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/bits64/gui/widgets/misc/wrapperwidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/misc/wrapperwidget.h>
 
 
 

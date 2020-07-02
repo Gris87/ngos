@@ -1,11 +1,11 @@
 #include "dmi.h"
 
-#include <common/src/bits64/dmi/entry/dmimemorydeviceentry.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/string/utils.h>
-#include <uuid/utils.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/dmimemorydeviceentry.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/string/utils.h>
+#include <common/src/com/ngos/shared/common/uuid/utils.h>
 
 #ifdef UEFI_APPLICATION // Defined in Makefile
 #include <uefibase/src/bits64/uefi/uefi.h>

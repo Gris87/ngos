@@ -3,10 +3,10 @@
 
 
 
-#include <elf/symbolbind.h>
-#include <elf/symboltype.h>
-#include <elf/symbolvisibility.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/elf/symbolbind.h>
+#include <common/src/com/ngos/shared/common/elf/symboltype.h>
+#include <common/src/com/ngos/shared/common/elf/symbolvisibility.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

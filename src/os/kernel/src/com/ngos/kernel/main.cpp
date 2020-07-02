@@ -1,12 +1,12 @@
-#include <bootparams/bootparams.h>
-#include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <common/src/bits64/fpu/fpu.h>
-#include <common/src/bits64/serial/serial.h>
-#include <ngos/linkage.h>
-#include <pagetable/utils.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/assets/assets.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/fpu/fpu.h>
+#include <common/src/com/ngos/shared/common/serial/serial.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/pagetable/utils.h>
 
 #include <src/com/ngos/kernel/a_early/main/disableirq.h>
 #include <src/com/ngos/kernel/a_early/main/reservepciromimages.h>
@@ -63,13 +63,7 @@ void kernelMain(BootParams *params)
 
 
 
-#if defined(BUILD_TARGET_INSTALLER)                                             // Defined in Makefile
-    EARLY_LI(("NGOS installer started"));
-#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
     EARLY_LI(("NGOS kernel started"));
-#else
-    EARLY_LI(("UNKNOWN started"));
-#endif
 
 
 

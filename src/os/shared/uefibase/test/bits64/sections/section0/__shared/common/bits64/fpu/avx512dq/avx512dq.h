@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvcvtpd2qq.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvcvtps2qq.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512dq/asm_testavx512dqvcvtqq2pd.h>

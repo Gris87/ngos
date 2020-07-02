@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/dmistringid.h>
-#include <common/src/bits64/dmi/entry/lib/dmicoolingdevicestatus.h>
-#include <common/src/bits64/dmi/entry/lib/dmicoolingdevicetype.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
+#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicestatus.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicetype.h>
 
 
 

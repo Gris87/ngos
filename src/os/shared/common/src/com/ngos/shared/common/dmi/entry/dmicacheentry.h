@@ -3,15 +3,15 @@
 
 
 
-#include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/dmistringid.h>
-#include <common/src/bits64/dmi/entry/lib/dmicacheassociativity.h>
-#include <common/src/bits64/dmi/entry/lib/dmicacheconfiguration.h>
-#include <common/src/bits64/dmi/entry/lib/dmicacheerrorcorrectiontype.h>
-#include <common/src/bits64/dmi/entry/lib/dmicachesize.h>
-#include <common/src/bits64/dmi/entry/lib/dmicachesize2.h>
-#include <common/src/bits64/dmi/entry/lib/dmicachesramtypeflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmicachetype.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
+#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicacheassociativity.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicacheconfiguration.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicacheerrorcorrectiontype.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicachesize.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicachesize2.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicachesramtypeflags.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmicachetype.h>
 
 
 

@@ -3,16 +3,16 @@
 
 
 
-#include <guid/guid.h>
-#include <uefi/types.h>
-#include <uefi/ueficapsuleheader.h>
-#include <uefi/uefimemorydescriptor.h>
-#include <uefi/uefiresettype.h>
-#include <uefi/uefistatus.h>
-#include <uefi/uefitableheader.h>
-#include <uefi/uefitime.h>
-#include <uefi/uefitimecapabilicies.h>
-#include <uefi/uefivariableattributeflags.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/ueficapsuleheader.h>
+#include <common/src/com/ngos/shared/common/uefi/uefimemorydescriptor.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiresettype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/uefi/uefitableheader.h>
+#include <common/src/com/ngos/shared/common/uefi/uefitime.h>
+#include <common/src/com/ngos/shared/common/uefi/uefitimecapabilicies.h>
+#include <common/src/com/ngos/shared/common/uefi/uefivariableattributeflags.h>
 
 
 

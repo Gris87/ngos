@@ -3,8 +3,8 @@
 
 
 
-#include <elf/header.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/elf/header.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

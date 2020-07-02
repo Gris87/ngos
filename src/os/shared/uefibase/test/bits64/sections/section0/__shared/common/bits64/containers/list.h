@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/containers/list.h>
+#include <common/src/com/ngos/shared/common/containers/list.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

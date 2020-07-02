@@ -3,8 +3,8 @@
 
 
 
-#include <uefi/types.h>
-#include <uefi/uefimemorytype.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefimemorytype.h>
 
 
 

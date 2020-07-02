@@ -1,7 +1,7 @@
 #include <buildconfig.h>
-#include <gdt/segments.h>
-#include <ngos/linkage.h>
-#include <page/macros.h>
+#include <common/src/com/ngos/shared/common/gdt/segments.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/page/macros.h>
 #include "src/com/ngos/configure/other/asm/generated/asmoffsets.h"
 #include "src/com/ngos/configure/other/configuredefines.h"
                                                                                 #

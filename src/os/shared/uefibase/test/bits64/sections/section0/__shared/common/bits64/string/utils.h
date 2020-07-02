@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/string/string.h>
-#include <common/src/bits64/string/utils.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
+#include <common/src/com/ngos/shared/common/string/utils.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

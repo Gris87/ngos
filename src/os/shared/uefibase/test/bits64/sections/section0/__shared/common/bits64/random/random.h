@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/random/random.h>
+#include <common/src/com/ngos/shared/common/random/random.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

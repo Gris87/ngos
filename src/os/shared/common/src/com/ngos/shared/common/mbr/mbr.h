@@ -3,8 +3,8 @@
 
 
 
-#include <mbr/mbrpartition.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/mbr/mbrpartition.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

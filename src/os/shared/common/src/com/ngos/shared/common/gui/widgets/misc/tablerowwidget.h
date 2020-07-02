@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/bits64/containers/arraylist.h>
-#include <common/src/bits64/gui/widgets/misc/tablecellwidget.h>
+#include <common/src/com/ngos/shared/common/containers/arraylist.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/misc/tablecellwidget.h>
 
 
 

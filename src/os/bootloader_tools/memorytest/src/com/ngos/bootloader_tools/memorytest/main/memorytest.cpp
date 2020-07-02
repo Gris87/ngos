@@ -1,6 +1,6 @@
 #include "memorytest.h"
 
-#include <asm/instructions.h>
+#include <common/src/com/ngos/shared/common/asm/instructions.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

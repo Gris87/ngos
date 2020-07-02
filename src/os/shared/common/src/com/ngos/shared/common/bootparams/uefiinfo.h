@@ -3,8 +3,8 @@
 
 
 
-#include <bootparams/uefimemorymapinfo.h>
-#include <uefi/uefisystemtable.h>
+#include <common/src/com/ngos/shared/common/bootparams/uefimemorymapinfo.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
 
 
 

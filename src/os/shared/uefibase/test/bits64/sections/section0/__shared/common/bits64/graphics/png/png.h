@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/graphics/png/png.h>
-#include <common/src/bits64/memory/memory.h>
+#include <common/src/com/ngos/shared/common/graphics/png/png.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/graphics/image.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/graphics/image.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

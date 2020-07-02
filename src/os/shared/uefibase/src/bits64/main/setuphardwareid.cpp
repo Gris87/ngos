@@ -1,12 +1,12 @@
 #include "setuphardwareid.h"
 
-#include <common/src/bits64/dmi/dmi.h>
-#include <common/src/bits64/random/random.h>
-#include <common/src/bits64/string/utils.h>
-#include <uefi/uefiloadedimageprotocol.h>
+#include <common/src/com/ngos/shared/common/dmi/dmi.h>
+#include <common/src/com/ngos/shared/common/random/random.h>
+#include <common/src/com/ngos/shared/common/string/utils.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
-#include <uuid/utils.h>
+#include <common/src/com/ngos/shared/common/uuid/utils.h>
 
 
 

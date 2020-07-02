@@ -5,7 +5,7 @@
 
 #include "src/com/ngos/bootloader_tools/cputest/tests/testbase.h"
 
-#include <common/src/bits64/cryptography/aes.h>
+#include <common/src/com/ngos/shared/common/cryptography/aes.h>
 
 
 

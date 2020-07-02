@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

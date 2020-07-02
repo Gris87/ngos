@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/dmistringid.h>
-#include <common/src/bits64/dmi/entry/lib/dmiportconnectorporttype.h>
-#include <common/src/bits64/dmi/entry/lib/dmiportconnectortype.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
+#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiportconnectorporttype.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiportconnectortype.h>
 
 
 

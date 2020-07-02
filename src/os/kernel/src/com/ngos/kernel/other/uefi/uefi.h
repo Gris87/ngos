@@ -3,27 +3,27 @@
 
 
 
-#include <bootparams/uefimemorymapinfo.h>
+#include <common/src/com/ngos/shared/common/bootparams/uefimemorymapinfo.h>
 #include <buildconfig.h>
-#include <ngos/status.h>
-#include <uefi/config/uefiacpi20configurationtable.h>
-#include <uefi/config/uefiacpiconfigurationtable.h>
-#include <uefi/config/uefidebuginfoconfigurationtable.h>
-#include <uefi/config/uefidxeservicesconfigurationtable.h>
-#include <uefi/config/uefihcdpconfigurationtable.h>
-#include <uefi/config/uefihoblistconfigurationtable.h>
-#include <uefi/config/uefilzmadecompressconfigurationtable.h>
-#include <uefi/config/uefimemoryattributesconfigurationtable.h>
-#include <uefi/config/uefimemorystatuscoderecordconfigurationtable.h>
-#include <uefi/config/uefimemorytypeinformationconfigurationtable.h>
-#include <uefi/config/uefimpsconfigurationtable.h>
-#include <uefi/config/uefipropertiesconfigurationtable.h>
-#include <uefi/config/uefisalsystemconfigurationtable.h>
-#include <uefi/config/uefismbios3configurationtable.h>
-#include <uefi/config/uefismbiosconfigurationtable.h>
-#include <uefi/config/uefisystemresourceconfigurationtable.h>
-#include <uefi/config/uefiugaioconfigurationtable.h>
-#include <uefi/uefisystemtable.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefiacpi20configurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefiacpiconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefidebuginfoconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefidxeservicesconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefihcdpconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefihoblistconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefilzmadecompressconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefimemoryattributesconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefimemorystatuscoderecordconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefimemorytypeinformationconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefimpsconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefipropertiesconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefisalsystemconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefismbios3configurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefismbiosconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefisystemresourceconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/config/uefiugaioconfigurationtable.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
 
 
 

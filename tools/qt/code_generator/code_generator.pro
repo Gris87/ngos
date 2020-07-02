@@ -42,7 +42,7 @@ INCLUDEPATH += \
     ../../../3rd_party/libs/freetype/include \  # /3rd_party/libs/freetype/include
     ../../../include \                          # /include
     ../../../src/os/configure \                 # /src/os/configure
-    ../../../src/os/include \                   # /src/os/include
+    ../../../src/os/shared \                    # /src/os/shared
     ../include                                  # /tools/qt/include
 
 

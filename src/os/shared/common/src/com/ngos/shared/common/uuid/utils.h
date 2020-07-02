@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/printf/printf.h>
-#include <uuid/uuid.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/uuid/uuid.h>
 
 
 

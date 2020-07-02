@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
-#include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraylocation.h>
-#include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
-#include <common/src/bits64/dmi/entry/lib/dmiphysicalmemoryarrayuse.h>
-#include <macro/constants.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraylocation.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarrayuse.h>
+#include <common/src/com/ngos/shared/common/macro/constants.h>
 
 
 

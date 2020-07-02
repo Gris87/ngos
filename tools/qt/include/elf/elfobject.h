@@ -6,10 +6,10 @@
 #include <QHash>
 #include <QList>
 #include <QString>
-#include <elf/header.h>
-#include <elf/programheadertableentry.h>
-#include <elf/sectionheadertableentry.h>
-#include <elf/symbol.h>
+#include <common/src/com/ngos/shared/common/elf/header.h>
+#include <common/src/com/ngos/shared/common/elf/programheadertableentry.h>
+#include <common/src/com/ngos/shared/common/elf/sectionheadertableentry.h>
+#include <common/src/com/ngos/shared/common/elf/symbol.h>
 
 
 

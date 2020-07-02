@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/dmi/entry/lib/dmivoltageprobelocation.h>
-#include <common/src/bits64/dmi/entry/lib/dmivoltageprobestatus.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocation.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmivoltageprobestatus.h>
 
 
 

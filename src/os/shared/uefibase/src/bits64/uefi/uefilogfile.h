@@ -4,9 +4,9 @@
 
 
 #include <buildconfig.h>
-#include <ngos/status.h>
-#include <ngos/types.h>
-#include <uefi/uefifileprotocol.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefifileprotocol.h>
 
 
 

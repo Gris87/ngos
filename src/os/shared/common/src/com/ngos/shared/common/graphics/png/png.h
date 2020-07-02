@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/bits64/graphics/image.h>
-#include <common/src/bits64/graphics/png/lib/pngchunk.h>
-#include <common/src/bits64/graphics/png/lib/pngfiltertype.h>
-#include <common/src/bits64/graphics/png/pngdecoder.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/graphics/image.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pngchunk.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pngfiltertype.h>
+#include <common/src/com/ngos/shared/common/graphics/png/pngdecoder.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

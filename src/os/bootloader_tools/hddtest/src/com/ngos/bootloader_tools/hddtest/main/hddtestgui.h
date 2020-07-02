@@ -3,14 +3,14 @@
 
 
 
-#include <bootparams/bootparams.h>
-#include <common/src/bits64/containers/arraylist.h>
-#include <common/src/bits64/gui/widgets/controls/button.h>
-#include <common/src/bits64/gui/widgets/controls/tablewidget.h>
-#include <common/src/bits64/gui/widgets/controls/tabwidget.h>
-#include <ngos/status.h>
-#include <uefi/uefiabsolutepointerprotocol.h>
-#include <uefi/uefisimplepointerprotocol.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/containers/arraylist.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/controls/button.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/controls/tablewidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/controls/tabwidget.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
+#include <common/src/com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
 
 
 

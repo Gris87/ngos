@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/graphics/png/lib/pngchunktype.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/graphics/png/lib/pngchunktype.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

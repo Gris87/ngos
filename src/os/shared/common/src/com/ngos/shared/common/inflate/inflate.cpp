@@ -1,14 +1,14 @@
 #include "inflate.h"
 
-#include <common/src/bits64/inflate/inflateblocktype.h>
-#include <common/src/bits64/inflate/inflatecode.h>
-#include <common/src/bits64/inflate/inflatecodetype.h>
-#include <common/src/bits64/inflate/inflatedecoder.h>
-#include <common/src/bits64/inflate/inflatefixedcodes.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/string/utils.h>
+#include <common/src/com/ngos/shared/common/inflate/inflateblocktype.h>
+#include <common/src/com/ngos/shared/common/inflate/inflatecode.h>
+#include <common/src/com/ngos/shared/common/inflate/inflatecodetype.h>
+#include <common/src/com/ngos/shared/common/inflate/inflatedecoder.h>
+#include <common/src/com/ngos/shared/common/inflate/inflatefixedcodes.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/string/utils.h>
 
 
 

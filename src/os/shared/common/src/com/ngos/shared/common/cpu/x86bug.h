@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/bits64/cpu/x86bugword.h>
-#include <ngos/types.h>
-#include <ngos/utils.h>
+#include <common/src/com/ngos/shared/common/cpu/x86bugword.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
 
 
 

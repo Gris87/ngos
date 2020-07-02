@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/memory/memory.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
 
 #include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
 #include <test/com/ngos/kernel/a_early/testengine.h>

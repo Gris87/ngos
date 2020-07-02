@@ -1,9 +1,9 @@
-#include <bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
 #include <buildconfig.h>
-#include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/assets/assets.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
 
 #include "src/com/ngos/configure/b_early/main/decompressors/gzip/decompress.h"
 #include "src/com/ngos/configure/b_early/main/decompressors/xz/decompress.h"

@@ -1,17 +1,17 @@
 #include "bootloader.h"
 
-#include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/checksum/md5.h>
-#include <common/src/bits64/graphics/graphics.h>
-#include <common/src/bits64/gui/gui.h>
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/string/string.h>
-#include <gpt/utils.h>
-#include <guid/utils.h>
-#include <ngos/utils.h>
-#include <uefi/uefiblockioprotocol.h>
-#include <uefi/uefifileinfo.h>
-#include <uefi/uefiharddrivedevicepath.h>
+#include <common/src/com/ngos/shared/common/assets/assets.h>
+#include <common/src/com/ngos/shared/common/checksum/md5.h>
+#include <common/src/com/ngos/shared/common/graphics/graphics.h>
+#include <common/src/com/ngos/shared/common/gui/gui.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
+#include <common/src/com/ngos/shared/common/gpt/utils.h>
+#include <common/src/com/ngos/shared/common/guid/utils.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h>
+#include <common/src/com/ngos/shared/common/uefi/uefifileinfo.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiharddrivedevicepath.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

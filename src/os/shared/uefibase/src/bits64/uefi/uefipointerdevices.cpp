@@ -1,6 +1,6 @@
 #include "uefipointerdevices.h"
 
-#include <common/src/bits64/string/utils.h>
+#include <common/src/com/ngos/shared/common/string/utils.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

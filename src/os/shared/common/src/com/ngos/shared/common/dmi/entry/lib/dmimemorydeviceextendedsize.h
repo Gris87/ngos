@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/log/log.h>
-#include <macro/constants.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/macro/constants.h>
 
 
 

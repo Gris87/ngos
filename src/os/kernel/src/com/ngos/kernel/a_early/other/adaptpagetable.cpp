@@ -1,9 +1,9 @@
-#include <common/src/bits64/assets/assets.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <ngos/linkage.h>
-#include <ngos/utils.h>
-#include <pagetable/utils.h>
+#include <common/src/com/ngos/shared/common/assets/assets.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <common/src/com/ngos/shared/common/pagetable/utils.h>
 
 #include <src/com/ngos/kernel/other/kerneldefines.h>
 #include <src/com/ngos/kernel/other/pagetable/addressconversion.h>

@@ -3,8 +3,8 @@
 
 
 
-#include <uefi/types.h>
-#include <uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

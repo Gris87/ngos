@@ -1,10 +1,10 @@
 #include "decompress.h"
 
-#include <common/src/bits64/checksum/crc.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <common/src/bits64/inflate/inflate.h>
-#include <common/src/bits64/memory/memory.h>
+#include <common/src/com/ngos/shared/common/checksum/crc.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/inflate/inflate.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
 
 #include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
 #include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"

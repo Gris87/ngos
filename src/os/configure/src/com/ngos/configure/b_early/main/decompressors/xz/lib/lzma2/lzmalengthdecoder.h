@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 #include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
 

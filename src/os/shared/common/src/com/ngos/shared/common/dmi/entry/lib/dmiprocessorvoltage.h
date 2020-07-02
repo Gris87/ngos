@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltageflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltagemodetype.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltageflags.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltagemodetype.h>
 
 
 

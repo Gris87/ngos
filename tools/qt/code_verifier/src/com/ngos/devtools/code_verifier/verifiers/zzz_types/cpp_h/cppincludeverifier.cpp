@@ -63,13 +63,13 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
         &&
         lines.at(4) == ""
         &&
-        lines.at(5) == "#include <ngos/types.h>"
+        lines.at(5) == "#include <common/src/com/ngos/shared/common/ngos/types.h>"
         &&
         lines.at(6) == ""
         &&
-        lines.at(7) == "#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile"
+        lines.at(7) == "#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile"
         &&
-        lines.at(8) == "#include <common/src/bits64/printf/printf.h>"
+        lines.at(8) == "#include <common/src/com/ngos/shared/common/printf/printf.h>"
         &&
         lines.at(9) == "#endif"
         &&
@@ -94,19 +94,19 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
         &&
         lines.at(4) == ""
         &&
-        lines.at(5) == "#include <ngos/flags.h>"
+        lines.at(5) == "#include <common/src/com/ngos/shared/common/ngos/flags.h>"
         &&
-        lines.at(6) == "#include <ngos/linkage.h>"
+        lines.at(6) == "#include <common/src/com/ngos/shared/common/ngos/linkage.h>"
         &&
-        lines.at(7) == "#include <ngos/types.h>"
+        lines.at(7) == "#include <common/src/com/ngos/shared/common/ngos/types.h>"
         &&
         lines.at(8) == ""
         &&
-        lines.at(9) == "#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile"
+        lines.at(9) == "#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile"
         &&
-        lines.at(10) == "#include <common/src/bits64/printf/printf.h>"
+        lines.at(10) == "#include <common/src/com/ngos/shared/common/printf/printf.h>"
         &&
-        lines.at(11) == "#include <common/src/bits64/string/string.h>"
+        lines.at(11) == "#include <common/src/com/ngos/shared/common/string/string.h>"
         &&
         lines.at(12) == "#endif"
         &&

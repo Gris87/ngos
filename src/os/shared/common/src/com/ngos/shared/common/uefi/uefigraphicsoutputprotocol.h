@@ -3,12 +3,12 @@
 
 
 
-#include <uefi/macros.h>
-#include <uefi/uefigraphicsoutputbltoperation.h>
-#include <uefi/uefigraphicsoutputbltpixel.h>
-#include <uefi/uefigraphicsoutputmodeinformation.h>
-#include <uefi/uefigraphicsoutputprotocolmode.h>
-#include <uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputbltoperation.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputbltpixel.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputmodeinformation.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputprotocolmode.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

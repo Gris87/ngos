@@ -3,8 +3,8 @@
 
 
 
-#include <ngos/status.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 #include <src/com/ngos/kernel/other/memorymanager/memoryblock.h>
 

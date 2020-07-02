@@ -3,21 +3,21 @@
 
 
 
-#include <guid/guid.h>
-#include <uefi/macros.h>
-#include <uefi/types.h>
-#include <uefi/uefiallocatetype.h>
-#include <uefi/uefidevicepath.h>
-#include <uefi/uefieventtype.h>
-#include <uefi/uefiinterfacetype.h>
-#include <uefi/uefilocatesearchtype.h>
-#include <uefi/uefimemorydescriptor.h>
-#include <uefi/uefimemorytype.h>
-#include <uefi/uefiopenprotocolinformationentry.h>
-#include <uefi/uefistatus.h>
-#include <uefi/uefitableheader.h>
-#include <uefi/uefitimerdelay.h>
-#include <uefi/uefitpl.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiallocatetype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefidevicepath.h>
+#include <common/src/com/ngos/shared/common/uefi/uefieventtype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiinterfacetype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefilocatesearchtype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefimemorydescriptor.h>
+#include <common/src/com/ngos/shared/common/uefi/uefimemorytype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiopenprotocolinformationentry.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/uefi/uefitableheader.h>
+#include <common/src/com/ngos/shared/common/uefi/uefitimerdelay.h>
+#include <common/src/com/ngos/shared/common/uefi/uefitpl.h>
 
 
 

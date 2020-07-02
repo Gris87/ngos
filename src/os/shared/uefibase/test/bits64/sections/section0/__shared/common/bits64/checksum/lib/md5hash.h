@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/checksum/lib/md5hash.h>
+#include <common/src/com/ngos/shared/common/checksum/lib/md5hash.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

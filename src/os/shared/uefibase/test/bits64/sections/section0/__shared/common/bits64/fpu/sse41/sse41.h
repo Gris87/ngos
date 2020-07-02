@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmaxsb.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmaxsd.h>
 #include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse41/asm_testsse41pmaxud.h>

@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/hex/hex.h>
-#include <common/src/bits64/memory/malloc.h>
+#include <common/src/com/ngos/shared/common/hex/hex.h>
+#include <common/src/com/ngos/shared/common/memory/malloc.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

@@ -1,8 +1,8 @@
 #include "setupinittask.h"
 
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
 
 #include <src/com/ngos/kernel/other/task/utils.h>
 

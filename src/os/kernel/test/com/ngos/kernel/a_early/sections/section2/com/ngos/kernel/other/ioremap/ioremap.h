@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/memory/memory.h>
-#include <pagetable/utils.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/pagetable/utils.h>
 
 #include <src/com/ngos/kernel/other/ioremap/ioremap.h>
 #include <test/com/ngos/kernel/a_early/testengine.h>

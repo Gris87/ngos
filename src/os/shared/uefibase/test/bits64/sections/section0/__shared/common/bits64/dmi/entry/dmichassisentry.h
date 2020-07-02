@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/dmi/entry/dmichassisentry.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/dmichassisentry.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/test/bits64/testengine.h>

@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/bits64/graphics/ninepatch.h>
-#include <common/src/bits64/graphics/rgbapixel.h>
-#include <common/src/bits64/graphics/rgbpixel.h>
-#include <ngos/status.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/graphics/ninepatch.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbpixel.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

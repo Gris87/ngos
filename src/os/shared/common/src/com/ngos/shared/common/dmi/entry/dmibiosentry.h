@@ -3,13 +3,13 @@
 
 
 
-#include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/dmistringid.h>
-#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicsflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmibiosextendedromsize.h>
-#include <common/src/bits64/dmi/entry/lib/dmibiosromsize.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
+#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibioscharacteristicsflags.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibioscharacteristicssystemreservedflags.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibiosextendedromsize.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibiosromsize.h>
 
 
 

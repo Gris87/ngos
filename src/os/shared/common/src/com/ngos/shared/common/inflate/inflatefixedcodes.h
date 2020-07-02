@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/inflate/inflatecode.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/inflate/inflatecode.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

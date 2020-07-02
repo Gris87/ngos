@@ -51,9 +51,9 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
     lines.append("#include \"x86bugsnames.h\"");
     addOneBlankLine(lines);
-    lines.append("#include <common/src/bits64/log/assert.h>");
-    lines.append("#include <common/src/bits64/log/log.h>");
-    lines.append("#include <ngos/utils.h>");
+    lines.append("#include <common/src/com/ngos/shared/common/log/assert.h>");
+    lines.append("#include <common/src/com/ngos/shared/common/log/log.h>");
+    lines.append("#include <common/src/com/ngos/shared/common/ngos/utils.h>");
 
     addThreeBlankLines(lines);
 

@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/containers/lib/mapelement.h>
+#include <common/src/com/ngos/shared/common/containers/lib/mapelement.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

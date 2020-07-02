@@ -3,16 +3,16 @@
 
 
 
-#include <uefi/macros.h>
-#include <uefi/types.h>
-#include <uefi/uefiallocatetype.h>
-#include <uefi/uefimemorytype.h>
-#include <uefi/uefipciioprotocolaccess.h>
-#include <uefi/uefipciioprotocolattributeoperation.h>
-#include <uefi/uefipciioprotocolconfigaccess.h>
-#include <uefi/uefipciioprotocoloperation.h>
-#include <uefi/uefipciioprotocolwidth.h>
-#include <uefi/uefistatus.h>
+#include <common/src/com/ngos/shared/common/uefi/macros.h>
+#include <common/src/com/ngos/shared/common/uefi/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefiallocatetype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefimemorytype.h>
+#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolaccess.h>
+#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolattributeoperation.h>
+#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolconfigaccess.h>
+#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocoloperation.h>
+#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolwidth.h>
+#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

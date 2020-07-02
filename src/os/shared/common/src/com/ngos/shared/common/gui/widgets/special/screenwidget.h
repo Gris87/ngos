@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/bits64/gui/widgets/widget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/bits64/graphics/rgbapixel.h>
-#include <uefi/uefigraphicsoutputprotocol.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>
 
 
 

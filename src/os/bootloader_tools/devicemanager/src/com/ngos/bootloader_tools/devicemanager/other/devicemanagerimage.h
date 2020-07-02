@@ -3,15 +3,15 @@
 
 
 
-#include <common/src/bits64/dmi/dmientrytype.h>
-#include <common/src/bits64/dmi/entry/dmionboarddevicesextendedentry.h>
-#include <common/src/bits64/dmi/entry/dmiportconnectorentry.h>
-#include <common/src/bits64/dmi/entry/dmisystemslotsentry.h>
-#include <common/src/bits64/dmi/entry/lib/dmionboarddevicesdevice.h>
-#include <common/src/bits64/printf/printf.h>
-#include <common/src/bits64/string/string.h>
-#include <ngos/linkage.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientrytype.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/dmionboarddevicesextendedentry.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/dmiportconnectorentry.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/dmisystemslotsentry.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevice.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 

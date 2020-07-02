@@ -1,10 +1,10 @@
 #include "ioremap.h"
 
-#include <asm/instructions.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/memory.h>
-#include <pagetable/utils.h>
+#include <common/src/com/ngos/shared/common/asm/instructions.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/pagetable/utils.h>
 
 #include <src/com/ngos/kernel/other/ioremap/utils.h>
 #include <src/com/ngos/kernel/other/pagetable/addressconversion.h>

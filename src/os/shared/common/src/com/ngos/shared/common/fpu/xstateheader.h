@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/fpu/xfeaturetypeflags.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeaturetypeflags.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

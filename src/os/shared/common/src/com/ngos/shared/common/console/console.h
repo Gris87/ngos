@@ -3,11 +3,11 @@
 
 
 
-#include <bootparams/bootparams.h>
-#include <common/src/bits64/graphics/rgbapixel.h>
-#include <ngos/status.h>
-#include <ngos/types.h>
-#include <uefi/uefigraphicsoutputprotocol.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>
 
 
 

@@ -1,11 +1,11 @@
 #include "pagetable.h"
 
-#include <asm/instructions.h>
-#include <common/src/bits64/early/earlyassert.h>
-#include <common/src/bits64/early/earlylog.h>
-#include <common/src/bits64/memory/memory.h>
-#include <ngos/utils.h>
-#include <pagetable/utils.h>
+#include <common/src/com/ngos/shared/common/asm/instructions.h>
+#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <common/src/com/ngos/shared/common/pagetable/utils.h>
 
 #include "src/com/ngos/configure/b_early/other/pagetable/asm_switchtofivelevelpaging.h"
 #include "src/com/ngos/configure/b_early/other/pagetable/pageallocationcontext.h"

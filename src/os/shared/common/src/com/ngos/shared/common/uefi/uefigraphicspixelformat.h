@@ -3,10 +3,10 @@
 
 
 
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
-#include <common/src/bits64/printf/printf.h>
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
+#include <common/src/com/ngos/shared/common/printf/printf.h>
 #endif
 
 
@@ -38,7 +38,7 @@ inline const char8* enumToString(UefiGraphicsPixelFormat format) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 
 
 

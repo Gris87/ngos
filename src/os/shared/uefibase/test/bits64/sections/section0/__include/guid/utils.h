@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <guid/utils.h>
+#include <common/src/com/ngos/shared/common/guid/utils.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

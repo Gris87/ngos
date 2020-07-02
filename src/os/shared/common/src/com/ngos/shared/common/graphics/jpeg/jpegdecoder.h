@@ -3,14 +3,14 @@
 
 
 
-#include <common/src/bits64/graphics/image.h>
-#include <common/src/bits64/graphics/jpeg/jpegcomponent.h>
-#include <common/src/bits64/graphics/jpeg/jpegvlccode.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpeghuffmantable.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegquantizationtable.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegstartofframemarker.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/graphics/image.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/jpegcomponent.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/jpegvlccode.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpeghuffmantable.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegquantizationtable.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframemarker.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscanmarker.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

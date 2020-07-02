@@ -3,13 +3,13 @@
 
 
 
-#include <ngos/flags.h>
-#include <ngos/linkage.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/ngos/flags.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
-#include <common/src/bits64/printf/printf.h>
-#include <common/src/bits64/string/string.h>
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
 #endif
 
 
@@ -43,7 +43,7 @@ inline const char8* flagToString(ElfProgramFlag flag) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) || defined(BUILD_TARGET_INSTALLER) // Defined in Makefile
+#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 
 
 

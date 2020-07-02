@@ -1,12 +1,12 @@
 #include "screenwidget.h"
 
-#include <common/src/bits64/graphics/graphics.h>
-#include <common/src/bits64/graphics/rgbapixel.h>
-#include <common/src/bits64/graphics/rgbpixel.h>
-#include <common/src/bits64/gui/widgets/special/rootwidget.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/memory.h>
+#include <common/src/com/ngos/shared/common/graphics/graphics.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
+#include <common/src/com/ngos/shared/common/graphics/rgbpixel.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/special/rootwidget.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
 
 
 

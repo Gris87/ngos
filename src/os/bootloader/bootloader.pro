@@ -17,7 +17,6 @@ DEFINES += \
 
 INCLUDEPATH += \
     ../shared \                # /src/os/shared
-    ../include \               # /src/os/include
     ../../../include \         # /include
     ../../../include/stdinc    # /include/stdinc
 

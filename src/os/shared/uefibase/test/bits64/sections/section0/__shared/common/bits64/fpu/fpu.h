@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/fpu/fpu.h>
+#include <common/src/com/ngos/shared/common/fpu/fpu.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

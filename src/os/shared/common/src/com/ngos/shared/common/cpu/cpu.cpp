@@ -1,19 +1,19 @@
 #include "cpu.h"
 
-#include <asm/bitutils.h>
-#include <common/src/bits64/cpu/flags.h>
-#include <common/src/bits64/cpu/generated/x86bugsnames.h>
-#include <common/src/bits64/cpu/generated/x86featuresnames.h>
-#include <common/src/bits64/cpu/model/amdcpumodel.h>
-#include <common/src/bits64/cpu/model/cpumodel.h>
-#include <common/src/bits64/cpu/model/intelcpumodel.h>
-#include <common/src/bits64/cpu/msr/msr.h>
-#include <common/src/bits64/cpu/msr/msrregisters.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/printf/printf.h>
-#include <common/src/bits64/string/string.h>
-#include <ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/asm/bitutils.h>
+#include <common/src/com/ngos/shared/common/cpu/flags.h>
+#include <common/src/com/ngos/shared/common/cpu/generated/x86bugsnames.h>
+#include <common/src/com/ngos/shared/common/cpu/generated/x86featuresnames.h>
+#include <common/src/com/ngos/shared/common/cpu/model/amdcpumodel.h>
+#include <common/src/com/ngos/shared/common/cpu/model/cpumodel.h>
+#include <common/src/com/ngos/shared/common/cpu/model/intelcpumodel.h>
+#include <common/src/com/ngos/shared/common/cpu/msr/msr.h>
+#include <common/src/com/ngos/shared/common/cpu/msr/msrregisters.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/string/string.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
 
 
 

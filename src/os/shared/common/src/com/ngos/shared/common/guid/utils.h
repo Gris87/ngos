@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/printf/printf.h>
-#include <guid/guid.h>
+#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <common/src/com/ngos/shared/common/guid/guid.h>
 
 
 

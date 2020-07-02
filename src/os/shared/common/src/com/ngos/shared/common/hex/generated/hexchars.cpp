@@ -1,6 +1,6 @@
 // This file generated with the code_generator
 // Please do not modify it manually
-#include <common/src/bits64/hex/hex.h>
+#include <common/src/com/ngos/shared/common/hex/hex.h>
 
 
 

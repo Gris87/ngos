@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/bits64/fpu/fxsavestate.h>
-#include <common/src/bits64/fpu/xstateheader.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/fpu/fxsavestate.h>
+#include <common/src/com/ngos/shared/common/fpu/xstateheader.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 

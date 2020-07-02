@@ -1,7 +1,7 @@
 #include <buildconfig.h>
-#include <common/src/bits64/cpu/flags.h>
-#include <gdt/segments.h>
-#include <ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/cpu/flags.h>
+#include <common/src/com/ngos/shared/common/gdt/segments.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
                                                                                 #
                                                                                 #
                                                                                 #

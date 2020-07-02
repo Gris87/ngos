@@ -3,8 +3,8 @@
 
 
 
-#include <bootparams/bootparams.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

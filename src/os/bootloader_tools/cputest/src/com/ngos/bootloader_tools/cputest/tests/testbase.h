@@ -3,8 +3,8 @@
 
 
 
-#include <ngos/status.h>
-#include <uefi/uefimpservicesprotocol.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
 
 #include "src/com/ngos/bootloader_tools/cputest/other/testtype.h"
 

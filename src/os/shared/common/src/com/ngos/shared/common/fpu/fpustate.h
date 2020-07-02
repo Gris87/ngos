@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/bits64/fpu/fsavestate.h>
-#include <common/src/bits64/fpu/fxsavestate.h>
-#include <common/src/bits64/fpu/xsavestate.h>
-#include <ngos/types.h>
-#include <pagetable/macros.h>
+#include <common/src/com/ngos/shared/common/fpu/fsavestate.h>
+#include <common/src/com/ngos/shared/common/fpu/fxsavestate.h>
+#include <common/src/com/ngos/shared/common/fpu/xsavestate.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <common/src/com/ngos/shared/common/pagetable/macros.h>
 
 
 

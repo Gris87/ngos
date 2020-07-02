@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/bits64/fpu/fpustate.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/fpu/fpustate.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

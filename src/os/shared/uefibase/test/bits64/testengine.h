@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <macro/utils.h>
-#include <ngos/utils.h>
+#include <common/src/com/ngos/shared/common/macro/utils.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>
 #include <uefibase/src/bits64/uefi/uefilogfile.h>
 #include <uefibase/test/bits64/testresults.h>

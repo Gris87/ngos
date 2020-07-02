@@ -3,16 +3,16 @@
 
 
 
-#include <common/src/bits64/dmi/dmientryheader.h>
-#include <common/src/bits64/dmi/dmistringid.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorcharacteristicsflags.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorfamily2.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorid.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorstatus.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessortype.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorupgrade.h>
-#include <common/src/bits64/dmi/entry/lib/dmiprocessorvoltage.h>
+#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
+#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorcharacteristicsflags.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily2.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorid.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorstatus.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessortype.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorupgrade.h>
+#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltage.h>
 
 
 

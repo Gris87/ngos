@@ -1,15 +1,15 @@
 #include "bootloadergui.h"
 
-#include <common/src/bits64/graphics/graphics.h>
-#include <common/src/bits64/gui/gui.h>
-#include <common/src/bits64/gui/widgets/misc/labelwidget.h>
-#include <common/src/bits64/gui/widgets/special/rootwidget.h>
-#include <common/src/bits64/gui/widgets/special/screenwidget.h>
-#include <common/src/bits64/memory/memory.h>
-#include <common/src/bits64/string/utils.h>
-#include <guid/utils.h>
-#include <ngos/linkage.h>
-#include <ngos/utils.h>
+#include <common/src/com/ngos/shared/common/graphics/graphics.h>
+#include <common/src/com/ngos/shared/common/gui/gui.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/special/rootwidget.h>
+#include <common/src/com/ngos/shared/common/gui/widgets/special/screenwidget.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <common/src/com/ngos/shared/common/string/utils.h>
+#include <common/src/com/ngos/shared/common/guid/utils.h>
+#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <common/src/com/ngos/shared/common/ngos/utils.h>
 #include <uefibase/src/bits64/uefi/uefi.h>
 #include <uefibase/src/bits64/uefi/uefiassert.h>
 #include <uefibase/src/bits64/uefi/uefilog.h>

@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/bits64/graphics/image.h>
-#include <common/src/bits64/graphics/jpeg/jpegdecoder.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegmarkerheader.h>
-#include <common/src/bits64/graphics/jpeg/lib/jpegstartofscanmarker.h>
-#include <ngos/status.h>
+#include <common/src/com/ngos/shared/common/graphics/image.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/jpegdecoder.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkerheader.h>
+#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscanmarker.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
 
 
 

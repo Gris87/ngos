@@ -3,11 +3,11 @@
 
 
 
-#include <bootparams/bootparamsheader.h>
-#include <bootparams/memorymapentry.h>
-#include <bootparams/pciromimagewithinfo.h>
-#include <bootparams/uefiinfo.h>
-#include <uefi/uefigraphicsoutputprotocol.h>
+#include <common/src/com/ngos/shared/common/bootparams/bootparamsheader.h>
+#include <common/src/com/ngos/shared/common/bootparams/memorymapentry.h>
+#include <common/src/com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
+#include <common/src/com/ngos/shared/common/bootparams/uefiinfo.h>
+#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>
 
 
 

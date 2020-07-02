@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/bits64/time/time.h>
+#include <common/src/com/ngos/shared/common/time/time.h>
 #include <uefibase/test/bits64/testengine.h>
 
 

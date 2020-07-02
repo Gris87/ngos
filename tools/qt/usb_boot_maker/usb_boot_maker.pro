@@ -39,7 +39,8 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    ../../../include    # /include
+    ../../../include \          # /include
+    ../../../src/os/shared      # /src/os/shared
 
 
 

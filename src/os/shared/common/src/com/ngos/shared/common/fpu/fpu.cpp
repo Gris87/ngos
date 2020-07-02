@@ -1,19 +1,19 @@
 #include "fpu.h"
 
-#include <asm/instructions.h>
-#include <common/src/bits64/cpu/cpu.h>
-#include <common/src/bits64/fpu/macros.h>
-#include <common/src/bits64/fpu/xfeature/xfeatureavx512opmaskstate.h>
-#include <common/src/bits64/fpu/xfeature/xfeatureavx512zmmfrom0to15state.h>
-#include <common/src/bits64/fpu/xfeature/xfeatureavx512zmmfrom16to31state.h>
-#include <common/src/bits64/fpu/xfeature/xfeatureavxstate.h>
-#include <common/src/bits64/fpu/xfeature/xfeaturempxboundconfigandstatusregistersstate.h>
-#include <common/src/bits64/fpu/xfeature/xfeaturempxboundregistersstate.h>
-#include <common/src/bits64/fpu/xfeature/xfeaturepkrustate.h>
-#include <common/src/bits64/fpu/xfeatureflags.h>
-#include <common/src/bits64/log/assert.h>
-#include <common/src/bits64/log/log.h>
-#include <common/src/bits64/memory/memory.h>
+#include <common/src/com/ngos/shared/common/asm/instructions.h>
+#include <common/src/com/ngos/shared/common/cpu/cpu.h>
+#include <common/src/com/ngos/shared/common/fpu/macros.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeature/xfeatureavx512opmaskstate.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeature/xfeatureavx512zmmfrom0to15state.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeature/xfeatureavx512zmmfrom16to31state.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeature/xfeatureavxstate.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeature/xfeaturempxboundconfigandstatusregistersstate.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeature/xfeaturempxboundregistersstate.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeature/xfeaturepkrustate.h>
+#include <common/src/com/ngos/shared/common/fpu/xfeatureflags.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
+#include <common/src/com/ngos/shared/common/memory/memory.h>
 
 
 

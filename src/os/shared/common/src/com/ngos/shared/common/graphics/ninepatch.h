@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/bits64/containers/list.h>
-#include <common/src/bits64/graphics/stretchrange.h>
-#include <ngos/status.h>
-#include <ngos/types.h>
+#include <common/src/com/ngos/shared/common/containers/list.h>
+#include <common/src/com/ngos/shared/common/graphics/stretchrange.h>
+#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <common/src/com/ngos/shared/common/ngos/types.h>
 
 
 
