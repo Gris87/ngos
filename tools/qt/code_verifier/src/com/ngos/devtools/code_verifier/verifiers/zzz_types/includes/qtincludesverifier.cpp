@@ -90,8 +90,6 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     addSubfoldersWithQtPro(blockTarget, parentFolder, "src/os/bootloader_tools");
     addSubfoldersWithQtPro(blockTarget, parentFolder, "tools/qt");
 
-    blockTarget.removeOne("src/os/bootloader_tools/");
-
     blockTarget.sort();
 
 
@@ -115,26 +113,46 @@ void QtIncludesVerifier::addSubfoldersWithQtPro(QStringList &block, const QStrin
 
 
 
-        if (
-            subfolder == "include"
-            ||
-            subfolder == "shared"
-            ||
-            proFile.exists()
-           )
+        if (proFile.exists())
         {
-            block.append(subfolderPath + '/');
-
-            if (proFile.exists())
+            if (QDir(parentFolder + '/' + subfolderPath + "/src").exists())
             {
-                if (proFile.open(QIODevice::ReadOnly))
-                {
-                    if (proFile.readAll().contains("QT += core gui widgets"))
-                    {
-                        block.append(subfolderPath + "/build/gen/");
-                    }
+                block.append(subfolderPath + "/src/");
+            }
 
-                    proFile.close();
+            if (QDir(parentFolder + '/' + subfolderPath + "/test").exists())
+            {
+                block.append(subfolderPath + "/test/");
+            }
+
+            if (proFile.open(QIODevice::ReadOnly))
+            {
+                if (proFile.readAll().contains("QT += core gui widgets"))
+                {
+                    block.append(subfolderPath + "/build/gen/");
+                }
+
+                proFile.close();
+            }
+        }
+        else
+        if (subfolder == "shared")
+        {
+            QStringList sharedSubfolders = QDir(parentFolder + '/' + subfolderPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+            for (qint64 j = 0; j < sharedSubfolders.length(); ++j)
+            {
+                QString sharedSubfolder     = sharedSubfolders.at(j);
+                QString sharedSubfolderPath = subfolderPath + '/' + sharedSubfolder;
+
+                if (QDir(parentFolder + '/' + sharedSubfolderPath + "/src").exists())
+                {
+                    block.append(sharedSubfolderPath + "/src/");
+                }
+
+                if (QDir(parentFolder + '/' + sharedSubfolderPath + "/test").exists())
+                {
+                    block.append(sharedSubfolderPath + "/test/");
                 }
             }
         }

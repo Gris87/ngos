@@ -43,7 +43,7 @@ INCLUDEPATH += \
     ../../../include \                          # /include
     ../../../src/os/configure \                 # /src/os/configure
     ../../../src/os/shared \                    # /src/os/shared
-    ../include                                  # /tools/qt/include
+    ../shared/console                           # /tools/qt/shared/console
 
 
 
@@ -52,7 +52,7 @@ LIBS += \
 
 
 
-include(../include/console/console.pri)
+include(../shared/console/console.pri)
 
 
 

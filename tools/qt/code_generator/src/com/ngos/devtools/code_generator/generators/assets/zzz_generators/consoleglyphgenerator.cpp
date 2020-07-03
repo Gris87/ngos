@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 #include <QFile>
-#include <console/console.h>
+#include <src/com/ngos/devtools/shared/console/console.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 

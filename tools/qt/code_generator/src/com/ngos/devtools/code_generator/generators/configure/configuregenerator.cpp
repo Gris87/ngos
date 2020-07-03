@@ -1,7 +1,7 @@
 #include "configuregenerator.h"
 
 #include <QDir>
-#include <console/console.h>
+#include <src/com/ngos/devtools/shared/console/console.h>
 
 
 

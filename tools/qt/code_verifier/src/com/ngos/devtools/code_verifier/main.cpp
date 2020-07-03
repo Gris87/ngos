@@ -5,7 +5,7 @@
 #include <QList>
 #include <QProcess>
 #include <QQueue>
-#include <console/console.h>
+#include <src/com/ngos/devtools/shared/console/console.h>
 
 #include "src/com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
 #include "src/com/ngos/devtools/code_verifier/threads/codeworkerthread.h"

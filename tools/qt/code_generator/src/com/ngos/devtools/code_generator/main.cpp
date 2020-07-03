@@ -1,7 +1,7 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QFile>
-#include <console/console.h>
+#include <src/com/ngos/devtools/shared/console/console.h>
 
 #include "src/com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h"
 #include "src/com/ngos/devtools/code_generator/generators/common/commongenerator.h"

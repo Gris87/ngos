@@ -37,11 +37,11 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    ../include      # /tools/qt/include
+    ../shared/console   # /tools/qt/shared/console
 
 
 
-include(../include/console/console.pri)
+include(../shared/console/console.pri)
 
 
 

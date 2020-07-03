@@ -1,6 +1,6 @@
 #include "cppsinglecharverifier.h"
 
-#include <console/console.h>
+#include <src/com/ngos/devtools/shared/console/console.h>
 
 #include "src/com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
 

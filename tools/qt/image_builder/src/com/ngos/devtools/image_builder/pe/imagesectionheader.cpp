@@ -1,6 +1,6 @@
 #include "imagesectionheader.h"
 
-#include <console/console.h>
+#include <src/com/ngos/devtools/shared/console/console.h>
 
 
 

@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QIODevice>
 #include <buildconfig.h>
-#include <console/console.h>
+#include <src/com/ngos/devtools/shared/console/console.h>
 #include <src/com/ngos/configure/other/kerneldescriptor.h>
 
 
