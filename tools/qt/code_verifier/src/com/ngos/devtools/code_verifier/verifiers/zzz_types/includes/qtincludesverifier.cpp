@@ -57,7 +57,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                     &&
                     !QFile::exists(parentFolder + '/' + line + "/Makefile")
                     &&
-                    !QDir(parentFolder + '/' + line).entryList(QStringList() << "*.pro", QDir::Files).length() // QDir(parentFolder + '/' + line).entryList(QStringList() << "*.pro", QDir::Files).length() == 0
+                    QDir(parentFolder + '/' + line).entryList(QStringList() << "*.pro", QDir::Files).length() == 0
                    )
                 {
                     worker->addWarning(path, i, "Invalid path included");
