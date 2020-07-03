@@ -1839,12 +1839,6 @@ tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peheader.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peheader.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peoptheader.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peoptheader.h
-tools/qt/include/console/console.cpp
-tools/qt/include/console/console.h
-tools/qt/include/console/console.pri
-tools/qt/include/elf/elf.pri
-tools/qt/include/elf/elfobject.cpp
-tools/qt/include/elf/elfobject.h
 tools/qt/qmake/.gitignore
 tools/qt/qmake/qmake.pro
 tools/qt/qmake/README.md
@@ -1855,6 +1849,12 @@ tools/qt/qmake/src/com/ngos/devtools/qmake/main/qmake.h
 tools/qt/qmake/src/com/ngos/devtools/qmake/threads/searchdependenciesthread.cpp
 tools/qt/qmake/src/com/ngos/devtools/qmake/threads/searchdependenciesthread.h
 tools/qt/qt.pro
+tools/qt/shared/console/console.pri
+tools/qt/shared/console/src/com/ngos/devtools/shared/console/console.cpp
+tools/qt/shared/console/src/com/ngos/devtools/shared/console/console.h
+tools/qt/shared/elf/elf.pri
+tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.cpp
+tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.h
 tools/qt/test_verifier/.gitignore
 tools/qt/test_verifier/README.md
 tools/qt/test_verifier/Screenshot.png
