@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
-#include "src/com/ngos/bootloader_tools/hddtest/main/hddtest.h"
-#include "src/com/ngos/bootloader_tools/hddtest/main/hddtestgui.h"
+#include "com/ngos/bootloader_tools/hddtest/main/hddtest.h"
+#include "com/ngos/bootloader_tools/hddtest/main/hddtestgui.h"
 
 
 

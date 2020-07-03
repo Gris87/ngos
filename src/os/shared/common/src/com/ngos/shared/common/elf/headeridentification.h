@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/elf/class.h>
-#include <common/src/com/ngos/shared/common/elf/data.h>
-#include <common/src/com/ngos/shared/common/elf/fileversion.h>
-#include <common/src/com/ngos/shared/common/elf/osabi.h>
+#include <com/ngos/shared/common/elf/class.h>
+#include <com/ngos/shared/common/elf/data.h>
+#include <com/ngos/shared/common/elf/fileversion.h>
+#include <com/ngos/shared/common/elf/osabi.h>
 
 
 

@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/uefi/macros.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefifileprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
+#include <com/ngos/shared/common/uefi/macros.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefifileprotocol.h>
+#include <com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

@@ -2,9 +2,9 @@
 // Please do not modify it manually
 #include "x86featuresnames.h"
 
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

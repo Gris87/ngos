@@ -1,9 +1,9 @@
 #include "setupbootparams.h"
 
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setupbootparams.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/uefibase/main/setupbootparams.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/com/ngos/shared/common/cpu/cpufamily.h>
-#include <common/src/com/ngos/shared/common/cpu/cpuvendor.h>
-#include <common/src/com/ngos/shared/common/cpu/x86bug.h>
-#include <common/src/com/ngos/shared/common/cpu/x86feature.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/cpu/cpufamily.h>
+#include <com/ngos/shared/common/cpu/cpuvendor.h>
+#include <com/ngos/shared/common/cpu/x86bug.h>
+#include <com/ngos/shared/common/cpu/x86feature.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

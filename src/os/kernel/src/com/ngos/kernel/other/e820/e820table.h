@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/bootparams/memorymapentry.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/bootparams/memorymapentry.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

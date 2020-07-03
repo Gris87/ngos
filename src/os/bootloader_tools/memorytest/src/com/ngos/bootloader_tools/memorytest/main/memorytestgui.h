@@ -3,21 +3,21 @@
 
 
 
-#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/dmi/dmimemorydevice.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/button.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/tablewidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/tabwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/progressbarwidget.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/dmi/dmimemorydevice.h>
+#include <com/ngos/shared/common/gui/widgets/controls/button.h>
+#include <com/ngos/shared/common/gui/widgets/controls/tablewidget.h>
+#include <com/ngos/shared/common/gui/widgets/controls/tabwidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/progressbarwidget.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
+#include <com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
+#include <com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
 
-#include "src/com/ngos/bootloader_tools/memorytest/other/testmode.h"
-#include "src/com/ngos/bootloader_tools/memorytest/other/testtype.h"
+#include "com/ngos/bootloader_tools/memorytest/other/testmode.h"
+#include "com/ngos/bootloader_tools/memorytest/other/testtype.h"
 
 
 

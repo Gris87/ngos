@@ -37,8 +37,9 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
+    src \                   # /tools/qt/qmake/src
     ../../../include \      # /include
-    ../shared/console       # /tools/qt/shared/console
+    ../shared/console/src   # /tools/qt/shared/console/src
 
 
 

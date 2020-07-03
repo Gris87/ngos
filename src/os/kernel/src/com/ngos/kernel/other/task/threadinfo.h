@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
-#include <src/com/ngos/kernel/other/task/threadinfoflags.h>
+#include <com/ngos/kernel/other/task/threadinfoflags.h>
 
 
 

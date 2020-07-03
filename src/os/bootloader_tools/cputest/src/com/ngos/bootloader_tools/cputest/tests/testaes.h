@@ -3,9 +3,9 @@
 
 
 
-#include "src/com/ngos/bootloader_tools/cputest/tests/testbase.h"
+#include "com/ngos/bootloader_tools/cputest/tests/testbase.h"
 
-#include <common/src/com/ngos/shared/common/cryptography/aes.h>
+#include <com/ngos/shared/common/cryptography/aes.h>
 
 
 

@@ -4,18 +4,18 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddw.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubw.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

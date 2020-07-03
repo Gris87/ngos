@@ -1,14 +1,14 @@
 #include "reservepciromimages.h"
 
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/pagetable/utils.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/pagetable/utils.h>
 
-#include <src/com/ngos/kernel/other/bootparams/bootparams.h>
-#include <src/com/ngos/kernel/other/e820/e820.h>
-#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
-#include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <com/ngos/kernel/other/bootparams/bootparams.h>
+#include <com/ngos/kernel/other/e820/e820.h>
+#include <com/ngos/kernel/other/ioremap/ioremap.h>
+#include <com/ngos/kernel/other/memorymanager/memorymanager.h>
 
 
 

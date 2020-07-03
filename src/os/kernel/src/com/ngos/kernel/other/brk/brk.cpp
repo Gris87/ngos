@@ -1,9 +1,9 @@
 #include "brk.h"
 
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

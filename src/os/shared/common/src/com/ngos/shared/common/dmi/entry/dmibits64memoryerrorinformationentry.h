@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibits64memoryerrorinformationerrorgranularity.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibits64memoryerrorinformationerroroperation.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibits64memoryerrorinformationerrortype.h>
+#include <com/ngos/shared/common/dmi/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmibits64memoryerrorinformationerrorgranularity.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmibits64memoryerrorinformationerroroperation.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmibits64memoryerrorinformationerrortype.h>
 
 
 

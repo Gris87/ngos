@@ -1,15 +1,15 @@
 #include "randomization.h"
 
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
-#include <common/src/com/ngos/shared/common/random/random.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
-#include <common/src/com/ngos/shared/common/pagetable/utils.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/random/random.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/pagetable/utils.h>
 
-#include "src/com/ngos/configure/b_early/other/memoryarea.h"
-#include "src/com/ngos/configure/b_early/other/pagetable/pagetable.h"
-#include "src/com/ngos/configure/b_early/other/unavailablememoryarea.h"
+#include "com/ngos/configure/b_early/other/memoryarea.h"
+#include "com/ngos/configure/b_early/other/pagetable/pagetable.h"
+#include "com/ngos/configure/b_early/other/unavailablememoryarea.h"
 
 
 

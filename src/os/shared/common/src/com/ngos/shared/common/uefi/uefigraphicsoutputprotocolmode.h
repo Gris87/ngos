@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputmodeinformation.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefigraphicsoutputmodeinformation.h>
 
 
 

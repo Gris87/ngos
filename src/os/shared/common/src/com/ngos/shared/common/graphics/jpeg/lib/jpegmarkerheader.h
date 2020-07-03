@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkertype.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegmarkertype.h>
+#include <com/ngos/shared/common/ngos/status.h>
 
 
 

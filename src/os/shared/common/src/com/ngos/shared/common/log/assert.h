@@ -4,14 +4,14 @@
 
 
 #if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
 #else
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/serial/serial.h>
-#include <common/src/com/ngos/shared/common/macro/utils.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/serial/serial.h>
+#include <com/ngos/shared/common/macro/utils.h>
+#include <com/ngos/shared/common/ngos/status.h>
 #endif
 
 

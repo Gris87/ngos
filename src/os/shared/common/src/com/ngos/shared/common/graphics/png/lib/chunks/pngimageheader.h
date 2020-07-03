@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/graphics/png/lib/pngcolortype.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/pngcompressionmethod.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/pngfiltermethod.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/pnginterlacemethod.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/graphics/png/lib/pngcolortype.h>
+#include <com/ngos/shared/common/graphics/png/lib/pngcompressionmethod.h>
+#include <com/ngos/shared/common/graphics/png/lib/pngfiltermethod.h>
+#include <com/ngos/shared/common/graphics/png/lib/pnginterlacemethod.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

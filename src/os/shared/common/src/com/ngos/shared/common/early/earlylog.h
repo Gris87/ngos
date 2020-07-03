@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/console/console.h>
-#include <common/src/com/ngos/shared/common/console/graphicalconsole.h>
-#include <common/src/com/ngos/shared/common/printf/printf.h>
-#include <common/src/com/ngos/shared/common/serial/serial.h>
+#include <com/ngos/shared/common/console/console.h>
+#include <com/ngos/shared/common/console/graphicalconsole.h>
+#include <com/ngos/shared/common/printf/printf.h>
+#include <com/ngos/shared/common/serial/serial.h>
 
 
 

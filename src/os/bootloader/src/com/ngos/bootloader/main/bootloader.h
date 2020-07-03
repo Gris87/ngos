@@ -3,15 +3,15 @@
 
 
 
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/containers/list.h>
-#include <common/src/com/ngos/shared/common/graphics/image.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/uefi/uefidevicepath.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/containers/list.h>
+#include <com/ngos/shared/common/graphics/image.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/uefidevicepath.h>
+#include <com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
 
-#include "src/com/ngos/bootloader/other/osinfo.h"
-#include "src/com/ngos/bootloader/other/volumeinfo.h"
+#include "com/ngos/bootloader/other/osinfo.h"
+#include "com/ngos/bootloader/other/volumeinfo.h"
 
 
 

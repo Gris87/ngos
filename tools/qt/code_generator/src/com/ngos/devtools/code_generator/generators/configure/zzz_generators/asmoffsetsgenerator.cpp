@@ -1,7 +1,7 @@
 #include "asmoffsetsgenerator.h"
 
-#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
-#include <src/com/ngos/configure/other/kerneldescriptor.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/configure/other/kerneldescriptor.h>
 
 
 

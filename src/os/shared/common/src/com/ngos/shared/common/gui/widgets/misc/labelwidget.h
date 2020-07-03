@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
+#include <com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/com/ngos/shared/common/gui/other/horizontalalignment.h>
-#include <common/src/com/ngos/shared/common/gui/other/verticalalignment.h>
+#include <com/ngos/shared/common/gui/other/horizontalalignment.h>
+#include <com/ngos/shared/common/gui/other/verticalalignment.h>
 
 
 

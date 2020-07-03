@@ -4,12 +4,12 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213pd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213ps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213pd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213ps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213pd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213ps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213pd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213ps.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

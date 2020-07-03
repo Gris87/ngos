@@ -1,10 +1,10 @@
 #include "time.h"
 
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
 
 #if defined(UEFI_APPLICATION)                       // Defined in Makefile
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <com/ngos/shared/uefibase/uefi/uefi.h>
 #endif
 
 

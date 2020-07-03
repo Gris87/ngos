@@ -1,15 +1,15 @@
 #include "testsequentialwrite.h"
 
-#include <common/src/com/ngos/shared/common/asm/instructions.h>
-#include <common/src/com/ngos/shared/common/fpu/fpu.h>
-#include <common/src/com/ngos/shared/common/macro/constants.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setupcr4.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/fpu/fpu.h>
+#include <com/ngos/shared/common/macro/constants.h>
+#include <com/ngos/shared/uefibase/main/setupcr4.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
-#include "src/com/ngos/bootloader_tools/memorytest/main/memorytest.h"
-#include "src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h"
-#include "src/com/ngos/bootloader_tools/memorytest/tests/asm_writememoryblock.h"
+#include "com/ngos/bootloader_tools/memorytest/main/memorytest.h"
+#include "com/ngos/bootloader_tools/memorytest/main/memorytestgui.h"
+#include "com/ngos/bootloader_tools/memorytest/tests/asm_writememoryblock.h"
 
 
 

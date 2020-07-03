@@ -5,10 +5,10 @@
 #include <QList>
 #include <QProcess>
 #include <QQueue>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
-#include "src/com/ngos/devtools/test_verifier/threads/testverifythread.h"
-#include "src/com/ngos/devtools/test_verifier/threads/testworkerthread.h"
+#include "com/ngos/devtools/test_verifier/threads/testverifythread.h"
+#include "com/ngos/devtools/test_verifier/threads/testworkerthread.h"
 
 
 

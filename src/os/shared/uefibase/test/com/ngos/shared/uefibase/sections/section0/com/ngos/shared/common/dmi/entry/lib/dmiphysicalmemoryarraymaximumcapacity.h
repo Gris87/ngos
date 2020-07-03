@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

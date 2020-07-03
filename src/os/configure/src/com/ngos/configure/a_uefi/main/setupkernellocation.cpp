@@ -1,14 +1,14 @@
 #include "setupkernellocation.h"
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
-#include "src/com/ngos/configure/other/configuredefines.h"
-#include "src/com/ngos/configure/other/kerneldescriptor.h"
+#include "com/ngos/configure/other/configuredefines.h"
+#include "com/ngos/configure/other/kerneldescriptor.h"
 
 
 

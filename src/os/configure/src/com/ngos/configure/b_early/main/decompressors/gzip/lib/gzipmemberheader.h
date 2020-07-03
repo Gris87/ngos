@@ -4,12 +4,12 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
-#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipcompressionmethod.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberextraflags.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberflags.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipoperatingsystem.h"
+#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipcompressionmethod.h"
+#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberextraflags.h"
+#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberflags.h"
+#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipoperatingsystem.h"
 
 
 

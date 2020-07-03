@@ -2,7 +2,7 @@
 
 #include <QFile>
 #include <QRegularExpression>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 
@@ -51,9 +51,9 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
     lines.append("#include \"x86featuresnames.h\"");
     addOneBlankLine(lines);
-    lines.append("#include <common/src/com/ngos/shared/common/log/assert.h>");
-    lines.append("#include <common/src/com/ngos/shared/common/log/log.h>");
-    lines.append("#include <common/src/com/ngos/shared/common/ngos/utils.h>");
+    lines.append("#include <com/ngos/shared/common/log/assert.h>");
+    lines.append("#include <com/ngos/shared/common/log/log.h>");
+    lines.append("#include <com/ngos/shared/common/ngos/utils.h>");
 
     addThreeBlankLines(lines);
 

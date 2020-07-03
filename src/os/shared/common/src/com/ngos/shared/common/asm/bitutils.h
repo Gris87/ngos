@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/asm/instructions.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

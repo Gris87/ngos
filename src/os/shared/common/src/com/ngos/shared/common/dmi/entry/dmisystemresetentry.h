@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemresetcapabilities.h>
+#include <com/ngos/shared/common/dmi/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmisystemresetcapabilities.h>
 
 
 

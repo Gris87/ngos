@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QString>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
-#include "src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.h"
+#include "com/ngos/devtools/build_config_maker/main/buildconfigmaker.h"
 
 
 

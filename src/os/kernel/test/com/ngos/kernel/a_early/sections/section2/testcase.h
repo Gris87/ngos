@@ -5,19 +5,19 @@
 
 #include <buildconfig.h>
 
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/brk/brk.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/cpu/cpumask.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/e820/e820.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/hypervisor/kvm/kvm.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/ioremap/ioremap.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/ioremap/utils.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/memorymanager/memoryblockregion.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/memorymanager/memorymanager.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/pagetable/addressconversion.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/pagetable/dynamicpagetable.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/task/utils.h>
-#include <test/com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/types.h>
-#include <test/com/ngos/kernel/a_early/testengine.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/brk/brk.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/cpu/cpumask.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/e820/e820.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/hypervisor/kvm/kvm.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/ioremap/ioremap.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/ioremap/utils.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/memorymanager/memoryblockregion.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/pagetable/addressconversion.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/pagetable/dynamicpagetable.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/task/utils.h>
+#include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/types.h>
+#include <com/ngos/kernel/a_early/testengine.h>
 
 
 

@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/elf/relatype.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/elf/relatype.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

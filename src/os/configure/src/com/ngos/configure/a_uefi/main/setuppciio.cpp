@@ -1,12 +1,12 @@
 #include "setuppciio.h"
 
-#include <common/src/com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocol.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/uefi/uefipciioprotocol.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
-#include "src/com/ngos/configure/a_uefi/other/pciregisters.h"
+#include "com/ngos/configure/a_uefi/other/pciregisters.h"
 
 
 

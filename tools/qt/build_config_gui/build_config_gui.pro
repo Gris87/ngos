@@ -38,6 +38,11 @@ UI_DIR      = build/gen
 
 
 
+INCLUDEPATH += \
+    src     # /tools/qt/build_config_gui/src
+
+
+
 SOURCES += \
     src/com/ngos/devtools/build_config_gui/main.cpp \
     src/com/ngos/devtools/build_config_gui/main/aboutdialog.cpp \

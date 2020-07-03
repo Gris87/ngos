@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/macro/constants.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
+#include <com/ngos/shared/common/macro/constants.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
 
-#include "src/com/ngos/bootloader_tools/memorytest/other/testtype.h"
+#include "com/ngos/bootloader_tools/memorytest/other/testtype.h"
 
 
 

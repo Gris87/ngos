@@ -1,9 +1,9 @@
 #include "exitbootservices.h"
 
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
-#include "src/com/ngos/configure/a_uefi/main/setupmemorymapentries.h"
+#include "com/ngos/configure/a_uefi/main/setupmemorymapentries.h"
 
 
 

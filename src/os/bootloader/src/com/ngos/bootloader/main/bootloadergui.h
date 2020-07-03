@@ -3,16 +3,16 @@
 
 
 
-#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/button.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/gui/widgets/controls/button.h>
+#include <com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
+#include <com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
 
-#include "src/com/ngos/bootloader/other/ostype.h"
-#include "src/com/ngos/bootloader/other/volumetype.h"
+#include "com/ngos/bootloader/other/ostype.h"
+#include "com/ngos/bootloader/other/volumetype.h"
 
 
 

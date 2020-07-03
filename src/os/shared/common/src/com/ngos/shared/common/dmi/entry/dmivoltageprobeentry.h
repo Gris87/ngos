@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
-#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocation.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmivoltageprobestatus.h>
+#include <com/ngos/shared/common/dmi/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/dmistringid.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocation.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmivoltageprobestatus.h>
 
 
 

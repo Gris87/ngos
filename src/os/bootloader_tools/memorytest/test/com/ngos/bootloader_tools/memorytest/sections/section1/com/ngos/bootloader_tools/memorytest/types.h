@@ -4,17 +4,17 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
-#include "src/com/ngos/bootloader_tools/memorytest/main/memorytest.h"
-#include "src/com/ngos/bootloader_tools/memorytest/main/memorytestgui.h"
-#include "src/com/ngos/bootloader_tools/memorytest/other/testmode.h"
-#include "src/com/ngos/bootloader_tools/memorytest/other/testtype.h"
-#include "src/com/ngos/bootloader_tools/memorytest/tests/testbase.h"
-#include "src/com/ngos/bootloader_tools/memorytest/tests/testrandomread.h"
-#include "src/com/ngos/bootloader_tools/memorytest/tests/testrandomwrite.h"
-#include "src/com/ngos/bootloader_tools/memorytest/tests/testsequentialread.h"
-#include "src/com/ngos/bootloader_tools/memorytest/tests/testsequentialwrite.h"
+#include "com/ngos/bootloader_tools/memorytest/main/memorytest.h"
+#include "com/ngos/bootloader_tools/memorytest/main/memorytestgui.h"
+#include "com/ngos/bootloader_tools/memorytest/other/testmode.h"
+#include "com/ngos/bootloader_tools/memorytest/other/testtype.h"
+#include "com/ngos/bootloader_tools/memorytest/tests/testbase.h"
+#include "com/ngos/bootloader_tools/memorytest/tests/testrandomread.h"
+#include "com/ngos/bootloader_tools/memorytest/tests/testrandomwrite.h"
+#include "com/ngos/bootloader_tools/memorytest/tests/testsequentialread.h"
+#include "com/ngos/bootloader_tools/memorytest/tests/testsequentialwrite.h"
 
 
 

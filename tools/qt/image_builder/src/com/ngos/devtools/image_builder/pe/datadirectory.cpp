@@ -1,6 +1,6 @@
 #include "datadirectory.h"
 
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 

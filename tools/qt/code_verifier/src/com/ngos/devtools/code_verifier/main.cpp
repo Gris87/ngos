@@ -5,11 +5,11 @@
 #include <QList>
 #include <QProcess>
 #include <QQueue>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
-#include "src/com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
-#include "src/com/ngos/devtools/code_verifier/threads/codeworkerthread.h"
-#include "src/com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h"
+#include "com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
+#include "com/ngos/devtools/code_verifier/threads/codeworkerthread.h"
+#include "com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h"
 
 
 

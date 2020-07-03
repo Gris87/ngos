@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
-#include <src/com/ngos/kernel/other/kerneldefines.h>
-#include <src/com/ngos/kernel/other/task/taskstate.h>
-#include <src/com/ngos/kernel/other/task/threadinfo.h>
+#include <com/ngos/kernel/other/kerneldefines.h>
+#include <com/ngos/kernel/other/task/taskstate.h>
+#include <com/ngos/kernel/other/task/threadinfo.h>
 
 
 

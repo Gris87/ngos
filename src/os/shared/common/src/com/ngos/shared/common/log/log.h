@@ -4,12 +4,12 @@
 
 
 #if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/early/earlylog.h>
 #else
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/serial/serial.h>
+#include <com/ngos/shared/common/serial/serial.h>
 #endif
 
 

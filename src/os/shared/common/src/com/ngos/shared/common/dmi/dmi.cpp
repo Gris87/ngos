@@ -1,18 +1,18 @@
 #include "dmi.h"
 
-#include <common/src/com/ngos/shared/common/dmi/entry/dmimemorydeviceentry.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/string/utils.h>
-#include <common/src/com/ngos/shared/common/uuid/utils.h>
+#include <com/ngos/shared/common/dmi/entry/dmimemorydeviceentry.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/string/utils.h>
+#include <com/ngos/shared/common/uuid/utils.h>
 
 #ifdef UEFI_APPLICATION // Defined in Makefile
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <com/ngos/shared/uefibase/uefi/uefi.h>
 #else
-#include <src/com/ngos/kernel/other/brk/brk.h>
-#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
-#include <src/com/ngos/kernel/other/uefi/uefi.h>
+#include <com/ngos/kernel/other/brk/brk.h>
+#include <com/ngos/kernel/other/ioremap/ioremap.h>
+#include <com/ngos/kernel/other/uefi/uefi.h>
 #endif
 
 

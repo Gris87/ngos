@@ -3,7 +3,7 @@
 
 
 
-#include "src/com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h"
+#include "com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h"
 
 
 

@@ -1,18 +1,18 @@
 #include "png.h"
 
-#include <common/src/com/ngos/shared/common/checksum/crc.h>
-#include <common/src/com/ngos/shared/common/graphics/graphics.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/pngheader.h>
-#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
-#include <common/src/com/ngos/shared/common/graphics/rgbpixel.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/memory/malloc.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/string/string.h>
-#include <common/src/com/ngos/shared/common/zlib/zlib.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/checksum/crc.h>
+#include <com/ngos/shared/common/graphics/graphics.h>
+#include <com/ngos/shared/common/graphics/png/lib/pngheader.h>
+#include <com/ngos/shared/common/graphics/rgbapixel.h>
+#include <com/ngos/shared/common/graphics/rgbpixel.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/malloc.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/string/string.h>
+#include <com/ngos/shared/common/zlib/zlib.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

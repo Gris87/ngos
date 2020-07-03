@@ -4,17 +4,17 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseaddps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssedivps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemaxps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseminps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemulps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssercpps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssersqrtps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesqrtps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesubps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseaddps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssedivps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemaxps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseminps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemulps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssercpps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssersqrtps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesqrtps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesubps.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

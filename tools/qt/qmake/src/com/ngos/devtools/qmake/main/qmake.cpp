@@ -7,9 +7,9 @@
 #include <QIODevice>
 #include <QXmlStreamReader>
 #include <buildconfig.h>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
-#include "src/com/ngos/devtools/qmake/threads/searchdependenciesthread.h"
+#include "com/ngos/devtools/qmake/threads/searchdependenciesthread.h"
 
 
 
@@ -521,7 +521,8 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
     {
         lines.append("");
         lines.append("# Includes:");
-        lines.append("# .                               # " + workingDirectory);
+        lines.append("# src                             # " + workingDirectory + "/src");
+        lines.append("# test                            # " + workingDirectory + "/test");
 
         for (qint64 i = 0; i < includes.length(); ++i)
         {
@@ -533,7 +534,8 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
 
         lines.append("INCLUDES            = \\");
-        lines.append("\t-I . \\");
+        lines.append("\t-I src \\");
+        lines.append("\t-I test \\");
 
         for (qint64 i = 0; i < includes.length(); ++i)
         {
@@ -542,12 +544,14 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
     }
     else
     {
-        if (defines.length() > 1)
-        {
-            lines.append("");
-        }
+        lines.append("");
+        lines.append("# Includes:");
+        lines.append("# src                             # " + workingDirectory + "/src");
+        lines.append("# test                            # " + workingDirectory + "/test");
 
-        lines.append("INCLUDES            = -I .    # " + workingDirectory);
+        lines.append("INCLUDES            = \\");
+        lines.append("\t-I src \\");
+        lines.append("\t-I test");
     }
 
     tail += " $(INCLUDES)";

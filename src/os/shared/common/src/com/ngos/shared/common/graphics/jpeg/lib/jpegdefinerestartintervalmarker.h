@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkerheader.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegmarkerheader.h>
 
 
 

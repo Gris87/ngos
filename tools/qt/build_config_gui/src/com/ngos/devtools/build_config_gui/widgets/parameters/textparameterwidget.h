@@ -3,9 +3,9 @@
 
 
 
-#include "src/com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h"
+#include "com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h"
 
-#include "src/com/ngos/devtools/build_config_gui/widgets/common/trackinglineedit.h"
+#include "com/ngos/devtools/build_config_gui/widgets/common/trackinglineedit.h"
 
 
 

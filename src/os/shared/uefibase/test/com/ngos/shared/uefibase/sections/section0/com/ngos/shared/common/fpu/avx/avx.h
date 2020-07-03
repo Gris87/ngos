@@ -4,17 +4,17 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvaddps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvdivps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmaxps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvminps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmulps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrcpps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrsqrtps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsqrtps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsubps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvaddps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvdivps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmaxps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvminps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmulps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrcpps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrsqrtps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsqrtps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsubps.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

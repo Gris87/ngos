@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/dmientrytype.h>
+#include <com/ngos/shared/common/dmi/dmientrytype.h>
 
 
 

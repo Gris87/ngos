@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/string/string.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/string/string.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
-#include "src/com/ngos/bootloader/main/bootloader.h"
+#include "com/ngos/bootloader/main/bootloader.h"
 
 
 

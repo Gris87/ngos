@@ -1,17 +1,17 @@
 #include "graphicalconsole.h"
 
-#include <common/src/com/ngos/shared/common/assets/assets.h>
-#include <common/src/com/ngos/shared/common/console/lib/glyphdata.h>
-#include <common/src/com/ngos/shared/common/graphics/graphics.h>
-#include <common/src/com/ngos/shared/common/graphics/image.h>
-#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
-#include <common/src/com/ngos/shared/common/graphics/rgbpixel.h>
-#include <common/src/com/ngos/shared/common/gui/gui.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/consolewidget.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/console/lib/glyphdata.h>
+#include <com/ngos/shared/common/graphics/graphics.h>
+#include <com/ngos/shared/common/graphics/image.h>
+#include <com/ngos/shared/common/graphics/rgbapixel.h>
+#include <com/ngos/shared/common/graphics/rgbpixel.h>
+#include <com/ngos/shared/common/gui/gui.h>
+#include <com/ngos/shared/common/gui/widgets/misc/consolewidget.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/printf/printf.h>
 
 
 

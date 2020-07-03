@@ -1,16 +1,16 @@
 #include "setupidthandlers.h"
 
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
-#include <common/src/com/ngos/shared/common/gdt/segments.h>
-#include <common/src/com/ngos/shared/common/idt/flags.h>
-#include <common/src/com/ngos/shared/common/idt/idtdescriptor.h>
-#include <common/src/com/ngos/shared/common/idt/idtgatetype.h>
-#include <common/src/com/ngos/shared/common/idt/idtregister.h>
-#include <common/src/com/ngos/shared/common/idt/macros.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/gdt/segments.h>
+#include <com/ngos/shared/common/idt/flags.h>
+#include <com/ngos/shared/common/idt/idtdescriptor.h>
+#include <com/ngos/shared/common/idt/idtgatetype.h>
+#include <com/ngos/shared/common/idt/idtregister.h>
+#include <com/ngos/shared/common/idt/macros.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
 
-#include <src/com/ngos/kernel/a_early/main/asm_setupidthandlers.h>
+#include <com/ngos/kernel/a_early/main/asm_setupidthandlers.h>
 
 
 

@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
-#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibaseboardfeatureflags.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmibaseboardtype.h>
+#include <com/ngos/shared/common/dmi/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/dmistringid.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmibaseboardfeatureflags.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmibaseboardtype.h>
 
 
 

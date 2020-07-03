@@ -1,10 +1,10 @@
 #include "xzfilterbcj.h"
 
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
 
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
 
 
 

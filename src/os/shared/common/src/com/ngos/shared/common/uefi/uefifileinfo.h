@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/uefi/uefifileattributeflags.h>
-#include <common/src/com/ngos/shared/common/uefi/uefitime.h>
+#include <com/ngos/shared/common/uefi/uefifileattributeflags.h>
+#include <com/ngos/shared/common/uefi/uefitime.h>
 
 
 

@@ -1,8 +1,8 @@
 #include "testresults.h"
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
 
 
 

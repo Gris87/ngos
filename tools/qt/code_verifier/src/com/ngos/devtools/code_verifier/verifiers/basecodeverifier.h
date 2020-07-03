@@ -5,8 +5,8 @@
 
 #include <QList>
 
-#include "src/com/ngos/devtools/code_verifier/other/codefileinfo.h"
-#include "src/com/ngos/devtools/code_verifier/threads/codeworkerthread.h"
+#include "com/ngos/devtools/code_verifier/other/codefileinfo.h"
+#include "com/ngos/devtools/code_verifier/threads/codeworkerthread.h"
 
 
 

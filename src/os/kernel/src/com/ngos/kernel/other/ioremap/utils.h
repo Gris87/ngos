@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/page/macros.h>
+#include <com/ngos/shared/common/page/macros.h>
 
-#include <src/com/ngos/kernel/other/ioremap/macros.h>
+#include <com/ngos/kernel/other/ioremap/macros.h>
 
 
 

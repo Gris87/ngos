@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/dmientryheader.h>
-#include <common/src/com/ngos/shared/common/dmi/dmistringid.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobelocation.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobestatus.h>
+#include <com/ngos/shared/common/dmi/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/dmistringid.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobelocation.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobestatus.h>
 
 
 

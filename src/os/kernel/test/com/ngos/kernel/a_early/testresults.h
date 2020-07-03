@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/ngos/status.h>
 
 
 

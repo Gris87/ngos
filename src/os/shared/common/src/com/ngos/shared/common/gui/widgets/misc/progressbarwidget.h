@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
+#include <com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/imagewidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/imagewidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
 
 
 

@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QString>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
-#include "src/com/ngos/devtools/qmake/main/qmake.h"
+#include "com/ngos/devtools/qmake/main/qmake.h"
 
 
 

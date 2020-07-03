@@ -4,9 +4,9 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/asm/instructions.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

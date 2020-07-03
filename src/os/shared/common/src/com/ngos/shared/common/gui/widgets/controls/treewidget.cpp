@@ -1,11 +1,11 @@
 #include "treewidget.h"
 
-#include <common/src/com/ngos/shared/common/graphics/graphics.h>
-#include <common/src/com/ngos/shared/common/gui/gui.h>
-#include <common/src/com/ngos/shared/common/gui/other/defines.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/time/time.h>
+#include <com/ngos/shared/common/graphics/graphics.h>
+#include <com/ngos/shared/common/gui/gui.h>
+#include <com/ngos/shared/common/gui/other/defines.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/time/time.h>
 
 
 

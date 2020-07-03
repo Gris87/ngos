@@ -1,13 +1,13 @@
 #include "console.h"
 
-#include <common/src/com/ngos/shared/common/assets/assets.h>
-#include <common/src/com/ngos/shared/common/console/lib/glyphdata.h>
-#include <common/src/com/ngos/shared/common/graphics/rgbapixel.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/printf/printf.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/console/lib/glyphdata.h>
+#include <com/ngos/shared/common/graphics/rgbapixel.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/printf/printf.h>
+#include <com/ngos/shared/uefibase/uefi/uefi.h>
 
 
 

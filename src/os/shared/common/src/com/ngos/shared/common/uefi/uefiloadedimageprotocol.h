@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/com/ngos/shared/common/uefi/macros.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefidevicepath.h>
-#include <common/src/com/ngos/shared/common/uefi/uefimemorytype.h>
-#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
+#include <com/ngos/shared/common/uefi/macros.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefidevicepath.h>
+#include <com/ngos/shared/common/uefi/uefimemorytype.h>
+#include <com/ngos/shared/common/uefi/uefistatus.h>
+#include <com/ngos/shared/common/uefi/uefisystemtable.h>
 
 
 

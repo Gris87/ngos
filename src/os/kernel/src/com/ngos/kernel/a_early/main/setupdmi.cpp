@@ -1,8 +1,8 @@
 #include "setupdmi.h"
 
-#include <common/src/com/ngos/shared/common/dmi/dmi.h>
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/dmi/dmi.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
 
 
 

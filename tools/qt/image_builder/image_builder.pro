@@ -37,11 +37,12 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    ../../../include \              # /include
-    ../../../src/os/configure \     # /src/os/configure
-    ../../../src/os/shared \        # /src/os/shared
-    ../shared/console \             # /tools/qt/shared/console
-    ../shared/elf                   # /tools/qt/shared/elf
+    src \                                   # /tools/qt/image_builder/src
+    ../../../include \                      # /include
+    ../../../src/os/configure/src \         # /src/os/configure/src
+    ../../../src/os/shared/common/src \     # /src/os/shared/common/src
+    ../shared/console/src \                 # /tools/qt/shared/console/src
+    ../shared/elf/src                       # /tools/qt/shared/elf/src
 
 
 

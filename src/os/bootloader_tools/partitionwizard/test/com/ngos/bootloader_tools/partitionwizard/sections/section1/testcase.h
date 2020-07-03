@@ -4,9 +4,9 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
-#include "test/com/ngos/bootloader_tools/partitionwizard/sections/section1/com/ngos/bootloader_tools/partitionwizard/types.h"
+#include "com/ngos/bootloader_tools/partitionwizard/sections/section1/com/ngos/bootloader_tools/partitionwizard/types.h"
 
 
 

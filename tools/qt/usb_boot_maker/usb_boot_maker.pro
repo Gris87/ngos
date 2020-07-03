@@ -39,8 +39,9 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    ../../../include \          # /include
-    ../../../src/os/shared      # /src/os/shared
+    src \                               # /tools/qt/usb_boot_maker/src
+    ../../../include \                  # /include
+    ../../../src/os/shared/common/src   # /src/os/shared/common/src
 
 
 

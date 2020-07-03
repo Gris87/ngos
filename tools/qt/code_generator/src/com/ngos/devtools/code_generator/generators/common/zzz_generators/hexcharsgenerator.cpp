@@ -2,7 +2,7 @@
 
 #include <QFile>
 #include <QRegularExpression>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 
@@ -22,7 +22,7 @@ bool HexCharsGenerator::generate(const QString &path)
 
 
 
-    lines.append("#include <common/src/com/ngos/shared/common/hex/hex.h>");
+    lines.append("#include <com/ngos/shared/common/hex/hex.h>");
 
     addThreeBlankLines(lines);
 

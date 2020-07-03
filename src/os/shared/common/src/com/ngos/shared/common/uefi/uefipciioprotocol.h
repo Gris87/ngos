@@ -3,16 +3,16 @@
 
 
 
-#include <common/src/com/ngos/shared/common/uefi/macros.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiallocatetype.h>
-#include <common/src/com/ngos/shared/common/uefi/uefimemorytype.h>
-#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolaccess.h>
-#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolattributeoperation.h>
-#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolconfigaccess.h>
-#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocoloperation.h>
-#include <common/src/com/ngos/shared/common/uefi/uefipciioprotocolwidth.h>
-#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
+#include <com/ngos/shared/common/uefi/macros.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefiallocatetype.h>
+#include <com/ngos/shared/common/uefi/uefimemorytype.h>
+#include <com/ngos/shared/common/uefi/uefipciioprotocolaccess.h>
+#include <com/ngos/shared/common/uefi/uefipciioprotocolattributeoperation.h>
+#include <com/ngos/shared/common/uefi/uefipciioprotocolconfigaccess.h>
+#include <com/ngos/shared/common/uefi/uefipciioprotocoloperation.h>
+#include <com/ngos/shared/common/uefi/uefipciioprotocolwidth.h>
+#include <com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

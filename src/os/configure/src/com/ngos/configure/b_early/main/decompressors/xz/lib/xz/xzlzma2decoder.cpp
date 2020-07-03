@@ -1,9 +1,9 @@
 #include "xzlzma2decoder.h"
 
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

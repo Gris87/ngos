@@ -2,7 +2,7 @@
 
 #include <QFile>
 #include <QRegularExpression>
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 

@@ -1,13 +1,13 @@
 #include "setupuefimemorymap.h"
 
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
 
-#include <src/com/ngos/kernel/other/bootparams/bootparams.h>
-#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
-#include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
-#include <src/com/ngos/kernel/other/pagetable/addressconversion.h>
-#include <src/com/ngos/kernel/other/uefi/uefi.h>
+#include <com/ngos/kernel/other/bootparams/bootparams.h>
+#include <com/ngos/kernel/other/ioremap/ioremap.h>
+#include <com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <com/ngos/kernel/other/pagetable/addressconversion.h>
+#include <com/ngos/kernel/other/uefi/uefi.h>
 
 
 

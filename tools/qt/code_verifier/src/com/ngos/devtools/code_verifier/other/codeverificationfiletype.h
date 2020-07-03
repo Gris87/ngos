@@ -4,7 +4,7 @@
 
 
 #include <Qt>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/types.h>
 #include <stdio.h>
 
 

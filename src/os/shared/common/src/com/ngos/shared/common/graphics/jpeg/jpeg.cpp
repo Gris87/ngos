@@ -1,16 +1,16 @@
 #include "jpeg.h"
 
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegdefinehuffmantablemarker.h>
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegdefinequantizationtablemarker.h>
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegdefinerestartintervalmarker.h>
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframemarker.h>
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegzigzagorder.h>
-#include <common/src/com/ngos/shared/common/graphics/rgbpixel.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/memory/malloc.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegdefinehuffmantablemarker.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegdefinequantizationtablemarker.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegdefinerestartintervalmarker.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframemarker.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegzigzagorder.h>
+#include <com/ngos/shared/common/graphics/rgbpixel.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/malloc.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

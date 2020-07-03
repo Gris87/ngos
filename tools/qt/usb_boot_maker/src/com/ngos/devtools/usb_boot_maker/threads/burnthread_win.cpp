@@ -11,7 +11,7 @@
 #include <QFile>
 #include <Windows.h>
 
-#include "src/com/ngos/devtools/usb_boot_maker/other/defines.h"
+#include "com/ngos/devtools/usb_boot_maker/other/defines.h"
 
 
 

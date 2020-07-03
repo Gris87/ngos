@@ -4,15 +4,15 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/checksum/adler.h>
-#include <common/src/com/ngos/shared/common/checksum/crc.h>
-#include <common/src/com/ngos/shared/common/checksum/md5.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <common/src/com/ngos/shared/common/cryptography/aes.h>
-#include <common/src/com/ngos/shared/common/memory/malloc.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/string/string.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/checksum/adler.h>
+#include <com/ngos/shared/common/checksum/crc.h>
+#include <com/ngos/shared/common/checksum/md5.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/common/cryptography/aes.h>
+#include <com/ngos/shared/common/memory/malloc.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/string/string.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

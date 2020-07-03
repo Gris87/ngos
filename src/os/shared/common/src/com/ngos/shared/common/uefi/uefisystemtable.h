@@ -3,13 +3,13 @@
 
 
 
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefibootservices.h>
-#include <common/src/com/ngos/shared/common/uefi/ueficonfigurationtable.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiruntimeservices.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisimpleinputinterface.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisimpletextoutputinterface.h>
-#include <common/src/com/ngos/shared/common/uefi/uefitableheader.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefibootservices.h>
+#include <com/ngos/shared/common/uefi/ueficonfigurationtable.h>
+#include <com/ngos/shared/common/uefi/uefiruntimeservices.h>
+#include <com/ngos/shared/common/uefi/uefisimpleinputinterface.h>
+#include <com/ngos/shared/common/uefi/uefisimpletextoutputinterface.h>
+#include <com/ngos/shared/common/uefi/uefitableheader.h>
 
 
 

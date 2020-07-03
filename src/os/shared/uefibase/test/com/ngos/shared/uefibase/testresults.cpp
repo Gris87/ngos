@@ -1,9 +1,9 @@
 #include "testresults.h"
 
 #include <buildconfig.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilogfile.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/uefibase/uefi/uefilogfile.h>
 
 
 

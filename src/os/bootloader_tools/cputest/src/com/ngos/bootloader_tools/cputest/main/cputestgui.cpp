@@ -1,26 +1,26 @@
 #include "cputestgui.h"
 
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <common/src/com/ngos/shared/common/cpu/generated/x86featuresnames.h>
-#include <common/src/com/ngos/shared/common/graphics/graphics.h>
-#include <common/src/com/ngos/shared/common/gui/gui.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/special/rootwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/special/screenwidget.h>
-#include <common/src/com/ngos/shared/common/memory/malloc.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/string/utils.h>
-#include <common/src/com/ngos/shared/common/macro/constants.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/common/cpu/generated/x86featuresnames.h>
+#include <com/ngos/shared/common/graphics/graphics.h>
+#include <com/ngos/shared/common/gui/gui.h>
+#include <com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/panelwidget.h>
+#include <com/ngos/shared/common/gui/widgets/special/rootwidget.h>
+#include <com/ngos/shared/common/gui/widgets/special/screenwidget.h>
+#include <com/ngos/shared/common/memory/malloc.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/string/utils.h>
+#include <com/ngos/shared/common/macro/constants.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/uefibase/uefi/uefi.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/uefibase/uefi/uefipointerdevices.h>
 
-#include "src/com/ngos/bootloader_tools/cputest/main/cputest.h"
-#include "src/com/ngos/bootloader_tools/cputest/tests/testbase.h"
+#include "com/ngos/bootloader_tools/cputest/main/cputest.h"
+#include "com/ngos/bootloader_tools/cputest/tests/testbase.h"
 
 
 

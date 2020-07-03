@@ -4,12 +4,12 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastb.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsllvw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsrlvw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastb.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastw.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsllvw.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsrlvw.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

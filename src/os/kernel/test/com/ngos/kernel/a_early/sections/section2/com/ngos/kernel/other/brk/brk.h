@@ -5,8 +5,8 @@
 
 #include <buildconfig.h>
 
-#include <src/com/ngos/kernel/other/brk/brk.h>
-#include <test/com/ngos/kernel/a_early/testengine.h>
+#include <com/ngos/kernel/other/brk/brk.h>
+#include <com/ngos/kernel/a_early/testengine.h>
 
 
 

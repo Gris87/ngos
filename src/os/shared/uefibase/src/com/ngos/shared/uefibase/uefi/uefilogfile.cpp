@@ -1,8 +1,8 @@
 #include "uefilogfile.h"
 
-#include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

@@ -1,8 +1,8 @@
 #include "coffheader.h"
 
-#include <src/com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
-#include "src/com/ngos/devtools/image_builder/pe/peoptheader.h"
+#include "com/ngos/devtools/image_builder/pe/peoptheader.h"
 
 
 

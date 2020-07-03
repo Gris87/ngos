@@ -3,7 +3,7 @@
 
 
 
-#include "src/com/ngos/devtools/code_generator/generators/generator.h"
+#include "com/ngos/devtools/code_generator/generators/generator.h"
 
 #include <QList>
 

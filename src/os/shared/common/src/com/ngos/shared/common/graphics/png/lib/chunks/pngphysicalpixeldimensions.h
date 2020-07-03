@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/graphics/png/lib/pngunitspecifier.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/graphics/png/lib/pngunitspecifier.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

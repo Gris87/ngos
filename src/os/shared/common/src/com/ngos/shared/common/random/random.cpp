@@ -1,10 +1,10 @@
 #include "random.h"
 
-#include <common/src/com/ngos/shared/common/asm/instructions.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <common/src/com/ngos/shared/common/cpu/x86feature.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/common/cpu/x86feature.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
 
 
 

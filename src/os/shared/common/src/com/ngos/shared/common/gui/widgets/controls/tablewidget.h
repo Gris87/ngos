@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
+#include <com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/tableheaderwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/tablerowwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/wrapperwidget.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/gui/widgets/misc/tableheaderwidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/tablerowwidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/wrapperwidget.h>
 
 
 

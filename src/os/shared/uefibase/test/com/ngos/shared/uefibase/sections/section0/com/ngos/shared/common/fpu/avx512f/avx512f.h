@@ -4,17 +4,17 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvaddps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvdivps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmaxps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvminps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmulps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrcp14ps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrsqrt14ps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsqrtps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsubps.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvaddps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvdivps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmaxps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvminps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmulps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrcp14ps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrsqrt14ps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsqrtps.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsubps.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

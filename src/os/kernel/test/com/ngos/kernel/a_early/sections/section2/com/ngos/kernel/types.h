@@ -5,32 +5,32 @@
 
 #include <buildconfig.h>
 
-#include <src/com/ngos/kernel/other/brk/brk.h>
-#include <src/com/ngos/kernel/other/cpu/cpumask.h>
-#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplug.h>
-#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplugstate.h>
-#include <src/com/ngos/kernel/other/cpu/hotplug/cpuhotplugstep.h>
-#include <src/com/ngos/kernel/other/cpu/percpu.h>
-#include <src/com/ngos/kernel/other/e820/e820.h>
-#include <src/com/ngos/kernel/other/e820/e820table.h>
-#include <src/com/ngos/kernel/other/hypervisor/hypervisor.h>
-#include <src/com/ngos/kernel/other/hypervisor/hypervisortype.h>
-#include <src/com/ngos/kernel/other/hypervisor/kvm/clock/kvmclock.h>
-#include <src/com/ngos/kernel/other/hypervisor/kvm/kvm.h>
-#include <src/com/ngos/kernel/other/hypervisor/kvm/kvmfeature.h>
-#include <src/com/ngos/kernel/other/hypervisor/kvm/kvmfeaturetypeflags.h>
-#include <src/com/ngos/kernel/other/ioremap/fixmap.h>
-#include <src/com/ngos/kernel/other/ioremap/ioremap.h>
-#include <src/com/ngos/kernel/other/irq/irqstack.h>
-#include <src/com/ngos/kernel/other/memorymanager/memoryblock.h>
-#include <src/com/ngos/kernel/other/memorymanager/memoryblockregion.h>
-#include <src/com/ngos/kernel/other/memorymanager/memoryblocktype.h>
-#include <src/com/ngos/kernel/other/memorymanager/memorymanager.h>
-#include <src/com/ngos/kernel/other/pagetable/addressconversion.h>
-#include <src/com/ngos/kernel/other/task/task.h>
-#include <src/com/ngos/kernel/other/task/threadinfo.h>
-#include <src/com/ngos/kernel/other/uefi/uefi.h>
-#include <test/com/ngos/kernel/a_early/testengine.h>
+#include <com/ngos/kernel/other/brk/brk.h>
+#include <com/ngos/kernel/other/cpu/cpumask.h>
+#include <com/ngos/kernel/other/cpu/hotplug/cpuhotplug.h>
+#include <com/ngos/kernel/other/cpu/hotplug/cpuhotplugstate.h>
+#include <com/ngos/kernel/other/cpu/hotplug/cpuhotplugstep.h>
+#include <com/ngos/kernel/other/cpu/percpu.h>
+#include <com/ngos/kernel/other/e820/e820.h>
+#include <com/ngos/kernel/other/e820/e820table.h>
+#include <com/ngos/kernel/other/hypervisor/hypervisor.h>
+#include <com/ngos/kernel/other/hypervisor/hypervisortype.h>
+#include <com/ngos/kernel/other/hypervisor/kvm/clock/kvmclock.h>
+#include <com/ngos/kernel/other/hypervisor/kvm/kvm.h>
+#include <com/ngos/kernel/other/hypervisor/kvm/kvmfeature.h>
+#include <com/ngos/kernel/other/hypervisor/kvm/kvmfeaturetypeflags.h>
+#include <com/ngos/kernel/other/ioremap/fixmap.h>
+#include <com/ngos/kernel/other/ioremap/ioremap.h>
+#include <com/ngos/kernel/other/irq/irqstack.h>
+#include <com/ngos/kernel/other/memorymanager/memoryblock.h>
+#include <com/ngos/kernel/other/memorymanager/memoryblockregion.h>
+#include <com/ngos/kernel/other/memorymanager/memoryblocktype.h>
+#include <com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <com/ngos/kernel/other/pagetable/addressconversion.h>
+#include <com/ngos/kernel/other/task/task.h>
+#include <com/ngos/kernel/other/task/threadinfo.h>
+#include <com/ngos/kernel/other/uefi/uefi.h>
+#include <com/ngos/kernel/a_early/testengine.h>
 
 
 

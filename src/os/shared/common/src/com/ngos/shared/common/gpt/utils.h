@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/checksum/crc.h>
-#include <common/src/com/ngos/shared/common/gpt/gptdata.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/checksum/crc.h>
+#include <com/ngos/shared/common/gpt/gptdata.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
 
 
 

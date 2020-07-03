@@ -5,7 +5,7 @@
 
 #include <QString>
 
-#include "src/com/ngos/devtools/test_verifier/other/testentrytype.h"
+#include "com/ngos/devtools/test_verifier/other/testentrytype.h"
 
 
 

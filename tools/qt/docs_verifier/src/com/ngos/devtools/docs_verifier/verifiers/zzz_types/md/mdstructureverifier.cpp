@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QFileInfo>
 
-#include "src/com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h"
+#include "com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h"
 
 
 

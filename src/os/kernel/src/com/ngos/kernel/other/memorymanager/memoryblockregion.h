@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
-#include <src/com/ngos/kernel/other/memorymanager/memoryblockregionflags.h>
-#include <src/com/ngos/kernel/other/memorymanager/memoryblockregionnodeid.h>
+#include <com/ngos/kernel/other/memorymanager/memoryblockregionflags.h>
+#include <com/ngos/kernel/other/memorymanager/memoryblockregionnodeid.h>
 
 
 

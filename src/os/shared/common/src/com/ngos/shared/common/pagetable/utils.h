@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <common/src/com/ngos/shared/common/pagetable/flags.h>
-#include <common/src/com/ngos/shared/common/pagetable/macros.h>
-#include <common/src/com/ngos/shared/common/pagetable/types.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pagetable/flags.h>
+#include <com/ngos/shared/common/pagetable/macros.h>
+#include <com/ngos/shared/common/pagetable/types.h>
 
 
 

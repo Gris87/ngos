@@ -1,10 +1,10 @@
 #include "tabbutton.h"
 
-#include <common/src/com/ngos/shared/common/graphics/graphics.h>
-#include <common/src/com/ngos/shared/common/gui/gui.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/graphics/graphics.h>
+#include <com/ngos/shared/common/gui/gui.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

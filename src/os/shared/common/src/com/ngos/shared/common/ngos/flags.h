@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/com/ngos/shared/common/macro/utils.h>
+#include <com/ngos/shared/common/macro/utils.h>
 
 
 

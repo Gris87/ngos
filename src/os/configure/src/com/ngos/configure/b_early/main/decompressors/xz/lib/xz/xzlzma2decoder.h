@@ -4,15 +4,15 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
 
 
 

@@ -1,12 +1,12 @@
-#include <common/src/com/ngos/shared/common/assets/assets.h>
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
-#include <common/src/com/ngos/shared/common/pagetable/utils.h>
+#include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/pagetable/utils.h>
 
-#include <src/com/ngos/kernel/other/kerneldefines.h>
-#include <src/com/ngos/kernel/other/pagetable/addressconversion.h>
+#include <com/ngos/kernel/other/kerneldefines.h>
+#include <com/ngos/kernel/other/pagetable/addressconversion.h>
 
 
 

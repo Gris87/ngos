@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/cpu/x86featureword.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/cpu/x86featureword.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

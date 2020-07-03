@@ -1,18 +1,18 @@
 #include "earlyinitialization.h"
 
-#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/assets/assets.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <common/src/com/ngos/shared/common/fpu/fpu.h>
-#include <common/src/com/ngos/shared/common/serial/serial.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setupcr4.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setupglobalobjects.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/common/fpu/fpu.h>
+#include <com/ngos/shared/common/serial/serial.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/uefi/uefisystemtable.h>
+#include <com/ngos/shared/uefibase/main/setupcr4.h>
+#include <com/ngos/shared/uefibase/main/setupdynamicrelocation.h>
+#include <com/ngos/shared/uefibase/main/setupglobalobjects.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

@@ -4,11 +4,11 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmastate.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmastate.h"
 
 
 

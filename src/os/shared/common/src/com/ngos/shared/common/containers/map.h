@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/containers/lib/mapelement.h>
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/containers/lib/mapelement.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
 
 
 

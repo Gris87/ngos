@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/graphics/jpeg/jpegvlccode.h>
-#include <common/src/com/ngos/shared/common/graphics/jpeg/lib/jpegcomponentid.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/graphics/jpeg/jpegvlccode.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegcomponentid.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

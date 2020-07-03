@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefigraphicspixelformat.h>
-#include <common/src/com/ngos/shared/common/uefi/uefipixelbitmask.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/uefi/uefigraphicspixelformat.h>
+#include <com/ngos/shared/common/uefi/uefipixelbitmask.h>
 
 
 

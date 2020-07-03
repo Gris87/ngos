@@ -1,11 +1,11 @@
 #include "e820.h"
 
-#include <common/src/com/ngos/shared/common/log/assert.h>
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/memory.h>
 
-#include <src/com/ngos/kernel/other/bootparams/bootparams.h>
-#include <src/com/ngos/kernel/other/pagetable/dynamicpagetable.h>
+#include <com/ngos/kernel/other/bootparams/bootparams.h>
+#include <com/ngos/kernel/other/pagetable/dynamicpagetable.h>
 
 
 

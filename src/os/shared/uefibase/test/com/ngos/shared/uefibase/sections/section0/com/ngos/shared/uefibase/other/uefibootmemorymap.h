@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/src/com/ngos/shared/uefibase/other/uefibootmemorymap.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/uefibase/other/uefibootmemorymap.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

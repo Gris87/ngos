@@ -8,8 +8,8 @@
 #include <QMutex>
 #include <QSemaphore>
 
-#include "src/com/ngos/devtools/docs_verifier/other/docsfileinfo.h"
-#include "src/com/ngos/devtools/docs_verifier/other/docsmessageinfo.h"
+#include "com/ngos/devtools/docs_verifier/other/docsfileinfo.h"
+#include "com/ngos/devtools/docs_verifier/other/docsmessageinfo.h"
 
 
 

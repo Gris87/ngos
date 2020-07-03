@@ -3,13 +3,13 @@
 
 
 
-#include <common/src/com/ngos/shared/common/gpt/gptdata.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefidevicepath.h>
-#include <common/src/com/ngos/shared/common/uefi/uefifileprotocol.h>
+#include <com/ngos/shared/common/gpt/gptdata.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefiblockioprotocol.h>
+#include <com/ngos/shared/common/uefi/uefidevicepath.h>
+#include <com/ngos/shared/common/uefi/uefifileprotocol.h>
 
-#include "src/com/ngos/bootloader/other/volumetype.h"
+#include "com/ngos/bootloader/other/volumetype.h"
 
 
 

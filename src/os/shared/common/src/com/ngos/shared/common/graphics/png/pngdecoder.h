@@ -3,16 +3,16 @@
 
 
 
-#include <common/src/com/ngos/shared/common/graphics/image.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngembeddediccprofile.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngimagegamma.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngimageheader.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngimagelastmodificationtime.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngphysicalpixeldimensions.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngprimarychromaticities.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngsignificantbits.h>
-#include <common/src/com/ngos/shared/common/graphics/png/lib/chunks/pngstandardrgbcolorspace.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/graphics/image.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngembeddediccprofile.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngimagegamma.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngimageheader.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngimagelastmodificationtime.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngphysicalpixeldimensions.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngprimarychromaticities.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngsignificantbits.h>
+#include <com/ngos/shared/common/graphics/png/lib/chunks/pngstandardrgbcolorspace.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

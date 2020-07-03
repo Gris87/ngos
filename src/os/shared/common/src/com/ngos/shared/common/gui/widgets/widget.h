@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/containers/list.h>
-#include <common/src/com/ngos/shared/common/graphics/image.h>
-#include <common/src/com/ngos/shared/common/gui/other/presseventhandler.h>
-#include <common/src/com/ngos/shared/common/gui/other/widgetstate.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiinputkey.h>
+#include <com/ngos/shared/common/containers/list.h>
+#include <com/ngos/shared/common/graphics/image.h>
+#include <com/ngos/shared/common/gui/other/presseventhandler.h>
+#include <com/ngos/shared/common/gui/other/widgetstate.h>
+#include <com/ngos/shared/common/uefi/uefiinputkey.h>
 
 
 

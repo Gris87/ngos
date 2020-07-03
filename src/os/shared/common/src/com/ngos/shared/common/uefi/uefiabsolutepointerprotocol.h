@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/uefi/macros.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointermode.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointerstate.h>
-#include <common/src/com/ngos/shared/common/uefi/uefistatus.h>
+#include <com/ngos/shared/common/uefi/macros.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefiabsolutepointermode.h>
+#include <com/ngos/shared/common/uefi/uefiabsolutepointerstate.h>
+#include <com/ngos/shared/common/uefi/uefistatus.h>
 
 
 

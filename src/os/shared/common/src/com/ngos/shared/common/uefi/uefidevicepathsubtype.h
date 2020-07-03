@@ -3,15 +3,15 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 #if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-#include <common/src/com/ngos/shared/common/printf/printf.h>
+#include <com/ngos/shared/common/printf/printf.h>
 #endif
 
 
 
-#include <common/src/com/ngos/shared/common/uefi/uefidevicepathtype.h>
+#include <com/ngos/shared/common/uefi/uefidevicepathtype.h>
 
 
 

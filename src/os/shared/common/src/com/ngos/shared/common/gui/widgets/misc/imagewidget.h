@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
+#include <com/ngos/shared/common/gui/widgets/widget.h>
 
 
 

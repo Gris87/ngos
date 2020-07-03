@@ -3,11 +3,11 @@
 
 
 
-#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
+#include <com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/tabbutton.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/tabpagewidget.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/gui/widgets/controls/tabbutton.h>
+#include <com/ngos/shared/common/gui/widgets/misc/tabpagewidget.h>
 
 
 

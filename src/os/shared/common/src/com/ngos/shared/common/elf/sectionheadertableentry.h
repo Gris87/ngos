@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/elf/sectionflags.h>
-#include <common/src/com/ngos/shared/common/elf/sectiontype.h>
+#include <com/ngos/shared/common/elf/sectionflags.h>
+#include <com/ngos/shared/common/elf/sectiontype.h>
 
 
 

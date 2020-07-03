@@ -3,19 +3,19 @@
 
 
 
-#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/button.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/tablewidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/tabwidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/treewidget.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/gui/widgets/controls/button.h>
+#include <com/ngos/shared/common/gui/widgets/controls/tablewidget.h>
+#include <com/ngos/shared/common/gui/widgets/controls/tabwidget.h>
+#include <com/ngos/shared/common/gui/widgets/controls/treewidget.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
+#include <com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
 
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
 
 
 

@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/memory/asm_memcpy.h>
-#include <common/src/com/ngos/shared/common/memory/asm_memset.h>
-#include <common/src/com/ngos/shared/common/memory/asm_memzero.h>
+#include <com/ngos/shared/common/memory/asm_memcpy.h>
+#include <com/ngos/shared/common/memory/asm_memset.h>
+#include <com/ngos/shared/common/memory/asm_memzero.h>
 
 
 

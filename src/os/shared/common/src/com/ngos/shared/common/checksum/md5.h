@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/checksum/lib/md5hash.h>
-#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/checksum/lib/md5hash.h>
+#include <com/ngos/shared/common/ngos/status.h>
 
 
 

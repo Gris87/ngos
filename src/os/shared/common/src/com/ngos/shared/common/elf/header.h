@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/elf/headeridentification.h>
-#include <common/src/com/ngos/shared/common/elf/machine.h>
-#include <common/src/com/ngos/shared/common/elf/type.h>
-#include <common/src/com/ngos/shared/common/elf/version.h>
+#include <com/ngos/shared/common/elf/headeridentification.h>
+#include <com/ngos/shared/common/elf/machine.h>
+#include <com/ngos/shared/common/elf/type.h>
+#include <com/ngos/shared/common/elf/version.h>
 
 
 

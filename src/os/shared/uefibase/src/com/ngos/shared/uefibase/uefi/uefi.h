@@ -3,15 +3,15 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <common/src/com/ngos/shared/common/uefi/config/uefismbios3configurationtable.h>
-#include <common/src/com/ngos/shared/common/uefi/config/uefismbiosconfigurationtable.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/ueficonsolecontrolscreenmode.h>
-#include <common/src/com/ngos/shared/common/uefi/uefifileprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisimpletextoutputinterface.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
-#include <uefibase/src/com/ngos/shared/uefibase/other/uefibootmemorymap.h>
+#include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/config/uefismbios3configurationtable.h>
+#include <com/ngos/shared/common/uefi/config/uefismbiosconfigurationtable.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/ueficonsolecontrolscreenmode.h>
+#include <com/ngos/shared/common/uefi/uefifileprotocol.h>
+#include <com/ngos/shared/common/uefi/uefisimpletextoutputinterface.h>
+#include <com/ngos/shared/common/uefi/uefisystemtable.h>
+#include <com/ngos/shared/uefibase/other/uefibootmemorymap.h>
 
 
 

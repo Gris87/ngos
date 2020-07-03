@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/ngos/status.h>
 
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
 
 
 

@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/log/log.h>
-#include <common/src/com/ngos/shared/common/macro/constants.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/macro/constants.h>
 
 
 

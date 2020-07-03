@@ -1,15 +1,15 @@
-#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/assets/assets.h>
-#include <common/src/com/ngos/shared/common/early/earlyassert.h>
-#include <common/src/com/ngos/shared/common/early/earlylog.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
 
-#include "src/com/ngos/configure/b_early/main/decompressors/gzip/decompress.h"
-#include "src/com/ngos/configure/b_early/main/decompressors/xz/decompress.h"
-#include "src/com/ngos/configure/b_early/main/procesself.h"
-#include "src/com/ngos/configure/b_early/main/randomization.h"
-#include "src/com/ngos/configure/other/kerneldescriptor.h"
+#include "com/ngos/configure/b_early/main/decompressors/gzip/decompress.h"
+#include "com/ngos/configure/b_early/main/decompressors/xz/decompress.h"
+#include "com/ngos/configure/b_early/main/procesself.h"
+#include "com/ngos/configure/b_early/main/randomization.h"
+#include "com/ngos/configure/other/kerneldescriptor.h"
 
 
 

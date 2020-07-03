@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
-#include <common/src/com/ngos/shared/common/uuid/utils.h>
+#include <com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/uuid/utils.h>
 
 
 

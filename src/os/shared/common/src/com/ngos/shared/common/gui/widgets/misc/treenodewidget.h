@@ -3,13 +3,13 @@
 
 
 
-#include <common/src/com/ngos/shared/common/gui/other/presseventhandler.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/widget.h>
+#include <com/ngos/shared/common/gui/other/presseventhandler.h>
+#include <com/ngos/shared/common/gui/widgets/widget.h>
 
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/controls/toolbutton.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/imagewidget.h>
-#include <common/src/com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/common/gui/widgets/controls/toolbutton.h>
+#include <com/ngos/shared/common/gui/widgets/misc/imagewidget.h>
+#include <com/ngos/shared/common/gui/widgets/misc/labelwidget.h>
 
 
 

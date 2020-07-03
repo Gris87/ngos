@@ -1,9 +1,9 @@
 #include "devicemanager.h"
 
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
-#include "src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h"
+#include "com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h"
 
 
 

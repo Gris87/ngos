@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/bootparams/memorymapentry.h>
+#include <com/ngos/shared/common/bootparams/memorymapentry.h>
 #include <buildconfig.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

@@ -4,10 +4,10 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/memory/memory.h>
 
-#include <src/com/ngos/kernel/other/cpu/cpumask.h>
-#include <test/com/ngos/kernel/a_early/testengine.h>
+#include <com/ngos/kernel/other/cpu/cpumask.h>
+#include <com/ngos/kernel/a_early/testengine.h>
 
 
 

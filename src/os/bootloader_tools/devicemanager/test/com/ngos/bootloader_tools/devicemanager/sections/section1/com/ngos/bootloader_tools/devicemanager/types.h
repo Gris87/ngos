@@ -4,16 +4,16 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
-#include "src/com/ngos/bootloader_tools/devicemanager/main/devicemanager.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/main/devicemanagergui.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
-#include "src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h"
+#include "com/ngos/bootloader_tools/devicemanager/main/devicemanager.h"
+#include "com/ngos/bootloader_tools/devicemanager/main/devicemanagergui.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
+#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h"
+#include "com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h"
 
 
 

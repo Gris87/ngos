@@ -1,12 +1,12 @@
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/flags.h>
-#include <common/src/com/ngos/shared/common/cpu/msr/msrregisters.h>
-#include <common/src/com/ngos/shared/common/gdt/segments.h>
-#include <common/src/com/ngos/shared/common/idt/macros.h>
-#include <src/com/ngos/kernel/other/kerneldefines.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/pagetable/flags.h>
-#include <common/src/com/ngos/shared/common/pagetable/macros.h>
+#include <com/ngos/shared/common/cpu/flags.h>
+#include <com/ngos/shared/common/cpu/msr/msrregisters.h>
+#include <com/ngos/shared/common/gdt/segments.h>
+#include <com/ngos/shared/common/idt/macros.h>
+#include <com/ngos/kernel/other/kerneldefines.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/pagetable/flags.h>
+#include <com/ngos/shared/common/pagetable/macros.h>
                                                                                 #
                                                                                 #
                                                                                 #

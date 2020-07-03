@@ -3,7 +3,7 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
 
 
 

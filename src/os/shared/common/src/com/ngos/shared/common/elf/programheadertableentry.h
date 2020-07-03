@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/elf/programflags.h>
-#include <common/src/com/ngos/shared/common/elf/programtype.h>
+#include <com/ngos/shared/common/elf/programflags.h>
+#include <com/ngos/shared/common/elf/programtype.h>
 
 
 

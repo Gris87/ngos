@@ -1,9 +1,9 @@
 #include "setupdynamicrelocation.h"
 
-#include <common/src/com/ngos/shared/common/elf/rela.h>
-#include <common/src/com/ngos/shared/common/elf/relatype.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/elf/rela.h>
+#include <com/ngos/shared/common/elf/relatype.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

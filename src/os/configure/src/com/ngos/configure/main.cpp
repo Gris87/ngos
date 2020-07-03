@@ -1,22 +1,22 @@
-#include <common/src/com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/assets/assets.h>
-#include <common/src/com/ngos/shared/common/serial/serial.h>
-#include <common/src/com/ngos/shared/common/ngos/linkage.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/earlyinitialization.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setupgraphics.h>
-#include <uefibase/src/com/ngos/shared/uefibase/main/setuphardwareid.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/testcase.h>
+#include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/serial/serial.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/uefi/uefisystemtable.h>
+#include <com/ngos/shared/uefibase/main/earlyinitialization.h>
+#include <com/ngos/shared/uefibase/main/setupdynamicrelocation.h>
+#include <com/ngos/shared/uefibase/main/setupgraphics.h>
+#include <com/ngos/shared/uefibase/main/setuphardwareid.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/uefibase/sections/section0/testcase.h>
 
-#include "src/com/ngos/configure/a_uefi/main/exitbootservices.h"
-#include "src/com/ngos/configure/a_uefi/main/setupbootparams.h"
-#include "src/com/ngos/configure/a_uefi/main/setupkernellocation.h"
-#include "src/com/ngos/configure/a_uefi/main/setuppciio.h"
-#include "test/com/ngos/configure/sections/section1/testcase.h"
+#include "com/ngos/configure/a_uefi/main/exitbootservices.h"
+#include "com/ngos/configure/a_uefi/main/setupbootparams.h"
+#include "com/ngos/configure/a_uefi/main/setupkernellocation.h"
+#include "com/ngos/configure/a_uefi/main/setuppciio.h"
+#include "com/ngos/configure/sections/section1/testcase.h"
 
 
 

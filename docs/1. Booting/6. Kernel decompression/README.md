@@ -51,8 +51,8 @@ Decompression algorithms implemented in [src/os/configure/src/bits64/b_early/mai
 Here is the list of included headers:
 
 ```
-#include "src/bits64/b_early/main/decompressors/gzip/decompress.h"
-#include "src/bits64/b_early/main/decompressors/xz/decompress.h"
+#include "bits64/b_early/main/decompressors/gzip/decompress.h"
+#include "bits64/b_early/main/decompressors/xz/decompress.h"
 ```
 
 ### Extracting ELF image

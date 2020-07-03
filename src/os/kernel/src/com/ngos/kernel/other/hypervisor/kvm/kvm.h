@@ -3,10 +3,10 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/ngos/status.h>
 
-#include <src/com/ngos/kernel/other/hypervisor/kvm/kvmfeature.h>
-#include <src/com/ngos/kernel/other/hypervisor/kvm/kvmfeaturetypeflags.h>
+#include <com/ngos/kernel/other/hypervisor/kvm/kvmfeature.h>
+#include <com/ngos/kernel/other/hypervisor/kvm/kvmfeaturetypeflags.h>
 
 
 

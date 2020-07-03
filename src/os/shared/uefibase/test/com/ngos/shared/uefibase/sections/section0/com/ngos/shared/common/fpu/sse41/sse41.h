@@ -4,18 +4,18 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsb.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxud.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxuw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsb.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminud.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminuw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmuldq.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmulld.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsb.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxud.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxuw.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsb.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminud.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminuw.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmuldq.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmulld.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

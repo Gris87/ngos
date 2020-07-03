@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/containers/arraylist.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/containers/arraylist.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

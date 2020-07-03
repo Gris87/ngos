@@ -3,12 +3,12 @@
 
 
 
-#include <common/src/com/ngos/shared/common/guid/guid.h>
-#include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <common/src/com/ngos/shared/common/uefi/types.h>
-#include <common/src/com/ngos/shared/common/uefi/uefidevicepath.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiharddrivedevicepathmbrtype.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiharddrivedevicepathsignaturetype.h>
+#include <com/ngos/shared/common/guid/guid.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/uefi/types.h>
+#include <com/ngos/shared/common/uefi/uefidevicepath.h>
+#include <com/ngos/shared/common/uefi/uefiharddrivedevicepathmbrtype.h>
+#include <com/ngos/shared/common/uefi/uefiharddrivedevicepathsignaturetype.h>
 
 
 

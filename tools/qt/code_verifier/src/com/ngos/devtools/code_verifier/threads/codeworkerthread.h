@@ -8,8 +8,8 @@
 #include <QMutex>
 #include <QSemaphore>
 
-#include "src/com/ngos/devtools/code_verifier/other/codefileinfo.h"
-#include "src/com/ngos/devtools/code_verifier/other/codemessageinfo.h"
+#include "com/ngos/devtools/code_verifier/other/codefileinfo.h"
+#include "com/ngos/devtools/code_verifier/other/codemessageinfo.h"
 
 
 

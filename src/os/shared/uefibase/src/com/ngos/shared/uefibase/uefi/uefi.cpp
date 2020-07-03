@@ -1,17 +1,17 @@
 #include "uefi.h"
 
-#include <common/src/com/ngos/shared/common/memory/memory.h>
-#include <common/src/com/ngos/shared/common/printf/printf.h>
-#include <common/src/com/ngos/shared/common/string/string.h>
-#include <common/src/com/ngos/shared/common/guid/utils.h>
-#include <common/src/com/ngos/shared/common/ngos/utils.h>
-#include <common/src/com/ngos/shared/common/page/macros.h>
-#include <common/src/com/ngos/shared/common/uefi/ueficonsolecontrolprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefidevicepathtotextprotocol.h>
-#include <common/src/com/ngos/shared/common/uefi/uefifilepath.h>
-#include <common/src/com/ngos/shared/common/uefi/uefisimplefilesystemprotocol.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
-#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/printf/printf.h>
+#include <com/ngos/shared/common/string/string.h>
+#include <com/ngos/shared/common/guid/utils.h>
+#include <com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/common/page/macros.h>
+#include <com/ngos/shared/common/uefi/ueficonsolecontrolprotocol.h>
+#include <com/ngos/shared/common/uefi/uefidevicepathtotextprotocol.h>
+#include <com/ngos/shared/common/uefi/uefifilepath.h>
+#include <com/ngos/shared/common/uefi/uefisimplefilesystemprotocol.h>
+#include <com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

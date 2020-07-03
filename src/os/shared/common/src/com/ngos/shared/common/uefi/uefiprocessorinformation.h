@@ -3,9 +3,9 @@
 
 
 
-#include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <common/src/com/ngos/shared/common/uefi/ueficpuphysicallocation.h>
-#include <common/src/com/ngos/shared/common/uefi/uefiprocessorinformationstatusflags.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/uefi/ueficpuphysicallocation.h>
+#include <com/ngos/shared/common/uefi/uefiprocessorinformationstatusflags.h>
 
 
 

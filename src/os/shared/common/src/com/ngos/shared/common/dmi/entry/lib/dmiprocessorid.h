@@ -3,8 +3,8 @@
 
 
 
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorfeatureflags.h>
-#include <common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorsignature.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorfeatureflags.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorsignature.h>
 
 
 

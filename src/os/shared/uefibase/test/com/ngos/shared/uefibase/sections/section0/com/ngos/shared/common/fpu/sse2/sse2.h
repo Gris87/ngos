@@ -4,23 +4,23 @@
 
 
 #include <buildconfig.h>
-#include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2addpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2divpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2maxpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2minpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2mulpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddb.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddq.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubb.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubq.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubw.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2sqrtpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2subpd.h>
-#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2addpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2divpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2maxpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2minpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2mulpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddb.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddq.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddw.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubb.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubq.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubw.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2sqrtpd.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2subpd.h>
+#include <com/ngos/shared/uefibase/testengine.h>
 
 
 

@@ -4,9 +4,9 @@
 
 
 #include <QString>
-#include <src/com/ngos/devtools/shared/elf/elfobject.h>
+#include <com/ngos/devtools/shared/elf/elfobject.h>
 
-#include "src/com/ngos/devtools/image_builder/pe/peheader.h"
+#include "com/ngos/devtools/image_builder/pe/peheader.h"
 
 
 
