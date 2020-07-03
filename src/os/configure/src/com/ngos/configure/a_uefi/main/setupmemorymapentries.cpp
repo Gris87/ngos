@@ -1,8 +1,8 @@
 #include "setupmemorymapentries.h"
 
 #include <common/src/com/ngos/shared/common/page/macros.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

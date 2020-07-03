@@ -1,5 +1,5 @@
-#ifndef ELF_SECTIONFLAGS_H
-#define ELF_SECTIONFLAGS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SECTIONFLAGS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SECTIONFLAGS_H
 
 
 
@@ -44,6 +44,10 @@ DEFINE_FLAGS(ElfSectionFlags, elf_section_flags); // TEST: NO
 
 inline const char8* flagToString(ElfSectionFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     switch (flag)
     {
         case ElfSectionFlag::NONE:             return "NONE";
@@ -72,6 +76,10 @@ inline const char8* flagToString(ElfSectionFlag flag) // TEST: NO
 
 inline const char8* flagToFullString(ElfSectionFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[38];
 
     sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
@@ -83,6 +91,10 @@ inline const char8* flagToFullString(ElfSectionFlag flag) // TEST: NO
 
 inline const char8* flagsToString(const ElfSectionFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[137];
 
     FLAGS_TO_STRING(res, flags.flags, ElfSectionFlag);
@@ -94,6 +106,10 @@ inline const char8* flagsToString(const ElfSectionFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const ElfSectionFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[158];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, ElfSectionFlag, "0x%016lX");
@@ -107,4 +123,4 @@ inline const char8* flagsToFullString(const ElfSectionFlags &flags) // TEST: NO
 
 
 
-#endif // ELF_SECTIONFLAGS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SECTIONFLAGS_H

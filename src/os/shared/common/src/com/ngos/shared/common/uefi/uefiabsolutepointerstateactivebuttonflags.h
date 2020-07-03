@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIABSOLUTEPOINTERSTATEACTIVEBUTTONFLAGS_H
-#define UEFI_UEFIABSOLUTEPOINTERSTATEACTIVEBUTTONFLAGS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIABSOLUTEPOINTERSTATEACTIVEBUTTONFLAGS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIABSOLUTEPOINTERSTATEACTIVEBUTTONFLAGS_H
 
 
 
@@ -26,6 +26,10 @@ DEFINE_FLAGS(UefiAbsolutePointerStateActiveButtonFlags, uefi_absolute_pointer_st
 
 inline const char8* flagToString(UefiAbsolutePointerStateActiveButtonFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     switch (flag)
     {
         case UefiAbsolutePointerStateActiveButtonFlag::NONE:             return "NONE";
@@ -40,6 +44,10 @@ inline const char8* flagToString(UefiAbsolutePointerStateActiveButtonFlag flag) 
 
 inline const char8* flagToFullString(UefiAbsolutePointerStateActiveButtonFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[30];
 
     sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
@@ -51,6 +59,10 @@ inline const char8* flagToFullString(UefiAbsolutePointerStateActiveButtonFlag fl
 
 inline const char8* flagsToString(const UefiAbsolutePointerStateActiveButtonFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[47];
 
     FLAGS_TO_STRING(res, flags.flags, UefiAbsolutePointerStateActiveButtonFlag);
@@ -62,6 +74,10 @@ inline const char8* flagsToString(const UefiAbsolutePointerStateActiveButtonFlag
 
 inline const char8* flagsToFullString(const UefiAbsolutePointerStateActiveButtonFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[60];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, UefiAbsolutePointerStateActiveButtonFlag, "0x%08X");
@@ -71,4 +87,4 @@ inline const char8* flagsToFullString(const UefiAbsolutePointerStateActiveButton
 
 
 
-#endif // UEFI_UEFIABSOLUTEPOINTERSTATEACTIVEBUTTONFLAGS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIABSOLUTEPOINTERSTATEACTIVEBUTTONFLAGS_H

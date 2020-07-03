@@ -1,12 +1,12 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_PRINTF_PRINTF_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_PRINTF_PRINTF_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_PRINTF_PRINTF_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_PRINTF_PRINTF_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/printf/printf.h>
 #include <common/src/com/ngos/shared/common/string/string.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -15,7 +15,7 @@
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
-TEST_CASES(section0, __shared_common_bits64_printf_printf);
+TEST_CASES(section0, com_ngos_shared_common_printf_printf);
 {
     char8 buffer[1024];
 
@@ -547,4 +547,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_PRINTF_PRINTF_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_PRINTF_PRINTF_H

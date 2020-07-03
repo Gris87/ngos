@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIGRAPHICSOUTPUTBLTOPERATION_H
-#define UEFI_UEFIGRAPHICSOUTPUTBLTOPERATION_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIGRAPHICSOUTPUTBLTOPERATION_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIGRAPHICSOUTPUTBLTOPERATION_H
 
 
 
@@ -24,6 +24,10 @@ enum class UefiGraphicsOutputBltOperation: u32
 
 inline const char8* enumToString(UefiGraphicsOutputBltOperation operation) // TEST: NO
 {
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
+
+
+
     switch (operation)
     {
         case UefiGraphicsOutputBltOperation::VIDEO_FILL:          return "VIDEO_FILL";
@@ -44,6 +48,10 @@ inline const char8* enumToString(UefiGraphicsOutputBltOperation operation) // TE
 
 inline const char8* enumToFullString(UefiGraphicsOutputBltOperation operation) // TEST: NO
 {
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[33];
 
     sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
@@ -57,4 +65,4 @@ inline const char8* enumToFullString(UefiGraphicsOutputBltOperation operation) /
 
 
 
-#endif // UEFI_UEFIGRAPHICSOUTPUTBLTOPERATION_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIGRAPHICSOUTPUTBLTOPERATION_H

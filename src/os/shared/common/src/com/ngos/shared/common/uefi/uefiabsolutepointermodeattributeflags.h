@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIABSOLUTEPOINTERMODEATTRIBUTEFLAGS_H
-#define UEFI_UEFIABSOLUTEPOINTERMODEATTRIBUTEFLAGS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIABSOLUTEPOINTERMODEATTRIBUTEFLAGS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIABSOLUTEPOINTERMODEATTRIBUTEFLAGS_H
 
 
 
@@ -26,6 +26,10 @@ DEFINE_FLAGS(UefiAbsolutePointerModeAttributeFlags, uefi_absolute_pointer_mode_a
 
 inline const char8* flagToString(UefiAbsolutePointerModeAttributeFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     switch (flag)
     {
         case UefiAbsolutePointerModeAttributeFlag::NONE:                      return "NONE";
@@ -40,6 +44,10 @@ inline const char8* flagToString(UefiAbsolutePointerModeAttributeFlag flag) // T
 
 inline const char8* flagToFullString(UefiAbsolutePointerModeAttributeFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[39];
 
     sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
@@ -51,6 +59,10 @@ inline const char8* flagToFullString(UefiAbsolutePointerModeAttributeFlag flag) 
 
 inline const char8* flagsToString(const UefiAbsolutePointerModeAttributeFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[66];
 
     FLAGS_TO_STRING(res, flags.flags, UefiAbsolutePointerModeAttributeFlag);
@@ -62,6 +74,10 @@ inline const char8* flagsToString(const UefiAbsolutePointerModeAttributeFlags &f
 
 inline const char8* flagsToFullString(const UefiAbsolutePointerModeAttributeFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[79];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, UefiAbsolutePointerModeAttributeFlag, "0x%08X");
@@ -71,4 +87,4 @@ inline const char8* flagsToFullString(const UefiAbsolutePointerModeAttributeFlag
 
 
 
-#endif // UEFI_UEFIABSOLUTEPOINTERMODEATTRIBUTEFLAGS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIABSOLUTEPOINTERMODEATTRIBUTEFLAGS_H

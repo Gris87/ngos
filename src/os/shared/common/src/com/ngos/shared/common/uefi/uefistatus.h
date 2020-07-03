@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFISTATUS_H
-#define UEFI_UEFISTATUS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFISTATUS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFISTATUS_H
 
 
 
@@ -51,6 +51,10 @@ enum class UefiStatus: u64
 
 inline const char8* enumToString(UefiStatus status) // TEST: NO
 {
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
+
+
+
     switch (status)
     {
         case UefiStatus::SUCCESS:              return "SUCCESS";
@@ -98,6 +102,10 @@ inline const char8* enumToString(UefiStatus status) // TEST: NO
 
 inline const char8* enumToFullString(UefiStatus status) // TEST: NO
 {
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[42];
 
     sprintf(res, "0x%016lX (%s)", status, enumToString(status));
@@ -111,4 +119,4 @@ inline const char8* enumToFullString(UefiStatus status) // TEST: NO
 
 
 
-#endif // UEFI_UEFISTATUS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFISTATUS_H

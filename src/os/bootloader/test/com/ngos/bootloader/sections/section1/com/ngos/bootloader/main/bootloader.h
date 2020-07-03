@@ -5,7 +5,7 @@
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/string/string.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 #include "src/com/ngos/bootloader/main/bootloader.h"
 

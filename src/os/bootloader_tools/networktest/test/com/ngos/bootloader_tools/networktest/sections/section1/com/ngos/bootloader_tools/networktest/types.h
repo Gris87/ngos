@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 #include "src/com/ngos/bootloader_tools/networktest/main/networktest.h"
 #include "src/com/ngos/bootloader_tools/networktest/main/networktestgui.h"

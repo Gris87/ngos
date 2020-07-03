@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIHARDDRIVEDEVICEPATHMBRTYPE_H
-#define UEFI_UEFIHARDDRIVEDEVICEPATHMBRTYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIHARDDRIVEDEVICEPATHMBRTYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIHARDDRIVEDEVICEPATHMBRTYPE_H
 
 
 
@@ -19,6 +19,10 @@ enum class UefiHardDriveDevicePathMbrType: u8
 
 inline const char8* enumToString(UefiHardDriveDevicePathMbrType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case UefiHardDriveDevicePathMbrType::NONE:                        return "NONE";
@@ -33,6 +37,10 @@ inline const char8* enumToString(UefiHardDriveDevicePathMbrType type) // TEST: N
 
 inline const char8* enumToFullString(UefiHardDriveDevicePathMbrType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[35];
 
     sprintf(res, "0x%02X (%s)", type, enumToString(type));
@@ -42,4 +50,4 @@ inline const char8* enumToFullString(UefiHardDriveDevicePathMbrType type) // TES
 
 
 
-#endif // UEFI_UEFIHARDDRIVEDEVICEPATHMBRTYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIHARDDRIVEDEVICEPATHMBRTYPE_H

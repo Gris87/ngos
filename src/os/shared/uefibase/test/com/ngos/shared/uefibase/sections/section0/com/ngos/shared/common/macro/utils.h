@@ -1,12 +1,12 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_MACRO_UTILS_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_MACRO_UTILS_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_MACRO_UTILS_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_MACRO_UTILS_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/string/string.h>
 #include <common/src/com/ngos/shared/common/macro/utils.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -14,7 +14,7 @@
 
 
 
-TEST_CASES(section0, __include_macro_utils);
+TEST_CASES(section0, com_ngos_shared_common_macro_utils);
 {
     TEST_CASE("PP_JOIN()");
     {
@@ -82,4 +82,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_MACRO_UTILS_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_MACRO_UTILS_H

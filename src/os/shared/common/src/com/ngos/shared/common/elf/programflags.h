@@ -1,5 +1,5 @@
-#ifndef ELF_PROGRAMFLAGS_H
-#define ELF_PROGRAMFLAGS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_PROGRAMFLAGS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_PROGRAMFLAGS_H
 
 
 
@@ -30,6 +30,10 @@ DEFINE_FLAGS(ElfProgramFlags, elf_program_flags); // TEST: NO
 
 inline const char8* flagToString(ElfProgramFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     switch (flag)
     {
         case ElfProgramFlag::NONE:       return "NONE";
@@ -49,6 +53,10 @@ inline const char8* flagToString(ElfProgramFlag flag) // TEST: NO
 
 inline const char8* flagToFullString(ElfProgramFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[24];
 
     sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
@@ -60,6 +68,10 @@ inline const char8* flagToFullString(ElfProgramFlag flag) // TEST: NO
 
 inline const char8* flagsToString(const ElfProgramFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[48];
 
     FLAGS_TO_STRING(res, flags.flags, ElfProgramFlag);
@@ -71,6 +83,10 @@ inline const char8* flagsToString(const ElfProgramFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const ElfProgramFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[61];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, ElfProgramFlag, "0x%08X");
@@ -84,4 +100,4 @@ inline const char8* flagsToFullString(const ElfProgramFlags &flags) // TEST: NO
 
 
 
-#endif // ELF_PROGRAMFLAGS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_PROGRAMFLAGS_H

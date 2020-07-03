@@ -1,5 +1,5 @@
-#ifndef ELF_DATA_H
-#define ELF_DATA_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_DATA_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_DATA_H
 
 
 
@@ -22,6 +22,10 @@ enum class ElfData: u8
 
 inline const char8* enumToString(ElfData data) // TEST: NO
 {
+    // COMMON_LT((" | data = %u", data)); // Commented to avoid bad looking logs
+
+
+
     switch (data)
     {
         case ElfData::NONE:                   return "NONE";
@@ -38,8 +42,13 @@ inline const char8* enumToString(ElfData data) // TEST: NO
 
 
 
+
 inline const char8* enumToFullString(ElfData data) // TEST: NO
 {
+    // COMMON_LT((" | data = %u", data)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[30];
 
     sprintf(res, "0x%02X (%s)", data, enumToString(data));
@@ -53,4 +62,4 @@ inline const char8* enumToFullString(ElfData data) // TEST: NO
 
 
 
-#endif // ELF_DATA_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_DATA_H

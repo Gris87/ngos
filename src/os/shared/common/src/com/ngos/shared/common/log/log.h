@@ -1,10 +1,10 @@
-#ifndef OS_SHARED_COMMON_SRC_BITS64_LOG_LOG_H
-#define OS_SHARED_COMMON_SRC_BITS64_LOG_LOG_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_LOG_LOG_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_LOG_LOG_H
 
 
 
 #if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
 #include <common/src/com/ngos/shared/common/early/earlylog.h>
 #else
@@ -124,4 +124,4 @@
 
 
 
-#endif // OS_SHARED_COMMON_SRC_BITS64_LOG_LOG_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_LOG_LOG_H

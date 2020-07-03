@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIDEVICEPATHSUBTYPE_H
-#define UEFI_UEFIDEVICEPATHSUBTYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIDEVICEPATHSUBTYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIDEVICEPATHSUBTYPE_H
 
 
 
@@ -91,6 +91,10 @@ enum class UefiDevicePathSubType: u8 // Ignore CppEnumVerifier
 
 inline const char8* enumToString(UefiDevicePathType type, UefiDevicePathSubType subtype) // TEST: NO
 {
+    // COMMON_LT((" | type = %u, subtype = %u", type, subtype)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case UefiDevicePathType::HARDWARE_DEVICE_PATH:
@@ -214,6 +218,10 @@ inline const char8* enumToString(UefiDevicePathType type, UefiDevicePathSubType 
 
 inline const char8* enumToFullString(UefiDevicePathType type, UefiDevicePathSubType subtype) // TEST: NO
 {
+    // COMMON_LT((" | type = %u, subtype = %u", type, subtype)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[38];
 
     sprintf(res, "0x%02X (%s)", subtype, enumToString(type, subtype));
@@ -227,4 +235,4 @@ inline const char8* enumToFullString(UefiDevicePathType type, UefiDevicePathSubT
 
 
 
-#endif // UEFI_UEFIDEVICEPATHSUBTYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIDEVICEPATHSUBTYPE_H

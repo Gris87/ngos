@@ -1,10 +1,10 @@
-#ifndef OS_SHARED_COMMON_SRC_BITS64_LOG_ASSERT_H
-#define OS_SHARED_COMMON_SRC_BITS64_LOG_ASSERT_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_LOG_ASSERT_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_LOG_ASSERT_H
 
 
 
 #if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
-#include <uefibase/src/bits64/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
 #elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
 #include <common/src/com/ngos/shared/common/early/earlyassert.h>
 #else
@@ -130,4 +130,4 @@
 
 
 
-#endif // OS_SHARED_COMMON_SRC_BITS64_LOG_ASSERT_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_LOG_ASSERT_H

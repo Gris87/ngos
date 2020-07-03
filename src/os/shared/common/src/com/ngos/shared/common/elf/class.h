@@ -1,5 +1,5 @@
-#ifndef ELF_CLASS_H
-#define ELF_CLASS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_CLASS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_CLASS_H
 
 
 
@@ -22,6 +22,10 @@ enum class ElfClass: u8
 
 inline const char8* enumToString(ElfClass elfClass) // TEST: NO
 {
+    // COMMON_LT((" | elfClass = %u", elfClass)); // Commented to avoid bad looking logs
+
+
+
     switch (elfClass)
     {
         case ElfClass::NONE:     return "NONE";
@@ -40,6 +44,10 @@ inline const char8* enumToString(ElfClass elfClass) // TEST: NO
 
 inline const char8* enumToFullString(ElfClass elfClass) // TEST: NO
 {
+    // COMMON_LT((" | elfClass = %u", elfClass)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[16];
 
     sprintf(res, "0x%02X (%s)", elfClass, enumToString(elfClass));
@@ -53,4 +61,4 @@ inline const char8* enumToFullString(ElfClass elfClass) // TEST: NO
 
 
 
-#endif // ELF_CLASS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_CLASS_H

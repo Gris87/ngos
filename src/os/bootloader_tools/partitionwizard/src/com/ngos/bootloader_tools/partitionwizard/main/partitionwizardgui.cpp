@@ -9,10 +9,10 @@
 #include <common/src/com/ngos/shared/common/string/utils.h>
 #include <common/src/com/ngos/shared/common/ngos/linkage.h>
 #include <common/src/com/ngos/shared/common/ngos/utils.h>
-#include <uefibase/src/bits64/uefi/uefi.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
-#include <uefibase/src/bits64/uefi/uefipointerdevices.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h>
 
 #include "src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h"
 

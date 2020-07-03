@@ -1,8 +1,10 @@
-#ifndef ASM_INSTRUCTIONS_H
-#define ASM_INSTRUCTIONS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
 
 
 
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
 #include <common/src/com/ngos/shared/common/ngos/status.h>
 #include <common/src/com/ngos/shared/common/ngos/types.h>
 
@@ -20,13 +22,23 @@
 
 inline NgosStatus cpuIdle() // TEST: NO
 {
+    // COMMON_LT(("")); // Commented to avoid bad looking logs
+
+
+
     asm volatile("rep; nop");
+
+
 
     return NgosStatus::OK;
 }
 
 inline NgosStatus outb(u8 value, u16 port) // TEST: NO
 {
+    COMMON_LT((" | value = 0x%02X, port = 0x%04X", value, port));
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "outb   %0, %1"       // outb   %al, (%dx)  # Output byte in AL to I/O port in DX. %al == value, (%dx) == port
@@ -37,11 +49,17 @@ inline NgosStatus outb(u8 value, u16 port) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline u8 inb(u16 port) // TEST: NO
 {
+    COMMON_LT((" | port = 0x%04X", port));
+
+
+
     u8 value;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -54,11 +72,17 @@ inline u8 inb(u16 port) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return value;
 }
 
 inline NgosStatus rdrand(u64 *value)
 {
+    COMMON_LT((" | value = 0x%p", value));
+
+
+
     bool ok;
     u8   retry = RDRAND_RETRY_LOOPS;
 
@@ -95,6 +119,10 @@ inline NgosStatus rdrand(u64 *value)
 
 inline u64 rdtsc()
 {
+    COMMON_LT((""));
+
+
+
     u32 eax;
     u32 edx;
 
@@ -107,11 +135,17 @@ inline u64 rdtsc()
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return ((u64)edx << 32) | eax;
 }
 
 inline NgosStatus writeCr3(u64 value) // TEST: NO
 {
+    COMMON_LT((" | value = 0x%016lX", value));
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "movq   %0, %%cr3"    // movq   %rax, %cr3      # Put value to CR3. %rax == value
@@ -121,11 +155,17 @@ inline NgosStatus writeCr3(u64 value) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline u64 readCr4() // TEST: NO
 {
+    COMMON_LT((""));
+
+
+
     u64 value;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -136,11 +176,17 @@ inline u64 readCr4() // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return value;
 }
 
 inline NgosStatus writeCr4(u64 value) // TEST: NO
 {
+    COMMON_LT((" | value = 0x%016lX", value));
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "movq   %0, %%cr4"    // movq   %rax, %cr4      # Put value to CR4. %rax == value
@@ -150,11 +196,19 @@ inline NgosStatus writeCr4(u64 value) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline bool bt(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", false);
+
+
+
     bool res;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -169,11 +223,19 @@ inline bool bt(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return res;
 }
 
 inline bool bts(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", false);
+
+
+
     bool res;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -190,11 +252,19 @@ inline bool bts(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return res;
 }
 
 inline bool btsSafe(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", false);
+
+
+
     bool res;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -211,11 +281,19 @@ inline bool btsSafe(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return res;
 }
 
 inline NgosStatus btsPure(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "bts    %1, %0"           // bts    %rax, (%rbx)    # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
@@ -228,11 +306,19 @@ inline NgosStatus btsPure(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus btsPureSafe(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "lock bts   %1, %0"       // lock bts   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
@@ -245,11 +331,19 @@ inline NgosStatus btsPureSafe(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline bool btr(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", false);
+
+
+
     bool res;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -266,11 +360,19 @@ inline bool btr(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return res;
 }
 
 inline bool btrSafe(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", false);
+
+
+
     bool res;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -287,11 +389,19 @@ inline bool btrSafe(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return res;
 }
 
 inline NgosStatus btrPure(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "btr    %1, %0"           // btr    %rax, (%rbx)    # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
@@ -304,11 +414,19 @@ inline NgosStatus btrPure(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus btrPureSafe(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "lock btr   %1, %0"       // lock btr   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
@@ -321,11 +439,19 @@ inline NgosStatus btrPureSafe(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline bool btc(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", false);
+
+
+
     bool res;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -342,11 +468,19 @@ inline bool btc(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return res;
 }
 
 inline bool btcSafe(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", false);
+
+
+
     bool res;
 
     // Ignore CppAlignmentVerifier [BEGIN]
@@ -363,11 +497,19 @@ inline bool btcSafe(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return res;
 }
 
 inline NgosStatus btcPure(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "btc    %1, %0"           // btc    %rax, (%rbx)    # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
@@ -380,11 +522,19 @@ inline NgosStatus btcPure(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus btcPureSafe(u8 *address, u64 bit)
 {
+    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "lock btc   %1, %0"       // lock btc   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
@@ -397,11 +547,17 @@ inline NgosStatus btcPureSafe(u8 *address, u64 bit)
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline u64 rdmsr(u32 msr) // TEST: NO
 {
+    COMMON_LT((" | msr = 0x%08X", msr));
+
+
+
     u32 eax;
     u32 edx;
 
@@ -416,11 +572,17 @@ inline u64 rdmsr(u32 msr) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return ((u64)edx << 32) | eax;
 }
 
 inline NgosStatus wrmsr(u32 msr, u64 value) // TEST: NO
 {
+    COMMON_LT((" | msr = 0x%08X, value = 0x%016lX", msr, value));
+
+
+
     u32 eax = value & 0xFFFFFFFF;
     u32 edx = value >> 32;
 
@@ -435,32 +597,55 @@ inline NgosStatus wrmsr(u32 msr, u64 value) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus cli() // TEST: NO
 {
+    COMMON_LT((""));
+
+
+
     asm volatile("cli");
+
+
 
     return NgosStatus::OK;
 }
 
 inline NgosStatus sti() // TEST: NO
 {
+    COMMON_LT((""));
+
+
     asm volatile("sti");
+
+
 
     return NgosStatus::OK;
 }
 
 inline NgosStatus fninit() // TEST: NO
 {
+    COMMON_LT((""));
+
+
+
     asm volatile("fninit");
+
+
 
     return NgosStatus::OK;
 }
 
 inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
 {
+    COMMON_LT((" | index = 0x%08X, value = 0x%016lX", index, value));
+
+
+
     u32 eax = value;
     u32 edx = value >> 32;
 
@@ -475,11 +660,19 @@ inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus fxsave(u8 *address) // TEST: NO
 {
+    COMMON_LT((" | address = 0x%p", address));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "fxsave     %0"           // fxsave     0x0000(%rip)    # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address
@@ -488,11 +681,20 @@ inline NgosStatus fxsave(u8 *address) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
+    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
+
+
+
     u32 eax = mask;
     u32 edx = mask >> 32;
 
@@ -507,11 +709,20 @@ inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: N
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
+    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
+
+
+
     u32 eax = mask;
     u32 edx = mask >> 32;
 
@@ -526,11 +737,20 @@ inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
+    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
+
+
+
     u32 eax = mask;
     u32 edx = mask >> 32;
 
@@ -545,11 +765,20 @@ inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
+    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
+
+
+
     u32 eax = mask;
     u32 edx = mask >> 32;
 
@@ -564,11 +793,19 @@ inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST:
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 inline NgosStatus invlpg(u8 *address) // TEST: NO
 {
+    COMMON_LT((" | address = 0x%p", address));
+
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
+
+
+
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
         "invlpg     %0"           // invlpg     0x0000(%rip)    # Invalidate TLB entries for page containing specified address. 0x0000(%rip) == address
@@ -578,9 +815,11 @@ inline NgosStatus invlpg(u8 *address) // TEST: NO
     );
     // Ignore CppAlignmentVerifier [END]
 
+
+
     return NgosStatus::OK;
 }
 
 
 
-#endif // ASM_INSTRUCTIONS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H

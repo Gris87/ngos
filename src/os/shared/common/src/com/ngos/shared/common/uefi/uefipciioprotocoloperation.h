@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIPCIIOPROTOCOLOPERATION_H
-#define UEFI_UEFIPCIIOPROTOCOLOPERATION_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLOPERATION_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLOPERATION_H
 
 
 
@@ -20,6 +20,10 @@ enum class UefiPciIoProtocolOperation: u32
 
 inline const char8* enumToString(UefiPciIoProtocolOperation operation) // TEST: NO
 {
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
+
+
+
     switch (operation)
     {
         case UefiPciIoProtocolOperation::BUS_MASTER_READ:          return "BUS_MASTER_READ";
@@ -35,6 +39,10 @@ inline const char8* enumToString(UefiPciIoProtocolOperation operation) // TEST: 
 
 inline const char8* enumToFullString(UefiPciIoProtocolOperation operation) // TEST: NO
 {
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[38];
 
     sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
@@ -44,4 +52,4 @@ inline const char8* enumToFullString(UefiPciIoProtocolOperation operation) // TE
 
 
 
-#endif // UEFI_UEFIPCIIOPROTOCOLOPERATION_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLOPERATION_H

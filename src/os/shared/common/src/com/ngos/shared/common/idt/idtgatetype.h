@@ -1,5 +1,5 @@
-#ifndef IDT_IDTGATETYPE_H
-#define IDT_IDTGATETYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_IDT_IDTGATETYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_IDT_IDTGATETYPE_H
 
 
 
@@ -21,6 +21,10 @@ enum class IdtGateType: u8
 
 inline const char8* enumToString(IdtGateType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case IdtGateType::NONE:      return "NONE";
@@ -37,6 +41,10 @@ inline const char8* enumToString(IdtGateType type) // TEST: NO
 
 inline const char8* enumToFullString(IdtGateType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[17];
 
     sprintf(res, "0x%02X (%s)", type, enumToString(type));
@@ -46,4 +54,4 @@ inline const char8* enumToFullString(IdtGateType type) // TEST: NO
 
 
 
-#endif // IDT_IDTGATETYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_IDT_IDTGATETYPE_H

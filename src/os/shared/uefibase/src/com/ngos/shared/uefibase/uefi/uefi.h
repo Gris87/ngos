@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFI_H
-#define OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFI_H
+#ifndef OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFI_H
+#define OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFI_H
 
 
 
@@ -11,7 +11,7 @@
 #include <common/src/com/ngos/shared/common/uefi/uefifileprotocol.h>
 #include <common/src/com/ngos/shared/common/uefi/uefisimpletextoutputinterface.h>
 #include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
-#include <uefibase/src/bits64/other/uefibootmemorymap.h>
+#include <uefibase/src/com/ngos/shared/uefibase/other/uefibootmemorymap.h>
 
 
 
@@ -100,4 +100,4 @@ private:
 
 
 
-#endif // OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFI_H
+#endif // OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFI_H

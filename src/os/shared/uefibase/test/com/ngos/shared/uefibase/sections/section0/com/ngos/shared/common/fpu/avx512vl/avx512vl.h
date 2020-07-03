@@ -1,20 +1,20 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512VL_AVX512VL_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512VL_AVX512VL_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_FPU_AVX512VL_AVX512VL_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_FPU_AVX512VL_AVX512VL_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvaddps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvdivps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvmaxps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvminps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvmulps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvrcp14ps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvrsqrt14ps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvsqrtps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/avx512vl/asm_testavx512vlvsubps.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvaddps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvdivps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvmaxps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvminps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvmulps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvrcp14ps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvrsqrt14ps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvsqrtps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvsubps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -22,7 +22,7 @@
 
 
 
-TEST_CASES(section0, __shared_common_bits64_fpu_avx512vl_avx512vl);
+TEST_CASES(section0, com_ngos_shared_common_fpu_avx512vl_avx512vl);
 {
     TEST_CASE("vaddps");
     {
@@ -414,4 +414,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_AVX512VL_AVX512VL_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_FPU_AVX512VL_AVX512VL_H

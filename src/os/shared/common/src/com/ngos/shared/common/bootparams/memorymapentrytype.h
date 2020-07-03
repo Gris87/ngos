@@ -1,5 +1,5 @@
-#ifndef BOOTPARAMS_MEMORYMAPENTRYTYPE_H
-#define BOOTPARAMS_MEMORYMAPENTRYTYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H
 
 
 
@@ -27,6 +27,10 @@ enum class MemoryMapEntryType: u8
 
 inline const char8* enumToString(MemoryMapEntryType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case MemoryMapEntryType::NONE:               return "NONE";
@@ -50,6 +54,10 @@ inline const char8* enumToString(MemoryMapEntryType type) // TEST: NO
 
 inline const char8* enumToFullString(MemoryMapEntryType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[26];
 
     sprintf(res, "0x%02X (%s)", type, enumToString(type));
@@ -63,4 +71,4 @@ inline const char8* enumToFullString(MemoryMapEntryType type) // TEST: NO
 
 
 
-#endif // BOOTPARAMS_MEMORYMAPENTRYTYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H

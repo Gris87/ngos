@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIRESETTYPE_H
-#define UEFI_UEFIRESETTYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIRESETTYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIRESETTYPE_H
 
 
 
@@ -22,6 +22,10 @@ enum class UefiResetType: u32
 
 inline const char8* enumToString(UefiResetType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case UefiResetType::COLD:     return "COLD";
@@ -40,6 +44,10 @@ inline const char8* enumToString(UefiResetType type) // TEST: NO
 
 inline const char8* enumToFullString(UefiResetType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[22];
 
     sprintf(res, "0x%08X (%s)", type, enumToString(type));
@@ -53,4 +61,4 @@ inline const char8* enumToFullString(UefiResetType type) // TEST: NO
 
 
 
-#endif // UEFI_UEFIRESETTYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIRESETTYPE_H

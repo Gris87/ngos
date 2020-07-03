@@ -23,15 +23,15 @@ CppIncludeVerifier::CppIncludeVerifier()
 void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
 {
     if (
-        path.endsWith("src/os/shared/common/src/bits64/dmi/dmi.cpp")
+        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/dmi/dmi.cpp")
         ||
-        path.endsWith("src/os/shared/common/src/bits64/log/assert.h")
+        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/assert.h")
         ||
-        path.endsWith("src/os/shared/common/src/bits64/log/log.h")
+        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/log.h")
         ||
-        path.endsWith("src/os/shared/common/src/bits64/memory/malloc.cpp")
+        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/memory/malloc.cpp")
         ||
-        path.endsWith("src/os/shared/common/src/bits64/time/time.cpp")
+        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/time/time.cpp")
        )
     {
         return;

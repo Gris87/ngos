@@ -1,11 +1,11 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_PAGETABLE_UTILS_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_PAGETABLE_UTILS_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_PAGETABLE_UTILS_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_PAGETABLE_UTILS_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/pagetable/utils.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -13,7 +13,7 @@
 
 
 
-TEST_CASES(section0, __include_pagetable_utils);
+TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
 {
     TEST_CASE("pgdIndex()");
     {
@@ -848,4 +848,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___INCLUDE_PAGETABLE_UTILS_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_PAGETABLE_UTILS_H

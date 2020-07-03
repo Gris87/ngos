@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIVARIABLEATTRIBUTEFLAGS_H
-#define UEFI_UEFIVARIABLEATTRIBUTEFLAGS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIVARIABLEATTRIBUTEFLAGS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIVARIABLEATTRIBUTEFLAGS_H
 
 
 
@@ -34,6 +34,10 @@ DEFINE_FLAGS(UefiVariableAttributeFlags, uefi_variable_attribute_flags); // TEST
 
 inline const char8* flagToString(UefiVariableAttributeFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     switch (flag)
     {
         case UefiVariableAttributeFlag::NONE:                                  return "NONE";
@@ -57,6 +61,10 @@ inline const char8* flagToString(UefiVariableAttributeFlag flag) // TEST: NO
 
 inline const char8* flagToFullString(UefiVariableAttributeFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[51];
 
     sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
@@ -68,6 +76,10 @@ inline const char8* flagToFullString(UefiVariableAttributeFlag flag) // TEST: NO
 
 inline const char8* flagsToString(const UefiVariableAttributeFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[156];
 
     FLAGS_TO_STRING(res, flags.flags, UefiVariableAttributeFlag);
@@ -79,6 +91,10 @@ inline const char8* flagsToString(const UefiVariableAttributeFlags &flags) // TE
 
 inline const char8* flagsToFullString(const UefiVariableAttributeFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[169];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, UefiVariableAttributeFlag, "0x%08X");
@@ -92,4 +108,4 @@ inline const char8* flagsToFullString(const UefiVariableAttributeFlags &flags) /
 
 
 
-#endif // UEFI_UEFIVARIABLEATTRIBUTEFLAGS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIVARIABLEATTRIBUTEFLAGS_H

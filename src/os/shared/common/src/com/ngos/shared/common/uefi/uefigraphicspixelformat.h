@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIGRAPHICSPIXELFORMAT_H
-#define UEFI_UEFIGRAPHICSPIXELFORMAT_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIGRAPHICSPIXELFORMAT_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIGRAPHICSPIXELFORMAT_H
 
 
 
@@ -24,6 +24,10 @@ enum class UefiGraphicsPixelFormat: u32
 
 inline const char8* enumToString(UefiGraphicsPixelFormat format) // TEST: NO
 {
+    // COMMON_LT((" | format = %u", format)); // Commented to avoid bad looking logs
+
+
+
     switch (format)
     {
         case UefiGraphicsPixelFormat::RGB_8_BIT_PER_COLOR: return "RGB_8_BIT_PER_COLOR";
@@ -44,6 +48,10 @@ inline const char8* enumToString(UefiGraphicsPixelFormat format) // TEST: NO
 
 inline const char8* enumToFullString(UefiGraphicsPixelFormat format) // TEST: NO
 {
+    // COMMON_LT((" | format = %u", format)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[33];
 
     sprintf(res, "0x%08X (%s)", format, enumToString(format));
@@ -57,4 +65,4 @@ inline const char8* enumToFullString(UefiGraphicsPixelFormat format) // TEST: NO
 
 
 
-#endif // UEFI_UEFIGRAPHICSPIXELFORMAT_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIGRAPHICSPIXELFORMAT_H

@@ -1,14 +1,14 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_TESTENGINE_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_TESTENGINE_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_TESTENGINE_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_TESTENGINE_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/macro/utils.h>
 #include <common/src/com/ngos/shared/common/ngos/utils.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
-#include <uefibase/src/bits64/uefi/uefilogfile.h>
-#include <uefibase/test/bits64/testresults.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilogfile.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testresults.h>
 
 
 
@@ -162,4 +162,4 @@
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_TESTENGINE_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_TESTENGINE_H

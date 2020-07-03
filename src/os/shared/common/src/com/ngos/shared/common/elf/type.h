@@ -1,5 +1,5 @@
-#ifndef ELF_TYPE_H
-#define ELF_TYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_TYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_TYPE_H
 
 
 
@@ -24,6 +24,10 @@ enum class ElfType: u16
 
 inline const char8* enumToString(ElfType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case ElfType::NONE:            return "NONE";
@@ -44,6 +48,10 @@ inline const char8* enumToString(ElfType type) // TEST: NO
 
 inline const char8* enumToFullString(ElfType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[25];
 
     sprintf(res, "0x%04X (%s)", type, enumToString(type));
@@ -57,4 +65,4 @@ inline const char8* enumToFullString(ElfType type) // TEST: NO
 
 
 
-#endif // ELF_TYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_TYPE_H

@@ -14,9 +14,9 @@ HexVerifier::HexVerifier()
 void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
     if (
-        path.endsWith("src/os/shared/uefibase/test/bits64/sections/section0/__shared/common/bits64/printf/printf.h")
+        path.endsWith("/src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h")
         ||
-        path.endsWith("tools/tracers/linux.sh")
+        path.endsWith("/tools/tracers/linux.sh")
        )
     {
         return;

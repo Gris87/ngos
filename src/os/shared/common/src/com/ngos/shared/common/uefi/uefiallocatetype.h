@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIALLOCATETYPE_H
-#define UEFI_UEFIALLOCATETYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIALLOCATETYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIALLOCATETYPE_H
 
 
 
@@ -23,6 +23,10 @@ enum class UefiAllocateType: u32
 
 inline const char8* enumToString(UefiAllocateType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case UefiAllocateType::ALLOCATE_ANY_PAGES:   return "ALLOCATE_ANY_PAGES";
@@ -42,6 +46,10 @@ inline const char8* enumToString(UefiAllocateType type) // TEST: NO
 
 inline const char8* enumToFullString(UefiAllocateType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[34];
 
     sprintf(res, "0x%08X (%s)", type, enumToString(type));
@@ -55,4 +63,4 @@ inline const char8* enumToFullString(UefiAllocateType type) // TEST: NO
 
 
 
-#endif // UEFI_UEFIALLOCATETYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIALLOCATETYPE_H

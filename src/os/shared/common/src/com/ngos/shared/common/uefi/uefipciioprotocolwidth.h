@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIPCIIOPROTOCOLWIDTH_H
-#define UEFI_UEFIPCIIOPROTOCOLWIDTH_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLWIDTH_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLWIDTH_H
 
 
 
@@ -29,6 +29,10 @@ enum class UefiPciIoProtocolWidth: u32
 
 inline const char8* enumToString(UefiPciIoProtocolWidth width) // TEST: NO
 {
+    // COMMON_LT((" | width = %u", width)); // Commented to avoid bad looking logs
+
+
+
     switch (width)
     {
         case UefiPciIoProtocolWidth::UINT8:       return "UINT8";
@@ -53,6 +57,10 @@ inline const char8* enumToString(UefiPciIoProtocolWidth width) // TEST: NO
 
 inline const char8* enumToFullString(UefiPciIoProtocolWidth width) // TEST: NO
 {
+    // COMMON_LT((" | width = %u", width)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[25];
 
     sprintf(res, "0x%08X (%s)", width, enumToString(width));
@@ -62,4 +70,4 @@ inline const char8* enumToFullString(UefiPciIoProtocolWidth width) // TEST: NO
 
 
 
-#endif // UEFI_UEFIPCIIOPROTOCOLWIDTH_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLWIDTH_H

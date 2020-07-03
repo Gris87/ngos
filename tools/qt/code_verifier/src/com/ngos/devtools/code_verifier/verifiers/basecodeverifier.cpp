@@ -199,9 +199,9 @@ QString BaseCodeVerifier::logPrefixFromPath(const QString &path)
     if (path.contains("/src/os/shared/common/"))
     {
         if (
-            path.endsWith("/src/os/shared/common/src/bits64/early/earlyassert.h")
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/early/earlyassert.h")
             ||
-            path.endsWith("/src/os/shared/common/src/bits64/early/earlylog.h")
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/early/earlylog.h")
            )
         {
             return "EARLY";

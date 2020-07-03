@@ -1,5 +1,5 @@
-#ifndef ELF_SYMBOLTYPE_H
-#define ELF_SYMBOLTYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLTYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLTYPE_H
 
 
 
@@ -33,6 +33,10 @@ enum class ElfSymbolType: u8
 
 inline const char8* enumToString(ElfSymbolType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case ElfSymbolType::NOTYPE:  return "NOTYPE";
@@ -55,6 +59,10 @@ inline const char8* enumToString(ElfSymbolType type) // TEST: NO
 
 inline const char8* enumToFullString(ElfSymbolType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[15];
 
     sprintf(res, "0x%02X (%s)", type, enumToString(type));
@@ -68,4 +76,4 @@ inline const char8* enumToFullString(ElfSymbolType type) // TEST: NO
 
 
 
-#endif // ELF_SYMBOLTYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLTYPE_H

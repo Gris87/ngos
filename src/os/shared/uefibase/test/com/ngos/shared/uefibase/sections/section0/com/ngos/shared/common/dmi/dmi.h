@@ -1,13 +1,13 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_DMI_DMI_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_DMI_DMI_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/dmi/dmi.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -37,7 +37,7 @@ NgosStatus testCountEntry(DmiEntryHeader *header)
 
 
 
-TEST_CASES(section0, __shared_common_bits64_dmi_dmi);
+TEST_CASES(section0, com_ngos_shared_common_dmi_dmi);
 {
     TEST_CASE("DMI_VERSION()");
     {
@@ -127,4 +127,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_DMI_DMI_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H

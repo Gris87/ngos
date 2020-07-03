@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIPROCESSORINFORMATIONSTATUSFLAGS_H
-#define UEFI_UEFIPROCESSORINFORMATIONSTATUSFLAGS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPROCESSORINFORMATIONSTATUSFLAGS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPROCESSORINFORMATIONSTATUSFLAGS_H
 
 
 
@@ -27,6 +27,10 @@ DEFINE_FLAGS(UefiProcessorInformationStatusFlags, uefi_processor_information_sta
 
 inline const char8* flagToString(UefiProcessorInformationStatusFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     switch (flag)
     {
         case UefiProcessorInformationStatusFlag::NONE:          return "NONE";
@@ -42,6 +46,10 @@ inline const char8* flagToString(UefiProcessorInformationStatusFlag flag) // TES
 
 inline const char8* flagToFullString(UefiProcessorInformationStatusFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[27];
 
     sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
@@ -53,6 +61,10 @@ inline const char8* flagToFullString(UefiProcessorInformationStatusFlag flag) //
 
 inline const char8* flagsToString(const UefiProcessorInformationStatusFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[51];
 
     FLAGS_TO_STRING(res, flags.flags, UefiProcessorInformationStatusFlag);
@@ -64,6 +76,10 @@ inline const char8* flagsToString(const UefiProcessorInformationStatusFlags &fla
 
 inline const char8* flagsToFullString(const UefiProcessorInformationStatusFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[64];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, UefiProcessorInformationStatusFlag, "0x%08X");
@@ -73,4 +89,4 @@ inline const char8* flagsToFullString(const UefiProcessorInformationStatusFlags 
 
 
 
-#endif // UEFI_UEFIPROCESSORINFORMATIONSTATUSFLAGS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPROCESSORINFORMATIONSTATUSFLAGS_H

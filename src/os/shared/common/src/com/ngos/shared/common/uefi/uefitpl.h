@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFITPL_H
-#define UEFI_UEFITPL_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFITPL_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFITPL_H
 
 
 
@@ -24,6 +24,10 @@ enum class UefiTpl: u64
 
 inline const char8* enumToString(UefiTpl tpl) // TEST: NO
 {
+    // COMMON_LT((" | tpl = %u", tpl)); // Commented to avoid bad looking logs
+
+
+
     switch (tpl)
     {
         case UefiTpl::NONE:        return "NONE";
@@ -44,6 +48,10 @@ inline const char8* enumToString(UefiTpl tpl) // TEST: NO
 
 inline const char8* enumToFullString(UefiTpl tpl) // TEST: NO
 {
+    // COMMON_LT((" | tpl = %u", tpl)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[33];
 
     sprintf(res, "0x%016lX (%s)", tpl, enumToString(tpl));
@@ -57,4 +65,4 @@ inline const char8* enumToFullString(UefiTpl tpl) // TEST: NO
 
 
 
-#endif // UEFI_UEFITPL_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFITPL_H

@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIINTERFACETYPE_H
-#define UEFI_UEFIINTERFACETYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIINTERFACETYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIINTERFACETYPE_H
 
 
 
@@ -21,6 +21,10 @@ enum class UefiInterfaceType: u32
 
 inline const char8* enumToString(UefiInterfaceType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case UefiInterfaceType::NATIVE_INTERFACE: return "NATIVE_INTERFACE";
@@ -38,6 +42,10 @@ inline const char8* enumToString(UefiInterfaceType type) // TEST: NO
 
 inline const char8* enumToFullString(UefiInterfaceType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[30];
 
     sprintf(res, "0x%08X (%s)", type, enumToString(type));
@@ -51,4 +59,4 @@ inline const char8* enumToFullString(UefiInterfaceType type) // TEST: NO
 
 
 
-#endif // UEFI_UEFIINTERFACETYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIINTERFACETYPE_H

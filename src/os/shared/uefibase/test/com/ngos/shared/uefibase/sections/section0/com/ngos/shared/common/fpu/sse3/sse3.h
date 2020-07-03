@@ -1,21 +1,21 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE3_SSE3_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE3_SSE3_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_FPU_SSE3_SSE3_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_FPU_SSE3_SSE3_H
 
 
 
 #include <buildconfig.h>
 #include <common/src/com/ngos/shared/common/cpu/cpu.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3addsubpd.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3addsubps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3haddpd.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3haddps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3hsubpd.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3hsubps.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phaddd.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phaddw.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phsubd.h>
-#include <uefibase/test/bits64/sections/section0/__shared/common/bits64/fpu/sse3/asm_testsse3phsubw.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubpd.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddpd.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubpd.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubps.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddd.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddw.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubd.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubw.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -23,7 +23,7 @@
 
 
 
-TEST_CASES(section0, __shared_common_bits64_fpu_sse3_sse3);
+TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 {
     TEST_CASE("addsubps");
     {
@@ -377,4 +377,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_FPU_SSE3_SSE3_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_FPU_SSE3_SSE3_H

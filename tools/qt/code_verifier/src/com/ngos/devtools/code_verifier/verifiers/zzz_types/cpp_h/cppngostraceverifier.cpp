@@ -97,11 +97,20 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
 
-                                index = argument.indexOf(' ');
+                                index = argument.indexOf('=');
 
                                 if (index >= 0)
                                 {
-                                    argument = argument.remove(0, index + 1);
+                                    argument = argument.left(index).trimmed();
+                                }
+
+
+
+                                index = argument.lastIndexOf(' ');
+
+                                if (index >= 0)
+                                {
+                                    argument = argument.mid(index + 1);
                                 }
                                 else
                                 {

@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFIASSERT_H
-#define OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFIASSERT_H
+#ifndef OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFIASSERT_H
+#define OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFIASSERT_H
 
 
 
@@ -10,8 +10,8 @@
 #include <common/src/com/ngos/shared/common/serial/serial.h>
 #include <common/src/com/ngos/shared/common/macro/utils.h>
 #include <common/src/com/ngos/shared/common/ngos/status.h>
-#include <uefibase/src/bits64/uefi/uefi.h>
-#include <uefibase/src/bits64/uefi/uefilogfile.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilogfile.h>
 
 
 
@@ -169,4 +169,4 @@
 
 
 
-#endif // OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFIASSERT_H
+#endif // OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFIASSERT_H

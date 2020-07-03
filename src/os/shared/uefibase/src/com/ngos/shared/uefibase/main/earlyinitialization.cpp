@@ -8,11 +8,11 @@
 #include <common/src/com/ngos/shared/common/serial/serial.h>
 #include <common/src/com/ngos/shared/common/ngos/linkage.h>
 #include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
-#include <uefibase/src/bits64/main/setupcr4.h>
-#include <uefibase/src/bits64/main/setupdynamicrelocation.h>
-#include <uefibase/src/bits64/main/setupglobalobjects.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/main/setupcr4.h>
+#include <uefibase/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.h>
+#include <uefibase/src/com/ngos/shared/uefibase/main/setupglobalobjects.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

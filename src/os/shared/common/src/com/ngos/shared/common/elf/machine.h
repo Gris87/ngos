@@ -1,5 +1,5 @@
-#ifndef ELF_MACHINE_H
-#define ELF_MACHINE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_MACHINE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_MACHINE_H
 
 
 
@@ -35,6 +35,10 @@ enum class ElfMachine: u16
 
 inline const char8* enumToString(ElfMachine machine) // TEST: NO
 {
+    // COMMON_LT((" | machine = %u", machine)); // Commented to avoid bad looking logs
+
+
+
     switch (machine)
     {
         case ElfMachine::NONE:             return "NONE";
@@ -66,6 +70,10 @@ inline const char8* enumToString(ElfMachine machine) // TEST: NO
 
 inline const char8* enumToFullString(ElfMachine machine) // TEST: NO
 {
+    // COMMON_LT((" | machine = %u", machine)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[26];
 
     sprintf(res, "0x%04X (%s)", machine, enumToString(machine));
@@ -79,4 +87,4 @@ inline const char8* enumToFullString(ElfMachine machine) // TEST: NO
 
 
 
-#endif // ELF_MACHINE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_MACHINE_H

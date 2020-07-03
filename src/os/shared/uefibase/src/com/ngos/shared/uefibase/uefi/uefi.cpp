@@ -10,8 +10,8 @@
 #include <common/src/com/ngos/shared/common/uefi/uefidevicepathtotextprotocol.h>
 #include <common/src/com/ngos/shared/common/uefi/uefifilepath.h>
 #include <common/src/com/ngos/shared/common/uefi/uefisimplefilesystemprotocol.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

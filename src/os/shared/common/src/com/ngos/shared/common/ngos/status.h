@@ -1,5 +1,5 @@
-#ifndef NGOS_STATUS_H
-#define NGOS_STATUS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_NGOS_STATUS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_NGOS_STATUS_H
 
 
 
@@ -29,6 +29,10 @@ enum class NgosStatus: u64
 
 inline const char8* enumToString(NgosStatus status) // TEST: NO
 {
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
+
+
+
     switch (status)
     {
         case NgosStatus::OK:                   return "OK";
@@ -54,6 +58,10 @@ inline const char8* enumToString(NgosStatus status) // TEST: NO
 
 inline const char8* enumToFullString(NgosStatus status) // TEST: NO
 {
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[42];
 
     sprintf(res, "0x%016lX (%s)", status, enumToString(status));
@@ -67,4 +75,4 @@ inline const char8* enumToFullString(NgosStatus status) // TEST: NO
 
 
 
-#endif // NGOS_STATUS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_NGOS_STATUS_H

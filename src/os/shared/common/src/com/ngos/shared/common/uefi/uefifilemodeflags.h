@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIFILEMODEFLAGS_H
-#define UEFI_UEFIFILEMODEFLAGS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIFILEMODEFLAGS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIFILEMODEFLAGS_H
 
 
 
@@ -27,6 +27,10 @@ DEFINE_FLAGS(UefiFileModeFlags, uefi_file_mode_flags); // TEST: NO
 
 inline const char8* flagToString(UefiFileModeFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     switch (flag)
     {
         case UefiFileModeFlag::NONE:   return "NONE";
@@ -42,6 +46,10 @@ inline const char8* flagToString(UefiFileModeFlag flag) // TEST: NO
 
 inline const char8* flagToFullString(UefiFileModeFlag flag) // TEST: NO
 {
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[29];
 
     sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
@@ -53,6 +61,10 @@ inline const char8* flagToFullString(UefiFileModeFlag flag) // TEST: NO
 
 inline const char8* flagsToString(const UefiFileModeFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[37];
 
     FLAGS_TO_STRING(res, flags.flags, UefiFileModeFlag);
@@ -64,6 +76,10 @@ inline const char8* flagsToString(const UefiFileModeFlags &flags) // TEST: NO
 
 inline const char8* flagsToFullString(const UefiFileModeFlags &flags) // TEST: NO
 {
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
     static char8 res[58];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, UefiFileModeFlag, "0x%016lX");
@@ -73,4 +89,4 @@ inline const char8* flagsToFullString(const UefiFileModeFlags &flags) // TEST: N
 
 
 
-#endif // UEFI_UEFIFILEMODEFLAGS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIFILEMODEFLAGS_H

@@ -1,5 +1,5 @@
-#ifndef ELF_OSABI_H
-#define ELF_OSABI_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_OSABI_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_OSABI_H
 
 
 
@@ -37,6 +37,10 @@ enum class ElfOsAbi: u8
 
 inline const char8* enumToString(ElfOsAbi abi) // TEST: NO
 {
+    // COMMON_LT((" | abi = %u", abi)); // Commented to avoid bad looking logs
+
+
+
     switch (abi)
     {
         case ElfOsAbi::SYSTEM_V:       return "SYSTEM_V";
@@ -70,6 +74,10 @@ inline const char8* enumToString(ElfOsAbi abi) // TEST: NO
 
 inline const char8* enumToFullString(ElfOsAbi abi) // TEST: NO
 {
+    // COMMON_LT((" | abi = %u", abi)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[22];
 
     sprintf(res, "0x%02X (%s)", abi, enumToString(abi));
@@ -83,4 +91,4 @@ inline const char8* enumToFullString(ElfOsAbi abi) // TEST: NO
 
 
 
-#endif // ELF_OSABI_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_OSABI_H

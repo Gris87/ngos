@@ -4,13 +4,13 @@
 #include <common/src/com/ngos/shared/common/serial/serial.h>
 #include <common/src/com/ngos/shared/common/ngos/linkage.h>
 #include <common/src/com/ngos/shared/common/uefi/uefisystemtable.h>
-#include <uefibase/src/bits64/main/earlyinitialization.h>
-#include <uefibase/src/bits64/main/setupdynamicrelocation.h>
-#include <uefibase/src/bits64/main/setupgraphics.h>
-#include <uefibase/src/bits64/main/setuphardwareid.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
-#include <uefibase/test/bits64/sections/section0/testcase.h>
+#include <uefibase/src/com/ngos/shared/uefibase/main/earlyinitialization.h>
+#include <uefibase/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.h>
+#include <uefibase/src/com/ngos/shared/uefibase/main/setupgraphics.h>
+#include <uefibase/src/com/ngos/shared/uefibase/main/setuphardwareid.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
+#include <uefibase/test/com/ngos/shared/uefibase/sections/section0/testcase.h>
 
 #include "src/com/ngos/configure/a_uefi/main/exitbootservices.h"
 #include "src/com/ngos/configure/a_uefi/main/setupbootparams.h"

@@ -8,7 +8,7 @@
 #include <common/src/com/ngos/shared/common/uuid/utils.h>
 
 #ifdef UEFI_APPLICATION // Defined in Makefile
-#include <uefibase/src/bits64/uefi/uefi.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
 #else
 #include <src/com/ngos/kernel/other/brk/brk.h>
 #include <src/com/ngos/kernel/other/ioremap/ioremap.h>

@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFILOG_H
-#define OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFILOG_H
+#ifndef OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFILOG_H
+#define OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFILOG_H
 
 
 
@@ -8,8 +8,8 @@
 #include <common/src/com/ngos/shared/common/console/graphicalconsole.h>
 #include <common/src/com/ngos/shared/common/printf/printf.h>
 #include <common/src/com/ngos/shared/common/serial/serial.h>
-#include <uefibase/src/bits64/uefi/uefi.h>
-#include <uefibase/src/bits64/uefi/uefilogfile.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilogfile.h>
 
 
 
@@ -231,4 +231,4 @@
 
 
 
-#endif // OS_SHARED_UEFIBASE_SRC_BITS64_UEFI_UEFILOG_H
+#endif // OS_SHARED_UEFIBASE_SRC_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFILOG_H

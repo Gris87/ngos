@@ -1,5 +1,5 @@
-#ifndef ELF_SYMBOLVISIBILITY_H
-#define ELF_SYMBOLVISIBILITY_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLVISIBILITY_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLVISIBILITY_H
 
 
 
@@ -26,6 +26,10 @@ enum class ElfSymbolVisibility: u8
 
 inline const char8* enumToString(ElfSymbolVisibility visibility) // TEST: NO
 {
+    // COMMON_LT((" | visibility = %u", visibility)); // Commented to avoid bad looking logs
+
+
+
     switch (visibility)
     {
         case ElfSymbolVisibility::DEFAULT:   return "DEFAULT";
@@ -48,6 +52,10 @@ inline const char8* enumToString(ElfSymbolVisibility visibility) // TEST: NO
 
 inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 {
+    // COMMON_LT((" | visibility = %u", visibility)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[17];
 
     sprintf(res, "0x%02X (%s)", visibility, enumToString(visibility));
@@ -61,4 +69,4 @@ inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 
 
 
-#endif // ELF_SYMBOLVISIBILITY_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLVISIBILITY_H

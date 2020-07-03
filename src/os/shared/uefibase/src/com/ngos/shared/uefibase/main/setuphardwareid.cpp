@@ -4,8 +4,8 @@
 #include <common/src/com/ngos/shared/common/random/random.h>
 #include <common/src/com/ngos/shared/common/string/utils.h>
 #include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 #include <common/src/com/ngos/shared/common/uuid/utils.h>
 
 

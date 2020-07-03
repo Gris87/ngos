@@ -4,8 +4,8 @@
 #include <common/src/com/ngos/shared/common/memory/memory.h>
 #include <common/src/com/ngos/shared/common/ngos/utils.h>
 #include <common/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 
 #include "src/com/ngos/configure/other/configuredefines.h"
 #include "src/com/ngos/configure/other/kerneldescriptor.h"

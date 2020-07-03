@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_UEFIBASE_BITS64_UEFI_UEFI_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_UEFIBASE_BITS64_UEFI_UEFI_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFI_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFI_H
 
 
 
@@ -7,8 +7,8 @@
 #include <common/src/com/ngos/shared/common/memory/malloc.h>
 #include <common/src/com/ngos/shared/common/memory/memory.h>
 #include <common/src/com/ngos/shared/common/string/string.h>
-#include <uefibase/src/bits64/uefi/uefi.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -16,7 +16,7 @@
 
 
 
-TEST_CASES(section0, __shared_uefibase_bits64_uefi_uefi);
+TEST_CASES(section0, com_ngos_shared_uefibase_uefi_uefi);
 {
     TEST_CASE("parentDirectory()");
     {
@@ -160,4 +160,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_UEFIBASE_BITS64_UEFI_UEFI_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_UEFIBASE_UEFI_UEFI_H

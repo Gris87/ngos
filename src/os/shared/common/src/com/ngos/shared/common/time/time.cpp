@@ -4,7 +4,7 @@
 #include <common/src/com/ngos/shared/common/log/log.h>
 
 #if defined(UEFI_APPLICATION)                       // Defined in Makefile
-#include <uefibase/src/bits64/uefi/uefi.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
 #endif
 
 

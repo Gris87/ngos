@@ -3,8 +3,8 @@
 #include <common/src/com/ngos/shared/common/guid/guid.h>
 #include <common/src/com/ngos/shared/common/ngos/linkage.h>
 #include <common/src/com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

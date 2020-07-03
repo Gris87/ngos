@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIINPUTKEYSCANCODE_H
-#define UEFI_UEFIINPUTKEYSCANCODE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIINPUTKEYSCANCODE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIINPUTKEYSCANCODE_H
 
 
 
@@ -44,6 +44,10 @@ enum class UefiInputKeyScanCode: u16
 
 inline const char8* enumToString(UefiInputKeyScanCode code) // TEST: NO
 {
+    // COMMON_LT((" | code = %u", code)); // Commented to avoid bad looking logs
+
+
+
     switch (code)
     {
         case UefiInputKeyScanCode::NONE:      return "NONE";
@@ -84,6 +88,10 @@ inline const char8* enumToString(UefiInputKeyScanCode code) // TEST: NO
 
 inline const char8* enumToFullString(UefiInputKeyScanCode code) // TEST: NO
 {
+    // COMMON_LT((" | code = %u", code)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[19];
 
     sprintf(res, "0x%04X (%s)", code, enumToString(code));
@@ -97,4 +105,4 @@ inline const char8* enumToFullString(UefiInputKeyScanCode code) // TEST: NO
 
 
 
-#endif // UEFI_UEFIINPUTKEYSCANCODE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIINPUTKEYSCANCODE_H

@@ -1553,7 +1553,6 @@ src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h
-src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types2.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h

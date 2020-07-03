@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIHARDDRIVEDEVICEPATHSIGNATURETYPE_H
-#define UEFI_UEFIHARDDRIVEDEVICEPATHSIGNATURETYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIHARDDRIVEDEVICEPATHSIGNATURETYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIHARDDRIVEDEVICEPATHSIGNATURETYPE_H
 
 
 
@@ -19,6 +19,10 @@ enum class UefiHardDriveDevicePathSignatureType: u8
 
 inline const char8* enumToString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case UefiHardDriveDevicePathSignatureType::NONE: return "NONE";
@@ -33,6 +37,10 @@ inline const char8* enumToString(UefiHardDriveDevicePathSignatureType type) // T
 
 inline const char8* enumToFullString(UefiHardDriveDevicePathSignatureType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[15];
 
     sprintf(res, "0x%02X (%s)", type, enumToString(type));
@@ -42,4 +50,4 @@ inline const char8* enumToFullString(UefiHardDriveDevicePathSignatureType type) 
 
 
 
-#endif // UEFI_UEFIHARDDRIVEDEVICEPATHSIGNATURETYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIHARDDRIVEDEVICEPATHSIGNATURETYPE_H

@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIMEMORYTYPE_H
-#define UEFI_UEFIMEMORYTYPE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIMEMORYTYPE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIMEMORYTYPE_H
 
 
 
@@ -35,6 +35,10 @@ enum class UefiMemoryType: u32
 
 inline const char8* enumToString(UefiMemoryType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     switch (type)
     {
         case UefiMemoryType::RESERVED_MEMORY:             return "RESERVED_MEMORY";
@@ -66,6 +70,10 @@ inline const char8* enumToString(UefiMemoryType type) // TEST: NO
 
 inline const char8* enumToFullString(UefiMemoryType type) // TEST: NO
 {
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[41];
 
     sprintf(res, "0x%08X (%s)", type, enumToString(type));
@@ -79,4 +87,4 @@ inline const char8* enumToFullString(UefiMemoryType type) // TEST: NO
 
 
 
-#endif // UEFI_UEFIMEMORYTYPE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIMEMORYTYPE_H

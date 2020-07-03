@@ -1,15 +1,21 @@
-#ifndef GPT_UTILS_H
-#define GPT_UTILS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_GPT_UTILS_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_GPT_UTILS_H
 
 
 
 #include <common/src/com/ngos/shared/common/checksum/crc.h>
 #include <common/src/com/ngos/shared/common/gpt/gptdata.h>
+#include <common/src/com/ngos/shared/common/log/assert.h>
+#include <common/src/com/ngos/shared/common/log/log.h>
 
 
 
 inline bool isGptValid(const GptData &data) // TEST: NO
 {
+    COMMON_LT((" | data = ..."));
+
+
+
     if (
         !data.protectiveMbr // data.protectiveMbr == 0
         ||
@@ -66,4 +72,4 @@ inline bool isGptValid(const GptData &data) // TEST: NO
 
 
 
-#endif // GPT_UTILS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_GPT_UTILS_H

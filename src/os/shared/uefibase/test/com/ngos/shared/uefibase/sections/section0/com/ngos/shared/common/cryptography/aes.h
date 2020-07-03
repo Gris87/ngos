@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_CRYPTOGRAPHY_AES_H
-#define OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_CRYPTOGRAPHY_AES_H
+#ifndef OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CRYPTOGRAPHY_AES_H
+#define OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CRYPTOGRAPHY_AES_H
 
 
 
@@ -12,7 +12,7 @@
 #include <common/src/com/ngos/shared/common/memory/malloc.h>
 #include <common/src/com/ngos/shared/common/memory/memory.h>
 #include <common/src/com/ngos/shared/common/string/string.h>
-#include <uefibase/test/bits64/testengine.h>
+#include <uefibase/test/com/ngos/shared/uefibase/testengine.h>
 
 
 
@@ -20,7 +20,7 @@
 
 
 
-TEST_CASES(section0, __shared_common_bits64_cryptography_aes);
+TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 {
     TEST_CASE("AES()");
     {
@@ -685,4 +685,4 @@ TEST_CASES_END();
 
 
 
-#endif // OS_SHARED_UEFIBASE_TEST_BITS64_SECTIONS_SECTION0___SHARED_COMMON_BITS64_CRYPTOGRAPHY_AES_H
+#endif // OS_SHARED_UEFIBASE_TEST_COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CRYPTOGRAPHY_AES_H

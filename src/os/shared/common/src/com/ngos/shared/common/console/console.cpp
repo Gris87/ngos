@@ -7,7 +7,7 @@
 #include <common/src/com/ngos/shared/common/log/log.h>
 #include <common/src/com/ngos/shared/common/memory/memory.h>
 #include <common/src/com/ngos/shared/common/printf/printf.h>
-#include <uefibase/src/bits64/uefi/uefi.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefi.h>
 
 
 

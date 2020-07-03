@@ -274,9 +274,9 @@ HEADERS += \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/com/ngos/shared/uefibase/other/uefibootmemorymap.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/com/ngos/shared/uefibase/types.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/com/ngos/shared/uefibase/uefi/uefi.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/uefi/uefi.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/testcase.h \
     $$PWD/test/com/ngos/shared/uefibase/testengine.h \
     $$PWD/test/com/ngos/shared/uefibase/testresults.h

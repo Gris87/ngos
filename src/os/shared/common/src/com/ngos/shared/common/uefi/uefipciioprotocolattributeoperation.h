@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFIPCIIOPROTOCOLATTRIBUTEOPERATION_H
-#define UEFI_UEFIPCIIOPROTOCOLATTRIBUTEOPERATION_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLATTRIBUTEOPERATION_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLATTRIBUTEOPERATION_H
 
 
 
@@ -22,6 +22,10 @@ enum class UefiPciIoProtocolAttributeOperation: u32
 
 inline const char8* enumToString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
 {
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
+
+
+
     switch (operation)
     {
         case UefiPciIoProtocolAttributeOperation::GET:       return "GET";
@@ -39,6 +43,10 @@ inline const char8* enumToString(UefiPciIoProtocolAttributeOperation operation) 
 
 inline const char8* enumToFullString(UefiPciIoProtocolAttributeOperation operation) // TEST: NO
 {
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[23];
 
     sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
@@ -48,4 +56,4 @@ inline const char8* enumToFullString(UefiPciIoProtocolAttributeOperation operati
 
 
 
-#endif // UEFI_UEFIPCIIOPROTOCOLATTRIBUTEOPERATION_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFIPCIIOPROTOCOLATTRIBUTEOPERATION_H

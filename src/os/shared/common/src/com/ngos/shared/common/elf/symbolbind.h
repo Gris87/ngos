@@ -1,5 +1,5 @@
-#ifndef ELF_SYMBOLBIND_H
-#define ELF_SYMBOLBIND_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLBIND_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLBIND_H
 
 
 
@@ -29,6 +29,10 @@ enum class ElfSymbolBind: u8
 
 inline const char8* enumToString(ElfSymbolBind bind) // TEST: NO
 {
+    // COMMON_LT((" | bind = %u", bind)); // Commented to avoid bad looking logs
+
+
+
     switch (bind)
     {
         case ElfSymbolBind::LOCAL:  return "LOCAL";
@@ -47,6 +51,10 @@ inline const char8* enumToString(ElfSymbolBind bind) // TEST: NO
 
 inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 {
+    // COMMON_LT((" | bind = %u", bind)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[15];
 
     sprintf(res, "0x%02X (%s)", bind, enumToString(bind));
@@ -60,4 +68,4 @@ inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 
 
 
-#endif // ELF_SYMBOLBIND_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_ELF_SYMBOLBIND_H

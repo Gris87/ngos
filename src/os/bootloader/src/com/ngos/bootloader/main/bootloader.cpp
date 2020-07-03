@@ -12,8 +12,8 @@
 #include <common/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h>
 #include <common/src/com/ngos/shared/common/uefi/uefifileinfo.h>
 #include <common/src/com/ngos/shared/common/uefi/uefiharddrivedevicepath.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 
 #include "src/com/ngos/bootloader/main/bootloadergui.h"
 

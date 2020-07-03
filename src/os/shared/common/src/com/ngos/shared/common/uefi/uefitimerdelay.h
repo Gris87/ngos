@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFITIMERDELAY_H
-#define UEFI_UEFITIMERDELAY_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFITIMERDELAY_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFITIMERDELAY_H
 
 
 
@@ -23,6 +23,10 @@ enum class UefiTimerDelay: u32
 
 inline const char8* enumToString(UefiTimerDelay delay) // TEST: NO
 {
+    // COMMON_LT((" | delay = %u", delay)); // Commented to avoid bad looking logs
+
+
+
     switch (delay)
     {
         case UefiTimerDelay::CANCEL:   return "CANCEL";
@@ -42,6 +46,10 @@ inline const char8* enumToString(UefiTimerDelay delay) // TEST: NO
 
 inline const char8* enumToFullString(UefiTimerDelay delay) // TEST: NO
 {
+    // COMMON_LT((" | delay = %u", delay)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[22];
 
     sprintf(res, "0x%08X (%s)", delay, enumToString(delay));
@@ -55,4 +63,4 @@ inline const char8* enumToFullString(UefiTimerDelay delay) // TEST: NO
 
 
 
-#endif // UEFI_UEFITIMERDELAY_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFITIMERDELAY_H

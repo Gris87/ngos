@@ -5,8 +5,8 @@
 
 #include <common/src/com/ngos/shared/common/printf/printf.h>
 #include <common/src/com/ngos/shared/common/ngos/types.h>
-#include <uefibase/src/bits64/uefi/uefiassert.h>
-#include <uefibase/src/bits64/uefi/uefilog.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefiassert.h>
+#include <uefibase/src/com/ngos/shared/uefibase/uefi/uefilog.h>
 
 
 

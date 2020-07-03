@@ -1,5 +1,5 @@
-#ifndef UEFI_UEFICONSOLECONTROLSCREENMODE_H
-#define UEFI_UEFICONSOLECONTROLSCREENMODE_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFICONSOLECONTROLSCREENMODE_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFICONSOLECONTROLSCREENMODE_H
 
 
 
@@ -19,6 +19,10 @@ enum class UefiConsoleControlScreenMode: u32
 
 inline const char8* enumToString(UefiConsoleControlScreenMode mode) // TEST: NO
 {
+    // COMMON_LT((" | mode = %u", mode)); // Commented to avoid bad looking logs
+
+
+
     switch (mode)
     {
         case UefiConsoleControlScreenMode::TEXT:     return "TEXT";
@@ -33,6 +37,10 @@ inline const char8* enumToString(UefiConsoleControlScreenMode mode) // TEST: NO
 
 inline const char8* enumToFullString(UefiConsoleControlScreenMode mode) // TEST: NO
 {
+    // COMMON_LT((" | mode = %u", mode)); // Commented to avoid bad looking logs
+
+
+
     static char8 res[22];
 
     sprintf(res, "0x%08X (%s)", mode, enumToString(mode));
@@ -42,4 +50,4 @@ inline const char8* enumToFullString(UefiConsoleControlScreenMode mode) // TEST:
 
 
 
-#endif // UEFI_UEFICONSOLECONTROLSCREENMODE_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_UEFI_UEFICONSOLECONTROLSCREENMODE_H
