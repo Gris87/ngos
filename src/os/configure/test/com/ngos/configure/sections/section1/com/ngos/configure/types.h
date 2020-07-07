@@ -4,26 +4,25 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h>
+#include <com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberheader.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockheader.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbuffer.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilter.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h>
+#include <com/ngos/configure/b_early/other/memoryarea.h>
+#include <com/ngos/configure/b_early/other/pagetable/pageallocationcontext.h>
+#include <com/ngos/configure/b_early/other/unavailablememoryarea.h>
+#include <com/ngos/configure/other/kerneldescriptor.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
-#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzma2decoder.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadecoder.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmadictionary.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmalengthdecoder.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/lzma2/lzmarcdecoder.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbcjdecoder.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzbuffer.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilter.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
-#include "com/ngos/configure/b_early/other/memoryarea.h"
-#include "com/ngos/configure/b_early/other/pagetable/pageallocationcontext.h"
-#include "com/ngos/configure/b_early/other/unavailablememoryarea.h"
-#include "com/ngos/configure/other/kerneldescriptor.h"
 
 
 

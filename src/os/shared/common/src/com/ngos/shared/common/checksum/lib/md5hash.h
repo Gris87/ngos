@@ -6,8 +6,8 @@
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/printf/printf.h>
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/printf/printf.h>
 
 
 
@@ -15,23 +15,39 @@ struct Md5Hash
 {
     Md5Hash()
     {
+        COMMON_LT((""));
+
+
+
         quads[0] = 0;
         quads[1] = 0;
     }
 
     Md5Hash(u64 quad1, u64 quad2)
     {
+        COMMON_LT((" | quad1 = %u, quad2 = %u", quad1, quad2));
+
+
+
         quads[0] = quad1;
         quads[1] = quad2;
     }
 
     Md5Hash(u8 data[16])
     {
+        COMMON_LT((" | data = ..."));
+
+
+
         memcpy(bytes, data, sizeof(bytes));
     }
 
     bool operator==(const Md5Hash &another) const
     {
+        COMMON_LT((" | another = ..."));
+
+
+
         return quads[0] == another.quads[0]
                 &&
                 quads[1] == another.quads[1];

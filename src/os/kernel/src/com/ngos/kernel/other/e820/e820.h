@@ -4,9 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/common/ngos/status.h>
-
 #include <com/ngos/kernel/other/e820/e820table.h>
+#include <com/ngos/shared/common/ngos/status.h>
 
 
 

@@ -1,10 +1,9 @@
 #include "setupinittask.h"
 
+#include <com/ngos/kernel/other/task/utils.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
-
-#include <com/ngos/kernel/other/task/utils.h>
 
 
 

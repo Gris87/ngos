@@ -13,7 +13,7 @@
 #include <QSettings>
 #include <QUrl>
 
-#include "com/ngos/devtools/usb_boot_maker/main/aboutdialog.h"
+#include <com/ngos/devtools/usb_boot_maker/main/aboutdialog.h>
 
 
 

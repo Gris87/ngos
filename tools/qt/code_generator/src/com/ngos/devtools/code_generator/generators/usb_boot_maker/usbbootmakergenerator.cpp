@@ -1,6 +1,7 @@
 #include "usbbootmakergenerator.h"
 
 #include <QDir>
+
 #include <com/ngos/devtools/shared/console/console.h>
 
 

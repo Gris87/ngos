@@ -2,8 +2,8 @@
 #include <QDebug>
 #include <QFile>
 
-#include "com/ngos/devtools/build_config_gui/main/mainwindow.h"
-#include "com/ngos/devtools/build_config_gui/other/global.h"
+#include <com/ngos/devtools/build_config_gui/main/mainwindow.h>
+#include <com/ngos/devtools/build_config_gui/other/global.h>
 
 
 

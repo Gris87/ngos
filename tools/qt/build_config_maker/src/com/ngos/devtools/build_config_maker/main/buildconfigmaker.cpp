@@ -2,6 +2,7 @@
 
 #include <QFile>
 #include <QIODevice>
+
 #include <com/ngos/devtools/shared/console/console.h>
 
 

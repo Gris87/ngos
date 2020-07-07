@@ -12,7 +12,7 @@
 #include <QSettings>
 #include <QtMath>
 
-#include "com/ngos/devtools/usb_boot_maker/other/defines.h"
+#include <com/ngos/devtools/usb_boot_maker/other/defines.h>
 
 
 

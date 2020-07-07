@@ -1,13 +1,3 @@
-#include <com/ngos/shared/common/bootparams/bootparams.h>
-#include <com/ngos/shared/common/assets/assets.h>
-#include <com/ngos/shared/common/cpu/cpu.h>
-#include <com/ngos/shared/common/early/earlyassert.h>
-#include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/fpu/fpu.h>
-#include <com/ngos/shared/common/serial/serial.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/pagetable/utils.h>
-
 #include <com/ngos/kernel/a_early/main/disableirq.h>
 #include <com/ngos/kernel/a_early/main/reservepciromimages.h>
 #include <com/ngos/kernel/a_early/main/setupbootparams.h>
@@ -24,8 +14,17 @@
 #include <com/ngos/kernel/a_early/main/setupstackcanary.h>
 #include <com/ngos/kernel/a_early/main/setupuefimemorymap.h>
 #include <com/ngos/kernel/a_early/main/setupuefisystemtable.h>
-#include <com/ngos/kernel/other/bootparams/bootparams.h>
 #include <com/ngos/kernel/a_early/sections/section2/testcase.h>
+#include <com/ngos/kernel/other/bootparams/bootparams.h>
+#include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
+#include <com/ngos/shared/common/cpu/cpu.h>
+#include <com/ngos/shared/common/early/earlyassert.h>
+#include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/fpu/fpu.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/pagetable/utils.h>
+#include <com/ngos/shared/common/serial/serial.h>
 
 
 

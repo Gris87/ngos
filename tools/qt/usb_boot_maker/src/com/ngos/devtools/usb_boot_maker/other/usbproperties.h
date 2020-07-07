@@ -5,7 +5,7 @@
 
 #include <Qt>
 
-#include "com/ngos/devtools/usb_boot_maker/other/usbspeed.h"
+#include <com/ngos/devtools/usb_boot_maker/other/usbspeed.h>
 
 
 

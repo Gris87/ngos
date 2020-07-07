@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/bootparams/memorymapentry.h>
 #include <buildconfig.h>
+#include <com/ngos/shared/common/bootparams/memorymapentry.h>
 #include <com/ngos/shared/uefibase/testengine.h>
 
 

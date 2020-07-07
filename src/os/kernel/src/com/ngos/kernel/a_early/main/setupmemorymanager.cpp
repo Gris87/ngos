@@ -1,11 +1,10 @@
 #include "setupmemorymanager.h"
 
+#include <com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <com/ngos/kernel/other/pagetable/addressconversion.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/page/macros.h>
-
-#include <com/ngos/kernel/other/memorymanager/memorymanager.h>
-#include <com/ngos/kernel/other/pagetable/addressconversion.h>
 
 
 

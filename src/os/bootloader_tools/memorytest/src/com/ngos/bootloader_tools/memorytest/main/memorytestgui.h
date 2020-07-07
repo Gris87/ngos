@@ -3,6 +3,8 @@
 
 
 
+#include <com/ngos/bootloader_tools/memorytest/other/testmode.h>
+#include <com/ngos/bootloader_tools/memorytest/other/testtype.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
 #include <com/ngos/shared/common/dmi/dmimemorydevice.h>
@@ -15,9 +17,6 @@
 #include <com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
 #include <com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
 #include <com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
-
-#include "com/ngos/bootloader_tools/memorytest/other/testmode.h"
-#include "com/ngos/bootloader_tools/memorytest/other/testtype.h"
 
 
 

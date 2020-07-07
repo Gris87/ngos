@@ -4,10 +4,9 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/bootloader_tools/networktest/main/networktest.h>
+#include <com/ngos/bootloader_tools/networktest/main/networktestgui.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/bootloader_tools/networktest/main/networktest.h"
-#include "com/ngos/bootloader_tools/networktest/main/networktestgui.h"
 
 
 

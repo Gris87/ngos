@@ -3,8 +3,9 @@
 
 
 
-#include <com/ngos/shared/common/ngos/types.h>
 #include <stdarg.h>
+
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

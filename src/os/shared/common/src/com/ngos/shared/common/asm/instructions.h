@@ -620,6 +620,7 @@ inline NgosStatus sti() // TEST: NO
     COMMON_LT((""));
 
 
+
     asm volatile("sti");
 
 

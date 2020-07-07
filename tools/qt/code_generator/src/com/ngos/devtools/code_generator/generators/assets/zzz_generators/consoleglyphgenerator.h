@@ -3,7 +3,7 @@
 
 
 
-#include "com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h"
+#include <com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h>
 
 
 

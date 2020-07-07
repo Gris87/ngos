@@ -4,8 +4,9 @@
 
 
 #include <Qt>
-#include <com/ngos/shared/common/ngos/types.h>
 #include <stdio.h>
+
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 

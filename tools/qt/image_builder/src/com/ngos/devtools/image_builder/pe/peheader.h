@@ -5,9 +5,9 @@
 
 #include <Qt>
 
-#include "com/ngos/devtools/image_builder/pe/coffheader.h"
-#include "com/ngos/devtools/image_builder/pe/imagesectionheader.h"
-#include "com/ngos/devtools/image_builder/pe/peoptheader.h"
+#include <com/ngos/devtools/image_builder/pe/coffheader.h>
+#include <com/ngos/devtools/image_builder/pe/imagesectionheader.h>
+#include <com/ngos/devtools/image_builder/pe/peoptheader.h>
 
 
 

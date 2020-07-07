@@ -1,10 +1,9 @@
 #include "xzfilterlzma2.h"
 
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
-
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzlzma2decoder.h"
 
 
 

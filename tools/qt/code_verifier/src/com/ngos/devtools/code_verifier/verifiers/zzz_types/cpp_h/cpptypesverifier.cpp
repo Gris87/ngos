@@ -1,6 +1,6 @@
 #include "cpptypesverifier.h"
 
-#include "com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
 
 
 
@@ -13,7 +13,7 @@ CppTypesVerifier::CppTypesVerifier()
 
 void CppTypesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    if (path.contains("include/ngos/types.h"))
+    if (path.contains("/src/os/shared/common/src/com/ngos/shared/common/ngos/types.h"))
     {
         return;
     }

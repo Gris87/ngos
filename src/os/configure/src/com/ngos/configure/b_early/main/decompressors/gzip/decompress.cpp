@@ -1,13 +1,12 @@
 #include "decompress.h"
 
+#include <com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h>
+#include <com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberheader.h>
 #include <com/ngos/shared/common/checksum/crc.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/inflate/inflate.h>
 #include <com/ngos/shared/common/memory/memory.h>
-
-#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberfooter.h"
-#include "com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberheader.h"
 
 
 

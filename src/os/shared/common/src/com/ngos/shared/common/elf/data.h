@@ -42,7 +42,6 @@ inline const char8* enumToString(ElfData data) // TEST: NO
 
 
 
-
 inline const char8* enumToFullString(ElfData data) // TEST: NO
 {
     // COMMON_LT((" | data = %u", data)); // Commented to avoid bad looking logs

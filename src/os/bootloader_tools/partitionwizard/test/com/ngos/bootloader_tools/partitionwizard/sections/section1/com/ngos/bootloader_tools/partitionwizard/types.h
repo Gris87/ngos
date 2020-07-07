@@ -4,10 +4,9 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h>
+#include <com/ngos/bootloader_tools/partitionwizard/main/partitionwizardgui.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h"
-#include "com/ngos/bootloader_tools/partitionwizard/main/partitionwizardgui.h"
 
 
 

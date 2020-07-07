@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/bootparams/uefimemorymapinfo.h>
 #include <buildconfig.h>
+#include <com/ngos/shared/common/bootparams/uefimemorymapinfo.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/uefi/config/uefiacpi20configurationtable.h>
 #include <com/ngos/shared/common/uefi/config/uefiacpiconfigurationtable.h>

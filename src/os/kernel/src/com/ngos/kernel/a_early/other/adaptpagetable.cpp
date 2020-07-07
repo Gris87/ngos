@@ -1,12 +1,11 @@
+#include <com/ngos/kernel/other/kerneldefines.h>
+#include <com/ngos/kernel/other/pagetable/addressconversion.h>
 #include <com/ngos/shared/common/assets/assets.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/utils.h>
 #include <com/ngos/shared/common/pagetable/utils.h>
-
-#include <com/ngos/kernel/other/kerneldefines.h>
-#include <com/ngos/kernel/other/pagetable/addressconversion.h>
 
 
 

@@ -6,9 +6,9 @@
 #include <buildconfig.h>
 #include <com/ngos/shared/common/macro/utils.h>
 #include <com/ngos/shared/common/ngos/utils.h>
+#include <com/ngos/shared/uefibase/testresults.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 #include <com/ngos/shared/uefibase/uefi/uefilogfile.h>
-#include <com/ngos/shared/uefibase/testresults.h>
 
 
 

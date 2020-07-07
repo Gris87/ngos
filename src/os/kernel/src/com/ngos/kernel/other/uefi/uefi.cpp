@@ -1,14 +1,13 @@
 #include "uefi.h"
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/guid/utils.h>
-#include <com/ngos/shared/common/pagetable/utils.h>
-
 #include <com/ngos/kernel/other/bootparams/bootparams.h>
 #include <com/ngos/kernel/other/ioremap/ioremap.h>
 #include <com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <com/ngos/shared/common/guid/utils.h>
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/pagetable/utils.h>
 
 
 

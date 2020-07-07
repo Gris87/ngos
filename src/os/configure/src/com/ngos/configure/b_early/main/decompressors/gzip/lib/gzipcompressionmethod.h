@@ -6,8 +6,8 @@
 #include <buildconfig.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/printf/printf.h>
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/printf/printf.h>
 
 
 

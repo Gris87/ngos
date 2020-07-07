@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QProcess>
 #include <QTemporaryFile>
+
 #include <com/ngos/devtools/shared/console/console.h>
 
 

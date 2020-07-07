@@ -3,7 +3,7 @@
 
 
 
-#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h"
+#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 
 #include <com/ngos/shared/common/dmi/dmientrytype.h>
 

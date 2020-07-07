@@ -4,7 +4,6 @@
 
 
 #include <buildconfig.h>
-
 #include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/brk/brk.h>
 #include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/cpu/cpumask.h>
 #include <com/ngos/kernel/a_early/sections/section2/com/ngos/kernel/other/e820/e820.h>

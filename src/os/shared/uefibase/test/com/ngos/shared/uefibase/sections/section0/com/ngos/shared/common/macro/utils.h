@@ -4,8 +4,8 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/common/string/string.h>
 #include <com/ngos/shared/common/macro/utils.h>
+#include <com/ngos/shared/common/string/string.h>
 #include <com/ngos/shared/uefibase/testengine.h>
 
 

@@ -1,13 +1,12 @@
 #include "ioremap.h"
 
+#include <com/ngos/kernel/other/ioremap/utils.h>
+#include <com/ngos/kernel/other/pagetable/addressconversion.h>
 #include <com/ngos/shared/common/asm/instructions.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/pagetable/utils.h>
-
-#include <com/ngos/kernel/other/ioremap/utils.h>
-#include <com/ngos/kernel/other/pagetable/addressconversion.h>
 
 
 

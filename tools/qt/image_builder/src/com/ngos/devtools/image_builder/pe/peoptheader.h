@@ -5,7 +5,7 @@
 
 #include <Qt>
 
-#include "com/ngos/devtools/image_builder/pe/datadirectory.h"
+#include <com/ngos/devtools/image_builder/pe/datadirectory.h>
 
 
 

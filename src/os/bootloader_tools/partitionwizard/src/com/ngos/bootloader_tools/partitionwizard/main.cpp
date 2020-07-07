@@ -1,22 +1,21 @@
-#include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <buildconfig.h>
+#include <com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h>
+#include <com/ngos/bootloader_tools/partitionwizard/main/partitionwizardgui.h>
+#include <com/ngos/bootloader_tools/partitionwizard/sections/section1/testcase.h>
 #include <com/ngos/shared/common/assets/assets.h>
-#include <com/ngos/shared/common/serial/serial.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/uefi/uefisystemtable.h>
 #include <com/ngos/shared/uefibase/main/earlyinitialization.h>
 #include <com/ngos/shared/uefibase/main/setupbootparams.h>
 #include <com/ngos/shared/uefibase/main/setupdynamicrelocation.h>
 #include <com/ngos/shared/uefibase/main/setupgraphics.h>
 #include <com/ngos/shared/uefibase/main/setuphardwareid.h>
+#include <com/ngos/shared/uefibase/sections/section0/testcase.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 #include <com/ngos/shared/uefibase/uefi/uefipointerdevices.h>
-#include <com/ngos/shared/uefibase/sections/section0/testcase.h>
-
-#include "com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h"
-#include "com/ngos/bootloader_tools/partitionwizard/main/partitionwizardgui.h"
-#include "com/ngos/bootloader_tools/partitionwizard/sections/section1/testcase.h"
 
 
 

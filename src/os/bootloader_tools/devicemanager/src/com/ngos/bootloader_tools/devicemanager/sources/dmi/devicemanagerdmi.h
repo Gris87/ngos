@@ -3,6 +3,7 @@
 
 
 
+#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
 #include <com/ngos/shared/common/dmi/dmientryheader.h>
 #include <com/ngos/shared/common/dmi/entry/dmiadditionalinformationentry.h>
@@ -40,8 +41,6 @@
 #include <com/ngos/shared/common/dmi/entry/dmisystemslotsentry.h>
 #include <com/ngos/shared/common/dmi/entry/dmitemperatureprobeentry.h>
 #include <com/ngos/shared/common/dmi/entry/dmivoltageprobeentry.h>
-
-#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h"
 
 
 

@@ -1,13 +1,12 @@
 #include "setupbootparams.h"
 
+#include <com/ngos/kernel/other/bootparams/bootparams.h>
+#include <com/ngos/kernel/other/pagetable/dynamicpagetable.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/pagetable/utils.h>
-
-#include <com/ngos/kernel/other/bootparams/bootparams.h>
-#include <com/ngos/kernel/other/pagetable/dynamicpagetable.h>
 
 
 

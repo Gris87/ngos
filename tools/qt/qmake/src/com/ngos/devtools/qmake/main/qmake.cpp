@@ -6,10 +6,10 @@
 #include <QFileInfo>
 #include <QIODevice>
 #include <QXmlStreamReader>
-#include <buildconfig.h>
-#include <com/ngos/devtools/shared/console/console.h>
 
-#include "com/ngos/devtools/qmake/threads/searchdependenciesthread.h"
+#include <buildconfig.h>
+#include <com/ngos/devtools/qmake/threads/searchdependenciesthread.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 

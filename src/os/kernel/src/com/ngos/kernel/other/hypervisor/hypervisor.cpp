@@ -1,9 +1,8 @@
 #include "hypervisor.h"
 
+#include <com/ngos/kernel/other/hypervisor/kvm/kvm.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
-
-#include <com/ngos/kernel/other/hypervisor/kvm/kvm.h>
 
 
 

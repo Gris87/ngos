@@ -4,9 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/bootloader_tools/memorytest/sections/section1/com/ngos/bootloader_tools/memorytest/types.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/bootloader_tools/memorytest/sections/section1/com/ngos/bootloader_tools/memorytest/types.h"
 
 
 

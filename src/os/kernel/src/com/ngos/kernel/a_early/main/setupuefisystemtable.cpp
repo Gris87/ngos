@@ -1,9 +1,8 @@
 #include "setupuefisystemtable.h"
 
+#include <com/ngos/kernel/other/uefi/uefi.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-
-#include <com/ngos/kernel/other/uefi/uefi.h>
 
 
 

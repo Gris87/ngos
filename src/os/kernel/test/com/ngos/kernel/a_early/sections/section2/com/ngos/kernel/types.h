@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-
+#include <com/ngos/kernel/a_early/testengine.h>
 #include <com/ngos/kernel/other/brk/brk.h>
 #include <com/ngos/kernel/other/cpu/cpumask.h>
 #include <com/ngos/kernel/other/cpu/hotplug/cpuhotplug.h>
@@ -30,7 +30,6 @@
 #include <com/ngos/kernel/other/task/task.h>
 #include <com/ngos/kernel/other/task/threadinfo.h>
 #include <com/ngos/kernel/other/uefi/uefi.h>
-#include <com/ngos/kernel/a_early/testengine.h>
 
 
 

@@ -3,14 +3,15 @@
 #include <QDir>
 #include <QFile>
 
-#include "com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
 
 
 
-#define INCLUDE_BLOCK_TYPE_NONE         0
-#define INCLUDE_BLOCK_TYPE_OWN          1
-#define INCLUDE_BLOCK_TYPE_LIBRARIES    2
-#define INCLUDE_BLOCK_TYPE_PROJECT      3
+#define INCLUDE_BLOCK_TYPE_NONE             0
+#define INCLUDE_BLOCK_TYPE_OWN              1
+#define INCLUDE_BLOCK_TYPE_LIBRARIES        2
+#define INCLUDE_BLOCK_TYPE_NGOS_LIBRARIES   3
+#define INCLUDE_BLOCK_TYPE_PROJECT          4
 
 
 
@@ -157,7 +158,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
             startLine == fileHeaderOffset
             ||
             (
-             startLine == 5 + fileHeaderOffset
+             startLine == fileHeaderOffset + 5
              &&
              (
               lines.at(fileHeaderOffset + 0).startsWith("#ifndef ")
@@ -214,7 +215,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                     if (
                         QFile::exists(tempParentFolder + "/Makefile")
                         ||
-                        QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() // QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() > 0
+                        QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() > 0
                        )
                     {
                         break;
@@ -355,7 +356,18 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                                     }
                                     else
                                     {
-                                        includeType = INCLUDE_BLOCK_TYPE_LIBRARIES;
+                                        if (
+                                            includeFile == "buildconfig.h"
+                                            ||
+                                            includeFile.startsWith("com/ngos/")
+                                           )
+                                        {
+                                            includeType = INCLUDE_BLOCK_TYPE_NGOS_LIBRARIES;
+                                        }
+                                        else
+                                        {
+                                            includeType = INCLUDE_BLOCK_TYPE_LIBRARIES;
+                                        }
 
                                         if (!globalInclude)
                                         {

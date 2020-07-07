@@ -1,9 +1,8 @@
 #include "setupbrk.h"
 
+#include <com/ngos/kernel/other/brk/brk.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-
-#include <com/ngos/kernel/other/brk/brk.h>
 
 
 

@@ -4,9 +4,8 @@
 
 
 #include <buildconfig.h>
-
-#include <com/ngos/kernel/other/ioremap/utils.h>
 #include <com/ngos/kernel/a_early/testengine.h>
+#include <com/ngos/kernel/other/ioremap/utils.h>
 
 
 

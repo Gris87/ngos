@@ -1,10 +1,9 @@
 #include "kvm.h"
 
+#include <com/ngos/kernel/other/hypervisor/kvm/clock/kvmclock.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
-
-#include <com/ngos/kernel/other/hypervisor/kvm/clock/kvmclock.h>
 
 
 

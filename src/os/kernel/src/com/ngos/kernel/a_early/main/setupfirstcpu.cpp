@@ -1,9 +1,8 @@
 #include "setupfirstcpu.h"
 
+#include <com/ngos/kernel/other/cpu/cpumask.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-
-#include <com/ngos/kernel/other/cpu/cpumask.h>
 
 
 

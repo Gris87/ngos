@@ -1,11 +1,10 @@
 #include "setupstackcanary.h"
 
+#include <com/ngos/kernel/other/irq/irqstack.h>
+#include <com/ngos/kernel/other/task/task.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/random/random.h>
-
-#include <com/ngos/kernel/other/irq/irqstack.h>
-#include <com/ngos/kernel/other/task/task.h>
 
 
 

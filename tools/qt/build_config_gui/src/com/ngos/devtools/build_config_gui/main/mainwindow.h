@@ -9,8 +9,8 @@
 #include <QHash>
 #include <QTreeWidgetItem>
 
-#include "com/ngos/devtools/build_config_gui/other/optioninfo.h"
-#include "com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h"
+#include <com/ngos/devtools/build_config_gui/other/optioninfo.h>
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h>
 
 
 

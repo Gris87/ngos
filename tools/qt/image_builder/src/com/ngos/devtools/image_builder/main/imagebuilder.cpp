@@ -2,9 +2,10 @@
 
 #include <QFile>
 #include <QIODevice>
+
 #include <buildconfig.h>
-#include <com/ngos/devtools/shared/console/console.h>
 #include <com/ngos/configure/other/kerneldescriptor.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 

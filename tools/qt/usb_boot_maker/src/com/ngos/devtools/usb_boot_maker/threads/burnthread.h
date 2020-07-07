@@ -5,7 +5,7 @@
 
 #include <QThread>
 
-#include "com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h"
+#include <com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h>
 
 
 

@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QString>
-#include <com/ngos/devtools/shared/console/console.h>
 
-#include "com/ngos/devtools/image_builder/main/imagebuilder.h"
+#include <com/ngos/devtools/image_builder/main/imagebuilder.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 

@@ -3,10 +3,9 @@
 
 
 
-#include <com/ngos/shared/common/ngos/status.h>
-
 #include <com/ngos/kernel/other/cpu/hotplug/cpuhotplugstate.h>
 #include <com/ngos/kernel/other/cpu/hotplug/cpuhotplugstep.h>
+#include <com/ngos/shared/common/ngos/status.h>
 
 
 

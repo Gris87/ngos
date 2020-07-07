@@ -121,13 +121,6 @@ HEADERS += \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/instructions.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/memorymapentry.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/guid/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/macro/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/linkage.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/lib/md5hash.h \
@@ -266,14 +259,21 @@ HEADERS += \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/rgbapixel.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/stretchrange.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/gui/widgets/widget.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/guid/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/hex/hex.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/macro/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/memory/memory.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/linkage.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/random/random.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/string.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/uefi/uefi.h \

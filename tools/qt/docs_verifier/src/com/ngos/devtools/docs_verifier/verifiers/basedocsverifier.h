@@ -5,8 +5,8 @@
 
 #include <QList>
 
-#include "com/ngos/devtools/docs_verifier/other/docsfileinfo.h"
-#include "com/ngos/devtools/docs_verifier/threads/docsworkerthread.h"
+#include <com/ngos/devtools/docs_verifier/other/docsfileinfo.h>
+#include <com/ngos/devtools/docs_verifier/threads/docsworkerthread.h>
 
 
 

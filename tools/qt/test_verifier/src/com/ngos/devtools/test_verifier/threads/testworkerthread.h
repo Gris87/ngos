@@ -9,8 +9,8 @@
 #include <QRegularExpression>
 #include <QSemaphore>
 
-#include "com/ngos/devtools/test_verifier/other/testentry.h"
-#include "com/ngos/devtools/test_verifier/other/teststructureentry.h"
+#include <com/ngos/devtools/test_verifier/other/testentry.h>
+#include <com/ngos/devtools/test_verifier/other/teststructureentry.h>
 
 
 

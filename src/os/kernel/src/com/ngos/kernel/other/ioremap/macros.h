@@ -3,10 +3,9 @@
 
 
 
+#include <com/ngos/kernel/other/ioremap/fixmap.h>
 #include <com/ngos/shared/common/ngos/utils.h>
 #include <com/ngos/shared/common/pagetable/macros.h>
-
-#include <com/ngos/kernel/other/ioremap/fixmap.h>
 
 
 

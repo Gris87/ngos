@@ -4,9 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/configure/sections/section1/com/ngos/configure/types.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/configure/sections/section1/com/ngos/configure/types.h"
 
 
 

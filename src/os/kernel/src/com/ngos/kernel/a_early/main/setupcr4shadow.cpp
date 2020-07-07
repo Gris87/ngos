@@ -1,10 +1,9 @@
 #include "setupcr4shadow.h"
 
+#include <com/ngos/kernel/other/cpu/percpu.h>
 #include <com/ngos/shared/common/asm/instructions.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-
-#include <com/ngos/kernel/other/cpu/percpu.h>
 
 
 

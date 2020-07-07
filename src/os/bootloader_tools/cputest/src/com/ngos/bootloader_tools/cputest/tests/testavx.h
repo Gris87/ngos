@@ -3,7 +3,7 @@
 
 
 
-#include "com/ngos/bootloader_tools/cputest/tests/testbase.h"
+#include <com/ngos/bootloader_tools/cputest/tests/testbase.h>
 
 
 

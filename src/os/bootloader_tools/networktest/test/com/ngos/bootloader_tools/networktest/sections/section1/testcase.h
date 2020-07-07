@@ -4,9 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/bootloader_tools/networktest/sections/section1/com/ngos/bootloader_tools/networktest/types.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/bootloader_tools/networktest/sections/section1/com/ngos/bootloader_tools/networktest/types.h"
 
 
 

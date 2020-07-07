@@ -3,8 +3,8 @@
 
 
 
-#include "com/ngos/bootloader/other/ostype.h"
-#include "com/ngos/bootloader/other/volumeinfo.h"
+#include <com/ngos/bootloader/other/ostype.h>
+#include <com/ngos/bootloader/other/volumeinfo.h>
 
 
 

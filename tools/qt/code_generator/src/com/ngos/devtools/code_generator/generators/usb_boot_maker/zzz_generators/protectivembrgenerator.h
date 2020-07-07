@@ -3,7 +3,7 @@
 
 
 
-#include "com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h"
+#include <com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h>
 
 
 

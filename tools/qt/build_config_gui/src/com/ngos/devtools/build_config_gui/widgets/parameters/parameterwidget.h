@@ -5,7 +5,7 @@
 
 #include <QWidget>
 
-#include "com/ngos/devtools/build_config_gui/other/optioninfo.h"
+#include <com/ngos/devtools/build_config_gui/other/optioninfo.h>
 
 
 

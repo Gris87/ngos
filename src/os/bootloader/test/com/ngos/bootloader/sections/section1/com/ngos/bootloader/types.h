@@ -4,14 +4,13 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/bootloader/main/bootloader.h>
+#include <com/ngos/bootloader/main/bootloadergui.h>
+#include <com/ngos/bootloader/other/osinfo.h>
+#include <com/ngos/bootloader/other/ostype.h>
+#include <com/ngos/bootloader/other/volumeinfo.h>
+#include <com/ngos/bootloader/other/volumetype.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/bootloader/main/bootloader.h"
-#include "com/ngos/bootloader/main/bootloadergui.h"
-#include "com/ngos/bootloader/other/osinfo.h"
-#include "com/ngos/bootloader/other/ostype.h"
-#include "com/ngos/bootloader/other/volumeinfo.h"
-#include "com/ngos/bootloader/other/volumetype.h"
 
 
 

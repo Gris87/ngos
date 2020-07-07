@@ -1,12 +1,12 @@
 #include "earlyinitialization.h"
 
-#include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <buildconfig.h>
 #include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/fpu/fpu.h>
-#include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/uefi/uefisystemtable.h>
 #include <com/ngos/shared/uefibase/main/setupcr4.h>
 #include <com/ngos/shared/uefibase/main/setupdynamicrelocation.h>

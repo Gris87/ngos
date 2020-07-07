@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include "com/ngos/devtools/usb_boot_maker/main/mainwindow.h"
+#include <com/ngos/devtools/usb_boot_maker/main/mainwindow.h>
 
 
 

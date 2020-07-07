@@ -2,11 +2,11 @@
 
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/elf/programheadertableentry.h>
 #include <com/ngos/shared/common/elf/rela.h>
 #include <com/ngos/shared/common/elf/relatype.h>
 #include <com/ngos/shared/common/elf/sectionheadertableentry.h>
+#include <com/ngos/shared/common/memory/memory.h>
 
 
 

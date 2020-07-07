@@ -3,15 +3,14 @@
 
 
 
+#include <com/ngos/kernel/other/kerneldefines.h>
 #include <com/ngos/shared/common/asm/bitutils.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/string/utils.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/ngos/utils.h>
-
-#include <com/ngos/kernel/other/kerneldefines.h>
+#include <com/ngos/shared/common/string/utils.h>
 
 
 

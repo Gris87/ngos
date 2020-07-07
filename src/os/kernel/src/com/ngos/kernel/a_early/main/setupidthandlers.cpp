@@ -1,5 +1,6 @@
 #include "setupidthandlers.h"
 
+#include <com/ngos/kernel/a_early/main/asm_setupidthandlers.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/gdt/segments.h>
@@ -9,8 +10,6 @@
 #include <com/ngos/shared/common/idt/idtregister.h>
 #include <com/ngos/shared/common/idt/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
-
-#include <com/ngos/kernel/a_early/main/asm_setupidthandlers.h>
 
 
 

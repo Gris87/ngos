@@ -4,11 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/kernel/a_early/testresults.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/macro/utils.h>
 #include <com/ngos/shared/common/ngos/utils.h>
-
-#include <com/ngos/kernel/a_early/testresults.h>
 
 
 

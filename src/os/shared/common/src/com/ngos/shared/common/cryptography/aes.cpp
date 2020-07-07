@@ -3,9 +3,9 @@
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/macro/utils.h>
 #include <com/ngos/shared/common/memory/malloc.h>
 #include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/macro/utils.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/utils.h>
 

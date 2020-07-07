@@ -6,10 +6,10 @@
 #include <buildconfig.h>
 #include <com/ngos/shared/common/console/console.h>
 #include <com/ngos/shared/common/console/graphicalconsole.h>
-#include <com/ngos/shared/common/printf/printf.h>
-#include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/macro/utils.h>
 #include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/printf/printf.h>
+#include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/uefibase/uefi/uefi.h>
 #include <com/ngos/shared/uefibase/uefi/uefilogfile.h>
 

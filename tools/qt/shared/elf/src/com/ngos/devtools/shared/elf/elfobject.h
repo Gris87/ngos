@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QList>
 #include <QString>
+
 #include <com/ngos/shared/common/elf/header.h>
 #include <com/ngos/shared/common/elf/programheadertableentry.h>
 #include <com/ngos/shared/common/elf/sectionheadertableentry.h>

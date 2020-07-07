@@ -3,6 +3,7 @@
 
 
 
+#include <com/ngos/bootloader_tools/cputest/other/testtype.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
 #include <com/ngos/shared/common/cpu/x86feature.h>
@@ -13,8 +14,6 @@
 #include <com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
 #include <com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
 #include <com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
-
-#include "com/ngos/bootloader_tools/cputest/other/testtype.h"
 
 
 

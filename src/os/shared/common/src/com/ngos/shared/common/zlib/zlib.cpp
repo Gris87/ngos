@@ -4,12 +4,12 @@
 #include <com/ngos/shared/common/inflate/inflate.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/ngos/utils.h>
 #include <com/ngos/shared/common/zlib/zlibcompressioninfo.h>
 #include <com/ngos/shared/common/zlib/zlibcompressionlevel.h>
 #include <com/ngos/shared/common/zlib/zlibcompressionmethod.h>
 #include <com/ngos/shared/common/zlib/zlibheader.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/utils.h>
 
 
 

@@ -4,10 +4,9 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/common/memory/memory.h>
-
-#include <com/ngos/kernel/other/memorymanager/memorymanager.h>
 #include <com/ngos/kernel/a_early/testengine.h>
+#include <com/ngos/kernel/other/memorymanager/memorymanager.h>
+#include <com/ngos/shared/common/memory/memory.h>
 
 
 

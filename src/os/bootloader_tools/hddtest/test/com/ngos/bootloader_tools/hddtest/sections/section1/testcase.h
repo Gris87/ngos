@@ -4,9 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/bootloader_tools/hddtest/sections/section1/com/ngos/bootloader_tools/hddtest/types.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/bootloader_tools/hddtest/sections/section1/com/ngos/bootloader_tools/hddtest/types.h"
 
 
 

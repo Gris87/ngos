@@ -5,11 +5,11 @@
 #include <QList>
 #include <QProcess>
 #include <QQueue>
-#include <com/ngos/devtools/shared/console/console.h>
 
-#include "com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h"
-#include "com/ngos/devtools/docs_verifier/threads/docsworkerthread.h"
-#include "com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h"
+#include <com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h>
+#include <com/ngos/devtools/docs_verifier/threads/docsworkerthread.h>
+#include <com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 

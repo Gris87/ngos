@@ -3,7 +3,7 @@
 #include <QDir>
 #include <QFile>
 
-#include "com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
 
 
 
@@ -51,13 +51,11 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 if (
                     !line.contains("include/")
                     &&
-                    !line.contains("src/os/shared/")
+                    !line.endsWith("/src/")
                     &&
-                    !line.contains("build/gen/")
+                    !line.endsWith("/test/")
                     &&
-                    !QFile::exists(parentFolder + '/' + line + "/Makefile")
-                    &&
-                    QDir(parentFolder + '/' + line).entryList(QStringList() << "*.pro", QDir::Files).length() == 0
+                    !line.endsWith("/build/gen/")
                    )
                 {
                     worker->addWarning(path, i, "Invalid path included");

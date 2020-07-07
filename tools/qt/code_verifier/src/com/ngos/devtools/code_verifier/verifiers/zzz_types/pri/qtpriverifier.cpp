@@ -5,7 +5,7 @@
 #include <QFileInfo>
 #include <QQueue>
 
-#include "com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
 
 
 
@@ -226,7 +226,19 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
         if (block != blockOriginal)
         {
-            worker->addWarning(path, startPos, QString("Files should be sorted or duplicates need to remove:\n%1").arg(block.join('\n')));
+            QString blockList;
+
+            for (qint64 i = 0; i < block.length(); ++i)
+            {
+                if (i > 0)
+                {
+                    blockList.append(" \\\n");
+                }
+
+                blockList.append("    $$PWD/" + block.at(i));
+            }
+
+            worker->addWarning(path, startPos, QString("Files should be sorted or duplicates need to remove:\n%1").arg(blockList));
         }
 
 

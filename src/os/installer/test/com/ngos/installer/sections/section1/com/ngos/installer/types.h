@@ -4,10 +4,9 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/installer/main/installer.h>
+#include <com/ngos/installer/main/installergui.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/installer/main/installer.h"
-#include "com/ngos/installer/main/installergui.h"
 
 
 

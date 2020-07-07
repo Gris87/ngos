@@ -4,32 +4,31 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/bootloader_tools/cputest/main/cputest.h>
+#include <com/ngos/bootloader_tools/cputest/main/cputestgui.h>
+#include <com/ngos/bootloader_tools/cputest/other/cacheinfo.h>
+#include <com/ngos/bootloader_tools/cputest/other/testtype.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testaes.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testavx.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testavx2.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testavx512bw.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testavx512cd.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testavx512dq.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testavx512f.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testavx512vl.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testbase.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testbitwise.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testdouble.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testfloat.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testfma3.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testinteger.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testlogical.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testsse.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testsse2.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testsse3.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testsse41.h>
+#include <com/ngos/bootloader_tools/cputest/tests/testsse42.h>
 #include <com/ngos/shared/uefibase/testengine.h>
-
-#include "com/ngos/bootloader_tools/cputest/main/cputest.h"
-#include "com/ngos/bootloader_tools/cputest/main/cputestgui.h"
-#include "com/ngos/bootloader_tools/cputest/other/cacheinfo.h"
-#include "com/ngos/bootloader_tools/cputest/other/testtype.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testaes.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testavx.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testavx2.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testavx512bw.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testavx512cd.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testavx512dq.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testavx512f.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testavx512vl.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testbase.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testbitwise.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testdouble.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testfloat.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testfma3.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testinteger.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testlogical.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testsse.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testsse2.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testsse3.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testsse41.h"
-#include "com/ngos/bootloader_tools/cputest/tests/testsse42.h"
 
 
 

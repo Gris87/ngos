@@ -3,6 +3,8 @@
 
 
 
+#include <com/ngos/bootloader/other/ostype.h>
+#include <com/ngos/bootloader/other/volumetype.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
 #include <com/ngos/shared/common/gui/widgets/controls/button.h>
@@ -10,9 +12,6 @@
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
 #include <com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
-
-#include "com/ngos/bootloader/other/ostype.h"
-#include "com/ngos/bootloader/other/volumetype.h"
 
 
 

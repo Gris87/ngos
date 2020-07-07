@@ -2,8 +2,8 @@
 #include <com/ngos/shared/common/gdt/segments.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/page/macros.h>
-#include "com/ngos/configure/other/asm/generated/asmoffsets.h"
-#include "com/ngos/configure/other/configuredefines.h"
+#include <com/ngos/configure/other/asm/generated/asmoffsets.h>
+#include <com/ngos/configure/other/configuredefines.h>
                                                                                 #
                                                                                 #
                                                                                 #

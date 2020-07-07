@@ -86,8 +86,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/containers/lib/mapelement.h \
     $$PWD/src/com/ngos/shared/common/containers/list.h \
     $$PWD/src/com/ngos/shared/common/containers/map.h \
-    $$PWD/src/com/ngos/shared/common/cpu/cpufamily.h \
     $$PWD/src/com/ngos/shared/common/cpu/cpu.h \
+    $$PWD/src/com/ngos/shared/common/cpu/cpufamily.h \
     $$PWD/src/com/ngos/shared/common/cpu/cpuvendor.h \
     $$PWD/src/com/ngos/shared/common/cpu/flags.h \
     $$PWD/src/com/ngos/shared/common/cpu/generated/x86bugsnames.h \
@@ -102,9 +102,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/cpu/x86feature.h \
     $$PWD/src/com/ngos/shared/common/cpu/x86featureword.h \
     $$PWD/src/com/ngos/shared/common/cryptography/aes.h \
+    $$PWD/src/com/ngos/shared/common/dmi/dmi.h \
     $$PWD/src/com/ngos/shared/common/dmi/dmientryheader.h \
     $$PWD/src/com/ngos/shared/common/dmi/dmientrytype.h \
-    $$PWD/src/com/ngos/shared/common/dmi/dmi.h \
     $$PWD/src/com/ngos/shared/common/dmi/dmiidentity.h \
     $$PWD/src/com/ngos/shared/common/dmi/dmimemorydevice.h \
     $$PWD/src/com/ngos/shared/common/dmi/dmistoreduuid.h \
@@ -165,9 +165,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicacheerrorcorrectiontype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicachelocation.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicacheoperationalmode.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicachesize.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicachesize2.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicachesizegranularity.h \
-    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicachesize.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicachesramtypeflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicachetype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmichassiscontainedelement.h \
@@ -191,11 +191,11 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceformfactor.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicemappedaddressrange.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h \
-    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesizegranularity.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesize.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesizegranularity.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetechnology.h \
-    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetypedetailflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetype.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetypedetailflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevice.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevicetype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h \
@@ -209,16 +209,16 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiportconnectorporttype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiportconnectortype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorcharacteristicsflags.h \
-    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily2.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily2.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorfeatureflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorid.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorsignature.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorstatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessortype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorupgrade.h \
-    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltageflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltage.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltageflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltagemodetype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmisystembootstatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmisystempowersupplycharacteristics.h \
@@ -255,8 +255,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/elf/sectionflags.h \
     $$PWD/src/com/ngos/shared/common/elf/sectionheadertableentry.h \
     $$PWD/src/com/ngos/shared/common/elf/sectiontype.h \
-    $$PWD/src/com/ngos/shared/common/elf/symbolbind.h \
     $$PWD/src/com/ngos/shared/common/elf/symbol.h \
+    $$PWD/src/com/ngos/shared/common/elf/symbolbind.h \
     $$PWD/src/com/ngos/shared/common/elf/symboltype.h \
     $$PWD/src/com/ngos/shared/common/elf/symbolvisibility.h \
     $$PWD/src/com/ngos/shared/common/elf/type.h \
@@ -266,10 +266,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/fpu/fsavestate.h \
     $$PWD/src/com/ngos/shared/common/fpu/fxsavestate.h \
     $$PWD/src/com/ngos/shared/common/fpu/macros.h \
-    $$PWD/src/com/ngos/shared/common/fpu/xfeature/extendedregisters.h \
-    $$PWD/src/com/ngos/shared/common/fpu/xfeatureflags.h \
     $$PWD/src/com/ngos/shared/common/fpu/xfeature.h \
-    $$PWD/src/com/ngos/shared/common/fpu/xfeaturetypeflags.h \
+    $$PWD/src/com/ngos/shared/common/fpu/xfeature/extendedregisters.h \
     $$PWD/src/com/ngos/shared/common/fpu/xfeature/xfeatureavx512opmaskstate.h \
     $$PWD/src/com/ngos/shared/common/fpu/xfeature/xfeatureavx512zmmfrom0to15state.h \
     $$PWD/src/com/ngos/shared/common/fpu/xfeature/xfeatureavx512zmmfrom16to31state.h \
@@ -277,6 +275,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/fpu/xfeature/xfeaturempxboundconfigandstatusregistersstate.h \
     $$PWD/src/com/ngos/shared/common/fpu/xfeature/xfeaturempxboundregistersstate.h \
     $$PWD/src/com/ngos/shared/common/fpu/xfeature/xfeaturepkrustate.h \
+    $$PWD/src/com/ngos/shared/common/fpu/xfeatureflags.h \
+    $$PWD/src/com/ngos/shared/common/fpu/xfeaturetypeflags.h \
     $$PWD/src/com/ngos/shared/common/fpu/xsavestate.h \
     $$PWD/src/com/ngos/shared/common/fpu/xstateheader.h \
     $$PWD/src/com/ngos/shared/common/gdt/flags.h \
@@ -294,9 +294,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/graphics/bmp/lib/bmpinformationheader.h \
     $$PWD/src/com/ngos/shared/common/graphics/graphics.h \
     $$PWD/src/com/ngos/shared/common/graphics/image.h \
+    $$PWD/src/com/ngos/shared/common/graphics/jpeg/jpeg.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/jpegcomponent.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/jpegdecoder.h \
-    $$PWD/src/com/ngos/shared/common/graphics/jpeg/jpeg.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/jpegvlccode.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegcomponentid.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegdefinehuffmantablemarker.h \
@@ -331,13 +331,11 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/graphics/png/lib/pnginterlacemethod.h \
     $$PWD/src/com/ngos/shared/common/graphics/png/lib/pngrenderingintent.h \
     $$PWD/src/com/ngos/shared/common/graphics/png/lib/pngunitspecifier.h \
-    $$PWD/src/com/ngos/shared/common/graphics/png/pngdecoder.h \
     $$PWD/src/com/ngos/shared/common/graphics/png/png.h \
+    $$PWD/src/com/ngos/shared/common/graphics/png/pngdecoder.h \
     $$PWD/src/com/ngos/shared/common/graphics/rgbapixel.h \
     $$PWD/src/com/ngos/shared/common/graphics/rgbpixel.h \
     $$PWD/src/com/ngos/shared/common/graphics/stretchrange.h \
-    $$PWD/src/com/ngos/shared/common/guid/guid.h \
-    $$PWD/src/com/ngos/shared/common/guid/utils.h \
     $$PWD/src/com/ngos/shared/common/gui/gui.h \
     $$PWD/src/com/ngos/shared/common/gui/other/defines.h \
     $$PWD/src/com/ngos/shared/common/gui/other/horizontalalignment.h \
@@ -365,18 +363,20 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/gui/widgets/special/rootwidget.h \
     $$PWD/src/com/ngos/shared/common/gui/widgets/special/screenwidget.h \
     $$PWD/src/com/ngos/shared/common/gui/widgets/widget.h \
+    $$PWD/src/com/ngos/shared/common/guid/guid.h \
+    $$PWD/src/com/ngos/shared/common/guid/utils.h \
     $$PWD/src/com/ngos/shared/common/hex/hex.h \
     $$PWD/src/com/ngos/shared/common/idt/flags.h \
     $$PWD/src/com/ngos/shared/common/idt/idtdescriptor.h \
     $$PWD/src/com/ngos/shared/common/idt/idtgatetype.h \
     $$PWD/src/com/ngos/shared/common/idt/idtregister.h \
     $$PWD/src/com/ngos/shared/common/idt/macros.h \
+    $$PWD/src/com/ngos/shared/common/inflate/inflate.h \
     $$PWD/src/com/ngos/shared/common/inflate/inflateblocktype.h \
     $$PWD/src/com/ngos/shared/common/inflate/inflatecode.h \
     $$PWD/src/com/ngos/shared/common/inflate/inflatecodetype.h \
     $$PWD/src/com/ngos/shared/common/inflate/inflatedecoder.h \
     $$PWD/src/com/ngos/shared/common/inflate/inflatefixedcodes.h \
-    $$PWD/src/com/ngos/shared/common/inflate/inflate.h \
     $$PWD/src/com/ngos/shared/common/log/assert.h \
     $$PWD/src/com/ngos/shared/common/log/log.h \
     $$PWD/src/com/ngos/shared/common/macro/constants.h \
@@ -426,11 +426,11 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/config/uefiugaioconfigurationtable.h \
     $$PWD/src/com/ngos/shared/common/uefi/macros.h \
     $$PWD/src/com/ngos/shared/common/uefi/types.h \
-    $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointermodeattributeflags.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointermode.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointermodeattributeflags.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h \
-    $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerstateactivebuttonflags.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerstate.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerstateactivebuttonflags.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiallocatetype.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiblockiomedia.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h \
@@ -469,10 +469,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/uefimemorytype.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefimpservicesprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiopenprotocolinformationentry.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocolaccess.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocolattributeoperation.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocolconfigaccess.h \
-    $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocoloperation.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocolwidth.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipixelbitmask.h \
@@ -490,15 +490,15 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/uefistatus.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefisystemtable.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefitableheader.h \
-    $$PWD/src/com/ngos/shared/common/uefi/uefitimecapabilicies.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefitime.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefitimecapabilicies.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefitimerdelay.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefitpl.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefivariableattributeflags.h \
     $$PWD/src/com/ngos/shared/common/uuid/utils.h \
     $$PWD/src/com/ngos/shared/common/uuid/uuid.h \
+    $$PWD/src/com/ngos/shared/common/zlib/zlib.h \
     $$PWD/src/com/ngos/shared/common/zlib/zlibcompressioninfo.h \
     $$PWD/src/com/ngos/shared/common/zlib/zlibcompressionlevel.h \
     $$PWD/src/com/ngos/shared/common/zlib/zlibcompressionmethod.h \
-    $$PWD/src/com/ngos/shared/common/zlib/zlib.h \
     $$PWD/src/com/ngos/shared/common/zlib/zlibheader.h

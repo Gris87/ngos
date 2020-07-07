@@ -1,12 +1,12 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QFile>
-#include <com/ngos/devtools/shared/console/console.h>
 
-#include "com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h"
-#include "com/ngos/devtools/code_generator/generators/common/commongenerator.h"
-#include "com/ngos/devtools/code_generator/generators/configure/configuregenerator.h"
-#include "com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h"
+#include <com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h>
+#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
+#include <com/ngos/devtools/code_generator/generators/configure/configuregenerator.h>
+#include <com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h>
+#include <com/ngos/devtools/shared/console/console.h>
 
 
 

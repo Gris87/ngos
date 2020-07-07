@@ -1,17 +1,16 @@
 #include "decompress.h"
 
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockheader.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilter.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilterbcj.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilterlzma2.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h>
 #include <com/ngos/shared/common/checksum/crc.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/ngos/utils.h>
-
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockheader.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilter.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilterbcj.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzfilterlzma2.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamfooter.h"
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzstreamheader.h"
 
 
 

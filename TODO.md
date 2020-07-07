@@ -13,18 +13,14 @@ NGOS:
 - Convert FLAGS_TO_STRING to template
 - Move include to shared/common
 - Check for log includes: common or early?
-- Convert installer to UEFI application
-- Make kernelbase just for kernel
 - Check where we can use enumToString and flagToString
 - Replace u64 with i64 where needed
 - guidToFullString
 - uuidToFullString
-- Basic mode for Device Manager
 - Change brackets for #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
 - ASSERTS for QEMU only for variated checks
 - Split validation regions to output/check region
 - Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"
-- Use com.ngos.app in source structure
 
 - Complete with interruptions
 - Implement boot screen for kernel
@@ -60,6 +56,7 @@ Code verifier:
 - Verify for English chars only in source code
 - Verify that #if, #ifdef, #endif, #define starts from the beginning of line
 - Verify for Validation region
+- Verify that each file includes buildconfig.h
 - Upgrade verifier for trace arguments (Check format with the types)
 
 

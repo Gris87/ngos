@@ -4,9 +4,8 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockflags.h>
 #include <com/ngos/shared/common/ngos/types.h>
-
-#include "com/ngos/configure/b_early/main/decompressors/xz/lib/xz/xzblockflags.h"
 
 
 

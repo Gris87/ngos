@@ -1,6 +1,6 @@
 #include "cppforverifier.h"
 
-#include "com/ngos/devtools/code_verifier/other/codeverificationfiletype.h"
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
 
 
 

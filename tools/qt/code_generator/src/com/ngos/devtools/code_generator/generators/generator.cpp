@@ -2,6 +2,7 @@
 
 #include <QDir>
 #include <QFile>
+
 #include <com/ngos/devtools/shared/console/console.h>
 
 

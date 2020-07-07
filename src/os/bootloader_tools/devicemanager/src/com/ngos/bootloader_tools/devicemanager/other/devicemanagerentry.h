@@ -3,10 +3,9 @@
 
 
 
+#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h>
+#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
-
-#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h"
-#include "com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h"
 
 
 

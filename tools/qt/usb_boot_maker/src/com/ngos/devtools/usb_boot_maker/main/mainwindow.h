@@ -12,13 +12,13 @@
 #include <QTimer>
 #include <QTranslator>
 
-#include "com/ngos/devtools/usb_boot_maker/other/fileinfo.h"
-#include "com/ngos/devtools/usb_boot_maker/other/usbbootmakerstate.h"
-#include "com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h"
-#include "com/ngos/devtools/usb_boot_maker/other/usbspeed.h"
-#include "com/ngos/devtools/usb_boot_maker/other/versioninfo.h"
-#include "com/ngos/devtools/usb_boot_maker/threads/burnthread.h"
-#include "com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread.h"
+#include <com/ngos/devtools/usb_boot_maker/other/fileinfo.h>
+#include <com/ngos/devtools/usb_boot_maker/other/usbbootmakerstate.h>
+#include <com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h>
+#include <com/ngos/devtools/usb_boot_maker/other/usbspeed.h>
+#include <com/ngos/devtools/usb_boot_maker/other/versioninfo.h>
+#include <com/ngos/devtools/usb_boot_maker/threads/burnthread.h>
+#include <com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread.h>
 
 
 

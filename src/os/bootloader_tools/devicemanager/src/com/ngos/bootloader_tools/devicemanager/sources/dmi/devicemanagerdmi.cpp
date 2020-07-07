@@ -3,9 +3,9 @@
 #include <com/ngos/shared/common/dmi/dmi.h>
 #include <com/ngos/shared/common/hex/hex.h>
 #include <com/ngos/shared/common/string/utils.h>
+#include <com/ngos/shared/common/uuid/utils.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
-#include <com/ngos/shared/common/uuid/utils.h>
 
 
 
