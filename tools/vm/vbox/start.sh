@@ -64,6 +64,10 @@ vboxmanage unregistervm "${VM_NAME}" 2> /dev/null
 
 
 
+sleep 3
+
+
+
 cd ../
 ./make_hdd.sh ${OS_TYPE} || exit 1
 cd ${CURRENT_PATH}/

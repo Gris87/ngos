@@ -64,6 +64,10 @@ vboxmanage unregistervm "${VM_NAME}" 2> /dev/null
 
 
 
+sleep 3
+
+
+
 cd ../
 ./make_hdd.sh ${OS_TYPE} || exit 1
 cd ${CURRENT_PATH}/
@@ -87,6 +91,7 @@ sudo virt-install --name ${VM_NAME} \
     --cpu host \
     --graphics ${DISPLAY_TYPE} \
     --video=vmvga \
+    --network network=default,model=virtio \
     --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none \
     --serial unix,path=/tmp/qemukvmttyS0 \
     --boot loader=/usr/local/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF_CODE.fd,loader_ro=yes,loader_type=pflash,nvram_template=/usr/local/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF_VARS.fd \
