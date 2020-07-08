@@ -16,6 +16,8 @@ DEFINES += \
 
 
 INCLUDEPATH += \
+    src \                           # /src/os/bootloader_tools/partitionwizard/src
+    test \                          # /src/os/bootloader_tools/partitionwizard/test
     ../../shared/common/src \       # /src/os/shared/common/src
     ../../shared/uefibase/src \     # /src/os/shared/uefibase/src
     ../../shared/uefibase/test \    # /src/os/shared/uefibase/test

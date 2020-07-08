@@ -16,6 +16,8 @@ DEFINES += \
 
 
 INCLUDEPATH += \
+    src \                           # /src/os/bootloader_tools/networktest/src
+    test \                          # /src/os/bootloader_tools/networktest/test
     ../../shared/common/src \       # /src/os/shared/common/src
     ../../shared/uefibase/src \     # /src/os/shared/uefibase/src
     ../../shared/uefibase/test \    # /src/os/shared/uefibase/test

@@ -16,11 +16,13 @@ DEFINES += \
 
 
 INCLUDEPATH += \
-    ../shared/common/src \     # /src/os/shared/common/src
-    ../shared/uefibase/src \   # /src/os/shared/uefibase/src
-    ../shared/uefibase/test \  # /src/os/shared/uefibase/test
-    ../../../include \         # /include
-    ../../../include/stdinc    # /include/stdinc
+    src \                       # /src/os/bootloader/src
+    test \                      # /src/os/bootloader/test
+    ../shared/common/src \      # /src/os/shared/common/src
+    ../shared/uefibase/src \    # /src/os/shared/uefibase/src
+    ../shared/uefibase/test \   # /src/os/shared/uefibase/test
+    ../../../include \          # /include
+    ../../../include/stdinc     # /include/stdinc
 
 
 

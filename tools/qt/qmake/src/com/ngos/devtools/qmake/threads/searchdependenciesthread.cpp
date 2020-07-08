@@ -45,7 +45,7 @@ QString SearchDependenciesThread::takeSource()
         if (
             sNumberOfBlockedThreads >= sNumberOfThreads
             &&
-            !sSources.length() // sSources.length() == 0
+            sSources.length() <= 0
            )
         {
             skipSemaphore = true;
@@ -245,7 +245,15 @@ bool SearchDependenciesThread::handleSource(const QString &source)
                             }
                         }
 
-                        if (!found)
+                        if (
+                            !found
+                            &&
+                            includedFile != "com/ngos/kernel/other/brk/brk.h"
+                            &&
+                            includedFile != "com/ngos/kernel/other/ioremap/ioremap.h"
+                            &&
+                            includedFile != "com/ngos/kernel/other/uefi/uefi.h"
+                           )
                         {
                             addError(QString("Failed to find included file \"%1\"").arg(includedFile));
                         }

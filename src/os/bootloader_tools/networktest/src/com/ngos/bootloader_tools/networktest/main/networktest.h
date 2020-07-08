@@ -3,7 +3,9 @@
 
 
 
+#include <com/ngos/shared/common/guid/guid.h>
 #include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/types.h>
 
 
 
@@ -11,6 +13,11 @@ class NetworkTest
 {
 public:
     static NgosStatus init(); // TEST: NO
+
+private:
+    static NgosStatus initSimpleNetworkProtocols(); // TEST: NO
+    static NgosStatus initSimpleNetworkProtocols(Guid *protocol, u64 size); // TEST: NO
+    static NgosStatus initSimpleNetworkProtocols(Guid *protocol, u64 size, uefi_handle *handles); // TEST: NO
 };
 
 

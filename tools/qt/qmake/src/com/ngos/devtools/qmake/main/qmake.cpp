@@ -521,8 +521,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
     {
         lines.append("");
         lines.append("# Includes:");
-        lines.append("# src                             # " + workingDirectory + "/src");
-        lines.append("# test                            # " + workingDirectory + "/test");
+        lines.append("# .                               # " + workingDirectory);
 
         for (qint64 i = 0; i < includes.length(); ++i)
         {
@@ -534,8 +533,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
 
         lines.append("INCLUDES            = \\");
-        lines.append("\t-I src \\");
-        lines.append("\t-I test \\");
+        lines.append("\t-I . \\");
 
         for (qint64 i = 0; i < includes.length(); ++i)
         {
@@ -544,14 +542,12 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
     }
     else
     {
-        lines.append("");
-        lines.append("# Includes:");
-        lines.append("# src                             # " + workingDirectory + "/src");
-        lines.append("# test                            # " + workingDirectory + "/test");
+        if (defines.length() > 1)
+        {
+            lines.append("");
+        }
 
-        lines.append("INCLUDES            = \\");
-        lines.append("\t-I src \\");
-        lines.append("\t-I test");
+        lines.append("INCLUDES            = -I .    # " + workingDirectory);
     }
 
     tail += " $(INCLUDES)";
