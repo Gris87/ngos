@@ -463,11 +463,16 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/uefiinputkey.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiinputkeyscancode.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiinterfacetype.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiipaddress.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiipv4address.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiipv6address.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiloadedimageprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefilocatesearchtype.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefimacaddress.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefimemorydescriptor.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefimemorytype.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefimpservicesprotocol.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefinetworkstatistics.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiopenprotocolinformationentry.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocolaccess.h \
@@ -482,6 +487,12 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/uefiruntimeservices.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefisimplefilesystemprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefisimpleinputinterface.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefisimplenetworkinterfacetype.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefisimplenetworkinterruptflags.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefisimplenetworkmode.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefisimplenetworkprotocol.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefisimplenetworkreceivefilterflags.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefisimplenetworkstate.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefisimplepointermode.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefisimplepointerprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefisimplepointerstate.h \

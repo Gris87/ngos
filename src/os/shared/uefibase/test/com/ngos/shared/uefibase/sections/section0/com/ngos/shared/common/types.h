@@ -312,11 +312,16 @@
 #include <com/ngos/shared/common/uefi/uefiinputkey.h>
 #include <com/ngos/shared/common/uefi/uefiinputkeyscancode.h>
 #include <com/ngos/shared/common/uefi/uefiinterfacetype.h>
+#include <com/ngos/shared/common/uefi/uefiipaddress.h>
+#include <com/ngos/shared/common/uefi/uefiipv4address.h>
+#include <com/ngos/shared/common/uefi/uefiipv6address.h>
 #include <com/ngos/shared/common/uefi/uefiloadedimageprotocol.h>
 #include <com/ngos/shared/common/uefi/uefilocatesearchtype.h>
+#include <com/ngos/shared/common/uefi/uefimacaddress.h>
 #include <com/ngos/shared/common/uefi/uefimemorydescriptor.h>
 #include <com/ngos/shared/common/uefi/uefimemorytype.h>
 #include <com/ngos/shared/common/uefi/uefimpservicesprotocol.h>
+#include <com/ngos/shared/common/uefi/uefinetworkstatistics.h>
 #include <com/ngos/shared/common/uefi/uefiopenprotocolinformationentry.h>
 #include <com/ngos/shared/common/uefi/uefipciioprotocol.h>
 #include <com/ngos/shared/common/uefi/uefipciioprotocolaccess.h>
@@ -331,6 +336,12 @@
 #include <com/ngos/shared/common/uefi/uefiruntimeservices.h>
 #include <com/ngos/shared/common/uefi/uefisimplefilesystemprotocol.h>
 #include <com/ngos/shared/common/uefi/uefisimpleinputinterface.h>
+#include <com/ngos/shared/common/uefi/uefisimplenetworkinterfacetype.h>
+#include <com/ngos/shared/common/uefi/uefisimplenetworkinterruptflags.h>
+#include <com/ngos/shared/common/uefi/uefisimplenetworkmode.h>
+#include <com/ngos/shared/common/uefi/uefisimplenetworkprotocol.h>
+#include <com/ngos/shared/common/uefi/uefisimplenetworkreceivefilterflags.h>
+#include <com/ngos/shared/common/uefi/uefisimplenetworkstate.h>
 #include <com/ngos/shared/common/uefi/uefisimplepointermode.h>
 #include <com/ngos/shared/common/uefi/uefisimplepointerprotocol.h>
 #include <com/ngos/shared/common/uefi/uefisimplepointerstate.h>
@@ -721,9 +732,13 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(UefiInputKey),                                    4);
         TEST_ASSERT_EQUALS(sizeof(UefiInputKeyScanCode),                            2);
         TEST_ASSERT_EQUALS(sizeof(UefiInterfaceType),                               4);
+        TEST_ASSERT_EQUALS(sizeof(UefiIpAddress),                                   16);
+        TEST_ASSERT_EQUALS(sizeof(UefiIpV4Address),                                 4);
+        TEST_ASSERT_EQUALS(sizeof(UefiIpV6Address),                                 16);
         TEST_ASSERT_EQUALS(sizeof(UefiLoadedImageProtocol),                         96);
         TEST_ASSERT_EQUALS(sizeof(UefiLocateSearchType),                            4);
         TEST_ASSERT_EQUALS(sizeof(UefiLzmaDecompressConfigurationTable),            1);
+        TEST_ASSERT_EQUALS(sizeof(UefiMacAddress),                                  32);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryAttributesConfigurationTable),          16);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryDescriptor),                            40);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryMapInfo),                               32);
@@ -732,6 +747,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(UefiMemoryTypeInformationConfigurationTable),     1);
         TEST_ASSERT_EQUALS(sizeof(UefiMpsConfigurationTable),                       1);
         TEST_ASSERT_EQUALS(sizeof(UefiMpServicesProtocol),                          56);
+        TEST_ASSERT_EQUALS(sizeof(UefiNetworkStatistics),                           208);
         TEST_ASSERT_EQUALS(sizeof(UefiOpenProtocolInformationEntry),                24);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocol),                               160);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocolAccess),                         16);
@@ -748,6 +764,12 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(UefiSalSystemConfigurationTable),                 1);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleFileSystemProtocol),                    16);
         TEST_ASSERT_EQUALS(sizeof(UefiSimpleInputInterface),                        24);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimpleNetworkInterfaceType),                  1);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimpleNetworkInterruptFlag),                  4);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimpleNetworkMode),                           656);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimpleNetworkProtocol),                       128);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimpleNetworkReceiveFilterFlag),              4);
+        TEST_ASSERT_EQUALS(sizeof(UefiSimpleNetworkState),                          4);
         TEST_ASSERT_EQUALS(sizeof(UefiSimplePointerMode),                           32);
         TEST_ASSERT_EQUALS(sizeof(UefiSimplePointerProtocol),                       32);
         TEST_ASSERT_EQUALS(sizeof(UefiSimplePointerState),                          16);
