@@ -255,33 +255,34 @@ NgosStatus InstallerGUI::processKeyboardEvent()
 
     UefiInputKey key;
 
-    UEFI_ASSERT_EXECUTION(UEFI::getSystemTable()->stdin->readKeyStroke(UEFI::getSystemTable()->stdin, &key), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
-
-    UEFI_LVVV(("key.scanCode    = %s",     enumToFullString(key.scanCode)));
-    UEFI_LVVV(("key.unicodeChar = 0x%04X", key.unicodeChar));
-
-
-
-    UEFI_TEST_ASSERT(GUI::getFocusedWidget(),                            NgosStatus::ASSERTION);
-    UEFI_TEST_ASSERT(GUI::getFocusedWidget()->getKeyboardEventHandler(), NgosStatus::ASSERTION);
-
-
-
-    NgosStatus status = GUI::getFocusedWidget()->getKeyboardEventHandler()(key);
-
-    if (status == NgosStatus::NO_EFFECT)
+    if (UEFI::getSystemTable()->stdin->readKeyStroke(UEFI::getSystemTable()->stdin, &key) == UefiStatus::SUCCESS)
     {
-        status = GUI::getFocusedWidget()->onKeyboardEvent(key);
+        UEFI_LVVV(("key.scanCode    = %s",     enumToFullString(key.scanCode)));
+        UEFI_LVVV(("key.unicodeChar = 0x%04X", key.unicodeChar));
+
+
+
+        UEFI_TEST_ASSERT(GUI::getFocusedWidget(),                            NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(GUI::getFocusedWidget()->getKeyboardEventHandler(), NgosStatus::ASSERTION);
+
+
+
+        NgosStatus status = GUI::getFocusedWidget()->getKeyboardEventHandler()(key);
 
         if (status == NgosStatus::NO_EFFECT)
         {
-            status = GUI::processKeyboardEvent(key);
-        }
-    }
+            status = GUI::getFocusedWidget()->onKeyboardEvent(key);
 
-    UEFI_TEST_ASSERT(status == NgosStatus::OK
-                    ||
-                    status == NgosStatus::NO_EFFECT, NgosStatus::ASSERTION);
+            if (status == NgosStatus::NO_EFFECT)
+            {
+                status = GUI::processKeyboardEvent(key);
+            }
+        }
+
+        UEFI_TEST_ASSERT(status == NgosStatus::OK
+                        ||
+                        status == NgosStatus::NO_EFFECT, NgosStatus::ASSERTION);
+    }
 
 
 

@@ -6,7 +6,7 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-linux">
-    <Machine uuid="{3ddad67e-3660-4fa1-bf24-c4195d11c922}" name="NGOS_dev" OSType="Other_64" snapshotFolder="Snapshots" lastStateChange="2019-02-15T08:42:54Z">
+    <Machine uuid="{3ddad67e-3660-4fa1-bf24-c4195d11c922}" name="NGOS_dev" OSType="Other_64" snapshotFolder="Snapshots" lastStateChange="2020-07-09T11:43:47Z">
         <MediaRegistry>
             <HardDisks>
                 <HardDisk uuid="{e7870c8a-2566-4906-8220-45d9de2f275c}" location="__PATH_TO_DISKS__/NGOS_dev.vdi" format="VDI" type="Normal" />
@@ -25,13 +25,20 @@
             <Memory RAMSize="__RAM_SIZE__" />
             <Firmware type="EFI" />
             <Paravirt provider="Default" />
+            <Display VRAMSize="16"/>
             <VideoCapture screens="1" file="." fps="25"/>
             <RemoteDisplay enabled="false" />
             <BIOS>
                 <IOAPIC enabled="true" />
             </BIOS>
             <Network>
-                <Adapter slot="0" type="Am79C973"/>
+                <Adapter slot="0" enabled="true" MACAddress="080027B96D7E" type="Am79C973">
+                    <DisabledModes>
+                        <InternalNetwork name="intnet"/>
+                        <NATNetwork name="NatNetwork"/>
+                    </DisabledModes>
+                    <NAT/>
+                </Adapter>
                 <Adapter slot="1" type="Am79C973"/>
                 <Adapter slot="2" type="Am79C973"/>
                 <Adapter slot="3" type="Am79C973"/>

@@ -22,7 +22,7 @@
 
 
 
-struct UefiSimpleNetworkProtocol
+struct UefiSimpleNetworkProtocol // TODO: is it needed?
 {
     u64 revision;
 
