@@ -1,6 +1,8 @@
 #include "devicemanagergui.h"
 
-#include <com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h>
+#include <com/ngos/bootloader_tools/devicemanager/sources/devicemanagerdmi.h>
+#include <com/ngos/bootloader_tools/devicemanager/sources/devicemanagermemorymap.h>
+#include <com/ngos/bootloader_tools/devicemanager/sources/devicemanagerpci.h>
 #include <com/ngos/shared/common/graphics/graphics.h>
 #include <com/ngos/shared/common/gui/gui.h>
 #include <com/ngos/shared/common/gui/widgets/misc/labelwidget.h>

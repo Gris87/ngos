@@ -1,8 +1,8 @@
 #include "devicemanager.h"
 
-#include <com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h>
-#include <com/ngos/bootloader_tools/devicemanager/sources/memorymap/devicemanagermemorymap.h>
-#include <com/ngos/bootloader_tools/devicemanager/sources/pci/devicemanagerpci.h>
+#include <com/ngos/bootloader_tools/devicemanager/sources/devicemanagerdmi.h>
+#include <com/ngos/bootloader_tools/devicemanager/sources/devicemanagermemorymap.h>
+#include <com/ngos/bootloader_tools/devicemanager/sources/devicemanagerpci.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
