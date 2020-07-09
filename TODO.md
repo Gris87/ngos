@@ -28,8 +28,6 @@ NGOS:
 - Initialization via multiple CPU cores
 
 - Add option to provide timestamp for logs
-- Add option to log in serial only/UDP only/All
-- Add option to log with UDP
 - Add option to disable inline
 - Add stack protector to build
 

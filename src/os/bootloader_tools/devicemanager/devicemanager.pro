@@ -46,7 +46,9 @@ SOURCES += \
     src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.cpp \
     src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.cpp \
     src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.cpp \
-    src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.cpp
+    src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/sources/memorymap/devicemanagermemorymap.cpp \
+    src/com/ngos/bootloader_tools/devicemanager/sources/pci/devicemanagerpci.cpp
 
 HEADERS += \
     src/com/ngos/bootloader_tools/devicemanager/main/devicemanager.h \
@@ -57,5 +59,7 @@ HEADERS += \
     src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h \
     src/com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h \
     src/com/ngos/bootloader_tools/devicemanager/sources/dmi/devicemanagerdmi.h \
+    src/com/ngos/bootloader_tools/devicemanager/sources/memorymap/devicemanagermemorymap.h \
+    src/com/ngos/bootloader_tools/devicemanager/sources/pci/devicemanagerpci.h \
     test/com/ngos/bootloader_tools/devicemanager/sections/section1/com/ngos/bootloader_tools/devicemanager/types.h \
     test/com/ngos/bootloader_tools/devicemanager/sections/section1/testcase.h
