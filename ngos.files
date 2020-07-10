@@ -294,6 +294,7 @@ src/os/bootloader_tools/devicemanager/assets/images/collapsed.png
 src/os/bootloader_tools/devicemanager/assets/images/console.9.png
 src/os/bootloader_tools/devicemanager/assets/images/cooling_device.png
 src/os/bootloader_tools/devicemanager/assets/images/cursor.png
+src/os/bootloader_tools/devicemanager/assets/images/dmi.png
 src/os/bootloader_tools/devicemanager/assets/images/electrical_current_probe.png
 src/os/bootloader_tools/devicemanager/assets/images/expanded.png
 src/os/bootloader_tools/devicemanager/assets/images/expert.png
@@ -307,6 +308,7 @@ src/os/bootloader_tools/devicemanager/assets/images/memory_array_mapped_address.
 src/os/bootloader_tools/devicemanager/assets/images/memory_controller.png
 src/os/bootloader_tools/devicemanager/assets/images/memory_device.png
 src/os/bootloader_tools/devicemanager/assets/images/memory_device_mapped_address.png
+src/os/bootloader_tools/devicemanager/assets/images/memory_map.png
 src/os/bootloader_tools/devicemanager/assets/images/memory_module.png
 src/os/bootloader_tools/devicemanager/assets/images/oem_strings.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_devices.png
@@ -316,6 +318,7 @@ src/os/bootloader_tools/devicemanager/assets/images/onboard_sata.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_sound.png
 src/os/bootloader_tools/devicemanager/assets/images/onboard_video.png
 src/os/bootloader_tools/devicemanager/assets/images/out_of_band_remote_access.png
+src/os/bootloader_tools/devicemanager/assets/images/pci.png
 src/os/bootloader_tools/devicemanager/assets/images/physical_memory_array.png
 src/os/bootloader_tools/devicemanager/assets/images/port_audio.png
 src/os/bootloader_tools/devicemanager/assets/images/port_connector.png

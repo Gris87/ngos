@@ -21,6 +21,7 @@
         <file>assets/images/console.9.png</file>
         <file>assets/images/cooling_device.png</file>
         <file>assets/images/cursor.png</file>
+        <file>assets/images/dmi.png</file>
         <file>assets/images/electrical_current_probe.png</file>
         <file>assets/images/expanded.png</file>
         <file>assets/images/expert.png</file>
@@ -34,6 +35,7 @@
         <file>assets/images/memory_controller.png</file>
         <file>assets/images/memory_device.png</file>
         <file>assets/images/memory_device_mapped_address.png</file>
+        <file>assets/images/memory_map.png</file>
         <file>assets/images/memory_module.png</file>
         <file>assets/images/oem_strings.png</file>
         <file>assets/images/onboard_devices.png</file>
@@ -43,6 +45,7 @@
         <file>assets/images/onboard_sound.png</file>
         <file>assets/images/onboard_video.png</file>
         <file>assets/images/out_of_band_remote_access.png</file>
+        <file>assets/images/pci.png</file>
         <file>assets/images/physical_memory_array.png</file>
         <file>assets/images/port_audio.png</file>
         <file>assets/images/port_connector.png</file>
