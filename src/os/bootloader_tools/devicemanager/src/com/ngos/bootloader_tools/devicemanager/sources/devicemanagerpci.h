@@ -1,5 +1,5 @@
-#ifndef DEVICEMANAGERPCI_H
-#define DEVICEMANAGERPCI_H
+#ifndef DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SOURCES_DEVICEMANAGERPCI_H
+#define DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SOURCES_DEVICEMANAGERPCI_H
 
 
 
@@ -20,9 +20,13 @@ public:
 #else
 private:
 #endif
+    static NgosStatus initPciRootBridgeIoProtocols(); // TEST: NO
+    static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size); // TEST: NO
+    static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size, uefi_handle *handles); // TEST: NO
+
     static ArrayList<DeviceManagerEntry *> sEntries;
 };
 
 
 
-#endif // DEVICEMANAGERPCI_H
+#endif // DEVICEMANAGER_SRC_COM_NGOS_BOOTLOADER_TOOLS_DEVICEMANAGER_SOURCES_DEVICEMANAGERPCI_H

@@ -1217,6 +1217,7 @@ src/os/shared/common/src/com/ngos/shared/common/uefi/uefiabsolutepointermodeattr
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiabsolutepointerstate.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiabsolutepointerstateactivebuttonflags.h
+src/os/shared/common/src/com/ngos/shared/common/uefi/uefiacpiaddressspacedescriptor.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiallocatetype.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiblockiomedia.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h
@@ -1266,6 +1267,10 @@ src/os/shared/common/src/com/ngos/shared/common/uefi/uefipciioprotocolattributeo
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefipciioprotocolconfigaccess.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefipciioprotocoloperation.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefipciioprotocolwidth.h
+src/os/shared/common/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h
+src/os/shared/common/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocolaccess.h
+src/os/shared/common/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocoloperation.h
+src/os/shared/common/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocolwidth.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefipixelbitmask.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiprocessorinformation.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiprocessorinformationstatusflags.h

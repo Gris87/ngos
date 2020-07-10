@@ -378,9 +378,11 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(RgbaPixel(BLACK_COLOR)), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),              NgosStatus::ASSERTION);
 
+    // Ignore CppAlignmentVerifier [BEGIN]
     UEFI_ASSERT_EXECUTION(fillDevicesTreeForDmi(      toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(fillDevicesTreeForPci(      toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(fillDevicesTreeForMemoryMap(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
+    // Ignore CppAlignmentVerifier [END]
 
     UEFI_ASSERT_EXECUTION(rootNodeWidget->setExpanded(true), NgosStatus::ASSERTION);
 

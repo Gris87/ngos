@@ -431,6 +431,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerstate.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerstateactivebuttonflags.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiacpiaddressspacedescriptor.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiallocatetype.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiblockiomedia.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h \
@@ -480,6 +481,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocolconfigaccess.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocoloperation.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipciioprotocolwidth.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocolaccess.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocoloperation.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocolwidth.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefipixelbitmask.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiprocessorinformation.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiprocessorinformationstatusflags.h \

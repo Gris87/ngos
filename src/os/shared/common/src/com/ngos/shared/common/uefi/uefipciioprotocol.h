@@ -34,7 +34,7 @@ struct UefiPciIoProtocol
     UefiStatus (UEFI_API *map)(UefiPciIoProtocol *obj, UefiPciIoProtocolOperation operation, void *hostAddress, u64 *numberOfBytes, u64 *deviceAddress, void **mapping); // TEST: NO
     UefiStatus (UEFI_API *unmap)(UefiPciIoProtocol *obj, void *mapping); // TEST: NO
     UefiStatus (UEFI_API *allocateBuffer)(UefiPciIoProtocol *obj, UefiAllocateType type, UefiMemoryType memoryType, u64 pages, void **HostAddress, u64 attributes); // TEST: NO
-    UefiStatus (UEFI_API *freeBuffer)(UefiPciIoProtocol *obj, u64 pages, void *HostAddress); // TEST: NO
+    UefiStatus (UEFI_API *freeBuffer)(UefiPciIoProtocol *obj, u64 pages, void *hostAddress); // TEST: NO
     UefiStatus (UEFI_API *flush)(UefiPciIoProtocol *obj); // TEST: NO
     UefiStatus (UEFI_API *getLocation)(UefiPciIoProtocol *obj, u64 *segmentNumber, u64 *busNumber, u64 *deviceNumber, u64 *functionNumber); // TEST: NO
     UefiStatus (UEFI_API *attributes)(UefiPciIoProtocol *obj, UefiPciIoProtocolAttributeOperation operation, u64 attributes, u64 *result); // TEST: NO
