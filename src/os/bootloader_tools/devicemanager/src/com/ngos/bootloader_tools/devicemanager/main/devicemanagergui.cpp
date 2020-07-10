@@ -96,7 +96,6 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/onboard_sound.png",                     // DeviceManagerImage::ONBOARD_SOUND
     "images/onboard_video.png",                     // DeviceManagerImage::ONBOARD_VIDEO
     "images/out_of_band_remote_access.png",         // DeviceManagerImage::OUT_OF_BAND_REMOTE_ACCESS
-    "images/pci.png",                               // DeviceManagerImage::PCI
     "images/physical_memory_array.png",             // DeviceManagerImage::PHYSICAL_MEMORY_ARRAY
     "images/port_audio.png",                        // DeviceManagerImage::PORT_AUDIO
     "images/port_connector.png",                    // DeviceManagerImage::PORT_CONNECTOR
@@ -477,12 +476,32 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForPci(Image *toolButtonNormalImage,
 
     RgbaPixel blackColor(BLACK_COLOR);
 
+    Image *iconImage;
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/pci.png", &iconImage), NgosStatus::ASSERTION);
 
 
-    TreeNodeWidget *pciNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::PCI), "PCI", sDevicesTreeWidget);
+
+    TreeNodeWidget *pciNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, iconImage, "PCI", sDevicesTreeWidget);
 
     UEFI_ASSERT_EXECUTION(pciNodeWidget->getLabelWidget()->setColor(blackColor),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->getRootNodeWidget()->addChildNode(pciNodeWidget), NgosStatus::ASSERTION);
+
+
+
+    const ArrayList<DeviceManagerEntry *>& entries = DeviceManagerPci::getEntries();
+
+    for (i64 i = 0; i < (i64)entries.getSize(); ++i)
+    {
+        DeviceManagerEntry *entry = entries.at(i);
+
+
+
+        TreeNodeWidget *entryNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, iconImage, entry->getName(), sDevicesTreeWidget);
+
+        UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(pciNodeWidget->addChildNode(entryNodeWidget),            NgosStatus::ASSERTION);
+    }
 
 
 

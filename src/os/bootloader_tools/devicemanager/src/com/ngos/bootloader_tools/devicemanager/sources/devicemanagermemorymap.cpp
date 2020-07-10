@@ -45,7 +45,7 @@ NgosStatus DeviceManagerMemoryMap::init()
         return NgosStatus::FAILED;
     }
 
-    // UEFI_LVV(("Found memory map")); // Commented to avoid log duplication
+    UEFI_LVV(("Found memory map"));
 
 
 
