@@ -16,7 +16,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-    MemoryMapEntry *previous              = 0;
+    MemoryMapEntry *previous              = nullptr;
     u64             memoryMapEntriesCount = 0;
 
 
@@ -33,7 +33,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-        UEFI_LVVV(("type          = %us",      enumToFullString(memoryDescriptor->type)));
+        UEFI_LVVV(("type          = %s",       enumToFullString(memoryDescriptor->type)));
         UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
         UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
         UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
@@ -110,7 +110,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
         if (
-            previous
+            previous != nullptr
             &&
             previous->type == entryType
             &&

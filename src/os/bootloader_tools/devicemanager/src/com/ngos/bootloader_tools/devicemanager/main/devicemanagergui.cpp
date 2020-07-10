@@ -96,6 +96,7 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/onboard_sound.png",                     // DeviceManagerImage::ONBOARD_SOUND
     "images/onboard_video.png",                     // DeviceManagerImage::ONBOARD_VIDEO
     "images/out_of_band_remote_access.png",         // DeviceManagerImage::OUT_OF_BAND_REMOTE_ACCESS
+    "images/pci.png",                               // DeviceManagerImage::PCI
     "images/physical_memory_array.png",             // DeviceManagerImage::PHYSICAL_MEMORY_ARRAY
     "images/port_audio.png",                        // DeviceManagerImage::PORT_AUDIO
     "images/port_connector.png",                    // DeviceManagerImage::PORT_CONNECTOR
@@ -378,7 +379,9 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
     UEFI_ASSERT_EXECUTION(rootNodeWidget->getLabelWidget()->setColor(RgbaPixel(BLACK_COLOR)), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->setRootNodeWidget(rootNodeWidget),              NgosStatus::ASSERTION);
 
-    UEFI_ASSERT_EXECUTION(fillDevicesTreeForDmi(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(fillDevicesTreeForDmi(      toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(fillDevicesTreeForPci(      toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(fillDevicesTreeForMemoryMap(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(rootNodeWidget->setExpanded(true), NgosStatus::ASSERTION);
 
@@ -395,9 +398,12 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
     RgbaPixel blackColor(BLACK_COLOR);
 
+    Image *iconImage;
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/dmi.png", &iconImage), NgosStatus::ASSERTION);
 
 
-    TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::SYSTEM), "DMI", sDevicesTreeWidget);
+
+    TreeNodeWidget *dmiNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, iconImage, "DMI", sDevicesTreeWidget);
 
     UEFI_ASSERT_EXECUTION(dmiNodeWidget->getLabelWidget()->setColor(blackColor),                NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->getRootNodeWidget()->addChildNode(dmiNodeWidget), NgosStatus::ASSERTION);
@@ -460,7 +466,47 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
 
 
-    UEFI_ASSERT_EXECUTION(dmiNodeWidget->setExpanded(true),  NgosStatus::ASSERTION);
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerGUI::fillDevicesTreeForPci(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage)
+{
+    UEFI_LT((" | toolButtonNormalImage = 0x%p, toolButtonHoverImage = 0x%p, toolButtonPressedImage = 0x%p, toolButtonNormalResizedImage = 0x%p, toolButtonHoverResizedImage = 0x%p, toolButtonPressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p", toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage));
+
+
+
+    RgbaPixel blackColor(BLACK_COLOR);
+
+
+
+    TreeNodeWidget *pciNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, getImage(DeviceManagerImage::PCI), "PCI", sDevicesTreeWidget);
+
+    UEFI_ASSERT_EXECUTION(pciNodeWidget->getLabelWidget()->setColor(blackColor),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->getRootNodeWidget()->addChildNode(pciNodeWidget), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerGUI::fillDevicesTreeForMemoryMap(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage)
+{
+    UEFI_LT((" | toolButtonNormalImage = 0x%p, toolButtonHoverImage = 0x%p, toolButtonPressedImage = 0x%p, toolButtonNormalResizedImage = 0x%p, toolButtonHoverResizedImage = 0x%p, toolButtonPressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p", toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage));
+
+
+
+    RgbaPixel blackColor(BLACK_COLOR);
+
+    Image *iconImage;
+    UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/memory_map.png", &iconImage), NgosStatus::ASSERTION);
+
+
+
+    TreeNodeWidget *memoryMapNodeWidget = new TreeNodeWidget(toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage, iconImage, "UEFI memory map", sDevicesTreeWidget);
+
+    UEFI_ASSERT_EXECUTION(memoryMapNodeWidget->getLabelWidget()->setColor(blackColor),                NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(memoryMapNodeWidget->setUserData(DeviceManagerMemoryMap::getEntry()),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sDevicesTreeWidget->getRootNodeWidget()->addChildNode(memoryMapNodeWidget), NgosStatus::ASSERTION);
 
 
 

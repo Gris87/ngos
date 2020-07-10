@@ -48,6 +48,7 @@ enum class DeviceManagerImage: u8
     ONBOARD_SOUND,
     ONBOARD_VIDEO,
     OUT_OF_BAND_REMOTE_ACCESS,
+    PCI,
     PHYSICAL_MEMORY_ARRAY,
     PORT_AUDIO,
     PORT_CONNECTOR,
@@ -113,6 +114,7 @@ inline const char8* enumToString(DeviceManagerImage image) // TEST: NO
         case DeviceManagerImage::ONBOARD_SOUND:                    return "ONBOARD_SOUND";
         case DeviceManagerImage::ONBOARD_VIDEO:                    return "ONBOARD_VIDEO";
         case DeviceManagerImage::OUT_OF_BAND_REMOTE_ACCESS:        return "OUT_OF_BAND_REMOTE_ACCESS";
+        case DeviceManagerImage::PCI:                              return "PCI";
         case DeviceManagerImage::PHYSICAL_MEMORY_ARRAY:            return "PHYSICAL_MEMORY_ARRAY";
         case DeviceManagerImage::PORT_AUDIO:                       return "PORT_AUDIO";
         case DeviceManagerImage::PORT_CONNECTOR:                   return "PORT_CONNECTOR";

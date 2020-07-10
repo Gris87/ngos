@@ -12,6 +12,7 @@
 class DeviceManagerEntry
 {
 public:
+    DeviceManagerEntry(); // TEST: NO
     DeviceManagerEntry(DeviceManagerImage image, const char8 *name); // TEST: NO
     virtual ~DeviceManagerEntry(); // TEST: NO
 

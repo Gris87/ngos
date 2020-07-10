@@ -27,6 +27,8 @@ public:
 private:
     static NgosStatus fillDevicesTree(); // TEST: NO
     static NgosStatus fillDevicesTreeForDmi(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
+    static NgosStatus fillDevicesTreeForPci(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
+    static NgosStatus fillDevicesTreeForMemoryMap(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
     static NgosStatus fillDeviceInfoTableWidget(DeviceManagerEntry *entry); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO

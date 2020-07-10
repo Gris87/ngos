@@ -15,8 +15,8 @@ NgosStatus DeviceManager::init()
 
 
     UEFI_ASSERT_EXECUTION(DeviceManagerDMI::init(),       NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(DeviceManagerMemoryMap::init(), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(DeviceManagerPci::init(),       NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(DeviceManagerMemoryMap::init(), NgosStatus::ASSERTION);
 
 
 

@@ -5,6 +5,14 @@
 
 
 
+DeviceManagerEntry::DeviceManagerEntry()
+    : mImage(DeviceManagerImage::MAXIMUM)
+    , mName(nullptr)
+    , mRecords()
+{
+    UEFI_LT((""));
+}
+
 DeviceManagerEntry::DeviceManagerEntry(DeviceManagerImage image, const char8 *name)
     : mImage(image)
     , mName(name)
