@@ -5,6 +5,7 @@
 
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 #include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h>
 
 
 
@@ -23,6 +24,7 @@ private:
     static NgosStatus initPciRootBridgeIoProtocols(); // TEST: NO
     static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size); // TEST: NO
     static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size, uefi_handle *handles); // TEST: NO
+    static NgosStatus initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProtocol *pci, UefiAcpiAddressSpaceDescriptor *resources); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
 };

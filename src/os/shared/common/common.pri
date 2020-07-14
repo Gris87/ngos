@@ -432,6 +432,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerstate.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiabsolutepointerstateactivebuttonflags.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiacpiaddressspacedescriptor.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiacpidescriptor.h \
+    $$PWD/src/com/ngos/shared/common/uefi/uefiacpiresourcetype.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiallocatetype.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiblockiomedia.h \
     $$PWD/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h \

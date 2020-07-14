@@ -1,6 +1,5 @@
 #include "devicemanagerpci.h"
 
-#include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
@@ -31,6 +30,7 @@ const ArrayList<DeviceManagerEntry *>& DeviceManagerPci::getEntries()
 
     return sEntries;
 }
+
 NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols()
 {
     UEFI_LT((""));
@@ -100,7 +100,7 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 si
     }
     else
     {
-        UEFI_LF(("Failed to locate handles(0x%p) for UEFI_PCI_ROOT_BRIDGE_IO_PROTOCOL", handles));
+        UEFI_LF(("Failed to locate handles(0x%p)UefiAcpiAddressSpaceDescriptor for UEFI_PCI_ROOT_BRIDGE_IO_PROTOCOL", handles));
     }
 
 
@@ -149,7 +149,106 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 si
         }
 
         UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_PCI_ROOT_BRIDGE_IO_PROTOCOL", handle, pci));
+
+
+
+        UefiAcpiAddressSpaceDescriptor *resources;
+
+        if (pci->configuration(pci, &resources) != UefiStatus::SUCCESS)
+        {
+            UEFI_LE(("Failed to get ACPI address space configuration for pci 0x%p", pci));
+
+            continue;
+        }
+
+
+
+        UEFI_ASSERT_EXECUTION(initPciRootBridgeIoProtocol(pci, resources), NgosStatus::ASSERTION);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProtocol *pci, UefiAcpiAddressSpaceDescriptor *resources)
+{
+    UEFI_LT((" | pci = 0x%p, resources = 0x%p", pci, resources));
+
+    UEFI_ASSERT(pci,       "pci is null",       NgosStatus::ASSERTION);
+    UEFI_ASSERT(resources, "resources is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("pci->parentHandle  = 0x%p", pci->parentHandle));
+        UEFI_LVVV(("pci->segmentNumber = %u",   pci->segmentNumber));
+
+        UEFI_TEST_ASSERT(pci->parentHandle  != nullptr, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(pci->segmentNumber == 0,       NgosStatus::ASSERTION);
+    }
+
+
+
+    UefiAcpiAddressSpaceDescriptor *descriptor = resources;
+
+    do
+    {
+        do
+        {
+            // Validation
+            {
+                UEFI_LVVV(("descriptor->descriptor               = %s", enumToFullString(descriptor->descriptor)));
+                UEFI_LVVV(("descriptor->length                   = %u", descriptor->length));
+                UEFI_LVVV(("descriptor->resourceType             = %s", enumToFullString(descriptor->resourceType)));
+                UEFI_LVVV(("descriptor->genFlag                  = %u", descriptor->genFlag));
+                UEFI_LVVV(("descriptor->specificFlag             = %u", descriptor->specificFlag));
+                UEFI_LVVV(("descriptor->addressSpaceGranularity  = %u", descriptor->addressSpaceGranularity));
+                UEFI_LVVV(("descriptor->addressRangeMinimum      = %u", descriptor->addressRangeMinimum));
+                UEFI_LVVV(("descriptor->addressRangeMaximum      = %u", descriptor->addressRangeMaximum));
+                UEFI_LVVV(("descriptor->addressTranslationOffset = %u", descriptor->addressTranslationOffset));
+                UEFI_LVVV(("descriptor->addressLength            = %u", descriptor->addressLength));
+            }
+
+
+
+            if (descriptor->descriptor == UefiAcpiDescriptor::END_TAG)
+            {
+                break;
+            }
+
+
+
+            UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
+
+
+
+            if (descriptor->resourceType == UefiAcpiResourceType::BUS)
+            {
+                break;
+            }
+
+
+
+            ++descriptor;
+        } while(true);
+
+
+
+        if (descriptor->descriptor == UefiAcpiDescriptor::END_TAG)
+        {
+            break;
+        }
+
+
+
+        UEFI_TEST_ASSERT(descriptor->resourceType == UefiAcpiResourceType::BUS, NgosStatus::ASSERTION);
+
+
+
+        ++descriptor;
+    } while(true);
 
 
 

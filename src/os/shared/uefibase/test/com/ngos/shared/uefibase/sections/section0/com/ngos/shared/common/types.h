@@ -282,6 +282,9 @@
 #include <com/ngos/shared/common/uefi/uefiabsolutepointerprotocol.h>
 #include <com/ngos/shared/common/uefi/uefiabsolutepointerstate.h>
 #include <com/ngos/shared/common/uefi/uefiabsolutepointerstateactivebuttonflags.h>
+#include <com/ngos/shared/common/uefi/uefiacpiaddressspacedescriptor.h>
+#include <com/ngos/shared/common/uefi/uefiacpidescriptor.h>
+#include <com/ngos/shared/common/uefi/uefiacpiresourcetype.h>
 #include <com/ngos/shared/common/uefi/uefiallocatetype.h>
 #include <com/ngos/shared/common/uefi/uefiblockiomedia.h>
 #include <com/ngos/shared/common/uefi/uefiblockioprotocol.h>
@@ -329,6 +332,10 @@
 #include <com/ngos/shared/common/uefi/uefipciioprotocolconfigaccess.h>
 #include <com/ngos/shared/common/uefi/uefipciioprotocoloperation.h>
 #include <com/ngos/shared/common/uefi/uefipciioprotocolwidth.h>
+#include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h>
+#include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocolaccess.h>
+#include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocoloperation.h>
+#include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocolwidth.h>
 #include <com/ngos/shared/common/uefi/uefipixelbitmask.h>
 #include <com/ngos/shared/common/uefi/uefiprocessorinformation.h>
 #include <com/ngos/shared/common/uefi/uefiprocessorinformationstatusflags.h>
@@ -694,7 +701,10 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(UefiAbsolutePointerState),                        32);
         TEST_ASSERT_EQUALS(sizeof(UefiAbsolutePointerStateActiveButtonFlag),        4);
         TEST_ASSERT_EQUALS(sizeof(UefiAcpi20ConfigurationTable),                    1);
+        TEST_ASSERT_EQUALS(sizeof(UefiAcpiAddressSpaceDescriptor),                  46);
         TEST_ASSERT_EQUALS(sizeof(UefiAcpiConfigurationTable),                      1);
+        TEST_ASSERT_EQUALS(sizeof(UefiAcpiDescriptor),                              1);
+        TEST_ASSERT_EQUALS(sizeof(UefiAcpiResourceType),                            1);
         TEST_ASSERT_EQUALS(sizeof(UefiAllocateType),                                4);
         TEST_ASSERT_EQUALS(sizeof(UefiBlockIoMedia),                                48);
         TEST_ASSERT_EQUALS(sizeof(UefiBlockIoProtocol),                             48);
@@ -755,6 +765,10 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocolConfigAccess),                   16);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocolOperation),                      4);
         TEST_ASSERT_EQUALS(sizeof(UefiPciIoProtocolWidth),                          4);
+        TEST_ASSERT_EQUALS(sizeof(UefiPciRootBridgeIoProtocol),                     152);
+        TEST_ASSERT_EQUALS(sizeof(UefiPciRootBridgeIoProtocolAccess),               16);
+        TEST_ASSERT_EQUALS(sizeof(UefiPciRootBridgeIoProtocolOperation),            4);
+        TEST_ASSERT_EQUALS(sizeof(UefiPciRootBridgeIoProtocolWidth),                4);
         TEST_ASSERT_EQUALS(sizeof(UefiPixelBitmask),                                16);
         TEST_ASSERT_EQUALS(sizeof(UefiProcessorInformation),                        24);
         TEST_ASSERT_EQUALS(sizeof(UefiProcessorInformationStatusFlag),              4);

@@ -1218,6 +1218,8 @@ src/os/shared/common/src/com/ngos/shared/common/uefi/uefiabsolutepointerprotocol
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiabsolutepointerstate.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiabsolutepointerstateactivebuttonflags.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiacpiaddressspacedescriptor.h
+src/os/shared/common/src/com/ngos/shared/common/uefi/uefiacpidescriptor.h
+src/os/shared/common/src/com/ngos/shared/common/uefi/uefiacpiresourcetype.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiallocatetype.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiblockiomedia.h
 src/os/shared/common/src/com/ngos/shared/common/uefi/uefiblockioprotocol.h
