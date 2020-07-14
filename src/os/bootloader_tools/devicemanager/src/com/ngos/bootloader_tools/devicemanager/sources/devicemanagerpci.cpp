@@ -100,7 +100,7 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 si
     }
     else
     {
-        UEFI_LF(("Failed to locate handles(0x%p)UefiAcpiAddressSpaceDescriptor for UEFI_PCI_ROOT_BRIDGE_IO_PROTOCOL", handles));
+        UEFI_LF(("Failed to locate handles(0x%p) for UEFI_PCI_ROOT_BRIDGE_IO_PROTOCOL", handles));
     }
 
 
