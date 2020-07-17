@@ -258,6 +258,7 @@
 #include <com/ngos/shared/common/mbr/mbrpartitiontype.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
+#include <com/ngos/shared/common/pci/pciregisters.h>
 #include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/time/time.h>
 #include <com/ngos/shared/common/uefi/config/uefiacpi20configurationtable.h>
@@ -648,6 +649,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(NgosStatus),                                      8);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
+        TEST_ASSERT_EQUALS(sizeof(PciRegister),                                     1);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                             56);
         TEST_ASSERT_EQUALS(sizeof(PGD),                                             8);
         TEST_ASSERT_EQUALS(sizeof(PMD),                                             8);

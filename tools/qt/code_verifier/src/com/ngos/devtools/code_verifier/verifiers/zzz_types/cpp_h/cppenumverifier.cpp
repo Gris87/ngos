@@ -113,6 +113,13 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
 
 
+                    if (variableName == "register")
+                    {
+                        variableName = "reg";
+                    }
+
+
+
                     bool    isFlag       = (variableName == "flag");
                     QString typeShort    = isFlag ? "flag" : "enum";
                     QString traceCommand = traceCommandFromPath(path);
@@ -452,9 +459,19 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             else
                             {
                                 if (
-                                    !valuesNumeric.length() // valuesNumeric.length() == 0
+                                    valuesNumeric.length() == 0
                                     ||
-                                    valuesNumeric.first() != '0'
+                                    (
+                                     valuesNumeric.first() != '0'
+                                     &&
+                                     valuesNumeric.first() != "0x00"
+                                     &&
+                                     valuesNumeric.first() != "0x0000"
+                                     &&
+                                     valuesNumeric.first() != "0x00000000"
+                                     &&
+                                     valuesNumeric.first() != "0x0000000000000000"
+                                    )
                                    )
                                 {
                                     worker->addError(path, i, "Enum value NONE should be first");

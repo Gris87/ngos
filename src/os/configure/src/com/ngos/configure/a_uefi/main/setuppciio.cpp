@@ -1,8 +1,8 @@
 #include "setuppciio.h"
 
-#include <com/ngos/configure/a_uefi/other/pciregisters.h>
 #include <com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
 #include <com/ngos/shared/common/memory/memory.h>
+#include <com/ngos/shared/common/pci/pciregisters.h>
 #include <com/ngos/shared/common/uefi/uefipciioprotocol.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
@@ -41,11 +41,11 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
 
 
 
-    if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, PCI_REGISTER_OFFSET_VENDOR_ID, 1, &rom->vendorId) == UefiStatus::SUCCESS)
+    if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, (u64)PciRegister::VENDOR_ID, 1, &rom->vendorId) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Successfully read PCI register Vendor ID(0x%04X) from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom->vendorId, pci));
 
-        if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, PCI_REGISTER_OFFSET_DEVICE_ID, 1, &rom->deviceId) == UefiStatus::SUCCESS)
+        if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, (u64)PciRegister::DEVICE_ID, 1, &rom->deviceId) == UefiStatus::SUCCESS)
         {
             UEFI_LVV(("Successfully read PCI register Device ID(0x%04X) from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom->deviceId, pci));
 

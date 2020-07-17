@@ -254,3 +254,19 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProt
 
     return NgosStatus::OK;
 }
+
+NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci, i64 minimumBus, i64 maximumBus)
+{
+    UEFI_LT((" | pci = 0x%p, minimumBus = %d, maximumBus = %d", pci, minimumBus, maximumBus));
+
+    UEFI_ASSERT(pci, "pci is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(minimumBus);
+    AVOID_UNUSED(maximumBus);
+
+
+
+    return NgosStatus::OK;
+}

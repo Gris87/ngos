@@ -597,7 +597,6 @@ src/os/configure/src/com/ngos/configure/a_uefi/main/setupmemorymapentries.cpp
 src/os/configure/src/com/ngos/configure/a_uefi/main/setupmemorymapentries.h
 src/os/configure/src/com/ngos/configure/a_uefi/main/setuppciio.cpp
 src/os/configure/src/com/ngos/configure/a_uefi/main/setuppciio.h
-src/os/configure/src/com/ngos/configure/a_uefi/other/pciregisters.h
 src/os/configure/src/com/ngos/configure/b_early/main/decompressors/gzip/decompress.cpp
 src/os/configure/src/com/ngos/configure/b_early/main/decompressors/gzip/decompress.h
 src/os/configure/src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipcompressionmethod.h
@@ -1178,6 +1177,8 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/flags.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
+src/os/shared/common/src/com/ngos/shared/common/pci/macros.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pciregisters.h
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.cpp
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.h
 src/os/shared/common/src/com/ngos/shared/common/random/random.cpp

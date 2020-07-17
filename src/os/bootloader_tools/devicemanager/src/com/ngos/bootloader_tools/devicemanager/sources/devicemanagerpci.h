@@ -25,6 +25,7 @@ private:
     static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size); // TEST: NO
     static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size, uefi_handle *handles); // TEST: NO
     static NgosStatus initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProtocol *pci, UefiAcpiAddressSpaceDescriptor *resources); // TEST: NO
+    static NgosStatus initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci, i64 minimumBus, i64 maximumBus); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
 };
