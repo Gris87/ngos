@@ -1,5 +1,6 @@
 #include "devicemanagerpci.h"
 
+#include <com/ngos/shared/common/pci/macros.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
@@ -154,16 +155,16 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 si
 
         UefiAcpiAddressSpaceDescriptor *resources;
 
-        if (pci->configuration(pci, &resources) != UefiStatus::SUCCESS)
+        if (pci->configuration(pci, &resources) == UefiStatus::SUCCESS)
         {
-            UEFI_LE(("Failed to get ACPI address space configuration for pci 0x%p", pci));
-
-            continue;
+            UEFI_ASSERT_EXECUTION(initPciRootBridgeIoProtocol(pci, resources), NgosStatus::ASSERTION);
         }
+        else
+        {
+            UEFI_LW(("Failed to get ACPI address space configuration for pci 0x%p", pci));
 
-
-
-        UEFI_ASSERT_EXECUTION(initPciRootBridgeIoProtocol(pci, resources), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(initPcisInBusRange(pci, 0, PCI_MAXIMUM_BUS), NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -241,9 +242,11 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProt
             break;
         }
 
-
-
         UEFI_TEST_ASSERT(descriptor->resourceType == UefiAcpiResourceType::BUS, NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(initPcisInBusRange(pci, descriptor->addressRangeMinimum, descriptor->addressRangeMaximum), NgosStatus::ASSERTION);
 
 
 

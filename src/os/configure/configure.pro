@@ -64,7 +64,6 @@ HEADERS += \
     src/com/ngos/configure/a_uefi/main/setupkernellocation.h \
     src/com/ngos/configure/a_uefi/main/setupmemorymapentries.h \
     src/com/ngos/configure/a_uefi/main/setuppciio.h \
-    src/com/ngos/configure/a_uefi/other/pciregisters.h \
     src/com/ngos/configure/b_early/main/decompressors/gzip/decompress.h \
     src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipcompressionmethod.h \
     src/com/ngos/configure/b_early/main/decompressors/gzip/lib/gzipmemberextraflags.h \
