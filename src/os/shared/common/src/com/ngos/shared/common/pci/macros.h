@@ -3,10 +3,10 @@
 
 
 
-#define PCI_MAX_SEGMENT 0
-#define PCI_MAX_BUS     255
-#define PCI_MAX_DEVICE  31
-#define PCI_MAX_FUNC    7
+#define PCI_MAX_SEGMENT  0
+#define PCI_MAX_BUS      255
+#define PCI_MAX_DEVICE   31
+#define PCI_MAX_FUNCTION 7
 
 
 
