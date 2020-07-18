@@ -21,6 +21,7 @@ NGOS:
 - ASSERTS for QEMU only for variated checks
 - Split validation regions to output/check region
 - Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"
+- BIT0-63
 
 - Complete with interruptions
 - Implement boot screen for kernel

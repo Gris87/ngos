@@ -66,6 +66,7 @@
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h>
@@ -148,6 +149,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, com_ngos_shared_common_string_utils);
     CALL_TEST_CASES(section0, com_ngos_shared_common_time_time);
     CALL_TEST_CASES(section0, com_ngos_shared_common_types);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_uefi_uefipcirootbridgeioprotocol);
     CALL_TEST_CASES(section0, com_ngos_shared_common_uuid_utils);
     CALL_TEST_CASES(section0, com_ngos_shared_uefibase_other_uefibootmemorymap);
     CALL_TEST_CASES(section0, com_ngos_shared_uefibase_types);

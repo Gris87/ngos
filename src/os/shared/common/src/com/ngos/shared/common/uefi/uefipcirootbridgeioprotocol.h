@@ -20,6 +20,17 @@
 
 
 
+// Ignore CppAlignmentVerifier [BEGIN]
+#define UEFI_PCI_ADDRESS(bus, device, function, reg) \
+    (u64)( \
+    ((u64)(bus)      << 24) | \
+    ((u64)(device)   << 16) | \
+    ((u64)(function) << 8)  | \
+    ((u64)(reg) < 256 ? (u64)(reg) : ((u64)(reg) << 32)))
+// Ignore CppAlignmentVerifier [END]
+
+
+
 struct UefiPciRootBridgeIoProtocol
 {
     uefi_handle parentHandle;

@@ -1,5 +1,5 @@
-#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_PCI_PCIREGISTERS_H
-#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_PCI_PCIREGISTERS_H
+#ifndef OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_PCI_PCIREGISTER_H
+#define OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_PCI_PCIREGISTER_H
 
 
 
@@ -18,7 +18,7 @@ enum class PciRegister: u8
     PRIMARY_STATUS      = 0x06,
     REVISION_ID         = 0x08,
     CLASS_CODE          = 0x09,
-    CACHELINE_SIZE      = 0x0C,
+    CACHE_LINE_SIZE     = 0x0C,
     LATENCY_TIMER       = 0x0D,
     HEADER_TYPE         = 0x0E,
     BUILT_IN_SELF_TEST  = 0x0F,
@@ -50,7 +50,7 @@ inline const char8* enumToString(PciRegister reg) // TEST: NO
         case PciRegister::PRIMARY_STATUS:      return "PRIMARY_STATUS";
         case PciRegister::REVISION_ID:         return "REVISION_ID";
         case PciRegister::CLASS_CODE:          return "CLASS_CODE";
-        case PciRegister::CACHELINE_SIZE:      return "CACHELINE_SIZE";
+        case PciRegister::CACHE_LINE_SIZE:     return "CACHE_LINE_SIZE";
         case PciRegister::LATENCY_TIMER:       return "LATENCY_TIMER";
         case PciRegister::HEADER_TYPE:         return "HEADER_TYPE";
         case PciRegister::BUILT_IN_SELF_TEST:  return "BUILT_IN_SELF_TEST";
@@ -86,4 +86,4 @@ inline const char8* enumToFullString(PciRegister reg) // TEST: NO
 
 
 
-#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_PCI_PCIREGISTERS_H
+#endif // OS_SHARED_COMMON_SRC_COM_NGOS_SHARED_COMMON_PCI_PCIREGISTER_H

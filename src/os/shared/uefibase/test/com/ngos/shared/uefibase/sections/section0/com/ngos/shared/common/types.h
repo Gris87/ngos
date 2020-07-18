@@ -258,7 +258,9 @@
 #include <com/ngos/shared/common/mbr/mbrpartitiontype.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
-#include <com/ngos/shared/common/pci/pciregisters.h>
+#include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
+#include <com/ngos/shared/common/pci/pciheadertype.h>
+#include <com/ngos/shared/common/pci/pciregister.h>
 #include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/time/time.h>
 #include <com/ngos/shared/common/uefi/config/uefiacpi20configurationtable.h>
@@ -649,6 +651,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(NgosStatus),                                      8);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                      16);
+        TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                   1);
         TEST_ASSERT_EQUALS(sizeof(PciRegister),                                     1);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                             56);
         TEST_ASSERT_EQUALS(sizeof(PGD),                                             8);
@@ -2216,6 +2220,40 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         temp.huffmanDcTableId = 7;      // ||  0111  |  0010  ||
 
         TEST_ASSERT_EQUALS(temp.huffmanTableIds, 0x72);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciDeviceIndependentRegion");
+    {
+        PciDeviceIndependentRegion temp;
+
+
+
+        //  PciDeviceIndependentRegion - headerTypeAndIsMultiFunction:
+        // ============================================
+        // |  isMultiFunction : 1  |  headerType : 7  |
+        // ============================================
+
+
+
+        temp.headerTypeAndIsMultiFunction = 0x85;   // ||  1  |  0000101  ||
+
+        TEST_ASSERT_EQUALS(temp.headerType,      5);
+        TEST_ASSERT_EQUALS(temp.isMultiFunction, 1);
+
+
+
+        temp.headerType = 10;                       // ||  1  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.headerTypeAndIsMultiFunction, 0x8A);
+
+
+
+        temp.isMultiFunction = 0;                   // ||  0  |  0001010  ||
+
+        TEST_ASSERT_EQUALS(temp.headerTypeAndIsMultiFunction, 0x0A);
     }
     TEST_CASE_END();
 

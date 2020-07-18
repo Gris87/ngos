@@ -1178,7 +1178,9 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/common/src/com/ngos/shared/common/pci/macros.h
-src/os/shared/common/src/com/ngos/shared/common/pci/pciregisters.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceindependentregion.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pciheadertype.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pciregister.h
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.cpp
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.h
 src/os/shared/common/src/com/ngos/shared/common/random/random.cpp
@@ -1579,6 +1581,7 @@ src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h

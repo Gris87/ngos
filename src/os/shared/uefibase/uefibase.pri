@@ -273,6 +273,7 @@ HEADERS += \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h \

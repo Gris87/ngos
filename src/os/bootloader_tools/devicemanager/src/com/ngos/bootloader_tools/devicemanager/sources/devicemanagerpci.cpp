@@ -1,6 +1,9 @@
 #include "devicemanagerpci.h"
 
 #include <com/ngos/shared/common/pci/macros.h>
+#include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
+#include <com/ngos/shared/common/pci/pciregister.h>
+#include <com/ngos/shared/common/string/utils.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
@@ -262,12 +265,82 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 {
     UEFI_LT((" | pci = 0x%p, minimumBus = %d, maximumBus = %d", pci, minimumBus, maximumBus));
 
-    UEFI_ASSERT(pci, "pci is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci,                                  "pci is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(minimumBus >= 0 && minimumBus <= 255, "minimumBus is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(maximumBus >= 0 && maximumBus <= 255, "maximumBus is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(minimumBus <= maximumBus,             "minimumBus is invalid", NgosStatus::ASSERTION);
 
 
 
-    AVOID_UNUSED(minimumBus);
-    AVOID_UNUSED(maximumBus);
+    for (i64 i = minimumBus; i <= maximumBus; ++i)
+    {
+        for (i64 j = 0; j <= PCI_MAXIMUM_DEVICE; ++j)
+        {
+            for (i64 k = 0; k <= PCI_MAXIMUM_FUNCTION; ++k)
+            {
+                u16 vendorId;
+                u64 address = UEFI_PCI_ADDRESS(i, j, k, (u64)PciRegister::VENDOR_ID);
+
+                if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT16, address, 1, &vendorId) == UefiStatus::SUCCESS)
+                {
+                    if (vendorId != 0xFFFF)
+                    {
+                        UEFI_LVV(("Successfully read PCI register Vendor ID(0x%04X) from protocol(0x%p) for PCI(%d/%d/%d)", vendorId, pci, i, j, k));
+
+
+
+                        PciDeviceIndependentRegion pciHeader;
+
+                        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(pciHeader) / sizeof(u32), &pciHeader) == UefiStatus::SUCCESS)
+                        {
+                            UEFI_LVV(("Successfully read PCI header from protocol(0x%p) for PCI(%d/%d/%d)", pci, i, j, k));
+
+                            UEFI_LVVV(("pciHeader.vendorId                     = 0x%04X",                 pciHeader.vendorId));
+                            UEFI_LVVV(("pciHeader.deviceId                     = 0x%04X",                 pciHeader.deviceId));
+                            UEFI_LVVV(("pciHeader.command                      = 0x%04X",                 pciHeader.command));
+                            UEFI_LVVV(("pciHeader.status                       = 0x%04X",                 pciHeader.status));
+                            UEFI_LVVV(("pciHeader.revisionId                   = %u",                     pciHeader.revisionId));
+                            UEFI_LVVV(("pciHeader.classCode                    = 0x%02X, 0x%02X, 0x%02X", pciHeader.classCode[0], pciHeader.classCode[1], pciHeader.classCode[2]));
+                            UEFI_LVVV(("pciHeader.cacheLineSize                = %u",                     pciHeader.cacheLineSize));
+                            UEFI_LVVV(("pciHeader.latencyTimer                 = %u",                     pciHeader.latencyTimer));
+                            UEFI_LVVV(("pciHeader.headerType                   = %s",                     enumToFullString((PciHeaderType)pciHeader.headerType)));
+                            UEFI_LVVV(("pciHeader.isMultiFunction              = %s",                     boolToString(pciHeader.isMultiFunction)));
+                            UEFI_LVVV(("pciHeader.headerTypeAndIsMultiFunction = 0x%02X",                 pciHeader.headerTypeAndIsMultiFunction));
+                            UEFI_LVVV(("pciHeader.builtInSelfTest              = %u",                     pciHeader.builtInSelfTest));
+
+
+
+                            // If device is not multi-function then there is no need to check for remaining functions
+                            if (
+                                k == 0
+                                &&
+                                !pciHeader.isMultiFunction
+                               )
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            UEFI_LE(("Failed to read PCI header from protocol(0x%p) for PCI(%d/%d/%d)", pci, i, j, k));
+                        }
+                    }
+                    else
+                    {
+                        // If we fail to get valid vendorId for function 0 then there is no need to check for remaining functions
+                        if (k == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    UEFI_LE(("Failed to read PCI register Vendor ID from protocol(0x%p) for PCI(%d/%d/%d)", pci, i, j, k));
+                }
+            }
+        }
+    }
 
 
 

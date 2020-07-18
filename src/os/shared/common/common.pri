@@ -400,7 +400,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
-    $$PWD/src/com/ngos/shared/common/pci/pciregisters.h \
+    $$PWD/src/com/ngos/shared/common/pci/pcideviceindependentregion.h \
+    $$PWD/src/com/ngos/shared/common/pci/pciheadertype.h \
+    $$PWD/src/com/ngos/shared/common/pci/pciregister.h \
     $$PWD/src/com/ngos/shared/common/printf/printf.h \
     $$PWD/src/com/ngos/shared/common/random/random.h \
     $$PWD/src/com/ngos/shared/common/serial/serial.h \
