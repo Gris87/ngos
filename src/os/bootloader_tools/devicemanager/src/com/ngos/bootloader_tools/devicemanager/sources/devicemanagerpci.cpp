@@ -253,6 +253,10 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProt
 
 
 
+        UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
+
+
+
         ++descriptor;
     } while(true);
 
