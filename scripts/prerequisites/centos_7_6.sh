@@ -95,6 +95,7 @@ yum install -y ImageMagick
 yum install -y nodejs
 yum install -y efitools
 yum install -y sbsigntools
+yum install -y cmake
 
 npm i sinon --save-dev       || exit 1
 npm i markdown-spellcheck -g || exit 1

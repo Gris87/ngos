@@ -89,6 +89,7 @@ apt-get install -y imagemagick
 apt-get install -y npm
 apt-get install -y efitools
 apt-get install -y sbsigntool
+apt-get install -y cmake
 
 ln -s /usr/bin/nodejs /usr/bin/node
 npm i sinon --save-dev       || exit 1
