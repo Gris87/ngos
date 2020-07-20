@@ -36,7 +36,7 @@ $(TARGET_FREETYPE): $(FREETYPE_DIR)
 
 
 $(TARGET_POPPLER): $(POPPLER_DIR)
-	bash -c "cd $(POPPLER_DIR) && mkdir build && cd build && cmake .. && make -j`nproc`"
+	bash -c "cd $(POPPLER_DIR) && $(MKDIR) build && cd build && cmake .. && make -j`nproc`"
 
 
 
