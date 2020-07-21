@@ -97,6 +97,8 @@ scripts/prerequisites/ubuntu_16_04.sh
 scripts/prerequisites/ubuntu_18_04.sh
 scripts/prerequisites/ubuntu_18_10.sh
 scripts/prerequisites/ubuntu_19_04.sh
+scripts/prerequisites/ubuntu_19_10.sh
+scripts/prerequisites/ubuntu_20_04.sh
 scripts/pull.sh
 scripts/push.sh
 scripts/sign_uefi_application.sh

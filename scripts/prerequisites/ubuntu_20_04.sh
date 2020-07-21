@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script helps to install prerequisites on CentOS 7.6
+# This script helps to install prerequisites on Ubuntu 20.04
 # Author: Maxim Shvecov
-# Usage: sudo ./centos_7_6.sh
+# Usage: sudo ./ubuntu_20_04.sh
 
 
 
@@ -20,6 +20,7 @@ LIBVIRT_GLIB_VERSION=3.0.0
 QEMU_VERSION=5.0.0
 VIRT_MANAGER_VERSION=2.2.1
 VIRT_VIEWER_VERSION=9.0
+OVMF_VERSION=edk2-stable202005
 VIRTUALBOX_VERSION=6.0
 QT_VERSION=5.15.0
 
@@ -39,12 +40,8 @@ fi
 
 
 
-yum install -y redhat-lsb
-
-
-
-if [[ "`lsb_release -rs`" != "7.6.1810" ]]; then
-    echo "This script should be called on CentOS 7.6"
+if [[ "`lsb_release -rs`" != "20.04" ]]; then
+    echo "This script should be called on Ubuntu 20.04"
 
     exit 1
 fi
@@ -75,28 +72,26 @@ echo ""
 
 mkdir /tmp/src/
 cd /tmp/src/
-mkdir epel/
-cd epel/
-wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install -y epel-release-latest-7.noarch.rpm
 
-yum update -y
-yum install -y curl
-yum install -y gcc
-yum install -y gcc-c++
-yum install -y ncurses-devel
-yum install -y libelf-devel
-yum install -y bison
-yum install -y flex
-yum install -y gdb
-yum install -y mesa-libGL-devel
-yum install -y socat
-yum install -y ImageMagick
-yum install -y nodejs
-yum install -y efitools
-yum install -y sbsigntools
-yum install -y cmake
+sed -i "s/^# deb-src /deb-src /" /etc/apt/sources.list
+apt-get update
+apt-get upgrade -y
+apt-get install -y curl
+apt-get install -y build-essential
+apt-get install -y libncurses-dev
+apt-get install -y libelf-dev
+apt-get install -y bison
+apt-get install -y flex
+apt-get install -y gdb
+apt-get install -y libgl-dev
+apt-get install -y socat
+apt-get install -y imagemagick
+apt-get install -y npm
+apt-get install -y efitools
+apt-get install -y sbsigntool
+apt-get install -y cmake
 
+ln -s /usr/bin/nodejs /usr/bin/node
 npm i sinon --save-dev       || exit 1
 npm i markdown-spellcheck -g || exit 1
 
@@ -107,25 +102,15 @@ export PATH="${PREFIX}/bin:${PATH}"
 
 
 echo ""
-echo -e "\e[33m-------------------- gcc-8 --------------------\e[0m"
+echo -e "\e[33m-------------------- gcc-9.3 --------------------\e[0m"
 echo ""
 
 
 
-mkdir /tmp/src/
-cd /tmp/src/
-mkdir devtoolset/
-cd devtoolset/
-
-rm *
-
-for RPM in `curl https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/ | grep -o -E -e "href=\".*.rpm\"" | cut -d \" -f 2`
-do
-    wget https://cbs.centos.org/repos/sclo7-devtoolset-8-rh-release/x86_64/os/Packages/${RPM}
-done
-
-yum install -y *.rpm
-source /opt/rh/devtoolset-8/enable
+add-apt-repository -y ppa:jonathonf/gcc-9.3
+apt-get update
+apt-get install -y gcc-9 g++-9
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
 
 
 
@@ -184,7 +169,7 @@ echo ""
 
 
 
-yum-builddep -y libvirt
+apt-get build-dep -y libvirt
 
 
 
@@ -217,8 +202,8 @@ echo ""
 
 
 
-yum-builddep -y libvirt-glib
-yum install -y gtk-doc
+apt-get build-dep -y libvirt-glib
+apt-get install -y gtk-doc-tools
 
 
 
@@ -248,7 +233,7 @@ echo ""
 
 
 
-yum install -y pixman-devel
+apt-get install -y libpixman-1-dev
 
 
 
@@ -281,15 +266,9 @@ echo ""
 
 
 
-yum install -y https://centos7.iuscommunity.org/ius-release.rpm
-yum install -y python36u python36u-devel python36u-pip
-ln -s /bin/python3.6 /bin/python3
-ln -s /bin/pip3.6 /bin/pip3
-yum install -y intltool libosinfo
+apt-get install -y intltool libgtk2.0-bin python3-pip libosinfo-1.0
 pip3 install libvirt-python
 pip3 install libxml2-python3
-pip3 install requests
-pip3 install pygobject
 
 
 
@@ -312,7 +291,7 @@ echo ""
 
 
 
-yum install -y gtk-vnc2-devel libvirt-glib-devel gtk3-devel spice-gtk3-devel
+apt-get install -y libgtk-vnc-2.0-dev
 
 
 
@@ -331,20 +310,41 @@ make install || exit 1
 
 
 
-sed -i "s/^#\? \?user *=.*/user = \"${USER}\"/g"   /etc/libvirt/qemu.conf
-sed -i "s/^#\? \?group *=.*/group = \"${USER}\"/g" /etc/libvirt/qemu.conf
+rm /usr/lib/x86_64-linux-gnu/libvirt*
 systemctl restart libvirtd
 
 
 
 echo ""
-echo -e "\e[33m-------------------- OVMF --------------------\e[0m"
+echo -e "\e[33m-------------------- OVMF-${OVMF_VERSION} --------------------\e[0m"
 echo ""
 
 
 
-cd /etc/yum.repos.d/ && wget http://www.kraxel.org/repos/firmware.repo
-yum install -y edk2.git-ovmf-x64
+apt-get install -y nasm iasl
+
+
+
+cd /usr/local/
+
+if [ ! -d edk2 ]; then
+    git clone https://github.com/tianocore/edk2.git
+    cd edk2
+    git submodule update --init
+    cd ..
+fi
+
+cd edk2
+git checkout master
+git reset --hard
+git clean -df
+git pull
+git reset --hard ${OVMF_VERSION}
+git submodule update
+
+source edksetup.sh BaseTools || exit 1
+make -C BaseTools/ || exit 1
+build -a X64 -t GCC5 -b DEBUG -n `nproc` -p OvmfPkg/OvmfPkgX64.dsc || exit 1
 
 
 
@@ -354,15 +354,12 @@ echo ""
 
 
 
-cd /etc/yum.repos.d
-wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
+apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib"
 
-yum --enablerepo=epel install -y dkms
-
-yum groupinstall -y "Development Tools"
-yum install -y kernel-devel
-
-yum install -y VirtualBox-${VIRTUALBOX_VERSION}
+apt-get update
+apt-get install -y virtualbox-${VIRTUALBOX_VERSION}
 
 
 
@@ -383,11 +380,10 @@ echo ""
 
 
 
-cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" | grep -v "/opt/rh/devtoolset-8/enable" > /home/${USER}/temp
+cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" > /home/${USER}/temp
 mv /home/${USER}/temp /home/${USER}/.bashrc
 echo "export PATH=/usr/local/x8664elfgcc/bin:\${PATH}"    >> /home/${USER}/.bashrc
 echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\${PATH}" >> /home/${USER}/.bashrc
-echo "source /opt/rh/devtoolset-8/enable"                 >> /home/${USER}/.bashrc
 chown ${USER}:${USER} /home/${USER}/.bashrc
 
 
@@ -413,12 +409,12 @@ echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
 
 
 echo ""
-echo -e "\e[33m-------------------- SELinux --------------------\e[0m"
+echo -e "\e[33m-------------------- AppArmor --------------------\e[0m"
 echo ""
 
 
 
-sed -i "s/SELINUX=.*/SELINUX=disabled/g" /etc/selinux/config
+update-rc.d apparmor disable
 
 
 
@@ -428,6 +424,6 @@ echo ""
 
 
 
-echo "SELinux disabled. Rebooting..."
+echo "AppArmor disabled. Rebooting..."
 sleep 5
 reboot

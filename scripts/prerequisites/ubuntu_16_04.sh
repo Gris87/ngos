@@ -13,16 +13,16 @@
 
 
 CURRENT_PATH=`pwd`
-BINUTILS_VERSION=2.32
-GCC_VERSION=9.2.0
-LIBVIRT_VERSION=5.7.0
-LIBVIRT_GLIB_VERSION=2.0.0
-QEMU_VERSION=4.1.0
+BINUTILS_VERSION=2.34
+GCC_VERSION=10.1.0
+LIBVIRT_VERSION=6.5.0
+LIBVIRT_GLIB_VERSION=3.0.0
+QEMU_VERSION=5.0.0
 VIRT_MANAGER_VERSION=2.2.1
-VIRT_VIEWER_VERSION=8.0
-OVMF_VERSION=c70fef962e804eba483512b64ec24169871060be
+VIRT_VIEWER_VERSION=9.0
+OVMF_VERSION=edk2-stable202005
 VIRTUALBOX_VERSION=6.0
-QT_VERSION=5.13.1
+QT_VERSION=5.15.0
 
 
 
@@ -102,12 +102,12 @@ export PATH="${PREFIX}/bin:${PATH}"
 
 
 echo ""
-echo -e "\e[33m-------------------- gcc-9.1 --------------------\e[0m"
+echo -e "\e[33m-------------------- gcc-9.3 --------------------\e[0m"
 echo ""
 
 
 
-add-apt-repository -y ppa:jonathonf/gcc-9.1
+add-apt-repository -y ppa:jonathonf/gcc-9.3
 apt-get update
 apt-get install -y gcc-9 g++-9
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
