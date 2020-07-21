@@ -90,6 +90,7 @@ apt-get install -y npm
 apt-get install -y efitools
 apt-get install -y sbsigntool
 apt-get install -y cmake
+apt-get install -y texinfo
 
 ln -s /usr/bin/nodejs /usr/bin/node
 npm i sinon --save-dev       || exit 1
