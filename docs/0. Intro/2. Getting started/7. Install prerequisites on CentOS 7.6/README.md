@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.2.5. Install prerequisites on CentOS 7.6
+0.2.7. Install prerequisites on CentOS 7.6
 ------------------------------------------
 
 Please follow instructions below in order to obtain the required software
@@ -49,5 +49,5 @@ rm qt-unified-linux-x64-online.run
 ```
 
 Please choose following items during Qt installation:
-* Qt -> Qt 5.13.1 -> Desktop gcc 64 bit
-* Qt -> Qt 5.13.1 -> Sources
+* Qt -> Qt 5.15.0 -> Desktop gcc 64 bit
+* Qt -> Qt 5.15.0 -> Sources

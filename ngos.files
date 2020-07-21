@@ -5,11 +5,13 @@
 3rd_party/Makefile
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
-docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 19.04/README.md
-docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 18.10/README.md
-docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 18.04/README.md
-docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 16.04/README.md
-docs/0. Intro/2. Getting started/5. Install prerequisites on CentOS 7.6/README.md
+docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 20.04/README.md
+docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 19.10/README.md
+docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 19.04/README.md
+docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 18.10/README.md
+docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 18.04/README.md
+docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 16.04/README.md
+docs/0. Intro/2. Getting started/7. Install prerequisites on CentOS 7.6/README.md
 docs/0. Intro/2. Getting started/Configuring Qt Creator 01.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 02.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 03.png
