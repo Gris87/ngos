@@ -96,7 +96,7 @@ yum install -y nodejs
 yum install -y efitools
 yum install -y sbsigntools
 yum install -y cmake
-yum install -y texinfo 
+yum install -y texinfo
 
 npm i sinon --save-dev       || exit 1
 npm i markdown-spellcheck -g || exit 1
@@ -169,6 +169,7 @@ fi
 cd gcc-${GCC_VERSION}
 contrib/download_prerequisites
 cd ..
+
 mkdir gcc-build
 cd gcc-build
 ../gcc-${GCC_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --enable-languages=c,c++ | tee configure.log || exit 1
@@ -202,8 +203,12 @@ git reset --hard
 git clean -df
 git pull
 git reset --hard v${LIBVIRT_VERSION}
-./autogen.sh || exit 1
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+cd ..
+
+mkdir libvirt-build
+cd libvirt-build
+../libvirt/autogen.sh || exit 1
+../libvirt/configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
 make -j`nproc` all || exit 1
 make install || exit 1
 
@@ -236,8 +241,12 @@ git reset --hard
 git clean -df
 git pull
 git reset --hard v${LIBVIRT_GLIB_VERSION}
-./autogen.sh || exit 1
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
+cd ..
+
+mkdir libvirt-glib-build
+cd libvirt-glib-build
+../libvirt-glib/autogen.sh || exit 1
+../libvirt-glib/configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
 make -j`nproc` all || exit 1
 make install || exit 1
 
