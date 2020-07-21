@@ -98,8 +98,8 @@ yum install -y sbsigntools
 yum install -y cmake
 yum install -y texinfo
 
-npm i sinon --save-dev       || exit 1
-npm i markdown-spellcheck -g || exit 1
+npm i sinon --save-dev
+npm i markdown-spellcheck -g
 
 export PREFIX="/usr/local/x8664elfgcc"
 export TARGET=x86_64-elf

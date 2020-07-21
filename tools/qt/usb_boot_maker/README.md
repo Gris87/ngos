@@ -13,7 +13,7 @@ In case of issue "qt.network.ssl: QSslSocket::connectToHostEncrypted: TLS initia
 
 1. Go to https://slproweb.com/products/Win32OpenSSL.html<br/>
 2. Download and install Win64 OpenSSL v1.0.2t Light<br/>
-3. Copy all *.dll files from installed dir to C:\Qt\5.13.1\msvc2017_64\bin
+3. Copy all *.dll files from installed dir to C:\Qt\5.15.0\msvc2017_64\bin
 
 
 

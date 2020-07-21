@@ -93,8 +93,8 @@ apt-get install -y cmake
 apt-get install -y texinfo
 
 ln -s /usr/bin/nodejs /usr/bin/node
-npm i sinon --save-dev       || exit 1
-npm i markdown-spellcheck -g || exit 1
+npm i sinon --save-dev
+npm i markdown-spellcheck -g
 
 export PREFIX="/usr/local/x8664elfgcc"
 export TARGET=x86_64-elf

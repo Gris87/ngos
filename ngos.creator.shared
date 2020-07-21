@@ -58,9 +58,9 @@
     <data>
         <variable>ProjectExplorer.Project.Target.0</variable>
         <valuemap type="QVariantMap">
-            <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.13.1 GCC 64bit</value>
-            <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 5.13.1 GCC 64bit</value>
-            <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt5.5131.gcc_64_kit</value>
+            <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.15.0 GCC 64bit</value>
+            <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 5.15.0 GCC 64bit</value>
+            <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt5.5150.gcc_64_kit</value>
             <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
             <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
             <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">2</value>
