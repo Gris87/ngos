@@ -132,8 +132,8 @@ fi
 mkdir binutils-build
 cd binutils-build
 ../binutils-${BINUTILS_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --disable-werror 2>&1 | tee configure.log || exit 1
-make -j`nproc` all 2>&1 | tee make.log || exit 1
-make install || exit 1
+make -j`nproc` all                                                                               2>&1 | tee make.log      || exit 1
+make install                                                                                     2>&1 | tee install.log   || exit 1
 
 
 
@@ -157,11 +157,11 @@ cd ..
 
 mkdir gcc-build
 cd gcc-build
-../gcc-${GCC_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --enable-languages=c,c++ | tee configure.log || exit 1
-make -j`nproc` all-gcc 2>&1 | tee make-gcc.log || exit 1
-make install-gcc || exit 1
-make -j`nproc` all-target-libgcc 2>&1 | tee make-libgcc.log || exit 1
-make install-target-libgcc || exit 1
+../gcc-${GCC_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --enable-languages=c,c++ 2>&1 | tee configure.log          || exit 1
+make -j`nproc` all-gcc                                                                         2>&1 | tee make-gcc.log           || exit 1
+make install-gcc                                                                               2>&1 | tee install-gcc.log        || exit 1
+make -j`nproc` all-target-libgcc                                                               2>&1 | tee make-libgcc.log        || exit 1
+make install-target-libgcc                                                                     2>&1 | tee install-target-gcc.log || exit 1
 
 
 
@@ -194,10 +194,9 @@ cd ..
 
 mkdir libvirt-build
 cd libvirt-build
-../libvirt/autogen.sh || exit 1
-../libvirt/configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
-make -j`nproc` all || exit 1
-make install || exit 1
+../libvirt/autogen.sh --system 2>&1 | tee configure.log || exit 1
+make -j`nproc` all             2>&1 | tee make.log      || exit 1
+make install                   2>&1 | tee install.log   || exit 1
 
 systemctl enable libvirtd
 systemctl restart libvirtd
@@ -232,10 +231,9 @@ cd ..
 
 mkdir libvirt-glib-build
 cd libvirt-glib-build
-../libvirt-glib/autogen.sh || exit 1
-../libvirt-glib/configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var || exit 1
-make -j`nproc` all || exit 1
-make install || exit 1
+../libvirt-glib/autogen.sh --system 2>&1 | tee configure.log || exit 1
+make -j`nproc` all                  2>&1 | tee make.log      || exit 1
+make install                        2>&1 | tee install.log   || exit 1
 
 
 
@@ -266,9 +264,9 @@ cd ..
 
 mkdir qemu-build
 cd qemu-build
-../qemu/configure --enable-debug || exit 1
-make -j`nproc` all || exit 1
-make install || exit 1
+../qemu/configure --enable-debug 2>&1 | tee configure.log || exit 1
+make -j`nproc` all               2>&1 | tee make.log      || exit 1
+make install                     2>&1 | tee install.log   || exit 1
 
 
 
@@ -293,7 +291,7 @@ if [ ! -d virt-manager-${VIRT_MANAGER_VERSION} ]; then
 fi
 
 cd virt-manager-${VIRT_MANAGER_VERSION}/
-./setup.py install || exit 1
+./setup.py install 2>&1 | tee install.log || exit 1
 
 
 
@@ -315,10 +313,11 @@ if [ ! -d virt-viewer-${VIRT_VIEWER_VERSION} ]; then
     tar xf virt-viewer-${VIRT_VIEWER_VERSION}.tar.gz
 fi
 
-cd virt-viewer-${VIRT_VIEWER_VERSION}/
-./configure || exit 1
-make -j`nproc` all || exit 1
-make install || exit 1
+mkdir virt-viewer-build
+cd virt-viewer-build
+../virt-viewer-${VIRT_VIEWER_VERSION}/configure 2>&1 | tee configure.log || exit 1
+make -j`nproc` all                              2>&1 | tee make.log      || exit 1
+make install                                    2>&1 | tee install.log   || exit 1
 
 
 
@@ -354,9 +353,9 @@ git pull
 git reset --hard ${OVMF_VERSION}
 git submodule update
 
-source edksetup.sh BaseTools || exit 1
-make -C BaseTools/ || exit 1
-build -a X64 -t GCC5 -b DEBUG -n `nproc` -p OvmfPkg/OvmfPkgX64.dsc || exit 1
+source edksetup.sh BaseTools                                       2>&1 | tee source.log     || exit 1
+make -C BaseTools/                                                 2>&1 | tee base_tools.log || exit 1
+build -a X64 -t GCC5 -b DEBUG -n `nproc` -p OvmfPkg/OvmfPkgX64.dsc 2>&1 | tee build.log      || exit 1
 
 
 
@@ -367,7 +366,7 @@ echo ""
 
 
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
-wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add -
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc      -O- | apt-key add -
 apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib"
 
 apt-get update
