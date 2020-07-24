@@ -94,7 +94,7 @@ sudo virt-install --name ${VM_NAME} \
     --network network=default,model=virtio \
     --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none \
     --serial unix,path=/tmp/qemukvmttyS0 \
-    --boot loader=/usr/local/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF_CODE.fd,loader_ro=yes,loader_type=pflash,nvram_template=/usr/local/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF_VARS.fd \
+    --boot loader=/usr/share/OVMF/OVMF_CODE.fd,loader_ro=yes,loader_type=pflash,nvram_template=/usr/share/OVMF/OVMF_VARS.fd \
     --qemu-commandline="-gdb tcp::1234" \
     --noautoconsole
 

@@ -14,12 +14,12 @@ Console::Console()
 
 void Console::out(const QString &text)
 {
-    sStdout << text << endl;
+    sStdout << text << Qt::endl;
     sStdout.flush();
 }
 
 void Console::err(const QString &text)
 {
-    sStderr << text << endl;
+    sStderr << text << Qt::endl;
     sStderr.flush();
 }
