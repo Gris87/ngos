@@ -1,7 +1,6 @@
 .gitignore
 3rd_party/.gitignore
 3rd_party/fetch_freetype.sh
-3rd_party/fetch_poppler.sh
 3rd_party/Makefile
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
