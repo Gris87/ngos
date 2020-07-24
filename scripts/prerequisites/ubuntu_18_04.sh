@@ -71,6 +71,11 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y build-essential
 apt-get install -y texinfo
+apt-get install -y libgl-dev
+apt-get install -y libudev-dev
+apt-get install -y gdb
+apt-get install -y socat
+apt-get install -y poppler-utils
 
 export PREFIX="/usr/local/x8664elfgcc"
 export TARGET=x86_64-elf
