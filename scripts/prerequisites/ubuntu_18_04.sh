@@ -42,7 +42,15 @@ fi
 
 
 
-USER=`pwd | cut -d / -f 3`
+if [[ ${CURRENT_PATH} != /home/* ]]; then
+    echo "Please run this script under your home directory"
+
+    exit 1
+fi
+
+
+
+USER=`echo "${CURRENT_PATH}" | cut -d / -f 3`
 
 if [ "${USER}" == "" ]; then
     echo "Failed to detect user name"
@@ -71,11 +79,14 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y build-essential
 apt-get install -y texinfo
+apt-get install -y gdb
 apt-get install -y libgl-dev
 apt-get install -y libudev-dev
-apt-get install -y gdb
 apt-get install -y socat
 apt-get install -y poppler-utils
+apt-get install -y npm
+
+npm i markdown-spellcheck -g
 
 export PREFIX="/usr/local/x8664elfgcc"
 export TARGET=x86_64-elf

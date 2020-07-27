@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script helps to install prerequisites on CentOS 7.6
+# This script helps to install prerequisites on CentOS 8.2
 # Author: Maxim Shvecov
-# Usage: sudo ./centos_7_6.sh
+# Usage: sudo ./centos_8_2.sh
 
 
 
@@ -38,8 +38,8 @@ yum install -y redhat-lsb
 
 
 
-if [[ "`lsb_release -rs`" != "7.6.*" ]]; then
-    echo "This script should be called on CentOS 7.6"
+if [[ "`lsb_release -rs`" != "8.2.*" ]]; then
+    echo "This script should be called on CentOS 8.2"
 
     exit 1
 fi
