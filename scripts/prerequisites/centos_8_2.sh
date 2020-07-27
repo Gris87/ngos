@@ -160,6 +160,9 @@ echo ""
 
 yum install -y qemu-kvm qemu-img libvirt libvirt-client virt-install virt-manager virt-viewer
 
+sed -i "s/^#\? \?user *=.*/user = \"${USER}\"/g"   /etc/libvirt/qemu.conf
+sed -i "s/^#\? \?group *=.*/group = \"${USER}\"/g" /etc/libvirt/qemu.conf
+
 systemctl enable libvirtd
 systemctl restart libvirtd
 
