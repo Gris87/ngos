@@ -93,7 +93,8 @@ yum install -y libudev-devel
 yum install -y poppler-utils
 yum install -y npm
 
-npm i markdown-spellcheck -g
+npm install sinon
+npm install markdown-spellcheck -g
 
 export PREFIX="/usr/local/x8664elfgcc"
 export TARGET=x86_64-elf

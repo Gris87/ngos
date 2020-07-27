@@ -86,7 +86,8 @@ apt-get install -y libudev-dev
 apt-get install -y poppler-utils
 apt-get install -y npm
 
-npm i markdown-spellcheck -g
+npm install sinon
+npm install markdown-spellcheck -g
 
 export PREFIX="/usr/local/x8664elfgcc"
 export TARGET=x86_64-elf
