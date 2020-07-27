@@ -15,7 +15,7 @@
 CURRENT_PATH=`pwd`
 BINUTILS_VERSION=2.34
 GCC_VERSION=10.1.0
-VIRTUALBOX_VERSION=6.0
+VIRTUALBOX_VERSION=6.1
 QT_VERSION=5.15.0
 
 
@@ -80,9 +80,9 @@ apt-get upgrade -y
 apt-get install -y build-essential
 apt-get install -y texinfo
 apt-get install -y gdb
+apt-get install -y socat
 apt-get install -y libgl-dev
 apt-get install -y libudev-dev
-apt-get install -y socat
 apt-get install -y poppler-utils
 apt-get install -y npm
 
