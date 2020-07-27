@@ -34,7 +34,7 @@ fi
 
 
 
-if [[ "`lsb_release -rs`" != "19.04" ]]; then
+if [[ `lsb_release -rs` != 19.04 ]]; then
     echo "This script should be called on Ubuntu 19.04"
 
     exit 1

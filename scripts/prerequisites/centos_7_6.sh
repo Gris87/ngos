@@ -38,7 +38,7 @@ yum install -y redhat-lsb
 
 
 
-if [[ "`lsb_release -rs`" != "7.6.*" ]]; then
+if [[ `lsb_release -rs` != 7.6.* ]]; then
     echo "This script should be called on CentOS 7.6"
 
     exit 1

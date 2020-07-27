@@ -38,7 +38,7 @@ yum install -y redhat-lsb
 
 
 
-if [[ "`lsb_release -rs`" != "8.2.*" ]]; then
+if [[ `lsb_release -rs` != 8.2.* ]]; then
     echo "This script should be called on CentOS 8.2"
 
     exit 1
