@@ -88,6 +88,8 @@ yum group install -y "Development Tools"
 yum --enablerepo=PowerTools install -y texinfo
 yum install -y gdb
 yum install -y socat
+yum install -y mesa-libGL-devel
+yum install -y libudev-devel
 yum install -y poppler-utils
 yum install -y npm
 
@@ -155,7 +157,7 @@ echo ""
 
 
 
-yum install -y qemu-kvm qemu-img libvirt virt-install libvirt-client
+yum install -y qemu-kvm qemu-img libvirt libvirt-client virt-install virt-manager virt-viewer
 
 systemctl enable libvirtd
 systemctl restart libvirtd
@@ -227,3 +229,9 @@ echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
 echo ""
 echo -e "\e[32m-------------------- Done --------------------\e[0m"
 echo ""
+
+
+
+echo "Rebooting..."
+sleep 5
+reboot

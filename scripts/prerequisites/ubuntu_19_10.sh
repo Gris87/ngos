@@ -233,3 +233,9 @@ echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
 echo ""
 echo -e "\e[32m-------------------- Done --------------------\e[0m"
 echo ""
+
+
+
+echo "Rebooting..."
+sleep 5
+reboot

@@ -90,11 +90,11 @@ sudo virt-install --name ${VM_NAME} \
     --vcpus 4,sockets=1,cores=2,threads=2 \
     --cpu host \
     --graphics ${DISPLAY_TYPE} \
-    --video=vmvga \
+    --video=vga \
     --network network=default,model=virtio \
     --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none \
     --serial unix,path=/tmp/qemukvmttyS0 \
-    --boot loader=/usr/share/OVMF/OVMF_CODE.fd,loader_ro=yes,loader_type=pflash,nvram_template=/usr/share/OVMF/OVMF_VARS.fd \
+    --boot uefi \
     --qemu-commandline="-gdb tcp::1234" \
     --noautoconsole
 
