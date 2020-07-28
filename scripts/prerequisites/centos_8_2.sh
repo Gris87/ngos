@@ -88,6 +88,7 @@ yum group install -y "Development Tools"
 yum --enablerepo=PowerTools install -y texinfo
 yum install -y gdb
 yum install -y socat
+yum install -y curl
 yum install -y mesa-libGL-devel
 yum install -y libudev-devel
 yum install -y poppler-utils
@@ -179,6 +180,7 @@ wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo
 
 yum --enablerepo=epel install -y dkms
 
+yum groupinstall -y "Development Tools"
 yum install -y kernel-devel
 
 yum install -y VirtualBox-${VIRTUALBOX_VERSION}

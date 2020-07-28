@@ -81,11 +81,13 @@ apt-get install -y build-essential
 apt-get install -y texinfo
 apt-get install -y gdb
 apt-get install -y socat
+apt-get install -y curl
 apt-get install -y libgl-dev
 apt-get install -y libudev-dev
 apt-get install -y poppler-utils
 apt-get install -y npm
 
+ln -s /usr/bin/nodejs /usr/bin/node
 npm install sinon
 npm install markdown-spellcheck -g
 
