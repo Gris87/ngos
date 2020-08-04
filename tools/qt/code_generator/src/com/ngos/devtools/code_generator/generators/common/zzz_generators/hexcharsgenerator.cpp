@@ -7,7 +7,7 @@
 
 
 
-#define FILE_PATH "/src/os/shared/common/src/bits64/hex/generated/hexchars.cpp"
+#define FILE_PATH "/src/os/shared/common/src/com/ngos/shared/common/hex/generated/hexchars.cpp"
 
 
 

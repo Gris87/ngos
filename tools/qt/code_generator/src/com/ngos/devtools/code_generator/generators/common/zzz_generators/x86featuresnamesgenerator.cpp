@@ -7,8 +7,8 @@
 
 
 
-#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/bits64/cpu/x86feature.h"
-#define FILE_PATH          "/src/os/shared/common/src/bits64/cpu/generated/x86featuresnames.cpp"
+#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/com/ngos/shared/common/cpu/x86feature.h"
+#define FILE_PATH          "/src/os/shared/common/src/com/ngos/shared/common/cpu/generated/x86featuresnames.cpp"
 
 
 

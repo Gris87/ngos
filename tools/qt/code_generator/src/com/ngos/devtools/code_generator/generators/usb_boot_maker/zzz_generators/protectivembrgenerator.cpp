@@ -24,12 +24,15 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
     QTemporaryFile tempFile1;
     QTemporaryFile tempFile2;
 
-    tempFile1.open();
-    QString tempFile1Path = tempFile1.fileName();
-    tempFile1.close();
 
+
+    tempFile1.open();
     tempFile2.open();
+
+    QString tempFile1Path = tempFile1.fileName();
     QString tempFile2Path = tempFile2.fileName();
+
+    tempFile1.close();
     tempFile2.close();
 
 

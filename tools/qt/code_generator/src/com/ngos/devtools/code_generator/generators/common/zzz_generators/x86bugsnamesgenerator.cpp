@@ -7,8 +7,8 @@
 
 
 
-#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/bits64/cpu/x86bug.h"
-#define FILE_PATH          "/src/os/shared/common/src/bits64/cpu/generated/x86bugsnames.cpp"
+#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/com/ngos/shared/common/cpu/x86bug.h"
+#define FILE_PATH          "/src/os/shared/common/src/com/ngos/shared/common/cpu/generated/x86bugsnames.cpp"
 
 
 
