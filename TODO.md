@@ -11,7 +11,6 @@ NGOS:
 - Make global GET_UNALIGNED_LE32 and PUT_UNALIGNED_LE32 for all sizes
 - Check for mouse wheel on table widget
 - Convert FLAGS_TO_STRING to template
-- Move include to shared/common
 - Check for log includes: common or early?
 - Check where we can use enumToString and flagToString
 - Replace u64 with i64 where needed

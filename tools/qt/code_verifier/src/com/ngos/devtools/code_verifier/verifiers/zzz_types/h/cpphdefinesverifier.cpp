@@ -45,10 +45,65 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
     }
     else
     {
-        QString parentFolder = path;
+        index = path.indexOf("/shared/");
 
-        do
+        if (index >= 0)
         {
+            index = path.indexOf('/', index + 8);
+
+            if (index < 0)
+            {
+                worker->addError(path, -1, "Failed to get relative path");
+
+                return;
+            }
+
+
+
+            index = path.indexOf('/', index + 1);
+
+            if (index < 0)
+            {
+                worker->addError(path, -1, "Failed to get relative path");
+
+                return;
+            }
+
+
+
+            relativePath = path.mid(index + 1);
+        }
+        else
+        {
+            QString parentFolder = path;
+
+            do
+            {
+                index = parentFolder.lastIndexOf('/');
+
+                if (index < 0)
+                {
+                    worker->addError(path, -1, "Failed to get relative path");
+
+                    return;
+                }
+
+                parentFolder = parentFolder.left(index);
+
+
+
+                if (
+                    QFile::exists(parentFolder + "/../../Makefile")
+                    ||
+                    QDir(parentFolder + "/../../").entryList(QStringList() << "*.pro", QDir::Files).length() > 0
+                   )
+                {
+                    break;
+                }
+            } while(true);
+
+
+
             index = parentFolder.lastIndexOf('/');
 
             if (index < 0)
@@ -58,32 +113,8 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
                 return;
             }
 
-            parentFolder = parentFolder.left(index);
-
-
-
-            if (
-                QFile::exists(parentFolder + "/Makefile")
-                ||
-                QDir(parentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() // QDir(parentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() > 0
-               )
-            {
-                break;
-            }
-        } while(true);
-
-
-
-        index = parentFolder.lastIndexOf('/');
-
-        if (index < 0)
-        {
-            worker->addError(path, -1, "Failed to get relative path");
-
-            return;
+            relativePath = path.mid(index + 1);
         }
-
-        relativePath = path.mid(index + 1);
     }
 
 

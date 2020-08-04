@@ -42,10 +42,65 @@ bool Generator::save(const QString &path, const QStringList &lines)
         }
         else
         {
-            QString parentFolder = path;
+            index = path.indexOf("/shared/");
 
-            do
+            if (index >= 0)
             {
+                index = path.indexOf('/', index + 8);
+
+                if (index < 0)
+                {
+                    Console::err(QString("Failed to get relative path for \"%1\"").arg(path));
+
+                    return false;
+                }
+
+
+
+                index = path.indexOf('/', index + 1);
+
+                if (index < 0)
+                {
+                    Console::err(QString("Failed to get relative path for \"%1\"").arg(path));
+
+                    return false;
+                }
+
+
+
+                relativePath = path.mid(index + 1);
+            }
+            else
+            {
+                QString parentFolder = path;
+
+                do
+                {
+                    index = parentFolder.lastIndexOf('/');
+
+                    if (index < 0)
+                    {
+                        Console::err(QString("Failed to get relative path for \"%1\"").arg(path));
+
+                        return false;
+                    }
+
+                    parentFolder = parentFolder.left(index);
+
+
+
+                    if (
+                        QFile::exists(parentFolder + "/../../Makefile")
+                        ||
+                        QDir(parentFolder + "/../../").entryList(QStringList() << "*.pro", QDir::Files).length() > 0
+                       )
+                    {
+                        break;
+                    }
+                } while(true);
+
+
+
                 index = parentFolder.lastIndexOf('/');
 
                 if (index < 0)
@@ -55,32 +110,8 @@ bool Generator::save(const QString &path, const QStringList &lines)
                     return false;
                 }
 
-                parentFolder = parentFolder.left(index);
-
-
-
-                if (
-                    QFile::exists(parentFolder + "/Makefile")
-                    ||
-                    QDir(parentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() // QDir(parentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() > 0
-                   )
-                {
-                    break;
-                }
-            } while(true);
-
-
-
-            index = parentFolder.lastIndexOf('/');
-
-            if (index < 0)
-            {
-                Console::err(QString("Failed to get relative path for \"%1\"").arg(path));
-
-                return false;
+                relativePath = path.mid(index + 1);
             }
-
-            relativePath = path.mid(index + 1);
         }
 
 
