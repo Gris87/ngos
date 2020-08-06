@@ -79,7 +79,7 @@ inline const char8* enumToFullString(PciRegister reg) // TEST: NO
 
     static char8 res[27];
 
-    sprintf(res, "0x%02X (%s)", reg, enumToString(reg));
+    sprintf(res, "0x%02X (%s)", (u8)reg, enumToString(reg));
 
     return res;
 }

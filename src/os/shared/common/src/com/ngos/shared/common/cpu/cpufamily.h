@@ -71,7 +71,7 @@ inline const char8* enumToFullString(CpuVendor vendor, CpuFamily family) // TEST
 
     static char8 res[24];
 
-    sprintf(res, "0x%04X (%s)", family, enumToString(vendor, family));
+    sprintf(res, "0x%04X (%s)", (u16)family, enumToString(vendor, family));
 
     return res;
 }

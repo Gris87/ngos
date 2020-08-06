@@ -58,7 +58,7 @@ inline const char8* enumToFullString(UefiEventType type) // TEST: NO
 
     static char8 res[43];
 
-    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
 
     return res;
 }

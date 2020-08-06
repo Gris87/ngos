@@ -14,7 +14,7 @@
 
 
 
-enum class DocsVerificationFileType: quint64 // Ignore CppEnumVerifier
+enum class DocsVerificationFileType: quint64
 {
     NONE = 0,
     TEXT = (1ULL << 0),

@@ -58,7 +58,7 @@ inline const char8* flagToFullString(DmiMemoryDeviceOperatingModeCapabilityFlag 
 
     static char8 res[44];
 
-    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%04X (%s)", (dmi_memory_device_operating_mode_capability_flags)flag, flagToString(flag));
 
     return res;
 }

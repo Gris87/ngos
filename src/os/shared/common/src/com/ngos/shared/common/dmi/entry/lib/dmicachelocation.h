@@ -45,7 +45,7 @@ inline const char8* enumToFullString(DmiCacheLocation location) // TEST: NO
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", location, enumToString(location));
+    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));
 
     return res;
 }

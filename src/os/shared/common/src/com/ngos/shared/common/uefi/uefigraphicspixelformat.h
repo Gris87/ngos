@@ -54,7 +54,7 @@ inline const char8* enumToFullString(UefiGraphicsPixelFormat format) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%08X (%s)", format, enumToString(format));
+    sprintf(res, "0x%08X (%s)", (u32)format, enumToString(format));
 
     return res;
 }

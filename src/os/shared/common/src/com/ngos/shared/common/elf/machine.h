@@ -76,7 +76,7 @@ inline const char8* enumToFullString(ElfMachine machine) // TEST: NO
 
     static char8 res[26];
 
-    sprintf(res, "0x%04X (%s)", machine, enumToString(machine));
+    sprintf(res, "0x%04X (%s)", (u16)machine, enumToString(machine));
 
     return res;
 }

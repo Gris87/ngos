@@ -48,7 +48,7 @@ inline const char8* flagToFullString(ThreadInfoFlag flag) // TEST: NO
 
     static char8 res[21];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (thread_info_flags)flag, flagToString(flag));
 
     return res;
 }

@@ -50,7 +50,7 @@ inline const char8* flagToFullString(UefiAbsolutePointerStateActiveButtonFlag fl
 
     static char8 res[30];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (uefi_absolute_pointer_state_active_button_flags)flag, flagToString(flag));
 
     return res;
 }

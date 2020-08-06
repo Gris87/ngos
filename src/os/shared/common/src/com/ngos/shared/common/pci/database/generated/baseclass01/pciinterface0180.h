@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciInterface0180 interface0180) // TEST: NO
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", interface0180, enumToString(interface0180));
+    sprintf(res, "0x%02X (%s)", (u8)interface0180, enumToString(interface0180));
 
     return res;
 }

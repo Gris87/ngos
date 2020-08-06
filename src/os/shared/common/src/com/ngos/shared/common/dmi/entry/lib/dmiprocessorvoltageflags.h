@@ -54,7 +54,7 @@ inline const char8* flagToFullString(DmiProcessorVoltageFlag flag) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (dmi_processor_voltage_flags)flag, flagToString(flag));
 
     return res;
 }

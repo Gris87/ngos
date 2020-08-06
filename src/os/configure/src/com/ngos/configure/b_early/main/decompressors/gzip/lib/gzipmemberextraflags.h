@@ -57,7 +57,7 @@ inline const char8* flagToFullString(GzipMemberExtraFlag flag) // TEST: NO
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (gzip_member_extra_flags)flag, flagToString(flag));
 
     return res;
 }

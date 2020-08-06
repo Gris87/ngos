@@ -63,7 +63,7 @@ inline const char8* flagToFullString(UefiSimpleNetworkReceiveFilterFlag flag) //
 
     static char8 res[35];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (uefi_simple_network_receive_filter_flags)flag, flagToString(flag));
 
     return res;
 }

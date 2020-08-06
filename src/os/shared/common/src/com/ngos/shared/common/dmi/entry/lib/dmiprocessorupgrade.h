@@ -161,7 +161,7 @@ inline const char8* enumToFullString(DmiProcessorUpgrade upgrade) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", upgrade, enumToString(upgrade));
+    sprintf(res, "0x%02X (%s)", (u8)upgrade, enumToString(upgrade));
 
     return res;
 }

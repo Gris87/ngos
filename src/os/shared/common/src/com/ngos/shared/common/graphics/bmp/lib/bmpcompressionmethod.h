@@ -59,7 +59,7 @@ inline const char8* enumToFullString(BmpCompressionMethod method) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%08X (%s)", method, enumToString(method));
+    sprintf(res, "0x%08X (%s)", (u32)method, enumToString(method));
 
     return res;
 }

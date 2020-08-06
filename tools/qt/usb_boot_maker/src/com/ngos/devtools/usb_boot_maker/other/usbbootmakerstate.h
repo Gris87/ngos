@@ -10,7 +10,7 @@
 
 
 
-enum class UsbBootMakerState: quint8 // Ignore CppEnumVerifier
+enum class UsbBootMakerState: quint8
 {
     INITIAL            = 0,
     GET_LATEST_VERSION = 1,

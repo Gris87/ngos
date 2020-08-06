@@ -47,7 +47,7 @@ inline const char8* enumToFullString(DmiCacheOperationalMode mode) // TEST: NO
 
     static char8 res[34];
 
-    sprintf(res, "0x%02X (%s)", mode, enumToString(mode));
+    sprintf(res, "0x%02X (%s)", (u8)mode, enumToString(mode));
 
     return res;
 }

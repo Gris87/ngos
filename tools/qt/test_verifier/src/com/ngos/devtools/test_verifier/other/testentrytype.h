@@ -10,7 +10,7 @@
 
 
 
-enum class TestEntryType: quint8 // Ignore CppEnumVerifier
+enum class TestEntryType: quint8
 {
     NONE              = 0,
     INTERNAL_FUNCTION = 1,

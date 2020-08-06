@@ -52,7 +52,7 @@ inline const char8* flagToFullString(UefiProcessorInformationStatusFlag flag) //
 
     static char8 res[27];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (uefi_processor_information_status_flags)flag, flagToString(flag));
 
     return res;
 }

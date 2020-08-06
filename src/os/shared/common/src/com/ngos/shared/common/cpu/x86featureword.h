@@ -73,7 +73,7 @@ inline const char8* enumToFullString(x86FeatureWord word) // TEST: NO
 
     static char8 res[28];
 
-    sprintf(res, "0x%02X (%s)", word, enumToString(word));
+    sprintf(res, "0x%02X (%s)", (u8)word, enumToString(word));
 
     return res;
 }

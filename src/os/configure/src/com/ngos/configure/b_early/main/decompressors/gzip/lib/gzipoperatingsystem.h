@@ -74,7 +74,7 @@ inline const char8* enumToFullString(GzipOperatingSystem system) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", system, enumToString(system));
+    sprintf(res, "0x%02X (%s)", (u8)system, enumToString(system));
 
     return res;
 }

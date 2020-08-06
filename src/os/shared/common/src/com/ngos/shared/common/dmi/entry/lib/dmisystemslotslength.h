@@ -53,7 +53,7 @@ inline const char8* enumToFullString(DmiSystemSlotsLength length) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", length, enumToString(length));
+    sprintf(res, "0x%02X (%s)", (u8)length, enumToString(length));
 
     return res;
 }

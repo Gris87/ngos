@@ -49,7 +49,7 @@ inline const char8* enumToFullString(VolumeType type) // TEST: NO
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

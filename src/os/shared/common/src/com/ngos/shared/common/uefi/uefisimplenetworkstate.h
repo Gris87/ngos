@@ -52,7 +52,7 @@ inline const char8* enumToFullString(UefiSimpleNetworkState state) // TEST: NO
 
     static char8 res[25];
 
-    sprintf(res, "0x%08X (%s)", state, enumToString(state));
+    sprintf(res, "0x%08X (%s)", (u32)state, enumToString(state));
 
     return res;
 }

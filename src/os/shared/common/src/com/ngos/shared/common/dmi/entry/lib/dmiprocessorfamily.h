@@ -445,7 +445,7 @@ inline const char8* enumToFullString(DmiProcessorFamily family) // TEST: NO
 
     static char8 res[46];
 
-    sprintf(res, "0x%02X (%s)", family, enumToString(family));
+    sprintf(res, "0x%02X (%s)", (u8)family, enumToString(family));
 
     return res;
 }

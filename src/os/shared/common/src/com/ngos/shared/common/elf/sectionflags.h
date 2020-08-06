@@ -82,7 +82,7 @@ inline const char8* flagToFullString(ElfSectionFlag flag) // TEST: NO
 
     static char8 res[38];
 
-    sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%016lX (%s)", (elf_section_flags)flag, flagToString(flag));
 
     return res;
 }

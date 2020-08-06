@@ -50,7 +50,7 @@ inline const char8* flagToFullString(UefiAbsolutePointerModeAttributeFlag flag) 
 
     static char8 res[39];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (uefi_absolute_pointer_mode_attribute_flags)flag, flagToString(flag));
 
     return res;
 }

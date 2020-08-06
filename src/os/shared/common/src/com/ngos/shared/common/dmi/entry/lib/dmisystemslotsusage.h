@@ -51,7 +51,7 @@ inline const char8* enumToFullString(DmiSystemSlotsUsage usage) // TEST: NO
 
     static char8 res[19];
 
-    sprintf(res, "0x%02X (%s)", usage, enumToString(usage));
+    sprintf(res, "0x%02X (%s)", (u8)usage, enumToString(usage));
 
     return res;
 }

@@ -10,7 +10,7 @@
 
 
 
-enum class UsbSpeed: quint8 // Ignore CppEnumVerifier
+enum class UsbSpeed: quint8
 {
     NONE           = 0,
     LOW            = 1,

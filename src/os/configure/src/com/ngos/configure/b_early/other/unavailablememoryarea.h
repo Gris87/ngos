@@ -53,7 +53,7 @@ inline const char8* enumToFullString(UnavailableMemoryArea area) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", area, enumToString(area));
+    sprintf(res, "0x%02X (%s)", (u8)area, enumToString(area));
 
     return res;
 }

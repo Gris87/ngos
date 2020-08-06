@@ -241,7 +241,15 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                                     else
                                     if (enumStandardType == "u64" || enumStandardType == "quint64")
                                     {
-                                        enumTypeFormat       = "0x%016lX";
+                                        if (path.contains("tools/qt/"))
+                                        {
+                                            enumTypeFormat = "0x%016llX";
+                                        }
+                                        else
+                                        {
+                                            enumTypeFormat = "0x%016lX";
+                                        }
+
                                         enumTypeFormatLength = 18;
                                     }
                                     else
@@ -320,7 +328,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLength, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" // 4 == space, brackets and zero terminator
                         toStringFunction += '\n';
-                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", flag, flagToString(flag));\n";
+                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ")flag, flagToString(flag));\n";
                         toStringFunction += '\n';
                         toStringFunction += "    return res;\n";
                         toStringFunction += "}\n";
@@ -411,7 +419,15 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         else
                         if (enumType == "u64" || enumType == "quint64")
                         {
-                            enumTypeFormat       = "0x%016lX";
+                            if (path.contains("tools/qt/"))
+                            {
+                                enumTypeFormat = "0x%016llX";
+                            }
+                            else
+                            {
+                                enumTypeFormat = "0x%016lX";
+                            }
+
                             enumTypeFormatLength = 18;
                         }
                         else
@@ -499,7 +515,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLength, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" , 4 == space, brackets and zero terminator
                         toStringFunction += '\n';
-                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", " + variableName + ", enumToString(" + variableName + "));\n";
+                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ')' + variableName + ", enumToString(" + variableName + "));\n";
                         toStringFunction += '\n';
                         toStringFunction += "    return res;\n";
                         toStringFunction += "}\n";

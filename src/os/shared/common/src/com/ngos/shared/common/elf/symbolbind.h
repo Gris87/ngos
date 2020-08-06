@@ -57,7 +57,7 @@ inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", bind, enumToString(bind));
+    sprintf(res, "0x%02X (%s)", (u8)bind, enumToString(bind));
 
     return res;
 }

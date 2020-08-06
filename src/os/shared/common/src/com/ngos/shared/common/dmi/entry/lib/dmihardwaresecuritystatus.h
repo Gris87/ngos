@@ -47,7 +47,7 @@ inline const char8* enumToFullString(DmiHardwareSecurityStatus status) // TEST: 
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", status, enumToString(status));
+    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
 
     return res;
 }

@@ -71,7 +71,7 @@ inline const char8* enumToFullString(CpuFamily family, AmdCpuModel model) // TES
 
     static char8 res[32];
 
-    sprintf(res, "0x%02X (%s)", model, enumToString(family, model));
+    sprintf(res, "0x%02X (%s)", (u8)model, enumToString(family, model));
 
     return res;
 }

@@ -49,7 +49,7 @@ inline const char8* enumToFullString(UefiPciIoProtocolAttributeOperation operati
 
     static char8 res[23];
 
-    sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
+    sprintf(res, "0x%08X (%s)", (u32)operation, enumToString(operation));
 
     return res;
 }

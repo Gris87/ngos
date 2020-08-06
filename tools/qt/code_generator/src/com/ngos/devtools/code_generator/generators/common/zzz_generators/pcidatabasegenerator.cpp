@@ -191,7 +191,7 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
 
     lines.append("    static char8 res[21];");
     lines.append("");
-    lines.append("    sprintf(res, \"0x%02X (%s)\", baseClass, enumToString(baseClass));");
+    lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)baseClass, enumToString(baseClass));");
     lines.append("");
     lines.append("    return res;");
     lines.append("}"); // Ignore CppSingleCharVerifier
@@ -329,7 +329,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
 
     lines.append("    static char8 res[20];");
     lines.append("");
-    lines.append(QString("    sprintf(res, \"%2 (%s)\", class%1, enumToString(class%1));").arg(baseClassIdStr, 2, QChar('0')).arg("0x%02X"));
+    lines.append(QString("    sprintf(res, \"%2 (%s)\", (u8)class%1, enumToString(class%1));").arg(baseClassIdStr, 2, QChar('0')).arg("0x%02X"));
     lines.append("");
     lines.append("    return res;");
     lines.append("}"); // Ignore CppSingleCharVerifier
@@ -454,7 +454,7 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint16 b
 
     lines.append("    static char8 res[20];");
     lines.append("");
-    lines.append(QString("    sprintf(res, \"%3 (%s)\", interface%1%2, enumToString(interface%1%2));").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg("0x%02X"));
+    lines.append(QString("    sprintf(res, \"%3 (%s)\", (u8)interface%1%2, enumToString(interface%1%2));").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg("0x%02X"));
     lines.append("");
     lines.append("    return res;");
     lines.append("}"); // Ignore CppSingleCharVerifier

@@ -50,7 +50,7 @@ inline const char8* enumToFullString(UefiLocateSearchType type) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
 
     return res;
 }

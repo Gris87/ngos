@@ -67,7 +67,7 @@ inline const char8* enumToFullString(DmiBaseboardType type) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%02X (%s)", type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

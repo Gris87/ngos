@@ -71,7 +71,7 @@ inline const char8* enumToFullString(DmiTemperatureProbeLocation location) // TE
 
     static char8 res[32];
 
-    sprintf(res, "0x%02X (%s)", location, enumToString(location));
+    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));
 
     return res;
 }

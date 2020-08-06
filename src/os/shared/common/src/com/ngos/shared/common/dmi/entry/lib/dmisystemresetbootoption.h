@@ -47,7 +47,7 @@ inline const char8* enumToFullString(DmiSystemResetBootOption option) // TEST: N
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", option, enumToString(option));
+    sprintf(res, "0x%02X (%s)", (u8)option, enumToString(option));
 
     return res;
 }

@@ -54,7 +54,7 @@ inline const char8* flagToFullString(MemoryBlockRegionFlag flag) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (memory_block_region_flags)flag, flagToString(flag));
 
     return res;
 }

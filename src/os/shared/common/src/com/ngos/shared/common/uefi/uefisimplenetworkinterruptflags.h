@@ -61,7 +61,7 @@ inline const char8* flagToFullString(UefiSimpleNetworkInterruptFlag flag) // TES
 
     static char8 res[22];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (uefi_simple_network_interrupt_flags)flag, flagToString(flag));
 
     return res;
 }

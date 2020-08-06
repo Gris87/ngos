@@ -94,7 +94,7 @@ inline const char8* enumToFullString(UefiInputKeyScanCode code) // TEST: NO
 
     static char8 res[19];
 
-    sprintf(res, "0x%04X (%s)", code, enumToString(code));
+    sprintf(res, "0x%04X (%s)", (u16)code, enumToString(code));
 
     return res;
 }

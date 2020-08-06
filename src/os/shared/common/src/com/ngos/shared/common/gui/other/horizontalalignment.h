@@ -47,7 +47,7 @@ inline const char8* enumToFullString(HorizontalAlignment alignment) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", alignment, enumToString(alignment));
+    sprintf(res, "0x%02X (%s)", (u8)alignment, enumToString(alignment));
 
     return res;
 }

@@ -49,7 +49,7 @@ inline const char8* enumToFullString(DmiBits64MemoryErrorInformationErrorGranula
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", granularity, enumToString(granularity));
+    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
 
     return res;
 }

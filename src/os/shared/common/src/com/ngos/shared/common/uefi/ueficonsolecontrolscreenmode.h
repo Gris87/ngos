@@ -43,7 +43,7 @@ inline const char8* enumToFullString(UefiConsoleControlScreenMode mode) // TEST:
 
     static char8 res[22];
 
-    sprintf(res, "0x%08X (%s)", mode, enumToString(mode));
+    sprintf(res, "0x%08X (%s)", (u32)mode, enumToString(mode));
 
     return res;
 }

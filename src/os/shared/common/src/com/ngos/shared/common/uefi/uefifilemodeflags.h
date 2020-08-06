@@ -52,7 +52,7 @@ inline const char8* flagToFullString(UefiFileModeFlag flag) // TEST: NO
 
     static char8 res[29];
 
-    sprintf(res, "0x%016lX (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%016lX (%s)", (uefi_file_mode_flags)flag, flagToString(flag));
 
     return res;
 }

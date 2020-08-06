@@ -52,7 +52,7 @@ inline const char8* enumToFullString(UefiTimerDelay delay) // TEST: NO
 
     static char8 res[22];
 
-    sprintf(res, "0x%08X (%s)", delay, enumToString(delay));
+    sprintf(res, "0x%08X (%s)", (u32)delay, enumToString(delay));
 
     return res;
 }

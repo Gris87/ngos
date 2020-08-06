@@ -43,7 +43,7 @@ inline const char8* enumToFullString(DmiStoredUuid uuid) // TEST: NO
 
     static char8 res[19];
 
-    sprintf(res, "0x%02X (%s)", uuid, enumToString(uuid));
+    sprintf(res, "0x%02X (%s)", (u8)uuid, enumToString(uuid));
 
     return res;
 }

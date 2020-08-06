@@ -53,7 +53,7 @@ inline const char8* enumToFullString(DmiSystemPowerSupplyInputVoltageRangeSwitch
 
     static char8 res[22];
 
-    sprintf(res, "0x%02X (%s)", rangeSwitch, enumToString(rangeSwitch));
+    sprintf(res, "0x%02X (%s)", (u8)rangeSwitch, enumToString(rangeSwitch));
 
     return res;
 }

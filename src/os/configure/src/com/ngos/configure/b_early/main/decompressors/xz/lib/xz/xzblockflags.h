@@ -18,13 +18,13 @@
 
 
 
-#define NUMBER_OF_FILTERS_MASK 0x03
+#define NUMBER_OF_FILTERS_MASK 0x03 // TODO: replace with union
 
 
 
 typedef u8 xz_block_flags;
 
-enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier
+enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier // TODO: remove ignore after fixing union
 {
     NONE                      = 0,
     COMPRESSED_SIZE_PRESENT   = (1ULL << 6),
@@ -61,7 +61,7 @@ inline const char8* flagToFullString(XzBlockFlag flag) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (u8)flag, flagToString(flag));
 
     return res;
 }

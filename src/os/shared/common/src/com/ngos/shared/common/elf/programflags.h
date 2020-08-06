@@ -59,7 +59,7 @@ inline const char8* flagToFullString(ElfProgramFlag flag) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (elf_program_flags)flag, flagToString(flag));
 
     return res;
 }

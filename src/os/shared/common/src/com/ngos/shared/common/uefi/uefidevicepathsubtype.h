@@ -224,7 +224,7 @@ inline const char8* enumToFullString(UefiDevicePathType type, UefiDevicePathSubT
 
     static char8 res[38];
 
-    sprintf(res, "0x%02X (%s)", subtype, enumToString(type, subtype));
+    sprintf(res, "0x%02X (%s)", (u8)subtype, enumToString(type, subtype));
 
     return res;
 }

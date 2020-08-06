@@ -55,7 +55,7 @@ inline const char8* enumToFullString(WidgetState state) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", state, enumToString(state));
+    sprintf(res, "0x%02X (%s)", (u8)state, enumToString(state));
 
     return res;
 }

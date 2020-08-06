@@ -47,7 +47,7 @@ inline const char8* enumToFullString(ZLibCompressionLevel level) // TEST: NO
 
     static char8 res[27];
 
-    sprintf(res, "0x%02X (%s)", level, enumToString(level));
+    sprintf(res, "0x%02X (%s)", (u8)level, enumToString(level));
 
     return res;
 }

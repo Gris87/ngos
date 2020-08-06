@@ -80,7 +80,7 @@ inline const char8* enumToFullString(ElfOsAbi abi) // TEST: NO
 
     static char8 res[22];
 
-    sprintf(res, "0x%02X (%s)", abi, enumToString(abi));
+    sprintf(res, "0x%02X (%s)", (u8)abi, enumToString(abi));
 
     return res;
 }

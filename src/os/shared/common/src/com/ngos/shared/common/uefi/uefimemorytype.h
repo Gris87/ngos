@@ -76,7 +76,7 @@ inline const char8* enumToFullString(UefiMemoryType type) // TEST: NO
 
     static char8 res[41];
 
-    sprintf(res, "0x%08X (%s)", type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
 
     return res;
 }

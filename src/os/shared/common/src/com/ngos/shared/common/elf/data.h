@@ -50,7 +50,7 @@ inline const char8* enumToFullString(ElfData data) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", data, enumToString(data));
+    sprintf(res, "0x%02X (%s)", (u8)data, enumToString(data));
 
     return res;
 }

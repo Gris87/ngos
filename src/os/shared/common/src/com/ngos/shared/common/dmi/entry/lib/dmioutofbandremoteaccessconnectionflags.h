@@ -52,7 +52,7 @@ inline const char8* flagToFullString(DmiOutOfBandRemoteAccessConnectionFlag flag
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (dmi_out_of_band_remote_access_connection_flags)flag, flagToString(flag));
 
     return res;
 }

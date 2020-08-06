@@ -63,7 +63,7 @@ inline const char8* flagToFullString(XzStreamFlag flag) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%04X (%s)", (xz_stream_flags)flag, flagToString(flag));
 
     return res;
 }

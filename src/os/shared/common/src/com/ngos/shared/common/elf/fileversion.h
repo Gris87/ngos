@@ -48,7 +48,7 @@ inline const char8* enumToFullString(ElfFileVersion version) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", version, enumToString(version));
+    sprintf(res, "0x%02X (%s)", (u8)version, enumToString(version));
 
     return res;
 }

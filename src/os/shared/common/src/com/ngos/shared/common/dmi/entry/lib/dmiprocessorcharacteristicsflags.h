@@ -64,7 +64,7 @@ inline const char8* flagToFullString(DmiProcessorCharacteristicsFlag flag) // TE
 
     static char8 res[35];
 
-    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%04X (%s)", (dmi_processor_characteristics_flags)flag, flagToString(flag));
 
     return res;
 }

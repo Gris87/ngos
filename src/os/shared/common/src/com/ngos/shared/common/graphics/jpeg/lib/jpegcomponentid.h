@@ -51,7 +51,7 @@ inline const char8* enumToFullString(JpegComponentId id) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", id, enumToString(id));
+    sprintf(res, "0x%02X (%s)", (u8)id, enumToString(id));
 
     return res;
 }

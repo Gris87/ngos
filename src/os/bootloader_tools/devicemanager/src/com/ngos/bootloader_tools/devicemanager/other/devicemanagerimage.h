@@ -152,7 +152,7 @@ inline const char8* enumToFullString(DeviceManagerImage image) // TEST: NO
 
     static char8 res[40];
 
-    sprintf(res, "0x%02X (%s)", image, enumToString(image));
+    sprintf(res, "0x%02X (%s)", (u8)image, enumToString(image));
 
     return res;
 }

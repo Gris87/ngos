@@ -47,7 +47,7 @@ inline const char8* enumToFullString(TaskState state) // TEST: NO
 
     static char8 res[18];
 
-    sprintf(res, "0x%02X (%s)", state, enumToString(state));
+    sprintf(res, "0x%02X (%s)", (u8)state, enumToString(state));
 
     return res;
 }

@@ -47,7 +47,7 @@ inline const char8* enumToFullString(PngRenderingIntent intent) // TEST: NO
 
     static char8 res[29];
 
-    sprintf(res, "0x%02X (%s)", intent, enumToString(intent));
+    sprintf(res, "0x%02X (%s)", (u8)intent, enumToString(intent));
 
     return res;
 }

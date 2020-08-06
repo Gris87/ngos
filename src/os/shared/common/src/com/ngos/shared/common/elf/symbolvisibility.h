@@ -58,7 +58,7 @@ inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 
     static char8 res[17];
 
-    sprintf(res, "0x%02X (%s)", visibility, enumToString(visibility));
+    sprintf(res, "0x%02X (%s)", (u8)visibility, enumToString(visibility));
 
     return res;
 }

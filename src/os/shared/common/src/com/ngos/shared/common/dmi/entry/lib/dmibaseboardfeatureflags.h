@@ -58,7 +58,7 @@ inline const char8* flagToFullString(DmiBaseboardFeatureFlag flag) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (dmi_baseboard_feature_flags)flag, flagToString(flag));
 
     return res;
 }

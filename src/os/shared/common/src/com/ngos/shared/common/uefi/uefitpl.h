@@ -54,7 +54,7 @@ inline const char8* enumToFullString(UefiTpl tpl) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%016lX (%s)", tpl, enumToString(tpl));
+    sprintf(res, "0x%016lX (%s)", (u64)tpl, enumToString(tpl));
 
     return res;
 }

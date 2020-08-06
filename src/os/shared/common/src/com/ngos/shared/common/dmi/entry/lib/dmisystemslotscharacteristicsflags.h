@@ -72,7 +72,7 @@ inline const char8* flagToFullString(DmiSystemSlotsCharacteristicsFlag flag) // 
 
     static char8 res[37];
 
-    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%04X (%s)", (dmi_system_slots_characteristics_flags)flag, flagToString(flag));
 
     return res;
 }

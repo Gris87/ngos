@@ -50,7 +50,7 @@ inline const char8* flagToFullString(DmiBiosLanguageFlag flag) // TEST: NO
 
     static char8 res[26];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (dmi_bios_language_flags)flag, flagToString(flag));
 
     return res;
 }

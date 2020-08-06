@@ -57,7 +57,7 @@ inline const char8* enumToFullString(DmiPortableBatteryDeviceChemistry chemistry
 
     static char8 res[28];
 
-    sprintf(res, "0x%02X (%s)", chemistry, enumToString(chemistry));
+    sprintf(res, "0x%02X (%s)", (u8)chemistry, enumToString(chemistry));
 
     return res;
 }

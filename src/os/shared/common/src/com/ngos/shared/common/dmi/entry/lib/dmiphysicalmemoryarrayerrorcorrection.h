@@ -55,7 +55,7 @@ inline const char8* enumToFullString(DmiPhysicalMemoryArrayErrorCorrection corre
 
     static char8 res[22];
 
-    sprintf(res, "0x%02X (%s)", correction, enumToString(correction));
+    sprintf(res, "0x%02X (%s)", (u8)correction, enumToString(correction));
 
     return res;
 }

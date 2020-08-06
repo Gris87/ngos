@@ -55,7 +55,7 @@ inline const char8* enumToFullString(DmiPhysicalMemoryArrayUse use) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", use, enumToString(use));
+    sprintf(res, "0x%02X (%s)", (u8)use, enumToString(use));
 
     return res;
 }

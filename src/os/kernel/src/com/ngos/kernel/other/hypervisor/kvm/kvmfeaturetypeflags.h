@@ -73,7 +73,7 @@ inline const char8* flagToFullString(KvmFeatureTypeFlag flag) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%08X (%s)", (kvm_feature_type_flags)flag, flagToString(flag));
 
     return res;
 }

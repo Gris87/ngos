@@ -62,7 +62,7 @@ inline const char8* flagToFullString(DmiCacheSramTypeFlag flag) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%04X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%04X (%s)", (dmi_cache_sram_type_flags)flag, flagToString(flag));
 
     return res;
 }

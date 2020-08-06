@@ -73,7 +73,7 @@ inline const char8* enumToFullString(DmiMemoryDeviceFormFactor factor) // TEST: 
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", factor, enumToString(factor));
+    sprintf(res, "0x%02X (%s)", (u8)factor, enumToString(factor));
 
     return res;
 }

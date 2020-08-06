@@ -54,7 +54,7 @@ inline const char8* enumToFullString(UefiGraphicsOutputBltOperation operation) /
 
     static char8 res[33];
 
-    sprintf(res, "0x%08X (%s)", operation, enumToString(operation));
+    sprintf(res, "0x%08X (%s)", (u32)operation, enumToString(operation));
 
     return res;
 }

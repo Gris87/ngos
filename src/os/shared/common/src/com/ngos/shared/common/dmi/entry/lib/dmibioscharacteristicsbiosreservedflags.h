@@ -64,7 +64,7 @@ inline const char8* flagToFullString(DmiBiosCharacteristicsBiosReservedFlag flag
 
     static char8 res[38];
 
-    sprintf(res, "0x%02X (%s)", flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (dmi_bios_characteristics_bios_reserved_flags)flag, flagToString(flag));
 
     return res;
 }

@@ -69,7 +69,7 @@ inline const char8* enumToFullString(DmiSystemSlotsDataBusWidth width) // TEST: 
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", width, enumToString(width));
+    sprintf(res, "0x%02X (%s)", (u8)width, enumToString(width));
 
     return res;
 }

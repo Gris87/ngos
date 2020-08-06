@@ -63,7 +63,7 @@ inline const char8* enumToFullString(KvmFeature feature) // TEST: NO
 
     static char8 res[26];
 
-    sprintf(res, "0x%02X (%s)", feature, enumToString(feature));
+    sprintf(res, "0x%02X (%s)", (u8)feature, enumToString(feature));
 
     return res;
 }

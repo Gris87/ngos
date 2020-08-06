@@ -69,7 +69,7 @@ inline const char8* enumToFullString(DmiCacheAssociativity associativity) // TES
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", associativity, enumToString(associativity));
+    sprintf(res, "0x%02X (%s)", (u8)associativity, enumToString(associativity));
 
     return res;
 }

@@ -62,7 +62,7 @@ inline const char8* enumToFullString(Lzma2Sequence sequence) // TEST: NO
 
     static char8 res[26];
 
-    sprintf(res, "0x%02X (%s)", sequence, enumToString(sequence));
+    sprintf(res, "0x%02X (%s)", (u8)sequence, enumToString(sequence));
 
     return res;
 }

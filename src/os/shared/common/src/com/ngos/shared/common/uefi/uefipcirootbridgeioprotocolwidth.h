@@ -63,7 +63,7 @@ inline const char8* enumToFullString(UefiPciRootBridgeIoProtocolWidth width) // 
 
     static char8 res[25];
 
-    sprintf(res, "0x%08X (%s)", width, enumToString(width));
+    sprintf(res, "0x%08X (%s)", (u32)width, enumToString(width));
 
     return res;
 }

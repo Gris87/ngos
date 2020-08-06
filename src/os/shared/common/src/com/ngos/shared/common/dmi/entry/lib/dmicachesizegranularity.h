@@ -43,7 +43,7 @@ inline const char8* enumToFullString(DmiCacheSizeGranularity granularity) // TES
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", granularity, enumToString(granularity));
+    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
 
     return res;
 }

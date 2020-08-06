@@ -53,7 +53,7 @@
 
 
 
-enum class CodeVerificationFileType: quint64 // Ignore CppEnumVerifier
+enum class CodeVerificationFileType: quint64
 {
     NONE     = 0,
     TEXT     = (1ULL << 0),

@@ -55,7 +55,7 @@ inline const char8* enumToFullString(DmiIdentity identity) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", identity, enumToString(identity));
+    sprintf(res, "0x%02X (%s)", (u8)identity, enumToString(identity));
 
     return res;
 }

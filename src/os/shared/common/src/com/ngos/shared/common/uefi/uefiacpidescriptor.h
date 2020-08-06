@@ -78,7 +78,7 @@ inline const char8* enumToFullString(UefiAcpiDescriptor descriptor) // TEST: NO
 
     static char8 res[34];
 
-    sprintf(res, "0x%02X (%s)", descriptor, enumToString(descriptor));
+    sprintf(res, "0x%02X (%s)", (u8)descriptor, enumToString(descriptor));
 
     return res;
 }

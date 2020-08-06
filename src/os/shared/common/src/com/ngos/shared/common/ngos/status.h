@@ -64,7 +64,7 @@ inline const char8* enumToFullString(NgosStatus status) // TEST: NO
 
     static char8 res[42];
 
-    sprintf(res, "0x%016lX (%s)", status, enumToString(status));
+    sprintf(res, "0x%016lX (%s)", (u64)status, enumToString(status));
 
     return res;
 }

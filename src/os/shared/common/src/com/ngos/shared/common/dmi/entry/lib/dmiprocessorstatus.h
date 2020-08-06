@@ -51,7 +51,7 @@ inline const char8* enumToFullString(DmiProcessorStatus status) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", status, enumToString(status));
+    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
 
     return res;
 }

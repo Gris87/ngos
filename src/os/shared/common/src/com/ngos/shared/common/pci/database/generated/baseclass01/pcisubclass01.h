@@ -57,7 +57,7 @@ inline const char8* enumToFullString(PciSubClass01 class01) // TEST: NO
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", class01, enumToString(class01));
+    sprintf(res, "0x%02X (%s)", (u8)class01, enumToString(class01));
 
     return res;
 }
