@@ -65,6 +65,7 @@ SOURCES += \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/pcidatabasegenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86featuresnamesgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/configure/configuregenerator.cpp \
@@ -82,6 +83,7 @@ HEADERS += \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/pcidatabasegenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86featuresnamesgenerator.h \
     src/com/ngos/devtools/code_generator/generators/configure/configuregenerator.h \

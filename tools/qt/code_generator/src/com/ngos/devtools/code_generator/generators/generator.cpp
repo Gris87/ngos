@@ -7,9 +7,18 @@
 
 
 
+qint64 Generator::sNumberOfGeneratedFiles;
+
+
+
 Generator::Generator()
 {
     // Nothing
+}
+
+qint64 Generator::getNumberOfGeneratedFiles()
+{
+    return sNumberOfGeneratedFiles;
 }
 
 void Generator::addOneBlankLine(QStringList &lines)
@@ -201,10 +210,12 @@ bool Generator::save(const QString &path, const QByteArray &bytes)
 
 
         Console::out(QString("Generated file: %1").arg(path));
+
+        ++sNumberOfGeneratedFiles;
     }
     else
     {
-        Console::out(QString("Generated file: %1 [up-to-date]").arg(path, -90, QChar(' ')));
+        Console::out(QString("Generated file: %1 [up-to-date]").arg(path, -110, QChar(' ')));
     }
 
 

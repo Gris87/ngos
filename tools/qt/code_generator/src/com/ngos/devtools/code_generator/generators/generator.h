@@ -13,12 +13,17 @@ class Generator
 public:
     Generator(); // TEST: NO
 
+    static qint64 getNumberOfGeneratedFiles();
+
 protected:
     void addOneBlankLine(QStringList &lines); // TEST: NO
     void addThreeBlankLines(QStringList &lines); // TEST: NO
 
     bool save(const QString &path, const QStringList &lines); // TEST: NO
     bool save(const QString &path, const QByteArray &bytes); // TEST: NO
+
+private:
+    static qint64 sNumberOfGeneratedFiles;
 };
 
 

@@ -67,7 +67,7 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     lines.append("NgosStatus initX86BugsNames()");
-    lines.append(QString('{'));
+    lines.append("{"); // Ignore CppSingleCharVerifier
     lines.append("    COMMON_LT((\"\"));");
     addThreeBlankLines(lines);
     // Ignore CppAlignmentVerifier [END]

@@ -60,34 +60,23 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (!AssetsGenerator::generateAll(targetPath))
+    if (
+        !AssetsGenerator::generateAll(targetPath)
+        ||
+        !CommonGenerator::generateAll(targetPath)
+        ||
+        !ConfigureGenerator::generateAll(targetPath)
+        ||
+        !UsbBootMakerGenerator::generateAll(targetPath)
+       )
     {
         return 3;
     }
 
 
 
-    if (!CommonGenerator::generateAll(targetPath))
-    {
-        return 3;
-    }
-
-
-
-    if (!ConfigureGenerator::generateAll(targetPath))
-    {
-        return 3;
-    }
-
-
-
-    if (!UsbBootMakerGenerator::generateAll(targetPath))
-    {
-        return 3;
-    }
-
-
-
+    Console::out("");
+    Console::out(QString("%1 files generated").arg(Generator::getNumberOfGeneratedFiles()));
     Console::out("");
     Console::out(QString("Code generation completed in %1 ms").arg(QDateTime::currentMSecsSinceEpoch() - startTime));
     Console::out("");

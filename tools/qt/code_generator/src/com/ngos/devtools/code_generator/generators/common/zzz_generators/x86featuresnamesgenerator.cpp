@@ -67,7 +67,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
     // Ignore CppAlignmentVerifier [BEGIN]
     lines.append("NgosStatus initX86FeaturesNames()");
-    lines.append(QString('{'));
+    lines.append("{"); // Ignore CppSingleCharVerifier
     lines.append("    COMMON_LT((\"\"));");
     addThreeBlankLines(lines);
     // Ignore CppAlignmentVerifier [END]

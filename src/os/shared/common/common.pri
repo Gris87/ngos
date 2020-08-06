@@ -399,6 +399,18 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/macros.h \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass00/pciinterface0000.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass00/pciinterface0001.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0100.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0102.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0103.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0104.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0106.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0180.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pcisubclass01.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/pcibaseclass.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceindependentregion.h \
     $$PWD/src/com/ngos/shared/common/pci/pciheadertype.h \

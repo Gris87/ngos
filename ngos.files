@@ -1181,6 +1181,18 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/flags.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass00/pciinterface0000.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass00/pciinterface0001.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0100.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0102.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0103.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0104.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0106.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0180.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pcisubclass01.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/pcibaseclass.h
 src/os/shared/common/src/com/ngos/shared/common/pci/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceindependentregion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciheadertype.h
@@ -1688,6 +1700,8 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/z
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.h
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/pcidatabasegenerator.cpp
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/pcidatabasegenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86featuresnamesgenerator.cpp
