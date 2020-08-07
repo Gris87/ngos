@@ -25,13 +25,12 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols()
 
 
 
-    Guid         protocol = UEFI_SIMPLE_NETWORK_PROTOCOL_GUID;
-    u64          size     = 0;
-    uefi_handle *handles  = nullptr;
+    Guid protocol = UEFI_SIMPLE_NETWORK_PROTOCOL_GUID;
+    u64  size     = 0;
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &protocol, 0, &size, handles) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &protocol, 0, &size, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_SIMPLE_NETWORK_PROTOCOL", size));
 

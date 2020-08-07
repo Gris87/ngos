@@ -661,13 +661,12 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-    Guid         blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
-    u64          blockIoSize     = 0;
-    uefi_handle *blockIoHandles  = 0;
+    Guid blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
+    u64  blockIoSize     = 0;
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &blockIoProtocol, 0, &blockIoSize, blockIoHandles) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &blockIoProtocol, 0, &blockIoSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoSize));
 
@@ -806,7 +805,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size)
 
 
 
-    uefi_handle *blockIoHandles = 0;
+    uefi_handle *blockIoHandles = nullptr;
 
 
 

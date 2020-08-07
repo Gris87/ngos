@@ -305,13 +305,12 @@ NgosStatus setupPciIo(BootParams *params)
 
 
 
-    Guid         pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
-    u64          pciIoSize     = 0;
-    uefi_handle *pciIoHandles  = 0;
+    Guid pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
+    u64  pciIoSize     = 0;
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pciIoProtocol, 0, &pciIoSize, pciIoHandles) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pciIoProtocol, 0, &pciIoSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_PCI_IO_PROTOCOL", pciIoSize));
 

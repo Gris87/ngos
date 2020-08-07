@@ -296,13 +296,12 @@ NgosStatus setupGraphics(BootParams *params)
 
 
 
-    Guid         graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-    u64          graphicsSize     = 0;
-    uefi_handle *graphicsHandles  = 0;
+    Guid graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+    u64  graphicsSize     = 0;
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &graphicsProtocol, 0, &graphicsSize, graphicsHandles) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &graphicsProtocol, 0, &graphicsSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsSize));
 

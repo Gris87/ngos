@@ -96,6 +96,7 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
     "images/onboard_sound.png",                     // DeviceManagerImage::ONBOARD_SOUND
     "images/onboard_video.png",                     // DeviceManagerImage::ONBOARD_VIDEO
     "images/out_of_band_remote_access.png",         // DeviceManagerImage::OUT_OF_BAND_REMOTE_ACCESS
+    "images/pci.png",                               // DeviceManagerImage::PCI
     "images/physical_memory_array.png",             // DeviceManagerImage::PHYSICAL_MEMORY_ARRAY
     "images/port_audio.png",                        // DeviceManagerImage::PORT_AUDIO
     "images/port_connector.png",                    // DeviceManagerImage::PORT_CONNECTOR

@@ -108,13 +108,12 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
 
 
 
-    Guid         pointersProtocol = UEFI_ABSOLUTE_POINTER_PROTOCOL_GUID;
-    u64          pointersSize     = 0;
-    uefi_handle *pointersHandles  = 0;
+    Guid pointersProtocol = UEFI_ABSOLUTE_POINTER_PROTOCOL_GUID;
+    u64  pointersSize     = 0;
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, 0, &pointersSize, pointersHandles) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, 0, &pointersSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_ABSOLUTE_POINTER_PROTOCOL", pointersSize));
 
@@ -315,13 +314,12 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
 
 
 
-    Guid         pointersProtocol = UEFI_SIMPLE_POINTER_PROTOCOL_GUID;
-    u64          pointersSize     = 0;
-    uefi_handle *pointersHandles  = 0;
+    Guid pointersProtocol = UEFI_SIMPLE_POINTER_PROTOCOL_GUID;
+    u64  pointersSize     = 0;
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, 0, &pointersSize, pointersHandles) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, 0, &pointersSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_SIMPLE_POINTER_PROTOCOL", pointersSize));
 
