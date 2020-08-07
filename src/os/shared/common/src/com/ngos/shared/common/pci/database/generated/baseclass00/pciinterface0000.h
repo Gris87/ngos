@@ -50,4 +50,20 @@ inline const char8* enumToFullString(PciInterface0000 interface0000) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0000 interface0000) // TEST: NO
+{
+    // COMMON_LT((" | interface0000 = %u", interface0000)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0000)
+    {
+        case PciInterface0000::INTERFACE_00: return "All currently implemented devices except VGA-compatible devices";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS00_PCIINTERFACE0000_H

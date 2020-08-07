@@ -50,4 +50,20 @@ inline const char8* enumToFullString(PciInterface0180 interface0180) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0180 interface0180) // TEST: NO
+{
+    // COMMON_LT((" | interface0180 = %u", interface0180)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0180)
+    {
+        case PciInterface0180::INTERFACE_00: return "Other mass storage controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS01_PCIINTERFACE0180_H

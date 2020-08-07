@@ -50,4 +50,20 @@ inline const char8* enumToFullString(PciInterface0100 interface0100) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0100 interface0100) // TEST: NO
+{
+    // COMMON_LT((" | interface0100 = %u", interface0100)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0100)
+    {
+        case PciInterface0100::INTERFACE_00: return "SCSI bus controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS01_PCIINTERFACE0100_H

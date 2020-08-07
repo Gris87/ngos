@@ -8,6 +8,8 @@
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pcisubclass01.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -48,6 +50,23 @@ inline const char8* enumToFullString(PciBaseClass baseClass) // TEST: NO
     sprintf(res, "0x%02X (%s)", (u8)baseClass, enumToString(baseClass));
 
     return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId) // TEST: NO
+{
+    // COMMON_LT((" | baseClass = %u, subClassId = %u, interfaceId = %u", baseClass, subClassId, interfaceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (baseClass)
+    {
+        case PciBaseClass::BASE_CLASS_00: return enumToHumanString((PciSubClass00)subClassId, interfaceId);
+        case PciBaseClass::BASE_CLASS_01: return enumToHumanString((PciSubClass01)subClassId, interfaceId);
+
+        default: return "Unknown device";
+    }
 }
 
 

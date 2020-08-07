@@ -50,4 +50,20 @@ inline const char8* enumToFullString(PciInterface0106 interface0106) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0106 interface0106) // TEST: NO
+{
+    // COMMON_LT((" | interface0106 = %u", interface0106)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0106)
+    {
+        case PciInterface0106::INTERFACE_00: return "Serial ATA Direct Port Access (DPA)";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS01_PCIINTERFACE0106_H

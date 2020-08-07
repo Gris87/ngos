@@ -50,4 +50,20 @@ inline const char8* enumToFullString(PciInterface0102 interface0102) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0102 interface0102) // TEST: NO
+{
+    // COMMON_LT((" | interface0102 = %u", interface0102)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0102)
+    {
+        case PciInterface0102::INTERFACE_00: return "Floppy disk controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS01_PCIINTERFACE0102_H

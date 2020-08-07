@@ -8,6 +8,13 @@
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0100.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0102.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0103.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0104.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0106.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0180.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -60,6 +67,29 @@ inline const char8* enumToFullString(PciSubClass01 class01) // TEST: NO
     sprintf(res, "0x%02X (%s)", (u8)class01, enumToString(class01));
 
     return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubClass01 class01, u8 interfaceId) // TEST: NO
+{
+    // COMMON_LT((" | class01 = %u, interfaceId = %u", class01, interfaceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (class01)
+    {
+        case PciSubClass01::SUB_CLASS_00: return enumToHumanString((PciInterface0100)interfaceId);
+        case PciSubClass01::SUB_CLASS_01: return "IDE controller";
+        case PciSubClass01::SUB_CLASS_02: return enumToHumanString((PciInterface0102)interfaceId);
+        case PciSubClass01::SUB_CLASS_03: return enumToHumanString((PciInterface0103)interfaceId);
+        case PciSubClass01::SUB_CLASS_04: return enumToHumanString((PciInterface0104)interfaceId);
+        case PciSubClass01::SUB_CLASS_05: return enumToHumanString((PciInterface0105)interfaceId);
+        case PciSubClass01::SUB_CLASS_06: return enumToHumanString((PciInterface0106)interfaceId);
+        case PciSubClass01::SUB_CLASS_80: return enumToHumanString((PciInterface0180)interfaceId);
+
+        default: return "Unknown device";
+    }
 }
 
 

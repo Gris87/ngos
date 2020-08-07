@@ -54,4 +54,21 @@ inline const char8* enumToFullString(PciInterface0105 interface0105) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0105 interface0105) // TEST: NO
+{
+    // COMMON_LT((" | interface0105 = %u", interface0105)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0105)
+    {
+        case PciInterface0105::INTERFACE_20: return "ATA controller with single DMA";
+        case PciInterface0105::INTERFACE_30: return "ATA controller with chained DMA";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS01_PCIINTERFACE0105_H

@@ -50,4 +50,20 @@ inline const char8* enumToFullString(PciInterface0104 interface0104) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0104 interface0104) // TEST: NO
+{
+    // COMMON_LT((" | interface0104 = %u", interface0104)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0104)
+    {
+        case PciInterface0104::INTERFACE_00: return "RAID controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS01_PCIINTERFACE0104_H

@@ -50,4 +50,20 @@ inline const char8* enumToFullString(PciInterface0103 interface0103) // TEST: NO
 
 
 
+inline const char8* enumToHumanString(PciInterface0103 interface0103) // TEST: NO
+{
+    // COMMON_LT((" | interface0103 = %u", interface0103)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0103)
+    {
+        case PciInterface0103::INTERFACE_00: return "IPI bus controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS01_PCIINTERFACE0103_H
