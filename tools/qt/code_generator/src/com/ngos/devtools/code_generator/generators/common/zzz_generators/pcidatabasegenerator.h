@@ -5,6 +5,8 @@
 
 #include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
 
+#include <QRegularExpression>
+
 
 
 typedef QMap<quint16, QString>       PciInterfaces;
@@ -22,11 +24,17 @@ public:
 
 private:
     bool obtainBaseClasses(PciBaseClasses &baseClasses); // TEST: NO
+    bool prepareSpecification(QStringList &lines); // TEST: NO
+    bool parseSpecification(const QStringList &lines, PciBaseClasses &baseClasses); // TEST: NO
+    bool parseBaseClass(const QStringList &lines, qint64 start, qint64 end, PciBaseClasses &baseClasses); // TEST: NO
+    bool parseBaseClassFallback(const QStringList &lines, qint64 start, qint64 end, PciBaseClasses &baseClasses); // TEST: NO
     bool generateBaseClasses(const QString &path, const PciBaseClasses &baseClasses); // TEST: NO
     bool generateSubClasses(const QString &path, quint16 baseClassId, const PciSubClasses &subClasses); // TEST: NO
     bool generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses); // TEST: NO
     bool generateSubClassesFile(const QString &path, quint16 baseClassId, const PciSubClasses &subClasses); // TEST: NO
     bool generateInterfacesFile(const QString &path, quint16 baseClassId, quint16 subClassId, const PciInterfaces &interfaces); // TEST: NO
+
+    QRegularExpression mBaseClassTitleRegExp;
 };
 
 

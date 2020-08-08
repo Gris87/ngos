@@ -1,15 +1,23 @@
 #include "pcidatabasegenerator.h"
 
+#include <QFile>
+#include <QProcess>
+#include <QTemporaryDir>
+#include <QTemporaryFile>
+
 #include <com/ngos/devtools/shared/console/console.h>
 
 
 
 #define FOLDER_PATH "/src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/"
 
+#define SPECIFICATION_URL "http://fpga-faq.narod.ru/PCI_Rev_30.pdf"
+
 
 
 PciDatabaseGenerator::PciDatabaseGenerator()
     : CommonGenerator()
+    , mBaseClassTitleRegExp("D\\.\\d+\\. *Base Class [0-9a-fA-F]+h")
 {
     // Nothing
 }
@@ -28,54 +36,204 @@ bool PciDatabaseGenerator::generate(const QString & path)
 
 bool PciDatabaseGenerator::obtainBaseClasses(PciBaseClasses &baseClasses)
 {
-    PciSubClasses subClasses00;
+    QStringList lines;
 
-    PciInterfaces interfaces0000;
-    PciInterfaces interfaces0001;
+    if (!prepareSpecification(lines))
+    {
+        return false;
+    }
 
-    interfaces0000.insert(0, "All currently implemented devices except VGA-compatible devices");
-    interfaces0001.insert(0, "VGA-compatible device");
+    return parseSpecification(lines, baseClasses);
+}
 
-    subClasses00.insert(0, interfaces0000);
-    subClasses00.insert(1, interfaces0001);
-
-    baseClasses.insert(0, subClasses00);
-
-
-
-    PciSubClasses subClasses01;
-
-    PciInterfaces interfaces0100;
-    PciInterfaces interfaces0101;
-    PciInterfaces interfaces0102;
-    PciInterfaces interfaces0103;
-    PciInterfaces interfaces0104;
-    PciInterfaces interfaces0105;
-    PciInterfaces interfaces0106;
-    PciInterfaces interfaces0180;
-
-    interfaces0100.insert(0,      "SCSI bus controller");
-    interfaces0101.insert(0xFFFF, "IDE controller");
-    interfaces0102.insert(0,      "Floppy disk controller");
-    interfaces0103.insert(0,      "IPI bus controller");
-    interfaces0104.insert(0,      "RAID controller");
-    interfaces0105.insert(32,     "ATA controller with single DMA");
-    interfaces0105.insert(48,     "ATA controller with chained DMA");
-    interfaces0106.insert(0,      "Serial ATA Direct Port Access (DPA)");
-    interfaces0180.insert(0,      "Other mass storage controller");
-
-    subClasses01.insert(0,   interfaces0100);
-    subClasses01.insert(1,   interfaces0101);
-    subClasses01.insert(2,   interfaces0102);
-    subClasses01.insert(3,   interfaces0103);
-    subClasses01.insert(4,   interfaces0104);
-    subClasses01.insert(5,   interfaces0105);
-    subClasses01.insert(6,   interfaces0106);
-    subClasses01.insert(128, interfaces0180);
-
-    baseClasses.insert(1, subClasses01);
+bool PciDatabaseGenerator::prepareSpecification(QStringList &lines)
+{
+    QTemporaryFile tempFile;
+    QTemporaryDir  tempDir;
 
 
+
+    tempFile.open();
+    QString tempFilePath = tempFile.fileName();
+    tempFile.close();
+
+
+
+    QProcess process;
+    process.start("wget", QStringList() << "-O" << tempFilePath << SPECIFICATION_URL);
+    process.waitForFinished(-1);
+
+    if (process.exitCode() != 0)
+    {
+        Console::err(QString("Failed to download specification from %1:\n%2").arg(SPECIFICATION_URL).arg(QString::fromUtf8(process.readAllStandardError())));
+
+        return false;
+    }
+
+
+
+    process.start("pdftohtml", QStringList() << "-s" << "-i" << tempFilePath << tempDir.path() + "/pci.html");
+    process.waitForFinished(-1);
+
+    if (process.exitCode() != 0)
+    {
+        Console::err(QString("Failed to convert PDF file to html:\n%1").arg(QString::fromUtf8(process.readAllStandardError())));
+
+        return false;
+    }
+
+
+
+    QFile file(tempDir.path() + "/pci-html.html");
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        Console::err(QString("Failed to open file: %1").arg(tempDir.path() + "/pci-html.html"));
+
+        return false;
+    }
+
+    QString content = QString::fromUtf8(file.readAll());
+    content.replace("&#160;", " "); // Ignore CppSingleCharVerifier
+    file.close();
+
+
+
+    lines = content.split('\n');
+
+    for (qint64 i = 0; i < lines.length(); ++i)
+    {
+        QString &line = lines[i];
+
+        if (line.endsWith('\r'))
+        {
+            line.remove(line.length() - 1, 1);
+        }
+    }
+
+
+
+    return true;
+}
+
+bool PciDatabaseGenerator::parseSpecification(const QStringList &lines, PciBaseClasses &baseClasses)
+{
+    qint64 i = 0;
+
+
+
+    // Search for appendix D in PCI specification
+    {
+        while (i < lines.length())
+        {
+            if (lines.at(i).contains("D. Class Codes"))
+            {
+                break;
+            }
+
+            ++i;
+        }
+
+        if (i >= lines.length())
+        {
+            Console::err("Failed to find appendix D in PCI specification");
+
+            return false;
+        }
+    }
+
+
+
+    QList<qint64> ranges;
+
+
+
+    // Search for section ranges in appendix D in PCI specification
+    {
+        ranges.append(i);
+
+
+
+        while (i < lines.length())
+        {
+            if (lines.at(i).contains("E. System Transaction Ordering"))
+            {
+                break;
+            }
+
+            if (mBaseClassTitleRegExp.match(lines.at(i)).hasMatch())
+            {
+                ranges.append(i);
+            }
+
+            ++i;
+        }
+
+        if (i >= lines.length())
+        {
+            Console::err("Failed to find appendix E in PCI specification");
+
+            return false;
+        }
+
+
+
+        ranges.append(i);
+    }
+
+
+
+    if (ranges.length() <= 2)
+    {
+        Console::err("Failed to find section ranges in appendix D in PCI specification");
+
+        return false;
+    }
+
+
+
+    // Parse base classes with the found section ranges
+    {
+        for (qint64 j = 2; j < ranges.length(); ++j)
+        {
+            if (!parseBaseClass(lines, ranges.at(j - 1), ranges.at(j), baseClasses))
+            {
+                return false;
+            }
+        }
+    }
+
+
+
+    // Getting information about whole base class from first section range
+    {
+        if (!parseBaseClassFallback(lines, ranges.at(0), ranges.at(1), baseClasses))
+        {
+            return false;
+        }
+    }
+
+
+
+    return true;
+}
+
+bool PciDatabaseGenerator::parseBaseClass(const QStringList &lines, qint64 start, qint64 end, PciBaseClasses &baseClasses)
+{
+    Q_UNUSED(lines);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+    Q_UNUSED(baseClasses);
+
+    return true;
+}
+
+bool PciDatabaseGenerator::parseBaseClassFallback(const QStringList &lines, qint64 start, qint64 end, PciBaseClasses &baseClasses)
+{
+    Q_UNUSED(lines);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+    Q_UNUSED(baseClasses);
 
     return true;
 }
