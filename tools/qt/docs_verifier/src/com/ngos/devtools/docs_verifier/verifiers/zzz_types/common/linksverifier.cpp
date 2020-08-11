@@ -54,8 +54,8 @@ void LinksVerifier::verify(DocsWorkerThread *worker, const QString &path, const 
 
                 QEventLoop waitLoop;
 
-                QObject::connect(reply, SIGNAL(metaDataChanged()),                  &waitLoop, SLOT(quit()));
-                QObject::connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));
+                QObject::connect(reply, SIGNAL(metaDataChanged()),                          &waitLoop, SLOT(quit()));
+                QObject::connect(reply, SIGNAL(errorOccurred(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));
 
                 waitLoop.exec();
 

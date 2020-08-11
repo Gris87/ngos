@@ -1,0 +1,78 @@
+// This file generated with the code_generator
+// Please do not modify it manually
+#ifndef COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS08_PCIINTERFACE0802_H
+#define COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS08_PCIINTERFACE0802_H
+
+
+
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/printf/printf.h>
+
+
+
+enum class PciInterface0802: u8
+{
+    INTERFACE_00 = 0x00,
+    INTERFACE_01 = 0x01,
+    INTERFACE_02 = 0x02,
+    INTERFACE_03 = 0x03,
+};
+
+
+
+inline const char8* enumToString(PciInterface0802 interface0802) // TEST: NO
+{
+    // COMMON_LT((" | interface0802 = %u", interface0802)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0802)
+    {
+        case PciInterface0802::INTERFACE_00: return "INTERFACE_00";
+        case PciInterface0802::INTERFACE_01: return "INTERFACE_01";
+        case PciInterface0802::INTERFACE_02: return "INTERFACE_02";
+        case PciInterface0802::INTERFACE_03: return "INTERFACE_03";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciInterface0802 interface0802) // TEST: NO
+{
+    // COMMON_LT((" | interface0802 = %u", interface0802)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[20];
+
+    sprintf(res, "0x%02X (%s)", (u8)interface0802, enumToString(interface0802));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciInterface0802 interface0802) // TEST: NO
+{
+    // COMMON_LT((" | interface0802 = %u", interface0802)); // Commented to avoid bad looking logs
+
+
+
+    switch (interface0802)
+    {
+        case PciInterface0802::INTERFACE_00: return "8254";
+        case PciInterface0802::INTERFACE_01: return "ISA Timer";
+        case PciInterface0802::INTERFACE_02: return "EISA Timers";
+        case PciInterface0802::INTERFACE_03: return "HPET";
+
+        default: return "Timer";
+    }
+}
+
+
+
+#endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_BASECLASS08_PCIINTERFACE0802_H

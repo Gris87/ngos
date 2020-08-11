@@ -410,6 +410,45 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0106.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0180.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pcisubclass01.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0106.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0107.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0108.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pcisubclass01.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass02/pcisubclass02.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass03/pciinterface0300.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass03/pcisubclass03.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass04/pcisubclass04.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass05/pcisubclass05.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass06/pciinterface0604.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass06/pciinterface0608.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass06/pciinterface0609.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass06/pcisubclass06.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0700.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0701.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0703.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass07/pcisubclass07.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0800.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0801.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0802.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0803.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass08/pcisubclass08.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass09/pciinterface0904.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass09/pcisubclass09.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0a/pcisubclass0a.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0b/pcisubclass0b.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0c/pciinterface0c00.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0c/pciinterface0c03.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0c/pciinterface0c07.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0c/pcisubclass0c.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0d/pcisubclass0d.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0e/pcisubclass0e.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass0f/pcisubclass0f.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass10/pcisubclass10.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass11/pcisubclass11.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass12/pcisubclass12.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/pcibaseclass.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceindependentregion.h \

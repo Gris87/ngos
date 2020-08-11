@@ -1,6 +1,11 @@
 #include "pcidatabasegenerator.h"
 
+
+#include <QEventLoop>
 #include <QFile>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QProcess>
 #include <QTemporaryDir>
 #include <QTemporaryFile>
@@ -11,91 +16,74 @@
 
 #define FOLDER_PATH "/src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/"
 
-#define SPECIFICATION_URL "http://fpga-faq.narod.ru/PCI_Rev_30.pdf"
+#define DATABASE_URL "https://pci-ids.ucw.cz/v2.2/pci.ids"
 
 
 
 PciDatabaseGenerator::PciDatabaseGenerator()
     : CommonGenerator()
-    , mBaseClassTitleRegExp("D\\.\\d+\\. *Base Class [0-9a-fA-F]+h")
 {
     // Nothing
 }
 
-bool PciDatabaseGenerator::generate(const QString & path)
-{
-    PciBaseClasses baseClasses;
-
-    if (!obtainBaseClasses(baseClasses))
-    {
-        return false;
-    }
-
-    return generateBaseClasses(path, baseClasses);
-}
-
-bool PciDatabaseGenerator::obtainBaseClasses(PciBaseClasses &baseClasses)
+bool PciDatabaseGenerator::generate(const QString &path)
 {
     QStringList lines;
 
-    if (!prepareSpecification(lines))
+    if (!prepareDatabase(lines))
     {
         return false;
     }
 
-    return parseSpecification(lines, baseClasses);
+    PciBaseClasses baseClasses;
+
+    if (!parseDatabase(lines, baseClasses))
+    {
+        return false;
+    }
+
+    if (!generateBaseClasses(path, baseClasses))
+    {
+        return false;
+    }
+
+    return true;
 }
 
-bool PciDatabaseGenerator::prepareSpecification(QStringList &lines)
+bool PciDatabaseGenerator::prepareDatabase(QStringList &lines)
 {
-    QTemporaryFile tempFile;
-    QTemporaryDir  tempDir;
+    QNetworkRequest request;
+    request.setUrl(QUrl(DATABASE_URL));
+
+    QNetworkAccessManager  manager;
+    QNetworkReply         *reply = manager.get(request);
 
 
 
-    tempFile.open();
-    QString tempFilePath = tempFile.fileName();
-    tempFile.close();
+    QEventLoop waitLoop;
+
+    QObject::connect(reply, SIGNAL(finished()),                                 &waitLoop, SLOT(quit()));
+    QObject::connect(reply, SIGNAL(errorOccurred(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));
+
+    waitLoop.exec();
 
 
 
-    QProcess process;
-    process.start("wget", QStringList() << "-O" << tempFilePath << SPECIFICATION_URL);
-    process.waitForFinished(-1);
+    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
-    if (process.exitCode() != 0)
+    if (statusCode.toInt() != 200)
     {
-        Console::err(QString("Failed to download specification from %1:\n%2").arg(SPECIFICATION_URL).arg(QString::fromUtf8(process.readAllStandardError())));
+        Console::err(QString("Failed to get PCI database from: %1").arg(DATABASE_URL));
+
+        delete reply;
 
         return false;
     }
 
 
 
-    process.start("pdftohtml", QStringList() << "-s" << "-i" << tempFilePath << tempDir.path() + "/pci.html");
-    process.waitForFinished(-1);
-
-    if (process.exitCode() != 0)
-    {
-        Console::err(QString("Failed to convert PDF file to html:\n%1").arg(QString::fromUtf8(process.readAllStandardError())));
-
-        return false;
-    }
-
-
-
-    QFile file(tempDir.path() + "/pci-html.html");
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        Console::err(QString("Failed to open file: %1").arg(tempDir.path() + "/pci-html.html"));
-
-        return false;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    content.replace("&#160;", " "); // Ignore CppSingleCharVerifier
-    file.close();
+    QString content = QString::fromUtf8(reply->readAll());
+    delete reply;
 
 
 
@@ -116,124 +104,165 @@ bool PciDatabaseGenerator::prepareSpecification(QStringList &lines)
     return true;
 }
 
-bool PciDatabaseGenerator::parseSpecification(const QStringList &lines, PciBaseClasses &baseClasses)
+bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses)
 {
+    Q_UNUSED(baseClasses);
+
     qint64 i = 0;
 
 
 
-    // Search for appendix D in PCI specification
+    // Parse vendors and devices
     {
         while (i < lines.length())
         {
-            if (lines.at(i).contains("D. Class Codes"))
+            QString line = lines.at(i);
+
+
+
+            if (line == "# List of known device classes, subclasses and programming interfaces")
             {
                 break;
             }
 
+
+
+            if (
+                line.startsWith('#')
+                ||
+                line == ""
+               )
+            {
+                ++i;
+
+                continue;
+            }
+
+
+
             ++i;
-        }
-
-        if (i >= lines.length())
-        {
-            Console::err("Failed to find appendix D in PCI specification");
-
-            return false;
         }
     }
 
 
 
-    QList<qint64> ranges;
-
-
-
-    // Search for section ranges in appendix D in PCI specification
+    if (i >= lines.length())
     {
-        ranges.append(i);
-
-
-
-        while (i < lines.length())
-        {
-            if (lines.at(i).contains("E. System Transaction Ordering"))
-            {
-                break;
-            }
-
-            if (mBaseClassTitleRegExp.match(lines.at(i)).hasMatch())
-            {
-                ranges.append(i);
-            }
-
-            ++i;
-        }
-
-        if (i >= lines.length())
-        {
-            Console::err("Failed to find appendix E in PCI specification");
-
-            return false;
-        }
-
-
-
-        ranges.append(i);
-    }
-
-
-
-    if (ranges.length() <= 2)
-    {
-        Console::err("Failed to find section ranges in appendix D in PCI specification");
+        Console::err("Failed to parse PCI database");
 
         return false;
     }
 
 
 
-    // Parse base classes with the found section ranges
+    // Parse base classes, sub classes and interfaces
     {
-        for (qint64 j = 2; j < ranges.length(); ++j)
+        PciSubClasses *subClasses = nullptr;
+        PciInterfaces *interfaces = nullptr;
+
+        while (i < lines.length())
         {
-            if (!parseBaseClass(lines, ranges.at(j - 1), ranges.at(j), baseClasses))
+            QString line = lines.at(i);
+
+
+
+            if (
+                line.startsWith('#')
+                ||
+                line == ""
+               )
             {
+                ++i;
+
+                continue;
+            }
+
+
+
+            bool isBaseClass = false;
+            bool isSubClass  = false;
+            bool isInterface = false;
+
+
+
+            // Try to get type of the line
+            {
+                if (line.startsWith("C "))
+                {
+                    isBaseClass = true;
+
+                    line.remove(0, 2);
+                }
+                else
+                if (line.startsWith("\t\t"))
+                {
+                    isInterface = true;
+
+                    line.remove(0, 2);
+                }
+                else
+                if (line.startsWith("\t"))
+                {
+                    isSubClass = true;
+
+                    line.remove(0, 1);
+                }
+                else
+                {
+                    Console::err("Failed to parse line in PCI database: " + lines.at(i));
+
+                    return false;
+                }
+            }
+
+
+
+            bool    ok;
+            quint16 id = line.left(2).toUShort(&ok, 16);
+
+            if (!ok)
+            {
+                Console::err("Failed to parse line in PCI database: " + lines.at(i));
+
                 return false;
             }
+
+
+
+            line.remove(0, 4);
+
+
+
+            if (isBaseClass)
+            {
+                subClasses                    = &baseClasses[id];
+                (*subClasses)[0xFFFF][0xFFFF] = line;
+            }
+            else
+            if (isSubClass)
+            {
+                interfaces            = &(*subClasses)[id];
+                (*interfaces)[0xFFFF] = line;
+            }
+            else
+            if (isInterface)
+            {
+                (*interfaces)[id] = line;
+            }
+            else
+            {
+                Console::err("Failed to parse line in PCI database: " + lines.at(i));
+
+                return false;
+            }
+
+
+
+            ++i;
         }
     }
 
 
-
-    // Getting information about whole base class from first section range
-    {
-        if (!parseBaseClassFallback(lines, ranges.at(0), ranges.at(1), baseClasses))
-        {
-            return false;
-        }
-    }
-
-
-
-    return true;
-}
-
-bool PciDatabaseGenerator::parseBaseClass(const QStringList &lines, qint64 start, qint64 end, PciBaseClasses &baseClasses)
-{
-    Q_UNUSED(lines);
-    Q_UNUSED(start);
-    Q_UNUSED(end);
-    Q_UNUSED(baseClasses);
-
-    return true;
-}
-
-bool PciDatabaseGenerator::parseBaseClassFallback(const QStringList &lines, qint64 start, qint64 end, PciBaseClasses &baseClasses)
-{
-    Q_UNUSED(lines);
-    Q_UNUSED(start);
-    Q_UNUSED(end);
-    Q_UNUSED(baseClasses);
 
     return true;
 }
@@ -251,9 +280,16 @@ bool PciDatabaseGenerator::generateBaseClasses(const QString &path, const PciBas
             quint16              baseClassId = it.key();
             const PciSubClasses &subClasses  = it.value();
 
-            if (!generateSubClasses(path, baseClassId, subClasses))
+            if (
+                subClasses.size() > 1
+                ||
+                !subClasses.contains(0xFFFF)
+               )
             {
-                return false;
+                if (!generateSubClasses(path, baseClassId, subClasses))
+                {
+                    return false;
+                }
             }
         }
     }
@@ -309,9 +345,17 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
         {
             it.next();
 
-            quint16 baseClassId = it.key();
+            quint16              baseClassId = it.key();
+            const PciSubClasses &subClasses  = it.value();
 
-            lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/baseclass%1/pcisubclass%1.h>").arg(baseClassId, 2, 16, QChar('0')));
+            if (
+                subClasses.size() > 1
+                ||
+                !subClasses.contains(0xFFFF)
+               )
+            {
+                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/baseclass%1/pcisubclass%1.h>").arg(baseClassId, 2, 16, QChar('0')));
+            }
         }
 
         lines.append("#include <com/ngos/shared/common/printf/printf.h>");
@@ -438,10 +482,25 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
         {
             it.next();
 
-            quint16 baseClassId    = it.key();
+            quint16              baseClassId = it.key();
+            const PciSubClasses &subClasses  = it.value();
+
             QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
 
-            lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId, interfaceId);").arg(baseClassIdStr, 2, QChar('0')));
+
+
+            if (
+                subClasses.size() > 1
+                ||
+                !subClasses.contains(0xFFFF)
+               )
+            {
+                lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId, interfaceId);").arg(baseClassIdStr, 2, QChar('0')));
+            }
+            else
+            {
+                lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return \"%2\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClasses.value(0xFFFF).value(0xFFFF)));
+            }
         }
 
         lines.append("");
@@ -521,10 +580,14 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
         {
             it.next();
 
-            quint16 subClassId    = it.key();
-            QString subClassIdStr = QString::number(subClassId, 16).toUpper();
+            quint16 subClassId = it.key();
 
-            lines.append(QString("    SUB_CLASS_%1 = 0x%1%2").arg(subClassIdStr, 2, QChar('0')).arg(it.hasNext() ? "," : "")); // Ignore CppSingleCharVerifier
+            if (subClassId != 0xFFFF)
+            {
+                QString subClassIdStr = QString::number(subClassId, 16).toUpper();
+
+                lines.append(QString("    SUB_CLASS_%1 = 0x%1%2").arg(subClassIdStr, 2, QChar('0')).arg(it.hasNext() ? "," : "")); // Ignore CppSingleCharVerifier
+            }
         }
 
         lines.append("};");
@@ -559,10 +622,14 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
         {
             it.next();
 
-            quint16 subClassId    = it.key();
-            QString subClassIdStr = QString::number(subClassId, 16).toUpper();
+            quint16 subClassId = it.key();
 
-            lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"SUB_CLASS_%2\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')));
+            if (subClassId != 0xFFFF)
+            {
+                QString subClassIdStr = QString::number(subClassId, 16).toUpper();
+
+                lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"SUB_CLASS_%2\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')));
+            }
         }
 
         lines.append("");
@@ -600,6 +667,10 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
 
     // inline const char8* enumToHumanString(PciSubClass subClass, u8 interfaceId)
     {
+        QString unknownValue = "Unknown device";
+
+
+
         addThreeBlankLines(lines);
 
 
@@ -623,24 +694,31 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
             quint16              subClassId = it.key();
             const PciInterfaces &interfaces = it.value();
 
-            QString subClassIdStr = QString::number(subClassId, 16).toUpper();
-
-            if (
-                interfaces.size() > 1
-                ||
-                !interfaces.contains(0xFFFF)
-               )
+            if (subClassId != 0xFFFF)
             {
-                lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return enumToHumanString((PciInterface%1%2)interfaceId);").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')));
+                QString subClassIdStr = QString::number(subClassId, 16).toUpper();
+
+                if (
+                    interfaces.size() > 1
+                    ||
+                    !interfaces.contains(0xFFFF)
+                   )
+                {
+                    lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return enumToHumanString((PciInterface%1%2)interfaceId);").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')));
+                }
+                else
+                {
+                    lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"%3\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg(interfaces.value(0xFFFF)));
+                }
             }
             else
             {
-                lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"%3\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg(interfaces.value(0xFFFF)));
+                unknownValue = interfaces.value(0xFFFF);
             }
         }
 
         lines.append("");
-        lines.append("        default: return \"Unknown device\";");
+        lines.append(QString("        default: return \"%1\";").arg(unknownValue));
         lines.append("    }");
         lines.append("}"); // Ignore CppSingleCharVerifier
         // Ignore CppAlignmentVerifier [END]

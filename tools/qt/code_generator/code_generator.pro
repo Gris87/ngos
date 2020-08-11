@@ -1,4 +1,5 @@
 QT -= gui
+QT += network
 
 CONFIG += c++17 console
 CONFIG -= app_bundle
@@ -90,4 +91,5 @@ HEADERS += \
     src/com/ngos/devtools/code_generator/generators/configure/zzz_generators/asmoffsetsgenerator.h \
     src/com/ngos/devtools/code_generator/generators/generator.h \
     src/com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h \
-    src/com/ngos/devtools/code_generator/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h
+    src/com/ngos/devtools/code_generator/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h \
+    src/com/ngos/devtools/code_generator/other/pdfspecificationentry.h

@@ -14,7 +14,9 @@
 
 enum class PciInterface0106: u8
 {
-    INTERFACE_00 = 0x00
+    INTERFACE_00 = 0x00,
+    INTERFACE_01 = 0x01,
+    INTERFACE_02 = 0x02,
 };
 
 
@@ -28,6 +30,8 @@ inline const char8* enumToString(PciInterface0106 interface0106) // TEST: NO
     switch (interface0106)
     {
         case PciInterface0106::INTERFACE_00: return "INTERFACE_00";
+        case PciInterface0106::INTERFACE_01: return "INTERFACE_01";
+        case PciInterface0106::INTERFACE_02: return "INTERFACE_02";
 
         default: return "UNKNOWN";
     }
@@ -58,9 +62,11 @@ inline const char8* enumToHumanString(PciInterface0106 interface0106) // TEST: N
 
     switch (interface0106)
     {
-        case PciInterface0106::INTERFACE_00: return "Serial ATA Direct Port Access (DPA)";
+        case PciInterface0106::INTERFACE_00: return "Vendor specific";
+        case PciInterface0106::INTERFACE_01: return "AHCI 1.0";
+        case PciInterface0106::INTERFACE_02: return "Serial Storage Bus";
 
-        default: return "Unknown device";
+        default: return "SATA controller";
     }
 }
 

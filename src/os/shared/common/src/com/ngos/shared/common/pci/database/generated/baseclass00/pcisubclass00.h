@@ -8,8 +8,6 @@
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/pci/database/generated/baseclass00/pciinterface0000.h>
-#include <com/ngos/shared/common/pci/database/generated/baseclass00/pciinterface0001.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -17,7 +15,7 @@
 enum class PciSubClass00: u8
 {
     SUB_CLASS_00 = 0x00,
-    SUB_CLASS_01 = 0x01
+    SUB_CLASS_01 = 0x01,
 };
 
 
@@ -62,10 +60,10 @@ inline const char8* enumToHumanString(PciSubClass00 class00, u8 interfaceId) // 
 
     switch (class00)
     {
-        case PciSubClass00::SUB_CLASS_00: return enumToHumanString((PciInterface0000)interfaceId);
-        case PciSubClass00::SUB_CLASS_01: return enumToHumanString((PciInterface0001)interfaceId);
+        case PciSubClass00::SUB_CLASS_00: return "Non-VGA unclassified device";
+        case PciSubClass00::SUB_CLASS_01: return "VGA compatible unclassified device";
 
-        default: return "Unknown device";
+        default: return "Unclassified device";
     }
 }
 

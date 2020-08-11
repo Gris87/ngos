@@ -16,7 +16,7 @@ enum class PciInterface0105: u8
 {
     NONE         = 0,
     INTERFACE_20 = 0x20,
-    INTERFACE_30 = 0x30
+    INTERFACE_30 = 0x30,
 };
 
 
@@ -62,10 +62,10 @@ inline const char8* enumToHumanString(PciInterface0105 interface0105) // TEST: N
 
     switch (interface0105)
     {
-        case PciInterface0105::INTERFACE_20: return "ATA controller with single DMA";
-        case PciInterface0105::INTERFACE_30: return "ATA controller with chained DMA";
+        case PciInterface0105::INTERFACE_20: return "ADMA single stepping";
+        case PciInterface0105::INTERFACE_30: return "ADMA continuous operation";
 
-        default: return "Unknown device";
+        default: return "ATA controller";
     }
 }
 
