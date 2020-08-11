@@ -106,8 +106,6 @@ bool PciDatabaseGenerator::prepareDatabase(QStringList &lines)
 
 bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses)
 {
-    Q_UNUSED(baseClasses);
-
     qint64 i = 0;
 
 

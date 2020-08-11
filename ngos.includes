@@ -46,4 +46,3 @@ tools/qt/shared/elf/src/
 tools/qt/test_verifier/src/
 tools/qt/usb_boot_maker/build/gen/
 tools/qt/usb_boot_maker/src/
-tools/qt/code_generator/src/com/ngos/devtools/code_generator/other
