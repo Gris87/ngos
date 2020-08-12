@@ -5,11 +5,13 @@
 
 #include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
 
+#include <com/ngos/devtools/code_generator/other/pcibaseclass.h>
+#include <com/ngos/devtools/code_generator/other/pcivendor.h>
 
 
-typedef QMap<quint16, QString>       PciInterfaces;
-typedef QMap<quint16, PciInterfaces> PciSubClasses;
-typedef QMap<quint16, PciSubClasses> PciBaseClasses;
+
+typedef QMap<quint8,  PciBaseClass> PciBaseClasses;
+typedef QMap<quint16, PciVendor>    PciVendors;
 
 
 
@@ -24,10 +26,10 @@ private:
     bool prepareDatabase(QStringList &lines); // TEST: NO
     bool parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses); // TEST: NO
     bool generateBaseClasses(const QString &path, const PciBaseClasses &baseClasses); // TEST: NO
-    bool generateSubClasses(const QString &path, quint16 baseClassId, const PciSubClasses &subClasses); // TEST: NO
+    bool generateSubClasses(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass); // TEST: NO
     bool generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses); // TEST: NO
-    bool generateSubClassesFile(const QString &path, quint16 baseClassId, const PciSubClasses &subClasses); // TEST: NO
-    bool generateInterfacesFile(const QString &path, quint16 baseClassId, const QString &baseClassDescription, quint16 subClassId, const PciInterfaces &interfaces); // TEST: NO
+    bool generateSubClassesFile(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass); // TEST: NO
+    bool generateInterfacesFile(const QString &path, quint8 baseClassId, const QString &baseClassDescription, quint8 subClassId, const PciSubClass &subClass); // TEST: NO
 };
 
 

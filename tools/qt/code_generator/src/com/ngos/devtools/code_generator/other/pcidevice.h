@@ -1,0 +1,17 @@
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIDEVICE_H
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIDEVICE_H
+
+
+
+#include <QString>
+
+
+
+struct PciDevice
+{
+    QString description;
+};
+
+
+
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIDEVICE_H

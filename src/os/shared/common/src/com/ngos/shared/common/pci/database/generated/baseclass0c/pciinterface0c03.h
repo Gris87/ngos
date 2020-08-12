@@ -12,7 +12,7 @@
 
 
 
-enum class PciInterface0C03: u8
+enum class PciInterface0C03: u8 // Ignore CppEnumVerifier
 {
     INTERFACE_00 = 0x00,
     INTERFACE_10 = 0x10,

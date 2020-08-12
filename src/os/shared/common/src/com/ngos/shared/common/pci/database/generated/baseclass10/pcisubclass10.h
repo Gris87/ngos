@@ -12,7 +12,7 @@
 
 
 
-enum class PciSubClass10: u8
+enum class PciSubClass10: u8 // Ignore CppEnumVerifier
 {
     SUB_CLASS_00 = 0x00,
     SUB_CLASS_10 = 0x10,

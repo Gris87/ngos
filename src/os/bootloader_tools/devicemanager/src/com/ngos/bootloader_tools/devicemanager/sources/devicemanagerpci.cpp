@@ -408,6 +408,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
                             {
                                 DeviceManagerEntry *deviceManagerEntry = new DeviceManagerEntry(DeviceManagerImage::PCI, mprintf("PCI(%d/%d/%d)", i, j, k));
 
+                                // Ignore CppAlignmentVerifier [BEGIN]
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",         baseClass,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",           subClass,                                                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",          interface,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
@@ -425,6 +426,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Latency timer",      mprintf("%u",                     pciHeader.latencyTimer),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header type",        strdup(enumToFullString((PciHeaderType)pciHeader.headerType)),                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-In self test", mprintf("%u",                     pciHeader.builtInSelfTest),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                // Ignore CppAlignmentVerifier [END]
 
                                 UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
                             }

@@ -1,0 +1,17 @@
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H
+
+
+
+#include <QString>
+
+
+
+struct PciInterface
+{
+    QString description;
+};
+
+
+
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H
