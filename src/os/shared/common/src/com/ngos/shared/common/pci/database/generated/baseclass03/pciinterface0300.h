@@ -15,7 +15,7 @@
 enum class PciInterface0300: u8
 {
     INTERFACE_00 = 0x00,
-    INTERFACE_01 = 0x01,
+    INTERFACE_01 = 0x01
 };
 
 
@@ -60,10 +60,10 @@ inline const char8* enumToHumanString(PciInterface0300 interface0300) // TEST: N
 
     switch (interface0300)
     {
-        case PciInterface0300::INTERFACE_00: return "VGA controller";
-        case PciInterface0300::INTERFACE_01: return "8514 controller";
+        case PciInterface0300::INTERFACE_00: return "Display controller - VGA compatible controller - VGA controller";
+        case PciInterface0300::INTERFACE_01: return "Display controller - VGA compatible controller - 8514 controller";
 
-        default: return "VGA compatible controller";
+        default: return "Display controller - VGA compatible controller";
     }
 }
 

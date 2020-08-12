@@ -18,7 +18,7 @@ enum class PciSubClass0F: u8
     SUB_CLASS_01 = 0x01,
     SUB_CLASS_02 = 0x02,
     SUB_CLASS_03 = 0x03,
-    SUB_CLASS_04 = 0x04,
+    SUB_CLASS_04 = 0x04
 };
 
 
@@ -58,18 +58,18 @@ inline const char8* enumToFullString(PciSubClass0F class0F) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass0F class0F, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass0F class0F) // TEST: NO
 {
-    // COMMON_LT((" | class0F = %u, interfaceId = %u", class0F, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class0F = %u", class0F)); // Commented to avoid bad looking logs
 
 
 
     switch (class0F)
     {
-        case PciSubClass0F::SUB_CLASS_01: return "Satellite TV controller";
-        case PciSubClass0F::SUB_CLASS_02: return "Satellite audio communication controller";
-        case PciSubClass0F::SUB_CLASS_03: return "Satellite voice communication controller";
-        case PciSubClass0F::SUB_CLASS_04: return "Satellite data communication controller";
+        case PciSubClass0F::SUB_CLASS_01: return "Satellite communications controller - Satellite TV controller";
+        case PciSubClass0F::SUB_CLASS_02: return "Satellite communications controller - Satellite audio communication controller";
+        case PciSubClass0F::SUB_CLASS_03: return "Satellite communications controller - Satellite voice communication controller";
+        case PciSubClass0F::SUB_CLASS_04: return "Satellite communications controller - Satellite data communication controller";
 
         default: return "Satellite communications controller";
     }

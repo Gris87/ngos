@@ -15,7 +15,7 @@
 enum class PciInterface0C00: u8
 {
     INTERFACE_00 = 0x00,
-    INTERFACE_10 = 0x10,
+    INTERFACE_10 = 0x10
 };
 
 
@@ -60,10 +60,10 @@ inline const char8* enumToHumanString(PciInterface0C00 interface0C00) // TEST: N
 
     switch (interface0C00)
     {
-        case PciInterface0C00::INTERFACE_00: return "Generic";
-        case PciInterface0C00::INTERFACE_10: return "OHCI";
+        case PciInterface0C00::INTERFACE_00: return "Serial bus controller - FireWire (IEEE 1394) - Generic";
+        case PciInterface0C00::INTERFACE_10: return "Serial bus controller - FireWire (IEEE 1394) - OHCI";
 
-        default: return "FireWire (IEEE 1394)";
+        default: return "Serial bus controller - FireWire (IEEE 1394)";
     }
 }
 

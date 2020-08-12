@@ -15,7 +15,7 @@
 enum class PciSubClass0A: u8
 {
     SUB_CLASS_00 = 0x00,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -52,16 +52,16 @@ inline const char8* enumToFullString(PciSubClass0A class0A) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass0A class0A, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass0A class0A) // TEST: NO
 {
-    // COMMON_LT((" | class0A = %u, interfaceId = %u", class0A, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class0A = %u", class0A)); // Commented to avoid bad looking logs
 
 
 
     switch (class0A)
     {
-        case PciSubClass0A::SUB_CLASS_00: return "Generic Docking Station";
-        case PciSubClass0A::SUB_CLASS_80: return "Docking Station";
+        case PciSubClass0A::SUB_CLASS_00: return "Docking station - Generic Docking Station";
+        case PciSubClass0A::SUB_CLASS_80: return "Docking station - Docking Station";
 
         default: return "Docking station";
     }

@@ -23,7 +23,7 @@ enum class PciSubClass07: u8
     SUB_CLASS_03 = 0x03,
     SUB_CLASS_04 = 0x04,
     SUB_CLASS_05 = 0x05,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -75,11 +75,11 @@ inline const char8* enumToHumanString(PciSubClass07 class07, u8 interfaceId) // 
     {
         case PciSubClass07::SUB_CLASS_00: return enumToHumanString((PciInterface0700)interfaceId);
         case PciSubClass07::SUB_CLASS_01: return enumToHumanString((PciInterface0701)interfaceId);
-        case PciSubClass07::SUB_CLASS_02: return "Multiport serial controller";
+        case PciSubClass07::SUB_CLASS_02: return "Communication controller - Multiport serial controller";
         case PciSubClass07::SUB_CLASS_03: return enumToHumanString((PciInterface0703)interfaceId);
-        case PciSubClass07::SUB_CLASS_04: return "GPIB controller";
-        case PciSubClass07::SUB_CLASS_05: return "Smard Card controller";
-        case PciSubClass07::SUB_CLASS_80: return "Communication controller";
+        case PciSubClass07::SUB_CLASS_04: return "Communication controller - GPIB controller";
+        case PciSubClass07::SUB_CLASS_05: return "Communication controller - Smard Card controller";
+        case PciSubClass07::SUB_CLASS_80: return "Communication controller - Communication controller";
 
         default: return "Communication controller";
     }

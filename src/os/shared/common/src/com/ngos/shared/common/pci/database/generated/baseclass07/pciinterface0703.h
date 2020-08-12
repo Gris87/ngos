@@ -18,7 +18,7 @@ enum class PciInterface0703: u8
     INTERFACE_01 = 0x01,
     INTERFACE_02 = 0x02,
     INTERFACE_03 = 0x03,
-    INTERFACE_04 = 0x04,
+    INTERFACE_04 = 0x04
 };
 
 
@@ -66,13 +66,13 @@ inline const char8* enumToHumanString(PciInterface0703 interface0703) // TEST: N
 
     switch (interface0703)
     {
-        case PciInterface0703::INTERFACE_00: return "Generic";
-        case PciInterface0703::INTERFACE_01: return "Hayes/16450";
-        case PciInterface0703::INTERFACE_02: return "Hayes/16550";
-        case PciInterface0703::INTERFACE_03: return "Hayes/16650";
-        case PciInterface0703::INTERFACE_04: return "Hayes/16750";
+        case PciInterface0703::INTERFACE_00: return "Communication controller - Modem - Generic";
+        case PciInterface0703::INTERFACE_01: return "Communication controller - Modem - Hayes/16450";
+        case PciInterface0703::INTERFACE_02: return "Communication controller - Modem - Hayes/16550";
+        case PciInterface0703::INTERFACE_03: return "Communication controller - Modem - Hayes/16650";
+        case PciInterface0703::INTERFACE_04: return "Communication controller - Modem - Hayes/16750";
 
-        default: return "Modem";
+        default: return "Communication controller - Modem";
     }
 }
 

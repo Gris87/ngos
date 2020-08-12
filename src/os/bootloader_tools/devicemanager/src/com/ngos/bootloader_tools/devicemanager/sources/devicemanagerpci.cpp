@@ -1,5 +1,6 @@
 #include "devicemanagerpci.h"
 
+#include <com/ngos/shared/common/pci/database/generated/pcibaseclass.h>
 #include <com/ngos/shared/common/pci/macros.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
 #include <com/ngos/shared/common/pci/pciregister.h>
@@ -313,12 +314,103 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
 
 
+                            const char8 *baseClass = "N/A";
+                            const char8 *subClass  = "N/A";
+                            const char8 *interface = "N/A";
+
+                            // Get other strings
+                            {
+                                char8 *classStr = strdup(enumToHumanString((PciBaseClass)pciHeader.classCode[2], pciHeader.classCode[1], pciHeader.classCode[0]));
+
+
+
+                                // Get string for Base class
+                                {
+                                    baseClass = classStr;
+                                }
+
+
+
+                                // Get string for Subclass
+                                {
+                                    if (
+                                        classStr[0] != 0
+                                        &&
+                                        classStr[1] != 0
+                                        &&
+                                        classStr[2] != 0
+                                       )
+                                    {
+                                        classStr += 3; // We will check previous 3 chars for " - "
+
+                                        while (classStr[0] != 0)
+                                        {
+                                            if (
+                                                classStr[-1] == ' '
+                                                &&
+                                                classStr[-2] == '-'
+                                                &&
+                                                classStr[-3] == ' '
+                                               )
+                                            {
+                                                classStr[-3] = 0;
+
+                                                subClass = classStr;
+
+                                                break;
+                                            }
+
+                                            ++classStr;
+                                        }
+                                    }
+                                }
+
+
+
+                                // Get string for Interface
+                                {
+                                    if (
+                                        classStr[0] != 0
+                                        &&
+                                        classStr[1] != 0
+                                        &&
+                                        classStr[2] != 0
+                                       )
+                                    {
+                                        classStr += 3; // We will check previous 3 chars for " - "
+
+                                        while (classStr[0] != 0)
+                                        {
+                                            if (
+                                                classStr[-1] == ' '
+                                                &&
+                                                classStr[-2] == '-'
+                                                &&
+                                                classStr[-3] == ' '
+                                               )
+                                            {
+                                                classStr[-3] = 0;
+
+                                                interface = classStr;
+
+                                                break;
+                                            }
+
+                                            ++classStr;
+                                        }
+                                    }
+                                }
+                            }
+
+
+
                             // Add Device Manager entry
                             {
                                 DeviceManagerEntry *deviceManagerEntry = new DeviceManagerEntry(DeviceManagerImage::PCI, mprintf("PCI(%d/%d/%d)", i, j, k));
 
-                                // TODO: Uncomment it
-                                //UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Class",              enumToHumanString((PciBaseClass)pciHeader.classCode[2], pciHeader.classCode[1], pciHeader.classCode[0]),   DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",         baseClass,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",           subClass,                                                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",          interface,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",            mprintf("%u",                     pci->segmentNumber),                                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",                mprintf("%u",                     i),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device",             mprintf("%u",                     j),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);

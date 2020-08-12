@@ -18,7 +18,7 @@ enum class PciInterface0701: u8
     INTERFACE_01 = 0x01,
     INTERFACE_02 = 0x02,
     INTERFACE_03 = 0x03,
-    INTERFACE_FE = 0xFE,
+    INTERFACE_FE = 0xFE
 };
 
 
@@ -66,13 +66,13 @@ inline const char8* enumToHumanString(PciInterface0701 interface0701) // TEST: N
 
     switch (interface0701)
     {
-        case PciInterface0701::INTERFACE_00: return "SPP";
-        case PciInterface0701::INTERFACE_01: return "BiDir";
-        case PciInterface0701::INTERFACE_02: return "ECP";
-        case PciInterface0701::INTERFACE_03: return "IEEE1284";
-        case PciInterface0701::INTERFACE_FE: return "IEEE1284 Target";
+        case PciInterface0701::INTERFACE_00: return "Communication controller - Parallel controller - SPP";
+        case PciInterface0701::INTERFACE_01: return "Communication controller - Parallel controller - BiDir";
+        case PciInterface0701::INTERFACE_02: return "Communication controller - Parallel controller - ECP";
+        case PciInterface0701::INTERFACE_03: return "Communication controller - Parallel controller - IEEE1284";
+        case PciInterface0701::INTERFACE_FE: return "Communication controller - Parallel controller - IEEE1284 Target";
 
-        default: return "Parallel controller";
+        default: return "Communication controller - Parallel controller";
     }
 }
 

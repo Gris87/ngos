@@ -20,7 +20,7 @@ enum class PciInterface0700: u8
     INTERFACE_03 = 0x03,
     INTERFACE_04 = 0x04,
     INTERFACE_05 = 0x05,
-    INTERFACE_06 = 0x06,
+    INTERFACE_06 = 0x06
 };
 
 
@@ -70,15 +70,15 @@ inline const char8* enumToHumanString(PciInterface0700 interface0700) // TEST: N
 
     switch (interface0700)
     {
-        case PciInterface0700::INTERFACE_00: return "8250";
-        case PciInterface0700::INTERFACE_01: return "16450";
-        case PciInterface0700::INTERFACE_02: return "16550";
-        case PciInterface0700::INTERFACE_03: return "16650";
-        case PciInterface0700::INTERFACE_04: return "16750";
-        case PciInterface0700::INTERFACE_05: return "16850";
-        case PciInterface0700::INTERFACE_06: return "16950";
+        case PciInterface0700::INTERFACE_00: return "Communication controller - Serial controller - 8250";
+        case PciInterface0700::INTERFACE_01: return "Communication controller - Serial controller - 16450";
+        case PciInterface0700::INTERFACE_02: return "Communication controller - Serial controller - 16550";
+        case PciInterface0700::INTERFACE_03: return "Communication controller - Serial controller - 16650";
+        case PciInterface0700::INTERFACE_04: return "Communication controller - Serial controller - 16750";
+        case PciInterface0700::INTERFACE_05: return "Communication controller - Serial controller - 16850";
+        case PciInterface0700::INTERFACE_06: return "Communication controller - Serial controller - 16950";
 
-        default: return "Serial controller";
+        default: return "Communication controller - Serial controller";
     }
 }
 

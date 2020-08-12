@@ -18,7 +18,7 @@ enum class PciSubClass03: u8
     SUB_CLASS_00 = 0x00,
     SUB_CLASS_01 = 0x01,
     SUB_CLASS_02 = 0x02,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -66,9 +66,9 @@ inline const char8* enumToHumanString(PciSubClass03 class03, u8 interfaceId) // 
     switch (class03)
     {
         case PciSubClass03::SUB_CLASS_00: return enumToHumanString((PciInterface0300)interfaceId);
-        case PciSubClass03::SUB_CLASS_01: return "XGA compatible controller";
-        case PciSubClass03::SUB_CLASS_02: return "3D controller";
-        case PciSubClass03::SUB_CLASS_80: return "Display controller";
+        case PciSubClass03::SUB_CLASS_01: return "Display controller - XGA compatible controller";
+        case PciSubClass03::SUB_CLASS_02: return "Display controller - 3D controller";
+        case PciSubClass03::SUB_CLASS_80: return "Display controller - Display controller";
 
         default: return "Display controller";
     }

@@ -28,7 +28,7 @@ enum class PciSubClass06: u8
     SUB_CLASS_08 = 0x08,
     SUB_CLASS_09 = 0x09,
     SUB_CLASS_0A = 0x0A,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -83,18 +83,18 @@ inline const char8* enumToHumanString(PciSubClass06 class06, u8 interfaceId) // 
 
     switch (class06)
     {
-        case PciSubClass06::SUB_CLASS_00: return "Host bridge";
-        case PciSubClass06::SUB_CLASS_01: return "ISA bridge";
-        case PciSubClass06::SUB_CLASS_02: return "EISA bridge";
-        case PciSubClass06::SUB_CLASS_03: return "MicroChannel bridge";
+        case PciSubClass06::SUB_CLASS_00: return "Bridge - Host bridge";
+        case PciSubClass06::SUB_CLASS_01: return "Bridge - ISA bridge";
+        case PciSubClass06::SUB_CLASS_02: return "Bridge - EISA bridge";
+        case PciSubClass06::SUB_CLASS_03: return "Bridge - MicroChannel bridge";
         case PciSubClass06::SUB_CLASS_04: return enumToHumanString((PciInterface0604)interfaceId);
-        case PciSubClass06::SUB_CLASS_05: return "PCMCIA bridge";
-        case PciSubClass06::SUB_CLASS_06: return "NuBus bridge";
-        case PciSubClass06::SUB_CLASS_07: return "CardBus bridge";
+        case PciSubClass06::SUB_CLASS_05: return "Bridge - PCMCIA bridge";
+        case PciSubClass06::SUB_CLASS_06: return "Bridge - NuBus bridge";
+        case PciSubClass06::SUB_CLASS_07: return "Bridge - CardBus bridge";
         case PciSubClass06::SUB_CLASS_08: return enumToHumanString((PciInterface0608)interfaceId);
         case PciSubClass06::SUB_CLASS_09: return enumToHumanString((PciInterface0609)interfaceId);
-        case PciSubClass06::SUB_CLASS_0A: return "InfiniBand to PCI host bridge";
-        case PciSubClass06::SUB_CLASS_80: return "Bridge";
+        case PciSubClass06::SUB_CLASS_0A: return "Bridge - InfiniBand to PCI host bridge";
+        case PciSubClass06::SUB_CLASS_80: return "Bridge - Bridge";
 
         default: return "Bridge";
     }

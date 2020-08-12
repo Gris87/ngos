@@ -17,7 +17,7 @@ enum class PciInterface0802: u8
     INTERFACE_00 = 0x00,
     INTERFACE_01 = 0x01,
     INTERFACE_02 = 0x02,
-    INTERFACE_03 = 0x03,
+    INTERFACE_03 = 0x03
 };
 
 
@@ -64,12 +64,12 @@ inline const char8* enumToHumanString(PciInterface0802 interface0802) // TEST: N
 
     switch (interface0802)
     {
-        case PciInterface0802::INTERFACE_00: return "8254";
-        case PciInterface0802::INTERFACE_01: return "ISA Timer";
-        case PciInterface0802::INTERFACE_02: return "EISA Timers";
-        case PciInterface0802::INTERFACE_03: return "HPET";
+        case PciInterface0802::INTERFACE_00: return "Generic system peripheral - Timer - 8254";
+        case PciInterface0802::INTERFACE_01: return "Generic system peripheral - Timer - ISA Timer";
+        case PciInterface0802::INTERFACE_02: return "Generic system peripheral - Timer - EISA Timers";
+        case PciInterface0802::INTERFACE_03: return "Generic system peripheral - Timer - HPET";
 
-        default: return "Timer";
+        default: return "Generic system peripheral - Timer";
     }
 }
 

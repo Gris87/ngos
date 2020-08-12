@@ -16,7 +16,7 @@ enum class PciSubClass10: u8
 {
     SUB_CLASS_00 = 0x00,
     SUB_CLASS_10 = 0x10,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -54,17 +54,17 @@ inline const char8* enumToFullString(PciSubClass10 class10) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass10 class10, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass10 class10) // TEST: NO
 {
-    // COMMON_LT((" | class10 = %u, interfaceId = %u", class10, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class10 = %u", class10)); // Commented to avoid bad looking logs
 
 
 
     switch (class10)
     {
-        case PciSubClass10::SUB_CLASS_00: return "Network and computing encryption device";
-        case PciSubClass10::SUB_CLASS_10: return "Entertainment encryption device";
-        case PciSubClass10::SUB_CLASS_80: return "Encryption controller";
+        case PciSubClass10::SUB_CLASS_00: return "Encryption controller - Network and computing encryption device";
+        case PciSubClass10::SUB_CLASS_10: return "Encryption controller - Entertainment encryption device";
+        case PciSubClass10::SUB_CLASS_80: return "Encryption controller - Encryption controller";
 
         default: return "Encryption controller";
     }

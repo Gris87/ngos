@@ -15,7 +15,7 @@
 enum class PciSubClass12: u8
 {
     SUB_CLASS_00 = 0x00,
-    SUB_CLASS_01 = 0x01,
+    SUB_CLASS_01 = 0x01
 };
 
 
@@ -52,16 +52,16 @@ inline const char8* enumToFullString(PciSubClass12 class12) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass12 class12, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass12 class12) // TEST: NO
 {
-    // COMMON_LT((" | class12 = %u, interfaceId = %u", class12, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class12 = %u", class12)); // Commented to avoid bad looking logs
 
 
 
     switch (class12)
     {
-        case PciSubClass12::SUB_CLASS_00: return "Processing accelerators";
-        case PciSubClass12::SUB_CLASS_01: return "AI Inference Accelerator";
+        case PciSubClass12::SUB_CLASS_00: return "Processing accelerators - Processing accelerators";
+        case PciSubClass12::SUB_CLASS_01: return "Processing accelerators - AI Inference Accelerator";
 
         default: return "Processing accelerators";
     }

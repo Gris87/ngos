@@ -20,7 +20,7 @@ enum class PciSubClass0B: u8
     SUB_CLASS_10 = 0x10,
     SUB_CLASS_20 = 0x20,
     SUB_CLASS_30 = 0x30,
-    SUB_CLASS_40 = 0x40,
+    SUB_CLASS_40 = 0x40
 };
 
 
@@ -62,21 +62,21 @@ inline const char8* enumToFullString(PciSubClass0B class0B) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass0B class0B, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass0B class0B) // TEST: NO
 {
-    // COMMON_LT((" | class0B = %u, interfaceId = %u", class0B, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class0B = %u", class0B)); // Commented to avoid bad looking logs
 
 
 
     switch (class0B)
     {
-        case PciSubClass0B::SUB_CLASS_00: return "386";
-        case PciSubClass0B::SUB_CLASS_01: return "486";
-        case PciSubClass0B::SUB_CLASS_02: return "Pentium";
-        case PciSubClass0B::SUB_CLASS_10: return "Alpha";
-        case PciSubClass0B::SUB_CLASS_20: return "Power PC";
-        case PciSubClass0B::SUB_CLASS_30: return "MIPS";
-        case PciSubClass0B::SUB_CLASS_40: return "Co-processor";
+        case PciSubClass0B::SUB_CLASS_00: return "Processor - 386";
+        case PciSubClass0B::SUB_CLASS_01: return "Processor - 486";
+        case PciSubClass0B::SUB_CLASS_02: return "Processor - Pentium";
+        case PciSubClass0B::SUB_CLASS_10: return "Processor - Alpha";
+        case PciSubClass0B::SUB_CLASS_20: return "Processor - Power PC";
+        case PciSubClass0B::SUB_CLASS_30: return "Processor - MIPS";
+        case PciSubClass0B::SUB_CLASS_40: return "Processor - Co-processor";
 
         default: return "Processor";
     }

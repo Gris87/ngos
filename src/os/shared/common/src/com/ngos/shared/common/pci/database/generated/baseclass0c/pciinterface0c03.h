@@ -20,7 +20,7 @@ enum class PciInterface0C03: u8
     INTERFACE_30 = 0x30,
     INTERFACE_40 = 0x40,
     INTERFACE_80 = 0x80,
-    INTERFACE_FE = 0xFE,
+    INTERFACE_FE = 0xFE
 };
 
 
@@ -70,15 +70,15 @@ inline const char8* enumToHumanString(PciInterface0C03 interface0C03) // TEST: N
 
     switch (interface0C03)
     {
-        case PciInterface0C03::INTERFACE_00: return "UHCI";
-        case PciInterface0C03::INTERFACE_10: return "OHCI";
-        case PciInterface0C03::INTERFACE_20: return "EHCI";
-        case PciInterface0C03::INTERFACE_30: return "XHCI";
-        case PciInterface0C03::INTERFACE_40: return "USB4 Host Interface";
-        case PciInterface0C03::INTERFACE_80: return "Unspecified";
-        case PciInterface0C03::INTERFACE_FE: return "USB Device";
+        case PciInterface0C03::INTERFACE_00: return "Serial bus controller - USB controller - UHCI";
+        case PciInterface0C03::INTERFACE_10: return "Serial bus controller - USB controller - OHCI";
+        case PciInterface0C03::INTERFACE_20: return "Serial bus controller - USB controller - EHCI";
+        case PciInterface0C03::INTERFACE_30: return "Serial bus controller - USB controller - XHCI";
+        case PciInterface0C03::INTERFACE_40: return "Serial bus controller - USB controller - USB4 Host Interface";
+        case PciInterface0C03::INTERFACE_80: return "Serial bus controller - USB controller - Unspecified";
+        case PciInterface0C03::INTERFACE_FE: return "Serial bus controller - USB controller - USB Device";
 
-        default: return "USB controller";
+        default: return "Serial bus controller - USB controller";
     }
 }
 

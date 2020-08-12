@@ -15,7 +15,7 @@
 enum class PciInterface0904: u8
 {
     INTERFACE_00 = 0x00,
-    INTERFACE_10 = 0x10,
+    INTERFACE_10 = 0x10
 };
 
 
@@ -60,10 +60,10 @@ inline const char8* enumToHumanString(PciInterface0904 interface0904) // TEST: N
 
     switch (interface0904)
     {
-        case PciInterface0904::INTERFACE_00: return "Generic";
-        case PciInterface0904::INTERFACE_10: return "Extended";
+        case PciInterface0904::INTERFACE_00: return "Input device controller - Gameport controller - Generic";
+        case PciInterface0904::INTERFACE_10: return "Input device controller - Gameport controller - Extended";
 
-        default: return "Gameport controller";
+        default: return "Input device controller - Gameport controller";
     }
 }
 

@@ -15,7 +15,7 @@
 enum class PciInterface0604: u8
 {
     INTERFACE_00 = 0x00,
-    INTERFACE_01 = 0x01,
+    INTERFACE_01 = 0x01
 };
 
 
@@ -60,10 +60,10 @@ inline const char8* enumToHumanString(PciInterface0604 interface0604) // TEST: N
 
     switch (interface0604)
     {
-        case PciInterface0604::INTERFACE_00: return "Normal decode";
-        case PciInterface0604::INTERFACE_01: return "Subtractive decode";
+        case PciInterface0604::INTERFACE_00: return "Bridge - PCI bridge - Normal decode";
+        case PciInterface0604::INTERFACE_01: return "Bridge - PCI bridge - Subtractive decode";
 
-        default: return "PCI bridge";
+        default: return "Bridge - PCI bridge";
     }
 }
 

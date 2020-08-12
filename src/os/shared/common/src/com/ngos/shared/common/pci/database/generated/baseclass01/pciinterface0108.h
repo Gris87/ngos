@@ -16,7 +16,7 @@ enum class PciInterface0108: u8
 {
     NONE         = 0,
     INTERFACE_01 = 0x01,
-    INTERFACE_02 = 0x02,
+    INTERFACE_02 = 0x02
 };
 
 
@@ -62,10 +62,10 @@ inline const char8* enumToHumanString(PciInterface0108 interface0108) // TEST: N
 
     switch (interface0108)
     {
-        case PciInterface0108::INTERFACE_01: return "NVMHCI";
-        case PciInterface0108::INTERFACE_02: return "NVM Express";
+        case PciInterface0108::INTERFACE_01: return "Mass storage controller - Non-Volatile memory controller - NVMHCI";
+        case PciInterface0108::INTERFACE_02: return "Mass storage controller - Non-Volatile memory controller - NVM Express";
 
-        default: return "Non-Volatile memory controller";
+        default: return "Mass storage controller - Non-Volatile memory controller";
     }
 }
 

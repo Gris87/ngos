@@ -15,7 +15,7 @@
 enum class PciInterface0608: u8
 {
     INTERFACE_00 = 0x00,
-    INTERFACE_01 = 0x01,
+    INTERFACE_01 = 0x01
 };
 
 
@@ -60,10 +60,10 @@ inline const char8* enumToHumanString(PciInterface0608 interface0608) // TEST: N
 
     switch (interface0608)
     {
-        case PciInterface0608::INTERFACE_00: return "Transparent mode";
-        case PciInterface0608::INTERFACE_01: return "Endpoint mode";
+        case PciInterface0608::INTERFACE_00: return "Bridge - RACEway bridge - Transparent mode";
+        case PciInterface0608::INTERFACE_01: return "Bridge - RACEway bridge - Endpoint mode";
 
-        default: return "RACEway bridge";
+        default: return "Bridge - RACEway bridge";
     }
 }
 

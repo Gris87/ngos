@@ -18,7 +18,7 @@ enum class PciSubClass04: u8
     SUB_CLASS_01 = 0x01,
     SUB_CLASS_02 = 0x02,
     SUB_CLASS_03 = 0x03,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -58,19 +58,19 @@ inline const char8* enumToFullString(PciSubClass04 class04) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass04 class04, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass04 class04) // TEST: NO
 {
-    // COMMON_LT((" | class04 = %u, interfaceId = %u", class04, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class04 = %u", class04)); // Commented to avoid bad looking logs
 
 
 
     switch (class04)
     {
-        case PciSubClass04::SUB_CLASS_00: return "Multimedia video controller";
-        case PciSubClass04::SUB_CLASS_01: return "Multimedia audio controller";
-        case PciSubClass04::SUB_CLASS_02: return "Computer telephony device";
-        case PciSubClass04::SUB_CLASS_03: return "Audio device";
-        case PciSubClass04::SUB_CLASS_80: return "Multimedia controller";
+        case PciSubClass04::SUB_CLASS_00: return "Multimedia controller - Multimedia video controller";
+        case PciSubClass04::SUB_CLASS_01: return "Multimedia controller - Multimedia audio controller";
+        case PciSubClass04::SUB_CLASS_02: return "Multimedia controller - Computer telephony device";
+        case PciSubClass04::SUB_CLASS_03: return "Multimedia controller - Audio device";
+        case PciSubClass04::SUB_CLASS_80: return "Multimedia controller - Multimedia controller";
 
         default: return "Multimedia controller";
     }

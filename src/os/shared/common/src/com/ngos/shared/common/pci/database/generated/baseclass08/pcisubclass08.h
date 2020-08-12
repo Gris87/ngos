@@ -25,7 +25,7 @@ enum class PciSubClass08: u8
     SUB_CLASS_04 = 0x04,
     SUB_CLASS_05 = 0x05,
     SUB_CLASS_06 = 0x06,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -80,10 +80,10 @@ inline const char8* enumToHumanString(PciSubClass08 class08, u8 interfaceId) // 
         case PciSubClass08::SUB_CLASS_01: return enumToHumanString((PciInterface0801)interfaceId);
         case PciSubClass08::SUB_CLASS_02: return enumToHumanString((PciInterface0802)interfaceId);
         case PciSubClass08::SUB_CLASS_03: return enumToHumanString((PciInterface0803)interfaceId);
-        case PciSubClass08::SUB_CLASS_04: return "PCI Hot-plug controller";
-        case PciSubClass08::SUB_CLASS_05: return "SD Host controller";
-        case PciSubClass08::SUB_CLASS_06: return "IOMMU";
-        case PciSubClass08::SUB_CLASS_80: return "System peripheral";
+        case PciSubClass08::SUB_CLASS_04: return "Generic system peripheral - PCI Hot-plug controller";
+        case PciSubClass08::SUB_CLASS_05: return "Generic system peripheral - SD Host controller";
+        case PciSubClass08::SUB_CLASS_06: return "Generic system peripheral - IOMMU";
+        case PciSubClass08::SUB_CLASS_80: return "Generic system peripheral - System peripheral";
 
         default: return "Generic system peripheral";
     }

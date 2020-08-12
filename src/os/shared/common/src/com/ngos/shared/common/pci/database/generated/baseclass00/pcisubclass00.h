@@ -15,7 +15,7 @@
 enum class PciSubClass00: u8
 {
     SUB_CLASS_00 = 0x00,
-    SUB_CLASS_01 = 0x01,
+    SUB_CLASS_01 = 0x01
 };
 
 
@@ -52,16 +52,16 @@ inline const char8* enumToFullString(PciSubClass00 class00) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass00 class00, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass00 class00) // TEST: NO
 {
-    // COMMON_LT((" | class00 = %u, interfaceId = %u", class00, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class00 = %u", class00)); // Commented to avoid bad looking logs
 
 
 
     switch (class00)
     {
-        case PciSubClass00::SUB_CLASS_00: return "Non-VGA unclassified device";
-        case PciSubClass00::SUB_CLASS_01: return "VGA compatible unclassified device";
+        case PciSubClass00::SUB_CLASS_00: return "Unclassified device - Non-VGA unclassified device";
+        case PciSubClass00::SUB_CLASS_01: return "Unclassified device - VGA compatible unclassified device";
 
         default: return "Unclassified device";
     }

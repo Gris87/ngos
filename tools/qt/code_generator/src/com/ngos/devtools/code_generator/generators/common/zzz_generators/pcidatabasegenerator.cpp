@@ -153,7 +153,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 
 
-    // Parse base classes, sub classes and interfaces
+    // Parse base classes, subclasses and interfaces
     {
         PciSubClasses *subClasses = nullptr;
         PciInterfaces *interfaces = nullptr;
@@ -267,7 +267,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 bool PciDatabaseGenerator::generateBaseClasses(const QString &path, const PciBaseClasses &baseClasses)
 {
-    // Iterate over base classes and generate sub classes
+    // Iterate over base classes and generate subclasses
     {
         QMapIterator<quint16, PciSubClasses> it(baseClasses);
 
@@ -297,7 +297,7 @@ bool PciDatabaseGenerator::generateBaseClasses(const QString &path, const PciBas
 
 bool PciDatabaseGenerator::generateSubClasses(const QString &path, quint16 baseClassId, const PciSubClasses &subClasses)
 {
-    // Iterate over sub classes and generate interfaces
+    // Iterate over subclasses and generate interfaces
     {
         QMapIterator<quint16, PciInterfaces> it(subClasses);
 
@@ -314,7 +314,7 @@ bool PciDatabaseGenerator::generateSubClasses(const QString &path, quint16 baseC
                 !interfaces.contains(0xFFFF)
                )
             {
-                if (!generateInterfacesFile(path, baseClassId, subClassId, interfaces))
+                if (!generateInterfacesFile(path, baseClassId, subClasses.value(0xFFFF).value(0xFFFF), subClassId, interfaces))
                 {
                     return false;
                 }
@@ -384,7 +384,13 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
             quint16 baseClassId    = it.key();
             QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
 
-            lines.append(QString("    BASE_CLASS_%1 = 0x%1%2").arg(baseClassIdStr, 2, QChar('0')).arg(it.hasNext() ? "," : "")); // Ignore CppSingleCharVerifier
+            lines.append(QString("    BASE_CLASS_%1 = 0x%1,").arg(baseClassIdStr, 2, QChar('0')));
+        }
+
+        // Remove ',' from the previous line
+        {
+            QString &previousLine = lines.last();
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -493,7 +499,45 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
                 !subClasses.contains(0xFFFF)
                )
             {
-                lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId, interfaceId);").arg(baseClassIdStr, 2, QChar('0')));
+                bool interfaceIdUsed = false;
+
+                // Check that interfaceId used
+                {
+                    QMapIterator<quint16, PciInterfaces> it(subClasses);
+
+                    while (it.hasNext())
+                    {
+                        it.next();
+
+                        quint16              subClassId = it.key();
+                        const PciInterfaces &interfaces = it.value();
+
+                        if (subClassId != 0xFFFF)
+                        {
+                            if (
+                                interfaces.size() > 1
+                                ||
+                                !interfaces.contains(0xFFFF)
+                               )
+                            {
+                                interfaceIdUsed = true;
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+
+                if (interfaceIdUsed)
+                {
+                    lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId, interfaceId);").arg(baseClassIdStr, 2, QChar('0')));
+                }
+                else
+                {
+                    lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId);").arg(baseClassIdStr, 2, QChar('0')));
+                }
             }
             else
             {
@@ -584,8 +628,14 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
             {
                 QString subClassIdStr = QString::number(subClassId, 16).toUpper();
 
-                lines.append(QString("    SUB_CLASS_%1 = 0x%1%2").arg(subClassIdStr, 2, QChar('0')).arg(it.hasNext() ? "," : "")); // Ignore CppSingleCharVerifier
+                lines.append(QString("    SUB_CLASS_%1 = 0x%1,").arg(subClassIdStr, 2, QChar('0')));
             }
+        }
+
+        // Remove ',' from the previous line
+        {
+            QString &previousLine = lines.last();
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -665,7 +715,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
 
     // inline const char8* enumToHumanString(PciSubClass subClass, u8 interfaceId)
     {
-        QString unknownValue = "Unknown device";
+        QString unknownValue = subClasses.value(0xFFFF).value(0xFFFF);
 
 
 
@@ -673,10 +723,53 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
 
 
 
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 class%1, u8 interfaceId) // TEST: NO").arg(baseClassIdStr, 2, QChar('0')));
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append(QString("    // COMMON_LT((\" | class%1 = %u, interfaceId = %u\", class%1, interfaceId)); // Commented to avoid bad looking logs").arg(baseClassIdStr, 2, QChar('0')));
+        bool interfaceIdUsed = false;
+
+        // Check that interfaceId used
+        {
+            QMapIterator<quint16, PciInterfaces> it(subClasses);
+
+            while (it.hasNext())
+            {
+                it.next();
+
+                quint16              subClassId = it.key();
+                const PciInterfaces &interfaces = it.value();
+
+                if (subClassId != 0xFFFF)
+                {
+                    if (
+                        interfaces.size() > 1
+                        ||
+                        !interfaces.contains(0xFFFF)
+                       )
+                    {
+                        interfaceIdUsed = true;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+
+
+        if (interfaceIdUsed)
+        {
+            // Ignore CppAlignmentVerifier [BEGIN]
+            lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 class%1, u8 interfaceId) // TEST: NO").arg(baseClassIdStr, 2, QChar('0')));
+            lines.append("{"); // Ignore CppSingleCharVerifier
+            lines.append(QString("    // COMMON_LT((\" | class%1 = %u, interfaceId = %u\", class%1, interfaceId)); // Commented to avoid bad looking logs").arg(baseClassIdStr, 2, QChar('0')));
+        }
+        else
+        {
+            // Ignore CppAlignmentVerifier [BEGIN]
+            lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 class%1) // TEST: NO").arg(baseClassIdStr, 2, QChar('0')));
+            lines.append("{"); // Ignore CppSingleCharVerifier
+            lines.append(QString("    // COMMON_LT((\" | class%1 = %u\", class%1)); // Commented to avoid bad looking logs").arg(baseClassIdStr, 2, QChar('0')));
+        }
+
+
 
         addThreeBlankLines(lines);
 
@@ -706,12 +799,8 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
                 }
                 else
                 {
-                    lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"%3\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg(interfaces.value(0xFFFF)));
+                    lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"%3 - %4\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg(unknownValue).arg(interfaces.value(0xFFFF)));
                 }
-            }
-            else
-            {
-                unknownValue = interfaces.value(0xFFFF);
             }
         }
 
@@ -727,7 +816,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint16 b
     return save(QString(path + FOLDER_PATH + "baseclass%1/pcisubclass%1.h").arg(baseClassId, 2, 16, QChar('0')), lines);
 }
 
-bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint16 baseClassId, quint16 subClassId, const PciInterfaces &interfaces)
+bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint16 baseClassId, const QString &baseClassDescription, quint16 subClassId, const PciInterfaces &interfaces)
 {
     QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
     QString subClassIdStr  = QString::number(subClassId,  16).toUpper();
@@ -784,8 +873,14 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint16 b
             {
                 QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();
 
-                lines.append(QString("    INTERFACE_%1 = 0x%1%2").arg(interfaceIdStr, 2, QChar('0')).arg(it.hasNext() ? "," : "")); // Ignore CppSingleCharVerifier
+                lines.append(QString("    INTERFACE_%1 = 0x%1,").arg(interfaceIdStr, 2, QChar('0')));
             }
+        }
+
+        // Remove ',' from the previous line
+        {
+            QString &previousLine = lines.last();
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -865,7 +960,7 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint16 b
 
     // inline const char8* enumToHumanString(PciInterface interface)
     {
-        QString unknownValue = "Unknown device";
+        QString unknownValue = baseClassDescription + " - " + interfaces.value(0xFFFF);
 
 
 
@@ -896,11 +991,7 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint16 b
             {
                 QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();
 
-                lines.append(QString("        case PciInterface%1%2::INTERFACE_%3: return \"%4\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg(interfaceIdStr, 2, QChar('0')).arg(description));
-            }
-            else
-            {
-                unknownValue = description;
+                lines.append(QString("        case PciInterface%1%2::INTERFACE_%3: return \"%4 - %5\";").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')).arg(interfaceIdStr, 2, QChar('0')).arg(unknownValue).arg(description));
             }
         }
 

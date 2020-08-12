@@ -16,7 +16,7 @@ enum class PciInterface0C07: u8
 {
     INTERFACE_00 = 0x00,
     INTERFACE_01 = 0x01,
-    INTERFACE_02 = 0x02,
+    INTERFACE_02 = 0x02
 };
 
 
@@ -62,11 +62,11 @@ inline const char8* enumToHumanString(PciInterface0C07 interface0C07) // TEST: N
 
     switch (interface0C07)
     {
-        case PciInterface0C07::INTERFACE_00: return "SMIC";
-        case PciInterface0C07::INTERFACE_01: return "KCS";
-        case PciInterface0C07::INTERFACE_02: return "BT (Block Transfer)";
+        case PciInterface0C07::INTERFACE_00: return "Serial bus controller - IPMI Interface - SMIC";
+        case PciInterface0C07::INTERFACE_01: return "Serial bus controller - IPMI Interface - KCS";
+        case PciInterface0C07::INTERFACE_02: return "Serial bus controller - IPMI Interface - BT (Block Transfer)";
 
-        default: return "IPMI Interface";
+        default: return "Serial bus controller - IPMI Interface";
     }
 }
 

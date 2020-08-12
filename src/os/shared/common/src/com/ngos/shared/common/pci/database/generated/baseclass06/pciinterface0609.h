@@ -16,7 +16,7 @@ enum class PciInterface0609: u8
 {
     NONE         = 0,
     INTERFACE_40 = 0x40,
-    INTERFACE_80 = 0x80,
+    INTERFACE_80 = 0x80
 };
 
 
@@ -62,10 +62,10 @@ inline const char8* enumToHumanString(PciInterface0609 interface0609) // TEST: N
 
     switch (interface0609)
     {
-        case PciInterface0609::INTERFACE_40: return "Primary bus towards host CPU";
-        case PciInterface0609::INTERFACE_80: return "Secondary bus towards host CPU";
+        case PciInterface0609::INTERFACE_40: return "Bridge - Semi-transparent PCI-to-PCI bridge - Primary bus towards host CPU";
+        case PciInterface0609::INTERFACE_80: return "Bridge - Semi-transparent PCI-to-PCI bridge - Secondary bus towards host CPU";
 
-        default: return "Semi-transparent PCI-to-PCI bridge";
+        default: return "Bridge - Semi-transparent PCI-to-PCI bridge";
     }
 }
 

@@ -21,7 +21,7 @@ enum class PciInterface0101: u8
     INTERFACE_80 = 0x80,
     INTERFACE_85 = 0x85,
     INTERFACE_8A = 0x8A,
-    INTERFACE_8F = 0x8F,
+    INTERFACE_8F = 0x8F
 };
 
 
@@ -72,16 +72,16 @@ inline const char8* enumToHumanString(PciInterface0101 interface0101) // TEST: N
 
     switch (interface0101)
     {
-        case PciInterface0101::INTERFACE_00: return "ISA Compatibility mode-only controller";
-        case PciInterface0101::INTERFACE_05: return "PCI native mode-only controller";
-        case PciInterface0101::INTERFACE_0A: return "ISA Compatibility mode controller, supports both channels switched to PCI native mode";
-        case PciInterface0101::INTERFACE_0F: return "PCI native mode controller, supports both channels switched to ISA compatibility mode";
-        case PciInterface0101::INTERFACE_80: return "ISA Compatibility mode-only controller, supports bus mastering";
-        case PciInterface0101::INTERFACE_85: return "PCI native mode-only controller, supports bus mastering";
-        case PciInterface0101::INTERFACE_8A: return "ISA Compatibility mode controller, supports both channels switched to PCI native mode, supports bus mastering";
-        case PciInterface0101::INTERFACE_8F: return "PCI native mode controller, supports both channels switched to ISA compatibility mode, supports bus mastering";
+        case PciInterface0101::INTERFACE_00: return "Mass storage controller - IDE interface - ISA Compatibility mode-only controller";
+        case PciInterface0101::INTERFACE_05: return "Mass storage controller - IDE interface - PCI native mode-only controller";
+        case PciInterface0101::INTERFACE_0A: return "Mass storage controller - IDE interface - ISA Compatibility mode controller, supports both channels switched to PCI native mode";
+        case PciInterface0101::INTERFACE_0F: return "Mass storage controller - IDE interface - PCI native mode controller, supports both channels switched to ISA compatibility mode";
+        case PciInterface0101::INTERFACE_80: return "Mass storage controller - IDE interface - ISA Compatibility mode-only controller, supports bus mastering";
+        case PciInterface0101::INTERFACE_85: return "Mass storage controller - IDE interface - PCI native mode-only controller, supports bus mastering";
+        case PciInterface0101::INTERFACE_8A: return "Mass storage controller - IDE interface - ISA Compatibility mode controller, supports both channels switched to PCI native mode, supports bus mastering";
+        case PciInterface0101::INTERFACE_8F: return "Mass storage controller - IDE interface - PCI native mode controller, supports both channels switched to ISA compatibility mode, supports bus mastering";
 
-        default: return "IDE interface";
+        default: return "Mass storage controller - IDE interface";
     }
 }
 

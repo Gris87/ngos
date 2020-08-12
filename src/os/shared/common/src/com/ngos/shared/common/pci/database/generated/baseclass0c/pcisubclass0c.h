@@ -26,7 +26,7 @@ enum class PciSubClass0C: u8
     SUB_CLASS_06 = 0x06,
     SUB_CLASS_07 = 0x07,
     SUB_CLASS_08 = 0x08,
-    SUB_CLASS_09 = 0x09,
+    SUB_CLASS_09 = 0x09
 };
 
 
@@ -80,15 +80,15 @@ inline const char8* enumToHumanString(PciSubClass0C class0C, u8 interfaceId) // 
     switch (class0C)
     {
         case PciSubClass0C::SUB_CLASS_00: return enumToHumanString((PciInterface0C00)interfaceId);
-        case PciSubClass0C::SUB_CLASS_01: return "ACCESS Bus";
-        case PciSubClass0C::SUB_CLASS_02: return "SSA";
+        case PciSubClass0C::SUB_CLASS_01: return "Serial bus controller - ACCESS Bus";
+        case PciSubClass0C::SUB_CLASS_02: return "Serial bus controller - SSA";
         case PciSubClass0C::SUB_CLASS_03: return enumToHumanString((PciInterface0C03)interfaceId);
-        case PciSubClass0C::SUB_CLASS_04: return "Fibre Channel";
-        case PciSubClass0C::SUB_CLASS_05: return "SMBus";
-        case PciSubClass0C::SUB_CLASS_06: return "InfiniBand";
+        case PciSubClass0C::SUB_CLASS_04: return "Serial bus controller - Fibre Channel";
+        case PciSubClass0C::SUB_CLASS_05: return "Serial bus controller - SMBus";
+        case PciSubClass0C::SUB_CLASS_06: return "Serial bus controller - InfiniBand";
         case PciSubClass0C::SUB_CLASS_07: return enumToHumanString((PciInterface0C07)interfaceId);
-        case PciSubClass0C::SUB_CLASS_08: return "SERCOS interface";
-        case PciSubClass0C::SUB_CLASS_09: return "CANBUS";
+        case PciSubClass0C::SUB_CLASS_08: return "Serial bus controller - SERCOS interface";
+        case PciSubClass0C::SUB_CLASS_09: return "Serial bus controller - CANBUS";
 
         default: return "Serial bus controller";
     }

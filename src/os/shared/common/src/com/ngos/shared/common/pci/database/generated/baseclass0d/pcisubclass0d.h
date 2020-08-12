@@ -21,7 +21,7 @@ enum class PciSubClass0D: u8
     SUB_CLASS_12 = 0x12,
     SUB_CLASS_20 = 0x20,
     SUB_CLASS_21 = 0x21,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -64,22 +64,22 @@ inline const char8* enumToFullString(PciSubClass0D class0D) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass0D class0D, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass0D class0D) // TEST: NO
 {
-    // COMMON_LT((" | class0D = %u, interfaceId = %u", class0D, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class0D = %u", class0D)); // Commented to avoid bad looking logs
 
 
 
     switch (class0D)
     {
-        case PciSubClass0D::SUB_CLASS_00: return "IRDA controller";
-        case PciSubClass0D::SUB_CLASS_01: return "Consumer IR controller";
-        case PciSubClass0D::SUB_CLASS_10: return "RF controller";
-        case PciSubClass0D::SUB_CLASS_11: return "Bluetooth";
-        case PciSubClass0D::SUB_CLASS_12: return "Broadband";
-        case PciSubClass0D::SUB_CLASS_20: return "802.1a controller";
-        case PciSubClass0D::SUB_CLASS_21: return "802.1b controller";
-        case PciSubClass0D::SUB_CLASS_80: return "Wireless controller";
+        case PciSubClass0D::SUB_CLASS_00: return "Wireless controller - IRDA controller";
+        case PciSubClass0D::SUB_CLASS_01: return "Wireless controller - Consumer IR controller";
+        case PciSubClass0D::SUB_CLASS_10: return "Wireless controller - RF controller";
+        case PciSubClass0D::SUB_CLASS_11: return "Wireless controller - Bluetooth";
+        case PciSubClass0D::SUB_CLASS_12: return "Wireless controller - Broadband";
+        case PciSubClass0D::SUB_CLASS_20: return "Wireless controller - 802.1a controller";
+        case PciSubClass0D::SUB_CLASS_21: return "Wireless controller - 802.1b controller";
+        case PciSubClass0D::SUB_CLASS_80: return "Wireless controller - Wireless controller";
 
         default: return "Wireless controller";
     }

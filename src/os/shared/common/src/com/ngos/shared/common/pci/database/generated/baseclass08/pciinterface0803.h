@@ -15,7 +15,7 @@
 enum class PciInterface0803: u8
 {
     INTERFACE_00 = 0x00,
-    INTERFACE_01 = 0x01,
+    INTERFACE_01 = 0x01
 };
 
 
@@ -60,10 +60,10 @@ inline const char8* enumToHumanString(PciInterface0803 interface0803) // TEST: N
 
     switch (interface0803)
     {
-        case PciInterface0803::INTERFACE_00: return "Generic";
-        case PciInterface0803::INTERFACE_01: return "ISA RTC";
+        case PciInterface0803::INTERFACE_00: return "Generic system peripheral - RTC - Generic";
+        case PciInterface0803::INTERFACE_01: return "Generic system peripheral - RTC - ISA RTC";
 
-        default: return "RTC";
+        default: return "Generic system peripheral - RTC";
     }
 }
 

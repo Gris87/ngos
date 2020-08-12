@@ -119,25 +119,25 @@ inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 
 
     switch (baseClass)
     {
-        case PciBaseClass::BASE_CLASS_00: return enumToHumanString((PciSubClass00)subClassId, interfaceId);
+        case PciBaseClass::BASE_CLASS_00: return enumToHumanString((PciSubClass00)subClassId);
         case PciBaseClass::BASE_CLASS_01: return enumToHumanString((PciSubClass01)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_02: return enumToHumanString((PciSubClass02)subClassId, interfaceId);
+        case PciBaseClass::BASE_CLASS_02: return enumToHumanString((PciSubClass02)subClassId);
         case PciBaseClass::BASE_CLASS_03: return enumToHumanString((PciSubClass03)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_04: return enumToHumanString((PciSubClass04)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_05: return enumToHumanString((PciSubClass05)subClassId, interfaceId);
+        case PciBaseClass::BASE_CLASS_04: return enumToHumanString((PciSubClass04)subClassId);
+        case PciBaseClass::BASE_CLASS_05: return enumToHumanString((PciSubClass05)subClassId);
         case PciBaseClass::BASE_CLASS_06: return enumToHumanString((PciSubClass06)subClassId, interfaceId);
         case PciBaseClass::BASE_CLASS_07: return enumToHumanString((PciSubClass07)subClassId, interfaceId);
         case PciBaseClass::BASE_CLASS_08: return enumToHumanString((PciSubClass08)subClassId, interfaceId);
         case PciBaseClass::BASE_CLASS_09: return enumToHumanString((PciSubClass09)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_0A: return enumToHumanString((PciSubClass0A)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_0B: return enumToHumanString((PciSubClass0B)subClassId, interfaceId);
+        case PciBaseClass::BASE_CLASS_0A: return enumToHumanString((PciSubClass0A)subClassId);
+        case PciBaseClass::BASE_CLASS_0B: return enumToHumanString((PciSubClass0B)subClassId);
         case PciBaseClass::BASE_CLASS_0C: return enumToHumanString((PciSubClass0C)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_0D: return enumToHumanString((PciSubClass0D)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_0E: return enumToHumanString((PciSubClass0E)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_0F: return enumToHumanString((PciSubClass0F)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_10: return enumToHumanString((PciSubClass10)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_11: return enumToHumanString((PciSubClass11)subClassId, interfaceId);
-        case PciBaseClass::BASE_CLASS_12: return enumToHumanString((PciSubClass12)subClassId, interfaceId);
+        case PciBaseClass::BASE_CLASS_0D: return enumToHumanString((PciSubClass0D)subClassId);
+        case PciBaseClass::BASE_CLASS_0E: return enumToHumanString((PciSubClass0E)subClassId);
+        case PciBaseClass::BASE_CLASS_0F: return enumToHumanString((PciSubClass0F)subClassId);
+        case PciBaseClass::BASE_CLASS_10: return enumToHumanString((PciSubClass10)subClassId);
+        case PciBaseClass::BASE_CLASS_11: return enumToHumanString((PciSubClass11)subClassId);
+        case PciBaseClass::BASE_CLASS_12: return enumToHumanString((PciSubClass12)subClassId);
         case PciBaseClass::BASE_CLASS_13: return "Non-Essential Instrumentation";
         case PciBaseClass::BASE_CLASS_40: return "Coprocessor";
         case PciBaseClass::BASE_CLASS_FF: return "Unassigned class";

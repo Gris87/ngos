@@ -14,7 +14,7 @@
 
 enum class PciSubClass0E: u8
 {
-    SUB_CLASS_00 = 0x00,
+    SUB_CLASS_00 = 0x00
 };
 
 
@@ -50,15 +50,15 @@ inline const char8* enumToFullString(PciSubClass0E class0E) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass0E class0E, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass0E class0E) // TEST: NO
 {
-    // COMMON_LT((" | class0E = %u, interfaceId = %u", class0E, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class0E = %u", class0E)); // Commented to avoid bad looking logs
 
 
 
     switch (class0E)
     {
-        case PciSubClass0E::SUB_CLASS_00: return "I2O";
+        case PciSubClass0E::SUB_CLASS_00: return "Intelligent controller - I2O";
 
         default: return "Intelligent controller";
     }

@@ -16,7 +16,7 @@ enum class PciSubClass05: u8
 {
     SUB_CLASS_00 = 0x00,
     SUB_CLASS_01 = 0x01,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -54,17 +54,17 @@ inline const char8* enumToFullString(PciSubClass05 class05) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass05 class05, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass05 class05) // TEST: NO
 {
-    // COMMON_LT((" | class05 = %u, interfaceId = %u", class05, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class05 = %u", class05)); // Commented to avoid bad looking logs
 
 
 
     switch (class05)
     {
-        case PciSubClass05::SUB_CLASS_00: return "RAM memory";
-        case PciSubClass05::SUB_CLASS_01: return "FLASH memory";
-        case PciSubClass05::SUB_CLASS_80: return "Memory controller";
+        case PciSubClass05::SUB_CLASS_00: return "Memory controller - RAM memory";
+        case PciSubClass05::SUB_CLASS_01: return "Memory controller - FLASH memory";
+        case PciSubClass05::SUB_CLASS_80: return "Memory controller - Memory controller";
 
         default: return "Memory controller";
     }

@@ -27,7 +27,7 @@ private:
     bool generateSubClasses(const QString &path, quint16 baseClassId, const PciSubClasses &subClasses); // TEST: NO
     bool generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses); // TEST: NO
     bool generateSubClassesFile(const QString &path, quint16 baseClassId, const PciSubClasses &subClasses); // TEST: NO
-    bool generateInterfacesFile(const QString &path, quint16 baseClassId, quint16 subClassId, const PciInterfaces &interfaces); // TEST: NO
+    bool generateInterfacesFile(const QString &path, quint16 baseClassId, const QString &baseClassDescription, quint16 subClassId, const PciInterfaces &interfaces); // TEST: NO
 };
 
 

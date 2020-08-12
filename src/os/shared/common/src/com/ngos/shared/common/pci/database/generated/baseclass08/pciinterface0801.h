@@ -16,7 +16,7 @@ enum class PciInterface0801: u8
 {
     INTERFACE_00 = 0x00,
     INTERFACE_01 = 0x01,
-    INTERFACE_02 = 0x02,
+    INTERFACE_02 = 0x02
 };
 
 
@@ -62,11 +62,11 @@ inline const char8* enumToHumanString(PciInterface0801 interface0801) // TEST: N
 
     switch (interface0801)
     {
-        case PciInterface0801::INTERFACE_00: return "8237";
-        case PciInterface0801::INTERFACE_01: return "ISA DMA";
-        case PciInterface0801::INTERFACE_02: return "EISA DMA";
+        case PciInterface0801::INTERFACE_00: return "Generic system peripheral - DMA controller - 8237";
+        case PciInterface0801::INTERFACE_01: return "Generic system peripheral - DMA controller - ISA DMA";
+        case PciInterface0801::INTERFACE_02: return "Generic system peripheral - DMA controller - EISA DMA";
 
-        default: return "DMA controller";
+        default: return "Generic system peripheral - DMA controller";
     }
 }
 

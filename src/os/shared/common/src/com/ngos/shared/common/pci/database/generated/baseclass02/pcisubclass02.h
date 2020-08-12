@@ -23,7 +23,7 @@ enum class PciSubClass02: u8
     SUB_CLASS_06 = 0x06,
     SUB_CLASS_07 = 0x07,
     SUB_CLASS_08 = 0x08,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -68,24 +68,24 @@ inline const char8* enumToFullString(PciSubClass02 class02) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass02 class02, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass02 class02) // TEST: NO
 {
-    // COMMON_LT((" | class02 = %u, interfaceId = %u", class02, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class02 = %u", class02)); // Commented to avoid bad looking logs
 
 
 
     switch (class02)
     {
-        case PciSubClass02::SUB_CLASS_00: return "Ethernet controller";
-        case PciSubClass02::SUB_CLASS_01: return "Token ring network controller";
-        case PciSubClass02::SUB_CLASS_02: return "FDDI network controller";
-        case PciSubClass02::SUB_CLASS_03: return "ATM network controller";
-        case PciSubClass02::SUB_CLASS_04: return "ISDN controller";
-        case PciSubClass02::SUB_CLASS_05: return "WorldFip controller";
-        case PciSubClass02::SUB_CLASS_06: return "PICMG controller";
-        case PciSubClass02::SUB_CLASS_07: return "Infiniband controller";
-        case PciSubClass02::SUB_CLASS_08: return "Fabric controller";
-        case PciSubClass02::SUB_CLASS_80: return "Network controller";
+        case PciSubClass02::SUB_CLASS_00: return "Network controller - Ethernet controller";
+        case PciSubClass02::SUB_CLASS_01: return "Network controller - Token ring network controller";
+        case PciSubClass02::SUB_CLASS_02: return "Network controller - FDDI network controller";
+        case PciSubClass02::SUB_CLASS_03: return "Network controller - ATM network controller";
+        case PciSubClass02::SUB_CLASS_04: return "Network controller - ISDN controller";
+        case PciSubClass02::SUB_CLASS_05: return "Network controller - WorldFip controller";
+        case PciSubClass02::SUB_CLASS_06: return "Network controller - PICMG controller";
+        case PciSubClass02::SUB_CLASS_07: return "Network controller - Infiniband controller";
+        case PciSubClass02::SUB_CLASS_08: return "Network controller - Fabric controller";
+        case PciSubClass02::SUB_CLASS_80: return "Network controller - Network controller";
 
         default: return "Network controller";
     }

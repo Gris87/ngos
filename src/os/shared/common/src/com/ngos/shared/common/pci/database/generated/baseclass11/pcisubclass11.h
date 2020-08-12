@@ -18,7 +18,7 @@ enum class PciSubClass11: u8
     SUB_CLASS_01 = 0x01,
     SUB_CLASS_10 = 0x10,
     SUB_CLASS_20 = 0x20,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -58,19 +58,19 @@ inline const char8* enumToFullString(PciSubClass11 class11) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass11 class11, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass11 class11) // TEST: NO
 {
-    // COMMON_LT((" | class11 = %u, interfaceId = %u", class11, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | class11 = %u", class11)); // Commented to avoid bad looking logs
 
 
 
     switch (class11)
     {
-        case PciSubClass11::SUB_CLASS_00: return "DPIO module";
-        case PciSubClass11::SUB_CLASS_01: return "Performance counters";
-        case PciSubClass11::SUB_CLASS_10: return "Communication synchronizer";
-        case PciSubClass11::SUB_CLASS_20: return "Signal processing management";
-        case PciSubClass11::SUB_CLASS_80: return "Signal processing controller";
+        case PciSubClass11::SUB_CLASS_00: return "Signal processing controller - DPIO module";
+        case PciSubClass11::SUB_CLASS_01: return "Signal processing controller - Performance counters";
+        case PciSubClass11::SUB_CLASS_10: return "Signal processing controller - Communication synchronizer";
+        case PciSubClass11::SUB_CLASS_20: return "Signal processing controller - Signal processing management";
+        case PciSubClass11::SUB_CLASS_80: return "Signal processing controller - Signal processing controller";
 
         default: return "Signal processing controller";
     }

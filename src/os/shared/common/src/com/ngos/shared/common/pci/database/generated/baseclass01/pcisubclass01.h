@@ -28,7 +28,7 @@ enum class PciSubClass01: u8
     SUB_CLASS_06 = 0x06,
     SUB_CLASS_07 = 0x07,
     SUB_CLASS_08 = 0x08,
-    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -81,16 +81,16 @@ inline const char8* enumToHumanString(PciSubClass01 class01, u8 interfaceId) // 
 
     switch (class01)
     {
-        case PciSubClass01::SUB_CLASS_00: return "SCSI storage controller";
+        case PciSubClass01::SUB_CLASS_00: return "Mass storage controller - SCSI storage controller";
         case PciSubClass01::SUB_CLASS_01: return enumToHumanString((PciInterface0101)interfaceId);
-        case PciSubClass01::SUB_CLASS_02: return "Floppy disk controller";
-        case PciSubClass01::SUB_CLASS_03: return "IPI bus controller";
-        case PciSubClass01::SUB_CLASS_04: return "RAID bus controller";
+        case PciSubClass01::SUB_CLASS_02: return "Mass storage controller - Floppy disk controller";
+        case PciSubClass01::SUB_CLASS_03: return "Mass storage controller - IPI bus controller";
+        case PciSubClass01::SUB_CLASS_04: return "Mass storage controller - RAID bus controller";
         case PciSubClass01::SUB_CLASS_05: return enumToHumanString((PciInterface0105)interfaceId);
         case PciSubClass01::SUB_CLASS_06: return enumToHumanString((PciInterface0106)interfaceId);
         case PciSubClass01::SUB_CLASS_07: return enumToHumanString((PciInterface0107)interfaceId);
         case PciSubClass01::SUB_CLASS_08: return enumToHumanString((PciInterface0108)interfaceId);
-        case PciSubClass01::SUB_CLASS_80: return "Mass storage controller";
+        case PciSubClass01::SUB_CLASS_80: return "Mass storage controller - Mass storage controller";
 
         default: return "Mass storage controller";
     }

@@ -16,7 +16,7 @@ enum class PciInterface0106: u8
 {
     INTERFACE_00 = 0x00,
     INTERFACE_01 = 0x01,
-    INTERFACE_02 = 0x02,
+    INTERFACE_02 = 0x02
 };
 
 
@@ -62,11 +62,11 @@ inline const char8* enumToHumanString(PciInterface0106 interface0106) // TEST: N
 
     switch (interface0106)
     {
-        case PciInterface0106::INTERFACE_00: return "Vendor specific";
-        case PciInterface0106::INTERFACE_01: return "AHCI 1.0";
-        case PciInterface0106::INTERFACE_02: return "Serial Storage Bus";
+        case PciInterface0106::INTERFACE_00: return "Mass storage controller - SATA controller - Vendor specific";
+        case PciInterface0106::INTERFACE_01: return "Mass storage controller - SATA controller - AHCI 1.0";
+        case PciInterface0106::INTERFACE_02: return "Mass storage controller - SATA controller - Serial Storage Bus";
 
-        default: return "SATA controller";
+        default: return "Mass storage controller - SATA controller";
     }
 }
 
