@@ -1,6 +1,7 @@
 #include "devicemanagerpci.h"
 
 #include <com/ngos/shared/common/pci/database/generated/pcibaseclass.h>
+#include <com/ngos/shared/common/pci/database/generated/pcivendor.h>
 #include <com/ngos/shared/common/pci/macros.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
 #include <com/ngos/shared/common/pci/pciregister.h>
@@ -412,6 +413,8 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",         baseClass,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",           subClass,                                                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",          interface,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",             enumToHumanString((PciVendor)pciHeader.vendorId),                                                          DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",        enumToHumanString((PciVendor)pciHeader.vendorId, pciHeader.deviceId),                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",            mprintf("%u",                     pci->segmentNumber),                                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",                mprintf("%u",                     i),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device",             mprintf("%u",                     j),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);

@@ -1,0 +1,71 @@
+// This file generated with the code_generator
+// Please do not modify it manually
+#ifndef COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1C8A_PCIDEVICE1C8A_H
+#define COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1C8A_PCIDEVICE1C8A_H
+
+
+
+#include <com/ngos/shared/common/log/assert.h>
+#include <com/ngos/shared/common/log/log.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/printf/printf.h>
+
+
+
+enum class PciDevice1C8A: u16 // Ignore CppEnumVerifier
+{
+    NONE        = 0,
+    DEVICE_0001 = 0x0001
+};
+
+
+
+inline const char8* enumToString(PciDevice1C8A device1C8A) // TEST: NO
+{
+    // COMMON_LT((" | device1C8A = %u", device1C8A)); // Commented to avoid bad looking logs
+
+
+
+    switch (device1C8A)
+    {
+        case PciDevice1C8A::NONE:        return "NONE";
+        case PciDevice1C8A::DEVICE_0001: return "DEVICE_0001";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciDevice1C8A device1C8A) // TEST: NO
+{
+    // COMMON_LT((" | device1C8A = %u", device1C8A)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[23];
+
+    sprintf(res, "0x%04X (%s)", (u16)device1C8A, enumToString(device1C8A));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1C8A device1C8A) // TEST: NO
+{
+    // COMMON_LT((" | device1C8A = %u", device1C8A)); // Commented to avoid bad looking logs
+
+
+
+    switch (device1C8A)
+    {
+        case PciDevice1C8A::DEVICE_0001: return "Hunter PCI Express";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+#endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1C8A_PCIDEVICE1C8A_H

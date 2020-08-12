@@ -24,12 +24,15 @@ public:
 
 private:
     bool prepareDatabase(QStringList &lines); // TEST: NO
-    bool parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses); // TEST: NO
+    bool parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses, PciVendors &vendors); // TEST: NO
     bool generateBaseClasses(const QString &path, const PciBaseClasses &baseClasses); // TEST: NO
     bool generateSubClasses(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass); // TEST: NO
+    bool generateVendors(const QString &path, const PciVendors &vendors); // TEST: NO
     bool generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses); // TEST: NO
     bool generateSubClassesFile(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass); // TEST: NO
     bool generateInterfacesFile(const QString &path, quint8 baseClassId, const QString &baseClassDescription, quint8 subClassId, const PciSubClass &subClass); // TEST: NO
+    bool generateVendorsFile(const QString &path, const PciVendors &vendors); // TEST: NO
+    bool generateDevicesFile(const QString &path, quint16 vendorId, const PciVendor &vendor); // TEST: NO
 };
 
 

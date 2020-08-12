@@ -47,7 +47,7 @@ wc -l ` \
                 -ve \.svg$ \
     ` | \
     tail -n 1 | \
-    cut -d " " -f 2
+    sed -s -E "s/ *([0-9]+) .*/\1/"
 
 IFS=${OLD_IFS}
 

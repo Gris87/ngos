@@ -34,17 +34,29 @@ bool PciDatabaseGenerator::generate(const QString &path)
         return false;
     }
 
-    PciBaseClasses baseClasses;
 
-    if (!parseDatabase(lines, baseClasses))
+
+    PciBaseClasses baseClasses;
+    PciVendors     vendors;
+
+    if (!parseDatabase(lines, baseClasses, vendors))
     {
         return false;
     }
+
+
 
     if (!generateBaseClasses(path, baseClasses))
     {
         return false;
     }
+
+    if (!generateVendors(path, vendors))
+    {
+        return false;
+    }
+
+
 
     return true;
 }
@@ -103,7 +115,7 @@ bool PciDatabaseGenerator::prepareDatabase(QStringList &lines)
     return true;
 }
 
-bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses)
+bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses, PciVendors &vendors)
 {
     qint64 i = 0;
 
@@ -111,6 +123,8 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
     // Parse vendors and devices
     {
+        PciVendor *vendor = nullptr;
+
         while (i < lines.length())
         {
             QString line = lines.at(i);
@@ -133,6 +147,76 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
                 ++i;
 
                 continue;
+            }
+
+
+
+            bool isVendor    = false;
+            bool isDevice    = false;
+            bool isSubDevice = false;
+
+
+
+            // Try to get type of the line
+            {
+                if (line.startsWith("\t\t"))
+                {
+                    isSubDevice = true;
+
+                    line.remove(0, 2);
+                }
+                else
+                if (line.startsWith('\t'))
+                {
+                    isDevice = true;
+
+                    line.remove(0, 1);
+                }
+                else
+                {
+                    isVendor = true;
+                }
+            }
+
+
+
+            bool    ok;
+            quint16 id = line.left(4).toUShort(&ok, 16);
+
+            if (!ok)
+            {
+                Console::err("Failed to parse line in PCI database: " + lines.at(i));
+
+                return false;
+            }
+
+
+
+            line.remove(0, 6);
+            line.replace("\"", "\\\""); // Ignore CppSingleCharVerifier
+
+
+
+            if (isVendor)
+            {
+                vendor              = &vendors[id];
+                vendor->description = line;
+            }
+            else
+            if (isDevice)
+            {
+                vendor->devices[id].description = line;
+            }
+            else
+            if (isSubDevice)
+            {
+                // Nothing
+            }
+            else
+            {
+                Console::err("Failed to parse line in PCI database: " + lines.at(i));
+
+                return false;
             }
 
 
@@ -227,6 +311,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 
             line.remove(0, 4);
+            line.replace("\"", "\\\""); // Ignore CppSingleCharVerifier
 
 
 
@@ -314,6 +399,32 @@ bool PciDatabaseGenerator::generateSubClasses(const QString &path, quint8 baseCl
     }
 
     return generateSubClassesFile(path, baseClassId, baseClass);
+}
+
+bool PciDatabaseGenerator::generateVendors(const QString &path, const PciVendors &vendors)
+{
+    // Iterate over vendors and generate devices
+    {
+        QMapIterator<quint16, PciVendor> it(vendors);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16          vendorId = it.key();
+            const PciVendor &vendor   = it.value();
+
+            if (!vendor.devices.isEmpty())
+            {
+                if (!generateDevicesFile(path, vendorId, vendor))
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return generateVendorsFile(path, vendors);
 }
 
 bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses)
@@ -534,12 +645,7 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
 
 bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass)
 {
-    QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
-
-    if (baseClassId < 16)
-    {
-        baseClassIdStr = "0" + baseClassIdStr; // Ignore CppSingleCharVerifier
-    }
+    QString baseClassIdStr = QString("%1").arg(baseClassId, 2, 16, QChar('0')).toUpper();
 
 
 
@@ -766,18 +872,8 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
 
 bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 baseClassId, const QString &baseClassDescription, quint8 subClassId, const PciSubClass &subClass)
 {
-    QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
-    QString subClassIdStr  = QString::number(subClassId,  16).toUpper();
-
-    if (baseClassId < 16)
-    {
-        baseClassIdStr = "0" + baseClassIdStr; // Ignore CppSingleCharVerifier
-    }
-
-    if (subClassId < 16)
-    {
-        subClassIdStr = "0" + subClassIdStr; // Ignore CppSingleCharVerifier
-    }
+    QString baseClassIdStr = QString("%1").arg(baseClassId, 2, 16, QChar('0')).toUpper();
+    QString subClassIdStr  = QString("%1").arg(subClassId,  2, 16, QChar('0')).toUpper();
 
 
 
@@ -942,6 +1038,396 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 ba
 
 
     return save(QString(path + FOLDER_PATH + "baseclass%1/pciinterface%1%2.h").arg(baseClassId, 2, 16, QChar('0')).arg(subClassId, 2, 16, QChar('0')), lines);
+}
+
+bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVendors &vendors)
+{
+    QStringList lines;
+
+
+
+    // Headers
+    {
+        lines.append("#include <com/ngos/shared/common/log/assert.h>");
+        lines.append("#include <com/ngos/shared/common/log/log.h>");
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
+
+        QMapIterator<quint16, PciVendor> it(vendors);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16          vendorId = it.key();
+            const PciVendor &vendor   = it.value();
+
+            if (!vendor.devices.isEmpty())
+            {
+                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/vendor%1/pcidevice%1.h>").arg(vendorId, 4, 16, QChar('0')));
+            }
+        }
+
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
+    }
+
+
+
+    // enum class PciVendor
+    {
+        addThreeBlankLines(lines);
+
+
+
+        lines.append("enum class PciVendor: u16");
+        lines.append("{"); // Ignore CppSingleCharVerifier
+
+        if (!vendors.contains(0))
+        {
+            lines.append("    NONE        = 0,");
+        }
+
+        QMapIterator<quint16, PciVendor> it(vendors);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16 vendorId    = it.key();
+            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
+
+            lines.append(QString("    VENDOR_%1 = 0x%1,").arg(vendorIdStr, 4, QChar('0')));
+        }
+
+        // Remove ',' from the previous line
+        {
+            QString &previousLine = lines.last();
+            previousLine.remove(previousLine.length() - 1, 1);
+        }
+
+        lines.append("};");
+    }
+
+
+
+    // inline const char8* enumToString(PciVendor vendor)
+    {
+        addThreeBlankLines(lines);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append("inline const char8* enumToString(PciVendor vendor) // TEST: NO");
+        lines.append("{"); // Ignore CppSingleCharVerifier
+        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");
+
+        addThreeBlankLines(lines);
+
+        lines.append("    switch (vendor)");
+        lines.append("    {");
+
+        if (!vendors.contains(0))
+        {
+            lines.append("        case PciVendor::NONE:        return \"NONE\";");
+        }
+
+        QMapIterator<quint16, PciVendor> it(vendors);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16 vendorId    = it.key();
+            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
+
+            lines.append(QString("        case PciVendor::VENDOR_%1: return \"VENDOR_%1\";").arg(vendorIdStr, 4, QChar('0')));
+        }
+
+        lines.append("");
+        lines.append("        default: return \"UNKNOWN\";");
+        lines.append("    }");
+        lines.append("}"); // Ignore CppSingleCharVerifier
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    // inline const char8* enumToFullString(PciVendor vendor)
+    {
+        addThreeBlankLines(lines);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append("inline const char8* enumToFullString(PciVendor vendor) // TEST: NO");
+        lines.append("{"); // Ignore CppSingleCharVerifier
+        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");
+
+        addThreeBlankLines(lines);
+
+        lines.append("    static char8 res[21];");
+        lines.append("");
+        lines.append("    sprintf(res, \"0x%04X (%s)\", (u16)vendor, enumToString(vendor));");
+        lines.append("");
+        lines.append("    return res;");
+        lines.append("}"); // Ignore CppSingleCharVerifier
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    // inline const char8* enumToHumanString(PciVendor vendor)
+    {
+        addThreeBlankLines(lines);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append("inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO");
+        lines.append("{"); // Ignore CppSingleCharVerifier
+        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");
+
+        addThreeBlankLines(lines);
+
+        lines.append("    switch (vendor)");
+        lines.append("    {");
+
+        QMapIterator<quint16, PciVendor> it(vendors);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16          vendorId = it.key();
+            const PciVendor &vendor   = it.value();
+
+            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
+
+            lines.append(QString("        case PciVendor::VENDOR_%1: return \"%2\";").arg(vendorIdStr, 4, QChar('0')).arg(vendor.description));
+        }
+
+        lines.append("");
+        lines.append("        default: return \"Unknown vendor\";");
+        lines.append("    }");
+        lines.append("}"); // Ignore CppSingleCharVerifier
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    // inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId)
+    {
+        addThreeBlankLines(lines);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append("inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: NO");
+        lines.append("{"); // Ignore CppSingleCharVerifier
+        lines.append("    // COMMON_LT((\" | vendor = %u, deviceId = %u\", vendor, deviceId)); // Commented to avoid bad looking logs");
+
+        addThreeBlankLines(lines);
+
+        lines.append("    switch (vendor)");
+        lines.append("    {");
+
+        QMapIterator<quint16, PciVendor> it(vendors);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16          vendorId = it.key();
+            const PciVendor &vendor   = it.value();
+
+            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
+
+
+
+            if (!vendor.devices.isEmpty())
+            {
+                lines.append(QString("        case PciVendor::VENDOR_%1: return enumToHumanString((PciDevice%1)deviceId);").arg(vendorIdStr, 4, QChar('0')));
+            }
+            else
+            {
+                lines.append(QString("        case PciVendor::VENDOR_%1: return \"Unknown device\";").arg(vendorIdStr, 4, QChar('0')));
+            }
+        }
+
+        lines.append("");
+        lines.append("        default: return \"Unknown device\";");
+        lines.append("    }");
+        lines.append("}"); // Ignore CppSingleCharVerifier
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return save(path + FOLDER_PATH + "pcivendor.h", lines);
+}
+
+bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vendorId, const PciVendor &vendor)
+{
+    QString vendorIdStr = QString("%1").arg(vendorId, 4, 16, QChar('0')).toUpper();
+
+
+
+    QStringList lines;
+
+
+
+    // Headers
+    {
+        lines.append("#include <com/ngos/shared/common/log/assert.h>");
+        lines.append("#include <com/ngos/shared/common/log/log.h>");
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
+    }
+
+
+
+    // enum class PciDevice
+    {
+        addThreeBlankLines(lines);
+
+
+
+        lines.append(QString("enum class PciDevice%1: u16 // Ignore CppEnumVerifier").arg(vendorIdStr, 4, QChar('0')));
+        lines.append("{"); // Ignore CppSingleCharVerifier
+
+        if (!vendor.devices.contains(0))
+        {
+            lines.append("    NONE        = 0,");
+        }
+
+        QMapIterator<quint16, PciDevice> it(vendor.devices);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16 deviceId    = it.key();
+            QString deviceIdStr = QString::number(deviceId, 16).toUpper();
+
+            lines.append(QString("    DEVICE_%1 = 0x%1,").arg(deviceIdStr, 4, QChar('0')));
+        }
+
+        // Remove ',' from the previous line
+        {
+            QString &previousLine = lines.last();
+            previousLine.remove(previousLine.length() - 1, 1);
+        }
+
+        lines.append("};");
+    }
+
+
+
+    // inline const char8* enumToString(PciDevice device)
+    {
+        addThreeBlankLines(lines);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append(QString("inline const char8* enumToString(PciDevice%1 device%1) // TEST: NO").arg(vendorIdStr, 4, QChar('0')));
+        lines.append("{"); // Ignore CppSingleCharVerifier
+        lines.append(QString("    // COMMON_LT((\" | device%1 = %u\", device%1)); // Commented to avoid bad looking logs").arg(vendorIdStr, 4, QChar('0')));
+
+        addThreeBlankLines(lines);
+
+        lines.append(QString("    switch (device%1)").arg(vendorIdStr, 4, QChar('0')));
+        lines.append("    {");
+
+        if (!vendor.devices.contains(0))
+        {
+            lines.append(QString("        case PciDevice%1::NONE:        return \"NONE\";").arg(vendorIdStr, 4, QChar('0')));
+        }
+
+        QMapIterator<quint16, PciDevice> it(vendor.devices);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16 deviceId    = it.key();
+            QString deviceIdStr = QString::number(deviceId, 16).toUpper();
+
+            lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"DEVICE_%2\";").arg(vendorIdStr, 4, QChar('0')).arg(deviceIdStr, 4, QChar('0')));
+        }
+
+        lines.append("");
+        lines.append("        default: return \"UNKNOWN\";");
+        lines.append("    }");
+        lines.append("}"); // Ignore CppSingleCharVerifier
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    // inline const char8* enumToFullString(PciDevice device)
+    {
+        addThreeBlankLines(lines);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append(QString("inline const char8* enumToFullString(PciDevice%1 device%1) // TEST: NO").arg(vendorIdStr, 4, QChar('0')));
+        lines.append("{"); // Ignore CppSingleCharVerifier
+        lines.append(QString("    // COMMON_LT((\" | device%1 = %u\", device%1)); // Commented to avoid bad looking logs").arg(vendorIdStr, 4, QChar('0')));
+
+        addThreeBlankLines(lines);
+
+        lines.append("    static char8 res[23];");
+        lines.append("");
+        lines.append(QString("    sprintf(res, \"%2 (%s)\", (u16)device%1, enumToString(device%1));").arg(vendorIdStr, 4, QChar('0')).arg("0x%04X"));
+        lines.append("");
+        lines.append("    return res;");
+        lines.append("}"); // Ignore CppSingleCharVerifier
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    // inline const char8* enumToHumanString(PciDevice device)
+    {
+        addThreeBlankLines(lines);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append(QString("inline const char8* enumToHumanString(PciDevice%1 device%1) // TEST: NO").arg(vendorIdStr, 4, QChar('0')));
+        lines.append("{"); // Ignore CppSingleCharVerifier
+        lines.append(QString("    // COMMON_LT((\" | device%1 = %u\", device%1)); // Commented to avoid bad looking logs").arg(vendorIdStr, 4, QChar('0')));
+
+        addThreeBlankLines(lines);
+
+        lines.append(QString("    switch (device%1)").arg(vendorIdStr, 4, QChar('0')));
+        lines.append("    {");
+
+        QMapIterator<quint16, PciDevice> it(vendor.devices);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16          deviceId = it.key();
+            const PciDevice &device   = it.value();
+
+            QString deviceIdStr = QString::number(deviceId, 16).toUpper();
+
+            lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"%3\";").arg(vendorIdStr, 4, QChar('0')).arg(deviceIdStr, 4, QChar('0')).arg(device.description));
+        }
+
+        lines.append("");
+        lines.append("        default: return \"Unknown device\";");
+        lines.append("    }");
+        lines.append("}"); // Ignore CppSingleCharVerifier
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return save(QString(path + FOLDER_PATH + "vendor%1/pcidevice%1.h").arg(vendorId, 4, 16, QChar('0')), lines);
 }
 
 
